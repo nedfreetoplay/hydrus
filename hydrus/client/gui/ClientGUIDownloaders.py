@@ -140,7 +140,7 @@ class EditDownloaderDisplayPanel( ClientGUIScrolledPanels.EditPanel ):
         
         gug = self._gug_keys_to_gugs[ gug_key ]
         
-        name = gug.GetName()
+        name = gug.get_name()
         
         pretty_name = name
         
@@ -162,7 +162,7 @@ class EditDownloaderDisplayPanel( ClientGUIScrolledPanels.EditPanel ):
         
         gug = self._gug_keys_to_gugs[ gug_key ]
         
-        name = gug.GetName()
+        name = gug.get_name()
         
         return ( name, display )
         
@@ -173,7 +173,7 @@ class EditDownloaderDisplayPanel( ClientGUIScrolledPanels.EditPanel ):
         
         url_class = self._url_class_keys_to_url_classes[ url_class_key ]
         
-        url_class_name = url_class.GetName()
+        url_class_name = url_class.get_name()
         url_type = url_class.GetURLType()
         
         pretty_name = url_class_name
@@ -197,7 +197,7 @@ class EditDownloaderDisplayPanel( ClientGUIScrolledPanels.EditPanel ):
         
         url_class = self._url_class_keys_to_url_classes[ url_class_key ]
         
-        url_class_name = url_class.GetName()
+        url_class_name = url_class.get_name()
         url_type = url_class.GetURLType()
         
         pretty_url_type = HC.url_type_string_lookup[ url_type ]
@@ -214,9 +214,9 @@ class EditDownloaderDisplayPanel( ClientGUIScrolledPanels.EditPanel ):
             return
             
         
-        names = [ self._gug_keys_to_gugs[ gug_key_and_display[0] ].GetName() for gug_key_and_display in gug_keys_and_displays ]
+        names = [ self._gug_keys_to_gugs[ gug_key_and_display[0] ].get_name() for gug_key_and_display in gug_keys_and_displays ]
         
-        message = f'Show{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( names )}in the main selector list?'
+        message = f'Show{HydrusText.convert_many_strings_to_nice_insertable_human_summary( names )}in the main selector list?'
         
         ( result, closed_by_user ) = ClientGUIDialogsQuick.GetYesNo( self, message, title = 'Show in the first list?', check_for_cancelled = True )
         
@@ -248,9 +248,9 @@ class EditDownloaderDisplayPanel( ClientGUIScrolledPanels.EditPanel ):
             return
             
         
-        names = [ self._url_class_keys_to_url_classes[ url_class_key_and_display[0] ].GetName() for url_class_key_and_display in url_class_keys_and_displays ]
+        names = [ self._url_class_keys_to_url_classes[ url_class_key_and_display[0] ].get_name() for url_class_key_and_display in url_class_keys_and_displays ]
         
-        message = f'Show{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( names )}in the media viewer?'
+        message = f'Show{HydrusText.convert_many_strings_to_nice_insertable_human_summary( names )}in the media viewer?'
         
         ( result, closed_by_user ) = ClientGUIDialogsQuick.GetYesNo( self, message, title = 'Show in the media viewer?', check_for_cancelled = True )
         
@@ -317,7 +317,7 @@ class EditGUGPanel( ClientGUIScrolledPanels.EditPanel ):
         
         #
         
-        name = gug.GetName()
+        name = gug.get_name()
         
         ( url_template, replacement_phrase, search_terms_separator, example_search_text ) = gug.GetURLTemplateVariables()
         
@@ -420,7 +420,7 @@ class EditGUGPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 else:
                     
-                    url_class_text = 'Matched ' + url_class.GetName() + ' url class.'
+                    url_class_text = 'Matched ' + url_class.get_name() + ' url class.'
                     
                 
             except HydrusExceptions.URLClassException:
@@ -457,7 +457,7 @@ class EditNGUGPanel( ClientGUIScrolledPanels.EditPanel ):
         self._original_ngug = ngug
         self._available_gugs = list( available_gugs )
         
-        self._available_gugs.sort( key = lambda g: g.GetName() )
+        self._available_gugs.sort( key = lambda g: g.get_name() )
         
         self._name = QW.QLineEdit( self )
         
@@ -478,7 +478,7 @@ class EditNGUGPanel( ClientGUIScrolledPanels.EditPanel ):
         
         #
         
-        name = ngug.GetName()
+        name = ngug.get_name()
         
         initial_search_text = ngug.GetInitialSearchText()
         
@@ -520,7 +520,7 @@ class EditNGUGPanel( ClientGUIScrolledPanels.EditPanel ):
         existing_gug_keys = { gug_key for ( gug_key, gug_name ) in self._gug_list_ctrl.GetData() }
         existing_gug_names = { gug_name for ( gug_key, gug_name ) in self._gug_list_ctrl.GetData() }
         
-        choice_tuples = [ ( gug.GetName(), gug, False ) for gug in self._available_gugs if gug.GetName() not in existing_gug_names and gug.GetGUGKey() not in existing_gug_keys ]
+        choice_tuples = [ ( gug.get_name(), gug, False ) for gug in self._available_gugs if gug.get_name() not in existing_gug_names and gug.GetGUGKey() not in existing_gug_keys ]
         
         if len( choice_tuples ) == 0:
             
@@ -551,7 +551,7 @@ class EditNGUGPanel( ClientGUIScrolledPanels.EditPanel ):
         name = gug_name
         pretty_name = name
         
-        available = gug_key in ( gug.GetGUGKey() for gug in self._available_gugs ) or gug_name in ( gug.GetName() for gug in self._available_gugs )
+        available = gug_key in ( gug.GetGUGKey() for gug in self._available_gugs ) or gug_name in ( gug.get_name() for gug in self._available_gugs )
         
         if available:
             
@@ -571,7 +571,7 @@ class EditNGUGPanel( ClientGUIScrolledPanels.EditPanel ):
         
         name = gug_name
         
-        available = gug_key in ( gug.GetGUGKey() for gug in self._available_gugs ) or gug_name in ( gug.GetName() for gug in self._available_gugs )
+        available = gug_key in ( gug.GetGUGKey() for gug in self._available_gugs ) or gug_name in ( gug.get_name() for gug in self._available_gugs )
         
         return ( name, available )
         
@@ -720,7 +720,7 @@ class EditGUGsPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _AddGUG( self, gug, select_sort_and_scroll = False ):
         
-        HydrusSerialisable.SetNonDupeName( gug, self._GetExistingNames() )
+        HydrusSerialisable.set_non_dupe_name( gug, self._GetExistingNames() )
         
         gug.RegenerateGUGKey()
         
@@ -729,7 +729,7 @@ class EditGUGsPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _AddNGUG( self, ngug, select_sort_and_scroll = False ):
         
-        HydrusSerialisable.SetNonDupeName( ngug, self._GetExistingNames() )
+        HydrusSerialisable.set_non_dupe_name( ngug, self._GetExistingNames() )
         
         ngug.RegenerateGUGKey()
         
@@ -761,7 +761,7 @@ class EditGUGsPanel( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            pretty_gallery_url_class = url_class.GetName()
+            pretty_gallery_url_class = url_class.get_name()
             
         
         pretty_name = name
@@ -875,11 +875,11 @@ class EditGUGsPanel( ClientGUIScrolledPanels.EditPanel ):
             if dlg.exec() == QW.QDialog.DialogCode.Accepted:
                 
                 existing_names = self._GetExistingNames()
-                existing_names.discard( gug.GetName() )
+                existing_names.discard( gug.get_name() )
                 
                 edited_gug = panel.GetValue()
                 
-                HydrusSerialisable.SetNonDupeName( edited_gug, existing_names )
+                HydrusSerialisable.set_non_dupe_name( edited_gug, existing_names )
                 
                 self._gug_list_ctrl.ReplaceData( gug, edited_gug, sort_and_scroll = True )
                 
@@ -909,11 +909,11 @@ class EditGUGsPanel( ClientGUIScrolledPanels.EditPanel ):
             if dlg.exec() == QW.QDialog.DialogCode.Accepted:
                 
                 existing_names = self._GetExistingNames()
-                existing_names.discard( ngug.GetName() )
+                existing_names.discard( ngug.get_name() )
                 
                 edited_ngug = panel.GetValue()
                 
-                HydrusSerialisable.SetNonDupeName( edited_ngug, existing_names )
+                HydrusSerialisable.set_non_dupe_name( edited_ngug, existing_names )
                 
                 self._ngug_list_ctrl.ReplaceData( ngug, edited_ngug, sort_and_scroll = True )
                 

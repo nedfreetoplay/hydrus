@@ -38,7 +38,7 @@ class GUISessionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         #
         
-        gui_session_names = CG.client_controller.Read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_GUI_SESSION_CONTAINER )
+        gui_session_names = CG.client_controller.read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_GUI_SESSION_CONTAINER )
         
         if CC.LAST_SESSION_SESSION_NAME not in gui_session_names:
             

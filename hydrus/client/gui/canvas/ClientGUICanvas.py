@@ -340,12 +340,12 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         self._background_colour_generator = CanvasBackgroundColourGenerator( self )
         
-        self._current_media_start_time_ms = HydrusTime.GetNowMS()
+        self._current_media_start_time_ms = HydrusTime.get_now_ms()
         
         self._new_options = CG.client_controller.new_options
         
         self._canvas_type = CC.CANVAS_MEDIA_VIEWER
-        self._canvas_key = HydrusData.GenerateKey()
+        self._canvas_key = HydrusData.generate_key()
         
         self._force_maintain_pan_and_zoom = False
         
@@ -393,7 +393,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         if self._current_media is not None:
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_ARCHIVE, ( self._current_media.GetHash(), ) ) ) )
+            CG.client_controller.write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_ARCHIVE, ( self._current_media.GetHash(), ) ) ) )
             
         
     
@@ -440,7 +440,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
             for content_update_package in content_update_packages:
                 
-                CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+                CG.client_controller.write_synchronous( 'content_updates', content_update_package )
                 
             
         
@@ -450,7 +450,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
         else:
             
-            CG.client_controller.CallToThread( do_it, content_update_packages )
+            CG.client_controller.call_to_thread( do_it, content_update_packages )
             
             return True
             
@@ -489,7 +489,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             return
             
         
-        CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_INBOX, ( self._current_media.GetHash(), ) ) ) )
+        CG.client_controller.write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_INBOX, ( self._current_media.GetHash(), ) ) ) )
         
     
     def _MaintainNeighbourPrefetch( self ):
@@ -606,7 +606,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                     
                     content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, pending_content_updates )
                     
-                    CG.client_controller.Write( 'content_updates', content_update_package )
+                    CG.client_controller.write( 'content_updates', content_update_package )
                     
                 
             
@@ -635,7 +635,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
     
     def _SaveCurrentMediaViewTime( self ):
         
-        now_ms = HydrusTime.GetNowMS()
+        now_ms = HydrusTime.get_now_ms()
         
         view_timestamp_ms = self._current_media_start_time_ms
         
@@ -1420,7 +1420,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
                 from hydrus.core.files.images import HydrusImageNormalisation
                 
-                HydrusImageNormalisation.SetDoICCProfileNormalisation( result )
+                HydrusImageNormalisation.set_do_icc_profile_normalisation( result )
                 
             elif action in ( CAC.SIMPLE_FLIP_TRANSPARENCY_CHECKERBOARD_MEDIA_VIEWER, CAC.SIMPLE_FLIP_TRANSPARENCY_CHECKERBOARD_MEDIA_VIEWER_DUPLICATE_FILTER, CAC.SIMPLE_FLIP_TRANSPARENCY_CHECKERBOARD_GREENSCREEN ):
                 
@@ -1515,7 +1515,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
             self.EndDrag()
             
-            CG.client_controller.ResetIdleTimer()
+            CG.client_controller.reset_idle_timer()
             
             self._SaveCurrentMediaViewTime()
             
@@ -1775,7 +1775,7 @@ class CanvasPanel( Canvas ):
             ClientGUIMediaMenus.AddFileViewingStatsMenu( info_menu, (self._current_media,) )
             
             filetype_summary = ClientMedia.GetMediasFiletypeSummaryString( [ self._current_media ] )
-            size_summary = HydrusData.ToHumanBytes( self._current_media.GetSize() )
+            size_summary = HydrusData.to_human_bytes( self._current_media.GetSize() )
             
             info_summary = f'{filetype_summary}, {size_summary}'
             
@@ -1839,7 +1839,7 @@ class CanvasPanel( Canvas ):
             
             if num_notes > 0:
                 
-                notes_str = '{} ({})'.format( notes_str, HydrusNumbers.ToHumanInt( num_notes ) )
+                notes_str = '{} ({})'.format( notes_str, HydrusNumbers.to_human_int( num_notes ) )
                 
             
             ClientGUIMenus.AppendMenuItem( manage_menu, notes_str, 'Manage this file\'s notes.', self._ManageNotes )
@@ -2276,7 +2276,7 @@ class CanvasWithHovers( Canvas ):
         #
         
         self._cursor_autohide_timer = QC.QTimer( self )
-        self._last_cursor_autohide_touch_time = HydrusTime.GetNowFloat()
+        self._last_cursor_autohide_touch_time = HydrusTime.get_now_float()
         
         # need this as we need un-button-pressed move events for cursor hide
         self.setMouseTracking( True )
@@ -2576,7 +2576,7 @@ class CanvasWithHovers( Canvas ):
                     display_string += ' (-)'
                     
                 
-                ( namespace, subtag ) = HydrusTags.SplitTag( tag )
+                ( namespace, subtag ) = HydrusTags.split_tag( tag )
                 
                 if namespace in namespace_colours:
                     
@@ -2890,13 +2890,13 @@ class CanvasWithHovers( Canvas ):
                 
                 should_be_hidden = False
                 
-                self._last_cursor_autohide_touch_time = HydrusTime.GetNowFloat()
+                self._last_cursor_autohide_touch_time = HydrusTime.get_now_float()
                 
             else:
                 
-                hide_time = HydrusTime.SecondiseMSFloat( hide_time_ms )
+                hide_time = HydrusTime.secondise_ms_float( hide_time_ms )
                 
-                should_be_hidden = HydrusTime.TimeHasPassedFloat( self._last_cursor_autohide_touch_time + hide_time )
+                should_be_hidden = HydrusTime.time_has_passed_float( self._last_cursor_autohide_touch_time + hide_time )
                 
             
             next_check_period_ms = max( 100, min( int( hide_time_ms / 5 ), 250 ) )
@@ -2918,7 +2918,7 @@ class CanvasWithHovers( Canvas ):
     
     def _RestartCursorHideWait( self ):
         
-        self._last_cursor_autohide_touch_time = HydrusTime.GetNowFloat()
+        self._last_cursor_autohide_touch_time = HydrusTime.get_now_float()
         
         self._cursor_autohide_timer.start( 100 )
         
@@ -3195,11 +3195,11 @@ class CanvasMediaList( CanvasWithHovers ):
         
         if self._current_media is None:
             
-            index_string = '-/' + HydrusNumbers.ToHumanInt( len( self._media_list ) )
+            index_string = '-/' + HydrusNumbers.to_human_int( len( self._media_list ) )
             
         else:
             
-            index_string = HydrusNumbers.ValueRangeToPrettyString( self._media_list.IndexOf( self._current_media ) + 1, len( self._media_list ) )
+            index_string = HydrusNumbers.value_range_to_pretty_string( self._media_list.IndexOf( self._current_media ) + 1, len( self._media_list ) )
             
         
         return index_string
@@ -3375,7 +3375,7 @@ def CommitArchiveDelete( deletee_location_context: ClientLocation.LocationContex
     # we had some odd 'remove again' calls to try to double-action the remove in this case, but it was awkward especially as we moved to Qt signals for that stuff
     # thus I'm now wangling a job status to show archive/delete status when it takes more than two seconds. the slow-computer/fast-F5ing user will see that thing popup and know what happened
     
-    start_time = HydrusTime.GetNowFloat()
+    start_time = HydrusTime.get_now_float()
     
     job_status = ClientThreading.JobStatus()
     
@@ -3386,7 +3386,7 @@ def CommitArchiveDelete( deletee_location_context: ClientLocation.LocationContex
     kept = list( kept )
     deleted = list( deleted )
     
-    deletee_location_context = deletee_location_context.Duplicate()
+    deletee_location_context = deletee_location_context.duplicate()
     
     deletee_location_context.FixMissingServices( ClientLocation.ValidLocalDomainsFilter )
     
@@ -3402,14 +3402,14 @@ def CommitArchiveDelete( deletee_location_context: ClientLocation.LocationContex
     
     BLOCK_SIZE = 64
     
-    for ( num_done, num_to_do, block_of_deleted ) in HydrusLists.SplitListIntoChunksRich( deleted, BLOCK_SIZE ):
+    for ( num_done, num_to_do, block_of_deleted ) in HydrusLists.split_list_into_chunks_rich( deleted, BLOCK_SIZE ):
         
-        if not have_shown_popup and HydrusTime.TimeHasPassedFloat( start_time + 1 ):
+        if not have_shown_popup and HydrusTime.time_has_passed_float( start_time + 1 ):
             
             CG.client_controller.pub( 'message', job_status )
             
         
-        job_status.SetStatusText( f'Deleting: {HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do )}' )
+        job_status.SetStatusText( f'Deleting: {HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do )}' )
         job_status.SetGauge( num_done, num_to_do )
         
         if CG.client_controller.new_options.GetBoolean( 'delete_lock_for_archived_files' ) and CG.client_controller.new_options.GetBoolean( 'delete_lock_reinbox_deletees_after_archive_delete' ):
@@ -3418,7 +3418,7 @@ def CommitArchiveDelete( deletee_location_context: ClientLocation.LocationContex
             
             content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_INBOX, block_of_deleted_hashes ) )
             
-            CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+            CG.client_controller.write_synchronous( 'content_updates', content_update_package )
             
             CG.client_controller.WaitUntilViewFree()
             
@@ -3434,26 +3434,26 @@ def CommitArchiveDelete( deletee_location_context: ClientLocation.LocationContex
             content_update_package.AddContentUpdate( deletee_file_service_key, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, block_of_deleted_hashes, reason = reason ) )
             
         
-        CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+        CG.client_controller.write_synchronous( 'content_updates', content_update_package )
         
         CG.client_controller.WaitUntilViewFree()
         
     
     kept_hashes = [ m.GetHash() for m in kept ]
     
-    for ( num_done, num_to_do, block_of_kept_hashes ) in HydrusLists.SplitListIntoChunksRich( kept_hashes, BLOCK_SIZE ):
+    for ( num_done, num_to_do, block_of_kept_hashes ) in HydrusLists.split_list_into_chunks_rich( kept_hashes, BLOCK_SIZE ):
         
-        if not have_shown_popup and HydrusTime.TimeHasPassedFloat( start_time + 1 ):
+        if not have_shown_popup and HydrusTime.time_has_passed_float( start_time + 1 ):
             
             CG.client_controller.pub( 'message', job_status )
             
         
-        job_status.SetStatusText( f'Archiving: {HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do )}' )
+        job_status.SetStatusText( f'Archiving: {HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do )}' )
         job_status.SetGauge( num_done, num_to_do )
         
         content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_ARCHIVE, block_of_kept_hashes ) )
         
-        CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+        CG.client_controller.write_synchronous( 'content_updates', content_update_package )
         
         CG.client_controller.WaitUntilViewFree()
         
@@ -3670,7 +3670,7 @@ class CanvasMediaListFilterArchiveDelete( CanvasMediaList ):
             
             if len( kept ) > 0:
                 
-                kept_label = 'keep {}'.format( HydrusNumbers.ToHumanInt( len( kept ) ) )
+                kept_label = 'keep {}'.format( HydrusNumbers.to_human_int( len( kept ) ) )
                 
             else:
                 
@@ -3689,7 +3689,7 @@ class CanvasMediaListFilterArchiveDelete( CanvasMediaList ):
                     
                     location_contexts_to_present_options_for = []
                     
-                    possible_location_context_at_top = self._location_context.Duplicate()
+                    possible_location_context_at_top = self._location_context.duplicate()
                     
                     possible_location_context_at_top.LimitToServiceTypes( CG.client_controller.services_manager.GetServiceType, ( HC.COMBINED_LOCAL_FILE_DOMAINS, HC.LOCAL_FILE_DOMAIN ) )
                     
@@ -3698,7 +3698,7 @@ class CanvasMediaListFilterArchiveDelete( CanvasMediaList ):
                         location_contexts_to_present_options_for.append( possible_location_context_at_top )
                         
                     
-                    current_local_service_keys = HydrusLists.MassUnion( [ m.GetLocationsManager().GetCurrent() for m in deleted ] )
+                    current_local_service_keys = HydrusLists.mass_union( [ m.GetLocationsManager().GetCurrent() for m in deleted ] )
                     
                     local_file_domain_service_keys = [ service_key for service_key in current_local_service_keys if CG.client_controller.services_manager.GetServiceType( service_key ) == HC.LOCAL_FILE_DOMAIN ]
                     
@@ -3711,7 +3711,7 @@ class CanvasMediaListFilterArchiveDelete( CanvasMediaList ):
                         location_contexts_to_present_options_for.insert( 0, combined_local_file_domains_location_context )
                         
                     
-                    location_contexts_to_present_options_for = HydrusLists.DedupeList( location_contexts_to_present_options_for )
+                    location_contexts_to_present_options_for = HydrusLists.dedupe_list( location_contexts_to_present_options_for )
                     
                 
                 for location_context in location_contexts_to_present_options_for:
@@ -3732,14 +3732,14 @@ class CanvasMediaListFilterArchiveDelete( CanvasMediaList ):
                                 
                             else:
                                 
-                                num_label = f'all {HydrusNumbers.ToHumanInt( num_deletable )}'
+                                num_label = f'all {HydrusNumbers.to_human_int( num_deletable )}'
                                 
                             
                             delete_label = f'delete {num_label} from {location_label}, sending directly to trash'
                             
                         else:
                             
-                            delete_label = f'delete {HydrusNumbers.ToHumanInt( num_deletable )} from {location_label}'
+                            delete_label = f'delete {HydrusNumbers.to_human_int( num_deletable )} from {location_label}'
                             
                         
                         deletion_options.append( ( location_context, delete_label ) )
@@ -3803,7 +3803,7 @@ class CanvasMediaListFilterArchiveDelete( CanvasMediaList ):
                 kept_mr = [ m.GetMediaResult() for m in kept ]
                 deleted_mr = [ m.GetMediaResult() for m in deleted ]
                 
-                CG.client_controller.CallToThread( CommitArchiveDelete, deletee_location_context, kept_mr, deleted_mr )
+                CG.client_controller.call_to_thread( CommitArchiveDelete, deletee_location_context, kept_mr, deleted_mr )
                 
             
         
@@ -4181,7 +4181,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
                 time_to_switch = self._last_slideshow_switch_time + self._special_slideshow_period_for_current_media
                 
             
-            if not HydrusTime.TimeHasPassedFloat( time_to_switch ):
+            if not HydrusTime.time_has_passed_float( time_to_switch ):
                 
                 return
                 
@@ -4216,7 +4216,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
         
         if self._slideshow_is_running:
             
-            self._last_slideshow_switch_time = HydrusTime.GetNowFloat()
+            self._last_slideshow_switch_time = HydrusTime.get_now_float()
             
             self._special_slideshow_period_for_current_media = None
             
@@ -4371,7 +4371,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
             ClientGUIMediaMenus.AddFileViewingStatsMenu( info_menu, ( self._current_media, ) )
             
             filetype_summary = ClientMedia.GetMediasFiletypeSummaryString( [ self._current_media ] )
-            size_summary = HydrusData.ToHumanBytes( self._current_media.GetSize() )
+            size_summary = HydrusData.to_human_bytes( self._current_media.GetSize() )
             
             info_summary = f'{filetype_summary}, {size_summary}'
             
@@ -4485,7 +4485,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
             
             if num_notes > 0:
                 
-                notes_str = '{} ({})'.format( notes_str, HydrusNumbers.ToHumanInt( num_notes ) )
+                notes_str = '{} ({})'.format( notes_str, HydrusNumbers.to_human_int( num_notes ) )
                 
             
             ClientGUIMenus.AppendMenuItem( manage_menu, notes_str, 'Manage this file\'s notes.', self._ManageNotes )

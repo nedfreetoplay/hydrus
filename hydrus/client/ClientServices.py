@@ -62,7 +62,7 @@ def GenerateDefaultServiceDictionary( service_type ):
         
         if service_type in HC.RESTRICTED_SERVICES:
             
-            dictionary[ 'account' ] = HydrusNetwork.Account.GenerateSerialisableTupleFromAccount( HydrusNetwork.Account.GenerateUnknownAccount() )
+            dictionary[ 'account' ] = HydrusNetwork.Account.generate_serialisable_tuple_from_account( HydrusNetwork.Account.generate_unknown_account() )
             dictionary[ 'next_account_sync' ] = 0
             dictionary[ 'network_sync_paused' ] = False
             dictionary[ 'service_options' ] = HydrusSerialisable.SerialisableDictionary()
@@ -233,7 +233,7 @@ class ServiceSpecifier( HydrusSerialisable.SerialisableBase ):
         return ( tuple( sorted( self._service_types ) ), tuple( sorted( self._service_keys ) ) ).__hash__()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         serialisable_service_types = sorted( self._service_types )
         serialisable_service_keys = sorted( ( key.hex() for key in self._service_keys ) )
@@ -241,7 +241,7 @@ class ServiceSpecifier( HydrusSerialisable.SerialisableBase ):
         return ( serialisable_service_types, serialisable_service_keys )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( serialisable_service_types, serialisable_service_keys ) = serialisable_info
         
@@ -334,7 +334,7 @@ class ServiceSpecifier( HydrusSerialisable.SerialisableBase ):
                 
             else:
                 
-                name = f'{HydrusNumbers.ToHumanInt(len(self._service_keys))} services'
+                name = f'{HydrusNumbers.to_human_int(len(self._service_keys))} services'
                 
             
             return name
@@ -731,7 +731,7 @@ class ServiceLocalRatingIncDec( ServiceLocalRating ):
             
         elif isinstance( rating, int ):
             
-            return HydrusNumbers.ToHumanInt( rating )
+            return HydrusNumbers.to_human_int( rating )
             
         
         return 'unknown'
@@ -741,7 +741,7 @@ class ServiceLocalRatingIncDec( ServiceLocalRating ):
         
         if rating_state == ClientRatings.SET:
             
-            return HydrusNumbers.ToHumanInt( rating )
+            return HydrusNumbers.to_human_int( rating )
             
         elif rating_state == ClientRatings.MIXED:
             
@@ -883,7 +883,7 @@ class ServiceLocalRatingNumerical( ServiceLocalRatingStars ):
             rating_value = self.ConvertRatingToStars( rating )
             rating_range = self._num_stars
             
-            return HydrusNumbers.ValueRangeToPrettyString( rating_value, rating_range )
+            return HydrusNumbers.value_range_to_pretty_string( rating_value, rating_range )
             
         
         return 'unknown'
@@ -978,12 +978,12 @@ class ServiceRemote( Service ):
             duration_s = self._GetErrorWaitPeriod()
             
         
-        next_no_requests_until = HydrusTime.GetNow() + duration_s
+        next_no_requests_until = HydrusTime.get_now() + duration_s
         
         if next_no_requests_until > self._no_requests_until:
             
             self._no_requests_reason = reason
-            self._no_requests_until = HydrusTime.GetNow() + duration_s
+            self._no_requests_until = HydrusTime.get_now() + duration_s
             
         
         self._SetDirty()
@@ -991,7 +991,7 @@ class ServiceRemote( Service ):
     
     def _GetBaseURL( self ):
         
-        full_host = self._credentials.GetPortedAddress()
+        full_host = self._credentials.get_ported_address()
         
         base_url = 'https://{}/'.format( full_host )
         
@@ -1015,9 +1015,9 @@ class ServiceRemote( Service ):
     
     def _CheckCanCommunicateExternally( self, including_bandwidth = True ):
         
-        if not HydrusTime.TimeHasPassed( self._no_requests_until ):
+        if not HydrusTime.time_has_passed( self._no_requests_until ):
             
-            raise HydrusExceptions.InsufficientCredentialsException( self._no_requests_reason + ' - next request ' + HydrusTime.TimestampToPrettyTimeDelta( self._no_requests_until ) )
+            raise HydrusExceptions.InsufficientCredentialsException( self._no_requests_reason + ' - next request ' + HydrusTime.timestamp_to_pretty_timedelta( self._no_requests_until ) )
             
         
         if including_bandwidth:
@@ -1102,7 +1102,7 @@ class ServiceRemote( Service ):
         
         with self._lock:
             
-            if credentials.DumpToString() != self._credentials.DumpToString():
+            if credentials.dump_to_string() != self._credentials.dump_to_string():
                 
                 self._CredentialsAreChanging()
                 
@@ -1117,13 +1117,13 @@ class ServiceRestricted( ServiceRemote ):
     
     def _DealWithAccountError( self ):
         
-        account_key = self._account.GetAccountKey()
+        account_key = self._account.get_account_key()
         
-        self._account = HydrusNetwork.Account.GenerateUnknownAccount( account_key )
+        self._account = HydrusNetwork.Account.generate_unknown_account( account_key )
         
         CG.client_controller.pub( 'notify_account_sync_due' )
         
-        self._next_account_sync = HydrusTime.GetNow()
+        self._next_account_sync = HydrusTime.get_now()
         
         CG.client_controller.network_engine.session_manager.ClearSession( self.network_context )
         
@@ -1134,11 +1134,11 @@ class ServiceRestricted( ServiceRemote ):
     
     def _DealWithFundamentalNetworkError( self ):
         
-        account_key = self._account.GetAccountKey()
+        account_key = self._account.get_account_key()
         
-        self._account = HydrusNetwork.Account.GenerateUnknownAccount( account_key )
+        self._account = HydrusNetwork.Account.generate_unknown_account( account_key )
         
-        self._next_account_sync = HydrusTime.GetNow() + ACCOUNT_SYNC_PERIOD
+        self._next_account_sync = HydrusTime.get_now() + ACCOUNT_SYNC_PERIOD
         
         self._SetDirty()
         
@@ -1147,7 +1147,7 @@ class ServiceRestricted( ServiceRemote ):
     
     def _GetErrorWaitPeriod( self ):
         
-        if self._account.HasPermission( HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_MODERATE ):
+        if self._account.has_permission( HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_MODERATE ):
             
             return 900
             
@@ -1180,7 +1180,7 @@ class ServiceRestricted( ServiceRemote ):
         
         if including_account:
             
-            self._account.CheckFunctional()
+            self._account.check_functional()
             
         
         ServiceRemote._CheckFunctional( self, including_external_communication = including_external_communication, including_bandwidth = including_bandwidth )
@@ -1188,7 +1188,7 @@ class ServiceRestricted( ServiceRemote ):
     
     def _CheckCanCommunicateExternally( self, including_bandwidth = True ):
         
-        if not self._credentials.HasAccessKey():
+        if not self._credentials.has_access_key():
             
             raise HydrusExceptions.MissingCredentialsException( 'this service has no access key set' )
             
@@ -1198,11 +1198,11 @@ class ServiceRestricted( ServiceRemote ):
     
     def _CredentialsAreChanging( self ):
         
-        account_key = self._account.GetAccountKey()
+        account_key = self._account.get_account_key()
         
-        self._account = HydrusNetwork.Account.GenerateUnknownAccount( account_key )
+        self._account = HydrusNetwork.Account.generate_unknown_account( account_key )
         
-        self._next_account_sync = HydrusTime.GetNow()
+        self._next_account_sync = HydrusTime.get_now()
         
         self._SetDirty()
         
@@ -1213,7 +1213,7 @@ class ServiceRestricted( ServiceRemote ):
         
         dictionary = ServiceRemote._GetSerialisableDictionary( self )
         
-        dictionary[ 'account' ] = HydrusNetwork.Account.GenerateSerialisableTupleFromAccount( self._account )
+        dictionary[ 'account' ] = HydrusNetwork.Account.generate_serialisable_tuple_from_account( self._account )
         dictionary[ 'next_account_sync' ] = self._next_account_sync
         dictionary[ 'network_sync_paused' ] = self._network_sync_paused
         dictionary[ 'service_options' ] = HydrusSerialisable.SerialisableDictionary( self._service_options )
@@ -1225,7 +1225,7 @@ class ServiceRestricted( ServiceRemote ):
         
         ServiceRemote._LoadFromDictionary( self, dictionary )
         
-        self._account = HydrusNetwork.Account.GenerateAccountFromSerialisableTuple( dictionary[ 'account' ] )
+        self._account = HydrusNetwork.Account.generate_account_from_serialisable_tuple( dictionary[ 'account' ] )
         self._next_account_sync = dictionary[ 'next_account_sync' ]
         
         if 'network_sync_paused' not in dictionary:
@@ -1286,13 +1286,13 @@ class ServiceRestricted( ServiceRemote ):
     
     def GetNextAccountSyncStatus( self ):
         
-        if HydrusTime.TimeHasPassed( self._next_account_sync ):
+        if HydrusTime.time_has_passed( self._next_account_sync ):
             
             s = 'imminently'
             
         else:
             
-            s = HydrusTime.TimestampToPrettyTimeDelta( self._next_account_sync )
+            s = HydrusTime.timestamp_to_pretty_timedelta( self._next_account_sync )
             
         
         return 'next account sync ' + s
@@ -1319,7 +1319,7 @@ class ServiceRestricted( ServiceRemote ):
         
         with self._lock:
             
-            return self._account.HasPermission( content_type, action )
+            return self._account.has_permission( content_type, action )
             
         
     
@@ -1332,7 +1332,7 @@ class ServiceRestricted( ServiceRemote ):
         
         with self._lock:
             
-            return self._account.IsDirty()
+            return self._account.is_dirty()
             
         
     
@@ -1393,7 +1393,7 @@ class ServiceRestricted( ServiceRemote ):
             
             if method == HC.GET:
                 
-                query = HydrusNetworkVariableHandling.DumpToGETQuery( request_args )
+                query = HydrusNetworkVariableHandling.dump_to_get_query( request_args )
                 
                 body = ''
                 
@@ -1411,7 +1411,7 @@ class ServiceRestricted( ServiceRemote ):
                     
                     content_type = HC.APPLICATION_JSON
                     
-                    body = HydrusNetworkVariableHandling.DumpHydrusArgsToNetworkBytes( request_args )
+                    body = HydrusNetworkVariableHandling.dump_hydrus_args_to_network_bytes( request_args )
                     
                 
             
@@ -1450,7 +1450,7 @@ class ServiceRestricted( ServiceRemote ):
                 
                 if command == 'access_key_verification':
                     
-                    network_job.AddAdditionalHeader( 'Hydrus-Key', self._credentials.GetAccessKey().hex() )
+                    network_job.AddAdditionalHeader( 'Hydrus-Key', self._credentials.get_access_key().hex() )
                     
                 
             
@@ -1469,7 +1469,7 @@ class ServiceRestricted( ServiceRemote ):
             
             if content_type is not None and content_type.startswith( 'application/json' ):
                 
-                parsed_args = HydrusNetworkVariableHandling.ParseNetworkBytesToParsedHydrusArgs( network_bytes )
+                parsed_args = HydrusNetworkVariableHandling.parse_network_bytes_to_parsed_hydrus_args( network_bytes )
                 
                 if command == 'account' and 'account' in parsed_args:
                     
@@ -1529,7 +1529,7 @@ class ServiceRestricted( ServiceRemote ):
         
         with self._lock:
             
-            self._next_account_sync = HydrusTime.GetNow() - 1
+            self._next_account_sync = HydrusTime.get_now() - 1
             
             self._SetDirty()
             
@@ -1541,14 +1541,14 @@ class ServiceRestricted( ServiceRemote ):
         
         ServiceRemote.SetClean( self )
         
-        self._account.SetClean()
+        self._account.set_clean()
         
     
     def SyncAccount( self, force = False ):
         
         with self._lock:
             
-            ( original_message, original_message_created ) = self._account.GetMessageAndTimestamp()
+            ( original_message, original_message_created ) = self._account.get_message_and_timestamp()
             
             name = self._name
             
@@ -1558,7 +1558,7 @@ class ServiceRestricted( ServiceRemote ):
                 
                 self._no_requests_until = 0
                 
-                self._account = HydrusNetwork.Account.GenerateUnknownAccount()
+                self._account = HydrusNetwork.Account.generate_unknown_account()
                 
             else:
                 
@@ -1566,13 +1566,13 @@ class ServiceRestricted( ServiceRemote ):
                     
                     do_it = False
                     
-                    self._next_account_sync = HydrusTime.GetNow() + SHORT_DELAY_PERIOD
+                    self._next_account_sync = HydrusTime.get_now() + SHORT_DELAY_PERIOD
                     
                     self._SetDirty()
                     
                 else:
                     
-                    do_it = HydrusTime.TimeHasPassed( self._next_account_sync )
+                    do_it = HydrusTime.time_has_passed( self._next_account_sync )
                     
                 
             
@@ -1589,13 +1589,13 @@ class ServiceRestricted( ServiceRemote ):
                     
                     ( message, message_created ) = self._account.GetMessageAndTimestamp()
                     
-                    if message != '' and message_created != original_message_created and not HydrusTime.TimeHasPassed( message_created + ( 86400 * 5 ) ):
+                    if message != '' and message_created != original_message_created and not HydrusTime.time_has_passed( message_created + ( 86400 * 5 ) ):
                         
                         m = 'New message for your account on {}:'.format( self._name )
                         m += '\n' * 2
                         m += message
                         
-                        HydrusData.ShowText( m )
+                        HydrusData.show_text( m )
                         
                     
                     if force:
@@ -1642,7 +1642,7 @@ class ServiceRestricted( ServiceRemote ):
                                         
                                         message = 'The tag filter for "{}" just changed! Changes are:{}{}'.format( self._name, '\n' * 2, summary )
                                         
-                                        HydrusData.ShowText( message )
+                                        HydrusData.show_text( message )
                                         
                                     except:
                                         
@@ -1662,9 +1662,9 @@ class ServiceRestricted( ServiceRemote ):
                 
             except ( HydrusExceptions.CancelledException, HydrusExceptions.NetworkException ) as e:
                 
-                HydrusData.Print( 'Failed to refresh account for {}:'.format( name ) )
+                HydrusData.print_text( 'Failed to refresh account for {}:'.format( name ) )
                 
-                HydrusData.Print( e )
+                HydrusData.print_text( e )
                 
                 if force:
                     
@@ -1677,9 +1677,9 @@ class ServiceRestricted( ServiceRemote ):
                 
             except Exception:
                 
-                HydrusData.Print( 'Failed to refresh account for {}:'.format( name ) )
+                HydrusData.print_text( 'Failed to refresh account for {}:'.format( name ) )
                 
-                HydrusData.Print( traceback.format_exc() )
+                HydrusData.print_text( traceback.format_exc() )
                 
                 if force:
                     
@@ -1690,7 +1690,7 @@ class ServiceRestricted( ServiceRemote ):
                 
                 with self._lock:
                     
-                    self._next_account_sync = HydrusTime.GetNow() + ACCOUNT_SYNC_PERIOD
+                    self._next_account_sync = HydrusTime.get_now() + ACCOUNT_SYNC_PERIOD
                     
                     self._SetDirty()
                     
@@ -1824,22 +1824,22 @@ class ServiceRepository( ServiceRestricted ):
             return
             
         
-        it_took = HydrusTime.GetNowPrecise() - precise_timestamp
+        it_took = HydrusTime.get_now_precise() - precise_timestamp
         
-        rows_s = HydrusNumbers.ToHumanInt( int( total_rows / it_took ) )
+        rows_s = HydrusNumbers.to_human_int( int( total_rows / it_took ) )
         
-        summary = '{} processed {} {} at {} rows/s'.format( self._name, HydrusNumbers.ToHumanInt( total_rows ), row_name, rows_s )
+        summary = '{} processed {} {} at {} rows/s'.format( self._name, HydrusNumbers.to_human_int( total_rows ), row_name, rows_s )
         
-        HydrusData.Print( summary )
+        HydrusData.print_text( summary )
         
     
     def _ReportOngoingRowSpeed( self, job_status, rows_done, total_rows, precise_timestamp, rows_done_in_last_packet, row_name ):
         
-        it_took = HydrusTime.GetNowPrecise() - precise_timestamp
+        it_took = HydrusTime.get_now_precise() - precise_timestamp
         
-        rows_s = HydrusNumbers.ToHumanInt( int( rows_done_in_last_packet / it_took ) )
+        rows_s = HydrusNumbers.to_human_int( int( rows_done_in_last_packet / it_took ) )
         
-        popup_message = '{} {}: processing at {} rows/s'.format( row_name, HydrusNumbers.ValueRangeToPrettyString( rows_done, total_rows ), rows_s )
+        popup_message = '{} {}: processing at {} rows/s'.format( row_name, HydrusNumbers.value_range_to_pretty_string( rows_done, total_rows ), rows_s )
         
         CG.client_controller.frame_splash_status.SetText( popup_message, print_to_log = False )
         job_status.SetStatusText( popup_message, 2 )
@@ -1864,9 +1864,9 @@ class ServiceRepository( ServiceRestricted ):
                 
             else:
                 
-                do_it = self._metadata.UpdateDue( from_client = True )
+                do_it = self._metadata.update_due( from_client = True )
                 
-                next_update_index = self._metadata.GetNextUpdateIndex()
+                next_update_index = self._metadata.get_next_update_index()
                 
             
             service_key = self._service_key
@@ -1890,20 +1890,20 @@ class ServiceRepository( ServiceRestricted ):
                 
             except HydrusExceptions.NetworkException as e:
                 
-                HydrusData.Print( 'Attempting to download metadata for ' + name + ' resulted in a network error:' )
+                HydrusData.print_text( 'Attempting to download metadata for ' + name + ' resulted in a network error:' )
                 
-                HydrusData.Print( e )
+                HydrusData.print_text( e )
                 
                 return
                 
             
             if do_a_full_metadata_resync:
                 
-                CG.client_controller.WriteSynchronous( 'set_repository_update_hashes', service_key, metadata_slice )
+                CG.client_controller.write_synchronous( 'set_repository_update_hashes', service_key, metadata_slice )
                 
             else:
                 
-                CG.client_controller.WriteSynchronous( 'associate_repository_update_hashes', service_key, metadata_slice )
+                CG.client_controller.write_synchronous( 'associate_repository_update_hashes', service_key, metadata_slice )
                 
             
             with self._lock:
@@ -1915,7 +1915,7 @@ class ServiceRepository( ServiceRestricted ):
                     self._do_a_full_metadata_resync = False
                     
                 
-                self._metadata.UpdateFromSlice( metadata_slice )
+                self._metadata.update_from_slice( metadata_slice )
                 
                 self._is_mostly_caught_up = None
                 
@@ -1937,7 +1937,7 @@ class ServiceRepository( ServiceRestricted ):
             service_key = self._service_key
             
         
-        update_hashes = CG.client_controller.Read( 'missing_repository_update_hashes', service_key )
+        update_hashes = CG.client_controller.read( 'missing_repository_update_hashes', service_key )
         
         if len( update_hashes ) > 0:
             
@@ -1951,7 +1951,7 @@ class ServiceRepository( ServiceRestricted ):
                 
                 for ( i, update_hash ) in enumerate( update_hashes ):
                     
-                    status = HydrusNumbers.ValueRangeToPrettyString( i, len( update_hashes ) )
+                    status = HydrusNumbers.value_range_to_pretty_string( i, len( update_hashes ) )
                     
                     CG.client_controller.frame_splash_status.SetText( status, print_to_log = False )
                     job_status.SetStatusText( status )
@@ -1991,9 +1991,9 @@ class ServiceRepository( ServiceRestricted ):
                         
                         self._DelayFutureRequests( str( e ) )
                         
-                        HydrusData.Print( 'Attempting to download an update for ' + name + ' resulted in a network error:' )
+                        HydrusData.print_text( 'Attempting to download an update for ' + name + ' resulted in a network error:' )
                         
-                        HydrusData.Print( e )
+                        HydrusData.print_text( e )
                         
                         return
                         
@@ -2015,7 +2015,7 @@ class ServiceRepository( ServiceRestricted ):
                     
                     try:
                         
-                        update = HydrusSerialisable.CreateFromNetworkBytes( update_network_string )
+                        update = HydrusSerialisable.create_from_network_bytes( update_network_string )
                         
                     except Exception as e:
                         
@@ -2028,7 +2028,7 @@ class ServiceRepository( ServiceRestricted ):
                         message += '\n' * 2
                         message += 'The repository has been paused for now. Please look into what could be wrong and report this to the hydrus dev.'
                         
-                        HydrusData.ShowText( message )
+                        HydrusData.show_text( message )
                         
                         HydrusData.ShowException( e )
                         
@@ -2054,14 +2054,14 @@ class ServiceRepository( ServiceRestricted ):
                         message += '\n' * 2
                         message += 'The repository has been paused for now. Please look into what could be wrong and report this to the hydrus dev.'
                         
-                        HydrusData.ShowText( message )
+                        HydrusData.show_text( message )
                         
                         return
                         
                     
                     try:
                         
-                        CG.client_controller.WriteSynchronous( 'import_update', update_network_string, update_hash, mime )
+                        CG.client_controller.write_synchronous( 'import_update', update_network_string, update_hash, mime )
                         
                     except Exception as e:
                         
@@ -2072,7 +2072,7 @@ class ServiceRepository( ServiceRestricted ):
                         
                         message = 'While downloading updates for the ' + self._name + ' repository, one failed to import! The error follows:'
                         
-                        HydrusData.ShowText( message )
+                        HydrusData.show_text( message )
                         
                         HydrusData.ShowException( e )
                         
@@ -2100,7 +2100,7 @@ class ServiceRepository( ServiceRestricted ):
                 
             
         
-        if CG.client_controller.ShouldStopThisWork( maintenance_mode, stop_time = stop_time ):
+        if CG.client_controller.should_stop_this_work( maintenance_mode, stop_time = stop_time ):
             
             return
             
@@ -2117,7 +2117,7 @@ class ServiceRepository( ServiceRestricted ):
             
             content_types_to_process = self._GetContentTypesWeAreProcessing()
             
-            ( this_is_first_definitions_work, definition_hashes_and_content_types, this_is_first_content_work, content_hashes_and_content_types ) = CG.client_controller.Read( 'repository_update_hashes_to_process', self._service_key, content_types_to_process )
+            ( this_is_first_definitions_work, definition_hashes_and_content_types, this_is_first_content_work, content_hashes_and_content_types ) = CG.client_controller.read( 'repository_update_hashes_to_process', self._service_key, content_types_to_process )
             
             if len( definition_hashes_and_content_types ) == 0 and len( content_hashes_and_content_types ) == 0:
                 
@@ -2126,10 +2126,10 @@ class ServiceRepository( ServiceRestricted ):
             
             if len( content_hashes_and_content_types ) > 0:
                 
-                content_hashes_and_content_types = self._metadata.SortContentHashesAndContentTypes( content_hashes_and_content_types )
+                content_hashes_and_content_types = self._metadata.sort_content_hashes_and_content_types( content_hashes_and_content_types )
                 
             
-            HydrusData.Print( title )
+            HydrusData.print_text( title )
             
             num_updates_done = 0
             num_updates_to_do = len( definition_hashes_and_content_types ) + len( content_hashes_and_content_types )
@@ -2143,13 +2143,13 @@ class ServiceRepository( ServiceRestricted ):
             did_definition_analyze = False
             did_content_analyze = False
             
-            definition_start_time = HydrusTime.GetNowPrecise()
+            definition_start_time = HydrusTime.get_now_precise()
             
             try:
                 
                 for ( definition_hash, content_types ) in definition_hashes_and_content_types:
                     
-                    progress_string = HydrusNumbers.ValueRangeToPrettyString( num_updates_done, num_updates_to_do )
+                    progress_string = HydrusNumbers.value_range_to_pretty_string( num_updates_done, num_updates_to_do )
                     
                     splash_title = '{} sync: processing updates: {}'.format( self._name, progress_string )
                     
@@ -2166,7 +2166,7 @@ class ServiceRepository( ServiceRestricted ):
                         
                     except HydrusExceptions.FileMissingException:
                         
-                        CG.client_controller.WriteSynchronous( 'schedule_repository_update_file_maintenance', self._service_key, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_PRESENCE_REMOVE_RECORD )
+                        CG.client_controller.write_synchronous( 'schedule_repository_update_file_maintenance', self._service_key, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_PRESENCE_REMOVE_RECORD )
                         
                         raise Exception( 'An unusual error has occured during repository processing: a definition update file ({}) was missing. Your repository should be paused, and all update files have been scheduled for a presence check. I recommend you run _database->maintenance->clear/fix orphan file records_ too. Please then permit file maintenance under _database->file maintenance->manage scheduled jobs_ to finish its new work, which should fix this, before unpausing your repository.'.format( definition_hash.hex() ) )
                         
@@ -2178,55 +2178,55 @@ class ServiceRepository( ServiceRestricted ):
                     
                     try:
                         
-                        definition_update = HydrusSerialisable.CreateFromNetworkBytes( update_network_bytes )
+                        definition_update = HydrusSerialisable.create_from_network_bytes( update_network_bytes )
                         
                     except:
                         
-                        CG.client_controller.WriteSynchronous( 'schedule_repository_update_file_maintenance', self._service_key, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_REMOVE_RECORD )
+                        CG.client_controller.write_synchronous( 'schedule_repository_update_file_maintenance', self._service_key, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_REMOVE_RECORD )
                         
                         raise Exception( 'An unusual error has occured during repository processing: a definition update file ({}) was invalid. Your repository should be paused, and all update files have been scheduled for an integrity check. Please permit file maintenance under _database->file maintenance->manage scheduled jobs_ to finish its new work, which should fix this, before unpausing your repository.'.format( definition_hash.hex() ) )
                         
                     
                     if not isinstance( definition_update, HydrusNetwork.DefinitionsUpdate ):
                         
-                        CG.client_controller.WriteSynchronous( 'schedule_repository_update_file_maintenance', self._service_key, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_METADATA )
+                        CG.client_controller.write_synchronous( 'schedule_repository_update_file_maintenance', self._service_key, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_METADATA )
                         
                         raise Exception( 'An unusual error has occured during repository processing: a definition update file ({}) has incorrect metadata. Your repository should be paused, and all update files have been scheduled for a metadata rescan. Please permit file maintenance under _database->file maintenance->manage scheduled jobs_ to finish its new work, which should fix this, before unpausing your repository.'.format( definition_hash.hex() ) )
                         
                     
-                    rows_in_this_update = definition_update.GetNumRows()
+                    rows_in_this_update = definition_update.get_num_rows()
                     rows_done_in_this_update = 0
                     
                     iterator_dict = {}
                     
-                    iterator_dict[ 'service_hash_ids_to_hashes' ] = iter( definition_update.GetHashIdsToHashes().items() )
-                    iterator_dict[ 'service_tag_ids_to_tags' ] = iter( definition_update.GetTagIdsToTags().items() )
+                    iterator_dict[ 'service_hash_ids_to_hashes' ] = iter( definition_update.get_hash_ids_to_hashes().items() )
+                    iterator_dict[ 'service_tag_ids_to_tags' ] = iter( definition_update.get_tag_ids_to_tags().items() )
                     
                     while len( iterator_dict ) > 0:
                         
-                        this_work_start_time = HydrusTime.GetNowPrecise()
+                        this_work_start_time = HydrusTime.get_now_precise()
                         
                         if CG.client_controller.CurrentlyVeryIdle():
                             
-                            expected_work_period = HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_very_idle' ) )
+                            expected_work_period = HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_very_idle' ) )
                             rest_ratio = CG.client_controller.new_options.GetInteger( 'repository_processing_rest_percentage_very_idle' ) / 100
                             
-                        elif CG.client_controller.CurrentlyIdle():
+                        elif CG.client_controller.currently_idle():
                             
-                            expected_work_period = HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_idle' ) )
+                            expected_work_period = HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_idle' ) )
                             rest_ratio = CG.client_controller.new_options.GetInteger( 'repository_processing_rest_percentage_idle' ) / 100
                             
                         else:
                             
-                            expected_work_period = HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_normal' ) )
+                            expected_work_period = HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_normal' ) )
                             rest_ratio = CG.client_controller.new_options.GetInteger( 'repository_processing_rest_percentage_normal' ) / 100
                             
                         
-                        start_time = HydrusTime.GetNowPrecise()
+                        start_time = HydrusTime.get_now_precise()
                         
-                        num_rows_done = CG.client_controller.WriteSynchronous( 'process_repository_definitions', self._service_key, definition_hash, iterator_dict, content_types, job_status, expected_work_period )
+                        num_rows_done = CG.client_controller.write_synchronous( 'process_repository_definitions', self._service_key, definition_hash, iterator_dict, content_types, job_status, expected_work_period )
                         
-                        actual_work_period = HydrusTime.GetNowPrecise() - start_time
+                        actual_work_period = HydrusTime.get_now_precise() - start_time
                         
                         rows_done_in_this_update += num_rows_done
                         total_definition_rows_completed += num_rows_done
@@ -2235,12 +2235,12 @@ class ServiceRepository( ServiceRestricted ):
                         
                         if ( this_is_first_definitions_work or total_definition_rows_completed > 10000 ) and not did_definition_analyze:
                             
-                            CG.client_controller.WriteSynchronous( 'analyze', maintenance_mode = maintenance_mode )
+                            CG.client_controller.write_synchronous( 'analyze', maintenance_mode = maintenance_mode )
                             
                             did_definition_analyze = True
                             
                         
-                        if CG.client_controller.ShouldStopThisWork( maintenance_mode, stop_time = stop_time ) or job_status.IsCancelled():
+                        if CG.client_controller.should_stop_this_work( maintenance_mode, stop_time = stop_time ) or job_status.IsCancelled():
                             
                             return
                             
@@ -2257,7 +2257,7 @@ class ServiceRepository( ServiceRestricted ):
                 
                 if ( this_is_first_definitions_work or total_definition_rows_completed > 10000 ) and not did_definition_analyze:
                     
-                    CG.client_controller.WriteSynchronous( 'analyze', maintenance_mode = maintenance_mode )
+                    CG.client_controller.write_synchronous( 'analyze', maintenance_mode = maintenance_mode )
                     
                     did_definition_analyze = True
                     
@@ -2267,18 +2267,18 @@ class ServiceRepository( ServiceRestricted ):
                 self._LogFinalRowSpeed( definition_start_time, total_definition_rows_completed, 'definitions' )
                 
             
-            if CG.client_controller.ShouldStopThisWork( maintenance_mode, stop_time = stop_time ) or job_status.IsCancelled():
+            if CG.client_controller.should_stop_this_work( maintenance_mode, stop_time = stop_time ) or job_status.IsCancelled():
                 
                 return
                 
             
-            content_start_time = HydrusTime.GetNowPrecise()
+            content_start_time = HydrusTime.get_now_precise()
             
             try:
                 
                 for ( content_hash, content_types ) in content_hashes_and_content_types:
                     
-                    progress_string = HydrusNumbers.ValueRangeToPrettyString( num_updates_done, num_updates_to_do )
+                    progress_string = HydrusNumbers.value_range_to_pretty_string( num_updates_done, num_updates_to_do )
                     
                     splash_title = '{} sync: processing updates: {}'.format( self._name, progress_string )
                     
@@ -2295,7 +2295,7 @@ class ServiceRepository( ServiceRestricted ):
                         
                     except HydrusExceptions.FileMissingException:
                         
-                        CG.client_controller.WriteSynchronous( 'schedule_repository_update_file_maintenance', self._service_key, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_PRESENCE_REMOVE_RECORD )
+                        CG.client_controller.write_synchronous( 'schedule_repository_update_file_maintenance', self._service_key, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_PRESENCE_REMOVE_RECORD )
                         
                         raise Exception( 'An unusual error has occured during repository processing: a content update file ({}) was missing. Your repository should be paused, and all update files have been scheduled for a presence check. I recommend you run _database->maintenance->clear/fix orphan file records_ too. Please then permit file maintenance under _database->file maintenance->manage scheduled jobs_ to finish its new work, which should fix this, before unpausing your repository.'.format( content_hash.hex() ) )
                         
@@ -2307,76 +2307,76 @@ class ServiceRepository( ServiceRestricted ):
                     
                     try:
                         
-                        content_update = HydrusSerialisable.CreateFromNetworkBytes( update_network_bytes )
+                        content_update = HydrusSerialisable.create_from_network_bytes( update_network_bytes )
                         
                     except:
                         
-                        CG.client_controller.WriteSynchronous( 'schedule_repository_update_file_maintenance', self._service_key, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_REMOVE_RECORD )
+                        CG.client_controller.write_synchronous( 'schedule_repository_update_file_maintenance', self._service_key, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_REMOVE_RECORD )
                         
                         raise Exception( 'An unusual error has occured during repository processing: a content update file ({}) was invalid. Your repository should be paused, and all update files have been scheduled for an integrity check. Please permit file maintenance under _database->file maintenance->manage scheduled jobs_ to finish its new work, which should fix this, before unpausing your repository.'.format( content_hash.hex() ) )
                         
                     
                     if not isinstance( content_update, HydrusNetwork.ContentUpdate ):
                         
-                        CG.client_controller.WriteSynchronous( 'schedule_repository_update_file_maintenance', self._service_key, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_METADATA )
+                        CG.client_controller.write_synchronous( 'schedule_repository_update_file_maintenance', self._service_key, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_METADATA )
                         
                         raise Exception( 'An unusual error has occured during repository processing: a content update file ({}) has incorrect metadata. Your repository should be paused, and all update files have been scheduled for a metadata rescan. Please permit file maintenance under _database->file maintenance->manage scheduled jobs_ to finish its new work, which should fix this, before unpausing your repository.'.format( content_hash.hex() ) )
                         
                     
-                    rows_in_this_update = content_update.GetNumRows( content_types )
+                    rows_in_this_update = content_update.get_num_rows( content_types )
                     rows_done_in_this_update = 0
                     
                     iterator_dict = {}
                     
                     if HC.CONTENT_TYPE_FILES in content_types:
                         
-                        iterator_dict[ 'new_files' ] = iter( content_update.GetNewFiles() )
-                        iterator_dict[ 'deleted_files' ] = iter( content_update.GetDeletedFiles() )
+                        iterator_dict[ 'new_files' ] = iter( content_update.get_new_files() )
+                        iterator_dict[ 'deleted_files' ] = iter( content_update.get_deleted_files() )
                         
                     
                     if HC.CONTENT_TYPE_MAPPINGS in content_types:
                         
-                        iterator_dict[ 'new_mappings' ] = HydrusLists.SmoothOutMappingIterator( content_update.GetNewMappings(), 50 )
-                        iterator_dict[ 'deleted_mappings' ] = HydrusLists.SmoothOutMappingIterator( content_update.GetDeletedMappings(), 50 )
+                        iterator_dict[ 'new_mappings' ] = HydrusLists.smooth_out_mapping_iterator( content_update.get_new_mappings(), 50 )
+                        iterator_dict[ 'deleted_mappings' ] = HydrusLists.smooth_out_mapping_iterator( content_update.get_deleted_mappings(), 50 )
                         
                     
                     if HC.CONTENT_TYPE_TAG_PARENTS in content_types:
                         
-                        iterator_dict[ 'new_parents' ] = iter( content_update.GetNewTagParents() )
-                        iterator_dict[ 'deleted_parents' ] = iter( content_update.GetDeletedTagParents() )
+                        iterator_dict[ 'new_parents' ] = iter( content_update.get_new_tag_parents() )
+                        iterator_dict[ 'deleted_parents' ] = iter( content_update.get_deleted_tag_parents() )
                         
                     
                     if HC.CONTENT_TYPE_TAG_SIBLINGS in content_types:
                         
-                        iterator_dict[ 'new_siblings' ] = iter( content_update.GetNewTagSiblings() )
-                        iterator_dict[ 'deleted_siblings' ] = iter( content_update.GetDeletedTagSiblings() )
+                        iterator_dict[ 'new_siblings' ] = iter( content_update.get_new_tag_siblings() )
+                        iterator_dict[ 'deleted_siblings' ] = iter( content_update.get_deleted_tag_siblings() )
                         
                     
                     while len( iterator_dict ) > 0:
                         
-                        this_work_start_time = HydrusTime.GetNowPrecise()
+                        this_work_start_time = HydrusTime.get_now_precise()
                         
                         if CG.client_controller.CurrentlyVeryIdle():
                             
-                            expected_work_period = HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_very_idle' ) )
+                            expected_work_period = HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_very_idle' ) )
                             rest_ratio = CG.client_controller.new_options.GetInteger( 'repository_processing_rest_percentage_very_idle' ) / 100
                             
-                        elif CG.client_controller.CurrentlyIdle():
+                        elif CG.client_controller.currently_idle():
                             
-                            expected_work_period = HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_idle' ) )
+                            expected_work_period = HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_idle' ) )
                             rest_ratio = CG.client_controller.new_options.GetInteger( 'repository_processing_rest_percentage_idle' ) / 100
                             
                         else:
                             
-                            expected_work_period = HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_normal' ) )
+                            expected_work_period = HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_normal' ) )
                             rest_ratio = CG.client_controller.new_options.GetInteger( 'repository_processing_rest_percentage_normal' ) / 100
                             
                         
-                        start_time = HydrusTime.GetNowPrecise()
+                        start_time = HydrusTime.get_now_precise()
                         
-                        num_rows_done = CG.client_controller.WriteSynchronous( 'process_repository_content', self._service_key, content_hash, iterator_dict, content_types, job_status, expected_work_period )
+                        num_rows_done = CG.client_controller.write_synchronous( 'process_repository_content', self._service_key, content_hash, iterator_dict, content_types, job_status, expected_work_period )
                         
-                        actual_work_period = HydrusTime.GetNowPrecise() - start_time
+                        actual_work_period = HydrusTime.get_now_precise() - start_time
                         
                         rows_done_in_this_update += num_rows_done
                         total_content_rows_completed += num_rows_done
@@ -2385,12 +2385,12 @@ class ServiceRepository( ServiceRestricted ):
                         
                         if ( this_is_first_content_work or total_content_rows_completed > 10000 ) and not did_content_analyze:
                             
-                            CG.client_controller.WriteSynchronous( 'analyze', maintenance_mode = maintenance_mode )
+                            CG.client_controller.write_synchronous( 'analyze', maintenance_mode = maintenance_mode )
                             
                             did_content_analyze = True
                             
                         
-                        if CG.client_controller.ShouldStopThisWork( maintenance_mode, stop_time = stop_time ) or job_status.IsCancelled():
+                        if CG.client_controller.should_stop_this_work( maintenance_mode, stop_time = stop_time ) or job_status.IsCancelled():
                             
                             return
                             
@@ -2407,7 +2407,7 @@ class ServiceRepository( ServiceRestricted ):
                 
                 if ( this_is_first_content_work or total_content_rows_completed > 10000 ) and not did_content_analyze:
                     
-                    CG.client_controller.WriteSynchronous( 'analyze', maintenance_mode = maintenance_mode )
+                    CG.client_controller.write_synchronous( 'analyze', maintenance_mode = maintenance_mode )
                     
                     did_content_analyze = True
                     
@@ -2425,7 +2425,7 @@ class ServiceRepository( ServiceRestricted ):
             
             message = 'Failed to process updates for the {} repository! The error follows:'.format( self._name )
             
-            HydrusData.ShowText( message )
+            HydrusData.show_text( message )
             
             HydrusData.ShowException( e )
             
@@ -2470,7 +2470,7 @@ class ServiceRepository( ServiceRestricted ):
             
             update_period = service_options[ 'update_period' ]
             
-            self._metadata.CalculateNewNextUpdateDue( update_period )
+            self._metadata.calculate_new_next_update_due( update_period )
             
         
         ServiceRestricted._UpdateServiceOptions( self, service_options )
@@ -2490,7 +2490,7 @@ class ServiceRepository( ServiceRestricted ):
         
         content_types_we_are_processing = self._GetContentTypesWeAreProcessing()
         
-        ( num_local_updates, num_updates, content_types_to_num_processed_updates, content_types_to_num_updates ) = CG.client_controller.Read( 'repository_progress', service_key )
+        ( num_local_updates, num_updates, content_types_to_num_processed_updates, content_types_to_num_updates ) = CG.client_controller.read( 'repository_progress', service_key )
         
         for ( content_type, num_processed_updates ) in content_types_to_num_processed_updates.items():
             
@@ -2531,7 +2531,7 @@ class ServiceRepository( ServiceRestricted ):
             self._next_account_sync = 1
             self._do_a_full_metadata_resync = True
             
-            self._metadata.UpdateASAP()
+            self._metadata.update_asap()
             
             self._SetDirty()
             
@@ -2552,7 +2552,7 @@ class ServiceRepository( ServiceRestricted ):
         
         with self._lock:
             
-            return self._metadata.GetNextUpdateDueString( from_client = True )
+            return self._metadata.get_next_update_due_string( from_client = True )
             
         
     
@@ -2609,7 +2609,7 @@ class ServiceRepository( ServiceRestricted ):
         
         with self._lock:
             
-            return self._metadata.GetUpdateHashes()
+            return self._metadata.get_update_hashes()
             
         
     
@@ -2648,13 +2648,13 @@ class ServiceRepository( ServiceRestricted ):
         # if a user is more than two weeks behind, let's assume they aren't 'caught up'
         CAUGHT_UP_BUFFER = 14 * 86400
         
-        two_weeks_ago = HydrusTime.GetNow() - CAUGHT_UP_BUFFER
+        two_weeks_ago = HydrusTime.get_now() - CAUGHT_UP_BUFFER
         
         with self._lock:
             
             if self._is_mostly_caught_up is None:
                 
-                if not self._metadata.HasDoneInitialSync():
+                if not self._metadata.has_done_initial_sync():
                     
                     self._is_mostly_caught_up = False
                     
@@ -2662,7 +2662,7 @@ class ServiceRepository( ServiceRestricted ):
                     
                 else:
                     
-                    next_begin = self._metadata.GetNextUpdateBegin()
+                    next_begin = self._metadata.get_next_update_begin()
                     
                     # haven't synced new metadata, so def not caught up
                     if next_begin < two_weeks_ago:
@@ -2683,9 +2683,9 @@ class ServiceRepository( ServiceRestricted ):
         
         content_types_to_process = self._GetContentTypesWeAreProcessing()
         
-        ( this_is_first_definitions_work, definition_hashes_and_content_types, this_is_first_content_work, content_hashes_and_content_types ) = CG.client_controller.Read( 'repository_update_hashes_to_process', self._service_key, content_types_to_process )
+        ( this_is_first_definitions_work, definition_hashes_and_content_types, this_is_first_content_work, content_hashes_and_content_types ) = CG.client_controller.read( 'repository_update_hashes_to_process', self._service_key, content_types_to_process )
         
-        missing_update_hashes = CG.client_controller.Read( 'missing_repository_update_hashes', service_key )
+        missing_update_hashes = CG.client_controller.read( 'missing_repository_update_hashes', service_key )
         
         unprocessed_update_hashes = set( ( hash for ( hash, content_types ) in definition_hashes_and_content_types ) ).union( ( hash for ( hash, content_types ) in content_hashes_and_content_types ) ).union( missing_update_hashes )
         
@@ -2697,7 +2697,7 @@ class ServiceRepository( ServiceRestricted ):
                 
             else:
                 
-                earliest_unsorted_update_timestamp = self._metadata.GetEarliestTimestampForTheseHashes( unprocessed_update_hashes )
+                earliest_unsorted_update_timestamp = self._metadata.get_earliest_timestamp_for_these_hashes( unprocessed_update_hashes )
                 
                 self._is_mostly_caught_up = earliest_unsorted_update_timestamp > two_weeks_ago
                 
@@ -2783,7 +2783,7 @@ class ServiceRepository( ServiceRestricted ):
             self._no_requests_reason = ''
             self._no_requests_until = 0
             
-            self._account = HydrusNetwork.Account.GenerateUnknownAccount()
+            self._account = HydrusNetwork.Account.generate_unknown_account()
             
             self._next_account_sync = 0
             
@@ -2797,7 +2797,7 @@ class ServiceRepository( ServiceRestricted ):
         CG.client_controller.pub( 'notify_account_sync_due' )
         CG.client_controller.pub( 'important_dirt_to_clean' )
         
-        CG.client_controller.Write( 'reset_repository', self )
+        CG.client_controller.write( 'reset_repository', self )
         
     
     def SetTagFilter( self, tag_filter: HydrusTags.TagFilter ):
@@ -2839,7 +2839,7 @@ class ServiceRepository( ServiceRestricted ):
                     self._DelayFutureRequests( str( e ) )
                     
                 
-                HydrusData.ShowText( 'The service "{}" encountered an error while trying to sync! The error was "{}". It will not do any work for a little while. If the fix is not obvious, please elevate this to hydrus dev.'.format( self._name, str( e ) ) )
+                HydrusData.show_text( 'The service "{}" encountered an error while trying to sync! The error was "{}". It will not do any work for a little while. If the fix is not obvious, please elevate this to hydrus dev.'.format( self._name, str( e ) ) )
                 
                 HydrusData.ShowException( e )
                 
@@ -2879,7 +2879,7 @@ class ServiceRepository( ServiceRestricted ):
             service_key = self._service_key
             
         
-        thumbnail_hashes = CG.client_controller.Read( 'missing_thumbnail_hashes', service_key )
+        thumbnail_hashes = CG.client_controller.read( 'missing_thumbnail_hashes', service_key )
         
         num_to_do = len( thumbnail_hashes )
         
@@ -2897,7 +2897,7 @@ class ServiceRepository( ServiceRestricted ):
                 
                 for ( i, thumbnail_hash ) in enumerate( thumbnail_hashes ):
                     
-                    status = HydrusNumbers.ValueRangeToPrettyString( i, num_to_do )
+                    status = HydrusNumbers.value_range_to_pretty_string( i, num_to_do )
                     
                     CG.client_controller.frame_splash_status.SetText( status, print_to_log = False )
                     job_status.SetStatusText( status )
@@ -2942,9 +2942,9 @@ class ServiceRepository( ServiceRestricted ):
                         
                     except HydrusExceptions.NetworkException as e:
                         
-                        HydrusData.Print( 'Attempting to download a thumbnail for ' + name + ' resulted in a network error:' )
+                        HydrusData.print_text( 'Attempting to download a thumbnail for ' + name + ' resulted in a network error:' )
                         
-                        HydrusData.Print( e )
+                        HydrusData.print_text( e )
                         
                         return
                         
@@ -3040,7 +3040,7 @@ class ServiceIPFS( ServiceRemote ):
     
     def _GetAPIBaseURL( self ):
         
-        full_host = self._credentials.GetPortedAddress()
+        full_host = self._credentials.get_ported_address()
         
         api_base_url = 'http://{}/api/v0/'.format( full_host )
         
@@ -3157,10 +3157,10 @@ class ServiceIPFS( ServiceRemote ):
                     return
                     
                 
-                job_status.SetStatusText( 'ensuring files are pinned: ' + HydrusNumbers.ValueRangeToPrettyString( i, len( hashes ) ) )
+                job_status.SetStatusText( 'ensuring files are pinned: ' + HydrusNumbers.value_range_to_pretty_string( i, len( hashes ) ) )
                 job_status.SetGauge( i, len( hashes ) )
                 
-                media_result = CG.client_controller.Read( 'media_result', hash )
+                media_result = CG.client_controller.read( 'media_result', hash )
                 
                 mime = media_result.GetMime()
                 
@@ -3229,7 +3229,7 @@ class ServiceIPFS( ServiceRemote ):
             
             content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_DIRECTORIES, HC.CONTENT_UPDATE_ADD, content_update_row ) ]
             
-            CG.client_controller.WriteSynchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( self._service_key, content_updates ) )
+            CG.client_controller.write_synchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( self._service_key, content_updates ) )
             
             job_status.SetStatusText( 'done!' )
             
@@ -3295,8 +3295,8 @@ class ServiceIPFS( ServiceRemote ):
             
             message = 'IPFS was unable to pin--returned no hash!'
             
-            HydrusData.Print( message )
-            HydrusData.Print( parsing_text )
+            HydrusData.print_text( message )
+            HydrusData.print_text( parsing_text )
             
             raise HydrusExceptions.DataMissing( message )
             
@@ -3309,13 +3309,13 @@ class ServiceIPFS( ServiceRemote ):
             
             message = 'IPFS was unable to pin--returned empty multihash!'
             
-            HydrusData.Print( message )
-            HydrusData.Print( parsing_text )
+            HydrusData.print_text( message )
+            HydrusData.print_text( parsing_text )
             
             raise HydrusExceptions.DataMissing( message )
             
         
-        media_result = CG.client_controller.Read( 'media_result', hash )
+        media_result = CG.client_controller.read( 'media_result', hash )
         
         file_info_manager = media_result.GetFileInfoManager()
         
@@ -3323,7 +3323,7 @@ class ServiceIPFS( ServiceRemote ):
         
         content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_ADD, content_update_row ) ]
         
-        CG.client_controller.WriteSynchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( self._service_key, content_updates ) )
+        CG.client_controller.write_synchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( self._service_key, content_updates ) )
         
         return multihash
         
@@ -3348,7 +3348,7 @@ class ServiceIPFS( ServiceRemote ):
         
         content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_DIRECTORIES, HC.CONTENT_UPDATE_DELETE, multihash ) ]
         
-        CG.client_controller.WriteSynchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( self._service_key, content_updates ) )
+        CG.client_controller.write_synchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( self._service_key, content_updates ) )
         
     
     def UnpinFile( self, hash, multihash ):
@@ -3371,7 +3371,7 @@ class ServiceIPFS( ServiceRemote ):
         
         content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, { hash } ) ]
         
-        CG.client_controller.WriteSynchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( self._service_key, content_updates ) )
+        CG.client_controller.write_synchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( self._service_key, content_updates ) )
         
     
 
@@ -3557,7 +3557,7 @@ class ServicesManager( object ):
         
         with self._lock:
             
-            services = self._controller.Read( 'services' )
+            services = self._controller.read( 'services' )
             
             self._SetServices( services )
             

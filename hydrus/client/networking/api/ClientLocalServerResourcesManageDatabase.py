@@ -29,7 +29,7 @@ class HydrusResourceClientAPIRestrictedManageDatabaseForceCommit( HydrusResource
     
     def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        CG.client_controller.db.ForceACommit()
+        CG.client_controller.db.force_a_commit()
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
@@ -52,7 +52,7 @@ class HydrusResourceClientAPIRestrictedManageDatabaseLockOff( HydrusResourceClie
             raise HydrusExceptions.BadRequestException( 'The server is not busy!' )
             
         
-        CG.client_controller.db.PauseAndDisconnect( False )
+        CG.client_controller.db.pause_and_disconnect( False )
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
@@ -71,13 +71,13 @@ class HydrusResourceClientAPIRestrictedManageDatabaseLockOn( HydrusResourceClien
             raise HydrusExceptions.BadRequestException( 'The client was already locked!' )
             
         
-        CG.client_controller.db.PauseAndDisconnect( True )
+        CG.client_controller.db.pause_and_disconnect( True )
         
         TIME_BLOCK = 0.25
         
         for i in range( int( 5 / TIME_BLOCK ) ):
             
-            if not CG.client_controller.db.IsConnected():
+            if not CG.client_controller.db.is_connected():
                 
                 break
                 
@@ -113,7 +113,7 @@ class HydrusResourceClientAPIRestrictedManageDatabaseMrBones( HydrusResourceClie
         
         request.disconnect_callables.append( job_status.Cancel )
         
-        boned_stats = CG.client_controller.Read( 'boned_stats', file_search_context = file_search_context, job_status = job_status )
+        boned_stats = CG.client_controller.read( 'boned_stats', file_search_context = file_search_context, job_status = job_status )
         
         body_dict = { 'boned_stats' : boned_stats }
         

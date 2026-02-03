@@ -33,16 +33,16 @@ class HydrusResourceClientAPIRestrictedAddNotesSetNotes( HydrusResourceClientAPI
             raise HydrusExceptions.BadRequestException( 'There was no file identifier or hash given!' )
             
         
-        new_names_to_notes = request.parsed_request_args.GetValue( 'notes', dict, expected_dict_types = ( str, str ) )
+        new_names_to_notes = request.parsed_request_args.get_value( 'notes', dict, expected_dict_types = ( str, str ) )
         
-        merge_cleverly = request.parsed_request_args.GetValue( 'merge_cleverly', bool, default_value = False )
+        merge_cleverly = request.parsed_request_args.get_value( 'merge_cleverly', bool, default_value = False )
         
         if merge_cleverly:
             
             from hydrus.client.importing.options import NoteImportOptions
             
-            extend_existing_note_if_possible = request.parsed_request_args.GetValue( 'extend_existing_note_if_possible', bool, default_value = True )
-            conflict_resolution = request.parsed_request_args.GetValue( 'conflict_resolution', int, default_value = NoteImportOptions.NOTE_IMPORT_CONFLICT_RENAME )
+            extend_existing_note_if_possible = request.parsed_request_args.get_value( 'extend_existing_note_if_possible', bool, default_value = True )
+            conflict_resolution = request.parsed_request_args.get_value( 'conflict_resolution', int, default_value = NoteImportOptions.NOTE_IMPORT_CONFLICT_RENAME )
             
             if conflict_resolution not in NoteImportOptions.note_import_conflict_str_lookup:
                 
@@ -55,7 +55,7 @@ class HydrusResourceClientAPIRestrictedAddNotesSetNotes( HydrusResourceClientAPI
             note_import_options.SetExtendExistingNoteIfPossible( extend_existing_note_if_possible )
             note_import_options.SetConflictResolution( conflict_resolution )
             
-            media_result = CG.client_controller.Read( 'media_result', hash )
+            media_result = CG.client_controller.read( 'media_result', hash )
             
             existing_names_to_notes = media_result.GetNotesManager().GetNamesToNotes()
             
@@ -70,7 +70,7 @@ class HydrusResourceClientAPIRestrictedAddNotesSetNotes( HydrusResourceClientAPI
             
             content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.LOCAL_NOTES_SERVICE_KEY, content_updates )
             
-            CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+            CG.client_controller.write_synchronous( 'content_updates', content_update_package )
             
         
         body_dict = {
@@ -100,13 +100,13 @@ class HydrusResourceClientAPIRestrictedAddNotesDeleteNotes( HydrusResourceClient
             raise HydrusExceptions.BadRequestException( 'There was no file identifier or hash given!' )
             
         
-        note_names = request.parsed_request_args.GetValue( 'note_names', list, expected_list_type = str )
+        note_names = request.parsed_request_args.get_value( 'note_names', list, expected_list_type = str )
         
         content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_NOTES, HC.CONTENT_UPDATE_DELETE, ( hash, name ) ) for name in note_names ]
         
         content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.LOCAL_NOTES_SERVICE_KEY, content_updates )
         
-        CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+        CG.client_controller.write_synchronous( 'content_updates', content_update_package )
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         

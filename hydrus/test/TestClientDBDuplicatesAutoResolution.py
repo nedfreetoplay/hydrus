@@ -152,7 +152,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
             
             TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
             
-            path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', filename ) )
+            path = HydrusStaticDir.get_static_path( os.path.join( 'testing', filename ) )
             
             hash = bytes.fromhex( hex_hash )
             
@@ -183,7 +183,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         rule_1.SetOperationMode( ClientDuplicatesAutoResolution.DUPLICATES_AUTO_RESOLUTION_RULE_OPERATION_MODE_FULLY_AUTOMATIC )
         
-        rules_we_are_setting = [ rule_1.Duplicate() ]
+        rules_we_are_setting = [ rule_1.duplicate() ]
         
         self._write( 'duplicates_auto_resolution_set_rules', rules_we_are_setting )
         
@@ -203,7 +203,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         rule_2.SetOperationMode( ClientDuplicatesAutoResolution.DUPLICATES_AUTO_RESOLUTION_RULE_OPERATION_MODE_FULLY_AUTOMATIC )
         
-        rules_we_are_setting = [ rule_1.Duplicate(), rule_2.Duplicate() ]
+        rules_we_are_setting = [ rule_1.duplicate(), rule_2.duplicate() ]
         
         self._write( 'duplicates_auto_resolution_set_rules', rules_we_are_setting )
         
@@ -220,9 +220,9 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         self._compare_counts_cache( rule_2_read.GetCountsCacheDuplicate(), {} )
         
-        rule_2.SetName( 'test 2a' )
+        rule_2.set_name( 'test 2a' )
         
-        rules_we_are_setting = [ rule_2.Duplicate() ]
+        rules_we_are_setting = [ rule_2.duplicate() ]
         
         self._write( 'duplicates_auto_resolution_set_rules', rules_we_are_setting )
         
@@ -234,7 +234,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         rule_3.SetOperationMode( ClientDuplicatesAutoResolution.DUPLICATES_AUTO_RESOLUTION_RULE_OPERATION_MODE_FULLY_AUTOMATIC )
         
-        rules_we_are_setting = [ rule_2.Duplicate(), rule_3.Duplicate() ]
+        rules_we_are_setting = [ rule_2.duplicate(), rule_3.duplicate() ]
         
         self._write( 'duplicates_auto_resolution_set_rules', rules_we_are_setting )
         
@@ -303,7 +303,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         rule_1.SetPairSelector( selector )
         
-        rules_we_are_setting = [ rule_1.Duplicate() ]
+        rules_we_are_setting = [ rule_1.duplicate() ]
         
         self._write( 'duplicates_auto_resolution_set_rules', rules_we_are_setting )
         
@@ -405,7 +405,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         rule_1.SetPairSelector( selector )
         
-        rules_we_are_setting = [ rule_1.Duplicate() ]
+        rules_we_are_setting = [ rule_1.duplicate() ]
         
         self._write( 'duplicates_auto_resolution_set_rules', rules_we_are_setting )
         
@@ -525,7 +525,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         rule_1.SetPairSelector( selector )
         
-        rules_we_are_setting = [ rule_1.Duplicate() ]
+        rules_we_are_setting = [ rule_1.duplicate() ]
         
         self._write( 'duplicates_auto_resolution_set_rules', rules_we_are_setting )
         
@@ -591,7 +591,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         rule_1.SetOperationMode( ClientDuplicatesAutoResolution.DUPLICATES_AUTO_RESOLUTION_RULE_OPERATION_MODE_FULLY_AUTOMATIC )
         
-        rules_we_are_setting = [ rule_1.Duplicate() ]
+        rules_we_are_setting = [ rule_1.duplicate() ]
         
         self._write( 'duplicates_auto_resolution_set_rules', rules_we_are_setting )
         
@@ -698,7 +698,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         rule_1.SetPotentialDuplicatesSearchContext( potential_duplicates_search_context )
         
-        rules_we_are_setting = [ rule_1.Duplicate() ]
+        rules_we_are_setting = [ rule_1.duplicate() ]
         
         self._write( 'duplicates_auto_resolution_set_rules', rules_we_are_setting )
         
@@ -785,7 +785,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         rule_1.SetAction( HC.DUPLICATE_BETTER )
         
-        rules_we_are_setting = [ rule_1.Duplicate() ]
+        rules_we_are_setting = [ rule_1.duplicate() ]
         
         self._write( 'duplicates_auto_resolution_set_rules', rules_we_are_setting )
         
@@ -898,7 +898,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         rule_1.SetPairSelector( selector )
         
-        rules_we_are_setting = [ rule_1.Duplicate() ]
+        rules_we_are_setting = [ rule_1.duplicate() ]
         
         self._write( 'duplicates_auto_resolution_set_rules', rules_we_are_setting )
         

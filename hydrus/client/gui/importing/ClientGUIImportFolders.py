@@ -88,7 +88,7 @@ class EditImportFoldersPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 import_folder = panel.GetValue()
                 
-                import_folder.SetNonDupeName( self._GetExistingNames(), do_casefold = True )
+                import_folder.set_non_dupe_name( self._GetExistingNames(), do_casefold = True )
                 
                 self._import_folders.AddData( import_folder, select_sort_and_scroll = True )
                 
@@ -114,7 +114,7 @@ class EditImportFoldersPanel( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            pretty_check_period = HydrusTime.TimeDeltaToPrettyTimeDelta( check_period )
+            pretty_check_period = HydrusTime.timedelta_to_pretty_timedelta( check_period )
             
         
         display_tuple = ( name, path, pretty_paused, pretty_check_period )
@@ -149,7 +149,7 @@ class EditImportFoldersPanel( ClientGUIScrolledPanels.EditPanel ):
             return
             
         
-        original_name = import_folder.GetName()
+        original_name = import_folder.get_name()
         
         with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit import folder' ) as dlg:
             
@@ -161,13 +161,13 @@ class EditImportFoldersPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 edited_import_folder = panel.GetValue()
                 
-                if edited_import_folder.GetName() != original_name:
+                if edited_import_folder.get_name() != original_name:
                     
                     existing_names = self._GetExistingNames()
                     
                     existing_names.discard( original_name )
                     
-                    edited_import_folder.SetNonDupeName( existing_names, do_casefold = True )
+                    edited_import_folder.set_non_dupe_name( existing_names, do_casefold = True )
                     
                 
                 self._import_folders.ReplaceData( import_folder, edited_import_folder, sort_and_scroll = True )
@@ -663,7 +663,7 @@ class EditImportFolderPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 filenames = list( os.listdir( path ) )[:ClientGUIMetadataMigrationTest.HOW_MANY_EXAMPLE_OBJECTS_TO_USE]
                 
-                example_paths = [ f for f in [ os.path.join( path, filename ) for filename in filenames ] if os.path.isfile( f ) and HydrusFileHandling.GetMime( f ) in HC.ALLOWED_MIMES ]
+                example_paths = [ f for f in [ os.path.join( path, filename ) for filename in filenames ] if os.path.isfile( f ) and HydrusFileHandling.get_mime( f ) in HC.ALLOWED_MIMES ]
                 
                 self._sidecar_test_context_factory.SetExampleFilePaths( example_paths )
                 

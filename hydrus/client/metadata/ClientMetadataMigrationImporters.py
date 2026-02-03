@@ -89,18 +89,18 @@ class SingleFileMetadataImporterMediaNotes( SingleFileMetadataImporterMedia, Hyd
         super().__init__( string_processor )
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         serialisable_string_processor = self._string_processor.GetSerialisableTuple()
         
         return serialisable_string_processor
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         serialisable_string_processor = serialisable_info
         
-        self._string_processor = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_string_processor )
+        self._string_processor = HydrusSerialisable.create_from_serialisable_tuple( serialisable_string_processor )
         
     
     def GetExampleStrings( self ):
@@ -168,7 +168,7 @@ class SingleFileMetadataImporterMediaTags( SingleFileMetadataImporterMedia, Hydr
         self._service_key = service_key
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         serialisable_string_processor = self._string_processor.GetSerialisableTuple()
         serialisable_service_key = self._service_key.hex()
@@ -176,15 +176,15 @@ class SingleFileMetadataImporterMediaTags( SingleFileMetadataImporterMedia, Hydr
         return ( serialisable_string_processor, serialisable_service_key, self._tag_display_type )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( serialisable_string_processor, serialisable_service_key, self._tag_display_type ) = serialisable_info
         
-        self._string_processor = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_string_processor )
+        self._string_processor = HydrusSerialisable.create_from_serialisable_tuple( serialisable_string_processor )
         self._service_key = bytes.fromhex( serialisable_service_key )
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -192,7 +192,7 @@ class SingleFileMetadataImporterMediaTags( SingleFileMetadataImporterMedia, Hydr
             
             string_processor = ClientStrings.StringProcessor()
             
-            serialisable_string_processor = string_processor.GetSerialisableTuple()
+            serialisable_string_processor = string_processor.get_serialisable_tuple()
             
             new_serialisable_info = ( serialisable_string_processor, serialisable_service_key )
             
@@ -246,9 +246,9 @@ class SingleFileMetadataImporterMediaTags( SingleFileMetadataImporterMedia, Hydr
         # turning ::) into :)
         tags = [ HydrusText.re_leading_double_colon.sub( ':', tag ) for tag in tags ]
         
-        tags = HydrusLists.DedupeList( tags )
+        tags = HydrusLists.dedupe_list( tags )
         
-        HydrusText.HumanTextSort( tags )
+        HydrusText.human_text_sort( tags )
         
         return tags
         
@@ -307,20 +307,20 @@ class SingleFileMetadataImporterMediaTimestamps( SingleFileMetadataImporterMedia
         self._timestamp_data_stub = timestamp_data_stub
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
     
         serialisable_string_processor = self._string_processor.GetSerialisableTuple()
-        serialisable_timestamp_data_stub = self._timestamp_data_stub.GetSerialisableTuple()
+        serialisable_timestamp_data_stub = self._timestamp_data_stub.get_serialisable_tuple()
         
         return ( serialisable_string_processor, serialisable_timestamp_data_stub )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( serialisable_string_processor, serialisable_timestamp_data_stub ) = serialisable_info
         
-        self._string_processor = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_string_processor )
-        self._timestamp_data_stub = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_timestamp_data_stub )
+        self._string_processor = HydrusSerialisable.create_from_serialisable_tuple( serialisable_string_processor )
+        self._timestamp_data_stub = HydrusSerialisable.create_from_serialisable_tuple( serialisable_timestamp_data_stub )
         
     
     def GetExampleStrings( self ):
@@ -341,7 +341,7 @@ class SingleFileMetadataImporterMediaTimestamps( SingleFileMetadataImporterMedia
         
         rows = []
         
-        timestamp = HydrusTime.SecondiseMS( media_result.GetTimesManager().GetTimestampMSFromStub( self._timestamp_data_stub ) )
+        timestamp = HydrusTime.secondise_ms( media_result.GetTimesManager().GetTimestampMSFromStub( self._timestamp_data_stub ) )
         
         if timestamp is not None:
             
@@ -389,21 +389,21 @@ class SingleFileMetadataImporterMediaURLs( SingleFileMetadataImporterMedia, Hydr
         super().__init__( string_processor )
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         serialisable_string_processor = self._string_processor.GetSerialisableTuple()
         
         return serialisable_string_processor
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         serialisable_string_processor = serialisable_info
         
-        self._string_processor = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_string_processor )
+        self._string_processor = HydrusSerialisable.create_from_serialisable_tuple( serialisable_string_processor )
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -411,7 +411,7 @@ class SingleFileMetadataImporterMediaURLs( SingleFileMetadataImporterMedia, Hydr
             
             string_processor = ClientStrings.StringProcessor()
             
-            serialisable_string_processor = string_processor.GetSerialisableTuple()
+            serialisable_string_processor = string_processor.get_serialisable_tuple()
             
             new_serialisable_info = serialisable_string_processor
             
@@ -536,25 +536,25 @@ class SingleFileMetadataImporterJSON( SingleFileMetadataImporterSidecar, HydrusS
         self._json_parsing_formula = json_parsing_formula
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         serialisable_string_processor = self._string_processor.GetSerialisableTuple()
         serialisable_filename_string_converter = self._filename_string_converter.GetSerialisableTuple()
-        serialisable_json_parsing_formula = self._json_parsing_formula.GetSerialisableTuple()
+        serialisable_json_parsing_formula = self._json_parsing_formula.get_serialisable_tuple()
         
         return ( serialisable_string_processor, self._remove_actual_filename_ext, self._suffix, serialisable_filename_string_converter, serialisable_json_parsing_formula )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
     
         ( serialisable_string_processor, self._remove_actual_filename_ext, self._suffix, serialisable_filename_string_converter, serialisable_json_parsing_formula ) = serialisable_info
         
-        self._string_processor = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_string_processor )
-        self._filename_string_converter = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_filename_string_converter )
-        self._json_parsing_formula = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_json_parsing_formula )
+        self._string_processor = HydrusSerialisable.create_from_serialisable_tuple( serialisable_string_processor )
+        self._filename_string_converter = HydrusSerialisable.create_from_serialisable_tuple( serialisable_filename_string_converter )
+        self._json_parsing_formula = HydrusSerialisable.create_from_serialisable_tuple( serialisable_json_parsing_formula )
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -562,7 +562,7 @@ class SingleFileMetadataImporterJSON( SingleFileMetadataImporterSidecar, HydrusS
             
             string_processor = ClientStrings.StringProcessor()
             
-            serialisable_string_processor = string_processor.GetSerialisableTuple()
+            serialisable_string_processor = string_processor.get_serialisable_tuple()
             
             new_serialisable_info = ( serialisable_string_processor, suffix, serialisable_json_parsing_formula )
             
@@ -576,7 +576,7 @@ class SingleFileMetadataImporterJSON( SingleFileMetadataImporterSidecar, HydrusS
             remove_actual_filename_ext = False
             filename_string_converter = ClientStrings.StringConverter( example_string = 'my_image.jpg.json' )
             
-            serialisable_filename_string_converter = filename_string_converter.GetSerialisableTuple()
+            serialisable_filename_string_converter = filename_string_converter.get_serialisable_tuple()
             
             new_serialisable_info = ( serialisable_string_processor, remove_actual_filename_ext, suffix, serialisable_filename_string_converter, serialisable_json_parsing_formula )
             
@@ -686,7 +686,7 @@ class SingleFileMetadataImporterTXT( SingleFileMetadataImporterSidecar, HydrusSe
         self._separator = separator
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         serialisable_string_processor = self._string_processor.GetSerialisableTuple()
         serialisable_filename_string_converter = self._filename_string_converter.GetSerialisableTuple()
@@ -694,15 +694,15 @@ class SingleFileMetadataImporterTXT( SingleFileMetadataImporterSidecar, HydrusSe
         return ( serialisable_string_processor, self._remove_actual_filename_ext, self._suffix, serialisable_filename_string_converter, self._separator )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
     
         ( serialisable_string_processor, self._remove_actual_filename_ext, self._suffix, serialisable_filename_string_converter, self._separator ) = serialisable_info
         
-        self._string_processor = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_string_processor )
-        self._filename_string_converter = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_filename_string_converter )
+        self._string_processor = HydrusSerialisable.create_from_serialisable_tuple( serialisable_string_processor )
+        self._filename_string_converter = HydrusSerialisable.create_from_serialisable_tuple( serialisable_filename_string_converter )
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -710,7 +710,7 @@ class SingleFileMetadataImporterTXT( SingleFileMetadataImporterSidecar, HydrusSe
             
             string_processor = ClientStrings.StringProcessor()
             
-            serialisable_string_processor = string_processor.GetSerialisableTuple()
+            serialisable_string_processor = string_processor.get_serialisable_tuple()
             
             new_serialisable_info = ( serialisable_string_processor, suffix )
             
@@ -724,7 +724,7 @@ class SingleFileMetadataImporterTXT( SingleFileMetadataImporterSidecar, HydrusSe
             remove_actual_filename_ext = False
             filename_string_converter = ClientStrings.StringConverter( example_string = 'my_image.jpg.txt' )
             
-            serialisable_filename_string_converter = filename_string_converter.GetSerialisableTuple()
+            serialisable_filename_string_converter = filename_string_converter.get_serialisable_tuple()
             
             new_serialisable_info = ( serialisable_string_processor, remove_actual_filename_ext, suffix, serialisable_filename_string_converter )
             
@@ -777,7 +777,7 @@ class SingleFileMetadataImporterTXT( SingleFileMetadataImporterSidecar, HydrusSe
             raise Exception( f'Could not import from {path} (from file path {actual_file_path}: {e}' )
             
         
-        raw_text = HydrusText.CleanseImportText( raw_text )
+        raw_text = HydrusText.cleanse_import_text( raw_text )
         
         if self._separator == '\n':
             

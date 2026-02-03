@@ -247,7 +247,7 @@ class BitmapManager( object ):
                 
                 self._media_background_pixmap = None
                 
-                HydrusData.ShowText( 'Loading a bmp caused an error!' )
+                HydrusData.show_text( 'Loading a bmp caused an error!' )
                 
                 HydrusData.ShowException( e )
                 
@@ -269,9 +269,9 @@ class FileViewingStatsManager( object ):
         
         self._pending_updates = {}
         
-        self._last_update = HydrusTime.GetNow()
+        self._last_update = HydrusTime.get_now()
         
-        self._my_flush_job = self._controller.CallRepeating( 5, 60, self.REPEATINGFlush )
+        self._my_flush_job = self._controller.call_repeating( 5, 60, self.REPEATINGFlush )
         
     
     def _GenerateViewsRow( self, media_result: ClientMediaResult.MediaResult, canvas_type: int, view_timestamp_ms: int, viewtime_delta_ms: int ):
@@ -374,7 +374,7 @@ class FileViewingStatsManager( object ):
                 content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_updates )
                 
                 # non-synchronous, non-publishing
-                self._controller.Write( 'content_updates', content_update_package, publish_content_updates = False )
+                self._controller.write( 'content_updates', content_update_package, publish_content_updates = False )
                 
                 self._pending_updates = {}
                 
@@ -637,7 +637,7 @@ class UndoManager( object ):
         
         if action is not None:
             
-            self._controller.WriteSynchronous( action, *args, **kwargs )
+            self._controller.write_synchronous( action, *args, **kwargs )
             
             self._controller.pub( 'notify_new_undo' )
             
@@ -659,7 +659,7 @@ class UndoManager( object ):
         
         if action is not None:
             
-            self._controller.WriteSynchronous( action, *args, **kwargs )
+            self._controller.write_synchronous( action, *args, **kwargs )
             
             self._controller.pub( 'notify_new_undo' )
             

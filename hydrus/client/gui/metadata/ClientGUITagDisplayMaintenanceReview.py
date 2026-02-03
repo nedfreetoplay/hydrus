@@ -175,7 +175,7 @@ class ReviewTagDisplayMaintenancePanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             def work_callable( args ):
                 
-                status = CG.client_controller.Read( 'tag_display_maintenance_status', service_key )
+                status = CG.client_controller.read( 'tag_display_maintenance_status', service_key )
                 
                 time.sleep( 0.1 ) # for user feedback more than anything
                 
@@ -199,15 +199,15 @@ class ReviewTagDisplayMaintenancePanel( ClientGUIScrolledPanels.ReviewPanel ):
                     
                 elif num_parents_to_sync == 0:
                     
-                    message = '{} siblings to sync.'.format( HydrusNumbers.ToHumanInt( num_siblings_to_sync ) )
+                    message = '{} siblings to sync.'.format( HydrusNumbers.to_human_int( num_siblings_to_sync ) )
                     
                 elif num_siblings_to_sync == 0:
                     
-                    message = '{} parents to sync.'.format( HydrusNumbers.ToHumanInt( num_parents_to_sync ) )
+                    message = '{} parents to sync.'.format( HydrusNumbers.to_human_int( num_parents_to_sync ) )
                     
                 else:
                     
-                    message = '{} siblings and {} parents to sync.'.format( HydrusNumbers.ToHumanInt( num_siblings_to_sync ), HydrusNumbers.ToHumanInt( num_parents_to_sync ) )
+                    message = '{} siblings and {} parents to sync.'.format( HydrusNumbers.to_human_int( num_siblings_to_sync ), HydrusNumbers.to_human_int( num_parents_to_sync ) )
                     
                 
                 if len( status[ 'waiting_on_tag_repos' ] ) > 0:
@@ -233,7 +233,7 @@ class ReviewTagDisplayMaintenancePanel( ClientGUIScrolledPanels.ReviewPanel ):
                         
                     else:
                         
-                        message = '{} rules, all synced!'.format( HydrusNumbers.ToHumanInt( num_ideal_rows ) )
+                        message = '{} rules, all synced!'.format( HydrusNumbers.to_human_int( num_ideal_rows ) )
                         
                     
                     value = 1
@@ -248,11 +248,11 @@ class ReviewTagDisplayMaintenancePanel( ClientGUIScrolledPanels.ReviewPanel ):
                     
                     if num_ideal_rows == 0:
                         
-                        message = 'Removing all siblings/parents, {} rules remaining.'.format( HydrusNumbers.ToHumanInt( num_actual_rows ) )
+                        message = 'Removing all siblings/parents, {} rules remaining.'.format( HydrusNumbers.to_human_int( num_actual_rows ) )
                         
                     else:
                         
-                        message = '{} rules applied now, moving to {}.'.format( HydrusNumbers.ToHumanInt( num_actual_rows ), HydrusNumbers.ToHumanInt( num_ideal_rows ) )
+                        message = '{} rules applied now, moving to {}.'.format( HydrusNumbers.to_human_int( num_actual_rows ), HydrusNumbers.to_human_int( num_ideal_rows ) )
                         
                         if num_actual_rows <= num_ideal_rows:
                             

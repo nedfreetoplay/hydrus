@@ -117,7 +117,7 @@ class FileInfoManager( object ):
             
             try:
                 
-                return self.num_frames / HydrusTime.SecondiseMSFloat( self.duration_ms )
+                return self.num_frames / HydrusTime.secondise_ms_float( self.duration_ms )
                 
             except:
                 
@@ -642,10 +642,10 @@ class FileViewingStatsManager( object ):
             
         else:
             
-            last_viewed_string = 'last {}'.format( HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( max( last_viewed_times_ms ) ) ) )
+            last_viewed_string = 'last {}'.format( HydrusTime.timestamp_to_pretty_timedelta( HydrusTime.secondise_ms( max( last_viewed_times_ms ) ) ) )
             
         
-        return 'viewed {} times{}, totalling {}, {}'.format( HydrusNumbers.ToHumanInt( views_total ), canvas_type_string, HydrusTime.TimeDeltaToPrettyTimeDelta( HydrusTime.SecondiseMSFloat( viewtime_ms_total ) ), last_viewed_string )
+        return 'viewed {} times{}, totalling {}, {}'.format( HydrusNumbers.to_human_int( views_total ), canvas_type_string, HydrusTime.timedelta_to_pretty_timedelta( HydrusTime.secondise_ms_float( viewtime_ms_total ) ), last_viewed_string )
         
     
     def GetTimesManager( self ) -> TimesManager:
@@ -793,7 +793,7 @@ class LocationsManager( object ):
         
         if forced_import_time_ms is None:
             
-            import_timestamp_ms = HydrusTime.GetNowMS()
+            import_timestamp_ms = HydrusTime.get_now_ms()
             
         else:
             
@@ -894,7 +894,7 @@ class LocationsManager( object ):
         
         if make_a_delete_record:
             
-            self._times_manager.SetDeletedTimestampMS( service_key, HydrusTime.GetNowMS() )
+            self._times_manager.SetDeletedTimestampMS( service_key, HydrusTime.get_now_ms() )
             self._times_manager.SetPreviouslyImportedTimestampMS( service_key, previously_imported_timestamp_ms )
             
             self._deleted.add( service_key )
@@ -1183,7 +1183,7 @@ class LocationsManager( object ):
                     
                     self.inbox = False
                     
-                    self._times_manager.SetArchivedTimestampMS( HydrusTime.GetNowMS() )
+                    self._times_manager.SetArchivedTimestampMS( HydrusTime.get_now_ms() )
                     
                 
             elif action == HC.CONTENT_UPDATE_INBOX:
@@ -1775,7 +1775,7 @@ class TagsManager( object ):
         flattened_s_k_s_t_t = itertools.chain.from_iterable( s_k_s_t_t_tupled )
         
         # service_key : [ statuses_to_tags ]
-        s_k_s_t_t_dict = HydrusData.BuildKeyToListDict( flattened_s_k_s_t_t )
+        s_k_s_t_t_dict = HydrusData.build_key_to_list_dict( flattened_s_k_s_t_t )
         
         # now let's merge so we have service_key : statuses_to_tags
         
@@ -1864,14 +1864,14 @@ class TagsManager( object ):
             
             combined_tags = statuses_to_tags[ HC.CONTENT_STATUS_CURRENT ].union( statuses_to_tags[ HC.CONTENT_STATUS_PENDING ] )
             
-            pairs = [ HydrusTags.SplitTag( tag ) for tag in combined_tags ]
+            pairs = [ HydrusTags.split_tag( tag ) for tag in combined_tags ]
             
             slice_tags = []
             
             for desired_namespace in namespaces:
                 
                 # yes this is correct, we want _comparable_ tag slice
-                subtags = sorted( ( HydrusText.HumanTextSortKey( subtag ) for ( namespace, subtag ) in pairs if namespace == desired_namespace ) )
+                subtags = sorted( ( HydrusText.human_text_sort_key( subtag ) for ( namespace, subtag ) in pairs if namespace == desired_namespace ) )
                 
                 slice_tags.append( tuple( subtags ) )
                 

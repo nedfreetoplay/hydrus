@@ -87,7 +87,7 @@ class ReviewPurgeTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             return
             
         
-        text = f'Start this purge job on {HydrusNumbers.ToHumanInt( len( tags_to_purge ) )} tags?'
+        text = f'Start this purge job on {HydrusNumbers.to_human_int( len( tags_to_purge ) )} tags?'
         
         result = ClientGUIDialogsQuick.GetYesNo( self, text )
         
@@ -106,8 +106,8 @@ class ReviewPurgeTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         tag_filter = HydrusTags.TagFilter()
         
         # we want the migration to cover the tags we want to delete
-        tag_filter.SetRules( ( '', ':' ), HC.FILTER_BLACKLIST )
-        tag_filter.SetRules( tags_to_purge, HC.FILTER_WHITELIST )
+        tag_filter.set_rules( ( '', ':' ), HC.FILTER_BLACKLIST )
+        tag_filter.set_rules( tags_to_purge, HC.FILTER_WHITELIST )
         
         PurgeTags( self._service_key, tag_filter, reason )
         
@@ -134,7 +134,7 @@ def PurgeTags(
     
     migration_job = ClientMigration.MigrationJob( CG.client_controller, 'purging tags', source, destination )
     
-    CG.client_controller.CallToThread( migration_job.Run )
+    CG.client_controller.call_to_thread( migration_job.Run )
     
 
 def OpenPurgeTagsWindow(
@@ -159,7 +159,7 @@ def StartPurgeTagFilter(
     
     text = f'This will start a purge job based on the rules in the current tag filter, "syncing" the mappings store to the filter by petitioning everything that retroactively violates the rules. The current tag filter for this service is:'
     text += '\n' * 2
-    text += tag_filter.ToPermittedString()
+    text += tag_filter.to_permitted_string()
     text += '\n' * 2
     text += 'If you do not make any changes to the tag filter, this is idempotent.'
     
@@ -170,7 +170,7 @@ def StartPurgeTagFilter(
         return
         
     
-    inverted_tag_filter = tag_filter.GetInvertedFilter() # we actively want to _delete_ what is currently _disallowed_, which means the migration needs to attack the opposite
+    inverted_tag_filter = tag_filter.get_inverted_filter() # we actively want to _delete_ what is currently _disallowed_, which means the migration needs to attack the opposite
     
     reason = 'Tag Filter Purge Sync'
     

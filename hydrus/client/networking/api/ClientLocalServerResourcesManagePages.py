@@ -43,11 +43,11 @@ class HydrusResourceClientAPIRestrictedManagePagesAddFiles( HydrusResourceClient
             raise HydrusExceptions.BadRequestException( 'You need a page key for this request!' )
             
         
-        page_key = request.parsed_request_args.GetValue( 'page_key', bytes )
+        page_key = request.parsed_request_args.get_value( 'page_key', bytes )
         
         hashes = ClientLocalServerCore.ParseHashes( request )
         
-        media_results = CG.client_controller.Read( 'media_results', hashes, sorted = True )
+        media_results = CG.client_controller.read( 'media_results', hashes, sorted = True )
         
         try:
             
@@ -73,7 +73,7 @@ class HydrusResourceClientAPIRestrictedManagePagesFocusPage( HydrusResourceClien
             return CG.client_controller.gui.ShowPage( page_key )
             
         
-        page_key = request.parsed_request_args.GetValue( 'page_key', bytes )
+        page_key = request.parsed_request_args.get_value( 'page_key', bytes )
         
         try:
             
@@ -119,9 +119,9 @@ class HydrusResourceClientAPIRestrictedManagePagesGetPageInfo( HydrusResourceCli
             return CG.client_controller.gui.GetPageAPIInfoDict( page_key, simple )
             
         
-        page_key = request.parsed_request_args.GetValue( 'page_key', bytes )
+        page_key = request.parsed_request_args.get_value( 'page_key', bytes )
         
-        simple = request.parsed_request_args.GetValue( 'simple', bool, default_value = True )
+        simple = request.parsed_request_args.get_value( 'simple', bool, default_value = True )
         
         page_info_dict = CG.client_controller.CallBlockingToQtTLW( do_it, page_key, simple )
         
@@ -149,7 +149,7 @@ class HydrusResourceClientAPIRestrictedManagePagesRefreshPage( HydrusResourceCli
             return CG.client_controller.gui.RefreshPage( page_key )
             
         
-        page_key = request.parsed_request_args.GetValue( 'page_key', bytes )
+        page_key = request.parsed_request_args.get_value( 'page_key', bytes )
         
         try:
             

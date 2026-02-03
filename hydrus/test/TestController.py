@@ -88,9 +88,9 @@ DB_DIR = None
 
 tiniest_gif = b'\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x00\xFF\x00\x2C\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x00\x3B'
 
-LOCAL_RATING_LIKE_SERVICE_KEY = HydrusData.GenerateKey()
-LOCAL_RATING_NUMERICAL_SERVICE_KEY = HydrusData.GenerateKey()
-LOCAL_RATING_INCDEC_SERVICE_KEY = HydrusData.GenerateKey()
+LOCAL_RATING_LIKE_SERVICE_KEY = HydrusData.generate_key()
+LOCAL_RATING_NUMERICAL_SERVICE_KEY = HydrusData.generate_key()
+LOCAL_RATING_INCDEC_SERVICE_KEY = HydrusData.generate_key()
 
 callable_P = typing.ParamSpec( 'callable_P' )
 callable_R = typing.TypeVar( 'callable_R' )
@@ -198,7 +198,7 @@ class Controller( object ):
         
         self.db_dir = tempfile.mkdtemp()
         
-        self._hydrus_temp_dir = HydrusTemp.InitialiseHydrusTempDir()
+        self._hydrus_temp_dir = HydrusTemp.initialise_hydrus_temp_dir()
         
         global DB_DIR
         
@@ -209,9 +209,9 @@ class Controller( object ):
         
         client_files_default = os.path.join( self.db_dir, 'client_files' )
         
-        HydrusPaths.MakeSureDirectoryExists( self._server_files_dir )
-        HydrusPaths.MakeSureDirectoryExists( self._updates_dir )
-        HydrusPaths.MakeSureDirectoryExists( client_files_default )
+        HydrusPaths.make_sure_directory_exists( self._server_files_dir )
+        HydrusPaths.make_sure_directory_exists( self._updates_dir )
+        HydrusPaths.make_sure_directory_exists( client_files_default )
         
         HG.controller = self
         CG.client_controller = self
@@ -235,7 +235,7 @@ class Controller( object ):
         
         def show_text( text ): pass
         
-        HydrusData.ShowText = show_text
+        HydrusData.show_text = show_text
         
         self._name_read_responses = {}
         
@@ -250,10 +250,10 @@ class Controller( object ):
         self.example_numerical_rating_service_key = LOCAL_RATING_NUMERICAL_SERVICE_KEY
         self.example_incdec_rating_service_key = LOCAL_RATING_INCDEC_SERVICE_KEY
         
-        self.example_file_repo_service_key_1 = HydrusData.GenerateKey()
-        self.example_file_repo_service_key_2 = HydrusData.GenerateKey()
-        self.example_tag_repo_service_key = HydrusData.GenerateKey()
-        self.example_ipfs_service_key = HydrusData.GenerateKey()
+        self.example_file_repo_service_key_1 = HydrusData.generate_key()
+        self.example_file_repo_service_key_2 = HydrusData.generate_key()
+        self.example_tag_repo_service_key = HydrusData.generate_key()
+        self.example_ipfs_service_key = HydrusData.generate_key()
         
         services = []
         
@@ -286,12 +286,12 @@ class Controller( object ):
         
         base_location = ClientFilesPhysical.FilesStorageBaseLocation( client_files_default, 1 )
         
-        for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( 'f' ):
+        for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( 'f' ):
             
             client_files_subfolders.append( ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location ) )
             
         
-        for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( 't' ):
+        for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( 't' ):
             
             client_files_subfolders.append( ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location ) )
             
@@ -399,7 +399,7 @@ class Controller( object ):
     
     def AcquirePageKey( self ):
         
-        return HydrusData.GenerateKey()
+        return HydrusData.generate_key()
         
     
     def AmInTheMainQtThread( self ) -> bool:
@@ -523,7 +523,7 @@ class Controller( object ):
         
         job = HydrusThreading.SingleJob( self, self._job_scheduler, initial_delay, call )
         
-        self._job_scheduler.AddJob( job )
+        self._job_scheduler.add_job( job )
         
         return job
         
@@ -532,11 +532,11 @@ class Controller( object ):
         
         call = HydrusData.Call( func, *args, **kwargs )
         
-        call.SetLabel( label )
+        call.set_label( label )
         
         job = ClientThreading.QtAwareJob( self, self._job_scheduler, window, initial_delay, call )
         
-        self._job_scheduler.AddJob( job )
+        self._job_scheduler.add_job( job )
         
         return job
         
@@ -547,7 +547,7 @@ class Controller( object ):
         
         job = HydrusThreading.RepeatingJob( self, self._job_scheduler, initial_delay, period, call )
         
-        self._job_scheduler.AddJob( job )
+        self._job_scheduler.add_job( job )
         
         return job
         
@@ -558,7 +558,7 @@ class Controller( object ):
         
         job = ClientThreading.QtAwareRepeatingJob(self, self._job_scheduler, window, initial_delay, period, call)
         
-        self._job_scheduler.AddJob( job )
+        self._job_scheduler.add_job( job )
         
         return job
         
@@ -964,7 +964,7 @@ class Controller( object ):
             TestHydrusServer
         ]
         
-        module_lookup[ 'all' ] = sorted( HydrusLists.MassUnion( module_lookup.values() ), key = lambda d: d.__name__ )
+        module_lookup[ 'all' ] = sorted( HydrusLists.mass_union( module_lookup.values() ), key = lambda d: d.__name__ )
         
         if run_all:
             
@@ -1049,7 +1049,7 @@ class Controller( object ):
         
         time.sleep( 2 )
         
-        HydrusPaths.DeletePath( self.db_dir )
+        HydrusPaths.delete_path( self.db_dir )
         
     
     def WaitUntilModelFree( self ):

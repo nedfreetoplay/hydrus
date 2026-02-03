@@ -394,7 +394,7 @@ class EditFileTimestampsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUISc
             list_of_timestamp_data = HydrusSerialisable.SerialisableList( [ timestamp_data for timestamp_data in list_of_timestamp_data if timestamp_data.timestamp_type in allowed_timestamp_types ] )
             
         
-        text = json.dumps( list_of_timestamp_data.GetSerialisableTuple() )
+        text = json.dumps( list_of_timestamp_data.get_serialisable_tuple() )
         
         CG.client_controller.pub( 'clipboard', 'text', text )
         
@@ -742,7 +742,7 @@ class EditFileTimestampsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUISc
             
             serialisable_tuple = json.loads( raw_text )
             
-            list_of_timestamp_data = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tuple )
+            list_of_timestamp_data = HydrusSerialisable.create_from_serialisable_tuple( serialisable_tuple )
             
             for item in list_of_timestamp_data:
                 
@@ -912,7 +912,7 @@ class EditFileTimestampsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUISc
                 
                 self._file_modified_time_warning_st.setVisible( True )
                 
-                if HydrusPaths.FileModifiedTimeIsOk( HydrusTime.SecondiseMSFloat( timestamp_data.timestamp_ms ) ):
+                if HydrusPaths.file_modified_time_is_ok( HydrusTime.secondise_ms_float( timestamp_data.timestamp_ms ) ):
                     
                     self._file_modified_time_warning_st.setText( 'This will also change the modified time of the file on disk!' )
                     
@@ -934,7 +934,7 @@ class EditFileTimestampsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUISc
             
             if timestamp_data.timestamp_type == HC.TIMESTAMP_TYPE_MODIFIED_FILE and timestamp_data.timestamp_ms is not None:
                 
-                if HydrusPaths.FileModifiedTimeIsOk( HydrusTime.SecondiseMSFloat( timestamp_data.timestamp_ms ) ):
+                if HydrusPaths.file_modified_time_is_ok( HydrusTime.secondise_ms_float( timestamp_data.timestamp_ms ) ):
                     
                     return ( hashes, timestamp_data.timestamp_ms, step_ms )
                     

@@ -100,7 +100,7 @@ class ClientDBFilesMaintenance( ClientDBModule.ClientDBModule ):
                     
                     if mime != original_mime:
                         
-                        HydrusData.Print( f'File Maintenance: File {hash.hex()} changed filetype from {HC.mime_string_lookup[ original_mime ]} to {HC.mime_string_lookup[ mime ]}.' )
+                        HydrusData.print_text( f'File Maintenance: File {hash.hex()} changed filetype from {HC.mime_string_lookup[ original_mime ]} to {HC.mime_string_lookup[ mime ]}.' )
                         
                         if ( mime in HC.HYDRUS_UPDATE_FILES or original_mime in HC.HYDRUS_UPDATE_FILES ):
                             
@@ -110,7 +110,7 @@ class ClientDBFilesMaintenance( ClientDBModule.ClientDBModule ):
                     
                     if mime in HC.MIMES_WITH_THUMBNAILS and resolution_changed:
                         
-                        HydrusData.Print( f'File Maintenance: File {hash.hex()} changed resolution from {ClientData.ResolutionToPrettyString( original_resolution )} to {ClientData.ResolutionToPrettyString( ( width, height ) )}.' )
+                        HydrusData.print_text( f'File Maintenance: File {hash.hex()} changed resolution from {ClientData.ResolutionToPrettyString( original_resolution )} to {ClientData.ResolutionToPrettyString( ( width, height ) )}.' )
                         
                         self._ScheduleJobsForChangedAppearance( hash_id )
                         
@@ -257,7 +257,7 @@ class ClientDBFilesMaintenance( ClientDBModule.ClientDBModule ):
             
             job_types_to_delete.extend( ClientFilesMaintenance.regen_file_enum_to_overruled_jobs[ job_type ] )
             
-            self._ExecuteMany( 'DELETE FROM file_maintenance_jobs WHERE hash_id = ? AND job_type = ?;', ( ( hash_id, job_type_to_delete ) for job_type_to_delete in job_types_to_delete ) )
+            self._execute_many( 'DELETE FROM file_maintenance_jobs WHERE hash_id = ? AND job_type = ?;', ( ( hash_id, job_type_to_delete ) for job_type_to_delete in job_types_to_delete ) )
             
         
         if len( new_file_info_managers_info ) > 0:
@@ -271,7 +271,7 @@ class ClientDBFilesMaintenance( ClientDBModule.ClientDBModule ):
             
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         return []
         

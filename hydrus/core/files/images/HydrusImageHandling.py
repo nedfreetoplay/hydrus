@@ -262,7 +262,7 @@ def generate_numpy_image( path, mime, force_pil = False, human_file_description 
             HydrusData.show_text( 'Loading PSD' )
             
         
-        pil_image = HydrusPSDHandling.GeneratePILImageFromPSD( path )
+        pil_image = HydrusPSDHandling.generate_pil_image_from_psd( path )
         
         return generate_numpy_image_from_pil_image( pil_image )
         
@@ -274,7 +274,7 @@ def generate_numpy_image( path, mime, force_pil = False, human_file_description 
             HydrusData.show_text( 'Loading KRA' )
             
         
-        pil_image = HydrusKritaHandling.MergedPILImageFromKra( path )
+        pil_image = HydrusKritaHandling.merged_pil_image_from_kra( path )
         
         return generate_numpy_image_from_pil_image( pil_image )
         
@@ -286,14 +286,14 @@ def generate_numpy_image( path, mime, force_pil = False, human_file_description 
     
     if not force_pil:
         
-        pil_image = HydrusImageOpening.RawOpenPILImage( path, human_file_description = human_file_description )
+        pil_image = HydrusImageOpening.raw_open_pil_image( path, human_file_description = human_file_description )
         
         if pil_image.mode == 'LAB':
             
             force_pil = True
             
         
-        if HydrusImageMetadata.HasICCProfile( pil_image ):
+        if HydrusImageMetadata.has_icc_profile( pil_image ):
             
             if HG.media_load_report_mode:
                 
@@ -350,9 +350,9 @@ def generate_numpy_image( path, mime, force_pil = False, human_file_description 
             
         else:
             
-            numpy_image = HydrusImageNormalisation.DequantizeFreshlyLoadedNumPyImage( numpy_image )
+            numpy_image = HydrusImageNormalisation.dequantize_freshly_loaded_numpy_image( numpy_image )
             
-            numpy_image = HydrusImageNormalisation.StripOutAnyUselessAlphaChannel( numpy_image )
+            numpy_image = HydrusImageNormalisation.strip_out_any_useless_alpha_channel( numpy_image )
             
         
     
@@ -377,7 +377,7 @@ def generate_numpy_image_from_pil_image( pil_image: PILImage.Image, strip_useles
     
     if strip_useless_alpha:
         
-        numpy_image = HydrusImageNormalisation.StripOutAnyUselessAlphaChannel( numpy_image )
+        numpy_image = HydrusImageNormalisation.strip_out_any_useless_alpha_channel( numpy_image )
         
     
     return numpy_image
@@ -385,11 +385,11 @@ def generate_numpy_image_from_pil_image( pil_image: PILImage.Image, strip_useles
 
 def generate_pil_image( path: str | typing.BinaryIO, dequantize = True, human_file_description = None ) -> PILImage.Image:
     
-    pil_image = HydrusImageOpening.RawOpenPILImage( path, human_file_description = human_file_description )
+    pil_image = HydrusImageOpening.raw_open_pil_image( path, human_file_description = human_file_description )
     
     try:
         
-        pil_image = HydrusImageNormalisation.RotateEXIFPILImage( pil_image )
+        pil_image = HydrusImageNormalisation.rotate_exif_pil_image( pil_image )
         
         if dequantize:
             
@@ -403,13 +403,13 @@ def generate_pil_image( path: str | typing.BinaryIO, dequantize = True, human_fi
                 
                 numpy_image = generate_numpy_image_from_pil_image( pil_image )
                 
-                numpy_image = HydrusImageNormalisation.NormaliseNumPyImageToUInt8( numpy_image )
+                numpy_image = HydrusImageNormalisation.normalise_numpy_image_to_uint8( numpy_image )
                 
                 pil_image = generate_pil_image_from_numpy_image( numpy_image )
                 
             
             # note this destroys animated gifs atm, it collapses down to one frame
-            pil_image = HydrusImageNormalisation.DequantizePILImage( pil_image )
+            pil_image = HydrusImageNormalisation.dequantize_pil_image( pil_image )
             
         
         return pil_image
@@ -751,7 +751,7 @@ def is_decompression_bomb( path, human_file_description = None ) -> bool:
     
     try:
         
-        HydrusImageOpening.RawOpenPILImage( path, human_file_description = human_file_description )
+        HydrusImageOpening.raw_open_pil_image( path, human_file_description = human_file_description )
         
     except ( PILImage.DecompressionBombError ):
         

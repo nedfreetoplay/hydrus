@@ -120,7 +120,7 @@ class MediaPlaybackPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         system_panel = ClientGUICommon.StaticBox( self, 'system' )
         
-        self._mpv_conf_path = ClientGUIPathWidgets.FilePickerCtrl( system_panel, starting_directory = HydrusStaticDir.GetStaticPath( 'mpv-conf' ) )
+        self._mpv_conf_path = ClientGUIPathWidgets.FilePickerCtrl( system_panel, starting_directory = HydrusStaticDir.get_static_path( 'mpv-conf' ) )
         
         self._use_system_ffmpeg = QW.QCheckBox( system_panel )
         self._use_system_ffmpeg.setToolTip( ClientGUIFunctions.WrapToolTip( 'FFMPEG is used for file import metadata parsing and the native animation viewer. Check this to always default to the system ffmpeg in your path, rather than using any static ffmpeg in hydrus\'s bin directory. (requires restart)' ) )
@@ -476,7 +476,7 @@ class MediaPlaybackPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
         except ValueError:
             
-            HydrusData.ShowText( 'Could not parse those zooms, so they were not saved!' )
+            HydrusData.show_text( 'Could not parse those zooms, so they were not saved!' )
             
         
         self._new_options.SetInteger( 'media_viewer_zoom_center', self._media_viewer_zoom_center.GetValue() )
@@ -498,11 +498,11 @@ class MediaPlaybackPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
             try:
                 
-                HydrusPaths.MirrorFile( mpv_conf_path, dest_mpv_conf_path )
+                HydrusPaths.mirror_file( mpv_conf_path, dest_mpv_conf_path )
                 
             except Exception as e:
                 
-                HydrusData.ShowText( 'Could not set the mpv conf path "{}" to "{}"! Error follows!'.format( mpv_conf_path, dest_mpv_conf_path ) )
+                HydrusData.show_text( 'Could not set the mpv conf path "{}" to "{}"! Error follows!'.format( mpv_conf_path, dest_mpv_conf_path ) )
                 HydrusData.ShowException( e )
                 
             

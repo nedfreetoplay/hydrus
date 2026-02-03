@@ -137,7 +137,7 @@ class HydrusListItemModel( QC.QAbstractItemModel ):
                 
                 display_tuple = self._data_to_display_tuple_func( data )
                 
-                display_tuple = tuple( ( HydrusText.GetFirstLineSummary( t ) for t in display_tuple ) )
+                display_tuple = tuple( ( HydrusText.get_first_line_summary( t ) for t in display_tuple ) )
                 
                 self._data_to_display_tuples[ data ] = display_tuple
                 
@@ -372,7 +372,7 @@ class HydrusListItemModel( QC.QAbstractItemModel ):
             
             if data not in self._data_to_sort_tuples:
                 
-                sort_tuple = HydrusLists.ConvertTupleOfDatasToCasefolded( self._data_to_sort_tuple_func( data ) )
+                sort_tuple = HydrusLists.convert_tuple_of_datas_to_case_folded( self._data_to_sort_tuple_func( data ) )
                 
                 self._data_to_sort_tuples[ data ] = sort_tuple
                 
@@ -399,7 +399,7 @@ class HydrusListItemModel( QC.QAbstractItemModel ):
             
             datas_sorted = list( self._data_to_indices.keys() )
             
-            HydrusData.ShowText( 'A multi-column list failed to sort! Please send hydrus dev the traceback!' )
+            HydrusData.show_text( 'A multi-column list failed to sort! Please send hydrus dev the traceback!' )
             HydrusData.ShowException( e )
             
         
@@ -474,7 +474,7 @@ class HydrusListItemModel( QC.QAbstractItemModel ):
                     
                     existing_sort_tuple = self._data_to_sort_tuples[ data ]
                     
-                    new_sort_tuple = HydrusLists.ConvertTupleOfDatasToCasefolded( self._data_to_sort_tuple_func( data ) )
+                    new_sort_tuple = HydrusLists.convert_tuple_of_datas_to_case_folded( self._data_to_sort_tuple_func( data ) )
                     
                     if existing_sort_tuple[ existing_sort_logical_index ] != new_sort_tuple[ existing_sort_logical_index ]:
                         
@@ -516,7 +516,7 @@ class BetterListCtrlTreeView( QW.QTreeView ):
         
         self._have_shown_a_column_data_error = False
         
-        self._creation_time = HydrusTime.GetNow()
+        self._creation_time = HydrusTime.get_now()
         
         self._column_list_type = model.GetColumnListType()
         
@@ -1251,7 +1251,7 @@ class BetterListCtrlTreeView( QW.QTreeView ):
         
         last_column_type = self._column_list_status.GetColumnTypes()[-1]
         
-        if HydrusTime.TimeHasPassed( self._creation_time + 2 ):
+        if HydrusTime.time_has_passed( self._creation_time + 2 ):
             
             width += self.columnWidth( self.model().columnCount() - 1 )
             
@@ -1381,7 +1381,7 @@ class BetterListCtrlTreeView( QW.QTreeView ):
         
         current_names = { o.GetName() for o in self.GetData() if o is not obj }
 
-        HydrusSerialisable.SetNonDupeName( obj, current_names, do_casefold = do_casefold )
+        HydrusSerialisable.set_non_dupe_name( obj, current_names, do_casefold = do_casefold )
         
     
     def ShowDeleteSelectedDialog( self ):
@@ -1422,7 +1422,7 @@ class BetterListCtrlTreeView( QW.QTreeView ):
             
         except Exception as e:
             
-            HydrusData.ShowText( 'An attempt to sort a multi-column list failed! Error follows:' )
+            HydrusData.show_text( 'An attempt to sort a multi-column list failed! Error follows:' )
             
             HydrusData.ShowException( e )
             
@@ -1552,7 +1552,7 @@ class BetterListCtrlPanel( QW.QWidget ):
         
         if dupe_data is not None:
             
-            dupe_data = dupe_data.Duplicate()
+            dupe_data = dupe_data.duplicate()
             
             self._ImportObject( dupe_data )
             
@@ -1566,7 +1566,7 @@ class BetterListCtrlPanel( QW.QWidget ):
         
         if export_object is not None:
             
-            json = export_object.DumpToString()
+            json = export_object.dump_to_string()
             
             CG.client_controller.pub( 'clipboard', 'text', json )
             
@@ -1578,7 +1578,7 @@ class BetterListCtrlPanel( QW.QWidget ):
         
         if export_object is not None:
             
-            json = export_object.DumpToString()
+            json = export_object.dump_to_string()
             
             with ClientGUIDialogsFiles.FileDialog( self, 'select where to save the json file', default_filename = 'export.json', wildcard = 'JSON (*.json)', acceptMode = QW.QFileDialog.AcceptMode.AcceptSave, fileMode = QW.QFileDialog.FileMode.AnyFile ) as f_dlg:
                 
@@ -1717,7 +1717,7 @@ class BetterListCtrlPanel( QW.QWidget ):
                 
                 payload = ClientSerialisable.LoadFromQtImage( qt_image )
                 
-                obj = HydrusSerialisable.CreateFromNetworkBytes( payload, raise_error_on_future_version = True )
+                obj = HydrusSerialisable.create_from_network_bytes( payload, raise_error_on_future_version = True )
                 
             except HydrusExceptions.SerialisationException as e:
                 
@@ -1749,7 +1749,7 @@ class BetterListCtrlPanel( QW.QWidget ):
             
             try:
                 
-                obj = HydrusSerialisable.CreateFromString( raw_text, raise_error_on_future_version = True )
+                obj = HydrusSerialisable.create_from_string( raw_text, raise_error_on_future_version = True )
                 
             except Exception as e:
                 
@@ -1826,7 +1826,7 @@ class BetterListCtrlPanel( QW.QWidget ):
                 
             else:
                 
-                bad_object_type_names.add( HydrusData.GetTypeName( type( obj ) ) )
+                bad_object_type_names.add( HydrusData.get_type_name( type( obj ) ) )
                 
             
         
@@ -1838,7 +1838,7 @@ class BetterListCtrlPanel( QW.QWidget ):
             message += '\n' * 2
             message += 'Whereas this control only allows:'
             message += '\n' * 2
-            message += '\n'.join( ( HydrusData.GetTypeName( o ) for o in self._permitted_object_types ) )
+            message += '\n'.join( ( HydrusData.get_type_name( o ) for o in self._permitted_object_types ) )
             
             ClientGUIDialogsMessage.ShowWarning( self, message )
             
@@ -1847,7 +1847,7 @@ class BetterListCtrlPanel( QW.QWidget ):
         
         if can_present_messages and num_added > 0:
             
-            message = '{} objects added!'.format( HydrusNumbers.ToHumanInt( num_added ) )
+            message = '{} objects added!'.format( HydrusNumbers.to_human_int( num_added ) )
             
             ClientGUIDialogsMessage.ShowInformation( self, message )
             
@@ -1874,7 +1874,7 @@ class BetterListCtrlPanel( QW.QWidget ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Problem loading!', str(e) )
                 
@@ -1883,13 +1883,13 @@ class BetterListCtrlPanel( QW.QWidget ):
             
             try:
                 
-                obj = HydrusSerialisable.CreateFromString( payload, raise_error_on_future_version = True )
+                obj = HydrusSerialisable.create_from_string( payload, raise_error_on_future_version = True )
                 
                 self._ImportObject( obj )
                 
             except HydrusExceptions.SerialisationException as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 if not have_shown_load_error:
                     
@@ -1908,7 +1908,7 @@ class BetterListCtrlPanel( QW.QWidget ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', f'I could not understand what was encoded in "{path}"!' )
                 
@@ -1929,7 +1929,7 @@ class BetterListCtrlPanel( QW.QWidget ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', str(e) )
                 
@@ -1938,13 +1938,13 @@ class BetterListCtrlPanel( QW.QWidget ):
             
             try:
                 
-                obj = HydrusSerialisable.CreateFromNetworkBytes( payload, raise_error_on_future_version = True )
+                obj = HydrusSerialisable.create_from_network_bytes( payload, raise_error_on_future_version = True )
                 
                 self._ImportObject( obj )
                 
             except HydrusExceptions.SerialisationException as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 if not have_shown_load_error:
                     
@@ -1963,7 +1963,7 @@ class BetterListCtrlPanel( QW.QWidget ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Error', 'I could not understand what was encoded in "{path}"!' )
                 
@@ -2118,13 +2118,13 @@ class BetterListCtrlPanel( QW.QWidget ):
         
         from hydrus.client.gui import ClientGUIDialogsQuick
         
-        message = 'Try to import the {} dropped files to this list? I am expecting json or png files.'.format( HydrusNumbers.ToHumanInt( len( paths ) ) )
+        message = 'Try to import the {} dropped files to this list? I am expecting json or png files.'.format( HydrusNumbers.to_human_int( len( paths ) ) )
         
         result = ClientGUIDialogsQuick.GetYesNo( self, message )
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            ( jsons, pngs ) = HydrusLists.PartitionIteratorIntoLists( lambda path: path.endswith( '.png' ), paths )
+            ( jsons, pngs ) = HydrusLists.partition_iterator_into_lists( lambda path: path.endswith( '.png' ), paths )
             
             self._ImportPNGs( pngs )
             self._ImportJSONs( jsons )

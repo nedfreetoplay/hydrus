@@ -80,12 +80,12 @@ encoding_type_legacy_to_enum_lookup = {
 
 class StringProcessingStep( HydrusSerialisable.SerialisableBase ):
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         raise NotImplementedError()
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         raise NotImplementedError()
         
@@ -126,12 +126,12 @@ class StringConverter( StringProcessingStep ):
         self.example_string = example_string
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         return ( self.conversions, self.example_string )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( serialisable_conversions, self.example_string ) = serialisable_info
         
@@ -155,7 +155,7 @@ class StringConverter( StringProcessingStep ):
             
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -389,7 +389,7 @@ class StringConverter( StringProcessingStep ):
                             
                         
                     
-                    timestamp = HydrusTime.DateTimeToTimestamp( dt )
+                    timestamp = HydrusTime.date_time_to_timestamp( dt )
                     
                     s = str( timestamp )
                     
@@ -412,7 +412,7 @@ class StringConverter( StringProcessingStep ):
                         raise Exception( '"{}" was not an integer!'.format( s ) )
                         
                     
-                    dt = HydrusTime.TimestampToDateTime( timestamp, timezone )
+                    dt = HydrusTime.timestamp_to_datetime( timestamp, timezone )
                     
                     s = dt.strftime( phrase )
                     
@@ -491,7 +491,7 @@ class StringConverter( StringProcessingStep ):
             
             if simple:
                 
-                label = '{} changes'.format( HydrusNumbers.ToHumanInt( num_rules ) )
+                label = '{} changes'.format( HydrusNumbers.to_human_int( num_rules ) )
                 
             else:
                 
@@ -514,19 +514,19 @@ class StringConverter( StringProcessingStep ):
         
         if conversion_type == STRING_CONVERSION_REMOVE_TEXT_FROM_BEGINNING:
             
-            return 'remove the first ' + HydrusNumbers.ToHumanInt( data ) + ' characters'
+            return 'remove the first ' + HydrusNumbers.to_human_int( data ) + ' characters'
             
         elif conversion_type == STRING_CONVERSION_REMOVE_TEXT_FROM_END:
             
-            return 'remove the last ' + HydrusNumbers.ToHumanInt( data ) + ' characters'
+            return 'remove the last ' + HydrusNumbers.to_human_int( data ) + ' characters'
             
         elif conversion_type == STRING_CONVERSION_CLIP_TEXT_FROM_BEGINNING:
             
-            return 'take the first ' + HydrusNumbers.ToHumanInt( data ) + ' characters'
+            return 'take the first ' + HydrusNumbers.to_human_int( data ) + ' characters'
             
         elif conversion_type == STRING_CONVERSION_CLIP_TEXT_FROM_END:
             
-            return 'take the last ' + HydrusNumbers.ToHumanInt( data ) + ' characters'
+            return 'take the last ' + HydrusNumbers.to_human_int( data ) + ' characters'
             
         elif conversion_type == STRING_CONVERSION_PREPEND_TEXT:
             
@@ -540,7 +540,7 @@ class StringConverter( StringProcessingStep ):
             
             ( population_text, num_chars ) = data
             
-            return f'append with {HydrusNumbers.ToHumanInt( num_chars )} random characters, from "{population_text}"'
+            return f'append with {HydrusNumbers.to_human_int( num_chars )} random characters, from "{population_text}"'
             
         elif conversion_type == STRING_CONVERSION_ENCODE:
             
@@ -601,17 +601,17 @@ class StringJoiner( StringProcessingStep ):
         self._join_tuple_size = join_tuple_size
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         return ( self._joiner, self._join_tuple_size )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( self._joiner, self._join_tuple_size ) = serialisable_info
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -670,7 +670,7 @@ class StringJoiner( StringProcessingStep ):
                 
             else:
                 
-                for chunk_of_texts in HydrusLists.SplitIteratorIntoChunks( texts, self._join_tuple_size ):
+                for chunk_of_texts in HydrusLists.split_iterator_into_chunks( texts, self._join_tuple_size ):
                     
                     if len( chunk_of_texts ) == self._join_tuple_size:
                         
@@ -748,12 +748,12 @@ class StringMatch( StringProcessingStep ):
         self._example_string = example_string
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         return ( self._match_type, self._match_value, self._min_chars, self._max_chars, self._example_string )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( self._match_type, self._match_value, self._min_chars, self._max_chars, self._example_string ) = serialisable_info
         
@@ -815,12 +815,12 @@ class StringMatch( StringProcessingStep ):
         
         if self._min_chars is not None and text_len < self._min_chars:
             
-            raise HydrusExceptions.StringMatchException( presentation_text + ' had fewer than ' + HydrusNumbers.ToHumanInt( self._min_chars ) + ' characters' )
+            raise HydrusExceptions.StringMatchException( presentation_text + ' had fewer than ' + HydrusNumbers.to_human_int( self._min_chars ) + ' characters' )
             
         
         if self._max_chars is not None and text_len > self._max_chars:
             
-            raise HydrusExceptions.StringMatchException( presentation_text + ' had more than ' + HydrusNumbers.ToHumanInt( self._max_chars ) + ' characters' )
+            raise HydrusExceptions.StringMatchException( presentation_text + ' had more than ' + HydrusNumbers.to_human_int( self._max_chars ) + ' characters' )
             
         
         if self._match_type == STRING_MATCH_FIXED:
@@ -1023,12 +1023,12 @@ class StringSlicer( StringProcessingStep ):
         self._index_end = index_end
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         return ( self._index_start, self._index_end )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( self._index_start, self._index_end ) = serialisable_info
         
@@ -1132,7 +1132,7 @@ class StringSlicer( StringProcessingStep ):
             
         elif self.SelectsOne():
             
-            result = 'selecting the {} string'.format( HydrusNumbers.IndexToPrettyOrdinalString( self._index_start ) )
+            result = 'selecting the {} string'.format( HydrusNumbers.index_to_pretty_ordinal_string( self._index_start ) )
             
         elif self._index_start is None and self._index_end is None:
             
@@ -1140,15 +1140,15 @@ class StringSlicer( StringProcessingStep ):
             
         elif self._index_start is not None and self._index_end is None:
             
-            result = 'selecting the {} string and onwards'.format( HydrusNumbers.IndexToPrettyOrdinalString( self._index_start ) )
+            result = 'selecting the {} string and onwards'.format( HydrusNumbers.index_to_pretty_ordinal_string( self._index_start ) )
             
         elif self._index_start is None and self._index_end is not None:
             
-            result = 'selecting up to and including the {} string'.format( HydrusNumbers.IndexToPrettyOrdinalString( self._index_end - 1 ) )
+            result = 'selecting up to and including the {} string'.format( HydrusNumbers.index_to_pretty_ordinal_string( self._index_end - 1 ) )
             
         else:
             
-            result = 'selecting the {} string up to and including the {} string'.format( HydrusNumbers.IndexToPrettyOrdinalString( self._index_start ), HydrusNumbers.IndexToPrettyOrdinalString( self._index_end - 1 ) )
+            result = 'selecting the {} string up to and including the {} string'.format( HydrusNumbers.index_to_pretty_ordinal_string( self._index_start ), HydrusNumbers.index_to_pretty_ordinal_string( self._index_end - 1 ) )
             
         
         if with_type:
@@ -1195,12 +1195,12 @@ class StringSorter( StringProcessingStep ):
         self._regex = regex
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         return ( self._sort_type, self._asc, self._regex )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( self._sort_type, self._asc, self._regex ) = serialisable_info
         
@@ -1268,7 +1268,7 @@ class StringSorter( StringProcessingStep ):
                 
                 if self._sort_type == CONTENT_PARSER_SORT_TYPE_HUMAN_SORT:
                     
-                    sort_convert = HydrusText.HumanTextSortKey
+                    sort_convert = HydrusText.human_text_sort_key
                     
                 
                 key = lambda k_s: sort_convert( data_convert( k_s ) )
@@ -1328,17 +1328,17 @@ class StringSplitter( StringProcessingStep ):
         self._max_splits = max_splits
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         return ( self._separator, self._max_splits )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( self._separator, self._max_splits ) = serialisable_info
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -1413,7 +1413,7 @@ class StringSplitter( StringProcessingStep ):
         
         if self._max_splits is not None:
             
-            result = '{}, at most {} times'.format( result, HydrusNumbers.ToHumanInt( self._max_splits ) )
+            result = '{}, at most {} times'.format( result, HydrusNumbers.to_human_int( self._max_splits ) )
             
         
         if with_type:
@@ -1447,27 +1447,27 @@ class StringTagFilter( StringProcessingStep ):
         self._example_string = example_string
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_tag_filter = self._tag_filter.GetSerialisableTuple()
+        serialisable_tag_filter = self._tag_filter.get_serialisable_tuple()
         
         return ( serialisable_tag_filter, self._example_string )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( serialisable_tag_filter, self._example_string ) = serialisable_info
         
-        self._tag_filter = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tag_filter )
+        self._tag_filter = HydrusSerialisable.create_from_serialisable_tuple( serialisable_tag_filter )
         
     
     def ConvertAndFilter( self, tag_texts ):
         
-        tags = HydrusTags.CleanTags( tag_texts )
+        tags = HydrusTags.clean_tags( tag_texts )
         
-        tags = self._tag_filter.Filter( tags, apply_unnamespaced_rules_to_namespaced_tags = True )
+        tags = self._tag_filter.filter( tags, apply_unnamespaced_rules_to_namespaced_tags = True )
         
-        tags = sorted( tags, key = HydrusText.HumanTextSortKey )
+        tags = sorted( tags, key = HydrusText.human_text_sort_key )
         
         return tags
         
@@ -1514,7 +1514,7 @@ class StringTagFilter( StringProcessingStep ):
         
         try:
             
-            tags = HydrusTags.CleanTags( [ text ] )
+            tags = HydrusTags.clean_tags( [ text ] )
             
             if len( tags ) == 0:
                 
@@ -1530,7 +1530,7 @@ class StringTagFilter( StringProcessingStep ):
             raise HydrusExceptions.StringMatchException( '{} was not a valid tag!'.format( presentation_text ) )
             
         
-        if not self._tag_filter.TagOK( tag, apply_unnamespaced_rules_to_namespaced_tags = True ):
+        if not self._tag_filter.tag_ok( tag, apply_unnamespaced_rules_to_namespaced_tags = True ):
             
             raise HydrusExceptions.StringMatchException( '{} did not pass the tag filter!'.format( presentation_text ) )
             
@@ -1543,7 +1543,7 @@ class StringTagFilter( StringProcessingStep ):
             return 'tag filter'
             
         
-        result = '{}, such as {}'.format( self._tag_filter.ToPermittedString(), self._example_string )
+        result = '{}, such as {}'.format( self._tag_filter.to_permitted_string(), self._example_string )
         
         if with_type:
             
@@ -1568,16 +1568,16 @@ class StringProcessor( StringProcessingStep ):
         self._processing_steps = []
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        return HydrusSerialisable.SerialisableList( self._processing_steps ).GetSerialisableTuple()
+        return HydrusSerialisable.SerialisableList( self._processing_steps ).get_serialisable_tuple()
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         serialisable_processing_steps = serialisable_info
         
-        self._processing_steps = list( HydrusSerialisable.CreateFromSerialisableTuple( serialisable_processing_steps ) )
+        self._processing_steps = list( HydrusSerialisable.create_from_serialisable_tuple( serialisable_processing_steps ) )
         
     
     def GetProcessingSteps( self ):

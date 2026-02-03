@@ -189,7 +189,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         return index_generation_dict
         
     
-    def _GetServiceIndexGenerationDict( self, service_id ) -> dict:
+    def _get_service_index_generation_dict( self, service_id ) -> dict:
         
         tag_service_id = service_id
         
@@ -225,7 +225,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         return table_dict
         
     
-    def _GetServiceTableGenerationDict( self, service_id ) -> dict:
+    def _get_service_table_generation_dict( self, service_id ) -> dict:
         
         tag_service_id = service_id
         
@@ -244,7 +244,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         return table_dict
         
     
-    def _GetServiceTablePrefixes( self ):
+    def _get_service_table_prefixes( self ):
         
         # do not add the fts4 guys to this, since that already uses a bunch of different suffixes for its own virtual sub-tables and it all gets wrapped up false-positive in our tests!
         return {
@@ -257,12 +257,12 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         }
         
     
-    def _GetServiceIdsWeGenerateDynamicTablesFor( self ):
+    def _get_service_ids_we_generate_dynamic_tables_for( self ):
         
         return self.modules_services.GetServiceIds( HC.REAL_TAG_SERVICES )
         
     
-    def _RepairRepopulateTables( self, table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper ):
+    def _repair_repopulate_tables( self, table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper ):
         
         file_service_ids = list( self.modules_services.GetServiceIds( HC.FILE_SERVICES_WITH_SPECIFIC_TAG_LOOKUP_CACHES ) )
         file_service_ids.append( self.modules_services.combined_file_service_id )
@@ -298,9 +298,9 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         
         for tag_id in tag_ids:
             
-            self._Execute( 'INSERT OR IGNORE INTO {} ( tag_id, namespace_id, subtag_id ) SELECT tag_id, namespace_id, subtag_id FROM tags WHERE tag_id = ?;'.format( tags_table_name ), ( tag_id, ) )
+            self._execute( 'INSERT OR IGNORE INTO {} ( tag_id, namespace_id, subtag_id ) SELECT tag_id, namespace_id, subtag_id FROM tags WHERE tag_id = ?;'.format( tags_table_name ), ( tag_id, ) )
             
-            if self._GetRowCount() > 0:
+            if self._get_row_count() > 0:
                 
                 actually_new_tag_ids.add( tag_id )
                 
@@ -310,13 +310,13 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
             
             if file_service_id == self.modules_services.combined_file_service_id:
                 
-                self._Execute( 'UPDATE service_info SET info = info + ? WHERE service_id = ? AND info_type = ?;', ( len( actually_new_tag_ids ), tag_service_id, HC.SERVICE_INFO_NUM_TAGS ) )
+                self._execute( 'UPDATE service_info SET info = info + ? WHERE service_id = ? AND info_type = ?;', ( len( actually_new_tag_ids ), tag_service_id, HC.SERVICE_INFO_NUM_TAGS ) )
                 
             
-            with self._MakeTemporaryIntegerTable( actually_new_tag_ids, 'tag_id' ) as temp_tag_ids_table_name:
+            with self._make_temporary_integer_table( actually_new_tag_ids, 'tag_id' ) as temp_tag_ids_table_name:
                 
                 # temp tags to fast tag definitions to subtags
-                subtag_ids_and_subtags = self._Execute( 'SELECT subtag_id, subtag FROM {} CROSS JOIN {} USING ( tag_id ) CROSS JOIN subtags USING ( subtag_id );'.format( temp_tag_ids_table_name, tags_table_name ) ).fetchall()
+                subtag_ids_and_subtags = self._execute( 'SELECT subtag_id, subtag FROM {} CROSS JOIN {} USING ( tag_id ) CROSS JOIN subtags USING ( subtag_id );'.format( temp_tag_ids_table_name, tags_table_name ) ).fetchall()
                 
                 subtags_fts4_table_name = self.GetSubtagsFTS4TableName( file_service_id, tag_service_id )
                 subtags_searchable_map_table_name = self.GetSubtagsSearchableMapTableName( file_service_id, tag_service_id )
@@ -330,12 +330,12 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
                         
                         searchable_subtag_id = self.modules_tags.GetSubtagId( searchable_subtag )
                         
-                        self._Execute( 'INSERT OR IGNORE INTO {} ( subtag_id, searchable_subtag_id ) VALUES ( ?, ? );'.format( subtags_searchable_map_table_name ), ( subtag_id, searchable_subtag_id ) )
+                        self._execute( 'INSERT OR IGNORE INTO {} ( subtag_id, searchable_subtag_id ) VALUES ( ?, ? );'.format( subtags_searchable_map_table_name ), ( subtag_id, searchable_subtag_id ) )
                         
                     
                     #
                     
-                    self._Execute( 'INSERT OR IGNORE INTO {} ( docid, subtag ) VALUES ( ?, ? );'.format( subtags_fts4_table_name ), ( subtag_id, searchable_subtag ) )
+                    self._execute( 'INSERT OR IGNORE INTO {} ( docid, subtag ) VALUES ( ?, ? );'.format( subtags_fts4_table_name ), ( subtag_id, searchable_subtag ) )
                     
                     if subtag.isdecimal():
                         
@@ -345,7 +345,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
                             
                             if CanCacheInteger( integer_subtag ):
                                 
-                                self._Execute( 'INSERT OR IGNORE INTO {} ( subtag_id, integer_subtag ) VALUES ( ?, ? );'.format( integer_subtags_table_name ), ( subtag_id, integer_subtag ) )
+                                self._execute( 'INSERT OR IGNORE INTO {} ( subtag_id, integer_subtag ) VALUES ( ?, ? );'.format( integer_subtags_table_name ), ( subtag_id, integer_subtag ) )
                                 
                             
                         except ValueError:
@@ -389,38 +389,38 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         subtags_searchable_map_table_name = self.GetSubtagsSearchableMapTableName( file_service_id, tag_service_id )
         integer_subtags_table_name = self.GetIntegerSubtagsTableName( file_service_id, tag_service_id )
         
-        with self._MakeTemporaryIntegerTable( tag_ids, 'tag_id' ) as temp_tag_ids_table_name:
+        with self._make_temporary_integer_table( tag_ids, 'tag_id' ) as temp_tag_ids_table_name:
             
             # temp tag ids to tag definitions
-            subtag_ids = self._STS( self._Execute( 'SELECT subtag_id FROM {} CROSS JOIN {} USING ( tag_id );'.format( temp_tag_ids_table_name, tags_table_name ) ) )
+            subtag_ids = self._sts( self._execute( 'SELECT subtag_id FROM {} CROSS JOIN {} USING ( tag_id );'.format( temp_tag_ids_table_name, tags_table_name ) ) )
             
             #
             
-            self._ExecuteMany( 'DELETE FROM {} WHERE tag_id = ?;'.format( tags_table_name ), ( ( tag_id, ) for tag_id in tag_ids ) )
+            self._execute_many( 'DELETE FROM {} WHERE tag_id = ?;'.format( tags_table_name ), ( ( tag_id, ) for tag_id in tag_ids ) )
             
-            num_deleted = self._GetRowCount()
+            num_deleted = self._get_row_count()
             
             if num_deleted > 0:
                 
                 if file_service_id == self.modules_services.combined_file_service_id:
                     
-                    self._Execute( 'UPDATE service_info SET info = info - ? WHERE service_id = ? AND info_type = ?;', ( num_deleted, tag_service_id, HC.SERVICE_INFO_NUM_TAGS ) )
+                    self._execute( 'UPDATE service_info SET info = info - ? WHERE service_id = ? AND info_type = ?;', ( num_deleted, tag_service_id, HC.SERVICE_INFO_NUM_TAGS ) )
                     
                 
                 #
                 
                 # subtags may exist under other namespaces, so exclude those that do
                 
-                with self._MakeTemporaryIntegerTable( subtag_ids, 'subtag_id' ) as temp_subtag_ids_table_name:
+                with self._make_temporary_integer_table( subtag_ids, 'subtag_id' ) as temp_subtag_ids_table_name:
                     
-                    still_existing_subtag_ids = self._STS( self._Execute( 'SELECT subtag_id FROM {} CROSS JOIN {} USING ( subtag_id );'.format( temp_subtag_ids_table_name, tags_table_name ) ) )
+                    still_existing_subtag_ids = self._sts( self._execute( 'SELECT subtag_id FROM {} CROSS JOIN {} USING ( subtag_id );'.format( temp_subtag_ids_table_name, tags_table_name ) ) )
                     
                 
                 deletee_subtag_ids = subtag_ids.difference( still_existing_subtag_ids )
                 
-                self._ExecuteMany( 'DELETE FROM {} WHERE docid = ?;'.format( subtags_fts4_table_name ), ( ( subtag_id, ) for subtag_id in deletee_subtag_ids ) )
-                self._ExecuteMany( 'DELETE FROM {} WHERE subtag_id = ?;'.format( subtags_searchable_map_table_name ), ( ( subtag_id, ) for subtag_id in deletee_subtag_ids ) )
-                self._ExecuteMany( 'DELETE FROM {} WHERE subtag_id = ?;'.format( integer_subtags_table_name ), ( ( subtag_id, ) for subtag_id in deletee_subtag_ids ) )
+                self._execute_many( 'DELETE FROM {} WHERE docid = ?;'.format( subtags_fts4_table_name ), ( ( subtag_id, ) for subtag_id in deletee_subtag_ids ) )
+                self._execute_many( 'DELETE FROM {} WHERE subtag_id = ?;'.format( subtags_searchable_map_table_name ), ( ( subtag_id, ) for subtag_id in deletee_subtag_ids ) )
+                self._execute_many( 'DELETE FROM {} WHERE subtag_id = ?;'.format( integer_subtags_table_name ), ( ( subtag_id, ) for subtag_id in deletee_subtag_ids ) )
                 
             
         
@@ -448,7 +448,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         
         tags_table_name = self.GetTagsTableName( file_service_id, tag_service_id )
         
-        return self._STS( self._Execute( 'SELECT tag_id FROM {} CROSS JOIN {} USING ( tag_id );'.format( tag_ids_table_name, tags_table_name ) ) )
+        return self._sts( self._execute( 'SELECT tag_id FROM {} CROSS JOIN {} USING ( tag_id );'.format( tag_ids_table_name, tags_table_name ) ) )
         
     
     def Generate( self, file_service_id, tag_service_id ):
@@ -457,14 +457,14 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         
         for ( table_name, ( create_query_without_name, version_added ) ) in table_generation_dict.items():
             
-            self._CreateTable( create_query_without_name, table_name )
+            self._create_table( create_query_without_name, table_name )
             
         
         index_generation_dict = self._GetServiceIndexGenerationDictSingle( file_service_id, tag_service_id )
         
-        for ( table_name, columns, unique, version_added ) in self._FlattenIndexGenerationDict( index_generation_dict ):
+        for ( table_name, columns, unique, version_added ) in self._flatten_index_generation_dict( index_generation_dict ):
             
-            self._CreateIndex( table_name, columns, unique = unique )
+            self._create_index( table_name, columns, unique = unique )
             
         
     
@@ -479,7 +479,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         
         query = '{};'.format( self.GetQueryPhraseForTagIds( leaf.file_service_id, leaf.tag_service_id ) )
         
-        tag_ids = self._STS( self._ExecuteCancellable( query, (), cancelled_hook ) )
+        tag_ids = self._sts( self._execute_cancellable( query, (), cancelled_hook ) )
         
         return tag_ids
         
@@ -502,9 +502,9 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         
         if HG.autocomplete_delay_mode and not exact_match:
             
-            time_to_stop = HydrusTime.GetNowFloat() + 3.0
+            time_to_stop = HydrusTime.get_now_float() + 3.0
             
-            while not HydrusTime.TimeHasPassedFloat( time_to_stop ):
+            while not HydrusTime.time_has_passed_float( time_to_stop ):
                 
                 time.sleep( 0.1 )
                 
@@ -552,7 +552,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
             
             domain_is_cross_referenced = leaf.file_service_id != self.modules_services.combined_deleted_file_service_id
             
-            for group_of_tag_ids in HydrusLists.SplitIteratorIntoChunks( tag_ids, 1000 ):
+            for group_of_tag_ids in HydrusLists.split_iterator_into_chunks( tag_ids, 1000 ):
                 
                 if job_status is not None and job_status.IsCancelled():
                     
@@ -591,7 +591,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
             return set()
             
         
-        ( namespace, half_complete_searchable_subtag ) = HydrusTags.SplitTag( search_text )
+        ( namespace, half_complete_searchable_subtag ) = HydrusTags.split_tag( search_text )
         
         if half_complete_searchable_subtag == '':
             
@@ -637,7 +637,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
             
             tag_ids = set()
             
-            with self._MakeTemporaryIntegerTable( [], 'subtag_id' ) as temp_subtag_ids_table_name:
+            with self._make_temporary_integer_table( [], 'subtag_id' ) as temp_subtag_ids_table_name:
                 
                 self.GetSubtagIdsFromWildcardIntoTable( leaf.file_service_id, leaf.tag_service_id, half_complete_searchable_subtag, temp_subtag_ids_table_name, job_status = job_status )
                 
@@ -647,7 +647,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
                     
                 else:
                     
-                    with self._MakeTemporaryIntegerTable( namespace_ids, 'namespace_id' ) as temp_namespace_ids_table_name:
+                    with self._make_temporary_integer_table( namespace_ids, 'namespace_id' ) as temp_namespace_ids_table_name:
                         
                         loop_of_tag_ids = self.GetTagIdsFromNamespaceIdsSubtagIdsTables( leaf.file_service_id, leaf.tag_service_id, temp_namespace_ids_table_name, temp_subtag_ids_table_name, job_status = job_status )
                         
@@ -669,24 +669,24 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         
         tag_ids_without_siblings = list( tag_ids )
         
-        for ( num_done, num_to_do, batch_of_tag_ids ) in HydrusLists.SplitListIntoChunksRich( tag_ids_without_siblings, 10240 ):
+        for ( num_done, num_to_do, batch_of_tag_ids ) in HydrusLists.split_list_into_chunks_rich( tag_ids_without_siblings, 10240 ):
             
-            with self._MakeTemporaryIntegerTable( batch_of_tag_ids, 'tag_id' ) as temp_tag_ids_table_name:
+            with self._make_temporary_integer_table( batch_of_tag_ids, 'tag_id' ) as temp_tag_ids_table_name:
                 
                 if job_status is not None and job_status.IsCancelled():
                     
                     return set()
                     
                 
-                with self._MakeTemporaryIntegerTable( [], 'ideal_tag_id' ) as temp_ideal_tag_ids_table_name:
+                with self._make_temporary_integer_table( [], 'ideal_tag_id' ) as temp_ideal_tag_ids_table_name:
                     
                     self.modules_tag_siblings.FilterChainedIdealsIntoTable( ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, leaf.tag_service_id, temp_tag_ids_table_name, temp_ideal_tag_ids_table_name )
                     
-                    with self._MakeTemporaryIntegerTable( [], 'tag_id' ) as temp_chained_tag_ids_table_name:
+                    with self._make_temporary_integer_table( [], 'tag_id' ) as temp_chained_tag_ids_table_name:
                         
                         self.modules_tag_siblings.GetChainsMembersFromIdealsTables( ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, leaf.tag_service_id, temp_ideal_tag_ids_table_name, temp_chained_tag_ids_table_name )
                         
-                        tag_ids.update( self._STI( self._Execute( 'SELECT tag_id FROM {};'.format( temp_chained_tag_ids_table_name ) ) ) )
+                        tag_ids.update( self._sti( self._execute( 'SELECT tag_id FROM {};'.format( temp_chained_tag_ids_table_name ) ) ) )
                         
                     
                 
@@ -796,13 +796,13 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         
         if namespace_wildcard == '*':
             
-            return self._STL( self._Execute( 'SELECT namespace_id FROM namespaces;' ) )
+            return self._stl( self._execute( 'SELECT namespace_id FROM namespaces;' ) )
             
         elif '*' in namespace_wildcard:
             
             like_param = ConvertWildcardToSQLiteLikeParameter( namespace_wildcard )
             
-            return self._STL( self._Execute( 'SELECT namespace_id FROM namespaces WHERE namespace LIKE ?;', ( like_param, ) ) )
+            return self._stl( self._execute( 'SELECT namespace_id FROM namespaces WHERE namespace LIKE ?;', ( like_param, ) ) )
             
         else:
             
@@ -902,7 +902,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
                     query_args = ( subtags_fts4_param, )
                     
                 
-                loop_of_subtag_ids = self._STL( self._ExecuteCancellable( query, query_args, cancelled_hook ) )
+                loop_of_subtag_ids = self._stl( self._execute_cancellable( query, query_args, cancelled_hook ) )
                 
             else:
                 
@@ -922,7 +922,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
                     
                     searchable_subtag_id = self.modules_tags.GetSubtagId( searchable_subtag )
                     
-                    loop_of_subtag_ids = self._STS( self._Execute( 'SELECT subtag_id FROM {} WHERE searchable_subtag_id = ?;'.format( subtags_searchable_map_table_name ), ( searchable_subtag_id, ) ) )
+                    loop_of_subtag_ids = self._sts( self._execute( 'SELECT subtag_id FROM {} WHERE searchable_subtag_id = ?;'.format( subtags_searchable_map_table_name ), ( searchable_subtag_id, ) ) )
                     
                     loop_of_subtag_ids.add( searchable_subtag_id )
                     
@@ -972,7 +972,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
                 if subtag_wildcard == '*':
                     
                     # hellmode, but shouldn't be called normally
-                    query = self._Execute( 'SELECT docid FROM {};'.format( subtags_fts4_table_name ) )
+                    query = self._execute( 'SELECT docid FROM {};'.format( subtags_fts4_table_name ) )
                     query_args = ()
                     
                 elif ClientSearchAutocomplete.IsComplexWildcard( subtag_wildcard ) or not wildcard_has_fts4_searchable_characters:
@@ -1018,9 +1018,9 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
                     query_args = ( subtags_fts4_param, )
                     
                 
-                loop_of_subtag_id_tuples = self._ExecuteCancellable( query, query_args, cancelled_hook )
+                loop_of_subtag_id_tuples = self._execute_cancellable( query, query_args, cancelled_hook )
                 
-                self._ExecuteMany( 'INSERT OR IGNORE INTO {} ( subtag_id ) VALUES ( ? );'.format( subtag_id_table_name ), loop_of_subtag_id_tuples )
+                self._execute_many( 'INSERT OR IGNORE INTO {} ( subtag_id ) VALUES ( ? );'.format( subtag_id_table_name ), loop_of_subtag_id_tuples )
                 
             else:
                 
@@ -1038,17 +1038,17 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
                     
                     searchable_subtag_id = self.modules_tags.GetSubtagId( searchable_subtag )
                     
-                    self._Execute( 'INSERT OR IGNORE INTO {} ( subtag_id ) VALUES ( ? );'.format( subtag_id_table_name ), ( searchable_subtag_id, ) )
+                    self._execute( 'INSERT OR IGNORE INTO {} ( subtag_id ) VALUES ( ? );'.format( subtag_id_table_name ), ( searchable_subtag_id, ) )
                     
                     subtags_searchable_map_table_name = self.GetSubtagsSearchableMapTableName( file_service_id, search_tag_service_id )
                     
-                    self._Execute( 'INSERT OR IGNORE INTO {} ( subtag_id ) SELECT subtag_id FROM {} WHERE searchable_subtag_id = ?;'.format( subtag_id_table_name, subtags_searchable_map_table_name ), ( searchable_subtag_id, ) )
+                    self._execute( 'INSERT OR IGNORE INTO {} ( subtag_id ) SELECT subtag_id FROM {} WHERE searchable_subtag_id = ?;'.format( subtag_id_table_name, subtags_searchable_map_table_name ), ( searchable_subtag_id, ) )
                     
                 
             
             if job_status is not None and job_status.IsCancelled():
                 
-                self._Execute( 'DELETE FROM {};'.format( subtag_id_table_name ) )
+                self._execute( 'DELETE FROM {};'.format( subtag_id_table_name ) )
                 
                 return
                 
@@ -1093,7 +1093,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         return subtags_searchable_map_table_name
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         tables_and_columns = []
         
@@ -1126,14 +1126,14 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         
         integer_subtags_table_name = self.GetIntegerSubtagsTableName( file_service_id, tag_service_id )
         
-        return self._STS( self._Execute( 'SELECT subtag_id FROM {} WHERE integer_subtag {} {};'.format( integer_subtags_table_name, operator, num ) ) )
+        return self._sts( self._execute( 'SELECT subtag_id FROM {} WHERE integer_subtag {} {};'.format( integer_subtags_table_name, operator, num ) ) )
         
     
     def GetTagCount( self, file_service_id, tag_service_id ):
         
         tags_table_name = self.GetTagsTableName( file_service_id, tag_service_id )
         
-        ( count, ) = self._Execute( 'SELECT COUNT( * ) FROM {};'.format( tags_table_name ) ).fetchone()
+        ( count, ) = self._execute( 'SELECT COUNT( * ) FROM {};'.format( tags_table_name ) ).fetchone()
         
         return count
         
@@ -1147,7 +1147,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         
         final_result_tag_ids = set()
         
-        with self._MakeTemporaryIntegerTable( namespace_ids, 'namespace_id' ) as temp_namespace_ids_table_name:
+        with self._make_temporary_integer_table( namespace_ids, 'namespace_id' ) as temp_namespace_ids_table_name:
             
             tags_table_name = self.GetTagsTableName( leaf.file_service_id, leaf.tag_service_id )
             
@@ -1172,7 +1172,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
                 cancelled_hook = job_status.IsCancelled
                 
             
-            result_tag_ids = self._STS( self._ExecuteCancellable( query, query_args, cancelled_hook ) )
+            result_tag_ids = self._sts( self._execute_cancellable( query, query_args, cancelled_hook ) )
             
             if job_status is not None:
                 
@@ -1195,9 +1195,9 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
             return set()
             
         
-        with self._MakeTemporaryIntegerTable( subtag_ids, 'subtag_id' ) as temp_subtag_ids_table_name:
+        with self._make_temporary_integer_table( subtag_ids, 'subtag_id' ) as temp_subtag_ids_table_name:
             
-            with self._MakeTemporaryIntegerTable( namespace_ids, 'namespace_id' ) as temp_namespace_ids_table_name:
+            with self._make_temporary_integer_table( namespace_ids, 'namespace_id' ) as temp_namespace_ids_table_name:
                 
                 return self.GetTagIdsFromNamespaceIdsSubtagIdsTables( file_service_id, tag_service_id, temp_namespace_ids_table_name, temp_subtag_ids_table_name, job_status = job_status )
                 
@@ -1231,7 +1231,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
             # temp subtags to tags to temp namespaces
             query = 'SELECT tag_id FROM {} CROSS JOIN {} USING ( subtag_id ) CROSS JOIN {} USING ( namespace_id );'.format( subtag_ids_table_name, tags_table_name, namespace_ids_table_name )
             
-            result_tag_ids = self._STS( self._ExecuteCancellable( query, (), cancelled_hook ) )
+            result_tag_ids = self._sts( self._execute_cancellable( query, (), cancelled_hook ) )
             
             if job_status is not None:
                 
@@ -1254,7 +1254,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
             return set()
             
         
-        with self._MakeTemporaryIntegerTable( subtag_ids, 'subtag_id' ) as temp_subtag_ids_table_name:
+        with self._make_temporary_integer_table( subtag_ids, 'subtag_id' ) as temp_subtag_ids_table_name:
             
             return self.GetTagIdsFromSubtagIdsTable( file_service_id, tag_service_id, temp_subtag_ids_table_name, job_status = job_status )
             
@@ -1287,7 +1287,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
             # temp subtags to tags
             query = 'SELECT tag_id FROM {} CROSS JOIN {} USING ( subtag_id );'.format( subtag_ids_table_name, tags_table_name )
             
-            result_tag_ids = self._STS( self._ExecuteCancellable( query, (), cancelled_hook ) )
+            result_tag_ids = self._sts( self._execute_cancellable( query, (), cancelled_hook ) )
             
             if job_status is not None:
                 
@@ -1327,7 +1327,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
             
             domain_is_cross_referenced = leaf.file_service_id != self.modules_services.combined_deleted_file_service_id
             
-            for group_of_tag_ids in HydrusLists.SplitIteratorIntoChunks( tag_ids, 1000 ):
+            for group_of_tag_ids in HydrusLists.split_iterator_into_chunks( tag_ids, 1000 ):
                 
                 if job_status is not None and job_status.IsCancelled():
                     
@@ -1401,7 +1401,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         
         tags_table_name = self.GetTagsTableName( file_service_id, tag_service_id )
         
-        result = self._Execute( 'SELECT 1 FROM {} WHERE tag_id = ?;'.format( tags_table_name ), ( tag_id, ) ).fetchone()
+        result = self._execute( 'SELECT 1 FROM {} WHERE tag_id = ?;'.format( tags_table_name ), ( tag_id, ) ).fetchone()
         
         return result is not None
         
@@ -1417,13 +1417,13 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
             tags_table_name = self.GetTagsTableName( file_service_id, tag_service_id )
             
         
-        if tag_filter.AllowsEverything():
+        if tag_filter.allows_everything():
             
-            self._Execute( f'INSERT OR IGNORE INTO {temp_tag_ids_table_name} ( tag_id ) SELECT tag_id FROM {tags_table_name};' )
+            self._execute( f'INSERT OR IGNORE INTO {temp_tag_ids_table_name} ( tag_id ) SELECT tag_id FROM {tags_table_name};' )
             
         else:
             
-            tag_slices_to_rules = tag_filter.GetTagSlicesToRules()
+            tag_slices_to_rules = tag_filter.get_tag_slices_to_rules()
             
             # KISS: do 'alls', then namespaces, then tags
             
@@ -1431,14 +1431,14 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
             
             if include_all_unnamespaced:
                 
-                self._Execute( f'INSERT OR IGNORE INTO {temp_tag_ids_table_name} ( tag_id ) SELECT tag_id FROM {tags_table_name} WHERE namespace_id = ?;', ( self.modules_tags.null_namespace_id, ) )
+                self._execute( f'INSERT OR IGNORE INTO {temp_tag_ids_table_name} ( tag_id ) SELECT tag_id FROM {tags_table_name} WHERE namespace_id = ?;', ( self.modules_tags.null_namespace_id, ) )
                 
             
             include_all_namespaced = ':' not in tag_slices_to_rules or ( ':' in tag_slices_to_rules and tag_slices_to_rules[ ':' ] == HC.FILTER_WHITELIST )
             
             if include_all_namespaced:
                 
-                self._Execute( f'INSERT OR IGNORE INTO {temp_tag_ids_table_name} ( tag_id ) SELECT tag_id FROM {tags_table_name} WHERE namespace_id != ?;', ( self.modules_tags.null_namespace_id, ) )
+                self._execute( f'INSERT OR IGNORE INTO {temp_tag_ids_table_name} ( tag_id ) SELECT tag_id FROM {tags_table_name} WHERE namespace_id != ?;', ( self.modules_tags.null_namespace_id, ) )
                 
             
             #
@@ -1450,7 +1450,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
                     continue
                     
                 
-                if HydrusTags.IsNamespaceTagSlice( tag_slice ):
+                if HydrusTags.is_namespace_tag_slice( tag_slice ):
                     
                     namespace = tag_slice[:-1]
                     
@@ -1458,11 +1458,11 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
                     
                     if rule == HC.FILTER_WHITELIST:
                         
-                        self._Execute( f'INSERT OR IGNORE INTO {temp_tag_ids_table_name} ( tag_id ) SELECT tag_id FROM {tags_table_name} WHERE namespace_id = ?;', ( namespace_id, ) )
+                        self._execute( f'INSERT OR IGNORE INTO {temp_tag_ids_table_name} ( tag_id ) SELECT tag_id FROM {tags_table_name} WHERE namespace_id = ?;', ( namespace_id, ) )
                         
                     else:
                         
-                        self._Execute( f'DELETE FROM {temp_tag_ids_table_name} WHERE tag_id IN ( SELECT tag_id FROM {tags_table_name} WHERE namespace_id = ? );', ( namespace_id, ) )
+                        self._execute( f'DELETE FROM {temp_tag_ids_table_name} WHERE tag_id IN ( SELECT tag_id FROM {tags_table_name} WHERE namespace_id = ? );', ( namespace_id, ) )
                         
                     
                 
@@ -1479,7 +1479,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
                     continue
                     
                 
-                if not HydrusTags.IsNamespaceTagSlice( tag_slice ):
+                if not HydrusTags.is_namespace_tag_slice( tag_slice ):
                     
                     tag_id = self.modules_tags.GetTagId( tag_slice )
                     
@@ -1496,12 +1496,12 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
             
             if len( tag_ids_to_add ) > 0:
                 
-                self._ExecuteMany( f'INSERT OR IGNORE INTO {temp_tag_ids_table_name} ( tag_id ) VALUES ( ? );', ( ( tag_id, ) for tag_id in tag_ids_to_add ) )
+                self._execute_many( f'INSERT OR IGNORE INTO {temp_tag_ids_table_name} ( tag_id ) VALUES ( ? );', ( ( tag_id, ) for tag_id in tag_ids_to_add ) )
                 
             
             if len( tag_ids_to_delete ) > 0:
                 
-                self._ExecuteMany( f'DELETE FROM {temp_tag_ids_table_name} WHERE tag_id = ?;', ( ( tag_id, ) for tag_id in tag_ids_to_add ) )
+                self._execute_many( f'DELETE FROM {temp_tag_ids_table_name} WHERE tag_id = ?;', ( ( tag_id, ) for tag_id in tag_ids_to_add ) )
                 
             
         
@@ -1511,17 +1511,17 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         subtags_fts4_table_name = self.GetSubtagsFTS4TableName( file_service_id, tag_service_id )
         subtags_searchable_map_table_name = self.GetSubtagsSearchableMapTableName( file_service_id, tag_service_id )
         
-        self._Execute( 'DELETE FROM {};'.format( subtags_searchable_map_table_name ) )
+        self._execute( 'DELETE FROM {};'.format( subtags_searchable_map_table_name ) )
         
         query = 'SELECT docid FROM {};'.format( subtags_fts4_table_name )
         
         BLOCK_SIZE = 10000
         
-        for ( group_of_subtag_ids, num_done, num_to_do ) in HydrusDB.ReadLargeIdQueryInSeparateChunks( self._c, query, BLOCK_SIZE ):
+        for ( group_of_subtag_ids, num_done, num_to_do ) in HydrusDB.read_large_id_query_in_separate_chunks( self._c, query, BLOCK_SIZE ):
             
             for subtag_id in group_of_subtag_ids:
                 
-                result = self._Execute( 'SELECT subtag FROM subtags WHERE subtag_id = ?;', ( subtag_id, ) ).fetchone()
+                result = self._execute( 'SELECT subtag FROM subtags WHERE subtag_id = ?;', ( subtag_id, ) ).fetchone()
                 
                 if result is None:
                     
@@ -1536,11 +1536,11 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
                     
                     searchable_subtag_id = self.modules_tags.GetSubtagId( searchable_subtag )
                     
-                    self._Execute( 'INSERT OR IGNORE INTO {} ( subtag_id, searchable_subtag_id ) VALUES ( ?, ? );'.format( subtags_searchable_map_table_name ), ( subtag_id, searchable_subtag_id ) )
+                    self._execute( 'INSERT OR IGNORE INTO {} ( subtag_id, searchable_subtag_id ) VALUES ( ?, ? );'.format( subtags_searchable_map_table_name ), ( subtag_id, searchable_subtag_id ) )
                     
                 
             
-            message = HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do )
+            message = HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do )
             
             CG.client_controller.frame_splash_status.SetSubtext( message )
             
@@ -1558,11 +1558,11 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         subtags_searchable_map_table_name = self.GetSubtagsSearchableMapTableName( file_service_id, tag_service_id )
         integer_subtags_table_name = self.GetIntegerSubtagsTableName( file_service_id, tag_service_id )
         
-        missing_subtag_ids = self._STS( self._Execute( 'SELECT subtag_id FROM {} EXCEPT SELECT docid FROM {};'.format( tags_table_name, subtags_fts4_table_name ) ) )
+        missing_subtag_ids = self._sts( self._execute( 'SELECT subtag_id FROM {} EXCEPT SELECT docid FROM {};'.format( tags_table_name, subtags_fts4_table_name ) ) )
         
         for subtag_id in missing_subtag_ids:
             
-            result = self._Execute( 'SELECT subtag FROM subtags WHERE subtag_id = ?;', ( subtag_id, ) ).fetchone()
+            result = self._execute( 'SELECT subtag FROM subtags WHERE subtag_id = ?;', ( subtag_id, ) ).fetchone()
             
             if result is None:
                 
@@ -1577,12 +1577,12 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
                 
                 searchable_subtag_id = self.modules_tags.GetSubtagId( searchable_subtag )
                 
-                self._Execute( 'INSERT OR IGNORE INTO {} ( subtag_id, searchable_subtag_id ) VALUES ( ?, ? );'.format( subtags_searchable_map_table_name ), ( subtag_id, searchable_subtag_id ) )
+                self._execute( 'INSERT OR IGNORE INTO {} ( subtag_id, searchable_subtag_id ) VALUES ( ?, ? );'.format( subtags_searchable_map_table_name ), ( subtag_id, searchable_subtag_id ) )
                 
             
             #
             
-            self._Execute( 'INSERT OR IGNORE INTO {} ( docid, subtag ) VALUES ( ?, ? );'.format( subtags_fts4_table_name ), ( subtag_id, searchable_subtag ) )
+            self._execute( 'INSERT OR IGNORE INTO {} ( docid, subtag ) VALUES ( ?, ? );'.format( subtags_fts4_table_name ), ( subtag_id, searchable_subtag ) )
             
             if subtag.isdecimal():
                 
@@ -1592,7 +1592,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
                     
                     if CanCacheInteger( integer_subtag ):
                         
-                        self._Execute( 'INSERT OR IGNORE INTO {} ( subtag_id, integer_subtag ) VALUES ( ?, ? );'.format( integer_subtags_table_name ), ( subtag_id, integer_subtag ) )
+                        self._execute( 'INSERT OR IGNORE INTO {} ( subtag_id, integer_subtag ) VALUES ( ?, ? );'.format( integer_subtags_table_name ), ( subtag_id, integer_subtag ) )
                         
                     
                 except ValueError:
@@ -1604,7 +1604,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         
         if len( missing_subtag_ids ) > 0:
             
-            HydrusData.ShowText( 'Repopulated {} missing subtags for {}_{}.'.format( HydrusNumbers.ToHumanInt( len( missing_subtag_ids ) ), file_service_id, tag_service_id ) )
+            HydrusData.show_text( 'Repopulated {} missing subtags for {}_{}.'.format( HydrusNumbers.to_human_int( len( missing_subtag_ids ) ), file_service_id, tag_service_id ) )
             
         
     

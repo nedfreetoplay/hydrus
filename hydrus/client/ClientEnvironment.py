@@ -27,7 +27,7 @@ def SetRequestsCABundleEnv( pem_path = None ):
         
         if pem_path is None or os.environ[ env_var_name ] != pem_path:
             
-            HydrusData.Print( f'Custom REQUESTS_CA_BUNDLE: {os.environ[env_var_name]}')
+            HydrusData.print_text( f'Custom REQUESTS_CA_BUNDLE: {os.environ[env_var_name]}')
             
         
         return
@@ -37,7 +37,7 @@ def SetRequestsCABundleEnv( pem_path = None ):
     
     if pem_path is None:
         
-        HydrusData.Print( 'No certifi, so cannot set REQUESTS_CA_BUNDLE.' )
+        HydrusData.print_text( 'No certifi, so cannot set REQUESTS_CA_BUNDLE.' )
         
         return
         
@@ -48,6 +48,6 @@ def SetRequestsCABundleEnv( pem_path = None ):
         
     else:
         
-        HydrusData.Print( f'The given CA Bundle at "{pem_path}" does not exist, so cannot set REQUESTS_CA_BUNDLE!' )
+        HydrusData.print_text( f'The given CA Bundle at "{pem_path}" does not exist, so cannot set REQUESTS_CA_BUNDLE!' )
         
     

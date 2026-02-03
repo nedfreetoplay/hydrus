@@ -466,7 +466,7 @@ class PagesHistorySearchProvider( HydrusSearchProvider ):
                 if query_casefold in page_name.casefold():
                     
                     primary_text = highlight_result_text( page_name, query )
-                    secondary_text =  HydrusNumbers.IntToPrettyOrdinalString( self.result_id_counter + 1 ) + ' result in history'
+                    secondary_text =  HydrusNumbers.int_to_pretty_ordinal_string( self.result_id_counter + 1 ) + ' result in history'
                     
                     icon_filename = 'thumbnails.png'
                     

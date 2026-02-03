@@ -218,7 +218,7 @@ class FilenameTaggingOptionsPanel( QW.QWidget ):
         tags.update( self._simple_panel.GetTags( index, path ) )
         tags.update( self._advanced_panel.GetTags( index, path ) )
         
-        tags = HydrusTags.CleanTags( tags )
+        tags = HydrusTags.clean_tags( tags )
         
         tags = CG.client_controller.tag_display_manager.FilterTags( ClientTags.TAG_DISPLAY_STORAGE, self._service_key, tags )
         
@@ -631,7 +631,7 @@ class FilenameTaggingOptionsPanel( QW.QWidget ):
                 
             except HydrusExceptions.DataMissing as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
                 
@@ -640,9 +640,9 @@ class FilenameTaggingOptionsPanel( QW.QWidget ):
             
             try:
                 
-                tags = HydrusText.DeserialiseNewlinedTexts( raw_text )
+                tags = HydrusText.deserialise_newlined_texts( raw_text )
                 
-                tags = HydrusTags.CleanTags( tags )
+                tags = HydrusTags.clean_tags( tags )
                 
                 return tags
                 
@@ -662,7 +662,7 @@ class FilenameTaggingOptionsPanel( QW.QWidget ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
                 
@@ -680,7 +680,7 @@ class FilenameTaggingOptionsPanel( QW.QWidget ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
                 
@@ -692,7 +692,7 @@ class FilenameTaggingOptionsPanel( QW.QWidget ):
         
         def EnterTags( self, tags ):
             
-            CG.client_controller.Write( 'push_recent_tags', self._service_key, tags )
+            CG.client_controller.write( 'push_recent_tags', self._service_key, tags )
             
             if len( tags ) > 0:
                 
@@ -716,7 +716,7 @@ class FilenameTaggingOptionsPanel( QW.QWidget ):
         
         def EnterTagsSingle( self, tags ):
             
-            CG.client_controller.Write( 'push_recent_tags', self._service_key, tags )
+            CG.client_controller.write( 'push_recent_tags', self._service_key, tags )
             
             if len( tags ) > 0:
                 
@@ -1002,7 +1002,7 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
             
             tags = self._GetTags( index, path )
             
-            pretty_index = HydrusNumbers.ToHumanInt( index + 1 )
+            pretty_index = HydrusNumbers.to_human_int( index + 1 )
             
             pretty_tags = ', '.join( tags )
             
@@ -1057,7 +1057,7 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
             
             if self._schedule_refresh_file_list_job is not None:
                 
-                self._schedule_refresh_file_list_job.Cancel()
+                self._schedule_refresh_file_list_job.cancel()
                 
                 self._schedule_refresh_file_list_job = None
                 
@@ -1126,7 +1126,7 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
             
             strings = self._GetPrettyStrings( path )
             
-            pretty_index = HydrusNumbers.ToHumanInt( index + 1 )
+            pretty_index = HydrusNumbers.to_human_int( index + 1 )
             
             pretty_path = path
             pretty_strings = ', '.join( strings )
@@ -1174,11 +1174,11 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 if isinstance( exporter, ClientMetadataMigrationExporters.SingleFileMetadataExporterMediaTags ):
                     
-                    processed_strings = HydrusTags.CleanTags( processed_strings )
+                    processed_strings = HydrusTags.clean_tags( processed_strings )
                     
                 elif isinstance( exporter, ClientMetadataMigrationExporters.SingleFileMetadataExporterMediaNotes ):
                     
-                    processed_strings = [ f'note: {HydrusText.GetFirstLineSummary( s )}' for s in processed_strings ]
+                    processed_strings = [ f'note: {HydrusText.get_first_line_summary( s )}' for s in processed_strings ]
                     
                 
                 strings.extend( sorted( processed_strings ) )
@@ -1201,7 +1201,7 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
             
             if self._schedule_refresh_file_list_job is not None:
                 
-                self._schedule_refresh_file_list_job.Cancel()
+                self._schedule_refresh_file_list_job.cancel()
                 
                 self._schedule_refresh_file_list_job = None
                 
@@ -1303,7 +1303,7 @@ class EditFilenameTaggingOptionPanel( ClientGUIScrolledPanels.EditPanel ):
         
         if self._schedule_refresh_tags_job is not None:
             
-            self._schedule_refresh_tags_job.Cancel()
+            self._schedule_refresh_tags_job.cancel()
             
             self._schedule_refresh_tags_job = None
             
@@ -1989,13 +1989,13 @@ class WatcherReviewPanel( ClientGUICommon.StaticBox ):
                 
                 if watcher_status == '' and next_check_time is not None:
                     
-                    if HydrusTime.TimeHasPassed( next_check_time ):
+                    if HydrusTime.time_has_passed( next_check_time ):
                         
                         watcher_status = 'checking imminently'
                         
                     else:
                         
-                        watcher_status = 'next check ' + HydrusTime.TimestampToPrettyTimeDelta( next_check_time, just_now_threshold = 0 )
+                        watcher_status = 'next check ' + HydrusTime.timestamp_to_pretty_timedelta( next_check_time, just_now_threshold = 0 )
                         
                     
                 

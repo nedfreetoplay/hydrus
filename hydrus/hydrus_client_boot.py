@@ -30,9 +30,9 @@ try:
     
     from hydrus.core import HydrusBoot
     
-    HydrusBoot.AddBaseDirToEnvPath()
+    HydrusBoot.add_base_dir_to_env_path()
     
-    HydrusBoot.DoPreImportEnvWork()
+    HydrusBoot.do_pre_import_env_work()
     
     # initialise Qt here, important it is done early
     from hydrus.client.gui import QtInit
@@ -67,7 +67,7 @@ try:
     
     result = argparser.parse_args()
     
-    db_dir = HydrusPaths.FigureOutDBDir( result.db_dir )
+    db_dir = HydrusPaths.figure_out_db_dir( result.db_dir )
     
     HG.db_journal_mode = result.db_journal_mode
     
@@ -127,7 +127,7 @@ try:
         
         from hydrus.core import HydrusProfiling
         
-        HydrusProfiling.StartProfileMode( 'db' )
+        HydrusProfiling.start_profile_mode( 'db' )
         
     
     HG.boot_with_network_traffic_paused_command_line = result.pause_network_traffic
@@ -153,7 +153,7 @@ try:
     
     if result.temp_dir is not None:
         
-        HydrusTemp.SetEnvTempDir( result.temp_dir )
+        HydrusTemp.set_env_temp_dir( result.temp_dir )
         
     
 except Exception as e:
@@ -166,8 +166,8 @@ except Exception as e:
     
     try:
         
-        HydrusData.DebugPrint( title )
-        HydrusData.PrintException( e )
+        HydrusData.debug_print( title )
+        HydrusData.print_exception( e )
         
     except:
         
@@ -220,7 +220,7 @@ except Exception as e:
         
         try:
             
-            HydrusData.Print( message )
+            HydrusData.print_text( message )
             
         except:
             
@@ -239,7 +239,7 @@ def boot():
         
         try:
             
-            HydrusData.Print( 'hydrus client started' )
+            HydrusData.print_text( 'hydrus client started' )
             
             if not HG.twisted_is_broke:
                 
@@ -259,11 +259,11 @@ def boot():
             
         except:
             
-            HydrusData.Print( 'hydrus client failed' )
+            HydrusData.print_text( 'hydrus client failed' )
             
             import traceback
             
-            HydrusData.Print( traceback.format_exc() )
+            HydrusData.print_text( traceback.format_exc() )
             
         finally:
             
@@ -285,7 +285,7 @@ def boot():
                 reactor.callFromThread( target )
                 
             
-            HydrusData.Print( 'hydrus client shut down' )
+            HydrusData.print_text( 'hydrus client shut down' )
             
         
     
@@ -295,6 +295,6 @@ def boot():
         
         from hydrus.core.processes import HydrusProcess
         
-        HydrusProcess.RestartProcess()
+        HydrusProcess.restart_process()
         
     

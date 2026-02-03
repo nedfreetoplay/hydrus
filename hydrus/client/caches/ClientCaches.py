@@ -29,7 +29,7 @@ class ParsingCache( object ):
     
     def __init__( self ):
         
-        self._next_clean_cache_time = HydrusTime.GetNow()
+        self._next_clean_cache_time = HydrusTime.get_now()
         
         self._html_to_soups = {}
         self._json_to_jsons = {}
@@ -39,7 +39,7 @@ class ParsingCache( object ):
     
     def _CleanCache( self ):
         
-        if HydrusTime.TimeHasPassed( self._next_clean_cache_time ):
+        if HydrusTime.time_has_passed( self._next_clean_cache_time ):
             
             for cache in ( self._html_to_soups, self._json_to_jsons ):
                 
@@ -47,7 +47,7 @@ class ParsingCache( object ):
                 
                 for ( data, ( last_accessed, parsed_object ) ) in cache.items():
                     
-                    if HydrusTime.TimeHasPassed( last_accessed + 10 ):
+                    if HydrusTime.time_has_passed( last_accessed + 10 ):
                         
                         dead_datas.add( data )
                         
@@ -59,7 +59,7 @@ class ParsingCache( object ):
                     
                 
             
-            self._next_clean_cache_time = HydrusTime.GetNow() + 5
+            self._next_clean_cache_time = HydrusTime.get_now() + 5
             
         
     
@@ -75,7 +75,7 @@ class ParsingCache( object ):
         
         with self._lock:
             
-            now = HydrusTime.GetNow()
+            now = HydrusTime.get_now()
             
             if json_text not in self._json_to_jsons:
                 
@@ -104,7 +104,7 @@ class ParsingCache( object ):
         
         with self._lock:
             
-            now = HydrusTime.GetNow()
+            now = HydrusTime.get_now()
             
             if html not in self._html_to_soups:
                 
@@ -390,7 +390,7 @@ class ThumbnailCache( object ):
         
         self.Clear()
         
-        self._controller.CallToThreadLongRunning( self.MainLoop )
+        self._controller.call_to_thread_long_running( self.MainLoop )
         
         self._controller.sub( self, 'Clear', 'clear_thumbnail_cache' )
         self._controller.sub( self, 'ClearThumbnails', 'clear_thumbnails' )
@@ -413,9 +413,9 @@ class ThumbnailCache( object ):
                     thumbnail_scale_type = self._controller.new_options.GetInteger( 'thumbnail_scale_type' )
                     thumbnail_dpr_percent = CG.client_controller.new_options.GetInteger( 'thumbnail_dpr_percent' )
                     
-                    ( expected_width, expected_height ) = HydrusImageHandling.GetThumbnailResolution( ( media_width, media_height ), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
+                    ( expected_width, expected_height ) = HydrusImageHandling.get_thumbnail_resolution( ( media_width, media_height ), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
                     
-                    numpy_image = HydrusBlurhash.GetNumpyFromBlurhash( blurhash, expected_width, expected_height )
+                    numpy_image = HydrusBlurhash.get_numpy_from_blurhash( blurhash, expected_width, expected_height )
                     
                     hydrus_bitmap = ClientRendering.GenerateHydrusBitmapFromNumPyImage( numpy_image )
                     
@@ -462,9 +462,9 @@ class ThumbnailCache( object ):
         
         try:
             
-            thumbnail_mime = HydrusFileHandling.GetThumbnailMime( thumbnail_path )
+            thumbnail_mime = HydrusFileHandling.get_thumbnail_mime( thumbnail_path )
             
-            numpy_image = HydrusImageHandling.GenerateNumPyImage( thumbnail_path, thumbnail_mime )
+            numpy_image = HydrusImageHandling.generate_numpy_image( thumbnail_path, thumbnail_mime )
             
         except Exception as e:
             
@@ -484,7 +484,7 @@ class ThumbnailCache( object ):
             
             try:
                 
-                numpy_image = HydrusImageHandling.GenerateNumPyImage( thumbnail_path, thumbnail_mime )
+                numpy_image = HydrusImageHandling.generate_numpy_image( thumbnail_path, thumbnail_mime )
                 
             except Exception as e:
                 
@@ -496,7 +496,7 @@ class ThumbnailCache( object ):
                 
             
         
-        ( current_width, current_height ) = HydrusImageHandling.GetResolutionNumPy( numpy_image )
+        ( current_width, current_height ) = HydrusImageHandling.get_resolution_numpy( numpy_image )
         
         ( media_width, media_height ) = media_result.GetResolution()
         
@@ -504,7 +504,7 @@ class ThumbnailCache( object ):
         thumbnail_scale_type = self._controller.new_options.GetInteger( 'thumbnail_scale_type' )
         thumbnail_dpr_percent = CG.client_controller.new_options.GetInteger( 'thumbnail_dpr_percent' )
         
-        ( expected_width, expected_height ) = HydrusImageHandling.GetThumbnailResolution( ( media_width, media_height ), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
+        ( expected_width, expected_height ) = HydrusImageHandling.get_thumbnail_resolution( ( media_width, media_height ), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
         
         exactly_as_expected = current_width == expected_width and current_height == expected_height
         
@@ -514,7 +514,7 @@ class ThumbnailCache( object ):
         
         if not correct_size:
             
-            numpy_image = HydrusImageHandling.ResizeNumPyImage( numpy_image, ( expected_width, expected_height ) )
+            numpy_image = HydrusImageHandling.resize_numpy_image( numpy_image, ( expected_width, expected_height ) )
             
             if locations_manager.IsLocal():
                 
@@ -522,7 +522,7 @@ class ThumbnailCache( object ):
                 
                 if HG.file_report_mode:
                     
-                    HydrusData.ShowText( 'Thumbnail {} wrong size ({}x{} instead of {}x{}), scheduling regeneration from source.'.format( hash.hex(), current_width, current_height, expected_width, expected_height ) )
+                    HydrusData.show_text( 'Thumbnail {} wrong size ({}x{} instead of {}x{}), scheduling regeneration from source.'.format( hash.hex(), current_width, current_height, expected_width, expected_height ) )
                     
                 
                 with self._lock:
@@ -541,7 +541,7 @@ class ThumbnailCache( object ):
                 
                 if HG.file_report_mode:
                     
-                    HydrusData.ShowText( 'Thumbnail {} wrong size ({}x{} instead of {}x{}), only scaling due to no local source.'.format( hash.hex(), current_width, current_height, expected_width, expected_height ) )
+                    HydrusData.show_text( 'Thumbnail {} wrong size ({}x{} instead of {}x{}), only scaling due to no local source.'.format( hash.hex(), current_width, current_height, expected_width, expected_height ) )
                     
                 
             
@@ -555,7 +555,7 @@ class ThumbnailCache( object ):
         
         if self._thumbnail_error_occurred:
             
-            HydrusData.Print( summary )
+            HydrusData.print_text( summary )
             
         else:
             
@@ -735,11 +735,11 @@ class ThumbnailCache( object ):
             
             try:
                 
-                svg_thumbnail_path = HydrusStaticDir.GetStaticPath( 'image.svg' )
+                svg_thumbnail_path = HydrusStaticDir.get_static_path( 'image.svg' )
                 
                 numpy_image_resolution = ClientSVGHandling.GetSVGResolution( svg_thumbnail_path )
                 
-                target_resolution = HydrusImageHandling.GetThumbnailResolution( numpy_image_resolution, bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
+                target_resolution = HydrusImageHandling.get_thumbnail_resolution( numpy_image_resolution, bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
                 
                 numpy_image = ClientSVGHandling.GenerateThumbnailNumPyFromSVGPath( svg_thumbnail_path, target_resolution )
                 
@@ -759,13 +759,13 @@ class ThumbnailCache( object ):
                     continue
                     
                 
-                numpy_image = HydrusImageHandling.GenerateNumPyImage( thumbnail_path, HC.IMAGE_PNG )
+                numpy_image = HydrusImageHandling.generate_numpy_image( thumbnail_path, HC.IMAGE_PNG )
                 
-                numpy_image_resolution = HydrusImageHandling.GetResolutionNumPy( numpy_image )
+                numpy_image_resolution = HydrusImageHandling.get_resolution_numpy( numpy_image )
                 
-                target_resolution = HydrusImageHandling.GetThumbnailResolution( numpy_image_resolution, bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
+                target_resolution = HydrusImageHandling.get_thumbnail_resolution( numpy_image_resolution, bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
                 
-                numpy_image = HydrusImageHandling.ResizeNumPyImage( numpy_image, target_resolution )
+                numpy_image = HydrusImageHandling.resize_numpy_image( numpy_image, target_resolution )
                 
                 hydrus_bitmap = ClientRendering.GenerateHydrusBitmapFromNumPyImage( numpy_image )
                 
@@ -934,7 +934,7 @@ class ThumbnailCache( object ):
         
         # TODO: Wangle this guy to a ManagerWithMainLoop
         
-        while not HydrusThreading.IsThreadShuttingDown():
+        while not HydrusThreading.is_thread_shutting_down():
             
             time.sleep( 0.00001 )
             
@@ -950,7 +950,7 @@ class ThumbnailCache( object ):
                 self._waterfall_event.clear()
                 
             
-            start_time = HydrusTime.GetNowPrecise()
+            start_time = HydrusTime.get_now_precise()
             stop_time = start_time + 0.005 # a bit of a typical frame
             
             page_keys_to_rendered_medias = collections.defaultdict( list )
@@ -958,7 +958,7 @@ class ThumbnailCache( object ):
             num_done = 0
             max_at_once = 16
             
-            while not HydrusTime.TimeHasPassedPrecise( stop_time ) and num_done <= max_at_once:
+            while not HydrusTime.time_has_passed_precise( stop_time ) and num_done <= max_at_once:
                 
                 with self._lock:
                     
@@ -1004,7 +1004,7 @@ class ThumbnailCache( object ):
             with self._lock:
                 
                 # got more important work or no work to do
-                if len( self._waterfall_queue ) > 0 or len( self._delayed_regeneration_queue ) == 0 or CG.client_controller.CurrentlyPubSubbing():
+                if len( self._waterfall_queue ) > 0 or len( self._delayed_regeneration_queue ) == 0 or CG.client_controller.currently_pub_subbing():
                     
                     continue
                     
@@ -1018,7 +1018,7 @@ class ThumbnailCache( object ):
                 
                 hash = media_result.GetHash()
                 
-                HydrusData.ShowText( 'Thumbnail {} now regenerating from source.'.format( hash.hex() ) )
+                HydrusData.show_text( 'Thumbnail {} now regenerating from source.'.format( hash.hex() ) )
                 
             
             try:

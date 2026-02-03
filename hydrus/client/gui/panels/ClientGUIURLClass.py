@@ -653,7 +653,7 @@ class EditURLClassPanel( ClientGUIScrolledPanels.EditPanel ):
         
         #
         
-        name = url_class.GetName()
+        name = url_class.get_name()
         
         self._name.setText( name )
         
@@ -1070,7 +1070,7 @@ class EditURLClassPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 if True in ( string_match.Matches( n ) for n in ( '0', '1', '10', '100', '42' ) ):
                     
-                    choices.append( ( HydrusNumbers.IntToPrettyOrdinalString( index + 1 ) + ' path component', ( ClientNetworkingURLClass.GALLERY_INDEX_TYPE_PATH_COMPONENT, index ) ) )
+                    choices.append( ( HydrusNumbers.int_to_pretty_ordinal_string( index + 1 ) + ' path component', ( ClientNetworkingURLClass.GALLERY_INDEX_TYPE_PATH_COMPONENT, index ) ) )
                     
                 
             
@@ -1470,7 +1470,7 @@ class EditURLClassesPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _AddURLClass( self, url_class, select_sort_and_scroll = False ):
         
-        HydrusSerialisable.SetNonDupeName( url_class, self._GetExistingNames() )
+        HydrusSerialisable.set_non_dupe_name( url_class, self._GetExistingNames() )
         
         url_class.RegenerateClassKey()
         
@@ -1528,7 +1528,7 @@ class EditURLClassesPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 edited_url_class = panel.GetValue()
                 
-                HydrusSerialisable.SetNonDupeName( edited_url_class, existing_names )
+                HydrusSerialisable.set_non_dupe_name( edited_url_class, existing_names )
                 
                 self._list_ctrl.ReplaceData( url_class, edited_url_class, sort_and_scroll = True )
                 
@@ -1586,7 +1586,7 @@ class EditURLClassesPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 else:
                     
-                    text = 'Matches "' + url_class.GetName() + '"'
+                    text = 'Matches "' + url_class.get_name() + '"'
                     
                     self._list_ctrl.SelectDatas( ( url_class, ), deselect_others = True )
                     self._list_ctrl.ScrollToData( url_class, do_focus = False )

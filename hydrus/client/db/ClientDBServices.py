@@ -84,14 +84,14 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
         self._InitCaches()
         
     
-    def _GetCriticalTableNames( self ) -> collections.abc.Collection[ str ]:
+    def _get_critical_table_names( self ) -> collections.abc.Collection[ str ]:
         
         return {
             'main.services'
         }
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict( self ) -> dict:
         
         return {
             'main.services' : ( 'CREATE TABLE IF NOT EXISTS {} ( service_id INTEGER PRIMARY KEY AUTOINCREMENT, service_key BLOB_BYTES UNIQUE, service_type INTEGER, name TEXT, dictionary_string TEXT );', 400 ),
@@ -101,13 +101,13 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
     
     def _InitCaches( self ):
         
-        if self._Execute( 'SELECT 1 FROM sqlite_master WHERE name = ?;', ( 'services', ) ).fetchone() is not None:
+        if self._execute( 'SELECT 1 FROM sqlite_master WHERE name = ?;', ( 'services', ) ).fetchone() is not None:
             
-            all_data = self._Execute( 'SELECT service_id, service_key, service_type, name, dictionary_string FROM services;' ).fetchall()
+            all_data = self._execute( 'SELECT service_id, service_key, service_type, name, dictionary_string FROM services;' ).fetchall()
             
             for ( service_id, service_key, service_type, name, dictionary_string ) in all_data:
                 
-                dictionary = HydrusSerialisable.CreateFromString( dictionary_string )
+                dictionary = HydrusSerialisable.create_from_string( dictionary_string )
                 
                 service = ClientServices.GenerateService( service_key, service_type, name, dictionary )
                 
@@ -139,11 +139,11 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
     
     def AddService( self, service_key, service_type, name, dictionary: HydrusSerialisable.SerialisableBase ) -> int:
         
-        dictionary_string = dictionary.DumpToString()
+        dictionary_string = dictionary.dump_to_string()
         
-        self._Execute( 'INSERT INTO services ( service_key, service_type, name, dictionary_string ) VALUES ( ?, ?, ?, ? );', ( sqlite3.Binary( service_key ), service_type, name, dictionary_string ) )
+        self._execute( 'INSERT INTO services ( service_key, service_type, name, dictionary_string ) VALUES ( ?, ?, ?, ? );', ( sqlite3.Binary( service_key ), service_type, name, dictionary_string ) )
         
-        service_id = self._GetLastRowId()
+        service_id = self._get_last_row_id()
         
         service = ClientServices.GenerateService( service_key, service_type, name, dictionary )
         
@@ -196,7 +196,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
                 
             
         
-        self._Execute( 'DELETE FROM services WHERE service_id = ?;', ( service_id, ) )
+        self._execute( 'DELETE FROM services WHERE service_id = ?;', ( service_id, ) )
         
     
     def FileServiceIsCoveredByHydrusLocalFileStorage( self, service_id ) -> bool:
@@ -223,7 +223,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
                 
             except HydrusExceptions.DataMissing:
                 
-                HydrusData.ShowText( 'A query was run for a file service that does not exist! If you just removed a service, you might want to try checking the search and/or restarting the client.' )
+                HydrusData.show_text( 'A query was run for a file service that does not exist! If you just removed a service, you might want to try checking the search and/or restarting the client.' )
                 
                 continue
                 
@@ -243,7 +243,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
                 
             except HydrusExceptions.DataMissing:
                 
-                HydrusData.ShowText( 'A query was run for a tag service that does not exist! If you just removed a service, you might want to try checking the search and/or restarting the client.' )
+                HydrusData.show_text( 'A query was run for a tag service that does not exist! If you just removed a service, you might want to try checking the search and/or restarting the client.' )
                 
                 search_tag_service_ids = []
                 
@@ -256,7 +256,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
         
         existing_names = { service.GetName() for service in self._service_ids_to_services.values() }
         
-        return HydrusData.GetNonDupeName( name, existing_names, do_casefold = True )
+        return HydrusData.get_non_dupe_name( name, existing_names, do_casefold = True )
         
     
     def GetService( self, service_id ) -> typing.Any:
@@ -339,7 +339,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
         return service_types_to_service_ids
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         return []
         
@@ -372,7 +372,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
         
         dictionary_string = dictionary.DumpToString()
         
-        self._Execute( 'UPDATE services SET name = ?, dictionary_string = ? WHERE service_id = ?;', ( name, dictionary_string, service_id ) )
+        self._execute( 'UPDATE services SET name = ?, dictionary_string = ? WHERE service_id = ?;', ( name, dictionary_string, service_id ) )
         
         self._service_ids_to_services[ service_id ] = service
         

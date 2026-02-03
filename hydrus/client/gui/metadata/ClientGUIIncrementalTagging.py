@@ -112,7 +112,7 @@ class IncrementalTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
         
         medias_to_namespaced_subtags = self._GetMediasToNamespacedSubtags( namespace )
         
-        namespaced_subtags = HydrusTags.SortNumericTags( medias_to_namespaced_subtags[ first_media ] )
+        namespaced_subtags = HydrusTags.sort_numeric_tags( medias_to_namespaced_subtags[ first_media ] )
         
         for subtag in namespaced_subtags:
             
@@ -175,7 +175,7 @@ class IncrementalTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 for tag in current_and_pending_tags:
                     
-                    ( n, subtag ) = HydrusTags.SplitTag( tag )
+                    ( n, subtag ) = HydrusTags.split_tag( tag )
                     
                     if n == namespace:
                         
@@ -235,7 +235,7 @@ class IncrementalTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _UpdateSummary( self ):
         
-        file_summary = f'{HydrusNumbers.ToHumanInt(len(self._medias))} files'
+        file_summary = f'{HydrusNumbers.to_human_int(len(self._medias))} files'
         
         medias_and_tags = self._GetMediaAndTagPairs()
         
@@ -266,7 +266,7 @@ class IncrementalTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
         
         for ( media, tag ) in medias_and_tags:
             
-            ( n, subtag ) = HydrusTags.SplitTag( tag )
+            ( n, subtag ) = HydrusTags.split_tag( tag )
             
             namespaced_subtags = medias_to_namespaced_subtags[ media ]
             
@@ -292,16 +292,16 @@ class IncrementalTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
                 
             else:
                 
-                conflict_summary = f'{HydrusNumbers.ToHumanInt( already_count )} files already have these tags.'
+                conflict_summary = f'{HydrusNumbers.to_human_int( already_count )} files already have these tags.'
                 
             
         elif already_count == 0:
             
-            conflict_summary = f'{HydrusNumbers.ToHumanInt( disagree_count )} files already have different tags for this namespace. Are you sure you are lined up correct?'
+            conflict_summary = f'{HydrusNumbers.to_human_int( disagree_count )} files already have different tags for this namespace. Are you sure you are lined up correct?'
             
         else:
             
-            conflict_summary = f'{HydrusNumbers.ToHumanInt( already_count )} files already have these tags, and {HydrusNumbers.ToHumanInt( disagree_count )} files already have different tags for this namespace. Are you sure you are lined up correct?'
+            conflict_summary = f'{HydrusNumbers.to_human_int( already_count )} files already have these tags, and {HydrusNumbers.to_human_int( disagree_count )} files already have different tags for this namespace. Are you sure you are lined up correct?'
             
         
         label = f'For the {file_summary}, you are setting {tag_summary}.'

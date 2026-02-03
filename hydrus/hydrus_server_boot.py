@@ -20,9 +20,9 @@ try:
     
     from hydrus.core import HydrusBoot
     
-    HydrusBoot.AddBaseDirToEnvPath()
+    HydrusBoot.add_base_dir_to_env_path()
     
-    HydrusBoot.DoPreImportEnvWork()
+    HydrusBoot.do_pre_import_env_work()
     
     from hydrus.core import HydrusConstants as HC
     
@@ -64,7 +64,7 @@ try:
     
     HG.server_action = result.action
     
-    db_dir = HydrusPaths.FigureOutDBDir( result.db_dir )
+    db_dir = HydrusPaths.figure_out_db_dir( result.db_dir )
     
     HG.db_journal_mode = result.db_journal_mode
     
@@ -124,12 +124,12 @@ try:
         
         from hydrus.core import HydrusProfiling
         
-        HydrusProfiling.StartProfileMode( 'db' )
+        HydrusProfiling.start_profile_mode( 'db' )
         
     
     if result.temp_dir is not None:
         
-        HydrusTemp.SetEnvTempDir( result.temp_dir )
+        HydrusTemp.set_env_temp_dir( result.temp_dir )
         
     
 except Exception as e:
@@ -175,7 +175,7 @@ def boot():
         
     except HydrusExceptions.ShutdownException as e:
         
-        HydrusData.Print( e )
+        HydrusData.print_text( e )
         
         HG.server_action = 'exit'
         
@@ -198,7 +198,7 @@ def boot():
             
             if HG.server_action in ( 'start', 'restart' ):
                 
-                HydrusData.Print( 'Initialising controller' + HC.UNICODE_ELLIPSIS )
+                HydrusData.print_text( 'Initialising controller' + HC.UNICODE_ELLIPSIS )
                 
                 # noinspection PyUnresolvedReferences
                 target = reactor.run
@@ -214,7 +214,7 @@ def boot():
             
             error = str( e )
             
-            HydrusData.Print( error )
+            HydrusData.print_text( error )
             
         except:
             
@@ -222,9 +222,9 @@ def boot():
             
             error = traceback.format_exc()
             
-            HydrusData.Print( 'Hydrus server failed' )
+            HydrusData.print_text( 'Hydrus server failed' )
             
-            HydrusData.Print( error )
+            HydrusData.print_text( error )
             
         finally:
             
@@ -243,7 +243,7 @@ def boot():
             # noinspection PyUnresolvedReferences
             reactor.callFromThread( target )
             
-            HydrusData.Print( 'hydrus server shut down' )
+            HydrusData.print_text( 'hydrus server shut down' )
             
         
     

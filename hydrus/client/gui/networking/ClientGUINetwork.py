@@ -134,7 +134,7 @@ class EditCookiePanel( ClientGUIScrolledPanels.EditPanel ):
         
         with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit time delta' ) as dlg:
             
-            now_at_dialog_boot = HydrusTime.GetNow()
+            now_at_dialog_boot = HydrusTime.get_now()
             
             panel = ClientGUIScrolledPanels.EditSingleCtrlPanel( dlg )
             
@@ -175,7 +175,7 @@ class EditCookiePanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _UpdateExpiresText( self ):
         
-        self._expires_st.setText( HydrusTime.TimestampToPrettyExpires(self._expires) )
+        self._expires_st.setText( HydrusTime.timestamp_to_pretty_expires(self._expires) )
         self._expires_st_utc.setText( str(self._expires) )
         
     
@@ -241,7 +241,7 @@ class EditNetworkContextPanel( ClientGUIScrolledPanels.EditPanel ):
             self._context_data_none.setVisible( False )
             
         
-        names = CG.client_controller.Read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_LEGACY )
+        names = CG.client_controller.read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_LEGACY )
         
         for name in names:
             
@@ -465,7 +465,7 @@ class EditNetworkContextCustomHeadersPanel( ClientGUIScrolledPanels.EditPanel ):
         
         for ( network_context, ( key, value ), approved, reason ) in datas:
             
-            key = HydrusData.GetNonDupeName( key, existing_keys )
+            key = HydrusData.get_non_dupe_name( key, existing_keys )
             
             existing_keys.add( key )
             
@@ -715,28 +715,28 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         has_rules = not self._controller.network_engine.bandwidth_manager.UsesDefaultRules( network_context )
         
-        current_usage = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, 1, for_user = True )
+        current_usage = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_DATA, 1, for_user = True )
         
-        day_usage_requests = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_REQUESTS, 86400 )
-        day_usage_data = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, 86400 )
+        day_usage_requests = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_REQUESTS, 86400 )
+        day_usage_data = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_DATA, 86400 )
         
-        month_usage_requests = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_REQUESTS, None )
-        month_usage_data = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, None )
+        month_usage_requests = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_REQUESTS, None )
+        month_usage_data = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_DATA, None )
         
         if self._history_time_delta_none.isChecked():
             
-            search_usage_requests = bandwidth_tracker.GetAllUsage( HC.BANDWIDTH_TYPE_REQUESTS )
-            search_usage_data = bandwidth_tracker.GetAllUsage( HC.BANDWIDTH_TYPE_DATA )
+            search_usage_requests = bandwidth_tracker.get_all_usage( HC.BANDWIDTH_TYPE_REQUESTS )
+            search_usage_data = bandwidth_tracker.get_all_usage( HC.BANDWIDTH_TYPE_DATA )
             
         else:
             
             search_delta = self._history_time_delta_threshold.GetValue()
             
-            search_usage_requests = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_REQUESTS, search_delta )
-            search_usage_data = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, search_delta )
+            search_usage_requests = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_REQUESTS, search_delta )
+            search_usage_data = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_DATA, search_delta )
             
         
-        pretty_search_usage = HydrusData.ToHumanBytes( search_usage_data ) + ' in ' + HydrusNumbers.ToHumanInt( search_usage_requests ) + ' requests'
+        pretty_search_usage = HydrusData.to_human_bytes( search_usage_data ) + ' in ' + HydrusNumbers.to_human_int( search_usage_requests ) + ' requests'
         
         pretty_network_context = network_context.ToString()
         pretty_context_type = CC.network_context_type_string_lookup[ network_context.context_type ]
@@ -747,11 +747,11 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
         else:
             
-            pretty_current_usage = HydrusData.ToHumanBytes( current_usage ) + '/s'
+            pretty_current_usage = HydrusData.to_human_bytes( current_usage ) + '/s'
             
         
-        pretty_day_usage = HydrusData.ToHumanBytes( day_usage_data ) + ' in ' + HydrusNumbers.ToHumanInt( day_usage_requests ) + ' requests'
-        pretty_month_usage = HydrusData.ToHumanBytes( month_usage_data ) + ' in ' + HydrusNumbers.ToHumanInt( month_usage_requests ) + ' requests'
+        pretty_day_usage = HydrusData.to_human_bytes( day_usage_data ) + ' in ' + HydrusNumbers.to_human_int( day_usage_requests ) + ' requests'
+        pretty_month_usage = HydrusData.to_human_bytes( month_usage_data ) + ' in ' + HydrusNumbers.to_human_int( month_usage_requests ) + ' requests'
         
         if network_context == ClientNetworkingContexts.GLOBAL_NETWORK_CONTEXT:
             
@@ -770,7 +770,7 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         if waiting_estimate > 0:
             
-            pretty_blocked = HydrusTime.TimeDeltaToPrettyTimeDelta( waiting_estimate )
+            pretty_blocked = HydrusTime.timedelta_to_pretty_timedelta( waiting_estimate )
             
         else:
             
@@ -790,29 +790,29 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         sortable_network_context = network_context.GetSortable()
         sortable_context_type = CC.network_context_type_string_lookup[ network_context.context_type ]
-        current_usage = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, 1, for_user = True )
+        current_usage = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_DATA, 1, for_user = True )
         
-        day_usage_requests = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_REQUESTS, 86400 )
-        day_usage_data = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, 86400 )
+        day_usage_requests = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_REQUESTS, 86400 )
+        day_usage_data = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_DATA, 86400 )
         
         day_usage = ( day_usage_data, day_usage_requests )
         
-        month_usage_requests = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_REQUESTS, None )
-        month_usage_data = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, None )
+        month_usage_requests = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_REQUESTS, None )
+        month_usage_data = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_DATA, None )
         
         month_usage = ( month_usage_data, month_usage_requests )
         
         if self._history_time_delta_none.isChecked():
             
-            search_usage_requests = bandwidth_tracker.GetAllUsage( HC.BANDWIDTH_TYPE_REQUESTS )
-            search_usage_data = bandwidth_tracker.GetAllUsage( HC.BANDWIDTH_TYPE_DATA )
+            search_usage_requests = bandwidth_tracker.get_all_usage( HC.BANDWIDTH_TYPE_REQUESTS )
+            search_usage_data = bandwidth_tracker.get_all_usage( HC.BANDWIDTH_TYPE_DATA )
             
         else:
             
             search_delta = self._history_time_delta_threshold.GetValue()
             
-            search_usage_requests = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_REQUESTS, search_delta )
-            search_usage_data = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, search_delta )
+            search_usage_requests = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_REQUESTS, search_delta )
+            search_usage_data = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_DATA, search_delta )
             
         
         search_usage = ( search_usage_data, search_usage_requests )
@@ -836,7 +836,7 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 self._controller.network_engine.bandwidth_manager.DeleteHistory( selected_network_contexts )
                 
-                self._update_job.Wake()
+                self._update_job.wake()
                 
             
         
@@ -937,7 +937,7 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         self._controller.new_options.SetNoneableInteger( 'last_review_bandwidth_search_distance', last_review_bandwidth_search_distance )
         
-        self._update_job.Wake()
+        self._update_job.wake()
         
     
     def ShowNetworkContext( self ):
@@ -1018,7 +1018,7 @@ class ReviewNetworkContextBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         self._time_delta_usage_bandwidth_type.SetValue( HC.BANDWIDTH_TYPE_DATA )
         
-        monthly_usage = self._bandwidth_tracker.GetMonthlyDataUsage()
+        monthly_usage = self._bandwidth_tracker.get_monthly_data_usage()
         
         if len( monthly_usage ) > 0:
             
@@ -1101,25 +1101,25 @@ class ReviewNetworkContextBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 self._controller.network_engine.bandwidth_manager.SetRules( self._network_context, self._bandwidth_rules )
                 
-                self._rules_job.Wake()
+                self._rules_job.wake()
                 
             
         
     
     def _Update( self ):
         
-        current_usage = self._bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, 1, for_user = True )
+        current_usage = self._bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_DATA, 1, for_user = True )
         
-        pretty_current_usage = 'Current usage: ' + HydrusData.ToHumanBytes( current_usage ) + '/s'
+        pretty_current_usage = 'Current usage: ' + HydrusData.to_human_bytes( current_usage ) + '/s'
         
         self._current_usage_st.setText( pretty_current_usage )
         
         #
         
-        search_usage_requests = self._bandwidth_tracker.GetAllUsage( HC.BANDWIDTH_TYPE_REQUESTS )
-        search_usage_data = self._bandwidth_tracker.GetAllUsage( HC.BANDWIDTH_TYPE_DATA )
+        search_usage_requests = self._bandwidth_tracker.get_all_usage( HC.BANDWIDTH_TYPE_REQUESTS )
+        search_usage_data = self._bandwidth_tracker.get_all_usage( HC.BANDWIDTH_TYPE_DATA )
         
-        all_time_pretty_search_usage = f'All time usage: {HydrusData.ToHumanBytes( search_usage_data )} in {HydrusNumbers.ToHumanInt( search_usage_requests )} requests'
+        all_time_pretty_search_usage = f'All time usage: {HydrusData.to_human_bytes( search_usage_data )} in {HydrusNumbers.to_human_int( search_usage_requests )} requests'
         
         self._all_time_usage.setText( all_time_pretty_search_usage )
         
@@ -1128,15 +1128,15 @@ class ReviewNetworkContextBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         bandwidth_type = self._time_delta_usage_bandwidth_type.GetValue()
         time_delta = self._time_delta_usage_time_delta.GetValue()
         
-        time_delta_usage = self._bandwidth_tracker.GetUsage( bandwidth_type, time_delta )
+        time_delta_usage = self._bandwidth_tracker.get_usage( bandwidth_type, time_delta )
         
         if bandwidth_type == HC.BANDWIDTH_TYPE_DATA:
             
-            converter = HydrusData.ToHumanBytes
+            converter = HydrusData.to_human_bytes
             
         elif bandwidth_type == HC.BANDWIDTH_TYPE_REQUESTS:
             
-            converter = HydrusNumbers.ToHumanInt
+            converter = HydrusNumbers.to_human_int
             
         
         pretty_time_delta_usage = ': ' + converter( time_delta_usage )
@@ -1180,7 +1180,7 @@ class ReviewNetworkContextBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
             
         
-        rule_rows = self._bandwidth_rules.GetBandwidthStringsAndGaugeTuples( self._bandwidth_tracker, threshold = 0 )
+        rule_rows = self._bandwidth_rules.get_bandwidth_strings_and_gauge_tuples( self._bandwidth_tracker, threshold = 0 )
         
         if rule_rows != self._last_fetched_rule_rows:
             
@@ -1220,7 +1220,7 @@ class ReviewNetworkContextBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             self._bandwidth_rules = self._controller.network_engine.bandwidth_manager.GetRules( self._network_context )
             
-            self._rules_job.Wake()
+            self._rules_job.wake()
             
         
     
@@ -1286,8 +1286,8 @@ class ReviewNetworkJobs( ClientGUIScrolledPanels.ReviewPanel ):
         pretty_position = ClientNetworking.job_status_str_lookup[ position ]
         pretty_url = url
         pretty_status = status
-        pretty_current_speed = HydrusData.ToHumanBytes( current_speed ) + '/s'
-        pretty_progress = HydrusData.ConvertValueRangeToBytes( num_bytes_read, num_bytes_to_read )
+        pretty_current_speed = HydrusData.to_human_bytes( current_speed ) + '/s'
+        pretty_progress = HydrusData.convert_value_range_to_bytes( num_bytes_read, num_bytes_to_read )
         
         display_tuple = ( pretty_position, pretty_url, pretty_status, pretty_current_speed, pretty_progress )
         
@@ -1357,7 +1357,7 @@ class ReviewNetworkJobs( ClientGUIScrolledPanels.ReviewPanel ):
             
             if waiting_estimate > 0:
                 
-                label = f'{label} ({HydrusTime.TimeDeltaToPrettyTimeDelta( waiting_estimate )})'
+                label = f'{label} ({HydrusTime.timedelta_to_pretty_timedelta( waiting_estimate )})'
                 
             else:
                 
@@ -1480,7 +1480,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         pretty_network_context = network_context.ToString()
         
         number_of_cookies = len( session.cookies )
-        pretty_number_of_cookies = HydrusNumbers.ToHumanInt( number_of_cookies )
+        pretty_number_of_cookies = HydrusNumbers.to_human_int( number_of_cookies )
         
         expires_numbers = [ c.expires for c in session.cookies if c.expires is not None ]
         
@@ -1500,7 +1500,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             try:
                 
                 expiry = max( expires_numbers )
-                pretty_expiry = HydrusTime.TimestampToPrettyExpires( expiry )
+                pretty_expiry = HydrusTime.timestamp_to_pretty_expires( expiry )
                 
             except:
                 
@@ -1624,7 +1624,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
             
         
-        ClientGUIDialogsMessage.ShowInformation( self, f'Added {HydrusNumbers.ToHumanInt(num_added)} cookies!' )
+        ClientGUIDialogsMessage.ShowInformation( self, f'Added {HydrusNumbers.to_human_int(num_added)} cookies!' )
         
         self._Update()
         
@@ -1637,7 +1637,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', str(e) )
             
@@ -1650,7 +1650,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
         except Exception as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Did not understand what was in the clipboard!', str(e) )
             
@@ -1668,7 +1668,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             domains = sorted( { domain for ( name, value, domain, path, expires ) in cookie_data_flat } )
             
-            message = f'About to import {HydrusNumbers.ToHumanInt(len(cookie_data_flat))} cookies for the domains {HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( domains )} Is that ok?'
+            message = f'About to import {HydrusNumbers.to_human_int(len(cookie_data_flat))} cookies for the domains {HydrusText.convert_many_strings_to_nice_insertable_human_summary( domains )} Is that ok?'
             
             result = ClientGUIDialogsQuick.GetYesNo( self, message = message )
             
@@ -1702,13 +1702,13 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 num_added += 1
                 
             
-            ClientGUIDialogsMessage.ShowInformation( self, f'Added {HydrusNumbers.ToHumanInt(num_added)} cookies!' )
+            ClientGUIDialogsMessage.ShowInformation( self, f'Added {HydrusNumbers.to_human_int(num_added)} cookies!' )
             
             self._Update()
             
         except Exception as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Had trouble importing what was in the clipboard!', str(e) )
             
@@ -1827,7 +1827,7 @@ class ReviewNetworkSessionPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
             
             path = '/'
-            expires = HydrusTime.GetNow() + 30 * 86400
+            expires = HydrusTime.get_now() + 30 * 86400
             
             panel = EditCookiePanel( dlg, name, value, domain, path, expires )
             
@@ -1868,7 +1868,7 @@ class ReviewNetworkSessionPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
         else:
             
-            pretty_expiry = HydrusTime.TimestampToPrettyExpires( expiry )
+            pretty_expiry = HydrusTime.timestamp_to_pretty_expires( expiry )
             
         
         display_tuple = ( pretty_name, pretty_value, pretty_domain, pretty_path, pretty_expiry )
@@ -2009,7 +2009,7 @@ class ReviewNetworkSessionPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
             
         
-        ClientGUIDialogsMessage.ShowInformation( self, f'Added {HydrusNumbers.ToHumanInt(num_added)} cookies!' )
+        ClientGUIDialogsMessage.ShowInformation( self, f'Added {HydrusNumbers.to_human_int(num_added)} cookies!' )
         
         self._Update()
         
@@ -2022,7 +2022,7 @@ class ReviewNetworkSessionPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', str(e) )
             
@@ -2035,7 +2035,7 @@ class ReviewNetworkSessionPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
         except Exception as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Did not understand what was in the clipboard!', str(e) )
             
@@ -2055,7 +2055,7 @@ class ReviewNetworkSessionPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             if len( cookie_data_flat ) != len( cookie_data_flat_domain_filtered ):
                 
-                text = f'Of the {HydrusNumbers.ToHumanInt(len(cookie_data_flat))} cookies in your clipboard, {HydrusNumbers.ToHumanInt(len( cookie_data_flat_domain_filtered ))} match this domain. What do you want to import?'
+                text = f'Of the {HydrusNumbers.to_human_int(len(cookie_data_flat))} cookies in your clipboard, {HydrusNumbers.to_human_int(len( cookie_data_flat_domain_filtered ))} match this domain. What do you want to import?'
                 
                 if len( cookie_data_flat_domain_filtered ) == 0:
                     
@@ -2093,7 +2093,7 @@ class ReviewNetworkSessionPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             domains = sorted( { domain for ( name, value, domain, path, expires ) in cookie_data_flat } )
             
-            message = f'About to import {HydrusNumbers.ToHumanInt(len(cookie_data_flat))} cookies for the domains {HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( domains, no_trailing_whitespace = True )}. Is that ok?'
+            message = f'About to import {HydrusNumbers.to_human_int(len(cookie_data_flat))} cookies for the domains {HydrusText.convert_many_strings_to_nice_insertable_human_summary( domains, no_trailing_whitespace = True )}. Is that ok?'
             
             result = ClientGUIDialogsQuick.GetYesNo( self, message = message )
             
@@ -2111,13 +2111,13 @@ class ReviewNetworkSessionPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 num_added += 1
                 
             
-            ClientGUIDialogsMessage.ShowInformation( self, f'Added {HydrusNumbers.ToHumanInt(num_added)} cookies!' )
+            ClientGUIDialogsMessage.ShowInformation( self, f'Added {HydrusNumbers.to_human_int(num_added)} cookies!' )
             
             self._Update()
             
         except Exception as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Had trouble importing what was in the clipboard!', str(e) )
             

@@ -34,16 +34,16 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
         super().__init__( 'client hashes local cache', cursor )
         
     
-    def _DoLastShutdownWasBadWork( self ):
+    def _do_last_shutdown_was_bad_work( self ):
         
         # We just had a crash, oh no! There is a chance we are desynced here, so let's see what was recently added and make sure we are good.
         
-        last_twenty_hash_ids = self._STL( self._Execute( 'SELECT hash_id FROM local_hashes_cache ORDER BY hash_id DESC LIMIT 20;' ) )
+        last_twenty_hash_ids = self._stl( self._execute( 'SELECT hash_id FROM local_hashes_cache ORDER BY hash_id DESC LIMIT 20;' ) )
         
         self.SyncHashIds( last_twenty_hash_ids )
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict( self ) -> dict:
         
         return {
             'external_caches.local_hashes_cache' : ( 'CREATE TABLE IF NOT EXISTS {} ( hash_id INTEGER PRIMARY KEY, hash BLOB_BYTES UNIQUE );', 429 )
@@ -71,14 +71,14 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
                 ( uncached_hash_id, ) = uncached_hash_ids
                 
                 # this makes 0 or 1 rows, so do fetchall rather than fetchone
-                local_uncached_hash_ids_to_hashes = { hash_id : hash for ( hash_id, hash ) in self._Execute( 'SELECT hash_id, hash FROM local_hashes_cache WHERE hash_id = ?;', ( uncached_hash_id, ) ) }
+                local_uncached_hash_ids_to_hashes = { hash_id : hash for ( hash_id, hash ) in self._execute( 'SELECT hash_id, hash FROM local_hashes_cache WHERE hash_id = ?;', ( uncached_hash_id, ) ) }
                 
             else:
                 
-                with self._MakeTemporaryIntegerTable( uncached_hash_ids, 'hash_id' ) as temp_table_name:
+                with self._make_temporary_integer_table( uncached_hash_ids, 'hash_id' ) as temp_table_name:
                     
                     # temp hash_ids to actual hashes
-                    local_uncached_hash_ids_to_hashes = { hash_id : hash for ( hash_id, hash ) in self._Execute( 'SELECT hash_id, hash FROM {} CROSS JOIN local_hashes_cache USING ( hash_id );'.format( temp_table_name ) ) }
+                    local_uncached_hash_ids_to_hashes = { hash_id : hash for ( hash_id, hash ) in self._execute( 'SELECT hash_id, hash FROM {} CROSS JOIN local_hashes_cache USING ( hash_id );'.format( temp_table_name ) ) }
                     
                 
             
@@ -95,30 +95,30 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
             
         
     
-    def _RepairRepopulateTables( self, table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper ):
+    def _repair_repopulate_tables( self, table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper ):
         
         self.Resync()
         
-        cursor_transaction_wrapper.CommitAndBegin()
+        cursor_transaction_wrapper.commit_and_begin()
         
     
     def AddHashIdsToCache( self, hash_ids ):
         
         hash_ids_to_hashes = self.modules_hashes.GetHashIdsToHashes( hash_ids = hash_ids )
         
-        self._ExecuteMany( 'INSERT OR IGNORE INTO local_hashes_cache ( hash_id, hash ) VALUES ( ?, ? );', ( ( hash_id, sqlite3.Binary( hash ) ) for ( hash_id, hash ) in hash_ids_to_hashes.items() ) )
+        self._execute_many( 'INSERT OR IGNORE INTO local_hashes_cache ( hash_id, hash ) VALUES ( ?, ? );', ( ( hash_id, sqlite3.Binary( hash ) ) for ( hash_id, hash ) in hash_ids_to_hashes.items() ) )
         
     
     def ClearCache( self ):
         
-        self._Execute( 'DELETE FROM local_hashes_cache;' )
+        self._execute( 'DELETE FROM local_hashes_cache;' )
         
         self._hash_ids_to_hashes_cache = {}
         
     
     def DropHashIdsFromCache( self, hash_ids ):
         
-        self._ExecuteMany( 'DELETE FROM local_hashes_cache WHERE hash_id = ?;', ( ( hash_id, ) for hash_id in hash_ids ) )
+        self._execute_many( 'DELETE FROM local_hashes_cache WHERE hash_id = ?;', ( ( hash_id, ) for hash_id in hash_ids ) )
         
     
     def GetHash( self, hash_id ) -> bytes:
@@ -137,7 +137,7 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
     
     def GetHashId( self, hash ) -> int:
         
-        result = self._Execute( 'SELECT hash_id FROM local_hashes_cache WHERE hash = ?;', ( sqlite3.Binary( hash ), ) ).fetchone()
+        result = self._execute( 'SELECT hash_id FROM local_hashes_cache WHERE hash = ?;', ( sqlite3.Binary( hash ), ) ).fetchone()
         
         if result is None:
             
@@ -163,7 +163,7 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
                 continue
                 
             
-            result = self._Execute( 'SELECT hash_id FROM local_hashes_cache WHERE hash = ?;', ( sqlite3.Binary( hash ), ) ).fetchone()
+            result = self._execute( 'SELECT hash_id FROM local_hashes_cache WHERE hash = ?;', ( sqlite3.Binary( hash ), ) ).fetchone()
             
             if result is None:
                 
@@ -208,7 +208,7 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
         return hash_ids_to_hashes
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         # we actually provide a backup, which we may want to automate later in mappings caches etc...
         
@@ -217,14 +217,14 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
     
     def HasHash( self, hash: bytes ):
         
-        result = self._Execute( 'SELECT hash_id FROM local_hashes_cache WHERE hash = ?;', ( sqlite3.Binary( hash ), ) ).fetchone()
+        result = self._execute( 'SELECT hash_id FROM local_hashes_cache WHERE hash = ?;', ( sqlite3.Binary( hash ), ) ).fetchone()
         
         return result is not None
         
     
     def HasHashId( self, hash_id: int ):
         
-        result = self._Execute( 'SELECT 1 FROM local_hashes_cache WHERE hash_id = ?;', ( hash_id, ) ).fetchone()
+        result = self._execute( 'SELECT 1 FROM local_hashes_cache WHERE hash_id = ?;', ( hash_id, ) ).fetchone()
         
         return result is not None
         
@@ -241,7 +241,7 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
         job_status.SetStatusText( text )
         CG.client_controller.frame_splash_status.SetSubtext( text )
         
-        all_hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM local_hashes_cache;' ) )
+        all_hash_ids = self._sts( self._execute( 'SELECT hash_id FROM local_hashes_cache;' ) )
         
         all_hash_ids.update( self.modules_files_storage.GetCurrentHashIdsList( self.modules_services.hydrus_local_file_storage_service_id ) )
         
@@ -266,7 +266,7 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
         all_missing_hash_ids = set()
         all_incorrect_hash_ids = set()
         
-        for ( num_done, num_to_do, block_of_hash_ids ) in HydrusLists.SplitListIntoChunksRich( all_hash_ids, BLOCK_SIZE ):
+        for ( num_done, num_to_do, block_of_hash_ids ) in HydrusLists.split_list_into_chunks_rich( all_hash_ids, BLOCK_SIZE ):
             
             if job_status.IsCancelled():
                 
@@ -275,16 +275,16 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
             
             block_of_hash_ids = set( block_of_hash_ids )
             
-            text = 'syncing local hashes {}'.format( HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do ) )
+            text = 'syncing local hashes {}'.format( HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do ) )
             
             CG.client_controller.frame_splash_status.SetSubtext( text )
             job_status.SetStatusText( text )
             
-            with self._MakeTemporaryIntegerTable( block_of_hash_ids, 'hash_id' ) as temp_table_name:
+            with self._make_temporary_integer_table( block_of_hash_ids, 'hash_id' ) as temp_table_name:
                 
                 table_join = self.modules_files_storage.GetTableJoinLimitedByFileDomain( self.modules_services.hydrus_local_file_storage_service_id, temp_table_name, HC.CONTENT_STATUS_CURRENT )
                 
-                local_hash_ids = self._STS( self._Execute( f'SELECT hash_id FROM {table_join};' ) )
+                local_hash_ids = self._sts( self._execute( f'SELECT hash_id FROM {table_join};' ) )
                 
             
             excess_hash_ids = block_of_hash_ids.difference( local_hash_ids )
@@ -327,27 +327,27 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
             
             bad_hash_ids_text = ', '.join( ( str( hash_id ) for hash_id in sorted( all_excess_hash_ids ) ) )
             
-            HydrusData.Print( f'Deleted excess desynced local hash_ids: {bad_hash_ids_text}' )
+            HydrusData.print_text( f'Deleted excess desynced local hash_ids: {bad_hash_ids_text}' )
             
-            status_text_info.append( f'{HydrusNumbers.ToHumanInt( len( all_excess_hash_ids ) ) } excess hash records' )
+            status_text_info.append( f'{HydrusNumbers.to_human_int( len( all_excess_hash_ids ) ) } excess hash records' )
             
         
         if len( all_missing_hash_ids ) > 0:
             
             bad_hash_ids_text = ', '.join( ( str( hash_id ) for hash_id in sorted( all_missing_hash_ids ) ) )
             
-            HydrusData.Print( f'Added missing desynced local hash_ids: {bad_hash_ids_text}' )
+            HydrusData.print_text( f'Added missing desynced local hash_ids: {bad_hash_ids_text}' )
             
-            status_text_info.append( f'{HydrusNumbers.ToHumanInt( len( all_missing_hash_ids ) ) } missing hash records' )
+            status_text_info.append( f'{HydrusNumbers.to_human_int( len( all_missing_hash_ids ) ) } missing hash records' )
             
         
         if len( all_incorrect_hash_ids ) > 0:
             
             bad_hash_ids_text = ', '.join( ( str( hash_id ) for hash_id in sorted( all_incorrect_hash_ids ) ) )
             
-            HydrusData.Print( f'Fixed incorrect desynced local hash_ids: {bad_hash_ids_text}' )
+            HydrusData.print_text( f'Fixed incorrect desynced local hash_ids: {bad_hash_ids_text}' )
             
-            status_text_info.append( f'{HydrusNumbers.ToHumanInt( len( all_incorrect_hash_ids ) ) } incorrect hash records' )
+            status_text_info.append( f'{HydrusNumbers.to_human_int( len( all_incorrect_hash_ids ) ) } incorrect hash records' )
             
         
         if len( status_text_info ) > 0:
@@ -389,7 +389,7 @@ class ClientDBCacheLocalTags( ClientDBModule.ClientDBModule ):
         super().__init__( 'client tags local cache', cursor )
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict( self ) -> dict:
         
         return {
             'external_caches.local_tags_cache' : ( 'CREATE TABLE IF NOT EXISTS {} ( tag_id INTEGER PRIMARY KEY, tag TEXT UNIQUE );', 400 )
@@ -417,14 +417,14 @@ class ClientDBCacheLocalTags( ClientDBModule.ClientDBModule ):
                 ( uncached_tag_id, ) = uncached_tag_ids
                 
                 # this makes 0 or 1 rows, so do fetchall rather than fetchone
-                local_uncached_tag_ids_to_tags = { tag_id : tag for ( tag_id, tag ) in self._Execute( 'SELECT tag_id, tag FROM local_tags_cache WHERE tag_id = ?;', ( uncached_tag_id, ) ) }
+                local_uncached_tag_ids_to_tags = { tag_id : tag for ( tag_id, tag ) in self._execute( 'SELECT tag_id, tag FROM local_tags_cache WHERE tag_id = ?;', ( uncached_tag_id, ) ) }
                 
             else:
                 
-                with self._MakeTemporaryIntegerTable( uncached_tag_ids, 'tag_id' ) as temp_table_name:
+                with self._make_temporary_integer_table( uncached_tag_ids, 'tag_id' ) as temp_table_name:
                     
                     # temp tag_ids to actual tags
-                    local_uncached_tag_ids_to_tags = { tag_id : tag for ( tag_id, tag ) in self._Execute( 'SELECT tag_id, tag FROM {} CROSS JOIN local_tags_cache USING ( tag_id );'.format( temp_table_name ) ) }
+                    local_uncached_tag_ids_to_tags = { tag_id : tag for ( tag_id, tag ) in self._execute( 'SELECT tag_id, tag FROM {} CROSS JOIN local_tags_cache USING ( tag_id );'.format( temp_table_name ) ) }
                     
                 
             
@@ -441,33 +441,33 @@ class ClientDBCacheLocalTags( ClientDBModule.ClientDBModule ):
             
         
     
-    def _RepairRepopulateTables( self, table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper ):
+    def _repair_repopulate_tables( self, table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper ):
         
         self.Repopulate()
         
-        cursor_transaction_wrapper.CommitAndBegin()
+        cursor_transaction_wrapper.commit_and_begin()
         
     
     def AddTagIdsToCache( self, tag_ids ):
         
         tag_ids_to_tags = self.modules_tags.GetTagIdsToTags( tag_ids = tag_ids )
         
-        self._ExecuteMany( 'INSERT OR IGNORE INTO local_tags_cache ( tag_id, tag ) VALUES ( ?, ? );', tag_ids_to_tags.items() )
+        self._execute_many( 'INSERT OR IGNORE INTO local_tags_cache ( tag_id, tag ) VALUES ( ?, ? );', tag_ids_to_tags.items() )
         
     
     def ClearCache( self ):
         
-        self._Execute( 'DELETE FROM local_tags_cache;' )
+        self._execute( 'DELETE FROM local_tags_cache;' )
         
         self._tag_ids_to_tags_cache = {}
         
     
     def DropTagIdsFromCache( self, tag_ids ):
         
-        self._ExecuteMany( 'DELETE FROM local_tags_cache WHERE tag_id = ?;', ( ( tag_id, ) for tag_id in tag_ids ) )
+        self._execute_many( 'DELETE FROM local_tags_cache WHERE tag_id = ?;', ( ( tag_id, ) for tag_id in tag_ids ) )
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         # we actually provide a backup, which we may want to automate later in mappings caches etc...
         
@@ -483,18 +483,18 @@ class ClientDBCacheLocalTags( ClientDBModule.ClientDBModule ):
     
     def GetTagId( self, tag ) -> int:
         
-        clean_tag = HydrusTags.CleanTag( tag )
+        clean_tag = HydrusTags.clean_tag( tag )
         
         try:
             
-            HydrusTags.CheckTagNotEmpty( clean_tag )
+            HydrusTags.check_tag_not_empty( clean_tag )
             
         except HydrusExceptions.TagSizeException:
             
             raise HydrusExceptions.TagSizeException( '"{}" tag seems not valid--when cleaned, it ends up with zero size!'.format( tag ) )
             
         
-        result = self._Execute( 'SELECT tag_id FROM local_tags_cache WHERE tag = ?;', ( tag, ) ).fetchone()
+        result = self._execute( 'SELECT tag_id FROM local_tags_cache WHERE tag = ?;', ( tag, ) ).fetchone()
         
         if result is None:
             
@@ -528,7 +528,7 @@ class ClientDBCacheLocalTags( ClientDBModule.ClientDBModule ):
     
     def UpdateTagInCache( self, tag_id, tag ):
         
-        self._Execute( 'UPDATE local_tags_cache SET tag = ? WHERE tag_id = ?;', ( tag, tag_id ) )
+        self._execute( 'UPDATE local_tags_cache SET tag = ? WHERE tag_id = ?;', ( tag, tag_id ) )
         
         if tag_id in self._tag_ids_to_tags_cache:
             
@@ -546,7 +546,7 @@ class ClientDBCacheLocalTags( ClientDBModule.ClientDBModule ):
         
         full_query = '{};'.format( ' UNION '.join( queries ) )
         
-        for ( block_of_tag_ids, num_done, num_to_do ) in HydrusDB.ReadLargeIdQueryInSeparateChunks( self._c, full_query, 1024 ):
+        for ( block_of_tag_ids, num_done, num_to_do ) in HydrusDB.read_large_id_query_in_separate_chunks( self._c, full_query, 1024 ):
             
             self.AddTagIdsToCache( block_of_tag_ids )
             

@@ -247,7 +247,7 @@ class DownloaderExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
         if len( export_object ) > 20:
             
             message += '\n'
-            message += '(and ' + HydrusNumbers.ToHumanInt( len( export_object ) - 20 ) + ' others)'
+            message += '(and ' + HydrusNumbers.to_human_int( len( export_object ) - 20 ) + ' others)'
             
         
         message += '\n' * 2
@@ -266,7 +266,7 @@ class DownloaderExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             if isinstance( obj, ( ClientNetworkingGUG.GalleryURLGenerator, ClientNetworkingGUG.NestedGalleryURLGenerator ) ):
                 
-                gug_names.add( obj.GetName() )
+                gug_names.add( obj.get_name() )
                 
             
         
@@ -284,7 +284,7 @@ class DownloaderExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
             else:
                 
-                title += ' - ' + HydrusNumbers.ToHumanInt( num_gugs ) + ' downloaders'
+                title += ' - ' + HydrusNumbers.to_human_int( num_gugs ) + ' downloaders'
                 
                 description = ', '.join( gug_names )
                 
@@ -1001,7 +1001,7 @@ class EditContentParserPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def UserIsOKToCancel( self ):
         
-        if self._original_content_parser.GetSerialisableTuple() != self.GetValue().GetSerialisableTuple():
+        if self._original_content_parser.get_serialisable_tuple() != self.GetValue().get_serialisable_tuple():
             
             text = 'It looks like you have made changes to the content parser--are you sure you want to cancel?'
             
@@ -1077,7 +1077,7 @@ class EditContentParsersPanel( ClientGUICommon.StaticBox ):
     
     def _AddContentParser( self, content_parser ):
         
-        HydrusSerialisable.SetNonDupeName( content_parser, self._GetExistingNames() )
+        HydrusSerialisable.set_non_dupe_name( content_parser, self._GetExistingNames() )
         
         self._content_parsers.AddData( content_parser, select_sort_and_scroll = True )
         
@@ -1118,7 +1118,7 @@ class EditContentParsersPanel( ClientGUICommon.StaticBox ):
                 
                 existing_names.discard( content_parser.GetName() )
                 
-                non_dupe_name = HydrusData.GetNonDupeName( edited_content_parser.GetName(), existing_names )
+                non_dupe_name = HydrusData.get_non_dupe_name( edited_content_parser.GetName(), existing_names )
                 
                 edited_content_parser.SetName( non_dupe_name )
                 
@@ -1274,7 +1274,7 @@ class EditPageParserPanel( ClientGUIScrolledPanels.EditPanel ):
         
         #
         
-        name = parser.GetName()
+        name = parser.get_name()
         
         ( subsidiary_page_parsers, content_parsers ) = parser.GetContentParsers()
         
@@ -1446,7 +1446,7 @@ class EditPageParserPanel( ClientGUIScrolledPanels.EditPanel ):
         formula = subsidiary_page_parser.GetFormula()
         page_parser = subsidiary_page_parser.GetPageParser()
         
-        name = page_parser.GetName()
+        name = page_parser.get_name()
         
         parseable_content_descriptions = page_parser.GetParsableContentDescriptions()
         
@@ -1588,7 +1588,7 @@ class EditPageParserPanel( ClientGUIScrolledPanels.EditPanel ):
         
         CG.client_controller.network_engine.AddJob( network_job )
         
-        CG.client_controller.CallToThread( wait_and_do_it, network_job )
+        CG.client_controller.call_to_thread( wait_and_do_it, network_job )
         
     
     def _GetPageParser( self ):
@@ -1636,7 +1636,7 @@ class EditPageParserPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def UserIsOKToCancel( self ):
         
-        original_parser = self._original_parser.Duplicate()
+        original_parser = self._original_parser.duplicate()
         current_parser = self._GetPageParser()
         
         original_parser.NullifyTestData()
@@ -1644,7 +1644,7 @@ class EditPageParserPanel( ClientGUIScrolledPanels.EditPanel ):
         
         # just a note, this thing was false-positiving a while ago because the content parsers were rearranging, I guess the UI was sorting them in the list in a diff way or whatever
         # the solution was to change the serialisation routine to sort subsidiary parsers and content parsers by name, so keep this in mind bro
-        if original_parser.GetSerialisableTuple() != current_parser.GetSerialisableTuple():
+        if original_parser.get_serialisable_tuple() != current_parser.get_serialisable_tuple():
             
             text = 'It looks like you have made changes to the parser--are you sure you want to cancel?'
             
@@ -1748,7 +1748,7 @@ class EditParsersPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _AddParser( self, parser, select_sort_and_scroll = False ):
         
-        HydrusSerialisable.SetNonDupeName( parser, self._GetExistingNames() )
+        HydrusSerialisable.set_non_dupe_name( parser, self._GetExistingNames() )
         
         parser.RegenerateParserKey()
         
@@ -1757,7 +1757,7 @@ class EditParsersPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _ConvertParserToDisplayTuple( self, parser: ClientParsing.PageParser ):
         
-        name = parser.GetName()
+        name = parser.get_name()
         
         example_urls = sorted( parser.GetExampleURLs() )
         
@@ -1775,7 +1775,7 @@ class EditParsersPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _ConvertParserToSortTuple( self, parser: ClientParsing.PageParser ):
         
-        name = parser.GetName()
+        name = parser.get_name()
         
         example_urls = sorted( parser.GetExampleURLs() )
         
@@ -1811,9 +1811,9 @@ class EditParsersPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 edited_parser = panel.GetValue()
                 
-                if edited_parser.GetName() != parser.GetName():
+                if edited_parser.GetName() != parser.get_name():
                     
-                    HydrusSerialisable.SetNonDupeName( edited_parser, self._GetExistingNames() )
+                    HydrusSerialisable.set_non_dupe_name( edited_parser, self._GetExistingNames() )
                     
                 
                 self._parsers.ReplaceData( parser, edited_parser, sort_and_scroll = True )

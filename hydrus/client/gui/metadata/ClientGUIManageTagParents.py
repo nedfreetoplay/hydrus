@@ -115,7 +115,7 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
         
         if content_update_package.HasContent():
             
-            CG.client_controller.Write( 'content_updates', content_update_package )
+            CG.client_controller.write( 'content_updates', content_update_package )
             
         
     
@@ -379,7 +379,7 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
         
         def _DeserialiseImportString( self, import_string ):
             
-            tags = HydrusText.DeserialiseNewlinedTexts( import_string )
+            tags = HydrusText.deserialise_newlined_texts( import_string )
             
             if len( tags ) % 2 == 1:
                 
@@ -393,8 +393,8 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
                 try:
                     
                     pair = (
-                        HydrusTags.CleanTag( tags[ 2 * i ] ),
-                        HydrusTags.CleanTag( tags[ ( 2 * i ) + 1 ] )
+                        HydrusTags.clean_tag( tags[ 2 * i ] ),
+                        HydrusTags.clean_tag( tags[ ( 2 * i ) + 1 ] )
                     )
                     
                 except:
@@ -405,7 +405,7 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
                 pairs.append( pair )
                 
             
-            pairs = HydrusLists.DedupeList( pairs )
+            pairs = HydrusLists.dedupe_list( pairs )
             
             return pairs
             
@@ -458,7 +458,7 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
                 
             except HydrusExceptions.DataMissing as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', str(e) )
                 
@@ -560,12 +560,12 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
                 
                 if len( self._current_pertinent_tags ) > 0:
                     
-                    message += f' Current workspace:{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( self._current_pertinent_tags, no_trailing_whitespace = True )}'
+                    message += f' Current workspace:{HydrusText.convert_many_strings_to_nice_insertable_human_summary( self._current_pertinent_tags, no_trailing_whitespace = True )}'
                     
                 
                 self._wipe_workspace.setToolTip( ClientGUIFunctions.WrapToolTip( message ) )
                 
-                self._count_st.setText( f'{HydrusNumbers.ToHumanInt(len(pairs))} pairs.' )
+                self._count_st.setText( f'{HydrusNumbers.to_human_int(len(pairs))} pairs.' )
                 
                 self._tag_parents.SetData( pairs )
                 
@@ -663,7 +663,7 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
             
             def work_callable():
                 
-                ( master_service_keys_to_sibling_applicable_service_keys, master_service_keys_to_parent_applicable_service_keys ) = CG.client_controller.Read( 'tag_display_application' )
+                ( master_service_keys_to_sibling_applicable_service_keys, master_service_keys_to_parent_applicable_service_keys ) = CG.client_controller.read( 'tag_display_application' )
                 
                 service_keys_we_care_about = { s_k for ( s_k, s_ks ) in master_service_keys_to_parent_applicable_service_keys.items() if service_key in s_ks }
                 
@@ -671,7 +671,7 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
                 
                 for s_k in service_keys_we_care_about:
                     
-                    status = CG.client_controller.Read( 'tag_display_maintenance_status', s_k )
+                    status = CG.client_controller.read( 'tag_display_maintenance_status', s_k )
                     
                     work_to_do = status[ 'num_parents_to_sync' ] > 0
                     

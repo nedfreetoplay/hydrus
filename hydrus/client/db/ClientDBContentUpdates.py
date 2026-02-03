@@ -187,8 +187,8 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                     
                 except Exception as e:
                     
-                    HydrusData.Print( 'Problem with duplicate update signal:' )
-                    HydrusData.PrintException( e, do_wait = False )
+                    HydrusData.print_text( 'Problem with duplicate update signal:' )
+                    HydrusData.print_exception( e, do_wait = False )
                     
             
             if service_id == self.modules_services.combined_local_file_domains_service_id:
@@ -199,8 +199,8 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                     
                 except Exception as e:
                     
-                    HydrusData.Print( 'Problem with duplicate update signal:' )
-                    HydrusData.PrintException( e, do_wait = False )
+                    HydrusData.print_text( 'Problem with duplicate update signal:' )
+                    HydrusData.print_exception( e, do_wait = False )
                     
                 
             
@@ -224,7 +224,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                 
                 tag_service_ids = self.modules_services.GetServiceIds( HC.REAL_TAG_SERVICES )
                 
-                with self._MakeTemporaryIntegerTable( new_hash_ids, 'hash_id' ) as temp_hash_id_table_name:
+                with self._make_temporary_integer_table( new_hash_ids, 'hash_id' ) as temp_hash_id_table_name:
                     
                     for tag_service_id in tag_service_ids:
                         
@@ -249,7 +249,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
             
             # push the service updates, done
             
-            self._ExecuteMany( 'UPDATE service_info SET info = info + ? WHERE service_id = ? AND info_type = ?;', service_info_updates )
+            self._execute_many( 'UPDATE service_info SET info = info + ? WHERE service_id = ? AND info_type = ?;', service_info_updates )
             
         
     
@@ -287,7 +287,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
         
         # do delete outside, file repos and perhaps some other bananas situation can delete without ever having added
         
-        now_ms = HydrusTime.GetNowMS()
+        now_ms = HydrusTime.get_now_ms()
         
         if service_type not in HC.FILE_SERVICES_WITH_NO_DELETE_RECORD:
             
@@ -341,7 +341,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                 
                 tag_service_ids = self.modules_services.GetServiceIds( HC.REAL_TAG_SERVICES )
                 
-                with self._MakeTemporaryIntegerTable( existing_hash_ids, 'hash_id' ) as temp_hash_id_table_name:
+                with self._make_temporary_integer_table( existing_hash_ids, 'hash_id' ) as temp_hash_id_table_name:
                     
                     for tag_service_id in tag_service_ids:
                         
@@ -369,8 +369,8 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                     
                 except Exception as e:
                     
-                    HydrusData.Print( 'Problem with duplicate update signal:' )
-                    HydrusData.PrintException( e, do_wait = False )
+                    HydrusData.print_text( 'Problem with duplicate update signal:' )
+                    HydrusData.print_exception( e, do_wait = False )
                     
                 
             
@@ -382,8 +382,8 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                     
                 except Exception as e:
                     
-                    HydrusData.Print( 'Problem with duplicate update signal:' )
-                    HydrusData.PrintException( e, do_wait = False )
+                    HydrusData.print_text( 'Problem with duplicate update signal:' )
+                    HydrusData.print_exception( e, do_wait = False )
                     
                 
             
@@ -429,8 +429,8 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                         
                     except Exception as e:
                         
-                        HydrusData.Print( 'Problem with duplicate update signal:' )
-                        HydrusData.PrintException( e, do_wait = False )
+                        HydrusData.print_text( 'Problem with duplicate update signal:' )
+                        HydrusData.print_exception( e, do_wait = False )
                         
                     
                 
@@ -444,11 +444,11 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
         
         if len( service_info_updates ) > 0:
             
-            self._ExecuteMany( 'UPDATE service_info SET info = info + ? WHERE service_id = ? AND info_type = ?;', service_info_updates )
+            self._execute_many( 'UPDATE service_info SET info = info + ? WHERE service_id = ? AND info_type = ?;', service_info_updates )
             
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         tables_and_columns = []
         
@@ -520,7 +520,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                                 self.ResyncCombinedDeletedFiles( hash_ids )
                                 
                             
-                            self._ExecuteMany( 'UPDATE service_info SET info = info + ? WHERE service_id = ? AND info_type = ?;', ( ( -num_cleared, clear_service_id, HC.SERVICE_INFO_NUM_DELETED_FILES ) for ( clear_service_id, num_cleared ) in service_ids_to_nums_cleared.items() ) )
+                            self._execute_many( 'UPDATE service_info SET info = info + ? WHERE service_id = ? AND info_type = ?;', ( ( -num_cleared, clear_service_id, HC.SERVICE_INFO_NUM_DELETED_FILES ) for ( clear_service_id, num_cleared ) in service_ids_to_nums_cleared.items() ) )
                             
                         elif action == HC.CONTENT_UPDATE_ADD:
                             
@@ -540,7 +540,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                                 
                                 self.modules_service_paths.SetServiceFilename( service_id, hash_id, multihash )
                                 
-                                timestamp_ms = HydrusTime.GetNowMS()
+                                timestamp_ms = HydrusTime.get_now_ms()
                                 
                             else:
                                 
@@ -682,9 +682,9 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                             
                             hash_ids = self.modules_hashes_local_cache.GetHashIds( hashes )
                             
-                            result = self._Execute( 'SELECT SUM( size ) FROM files_info WHERE hash_id IN ' + HydrusLists.SplayListForDB( hash_ids ) + ';' ).fetchone()
+                            result = self._execute( 'SELECT SUM( size ) FROM files_info WHERE hash_id IN ' + HydrusLists.splay_list_for_db( hash_ids ) + ';' ).fetchone()
                             
-                            total_size = self._GetSumResult( result )
+                            total_size = self._get_sum_result( result )
                             
                             self.modules_service_paths.SetServiceDirectory( service_id, hash_ids, dirname, total_size, note )
                             
@@ -786,7 +786,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                             
                             potentially_dirty_tag = tag
                             
-                            tag = HydrusTags.CleanTag( potentially_dirty_tag )
+                            tag = HydrusTags.clean_tag( potentially_dirty_tag )
                             
                             if tag != potentially_dirty_tag:
                                 
@@ -853,9 +853,9 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                             
                             ( current_mappings_table_name, deleted_mappings_table_name, pending_mappings_table_name, petitioned_mappings_table_name ) = ClientDBMappingsStorage.GenerateMappingsTableNames( service_id )
                             
-                            self._ExecuteMany( 'DELETE FROM {} WHERE tag_id = ? AND hash_id = ?;'.format( deleted_mappings_table_name ), ( ( tag_id, hash_id ) for hash_id in hash_ids ) )
+                            self._execute_many( 'DELETE FROM {} WHERE tag_id = ? AND hash_id = ?;'.format( deleted_mappings_table_name ), ( ( tag_id, hash_id ) for hash_id in hash_ids ) )
                             
-                            self._Execute( 'DELETE FROM service_info WHERE service_id = ? AND info_type = ?;', ( service_id, HC.SERVICE_INFO_NUM_DELETED_MAPPINGS ) )
+                            self._execute( 'DELETE FROM service_info WHERE service_id = ? AND info_type = ?;', ( service_id, HC.SERVICE_INFO_NUM_DELETED_MAPPINGS ) )
                             
                             cache_file_service_ids = self.modules_services.GetServiceIds( HC.FILE_SERVICES_WITH_SPECIFIC_MAPPING_CACHES )
                             
@@ -863,7 +863,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                                 
                                 ( cache_current_mappings_table_name, cache_deleted_mappings_table_name, cache_pending_mappings_table_name ) = ClientDBMappingsStorage.GenerateSpecificMappingsCacheTableNames( cache_file_service_id, service_id )
                                 
-                                self._ExecuteMany( 'DELETE FROM ' + cache_deleted_mappings_table_name + ' WHERE hash_id = ? AND tag_id = ?;', ( ( hash_id, tag_id ) for hash_id in hash_ids ) )
+                                self._execute_many( 'DELETE FROM ' + cache_deleted_mappings_table_name + ' WHERE hash_id = ? AND tag_id = ?;', ( ( hash_id, tag_id ) for hash_id in hash_ids ) )
                                 
                             
                         
@@ -1104,27 +1104,27 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                                 
                                 deleted_files_table_name = ClientDBFilesStorage.GenerateFilesTableName( self.modules_services.hydrus_local_file_storage_service_id, HC.CONTENT_STATUS_DELETED )
                                 
-                                self._Execute( 'DELETE FROM local_ratings WHERE service_id = ? and hash_id IN ( SELECT hash_id FROM {} );'.format( deleted_files_table_name ), ( service_id, ) )
+                                self._execute( 'DELETE FROM local_ratings WHERE service_id = ? and hash_id IN ( SELECT hash_id FROM {} );'.format( deleted_files_table_name ), ( service_id, ) )
                                 
-                                ratings_deleted = self._GetRowCount()
+                                ratings_deleted = self._get_row_count()
                                 
-                                self._Execute( 'UPDATE service_info SET info = info - ? WHERE service_id = ? AND info_type = ?;', ( ratings_deleted, service_id, HC.SERVICE_INFO_NUM_FILE_HASHES ) )
+                                self._execute( 'UPDATE service_info SET info = info - ? WHERE service_id = ? AND info_type = ?;', ( ratings_deleted, service_id, HC.SERVICE_INFO_NUM_FILE_HASHES ) )
                                 
                             elif action == 'delete_for_non_local_files':
                                 
                                 current_files_table_name = ClientDBFilesStorage.GenerateFilesTableName( self.modules_services.hydrus_local_file_storage_service_id, HC.CONTENT_STATUS_CURRENT )
                                 
-                                self._Execute( 'DELETE FROM local_ratings WHERE local_ratings.service_id = ? and hash_id NOT IN ( SELECT hash_id FROM {} );'.format( current_files_table_name ), ( service_id, ) )
+                                self._execute( 'DELETE FROM local_ratings WHERE local_ratings.service_id = ? and hash_id NOT IN ( SELECT hash_id FROM {} );'.format( current_files_table_name ), ( service_id, ) )
                                 
-                                ratings_deleted = self._GetRowCount()
+                                ratings_deleted = self._get_row_count()
                                 
-                                self._Execute( 'UPDATE service_info SET info = info - ? WHERE service_id = ? AND info_type = ?;', ( ratings_deleted, service_id, HC.SERVICE_INFO_NUM_FILE_HASHES ) )
+                                self._execute( 'UPDATE service_info SET info = info - ? WHERE service_id = ? AND info_type = ?;', ( ratings_deleted, service_id, HC.SERVICE_INFO_NUM_FILE_HASHES ) )
                                 
                             elif action == 'delete_for_all_files':
                                 
-                                self._Execute( 'DELETE FROM local_ratings WHERE service_id = ?;', ( service_id, ) )
+                                self._execute( 'DELETE FROM local_ratings WHERE service_id = ?;', ( service_id, ) )
                                 
-                                self._Execute( 'UPDATE service_info SET info = ? WHERE service_id = ? AND info_type = ?;', ( 0, service_id, HC.SERVICE_INFO_NUM_FILE_HASHES ) )
+                                self._execute( 'UPDATE service_info SET info = ? WHERE service_id = ? AND info_type = ?;', ( 0, service_id, HC.SERVICE_INFO_NUM_FILE_HASHES ) )
                                 
                             
                         elif service_type == HC.LOCAL_RATING_INCDEC:
@@ -1133,27 +1133,27 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                                 
                                 deleted_files_table_name = ClientDBFilesStorage.GenerateFilesTableName( self.modules_services.hydrus_local_file_storage_service_id, HC.CONTENT_STATUS_DELETED )
                                 
-                                self._Execute( 'DELETE FROM local_incdec_ratings WHERE service_id = ? and hash_id IN ( SELECT hash_id FROM {} );'.format( deleted_files_table_name ), ( service_id, ) )
+                                self._execute( 'DELETE FROM local_incdec_ratings WHERE service_id = ? and hash_id IN ( SELECT hash_id FROM {} );'.format( deleted_files_table_name ), ( service_id, ) )
                                 
-                                ratings_deleted = self._GetRowCount()
+                                ratings_deleted = self._get_row_count()
                                 
-                                self._Execute( 'UPDATE service_info SET info = info - ? WHERE service_id = ? AND info_type = ?;', ( ratings_deleted, service_id, HC.SERVICE_INFO_NUM_FILE_HASHES ) )
+                                self._execute( 'UPDATE service_info SET info = info - ? WHERE service_id = ? AND info_type = ?;', ( ratings_deleted, service_id, HC.SERVICE_INFO_NUM_FILE_HASHES ) )
                                 
                             elif action == 'delete_for_non_local_files':
                                 
                                 current_files_table_name = ClientDBFilesStorage.GenerateFilesTableName( self.modules_services.hydrus_local_file_storage_service_id, HC.CONTENT_STATUS_CURRENT )
                                 
-                                self._Execute( 'DELETE FROM local_incdec_ratings WHERE local_incdec_ratings.service_id = ? and hash_id NOT IN ( SELECT hash_id FROM {} );'.format( current_files_table_name ), ( service_id, ) )
+                                self._execute( 'DELETE FROM local_incdec_ratings WHERE local_incdec_ratings.service_id = ? and hash_id NOT IN ( SELECT hash_id FROM {} );'.format( current_files_table_name ), ( service_id, ) )
                                 
-                                ratings_deleted = self._GetRowCount()
+                                ratings_deleted = self._get_row_count()
                                 
-                                self._Execute( 'UPDATE service_info SET info = info - ? WHERE service_id = ? AND info_type = ?;', ( ratings_deleted, service_id, HC.SERVICE_INFO_NUM_FILE_HASHES ) )
+                                self._execute( 'UPDATE service_info SET info = info - ? WHERE service_id = ? AND info_type = ?;', ( ratings_deleted, service_id, HC.SERVICE_INFO_NUM_FILE_HASHES ) )
                                 
                             elif action == 'delete_for_all_files':
                                 
-                                self._Execute( 'DELETE FROM local_incdec_ratings WHERE service_id = ?;', ( service_id, ) )
+                                self._execute( 'DELETE FROM local_incdec_ratings WHERE service_id = ?;', ( service_id, ) )
                                 
-                                self._Execute( 'UPDATE service_info SET info = ? WHERE service_id = ? AND info_type = ?;', ( 0, service_id, HC.SERVICE_INFO_NUM_FILE_HASHES ) )
+                                self._execute( 'UPDATE service_info SET info = ? WHERE service_id = ? AND info_type = ?;', ( 0, service_id, HC.SERVICE_INFO_NUM_FILE_HASHES ) )
                                 
                             
                         
@@ -1364,11 +1364,11 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
         
         filtered_hashes_generator = self.modules_mappings_cache_specific_storage.GetFilteredHashesGenerator( file_service_ids, tag_service_id, hash_ids_being_altered )
         
-        self._Execute( 'CREATE TABLE IF NOT EXISTS mem.temp_hash_ids ( hash_id INTEGER );' )
+        self._execute( 'CREATE TABLE IF NOT EXISTS mem.temp_hash_ids ( hash_id INTEGER );' )
         
-        self._ExecuteMany( 'INSERT INTO temp_hash_ids ( hash_id ) VALUES ( ? );', ( ( hash_id, ) for hash_id in hash_ids_being_altered ) )
+        self._execute_many( 'INSERT INTO temp_hash_ids ( hash_id ) VALUES ( ? );', ( ( hash_id, ) for hash_id in hash_ids_being_altered ) )
         
-        pre_existing_hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM temp_hash_ids WHERE EXISTS ( SELECT 1 FROM {} WHERE hash_id = temp_hash_ids.hash_id );'.format( current_mappings_table_name ) ) )
+        pre_existing_hash_ids = self._sts( self._execute( 'SELECT hash_id FROM temp_hash_ids WHERE EXISTS ( SELECT 1 FROM {} WHERE hash_id = temp_hash_ids.hash_id );'.format( current_mappings_table_name ) ) )
         
         num_files_added = len( hash_ids_being_added.difference( pre_existing_hash_ids ) )
         
@@ -1388,17 +1388,17 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                     self.modules_mappings_cache_combined_files_display.AddMappingsForChained( tag_service_id, tag_id, hash_ids )
                     
                 
-                self._ExecuteMany( 'DELETE FROM ' + deleted_mappings_table_name + ' WHERE tag_id = ? AND hash_id = ?;', ( ( tag_id, hash_id ) for hash_id in hash_ids ) )
+                self._execute_many( 'DELETE FROM ' + deleted_mappings_table_name + ' WHERE tag_id = ? AND hash_id = ?;', ( ( tag_id, hash_id ) for hash_id in hash_ids ) )
                 
-                num_deleted_deleted = self._GetRowCount()
+                num_deleted_deleted = self._get_row_count()
                 
-                self._ExecuteMany( 'DELETE FROM ' + pending_mappings_table_name + ' WHERE tag_id = ? AND hash_id = ?;', ( ( tag_id, hash_id ) for hash_id in hash_ids ) )
+                self._execute_many( 'DELETE FROM ' + pending_mappings_table_name + ' WHERE tag_id = ? AND hash_id = ?;', ( ( tag_id, hash_id ) for hash_id in hash_ids ) )
                 
-                num_pending_deleted = self._GetRowCount()
+                num_pending_deleted = self._get_row_count()
                 
-                self._ExecuteMany( 'INSERT OR IGNORE INTO ' + current_mappings_table_name + ' VALUES ( ?, ? );', ( ( tag_id, hash_id ) for hash_id in hash_ids ) )
+                self._execute_many( 'INSERT OR IGNORE INTO ' + current_mappings_table_name + ' VALUES ( ?, ? );', ( ( tag_id, hash_id ) for hash_id in hash_ids ) )
                 
-                num_current_inserted = self._GetRowCount()
+                num_current_inserted = self._get_row_count()
                 
                 change_in_num_deleted_mappings -= num_deleted_deleted
                 change_in_num_pending_mappings -= num_pending_deleted
@@ -1424,17 +1424,17 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                     self.modules_mappings_cache_combined_files_display.DeleteMappingsForChained( tag_service_id, tag_id, hash_ids )
                     
                 
-                self._ExecuteMany( 'DELETE FROM ' + current_mappings_table_name + ' WHERE tag_id = ? AND hash_id = ?;', ( ( tag_id, hash_id ) for hash_id in hash_ids ) )
+                self._execute_many( 'DELETE FROM ' + current_mappings_table_name + ' WHERE tag_id = ? AND hash_id = ?;', ( ( tag_id, hash_id ) for hash_id in hash_ids ) )
                 
-                num_current_deleted = self._GetRowCount()
+                num_current_deleted = self._get_row_count()
                 
-                self._ExecuteMany( 'DELETE FROM ' + petitioned_mappings_table_name + ' WHERE tag_id = ? AND hash_id = ?;', ( ( tag_id, hash_id ) for hash_id in hash_ids ) )
+                self._execute_many( 'DELETE FROM ' + petitioned_mappings_table_name + ' WHERE tag_id = ? AND hash_id = ?;', ( ( tag_id, hash_id ) for hash_id in hash_ids ) )
                 
-                num_petitions_deleted = self._GetRowCount()
+                num_petitions_deleted = self._get_row_count()
                 
-                self._ExecuteMany( 'INSERT OR IGNORE INTO ' + deleted_mappings_table_name + ' VALUES ( ?, ? );', ( ( tag_id, hash_id ) for hash_id in hash_ids ) )
+                self._execute_many( 'INSERT OR IGNORE INTO ' + deleted_mappings_table_name + ' VALUES ( ?, ? );', ( ( tag_id, hash_id ) for hash_id in hash_ids ) )
                 
-                num_deleted_inserted = self._GetRowCount()
+                num_deleted_inserted = self._get_row_count()
                 
                 change_in_num_mappings -= num_current_deleted
                 change_in_num_petitioned_mappings -= num_petitions_deleted
@@ -1460,9 +1460,9 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                     self.modules_mappings_cache_combined_files_display.PendMappingsForChained( tag_service_id, tag_id, hash_ids )
                     
                 
-                self._ExecuteMany( 'INSERT OR IGNORE INTO ' + pending_mappings_table_name + ' VALUES ( ?, ? );', ( ( tag_id, hash_id ) for hash_id in hash_ids ) )
+                self._execute_many( 'INSERT OR IGNORE INTO ' + pending_mappings_table_name + ' VALUES ( ?, ? );', ( ( tag_id, hash_id ) for hash_id in hash_ids ) )
                 
-                num_pending_inserted = self._GetRowCount()
+                num_pending_inserted = self._get_row_count()
                 
                 change_in_num_pending_mappings += num_pending_inserted
                 
@@ -1486,9 +1486,9 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                     self.modules_mappings_cache_combined_files_display.RescindPendingMappingsForChained( tag_service_id, tag_id, hash_ids )
                     
                 
-                self._ExecuteMany( 'DELETE FROM ' + pending_mappings_table_name + ' WHERE tag_id = ? AND hash_id = ?;', ( ( tag_id, hash_id ) for hash_id in hash_ids ) )
+                self._execute_many( 'DELETE FROM ' + pending_mappings_table_name + ' WHERE tag_id = ? AND hash_id = ?;', ( ( tag_id, hash_id ) for hash_id in hash_ids ) )
                 
-                num_pending_deleted = self._GetRowCount()
+                num_pending_deleted = self._get_row_count()
                 
                 change_in_num_pending_mappings -= num_pending_deleted
                 
@@ -1505,9 +1505,9 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
         
         #
         
-        post_existing_hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM temp_hash_ids WHERE EXISTS ( SELECT 1 FROM {} WHERE hash_id = temp_hash_ids.hash_id );'.format( current_mappings_table_name ) ) )
+        post_existing_hash_ids = self._sts( self._execute( 'SELECT hash_id FROM temp_hash_ids WHERE EXISTS ( SELECT 1 FROM {} WHERE hash_id = temp_hash_ids.hash_id );'.format( current_mappings_table_name ) ) )
         
-        self._Execute( 'DROP TABLE temp_hash_ids;' )
+        self._execute( 'DROP TABLE temp_hash_ids;' )
         
         num_files_removed = len( pre_existing_hash_ids.intersection( hash_ids_being_removed ).difference( post_existing_hash_ids ) )
         
@@ -1515,18 +1515,18 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
         
         for ( tag_id, hash_ids, reason_id ) in petitioned_mappings_ids:
             
-            self._ExecuteMany( 'INSERT OR IGNORE INTO ' + petitioned_mappings_table_name + ' VALUES ( ?, ?, ? );', [ ( tag_id, hash_id, reason_id ) for hash_id in hash_ids ] )
+            self._execute_many( 'INSERT OR IGNORE INTO ' + petitioned_mappings_table_name + ' VALUES ( ?, ?, ? );', [ ( tag_id, hash_id, reason_id ) for hash_id in hash_ids ] )
             
-            num_petitions_inserted = self._GetRowCount()
+            num_petitions_inserted = self._get_row_count()
             
             change_in_num_petitioned_mappings += num_petitions_inserted
             
         
         for ( tag_id, hash_ids ) in petitioned_rescinded_mappings_ids:
             
-            self._ExecuteMany( 'DELETE FROM ' + petitioned_mappings_table_name + ' WHERE tag_id = ? AND hash_id = ?;', ( ( tag_id, hash_id ) for hash_id in hash_ids ) )
+            self._execute_many( 'DELETE FROM ' + petitioned_mappings_table_name + ' WHERE tag_id = ? AND hash_id = ?;', ( ( tag_id, hash_id ) for hash_id in hash_ids ) )
             
-            num_petitions_deleted = self._GetRowCount()
+            num_petitions_deleted = self._get_row_count()
             
             change_in_num_petitioned_mappings -= num_petitions_deleted
             
@@ -1539,6 +1539,6 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
         if change_in_num_petitioned_mappings != 0: service_info_updates.append( ( change_in_num_petitioned_mappings, tag_service_id, HC.SERVICE_INFO_NUM_PETITIONED_MAPPINGS ) )
         if change_in_num_files != 0: service_info_updates.append( ( change_in_num_files, tag_service_id, HC.SERVICE_INFO_NUM_FILE_HASHES ) )
         
-        if len( service_info_updates ) > 0: self._ExecuteMany( 'UPDATE service_info SET info = info + ? WHERE service_id = ? AND info_type = ?;', service_info_updates )
+        if len( service_info_updates ) > 0: self._execute_many( 'UPDATE service_info SET info = info + ? WHERE service_id = ? AND info_type = ?;', service_info_updates )
         
     

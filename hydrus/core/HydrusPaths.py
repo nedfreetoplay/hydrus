@@ -650,7 +650,7 @@ def filter_free_paths( paths ):
     
     for path in paths:
         
-        HydrusThreading.CheckIfThreadShuttingDown()
+        HydrusThreading.check_if_thread_shutting_down()
         
         if path_is_free( path ):
             
@@ -845,7 +845,7 @@ def launch_directory( path ):
             
             HydrusData.check_program_is_not_shutting_down()
             
-            HydrusSubprocess.RunSubprocess( cmd, this_is_a_potentially_long_lived_external_guy = True )
+            HydrusSubprocess.run_subprocess( cmd, this_is_a_potentially_long_lived_external_guy = True )
             
         
     
@@ -893,7 +893,7 @@ def launch_file( path, launch_path = None ):
                 
                 HydrusData.check_program_is_not_shutting_down()
                 
-                HydrusSubprocess.RunSubprocess( cmd, this_is_a_potentially_long_lived_external_guy = True, hide_terminal = False )
+                HydrusSubprocess.run_subprocess( cmd, this_is_a_potentially_long_lived_external_guy = True, hide_terminal = False )
                 
             except Exception as e:
                 
@@ -1183,7 +1183,7 @@ def merge_tree( source: str, dest: str, text_update_hook = None ):
             
             for dirname in dirnames:
                 
-                pauser.Pause()
+                pauser.pause()
                 
                 source_path = os.path.join( root, dirname )
                 dest_path = os.path.join( dest_root, dirname )
@@ -1195,7 +1195,7 @@ def merge_tree( source: str, dest: str, text_update_hook = None ):
             
             for filename in filenames:
                 
-                pauser.Pause()
+                pauser.pause()
                 
                 source_path = os.path.join( root, filename )
                 dest_path = os.path.join( dest_root, filename )
@@ -1389,7 +1389,7 @@ def mirror_tree( source: str, dest: str, text_update_hook = None, is_cancelled_h
         
         for dirname in dirnames:
             
-            pauser.Pause()
+            pauser.pause()
             
             source_path = os.path.join( root, dirname )
             dest_path = os.path.join( dest_root, dirname )
@@ -1403,7 +1403,7 @@ def mirror_tree( source: str, dest: str, text_update_hook = None, is_cancelled_h
         
         for filename in filenames:
             
-            pauser.Pause()
+            pauser.pause()
             
             source_path = os.path.join( root, filename )
             
@@ -1426,7 +1426,7 @@ def mirror_tree( source: str, dest: str, text_update_hook = None, is_cancelled_h
     
     for deletee_path in deletee_paths:
         
-        pauser.Pause()
+        pauser.pause()
         
         delete_path( deletee_path )
         
@@ -1459,7 +1459,7 @@ def open_file_location( path ):
         
         HydrusData.check_program_is_not_shutting_down()
         
-        HydrusSubprocess.RunSubprocess( cmd, this_is_a_potentially_long_lived_external_guy = True )
+        HydrusSubprocess.run_subprocess( cmd, this_is_a_potentially_long_lived_external_guy = True )
         
     
     thread = threading.Thread( target = do_it )

@@ -21,7 +21,7 @@ class ClientDBServicePaths( ClientDBModule.ClientDBModule ):
         super().__init__( 'client service paths', cursor )
         
     
-    def _GetInitialIndexGenerationDict( self ) -> dict:
+    def _get_initial_index_generation_dict( self ) -> dict:
         
         index_generation_dict = {}
         
@@ -41,7 +41,7 @@ class ClientDBServicePaths( ClientDBModule.ClientDBModule ):
         return index_generation_dict
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict( self ) -> dict:
         
         return {
             'main.service_filenames' : ( 'CREATE TABLE IF NOT EXISTS {} ( service_id INTEGER, hash_id INTEGER, filename TEXT, PRIMARY KEY ( service_id, hash_id ) );', 400 ),
@@ -52,24 +52,24 @@ class ClientDBServicePaths( ClientDBModule.ClientDBModule ):
     
     def ClearService( self, service_id: int ):
         
-        self._Execute( 'DELETE FROM service_filenames WHERE service_id = ?;', ( service_id, ) )
-        self._Execute( 'DELETE FROM service_directories WHERE service_id = ?;', ( service_id, ) )
-        self._Execute( 'DELETE FROM service_directory_file_map WHERE service_id = ?;', ( service_id, ) )
+        self._execute( 'DELETE FROM service_filenames WHERE service_id = ?;', ( service_id, ) )
+        self._execute( 'DELETE FROM service_directories WHERE service_id = ?;', ( service_id, ) )
+        self._execute( 'DELETE FROM service_directory_file_map WHERE service_id = ?;', ( service_id, ) )
         
     
     def DeleteServiceDirectory( self, service_id: int, dirname: str ):
         
         directory_id = self.modules_texts.GetTextId( dirname )
         
-        self._Execute( 'DELETE FROM service_directories WHERE service_id = ? AND directory_id = ?;', ( service_id, directory_id ) )
-        self._Execute( 'DELETE FROM service_directory_file_map WHERE service_id = ? AND directory_id = ?;', ( service_id, directory_id ) )
+        self._execute( 'DELETE FROM service_directories WHERE service_id = ? AND directory_id = ?;', ( service_id, directory_id ) )
+        self._execute( 'DELETE FROM service_directory_file_map WHERE service_id = ? AND directory_id = ?;', ( service_id, directory_id ) )
         
     
     def GetHashIdsToServiceIdsAndFilenames( self, hash_ids_table_name: str ):
         
         query = 'SELECT hash_id, service_id, filename FROM {} CROSS JOIN service_filenames USING ( hash_id );'.format( hash_ids_table_name )
         
-        hash_ids_to_service_ids_and_filenames = HydrusData.BuildKeyToListDict( ( ( hash_id, ( service_id, filename ) ) for ( hash_id, service_id, filename ) in self._Execute( query ) ) )
+        hash_ids_to_service_ids_and_filenames = HydrusData.build_key_to_list_dict( ( ( hash_id, ( service_id, filename ) ) for ( hash_id, service_id, filename ) in self._execute( query ) ) )
         
         return hash_ids_to_service_ids_and_filenames
         
@@ -79,7 +79,7 @@ class ClientDBServicePaths( ClientDBModule.ClientDBModule ):
         service_id = self.modules_services.GetServiceId( service_key )
         directory_id = self.modules_texts.GetTextId( dirname )
         
-        hash_ids = self._STL( self._Execute( 'SELECT hash_id FROM service_directory_file_map WHERE service_id = ? AND directory_id = ?;', ( service_id, directory_id ) ) )
+        hash_ids = self._stl( self._execute( 'SELECT hash_id FROM service_directory_file_map WHERE service_id = ? AND directory_id = ?;', ( service_id, directory_id ) ) )
         
         hashes = self.modules_hashes_local_cache.GetHashes( hash_ids )
         
@@ -90,7 +90,7 @@ class ClientDBServicePaths( ClientDBModule.ClientDBModule ):
         
         service_id = self.modules_services.GetServiceId( service_key )
         
-        incomplete_info = self._Execute( 'SELECT directory_id, num_files, total_size, note FROM service_directories WHERE service_id = ?;', ( service_id, ) ).fetchall()
+        incomplete_info = self._execute( 'SELECT directory_id, num_files, total_size, note FROM service_directories WHERE service_id = ?;', ( service_id, ) ).fetchall()
         
         info = [ ( self.modules_texts.GetText( directory_id ), num_files, total_size, note ) for ( directory_id, num_files, total_size, note ) in incomplete_info ]
         
@@ -99,7 +99,7 @@ class ClientDBServicePaths( ClientDBModule.ClientDBModule ):
     
     def GetServiceFilename( self, service_id, hash_id ):
         
-        result = self._Execute( 'SELECT filename FROM service_filenames WHERE service_id = ? AND hash_id = ?;', ( service_id, hash_id ) ).fetchone()
+        result = self._execute( 'SELECT filename FROM service_filenames WHERE service_id = ? AND hash_id = ?;', ( service_id, hash_id ) ).fetchone()
         
         if result is None:
             
@@ -116,12 +116,12 @@ class ClientDBServicePaths( ClientDBModule.ClientDBModule ):
         service_id = self.modules_services.GetServiceId( service_key )
         hash_ids = self.modules_hashes_local_cache.GetHashIds( hashes )
         
-        result = sorted( ( filename for ( filename, ) in self._Execute( 'SELECT filename FROM service_filenames WHERE service_id = ? AND hash_id IN ' + HydrusLists.SplayListForDB( hash_ids ) + ';', ( service_id, ) ) ) )
+        result = sorted( ( filename for ( filename, ) in self._execute( 'SELECT filename FROM service_filenames WHERE service_id = ? AND hash_id IN ' + HydrusLists.splay_list_for_db( hash_ids ) + ';', ( service_id, ) ) ) )
         
         return result
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         # if content type is a domain, then give urls? bleh
         
@@ -134,17 +134,17 @@ class ClientDBServicePaths( ClientDBModule.ClientDBModule ):
         
         directory_id = self.modules_texts.GetTextId( dirname )
         
-        self._Execute( 'DELETE FROM service_directories WHERE service_id = ? AND directory_id = ?;', ( service_id, directory_id ) )
-        self._Execute( 'DELETE FROM service_directory_file_map WHERE service_id = ? AND directory_id = ?;', ( service_id, directory_id ) )
+        self._execute( 'DELETE FROM service_directories WHERE service_id = ? AND directory_id = ?;', ( service_id, directory_id ) )
+        self._execute( 'DELETE FROM service_directory_file_map WHERE service_id = ? AND directory_id = ?;', ( service_id, directory_id ) )
         
         num_files = len( hash_ids )
         
-        self._Execute( 'INSERT INTO service_directories ( service_id, directory_id, num_files, total_size, note ) VALUES ( ?, ?, ?, ?, ? );', ( service_id, directory_id, num_files, total_size, note ) )
-        self._ExecuteMany( 'INSERT INTO service_directory_file_map ( service_id, directory_id, hash_id ) VALUES ( ?, ?, ? );', ( ( service_id, directory_id, hash_id ) for hash_id in hash_ids ) )
+        self._execute( 'INSERT INTO service_directories ( service_id, directory_id, num_files, total_size, note ) VALUES ( ?, ?, ?, ?, ? );', ( service_id, directory_id, num_files, total_size, note ) )
+        self._execute_many( 'INSERT INTO service_directory_file_map ( service_id, directory_id, hash_id ) VALUES ( ?, ?, ? );', ( ( service_id, directory_id, hash_id ) for hash_id in hash_ids ) )
         
     
     def SetServiceFilename( self, service_id: int, hash_id: int, filename: str ):
         
-        self._Execute( 'REPLACE INTO service_filenames ( service_id, hash_id, filename ) VALUES ( ?, ?, ? );', ( service_id, hash_id, filename ) )
+        self._execute( 'REPLACE INTO service_filenames ( service_id, hash_id, filename ) VALUES ( ?, ?, ? );', ( service_id, hash_id, filename ) )
         
     

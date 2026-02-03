@@ -252,7 +252,7 @@ class PotentialDuplicateIdPairsAndDistances( object ):
     
     def IterateBlocks( self ):
         
-        for block in HydrusLists.SplitListIntoChunks( self._potential_id_pairs_and_distances, POTENTIAL_DUPLICATE_PAIRS_BLOCK_SIZE_GUIDELINE ):
+        for block in HydrusLists.split_list_into_chunks( self._potential_id_pairs_and_distances, POTENTIAL_DUPLICATE_PAIRS_BLOCK_SIZE_GUIDELINE ):
             
             yield PotentialDuplicateIdPairsAndDistances( block )
             
@@ -367,14 +367,14 @@ class PotentialDuplicateIdPairsAndDistances( object ):
         self._potential_id_pairs_and_distances.sort()
         
         # this ensures we still have a decent random selection within that
-        self._potential_id_pairs_and_distances = HydrusLists.RandomiseListByChunks( self._potential_id_pairs_and_distances, POTENTIAL_DUPLICATE_PAIRS_BLOCK_SIZE_GUIDELINE )
+        self._potential_id_pairs_and_distances = HydrusLists.randomise_list_by_chunks( self._potential_id_pairs_and_distances, POTENTIAL_DUPLICATE_PAIRS_BLOCK_SIZE_GUIDELINE )
         
     
     def RandomiseForRichEstimate( self ):
         
         # we want hits early and thus are going for a very fine-grained randomisation
         # I'd just do random.shuffle but it is a bit slow at n=1 tbh
-        self._potential_id_pairs_and_distances = HydrusLists.RandomiseListByChunks( self._potential_id_pairs_and_distances, 32 )
+        self._potential_id_pairs_and_distances = HydrusLists.randomise_list_by_chunks( self._potential_id_pairs_and_distances, 32 )
         
     
 
@@ -782,7 +782,7 @@ class PotentialDuplicatePairsFragmentarySearch( object ):
     
     def SearchSpaceIsStale( self ):
         
-        return HydrusTime.TimeHasPassed( self._search_space_initialised_time + POTENTIAL_PAIRS_REFRESH_TIMEOUT )
+        return HydrusTime.time_has_passed( self._search_space_initialised_time + POTENTIAL_PAIRS_REFRESH_TIMEOUT )
         
     
     def SetDesiredNumHits( self, desired_num_hits: int ):
@@ -817,7 +817,7 @@ class PotentialDuplicatePairsFragmentarySearch( object ):
         
         self._search_space_initialised = True
         self._search_space_fetch_started = False
-        self._search_space_initialised_time = HydrusTime.GetNowFloat()
+        self._search_space_initialised_time = HydrusTime.get_now_float()
         
     
     def SpawnMediaIdFilteredSearch( self, media_ids ) -> "PotentialDuplicatePairsFragmentarySearch":
@@ -951,7 +951,7 @@ class PotentialDuplicatesSearchContext( HydrusSerialisable.SerialisableBase ):
         file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, predicates = initial_predicates )
         
         self._file_search_context_1 = file_search_context
-        self._file_search_context_2 = file_search_context.Duplicate()
+        self._file_search_context_2 = file_search_context.duplicate()
         self._dupe_search_type = ClientDuplicates.DUPE_SEARCH_ONE_FILE_MATCHES_ONE_SEARCH
         self._pixel_dupes_preference = ClientDuplicates.SIMILAR_FILES_PIXEL_DUPES_ALLOWED
         self._max_hamming_distance = 4
@@ -961,26 +961,26 @@ class PotentialDuplicatesSearchContext( HydrusSerialisable.SerialisableBase ):
         
         if isinstance( other, PotentialDuplicatesSearchContext ):
             
-            return self.GetSerialisableTuple() == other.GetSerialisableTuple()
+            return self.get_serialisable_tuple() == other.get_serialisable_tuple()
             
         
         return NotImplemented
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_file_search_context_1 = self._file_search_context_1.GetSerialisableTuple()
-        serialisable_file_search_context_2 = self._file_search_context_2.GetSerialisableTuple()
+        serialisable_file_search_context_1 = self._file_search_context_1.get_serialisable_tuple()
+        serialisable_file_search_context_2 = self._file_search_context_2.get_serialisable_tuple()
         
         return ( serialisable_file_search_context_1, serialisable_file_search_context_2, self._dupe_search_type, self._pixel_dupes_preference, self._max_hamming_distance )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( serialisable_file_search_context_1, serialisable_file_search_context_2, self._dupe_search_type, self._pixel_dupes_preference, self._max_hamming_distance ) = serialisable_info
         
-        self._file_search_context_1: ClientSearchFileSearchContext.FileSearchContext = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_file_search_context_1 )
-        self._file_search_context_2: ClientSearchFileSearchContext.FileSearchContext = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_file_search_context_2 )
+        self._file_search_context_1: ClientSearchFileSearchContext.FileSearchContext = HydrusSerialisable.create_from_serialisable_tuple( serialisable_file_search_context_1 )
+        self._file_search_context_2: ClientSearchFileSearchContext.FileSearchContext = HydrusSerialisable.create_from_serialisable_tuple( serialisable_file_search_context_2 )
         
     
     def GetDupeSearchType( self ) -> int:

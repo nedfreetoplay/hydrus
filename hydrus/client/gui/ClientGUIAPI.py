@@ -19,7 +19,7 @@ class CaptureAPIAccessPermissionsRequestPanel( ClientGUIScrolledPanels.ReviewPan
         
         super().__init__( parent )
         
-        self._time_started = HydrusTime.GetNow()
+        self._time_started = HydrusTime.get_now()
         
         self._api_permissions = None
         
@@ -50,7 +50,7 @@ class CaptureAPIAccessPermissionsRequestPanel( ClientGUIScrolledPanels.ReviewPan
             ClientGUIDialogsMessage.ShowInformation( self, 'Got request!' )
             
             ClientAPI.last_api_permissions_request = None
-            self._repeating_job.Cancel()
+            self._repeating_job.cancel()
             
             parent = self.parentWidget()
             
@@ -109,7 +109,7 @@ class EditAPIPermissionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         self._access_key.setText( access_key.hex() )
         
-        name = api_permissions.GetName()
+        name = api_permissions.get_name()
         
         self._name.setText( name )
         

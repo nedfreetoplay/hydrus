@@ -129,7 +129,7 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
         return index_generation_dict
         
     
-    def _GetServiceIndexGenerationDict( self, service_id ) -> dict:
+    def _get_service_index_generation_dict( self, service_id ) -> dict:
         
         tag_service_id = service_id
         
@@ -162,7 +162,7 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
         return table_dict
         
     
-    def _GetServiceTableGenerationDict( self, service_id ) -> dict:
+    def _get_service_table_generation_dict( self, service_id ) -> dict:
         
         tag_service_id = service_id
         
@@ -180,7 +180,7 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
         return table_dict
         
     
-    def _GetServiceTablePrefixes( self ):
+    def _get_service_table_prefixes( self ):
         
         return {
             ClientDBMappingsStorage.SPECIFIC_MAPPINGS_CURRENT_PREFIX,
@@ -189,12 +189,12 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
         }
         
     
-    def _GetServiceIdsWeGenerateDynamicTablesFor( self ):
+    def _get_service_ids_we_generate_dynamic_tables_for( self ):
         
         return self.modules_services.GetServiceIds( HC.REAL_TAG_SERVICES )
         
     
-    def _RepairRepopulateTables( self, table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper ):
+    def _repair_repopulate_tables( self, table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper ):
         
         file_service_ids = list( self.modules_services.GetServiceIds( HC.FILE_SERVICES_WITH_SPECIFIC_MAPPING_CACHES ) )
         tag_service_ids = list( self.modules_services.GetServiceIds( HC.REAL_TAG_SERVICES ) )
@@ -222,17 +222,17 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
         ( current_mappings_table_name, deleted_mappings_table_name, pending_mappings_table_name, petitioned_mappings_table_name ) = ClientDBMappingsStorage.GenerateMappingsTableNames( tag_service_id )
         
         # deleted don't have a/c counts to update, so we can do it all in one go here
-        self._Execute( 'INSERT OR IGNORE INTO {} ( hash_id, tag_id ) SELECT tag_id, hash_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( cache_deleted_mappings_table_name, hash_ids_table_name, deleted_mappings_table_name ) )
+        self._execute( 'INSERT OR IGNORE INTO {} ( hash_id, tag_id ) SELECT tag_id, hash_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( cache_deleted_mappings_table_name, hash_ids_table_name, deleted_mappings_table_name ) )
         
         # temp hashes to mappings
-        current_mapping_ids_raw = self._Execute( 'SELECT tag_id, hash_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_ids_table_name, current_mappings_table_name ) ).fetchall()
+        current_mapping_ids_raw = self._execute( 'SELECT tag_id, hash_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_ids_table_name, current_mappings_table_name ) ).fetchall()
         
-        current_mapping_ids_dict = HydrusData.BuildKeyToSetDict( current_mapping_ids_raw )
+        current_mapping_ids_dict = HydrusData.build_key_to_set_dict( current_mapping_ids_raw )
         
         # temp hashes to mappings
-        pending_mapping_ids_raw = self._Execute( 'SELECT tag_id, hash_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_ids_table_name, pending_mappings_table_name ) ).fetchall()
+        pending_mapping_ids_raw = self._execute( 'SELECT tag_id, hash_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_ids_table_name, pending_mappings_table_name ) ).fetchall()
         
-        pending_mapping_ids_dict = HydrusData.BuildKeyToSetDict( pending_mapping_ids_raw )
+        pending_mapping_ids_dict = HydrusData.build_key_to_set_dict( pending_mapping_ids_raw )
         
         all_ids_seen = set( current_mapping_ids_dict.keys() )
         all_ids_seen.update( pending_mapping_ids_dict.keys() )
@@ -247,9 +247,9 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
             
             if current_delta > 0:
                 
-                self._ExecuteMany( 'INSERT OR IGNORE INTO ' + cache_current_mappings_table_name + ' ( hash_id, tag_id ) VALUES ( ?, ? );', ( ( hash_id, tag_id ) for hash_id in current_hash_ids ) )
+                self._execute_many( 'INSERT OR IGNORE INTO ' + cache_current_mappings_table_name + ' ( hash_id, tag_id ) VALUES ( ?, ? );', ( ( hash_id, tag_id ) for hash_id in current_hash_ids ) )
                 
-                current_delta = self._GetRowCount()
+                current_delta = self._get_row_count()
                 
             
             #
@@ -260,9 +260,9 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
             
             if pending_delta > 0:
                 
-                self._ExecuteMany( 'INSERT OR IGNORE INTO ' + cache_pending_mappings_table_name + ' ( hash_id, tag_id ) VALUES ( ?, ? );', ( ( hash_id, tag_id ) for hash_id in pending_hash_ids ) )
+                self._execute_many( 'INSERT OR IGNORE INTO ' + cache_pending_mappings_table_name + ' ( hash_id, tag_id ) VALUES ( ?, ? );', ( ( hash_id, tag_id ) for hash_id in pending_hash_ids ) )
                 
-                pending_delta = self._GetRowCount()
+                pending_delta = self._get_row_count()
                 
             
             #
@@ -296,20 +296,20 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
                 # we have to interleave this into the iterator so that if two siblings with the same ideal are pend->currented at once, we remain logic consistent for soletag lookups!
                 self.modules_mappings_cache_specific_display.RescindPendingMappings( file_service_id, tag_service_id, tag_id, filtered_hash_ids )
                 
-                self._ExecuteMany( 'DELETE FROM ' + cache_pending_mappings_table_name + ' WHERE hash_id = ? AND tag_id = ?;', ( ( hash_id, tag_id ) for hash_id in filtered_hash_ids ) )
+                self._execute_many( 'DELETE FROM ' + cache_pending_mappings_table_name + ' WHERE hash_id = ? AND tag_id = ?;', ( ( hash_id, tag_id ) for hash_id in filtered_hash_ids ) )
                 
-                num_pending_rescinded = self._GetRowCount()
+                num_pending_rescinded = self._get_row_count()
                 
             
             #
             
-            self._ExecuteMany( 'INSERT OR IGNORE INTO ' + cache_current_mappings_table_name + ' ( hash_id, tag_id ) VALUES ( ?, ? );', ( ( hash_id, tag_id ) for hash_id in filtered_hash_ids ) )
+            self._execute_many( 'INSERT OR IGNORE INTO ' + cache_current_mappings_table_name + ' ( hash_id, tag_id ) VALUES ( ?, ? );', ( ( hash_id, tag_id ) for hash_id in filtered_hash_ids ) )
             
-            num_current_inserted = self._GetRowCount()
+            num_current_inserted = self._get_row_count()
             
             #
             
-            self._ExecuteMany( 'DELETE FROM ' + cache_deleted_mappings_table_name + ' WHERE hash_id = ? AND tag_id = ?;', ( ( hash_id, tag_id ) for hash_id in filtered_hash_ids ) )
+            self._execute_many( 'DELETE FROM ' + cache_deleted_mappings_table_name + ' WHERE hash_id = ? AND tag_id = ?;', ( ( hash_id, tag_id ) for hash_id in filtered_hash_ids ) )
             
             if num_current_inserted > 0:
                 
@@ -333,12 +333,12 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
         
         ( cache_current_mappings_table_name, cache_deleted_mappings_table_name, cache_pending_mappings_table_name ) = ClientDBMappingsStorage.GenerateSpecificMappingsCacheTableNames( file_service_id, tag_service_id )
         
-        self._Execute( 'DELETE FROM {};'.format( cache_current_mappings_table_name ) )
-        self._Execute( 'DELETE FROM {};'.format( cache_deleted_mappings_table_name ) )
+        self._execute( 'DELETE FROM {};'.format( cache_current_mappings_table_name ) )
+        self._execute( 'DELETE FROM {};'.format( cache_deleted_mappings_table_name ) )
         
         if not keep_pending:
             
-            self._Execute( 'DELETE FROM {};'.format( cache_pending_mappings_table_name ) )
+            self._execute( 'DELETE FROM {};'.format( cache_pending_mappings_table_name ) )
             
         
         self.modules_mappings_counts.ClearCounts( ClientTags.TAG_DISPLAY_STORAGE, file_service_id, tag_service_id, keep_pending = keep_pending )
@@ -352,7 +352,7 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
         
         for ( table_name, ( create_query_without_name, version_added ) ) in table_generation_dict.items():
             
-            self._CreateTable( create_query_without_name, table_name )
+            self._create_table( create_query_without_name, table_name )
             
         
         self.modules_mappings_counts.CreateTables( ClientTags.TAG_DISPLAY_STORAGE, file_service_id, tag_service_id )
@@ -378,22 +378,22 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
         ( cache_current_mappings_table_name, cache_deleted_mappings_table_name, cache_pending_mappings_table_name ) = ClientDBMappingsStorage.GenerateSpecificMappingsCacheTableNames( file_service_id, tag_service_id )
         
         # temp hashes to mappings
-        deleted_mapping_ids_raw = self._Execute( 'SELECT tag_id, hash_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_id_table_name, cache_deleted_mappings_table_name ) ).fetchall()
+        deleted_mapping_ids_raw = self._execute( 'SELECT tag_id, hash_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_id_table_name, cache_deleted_mappings_table_name ) ).fetchall()
         
         if len( deleted_mapping_ids_raw ) > 0:
             
-            self._ExecuteMany( 'DELETE FROM {} WHERE tag_id = ? AND hash_id = ?;'.format( cache_deleted_mappings_table_name ), deleted_mapping_ids_raw )
+            self._execute_many( 'DELETE FROM {} WHERE tag_id = ? AND hash_id = ?;'.format( cache_deleted_mappings_table_name ), deleted_mapping_ids_raw )
             
         
         # temp hashes to mappings
-        current_mapping_ids_raw = self._Execute( 'SELECT tag_id, hash_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_id_table_name, cache_current_mappings_table_name ) ).fetchall()
+        current_mapping_ids_raw = self._execute( 'SELECT tag_id, hash_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_id_table_name, cache_current_mappings_table_name ) ).fetchall()
         
-        current_mapping_ids_dict = HydrusData.BuildKeyToSetDict( current_mapping_ids_raw )
+        current_mapping_ids_dict = HydrusData.build_key_to_set_dict( current_mapping_ids_raw )
         
         # temp hashes to mappings
-        pending_mapping_ids_raw = self._Execute( 'SELECT tag_id, hash_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_id_table_name, cache_pending_mappings_table_name ) ).fetchall()
+        pending_mapping_ids_raw = self._execute( 'SELECT tag_id, hash_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_id_table_name, cache_pending_mappings_table_name ) ).fetchall()
         
-        pending_mapping_ids_dict = HydrusData.BuildKeyToSetDict( pending_mapping_ids_raw )
+        pending_mapping_ids_dict = HydrusData.build_key_to_set_dict( pending_mapping_ids_raw )
         
         all_ids_seen = set( current_mapping_ids_dict.keys() )
         all_ids_seen.update( pending_mapping_ids_dict.keys() )
@@ -415,8 +415,8 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
             counts_cache_changes.append( ( tag_id, num_current, num_pending ) )
             
         
-        self._ExecuteMany( 'DELETE FROM ' + cache_current_mappings_table_name + ' WHERE hash_id = ?;', ( ( hash_id, ) for hash_id in hash_ids ) )
-        self._ExecuteMany( 'DELETE FROM ' + cache_pending_mappings_table_name + ' WHERE hash_id = ?;', ( ( hash_id, ) for hash_id in hash_ids ) )
+        self._execute_many( 'DELETE FROM ' + cache_current_mappings_table_name + ' WHERE hash_id = ?;', ( ( hash_id, ) for hash_id in hash_ids ) )
+        self._execute_many( 'DELETE FROM ' + cache_pending_mappings_table_name + ' WHERE hash_id = ?;', ( ( hash_id, ) for hash_id in hash_ids ) )
         
         if len( counts_cache_changes ) > 0:
             
@@ -432,13 +432,13 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
             
             self.modules_mappings_cache_specific_display.DeleteMappings( file_service_id, tag_service_id, tag_id, filtered_hash_ids )
             
-            self._ExecuteMany( 'DELETE FROM ' + cache_current_mappings_table_name + ' WHERE hash_id = ? AND tag_id = ?;', ( ( hash_id, tag_id ) for hash_id in filtered_hash_ids ) )
+            self._execute_many( 'DELETE FROM ' + cache_current_mappings_table_name + ' WHERE hash_id = ? AND tag_id = ?;', ( ( hash_id, tag_id ) for hash_id in filtered_hash_ids ) )
             
-            num_deleted = self._GetRowCount()
+            num_deleted = self._get_row_count()
             
             #
             
-            self._ExecuteMany( 'INSERT OR IGNORE INTO ' + cache_deleted_mappings_table_name + ' ( hash_id, tag_id ) VALUES ( ?, ? );', ( ( hash_id, tag_id ) for hash_id in filtered_hash_ids ) )
+            self._execute_many( 'INSERT OR IGNORE INTO ' + cache_deleted_mappings_table_name + ' ( hash_id, tag_id ) VALUES ( ?, ? );', ( ( hash_id, tag_id ) for hash_id in filtered_hash_ids ) )
             
             if num_deleted > 0:
                 
@@ -459,9 +459,9 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
         
         BLOCK_SIZE = 10000
         
-        for ( num_done, num_to_do, block_of_hash_ids ) in HydrusLists.SplitListIntoChunksRich( hash_ids, BLOCK_SIZE ):
+        for ( num_done, num_to_do, block_of_hash_ids ) in HydrusLists.split_list_into_chunks_rich( hash_ids, BLOCK_SIZE ):
             
-            with self._MakeTemporaryIntegerTable( block_of_hash_ids, 'hash_id' ) as temp_hash_id_table_name:
+            with self._make_temporary_integer_table( block_of_hash_ids, 'hash_id' ) as temp_hash_id_table_name:
                 
                 self.AddFiles( file_service_id, tag_service_id, block_of_hash_ids, temp_hash_id_table_name )
                 
@@ -469,9 +469,9 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
         
         index_generation_dict = self._GetServiceIndexGenerationDictSingle( file_service_id, tag_service_id )
         
-        for ( table_name, columns, unique, version_added ) in self._FlattenIndexGenerationDict( index_generation_dict ):
+        for ( table_name, columns, unique, version_added ) in self._flatten_index_generation_dict( index_generation_dict ):
             
-            self._CreateIndex( table_name, columns, unique = unique )
+            self._create_index( table_name, columns, unique = unique )
             
         
         self.modules_db_maintenance.TouchAnalyzeNewTables()
@@ -483,13 +483,13 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
         
         file_service_ids_to_valid_hash_ids = collections.defaultdict( set )
         
-        with self._MakeTemporaryIntegerTable( hash_ids, 'hash_id' ) as temp_table_name:
+        with self._make_temporary_integer_table( hash_ids, 'hash_id' ) as temp_table_name:
             
             for file_service_id in file_service_ids:
                 
                 table_join = self.modules_files_storage.GetTableJoinLimitedByFileDomain( file_service_id, temp_table_name, HC.CONTENT_STATUS_CURRENT )
                 
-                valid_hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM {};'.format( table_join ) ) )
+                valid_hash_ids = self._sts( self._execute( 'SELECT hash_id FROM {};'.format( table_join ) ) )
                 
                 file_service_ids_to_valid_hash_ids[ file_service_id ] = valid_hash_ids
                 
@@ -504,13 +504,13 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
         
         file_service_ids_to_valid_hash_ids = collections.defaultdict( set )
         
-        with self._MakeTemporaryIntegerTable( all_hash_ids, 'hash_id' ) as temp_table_name:
+        with self._make_temporary_integer_table( all_hash_ids, 'hash_id' ) as temp_table_name:
             
             for file_service_id in file_service_ids:
                 
                 table_join = self.modules_files_storage.GetTableJoinLimitedByFileDomain( file_service_id, temp_table_name, HC.CONTENT_STATUS_CURRENT )
                 
-                valid_hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM {};'.format( table_join ) ) )
+                valid_hash_ids = self._sts( self._execute( 'SELECT hash_id FROM {};'.format( table_join ) ) )
                 
                 file_service_ids_to_valid_hash_ids[ file_service_id ] = valid_hash_ids
                 
@@ -524,13 +524,13 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
         return self._missing_tag_service_pairs
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         tables_and_columns = []
         
         if content_type == HC.CONTENT_TYPE_TAG:
             
-            table_dict = self._GetServicesTableGenerationDict()
+            table_dict = self._get_services_table_generation_dict()
             
             for table_name in table_dict.keys():
                 
@@ -539,7 +539,7 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
             
         elif content_type == HC.CONTENT_TYPE_HASH:
             
-            table_dict = self._GetServicesTableGenerationDict()
+            table_dict = self._get_services_table_generation_dict()
             
             for table_name in table_dict.keys():
                 
@@ -556,9 +556,9 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
             
             ( cache_current_mappings_table_name, cache_deleted_mappings_table_name, cache_pending_mappings_table_name ) = ClientDBMappingsStorage.GenerateSpecificMappingsCacheTableNames( file_service_id, tag_service_id )
             
-            self._ExecuteMany( 'INSERT OR IGNORE INTO ' + cache_pending_mappings_table_name + ' ( hash_id, tag_id ) VALUES ( ?, ? );', ( ( hash_id, tag_id ) for hash_id in filtered_hash_ids ) )
+            self._execute_many( 'INSERT OR IGNORE INTO ' + cache_pending_mappings_table_name + ' ( hash_id, tag_id ) VALUES ( ?, ? );', ( ( hash_id, tag_id ) for hash_id in filtered_hash_ids ) )
             
-            num_added = self._GetRowCount()
+            num_added = self._get_row_count()
             
             if num_added > 0:
                 
@@ -581,9 +581,9 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
             
             # delete what we have
             
-            self._ExecuteMany( f'DELETE FROM {cache_current_mappings_table_name} WHERE tag_id = ?;', ( ( tag_id, ) for tag_id in tag_ids ) )
-            self._ExecuteMany( f'DELETE FROM {cache_deleted_mappings_table_name} WHERE tag_id = ?;', ( ( tag_id, ) for tag_id in tag_ids ) )
-            self._ExecuteMany( f'DELETE FROM {cache_pending_mappings_table_name} WHERE tag_id = ?;', ( ( tag_id, ) for tag_id in tag_ids ) )
+            self._execute_many( f'DELETE FROM {cache_current_mappings_table_name} WHERE tag_id = ?;', ( ( tag_id, ) for tag_id in tag_ids ) )
+            self._execute_many( f'DELETE FROM {cache_deleted_mappings_table_name} WHERE tag_id = ?;', ( ( tag_id, ) for tag_id in tag_ids ) )
+            self._execute_many( f'DELETE FROM {cache_pending_mappings_table_name} WHERE tag_id = ?;', ( ( tag_id, ) for tag_id in tag_ids ) )
             
             self.modules_mappings_counts.ClearCounts( ClientTags.TAG_DISPLAY_STORAGE, file_service_id, tag_service_id, tag_ids = tag_ids )
             
@@ -597,19 +597,19 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
         
         for tag_id in tag_ids:
             
-            hash_ids = self._STL( self._Execute( f'SELECT hash_id FROM {current_mappings_table_name} WHERE tag_id = ?;', ( tag_id, ) ) )
+            hash_ids = self._stl( self._execute( f'SELECT hash_id FROM {current_mappings_table_name} WHERE tag_id = ?;', ( tag_id, ) ) )
             
             filtered_hashes_generator = self.GetFilteredHashesGenerator( file_service_ids, tag_service_id, hash_ids )
             
             self.AddMappings( tag_service_id, tag_id, hash_ids, filtered_hashes_generator )
             
-            hash_ids = self._STL( self._Execute( f'SELECT hash_id FROM {deleted_mappings_table_name} WHERE tag_id = ?;', ( tag_id, ) ) )
+            hash_ids = self._stl( self._execute( f'SELECT hash_id FROM {deleted_mappings_table_name} WHERE tag_id = ?;', ( tag_id, ) ) )
             
             filtered_hashes_generator = self.GetFilteredHashesGenerator( file_service_ids, tag_service_id, hash_ids )
             
             self.DeleteMappings( tag_service_id, tag_id, hash_ids, filtered_hashes_generator )
             
-            hash_ids = self._STL( self._Execute( f'SELECT hash_id FROM {pending_mappings_table_name} WHERE tag_id = ?;', ( tag_id, ) ) )
+            hash_ids = self._stl( self._execute( f'SELECT hash_id FROM {pending_mappings_table_name} WHERE tag_id = ?;', ( tag_id, ) ) )
             
             filtered_hashes_generator = self.GetFilteredHashesGenerator( file_service_ids, tag_service_id, hash_ids )
             
@@ -629,11 +629,11 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
             status_hook( message )
             
         
-        all_pending_storage_tag_ids = self._STS( self._Execute( 'SELECT DISTINCT tag_id FROM {};'.format( pending_mappings_table_name ) ) )
+        all_pending_storage_tag_ids = self._sts( self._execute( 'SELECT DISTINCT tag_id FROM {};'.format( pending_mappings_table_name ) ) )
         
         self.modules_mappings_counts.ClearCounts( ClientTags.TAG_DISPLAY_STORAGE, file_service_id, tag_service_id, keep_current = True )
         
-        self._Execute( 'DELETE FROM {};'.format( cache_pending_mappings_table_name ) )
+        self._execute( 'DELETE FROM {};'.format( cache_pending_mappings_table_name ) )
         
         counts_cache_changes = []
         
@@ -645,14 +645,14 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
             
             if i % 100 == 0 and status_hook is not None:
                 
-                message = 'regenerating pending tags {}'.format( HydrusNumbers.ValueRangeToPrettyString( i + 1, num_to_do ) )
+                message = 'regenerating pending tags {}'.format( HydrusNumbers.value_range_to_pretty_string( i + 1, num_to_do ) )
                 
                 status_hook( message )
                 
             
-            self._Execute( 'INSERT OR IGNORE INTO {} ( tag_id, hash_id ) SELECT tag_id, hash_id FROM {} WHERE tag_id = ?;'.format( cache_pending_mappings_table_name, select_table_join ), ( storage_tag_id, ) )
+            self._execute( 'INSERT OR IGNORE INTO {} ( tag_id, hash_id ) SELECT tag_id, hash_id FROM {} WHERE tag_id = ?;'.format( cache_pending_mappings_table_name, select_table_join ), ( storage_tag_id, ) )
             
-            pending_delta = self._GetRowCount()
+            pending_delta = self._get_row_count()
             
             counts_cache_changes.append( ( storage_tag_id, 0, pending_delta ) )
             
@@ -670,9 +670,9 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
             
             self.modules_mappings_cache_specific_display.RescindPendingMappings( file_service_id, tag_service_id, tag_id, filtered_hash_ids )
             
-            self._ExecuteMany( 'DELETE FROM ' + cache_pending_mappings_table_name + ' WHERE hash_id = ? AND tag_id = ?;', ( ( hash_id, tag_id ) for hash_id in filtered_hash_ids ) )
+            self._execute_many( 'DELETE FROM ' + cache_pending_mappings_table_name + ' WHERE hash_id = ? AND tag_id = ?;', ( ( hash_id, tag_id ) for hash_id in filtered_hash_ids ) )
             
-            num_deleted = self._GetRowCount()
+            num_deleted = self._get_row_count()
             
             if num_deleted > 0:
                 

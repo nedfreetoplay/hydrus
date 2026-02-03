@@ -563,7 +563,7 @@ class EditLoginsPanel( ClientGUIScrolledPanels.EditPanel ):
             
             ( login_domain, login_script_key_and_name, credentials_tuple, login_access_type, login_access_text, active, validity, validity_error_text, no_work_until, no_work_until_reason ) = domain_and_login_info
             
-            if not HydrusTime.TimeHasPassed( no_work_until ) or no_work_until_reason != '':
+            if not HydrusTime.time_has_passed( no_work_until ) or no_work_until_reason != '':
                 
                 return True
                 
@@ -667,20 +667,20 @@ class EditLoginsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         if login_expiry is None:
             
-            sort_login_expiry = HydrusTime.GetNow() + 45 * 60
+            sort_login_expiry = HydrusTime.get_now() + 45 * 60
             
         else:
             
             sort_login_expiry = login_expiry
             
         
-        if HydrusTime.TimeHasPassed( no_work_until ):
+        if HydrusTime.time_has_passed( no_work_until ):
             
             pretty_no_work_until = ''
             
         else:
             
-            pretty_no_work_until = '{} - {}'.format( HydrusTime.TimestampToPrettyExpires( no_work_until ), no_work_until_reason )
+            pretty_no_work_until = '{} - {}'.format( HydrusTime.timestamp_to_pretty_expires( no_work_until ), no_work_until_reason )
             
         
         pretty_login_domain = login_domain
@@ -705,7 +705,7 @@ class EditLoginsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
             else:
                 
-                pretty_login_expiry = HydrusTime.TimestampToPrettyExpires( login_expiry )
+                pretty_login_expiry = HydrusTime.timestamp_to_pretty_expires( login_expiry )
                 
             
             pretty_logged_in = 'yes - {}'.format( pretty_login_expiry )
@@ -768,7 +768,7 @@ class EditLoginsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         if login_expiry is None:
             
-            sort_login_expiry = HydrusTime.GetNow() + 45 * 60
+            sort_login_expiry = HydrusTime.get_now() + 45 * 60
             
         else:
             
@@ -1487,7 +1487,7 @@ class EditLoginScriptPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 new_credential_definition = panel.GetValue()
                 
-                HydrusSerialisable.SetNonDupeName( new_credential_definition, self._GetExistingCredentialDefinitionNames() )
+                HydrusSerialisable.set_non_dupe_name( new_credential_definition, self._GetExistingCredentialDefinitionNames() )
                 
                 self._credential_definitions.AddData( new_credential_definition, select_sort_and_scroll = True )
                 
@@ -1674,7 +1674,7 @@ class EditLoginScriptPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 existing_names.discard( credential_definition.GetName() )
                 
-                HydrusSerialisable.SetNonDupeName( edited_credential_definition, existing_names )
+                HydrusSerialisable.set_non_dupe_name( edited_credential_definition, existing_names )
                 
                 self._credential_definitions.ReplaceData( credential_definition, edited_credential_definition, sort_and_scroll = True )
                 
@@ -1712,12 +1712,12 @@ class EditLoginScriptPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 bandwidth_manager = ClientNetworkingBandwidth.NetworkBandwidthManager()
                 session_manager = ClientNetworkingSessions.NetworkSessionManager()
-                domain_manager = CG.client_controller.network_engine.domain_manager.Duplicate() # keep custom headers from current domain stuff
+                domain_manager = CG.client_controller.network_engine.domain_manager.duplicate() # keep custom headers from current domain stuff
                 login_manager = ClientNetworkingLogin.NetworkLoginManager()
                 
                 network_engine = ClientNetworking.NetworkEngine( CG.client_controller, bandwidth_manager, session_manager, domain_manager, login_manager )
                 
-                CG.client_controller.CallToThreadLongRunning( network_engine.MainLoop )
+                CG.client_controller.call_to_thread_long_running( network_engine.MainLoop )
                 
                 network_context = ClientNetworkingContexts.NetworkContext.STATICGenerateForDomain( domain )
                 
@@ -1727,8 +1727,8 @@ class EditLoginScriptPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 login_result = str( e )
                 
-                HydrusData.Print( 'During login test, encountered this halt/error:' )
-                HydrusData.PrintException( e )
+                HydrusData.print_text( 'During login test, encountered this halt/error:' )
+                HydrusData.print_exception( e )
                 
             finally:
                 
@@ -1806,7 +1806,7 @@ class EditLoginScriptPanel( ClientGUIScrolledPanels.EditPanel ):
         
         self._currently_testing = True
         
-        CG.client_controller.CallToThread( do_it, login_script, self._test_domain, self._test_credentials, network_job_presentation_context_factory )
+        CG.client_controller.call_to_thread( do_it, login_script, self._test_domain, self._test_credentials, network_job_presentation_context_factory )
         
     
     def _EditExampleDomainsInfo( self ):
@@ -2021,7 +2021,7 @@ class EditLoginScriptsPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _AddLoginScript( self, login_script ):
         
-        HydrusSerialisable.SetNonDupeName( login_script, self._GetExistingNames() )
+        HydrusSerialisable.set_non_dupe_name( login_script, self._GetExistingNames() )
         
         login_script.RegenerateLoginScriptKey()
         
@@ -2077,7 +2077,7 @@ class EditLoginScriptsPanel( ClientGUIScrolledPanels.EditPanel ):
                 existing_names = self._GetExistingNames()
                 existing_names.discard( login_script.GetName() )
                 
-                HydrusSerialisable.SetNonDupeName( edited_login_script, existing_names )
+                HydrusSerialisable.set_non_dupe_name( edited_login_script, existing_names )
                 
                 self._login_scripts.ReplaceData( login_script, edited_login_script, sort_and_scroll = True )
                 

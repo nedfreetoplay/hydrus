@@ -46,21 +46,21 @@ class HydrusResourceClientAPIRestrictedManageFavouriteTagsSetFavouriteTags( Hydr
         
         if 'set' in request.parsed_request_args:
             
-            set_tags = request.parsed_request_args.GetValue( 'set', list, expected_list_type = str )
+            set_tags = request.parsed_request_args.get_value( 'set', list, expected_list_type = str )
             
-            set_tags = HydrusTags.CleanTags( set_tags )
+            set_tags = HydrusTags.clean_tags( set_tags )
             
             favourite_tags = set_tags
             
         else:
             
-            add_tags = request.parsed_request_args.GetValue( 'add', list, expected_list_type = str, default_value = [] )
+            add_tags = request.parsed_request_args.get_value( 'add', list, expected_list_type = str, default_value = [] )
             
-            remove_tags = request.parsed_request_args.GetValue( 'remove', list, expected_list_type = str, default_value = [] )
+            remove_tags = request.parsed_request_args.get_value( 'remove', list, expected_list_type = str, default_value = [] )
             
-            add_tags = HydrusTags.CleanTags( add_tags )
+            add_tags = HydrusTags.clean_tags( add_tags )
             
-            remove_tags = HydrusTags.CleanTags( remove_tags )
+            remove_tags = HydrusTags.clean_tags( remove_tags )
             
             favourite_tags = set( favourite_tags )
             
@@ -69,7 +69,7 @@ class HydrusResourceClientAPIRestrictedManageFavouriteTagsSetFavouriteTags( Hydr
             favourite_tags.difference_update( remove_tags )
             
         
-        favourite_tags = sorted( favourite_tags, key = HydrusText.HumanTextSortKey )
+        favourite_tags = sorted( favourite_tags, key = HydrusText.human_text_sort_key )
         
         CG.client_controller.new_options.SetStringList( 'favourite_tags', favourite_tags )
         

@@ -47,7 +47,7 @@ MOCK_SUBDOMAIN = 'top.wew.lad'
 MOCK_URL = 'https://wew.lad/folder/request&key1=value1&key2=value2'
 MOCK_SUBURL = 'https://top.wew.lad/folder2/request&key1=value1&key2=value2'
 
-MOCK_HYDRUS_SERVICE_KEY = HydrusData.GenerateKey()
+MOCK_HYDRUS_SERVICE_KEY = HydrusData.generate_key()
 MOCK_HYDRUS_ADDRESS = '123.45.67.89'
 MOCK_HYDRUS_DOMAIN = '123.45.67.89:45871'
 MOCK_HYDRUS_URL = 'https://123.45.67.89:45871/muh_hydrus_command'
@@ -80,19 +80,19 @@ class TestBandwidthManager( unittest.TestCase ):
         
         PERMISSIVE_DATA_RULES = HydrusNetworking.BandwidthRules()
         
-        PERMISSIVE_DATA_RULES.AddRule( HC.BANDWIDTH_TYPE_DATA, None, 1048576 )
+        PERMISSIVE_DATA_RULES.add_rule( HC.BANDWIDTH_TYPE_DATA, None, 1048576 )
         
         PERMISSIVE_REQUEST_RULES = HydrusNetworking.BandwidthRules()
         
-        PERMISSIVE_REQUEST_RULES.AddRule( HC.BANDWIDTH_TYPE_REQUESTS, None, 10000 )
+        PERMISSIVE_REQUEST_RULES.add_rule( HC.BANDWIDTH_TYPE_REQUESTS, None, 10000 )
         
         RESTRICTIVE_DATA_RULES = HydrusNetworking.BandwidthRules()
         
-        RESTRICTIVE_DATA_RULES.AddRule( HC.BANDWIDTH_TYPE_DATA, None, 10 )
+        RESTRICTIVE_DATA_RULES.add_rule( HC.BANDWIDTH_TYPE_DATA, None, 10 )
         
         RESTRICTIVE_REQUEST_RULES = HydrusNetworking.BandwidthRules()
         
-        RESTRICTIVE_REQUEST_RULES.AddRule( HC.BANDWIDTH_TYPE_REQUESTS, None, 1 )
+        RESTRICTIVE_REQUEST_RULES.add_rule( HC.BANDWIDTH_TYPE_REQUESTS, None, 1 )
         
         DOMAIN_NETWORK_CONTEXT = ClientNetworkingContexts.NetworkContext( CC.NETWORK_CONTEXT_DOMAIN, MOCK_DOMAIN )
         SUBDOMAIN_NETWORK_CONTEXT = ClientNetworkingContexts.NetworkContext( CC.NETWORK_CONTEXT_DOMAIN, MOCK_SUBDOMAIN )
@@ -103,7 +103,7 @@ class TestBandwidthManager( unittest.TestCase ):
         
         #
         
-        fast_forward = HydrusTime.GetNow() + 3600
+        fast_forward = HydrusTime.get_now() + 3600
         
         with mock.patch.object( HydrusTime, 'GetNow', return_value = fast_forward ):
             
@@ -1297,7 +1297,7 @@ class TestNetworkingJob( unittest.TestCase ):
         
         self.assertTrue( job.IsAsleep() )
         
-        five_secs_from_now = HydrusTime.GetNowFloat() + 5
+        five_secs_from_now = HydrusTime.get_now_float() + 5
         
         with mock.patch.object( HydrusTime, 'GetNowFloat', return_value = five_secs_from_now ):
             
@@ -1309,7 +1309,7 @@ class TestNetworkingJob( unittest.TestCase ):
         
         RESTRICTIVE_DATA_RULES = HydrusNetworking.BandwidthRules()
         
-        RESTRICTIVE_DATA_RULES.AddRule( HC.BANDWIDTH_TYPE_DATA, None, 10 )
+        RESTRICTIVE_DATA_RULES.add_rule( HC.BANDWIDTH_TYPE_DATA, None, 10 )
         
         DOMAIN_NETWORK_CONTEXT = ClientNetworkingContexts.NetworkContext( CC.NETWORK_CONTEXT_DOMAIN, MOCK_DOMAIN )
         
@@ -1342,7 +1342,7 @@ class TestNetworkingJob( unittest.TestCase ):
         
         PERMISSIVE_DATA_RULES = HydrusNetworking.BandwidthRules()
         
-        PERMISSIVE_DATA_RULES.AddRule( HC.BANDWIDTH_TYPE_DATA, None, 1048576 )
+        PERMISSIVE_DATA_RULES.add_rule( HC.BANDWIDTH_TYPE_DATA, None, 1048576 )
         
         DOMAIN_NETWORK_CONTEXT = ClientNetworkingContexts.NetworkContext( CC.NETWORK_CONTEXT_DOMAIN, MOCK_DOMAIN )
         
@@ -1481,7 +1481,7 @@ class TestNetworkingJobHydrus( unittest.TestCase ):
         
         RESTRICTIVE_DATA_RULES = HydrusNetworking.BandwidthRules()
         
-        RESTRICTIVE_DATA_RULES.AddRule( HC.BANDWIDTH_TYPE_DATA, None, 10 )
+        RESTRICTIVE_DATA_RULES.add_rule( HC.BANDWIDTH_TYPE_DATA, None, 10 )
         
         HYDRUS_NETWORK_CONTEXT = ClientNetworkingContexts.NetworkContext( CC.NETWORK_CONTEXT_HYDRUS, MOCK_HYDRUS_SERVICE_KEY )
         
@@ -1514,7 +1514,7 @@ class TestNetworkingJobHydrus( unittest.TestCase ):
         
         PERMISSIVE_DATA_RULES = HydrusNetworking.BandwidthRules()
         
-        PERMISSIVE_DATA_RULES.AddRule( HC.BANDWIDTH_TYPE_DATA, None, 1048576 )
+        PERMISSIVE_DATA_RULES.add_rule( HC.BANDWIDTH_TYPE_DATA, None, 1048576 )
         
         HYDRUS_NETWORK_CONTEXT = ClientNetworkingContexts.NetworkContext( CC.NETWORK_CONTEXT_HYDRUS, MOCK_HYDRUS_SERVICE_KEY )
         

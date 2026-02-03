@@ -43,7 +43,7 @@ class NetworkSessionManagerSessionContainer( HydrusSerialisable.SerialisableBase
         
         self.network_context = network_context
         self.session = session
-        self.last_touched_time = HydrusTime.GetNow()
+        self.last_touched_time = HydrusTime.get_now()
         
         self.pool_is_cleared = True
         self.printed_connection_pool_error = False
@@ -59,9 +59,9 @@ class NetworkSessionManagerSessionContainer( HydrusSerialisable.SerialisableBase
             
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_network_context = self.network_context.GetSerialisableTuple()
+        serialisable_network_context = self.network_context.get_serialisable_tuple()
         
         self.session.cookies.clear_session_cookies()
         
@@ -70,11 +70,11 @@ class NetworkSessionManagerSessionContainer( HydrusSerialisable.SerialisableBase
         return ( serialisable_network_context, pickled_cookies_hex )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( serialisable_network_context, pickled_cookies_hex ) = serialisable_info
         
-        self.network_context = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_network_context )
+        self.network_context = HydrusSerialisable.create_from_serialisable_tuple( serialisable_network_context )
         
         self._InitialiseEmptySession()
         
@@ -86,13 +86,13 @@ class NetworkSessionManagerSessionContainer( HydrusSerialisable.SerialisableBase
             
         except:
             
-            HydrusData.Print( "Could not load and set cookies for session {}".format( self.network_context ) )
+            HydrusData.print_text( "Could not load and set cookies for session {}".format( self.network_context ) )
             
         
         self.session.cookies.clear_session_cookies()
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -117,7 +117,7 @@ class NetworkSessionManagerSessionContainer( HydrusSerialisable.SerialisableBase
     
     def MaintainConnectionPool( self ):
         
-        if not self.pool_is_cleared and HydrusTime.TimeHasPassed( self.last_touched_time + self.POOL_CONNECTION_TIMEOUT ):
+        if not self.pool_is_cleared and HydrusTime.time_has_passed( self.last_touched_time + self.POOL_CONNECTION_TIMEOUT ):
             
             try:
                 
@@ -141,8 +141,8 @@ class NetworkSessionManagerSessionContainer( HydrusSerialisable.SerialisableBase
                     
                     self.printed_connection_pool_error = True
                     
-                    HydrusData.Print( 'There was a problem clearing the connection pool. The full error should follow. To stop spam, this message will only show one time per program boot. The error may happen again, silently.' )
-                    HydrusData.PrintException( e, do_wait = False )
+                    HydrusData.print_text( 'There was a problem clearing the connection pool. The full error should follow. To stop spam, this message will only show one time per program boot. The error may happen again, silently.' )
+                    HydrusData.print_exception( e, do_wait = False )
                     
                 
             
@@ -150,12 +150,12 @@ class NetworkSessionManagerSessionContainer( HydrusSerialisable.SerialisableBase
     
     def PrepareForNewWork( self ):
         
-        self.last_touched_time = HydrusTime.GetNow()
+        self.last_touched_time = HydrusTime.get_now()
         self.pool_is_cleared = False
         
         my_session_cookies = self.session.cookies
         
-        if HydrusTime.TimeHasPassed( self.last_touched_time + self.SESSION_TIMEOUT ):
+        if HydrusTime.time_has_passed( self.last_touched_time + self.SESSION_TIMEOUT ):
             
             my_session_cookies.clear_session_cookies()
             
@@ -195,7 +195,7 @@ class NetworkSessionManager( HydrusSerialisable.SerialisableBase ):
         CG.client_controller.sub( self, 'MaintainConnectionPools', 'memory_maintenance_pulse' )
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         return sorted( self._session_container_names )
         
@@ -232,7 +232,7 @@ class NetworkSessionManager( HydrusSerialisable.SerialisableBase ):
         return network_context
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         self._session_container_names = set( serialisable_info )
         
@@ -246,7 +246,7 @@ class NetworkSessionManager( HydrusSerialisable.SerialisableBase ):
             session.verify = False
             
         
-        session_container_name = HydrusData.GenerateKey().hex()
+        session_container_name = HydrusData.generate_key().hex()
         
         session_container = NetworkSessionManagerSessionContainer( session_container_name, network_context = network_context, session = session )
         
@@ -443,7 +443,7 @@ class NetworkSessionManager( HydrusSerialisable.SerialisableBase ):
             
             for session_container in session_containers:
                 
-                session_container_name = session_container.GetName()
+                session_container_name = session_container.get_name()
                 
                 self._session_container_names_to_session_containers[ session_container_name ] = session_container
                 self._network_contexts_to_session_containers[ session_container.network_context ] = session_container

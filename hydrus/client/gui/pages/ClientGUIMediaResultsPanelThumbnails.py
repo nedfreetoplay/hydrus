@@ -89,12 +89,12 @@ class ThumbnailWaitingToBeDrawnAnimated( ThumbnailWaitingToBeDrawn ):
         
         self.alpha_bmp = QP.AdjustOpacity( self.bitmap, opacity_factor )
         
-        self.animation_started_precise = HydrusTime.GetNowPrecise()
+        self.animation_started_precise = HydrusTime.get_now_precise()
         
     
     def _GetNumFramesOutstanding( self ):
         
-        now_precise = HydrusTime.GetNowPrecise()
+        now_precise = HydrusTime.get_now_precise()
         
         num_frames_to_now = int( ( now_precise - self.animation_started_precise ) // FRAME_DURATION_60FPS )
         
@@ -368,7 +368,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
             return
             
         
-        now_precise = HydrusTime.GetNowPrecise()
+        now_precise = HydrusTime.get_now_precise()
         
         for thumbnail in thumbnails:
             
@@ -689,7 +689,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                         message = 'Hey, it looks like one of the thumbnail views on a page not currently in view'
                         
                     
-                    message += f' is very very very tall. I want to make it {HydrusNumbers.ToHumanInt( virtual_height )} pixels tall, but Qt only supports a max virtual scroll height of {HydrusNumbers.ToHumanInt( MAX_HEIGHT )} pixels.'
+                    message += f' is very very very tall. I want to make it {HydrusNumbers.to_human_int( virtual_height )} pixels tall, but Qt only supports a max virtual scroll height of {HydrusNumbers.to_human_int( MAX_HEIGHT )} pixels.'
                     message += '\n\n'
                     message += 'This page will handle ctrl+a and do its math correct (albeit slowly!), but you will not be able to scroll down all the way. This situation is probably not stable and you should rethink your query (e.g. adding a system:limit and doing the job in batches) before there is a real problem.'
                     message += '\n\n'
@@ -972,7 +972,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                 # prefire deal here is mpv lags on initial click, which can cause a drag (and hence an immediate pause) event by accident when mouserelease isn't processed quick
                 # so now we'll say we can't start a drag unless we get a smooth ramp to our pixel delta threshold
                 clean_drag_started = self._drag_prefire_event_count >= 10
-                prob_not_an_accidental_click = HydrusTime.TimeHasPassedMS( self._drag_click_timestamp_ms + 100 )
+                prob_not_an_accidental_click = HydrusTime.time_has_passed_ms( self._drag_click_timestamp_ms + 100 )
                 
                 if clean_drag_started and prob_not_an_accidental_click:
                     
@@ -1252,7 +1252,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         selection_has_archive = True in ( media.HasArchive() and media.GetLocationsManager().IsLocal() for media in self._selected_media )
         selection_has_deletion_record = True in ( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY in locations_manager.GetDeleted() for locations_manager in selected_locations_managers )
         
-        all_file_domains = HydrusLists.MassUnion( locations_manager.GetCurrent() for locations_manager in all_locations_managers )
+        all_file_domains = HydrusLists.mass_union( locations_manager.GetCurrent() for locations_manager in all_locations_managers )
         all_specific_file_domains = all_file_domains.difference( { CC.COMBINED_FILE_SERVICE_KEY, CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY } )
         
         some_downloading = True in ( locations_manager.IsDownloading() for locations_manager in selected_locations_managers )
@@ -1351,15 +1351,15 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         groups_of_petitioned_remote_service_keys = [ locations_manager.GetPetitioned().intersection( remote_service_keys ) for locations_manager in selected_locations_managers ]
         groups_of_deleted_remote_service_keys = [ locations_manager.GetDeleted().intersection( remote_service_keys ) for locations_manager in selected_locations_managers ]
         
-        current_remote_service_keys = HydrusLists.MassUnion( groups_of_current_remote_service_keys )
-        pending_remote_service_keys = HydrusLists.MassUnion( groups_of_pending_remote_service_keys )
-        petitioned_remote_service_keys = HydrusLists.MassUnion( groups_of_petitioned_remote_service_keys )
-        deleted_remote_service_keys = HydrusLists.MassUnion( groups_of_deleted_remote_service_keys )
+        current_remote_service_keys = HydrusLists.mass_union( groups_of_current_remote_service_keys )
+        pending_remote_service_keys = HydrusLists.mass_union( groups_of_pending_remote_service_keys )
+        petitioned_remote_service_keys = HydrusLists.mass_union( groups_of_petitioned_remote_service_keys )
+        deleted_remote_service_keys = HydrusLists.mass_union( groups_of_deleted_remote_service_keys )
         
-        common_current_remote_service_keys = HydrusLists.IntelligentMassIntersect( groups_of_current_remote_service_keys )
-        common_pending_remote_service_keys = HydrusLists.IntelligentMassIntersect( groups_of_pending_remote_service_keys )
-        common_petitioned_remote_service_keys = HydrusLists.IntelligentMassIntersect( groups_of_petitioned_remote_service_keys )
-        common_deleted_remote_service_keys = HydrusLists.IntelligentMassIntersect( groups_of_deleted_remote_service_keys )
+        common_current_remote_service_keys = HydrusLists.intelligent_mass_intersect( groups_of_current_remote_service_keys )
+        common_pending_remote_service_keys = HydrusLists.intelligent_mass_intersect( groups_of_pending_remote_service_keys )
+        common_petitioned_remote_service_keys = HydrusLists.intelligent_mass_intersect( groups_of_petitioned_remote_service_keys )
+        common_deleted_remote_service_keys = HydrusLists.intelligent_mass_intersect( groups_of_deleted_remote_service_keys )
         
         disparate_current_remote_service_keys = current_remote_service_keys - common_current_remote_service_keys
         disparate_pending_remote_service_keys = pending_remote_service_keys - common_pending_remote_service_keys
@@ -1702,7 +1702,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
             
             if num_notes > 0:
                 
-                notes_str = '{} ({})'.format( notes_str, HydrusNumbers.ToHumanInt( num_notes ) )
+                notes_str = '{} ({})'.format( notes_str, HydrusNumbers.to_human_int( num_notes ) )
                 
             
             ClientGUIMenus.AppendMenuItem( manage_menu, notes_str, 'Manage notes for the focused file.', self._ManageNotes )
@@ -1891,7 +1891,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
     
     def TIMERAnimationUpdate( self ):
         
-        loop_should_break_time = HydrusTime.GetNowPrecise() + ( FRAME_DURATION_60FPS / 2 )
+        loop_should_break_time = HydrusTime.get_now_precise() + ( FRAME_DURATION_60FPS / 2 )
         
         ( thumbnail_span_width, thumbnail_span_height ) = self._GetThumbnailSpanDimensions()
         
@@ -1903,7 +1903,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         
         page_height = self._num_rows_per_canvas_page * thumbnail_span_height
         
-        for hash in HydrusLists.IterateListRandomlyAndFast( hashes ):
+        for hash in HydrusLists.iterate_list_randomly_and_fast( hashes ):
             
             thumbnail_draw_object = self._hashes_to_thumbnails_waiting_to_be_drawn[ hash ]
             
@@ -1968,7 +1968,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                 del self._hashes_to_thumbnails_waiting_to_be_drawn[ hash ]
                 
             
-            if HydrusTime.TimeHasPassedPrecise( loop_should_break_time ):
+            if HydrusTime.time_has_passed_precise( loop_should_break_time ):
                 
                 break
                 
@@ -2008,7 +2008,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         def mousePressEvent( self, event ):
             
             self._parent._drag_init_coordinates = QG.QCursor.pos()
-            self._parent._drag_click_timestamp_ms = HydrusTime.GetNowMS()
+            self._parent._drag_click_timestamp_ms = HydrusTime.get_now_ms()
             
             thumb = self._parent._GetThumbnailUnderMouse( event )
             
@@ -2335,7 +2335,7 @@ class Thumbnail( Selectable ):
             
         except Exception as e:
             
-            HydrusData.ShowText( f'Failed to render thumbnail for file {media.GetDisplayMedia().GetHash().hex()}!' )
+            HydrusData.show_text( f'Failed to render thumbnail for file {media.GetDisplayMedia().GetHash().hex()}!' )
             HydrusData.ShowException( e, do_wait = False )
             
             thumbnail_hydrus_bmp = CG.client_controller.thumbnails_cache.GetHydrusPlaceholderThumbnail()
@@ -2687,7 +2687,7 @@ class Thumbnail( Selectable ):
             
             icon = CC.global_pixmaps().collection
             
-            num_files_str = HydrusNumbers.ToHumanInt( media.GetNumFiles() )
+            num_files_str = HydrusNumbers.to_human_int( media.GetNumFiles() )
             
             ( text_size, num_files_str ) = ClientGUIFunctions.GetTextSizeFromPainter( painter, num_files_str )
             

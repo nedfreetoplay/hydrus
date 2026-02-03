@@ -174,7 +174,7 @@ class TestMigration( unittest.TestCase ):
         
         for i in range( 20 ):
             
-            service_key = HydrusData.GenerateKey()
+            service_key = HydrusData.generate_key()
             
             services.append( ClientServices.GenerateService( service_key, HC.TAG_REPOSITORY, 'test repo {}'.format( i ) ) )
             
@@ -205,7 +205,7 @@ class TestMigration( unittest.TestCase ):
         
         for i in range( 100 ):
             
-            hash = HydrusData.GenerateKey()
+            hash = HydrusData.generate_key()
             md5 = os.urandom( 16 )
             sha1 = os.urandom( 20 )
             sha512 = os.urandom( 64 )
@@ -329,28 +329,28 @@ class TestMigration( unittest.TestCase ):
         md5_hta = HydrusTagArchive.HydrusTagArchive( md5_hta_path )
         sha256_hta = HydrusTagArchive.HydrusTagArchive( sha256_hta_path )
         
-        md5_hta.SetHashType( HydrusTagArchive.HASH_TYPE_MD5 )
-        sha256_hta.SetHashType( HydrusTagArchive.HASH_TYPE_SHA256 )
+        md5_hta.set_hash_type( HydrusTagArchive.HASH_TYPE_MD5 )
+        sha256_hta.set_hash_type( HydrusTagArchive.HASH_TYPE_SHA256 )
         
-        md5_hta.BeginBigJob()
-        sha256_hta.BeginBigJob()
+        md5_hta.begin_big_job()
+        sha256_hta.begin_big_job()
         
         for ( hash, tags ) in self._hashes_to_current_tags.items():
             
             md5 = self._sha256_to_md5[ hash ]
             
-            md5_hta.AddMappings( md5, tags )
-            sha256_hta.AddMappings( hash, tags )
+            md5_hta.add_mappings( md5, tags )
+            sha256_hta.add_mappings( hash, tags )
             
         
-        md5_hta.CommitBigJob()
-        sha256_hta.CommitBigJob()
+        md5_hta.commit_big_job()
+        sha256_hta.commit_big_job()
         
-        md5_hta.Optimise()
-        sha256_hta.Optimise()
+        md5_hta.optimise()
+        sha256_hta.optimise()
         
-        md5_hta.Close()
-        sha256_hta.Close()
+        md5_hta.close()
+        sha256_hta.close()
         
         del md5_hta
         del sha256_hta
@@ -427,19 +427,19 @@ class TestMigration( unittest.TestCase ):
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( '', HC.FILTER_WHITELIST )
-        tag_filter.SetRule( ':', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( '', HC.FILTER_WHITELIST )
+        tag_filter.set_rule( ':', HC.FILTER_BLACKLIST )
         
         source = ClientMigration.MigrationSourceHTA( self, md5_hta_path, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY ), 'md5', None, tag_filter )
         
-        expected_data = [ ( self._sha256_to_md5[ hash ], tag_filter.Filter( tags ) ) for ( hash, tags ) in self._hashes_to_current_tags.items() ]
+        expected_data = [ ( self._sha256_to_md5[ hash ], tag_filter.filter( tags ) ) for ( hash, tags ) in self._hashes_to_current_tags.items() ]
         expected_data = [ ( hash, tags ) for ( hash, tags ) in expected_data if len( tags ) > 0 ]
         
         run_test( source, expected_data )
         
         source = ClientMigration.MigrationSourceHTA( self, sha256_hta_path, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY ), 'sha256', None, tag_filter )
         
-        expected_data = [ ( hash, tag_filter.Filter( tags ) ) for ( hash, tags ) in self._hashes_to_current_tags.items() ]
+        expected_data = [ ( hash, tag_filter.filter( tags ) ) for ( hash, tags ) in self._hashes_to_current_tags.items() ]
         expected_data = [ ( hash, tags ) for ( hash, tags ) in expected_data if len( tags ) > 0 ]
         
         run_test( source, expected_data )
@@ -462,11 +462,11 @@ class TestMigration( unittest.TestCase ):
             
             hta = HydrusTagArchive.HydrusTagArchive( destination_path )
             
-            result = list( hta.IterateMappings() )
+            result = list( hta.iterate_mappings() )
             
             self.assertEqual( dict( result ), dict( expected_data ) )
             
-            hta.Close()
+            hta.close()
             
         
         md5_hta_path = os.path.join( TestController.DB_DIR, 'md5hta.db' )
@@ -564,19 +564,19 @@ class TestMigration( unittest.TestCase ):
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( '', HC.FILTER_WHITELIST )
-        tag_filter.SetRule( ':', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( '', HC.FILTER_WHITELIST )
+        tag_filter.set_rule( ':', HC.FILTER_BLACKLIST )
         
         source = ClientMigration.MigrationSourceTagServiceMappings( self, CC.DEFAULT_LOCAL_TAG_SERVICE_KEY, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY ), 'sha256', None, tag_filter, ( HC.CONTENT_STATUS_CURRENT, ) )
         
-        expected_data = [ ( hash, tag_filter.Filter( tags ) ) for ( hash, tags ) in self._hashes_to_current_tags.items() ]
+        expected_data = [ ( hash, tag_filter.filter( tags ) ) for ( hash, tags ) in self._hashes_to_current_tags.items() ]
         expected_data = [ ( hash, tags ) for ( hash, tags ) in expected_data if len( tags ) > 0 ]
         
         run_test( source, expected_data )
         
         source = ClientMigration.MigrationSourceTagServiceMappings( self, tag_repo_service_key, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY ), 'sha256', None, tag_filter, ( HC.CONTENT_STATUS_CURRENT, ) )
         
-        expected_data = [ ( hash, tag_filter.Filter( tags ) ) for ( hash, tags ) in self._hashes_to_current_tags.items() ]
+        expected_data = [ ( hash, tag_filter.filter( tags ) ) for ( hash, tags ) in self._hashes_to_current_tags.items() ]
         expected_data = [ ( hash, tags ) for ( hash, tags ) in expected_data if len( tags ) > 0 ]
         
         run_test( source, expected_data )
@@ -815,22 +815,22 @@ class TestMigration( unittest.TestCase ):
         
         if content_type == HC.CONTENT_TYPE_TAG_PARENTS:
             
-            htpa.SetPairType( HydrusTagArchive.TAG_PAIR_TYPE_PARENTS )
+            htpa.set_pair_type( HydrusTagArchive.TAG_PAIR_TYPE_PARENTS )
             
         elif content_type == HC.CONTENT_TYPE_TAG_SIBLINGS:
             
-            htpa.SetPairType( HydrusTagArchive.TAG_PAIR_TYPE_SIBLINGS )
+            htpa.set_pair_type( HydrusTagArchive.TAG_PAIR_TYPE_SIBLINGS )
             
         
-        htpa.BeginBigJob()
+        htpa.begin_big_job()
         
-        htpa.AddPairs( current )
+        htpa.add_pairs( current )
         
-        htpa.CommitBigJob()
+        htpa.commit_big_job()
         
-        htpa.Optimise()
+        htpa.optimise()
         
-        htpa.Close()
+        htpa.close()
         
         del htpa
         
@@ -842,8 +842,8 @@ class TestMigration( unittest.TestCase ):
         
         namespace_filter = HydrusTags.TagFilter()
         
-        namespace_filter.SetRule( ':', HC.FILTER_WHITELIST )
-        namespace_filter.SetRule( '', HC.FILTER_BLACKLIST )
+        namespace_filter.set_rule( ':', HC.FILTER_WHITELIST )
+        namespace_filter.set_rule( '', HC.FILTER_BLACKLIST )
         
         test_filters = []
         
@@ -883,11 +883,11 @@ class TestMigration( unittest.TestCase ):
             
             hta = HydrusTagArchive.HydrusTagPairArchive( destination_path )
             
-            result = list( hta.IteratePairs() )
+            result = list( hta.iterate_pairs() )
             
             self.assertEqual( set( result ), set( expected_data ) )
             
-            hta.Close()
+            hta.close()
             
         
         ( current, pending, to_be_pended, deleted ) = pair_types_to_pools[ content_type ]
@@ -936,8 +936,8 @@ class TestMigration( unittest.TestCase ):
         
         namespace_filter = HydrusTags.TagFilter()
         
-        namespace_filter.SetRule( ':', HC.FILTER_WHITELIST )
-        namespace_filter.SetRule( '', HC.FILTER_BLACKLIST )
+        namespace_filter.set_rule( ':', HC.FILTER_WHITELIST )
+        namespace_filter.set_rule( '', HC.FILTER_BLACKLIST )
         
         test_filters = []
         
@@ -1090,22 +1090,22 @@ class TestMigration( unittest.TestCase ):
         
         if content_type == HC.CONTENT_TYPE_TAG_PARENTS:
             
-            htpa.SetPairType( HydrusTagArchive.TAG_PAIR_TYPE_PARENTS )
+            htpa.set_pair_type( HydrusTagArchive.TAG_PAIR_TYPE_PARENTS )
             
         elif content_type == HC.CONTENT_TYPE_TAG_SIBLINGS:
             
-            htpa.SetPairType( HydrusTagArchive.TAG_PAIR_TYPE_SIBLINGS )
+            htpa.set_pair_type( HydrusTagArchive.TAG_PAIR_TYPE_SIBLINGS )
             
         
-        htpa.BeginBigJob()
+        htpa.begin_big_job()
         
-        htpa.AddPairs( count_filter_pairs[ content_type ] )
+        htpa.add_pairs( count_filter_pairs[ content_type ] )
         
-        htpa.CommitBigJob()
+        htpa.commit_big_job()
         
-        htpa.Optimise()
+        htpa.optimise()
         
-        htpa.Close()
+        htpa.close()
         
         del htpa
         

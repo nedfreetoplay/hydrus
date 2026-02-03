@@ -22,31 +22,31 @@ class NetworkBandwidthManagerLegacy( HydrusSerialisable.SerialisableBase ):
         self._network_contexts_to_bandwidth_rules = collections.defaultdict( HydrusNetworking.BandwidthRules )
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         # note this discards ephemeral network contexts, which have temporary identifiers that are generally invisible to the user
-        all_serialisable_trackers = [ ( network_context.GetSerialisableTuple(), tracker.GetSerialisableTuple() ) for ( network_context, tracker ) in list(self._network_contexts_to_bandwidth_trackers.items()) if not network_context.IsEphemeral() ]
-        all_serialisable_rules = [ ( network_context.GetSerialisableTuple(), rules.GetSerialisableTuple() ) for ( network_context, rules ) in list(self._network_contexts_to_bandwidth_rules.items()) ]
+        all_serialisable_trackers = [ ( network_context.GetSerialisableTuple(), tracker.get_serialisable_tuple() ) for ( network_context, tracker ) in list(self._network_contexts_to_bandwidth_trackers.items()) if not network_context.IsEphemeral() ]
+        all_serialisable_rules = [ ( network_context.GetSerialisableTuple(), rules.get_serialisable_tuple() ) for ( network_context, rules ) in list(self._network_contexts_to_bandwidth_rules.items()) ]
         
         return ( all_serialisable_trackers, all_serialisable_rules )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( all_serialisable_trackers, all_serialisable_rules ) = serialisable_info
         
         for ( serialisable_network_context, serialisable_tracker ) in all_serialisable_trackers:
             
-            network_context = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_network_context )
-            tracker = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tracker )
+            network_context = HydrusSerialisable.create_from_serialisable_tuple( serialisable_network_context )
+            tracker = HydrusSerialisable.create_from_serialisable_tuple( serialisable_tracker )
             
             self._network_contexts_to_bandwidth_trackers[ network_context ] = tracker
             
         
         for ( serialisable_network_context, serialisable_rules ) in all_serialisable_rules:
             
-            network_context = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_network_context )
-            rules = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_rules )
+            network_context = HydrusSerialisable.create_from_serialisable_tuple( serialisable_network_context )
+            rules = HydrusSerialisable.create_from_serialisable_tuple( serialisable_rules )
             
             if network_context.context_type == CC.NETWORK_CONTEXT_DOWNLOADER: # no longer use this
                 
@@ -72,7 +72,7 @@ def ConvertLegacyToNewBandwidth( legacy_bandwidth_manager: NetworkBandwidthManag
     
     for ( network_context, bandwidth_tracker ) in network_contexts_to_bandwidth_trackers.items():
         
-        tracker_container_name = HydrusData.GenerateKey().hex()
+        tracker_container_name = HydrusData.generate_key().hex()
         
         tracker_container = ClientNetworkingBandwidth.NetworkBandwidthManagerTrackerContainer( tracker_container_name, network_context = network_context, bandwidth_tracker = bandwidth_tracker )
         

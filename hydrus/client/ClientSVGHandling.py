@@ -69,7 +69,7 @@ def GenerateThumbnailNumPyFromSVGPath( path: str, target_resolution: tuple[int, 
     return CG.client_controller.CallBlockingToQtTLW( qt_code )
     
 
-HydrusSVGHandling.GenerateThumbnailNumPyFromSVGPath = GenerateThumbnailNumPyFromSVGPath
+HydrusSVGHandling.generate_thumbnail_numpy_from_svg_path = GenerateThumbnailNumPyFromSVGPath
 
 def GetSVGResolution( path: str ):
     
@@ -94,4 +94,4 @@ def GetSVGResolution( path: str ):
     return CG.client_controller.CallBlockingToQtTLW( qt_code )
     
 
-HydrusSVGHandling.GetSVGResolution = GetSVGResolution
+HydrusSVGHandling.get_svg_resolution = GetSVGResolution

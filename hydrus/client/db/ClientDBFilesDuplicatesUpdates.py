@@ -99,7 +99,7 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
                 
                 if alternates_group_id is not None:
                     
-                    alternates_media_ids = self._STS( self._Execute( 'SELECT media_id FROM alternate_file_group_members WHERE alternates_group_id = ?;', ( alternates_group_id, ) ) )
+                    alternates_media_ids = self._sts( self._execute( 'SELECT media_id FROM alternate_file_group_members WHERE alternates_group_id = ?;', ( alternates_group_id, ) ) )
                     
                     alternates_media_ids.discard( media_id )
                     
@@ -148,7 +148,7 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
                 
                 table_join = self.modules_files_duplicates_storage.GetPotentialDuplicatePairsTableJoinOnFileService( db_location_context )
                 
-                for ( smaller_media_id, larger_media_id ) in self._Execute( 'SELECT smaller_media_id, larger_media_id FROM {} WHERE smaller_media_id = ? OR larger_media_id = ?;'.format( table_join ), ( media_id, media_id ) ).fetchall():
+                for ( smaller_media_id, larger_media_id ) in self._execute( 'SELECT smaller_media_id, larger_media_id FROM {} WHERE smaller_media_id = ? OR larger_media_id = ?;'.format( table_join ), ( media_id, media_id ) ).fetchall():
                     
                     if smaller_media_id != media_id:
                         
@@ -313,7 +313,7 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
         
         if len( inserts ) > 0:
             
-            self._ExecuteMany( 'INSERT OR IGNORE INTO potential_duplicate_pairs ( smaller_media_id, larger_media_id, distance ) VALUES ( ?, ?, ? );', inserts )
+            self._execute_many( 'INSERT OR IGNORE INTO potential_duplicate_pairs ( smaller_media_id, larger_media_id, distance ) VALUES ( ?, ?, ? );', inserts )
             
             self._AddRowsToRowCacheAndAutoResolutionRules( inserts )
             
@@ -345,9 +345,9 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
         # if we pre-sort the list we give combinations, every pair in the output is sorted, a < b, which satisfies our need for smaller/larger pair
         all_pairs = list( itertools.combinations( sorted( alternates_group_ids ), 2 ) )
         
-        self._ExecuteMany( 'DELETE FROM duplicate_false_positives WHERE smaller_alternates_group_id = ? AND larger_alternates_group_id = ?;', all_pairs )
+        self._execute_many( 'DELETE FROM duplicate_false_positives WHERE smaller_alternates_group_id = ? AND larger_alternates_group_id = ?;', all_pairs )
         
-        num_cleared = self._GetRowCount()
+        num_cleared = self._get_row_count()
         
         self.modules_similar_files.ResetSearch( hash_ids )
         
@@ -376,9 +376,9 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
             return 0
             
         
-        self._ExecuteMany( 'DELETE FROM duplicate_false_positives WHERE smaller_alternates_group_id = ? OR larger_alternates_group_id = ?;', ( ( alternates_group_id, alternates_group_id ) for alternates_group_id in alternates_group_ids ) )
+        self._execute_many( 'DELETE FROM duplicate_false_positives WHERE smaller_alternates_group_id = ? OR larger_alternates_group_id = ?;', ( ( alternates_group_id, alternates_group_id ) for alternates_group_id in alternates_group_ids ) )
         
-        num_cleared = self._GetRowCount()
+        num_cleared = self._get_row_count()
         
         self.modules_similar_files.ResetSearch( hash_ids )
         
@@ -396,13 +396,13 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
         all_media_ids.update( media_ids_a )
         all_media_ids.update( media_ids_b )
         
-        with self._MakeTemporaryIntegerTable( all_media_ids, 'media_id' ) as temp_media_ids_table_name:
+        with self._make_temporary_integer_table( all_media_ids, 'media_id' ) as temp_media_ids_table_name:
             
             # keep these separate--older sqlite can't do cross join to an OR ON
             
             # temp media ids to potential pairs
-            potential_duplicate_pairs = set( self._Execute( 'SELECT smaller_media_id, larger_media_id FROM {} CROSS JOIN potential_duplicate_pairs ON ( smaller_media_id = media_id );'.format( temp_media_ids_table_name ) ).fetchall() )
-            potential_duplicate_pairs.update( self._Execute( 'SELECT smaller_media_id, larger_media_id FROM {} CROSS JOIN potential_duplicate_pairs ON ( larger_media_id = media_id );'.format( temp_media_ids_table_name ) ).fetchall() )
+            potential_duplicate_pairs = set( self._execute( 'SELECT smaller_media_id, larger_media_id FROM {} CROSS JOIN potential_duplicate_pairs ON ( smaller_media_id = media_id );'.format( temp_media_ids_table_name ) ).fetchall() )
+            potential_duplicate_pairs.update( self._execute( 'SELECT smaller_media_id, larger_media_id FROM {} CROSS JOIN potential_duplicate_pairs ON ( larger_media_id = media_id );'.format( temp_media_ids_table_name ) ).fetchall() )
             
         
         deletees = []
@@ -433,7 +433,7 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
     
     def DeleteAllPotentialDuplicatePairs( self ):
         
-        self._Execute( 'DELETE FROM potential_duplicate_pairs;' )
+        self._execute( 'DELETE FROM potential_duplicate_pairs;' )
         
         for ( location_context, potential_duplicate_id_pairs_and_distances ) in self._location_contexts_to_potential_duplicate_id_pairs_and_distances.items():
             
@@ -451,7 +451,7 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
         
         if len( pairs ) > 0:
             
-            self._ExecuteMany( 'DELETE FROM potential_duplicate_pairs WHERE smaller_media_id = ? AND larger_media_id = ?;', pairs )
+            self._execute_many( 'DELETE FROM potential_duplicate_pairs WHERE smaller_media_id = ? AND larger_media_id = ?;', pairs )
             
             self._DeletePairsFromRowCacheAndAutoResolutionRules( pairs )
             
@@ -459,12 +459,12 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
     
     def DeletePotentialDuplicatesForMediaId( self, media_id: int ):
         
-        self._Execute( 'DELETE FROM potential_duplicate_pairs WHERE smaller_media_id = ? OR larger_media_id = ?;', ( media_id, media_id ) )
+        self._execute( 'DELETE FROM potential_duplicate_pairs WHERE smaller_media_id = ? OR larger_media_id = ?;', ( media_id, media_id ) )
         
         # no location context here yet, unlike the add/delete calls
         self._cursor_transaction_wrapper.pub_after_job( 'potential_duplicate_pairs_update', ClientPotentialDuplicatesSearchContext.PAIRS_UPDATE_DELETE_PAIRS_BY_MEDIA_ID, media_id )
         
-        if self._GetRowCount() > 0:
+        if self._get_row_count() > 0:
             
             for ( location_context, potential_duplicate_id_pairs_and_distances ) in self._location_contexts_to_potential_duplicate_id_pairs_and_distances.items():
                 
@@ -484,8 +484,8 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
             self.DissolveMediaId( media_id )
             
         
-        self._Execute( 'DELETE FROM alternate_file_groups WHERE alternates_group_id = ?;', ( alternates_group_id, ) )
-        self._Execute( 'DELETE FROM duplicate_false_positives WHERE smaller_alternates_group_id = ? OR larger_alternates_group_id = ?;', ( alternates_group_id, alternates_group_id ) )
+        self._execute( 'DELETE FROM alternate_file_groups WHERE alternates_group_id = ?;', ( alternates_group_id, ) )
+        self._execute( 'DELETE FROM duplicate_false_positives WHERE smaller_alternates_group_id = ? OR larger_alternates_group_id = ?;', ( alternates_group_id, alternates_group_id ) )
         
     
     def DissolveAlternatesGroupIdFromHashes( self, hashes ):
@@ -516,8 +516,8 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
         
         hash_ids = self.modules_files_duplicates_storage.GetDuplicateHashIds( media_id )
         
-        self._Execute( 'DELETE FROM duplicate_file_members WHERE media_id = ?;', ( media_id, ) )
-        self._Execute( 'DELETE FROM duplicate_files WHERE media_id = ?;', ( media_id, ) )
+        self._execute( 'DELETE FROM duplicate_file_members WHERE media_id = ?;', ( media_id, ) )
+        self._execute( 'DELETE FROM duplicate_files WHERE media_id = ?;', ( media_id, ) )
         
         if len( hash_ids ) > 0:
             
@@ -550,7 +550,7 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
             
             if location_context.IsAllKnownFiles():
                 
-                rows = self._Execute( 'SELECT smaller_media_id, larger_media_id, distance FROM potential_duplicate_pairs;' ).fetchall()
+                rows = self._execute( 'SELECT smaller_media_id, larger_media_id, distance FROM potential_duplicate_pairs;' ).fetchall()
                 
             else:
                 
@@ -566,7 +566,7 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
                     
                     query = f'SELECT smaller_media_id, larger_media_id, distance FROM {table_join};'
                     
-                    rows = self._Execute( query ).fetchall()
+                    rows = self._execute( query ).fetchall()
                     
                 else:
                     
@@ -588,7 +588,7 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
                     
                     for query in queries:
                         
-                        good_media_ids.update( self._STI( self._Execute( query ) ) )
+                        good_media_ids.update( self._sti( self._execute( query ) ) )
                         
                     
                     all_potential_duplicate_id_pairs_and_distances = self.GetPotentialDuplicateIdPairsAndDistances( ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY ) )
@@ -623,7 +623,7 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
                 continue
                 
             
-            rows_for_this_file = self._Execute( 'SELECT smaller_media_id, larger_media_id, distance FROM potential_duplicate_pairs WHERE smaller_media_id = ? OR larger_media_id = ?;', ( media_id, media_id ) ).fetchall()
+            rows_for_this_file = self._execute( 'SELECT smaller_media_id, larger_media_id, distance FROM potential_duplicate_pairs WHERE smaller_media_id = ? OR larger_media_id = ?;', ( media_id, media_id ) ).fetchall()
             
             rows.extend( rows_for_this_file )
             
@@ -676,7 +676,7 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
                 continue
                 
             
-            pairs_for_this_file = self._Execute( 'SELECT smaller_media_id, larger_media_id FROM potential_duplicate_pairs WHERE smaller_media_id = ? OR larger_media_id = ?;', ( media_id, media_id ) ).fetchall()
+            pairs_for_this_file = self._execute( 'SELECT smaller_media_id, larger_media_id FROM potential_duplicate_pairs WHERE smaller_media_id = ? OR larger_media_id = ?;', ( media_id, media_id ) ).fetchall()
             
             pairs.extend( pairs_for_this_file )
             
@@ -729,15 +729,15 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
             
             alternates_media_ids = self.modules_files_duplicates_storage.GetAlternateMediaIds( alternates_group_id )
             
-            self._Execute( 'DELETE FROM alternate_file_group_members WHERE media_id = ?;', ( media_id, ) )
+            self._execute( 'DELETE FROM alternate_file_group_members WHERE media_id = ?;', ( media_id, ) )
             
-            self._Execute( 'DELETE FROM confirmed_alternate_pairs WHERE smaller_media_id = ? OR larger_media_id = ?;', ( media_id, media_id ) )
+            self._execute( 'DELETE FROM confirmed_alternate_pairs WHERE smaller_media_id = ? OR larger_media_id = ?;', ( media_id, media_id ) )
             
             if len( alternates_media_ids ) == 1: # i.e. what we just removed was the last of the group
                 
-                self._Execute( 'DELETE FROM alternate_file_groups WHERE alternates_group_id = ?;', ( alternates_group_id, ) )
+                self._execute( 'DELETE FROM alternate_file_groups WHERE alternates_group_id = ?;', ( alternates_group_id, ) )
                 
-                self._Execute( 'DELETE FROM duplicate_false_positives WHERE smaller_alternates_group_id = ? OR larger_alternates_group_id = ?;', ( alternates_group_id, alternates_group_id ) )
+                self._execute( 'DELETE FROM duplicate_false_positives WHERE smaller_alternates_group_id = ? OR larger_alternates_group_id = ?;', ( alternates_group_id, alternates_group_id ) )
                 
             
             hash_ids = self.modules_files_duplicates_storage.GetDuplicateHashIds( media_id )
@@ -775,7 +775,7 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
                 
             else:
                 
-                self._Execute( 'DELETE FROM duplicate_file_members WHERE hash_id = ?;', ( hash_id, ) )
+                self._execute( 'DELETE FROM duplicate_file_members WHERE hash_id = ?;', ( hash_id, ) )
                 
                 self.modules_similar_files.ResetSearch( ( hash_id, ) )
                 
@@ -826,7 +826,7 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
             
             job_status.SetStatusText( 'gathering data' )
             
-            all_ids_we_are_tracking = self._Execute( 'SELECT DISTINCT king_hash_id, media_id FROM potential_duplicate_pairs CROSS JOIN duplicate_files ON ( potential_duplicate_pairs.smaller_media_id = duplicate_files.media_id OR potential_duplicate_pairs.larger_media_id = duplicate_files.media_id );' ).fetchall()
+            all_ids_we_are_tracking = self._execute( 'SELECT DISTINCT king_hash_id, media_id FROM potential_duplicate_pairs CROSS JOIN duplicate_files ON ( potential_duplicate_pairs.smaller_media_id = duplicate_files.media_id OR potential_duplicate_pairs.larger_media_id = duplicate_files.media_id );' ).fetchall()
             
             all_king_hash_ids_we_are_tracking = { king_hash_id for ( king_hash_id, media_id ) in all_ids_we_are_tracking }
             
@@ -840,14 +840,14 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
                 
                 all_bad_ids = [ ( king_hash_id, media_id ) for ( king_hash_id, media_id ) in all_ids_we_are_tracking if king_hash_id in bad_king_hash_ids ]
                 
-                for ( num_done, num_to_do, batch_of_bad_ids ) in HydrusLists.SplitListIntoChunksRich( all_bad_ids, 16 ):
+                for ( num_done, num_to_do, batch_of_bad_ids ) in HydrusLists.split_list_into_chunks_rich( all_bad_ids, 16 ):
                     
                     if job_status.IsCancelled():
                         
                         break
                         
                     
-                    message = f'Clearing orphans: {HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do )}'
+                    message = f'Clearing orphans: {HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do )}'
                     
                     job_status.SetStatusText( message )
                     job_status.SetGauge( num_done, num_to_do )
@@ -872,9 +872,9 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
             
             if num_files_cleared_out > 0:
                 
-                HydrusData.Print( f'During potential duplicate pair local storage resync, I cleared out pairs for {HydrusNumbers.ToHumanInt(num_files_cleared_out)} files.' )
+                HydrusData.print_text( f'During potential duplicate pair local storage resync, I cleared out pairs for {HydrusNumbers.to_human_int(num_files_cleared_out)} files.' )
                 
-                job_status.SetStatusText( f'Done! Pairs for {HydrusNumbers.ToHumanInt(num_files_cleared_out)} out-of-domain files cleared out.' )
+                job_status.SetStatusText( f'Done! Pairs for {HydrusNumbers.to_human_int(num_files_cleared_out)} out-of-domain files cleared out.' )
                 
             else:
                 
@@ -922,8 +922,8 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
             
             # first, copy other false positive records from B to A
             
-            false_positive_records = self._STS( self._Execute( 'SELECT smaller_alternates_group_id FROM duplicate_false_positives WHERE larger_alternates_group_id = ?;', ( alternates_group_id_b, ) ) )
-            false_positive_records.update( self._STI( self._Execute( 'SELECT larger_alternates_group_id FROM duplicate_false_positives WHERE smaller_alternates_group_id = ?;', ( alternates_group_id_b, ) ) ) )
+            false_positive_records = self._sts( self._execute( 'SELECT smaller_alternates_group_id FROM duplicate_false_positives WHERE larger_alternates_group_id = ?;', ( alternates_group_id_b, ) ) )
+            false_positive_records.update( self._sti( self._execute( 'SELECT larger_alternates_group_id FROM duplicate_false_positives WHERE smaller_alternates_group_id = ?;', ( alternates_group_id_b, ) ) ) )
             
             for alternates_group_id_x in false_positive_records:
                 
@@ -938,7 +938,7 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
             # now move all B to A
             # all existing confirmed B/X pairs stay intact, no worries
             
-            self._Execute( 'UPDATE alternate_file_group_members SET alternates_group_id = ? WHERE alternates_group_id = ?;', ( alternates_group_id_a, alternates_group_id_b ) )
+            self._execute( 'UPDATE alternate_file_group_members SET alternates_group_id = ? WHERE alternates_group_id = ?;', ( alternates_group_id_a, alternates_group_id_b ) )
             
             # remove empty B
             
@@ -947,7 +947,7 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
         
         # in future, I can tune this to consider alternate labels and indices. alternates with different labels and indices are not appropriate for potentials, so we can add more rows here
         
-        self._Execute( 'INSERT OR IGNORE INTO confirmed_alternate_pairs ( smaller_media_id, larger_media_id ) VALUES ( ?, ? );', ( smaller_media_id, larger_media_id ) )
+        self._execute( 'INSERT OR IGNORE INTO confirmed_alternate_pairs ( smaller_media_id, larger_media_id ) VALUES ( ?, ? );', ( smaller_media_id, larger_media_id ) )
         
     
     def SetDuplicates( self, superior_media_id, mergee_media_id ):
@@ -975,8 +975,8 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
         
         # copy other potentials from the mergee to the superior
         
-        existing_potential_info = set( self._Execute( 'SELECT smaller_media_id, distance FROM potential_duplicate_pairs WHERE larger_media_id = ?;', ( mergee_media_id, ) ) )
-        existing_potential_info.update( self._Execute( 'SELECT larger_media_id, distance FROM potential_duplicate_pairs WHERE smaller_media_id = ?;', ( mergee_media_id, ) ) )
+        existing_potential_info = set( self._execute( 'SELECT smaller_media_id, distance FROM potential_duplicate_pairs WHERE larger_media_id = ?;', ( mergee_media_id, ) ) )
+        existing_potential_info.update( self._execute( 'SELECT larger_media_id, distance FROM potential_duplicate_pairs WHERE smaller_media_id = ?;', ( mergee_media_id, ) ) )
         
         potential_duplicate_media_ids_and_distances = [ ( media_id_x, distance ) for ( media_id_x, distance ) in existing_potential_info if media_id_x not in ( mergee_media_id, superior_media_id ) ]
         
@@ -987,8 +987,8 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
         
         # copy any previous confirmed alt pair that B has to A
         
-        mergee_confirmed_alternates = self._STS( self._Execute( 'SELECT smaller_media_id FROM confirmed_alternate_pairs WHERE larger_media_id = ?;', ( mergee_media_id, ) ) )
-        mergee_confirmed_alternates.update( self._STI( self._Execute( 'SELECT larger_media_id FROM confirmed_alternate_pairs WHERE smaller_media_id = ?;', ( mergee_media_id, ) ) ) )
+        mergee_confirmed_alternates = self._sts( self._execute( 'SELECT smaller_media_id FROM confirmed_alternate_pairs WHERE larger_media_id = ?;', ( mergee_media_id, ) ) )
+        mergee_confirmed_alternates.update( self._sti( self._execute( 'SELECT larger_media_id FROM confirmed_alternate_pairs WHERE smaller_media_id = ?;', ( mergee_media_id, ) ) ) )
         
         for media_id_x in mergee_confirmed_alternates:
             
@@ -1002,7 +1002,7 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
         
         # actually move the members over
         
-        self._Execute( 'UPDATE duplicate_file_members SET media_id = ? WHERE media_id = ?;', ( superior_media_id, mergee_media_id ) )
+        self._execute( 'UPDATE duplicate_file_members SET media_id = ? WHERE media_id = ?;', ( superior_media_id, mergee_media_id ) )
         
         # clear out empty duplicate group
         
@@ -1021,12 +1021,12 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
         smaller_alternates_group_id = min( alternates_group_id_a, alternates_group_id_b )
         larger_alternates_group_id = max( alternates_group_id_a, alternates_group_id_b )
         
-        self._Execute( 'INSERT OR IGNORE INTO duplicate_false_positives ( smaller_alternates_group_id, larger_alternates_group_id ) VALUES ( ?, ? );', ( smaller_alternates_group_id, larger_alternates_group_id ) )
+        self._execute( 'INSERT OR IGNORE INTO duplicate_false_positives ( smaller_alternates_group_id, larger_alternates_group_id ) VALUES ( ?, ? );', ( smaller_alternates_group_id, larger_alternates_group_id ) )
         
     
     def SetKing( self, king_hash_id, media_id ):
         
-        self._Execute( 'UPDATE duplicate_files SET king_hash_id = ? WHERE media_id = ?;', ( king_hash_id, media_id ) )
+        self._execute( 'UPDATE duplicate_files SET king_hash_id = ? WHERE media_id = ?;', ( king_hash_id, media_id ) )
         
     
     def SetKingFromHash( self, hash ):

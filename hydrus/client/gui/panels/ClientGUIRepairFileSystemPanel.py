@@ -260,7 +260,7 @@ class RepairFileSystemPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         try:
             
-            CG.client_controller.WriteSynchronous( 'repair_client_files', correct_rows )
+            CG.client_controller.write_synchronous( 'repair_client_files', correct_rows )
             
         except Exception as e:
             

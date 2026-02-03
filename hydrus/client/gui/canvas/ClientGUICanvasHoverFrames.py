@@ -90,7 +90,7 @@ class RatingIncDecCanvas( ClientGUIRatings.RatingIncDec ):
             
             content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_RATINGS, HC.CONTENT_UPDATE_ADD, ( rating, self._hashes ) )
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service_key, content_update ) )
+            CG.client_controller.write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service_key, content_update ) )
             
         
     
@@ -121,7 +121,7 @@ class RatingIncDecCanvas( ClientGUIRatings.RatingIncDec ):
                     
                     hashes = content_update.GetHashes()
                     
-                    if HydrusLists.SetsIntersect( self._hashes, hashes ):
+                    if HydrusLists.sets_intersect( self._hashes, hashes ):
                         
                         ( self._rating_state, self._rating ) = ClientRatings.GetIncDecStateFromMedia( ( self._current_media, ), self._service_key )
                         
@@ -236,7 +236,7 @@ class RatingLikeCanvas( ClientGUIRatings.RatingLike ):
             
             content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_RATINGS, HC.CONTENT_UPDATE_ADD, ( rating, self._hashes ) )
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service_key, content_update ) )
+            CG.client_controller.write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service_key, content_update ) )
             
         
     
@@ -249,7 +249,7 @@ class RatingLikeCanvas( ClientGUIRatings.RatingLike ):
             
             content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_RATINGS, HC.CONTENT_UPDATE_ADD, ( rating, self._hashes ) )
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service_key, content_update ) )
+            CG.client_controller.write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service_key, content_update ) )
             
         
     
@@ -268,7 +268,7 @@ class RatingLikeCanvas( ClientGUIRatings.RatingLike ):
                     
                     hashes = content_update.GetHashes()
                     
-                    if HydrusLists.SetsIntersect( self._hashes, hashes ):
+                    if HydrusLists.sets_intersect( self._hashes, hashes ):
                         
                         self._SetRatingFromCurrentMedia()
                         
@@ -331,7 +331,7 @@ class RatingNumericalCanvas( ClientGUIRatings.RatingNumericalControl ):
             
             content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_RATINGS, HC.CONTENT_UPDATE_ADD, ( rating, self._hashes ) )
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service_key, content_update ) )
+            CG.client_controller.write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service_key, content_update ) )
             
         
     
@@ -366,7 +366,7 @@ class RatingNumericalCanvas( ClientGUIRatings.RatingNumericalControl ):
             
             content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_RATINGS, HC.CONTENT_UPDATE_ADD, ( rating, self._hashes ) )
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service_key, content_update ) )
+            CG.client_controller.write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service_key, content_update ) )
             
         
     
@@ -390,7 +390,7 @@ class RatingNumericalCanvas( ClientGUIRatings.RatingNumericalControl ):
                     
                     hashes = content_update.GetHashes()
                     
-                    if HydrusLists.SetsIntersect( self._hashes, hashes ):
+                    if HydrusLists.sets_intersect( self._hashes, hashes ):
                         
                         ( self._rating_state, self._rating ) = ClientRatings.GetNumericalStateFromMedia( ( self._current_media, ), self._service_key )
                         
@@ -492,7 +492,7 @@ class CanvasHoverFrame( QW.QFrame ):
             
             if HG.hover_window_report_mode:
                 
-                HydrusData.ShowText( repr( self ) + ' - lowering' )
+                HydrusData.show_text( repr( self ) + ' - lowering' )
                 
             
             self.hide()
@@ -514,7 +514,7 @@ class CanvasHoverFrame( QW.QFrame ):
             
             if HG.hover_window_report_mode:
                 
-                HydrusData.ShowText( repr( self ) + ' - raising' )
+                HydrusData.show_text( repr( self ) + ' - raising' )
                 
             
             self.show()
@@ -728,10 +728,10 @@ class CanvasHoverFrame( QW.QFrame ):
             
             if HG.hover_window_report_mode:
                 
-                HydrusData.ShowText( 'showing' )
+                HydrusData.show_text( 'showing' )
                 
                 h1 = get_logic_report_string()
-                HydrusData.ShowText( h1 )
+                HydrusData.show_text( h1 )
                 
             
             self._SizeAndPosition()
@@ -742,11 +742,11 @@ class CanvasHoverFrame( QW.QFrame ):
                 
                 if h1 == h2:
                     
-                    HydrusData.ShowText( 'no change' )
+                    HydrusData.show_text( 'no change' )
                     
                 else:
                     
-                    HydrusData.ShowText( h2 )
+                    HydrusData.show_text( h2 )
                     
                 
             
@@ -756,8 +756,8 @@ class CanvasHoverFrame( QW.QFrame ):
             
             if HG.hover_window_report_mode:
                 
-                HydrusData.ShowText( 'hiding' )
-                HydrusData.ShowText( get_logic_report_string() )
+                HydrusData.show_text( 'hiding' )
+                HydrusData.show_text( get_logic_report_string() )
                 
             
             self._LowerHover()
@@ -1187,7 +1187,7 @@ class CanvasHoverFrameTop( CanvasHoverFrame ):
     
     def _ShowShortcutMenu( self ):
         
-        all_shortcut_names = CG.client_controller.Read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_SHORTCUT_SET )
+        all_shortcut_names = CG.client_controller.read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_SHORTCUT_SET )
         
         custom_shortcuts_names = [ name for name in all_shortcut_names if name not in ClientGUIShortcuts.SHORTCUTS_RESERVED_NAMES ]
         
@@ -2832,12 +2832,12 @@ class CanvasHoverFrameRightDuplicates( CanvasHoverFrame ):
         
         if total_score > 0:
             
-            text = 'score: +' + HydrusNumbers.ToHumanInt( total_score )
+            text = 'score: +' + HydrusNumbers.to_human_int( total_score )
             object_name = 'HydrusValid'
             
         elif total_score < 0:
             
-            text = 'score: ' + HydrusNumbers.ToHumanInt( total_score )
+            text = 'score: ' + HydrusNumbers.to_human_int( total_score )
             object_name = 'HydrusInvalid'
             
         else:

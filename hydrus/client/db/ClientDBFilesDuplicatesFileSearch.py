@@ -48,10 +48,10 @@ class ClientDBFilesDuplicatesFileSearch( ClientDBModule.ClientDBModule ):
             
             files_table_name = db_location_context.GetSingleFilesTableName()
             
-            return self._STS( self._Execute( f'SELECT king_hash_id FROM duplicate_files CROSS JOIN {files_table_name} ON ( duplicate_files.king_hash_id = {files_table_name}.hash_id );' ) )
+            return self._sts( self._execute( f'SELECT king_hash_id FROM duplicate_files CROSS JOIN {files_table_name} ON ( duplicate_files.king_hash_id = {files_table_name}.hash_id );' ) )
             
         
-        return self._STS( self._Execute( 'SELECT king_hash_id FROM duplicate_files;' ) )
+        return self._sts( self._execute( 'SELECT king_hash_id FROM duplicate_files;' ) )
         
     
     def GetPotentialDuplicateIdPairsAndDistances( self, potential_duplicate_pairs_fragmentary_search: ClientPotentialDuplicatesSearchContext.PotentialDuplicatePairsFragmentarySearch ) -> ClientPotentialDuplicatesSearchContext.PotentialDuplicateIdPairsAndDistances:
@@ -103,7 +103,7 @@ class ClientDBFilesDuplicatesFileSearch( ClientDBModule.ClientDBModule ):
             
             if do_report_mode:
                 
-                HydrusData.Print( f'This does appear to be a low hit-rate search, and the magic weights are: {estimated_num_file_search_based_hits_total * how_many_potential_rows_of_work_to_do_one_file_hit} versus {estimated_num_potential_based_rows_remaining}')
+                HydrusData.print_text( f'This does appear to be a low hit-rate search, and the magic weights are: {estimated_num_file_search_based_hits_total * how_many_potential_rows_of_work_to_do_one_file_hit} versus {estimated_num_potential_based_rows_remaining}')
                 
             
             if estimated_num_file_search_based_hits_total * how_many_potential_rows_of_work_to_do_one_file_hit < estimated_num_potential_based_rows_remaining:
@@ -114,12 +114,12 @@ class ClientDBFilesDuplicatesFileSearch( ClientDBModule.ClientDBModule ):
         
         if do_report_mode:
             
-            time_started = HydrusTime.GetNowPrecise()
+            time_started = HydrusTime.get_now_precise()
             
         
         potential_duplicates_search_context = potential_duplicate_pairs_fragmentary_search.GetPotentialDuplicatesSearchContext()
         
-        potential_duplicates_search_context = potential_duplicates_search_context.Duplicate()
+        potential_duplicates_search_context = potential_duplicates_search_context.duplicate()
         
         potential_duplicates_search_context.OptimiseForSearch()
         
@@ -133,11 +133,11 @@ class ClientDBFilesDuplicatesFileSearch( ClientDBModule.ClientDBModule ):
         
         #
         
-        with self._MakeTemporaryIntegerTable( [], ( 'smaller_media_id', 'larger_media_id', 'distance' ) ) as temp_media_ids_table_name:
+        with self._make_temporary_integer_table( [], ( 'smaller_media_id', 'larger_media_id', 'distance' ) ) as temp_media_ids_table_name:
             
-            with self._MakeTemporaryIntegerTable( [], 'hash_id' ) as temp_table_name_1:
+            with self._make_temporary_integer_table( [], 'hash_id' ) as temp_table_name_1:
                 
-                with self._MakeTemporaryIntegerTable( [], 'hash_id' ) as temp_table_name_2:
+                with self._make_temporary_integer_table( [], 'hash_id' ) as temp_table_name_2:
                     
                     if do_file_based_search:
                         
@@ -200,9 +200,9 @@ class ClientDBFilesDuplicatesFileSearch( ClientDBModule.ClientDBModule ):
                         
                         relevant_pairs_and_distances = potential_duplicate_pairs_fragmentary_search.PopRemaining()
                         
-                        with self._MakeTemporaryIntegerTable( relevant_pairs_and_distances, ( 'smaller_media_id', 'larger_media_id', 'distance' ) ) as temp_media_ids_table_name_for_culling:
+                        with self._make_temporary_integer_table( relevant_pairs_and_distances, ( 'smaller_media_id', 'larger_media_id', 'distance' ) ) as temp_media_ids_table_name_for_culling:
                             
-                            self._Execute( f'ANALYZE {temp_media_ids_table_name_for_culling};')
+                            self._execute( f'ANALYZE {temp_media_ids_table_name_for_culling};')
                             
                             if dupe_search_type == ClientDuplicates.DUPE_SEARCH_BOTH_FILES_MATCH_DIFFERENT_SEARCHES:
                                 
@@ -218,8 +218,8 @@ class ClientDBFilesDuplicatesFileSearch( ClientDBModule.ClientDBModule ):
                                     ( first_table, second_table ) = ( temp_table_name_2, temp_table_name_1 )
                                     
                                 
-                                self._Execute( f'ANALYZE {temp_table_name_1};')
-                                self._Execute( f'ANALYZE {temp_table_name_2};')
+                                self._execute( f'ANALYZE {temp_table_name_1};')
+                                self._execute( f'ANALYZE {temp_table_name_2};')
                                 
                                 table_join_1 = f'{first_table} CROSS JOIN duplicate_files AS duplicate_files_1 ON ( {first_table}.hash_id = duplicate_files_1.king_hash_id ) '
                                 table_join_1 += f'CROSS JOIN {temp_media_ids_table_name_for_culling} ON ( duplicate_files_1.media_id = {temp_media_ids_table_name_for_culling}.smaller_media_id ) '
@@ -250,7 +250,7 @@ class ClientDBFilesDuplicatesFileSearch( ClientDBModule.ClientDBModule ):
                                     
                                     results_1 = self.modules_files_query.PopulateSearchIntoTempTable( file_search_context_1, temp_table_name_1 )
                                     
-                                    self._Execute( f'ANALYZE {temp_table_name_1};')
+                                    self._execute( f'ANALYZE {temp_table_name_1};')
                                     
                                     if dupe_search_type == ClientDuplicates.DUPE_SEARCH_BOTH_FILES_MATCH_ONE_SEARCH:
                                         
@@ -280,7 +280,7 @@ class ClientDBFilesDuplicatesFileSearch( ClientDBModule.ClientDBModule ):
                             
                             for select_statement in select_statements:
                                 
-                                self._Execute( f'INSERT OR IGNORE INTO {temp_media_ids_table_name} ( smaller_media_id, larger_media_id, distance ) {select_statement};' )
+                                self._execute( f'INSERT OR IGNORE INTO {temp_media_ids_table_name} ( smaller_media_id, larger_media_id, distance ) {select_statement};' )
                                 
                             
                         
@@ -292,7 +292,7 @@ class ClientDBFilesDuplicatesFileSearch( ClientDBModule.ClientDBModule ):
                         
                         relevant_pairs_and_distances = potential_duplicate_pairs_fragmentary_search.PopBlock()
                         
-                        self._ExecuteMany( f'INSERT OR IGNORE INTO {temp_media_ids_table_name} ( smaller_media_id, larger_media_id, distance ) VALUES ( ?, ?, ? );', relevant_pairs_and_distances.GetRows() )
+                        self._execute_many( f'INSERT OR IGNORE INTO {temp_media_ids_table_name} ( smaller_media_id, larger_media_id, distance ) VALUES ( ?, ?, ? );', relevant_pairs_and_distances.GetRows() )
                         
                         if dupe_search_type == ClientDuplicates.DUPE_SEARCH_BOTH_FILES_MATCH_DIFFERENT_SEARCHES:
                             
@@ -303,8 +303,8 @@ class ClientDBFilesDuplicatesFileSearch( ClientDBModule.ClientDBModule ):
                             self.modules_files_query.PopulateSearchIntoTempTable( file_search_context_1, temp_table_name_1, query_hash_ids = required_hash_ids )
                             self.modules_files_query.PopulateSearchIntoTempTable( file_search_context_2, temp_table_name_2, query_hash_ids = required_hash_ids )
                             
-                            self._Execute( f'ANALYZE {temp_table_name_1};')
-                            self._Execute( f'ANALYZE {temp_table_name_2};')
+                            self._execute( f'ANALYZE {temp_table_name_1};')
+                            self._execute( f'ANALYZE {temp_table_name_2};')
                             
                         else:
                             
@@ -320,12 +320,12 @@ class ClientDBFilesDuplicatesFileSearch( ClientDBModule.ClientDBModule ):
                                 
                                 self.modules_files_query.PopulateSearchIntoTempTable( file_search_context_1, temp_table_name_1, query_hash_ids = required_hash_ids )
                                 
-                                self._Execute( f'ANALYZE {temp_table_name_1};')
+                                self._execute( f'ANALYZE {temp_table_name_1};')
                                 
                             
                         
                     
-                    self._Execute( f'ANALYZE {temp_media_ids_table_name};')
+                    self._execute( f'ANALYZE {temp_media_ids_table_name};')
                     
                     if dupe_search_type == ClientDuplicates.DUPE_SEARCH_BOTH_FILES_MATCH_DIFFERENT_SEARCHES:
                         
@@ -351,7 +351,7 @@ class ClientDBFilesDuplicatesFileSearch( ClientDBModule.ClientDBModule ):
                         
                     
                     # distinct important here for the search results table join
-                    matching_pairs_and_distances = self._Execute( 'SELECT DISTINCT smaller_media_id, larger_media_id, distance FROM {};'.format( table_join ) ).fetchall()
+                    matching_pairs_and_distances = self._execute( 'SELECT DISTINCT smaller_media_id, larger_media_id, distance FROM {};'.format( table_join ) ).fetchall()
                     
                 
             
@@ -360,26 +360,26 @@ class ClientDBFilesDuplicatesFileSearch( ClientDBModule.ClientDBModule ):
             
             try:
                 
-                time_took = HydrusTime.GetNowPrecise() - time_started
+                time_took = HydrusTime.get_now_precise() - time_started
                 
                 if do_file_based_search:
                     
                     # we care about 'time per hit' here
                     num_guys = len( matching_pairs_and_distances )
                     
-                    HydrusData.Print( f'Fragmentary potential duplicates search did a file based search, with per-hit speed of: { HydrusTime.TimeDeltaToPrettyTimeDelta( time_took / num_guys ) }' )
+                    HydrusData.print_text( f'Fragmentary potential duplicates search did a file based search, with per-hit speed of: { HydrusTime.timedelta_to_pretty_timedelta( time_took / num_guys ) }' )
                     
                 else:
                     
                     # we care about 'time per potential row' here
                     num_guys = len( relevant_pairs_and_distances )
                     
-                    HydrusData.Print( f'Fragmentary potential duplicates search did a potentials based search, with per-row speed of: { HydrusTime.TimeDeltaToPrettyTimeDelta( time_took / num_guys ) }' )
+                    HydrusData.print_text( f'Fragmentary potential duplicates search did a potentials based search, with per-row speed of: { HydrusTime.timedelta_to_pretty_timedelta( time_took / num_guys ) }' )
                     
                 
             except:
                 
-                HydrusData.Print( 'Could not profile the fragmentary duplicates search!' )
+                HydrusData.print_text( 'Could not profile the fragmentary duplicates search!' )
                 
             
         
@@ -503,7 +503,7 @@ class ClientDBFilesDuplicatesFileSearch( ClientDBModule.ClientDBModule ):
         return hashes
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         tables_and_columns = []
         

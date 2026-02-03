@@ -16,13 +16,13 @@ class GUISessionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
         self._page_tuples = []
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         def handle_e( page_tuple, e ):
             
-            HydrusData.ShowText( 'Attempting to save a page to the session failed! Its data tuple and error follows! Please close it or see if you can clear any potentially invalid data from it!' )
+            HydrusData.show_text( 'Attempting to save a page to the session failed! Its data tuple and error follows! Please close it or see if you can clear any potentially invalid data from it!' )
             
-            HydrusData.ShowText( page_tuple )
+            HydrusData.show_text( page_tuple )
             
             HydrusData.ShowException( e )
             
@@ -86,13 +86,13 @@ class GUISessionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
         return serialisable_info
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         def handle_e( serialisable_page_tuple, e ):
             
-            HydrusData.ShowText( 'A page failed to load! Its serialised data and error follows!' )
+            HydrusData.show_text( 'A page failed to load! Its serialised data and error follows!' )
             
-            HydrusData.ShowText( serialisable_page_tuple )
+            HydrusData.show_text( serialisable_page_tuple )
             
             HydrusData.ShowException( e )
             
@@ -125,7 +125,7 @@ class GUISessionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 ( serialisable_page_manager, serialisable_hashes ) = serialisable_page_data
                 
-                page_manager = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_page_manager )
+                page_manager = HydrusSerialisable.create_from_serialisable_tuple( serialisable_page_manager )
                 
                 hashes = [ bytes.fromhex( hash ) for hash in serialisable_hashes ]
                 
@@ -152,7 +152,7 @@ class GUISessionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
             
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -160,7 +160,7 @@ class GUISessionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
             
             for ( page_name, serialisable_page_manager, serialisable_hashes ) in old_serialisable_info:
                 
-                page_manager = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_page_manager )
+                page_manager = HydrusSerialisable.create_from_serialisable_tuple( serialisable_page_manager )
                 
                 page_manager.SetPageName( page_name )
                 
@@ -254,7 +254,7 @@ def ConvertPageTuplesToNotebookContainer( name, page_tuples ):
             
             page_data = ClientGUISession.GUISessionPageData( page_manager = page_manager, hashes = hashes )
             
-            page_data_hash = page_data.GetSerialisedHash()
+            page_data_hash = page_data.get_serialised_hash()
             
             page_container = ClientGUISession.GUISessionContainerPageSingle( page_manager.GetPageName(), page_data_hash = page_data_hash )
             
@@ -274,7 +274,7 @@ def ConvertLegacyToNew( legacy_session: GUISessionLegacy ):
     
     ( top_notebook_container, hashes_to_page_data ) = ConvertPageTuplesToNotebookContainer( 'top notebook', page_tuples )
     
-    session = ClientGUISession.GUISessionContainer( legacy_session.GetName(), top_notebook_container = top_notebook_container, hashes_to_page_data = hashes_to_page_data )
+    session = ClientGUISession.GUISessionContainer( legacy_session.get_name(), top_notebook_container = top_notebook_container, hashes_to_page_data = hashes_to_page_data )
     
     return session
     

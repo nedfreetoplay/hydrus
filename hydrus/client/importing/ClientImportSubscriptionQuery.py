@@ -21,7 +21,7 @@ SUBSCRIPTION_BANDWIDTH_OK_WINDOW = 90
 
 def GenerateQueryLogContainerName() -> str:
     
-    return HydrusData.GenerateKey().hex()
+    return HydrusData.generate_key().hex()
     
 class SubscriptionQueryLogContainer( HydrusSerialisable.SerialisableBaseNamed ):
     
@@ -37,20 +37,20 @@ class SubscriptionQueryLogContainer( HydrusSerialisable.SerialisableBaseNamed ):
         self._file_seed_cache = ClientImportFileSeeds.FileSeedCache()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_gallery_seed_log = self._gallery_seed_log.GetSerialisableTuple()
-        serialisable_file_seed_cache = self._file_seed_cache.GetSerialisableTuple()
+        serialisable_gallery_seed_log = self._gallery_seed_log.get_serialisable_tuple()
+        serialisable_file_seed_cache = self._file_seed_cache.get_serialisable_tuple()
         
         return ( serialisable_gallery_seed_log, serialisable_file_seed_cache )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( serialisable_gallery_seed_log, serialisable_file_seed_cache ) = serialisable_info
         
-        self._gallery_seed_log = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_gallery_seed_log )
-        self._file_seed_cache = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_file_seed_cache )
+        self._gallery_seed_log = HydrusSerialisable.create_from_serialisable_tuple( serialisable_gallery_seed_log )
+        self._file_seed_cache = HydrusSerialisable.create_from_serialisable_tuple( serialisable_file_seed_cache )
         
     
     def GetFileSeedCache( self ):
@@ -121,7 +121,7 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
         
         if HG.subscription_report_mode:
             
-            HydrusData.ShowText( 'Query "{}" domain test. Domain ok: {}'.format( self._GetHumanName(), domain_ok ) )
+            HydrusData.show_text( 'Query "{}" domain test. Domain ok: {}'.format( self._GetHumanName(), domain_ok ) )
             
         
         return domain_ok
@@ -210,13 +210,13 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_file_seed_cache_status = self._file_seed_cache_status.GetSerialisableTuple()
-        serialisable_tag_import_options = self._tag_import_options.GetSerialisableTuple()
+        serialisable_file_seed_cache_status = self._file_seed_cache_status.get_serialisable_tuple()
+        serialisable_tag_import_options = self._tag_import_options.get_serialisable_tuple()
         
-        serialisable_example_file_seed = HydrusSerialisable.GetNoneableSerialisableTuple( self._example_file_seed )
-        serialisable_example_gallery_seed = HydrusSerialisable.GetNoneableSerialisableTuple( self._example_gallery_seed )
+        serialisable_example_file_seed = HydrusSerialisable.get_noneable_serialisable_tuple( self._example_file_seed )
+        serialisable_example_gallery_seed = HydrusSerialisable.get_noneable_serialisable_tuple( self._example_gallery_seed )
         
         return (
             self._query_log_container_name,
@@ -239,7 +239,7 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
         )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         (
             self._query_log_container_name,
@@ -261,12 +261,12 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
             serialisable_example_gallery_seed
             ) = serialisable_info
         
-        self._file_seed_cache_status = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_file_seed_cache_status )
-        self._tag_import_options = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tag_import_options )
+        self._file_seed_cache_status = HydrusSerialisable.create_from_serialisable_tuple( serialisable_file_seed_cache_status )
+        self._tag_import_options = HydrusSerialisable.create_from_serialisable_tuple( serialisable_tag_import_options )
         
         try:
             
-            self._example_file_seed = HydrusSerialisable.CreateFromNoneableSerialisableTuple( serialisable_example_file_seed )
+            self._example_file_seed = HydrusSerialisable.create_from_noneable_serialisable_tuple( serialisable_example_file_seed )
             
         except:
             
@@ -275,7 +275,7 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
         
         try:
             
-            self._example_gallery_seed = HydrusSerialisable.CreateFromNoneableSerialisableTuple( serialisable_example_gallery_seed )
+            self._example_gallery_seed = HydrusSerialisable.create_from_noneable_serialisable_tuple( serialisable_example_gallery_seed )
             
         except:
             
@@ -283,7 +283,7 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -366,7 +366,7 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
         
         if HG.subscription_report_mode:
             
-            HydrusData.ShowText( 'Query "' + self._GetHumanName() + '" bandwidth/domain test. Bandwidth ok: {}'.format( bandwidth_ok ) )
+            HydrusData.show_text( 'Query "' + self._GetHumanName() + '" bandwidth/domain test. Bandwidth ok: {}'.format( bandwidth_ok ) )
             
         
         return bandwidth_ok
@@ -415,7 +415,7 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
         
         if HG.subscription_report_mode:
             
-            HydrusData.ShowText( 'Query "{}" pre-work file login test. Login ok: {}. {}'.format( self._GetHumanName(), str( result ), reason ) )
+            HydrusData.show_text( 'Query "{}" pre-work file login test. Login ok: {}. {}'.format( self._GetHumanName(), str( result ), reason ) )
             
         
         return ( result, reason )
@@ -465,7 +465,7 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
         
         if HG.subscription_report_mode:
             
-            HydrusData.ShowText( 'Query "{}" pre-work sync login test. Login ok: {}. {}'.format( self._GetHumanName(), str( result ), reason ) )
+            HydrusData.show_text( 'Query "{}" pre-work sync login test. Login ok: {}. {}'.format( self._GetHumanName(), str( result ), reason ) )
             
         
         return ( result, reason )
@@ -560,13 +560,13 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
             
         else:
             
-            if HydrusTime.TimeHasPassed( self._next_check_time ):
+            if HydrusTime.time_has_passed( self._next_check_time ):
                 
                 s = 'imminent'
                 
             else:
                 
-                s = HydrusTime.TimestampToPrettyTimeDelta( self._next_check_time )
+                s = HydrusTime.timestamp_to_pretty_timedelta( self._next_check_time )
                 
             
             if self._paused:
@@ -618,7 +618,7 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
                 
             else:
                 
-                file_work_time = HydrusTime.GetNow() + file_bandwidth_estimate
+                file_work_time = HydrusTime.get_now() + file_bandwidth_estimate
                 
                 work_times.add( file_work_time )
                 
@@ -658,7 +658,7 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
         
         if HG.subscription_report_mode:
             
-            HydrusData.ShowText( 'Query "{}" HasFileWorkToDo test. Result is {}.'.format( self._query_text, result ) )
+            HydrusData.show_text( 'Query "{}" HasFileWorkToDo test. Result is {}.'.format( self._query_text, result ) )
             
         
         return result
@@ -703,7 +703,7 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
         
         if HG.subscription_report_mode:
             
-            HydrusData.ShowText( 'Query "' + self._query_text + '" IsSyncDue test. Paused/dead/container status is {}/{}/{}, check time due is {}, and check_now is {}.'.format( self._paused, self.IsDead(), self.IsLogContainerOK(), HydrusTime.TimeHasPassed( self._next_check_time ), self._check_now ) )
+            HydrusData.show_text( 'Query "' + self._query_text + '" IsSyncDue test. Paused/dead/container status is {}/{}/{}, check time due is {}, and check_now is {}.'.format( self._paused, self.IsDead(), self.IsLogContainerOK(), HydrusTime.time_has_passed( self._next_check_time ), self._check_now ) )
             
         
         if not self.IsExpectingToWorkInFuture():
@@ -711,7 +711,7 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
             return False
             
         
-        return HydrusTime.TimeHasPassed( self._next_check_time ) or self._check_now
+        return HydrusTime.time_has_passed( self._next_check_time ) or self._check_now
         
     
     def PausePlay( self ):
@@ -721,7 +721,7 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
     
     def RegisterSyncComplete( self, checker_options: ClientImportOptions.CheckerOptions, query_log_container: SubscriptionQueryLogContainer ):
         
-        self._last_check_time = HydrusTime.GetNow()
+        self._last_check_time = HydrusTime.get_now()
         
         self._check_now = False
         

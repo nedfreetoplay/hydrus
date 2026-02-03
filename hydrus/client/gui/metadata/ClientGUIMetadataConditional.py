@@ -111,7 +111,7 @@ def ResultsFetch(
                     
                 else:
                     
-                    exact_match_predicates = CG.client_controller.Read( 'autocomplete_predicates', ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, file_search_context, search_text = strict_search_text, exact_match = True, job_status = job_status )
+                    exact_match_predicates = CG.client_controller.read( 'autocomplete_predicates', ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, file_search_context, search_text = strict_search_text, exact_match = True, job_status = job_status )
                     
                     small_exact_match_search = ClientGUIACDropdown.ShouldDoExactSearch( parsed_autocomplete_text )
                     
@@ -143,7 +143,7 @@ def ResultsFetch(
                         
                         search_namespaces_into_full_tags = parsed_autocomplete_text.GetTagAutocompleteOptions().SearchNamespacesIntoFullTags()
                         
-                        predicates = CG.client_controller.Read( 'autocomplete_predicates', ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, file_search_context, search_text = autocomplete_search_text, job_status = job_status, search_namespaces_into_full_tags = search_namespaces_into_full_tags )
+                        predicates = CG.client_controller.read( 'autocomplete_predicates', ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, file_search_context, search_text = autocomplete_search_text, job_status = job_status, search_namespaces_into_full_tags = search_namespaces_into_full_tags )
                         
                         if job_status.IsCancelled():
                             
@@ -200,12 +200,12 @@ class AutoCompleteDropdownMetadataConditional( ClientGUIACDropdown.AutocompleteD
     def __init__( self, parent: QW.QWidget, file_search_context: ClientSearchFileSearchContext.FileSearchContext ):
         
         # make a dupe here so we know that any direct changes we make to this guy will not affect other copies around
-        file_search_context = file_search_context.Duplicate()
+        file_search_context = file_search_context.duplicate()
         
         location_context = file_search_context.GetLocationContext()
         tag_context = file_search_context.GetTagContext()
         
-        page_key = HydrusData.GenerateKey()
+        page_key = HydrusData.generate_key()
         for_metadata_conditional = True
         
         super().__init__( parent, location_context, tag_context, file_search_context, page_key, for_metadata_conditional )
@@ -337,7 +337,7 @@ class AutoCompleteDropdownMetadataConditional( ClientGUIACDropdown.AutocompleteD
         
         try:
             
-            texts = HydrusText.DeserialiseNewlinedTexts( raw_text )
+            texts = HydrusText.deserialise_newlined_texts( raw_text )
             
             predicates = []
             
@@ -414,10 +414,10 @@ class AutoCompleteDropdownMetadataConditional( ClientGUIACDropdown.AutocompleteD
             
         else:
             
-            under_construction_or_predicate = self._under_construction_or_predicate.Duplicate()
+            under_construction_or_predicate = self._under_construction_or_predicate.duplicate()
             
         
-        CG.client_controller.CallToThread( ResultsFetch, self, job_status, self.SetPrefetchResults, self.SetFetchedResults, parsed_autocomplete_text, fsc, self._results_cache, under_construction_or_predicate )
+        CG.client_controller.call_to_thread( ResultsFetch, self, job_status, self.SetPrefetchResults, self.SetFetchedResults, parsed_autocomplete_text, fsc, self._results_cache, under_construction_or_predicate )
         
     
     def GetPredicates( self ) -> set[ ClientSearchPredicate.Predicate ]:

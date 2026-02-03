@@ -28,20 +28,20 @@ class HydrusResourceClientAPIRestrictedAddURLsAssociateURL( HydrusResourceClient
     
     def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        normalise_urls = request.parsed_request_args.GetValue( 'normalise_urls', bool, default_value = True )
+        normalise_urls = request.parsed_request_args.get_value( 'normalise_urls', bool, default_value = True )
         
         urls_to_add = []
         
         if 'url_to_add' in request.parsed_request_args:
             
-            url = request.parsed_request_args.GetValue( 'url_to_add', str )
+            url = request.parsed_request_args.get_value( 'url_to_add', str )
             
             urls_to_add.append( url )
             
         
         if 'urls_to_add' in request.parsed_request_args:
             
-            urls = request.parsed_request_args.GetValue( 'urls_to_add', list, expected_list_type = str )
+            urls = request.parsed_request_args.get_value( 'urls_to_add', list, expected_list_type = str )
             
             urls_to_add.extend( urls )
             
@@ -50,14 +50,14 @@ class HydrusResourceClientAPIRestrictedAddURLsAssociateURL( HydrusResourceClient
         
         if 'url_to_delete' in request.parsed_request_args:
             
-            url = request.parsed_request_args.GetValue( 'url_to_delete', str )
+            url = request.parsed_request_args.get_value( 'url_to_delete', str )
             
             urls_to_delete.append( url )
             
         
         if 'urls_to_delete' in request.parsed_request_args:
             
-            urls = request.parsed_request_args.GetValue( 'urls_to_delete', list, expected_list_type = str )
+            urls = request.parsed_request_args.get_value( 'urls_to_delete', list, expected_list_type = str )
             
             urls_to_delete.extend( urls )
             
@@ -106,7 +106,7 @@ class HydrusResourceClientAPIRestrictedAddURLsAssociateURL( HydrusResourceClient
         
         if content_update_package.HasContent():
             
-            CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+            CG.client_controller.write_synchronous( 'content_updates', content_update_package )
             
         
         response_context = HydrusServerResources.ResponseContext( 200 )
@@ -119,9 +119,9 @@ class HydrusResourceClientAPIRestrictedAddURLsGetURLFiles( HydrusResourceClientA
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        url = request.parsed_request_args.GetValue( 'url', str )
+        url = request.parsed_request_args.get_value( 'url', str )
         
-        do_file_system_check = request.parsed_request_args.GetValue( 'doublecheck_file_system', bool, default_value = False )
+        do_file_system_check = request.parsed_request_args.get_value( 'doublecheck_file_system', bool, default_value = False )
         
         if url == '':
             
@@ -137,7 +137,7 @@ class HydrusResourceClientAPIRestrictedAddURLsGetURLFiles( HydrusResourceClientA
             raise HydrusExceptions.BadRequestException( e )
             
         
-        url_statuses = CG.client_controller.Read( 'url_statuses', normalised_url )
+        url_statuses = CG.client_controller.read( 'url_statuses', normalised_url )
         
         json_happy_url_statuses = []
         
@@ -152,7 +152,7 @@ class HydrusResourceClientAPIRestrictedAddURLsGetURLFiles( HydrusResourceClientA
             
             d = {
                 'status': file_import_status.status,
-                'hash': HydrusData.BytesToNoneOrHex( file_import_status.hash ),
+                'hash': HydrusData.bytes_to_none_or_hex( file_import_status.hash ),
                 'note': file_import_status.note
             }
             
@@ -173,7 +173,7 @@ class HydrusResourceClientAPIRestrictedAddURLsGetURLFiles( HydrusResourceClientA
         if we_only_saw_successful:
             
             # not likely to change much, so no worries about reducing overhead here
-            response_context.SetMaxAge( 30 )
+            response_context.set_max_age( 30 )
             
         
         return response_context
@@ -184,7 +184,7 @@ class HydrusResourceClientAPIRestrictedAddURLsGetURLInfo( HydrusResourceClientAP
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        url = request.parsed_request_args.GetValue( 'url', str )
+        url = request.parsed_request_args.get_value( 'url', str )
         
         if url == '':
             
@@ -233,7 +233,7 @@ class HydrusResourceClientAPIRestrictedAddURLsImportURL( HydrusResourceClientAPI
     
     def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        url = request.parsed_request_args.GetValue( 'url', str )
+        url = request.parsed_request_args.get_value( 'url', str )
         
         if url == '':
             
@@ -246,16 +246,16 @@ class HydrusResourceClientAPIRestrictedAddURLsImportURL( HydrusResourceClientAPI
             
             request.client_api_permissions.CheckPermission( ClientAPI.CLIENT_API_PERMISSION_ADD_TAGS )
             
-            filterable_tags = request.parsed_request_args.GetValue( 'filterable_tags', list, expected_list_type = str )
+            filterable_tags = request.parsed_request_args.get_value( 'filterable_tags', list, expected_list_type = str )
             
-            filterable_tags = HydrusTags.CleanTags( filterable_tags )
+            filterable_tags = HydrusTags.clean_tags( filterable_tags )
             
         
         additional_service_keys_to_tags = ClientTags.ServiceKeysToTags()
         
         if 'service_keys_to_additional_tags' in request.parsed_request_args:
             
-            service_keys_to_additional_tags = request.parsed_request_args.GetValue( 'service_keys_to_additional_tags', dict )
+            service_keys_to_additional_tags = request.parsed_request_args.get_value( 'service_keys_to_additional_tags', dict )
             
             request.client_api_permissions.CheckPermission( ClientAPI.CLIENT_API_PERMISSION_ADD_TAGS )
             
@@ -263,7 +263,7 @@ class HydrusResourceClientAPIRestrictedAddURLsImportURL( HydrusResourceClientAPI
                 
                 ClientLocalServerCore.CheckTagService( service_key )
                 
-                tags = HydrusTags.CleanTags( tags )
+                tags = HydrusTags.clean_tags( tags )
                 
                 if len( tags ) == 0:
                     
@@ -278,17 +278,17 @@ class HydrusResourceClientAPIRestrictedAddURLsImportURL( HydrusResourceClientAPI
         
         if 'destination_page_name' in request.parsed_request_args:
             
-            destination_page_name = request.parsed_request_args.GetValue( 'destination_page_name', str )
+            destination_page_name = request.parsed_request_args.get_value( 'destination_page_name', str )
             
         
         destination_page_key = None
         
         if 'destination_page_key' in request.parsed_request_args:
             
-            destination_page_key = request.parsed_request_args.GetValue( 'destination_page_key', bytes )
+            destination_page_key = request.parsed_request_args.get_value( 'destination_page_key', bytes )
             
         
-        show_destination_page = request.parsed_request_args.GetValue( 'show_destination_page', bool, default_value = False )
+        show_destination_page = request.parsed_request_args.get_value( 'show_destination_page', bool, default_value = False )
         
         destination_location_context = ClientLocalServerCore.ParseLocalFileDomainLocationContext( request )
         

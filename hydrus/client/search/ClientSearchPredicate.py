@@ -276,11 +276,11 @@ class PredicateCount( object ):
         
         if self.min_current_count > 0 or self.max_current_count > 0:
             
-            number_text = HydrusNumbers.ToHumanInt( self.min_current_count )
+            number_text = HydrusNumbers.to_human_int( self.min_current_count )
             
             if self.max_current_count > self.min_current_count:
                 
-                number_text = '{}-{}'.format( number_text, HydrusNumbers.ToHumanInt( self.max_current_count ) )
+                number_text = '{}-{}'.format( number_text, HydrusNumbers.to_human_int( self.max_current_count ) )
                 
             
             suffix_components.append( '({})'.format( number_text ) )
@@ -288,11 +288,11 @@ class PredicateCount( object ):
         
         if self.min_pending_count > 0 or self.max_pending_count > 0:
             
-            number_text = HydrusNumbers.ToHumanInt( self.min_pending_count )
+            number_text = HydrusNumbers.to_human_int( self.min_pending_count )
             
             if self.max_pending_count > self.min_pending_count:
                 
-                number_text = '{}-{}'.format( number_text, HydrusNumbers.ToHumanInt( self.max_pending_count ) )
+                number_text = '{}-{}'.format( number_text, HydrusNumbers.to_human_int( self.max_pending_count ) )
                 
             
             suffix_components.append( '(+{})'.format( number_text ) )
@@ -453,7 +453,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
             
             value = list( value )
             
-            value.sort( key = lambda p: HydrusText.HumanTextSortKey( p.ToString() ) )
+            value.sort( key = lambda p: HydrusText.human_text_sort_key( p.ToString() ) )
             
         
         if isinstance( value, ( list, set ) ):
@@ -480,7 +480,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
         
         if self._predicate_type == PREDICATE_TYPE_PARENT:
             
-            self._parent_key = HydrusData.GenerateKey()
+            self._parent_key = HydrusData.generate_key()
             
         else:
             
@@ -531,7 +531,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         if self._value is None:
             
@@ -601,7 +601,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
                 ( service_key_or_none, tag_display_type, statuses, tag ) = self._value
                 
-                serialisable_service_key_or_none = HydrusData.BytesToNoneOrHex( service_key_or_none )
+                serialisable_service_key_or_none = HydrusData.bytes_to_none_or_hex( service_key_or_none )
                 serialisable_statuses = tuple( statuses )
                 
                 serialisable_value = ( serialisable_service_key_or_none, tag_display_type, serialisable_statuses, tag )
@@ -610,13 +610,13 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
                 or_predicates = self._value
                 
-                serialisable_value = HydrusSerialisable.SerialisableList( or_predicates ).GetSerialisableTuple()
+                serialisable_value = HydrusSerialisable.SerialisableList( or_predicates ).get_serialisable_tuple()
                 
             elif self._predicate_type in ( PREDICATE_TYPE_SYSTEM_WIDTH, PREDICATE_TYPE_SYSTEM_HEIGHT, PREDICATE_TYPE_SYSTEM_NUM_NOTES, PREDICATE_TYPE_SYSTEM_NUM_WORDS, PREDICATE_TYPE_SYSTEM_NUM_URLS, PREDICATE_TYPE_SYSTEM_NUM_FRAMES, PREDICATE_TYPE_SYSTEM_DURATION, PREDICATE_TYPE_SYSTEM_FRAMERATE ):
                 
                 number_test_or_none = typing.cast( ClientNumberTest.NumberTest | None, self._value )
                 
-                serialisable_value = HydrusSerialisable.GetNoneableSerialisableTuple( number_test_or_none )
+                serialisable_value = HydrusSerialisable.get_noneable_serialisable_tuple( number_test_or_none )
                 
             else:
                 
@@ -627,7 +627,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
         return ( self._predicate_type, serialisable_value, self._inclusive )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( self._predicate_type, serialisable_value, self._inclusive ) = serialisable_info
         
@@ -653,8 +653,8 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
                 ( logical_operator, serialisable_service_specifier_primary, serialisable_service_specifier_secondary, rated ) = serialisable_value
                 
-                service_specifier_primary = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_service_specifier_primary )
-                service_specifier_secondary = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_service_specifier_secondary )
+                service_specifier_primary = HydrusSerialisable.create_from_serialisable_tuple( serialisable_service_specifier_primary )
+                service_specifier_secondary = HydrusSerialisable.create_from_serialisable_tuple( serialisable_service_specifier_secondary )
                 
                 self._value = ( logical_operator, service_specifier_primary, service_specifier_secondary, rated )
                 
@@ -680,7 +680,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
                 if rule_type in ( 'url_match', 'url_class' ):
                     
-                    rule = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_rule )
+                    rule = HydrusSerialisable.create_from_serialisable_tuple( serialisable_rule )
                     
                 else:
                     
@@ -699,7 +699,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
                 ( serialisable_key_or_none, tag_display_type, serialisable_statuses, tag ) = serialisable_value
                 
-                service_key_or_none = HydrusData.HexToNoneOrBytes( serialisable_key_or_none )
+                service_key_or_none = HydrusData.hex_to_none_or_bytes( serialisable_key_or_none )
                 statuses = tuple( serialisable_statuses )
                 
                 self._value = ( service_key_or_none, tag_display_type, statuses, tag )
@@ -720,11 +720,11 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
                 serialisable_or_predicates = serialisable_value
                 
-                self._value = tuple( HydrusSerialisable.CreateFromSerialisableTuple( serialisable_or_predicates ) )
+                self._value = tuple( HydrusSerialisable.create_from_serialisable_tuple( serialisable_or_predicates ) )
                 
                 try:
                     
-                    self._value = tuple( sorted( self._value, key = lambda p: HydrusText.HumanTextSortKey( p.ToString() ) ) )
+                    self._value = tuple( sorted( self._value, key = lambda p: HydrusText.human_text_sort_key( p.ToString() ) ) )
                     
                 except:
                     
@@ -735,7 +735,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
                 serialisable_number_test = serialisable_value
                 
-                self._value = HydrusSerialisable.CreateFromNoneableSerialisableTuple( serialisable_number_test )
+                self._value = HydrusSerialisable.create_from_noneable_serialisable_tuple( serialisable_number_test )
                 
             else:
                 
@@ -773,7 +773,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -919,7 +919,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                         
                     
                 
-                serialisable_value = number_test.GetSerialisableTuple()
+                serialisable_value = number_test.get_serialisable_tuple()
                 
             
             new_serialisable_info = ( predicate_type, serialisable_value, inclusive )
@@ -1067,7 +1067,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
             
             tag_analogue = self._value
             
-            ( namespace, subtag ) = HydrusTags.SplitTag( tag_analogue )
+            ( namespace, subtag ) = HydrusTags.split_tag( tag_analogue )
             
             if '*' in namespace:
                 
@@ -1306,7 +1306,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
             
         except Exception as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             return None
             
@@ -1395,7 +1395,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
         
         if self._predicate_type == PREDICATE_TYPE_TAG:
             
-            ( namespace, subtag ) = HydrusTags.SplitTag( self._value )
+            ( namespace, subtag ) = HydrusTags.split_tag( self._value )
             
             return Predicate( self._predicate_type, subtag, self._inclusive, count = self._count.Duplicate() )
             
@@ -1657,7 +1657,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
             else:
                 
-                pertinent_tags = { tag for tag in tags if HydrusTags.SplitTag( tag )[0] == namespace }
+                pertinent_tags = { tag for tag in tags if HydrusTags.split_tag( tag )[0] == namespace }
                 
             
             return number_test.Test( len( pertinent_tags ) )
@@ -1736,9 +1736,9 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
                 ( years, months, days, hours ) = age_value
                 
-                dt = HydrusTime.CalendarDeltaToDateTime( years, months, days, hours )
+                dt = HydrusTime.calendar_delta_to_datetime( years, months, days, hours )
                 
-                time_pivot_ms = HydrusTime.DateTimeToTimestampMS( dt )
+                time_pivot_ms = HydrusTime.date_time_to_timestamp_ms( dt )
                 
                 # this is backwards (less than means min timestamp) because we are talking about age, not timestamp
                 
@@ -1756,13 +1756,13 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                     
                 elif operator == HC.UNICODE_APPROX_EQUAL:
                     
-                    rough_timedelta_gap = HydrusTime.CalendarDeltaToRoughDateTimeTimeDelta( years, months, days, hours ) * 0.15
+                    rough_timedelta_gap = HydrusTime.calendar_delta_to_rough_datetime_timedelta( years, months, days, hours ) * 0.15
                     
                     earliest_dt = dt - rough_timedelta_gap
                     latest_dt = dt + rough_timedelta_gap
                     
-                    earliest_time_pivot_ms = HydrusTime.DateTimeToTimestampMS( earliest_dt )
-                    latest_time_pivot_ms = HydrusTime.DateTimeToTimestampMS( latest_dt )
+                    earliest_time_pivot_ms = HydrusTime.date_time_to_timestamp_ms( earliest_dt )
+                    latest_time_pivot_ms = HydrusTime.date_time_to_timestamp_ms( latest_dt )
                     
                     min_timestamp_ms = earliest_time_pivot_ms
                     max_timestamp_ms = latest_time_pivot_ms
@@ -1774,12 +1774,12 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
                 dt = datetime.datetime( year, month, day, hour, minute )
                 
-                time_pivot_ms = HydrusTime.DateTimeToTimestampMS( dt )
+                time_pivot_ms = HydrusTime.date_time_to_timestamp_ms( dt )
                 
-                dt_day_of_start = HydrusTime.GetDateTime( year, month, day, 0, 0 )
+                dt_day_of_start = HydrusTime.get_date_time( year, month, day, 0, 0 )
                 
-                day_of_start_timestamp_ms = HydrusTime.DateTimeToTimestampMS( dt_day_of_start )
-                day_of_end_timestamp_ms = HydrusTime.DateTimeToTimestampMS( ClientTime.CalendarDelta( dt_day_of_start, day_delta = 1 ) )
+                day_of_start_timestamp_ms = HydrusTime.date_time_to_timestamp_ms( dt_day_of_start )
+                day_of_end_timestamp_ms = HydrusTime.date_time_to_timestamp_ms( ClientTime.CalendarDelta( dt_day_of_start, day_delta = 1 ) )
                 
                 # the before/since semantic logic is:
                 # '<' 2022-05-05 means 'before that date'
@@ -1800,8 +1800,8 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                     
                 elif operator == HC.UNICODE_APPROX_EQUAL:
                     
-                    previous_month_timestamp_ms = HydrusTime.DateTimeToTimestampMS( ClientTime.CalendarDelta( dt, month_delta = -1 ) )
-                    next_month_timestamp_ms = HydrusTime.DateTimeToTimestampMS( ClientTime.CalendarDelta( dt, month_delta = 1 ) )
+                    previous_month_timestamp_ms = HydrusTime.date_time_to_timestamp_ms( ClientTime.CalendarDelta( dt, month_delta = -1 ) )
+                    next_month_timestamp_ms = HydrusTime.date_time_to_timestamp_ms( ClientTime.CalendarDelta( dt, month_delta = 1 ) )
                     
                     min_timestamp_ms = previous_month_timestamp_ms
                     max_timestamp_ms = next_month_timestamp_ms
@@ -1911,7 +1911,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                     
                 else:
                     
-                    inclusive_result = True in ( namespace == t_namespace for ( t_namespace, t_subtag ) in ( HydrusTags.SplitTag( tag ) for tag in tags ) )
+                    inclusive_result = True in ( namespace == t_namespace for ( t_namespace, t_subtag ) in ( HydrusTags.split_tag( tag ) for tag in tags ) )
                     
                 
             elif self._predicate_type == PREDICATE_TYPE_WILDCARD:
@@ -2004,7 +2004,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                     
                 elif self._predicate_type == PREDICATE_TYPE_SYSTEM_FRAMERATE:
                     
-                    absolute_number_renderer = lambda s: f'{HydrusNumbers.ToHumanInt(s)}fps'
+                    absolute_number_renderer = lambda s: f'{HydrusNumbers.to_human_int(s)}fps'
                     
                     base = 'framerate'
                     has_phrase = 'has framerate'
@@ -2036,7 +2036,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                     
                 elif self._predicate_type == PREDICATE_TYPE_SYSTEM_DURATION:
                     
-                    absolute_number_renderer = lambda n: HydrusTime.MillisecondsDurationToPrettyTime( n, force_numbers = True )
+                    absolute_number_renderer = lambda n: HydrusTime.milliseconds_duration_to_pretty_time( n, force_numbers = True )
                     
                     base = 'duration'
                     has_phrase = 'has duration'
@@ -2122,7 +2122,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                             base = 'number of {} tags'.format( ClientTags.RenderNamespaceForUser( namespace ) )
                             
                         
-                        base += ' {} {}'.format( operator, HydrusNumbers.ToHumanInt( value ) )
+                        base += ' {} {}'.format( operator, HydrusNumbers.to_human_int( value ) )
                         
                     
                 
@@ -2161,7 +2161,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                     
                     ( operator, size, unit ) = self._value
                     
-                    base += ' ' + operator + ' ' + str( size ) + HydrusNumbers.IntToUnit( unit )
+                    base += ' ' + operator + ' ' + str( size ) + HydrusNumbers.int_to_unit( unit )
                     
                 
             elif self._predicate_type == PREDICATE_TYPE_SYSTEM_LIMIT:
@@ -2172,7 +2172,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                     
                     value = self._value
                     
-                    base += ' is ' + HydrusNumbers.ToHumanInt( value )
+                    base += ' is ' + HydrusNumbers.to_human_int( value )
                     
                 
             elif self._predicate_type in ( PREDICATE_TYPE_SYSTEM_IMPORT_TIME, PREDICATE_TYPE_SYSTEM_LAST_VIEWED_TIME, PREDICATE_TYPE_SYSTEM_MODIFIED_TIME, PREDICATE_TYPE_SYSTEM_ARCHIVED_TIME  ):
@@ -2213,7 +2213,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                             
                             if quantity > 0:
                                 
-                                str_component = '{} {}'.format( HydrusNumbers.ToHumanInt( quantity ), label )
+                                str_component = '{} {}'.format( HydrusNumbers.to_human_int( quantity ), label )
                                 
                                 if quantity > 1:
                                     
@@ -2279,7 +2279,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                         
                         include_24h_time = operator != '=' and ( hour > 0 or minute > 0 )
                         
-                        base += ': ' + pretty_operator + HydrusTime.DateTimeToPrettyTime( dt, include_24h_time = include_24h_time )
+                        base += ': ' + pretty_operator + HydrusTime.date_time_to_pretty_time( dt, include_24h_time = include_24h_time )
                         
                     
                 
@@ -2291,7 +2291,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                     
                     ( operator, num_pixels, unit ) = self._value
                     
-                    base += ' ' + operator + ' ' + str( num_pixels ) + ' ' + HydrusNumbers.IntToPixels( unit )
+                    base += ' ' + operator + ' ' + str( num_pixels ) + ' ' + HydrusNumbers.int_to_pixels( unit )
                     
                 
             elif self._predicate_type == PREDICATE_TYPE_SYSTEM_KNOWN_URLS:
@@ -2424,7 +2424,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                         
                     else:
                         
-                        base = f'{base} {is_phrase} {HydrusNumbers.ToHumanInt( len( hashes ) )} hashes'
+                        base = f'{base} {is_phrase} {HydrusNumbers.to_human_int( len( hashes ) )} hashes'
                         
                     
                 
@@ -2628,7 +2628,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                         
                     else:
                         
-                        hash_string = f'{HydrusNumbers.ToHumanInt( len( hashes ) )} files'
+                        hash_string = f'{HydrusNumbers.to_human_int( len( hashes ) )} files'
                         
                     
                     base += f' {hash_string} with distance of {max_hamming}'
@@ -2654,12 +2654,12 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                         
                         if len( pixel_hashes ) > 0:
                             
-                            components.append( f'{HydrusNumbers.ToHumanInt( len( pixel_hashes ) )} pixel')
+                            components.append( f'{HydrusNumbers.to_human_int( len( pixel_hashes ) )} pixel')
                             
                         
                         if len( perceptual_hashes ) > 0:
                             
-                            components.append( f'{HydrusNumbers.ToHumanInt( len( perceptual_hashes ) )} perceptual')
+                            components.append( f'{HydrusNumbers.to_human_int( len( perceptual_hashes ) )} perceptual')
                             
                         
                         component_string = ', '.join( components )
@@ -2756,7 +2756,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                         o_text = 'unknown'
                         
                     
-                    base = f'{base}: {n_text} {o_text} {HydrusNumbers.ToHumanInt( num )}'
+                    base = f'{base}: {n_text} {o_text} {HydrusNumbers.to_human_int( num )}'
                     
                 
             elif self._predicate_type == PREDICATE_TYPE_SYSTEM_FILE_RELATIONSHIPS_COUNT:
@@ -2784,7 +2784,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                         o_text = ' '
                         
                     
-                    base += ' - has' + o_text + HydrusNumbers.ToHumanInt( num_relationships ) + ' ' + HC.duplicate_type_string_lookup[ dupe_type ]
+                    base += ' - has' + o_text + HydrusNumbers.to_human_int( num_relationships ) + ' ' + HC.duplicate_type_string_lookup[ dupe_type ]
                     
                 
             elif self._predicate_type == PREDICATE_TYPE_SYSTEM_FILE_RELATIONSHIPS_KING:
@@ -2826,11 +2826,11 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                     
                     if view_type == 'views':
                         
-                        value_string = HydrusNumbers.ToHumanInt( viewing_value )
+                        value_string = HydrusNumbers.to_human_int( viewing_value )
                         
                     elif view_type == 'viewtime':
                         
-                        value_string = HydrusTime.TimeDeltaToPrettyTimeDelta( viewing_value )
+                        value_string = HydrusTime.timedelta_to_pretty_timedelta( viewing_value )
                         
                     else:
                         
@@ -2841,7 +2841,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                     
                 
             
-            base = HydrusTags.CombineTag( 'system', base )
+            base = HydrusTags.combine_tag( 'system', base )
             
             base = ClientTags.RenderTag( base, render_for_user )
             
@@ -2884,7 +2884,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
             
             pretty_namespace = ClientTags.RenderNamespaceForUser( namespace )
             
-            anything_tag = HydrusTags.CombineTag( pretty_namespace, '*anything*' )
+            anything_tag = HydrusTags.combine_tag( pretty_namespace, '*anything*' )
             
             anything_tag = ClientTags.RenderTag( anything_tag, render_for_user )
             
@@ -2894,7 +2894,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
             
             if self._value.startswith( '*:' ):
                 
-                ( any_namespace, subtag ) = HydrusTags.SplitTag( self._value )
+                ( any_namespace, subtag ) = HydrusTags.split_tag( self._value )
                 
                 wildcard = '{} (any namespace)'.format( subtag )
                 
@@ -2945,7 +2945,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
             
         except Exception as e:
             
-            HydrusData.PrintException( e, do_wait = False )
+            HydrusData.print_exception( e, do_wait = False )
             
             return 'error:cannot render this predicate, check log'
             

@@ -34,13 +34,13 @@ class EditAccountTypePanel( ClientGUIScrolledPanels.EditPanel ):
         
         super().__init__( parent )
         
-        self._account_type_key = account_type.GetAccountTypeKey()
-        title = account_type.GetTitle()
-        permissions = account_type.GetPermissions()
-        bandwidth_rules = account_type.GetBandwidthRules()
+        self._account_type_key = account_type.get_account_type_key()
+        title = account_type.get_title()
+        permissions = account_type.get_permissions()
+        bandwidth_rules = account_type.get_bandwidth_rules()
         
-        auto_create_velocity = account_type.GetAutoCreateAccountVelocity()
-        self._auto_create_history = account_type.GetAutoCreateAccountHistory()
+        auto_create_velocity = account_type.get_auto_create_account_velocity()
+        self._auto_create_history = account_type.get_auto_create_account_history()
         
         self._title = QW.QLineEdit( self )
         
@@ -141,7 +141,7 @@ class EditAccountTypePanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _GeneratePermissionChoices( self, service_type ):
         
-        possible_permissions = HydrusNetwork.GetPossiblePermissions( service_type )
+        possible_permissions = HydrusNetwork.get_possible_permissions( service_type )
         
         permission_choices = []
         
@@ -171,9 +171,9 @@ class EditAccountTypePanel( ClientGUIScrolledPanels.EditPanel ):
             text = 'Auto-creation disabled. '
             
         
-        num_created = self._auto_create_history.GetUsage( HC.BANDWIDTH_TYPE_DATA, time_delta )
+        num_created = self._auto_create_history.get_usage( HC.BANDWIDTH_TYPE_DATA, time_delta )
         
-        text += '{} auto-created in the past {}.'.format( HydrusNumbers.ToHumanInt( num_created ), HydrusTime.TimeDeltaToPrettyTimeDelta( time_delta ) )
+        text += '{} auto-created in the past {}.'.format( HydrusNumbers.to_human_int( num_created ), HydrusTime.timedelta_to_pretty_timedelta( time_delta ) )
         
         self._auto_create_history_st.setText( text )
         
@@ -249,7 +249,7 @@ class EditAccountTypesPanel( ClientGUIScrolledPanels.EditPanel ):
         permissions = {}
         bandwidth_rules = HydrusNetworking.BandwidthRules()
         
-        account_type = HydrusNetwork.AccountType.GenerateNewAccountType( title, permissions, bandwidth_rules )
+        account_type = HydrusNetwork.AccountType.generate_new_account_type( title, permissions, bandwidth_rules )
         
         with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit account type' ) as dlg_edit:
             
@@ -268,9 +268,9 @@ class EditAccountTypesPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _ConvertAccountTypeToDataTuple( self, account_type: HydrusNetwork.AccountType ):
         
-        title = account_type.GetTitle()
+        title = account_type.get_title()
         
-        if account_type.IsNullAccount():
+        if account_type.is_null_account():
             
             title = '{} (cannot be edited)'.format( title )
             
@@ -384,7 +384,7 @@ class EditAccountTypesPanel( ClientGUIScrolledPanels.EditPanel ):
             keys = set( self._deletee_account_type_keys_to_new_account_type_keys.keys() )
             values = set( self._deletee_account_type_keys_to_new_account_type_keys.values() )
             
-            return HydrusLists.SetsIntersect( keys, values )
+            return HydrusLists.sets_intersect( keys, values )
             
         
         while key_transfer_not_collapsed():
@@ -434,15 +434,15 @@ class ListAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         my_admin_account_key = self._service.GetAccount().GetAccountKey()
         
-        accounts.sort( key = lambda a: ( a.GetAccountType().GetTitle(), a.GetAccountKey().hex() ) )
+        accounts.sort( key = lambda a: ( a.get_account_type().get_title(), a.get_account_key().hex() ) )
         
         for account in accounts:
             
             item = QW.QListWidgetItem()
             
-            account_key = account.GetAccountKey()
+            account_key = account.get_account_key()
             
-            text = account.GetSingleLineTitle()
+            text = account.get_single_line_title()
             
             if account_key == my_admin_account_key:
                 
@@ -685,7 +685,7 @@ class ReviewAccountsPanel( QW.QWidget ):
                         
                     except Exception as e:
                         
-                        HydrusData.PrintException( e )
+                        HydrusData.print_exception( e )
                         
                         continue
                         
@@ -1047,7 +1047,7 @@ class ModifyAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         if num_unchecked > 0:
             
-            ClientGUIDialogsMessage.ShowInformation( self, '{} accounts do not expire, so could not have time added!'.format( HydrusNumbers.ToHumanInt( num_unchecked ) ) )
+            ClientGUIDialogsMessage.ShowInformation( self, '{} accounts do not expire, so could not have time added!'.format( HydrusNumbers.to_human_int( num_unchecked ) ) )
             
         
         subject_accounts = self._account_panel.GetCheckedAccounts()
@@ -1059,7 +1059,7 @@ class ModifyAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             return
             
         
-        message = 'Add {} to expiry for {} accounts?'.format( HydrusTime.TimeDeltaToPrettyTimeDelta( expires_delta ), HydrusNumbers.ToHumanInt( len( subject_accounts ) ) )
+        message = 'Add {} to expiry for {} accounts?'.format( HydrusTime.timedelta_to_pretty_timedelta( expires_delta ), HydrusNumbers.to_human_int( len( subject_accounts ) ) )
         
         result = ClientGUIDialogsQuick.GetYesNo( self, message )
         
@@ -1106,7 +1106,7 @@ class ModifyAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         account_type = self._account_types_choice.GetValue()
         
-        message = 'Set {} accounts to "{}" type?'.format( HydrusNumbers.ToHumanInt( len( subject_account_keys ) ), account_type.GetTitle() )
+        message = 'Set {} accounts to "{}" type?'.format( HydrusNumbers.to_human_int( len( subject_account_keys ) ), account_type.GetTitle() )
         
         result = ClientGUIDialogsQuick.GetYesNo( self, message )
         
@@ -1179,7 +1179,7 @@ class ModifyAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             return
             
         
-        message = 'Ban {} account(s)? All of their pending petitions will be deleted serverside.'.format( HydrusNumbers.ToHumanInt( len( subject_account_keys ) ) )
+        message = 'Ban {} account(s)? All of their pending petitions will be deleted serverside.'.format( HydrusNumbers.to_human_int( len( subject_account_keys ) ) )
         
         result = ClientGUIDialogsQuick.GetYesNo( self, message )
         
@@ -1192,7 +1192,7 @@ class ModifyAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         if expires is not None:
             
-            expires += HydrusTime.GetNow()
+            expires += HydrusTime.get_now()
             
         
         service = self._service
@@ -1236,7 +1236,7 @@ class ModifyAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         subject_account_keys = [ subject_account.GetAccountKey() for subject_account in subject_accounts ]
         
-        message = 'Are you absolutely sure you want to delete all uploads for {} accounts? This will delete everything the user(s) have uploaded since the anonymisation date.'.format( HydrusNumbers.ToHumanInt( len( subject_account_keys ) ) )
+        message = 'Are you absolutely sure you want to delete all uploads for {} accounts? This will delete everything the user(s) have uploaded since the anonymisation date.'.format( HydrusNumbers.to_human_int( len( subject_account_keys ) ) )
         
         if self._service.GetServiceType() == HC.TAG_REPOSITORY:
             
@@ -1350,11 +1350,11 @@ class ModifyAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         if message == '':
             
-            yn_message = 'Clear message for {} accounts?'.format( HydrusNumbers.ToHumanInt( len( subject_accounts ) ) )
+            yn_message = 'Clear message for {} accounts?'.format( HydrusNumbers.to_human_int( len( subject_accounts ) ) )
             
         else:
             
-            yn_message = 'Set this message for {} accounts?'.format( HydrusNumbers.ToHumanInt( len( subject_accounts ) ) )
+            yn_message = 'Set this message for {} accounts?'.format( HydrusNumbers.to_human_int( len( subject_accounts ) ) )
             
         
         result = ClientGUIDialogsQuick.GetYesNo( self, yn_message )
@@ -1416,7 +1416,7 @@ class ModifyAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         subject_account_keys = [ subject_account.GetAccountKey() for subject_account in subject_accounts ]
         
-        message = 'Unban {} accounts?'.format( HydrusNumbers.ToHumanInt( len( subject_account_keys ) ) )
+        message = 'Unban {} accounts?'.format( HydrusNumbers.to_human_int( len( subject_account_keys ) ) )
         
         result = ClientGUIDialogsQuick.GetYesNo( self, message )
         
@@ -1509,7 +1509,7 @@ class ModifyAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         if expires is not None:
             
-            expires += HydrusTime.GetNow()
+            expires += HydrusTime.get_now()
             
         
         subject_account_keys_and_new_expires = [ ( subject_account_key, expires ) for subject_account_key in self._account_panel.GetCheckedAccountKeys() ]
@@ -1521,7 +1521,7 @@ class ModifyAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             return
             
         
-        message = 'Set expiry to {} for {} accounts?'.format( HydrusTime.TimestampToPrettyExpires( expires ), HydrusNumbers.ToHumanInt( len( subject_account_keys_and_new_expires ) ) )
+        message = 'Set expiry to {} for {} accounts?'.format( HydrusTime.timestamp_to_pretty_expires( expires ), HydrusNumbers.to_human_int( len( subject_account_keys_and_new_expires ) ) )
         
         result = ClientGUIDialogsQuick.GetYesNo( self, message )
         

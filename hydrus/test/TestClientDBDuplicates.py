@@ -83,10 +83,10 @@ class TestClientDBDuplicates( unittest.TestCase ):
         
         self._clear_db()
         
-        self._dupe_hashes = [ HydrusData.GenerateKey() for i in range( 16 ) ]
-        self._second_group_dupe_hashes = [ HydrusData.GenerateKey() for i in range( 4 ) ]
-        self._similar_looking_alternate_hashes = [ HydrusData.GenerateKey() for i in range( 5 ) ]
-        self._similar_looking_false_positive_hashes = [ HydrusData.GenerateKey() for i in range( 5 ) ]
+        self._dupe_hashes = [ HydrusData.generate_key() for i in range( 16 ) ]
+        self._second_group_dupe_hashes = [ HydrusData.generate_key() for i in range( 4 ) ]
+        self._similar_looking_alternate_hashes = [ HydrusData.generate_key() for i in range( 5 ) ]
+        self._similar_looking_false_positive_hashes = [ HydrusData.generate_key() for i in range( 5 ) ]
         
         self._all_hashes = set()
         
@@ -112,7 +112,7 @@ class TestClientDBDuplicates( unittest.TestCase ):
         # initial number pair combinations is (n(n-1))/2
         self._expected_num_potentials = int( n * ( n - 1 ) / 2 )
         
-        size_pred = ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( '=', 65535, HydrusNumbers.UnitToInt( 'B' ) ) )
+        size_pred = ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( '=', 65535, HydrusNumbers.unit_to_int( 'B' ) ) )
         png_pred = ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, ( HC.IMAGE_PNG, ) )
         
         location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )

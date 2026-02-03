@@ -70,14 +70,14 @@ class ShortcutsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         self._call_mouse_buttons_primary_secondary.setChecked( call_mouse_buttons_primary_secondary )
         self._shortcuts_merge_non_number_numpad.setChecked( shortcuts_merge_non_number_numpad )
         
-        reserved_shortcuts = [ shortcuts for shortcuts in all_shortcuts if shortcuts.GetName() in ClientGUIShortcuts.SHORTCUTS_RESERVED_NAMES ]
-        custom_shortcuts = [ shortcuts for shortcuts in all_shortcuts if shortcuts.GetName() not in ClientGUIShortcuts.SHORTCUTS_RESERVED_NAMES ]
+        reserved_shortcuts = [ shortcuts for shortcuts in all_shortcuts if shortcuts.get_name() in ClientGUIShortcuts.SHORTCUTS_RESERVED_NAMES ]
+        custom_shortcuts = [ shortcuts for shortcuts in all_shortcuts if shortcuts.get_name() not in ClientGUIShortcuts.SHORTCUTS_RESERVED_NAMES ]
         
         self._reserved_shortcuts.SetData( reserved_shortcuts )
         
         self._reserved_shortcuts.Sort()
         
-        self._original_custom_names = { shortcuts.GetName() for shortcuts in custom_shortcuts }
+        self._original_custom_names = { shortcuts.get_name() for shortcuts in custom_shortcuts }
         
         self._custom_shortcuts.SetData( custom_shortcuts )
         
@@ -150,7 +150,7 @@ class ShortcutsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
                 
                 existing_names = self._GetExistingCustomShortcutNames()
                 
-                new_shortcuts.SetNonDupeName( existing_names )
+                new_shortcuts.set_non_dupe_name( existing_names )
                 
                 self._custom_shortcuts.AddData( new_shortcuts, select_sort_and_scroll = True )
                 
@@ -199,7 +199,7 @@ class ShortcutsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
                 
                 existing_names.discard( shortcuts.GetName() )
                 
-                edited_shortcuts.SetNonDupeName( existing_names )
+                edited_shortcuts.set_non_dupe_name( existing_names )
                 
                 self._custom_shortcuts.ReplaceData( shortcuts, edited_shortcuts, sort_and_scroll = True )
                 
@@ -254,7 +254,7 @@ class ShortcutsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         size = len( shortcuts )
         
-        return ( pretty_name, HydrusNumbers.ToHumanInt( size ) )
+        return ( pretty_name, HydrusNumbers.to_human_int( size ) )
         
     
     def _GetExistingCustomShortcutNames( self ):
@@ -374,7 +374,7 @@ class ShortcutsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
             dupe_shortcut_sets = [ shortcut_set.Duplicate() for shortcut_set in shortcut_sets ]
             
-            CG.client_controller.Write( 'serialisables_overwrite', [ HydrusSerialisable.SERIALISABLE_TYPE_SHORTCUT_SET ], dupe_shortcut_sets )
+            CG.client_controller.write( 'serialisables_overwrite', [ HydrusSerialisable.SERIALISABLE_TYPE_SHORTCUT_SET ], dupe_shortcut_sets )
             
             ClientGUIShortcuts.shortcuts_manager().SetShortcutSets( shortcut_sets )
             

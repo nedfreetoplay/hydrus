@@ -159,14 +159,14 @@ def GetDuplicateComparisonStatementsFast( shown_media_result: ClientMediaResult.
                 percentage_difference = ( s_size / c_size ) - 1.0
                 
             
-            percentage_different_string = ' ({}{})'.format( sign, HydrusNumbers.FloatToPercentage( percentage_difference ) )
+            percentage_different_string = ' ({}{})'.format( sign, HydrusNumbers.float_to_percentage( percentage_difference ) )
             
             if they_are_pixel_duplicates:
                 
                 score = 0
                 
             
-            statement = '{} {} {}{}'.format( HydrusData.ToHumanBytes( s_size ), operator, HydrusData.ToHumanBytes( c_size ), percentage_different_string )
+            statement = '{} {} {}{}'.format( HydrusData.to_human_bytes( s_size ), operator, HydrusData.to_human_bytes( c_size ), percentage_different_string )
             
             statements_and_scores[ 'filesize' ]  = ( statement, score )
             
@@ -357,7 +357,7 @@ def GetDuplicateComparisonStatementsFast( shown_media_result: ClientMediaResult.
     if s_num_tags == c_num_tags:
         
         score = 0
-        statement = f'both have {HydrusNumbers.ToHumanInt(s_num_tags)} tags'
+        statement = f'both have {HydrusNumbers.to_human_int(s_num_tags)} tags'
         
     else:
         
@@ -387,15 +387,15 @@ def GetDuplicateComparisonStatementsFast( shown_media_result: ClientMediaResult.
             score = -duplicate_comparison_score_more_tags
             
         
-        statement = '{} tags {} {} tags'.format( HydrusNumbers.ToHumanInt( s_num_tags ), operator, HydrusNumbers.ToHumanInt( c_num_tags ) )
+        statement = '{} tags {} {} tags'.format( HydrusNumbers.to_human_int( s_num_tags ), operator, HydrusNumbers.to_human_int( c_num_tags ) )
         
     
     statements_and_scores[ 'num_tags' ] = ( statement, score )
     
     # older
     
-    s_import_timestamp = HydrusTime.SecondiseMS( shown_media_result.GetLocationsManager().GetTimesManager().GetImportedTimestampMS( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY ) )
-    c_import_timestamp = HydrusTime.SecondiseMS( comparison_media_result.GetLocationsManager().GetTimesManager().GetImportedTimestampMS( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY ) )
+    s_import_timestamp = HydrusTime.secondise_ms( shown_media_result.GetLocationsManager().GetTimesManager().GetImportedTimestampMS( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY ) )
+    c_import_timestamp = HydrusTime.secondise_ms( comparison_media_result.GetLocationsManager().GetTimesManager().GetImportedTimestampMS( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY ) )
     
     one_month = 86400 * 30
     
@@ -423,7 +423,7 @@ def GetDuplicateComparisonStatementsFast( shown_media_result: ClientMediaResult.
             score = 0
             
         
-        statement = '{}, {} {}'.format( HydrusTime.TimestampToPrettyTimeDelta( s_import_timestamp, history_suffix = ' old' ), operator, HydrusTime.TimestampToPrettyTimeDelta( c_import_timestamp, history_suffix = ' old' ) )
+        statement = '{}, {} {}'.format( HydrusTime.timestamp_to_pretty_timedelta( s_import_timestamp, history_suffix = ' old' ), operator, HydrusTime.timestamp_to_pretty_timedelta( c_import_timestamp, history_suffix = ' old' ) )
         
         statements_and_scores[ 'time_imported' ] = ( statement, score )
         
@@ -547,17 +547,17 @@ def GetDuplicateComparisonStatementsFast( shown_media_result: ClientMediaResult.
                     percentage_difference = ( s_duration_s / c_duration_s ) - 1.0
                     
                 
-                statement = f'{HydrusTime.TimeDeltaToPrettyTimeDelta( s_duration_s )} {operator} {HydrusTime.TimeDeltaToPrettyTimeDelta( c_duration_s )} ({sign}{HydrusNumbers.FloatToPercentage(percentage_difference)})'
+                statement = f'{HydrusTime.timedelta_to_pretty_timedelta( s_duration_s )} {operator} {HydrusTime.timedelta_to_pretty_timedelta( c_duration_s )} ({sign}{HydrusNumbers.float_to_percentage(percentage_difference)})'
                 
             
         elif s_has_duration:
             
-            statement = f'this has duration ({HydrusTime.TimeDeltaToPrettyTimeDelta( s_duration_s )}), the other does not'
+            statement = f'this has duration ({HydrusTime.timedelta_to_pretty_timedelta( s_duration_s )}), the other does not'
             score = 0
             
         else:
             
-            statement = f'the other has duration ({HydrusTime.TimeDeltaToPrettyTimeDelta( c_duration_s )}), this does not'
+            statement = f'the other has duration ({HydrusTime.timedelta_to_pretty_timedelta( c_duration_s )}), this does not'
             score = 0
             
         
@@ -580,11 +580,11 @@ def populate_jpeg_quality_storage( jpeg_hash ):
         
         try:
             
-            raw_pil_image = HydrusImageOpening.RawOpenPILImage( path )
+            raw_pil_image = HydrusImageOpening.raw_open_pil_image( path )
             
-            subsampling = HydrusImageMetadata.GetJpegSubsamplingRaw( raw_pil_image )
+            subsampling = HydrusImageMetadata.get_jpeg_subsampling_raw( raw_pil_image )
             
-            quality_result = HydrusImageMetadata.GetJPEGQuantizationQualityEstimate( raw_pil_image )
+            quality_result = HydrusImageMetadata.get_jpeg_quantization_quality_estimate( raw_pil_image )
             
         except:
             
@@ -738,7 +738,7 @@ def GetDuplicateComparisonStatementsSlow( shown_media_result: ClientMediaResult.
                 
                 HydrusData.ShowException( e, do_wait = False )
                 
-                HydrusData.ShowText( 'The "A and B are visual duplicates" test threw an error! Please let hydev know the details.' )
+                HydrusData.show_text( 'The "A and B are visual duplicates" test threw an error! Please let hydev know the details.' )
                 
             
         
@@ -758,7 +758,7 @@ def GetVisualData( media_result: ClientMediaResult.MediaResult ) -> ClientVisual
         
         while not image_renderer.IsReady():
             
-            if HydrusThreading.IsThreadShuttingDown():
+            if HydrusThreading.is_thread_shutting_down():
                 
                 raise HydrusExceptions.ShutdownException( 'Seems like program is shutting down!' )
                 
@@ -774,7 +774,7 @@ def GetVisualData( media_result: ClientMediaResult.MediaResult ) -> ClientVisual
             
         except:
             
-            HydrusData.Print( f'Hey, the media with hash {hash.hex()} failed to generate visual data! Hydev would be interested in seeing this file!' )
+            HydrusData.print_text( f'Hey, the media with hash {hash.hex()} failed to generate visual data! Hydev would be interested in seeing this file!' )
             
             raise
             
@@ -797,7 +797,7 @@ def GetVisualDataTiled( media_result: ClientMediaResult.MediaResult ) -> ClientV
         
         while not image_renderer.IsReady():
             
-            if HydrusThreading.IsThreadShuttingDown():
+            if HydrusThreading.is_thread_shutting_down():
                 
                 raise HydrusExceptions.ShutdownException( 'Seems like program is shutting down!' )
                 
@@ -813,7 +813,7 @@ def GetVisualDataTiled( media_result: ClientMediaResult.MediaResult ) -> ClientV
             
         except:
             
-            HydrusData.Print( f'Hey, the media with hash {hash.hex()} failed to generate tiled visual data! Hydev would be interested in seeing this file!' )
+            HydrusData.print_text( f'Hey, the media with hash {hash.hex()} failed to generate tiled visual data! Hydev would be interested in seeing this file!' )
             
             raise
             

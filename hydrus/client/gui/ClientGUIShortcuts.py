@@ -525,7 +525,7 @@ simple_shortcut_name_to_action_lookup = {
     'custom' : SHORTCUTS_MEDIA_ACTIONS + SHORTCUTS_MEDIA_VIEWER_ACTIONS
 }
 
-simple_shortcut_name_to_action_lookup = { key : HydrusLists.DedupeList( value ) for ( key, value ) in simple_shortcut_name_to_action_lookup.items() }
+simple_shortcut_name_to_action_lookup = { key : HydrusLists.dedupe_list( value ) for ( key, value ) in simple_shortcut_name_to_action_lookup.items() }
 
 CUMULATIVE_MOUSEWARP_MANHATTAN_LENGTH = 0
 
@@ -604,7 +604,7 @@ def ConvertQtKeyToShortcutKey( key_qt ):
             
             if HG.shortcut_report_mode:
                 
-                HydrusData.ShowText( f'This key ord was not allowed: {key_ord}' )
+                HydrusData.show_text( f'This key ord was not allowed: {key_ord}' )
                 
             
             return ( SHORTCUT_TYPE_NOT_ALLOWED, key_ord )
@@ -689,7 +689,7 @@ def ConvertKeyEventToShortcut( event, shortcuts_merge_non_number_numpad_override
         
         if HG.gui_report_mode:
             
-            HydrusData.ShowText( 'key event caught: ' + repr( shortcut ) )
+            HydrusData.show_text( 'key event caught: ' + repr( shortcut ) )
             
         
         return shortcut
@@ -850,7 +850,7 @@ def ConvertMouseEventToShortcut( event: QG.QMouseEvent | QG.QWheelEvent ):
         
         if HG.gui_report_mode:
             
-            HydrusData.ShowText( 'mouse event caught: ' + repr( shortcut ) )
+            HydrusData.show_text( 'mouse event caught: ' + repr( shortcut ) )
             
         
         return shortcut
@@ -1005,17 +1005,17 @@ class Shortcut( HydrusSerialisable.SerialisableBase ):
         return 'Shortcut: ' + self.ToString()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         return ( self.shortcut_type, self.shortcut_key, self.shortcut_press_type, self.modifiers )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( self.shortcut_type, self.shortcut_key, self.shortcut_press_type, self.modifiers ) = serialisable_info
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -1144,7 +1144,7 @@ class Shortcut( HydrusSerialisable.SerialisableBase ):
         
         if self.IsDoubleClick():
             
-            new_shortcut = self.Duplicate()
+            new_shortcut = self.duplicate()
             
             new_shortcut.shortcut_press_type = SHORTCUT_PRESS_TYPE_PRESS
             
@@ -1179,7 +1179,7 @@ class Shortcut( HydrusSerialisable.SerialisableBase ):
             
             if not it_is_a_number:
                 
-                numpad_alternate = self.Duplicate()
+                numpad_alternate = self.duplicate()
                 
                 if SHORTCUT_MODIFIER_KEYPAD not in numpad_alternate.modifiers:
                     
@@ -1402,23 +1402,23 @@ class ShortcutSet( HydrusSerialisable.SerialisableBaseNamed ):
         return len( self._shortcuts_to_commands )
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         return [ ( shortcut.GetSerialisableTuple(), command.GetSerialisableTuple() ) for ( shortcut, command ) in list(self._shortcuts_to_commands.items()) ]
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         for ( serialisable_shortcut, serialisable_command ) in serialisable_info:
             
-            shortcut = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_shortcut )
-            command = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_command )
+            shortcut = HydrusSerialisable.create_from_serialisable_tuple( serialisable_shortcut )
+            command = HydrusSerialisable.create_from_serialisable_tuple( serialisable_command )
             
             self._shortcuts_to_commands[ shortcut ] = command
             
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -1587,7 +1587,7 @@ class ShortcutsHandler( QC.QObject ):
             
             ancestor_shortcuts_handlers = AncestorShortcutsHandlers( self._parent )
             
-            all_ancestor_shortcut_names = HydrusLists.MassUnion( [ ancestor_shortcuts_handler.GetShortcutNames() for ancestor_shortcuts_handler in ancestor_shortcuts_handlers ] )
+            all_ancestor_shortcut_names = HydrusLists.mass_union( [ ancestor_shortcuts_handler.GetShortcutNames() for ancestor_shortcuts_handler in ancestor_shortcuts_handlers ] )
             
             ancestor_command = shortcuts_manager().GetCommand( all_ancestor_shortcut_names, shortcut )
             
@@ -1597,7 +1597,7 @@ class ShortcutsHandler( QC.QObject ):
                     
                     message = 'Shortcut "' + shortcut.ToString() + '" did not match any command. The single click version is now being attempted.'
                     
-                    HydrusData.ShowText( message )
+                    HydrusData.show_text( message )
                     
                 
                 shortcut = shortcut.ConvertToSingleClick()
@@ -1610,7 +1610,7 @@ class ShortcutsHandler( QC.QObject ):
                     
                     message = 'Shortcut "' + shortcut.ToString() + '" did not match any command. A parent seems to want it, however, so the single click version will not be attempted.'
                     
-                    HydrusData.ShowText( message )
+                    HydrusData.show_text( message )
                     
                 
             
@@ -1637,7 +1637,7 @@ class ShortcutsHandler( QC.QObject ):
                     message += ' It was not processed.'
                     
                 
-                HydrusData.ShowText( message )
+                HydrusData.show_text( message )
                 
             
         
@@ -1674,7 +1674,7 @@ class ShortcutsHandler( QC.QObject ):
                             message += ' I am not in a state to catch it.'
                             
                         
-                        HydrusData.ShowText( message )
+                        HydrusData.show_text( message )
                         
                     
                     if i_should_catch_shortcut_event:
@@ -1711,7 +1711,7 @@ class ShortcutsHandler( QC.QObject ):
                         if event.type() == QC.QEvent.Type.MouseButtonRelease and self._activating_wait_job is not None:
                             
                             # first completed click in the time window sets us active instantly
-                            self._activating_wait_job.Cancel()
+                            self._activating_wait_job.cancel()
                             
                             self._parent_currently_activated = True
                             
@@ -1756,7 +1756,7 @@ class ShortcutsHandler( QC.QObject ):
                                 message += ' I am not in a state to catch it.'
                                 
                             
-                            HydrusData.ShowText( message )
+                            HydrusData.show_text( message )
                             
                         
                         if i_should_catch_shortcut_event:
@@ -1823,14 +1823,14 @@ class ShortcutsHandler( QC.QObject ):
             self._parent_currently_activated = True
             
         
-        self._activating_wait_job = CG.client_controller.CallLater( 0.2, do_it )
+        self._activating_wait_job = CG.client_controller.call_later( 0.2, do_it )
         
     
     def FrameDeactivated( self ):
         
         if self._activating_wait_job is not None:
             
-            self._activating_wait_job.Cancel()
+            self._activating_wait_job.cancel()
             
         
         self._parent_currently_activated = False
@@ -1957,7 +1957,7 @@ class ShortcutsManager( QC.QObject ):
                     
                     if HG.shortcut_report_mode:
                         
-                        HydrusData.ShowText( 'Shortcut "{}" matched on "{}" set to "{}" command.'.format( shortcut.ToString(), name, repr( command ) ) )
+                        HydrusData.show_text( 'Shortcut "{}" matched on "{}" set to "{}" command.'.format( shortcut.ToString(), name, repr( command ) ) )
                         
                     
                     return command
@@ -1992,7 +1992,7 @@ class ShortcutsManager( QC.QObject ):
     
     def SetShortcutSets( self, shortcut_sets: collections.abc.Iterable[ ShortcutSet ] ):
         
-        self._names_to_shortcut_sets = { shortcut_set.GetName() : shortcut_set for shortcut_set in shortcut_sets }
+        self._names_to_shortcut_sets = { shortcut_set.get_name() : shortcut_set for shortcut_set in shortcut_sets }
         
         self.shortcutsChanged.emit()
         

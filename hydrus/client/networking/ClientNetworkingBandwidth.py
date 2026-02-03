@@ -36,20 +36,20 @@ class NetworkBandwidthManagerTrackerContainer( HydrusSerialisable.SerialisableBa
         self.bandwidth_tracker = bandwidth_tracker
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_network_context = self.network_context.GetSerialisableTuple()
-        serialisable_bandwidth_tracker = self.bandwidth_tracker.GetSerialisableTuple()
+        serialisable_network_context = self.network_context.get_serialisable_tuple()
+        serialisable_bandwidth_tracker = self.bandwidth_tracker.get_serialisable_tuple()
         
         return ( serialisable_network_context, serialisable_bandwidth_tracker )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( serialisable_network_context, serialisable_bandwidth_tracker ) = serialisable_info
         
-        self.network_context = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_network_context )
-        self.bandwidth_tracker = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_bandwidth_tracker )
+        self.network_context = HydrusSerialisable.create_from_serialisable_tuple( serialisable_network_context )
+        self.bandwidth_tracker = HydrusSerialisable.create_from_serialisable_tuple( serialisable_bandwidth_tracker )
         
     
 
@@ -98,7 +98,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
             
             bandwidth_tracker = self._GetTracker( network_context )
             
-            if not bandwidth_rules.CanStartRequest( bandwidth_tracker ):
+            if not bandwidth_rules.can_start_request( bandwidth_tracker ):
                 
                 return False
                 
@@ -117,10 +117,10 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
         return self._network_contexts_to_bandwidth_rules[ network_context ]
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         all_tracker_container_names = sorted( self._tracker_container_names )
-        all_serialisable_rules = [ ( network_context.GetSerialisableTuple(), rules.GetSerialisableTuple() ) for ( network_context, rules ) in list(self._network_contexts_to_bandwidth_rules.items()) ]
+        all_serialisable_rules = [ ( network_context.GetSerialisableTuple(), rules.get_serialisable_tuple() ) for ( network_context, rules ) in list(self._network_contexts_to_bandwidth_rules.items()) ]
         
         return ( all_tracker_container_names, all_serialisable_rules )
         
@@ -131,7 +131,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
             
             bandwidth_tracker = HydrusNetworking.BandwidthTracker()
             
-            tracker_container_name = HydrusData.GenerateKey().hex()
+            tracker_container_name = HydrusData.generate_key().hex()
             
             tracker_container = NetworkBandwidthManagerTrackerContainer( tracker_container_name, network_context = network_context, bandwidth_tracker = bandwidth_tracker )
             
@@ -159,7 +159,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
         return tracker_container.bandwidth_tracker
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( all_tracker_container_names, all_serialisable_rules ) = serialisable_info
         
@@ -167,8 +167,8 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
         
         for ( serialisable_network_context, serialisable_rules ) in all_serialisable_rules:
             
-            network_context = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_network_context )
-            rules = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_rules )
+            network_context = HydrusSerialisable.create_from_serialisable_tuple( serialisable_network_context )
+            rules = HydrusSerialisable.create_from_serialisable_tuple( serialisable_rules )
             
             if network_context.context_type == CC.NETWORK_CONTEXT_DOWNLOADER: # no longer use this
                 
@@ -188,7 +188,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
             bandwidth_tracker.ReportDataUsed( num_bytes )
             
         
-        self._my_bandwidth_tracker.ReportDataUsed( num_bytes )
+        self._my_bandwidth_tracker.report_data_used( num_bytes )
         
     
     def _ReportRequestUsed( self, network_contexts ):
@@ -200,7 +200,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
             bandwidth_tracker.ReportRequestUsed()
             
         
-        self._my_bandwidth_tracker.ReportRequestUsed()
+        self._my_bandwidth_tracker.report_request_used()
         
     
     def _SetDirty( self ):
@@ -214,7 +214,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
             
             if network_context in self._network_contexts_to_bandwidth_rules:
                 
-                if self._network_contexts_to_bandwidth_rules[ network_context ].GetSerialisableTuple() == bandwidth_rules.GetSerialisableTuple():
+                if self._network_contexts_to_bandwidth_rules[ network_context ].get_serialisable_tuple() == bandwidth_rules.GetSerialisableTuple():
                     
                     return True
                     
@@ -256,7 +256,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
                 
                 bandwidth_tracker = self._GetTracker( network_context )
                 
-                if not bandwidth_rules.CanContinueDownload( bandwidth_tracker ):
+                if not bandwidth_rules.can_continue_download( bandwidth_tracker ):
                     
                     return False
                     
@@ -276,7 +276,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
                 
                 bandwidth_tracker = self._GetTracker( network_context )
                 
-                if not bandwidth_rules.CanDoWork( bandwidth_tracker, expected_requests = expected_requests, expected_bytes = expected_bytes, threshold = threshold ):
+                if not bandwidth_rules.can_do_work( bandwidth_tracker, expected_requests = expected_requests, expected_bytes = expected_bytes, threshold = threshold ):
                     
                     return False
                     
@@ -357,7 +357,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
             
             bandwidth_tracker = self._GetTracker( network_context )
             
-            return bandwidth_rules.GetBandwidthStringsAndGaugeTuples( bandwidth_tracker )
+            return bandwidth_rules.get_bandwidth_strings_and_gauge_tuples( bandwidth_tracker )
             
         
     
@@ -480,7 +480,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
                 
                 bandwidth_tracker = self._GetTracker( network_context )
                 
-                estimates.append( ( bandwidth_rules.GetWaitingEstimate( bandwidth_tracker ), network_context ) )
+                estimates.append( ( bandwidth_rules.get_waiting_estimate( bandwidth_tracker ), network_context ) )
                 
             
             estimates.sort( key = lambda pair: -pair[0] ) # biggest first
@@ -587,7 +587,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
             
             for tracker_container in tracker_containers:
                 
-                tracker_container_name = tracker_container.GetName()
+                tracker_container_name = tracker_container.get_name()
                 network_context = tracker_container.network_context
                 
                 self._tracker_container_names_to_tracker_containers[ tracker_container_name ] = tracker_container
@@ -635,9 +635,9 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
             
             next_timestamp = timestamps_dict[ second_level_domain ] + delay
             
-            if HydrusTime.TimeHasPassed( next_timestamp ):
+            if HydrusTime.time_has_passed( next_timestamp ):
                 
-                timestamps_dict[ second_level_domain ] = HydrusTime.GetNow()
+                timestamps_dict[ second_level_domain ] = HydrusTime.get_now()
                 
                 return ( True, 0 )
                 

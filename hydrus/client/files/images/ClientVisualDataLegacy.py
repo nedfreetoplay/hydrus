@@ -254,7 +254,7 @@ def aberrant_bump_in_scores( values ):
 
 def GenerateImageRGBHistogramsNumPy( numpy_image: numpy.ndarray ):
     
-    numpy_image_rgb = HydrusImageNormalisation.StripOutAnyAlphaChannel( numpy_image )
+    numpy_image_rgb = HydrusImageNormalisation.strip_out_any_alpha_channel( numpy_image )
     
     r = numpy_image_rgb[ :, :, 0 ]
     g = numpy_image_rgb[ :, :, 1 ]

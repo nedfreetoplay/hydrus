@@ -589,9 +589,9 @@ class TestClientDBTags( unittest.TestCase ):
         
         services = self._read( 'services' )
         
-        self._my_service_key = HydrusData.GenerateKey()
-        self._processing_service_key = HydrusData.GenerateKey()
-        self._public_service_key = HydrusData.GenerateKey()
+        self._my_service_key = HydrusData.generate_key()
+        self._processing_service_key = HydrusData.generate_key()
+        self._public_service_key = HydrusData.generate_key()
         
         services.append( ClientServices.GenerateService( self._my_service_key, HC.LOCAL_TAG, 'personal tags' ) )
         services.append( ClientServices.GenerateService( self._processing_service_key, HC.LOCAL_TAG, 'processing tags' ) )
@@ -787,7 +787,7 @@ class TestClientDBTags( unittest.TestCase ):
                 
                 TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
                 
-                path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', filename ) )
+                path = HydrusStaticDir.get_static_path( os.path.join( 'testing', filename ) )
                 
                 file_import_options = FileImportOptionsLegacy.FileImportOptionsLegacy()
                 file_import_options.SetIsDefault( True )
@@ -881,7 +881,7 @@ class TestClientDBTags( unittest.TestCase ):
         
         services = self._read( 'services' )
         
-        other_service_keys = [ HydrusData.GenerateKey() for i in range( 32 ) ]
+        other_service_keys = [ HydrusData.generate_key() for i in range( 32 ) ]
         
         for other_service_key in other_service_keys:
             
@@ -912,7 +912,7 @@ class TestClientDBTags( unittest.TestCase ):
                 # let's test a mix of atomic and complete sync
                 block_size = random.choice( [ 1, 3, 5 ] )
                 
-                for block_of_content_updates in HydrusLists.SplitListIntoChunks( content_updates, block_size ):
+                for block_of_content_updates in HydrusLists.split_list_into_chunks( content_updates, block_size ):
                     
                     self._write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( other_service_key, block_of_content_updates ) )
                     
@@ -1101,7 +1101,7 @@ class TestClientDBTags( unittest.TestCase ):
         
         TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
         
-        path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', 'muh_jpg.jpg' ) )
+        path = HydrusStaticDir.get_static_path( os.path.join( 'testing', 'muh_jpg.jpg' ) )
         
         file_import_options = FileImportOptionsLegacy.FileImportOptionsLegacy()
         file_import_options.SetIsDefault( True )
@@ -1202,7 +1202,7 @@ class TestClientDBTags( unittest.TestCase ):
         
         TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
         
-        path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', 'muh_jpg.jpg' ) )
+        path = HydrusStaticDir.get_static_path( os.path.join( 'testing', 'muh_jpg.jpg' ) )
         
         file_import_options = FileImportOptionsLegacy.FileImportOptionsLegacy()
         file_import_options.SetIsDefault( True )
@@ -1304,7 +1304,7 @@ class TestClientDBTags( unittest.TestCase ):
         
         TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
         
-        path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', 'muh_jpg.jpg' ) )
+        path = HydrusStaticDir.get_static_path( os.path.join( 'testing', 'muh_jpg.jpg' ) )
         
         file_import_options = FileImportOptionsLegacy.FileImportOptionsLegacy()
         file_import_options.SetIsDefault( True )
@@ -1408,7 +1408,7 @@ class TestClientDBTags( unittest.TestCase ):
         
         TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
         
-        path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', 'muh_jpg.jpg' ) )
+        path = HydrusStaticDir.get_static_path( os.path.join( 'testing', 'muh_jpg.jpg' ) )
         
         file_import_options = FileImportOptionsLegacy.FileImportOptionsLegacy()
         file_import_options.SetIsDefault( True )
@@ -1511,7 +1511,7 @@ class TestClientDBTags( unittest.TestCase ):
         
         TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
         
-        path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', 'muh_jpg.jpg' ) )
+        path = HydrusStaticDir.get_static_path( os.path.join( 'testing', 'muh_jpg.jpg' ) )
         
         file_import_options = FileImportOptionsLegacy.FileImportOptionsLegacy()
         file_import_options.SetIsDefault( True )
@@ -2641,7 +2641,7 @@ class TestClientDBTags( unittest.TestCase ):
                     
                     TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
                     
-                    path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', filename ) )
+                    path = HydrusStaticDir.get_static_path( os.path.join( 'testing', filename ) )
                     
                     file_import_job = ClientImportFiles.FileImportJob( path, file_import_options )
                     

@@ -31,17 +31,17 @@ class HydrusResourceClientAPIRestrictedEditTimesSetTime( HydrusResourceClientAPI
             raise HydrusExceptions.BadRequestException( 'Did not find any hashes to apply the times to!' )
             
         
-        media_results = CG.client_controller.Read( 'media_results', hashes )
+        media_results = CG.client_controller.read( 'media_results', hashes )
         
         if 'timestamp' in request.parsed_request_args:
             
-            timestamp = request.parsed_request_args.GetValueOrNone( 'timestamp', float )
+            timestamp = request.parsed_request_args.get_value_or_none( 'timestamp', float )
             
-            timestamp_ms = HydrusTime.MillisecondiseS( timestamp )
+            timestamp_ms = HydrusTime.millisecondise_s( timestamp )
             
         elif 'timestamp_ms' in request.parsed_request_args:
             
-            timestamp_ms = request.parsed_request_args.GetValueOrNone( 'timestamp_ms', int )
+            timestamp_ms = request.parsed_request_args.get_value_or_none( 'timestamp_ms', int )
             
         else:
             
@@ -50,7 +50,7 @@ class HydrusResourceClientAPIRestrictedEditTimesSetTime( HydrusResourceClientAPI
         
         location = None
         
-        timestamp_type = request.parsed_request_args.GetValue( 'timestamp_type', int )
+        timestamp_type = request.parsed_request_args.get_value( 'timestamp_type', int )
         
         if timestamp_type is None:
             
@@ -59,7 +59,7 @@ class HydrusResourceClientAPIRestrictedEditTimesSetTime( HydrusResourceClientAPI
         
         if timestamp_type == HC.TIMESTAMP_TYPE_MODIFIED_DOMAIN:
             
-            domain = request.parsed_request_args.GetValue( 'domain', str )
+            domain = request.parsed_request_args.get_value( 'domain', str )
             
             if domain == 'local':
                 
@@ -72,7 +72,7 @@ class HydrusResourceClientAPIRestrictedEditTimesSetTime( HydrusResourceClientAPI
             
         elif timestamp_type == HC.TIMESTAMP_TYPE_LAST_VIEWED:
             
-            canvas_type = request.parsed_request_args.GetValueOrNone( 'canvas_type', int )
+            canvas_type = request.parsed_request_args.get_value_or_none( 'canvas_type', int )
             
             if canvas_type is None:
                 
@@ -88,7 +88,7 @@ class HydrusResourceClientAPIRestrictedEditTimesSetTime( HydrusResourceClientAPI
             
         elif timestamp_type in ( HC.TIMESTAMP_TYPE_IMPORTED, HC.TIMESTAMP_TYPE_DELETED, HC.TIMESTAMP_TYPE_PREVIOUSLY_IMPORTED ):
             
-            file_service_key = request.parsed_request_args.GetValue( 'file_service_key', bytes )
+            file_service_key = request.parsed_request_args.get_value( 'file_service_key', bytes )
             
             if not CG.client_controller.services_manager.ServiceExists( file_service_key ):
                 
@@ -148,7 +148,7 @@ class HydrusResourceClientAPIRestrictedEditTimesSetTime( HydrusResourceClientAPI
         
         content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_updates )
         
-        CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+        CG.client_controller.write_synchronous( 'content_updates', content_update_package )
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         

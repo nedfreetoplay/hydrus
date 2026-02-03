@@ -116,7 +116,7 @@ class TestClientDB( unittest.TestCase ):
         
         hash = b'\xadm5\x99\xa6\xc4\x89\xa5u\xeb\x19\xc0&\xfa\xce\x97\xa9\xcdey\xe7G(\xb0\xce\x94\xa6\x01\xd22\xf3\xc3'
         
-        path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+        path = HydrusStaticDir.get_static_path( 'hydrus.png' )
         
         file_import_job = ClientImportFiles.FileImportJob( path, file_import_options )
         
@@ -243,9 +243,9 @@ class TestClientDB( unittest.TestCase ):
     
     def test_export_folders( self ):
         
-        tag_context = ClientSearchTagContext.TagContext( service_key = HydrusData.GenerateKey() )
+        tag_context = ClientSearchTagContext.TagContext( service_key = HydrusData.generate_key() )
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( HydrusData.GenerateKey() )
+        location_context = ClientLocation.LocationContext.STATICCreateSimple( HydrusData.generate_key() )
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, tag_context = tag_context, predicates = [ ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_TAG, 'test' ) ] )
         
@@ -255,7 +255,7 @@ class TestClientDB( unittest.TestCase ):
         
         [ result ] = self._read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER )
         
-        self.assertEqual( result.GetName(), export_folder.GetName() )
+        self.assertEqual( result.GetName(), export_folder.get_name() )
         
     
     def test_file_query_ids( self ):
@@ -362,7 +362,7 @@ class TestClientDB( unittest.TestCase ):
         
         hash = b'\xadm5\x99\xa6\xc4\x89\xa5u\xeb\x19\xc0&\xfa\xce\x97\xa9\xcdey\xe7G(\xb0\xce\x94\xa6\x01\xd22\xf3\xc3'
         
-        path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+        path = HydrusStaticDir.get_static_path( 'hydrus.png' )
         
         file_import_options = FileImportOptionsLegacy.FileImportOptionsLegacy()
         file_import_options.SetIsDefault( True )
@@ -506,7 +506,7 @@ class TestClientDB( unittest.TestCase ):
         tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIMILAR_TO_FILES, ( ( hash, ), 5 ), 1 ) )
         tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIMILAR_TO_FILES, ( ( bytes.fromhex( '0123456789abcdef' * 4 ), ), 5 ), 0 ) )
         
-        pixel_hash = HydrusImageHandling.GetImagePixelHash( path, HC.IMAGE_PNG )
+        pixel_hash = HydrusImageHandling.get_image_pixel_hash( path, HC.IMAGE_PNG )
         
         tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIMILAR_TO_DATA, ( ( pixel_hash, ), (), 0 ), 1 ) )
         tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIMILAR_TO_DATA, ( ( os.urandom( 32 ), ), (), 0 ), 0 ) )
@@ -516,19 +516,19 @@ class TestClientDB( unittest.TestCase ):
         tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIMILAR_TO_DATA, ( (), tuple( perceptual_hashes ), 0 ), 1 ) )
         tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIMILAR_TO_DATA, ( (), ( os.urandom( 32 ), ), 0 ), 0 ) )
         
-        tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( '<', 0, HydrusNumbers.UnitToInt( 'B' ) ), 0 ) )
-        tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( '<', 5270, HydrusNumbers.UnitToInt( 'B' ) ), 0 ) )
-        tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( '<', 5271, HydrusNumbers.UnitToInt( 'B' ) ), 1 ) )
-        tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( '=', 5270, HydrusNumbers.UnitToInt( 'B' ) ), 1 ) )
-        tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( '=', 0, HydrusNumbers.UnitToInt( 'B' ) ), 0 ) )
-        tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( HC.UNICODE_APPROX_EQUAL, 5270, HydrusNumbers.UnitToInt( 'B' ) ), 1 ) )
-        tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( HC.UNICODE_APPROX_EQUAL, 0, HydrusNumbers.UnitToInt( 'B' ) ), 0 ) )
-        tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( '>', 5270, HydrusNumbers.UnitToInt( 'B' ) ), 0 ) )
-        tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( '>', 5269, HydrusNumbers.UnitToInt( 'B' ) ), 1 ) )
-        tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( '>', 0, HydrusNumbers.UnitToInt( 'B' ) ), 1 ) )
-        tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( '>', 0, HydrusNumbers.UnitToInt( 'KB' ) ), 1 ) )
-        tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( '>', 0, HydrusNumbers.UnitToInt( 'MB' ) ), 1 ) )
-        tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( '>', 0, HydrusNumbers.UnitToInt( 'GB' ) ), 1 ) )
+        tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( '<', 0, HydrusNumbers.unit_to_int( 'B' ) ), 0 ) )
+        tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( '<', 5270, HydrusNumbers.unit_to_int( 'B' ) ), 0 ) )
+        tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( '<', 5271, HydrusNumbers.unit_to_int( 'B' ) ), 1 ) )
+        tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( '=', 5270, HydrusNumbers.unit_to_int( 'B' ) ), 1 ) )
+        tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( '=', 0, HydrusNumbers.unit_to_int( 'B' ) ), 0 ) )
+        tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( HC.UNICODE_APPROX_EQUAL, 5270, HydrusNumbers.unit_to_int( 'B' ) ), 1 ) )
+        tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( HC.UNICODE_APPROX_EQUAL, 0, HydrusNumbers.unit_to_int( 'B' ) ), 0 ) )
+        tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( '>', 5270, HydrusNumbers.unit_to_int( 'B' ) ), 0 ) )
+        tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( '>', 5269, HydrusNumbers.unit_to_int( 'B' ) ), 1 ) )
+        tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( '>', 0, HydrusNumbers.unit_to_int( 'B' ) ), 1 ) )
+        tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( '>', 0, HydrusNumbers.unit_to_int( 'KB' ) ), 1 ) )
+        tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( '>', 0, HydrusNumbers.unit_to_int( 'MB' ) ), 1 ) )
+        tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( '>', 0, HydrusNumbers.unit_to_int( 'GB' ) ), 1 ) )
         
         tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_WIDTH, ClientNumberTest.NumberTest.STATICCreateFromCharacters( '<', 201 ), 1 ) )
         tests.append( ( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_WIDTH, ClientNumberTest.NumberTest.STATICCreateFromCharacters( '<', 200 ), 0 ) )
@@ -801,7 +801,7 @@ class TestClientDB( unittest.TestCase ):
         
         hash = b'\xadm5\x99\xa6\xc4\x89\xa5u\xeb\x19\xc0&\xfa\xce\x97\xa9\xcdey\xe7G(\xb0\xce\x94\xa6\x01\xd22\xf3\xc3'
         
-        path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+        path = HydrusStaticDir.get_static_path( 'hydrus.png' )
         
         file_import_options = FileImportOptionsLegacy.FileImportOptionsLegacy()
         file_import_options.SetIsDefault( True )
@@ -840,7 +840,7 @@ class TestClientDB( unittest.TestCase ):
         
         md5 = bytes.fromhex( 'fdadb2cae78f2dfeb629449cd005f2a2' )
         
-        path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+        path = HydrusStaticDir.get_static_path( 'hydrus.png' )
         
         ( media_result, ) = self._read( 'media_results', ( hash, ) )
         
@@ -959,7 +959,7 @@ class TestClientDB( unittest.TestCase ):
         
         md5 = bytes.fromhex( 'fdadb2cae78f2dfeb629449cd005f2a2' )
         
-        path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+        path = HydrusStaticDir.get_static_path( 'hydrus.png' )
         
         ( media_result, ) = self._read( 'media_results', ( hash, ) )
         
@@ -1019,11 +1019,11 @@ class TestClientDB( unittest.TestCase ):
         
         services = list( self._read( 'services' ) )
         
-        new_service_key = HydrusData.GenerateKey()
+        new_service_key = HydrusData.generate_key()
         
         services.append( ClientServices.GenerateService( new_service_key, HC.LOCAL_TAG, 'new service' ) )
         
-        empty_service_key = HydrusData.GenerateKey()
+        empty_service_key = HydrusData.generate_key()
         
         services.append( ClientServices.GenerateService( empty_service_key, HC.LOCAL_TAG, 'empty service' ) )
         
@@ -1074,7 +1074,7 @@ class TestClientDB( unittest.TestCase ):
         
         page_data = ClientGUISession.GUISessionPageData( page_manager, [] )
         
-        page_data_hash = page_data.GetSerialisedHash()
+        page_data_hash = page_data.get_serialised_hash()
         
         page_container = ClientGUISession.GUISessionContainerPageSingle( page_name, page_data_hash = page_data_hash )
         
@@ -1090,7 +1090,7 @@ class TestClientDB( unittest.TestCase ):
         
         page_data = ClientGUISession.GUISessionPageData( page_manager, [] )
         
-        page_data_hash = page_data.GetSerialisedHash()
+        page_data_hash = page_data.get_serialised_hash()
         
         page_container = ClientGUISession.GUISessionContainerPageSingle( page_name, page_data_hash = page_data_hash )
         
@@ -1100,7 +1100,7 @@ class TestClientDB( unittest.TestCase ):
         
         #
         
-        service_keys_to_tags = ClientTags.ServiceKeysToTags( { HydrusData.GenerateKey() : [ 'some', 'tags' ] } )
+        service_keys_to_tags = ClientTags.ServiceKeysToTags( { HydrusData.generate_key() : [ 'some', 'tags' ] } )
         
         page_manager = ClientGUIPageManager.CreatePageManagerImportHDD( [ 'some', 'paths' ], FileImportOptionsLegacy.FileImportOptionsLegacy(), [], { 'paths' : service_keys_to_tags }, True )
         
@@ -1110,7 +1110,7 @@ class TestClientDB( unittest.TestCase ):
         
         page_data = ClientGUISession.GUISessionPageData( page_manager, [] )
         
-        page_data_hash = page_data.GetSerialisedHash()
+        page_data_hash = page_data.get_serialised_hash()
         
         page_container = ClientGUISession.GUISessionContainerPageSingle( page_name, page_data_hash = page_data_hash )
         
@@ -1126,7 +1126,7 @@ class TestClientDB( unittest.TestCase ):
         
         page_data = ClientGUISession.GUISessionPageData( page_manager, [] )
         
-        page_data_hash = page_data.GetSerialisedHash()
+        page_data_hash = page_data.get_serialised_hash()
         
         page_container = ClientGUISession.GUISessionContainerPageSingle( page_name, page_data_hash = page_data_hash )
         
@@ -1142,7 +1142,7 @@ class TestClientDB( unittest.TestCase ):
         
         page_data = ClientGUISession.GUISessionPageData( page_manager, [] )
         
-        page_data_hash = page_data.GetSerialisedHash()
+        page_data_hash = page_data.get_serialised_hash()
         
         page_container = ClientGUISession.GUISessionContainerPageSingle( page_name, page_data_hash = page_data_hash )
         
@@ -1162,7 +1162,7 @@ class TestClientDB( unittest.TestCase ):
         
         page_data = ClientGUISession.GUISessionPageData( page_manager, [] )
         
-        page_data_hash = page_data.GetSerialisedHash()
+        page_data_hash = page_data.get_serialised_hash()
         
         page_container = ClientGUISession.GUISessionContainerPageSingle( page_name, page_data_hash = page_data_hash )
         
@@ -1182,9 +1182,9 @@ class TestClientDB( unittest.TestCase ):
         
         page_name = page_manager.GetPageName()
         
-        page_data = ClientGUISession.GUISessionPageData( page_manager, [ HydrusData.GenerateKey() for i in range( 200 ) ] )
+        page_data = ClientGUISession.GUISessionPageData( page_manager, [ HydrusData.generate_key() for i in range( 200 ) ] )
         
-        page_data_hash = page_data.GetSerialisedHash()
+        page_data_hash = page_data.get_serialised_hash()
         
         page_container = ClientGUISession.GUISessionContainerPageSingle( page_name, page_data_hash = page_data_hash )
         
@@ -1204,7 +1204,7 @@ class TestClientDB( unittest.TestCase ):
         
         page_data = ClientGUISession.GUISessionPageData( page_manager, [] )
         
-        page_data_hash = page_data.GetSerialisedHash()
+        page_data_hash = page_data.get_serialised_hash()
         
         page_container = ClientGUISession.GUISessionContainerPageSingle( page_name, page_data_hash = page_data_hash )
         
@@ -1224,7 +1224,7 @@ class TestClientDB( unittest.TestCase ):
         
         page_data = ClientGUISession.GUISessionPageData( page_manager, [] )
         
-        page_data_hash = page_data.GetSerialisedHash()
+        page_data_hash = page_data.get_serialised_hash()
         
         page_container = ClientGUISession.GUISessionContainerPageSingle( page_name, page_data_hash = page_data_hash )
         
@@ -1244,7 +1244,7 @@ class TestClientDB( unittest.TestCase ):
         
         page_data = ClientGUISession.GUISessionPageData( page_manager, [] )
         
-        page_data_hash = page_data.GetSerialisedHash()
+        page_data_hash = page_data.get_serialised_hash()
         
         page_container = ClientGUISession.GUISessionContainerPageSingle( page_name, page_data_hash = page_data_hash )
         
@@ -1299,7 +1299,7 @@ class TestClientDB( unittest.TestCase ):
             
             TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
             
-            path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', filename ) )
+            path = HydrusStaticDir.get_static_path( os.path.join( 'testing', filename ) )
             
             hash = bytes.fromhex( hex_hash )
             
@@ -1327,7 +1327,7 @@ class TestClientDB( unittest.TestCase ):
             
             mr_inbox = mr_locations_manager.inbox
             
-            now = HydrusTime.GetNow()
+            now = HydrusTime.get_now()
             
             self.assertEqual( mr_hash, hash )
             self.assertEqual( mr_inbox, True )
@@ -1409,7 +1409,7 @@ class TestClientDB( unittest.TestCase ):
         
         base_location = ClientFilesPhysical.FilesStorageBaseLocation( client_files_default, 1 )
         
-        for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( 'f' ):
+        for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( 'f' ):
             
             subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
             
@@ -1417,7 +1417,7 @@ class TestClientDB( unittest.TestCase ):
             self.assertTrue( subfolder.PathExists() )
             
         
-        for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( 't' ):
+        for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( 't' ):
             
             subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
             
@@ -1434,7 +1434,7 @@ class TestClientDB( unittest.TestCase ):
         
         md5 = bytes.fromhex( 'fdadb2cae78f2dfeb629449cd005f2a2' )
         
-        path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+        path = HydrusStaticDir.get_static_path( 'hydrus.png' )
         
         #
         
@@ -1503,7 +1503,7 @@ class TestClientDB( unittest.TestCase ):
         
         md5 = bytes.fromhex( 'fdadb2cae78f2dfeb629449cd005f2a2' )
         
-        path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+        path = HydrusStaticDir.get_static_path( 'hydrus.png' )
         
         #
         
@@ -1569,7 +1569,7 @@ class TestClientDB( unittest.TestCase ):
         
         TestClientDB._clear_db()
         
-        path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+        path = HydrusStaticDir.get_static_path( 'hydrus.png' )
         
         file_import_options = FileImportOptionsLegacy.FileImportOptionsLegacy()
         file_import_options.SetIsDefault( True )
@@ -1594,7 +1594,7 @@ class TestClientDB( unittest.TestCase ):
         
         mr_inbox = mr_locations_manager.inbox
         
-        now = HydrusTime.GetNow()
+        now = HydrusTime.get_now()
         
         self.assertEqual( mr_hash, hash )
         self.assertEqual( mr_inbox, True )
@@ -1616,7 +1616,7 @@ class TestClientDB( unittest.TestCase ):
         
         mr_inbox = mr_locations_manager.inbox
         
-        now = HydrusTime.GetNow()
+        now = HydrusTime.get_now()
         
         self.assertEqual( mr_hash, hash )
         self.assertEqual( mr_inbox, True )
@@ -1647,7 +1647,7 @@ class TestClientDB( unittest.TestCase ):
             
             TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
             
-            path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', filename ) )
+            path = HydrusStaticDir.get_static_path( os.path.join( 'testing', filename ) )
             
             file_import_job = ClientImportFiles.FileImportJob( path, file_import_options )
             
@@ -1662,7 +1662,7 @@ class TestClientDB( unittest.TestCase ):
         
         media_result = self._read( 'media_result', bytes.fromhex( swf_hash_hex ) )
         
-        earliest_import_timestamp = HydrusTime.SecondiseMS( media_result.GetLocationsManager().GetTimesManager().GetImportedTimestampMS( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
+        earliest_import_timestamp = HydrusTime.secondise_ms( media_result.GetLocationsManager().GetTimesManager().GetImportedTimestampMS( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
         
         result = self._read( 'boned_stats' )
         
@@ -1721,9 +1721,9 @@ class TestClientDB( unittest.TestCase ):
         
         services = list( self._read( 'services' ) )
         
-        tag_sk = HydrusData.GenerateKey()
-        file_sk = HydrusData.GenerateKey()
-        ipfs_sk = HydrusData.GenerateKey()
+        tag_sk = HydrusData.generate_key()
+        file_sk = HydrusData.generate_key()
+        ipfs_sk = HydrusData.generate_key()
         
         services.append( ClientServices.GenerateService( tag_sk, HC.TAG_REPOSITORY, 'test tag repo' ) )
         services.append( ClientServices.GenerateService( file_sk, HC.FILE_REPOSITORY, 'test file repo' ) )
@@ -1887,7 +1887,7 @@ class TestClientDB( unittest.TestCase ):
             
             TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
             
-            path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', filename ) )
+            path = HydrusStaticDir.get_static_path( os.path.join( 'testing', filename ) )
             
             file_import_job = ClientImportFiles.FileImportJob( path, file_import_options )
             
@@ -1960,7 +1960,7 @@ class TestClientDB( unittest.TestCase ):
         
         TestClientDB._clear_db()
         
-        service_key = HydrusData.GenerateKey()
+        service_key = HydrusData.generate_key()
         
         services = self._read( 'services' )
         
@@ -1968,7 +1968,7 @@ class TestClientDB( unittest.TestCase ):
         
         service = ClientServices.GenerateService( service_key, HC.TAG_REPOSITORY, 'new tag repo' )
         
-        service._account._account_type = HydrusNetwork.AccountType.GenerateAdminAccountType( HC.TAG_REPOSITORY )
+        service._account._account_type = HydrusNetwork.AccountType.generate_admin_account_type( HC.TAG_REPOSITORY )
         
         services.append( service )
         
@@ -2047,7 +2047,7 @@ class TestClientDB( unittest.TestCase ):
         
         old_services = list( services )
         
-        services.append( ClientServices.GenerateService( HydrusData.GenerateKey(), HC.TAG_REPOSITORY, 'new service' ) )
+        services.append( ClientServices.GenerateService( HydrusData.generate_key(), HC.TAG_REPOSITORY, 'new service' ) )
         
         self._write( 'update_services', services )
         

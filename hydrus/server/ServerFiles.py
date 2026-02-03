@@ -59,7 +59,7 @@ def IterateAllPaths( file_type ):
     
     files_dir = SG.server_controller.GetFilesDir()
     
-    for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( '', prefix_length = 2 ):
+    for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( '', prefix_length = 2 ):
         
         dir = os.path.join( files_dir, prefix )
         

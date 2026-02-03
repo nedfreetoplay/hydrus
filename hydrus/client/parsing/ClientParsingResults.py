@@ -18,7 +18,7 @@ def ConvertParsableContentDescriptionsToPrettyString( parsable_content_descripti
     # when this was tuple hell, this guy used to go "tags: creator, series, unnamespaced". it would be neat to have that compression again, so think about it
     # maybe each subclass could have the ability to do STATICToMassString( pcds ) or something, and then I just group by
     
-    content_types_to_pcds = HydrusData.BuildKeyToSetDict( [ ( pcd.content_type, pcd ) for pcd in parsable_content_descriptions ] )
+    content_types_to_pcds = HydrusData.build_key_to_set_dict( [ ( pcd.content_type, pcd ) for pcd in parsable_content_descriptions ] )
     
     content_types = sorted( content_types_to_pcds.keys(), key = lambda content_type: HC.content_type_string_lookup[ content_type ] )
     
@@ -358,10 +358,10 @@ class ParsableContentDescriptionTag( ParsableContentDescription ):
                     
                 else:
                     
-                    combined_tag = HydrusTags.CombineTag( self.namespace, parsed_text )
+                    combined_tag = HydrusTags.combine_tag( self.namespace, parsed_text )
                     
                 
-                tag = HydrusTags.CleanTag( combined_tag )
+                tag = HydrusTags.clean_tag( combined_tag )
                 
             except:
                 
@@ -370,7 +370,7 @@ class ParsableContentDescriptionTag( ParsableContentDescription ):
             
             try:
                 
-                HydrusTags.CheckTagNotEmpty( tag )
+                HydrusTags.check_tag_not_empty( tag )
                 
             except HydrusExceptions.TagSizeException:
                 
@@ -422,7 +422,7 @@ class ParsableContentDescriptionTimestamp( ParsableContentDescription ):
                 
                 timestamp = int( parsed_text )
                 
-                timestamp_string = HydrusTime.TimestampToPrettyTime( timestamp )
+                timestamp_string = HydrusTime.timestamp_to_pretty_time( timestamp )
                 
             except:
                 
@@ -662,7 +662,7 @@ class ParsedPost( object ):
             
             if isinstance( parsed_content_description, ParsableContentDescriptionNote ):
                 
-                note_text = HydrusText.CleanNoteText( parsed_content.parsed_text )
+                note_text = HydrusText.clean_note_text( parsed_content.parsed_text )
                 
                 if note_text == '':
                     
@@ -698,14 +698,14 @@ class ParsedPost( object ):
                     
                 else:
                     
-                    combined_tag = HydrusTags.CombineTag( namespace, subtag_or_tag )
+                    combined_tag = HydrusTags.combine_tag( namespace, subtag_or_tag )
                     
                 
                 tag_results.append( combined_tag )
                 
             
         
-        tag_results = HydrusTags.CleanTags( tag_results )
+        tag_results = HydrusTags.clean_tags( tag_results )
         
         return tag_results
         
@@ -735,7 +735,7 @@ class ParsedPost( object ):
                     
                     if timestamp_type == HC.TIMESTAMP_TYPE_MODIFIED_DOMAIN:
                         
-                        timestamp = min( HydrusTime.GetNow() - 5, timestamp )
+                        timestamp = min( HydrusTime.get_now() - 5, timestamp )
                         
                     
                     timestamp_results.append( timestamp )
@@ -801,7 +801,7 @@ class ParsedPost( object ):
                 
             
         
-        url_list = HydrusLists.DedupeList( url_list )
+        url_list = HydrusLists.dedupe_list( url_list )
         
         return url_list
         

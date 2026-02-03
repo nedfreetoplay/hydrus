@@ -21,7 +21,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         self._db_dir = db_dir
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict( self ) -> dict:
         
         return {
             'main.client_files_subfolders' : ( 'CREATE TABLE IF NOT EXISTS {} ( prefix TEXT, location TEXT, purge INTEGER_BOOLEAN, PRIMARY KEY ( prefix, location ) );', 541 ),
@@ -43,9 +43,9 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         
         subfolders = set()
         
-        for ( prefix, creation_path, purge ) in self._Execute( 'SELECT prefix, location, purge FROM client_files_subfolders;' ):
+        for ( prefix, creation_path, purge ) in self._execute( 'SELECT prefix, location, purge FROM client_files_subfolders;' ):
             
-            abs_path = HydrusPaths.ConvertPortablePathToAbsPath( creation_path )
+            abs_path = HydrusPaths.convert_portable_path_to_abs_path( creation_path )
             
             base_location = paths_to_base_locations.get( abs_path, ClientFilesPhysical.FilesStorageBaseLocation( creation_path, 0 ) )
             
@@ -54,8 +54,8 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         
         all_prefixes = { subfolder.prefix for subfolder in subfolders }
         
-        missing_prefixes_f = HydrusFilesPhysicalStorage.GetMissingPrefixes( 'f', all_prefixes )
-        missing_prefixes_t = HydrusFilesPhysicalStorage.GetMissingPrefixes( 't', all_prefixes )
+        missing_prefixes_f = HydrusFilesPhysicalStorage.get_missing_prefixes( 'f', all_prefixes )
+        missing_prefixes_t = HydrusFilesPhysicalStorage.get_missing_prefixes( 't', all_prefixes )
         
         if len( missing_prefixes_f ) > 0 or len( missing_prefixes_t ) > 0:
             
@@ -69,21 +69,21 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
             
             client_files_default = os.path.join( self._db_dir, 'client_files' )
             
-            HydrusPaths.MakeSureDirectoryExists( client_files_default )
+            HydrusPaths.make_sure_directory_exists( client_files_default )
             
-            portable_path = HydrusPaths.ConvertAbsPathToPortablePath( client_files_default )
+            portable_path = HydrusPaths.convert_abs_path_to_portable_path( client_files_default )
             
             for missing_prefix in missing_prefixes_f:
                 
-                self._Execute( 'INSERT OR IGNORE INTO client_files_subfolders ( prefix, location, purge ) VALUES ( ?, ?, ? );', ( missing_prefix, portable_path, False ) )
+                self._execute( 'INSERT OR IGNORE INTO client_files_subfolders ( prefix, location, purge ) VALUES ( ?, ?, ? );', ( missing_prefix, portable_path, False ) )
                 
             
             for missing_prefix in missing_prefixes_t:
                 
-                self._Execute( 'INSERT OR IGNORE INTO client_files_subfolders ( prefix, location, purge ) VALUES ( ?, ?, ? );', ( missing_prefix, portable_path, False ) )
+                self._execute( 'INSERT OR IGNORE INTO client_files_subfolders ( prefix, location, purge ) VALUES ( ?, ?, ? );', ( missing_prefix, portable_path, False ) )
                 
             
-            for ( prefix, creation_path, purge ) in self._Execute( 'SELECT prefix, location, purge FROM client_files_subfolders;' ):
+            for ( prefix, creation_path, purge ) in self._execute( 'SELECT prefix, location, purge FROM client_files_subfolders;' ):
                 
                 base_location = ClientFilesPhysical.FilesStorageBaseLocation( creation_path, 0 )
                 
@@ -98,12 +98,12 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         
         media_base_locations = set()
         
-        for ( creation_path, ideal_weight, max_num_bytes ) in self._Execute( 'SELECT location, weight, max_num_bytes FROM ideal_client_files_locations;' ):
+        for ( creation_path, ideal_weight, max_num_bytes ) in self._execute( 'SELECT location, weight, max_num_bytes FROM ideal_client_files_locations;' ):
             
             media_base_locations.add( ClientFilesPhysical.FilesStorageBaseLocation( creation_path, ideal_weight, max_num_bytes = max_num_bytes ) )
             
         
-        result = self._Execute( 'SELECT location FROM ideal_thumbnail_override_location;' ).fetchone()
+        result = self._execute( 'SELECT location FROM ideal_thumbnail_override_location;' ).fetchone()
         
         if result is None:
             
@@ -119,7 +119,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         return ( media_base_locations, thumbnail_override_base_location )
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         tables_and_columns = []
         
@@ -130,21 +130,21 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         
         default_abs_path = os.path.join( self._db_dir, 'client_files' )
         
-        HydrusPaths.MakeSureDirectoryExists( default_abs_path )
+        HydrusPaths.make_sure_directory_exists( default_abs_path )
         
-        portable_path = HydrusPaths.ConvertAbsPathToPortablePath( default_abs_path )
+        portable_path = HydrusPaths.convert_abs_path_to_portable_path( default_abs_path )
         
-        for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( 'f' ):
+        for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( 'f' ):
             
-            self._Execute( 'INSERT INTO client_files_subfolders ( prefix, location, purge ) VALUES ( ?, ?, ? );', ( prefix, portable_path, False ) )
-            
-        
-        for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( 't' ):
-            
-            self._Execute( 'INSERT INTO client_files_subfolders ( prefix, location, purge ) VALUES ( ?, ?, ? );', ( prefix, portable_path, False ) )
+            self._execute( 'INSERT INTO client_files_subfolders ( prefix, location, purge ) VALUES ( ?, ?, ? );', ( prefix, portable_path, False ) )
             
         
-        self._Execute( 'INSERT INTO ideal_client_files_locations ( location, weight, max_num_bytes ) VALUES ( ?, ?, ? );', ( portable_path, 1, None ) )
+        for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( 't' ):
+            
+            self._execute( 'INSERT INTO client_files_subfolders ( prefix, location, purge ) VALUES ( ?, ?, ? );', ( prefix, portable_path, False ) )
+            
+        
+        self._execute( 'INSERT INTO ideal_client_files_locations ( location, weight, max_num_bytes ) VALUES ( ?, ?, ? );', ( portable_path, 1, None ) )
         
     
     def RelocateClientFiles( self, source_subfolder: ClientFilesPhysical.FilesStorageSubfolder, dest_subfolder: ClientFilesPhysical.FilesStorageSubfolder ):
@@ -181,21 +181,21 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         prefix = source_subfolder.prefix
         creation_source_base_location = source_subfolder.base_location.creation_path
         
-        self._Execute( 'DELETE FROM client_files_subfolders WHERE prefix = ? AND location = ?;', ( prefix, creation_source_base_location ) )
+        self._execute( 'DELETE FROM client_files_subfolders WHERE prefix = ? AND location = ?;', ( prefix, creation_source_base_location ) )
         
-        if self._GetRowCount() == 0:
+        if self._get_row_count() == 0:
             
             portable_source_base_location = source_subfolder.base_location.portable_path
             
-            self._Execute( 'DELETE FROM client_files_subfolders WHERE prefix = ? AND location = ?;', ( prefix, portable_source_base_location ) )
+            self._execute( 'DELETE FROM client_files_subfolders WHERE prefix = ? AND location = ?;', ( prefix, portable_source_base_location ) )
             
-            if self._GetRowCount() == 0:
+            if self._get_row_count() == 0:
                 
                 absolute_base_location = source_subfolder.base_location.path
                 
-                self._Execute( 'DELETE FROM client_files_subfolders WHERE prefix = ? AND location = ?;', ( prefix, absolute_base_location ) )
+                self._execute( 'DELETE FROM client_files_subfolders WHERE prefix = ? AND location = ?;', ( prefix, absolute_base_location ) )
                 
-                if self._GetRowCount() == 0:
+                if self._get_row_count() == 0:
                     
                     raise Exception( f'Was commanded to move "{source_subfolder}" to "{dest_subfolder}", but the entry for the source folder seems incorrect! Please contact hydrus dev!' )
                     
@@ -209,26 +209,26 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
             
             if os.path.exists( source_dir ):
                 
-                HydrusPaths.MergeTree( source_dir, dest_dir )
+                HydrusPaths.merge_tree( source_dir, dest_dir )
                 
             else:
                 
                 if not os.path.exists( dest_dir ):
                     
-                    HydrusPaths.MakeSureDirectoryExists( dest_dir )
+                    HydrusPaths.make_sure_directory_exists( dest_dir )
                     
                 
             
         
         portable_dest_base_location = dest_subfolder.base_location.portable_path
         
-        self._Execute( 'INSERT OR IGNORE INTO client_files_subfolders ( prefix, location, purge ) VALUES ( ?, ?, ? );', ( prefix, portable_dest_base_location, False ) )
+        self._execute( 'INSERT OR IGNORE INTO client_files_subfolders ( prefix, location, purge ) VALUES ( ?, ?, ? );', ( prefix, portable_dest_base_location, False ) )
         
         if not they_are_secretly_the_same:
             
             if os.path.exists( source_dir ) and len( os.listdir( source_dir ) ) == 0:
                 
-                try: HydrusPaths.RecyclePath( source_dir )
+                try: HydrusPaths.recycle_path( source_dir )
                 except: pass
                 
             
@@ -256,28 +256,28 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
             
             if creation_incorrect_base_location != portable_correct_base_location:
                 
-                self._Execute( 'DELETE FROM client_files_subfolders WHERE prefix = ? AND location = ?;', ( prefix, creation_incorrect_base_location ) )
+                self._execute( 'DELETE FROM client_files_subfolders WHERE prefix = ? AND location = ?;', ( prefix, creation_incorrect_base_location ) )
                 
-                if self._GetRowCount() == 0:
+                if self._get_row_count() == 0:
                     
                     portable_incorrect_base_location = incorrect_subfolder.base_location.portable_path
                     
-                    self._Execute( 'DELETE FROM client_files_subfolders WHERE prefix = ? AND location = ?;', ( prefix, portable_incorrect_base_location ) )
+                    self._execute( 'DELETE FROM client_files_subfolders WHERE prefix = ? AND location = ?;', ( prefix, portable_incorrect_base_location ) )
                     
-                    if self._GetRowCount() == 0:
+                    if self._get_row_count() == 0:
                         
                         absolute_incorrect_base_location = incorrect_subfolder.base_location.path
                         
-                        self._Execute( 'DELETE FROM client_files_subfolders WHERE prefix = ? AND location = ?;', ( prefix, absolute_incorrect_base_location ) )
+                        self._execute( 'DELETE FROM client_files_subfolders WHERE prefix = ? AND location = ?;', ( prefix, absolute_incorrect_base_location ) )
                         
-                        if self._GetRowCount() == 0:
+                        if self._get_row_count() == 0:
                             
                             raise Exception( f'When trying to repair the database file storage system, I could not remove the old "{incorrect_subfolder}" entry from the database! Please contact hydrus dev--you probably need manual fixing.' )
                             
                         
                     
                 
-                self._Execute( 'INSERT OR IGNORE INTO client_files_subfolders ( prefix, location, purge ) VALUES ( ?, ?, ? );', ( prefix, portable_correct_base_location, False ) )
+                self._execute( 'INSERT OR IGNORE INTO client_files_subfolders ( prefix, location, purge ) VALUES ( ?, ?, ? );', ( prefix, portable_correct_base_location, False ) )
                 
             
         
@@ -289,24 +289,24 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
             raise Exception( 'No locations passed in ideal locations list!' )
             
         
-        self._Execute( 'DELETE FROM ideal_client_files_locations;' )
+        self._execute( 'DELETE FROM ideal_client_files_locations;' )
         
         for base_location in media_base_locations:
             
-            portable_path = HydrusPaths.ConvertAbsPathToPortablePath( base_location.path )
+            portable_path = HydrusPaths.convert_abs_path_to_portable_path( base_location.path )
             ideal_weight = base_location.ideal_weight
             max_num_bytes = base_location.max_num_bytes
             
-            self._Execute( 'INSERT INTO ideal_client_files_locations ( location, weight, max_num_bytes ) VALUES ( ?, ?, ? );', ( portable_path, ideal_weight, max_num_bytes ) )
+            self._execute( 'INSERT INTO ideal_client_files_locations ( location, weight, max_num_bytes ) VALUES ( ?, ?, ? );', ( portable_path, ideal_weight, max_num_bytes ) )
             
         
-        self._Execute( 'DELETE FROM ideal_thumbnail_override_location;' )
+        self._execute( 'DELETE FROM ideal_thumbnail_override_location;' )
         
         if thumbnail_override_base_location is not None:
             
-            portable_path = HydrusPaths.ConvertAbsPathToPortablePath( thumbnail_override_base_location.path )
+            portable_path = HydrusPaths.convert_abs_path_to_portable_path( thumbnail_override_base_location.path )
             
-            self._Execute( 'INSERT INTO ideal_thumbnail_override_location ( location ) VALUES ( ? );', ( portable_path, ) )
+            self._execute( 'INSERT INTO ideal_thumbnail_override_location ( location ) VALUES ( ? );', ( portable_path, ) )
             
         
         CG.client_controller.pub( 'new_ideal_client_files_locations' )

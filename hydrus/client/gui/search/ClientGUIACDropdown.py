@@ -182,11 +182,11 @@ def ReadFetch(
             
             we_need_results = not cache_valid
             
-            db_not_going_to_hang_if_we_hit_it = not CG.client_controller.DBCurrentlyDoingJob()
+            db_not_going_to_hang_if_we_hit_it = not CG.client_controller.db_currently_doing_job()
             
             if we_need_results or db_not_going_to_hang_if_we_hit_it:
                 
-                predicates = CG.client_controller.Read( 'file_system_predicates', file_search_context, force_system_everything = force_system_everything )
+                predicates = CG.client_controller.read( 'file_system_predicates', file_search_context, force_system_everything = force_system_everything )
                 
                 results_cache = ClientSearchAutocomplete.PredicateResultsCacheSystem( predicates )
                 
@@ -261,7 +261,7 @@ def ReadFetch(
                 
             else:
                 
-                exact_match_predicates = CG.client_controller.Read( 'autocomplete_predicates', ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, file_search_context, search_text = strict_search_text, exact_match = True, job_status = job_status )
+                exact_match_predicates = CG.client_controller.read( 'autocomplete_predicates', ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, file_search_context, search_text = strict_search_text, exact_match = True, job_status = job_status )
                 
                 small_exact_match_search = ShouldDoExactSearch( parsed_autocomplete_text )
                 
@@ -291,7 +291,7 @@ def ReadFetch(
                     
                     search_namespaces_into_full_tags = parsed_autocomplete_text.GetTagAutocompleteOptions().SearchNamespacesIntoFullTags()
                     
-                    predicates = CG.client_controller.Read( 'autocomplete_predicates', ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, file_search_context, search_text = autocomplete_search_text, job_status = job_status, search_namespaces_into_full_tags = search_namespaces_into_full_tags )
+                    predicates = CG.client_controller.read( 'autocomplete_predicates', ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, file_search_context, search_text = autocomplete_search_text, job_status = job_status, search_namespaces_into_full_tags = search_namespaces_into_full_tags )
                     
                     if job_status.IsCancelled():
                         
@@ -353,7 +353,7 @@ def ReadFetch(
                 include_current_tags = tag_context.include_current_tags
                 include_pending_tags = tag_context.include_pending_tags
                 
-                for ( num_done, num_to_do, group_of_tags_managers ) in HydrusLists.SplitListIntoChunksRich( tags_managers, 1000 ):
+                for ( num_done, num_to_do, group_of_tags_managers ) in HydrusLists.split_list_into_chunks_rich( tags_managers, 1000 ):
                     
                     if include_current_tags:
                         
@@ -405,7 +405,7 @@ def ReadFetch(
                 
                 # now spend time fetching siblings if needed
                 
-                predicates = CG.client_controller.Read( 'media_predicates', tag_context, tags_to_count, job_status = job_status )
+                predicates = CG.client_controller.read( 'media_predicates', tag_context, tags_to_count, job_status = job_status )
                 
                 results_cache = ClientSearchAutocomplete.PredicateResultsCacheMedia( predicates )
                 
@@ -493,7 +493,7 @@ def ShouldDoExactSearch( parsed_autocomplete_text: ClientSearchAutocomplete.Pars
     
     if ':' in strict_search_text:
         
-        ( namespace, test_text ) = HydrusTags.SplitTag( strict_search_text )
+        ( namespace, test_text ) = HydrusTags.split_tag( strict_search_text )
         
     else:
         
@@ -551,7 +551,7 @@ def WriteFetch(
             
         else:
             
-            original_exact_match_predicates = CG.client_controller.Read( 'autocomplete_predicates', ClientTags.TAG_DISPLAY_STORAGE, file_search_context, search_text = strict_search_text, exact_match = True, zero_count_ok = True, job_status = job_status )
+            original_exact_match_predicates = CG.client_controller.read( 'autocomplete_predicates', ClientTags.TAG_DISPLAY_STORAGE, file_search_context, search_text = strict_search_text, exact_match = True, zero_count_ok = True, job_status = job_status )
             
             exact_match_predicates = list( original_exact_match_predicates )
             
@@ -586,7 +586,7 @@ def WriteFetch(
                 
                 search_namespaces_into_full_tags = parsed_autocomplete_text.GetTagAutocompleteOptions().SearchNamespacesIntoFullTags()
                 
-                predicates = CG.client_controller.Read( 'autocomplete_predicates', ClientTags.TAG_DISPLAY_STORAGE, file_search_context, search_text = autocomplete_search_text, job_status = job_status, zero_count_ok = True, search_namespaces_into_full_tags = search_namespaces_into_full_tags )
+                predicates = CG.client_controller.read( 'autocomplete_predicates', ClientTags.TAG_DISPLAY_STORAGE, file_search_context, search_text = autocomplete_search_text, job_status = job_status, zero_count_ok = True, search_namespaces_into_full_tags = search_namespaces_into_full_tags )
                 
                 if is_explicit_wildcard:
                     
@@ -1048,7 +1048,7 @@ class AutoCompleteDropdown( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             return False
             
         
-        return HydrusTime.TimeHasPassed( self._time_results_last_set + 300 )
+        return HydrusTime.time_has_passed( self._time_results_last_set + 300 )
         
     
     def _HandleEscape( self ):
@@ -1111,7 +1111,7 @@ class AutoCompleteDropdown( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
     
     def _SetResultsToList( self, results, parsed_autocomplete_text ):
         
-        self._time_results_last_set = HydrusTime.GetNow()
+        self._time_results_last_set = HydrusTime.get_now()
         
     
     def _ShouldBroadcastCurrentInputOnEnterKey( self ):
@@ -1236,7 +1236,7 @@ class AutoCompleteDropdown( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                     # this resulted in annoying miss-cases where ctrl+c et al were being passed to the list and so you couldn't copy text from the text input
                     # THUS we are moving to a strict whitelist. a handful of events will pass down to the list, everything else we jealously keep
                     
-                    CG.client_controller.ResetIdleTimer()
+                    CG.client_controller.reset_idle_timer()
                     
                     ( modifier, key ) = ClientGUIShortcuts.ConvertKeyEventToSimpleTuple( event )
                     
@@ -1694,11 +1694,11 @@ class ChildrenTab( ListBoxTagsPredicatesAC ):
                 
                 if len( uncached_context_tags ) > 0:
                     
-                    new_tags_to_child_tags = CG.client_controller.Read( 'tag_descendants_lookup', tag_service_key, uncached_context_tags )
+                    new_tags_to_child_tags = CG.client_controller.read( 'tag_descendants_lookup', tag_service_key, uncached_context_tags )
                     
-                    new_child_tags = HydrusLists.MassUnion( new_tags_to_child_tags.values() )
+                    new_child_tags = HydrusLists.mass_union( new_tags_to_child_tags.values() )
                     
-                    child_predicates = CG.client_controller.Read(
+                    child_predicates = CG.client_controller.read(
                         'tag_predicates',
                         tag_display_type,
                         file_search_context,
@@ -1769,7 +1769,7 @@ class ChildrenTab( ListBoxTagsPredicatesAC ):
                 
                 self._children_need_updating = False
                 
-                HydrusData.ShowText( 'Trying to load some child tags failed, please send this to hydev:' )
+                HydrusData.show_text( 'Trying to load some child tags failed, please send this to hydev:' )
                 HydrusData.ShowExceptionTuple( etype, value, tb, do_wait = False )
                 
             
@@ -1917,7 +1917,7 @@ class AutoCompleteDropdownTags( AutoCompleteDropdown ):
     
     def _SetLocationContext( self, location_context: ClientLocation.LocationContext ):
         
-        location_context = location_context.Duplicate()
+        location_context = location_context.duplicate()
         
         location_context.FixMissingServices( CG.client_controller.services_manager.FilterValidServiceKeys )
         
@@ -2128,7 +2128,7 @@ class AutoCompleteDropdownTagsFileSearchContext( AutoCompleteDropdownTags ):
         file_search_context: ClientSearchFileSearchContext.FileSearchContext
     ):
         
-        self._file_search_context = file_search_context.Duplicate()
+        self._file_search_context = file_search_context.duplicate()
         
         super().__init__( parent, location_context, tag_context )
         
@@ -2162,12 +2162,12 @@ class AutoCompleteDropdownTagsFileSearchContext( AutoCompleteDropdownTags ):
     
     def GetFileSearchContext( self ) -> ClientSearchFileSearchContext.FileSearchContext:
         
-        return self._file_search_context.Duplicate()
+        return self._file_search_context.duplicate()
         
     
     def SetFileSearchContext( self, file_search_context: ClientSearchFileSearchContext.FileSearchContext ):
         
-        self._file_search_context = file_search_context.Duplicate()
+        self._file_search_context = file_search_context.duplicate()
         
     
 
@@ -2280,7 +2280,7 @@ class AutocompleteDropdownTagsFileSearchContextORCapable( AutoCompleteDropdownTa
         
         try:
             
-            empty_file_search_context = self._file_search_context.Duplicate()
+            empty_file_search_context = self._file_search_context.duplicate()
             
             empty_file_search_context.SetPredicates( [] )
             
@@ -2430,7 +2430,7 @@ class AutoCompleteDropdownTagsRead( AutocompleteDropdownTagsFileSearchContextORC
     ):
         
         # make a dupe here so we know that any direct changes we make to this guy will not affect other copies around
-        file_search_context = file_search_context.Duplicate()
+        file_search_context = file_search_context.duplicate()
         
         location_context = file_search_context.GetLocationContext()
         tag_context = file_search_context.GetTagContext()
@@ -2797,7 +2797,7 @@ class AutoCompleteDropdownTagsRead( AutocompleteDropdownTagsFileSearchContextORC
         
         try:
             
-            texts = HydrusText.DeserialiseNewlinedTexts( raw_text )
+            texts = HydrusText.deserialise_newlined_texts( raw_text )
             
             predicates = []
             
@@ -2923,7 +2923,7 @@ class AutoCompleteDropdownTagsRead( AutocompleteDropdownTagsFileSearchContextORC
     
     def _SignalNewSearchState( self ):
         
-        file_search_context = self._file_search_context.Duplicate()
+        file_search_context = self._file_search_context.duplicate()
         
         self.searchChanged.emit( file_search_context )
         
@@ -2940,10 +2940,10 @@ class AutoCompleteDropdownTagsRead( AutocompleteDropdownTagsFileSearchContextORC
             
         else:
             
-            under_construction_or_predicate = self._under_construction_or_predicate.Duplicate()
+            under_construction_or_predicate = self._under_construction_or_predicate.duplicate()
             
         
-        CG.client_controller.CallToThread( ReadFetch, self, job_status, self.SetPrefetchResults, self.SetFetchedResults, parsed_autocomplete_text, self._media_callable, fsc, self._search_pause_play.IsOn(), self._include_unusual_predicate_types, self._results_cache, under_construction_or_predicate, self._force_system_everything )
+        CG.client_controller.call_to_thread( ReadFetch, self, job_status, self.SetPrefetchResults, self.SetFetchedResults, parsed_autocomplete_text, self._media_callable, fsc, self._search_pause_play.IsOn(), self._include_unusual_predicate_types, self._results_cache, under_construction_or_predicate, self._force_system_everything )
         
     
     def _SynchronisedChanged( self, value ):
@@ -3146,7 +3146,7 @@ class ListBoxTagsActiveSearchPredicates( ClientGUIListBoxes.ListBoxTagsPredicate
                 
             else:
                 
-                desc = '{} search terms'.format( HydrusNumbers.ToHumanInt( len( editable_and_invertible_predicates ) ) )
+                desc = '{} search terms'.format( HydrusNumbers.to_human_int( len( editable_and_invertible_predicates ) ) )
                 
             
             label = 'edit {}'.format( desc )
@@ -3174,7 +3174,7 @@ class ListBoxTagsActiveSearchPredicates( ClientGUIListBoxes.ListBoxTagsPredicate
         
         try:
             
-            empty_file_search_context = self._file_search_context.Duplicate()
+            empty_file_search_context = self._file_search_context.duplicate()
             
             empty_file_search_context.SetPredicates( [] )
             
@@ -3223,7 +3223,7 @@ class ListBoxTagsActiveSearchPredicates( ClientGUIListBoxes.ListBoxTagsPredicate
             
             try:
                 
-                empty_file_search_context = self._file_search_context.Duplicate()
+                empty_file_search_context = self._file_search_context.duplicate()
                 
                 empty_file_search_context.SetPredicates( or_based_predicates )
                 
@@ -3330,7 +3330,7 @@ class ListBoxTagsActiveSearchPredicates( ClientGUIListBoxes.ListBoxTagsPredicate
             
             or_preds = [ p for p in predicates if p.IsORPredicate() ]
             
-            sub_preds = HydrusLists.MassUnion( [ p.GetValue() for p in or_preds ] )
+            sub_preds = HydrusLists.mass_union( [ p.GetValue() for p in or_preds ] )
             
             self._EnterPredicates( or_preds, permit_add = False )
             self._EnterPredicates( sub_preds, permit_remove = False )
@@ -3532,7 +3532,7 @@ class AutoCompleteDropdownTagsWrite( AutoCompleteDropdownTags ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             
@@ -3541,9 +3541,9 @@ class AutoCompleteDropdownTagsWrite( AutoCompleteDropdownTags ):
         
         try:
             
-            tags = [ text for text in HydrusText.DeserialiseNewlinedTexts( raw_text ) ]
+            tags = [ text for text in HydrusText.deserialise_newlined_texts( raw_text ) ]
             
-            tags = HydrusTags.CleanTags( tags )
+            tags = HydrusTags.clean_tags( tags )
             
             self.tagsPasted.emit( list( tags ) )
             
@@ -3583,7 +3583,7 @@ class AutoCompleteDropdownTagsWrite( AutoCompleteDropdownTags ):
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = self._location_context_button.GetValue(), tag_context = self._tag_context_button.GetValue() )
         
-        CG.client_controller.CallToThread( WriteFetch, self, job_status, self.SetPrefetchResults, self.SetFetchedResults, parsed_autocomplete_text, file_search_context, self._results_cache )
+        CG.client_controller.call_to_thread( WriteFetch, self, job_status, self.SetPrefetchResults, self.SetFetchedResults, parsed_autocomplete_text, file_search_context, self._results_cache )
         
     
     def _TryToProcessAPasteEvent( self ) -> bool:
@@ -3601,7 +3601,7 @@ class AutoCompleteDropdownTagsWrite( AutoCompleteDropdownTags ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             
@@ -3610,9 +3610,9 @@ class AutoCompleteDropdownTagsWrite( AutoCompleteDropdownTags ):
         
         try:
             
-            tags = [ text for text in HydrusText.DeserialiseNewlinedTexts( raw_text ) ]
+            tags = [ text for text in HydrusText.deserialise_newlined_texts( raw_text ) ]
             
-            tags = HydrusTags.CleanTags( tags )
+            tags = HydrusTags.clean_tags( tags )
             
             if len( tags ) > 1:
                 
@@ -3625,7 +3625,7 @@ class AutoCompleteDropdownTagsWrite( AutoCompleteDropdownTags ):
                 else:
                     
                     message = 'You have pasted multiple lines of content. Want to enter them all as separate tags? You entered:'
-                    message += HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( tags, do_sort = False, no_trailing_whitespace = True )
+                    message += HydrusText.convert_many_strings_to_nice_insertable_human_summary( tags, do_sort = False, no_trailing_whitespace = True )
                     
                     result = ClientGUIDialogsQuick.GetYesNo( self, message, title = 'Want to paste everything?' )
                     
@@ -3779,9 +3779,9 @@ class EditAdvancedORPredicates( ClientGUIScrolledPanels.EditPanel ):
                         
                         try:
                             
-                            tag_string = HydrusTags.CleanTag( tag_string )
+                            tag_string = HydrusTags.clean_tag( tag_string )
                             
-                            HydrusTags.CheckTagNotEmpty( tag_string )
+                            HydrusTags.check_tag_not_empty( tag_string )
                             
                         except Exception as e:
                             
@@ -3790,7 +3790,7 @@ class EditAdvancedORPredicates( ClientGUIScrolledPanels.EditPanel ):
                         
                         if '*' in tag_string:
                             
-                            ( namespace, subtag ) = HydrusTags.SplitTag( tag_string )
+                            ( namespace, subtag ) = HydrusTags.split_tag( tag_string )
                             
                             if len( namespace ) > 0 and subtag == '*':
                                 

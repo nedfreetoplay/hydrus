@@ -136,7 +136,7 @@ def GetFilesInfoPredicates( system_predicates: ClientSearchFileSearchContext.Fil
             
         else:
             
-            mimes_splayed = HydrusLists.SplayListForDB( mimes )
+            mimes_splayed = HydrusLists.splay_list_for_db( mimes )
             
             files_info_predicates.append( f'( ( mime IN {mimes_splayed} AND NOT EXISTS ( SELECT 1 FROM files_info_forced_filetypes WHERE hash_id = h1 AND forced_mime NOT IN {mimes_splayed} ) ) OR EXISTS ( SELECT 1 FROM files_info_forced_filetypes WHERE hash_id = h1 AND mime IN {mimes_splayed} ) )' )
             
@@ -302,7 +302,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
             namespace_ids = self.modules_tag_search.GetNamespaceIdsFromWildcard( namespace_wildcard )
             
         
-        with self._MakeTemporaryIntegerTable( namespace_ids, 'namespace_id' ) as temp_namespace_ids_table_name:
+        with self._make_temporary_integer_table( namespace_ids, 'namespace_id' ) as temp_namespace_ids_table_name:
             
             ( file_service_keys, file_location_is_cross_referenced ) = location_context.GetCoveringCurrentFileServiceKeys()
             
@@ -332,9 +332,9 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
                 cancelled_hook = job_status.IsCancelled
                 
             
-            for group_of_hash_ids in HydrusLists.SplitIteratorIntoChunks( hash_ids, BLOCK_SIZE ):
+            for group_of_hash_ids in HydrusLists.split_iterator_into_chunks( hash_ids, BLOCK_SIZE ):
                 
-                with self._MakeTemporaryIntegerTable( group_of_hash_ids, 'hash_id' ) as hash_ids_table_name:
+                with self._make_temporary_integer_table( group_of_hash_ids, 'hash_id' ) as hash_ids_table_name:
                     
                     if namespace_wildcard == '*':
                         
@@ -351,7 +351,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
                     
                     query = 'SELECT hash_id, COUNT( tag_id ) FROM {} GROUP BY hash_id;'.format( unions )
                     
-                    loop_of_results = self._ExecuteCancellable( query, (), cancelled_hook )
+                    loop_of_results = self._execute_cancellable( query, (), cancelled_hook )
                     
                     if job_status is not None and job_status.IsCancelled():
                         
@@ -433,7 +433,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
         
         service_ids_to_service_keys = self.modules_services.GetServiceIdsToServiceKeys()
         
-        ( namespace, subtag ) = HydrusTags.SplitTag( tag )
+        ( namespace, subtag ) = HydrusTags.split_tag( tag )
         
         tag_id = self.modules_tags.GetTagId( tag )
         
@@ -587,11 +587,11 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
                             query = f'SELECT hash_id FROM {mappings_table_name} WHERE tag_id = ?;'
                             
                         
-                        result_hash_ids.update( self._STI( self._ExecuteCancellable( query, ( search_tag_id, ), cancelled_hook ) ) )
+                        result_hash_ids.update( self._sti( self._execute_cancellable( query, ( search_tag_id, ), cancelled_hook ) ) )
                         
                     else:
                         
-                        with self._MakeTemporaryIntegerTable( search_tag_ids, 'tag_id' ) as temp_tag_ids_table_name:
+                        with self._make_temporary_integer_table( search_tag_ids, 'tag_id' ) as temp_tag_ids_table_name:
                             
                             if hash_ids is not None and hash_ids_table_name is not None:
                                 
@@ -607,7 +607,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
                                 query = f'SELECT hash_id FROM {temp_tag_ids_table_name} CROSS JOIN {mappings_table_name} USING ( tag_id );'
                                 
                             
-                            result_hash_ids.update( self._STI( self._ExecuteCancellable( query, (), cancelled_hook ) ) )
+                            result_hash_ids.update( self._sti( self._execute_cancellable( query, (), cancelled_hook ) ) )
                             
                         
                     
@@ -666,12 +666,12 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
             
             for query in queries:
                 
-                result_hash_ids.update( self._STI( self._ExecuteCancellable( query, ( tag_id, ), cancelled_hook ) ) )
+                result_hash_ids.update( self._sti( self._execute_cancellable( query, ( tag_id, ), cancelled_hook ) ) )
                 
             
         else:
             
-            with self._MakeTemporaryIntegerTable( tag_ids, 'tag_id' ) as temp_tag_ids_table_name:
+            with self._make_temporary_integer_table( tag_ids, 'tag_id' ) as temp_tag_ids_table_name:
                 
                 if do_hash_table_join:
                     
@@ -689,7 +689,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
                 
                 for query in queries:
                     
-                    result_hash_ids.update( self._STI( self._ExecuteCancellable( query, (), cancelled_hook ) ) )
+                    result_hash_ids.update( self._sti( self._execute_cancellable( query, (), cancelled_hook ) ) )
                     
                 
             
@@ -741,12 +741,12 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
             
             for query in queries:
                 
-                result_hash_ids.update( self._STI( self._ExecuteCancellable( query, ( tag_id, ), cancelled_hook ) ) )
+                result_hash_ids.update( self._sti( self._execute_cancellable( query, ( tag_id, ), cancelled_hook ) ) )
                 
             
         else:
             
-            with self._MakeTemporaryIntegerTable( tag_ids, 'tag_id' ) as temp_tag_ids_table_name:
+            with self._make_temporary_integer_table( tag_ids, 'tag_id' ) as temp_tag_ids_table_name:
                 
                 if do_hash_table_join:
                     
@@ -764,7 +764,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
                 
                 for query in queries:
                     
-                    result_hash_ids.update( self._STI( self._ExecuteCancellable( query, (), cancelled_hook ) ) )
+                    result_hash_ids.update( self._sti( self._execute_cancellable( query, (), cancelled_hook ) ) )
                     
                 
             
@@ -774,7 +774,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
     
     def GetHashIdsFromWildcardComplexLocation( self, tag_display_type: int, location_context: ClientLocation.LocationContext, tag_context: ClientSearchTagContext.TagContext, wildcard, hash_ids = None, hash_ids_table_name = None, job_status = None ):
         
-        ( namespace_wildcard, subtag_wildcard ) = HydrusTags.SplitTag( wildcard )
+        ( namespace_wildcard, subtag_wildcard ) = HydrusTags.split_tag( wildcard )
         
         if subtag_wildcard == '*':
             
@@ -804,7 +804,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
                 
             
         
-        with self._MakeTemporaryIntegerTable( possible_namespace_ids, 'namespace_id' ) as temp_namespace_ids_table_name:
+        with self._make_temporary_integer_table( possible_namespace_ids, 'namespace_id' ) as temp_namespace_ids_table_name:
             
             if namespace_wildcard == '*':
                 
@@ -840,7 +840,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
     
     def GetHashIdsFromWildcardSimpleLocation( self, tag_display_type: int, file_service_key: bytes, tag_context: ClientSearchTagContext.TagContext, subtag_wildcard, namespace_ids_table_name = None, hash_ids = None, hash_ids_table_name = None, job_status = None ):
         
-        with self._MakeTemporaryIntegerTable( [], 'subtag_id' ) as temp_subtag_ids_table_name:
+        with self._make_temporary_integer_table( [], 'subtag_id' ) as temp_subtag_ids_table_name:
             
             file_service_id = self.modules_services.GetServiceId( file_service_key )
             tag_service_id = self.modules_services.GetServiceId( tag_context.service_key )
@@ -954,7 +954,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
         
         results = set()
         
-        with self._MakeTemporaryIntegerTable( possible_namespace_ids, 'namespace_id' ) as temp_namespace_ids_table_name:
+        with self._make_temporary_integer_table( possible_namespace_ids, 'namespace_id' ) as temp_namespace_ids_table_name:
             
             if namespace_wildcard == '*':
                 
@@ -1038,7 +1038,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
         
         for query in queries:
             
-            nonzero_tag_hash_ids.update( self._STI( self._ExecuteCancellable( query, (), cancelled_hook ) ) )
+            nonzero_tag_hash_ids.update( self._sti( self._execute_cancellable( query, (), cancelled_hook ) ) )
             
             if job_status is not None and job_status.IsCancelled():
                 
@@ -1049,7 +1049,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
         return nonzero_tag_hash_ids
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         tables_and_columns = []
         
@@ -1276,7 +1276,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                         
                         if operator == '<' or ( operator == '=' and value == 0 ):
                             
-                            rated_hash_ids = self._STI( self._Execute( 'SELECT hash_id FROM local_incdec_ratings WHERE service_id = ?;', ( service_id, ) ) )
+                            rated_hash_ids = self._sti( self._execute( 'SELECT hash_id FROM local_incdec_ratings WHERE service_id = ?;', ( service_id, ) ) )
                             
                             not_rated_hash_ids = query_hash_ids.difference( rated_hash_ids )
                             
@@ -1286,7 +1286,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                             
                             if operator == '<' and value > 1:
                                 
-                                less_than_rating_hash_ids = self._STI( self._Execute( 'SELECT hash_id FROM local_incdec_ratings WHERE service_id = ? AND rating < ?;', ( service_id, value ) ) )
+                                less_than_rating_hash_ids = self._sti( self._execute( 'SELECT hash_id FROM local_incdec_ratings WHERE service_id = ? AND rating < ?;', ( service_id, value ) ) )
                                 
                                 rating_hash_ids.update( less_than_rating_hash_ids )
                                 
@@ -1322,7 +1322,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
             
             def sort_longest_tag_first_key( s ):
                 
-                return ( 1 if HydrusTags.IsUnnamespaced( s ) else 0, -len( s ) )
+                return ( 1 if HydrusTags.is_unnamespaced( s ) else 0, -len( s ) )
                 
             
             tags_to_include = list( tags_to_include )
@@ -1341,7 +1341,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                     
                 else:
                     
-                    with self._MakeTemporaryIntegerTable( query_hash_ids, 'hash_id' ) as temp_table_name:
+                    with self._make_temporary_integer_table( query_hash_ids, 'hash_id' ) as temp_table_name:
                         
                         tag_query_hash_ids = self.modules_files_search_tags.GetHashIdsFromTag( ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, location_context, tag_context, tag, hash_ids = query_hash_ids, hash_ids_table_name = temp_table_name, job_status = job_status )
                         
@@ -1369,9 +1369,9 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                     
                 else:
                     
-                    with self._MakeTemporaryIntegerTable( query_hash_ids, 'hash_id' ) as temp_table_name:
+                    with self._make_temporary_integer_table( query_hash_ids, 'hash_id' ) as temp_table_name:
                         
-                        self._AnalyzeTempTable( temp_table_name )
+                        self._analyze_temp_table( temp_table_name )
                         
                         namespace_query_hash_ids = self.modules_files_search_tags.GetHashIdsThatHaveTagsComplexLocation( ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, location_context, tag_context, namespace_wildcard = namespace, hash_ids_table_name = temp_table_name, job_status = job_status )
                         
@@ -1399,9 +1399,9 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                     
                 else:
                     
-                    with self._MakeTemporaryIntegerTable( query_hash_ids, 'hash_id' ) as temp_table_name:
+                    with self._make_temporary_integer_table( query_hash_ids, 'hash_id' ) as temp_table_name:
                         
-                        self._AnalyzeTempTable( temp_table_name )
+                        self._analyze_temp_table( temp_table_name )
                         
                         wildcard_query_hash_ids = self.modules_files_search_tags.GetHashIdsFromWildcardComplexLocation( ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, location_context, tag_context, wildcard, hash_ids = query_hash_ids, hash_ids_table_name = temp_table_name, job_status = job_status )
                         
@@ -1481,21 +1481,21 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                     
                     if query_hash_ids is None:
                         
-                        loop_query_hash_ids = self._STS( self._Execute( 'SELECT hash_id AS h1 FROM {} WHERE {};'.format( files_table_name, ' AND '.join( files_info_predicates ) ) ) )
+                        loop_query_hash_ids = self._sts( self._execute( 'SELECT hash_id AS h1 FROM {} WHERE {};'.format( files_table_name, ' AND '.join( files_info_predicates ) ) ) )
                         
                     else:
                         
                         if is_inbox and len( query_hash_ids ) == len( self.modules_files_inbox.inbox_hash_ids ):
                             
-                            loop_query_hash_ids = self._STS( self._Execute( 'SELECT hash_id AS h1 FROM {} NATURAL JOIN {} WHERE {};'.format( 'file_inbox', files_table_name, ' AND '.join( files_info_predicates ) ) ) )
+                            loop_query_hash_ids = self._sts( self._execute( 'SELECT hash_id AS h1 FROM {} NATURAL JOIN {} WHERE {};'.format( 'file_inbox', files_table_name, ' AND '.join( files_info_predicates ) ) ) )
                             
                         else:
                             
-                            with self._MakeTemporaryIntegerTable( query_hash_ids, 'hash_id' ) as temp_table_name:
+                            with self._make_temporary_integer_table( query_hash_ids, 'hash_id' ) as temp_table_name:
                                 
-                                self._AnalyzeTempTable( temp_table_name )
+                                self._analyze_temp_table( temp_table_name )
                                 
-                                loop_query_hash_ids = self._STS( self._Execute( 'SELECT hash_id AS h1 FROM {} NATURAL JOIN {} WHERE {};'.format( temp_table_name, files_table_name, ' AND '.join( files_info_predicates ) ) ) )
+                                loop_query_hash_ids = self._STS( self._execute( 'SELECT hash_id AS h1 FROM {} NATURAL JOIN {} WHERE {};'.format( temp_table_name, files_table_name, ' AND '.join( files_info_predicates ) ) ) )
                                 
                             
                         
@@ -1519,7 +1519,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
             
             if not SHOWN_UNINITIALISED_SEARCH_ERROR:
                 
-                HydrusData.ShowText( 'Hey, the search you just performed came up with zero results in part because it failed to initialise properly. Please contact hydev with any details you have.\n\nTo stop spam, this message will only show one time per program boot. The error may happen again, silently.' )
+                HydrusData.show_text( 'Hey, the search you just performed came up with zero results in part because it failed to initialise properly. Please contact hydev with any details you have.\n\nTo stop spam, this message will only show one time per program boot. The error may happen again, silently.' )
                 
                 SHOWN_UNINITIALISED_SEARCH_ERROR = True
                 
@@ -1532,15 +1532,15 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         # this was bodged in here during a rewrite; there is probably a nicer 'if cross-referenced already, do above, else this', but this is fine for now
         if search_state.there_are_simple_files_info_preds_to_search_for and not search_state.done_files_info_predicates:
             
-            with self._MakeTemporaryIntegerTable( query_hash_ids, 'hash_id' ) as temp_table_name:
+            with self._make_temporary_integer_table( query_hash_ids, 'hash_id' ) as temp_table_name:
                 
-                self._AnalyzeTempTable( temp_table_name )
+                self._analyze_temp_table( temp_table_name )
                 
                 predicate_string = ' AND '.join( files_info_predicates )
                 
                 select = 'SELECT hash_id AS h1 FROM {} NATURAL JOIN files_info WHERE {};'.format( temp_table_name, predicate_string )
                 
-                files_info_hash_ids = self._STI( self._Execute( select ) )
+                files_info_hash_ids = self._sti( self._execute( select ) )
                 
                 query_hash_ids.intersection_update( files_info_hash_ids )
                 
@@ -1621,7 +1621,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                         
                         if operator == '<' or ( operator == '=' and value == 0 ):
                             
-                            rated_hash_ids = self._STI( self._Execute( 'SELECT hash_id FROM local_incdec_ratings WHERE service_id = ?;', ( service_id, ) ) )
+                            rated_hash_ids = self._sti( self._execute( 'SELECT hash_id FROM local_incdec_ratings WHERE service_id = ?;', ( service_id, ) ) )
                             
                             not_rated_hash_ids = query_hash_ids.difference( rated_hash_ids )
                             
@@ -1631,7 +1631,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                             
                             if operator == '<' and value > 1:
                                 
-                                less_than_rating_hash_ids = self._STI( self._Execute( 'SELECT hash_id FROM local_incdec_ratings WHERE service_id = ? AND rating < ?;', ( service_id, value ) ) )
+                                less_than_rating_hash_ids = self._sti( self._execute( 'SELECT hash_id FROM local_incdec_ratings WHERE service_id = ? AND rating < ?;', ( service_id, value ) ) )
                                 
                                 rating_hash_ids.update( less_than_rating_hash_ids )
                                 
@@ -1681,7 +1681,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
             
             has_exif = simple_preds[ 'has_exif' ]
             
-            with self._MakeTemporaryIntegerTable( query_hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
+            with self._make_temporary_integer_table( query_hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
                 
                 has_exif_hash_ids = self.modules_files_metadata_basic.GetHasEXIFHashIds( temp_hash_ids_table_name )
                 
@@ -1700,7 +1700,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
             
             has_human_readable_embedded_metadata = simple_preds[ 'has_human_readable_embedded_metadata' ]
             
-            with self._MakeTemporaryIntegerTable( query_hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
+            with self._make_temporary_integer_table( query_hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
                 
                 has_human_readable_embedded_metadata_hash_ids = self.modules_files_metadata_basic.GetHasHumanReadableEmbeddedMetadataHashIds( temp_hash_ids_table_name )
                 
@@ -1719,7 +1719,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
             
             has_icc_profile = simple_preds[ 'has_icc_profile' ]
             
-            with self._MakeTemporaryIntegerTable( query_hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
+            with self._make_temporary_integer_table( query_hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
                 
                 has_icc_profile_hash_ids = self.modules_files_metadata_basic.GetHasICCProfileHashIds( temp_hash_ids_table_name )
                 
@@ -1738,7 +1738,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
             
             has_transparency = simple_preds[ 'has_transparency' ]
             
-            with self._MakeTemporaryIntegerTable( query_hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
+            with self._make_temporary_integer_table( query_hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
                 
                 has_transparency_hash_ids = self.modules_files_metadata_basic.GetHasTransparencyHashIds( temp_hash_ids_table_name )
                 
@@ -1791,9 +1791,9 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         
         if len( tags_to_exclude ) + len( namespaces_to_exclude ) + len( wildcards_to_exclude ) > 0:
             
-            with self._MakeTemporaryIntegerTable( query_hash_ids, 'hash_id' ) as temp_table_name:
+            with self._make_temporary_integer_table( query_hash_ids, 'hash_id' ) as temp_table_name:
                 
-                self._AnalyzeTempTable( temp_table_name )
+                self._analyze_temp_table( temp_table_name )
                 
                 for tag in tags_to_exclude:
                     
@@ -1806,7 +1806,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                         return set()
                         
                     
-                    self._ExecuteMany( 'DELETE FROM {} WHERE hash_id = ?;'.format( temp_table_name ), ( ( hash_id, ) for hash_id in unwanted_hash_ids ) )
+                    self._execute_many( 'DELETE FROM {} WHERE hash_id = ?;'.format( temp_table_name ), ( ( hash_id, ) for hash_id in unwanted_hash_ids ) )
                     
                 
                 for namespace in namespaces_to_exclude:
@@ -1820,7 +1820,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                         return set()
                         
                     
-                    self._ExecuteMany( 'DELETE FROM {} WHERE hash_id = ?;'.format( temp_table_name ), ( ( hash_id, ) for hash_id in unwanted_hash_ids ) )
+                    self._execute_many( 'DELETE FROM {} WHERE hash_id = ?;'.format( temp_table_name ), ( ( hash_id, ) for hash_id in unwanted_hash_ids ) )
                     
                 
                 for wildcard in wildcards_to_exclude:
@@ -1834,7 +1834,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                         return set()
                         
                     
-                    self._ExecuteMany( 'DELETE FROM {} WHERE hash_id = ?;'.format( temp_table_name ), ( ( hash_id, ) for hash_id in unwanted_hash_ids ) )
+                    self._execute_many( 'DELETE FROM {} WHERE hash_id = ?;'.format( temp_table_name ), ( ( hash_id, ) for hash_id in unwanted_hash_ids ) )
                     
                 
             
@@ -1856,7 +1856,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
             
             if value == 'not rated':
                 
-                query_hash_ids.difference_update( self._STI( self._Execute( 'SELECT hash_id FROM local_ratings WHERE service_id = ?;', ( service_id, ) ) ) )
+                query_hash_ids.difference_update( self._sti( self._execute( 'SELECT hash_id FROM local_ratings WHERE service_id = ?;', ( service_id, ) ) ) )
                 
             
         
@@ -1975,7 +1975,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         
         if len( num_urls_tests ) > 0:
             
-            with self._MakeTemporaryIntegerTable( query_hash_ids, 'hash_id' ) as temp_table_name:
+            with self._make_temporary_integer_table( query_hash_ids, 'hash_id' ) as temp_table_name:
                 
                 url_hash_ids = self.modules_url_map.GetHashIdsFromCountTests( num_urls_tests, query_hash_ids, temp_table_name )
                 
@@ -2017,9 +2017,9 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
             
             if is_zero or is_anything_but_zero or wants_zero:
                 
-                with self._MakeTemporaryIntegerTable( query_hash_ids, 'hash_id' ) as temp_table_name:
+                with self._make_temporary_integer_table( query_hash_ids, 'hash_id' ) as temp_table_name:
                     
-                    self._AnalyzeTempTable( temp_table_name )
+                    self._analyze_temp_table( temp_table_name )
                     
                     nonzero_tag_query_hash_ids = self.modules_files_search_tags.GetHashIdsThatHaveTagsComplexLocation( ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, location_context, tag_context, hash_ids_table_name = temp_table_name, namespace_wildcard = namespace_wildcard, job_status = job_status )
                     
@@ -2063,9 +2063,9 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
             
             ( namespace_wildcard, num ) = simple_preds[ 'min_tag_as_number' ]
             
-            with self._MakeTemporaryIntegerTable( query_hash_ids, 'hash_id' ) as temp_table_name:
+            with self._make_temporary_integer_table( query_hash_ids, 'hash_id' ) as temp_table_name:
                 
-                self._AnalyzeTempTable( temp_table_name )
+                self._analyze_temp_table( temp_table_name )
                 
                 good_hash_ids = self.modules_files_search_tags.GetHashIdsThatHaveTagAsNumComplexLocation( ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, location_context, tag_context, namespace_wildcard, num, '>', hash_ids = query_hash_ids, hash_ids_table_name = temp_table_name, job_status = job_status )
                 
@@ -2077,9 +2077,9 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
             
             ( namespace_wildcard, num ) = simple_preds[ 'max_tag_as_number' ]
             
-            with self._MakeTemporaryIntegerTable( query_hash_ids, 'hash_id' ) as temp_table_name:
+            with self._make_temporary_integer_table( query_hash_ids, 'hash_id' ) as temp_table_name:
                 
-                self._AnalyzeTempTable( temp_table_name )
+                self._analyze_temp_table( temp_table_name )
                 
                 good_hash_ids = self.modules_files_search_tags.GetHashIdsThatHaveTagAsNumComplexLocation( ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, location_context, tag_context, namespace_wildcard, num, '<', hash_ids = query_hash_ids, hash_ids_table_name = temp_table_name, job_status = job_status )
                 
@@ -2148,9 +2148,9 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
             
         else:
             
-            with self._MakeTemporaryIntegerTable( query_hash_ids, 'hash_id' ) as temp_table_name:
+            with self._make_temporary_integer_table( query_hash_ids, 'hash_id' ) as temp_table_name:
                 
-                self._AnalyzeTempTable( temp_table_name )
+                self._analyze_temp_table( temp_table_name )
                 
                 result = self.modules_files_search_tags.GetHashIdsFromTagAdvanced(
                     tag,
@@ -2254,16 +2254,16 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                     
                     if len( star_service_ids ) > 0:
                         
-                        query = f'SELECT DISTINCT hash_id FROM local_ratings WHERE service_id IN {HydrusLists.SplayListForDB( star_service_ids )};'
+                        query = f'SELECT DISTINCT hash_id FROM local_ratings WHERE service_id IN {HydrusLists.splay_list_for_db( star_service_ids )};'
                         
-                        result_hash_ids.update( self._STI( self._ExecuteCancellable( query, (), cancelled_hook ) ) )
+                        result_hash_ids.update( self._sti( self._execute_cancellable( query, (), cancelled_hook ) ) )
                         
                     
                     if len( incdec_service_ids ) > 0:
                         
-                        query = f'SELECT DISTINCT hash_id FROM local_incdec_ratings WHERE service_id IN {HydrusLists.SplayListForDB( incdec_service_ids )} AND rating > 0;'
+                        query = f'SELECT DISTINCT hash_id FROM local_incdec_ratings WHERE service_id IN {HydrusLists.splay_list_for_db( incdec_service_ids )} AND rating > 0;'
                         
-                        result_hash_ids.update( self._STI( self._ExecuteCancellable( query, (), cancelled_hook ) ) )
+                        result_hash_ids.update( self._sti( self._execute_cancellable( query, (), cancelled_hook ) ) )
                         
                     
                     query_hash_ids = intersection_update_qhi( query_hash_ids, result_hash_ids )
@@ -2299,7 +2299,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                         
                         query = 'SELECT hash_id FROM local_ratings WHERE service_id = ?;'
                         
-                        this_service_hash_ids = self._STS( self._ExecuteCancellable( query, ( service_id, ), cancelled_hook ) )
+                        this_service_hash_ids = self._sts( self._execute_cancellable( query, ( service_id, ), cancelled_hook ) )
                         
                         if result_hash_ids is None:
                             
@@ -2315,7 +2315,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                         
                         query = 'SELECT hash_id FROM local_incdec_ratings WHERE service_id = ? AND rating > 0;'
                         
-                        this_service_hash_ids = self._STS( self._ExecuteCancellable( query, ( service_id, ), cancelled_hook ) )
+                        this_service_hash_ids = self._sts( self._execute_cancellable( query, ( service_id, ), cancelled_hook ) )
                         
                         if result_hash_ids is None:
                             
@@ -2390,9 +2390,9 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         
         if len( number_tests ) > 0:
             
-            with self._MakeTemporaryIntegerTable( query_hash_ids, 'hash_id' ) as temp_table_name:
+            with self._make_temporary_integer_table( query_hash_ids, 'hash_id' ) as temp_table_name:
                 
-                self._AnalyzeTempTable( temp_table_name )
+                self._analyze_temp_table( temp_table_name )
                 
                 num_notes_hash_ids = self.modules_notes_map.GetHashIdsFromNumNotes( number_tests, query_hash_ids, temp_table_name, job_status = job_status )
                 
@@ -2406,9 +2406,9 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
             
             for note_name in inclusive_note_names:
                 
-                with self._MakeTemporaryIntegerTable( query_hash_ids, 'hash_id' ) as temp_table_name:
+                with self._make_temporary_integer_table( query_hash_ids, 'hash_id' ) as temp_table_name:
                     
-                    self._AnalyzeTempTable( temp_table_name )
+                    self._analyze_temp_table( temp_table_name )
                     
                     notes_hash_ids = self.modules_notes_map.GetHashIdsFromNoteName( note_name, temp_table_name, job_status = job_status )
                     
@@ -2423,9 +2423,9 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
             
             for note_name in exclusive_note_names:
                 
-                with self._MakeTemporaryIntegerTable( query_hash_ids, 'hash_id' ) as temp_table_name:
+                with self._make_temporary_integer_table( query_hash_ids, 'hash_id' ) as temp_table_name:
                     
-                    self._AnalyzeTempTable( temp_table_name )
+                    self._analyze_temp_table( temp_table_name )
                     
                     notes_hash_ids = self.modules_notes_map.GetHashIdsFromNoteName( note_name, temp_table_name, job_status = job_status )
                     
@@ -2467,7 +2467,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                     
                     # blue eyes
                     
-                    or_search_context = file_search_context.Duplicate()
+                    or_search_context = file_search_context.duplicate()
                     
                     or_search_context.SetPredicates( [ or_subpredicate ] )
                     
@@ -2509,7 +2509,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
             
             if value == 'rated':
                 
-                rating_hash_ids = self._STI( self._ExecuteCancellable( 'SELECT hash_id FROM local_ratings WHERE service_id = ?;', ( service_id, ), cancelled_hook ) )
+                rating_hash_ids = self._sti( self._execute_cancellable( 'SELECT hash_id FROM local_ratings WHERE service_id = ?;', ( service_id, ), cancelled_hook ) )
                 
                 query_hash_ids = intersection_update_qhi( query_hash_ids, rating_hash_ids )
                 
@@ -2562,7 +2562,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                     
                     query = f'SELECT hash_id FROM local_ratings WHERE service_id = ? AND {predicate};'
                     
-                    rating_hash_ids = self._STI( self._ExecuteCancellable( query, ( service_id, ), cancelled_hook ) )
+                    rating_hash_ids = self._sti( self._execute_cancellable( query, ( service_id, ), cancelled_hook ) )
                     
                     query_hash_ids = intersection_update_qhi( query_hash_ids, rating_hash_ids )
                     
@@ -2588,7 +2588,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                         
                         query = f'SELECT hash_id FROM local_incdec_ratings WHERE service_id = ? AND {predicate};'
                         
-                        rating_hash_ids = self._STI( self._ExecuteCancellable( query, ( service_id, ), cancelled_hook ) )
+                        rating_hash_ids = self._sti( self._execute_cancellable( query, ( service_id, ), cancelled_hook ) )
                         
                         query_hash_ids = intersection_update_qhi( query_hash_ids, rating_hash_ids )
                         
@@ -2648,9 +2648,9 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                     
                 else:
                     
-                    with self._MakeTemporaryIntegerTable( query_hash_ids, 'hash_id' ) as temp_table_name:
+                    with self._make_temporary_integer_table( query_hash_ids, 'hash_id' ) as temp_table_name:
                         
-                        self._AnalyzeTempTable( temp_table_name )
+                        self._analyze_temp_table( temp_table_name )
                         
                         url_hash_ids = self.modules_url_map.GetHashIdsFromURLRule( rule_type, rule, hash_ids = query_hash_ids, hash_ids_table_name = temp_table_name )
                         
@@ -2721,7 +2721,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                     
                     for table_name in table_names:
                         
-                        import_timestamp_hash_ids.update( self._STS( self._ExecuteCancellable( 'SELECT hash_id FROM {} WHERE {};'.format( table_name, pred_string ), (), cancelled_hook ) ) )
+                        import_timestamp_hash_ids.update( self._sts( self._execute_cancellable( 'SELECT hash_id FROM {} WHERE {};'.format( table_name, pred_string ), (), cancelled_hook ) ) )
                         
                     
                     query_hash_ids = intersection_update_qhi( query_hash_ids, import_timestamp_hash_ids )
@@ -2819,7 +2819,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                 
             except HydrusExceptions.DataMissing:
                 
-                HydrusData.ShowText( 'A file search query was run for a file service that does not exist! If you just removed a service, you might want to try checking the search and/or restarting the client.' )
+                HydrusData.show_text( 'A file search query was run for a file service that does not exist! If you just removed a service, you might want to try checking the search and/or restarting the client.' )
                 
                 return []
                 
@@ -2837,7 +2837,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                 
             except HydrusExceptions.DataMissing:
                 
-                HydrusData.ShowText( 'A file search query was run for a file service that does not exist! If you just removed a service, you might want to try checking the search and/or restarting the client.' )
+                HydrusData.show_text( 'A file search query was run for a file service that does not exist! If you just removed a service, you might want to try checking the search and/or restarting the client.' )
                 
                 return []
                 
@@ -2853,7 +2853,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
             
         except HydrusExceptions.DataMissing:
             
-            HydrusData.ShowText( 'A file search query was run for a tag service that does not exist! If you just removed a service, you might want to check the search and/or restart the client.' )
+            HydrusData.show_text( 'A file search query was run for a tag service that does not exist! If you just removed a service, you might want to check the search and/or restart the client.' )
             
             return []
             
@@ -3013,7 +3013,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         return query_hash_ids
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         tables_and_columns = []
         
@@ -3024,9 +3024,9 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         
         query_hash_ids = self.GetHashIdsFromQuery( file_search_context, apply_implicit_limit = False, query_hash_ids = query_hash_ids )
         
-        self._ExecuteMany( 'INSERT OR IGNORE INTO {} ( hash_id ) VALUES ( ? );'.format( temp_table_name ), ( ( hash_id, ) for hash_id in query_hash_ids ) )
+        self._execute_many( 'INSERT OR IGNORE INTO {} ( hash_id ) VALUES ( ? );'.format( temp_table_name ), ( ( hash_id, ) for hash_id in query_hash_ids ) )
         
-        self._AnalyzeTempTable( temp_table_name )
+        self._analyze_temp_table( temp_table_name )
         
         return query_hash_ids
         
@@ -3122,7 +3122,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                     
                     desired_canvas_types = CG.client_controller.new_options.GetIntegerList( 'file_viewing_stats_interesting_canvas_types' )
                     
-                    desired_canvas_types_splayed = HydrusLists.SplayListForDB( desired_canvas_types )
+                    desired_canvas_types_splayed = HydrusLists.splay_list_for_db( desired_canvas_types )
                     
                     if sort_data == CC.SORT_FILES_BY_MEDIA_VIEWS:
                         
@@ -3314,7 +3314,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                 
             elif sort_data == CC.SORT_FILES_BY_PIXEL_HASH:
                 
-                with self._MakeTemporaryIntegerTable( hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
+                with self._make_temporary_integer_table( hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
                     
                     hash_ids_to_pixel_hashes = self.modules_similar_files.GetHashIdsToPixelHashes( temp_hash_ids_table_name )
                     
@@ -3333,7 +3333,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                 
             elif sort_data == CC.SORT_FILES_BY_BLURHASH:
                 
-                with self._MakeTemporaryIntegerTable( hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
+                with self._make_temporary_integer_table( hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
                     
                     hash_ids_to_blurhashes = self.modules_files_metadata_basic.GetHashIdsToBlurhashes( temp_hash_ids_table_name )
                     
@@ -3352,7 +3352,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                 
             elif sort_data in CC.AVERAGE_COLOUR_FILE_SORTS:
                 
-                with self._MakeTemporaryIntegerTable( hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
+                with self._make_temporary_integer_table( hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
                     
                     hash_ids_to_blurhashes = self.modules_files_metadata_basic.GetHashIdsToBlurhashes( temp_hash_ids_table_name )
                     
@@ -3375,9 +3375,9 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         
         if query is not None:
             
-            with self._MakeTemporaryIntegerTable( hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
+            with self._make_temporary_integer_table( hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
                 
-                hash_ids_and_other_data = sorted( self._Execute( query.format( temp_table = temp_hash_ids_table_name ) ), key = key, reverse = reverse )
+                hash_ids_and_other_data = sorted( self._execute( query.format( temp_table = temp_hash_ids_table_name ) ), key = key, reverse = reverse )
                 
             
             original_hash_ids = set( hash_ids )

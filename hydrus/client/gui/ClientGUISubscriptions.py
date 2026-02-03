@@ -47,7 +47,7 @@ def DoAliveOrDeadCheck( win: QW.QWidget, subscriptions: collections.abc.Collecti
     
     if 0 < num_paused_subs:
         
-        message = f'Of the {HydrusNumbers.ToHumanInt(len(subscriptions))} selected subscriptions, {HydrusNumbers.ToHumanInt(num_paused_subs)} are paused. Do you want to unpause these paused subs and check their queries?'
+        message = f'Of the {HydrusNumbers.to_human_int(len(subscriptions))} selected subscriptions, {HydrusNumbers.to_human_int(num_paused_subs)} are paused. Do you want to unpause these paused subs and check their queries?'
         
         if num_paused_subs == len( subscriptions ):
             
@@ -85,7 +85,7 @@ def DoAliveOrDeadCheck( win: QW.QWidget, subscriptions: collections.abc.Collecti
             subs_to_pull_from = [ subscription for subscription in subscriptions if not subscription.IsPaused() ]
             
         
-        query_headers = HydrusLists.MassExtend( ( subscription.GetQueryHeaders() for subscription in subs_to_pull_from ) )
+        query_headers = HydrusLists.mass_extend( ( subscription.GetQueryHeaders() for subscription in subs_to_pull_from ) )
         
     
     do_alive = True
@@ -95,7 +95,7 @@ def DoAliveOrDeadCheck( win: QW.QWidget, subscriptions: collections.abc.Collecti
     
     if 0 < num_dead:
         
-        message = f'Of the {HydrusNumbers.ToHumanInt(len(query_headers))} selected queries, {HydrusNumbers.ToHumanInt(num_dead)} are DEAD. Do you want to check these?'
+        message = f'Of the {HydrusNumbers.to_human_int(len(query_headers))} selected queries, {HydrusNumbers.to_human_int(num_dead)} are DEAD. Do you want to check these?'
         
         if num_dead == len( query_headers ):
             
@@ -108,8 +108,8 @@ def DoAliveOrDeadCheck( win: QW.QWidget, subscriptions: collections.abc.Collecti
             
             choice_tuples = [
                 ( f'yes, check all of them', ( True, True ), 'Resuscitate the DEAD queries and check everything.' ),
-                ( f'check the {HydrusNumbers.ToHumanInt(len(query_headers)-num_dead)} ALIVE', ( True, False ), 'Check the ALIVE queries.' ),
-                ( f'resurrect and check the {HydrusNumbers.ToHumanInt(num_dead)} DEAD', ( False, True ), 'Resuscitate the DEAD queries and check them.' )
+                ( f'check the {HydrusNumbers.to_human_int(len(query_headers)-num_dead)} ALIVE', ( True, False ), 'Check the ALIVE queries.' ),
+                ( f'resurrect and check the {HydrusNumbers.to_human_int(num_dead)} DEAD', ( False, True ), 'Resuscitate the DEAD queries and check them.' )
             ]
             
         
@@ -139,7 +139,7 @@ def DoAliveOrDeadCheck( win: QW.QWidget, subscriptions: collections.abc.Collecti
     
     if 0 < num_paused_queries:
         
-        message = f'Of the {HydrusNumbers.ToHumanInt(len(query_headers))} selected queries, {HydrusNumbers.ToHumanInt(num_paused_queries)} are paused. Do you want to unpause and check them?'
+        message = f'Of the {HydrusNumbers.to_human_int(len(query_headers))} selected queries, {HydrusNumbers.to_human_int(num_paused_queries)} are paused. Do you want to unpause and check them?'
         
         if num_paused_queries == len( query_headers ):
             
@@ -177,7 +177,7 @@ def GetQueryHeadersQualityInfo( query_headers: collections.abc.Iterable[ ClientI
         
         try:
             
-            query_log_container = CG.client_controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_header.GetQueryLogContainerName() )
+            query_log_container = CG.client_controller.read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_header.GetQueryLogContainerName() )
             
         except HydrusExceptions.DataMissing:
             
@@ -188,7 +188,7 @@ def GetQueryHeadersQualityInfo( query_headers: collections.abc.Iterable[ ClientI
         
         hashes = fsc.GetHashes()
         
-        media_results = CG.client_controller.Read( 'media_results', hashes )
+        media_results = CG.client_controller.read( 'media_results', hashes )
         
         num_inbox = 0
         num_archived = 0
@@ -228,7 +228,7 @@ def GetQueryLogContainers( query_headers: collections.abc.Iterable[ ClientImport
         
         try:
             
-            query_log_container = CG.client_controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_header.GetQueryLogContainerName() )
+            query_log_container = CG.client_controller.read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_header.GetQueryLogContainerName() )
             
         except HydrusExceptions.DBException as e:
             
@@ -252,7 +252,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def __init__( self, parent: QW.QWidget, subscription: ClientImportSubscriptions.Subscription, names_to_edited_query_log_containers: typing.Mapping[ str, ClientImportSubscriptionQuery.SubscriptionQueryLogContainer ], original_existing_query_log_container_names: set[ str ] ):
         
-        subscription = subscription.Duplicate()
+        subscription = subscription.duplicate()
         
         super().__init__( parent )
         
@@ -560,7 +560,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 self._query_headers.AddData( query_header, select_sort_and_scroll = True )
                 
-                self._names_to_edited_query_log_containers[ query_log_container.GetName() ] = query_log_container
+                self._names_to_edited_query_log_containers[ query_log_container.get_name() ] = query_log_container
                 
             
         
@@ -672,7 +672,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            pretty_latest_new_file_time = HydrusTime.TimestampToPrettyTimeDelta( latest_new_file_time )
+            pretty_latest_new_file_time = HydrusTime.timestamp_to_pretty_timedelta( latest_new_file_time )
             
         
         if last_check_time is None or last_check_time == 0:
@@ -681,7 +681,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            pretty_last_check_time = HydrusTime.TimestampToPrettyTimeDelta( last_check_time )
+            pretty_last_check_time = HydrusTime.timestamp_to_pretty_timedelta( last_check_time )
             
         
         pretty_next_check_time = query_header.GetNextCheckStatusString()
@@ -690,7 +690,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            estimate = query_header.GetBandwidthWaitingEstimate( CG.client_controller.network_engine.bandwidth_manager, self._original_subscription.GetName() )
+            estimate = query_header.GetBandwidthWaitingEstimate( CG.client_controller.network_engine.bandwidth_manager, self._original_subscription.get_name() )
             
             if estimate == 0:
                 
@@ -698,7 +698,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
                 
             else:
                 
-                pretty_delay = 'bandwidth: ' + HydrusTime.TimeDeltaToPrettyTimeDelta( estimate )
+                pretty_delay = 'bandwidth: ' + HydrusTime.timedelta_to_pretty_timedelta( estimate )
                 
             
         except:
@@ -726,7 +726,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            estimate = query_header.GetBandwidthWaitingEstimate( CG.client_controller.network_engine.bandwidth_manager, self._original_subscription.GetName() )
+            estimate = query_header.GetBandwidthWaitingEstimate( CG.client_controller.network_engine.bandwidth_manager, self._original_subscription.get_name() )
             
             if estimate == 0:
                 
@@ -750,21 +750,21 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
         
         if latest_new_file_time == 0:
             
-            latest_new_file_time = HydrusTime.GetNow()
+            latest_new_file_time = HydrusTime.get_now()
             
         
         last_check_time = query_header.GetLastCheckTime()
         
         if last_check_time == 0:
             
-            last_check_time = HydrusTime.GetNow()
+            last_check_time = HydrusTime.get_now()
             
         
         next_check_time = query_header.GetNextCheckTime()
         
         if next_check_time == 0:
             
-            next_check_time = HydrusTime.GetNow()
+            next_check_time = HydrusTime.get_now()
             
         
         sort_latest_new_file_time = ClientGUIListCtrl.SafeNoneInt( latest_new_file_time )
@@ -847,7 +847,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
             
             try:
                 
-                old_query_log_container = CG.client_controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_log_container_name )
+                old_query_log_container = CG.client_controller.read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_log_container_name )
                 
             except HydrusExceptions.DataMissing:
                 
@@ -965,7 +965,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
             
             if num_archived + num_deleted > 0:
                 
-                percent = HydrusNumbers.FloatToPercentage( num_archived / ( num_archived + num_deleted ) )
+                percent = HydrusNumbers.float_to_percentage( num_archived / ( num_archived + num_deleted ) )
                 
             else:
                 
@@ -1018,11 +1018,11 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
         
         for ( name, num_inbox, num_archived, num_deleted ) in data:
             
-            data_string = '{}: inbox {} | archive {} | deleted {}'.format( name, HydrusNumbers.ToHumanInt( num_inbox ), HydrusNumbers.ToHumanInt( num_archived ), HydrusNumbers.ToHumanInt( num_deleted ) )
+            data_string = '{}: inbox {} | archive {} | deleted {}'.format( name, HydrusNumbers.to_human_int( num_inbox ), HydrusNumbers.to_human_int( num_archived ), HydrusNumbers.to_human_int( num_deleted ) )
             
             if num_archived + num_deleted > 0:
                 
-                data_string += ' | good {}'.format( HydrusNumbers.FloatToPercentage( num_archived / ( num_archived + num_deleted ) ) )
+                data_string += ' | good {}'.format( HydrusNumbers.float_to_percentage( num_archived / ( num_archived + num_deleted ) ) )
                 
             
             data_strings.append( data_string )
@@ -1114,7 +1114,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             
@@ -1123,7 +1123,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            pasted_query_texts = HydrusText.DeserialiseNewlinedTexts( raw_text )
+            pasted_query_texts = HydrusText.deserialise_newlined_texts( raw_text )
             
         except Exception as e:
             
@@ -1164,8 +1164,8 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
         
         DEAD_query_headers = { query_header for query_header in self._query_headers.GetData() if query_header.GetQueryText().lower() in already_existing_query_header_texts and query_header.IsDead() }
         
-        already_existing_human_names = sorted( already_existing_human_names, key = HydrusText.HumanTextSortKey )
-        new_query_texts = sorted( new_query_texts, key = HydrusText.HumanTextSortKey )
+        already_existing_human_names = sorted( already_existing_human_names, key = HydrusText.human_text_sort_key )
+        new_query_texts = sorted( new_query_texts, key = HydrusText.human_text_sort_key )
         
         #
         
@@ -1173,13 +1173,13 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
         
         if len( already_existing_human_names ) > 0:
             
-            paste_message_components.append( f'The queries{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary(already_existing_human_names)}were already in the subscription.' )
+            paste_message_components.append( f'The queries{HydrusText.convert_many_strings_to_nice_insertable_human_summary(already_existing_human_names)}were already in the subscription.' )
             
             if len( DEAD_query_headers ) > 0:
                 
-                DEAD_human_names = sorted( [ query_header.GetFullHumanName() for query_header in DEAD_query_headers ], key = HydrusText.HumanTextSortKey )
+                DEAD_human_names = sorted( [ query_header.GetFullHumanName() for query_header in DEAD_query_headers ], key = HydrusText.human_text_sort_key )
                 
-                DEAD_revive_message = f'Some of the queries you pasted already exist in the subscription but are DEAD. Do you want to revive them? They are:{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary(DEAD_human_names)}'
+                DEAD_revive_message = f'Some of the queries you pasted already exist in the subscription but are DEAD. Do you want to revive them? They are:{HydrusText.convert_many_strings_to_nice_insertable_human_summary(DEAD_human_names)}'
                 
                 result = ClientGUIDialogsQuick.GetYesNo( self, DEAD_revive_message )
                 
@@ -1187,7 +1187,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     revive_dead = True
                     
-                    paste_message_components.append( f'The DEAD queries{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary(DEAD_human_names)}were revived.' )
+                    paste_message_components.append( f'The DEAD queries{HydrusText.convert_many_strings_to_nice_insertable_human_summary(DEAD_human_names)}were revived.' )
                     
                 else:
                     
@@ -1198,7 +1198,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
         
         if len( new_query_texts ) > 0:
             
-            paste_message_components.append( f'The queries{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary(new_query_texts)}were added.' )
+            paste_message_components.append( f'The queries{HydrusText.convert_many_strings_to_nice_insertable_human_summary(new_query_texts)}were added.' )
             
         
         if len( paste_message_components ) > 0:
@@ -1368,13 +1368,13 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _UpdateDelayText( self ):
         
-        if HydrusTime.TimeHasPassed( self._no_work_until ):
+        if HydrusTime.time_has_passed( self._no_work_until ):
             
             status = 'no recent errors'
             
         else:
             
-            status = 'delayed--retrying ' + HydrusTime.TimestampToPrettyTimeDelta( self._no_work_until, just_now_threshold = 0 ) + ' because: ' + self._no_work_until_reason
+            status = 'delayed--retrying ' + HydrusTime.timestamp_to_pretty_timedelta( self._no_work_until, just_now_threshold = 0 ) + ' because: ' + self._no_work_until_reason
             
         
         self._delay_st.setText( status )
@@ -1433,8 +1433,8 @@ class EditSubscriptionQueryPanel( ClientGUIScrolledPanels.EditPanel ):
         self._original_query_header = query_header
         self._original_query_log_container = query_log_container
         
-        query_header = query_header.Duplicate()
-        query_log_container = query_log_container.Duplicate()
+        query_header = query_header.duplicate()
+        query_log_container = query_log_container.duplicate()
         
         name_panel = ClientGUICommon.StaticBox( self, 'query and name' )
         
@@ -1591,7 +1591,7 @@ class EditSubscriptionQueryPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _GetValue( self ) -> tuple[ ClientImportSubscriptionQuery.SubscriptionQueryHeader, ClientImportSubscriptionQuery.SubscriptionQueryLogContainer ]:
         
-        query_header = self._original_query_header.Duplicate()
+        query_header = self._original_query_header.duplicate()
         
         query_header.SetQueryText( self._query_text.text() )
         
@@ -1605,7 +1605,7 @@ class EditSubscriptionQueryPanel( ClientGUIScrolledPanels.EditPanel ):
         
         query_header.SetFileSeedCacheCompactionNumber( self._file_seed_cache_compaction_number.value() )
         
-        query_log_container = self._original_query_log_container.Duplicate()
+        query_log_container = self._original_query_log_container.duplicate()
         
         query_log_container.SetFileSeedCache( self._file_seed_cache )
         query_log_container.SetGallerySeedLog( self._gallery_seed_log )
@@ -1629,7 +1629,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def __init__( self, parent: QW.QWidget, subscriptions: collections.abc.Collection[ ClientImportSubscriptions.Subscription ] ):
         
-        subscriptions = [ subscription.Duplicate() for subscription in subscriptions ]
+        subscriptions = [ subscription.duplicate() for subscription in subscriptions ]
         
         super().__init__( parent )
         
@@ -1781,7 +1781,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
             if there_were_missing_query_log_containers:
                 
-                message = 'When importing this subscription, "{}", there was missing log data! I will still let you add it, but some of its queries are incomplete. If you are ok with this, ok and then immediately re-open the manage subscriptions dialog to reinitialise the missing data back to zero (and clear any orphaned data that came with this). If you are not ok with this, cancel out now or cancel out of the whole manage subs dialog.'.format( subscription.GetName() )
+                message = 'When importing this subscription, "{}", there was missing log data! I will still let you add it, but some of its queries are incomplete. If you are ok with this, ok and then immediately re-open the manage subscriptions dialog to reinitialise the missing data back to zero (and clear any orphaned data that came with this). If you are not ok with this, cancel out now or cancel out of the whole manage subs dialog.'.format( subscription.get_name() )
                 
                 result = ClientGUIDialogsQuick.GetYesNo( self, message, title = 'missing query log data!', yes_label = 'import it anyway', no_label = 'back out now' )
                 
@@ -1800,7 +1800,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             subscription = unknown_subscription
             
         
-        subscription.SetNonDupeName( self._GetExistingNames(), do_casefold = True )
+        subscription.set_non_dupe_name( self._GetExistingNames(), do_casefold = True )
         
         self._subscriptions.AddData( subscription, select_sort_and_scroll = True )
         
@@ -1918,7 +1918,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            pretty_latest_new_file_time = HydrusTime.TimestampToPrettyTimeDelta( latest_new_file_time )
+            pretty_latest_new_file_time = HydrusTime.timestamp_to_pretty_timedelta( latest_new_file_time )
             
         
         if last_checked is None or last_checked == 0:
@@ -1927,7 +1927,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            pretty_last_checked = HydrusTime.TimestampToPrettyTimeDelta( last_checked )
+            pretty_last_checked = HydrusTime.timestamp_to_pretty_timedelta( last_checked )
             
         
         #
@@ -1956,16 +1956,16 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            status_components = [ HydrusNumbers.ToHumanInt( num_ok ) + ' working' ]
+            status_components = [ HydrusNumbers.to_human_int( num_ok ) + ' working' ]
             
             if num_paused > 0:
                 
-                status_components.append( HydrusNumbers.ToHumanInt( num_paused ) + ' paused' )
+                status_components.append( HydrusNumbers.to_human_int( num_paused ) + ' paused' )
                 
             
             if num_dead > 0:
                 
-                status_components.append( HydrusNumbers.ToHumanInt( num_dead ) + ' dead' )
+                status_components.append( HydrusNumbers.to_human_int( num_dead ) + ' dead' )
                 
             
             pretty_status = ', '.join( status_components )
@@ -1973,7 +1973,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         #
         
-        if HydrusTime.TimeHasPassed( no_work_until ):
+        if HydrusTime.time_has_passed( no_work_until ):
             
             try:
                 
@@ -1985,17 +1985,17 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 elif min_estimate == 0: # some are good to go, but there are delays
                     
-                    pretty_delay = 'bandwidth: some ok, some up to ' + HydrusTime.TimeDeltaToPrettyTimeDelta( max_estimate )
+                    pretty_delay = 'bandwidth: some ok, some up to ' + HydrusTime.timedelta_to_pretty_timedelta( max_estimate )
                     
                 else:
                     
                     if min_estimate == max_estimate: # probably just one query, and it is delayed
                         
-                        pretty_delay = 'bandwidth: up to ' + HydrusTime.TimeDeltaToPrettyTimeDelta( max_estimate )
+                        pretty_delay = 'bandwidth: up to ' + HydrusTime.timedelta_to_pretty_timedelta( max_estimate )
                         
                     else:
                         
-                        pretty_delay = 'bandwidth: from ' + HydrusTime.TimeDeltaToPrettyTimeDelta( min_estimate ) + ' to ' + HydrusTime.TimeDeltaToPrettyTimeDelta( max_estimate )
+                        pretty_delay = 'bandwidth: from ' + HydrusTime.timedelta_to_pretty_timedelta( min_estimate ) + ' to ' + HydrusTime.timedelta_to_pretty_timedelta( max_estimate )
                         
                     
                 
@@ -2006,7 +2006,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            pretty_delay = 'delayed--retrying ' + HydrusTime.TimestampToPrettyTimeDelta( no_work_until, just_now_threshold = 0 ) + ' - because: ' + no_work_until_reason
+            pretty_delay = 'delayed--retrying ' + HydrusTime.timestamp_to_pretty_timedelta( no_work_until, just_now_threshold = 0 ) + ' - because: ' + no_work_until_reason
             
         
         file_seed_cache_status = ClientImportSubscriptionQuery.GenerateQueryHeadersStatus( query_headers )
@@ -2046,12 +2046,12 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         if latest_new_file_time == 0:
             
-            latest_new_file_time = HydrusTime.GetNow()
+            latest_new_file_time = HydrusTime.get_now()
             
         
         if last_checked == 0:
             
-            last_checked = HydrusTime.GetNow()
+            last_checked = HydrusTime.get_now()
             
         
         #
@@ -2076,7 +2076,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         #
         
-        if HydrusTime.TimeHasPassed( no_work_until ):
+        if HydrusTime.time_has_passed( no_work_until ):
             
             try:
                 
@@ -2109,7 +2109,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            delay = HydrusTime.GetTimeDeltaUntilTime( no_work_until )
+            delay = HydrusTime.get_time_delta_until_time( no_work_until )
             
         
         file_seed_cache_status = ClientImportSubscriptionQuery.GenerateQueryHeadersStatus( query_headers )
@@ -2189,7 +2189,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
             if len( missing_query_headers ) > 25:
                 
-                message = 'Exporting or duplicating the current selection means reading query data for {} queries from the database. This may take just a couple of seconds, or, for hundreds of thousands of cached URLs, it could be a couple of minutes (and a whack of memory). Do not panic, it will get there in the end. Do you want to do the export?'.format( HydrusNumbers.ToHumanInt( len( missing_query_headers ) ) )
+                message = 'Exporting or duplicating the current selection means reading query data for {} queries from the database. This may take just a couple of seconds, or, for hundreds of thousands of cached URLs, it could be a couple of minutes (and a whack of memory). Do not panic, it will get there in the end. Do you want to do the export?'.format( HydrusNumbers.to_human_int( len( missing_query_headers ) ) )
                 
                 result = ClientGUIDialogsQuick.GetYesNo( self, message )
                 
@@ -2243,7 +2243,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             subscription_container.query_log_containers = HydrusSerialisable.SerialisableList( query_log_containers )
             
             # duplicate important here to make sure we aren't linked with existing objects on a dupe call
-            to_export.append( subscription_container.Duplicate() )
+            to_export.append( subscription_container.duplicate() )
             
         
         if len( to_export ) == 0:
@@ -2627,7 +2627,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
             for ( gug_name, query_texts ) in gug_names_to_dupe_query_texts.items():
                 
-                label = '{} ({} duplicates)'.format( gug_name, HydrusNumbers.ToHumanInt( len( query_texts ) ) )
+                label = '{} ({} duplicates)'.format( gug_name, HydrusNumbers.to_human_int( len( query_texts ) ) )
                 
                 tooltip = ', '.join( sorted( query_texts ) )
                 
@@ -2677,7 +2677,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            message = 'There are {} duplicate query texts for the downloader "{}". Would you like to dedupe them all, or select which to do?'.format( HydrusNumbers.ToHumanInt( len( potential_dupe_query_texts ) ), gug_name )
+            message = 'There are {} duplicate query texts for the downloader "{}". Would you like to dedupe them all, or select which to do?'.format( HydrusNumbers.to_human_int( len( potential_dupe_query_texts ) ), gug_name )
             
             yes_tuples = []
             
@@ -2762,7 +2762,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                         
                     else:
                         
-                        label = '{} (has {} duplicate queries)'.format( subscription.GetName(), HydrusNumbers.ValueRangeToPrettyString( len( dupe_query_texts_it_can_do ), len( query_texts_we_want_to_dedupe_now ) ) )
+                        label = '{} (has {} duplicate queries)'.format( subscription.GetName(), HydrusNumbers.value_range_to_pretty_string( len( dupe_query_texts_it_can_do ), len( query_texts_we_want_to_dedupe_now ) ) )
                         
                     
                     choice_tuples.append( ( label, subscription, ', '.join( sorted( dupe_query_texts_it_can_do ) ) ) )
@@ -2827,7 +2827,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 if len( query_texts_we_want_to_dedupe_now ) > 0:
                     
-                    message = 'Dedupe was done. There are still {} queries that can be deduped between other subscriptions. Want to do them now?'.format( HydrusNumbers.ToHumanInt( len( query_texts_we_want_to_dedupe_now ) ) )
+                    message = 'Dedupe was done. There are still {} queries that can be deduped between other subscriptions. Want to do them now?'.format( HydrusNumbers.to_human_int( len( query_texts_we_want_to_dedupe_now ) ) )
                     
                     result = ClientGUIDialogsQuick.GetYesNo( self, message )
                     
@@ -2873,9 +2873,9 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 ( edited_subscription, self._names_to_edited_query_log_containers ) = panel.GetValue()
                 
-                if edited_subscription.GetName() != subscription.GetName():
+                if edited_subscription.get_name() != subscription.GetName():
                     
-                    edited_subscription.SetNonDupeName( self._GetExistingNames(), do_casefold = True )
+                    edited_subscription.set_non_dupe_name( self._GetExistingNames(), do_casefold = True )
                     
                 
                 self._subscriptions.ReplaceData( subscription, edited_subscription, sort_and_scroll = True )
@@ -2903,7 +2903,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         edited_query_log_containers = list( self._names_to_edited_query_log_containers.values() )
         
-        edited_query_log_containers = [ query_log_container for query_log_container in edited_query_log_containers if query_log_container.GetName() in required_query_log_container_names ]
+        edited_query_log_containers = [ query_log_container for query_log_container in edited_query_log_containers if query_log_container.get_name() in required_query_log_container_names ]
         
         deletee_query_log_container_names = self._original_existing_query_log_container_names.difference( required_query_log_container_names )
         
@@ -3010,7 +3010,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 merged_and_discardable_subs.extend( eaten_subs )
                 
-                message = f'{primary_sub_name} was able to merge {HydrusNumbers.ToHumanInt( len( eaten_subs ) )} other subscriptions. If you wish to change its name, do so here.'
+                message = f'{primary_sub_name} was able to merge {HydrusNumbers.to_human_int( len( eaten_subs ) )} other subscriptions. If you wish to change its name, do so here.'
                 
                 name = primary_sub_name
                 
@@ -3242,7 +3242,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
         elif action == 'half':
             
-            query_headers = sorted( subscription.GetQueryHeaders(), key = lambda q: HydrusText.HumanTextSortKey( q.GetQueryText() ) )
+            query_headers = sorted( subscription.GetQueryHeaders(), key = lambda q: HydrusText.human_text_sort_key( q.GetQueryText() ) )
             
             query_headers_to_extract = query_headers[ : len( query_headers ) // 2 ]
             

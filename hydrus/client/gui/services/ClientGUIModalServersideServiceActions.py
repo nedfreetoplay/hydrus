@@ -19,16 +19,16 @@ def ManageServiceOptionsTagFilter(
     
     service: ClientServices.ServiceRepository = CG.client_controller.services_manager.GetService( service_key )
     
-    tag_filter = service.GetTagFilter().Duplicate()
+    tag_filter = service.GetTagFilter().duplicate()
     
     if new_tags_to_block is not None:
         
-        tag_filter.SetRules( new_tags_to_block, HC.FILTER_BLACKLIST )
+        tag_filter.set_rules( new_tags_to_block, HC.FILTER_BLACKLIST )
         
     
     if new_tags_to_allow is not None:
         
-        tag_filter.SetRules( new_tags_to_allow, HC.FILTER_WHITELIST )
+        tag_filter.set_rules( new_tags_to_allow, HC.FILTER_WHITELIST )
         
     
     with ClientGUITopLevelWindowsPanels.DialogEdit( win, 'edit tag repository tag filter' ) as dlg:

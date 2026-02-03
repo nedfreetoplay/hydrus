@@ -79,7 +79,7 @@ class FileFilter( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         if self.filter_type == FILE_FILTER_FILE_SERVICE:
             
@@ -101,7 +101,7 @@ class FileFilter( HydrusSerialisable.SerialisableBase ):
         return ( self.filter_type, serialisable_filter_data )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( self.filter_type, serialisable_filter_data ) = serialisable_info
         
@@ -191,7 +191,7 @@ class FileFilter( HydrusSerialisable.SerialisableBase ):
                     
                 elif and_or_or == 'OR':
                     
-                    return sum( ( 1 for m in flat_media if HydrusLists.SetsIntersect( m.GetTagsManager().GetCurrentAndPending( tag_service_key, ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL ), select_tags ) ) )
+                    return sum( ( 1 for m in flat_media if HydrusLists.sets_intersect( m.GetTagsManager().GetCurrentAndPending( tag_service_key, ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL ), select_tags ) ) )
                     
                 
             
@@ -272,7 +272,7 @@ class FileFilter( HydrusSerialisable.SerialisableBase ):
                     
                 elif and_or_or == 'OR':
                     
-                    filtered_media = [ m for m in flat_media if HydrusLists.SetsIntersect( m.GetTagsManager().GetCurrentAndPending( tag_service_key, ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL ), select_tags ) ]
+                    filtered_media = [ m for m in flat_media if HydrusLists.sets_intersect( m.GetTagsManager().GetCurrentAndPending( tag_service_key, ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL ), select_tags ) ]
                     
                 
             
@@ -336,7 +336,7 @@ class FileFilter( HydrusSerialisable.SerialisableBase ):
                     
                 elif and_or_or == 'OR':
                     
-                    filtered_media = { m for m in media_list.GetSortedMedia() if HydrusLists.SetsIntersect( m.GetTagsManager().GetCurrentAndPending( tag_service_key, ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL ), select_tags ) }
+                    filtered_media = { m for m in media_list.GetSortedMedia() if HydrusLists.sets_intersect( m.GetTagsManager().GetCurrentAndPending( tag_service_key, ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL ), select_tags ) }
                     
                 
             
@@ -401,7 +401,7 @@ class FileFilter( HydrusSerialisable.SerialisableBase ):
                 s = '{} on {}'.format( s, CG.client_controller.services_manager.GetName( tag_service_key ) )
                 
             
-            s = HydrusText.ElideText( s, 64 )
+            s = HydrusText.elide_text( s, 64 )
             
         elif self.filter_type == FILE_FILTER_MIME:
             
@@ -425,7 +425,7 @@ class FileFilter( HydrusSerialisable.SerialisableBase ):
         
         my_count = filter_counts[ self ]
         
-        s += ' ({})'.format( HydrusNumbers.ToHumanInt( my_count ) )
+        s += ' ({})'.format( HydrusNumbers.to_human_int( my_count ) )
         
         if self.filter_type == FILE_FILTER_ALL:
             
@@ -469,7 +469,7 @@ quick_inverse_lookups.update( {
 
 def ReportDeleteLockFailures( media_results: collections.abc.Collection[ ClientMediaResult.MediaResult ] ):
     
-    HydrusData.Print( 'Hey, we had a delete-lock problem. Here is the stack, which hydev may care to see:' )
+    HydrusData.print_text( 'Hey, we had a delete-lock problem. Here is the stack, which hydev may care to see:' )
     
     traceback.print_stack()
     

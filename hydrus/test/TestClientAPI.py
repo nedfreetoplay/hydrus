@@ -240,7 +240,7 @@ class TestClientAPI( unittest.TestCase ):
         
         #
         
-        with open( HydrusStaticDir.GetStaticPath( 'hydrus.ico' ), 'rb' ) as f:
+        with open( HydrusStaticDir.get_static_path( 'hydrus.ico' ), 'rb' ) as f:
             
             favicon = f.read()
             
@@ -445,7 +445,7 @@ class TestClientAPI( unittest.TestCase ):
             
             self.assertEqual( len( access_key_hex ), 64 )
             
-            access_key_hex = HydrusText.HexFilter( access_key_hex )
+            access_key_hex = HydrusText.hex_filter( access_key_hex )
             
             self.assertEqual( len( access_key_hex ), 64 )
             
@@ -455,9 +455,9 @@ class TestClientAPI( unittest.TestCase ):
                 
                 search_tag_filter = HydrusTags.TagFilter()
                 
-                search_tag_filter.SetRule( '', HC.FILTER_BLACKLIST )
-                search_tag_filter.SetRule( ' :', HC.FILTER_BLACKLIST )
-                search_tag_filter.SetRule( 'green', HC.FILTER_WHITELIST )
+                search_tag_filter.set_rule( '', HC.FILTER_BLACKLIST )
+                search_tag_filter.set_rule( ' :', HC.FILTER_BLACKLIST )
+                search_tag_filter.set_rule( 'green', HC.FILTER_WHITELIST )
                 
                 api_permissions.SetSearchTagFilter( search_tag_filter )
                 
@@ -1017,7 +1017,7 @@ class TestClientAPI( unittest.TestCase ):
         
         self.assertEqual( response.getheader( 'content-type' ), 'image/svg+xml' )
         
-        svg_path = HydrusStaticDir.GetSVGPath( 'star' )
+        svg_path = HydrusStaticDir.get_svg_path( 'star' )
         
         svg_file = open( svg_path, 'rb' )
         
@@ -1076,7 +1076,7 @@ class TestClientAPI( unittest.TestCase ):
         
         TG.test_controller.SetRead( 'hash_status', f )
         
-        hydrus_png_path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+        hydrus_png_path = HydrusStaticDir.get_static_path( 'hydrus.png' )
         
         with open( hydrus_png_path, 'rb' ) as f:
             
@@ -1159,7 +1159,7 @@ class TestClientAPI( unittest.TestCase ):
         
         temp_hydrus_png_path = os.path.join( TG.test_controller.db_dir, 'hydrus_png_client_api_import_test.wew' )
         
-        HydrusPaths.MirrorFile( hydrus_png_path, temp_hydrus_png_path )
+        HydrusPaths.mirror_file( hydrus_png_path, temp_hydrus_png_path )
         
         body_dict = { 'path' : temp_hydrus_png_path, 'delete_after_successful_import' : True }
         
@@ -1196,7 +1196,7 @@ class TestClientAPI( unittest.TestCase ):
         
         #
         
-        hash = HydrusData.GenerateKey()
+        hash = HydrusData.generate_key()
         
         # missing file
         
@@ -1222,7 +1222,7 @@ class TestClientAPI( unittest.TestCase ):
         
         with mock.patch.object( HydrusTime, 'GetNowMS', return_value = magic_now ):
             
-            hash = HydrusData.GenerateKey()
+            hash = HydrusData.generate_key()
             
             media_result = HF.GetFakeMediaResult( hash )
             
@@ -1264,11 +1264,11 @@ class TestClientAPI( unittest.TestCase ):
         
         with mock.patch.object( HydrusTime, 'GetNowMS', return_value = magic_now ):
             
-            hash = HydrusData.GenerateKey()
+            hash = HydrusData.generate_key()
             
             media_result = HF.GetFakeMediaResult( hash )
             
-            some_file_service_key = HydrusData.GenerateKey()
+            some_file_service_key = HydrusData.generate_key()
             
             media_result.GetLocationsManager()._current = { CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, some_file_service_key }
             media_result.GetLocationsManager()._service_keys_to_filenames = {
@@ -1319,8 +1319,8 @@ class TestClientAPI( unittest.TestCase ):
         
         file_id = random.randint( 10000, 15000 )
         
-        hash = HydrusData.GenerateKey()
-        hashes = { HydrusData.GenerateKey() for i in range( 10 ) }
+        hash = HydrusData.generate_key()
+        hashes = { HydrusData.generate_key() for i in range( 10 ) }
         
         file_ids_to_hashes = { file_id : hash for ( file_id, hash ) in zip( random.sample( range( 2000 ), 10 ), hashes ) }
         
@@ -1788,7 +1788,7 @@ class TestClientAPI( unittest.TestCase ):
         
         f.hash = hash
         
-        hydrus_png_path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+        hydrus_png_path = HydrusStaticDir.get_static_path( 'hydrus.png' )
         
         with open( hydrus_png_path, 'rb' ) as f:
             
@@ -1827,7 +1827,7 @@ class TestClientAPI( unittest.TestCase ):
         
         f.hash = hash
         
-        hydrus_png_path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+        hydrus_png_path = HydrusStaticDir.get_static_path( 'hydrus.png' )
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex, 'Content-Type' : HC.mime_mimetype_string_lookup[ HC.APPLICATION_JSON ] }
         
@@ -2180,7 +2180,7 @@ class TestClientAPI( unittest.TestCase ):
         
         #
         
-        timestamp_ms = HydrusTime.GetNowMS() - 50000
+        timestamp_ms = HydrusTime.get_now_ms() - 50000
         
         request_args = {
             'canvas_type' : CC.CANVAS_CLIENT_API,
@@ -2351,7 +2351,7 @@ class TestClientAPI( unittest.TestCase ):
         
         #
         
-        timestamp_ms = HydrusTime.GetNowMS() - 50000
+        timestamp_ms = HydrusTime.get_now_ms() - 50000
         
         request_args = {
             'canvas_type' : CC.CANVAS_CLIENT_API,
@@ -2793,7 +2793,7 @@ class TestClientAPI( unittest.TestCase ):
         
         media_result = HF.GetFakeMediaResult( hash )
         
-        media_result.GetTimesManager().SetArchivedTimestampMS( HydrusTime.GetNowMS() )
+        media_result.GetTimesManager().SetArchivedTimestampMS( HydrusTime.get_now_ms() )
         
         result_timestamp_data = ClientTime.TimestampData( HC.TIMESTAMP_TYPE_ARCHIVED, timestamp_ms = 123456000 )
         
@@ -2808,7 +2808,7 @@ class TestClientAPI( unittest.TestCase ):
         
         media_result = HF.GetFakeMediaResult( hash )
         
-        media_result.GetTimesManager().SetArchivedTimestampMS( HydrusTime.GetNowMS() )
+        media_result.GetTimesManager().SetArchivedTimestampMS( HydrusTime.get_now_ms() )
         
         result_timestamp_data = ClientTime.TimestampData( HC.TIMESTAMP_TYPE_ARCHIVED, timestamp_ms = 123456789 )
         
@@ -2823,7 +2823,7 @@ class TestClientAPI( unittest.TestCase ):
         
         media_result = HF.GetFakeMediaResult( hash )
         
-        media_result.GetTimesManager().SetArchivedTimestampMS( HydrusTime.GetNowMS() )
+        media_result.GetTimesManager().SetArchivedTimestampMS( HydrusTime.get_now_ms() )
         
         result_timestamp_data = ClientTime.TimestampData( HC.TIMESTAMP_TYPE_ARCHIVED, timestamp_ms = 123456789 )
         
@@ -2838,7 +2838,7 @@ class TestClientAPI( unittest.TestCase ):
         
         media_result = HF.GetFakeMediaResult( hash )
         
-        media_result.GetTimesManager().SetFileModifiedTimestampMS( HydrusTime.GetNowMS() )
+        media_result.GetTimesManager().SetFileModifiedTimestampMS( HydrusTime.get_now_ms() )
         
         result_timestamp_data = ClientTime.TimestampData( HC.TIMESTAMP_TYPE_MODIFIED_FILE, timestamp_ms = 123456789 )
         
@@ -2854,7 +2854,7 @@ class TestClientAPI( unittest.TestCase ):
         
         media_result = HF.GetFakeMediaResult( hash )
         
-        media_result.GetTimesManager().SetFileModifiedTimestampMS( HydrusTime.GetNowMS() )
+        media_result.GetTimesManager().SetFileModifiedTimestampMS( HydrusTime.get_now_ms() )
         
         result_timestamp_data = ClientTime.TimestampData( HC.TIMESTAMP_TYPE_MODIFIED_FILE, timestamp_ms = 123456789 )
         
@@ -2870,7 +2870,7 @@ class TestClientAPI( unittest.TestCase ):
         
         media_result = HF.GetFakeMediaResult( hash )
         
-        media_result.GetTimesManager().SetDomainModifiedTimestampMS( 'site.com', HydrusTime.GetNowMS() )
+        media_result.GetTimesManager().SetDomainModifiedTimestampMS( 'site.com', HydrusTime.get_now_ms() )
         
         result_timestamp_data = ClientTime.TimestampData( HC.TIMESTAMP_TYPE_MODIFIED_DOMAIN, location = 'site.com', timestamp_ms = 123456789 )
         
@@ -2886,7 +2886,7 @@ class TestClientAPI( unittest.TestCase ):
         
         media_result = HF.GetFakeMediaResult( hash )
         
-        media_result.GetTimesManager().SetLastViewedTimestampMS( CC.CANVAS_MEDIA_VIEWER, HydrusTime.GetNowMS() )
+        media_result.GetTimesManager().SetLastViewedTimestampMS( CC.CANVAS_MEDIA_VIEWER, HydrusTime.get_now_ms() )
         
         result_timestamp_data = ClientTime.TimestampData( HC.TIMESTAMP_TYPE_LAST_VIEWED, location = CC.CANVAS_MEDIA_VIEWER, timestamp_ms = 123456789 )
         
@@ -2902,7 +2902,7 @@ class TestClientAPI( unittest.TestCase ):
         
         media_result = HF.GetFakeMediaResult( hash )
         
-        media_result.GetTimesManager().SetLastViewedTimestampMS( CC.CANVAS_PREVIEW, HydrusTime.GetNowMS() )
+        media_result.GetTimesManager().SetLastViewedTimestampMS( CC.CANVAS_PREVIEW, HydrusTime.get_now_ms() )
         
         result_timestamp_data = ClientTime.TimestampData( HC.TIMESTAMP_TYPE_LAST_VIEWED, location = CC.CANVAS_PREVIEW, timestamp_ms = 123456789 )
         
@@ -2917,7 +2917,7 @@ class TestClientAPI( unittest.TestCase ):
         
         media_result = HF.GetFakeMediaResult( hash )
         
-        media_result.GetTimesManager().SetLastViewedTimestampMS( CC.CANVAS_MEDIA_VIEWER, HydrusTime.GetNowMS() )
+        media_result.GetTimesManager().SetLastViewedTimestampMS( CC.CANVAS_MEDIA_VIEWER, HydrusTime.get_now_ms() )
         
         result_timestamp_data = ClientTime.TimestampData( HC.TIMESTAMP_TYPE_LAST_VIEWED, location = CC.CANVAS_MEDIA_VIEWER, timestamp_ms = 123456789 )
         
@@ -2933,7 +2933,7 @@ class TestClientAPI( unittest.TestCase ):
         
         media_result = HF.GetFakeMediaResult( hash )
         
-        media_result.GetTimesManager().SetImportedTimestampMS( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, HydrusTime.GetNowMS() )
+        media_result.GetTimesManager().SetImportedTimestampMS( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, HydrusTime.get_now_ms() )
         
         result_timestamp_data = ClientTime.TimestampData( HC.TIMESTAMP_TYPE_IMPORTED, location = CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, timestamp_ms = 123456789 )
         
@@ -2949,7 +2949,7 @@ class TestClientAPI( unittest.TestCase ):
         
         media_result = HF.GetFakeMediaResult( hash )
         
-        media_result.GetTimesManager().SetDeletedTimestampMS( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, HydrusTime.GetNowMS() )
+        media_result.GetTimesManager().SetDeletedTimestampMS( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, HydrusTime.get_now_ms() )
         
         result_timestamp_data = ClientTime.TimestampData( HC.TIMESTAMP_TYPE_DELETED, location = CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, timestamp_ms = 123456789 )
         
@@ -2965,7 +2965,7 @@ class TestClientAPI( unittest.TestCase ):
         
         media_result = HF.GetFakeMediaResult( hash )
         
-        media_result.GetTimesManager().SetPreviouslyImportedTimestampMS( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, HydrusTime.GetNowMS() )
+        media_result.GetTimesManager().SetPreviouslyImportedTimestampMS( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, HydrusTime.get_now_ms() )
         
         result_timestamp_data = ClientTime.TimestampData( HC.TIMESTAMP_TYPE_PREVIOUSLY_IMPORTED, location = CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, timestamp_ms = 123456789 )
         
@@ -3192,7 +3192,7 @@ class TestClientAPI( unittest.TestCase ):
         
         clean_tags = [ "bikini", "blue eyes", "character:samus aran", "::)", "10", "11", "9", "wew", "flower" ]
         
-        clean_tags = HydrusTags.SortNumericTags( clean_tags )
+        clean_tags = HydrusTags.sort_numeric_tags( clean_tags )
         
         expected_result[ 'tags' ] = clean_tags
         
@@ -4577,9 +4577,9 @@ class TestClientAPI( unittest.TestCase ):
         
         cookies = []
         
-        cookies.append( [ 'one', '1', '.somesite.com', '/', HydrusTime.GetNow() + 86400 ] )
-        cookies.append( [ 'two', '2', 'somesite.com', '/', HydrusTime.GetNow() + 86400 ] )
-        cookies.append( [ 'three', '3', 'wew.somesite.com', '/', HydrusTime.GetNow() + 86400 ] )
+        cookies.append( [ 'one', '1', '.somesite.com', '/', HydrusTime.get_now() + 86400 ] )
+        cookies.append( [ 'two', '2', 'somesite.com', '/', HydrusTime.get_now() + 86400 ] )
+        cookies.append( [ 'three', '3', 'wew.somesite.com', '/', HydrusTime.get_now() + 86400 ] )
         cookies.append( [ 'four', '4', '.somesite.com', '/', None ] )
         
         request_dict = { 'cookies' : cookies }
@@ -4655,8 +4655,8 @@ class TestClientAPI( unittest.TestCase ):
         
         expected_cookies = []
         
-        expected_cookies.append( [ 'two', '2', 'somesite.com', '/', HydrusTime.GetNow() + 86400 ] )
-        expected_cookies.append( [ 'three', '3', 'wew.somesite.com', '/', HydrusTime.GetNow() + 86400 ] )
+        expected_cookies.append( [ 'two', '2', 'somesite.com', '/', HydrusTime.get_now() + 86400 ] )
+        expected_cookies.append( [ 'three', '3', 'wew.somesite.com', '/', HydrusTime.get_now() + 86400 ] )
         expected_cookies.append( [ 'four', '4', '.somesite.com', '/', None ] )
         
         frozen_result_cookies = { tuple( row[:-1] ) for row in result_cookies }
@@ -5324,8 +5324,8 @@ class TestClientAPI( unittest.TestCase ):
         pixel_duplicates = potential_duplicates_search_context.GetPixelDupesPreference()
         max_hamming_distance = potential_duplicates_search_context.GetMaxHammingDistance()
         
-        self.assertEqual( file_search_context_1.GetSerialisableTuple(), default_file_search_context.GetSerialisableTuple() )
-        self.assertEqual( file_search_context_2.GetSerialisableTuple(), default_file_search_context.GetSerialisableTuple() )
+        self.assertEqual( file_search_context_1.GetSerialisableTuple(), default_file_search_context.get_serialisable_tuple() )
+        self.assertEqual( file_search_context_2.GetSerialisableTuple(), default_file_search_context.get_serialisable_tuple() )
         self.assertEqual( potentials_search_type, default_potentials_search_type )
         self.assertEqual( pixel_duplicates, default_pixel_duplicates )
         self.assertEqual( max_hamming_distance, default_max_hamming_distance )
@@ -5368,8 +5368,8 @@ class TestClientAPI( unittest.TestCase ):
         pixel_duplicates = potential_duplicates_search_context.GetPixelDupesPreference()
         max_hamming_distance = potential_duplicates_search_context.GetMaxHammingDistance()
         
-        self.assertEqual( file_search_context_1.GetSerialisableTuple(), test_file_search_context_1.GetSerialisableTuple() )
-        self.assertEqual( file_search_context_2.GetSerialisableTuple(), test_file_search_context_2.GetSerialisableTuple() )
+        self.assertEqual( file_search_context_1.GetSerialisableTuple(), test_file_search_context_1.get_serialisable_tuple() )
+        self.assertEqual( file_search_context_2.GetSerialisableTuple(), test_file_search_context_2.get_serialisable_tuple() )
         self.assertEqual( potentials_search_type, test_potentials_search_type )
         self.assertEqual( pixel_duplicates, test_pixel_duplicates )
         self.assertEqual( max_hamming_distance, test_max_hamming_distance )
@@ -5669,8 +5669,8 @@ class TestClientAPI( unittest.TestCase ):
         pixel_duplicates = read_potential_duplicates_search_context.GetPixelDupesPreference()
         max_hamming_distance = read_potential_duplicates_search_context.GetMaxHammingDistance()
         
-        self.assertEqual( file_search_context_1.GetSerialisableTuple(), default_file_search_context.GetSerialisableTuple() )
-        self.assertEqual( file_search_context_2.GetSerialisableTuple(), default_file_search_context.GetSerialisableTuple() )
+        self.assertEqual( file_search_context_1.GetSerialisableTuple(), default_file_search_context.get_serialisable_tuple() )
+        self.assertEqual( file_search_context_2.GetSerialisableTuple(), default_file_search_context.get_serialisable_tuple() )
         self.assertEqual( potentials_search_type, default_potentials_search_type )
         self.assertEqual( pixel_duplicates, default_pixel_duplicates )
         self.assertEqual( max_hamming_distance, default_max_hamming_distance )
@@ -5738,8 +5738,8 @@ class TestClientAPI( unittest.TestCase ):
         pixel_duplicates = read_potential_duplicates_search_context.GetPixelDupesPreference()
         max_hamming_distance = read_potential_duplicates_search_context.GetMaxHammingDistance()
         
-        self.assertEqual( file_search_context_1.GetSerialisableTuple(), test_file_search_context_1.GetSerialisableTuple() )
-        self.assertEqual( file_search_context_2.GetSerialisableTuple(), test_file_search_context_2.GetSerialisableTuple() )
+        self.assertEqual( file_search_context_1.GetSerialisableTuple(), test_file_search_context_1.get_serialisable_tuple() )
+        self.assertEqual( file_search_context_2.GetSerialisableTuple(), test_file_search_context_2.get_serialisable_tuple() )
         self.assertEqual( potentials_search_type, test_potentials_search_type )
         self.assertEqual( pixel_duplicates, test_pixel_duplicates )
         self.assertEqual( max_hamming_distance, test_max_hamming_distance )
@@ -5818,8 +5818,8 @@ class TestClientAPI( unittest.TestCase ):
         pixel_duplicates = read_potential_duplicates_search_context.GetPixelDupesPreference()
         max_hamming_distance = read_potential_duplicates_search_context.GetMaxHammingDistance()
         
-        self.assertEqual( file_search_context_1.GetSerialisableTuple(), test_file_search_context_1.GetSerialisableTuple() )
-        self.assertEqual( file_search_context_2.GetSerialisableTuple(), test_file_search_context_2.GetSerialisableTuple() )
+        self.assertEqual( file_search_context_1.GetSerialisableTuple(), test_file_search_context_1.get_serialisable_tuple() )
+        self.assertEqual( file_search_context_2.GetSerialisableTuple(), test_file_search_context_2.get_serialisable_tuple() )
         self.assertEqual( potentials_search_type, test_potentials_search_type )
         self.assertEqual( pixel_duplicates, test_pixel_duplicates )
         self.assertEqual( max_hamming_distance, test_max_hamming_distance )
@@ -5900,8 +5900,8 @@ class TestClientAPI( unittest.TestCase ):
         pixel_duplicates = read_potential_duplicates_search_context.GetPixelDupesPreference()
         max_hamming_distance = read_potential_duplicates_search_context.GetMaxHammingDistance()
         
-        self.assertEqual( file_search_context_1.GetSerialisableTuple(), test_file_search_context_1.GetSerialisableTuple() )
-        self.assertEqual( file_search_context_2.GetSerialisableTuple(), test_file_search_context_2.GetSerialisableTuple() )
+        self.assertEqual( file_search_context_1.GetSerialisableTuple(), test_file_search_context_1.get_serialisable_tuple() )
+        self.assertEqual( file_search_context_2.GetSerialisableTuple(), test_file_search_context_2.get_serialisable_tuple() )
         self.assertEqual( potentials_search_type, test_potentials_search_type )
         self.assertEqual( pixel_duplicates, test_pixel_duplicates )
         self.assertEqual( max_hamming_distance, test_max_hamming_distance )
@@ -6037,8 +6037,8 @@ class TestClientAPI( unittest.TestCase ):
         pixel_duplicates = read_potential_duplicates_search_context_for_ids.GetPixelDupesPreference()
         max_hamming_distance = read_potential_duplicates_search_context_for_ids.GetMaxHammingDistance()
         
-        self.assertEqual( file_search_context_1.GetSerialisableTuple(), test_file_search_context_1.GetSerialisableTuple() )
-        self.assertEqual( file_search_context_2.GetSerialisableTuple(), test_file_search_context_2.GetSerialisableTuple() )
+        self.assertEqual( file_search_context_1.GetSerialisableTuple(), test_file_search_context_1.get_serialisable_tuple() )
+        self.assertEqual( file_search_context_2.GetSerialisableTuple(), test_file_search_context_2.get_serialisable_tuple() )
         self.assertEqual( potentials_search_type, test_potentials_search_type )
         self.assertEqual( pixel_duplicates, test_pixel_duplicates )
         self.assertEqual( max_hamming_distance, test_max_hamming_distance )
@@ -6053,8 +6053,8 @@ class TestClientAPI( unittest.TestCase ):
         pixel_duplicates = read_potential_duplicates_search_context_for_media_results.GetPixelDupesPreference()
         max_hamming_distance = read_potential_duplicates_search_context_for_media_results.GetMaxHammingDistance()
         
-        self.assertEqual( file_search_context_1.GetSerialisableTuple(), test_file_search_context_1.GetSerialisableTuple() )
-        self.assertEqual( file_search_context_2.GetSerialisableTuple(), test_file_search_context_2.GetSerialisableTuple() )
+        self.assertEqual( file_search_context_1.GetSerialisableTuple(), test_file_search_context_1.get_serialisable_tuple() )
+        self.assertEqual( file_search_context_2.GetSerialisableTuple(), test_file_search_context_2.get_serialisable_tuple() )
         self.assertEqual( potentials_search_type, test_potentials_search_type )
         self.assertEqual( pixel_duplicates, test_pixel_duplicates )
         self.assertEqual( max_hamming_distance, test_max_hamming_distance )
@@ -6100,8 +6100,8 @@ class TestClientAPI( unittest.TestCase ):
         pixel_duplicates = potential_duplicates_search_context.GetPixelDupesPreference()
         max_hamming_distance = potential_duplicates_search_context.GetMaxHammingDistance()
         
-        self.assertEqual( file_search_context_1.GetSerialisableTuple(), default_file_search_context.GetSerialisableTuple() )
-        self.assertEqual( file_search_context_2.GetSerialisableTuple(), default_file_search_context.GetSerialisableTuple() )
+        self.assertEqual( file_search_context_1.GetSerialisableTuple(), default_file_search_context.get_serialisable_tuple() )
+        self.assertEqual( file_search_context_2.GetSerialisableTuple(), default_file_search_context.get_serialisable_tuple() )
         self.assertEqual( potentials_search_type, default_potentials_search_type )
         self.assertEqual( pixel_duplicates, default_pixel_duplicates )
         self.assertEqual( max_hamming_distance, default_max_hamming_distance )
@@ -6152,8 +6152,8 @@ class TestClientAPI( unittest.TestCase ):
         pixel_duplicates = potential_duplicates_search_context.GetPixelDupesPreference()
         max_hamming_distance = potential_duplicates_search_context.GetMaxHammingDistance()
         
-        self.assertEqual( file_search_context_1.GetSerialisableTuple(), test_file_search_context_1.GetSerialisableTuple() )
-        self.assertEqual( file_search_context_2.GetSerialisableTuple(), test_file_search_context_2.GetSerialisableTuple() )
+        self.assertEqual( file_search_context_1.GetSerialisableTuple(), test_file_search_context_1.get_serialisable_tuple() )
+        self.assertEqual( file_search_context_2.GetSerialisableTuple(), test_file_search_context_2.get_serialisable_tuple() )
         self.assertEqual( potentials_search_type, test_potentials_search_type )
         self.assertEqual( pixel_duplicates, test_pixel_duplicates )
         self.assertEqual( max_hamming_distance, test_max_hamming_distance )
@@ -7335,8 +7335,8 @@ class TestClientAPI( unittest.TestCase ):
             notes_manager = ClientMediaManagers.NotesManager( { 'note' : 'hello', 'note2' : 'hello2' } )
             
             view_rows = [
-                ( CC.CANVAS_MEDIA_VIEWER, HydrusTime.GetNowMS() - 50000, 5, 310567 ),
-                ( CC.CANVAS_PREVIEW, HydrusTime.GetNowMS() - 60000, 17, 662567 )
+                ( CC.CANVAS_MEDIA_VIEWER, HydrusTime.get_now_ms() - 50000, 5, 310567 ),
+                ( CC.CANVAS_PREVIEW, HydrusTime.get_now_ms() - 60000, 17, 662567 )
             ]
             
             file_viewing_stats_manager = ClientMediaManagers.FileViewingStatsManager( times_manager, view_rows )
@@ -7395,7 +7395,7 @@ class TestClientAPI( unittest.TestCase ):
                 thumbnail_scale_type = TG.test_controller.new_options.GetInteger( 'thumbnail_scale_type' )
                 thumbnail_dpr_percent = CG.client_controller.new_options.GetInteger( 'thumbnail_dpr_percent' )
                 
-                ( thumbnail_expected_width, thumbnail_expected_height ) = HydrusImageHandling.GetThumbnailResolution( ( file_info_manager.width, file_info_manager.height ), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
+                ( thumbnail_expected_width, thumbnail_expected_height ) = HydrusImageHandling.get_thumbnail_resolution( ( file_info_manager.width, file_info_manager.height ), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
                 
                 metadata_row[ 'thumbnail_width' ] = thumbnail_expected_width
                 metadata_row[ 'thumbnail_height' ] = thumbnail_expected_height
@@ -7405,7 +7405,7 @@ class TestClientAPI( unittest.TestCase ):
                 'file_services' : {
                     'current' : {
                         random_file_service_hex_current.hex() : {
-                            'time_imported' : HydrusTime.SecondiseMS( current_import_timestamp_ms ),
+                            'time_imported' : HydrusTime.secondise_ms( current_import_timestamp_ms ),
                             'name' : TG.test_controller.services_manager.GetName( random_file_service_hex_current ),
                             'type' : TG.test_controller.services_manager.GetServiceType( random_file_service_hex_current ),
                             'type_pretty' : HC.service_string_lookup[ TG.test_controller.services_manager.GetServiceType( random_file_service_hex_current ) ]
@@ -7413,8 +7413,8 @@ class TestClientAPI( unittest.TestCase ):
                     },
                     'deleted' : {
                         random_file_service_hex_deleted.hex() : {
-                            'time_deleted' : HydrusTime.SecondiseMS( deleted_deleted_timestamp_ms ),
-                            'time_imported' : HydrusTime.SecondiseMS( previously_imported_timestamp_ms ),
+                            'time_deleted' : HydrusTime.secondise_ms( deleted_deleted_timestamp_ms ),
+                            'time_imported' : HydrusTime.secondise_ms( previously_imported_timestamp_ms ),
                             'name' : TG.test_controller.services_manager.GetName( random_file_service_hex_deleted ),
                             'type' : TG.test_controller.services_manager.GetServiceType( random_file_service_hex_deleted ),
                             'type_pretty' : HC.service_string_lookup[ TG.test_controller.services_manager.GetServiceType( random_file_service_hex_deleted ) ]
@@ -7422,9 +7422,9 @@ class TestClientAPI( unittest.TestCase ):
                     }
                 },
                 'ipfs_multihashes' : {},
-                'time_modified' : HydrusTime.SecondiseMS( file_modified_timestamp_ms ),
+                'time_modified' : HydrusTime.secondise_ms( file_modified_timestamp_ms ),
                 'time_modified_details' : {
-                    'local' : HydrusTime.SecondiseMS( file_modified_timestamp_ms )
+                    'local' : HydrusTime.secondise_ms( file_modified_timestamp_ms )
                 },
                 'is_inbox' : False,
                 'is_local' : False,
@@ -7445,7 +7445,7 @@ class TestClientAPI( unittest.TestCase ):
                 for ( i_s_k, multihash ) in locations_manager.GetServiceFilenames().items():
                     
                     metadata_row[ 'file_services' ][ 'current' ][ i_s_k.hex() ] = {
-                        'time_imported' : HydrusTime.SecondiseMS( ipfs_import_timestamp_ms ),
+                        'time_imported' : HydrusTime.secondise_ms( ipfs_import_timestamp_ms ),
                         'name' : TG.test_controller.services_manager.GetName( i_s_k ),
                         'type' : TG.test_controller.services_manager.GetServiceType( i_s_k ),
                         'type_pretty' : HC.service_string_lookup[ TG.test_controller.services_manager.GetServiceType( i_s_k ) ]
@@ -7480,11 +7480,11 @@ class TestClientAPI( unittest.TestCase ):
                 
                 storage_statuses_to_tags = tags_manager.GetStatusesToTags( tag_service_key, ClientTags.TAG_DISPLAY_STORAGE )
                 
-                storage_tags_json_serialisable = { str( status ) : sorted( tags, key = HydrusText.HumanTextSortKey ) for ( status, tags ) in storage_statuses_to_tags.items() if len( tags ) > 0 }
+                storage_tags_json_serialisable = { str( status ) : sorted( tags, key = HydrusText.human_text_sort_key ) for ( status, tags ) in storage_statuses_to_tags.items() if len( tags ) > 0 }
                 
                 display_statuses_to_tags = tags_manager.GetStatusesToTags( tag_service_key, ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL )
                 
-                display_tags_json_serialisable = { str( status ) : sorted( tags, key = HydrusText.HumanTextSortKey ) for ( status, tags ) in display_statuses_to_tags.items() if len( tags ) > 0 }
+                display_tags_json_serialisable = { str( status ) : sorted( tags, key = HydrusText.human_text_sort_key ) for ( status, tags ) in display_statuses_to_tags.items() if len( tags ) > 0 }
                 
                 tags_dict_object = {
                     'name' : service_keys_to_names[ tag_service_key ],
@@ -7511,8 +7511,8 @@ class TestClientAPI( unittest.TestCase ):
             ]:
                 
                 views = fvsm.GetViews( canvas_type )
-                viewtime = HydrusTime.SecondiseMSFloat( fvsm.GetViewtimeMS( canvas_type ) )
-                last_viewed_timestamp = HydrusTime.SecondiseMSFloat( times_manager.GetLastViewedTimestampMS( canvas_type ) )
+                viewtime = HydrusTime.secondise_ms_float( fvsm.GetViewtimeMS( canvas_type ) )
+                last_viewed_timestamp = HydrusTime.secondise_ms_float( times_manager.GetLastViewedTimestampMS( canvas_type ) )
                 
                 json_object = {
                     'canvas_type' : canvas_type,
@@ -7803,7 +7803,7 @@ class TestClientAPI( unittest.TestCase ):
         
         for file_row in d[ 'metadata' ]:
             
-            self.assertEqual( file_row[ 'time_modified' ], HydrusTime.SecondiseMSFloat( file_modified_timestamp_ms ) )
+            self.assertEqual( file_row[ 'time_modified' ], HydrusTime.secondise_ms_float( file_modified_timestamp_ms ) )
             
         
         # now from hashes
@@ -8091,7 +8091,7 @@ class TestClientAPI( unittest.TestCase ):
         TG.test_controller.SetRead( 'media_result', media_result )
         TG.test_controller.SetRead( 'media_results_from_ids', ( media_result, ) )
         
-        path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+        path = HydrusStaticDir.get_static_path( 'hydrus.png' )
         
         file_path = TG.test_controller.client_files_manager.GetFilePath( hash, HC.IMAGE_PNG, check_file_exists = False )
         
@@ -8099,7 +8099,7 @@ class TestClientAPI( unittest.TestCase ):
         
         thumb_hash = b'\x17\xde\xd6\xee\x1b\xfa\x002\xbdj\xc0w\x92\xce5\xf0\x12~\xfe\x915\xb3\xb3tA\xac\x90F\x95\xc2T\xc5'
         
-        path = HydrusStaticDir.GetStaticPath( 'hydrus_small.png' )
+        path = HydrusStaticDir.get_static_path( 'hydrus_small.png' )
         
         thumb_path = TG.test_controller.client_files_manager._GenerateExpectedThumbnailPath( hash )
         
@@ -8426,7 +8426,7 @@ class TestClientAPI( unittest.TestCase ):
         
         data = response.read()
         
-        with open( HydrusStaticDir.GetStaticPath( 'hydrus.png' ), 'rb' ) as f:
+        with open( HydrusStaticDir.get_static_path( 'hydrus.png' ), 'rb' ) as f:
             
             expected_data = f.read()
             
@@ -8463,7 +8463,7 @@ class TestClientAPI( unittest.TestCase ):
         self.assertEqual( locations[0][ 'ideal_weight' ], 1 )
         self.assertEqual( locations[0][ 'max_num_bytes' ], None )
         self.assertEqual( locations[0][ 'path' ], os.path.join( TG.test_controller.db_dir, 'client_files' ) )
-        self.assertEqual( set( locations[0][ 'prefixes' ] ), set( HydrusFilesPhysicalStorage.IteratePrefixes( 'f' ) ).union( HydrusFilesPhysicalStorage.IteratePrefixes( 't' ) ) )
+        self.assertEqual( set( locations[0][ 'prefixes' ] ), set( HydrusFilesPhysicalStorage.iterate_prefixes( 'f' ) ).union( HydrusFilesPhysicalStorage.iterate_prefixes( 't' ) ) )
         
     
     def _test_permission_failures( self, connection, set_up_permissions ):

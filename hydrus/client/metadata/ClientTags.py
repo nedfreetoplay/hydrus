@@ -66,7 +66,7 @@ def RenderTag( tag, render_for_user: bool ):
             
         
     
-    ( namespace, subtag ) = HydrusTags.SplitTag( tag )
+    ( namespace, subtag ) = HydrusTags.split_tag( tag )
     
     if namespace == '':
         
@@ -118,12 +118,12 @@ class ServiceKeysToTags( HydrusSerialisable.SerialisableBase, collections.defaul
         super().__init__( set, *args, **kwargs )
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         return [ ( service_key.hex(), list( tags ) ) for ( service_key, tags ) in self.items() ]
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         for ( service_key_hex, tags_list ) in serialisable_info:
             
@@ -131,7 +131,7 @@ class ServiceKeysToTags( HydrusSerialisable.SerialisableBase, collections.defaul
             
         
     
-    def Duplicate( self ) -> "ServiceKeysToTags":
+    def duplicate( self ) -> "ServiceKeysToTags":
         
         return ServiceKeysToTags( { service_key : set( tags ) for ( service_key, tags ) in self.items() } )
         

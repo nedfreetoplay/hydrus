@@ -135,7 +135,7 @@ class EditExportFoldersPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 export_folder = panel.GetValue()
                 
-                export_folder.SetNonDupeName( self._GetExistingNames(), do_casefold = True )
+                export_folder.set_non_dupe_name( self._GetExistingNames(), do_casefold = True )
                 
                 self._export_folders.AddData( export_folder, select_sort_and_scroll = True )
                 
@@ -162,7 +162,7 @@ class EditExportFoldersPanel( ClientGUIScrolledPanels.EditPanel ):
         
         if run_regularly:
             
-            pretty_period = HydrusTime.TimeDeltaToPrettyTimeDelta( period )
+            pretty_period = HydrusTime.timedelta_to_pretty_timedelta( period )
             
         else:
             
@@ -200,13 +200,13 @@ class EditExportFoldersPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 edited_export_folder = panel.GetValue()
                 
-                if edited_export_folder.GetName() != export_folder.GetName():
+                if edited_export_folder.get_name() != export_folder.get_name():
                     
                     existing_names = self._GetExistingNames()
                     
-                    existing_names.discard( export_folder.GetName() )
+                    existing_names.discard( export_folder.get_name() )
                     
-                    edited_export_folder.SetNonDupeName( existing_names, do_casefold = True )
+                    edited_export_folder.set_non_dupe_name( existing_names, do_casefold = True )
                     
                 
                 self._export_folders.ReplaceData( export_folder, edited_export_folder, sort_and_scroll = True )
@@ -454,11 +454,11 @@ If you select synchronise, be careful!'''
             
             sort_by = ClientMedia.MediaSort( ( 'system', CC.SORT_FILES_BY_FILESIZE ), CC.SORT_ASC )
             
-            query_hash_ids = CG.client_controller.Read( 'file_query_ids', file_search_context, limit_sort_by = sort_by )
+            query_hash_ids = CG.client_controller.read( 'file_query_ids', file_search_context, limit_sort_by = sort_by )
             
             query_hash_ids = list( query_hash_ids )[:ClientGUIMetadataMigrationTest.HOW_MANY_EXAMPLE_OBJECTS_TO_USE]
             
-            media_results = CG.client_controller.Read( 'media_results_from_ids', query_hash_ids )
+            media_results = CG.client_controller.read( 'media_results_from_ids', query_hash_ids )
             
             return media_results
             
@@ -467,7 +467,7 @@ If you select synchronise, be careful!'''
             
             self._test_context_factory.SetExampleMediaResults( media_results )
             
-            self._update_test_context_factory_button.setText( f'got {HydrusNumbers.ToHumanInt(len( media_results))} files!' )
+            self._update_test_context_factory_button.setText( f'got {HydrusNumbers.to_human_int(len( media_results))} files!' )
             
         
         self._update_test_context_factory_button.setEnabled( False )
@@ -739,7 +739,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
             path = str( e )
             
         
-        pretty_number = HydrusNumbers.ToHumanInt( number )
+        pretty_number = HydrusNumbers.to_human_int( number )
         pretty_mime = HC.mime_string_lookup[ mime ]
         
         pretty_path = path
@@ -847,7 +847,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         directory = self._directory_picker.GetPath()
         
-        HydrusPaths.MakeSureDirectoryExists( directory )
+        HydrusPaths.make_sure_directory_exists( directory )
         
         pattern = self._pattern.text()
         
@@ -914,7 +914,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 try:
                     
-                    x_of_y = HydrusNumbers.ValueRangeToPrettyString( index, num_to_do )
+                    x_of_y = HydrusNumbers.value_range_to_pretty_string( index, num_to_do )
                     
                     job_status.SetStatusText( 'Exporting: {}'.format( x_of_y ) )
                     job_status.SetGauge( index, num_to_do )
@@ -933,7 +933,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                     
                     path_dir = os.path.dirname( dest_path )
                     
-                    HydrusPaths.MakeSureDirectoryExists( path_dir )
+                    HydrusPaths.make_sure_directory_exists( path_dir )
                     
                     for metadata_router in metadata_routers:
                         
@@ -968,9 +968,9 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                             
                     else:
                         
-                        HydrusPaths.MirrorFile( source_path, dest_path )
+                        HydrusPaths.mirror_file( source_path, dest_path )
                         
-                        HydrusPaths.TryToGiveFileNicePermissionBits( dest_path )
+                        HydrusPaths.try_to_give_file_nice_permission_bits( dest_path )
                         
                     
                     actually_done_ok.append( media )
@@ -979,14 +979,14 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                     
                     win = CG.client_controller.GetMainTLW()
                     
-                    HydrusData.PrintException( e, do_wait = False )
+                    HydrusData.print_exception( e, do_wait = False )
                     
-                    ClientGUIDialogsMessage.ShowCritical( win, 'Problem during file export!', f'Encountered a problem while attempting to export file #{HydrusNumbers.ToHumanInt( number )}:\n\n{e}' )
+                    ClientGUIDialogsMessage.ShowCritical( win, 'Problem during file export!', f'Encountered a problem while attempting to export file #{HydrusNumbers.to_human_int( number )}:\n\n{e}' )
                     
                     break
                     
                 
-                pauser.Pause()
+                pauser.pause()
                 
             
             if not job_status.IsCancelled() and delete_afterwards:
@@ -995,7 +995,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 actually_done_media_results = [ m.GetMediaResult() for m in actually_done_ok ]
                 
-                for ( num_done, num_to_do, chunk_of_deletee_media_results ) in HydrusLists.SplitListIntoChunksRich( actually_done_media_results, 64 ):
+                for ( num_done, num_to_do, chunk_of_deletee_media_results ) in HydrusLists.split_list_into_chunks_rich( actually_done_media_results, 64 ):
                     
                     reason = 'Deleted after manual export to "{}".'.format( directory )
                     
@@ -1003,7 +1003,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                     
                     content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, hashes, reason = reason )
                     
-                    CG.client_controller.WriteSynchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, content_update ) )
+                    CG.client_controller.write_synchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, content_update ) )
                     
                 
             
@@ -1021,7 +1021,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
             CG.client_controller.CallAfterQtSafe( self, qt_done, quit_afterwards )
             
         
-        CG.client_controller.CallToThread( do_it, directory, metadata_routers, delete_afterwards, export_symlinks, quit_afterwards, self._media_to_number_indices )
+        CG.client_controller.call_to_thread( do_it, directory, metadata_routers, delete_afterwards, export_symlinks, quit_afterwards, self._media_to_number_indices )
         
     
     def _GetPath( self, media ):
@@ -1121,7 +1121,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 return
                 
             
-            HydrusPaths.LaunchDirectory( directory )
+            HydrusPaths.launch_directory( directory )
             
         
     

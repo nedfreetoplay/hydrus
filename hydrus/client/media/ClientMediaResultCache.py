@@ -120,14 +120,14 @@ class MediaResultCache( object ):
         
         def do_it( hash_ids ):
             
-            for ( num_done, num_to_do, group_of_hash_ids ) in HydrusLists.SplitListIntoChunksRich( hash_ids, 256 ):
+            for ( num_done, num_to_do, group_of_hash_ids ) in HydrusLists.split_list_into_chunks_rich( hash_ids, 256 ):
                 
-                if HydrusThreading.IsThreadShuttingDown():
+                if HydrusThreading.is_thread_shutting_down():
                     
                     return
                     
                 
-                hash_ids_to_tags_managers = CG.client_controller.Read( 'force_refresh_tags_managers', group_of_hash_ids )
+                hash_ids_to_tags_managers = CG.client_controller.read( 'force_refresh_tags_managers', group_of_hash_ids )
                 
                 with self._lock:
                     
@@ -151,7 +151,7 @@ class MediaResultCache( object ):
             hash_ids = list( self._hash_ids_to_media_results.keys() )
             
         
-        CG.client_controller.CallToThread( do_it, hash_ids )
+        CG.client_controller.call_to_thread( do_it, hash_ids )
         
     
     def GetMediaResultsAndMissing( self, hash_ids: collections.abc.Iterable[ int ] ) -> tuple[ list[ ClientMediaResult.MediaResult ], list[ int ] ]:

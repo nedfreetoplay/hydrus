@@ -115,7 +115,7 @@ class StylePanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
         except Exception as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Critical', f'Could not apply style: {e}' )
             
@@ -135,7 +135,7 @@ class StylePanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
         except Exception as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Critical', f'Could not apply stylesheet: {e}' )
             

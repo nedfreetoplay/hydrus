@@ -18,7 +18,7 @@ def ClearAllFalsePositives( win, hashes ):
         
     else:
         
-        message = 'Are you sure you want to clear these {} files of all their false-positive relations?'.format( HydrusNumbers.ToHumanInt( len( hashes ) ) )
+        message = 'Are you sure you want to clear these {} files of all their false-positive relations?'.format( HydrusNumbers.to_human_int( len( hashes ) ) )
         message += '\n' * 2
         message += 'False-positive relations are recorded between alternate groups, so this change will also affect all alternate files to your selection.'
         message += '\n' * 2
@@ -31,7 +31,7 @@ def ClearAllFalsePositives( win, hashes ):
         
         def do_it():
             
-            num_cleared = CG.client_controller.WriteSynchronous( 'clear_all_false_positive_relations', hashes )
+            num_cleared = CG.client_controller.write_synchronous( 'clear_all_false_positive_relations', hashes )
             
             if num_cleared == 0:
                 
@@ -39,13 +39,13 @@ def ClearAllFalsePositives( win, hashes ):
                 
             else:
                 
-                message = f'{HydrusNumbers.ToHumanInt( num_cleared )} false positive relationships cleared.'
+                message = f'{HydrusNumbers.to_human_int( num_cleared )} false positive relationships cleared.'
                 
             
-            HydrusData.ShowText( message )
+            HydrusData.show_text( message )
             
         
-        CG.client_controller.CallToThread( do_it )
+        CG.client_controller.call_to_thread( do_it )
         
     
 
@@ -56,7 +56,7 @@ def ClearInternalFalsePositives( win, hashes ):
         return
         
     
-    message = 'Are you sure you want to clear these {} files of any false-positive relations between them?'.format( HydrusNumbers.ToHumanInt( len( hashes ) ) )
+    message = 'Are you sure you want to clear these {} files of any false-positive relations between them?'.format( HydrusNumbers.to_human_int( len( hashes ) ) )
     message += '\n' * 2
     message += 'False-positive relations are recorded between alternate groups, so this change will affect all alternate files to your selection. If all these files share the same alternates group, this action does nothing.'
     message += '\n' * 2
@@ -68,7 +68,7 @@ def ClearInternalFalsePositives( win, hashes ):
         
         def do_it():
             
-            num_cleared = CG.client_controller.WriteSynchronous( 'clear_internal_false_positive_relations', hashes )
+            num_cleared = CG.client_controller.write_synchronous( 'clear_internal_false_positive_relations', hashes )
             
             if num_cleared == 0:
                 
@@ -76,13 +76,13 @@ def ClearInternalFalsePositives( win, hashes ):
                 
             else:
                 
-                message = f'{HydrusNumbers.ToHumanInt( num_cleared )} false positive relationships cleared.'
+                message = f'{HydrusNumbers.to_human_int( num_cleared )} false positive relationships cleared.'
                 
             
-            HydrusData.ShowText( message )
+            HydrusData.show_text( message )
             
         
-        CG.client_controller.CallToThread( do_it )
+        CG.client_controller.call_to_thread( do_it )
         
     
 
@@ -98,7 +98,7 @@ def DissolveAlternateGroup( win, hashes ):
         
     else:
         
-        message = 'Are you sure you want to dissolve these {} files\' entire alternates groups?'.format( HydrusNumbers.ToHumanInt( len( hashes ) ) )
+        message = 'Are you sure you want to dissolve these {} files\' entire alternates groups?'.format( HydrusNumbers.to_human_int( len( hashes ) ) )
         message += '\n' * 2
         message += 'This will completely remove all duplicate, alternate, and false-positive relations for all alternate groups of all files selected and set them to come up again in the duplicate filter.'
         message += '\n' * 2
@@ -109,7 +109,7 @@ def DissolveAlternateGroup( win, hashes ):
     
     if result == QW.QDialog.DialogCode.Accepted:
         
-        CG.client_controller.Write( 'dissolve_alternates_group', hashes )
+        CG.client_controller.write( 'dissolve_alternates_group', hashes )
         
     
 def DissolveDuplicateGroup( win, hashes ):
@@ -124,7 +124,7 @@ def DissolveDuplicateGroup( win, hashes ):
         
     else:
         
-        message = 'Are you sure you want to dissolve these {} files\' duplicate groups?'.format( HydrusNumbers.ToHumanInt( len( hashes ) ) )
+        message = 'Are you sure you want to dissolve these {} files\' duplicate groups?'.format( HydrusNumbers.to_human_int( len( hashes ) ) )
         message += '\n' * 2
         message += 'This will split all the files\' duplicates groups back into individual files and remove any alternate relations they have. They will all be queued back up in the duplicate filter for reprocessing.'
         message += '\n' * 2
@@ -135,7 +135,7 @@ def DissolveDuplicateGroup( win, hashes ):
     
     if result == QW.QDialog.DialogCode.Accepted:
         
-        CG.client_controller.Write( 'dissolve_duplicates_group', hashes )
+        CG.client_controller.write( 'dissolve_duplicates_group', hashes )
         
     
 def RemoveFromAlternateGroup( win, hashes ):
@@ -150,7 +150,7 @@ def RemoveFromAlternateGroup( win, hashes ):
         
     else:
         
-        message = 'Are you sure you want to remove these {} files from their alternates groups?'.format( HydrusNumbers.ToHumanInt( len( hashes ) ) )
+        message = 'Are you sure you want to remove these {} files from their alternates groups?'.format( HydrusNumbers.to_human_int( len( hashes ) ) )
         message += '\n' * 2
         message += 'Alternate relationships are stored between duplicate groups, so this will pull any duplicates of these files with them.'
         message += '\n' * 2
@@ -161,7 +161,7 @@ def RemoveFromAlternateGroup( win, hashes ):
     
     if result == QW.QDialog.DialogCode.Accepted:
         
-        CG.client_controller.Write( 'remove_alternates_member', hashes )
+        CG.client_controller.write( 'remove_alternates_member', hashes )
         
     
 def RemoveFromDuplicateGroup( win, hashes ):
@@ -176,7 +176,7 @@ def RemoveFromDuplicateGroup( win, hashes ):
         
     else:
         
-        message = 'Are you sure you want to remove these {} files from their duplicate groups?'.format( HydrusNumbers.ToHumanInt( len( hashes ) ) )
+        message = 'Are you sure you want to remove these {} files from their duplicate groups?'.format( HydrusNumbers.to_human_int( len( hashes ) ) )
         message += '\n' * 2
         message += 'The remaining groups will be otherwise unaffected and keep their alternate relationships.'
         message += '\n' * 2
@@ -187,7 +187,7 @@ def RemoveFromDuplicateGroup( win, hashes ):
     
     if result == QW.QDialog.DialogCode.Accepted:
         
-        CG.client_controller.Write( 'remove_duplicates_member', hashes )
+        CG.client_controller.write( 'remove_duplicates_member', hashes )
         
     
 def RemovePotentials( win, hashes ):
@@ -200,7 +200,7 @@ def RemovePotentials( win, hashes ):
         
     else:
         
-        message = 'Are you sure you want to remove all of these {} files\' potentials?'.format( HydrusNumbers.ToHumanInt( len( hashes ) ) )
+        message = 'Are you sure you want to remove all of these {} files\' potentials?'.format( HydrusNumbers.to_human_int( len( hashes ) ) )
         message += '\n' * 2
         message += 'This will mean they (or any of their duplicates) will not appear in the duplicate filter unless new potentials are found with new files. Use this command if the files have accidentally received many false positive potential relationships.'
         
@@ -209,7 +209,7 @@ def RemovePotentials( win, hashes ):
     
     if result == QW.QDialog.DialogCode.Accepted:
         
-        CG.client_controller.Write( 'remove_potential_pairs', hashes )
+        CG.client_controller.write( 'remove_potential_pairs', hashes )
         
     
 def ResetPotentialSearch( win, hashes ):
@@ -222,7 +222,7 @@ def ResetPotentialSearch( win, hashes ):
         
     else:
         
-        message = 'Are you sure you want to search these {} files for potential duplicates again?'.format( HydrusNumbers.ToHumanInt( len( hashes ) ) )
+        message = 'Are you sure you want to search these {} files for potential duplicates again?'.format( HydrusNumbers.to_human_int( len( hashes ) ) )
         message += '\n' * 2
         message += 'This will not remove any existing potential pairs, and will typically not find any new relationships unless an error has occured.'
         
@@ -231,6 +231,6 @@ def ResetPotentialSearch( win, hashes ):
     
     if result == QW.QDialog.DialogCode.Accepted:
         
-        CG.client_controller.Write( 'reset_potential_search_status', hashes )
+        CG.client_controller.write( 'reset_potential_search_status', hashes )
         
     

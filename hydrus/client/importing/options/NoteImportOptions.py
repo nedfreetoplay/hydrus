@@ -39,7 +39,7 @@ class NoteImportOptions( HydrusSerialisable.SerialisableBase ):
         self._is_default = False
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         name_whitelist = list( self._name_whitelist )
         names_and_name_overrides = list( self._names_to_name_overrides.items() )
@@ -47,7 +47,7 @@ class NoteImportOptions( HydrusSerialisable.SerialisableBase ):
         return ( self._get_notes, self._extend_existing_note_if_possible, self._conflict_resolution, name_whitelist, self._all_name_override, names_and_name_overrides, self._is_default )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( self._get_notes, self._extend_existing_note_if_possible, self._conflict_resolution, name_whitelist, self._all_name_override, names_and_name_overrides, self._is_default ) = serialisable_info
         
@@ -269,7 +269,7 @@ class NoteImportOptions( HydrusSerialisable.SerialisableBase ):
                         
                         existing_names = set( existing_names_to_notes.keys() )
                         
-                        name = HydrusData.GetNonDupeName( name, existing_names )
+                        name = HydrusData.get_non_dupe_name( name, existing_names )
                         
                     elif self._conflict_resolution == NOTE_IMPORT_CONFLICT_APPEND:
                         

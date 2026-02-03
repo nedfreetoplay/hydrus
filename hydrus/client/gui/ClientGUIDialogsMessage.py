@@ -22,9 +22,9 @@ def ShowDialog( dialog_call: collections.abc.Callable, win: QW.QWidget | None, t
             
             message = f'Could not determine the text for this dialog message! Please let hydev know. My best attempt at rendering what I was given is:\n\n{repr( message )}'
             
-            HydrusData.DebugPrint( message )
+            HydrusData.debug_print( message )
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
         
     
@@ -42,8 +42,8 @@ def ShowDialog( dialog_call: collections.abc.Callable, win: QW.QWidget | None, t
 
 def ShowCritical( win: QW.QWidget | None, title: str, message: str ):
     
-    HydrusData.DebugPrint( title )
-    HydrusData.DebugPrint( message )
+    HydrusData.debug_print( title )
+    HydrusData.debug_print( message )
     
     ShowDialog( QW.QMessageBox.critical, win, title, message )
     

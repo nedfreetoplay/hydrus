@@ -26,7 +26,7 @@ class EditSelectFromListPanel( ClientGUIScrolledPanels.EditPanel ):
             
             try:
                 
-                choice_tuples = sorted( choice_tuples, key = lambda c_t: HydrusText.HumanTextSortKey( c_t[0] ) )
+                choice_tuples = sorted( choice_tuples, key = lambda c_t: HydrusText.human_text_sort_key( c_t[0] ) )
                 
             except TypeError:
                 
@@ -224,7 +224,7 @@ class EditSelectMultiple( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            choice_tuples = sorted( choice_tuples, key = lambda c_t: HydrusText.HumanTextSortKey( c_t[0] ) )
+            choice_tuples = sorted( choice_tuples, key = lambda c_t: HydrusText.human_text_sort_key( c_t[0] ) )
             
         except TypeError:
             

@@ -48,7 +48,7 @@ def FrameIndexOutOfRange( index, range_start, range_end ):
 
 def GenerateHydrusBitmap( path, mime, compressed = True ):
     
-    numpy_image = HydrusImageHandling.GenerateNumPyImage( path, mime )
+    numpy_image = HydrusImageHandling.generate_numpy_image( path, mime )
     
     return GenerateHydrusBitmapFromNumPyImage( numpy_image, compressed = compressed )
     
@@ -110,7 +110,7 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
         
         self._this_is_for_metadata_alone = this_is_for_metadata_alone
         
-        CG.client_controller.CallToThread( self._Initialise )
+        CG.client_controller.call_to_thread( self._Initialise )
         
 
     def GetNumPyImage(self):
@@ -167,7 +167,7 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
                 # and we want a nice padding size limit, big enough to make clean numbers but not so big that we are rendering the 8 tiles in a square around the one we want
                 no_bigger_than = max( 4, ( clip_width + clip_height ) // 4 )
                 
-                nice_number = HydrusData.GetNicelyDivisibleNumberForZoom( zoom_estimate_for_clip_padding_multiplier, no_bigger_than )
+                nice_number = HydrusData.get_nicely_divisible_number_for_zoom( zoom_estimate_for_clip_padding_multiplier, no_bigger_than )
                 
                 if nice_number != -1:
                     
@@ -249,7 +249,7 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
             
             self._path = client_files_manager.GetFilePath( self._hash, self._mime )
             
-            self._numpy_image = HydrusImageHandling.GenerateNumPyImage( self._path, self._mime )
+            self._numpy_image = HydrusImageHandling.generate_numpy_image( self._path, self._mime )
             
         except HydrusExceptions.NoRenderFileException as e:
             
@@ -263,9 +263,9 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
             
             self._render_failed = True
             
-            HydrusData.Print( 'Problem rendering image at "{}"! Error follows:'.format( self._path ) )
+            HydrusData.print_text( 'Problem rendering image at "{}"! Error follows:'.format( self._path ) )
             
-            HydrusData.PrintException( e, do_wait = False )
+            HydrusData.print_exception( e, do_wait = False )
             
         
         self._is_ready = True
@@ -310,9 +310,9 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
                     m += '\n' * 2
                     m += 'You may see some black squares in the image. A metadata regeneration has been scheduled, so with luck it will fix itself soon. If the file is still broken, hydev would like to see it!'
                     
-                    HydrusData.ShowText( m )
+                    HydrusData.show_text( m )
                     
-                    CG.client_controller.Write( 'file_maintenance_add_jobs_hashes', { self._hash }, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_METADATA )
+                    CG.client_controller.write( 'file_maintenance_add_jobs_hashes', { self._hash }, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_METADATA )
                     
                 
             
@@ -427,7 +427,7 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
                 
             except:
                 
-                HydrusData.Print( 'Failed to load the ICC Profile for {} into a Qt Colourspace!'.format( self._path ) )
+                HydrusData.print_text( 'Failed to load the ICC Profile for {} into a Qt Colourspace!'.format( self._path ) )
                 
                 self._icc_profile_bytes = None
                 
@@ -474,11 +474,11 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e, do_wait = False )
+                HydrusData.print_exception( e, do_wait = False )
                 
             
         
-        HydrusData.Print( 'Failed to produce a tile! Info is: {}, {}, {}, {}'.format( self._hash.hex(), ( my_width, my_height ), clip_rect, target_resolution ) )
+        HydrusData.print_text( 'Failed to produce a tile! Info is: {}, {}, {}, {}'.format( self._hash.hex(), ( my_width, my_height ), clip_rect, target_resolution ) )
         
         pixmap = QG.QPixmap( target_resolution )
         
@@ -621,7 +621,7 @@ class RasterContainerVideo( RasterContainer ):
             message += '\n' * 2
             message += 'You may wish to try regenerating its metadata through the advanced mode right-click menu.'
             
-            HydrusData.ShowText( message )
+            HydrusData.show_text( message )
             
             duration_ms = 1000
             
@@ -632,7 +632,7 @@ class RasterContainerVideo( RasterContainer ):
             message += '\n' * 2
             message += 'You may wish to try regenerating its metadata through the advanced mode right-click menu.'
             
-            HydrusData.ShowText( message )
+            HydrusData.show_text( message )
             
             num_frames_in_video = 1
             
@@ -660,7 +660,7 @@ class RasterContainerVideo( RasterContainer ):
         self._rendered_first_frame = False
         self._ideal_next_frame = 0
         
-        CG.client_controller.CallToThread( self.THREADRender )
+        CG.client_controller.call_to_thread( self.THREADRender )
         
     
     def __del__( self ):
@@ -931,13 +931,13 @@ class RasterContainerVideo( RasterContainer ):
         if self._media.GetMime() == HC.ANIMATION_APNG:
             
             self._frame_durations_ms = [] # we only support constant framerate for apng, I think the spec support variable though if PIL ever supports that
-            self._times_to_play_animation = HydrusAnimationHandling.GetTimesToPlayAPNG( self._path )
+            self._times_to_play_animation = HydrusAnimationHandling.get_times_to_play_apng( self._path )
             
         elif self._media.GetMime() == HC.ANIMATION_WEBP:
             
             try:
                 
-                ( self._frame_durations_ms, self._times_to_play_animation ) = HydrusAnimationHandling.GetWebPFrameDurationsMS( self._path )
+                ( self._frame_durations_ms, self._times_to_play_animation ) = HydrusAnimationHandling.get_webp_frame_durations_ms( self._path )
                 
             except:
                 
@@ -953,7 +953,7 @@ class RasterContainerVideo( RasterContainer ):
             
             try:
                 
-                ( self._frame_durations_ms, self._times_to_play_animation ) = HydrusAnimationHandling.GetFrameDurationsMSPILAnimation( self._path )
+                ( self._frame_durations_ms, self._times_to_play_animation ) = HydrusAnimationHandling.get_frame_durations_ms_pil_animation( self._path )
                 
             except:
                 
@@ -990,7 +990,7 @@ class RasterContainerVideo( RasterContainer ):
             
             if self._stop or HG.started_shutdown:
                 
-                self._renderer.Stop()
+                self._renderer.stop()
                 
                 self._renderer = None
                 
@@ -1103,7 +1103,7 @@ class RasterContainerVideo( RasterContainer ):
                     
                 else:
                     
-                    half_a_frame = ( HydrusTime.SecondiseMSFloat( self._average_frame_duration_ms ) ) * 0.5
+                    half_a_frame = ( HydrusTime.secondise_ms_float( self._average_frame_duration_ms ) ) * 0.5
                     
                     sleep_duration = min( 0.1, half_a_frame ) # for 10s-long 3-frame gifs, wew
                     
@@ -1135,7 +1135,7 @@ class HydrusBitmap( ClientCachesBase.CacheableObject ):
         
         if self._compressed:
             
-            self._data = HydrusCompression.CompressFastBytesToBytes( data )
+            self._data = HydrusCompression.compress_fast_bytes_to_bytes( data )
             
         else:
             
@@ -1150,7 +1150,7 @@ class HydrusBitmap( ClientCachesBase.CacheableObject ):
         
         if self._compressed:
             
-            return HydrusCompression.DecompressFastBytesToBytes( self._data )
+            return HydrusCompression.decompress_fast_bytes_to_bytes( self._data )
             
         else:
             

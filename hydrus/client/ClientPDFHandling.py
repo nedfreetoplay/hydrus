@@ -112,7 +112,7 @@ def GenerateThumbnailNumPyFromPDFPath( path: str, target_resolution: tuple[int, 
     return CG.client_controller.CallBlockingToQtTLW( qt_code )
     
 
-HydrusPDFHandling.GenerateThumbnailNumPyFromPDFPath = GenerateThumbnailNumPyFromPDFPath
+HydrusPDFHandling.generate_thumbnail_numpy_from_pdf_path = GenerateThumbnailNumPyFromPDFPath
 
 PDF_ASSUMED_DPI = 300
 
@@ -257,4 +257,4 @@ def GetPDFResolutionFromDocument( document ):
     return ( round( width ), round( height ) )
     
 
-HydrusPDFHandling.GetPDFInfo = GetPDFInfo
+HydrusPDFHandling.get_pdf_info = GetPDFInfo

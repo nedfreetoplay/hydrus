@@ -74,12 +74,12 @@ class CheckerOptions( HydrusSerialisable.SerialisableBase ):
         return ( current_files_found, current_time_delta )
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         return ( self._intended_files_per_check, self._never_faster_than, self._never_slower_than, self._death_file_velocity )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( self._intended_files_per_check, self._never_faster_than, self._never_slower_than, self._death_file_velocity ) = serialisable_info
         
@@ -123,7 +123,7 @@ class CheckerOptions( HydrusSerialisable.SerialisableBase ):
                 
             else:
                 
-                return HydrusTime.GetNow() + self._never_slower_than
+                return HydrusTime.get_now() + self._never_slower_than
                 
             
         
@@ -138,7 +138,7 @@ class CheckerOptions( HydrusSerialisable.SerialisableBase ):
             
             next_check_time = last_check_time + fixed_check_period
             
-            while HydrusTime.TimeHasPassed( next_check_time + fixed_check_period ):
+            while HydrusTime.time_has_passed( next_check_time + fixed_check_period ):
                 
                 next_check_time += fixed_check_period
                 
@@ -203,7 +203,7 @@ class CheckerOptions( HydrusSerialisable.SerialisableBase ):
             
             ( current_files_found, current_time_delta ) = self._GetCurrentFilesVelocity( file_seed_cache, last_check_time )
             
-            pretty_current_velocity += HydrusNumbers.ToHumanInt( current_files_found ) + ' files in previous ' + HydrusTime.TimeDeltaToPrettyTimeDelta( current_time_delta )
+            pretty_current_velocity += HydrusNumbers.to_human_int( current_files_found ) + ' files in previous ' + HydrusTime.timedelta_to_pretty_timedelta( current_time_delta )
             
         
         return pretty_current_velocity
@@ -218,13 +218,13 @@ class CheckerOptions( HydrusSerialisable.SerialisableBase ):
         
         if self._never_faster_than == self._never_slower_than:
             
-            timing_statement = 'Checking every ' + HydrusTime.TimeDeltaToPrettyTimeDelta( self._never_faster_than ) + '.'
+            timing_statement = 'Checking every ' + HydrusTime.timedelta_to_pretty_timedelta( self._never_faster_than ) + '.'
             
         else:
             
             if self._intended_files_per_check == int( self._intended_files_per_check ):
                 
-                intended_files_per_check_str = HydrusNumbers.ToHumanInt( self._intended_files_per_check )
+                intended_files_per_check_str = HydrusNumbers.to_human_int( self._intended_files_per_check )
                 
             else:
                 
@@ -232,7 +232,7 @@ class CheckerOptions( HydrusSerialisable.SerialisableBase ):
                 intended_files_per_check_str = str( self._intended_files_per_check )
                 
             
-            timing_statement = f'Trying to get {intended_files_per_check_str} files per check, never faster than ' + HydrusTime.TimeDeltaToPrettyTimeDelta( self._never_faster_than ) + ' and never slower than ' + HydrusTime.TimeDeltaToPrettyTimeDelta( self._never_slower_than ) + '.'
+            timing_statement = f'Trying to get {intended_files_per_check_str} files per check, never faster than ' + HydrusTime.timedelta_to_pretty_timedelta( self._never_faster_than ) + ' and never slower than ' + HydrusTime.timedelta_to_pretty_timedelta( self._never_slower_than ) + '.'
             
         
         ( death_files_found, death_time_delta ) = self._death_file_velocity
@@ -243,7 +243,7 @@ class CheckerOptions( HydrusSerialisable.SerialisableBase ):
             
         else:
             
-            death_statement = 'Stopping if file velocity falls below ' + HydrusNumbers.ToHumanInt( death_files_found ) + ' files per ' + HydrusTime.TimeDeltaToPrettyTimeDelta( death_time_delta ) + '.'
+            death_statement = 'Stopping if file velocity falls below ' + HydrusNumbers.to_human_int( death_files_found ) + ' files per ' + HydrusTime.timedelta_to_pretty_timedelta( death_time_delta ) + '.'
             
         
         return timing_statement + '\n' * 2 + death_statement

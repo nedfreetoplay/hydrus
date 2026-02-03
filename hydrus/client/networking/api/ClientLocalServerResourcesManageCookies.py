@@ -27,7 +27,7 @@ class HydrusResourceClientAPIRestrictedManageCookiesGetCookies( HydrusResourceCl
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        domain = request.parsed_request_args.GetValue( 'domain', str )
+        domain = request.parsed_request_args.get_value( 'domain', str )
         
         if '.' not in domain:
             
@@ -65,7 +65,7 @@ class HydrusResourceClientAPIRestrictedManageCookiesSetCookies( HydrusResourceCl
     
     def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        cookie_rows = request.parsed_request_args.GetValue( 'cookies', list )
+        cookie_rows = request.parsed_request_args.get_value( 'cookies', list )
         
         domains_cleared = set()
         domains_set = set()
@@ -153,7 +153,7 @@ class HydrusResourceClientAPIRestrictedManageCookiesSetUserAgent( HydrusResource
             stacklevel = 1
         )
         
-        user_agent = request.parsed_request_args.GetValue( 'user-agent', str )
+        user_agent = request.parsed_request_args.get_value( 'user-agent', str )
         
         if user_agent == '':
             
@@ -172,7 +172,7 @@ class HydrusResourceClientAPIRestrictedManageCookiesSetUserAgent( HydrusResource
 
 def GenerateNetworkContextFromRequest( request: HydrusServerRequest.HydrusRequest ):
     
-    domain = request.parsed_request_args.GetValueOrNone( 'domain', str )
+    domain = request.parsed_request_args.get_value_or_none( 'domain', str )
     
     if domain is None:
         
@@ -253,7 +253,7 @@ class HydrusResourceClientAPIRestrictedManageCookiesSetHeaders( HydrusResourceCl
     def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
         
         network_context = GenerateNetworkContextFromRequest( request )
-        http_header_objects = request.parsed_request_args.GetValue( 'headers', dict )
+        http_header_objects = request.parsed_request_args.get_value( 'headers', dict )
         
         headers_cleared = set()
         headers_set = set()

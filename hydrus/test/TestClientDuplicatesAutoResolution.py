@@ -28,8 +28,8 @@ class TestComparatorOneFile( unittest.TestCase ):
     
     def test_comparator_1_empty( self ):
         
-        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_PNG )
+        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_PNG )
         
         comparator = ClientDuplicatesAutoResolutionComparators.PairComparatorOneFile()
         
@@ -57,8 +57,8 @@ class TestComparatorOneFile( unittest.TestCase ):
     
     def test_comparator_2( self ):
         
-        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_PNG )
+        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_PNG )
         
         comparator = ClientDuplicatesAutoResolutionComparators.PairComparatorOneFile()
         
@@ -103,8 +103,8 @@ class TestComparatorRelativeFileInfo( unittest.TestCase ):
     
     def test_comparator_0_flat( self ):
         
-        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         comparator = ClientDuplicatesAutoResolutionComparators.PairComparatorRelativeFileInfo()
         
@@ -181,8 +181,8 @@ class TestComparatorRelativeFileInfo( unittest.TestCase ):
     
     def test_comparator_1_delta( self ):
         
-        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         # exactly 100 px difference
         
@@ -277,8 +277,8 @@ class TestComparatorRelativeFileInfo( unittest.TestCase ):
     
     def test_comparator_2_multiplier( self ):
         
-        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         # exactly twice
         
@@ -373,8 +373,8 @@ class TestComparatorRelativeFileInfo( unittest.TestCase ):
     
     def test_comparator_3_crazy( self ):
         
-        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         # just for fun
         
@@ -496,7 +496,7 @@ class TestComparatorHardcoded( unittest.TestCase ):
     
     def _do_file_import( self, name ):
         
-        path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', name ) )
+        path = HydrusStaticDir.get_static_path( os.path.join( 'testing', name ) )
         
         file_import_options = FileImportOptionsLegacy.FileImportOptionsLegacy()
         file_import_options.SetIsDefault( True )
@@ -520,9 +520,9 @@ class TestComparatorHardcoded( unittest.TestCase ):
     
     def test_comparator_0_filetypes( self ):
         
-        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_c = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_PNG )
+        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_c = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_PNG )
         
         comparator = ClientDuplicatesAutoResolutionComparators.PairComparatorRelativeHardcoded( hardcoded_type = ClientDuplicatesAutoResolutionComparators.HARDCODED_COMPARATOR_TYPE_FILETYPE_SAME )
         
@@ -549,10 +549,10 @@ class TestComparatorHardcoded( unittest.TestCase ):
     
     def test_comparator_1_exif_and_icc( self ):
         
-        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey() )
-        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey() )
-        media_result_c = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey() )
-        media_result_d = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey() )
+        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key() )
+        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key() )
+        media_result_c = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key() )
+        media_result_d = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key() )
         
         media_result_a.GetFileInfoManager().has_exif = True
         media_result_b.GetFileInfoManager().has_exif = True
@@ -574,10 +574,10 @@ class TestComparatorHardcoded( unittest.TestCase ):
         
         #
         
-        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey() )
-        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey() )
-        media_result_c = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey() )
-        media_result_d = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey() )
+        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key() )
+        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key() )
+        media_result_c = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key() )
+        media_result_d = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key() )
         
         media_result_a.GetFileInfoManager().has_icc_profile = True
         media_result_b.GetFileInfoManager().has_icc_profile = True
@@ -682,7 +682,7 @@ class TestComparatorVisualDuplicates( unittest.TestCase ):
     
     def _do_file_import( self, name ):
         
-        path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', name ) )
+        path = HydrusStaticDir.get_static_path( os.path.join( 'testing', name ) )
         
         file_import_options = FileImportOptionsLegacy.FileImportOptionsLegacy()
         file_import_options.SetIsDefault( True )
@@ -790,8 +790,8 @@ class TestComparatorAND( unittest.TestCase ):
     
     def test_comparator_0_empty( self ):
         
-        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_PNG )
+        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_PNG )
         
         comparator = ClientDuplicatesAutoResolutionComparators.PairComparatorAND( [] )
         
@@ -805,8 +805,8 @@ class TestComparatorAND( unittest.TestCase ):
     
     def test_comparator_1_true_both_ways( self ):
         
-        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         media_result_a.GetFileInfoManager().has_exif = True
         media_result_b.GetFileInfoManager().has_exif = True
@@ -828,8 +828,8 @@ class TestComparatorAND( unittest.TestCase ):
     
     def test_comparator_2_false_both_ways( self ):
         
-        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_PNG )
+        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_PNG )
         
         media_result_a.GetFileInfoManager().has_exif = True
         media_result_b.GetFileInfoManager().has_exif = True
@@ -851,8 +851,8 @@ class TestComparatorAND( unittest.TestCase ):
     
     def test_comparator_3_true_one_way( self ):
         
-        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         media_result_a.GetFileInfoManager().size = 1500
         media_result_b.GetFileInfoManager().size = 1000
@@ -894,8 +894,8 @@ class TestComparatorOR( unittest.TestCase ):
     
     def test_comparator_0_empty( self ):
         
-        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_PNG )
+        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_PNG )
         
         comparator = ClientDuplicatesAutoResolutionComparators.PairComparatorOR( [] )
         
@@ -909,8 +909,8 @@ class TestComparatorOR( unittest.TestCase ):
     
     def test_comparator_1_true_both_ways( self ):
         
-        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_PNG )
+        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_PNG )
         
         media_result_a.GetFileInfoManager().has_exif = True
         media_result_b.GetFileInfoManager().has_exif = True
@@ -932,8 +932,8 @@ class TestComparatorOR( unittest.TestCase ):
     
     def test_comparator_2_false_both_ways( self ):
         
-        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_PNG )
+        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_PNG )
         
         media_result_a.GetFileInfoManager().has_exif = False
         media_result_b.GetFileInfoManager().has_exif = True
@@ -955,8 +955,8 @@ class TestComparatorOR( unittest.TestCase ):
     
     def test_comparator_3_true_one_way( self ):
         
-        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_PNG )
+        media_result_a = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_b = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_PNG )
         
         media_result_a.GetFileInfoManager().size = 1500
         media_result_b.GetFileInfoManager().size = 1000
@@ -998,8 +998,8 @@ class TestSelector( unittest.TestCase ):
     
     def test_selector_empty( self ):
         
-        media_result_1 = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_2 = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_PNG )
+        media_result_1 = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_2 = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_PNG )
         
         selector = ClientDuplicatesAutoResolutionComparators.PairSelector()
         
@@ -1012,8 +1012,8 @@ class TestSelector( unittest.TestCase ):
     
     def test_selector_one_way_around( self ):
         
-        media_result_1 = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_2 = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_PNG )
+        media_result_1 = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_2 = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_PNG )
         
         selector = ClientDuplicatesAutoResolutionComparators.PairSelector()
         
@@ -1043,8 +1043,8 @@ class TestSelector( unittest.TestCase ):
     
     def test_selector_both_ways_around( self ):
         
-        media_result_1 = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_2 = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_PNG )
+        media_result_1 = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_2 = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_PNG )
         
         selector = ClientDuplicatesAutoResolutionComparators.PairSelector()
         
@@ -1075,8 +1075,8 @@ class TestSelector( unittest.TestCase ):
     
     def test_selector_no_match( self ):
         
-        media_result_1 = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_2 = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_PNG )
+        media_result_1 = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_2 = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_PNG )
         
         selector = ClientDuplicatesAutoResolutionComparators.PairSelector()
         
@@ -1104,8 +1104,8 @@ class TestSelector( unittest.TestCase ):
     
     def test_multiple_comparators_fail( self ):
         
-        media_result_1 = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_2 = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_PNG )
+        media_result_1 = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_2 = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_PNG )
         
         selector = ClientDuplicatesAutoResolutionComparators.PairSelector()
         
@@ -1149,8 +1149,8 @@ class TestSelector( unittest.TestCase ):
     
     def test_multiple_comparators_success( self ):
         
-        media_result_1 = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_2 = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_PNG )
+        media_result_1 = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_2 = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_PNG )
         
         selector = ClientDuplicatesAutoResolutionComparators.PairSelector()
         

@@ -344,7 +344,7 @@ class HydrusController( object ):
         
         job = HydrusThreading.SingleJob( self, job_scheduler, initial_delay, call )
         
-        job_scheduler.AddJob( job )
+        job_scheduler.add_job( job )
         
         return job
         
@@ -357,7 +357,7 @@ class HydrusController( object ):
         
         job = HydrusThreading.RepeatingJob( self, job_scheduler, initial_delay, period, call )
         
-        job_scheduler.AddJob( job )
+        job_scheduler.add_job( job )
         
         return job
         
@@ -447,12 +447,12 @@ class HydrusController( object ):
     
     def debug_show_scheduled_jobs( self ):
         
-        summary = self._fast_job_scheduler.GetPrettyJobSummary()
+        summary = self._fast_job_scheduler.get_pretty_job_summary()
         
         HydrusData.show_text( 'fast scheduler:' )
         HydrusData.show_text( summary )
         
-        summary = self._slow_job_scheduler.GetPrettyJobSummary()
+        summary = self._slow_job_scheduler.get_pretty_job_summary()
         
         HydrusData.show_text( 'slow scheduler:' )
         HydrusData.show_text( summary )
@@ -509,7 +509,7 @@ class HydrusController( object ):
             scheduler = self._slow_job_scheduler
             
         
-        return scheduler.GetJobs()
+        return scheduler.get_jobs()
         
     
     def get_manager( self, name ):
@@ -605,7 +605,7 @@ class HydrusController( object ):
         
         from hydrus.core.files import HydrusFileHandling
         
-        HydrusFileHandling.InitialiseMimesToDefaultThumbnailPaths()
+        HydrusFileHandling.initialise_mimes_to_default_thumbnail_paths()
         
         self._fast_job_scheduler = HydrusThreading.JobScheduler( self )
         self._slow_job_scheduler = HydrusThreading.JobScheduler( self )
@@ -623,8 +623,8 @@ class HydrusController( object ):
         
         job = self.call_repeating( 60.0, 300.0, self.maintain_db, maintenance_mode = HC.MAINTENANCE_IDLE )
         
-        job.WakeOnPubSub( 'wake_idle_workers' )
-        job.ShouldDelayOnWakeup( True )
+        job.wake_on_pub_sub( 'wake_idle_workers' )
+        job.should_delay_on_wakeup( True )
         
         self._daemon_jobs[ 'maintain_db' ] = job
         
@@ -644,7 +644,7 @@ class HydrusController( object ):
         
         self.services_upnp_manager = HydrusNATPunch.ServicesUPnPManager( upnp_services )
         
-        job = self.call_repeating( 10.0, 43200.0, self.services_upnp_manager.RefreshUPnP )
+        job = self.call_repeating( 10.0, 43200.0, self.services_upnp_manager.refresh_upnp )
         
         self._daemon_jobs[ 'services_upnp' ] = job
         
@@ -678,10 +678,10 @@ class HydrusController( object ):
         
         self.pub( 'memory_maintenance_pulse' )
         
-        self._fast_job_scheduler.ClearOutDead()
-        self._slow_job_scheduler.ClearOutDead()
+        self._fast_job_scheduler.clear_out_dead()
+        self._slow_job_scheduler.clear_out_dead()
         
-        HydrusSubprocess.ReapDeadLongLivedExternalProcesses()
+        HydrusSubprocess.reap_dead_long_lived_external_processes()
         
     
     def maintain_memory_slow( self ):
@@ -702,7 +702,7 @@ class HydrusController( object ):
         
         self._i_own_running_file = True
         
-        HydrusProcess.RecordRunningStart( self.db_dir, self._name )
+        HydrusProcess.record_running_start( self.db_dir, self._name )
         
     
     def release_thread_slot( self, thread_type ):

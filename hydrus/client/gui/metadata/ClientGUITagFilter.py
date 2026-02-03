@@ -278,7 +278,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
         
         tag_slices = [ self._CleanTagSliceInput( tag_slice ) for tag_slice in tag_slices ]
         
-        tag_slices = HydrusLists.DedupeList( tag_slices )
+        tag_slices = HydrusLists.dedupe_list( tag_slices )
         
         current_blacklist = set( self._advanced_blacklist.GetTagSlices() )
         
@@ -301,13 +301,13 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 if len( already_blocked ) == 1:
                     
-                    message = f'{HydrusTags.ConvertTagSliceToPrettyString( already_blocked[0] )} is already blocked by a broader rule!'
+                    message = f'{HydrusTags.convert_tag_slice_to_pretty_string( already_blocked[0] )} is already blocked by a broader rule!'
                     
                 else:
                     
                     separator = '\n' if len( already_blocked ) < 5 else ', '
                     
-                    message = 'The tags\n\n' + separator.join( [ HydrusTags.ConvertTagSliceToPrettyString( tag_slice ) for tag_slice in already_blocked ] ) + '\n\nare already blocked by a broader rule!'
+                    message = 'The tags\n\n' + separator.join( [ HydrusTags.convert_tag_slice_to_pretty_string( tag_slice ) for tag_slice in already_blocked ] ) + '\n\nare already blocked by a broader rule!'
                     
                 
                 self._ShowRedundantError( message )
@@ -344,13 +344,13 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 if len( already_permitted ) == 1:
                     
-                    message = f'{HydrusTags.ConvertTagSliceToPrettyString( to_add[0] )} is already permitted by a broader rule!'
+                    message = f'{HydrusTags.convert_tag_slice_to_pretty_string( to_add[0] )} is already permitted by a broader rule!'
                     
                 else:
                     
                     separator = '\n' if len( already_permitted ) < 5 else ', '
                     
-                    message = 'The tags\n\n' + separator.join( [ HydrusTags.ConvertTagSliceToPrettyString( tag_slice ) for tag_slice in already_permitted ] ) + '\n\nare already permitted by a broader rule!'
+                    message = 'The tags\n\n' + separator.join( [ HydrusTags.convert_tag_slice_to_pretty_string( tag_slice ) for tag_slice in already_permitted ] ) + '\n\nare already permitted by a broader rule!'
                     
                 
                 self._ShowRedundantError( message )
@@ -381,7 +381,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
         
         if ':' in tag_slice:
             
-            ( namespace, subtag ) = HydrusTags.SplitTag( tag_slice )
+            ( namespace, subtag ) = HydrusTags.split_tag( tag_slice )
             
             if subtag == '*':
                 
@@ -398,13 +398,13 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
             
             test_slices = { tag_slice }
             
-        elif HydrusTags.IsNamespaceTagSlice( tag_slice ):
+        elif HydrusTags.is_namespace_tag_slice( tag_slice ):
             
             test_slices = { ':', tag_slice }
             
         elif ':' in tag_slice:
             
-            ( ns, st ) = HydrusTags.SplitTag( tag_slice )
+            ( ns, st ) = HydrusTags.split_tag( tag_slice )
             
             test_slices = { ':', ns + ':', tag_slice }
             
@@ -466,7 +466,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
         
         menu = ClientGUIMenus.GenerateMenu( self )
         
-        ClientGUIMenus.AppendMenuItem( menu, 'this tag filter', 'export this tag filter', CG.client_controller.pub, 'clipboard', 'text', self.GetValue().DumpToString() )
+        ClientGUIMenus.AppendMenuItem( menu, 'this tag filter', 'export this tag filter', CG.client_controller.pub, 'clipboard', 'text', self.GetValue().dump_to_string() )
         
         if len( names_to_tag_filters ) > 0:
             
@@ -504,7 +504,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', str(e) )
             
@@ -513,7 +513,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            obj = HydrusSerialisable.CreateFromString( raw_text )
+            obj = HydrusSerialisable.create_from_string( raw_text )
             
         except Exception as e:
             
@@ -531,7 +531,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
         
         tag_filter = obj
         
-        tag_filter.CleanRules()
+        tag_filter.clean_rules()
         
         try:
             
@@ -1127,11 +1127,11 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
         
         if self._only_show_blacklist:
             
-            pretty_tag_filter = tag_filter.ToBlacklistString()
+            pretty_tag_filter = tag_filter.to_blacklist_string()
             
         else:
             
-            pretty_tag_filter = 'current filter: {}'.format( tag_filter.ToPermittedString() )
+            pretty_tag_filter = 'current filter: {}'.format( tag_filter.to_permitted_string() )
             
         
         self._current_filter_st.setText( pretty_tag_filter )
@@ -1161,9 +1161,9 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            test_tags = HydrusText.DeserialiseNewlinedTexts( test_input )
+            test_tags = HydrusText.deserialise_newlined_texts( test_input )
             
-            test_tags = HydrusTags.CleanTags( test_tags )
+            test_tags = HydrusTags.clean_tags( test_tags )
             
             tag_filter = self.GetValue()
             
@@ -1178,11 +1178,11 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     results = []
                     
-                    tags_to_siblings = CG.client_controller.Read( 'tag_siblings_lookup', CC.COMBINED_TAG_SERVICE_KEY, test_tags )
+                    tags_to_siblings = CG.client_controller.read( 'tag_siblings_lookup', CC.COMBINED_TAG_SERVICE_KEY, test_tags )
                     
                     for test_tag_and_siblings in tags_to_siblings.values():
                         
-                        results.append( False not in ( tag_filter.TagOK( t, apply_unnamespaced_rules_to_namespaced_tags = True ) for t in test_tag_and_siblings ) )
+                        results.append( False not in ( tag_filter.tag_ok( t, apply_unnamespaced_rules_to_namespaced_tags = True ) for t in test_tag_and_siblings ) )
                         
                     
                     return results
@@ -1192,7 +1192,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 def work_callable():
                     
-                    results = [ tag_filter.TagOK( test_tag ) for test_tag in test_tags ]
+                    results = [ tag_filter.tag_ok( test_tag ) for test_tag in test_tags ]
                     
                     return results
                     
@@ -1238,7 +1238,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
                         
                         c.update( results )
                         
-                        test_result_text = '{} pass, {} blocked!'.format( HydrusNumbers.ToHumanInt( c[ True ] ), HydrusNumbers.ToHumanInt( c[ False ] ) )
+                        test_result_text = '{} pass, {} blocked!'.format( HydrusNumbers.to_human_int( c[ True ] ), HydrusNumbers.to_human_int( c[ False ] ) )
                         
                         self._test_result_st.setObjectName( 'HydrusInvalid' )
                         
@@ -1313,16 +1313,16 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRules( self._advanced_blacklist.GetTagSlices(), HC.FILTER_BLACKLIST )
-        tag_filter.SetRules( self._advanced_whitelist.GetTagSlices(), HC.FILTER_WHITELIST )
+        tag_filter.set_rules( self._advanced_blacklist.GetTagSlices(), HC.FILTER_BLACKLIST )
+        tag_filter.set_rules( self._advanced_whitelist.GetTagSlices(), HC.FILTER_WHITELIST )
         
         return tag_filter
         
     
     def SetValue( self, tag_filter: HydrusTags.TagFilter ):
         
-        blacklist_tag_slices = [ tag_slice for ( tag_slice, rule ) in tag_filter.GetTagSlicesToRules().items() if rule == HC.FILTER_BLACKLIST ]
-        whitelist_tag_slices = [ tag_slice for ( tag_slice, rule ) in tag_filter.GetTagSlicesToRules().items() if rule == HC.FILTER_WHITELIST ]
+        blacklist_tag_slices = [ tag_slice for ( tag_slice, rule ) in tag_filter.get_tag_slices_to_rules().items() if rule == HC.FILTER_BLACKLIST ]
+        whitelist_tag_slices = [ tag_slice for ( tag_slice, rule ) in tag_filter.get_tag_slices_to_rules().items() if rule == HC.FILTER_WHITELIST ]
         
         self._advanced_blacklist.SetTagSlices( blacklist_tag_slices )
         self._advanced_whitelist.SetTagSlices( whitelist_tag_slices )
@@ -1406,11 +1406,11 @@ class TagFilterButton( ClientGUICommon.BetterButton ):
         
         if self._only_show_blacklist:
             
-            tt = self._tag_filter.ToBlacklistString()
+            tt = self._tag_filter.to_blacklist_string()
             
         else:
             
-            tt = self._tag_filter.ToPermittedString()
+            tt = self._tag_filter.to_permitted_string()
             
         
         if self._label_prefix is not None:
@@ -1418,7 +1418,7 @@ class TagFilterButton( ClientGUICommon.BetterButton ):
             tt = self._label_prefix + tt
             
         
-        button_text = HydrusText.ElideText( tt, 45 )
+        button_text = HydrusText.elide_text( tt, 45 )
         
         self.setText( button_text )
         

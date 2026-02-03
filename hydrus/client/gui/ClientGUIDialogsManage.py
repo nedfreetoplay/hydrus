@@ -41,7 +41,7 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
             self._hashes.update( m.GetHashes() )
             
         
-        super().__init__( parent, 'manage ratings for ' + HydrusNumbers.ToHumanInt( len( self._hashes ) ) + ' files', position = 'topleft' )
+        super().__init__( parent, 'manage ratings for ' + HydrusNumbers.to_human_int( len( self._hashes ) ) + ' files', position = 'topleft' )
         
         #
         
@@ -175,7 +175,7 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
             
             if content_update_package.HasContent():
                 
-                CG.client_controller.Write( 'content_updates', content_update_package )
+                CG.client_controller.write( 'content_updates', content_update_package )
                 
             
         finally:
@@ -715,12 +715,12 @@ class DialogManageUPnP( ClientGUIDialogs.Dialog ):
                     
                     if remove_existing:
                         
-                        HydrusNATPunch.RemoveUPnPMapping( external_port, protocol )
+                        HydrusNATPunch.remove_upnp_mapping( external_port, protocol )
                         
                     
-                    internal_client = HydrusNATPunch.GetLocalIP()
+                    internal_client = HydrusNATPunch.get_local_ip()
                     
-                    HydrusNATPunch.AddUPnPMapping( internal_client, internal_port, external_port, protocol, description, duration = duration )
+                    HydrusNATPunch.add_upnp_mapping( internal_client, internal_port, external_port, protocol, description, duration = duration )
                     
                     return True
                     
@@ -751,7 +751,7 @@ class DialogManageUPnP( ClientGUIDialogs.Dialog ):
             
         else:
             
-            pretty_duration = HydrusTime.TimeDeltaToPrettyTimeDelta( duration )
+            pretty_duration = HydrusTime.timedelta_to_pretty_timedelta( duration )
             
         
         return ( description, internal_ip, str( internal_port ), str( external_port ), protocol, pretty_duration )
@@ -785,17 +785,17 @@ class DialogManageUPnP( ClientGUIDialogs.Dialog ):
                         
                         if remove_old:
                             
-                            HydrusNATPunch.RemoveUPnPMapping( old_external_port, old_protocol )
+                            HydrusNATPunch.remove_upnp_mapping( old_external_port, old_protocol )
                             
                         
                         if remove_existing:
                             
-                            HydrusNATPunch.RemoveUPnPMapping( external_port, protocol )
+                            HydrusNATPunch.remove_upnp_mapping( external_port, protocol )
                             
                         
-                        internal_client = HydrusNATPunch.GetLocalIP()
+                        internal_client = HydrusNATPunch.get_local_ip()
                         
-                        HydrusNATPunch.AddUPnPMapping( internal_client, internal_port, external_port, protocol, description, duration = duration )
+                        HydrusNATPunch.add_upnp_mapping( internal_client, internal_port, external_port, protocol, description, duration = duration )
                         
                         return True
                         
@@ -828,7 +828,7 @@ class DialogManageUPnP( ClientGUIDialogs.Dialog ):
             
             try:
                 
-                external_ip = HydrusNATPunch.GetExternalIP()
+                external_ip = HydrusNATPunch.get_external_ip()
                 
                 external_ip_text = 'External IP: {}'.format( external_ip )
                 
@@ -860,7 +860,7 @@ class DialogManageUPnP( ClientGUIDialogs.Dialog ):
             
             try:
                 
-                mappings = HydrusNATPunch.GetUPnPMappings()
+                mappings = HydrusNATPunch.get_upnp_mappings()
                 
             except Exception as e:
                 
@@ -939,7 +939,7 @@ class DialogManageUPnP( ClientGUIDialogs.Dialog ):
                 
                 ( description, internal_ip, internal_port, external_port, protocol, duration ) = selected_mapping
                 
-                HydrusNATPunch.RemoveUPnPMapping( external_port, protocol )
+                HydrusNATPunch.remove_upnp_mapping( external_port, protocol )
                 
             
             return True

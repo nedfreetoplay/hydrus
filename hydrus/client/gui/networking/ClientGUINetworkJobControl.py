@@ -163,7 +163,7 @@ class NetworkJobControl( QW.QFrame ):
                         
                         if waiting_estimate > 0:
                             
-                            network_context_text = '{} ({})'.format( network_context_text, HydrusTime.TimeDeltaToPrettyTimeDelta( waiting_estimate ) )
+                            network_context_text = '{} ({})'.format( network_context_text, HydrusTime.timedelta_to_pretty_timedelta( waiting_estimate ) )
                             
                         
                     
@@ -231,7 +231,7 @@ class NetworkJobControl( QW.QFrame ):
             
         else:
             
-            if self._auto_override_bandwidth_rules and HydrusTime.TimeHasPassed( self._network_job.GetCreationTime() + 5 ):
+            if self._auto_override_bandwidth_rules and HydrusTime.time_has_passed( self._network_job.GetCreationTime() + 5 ):
                 
                 self._network_job.OverrideBandwidth()
                 
@@ -255,7 +255,7 @@ class NetworkJobControl( QW.QFrame ):
             
             ( status_text, current_speed, bytes_read, bytes_to_read ) = self._network_job.GetStatus()
             
-            self._left_text.setText( HydrusText.GetFirstLine( status_text ) )
+            self._left_text.setText( HydrusText.get_first_line( status_text ) )
             
             speed_text = ''
             
@@ -263,16 +263,16 @@ class NetworkJobControl( QW.QFrame ):
                 
                 if bytes_to_read is not None and bytes_read != bytes_to_read:
                     
-                    speed_text += HydrusData.ConvertValueRangeToBytes( bytes_read, bytes_to_read )
+                    speed_text += HydrusData.convert_value_range_to_bytes( bytes_read, bytes_to_read )
                     
                 else:
                     
-                    speed_text += HydrusData.ToHumanBytes( bytes_read )
+                    speed_text += HydrusData.to_human_bytes( bytes_read )
                     
                 
                 if current_speed != bytes_to_read: # if it is a real quick download, just say its size
                     
-                    speed_text += ' ' + HydrusData.ToHumanBytes( current_speed ) + '/s'
+                    speed_text += ' ' + HydrusData.to_human_bytes( current_speed ) + '/s'
                     
                 
             

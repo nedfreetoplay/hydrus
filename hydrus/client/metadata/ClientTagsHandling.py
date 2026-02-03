@@ -55,12 +55,12 @@ class TagAutocompleteOptions( HydrusSerialisable.SerialisableBase ):
         self._exact_match_character_threshold = 2
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         serialisable_service_key = self._service_key.hex()
         
         serialisable_write_autocomplete_tag_domain = self._write_autocomplete_tag_domain.hex()
-        serialisable_write_autocomplete_location_context = self._write_autocomplete_location_context.GetSerialisableTuple()
+        serialisable_write_autocomplete_location_context = self._write_autocomplete_location_context.get_serialisable_tuple()
         
         serialisable_info = [
             serialisable_service_key,
@@ -79,7 +79,7 @@ class TagAutocompleteOptions( HydrusSerialisable.SerialisableBase ):
         return serialisable_info
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         [
             serialisable_service_key,
@@ -97,10 +97,10 @@ class TagAutocompleteOptions( HydrusSerialisable.SerialisableBase ):
         
         self._service_key = bytes.fromhex( serialisable_service_key )
         self._write_autocomplete_tag_domain = bytes.fromhex( serialisable_write_autocomplete_tag_domain )
-        self._write_autocomplete_location_context = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_write_autocomplete_location_context )
+        self._write_autocomplete_location_context = HydrusSerialisable.create_from_serialisable_tuple( serialisable_write_autocomplete_location_context )
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -181,7 +181,7 @@ class TagAutocompleteOptions( HydrusSerialisable.SerialisableBase ):
             file_service_key = bytes.fromhex( serialisable_write_autocomplete_file_domain )
             location_context = ClientLocation.LocationContext.STATICCreateSimple( file_service_key )
             
-            serialisable_write_autocomplete_location_context = location_context.GetSerialisableTuple()
+            serialisable_write_autocomplete_location_context = location_context.get_serialisable_tuple()
             
             new_serialisable_info = [
                 serialisable_service_key,
@@ -267,7 +267,7 @@ class TagAutocompleteOptions( HydrusSerialisable.SerialisableBase ):
             
             if self._override_write_autocomplete_location_context:
                 
-                location_context = self._write_autocomplete_location_context.Duplicate()
+                location_context = self._write_autocomplete_location_context.duplicate()
                 
             
             tag_service_key = self._write_autocomplete_tag_domain
@@ -389,7 +389,7 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         if rest_ratio is None:
             
-            if self._controller.CurrentlyIdle():
+            if self._controller.currently_idle():
                 
                 rest_ratio = CG.client_controller.new_options.GetInteger( 'tag_display_processing_rest_percentage_idle' ) / 100
                 
@@ -436,17 +436,17 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             if service_key in self._go_faster:
                 
-                return HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'tag_display_processing_work_time_ms_work_hard' ) )
+                return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'tag_display_processing_work_time_ms_work_hard' ) )
                 
             
         
-        if self._controller.CurrentlyIdle():
+        if self._controller.currently_idle():
             
-            return HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'tag_display_processing_work_time_ms_idle' ) )
+            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'tag_display_processing_work_time_ms_idle' ) )
             
         else:
             
-            return HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'tag_display_processing_work_time_ms_normal' ) )
+            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'tag_display_processing_work_time_ms_normal' ) )
             
         
     
@@ -458,12 +458,12 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
         
         # we are getting new display data pretty fast. if it is streaming in, let's take a break
-        if not HydrusTime.TimeHasPassed( self._last_last_new_data_event_time + 10 ):
+        if not HydrusTime.time_has_passed( self._last_last_new_data_event_time + 10 ):
             
             return False
             
         
-        if self._controller.CurrentlyIdle():
+        if self._controller.currently_idle():
             
             if self._controller.new_options.GetBoolean( 'tag_display_maintenance_during_idle' ):
                 
@@ -491,7 +491,7 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             if service_key not in self._service_keys_to_needs_work:
                 
-                status = self._controller.Read( 'tag_display_maintenance_status', service_key )
+                status = self._controller.read( 'tag_display_maintenance_status', service_key )
                 
                 work_to_do = status[ 'num_siblings_to_sync' ] + status[ 'num_parents_to_sync' ] > 0
                 sync_halted = len( status[ 'waiting_on_tag_repos' ] ) > 0
@@ -568,11 +568,11 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 expected_work_period = self._GetWorkPeriod( service_key )
                 
-                start_time = HydrusTime.GetNowPrecise()
+                start_time = HydrusTime.get_now_precise()
                 
-                still_needs_work = self._controller.WriteSynchronous( 'sync_tag_display_maintenance', service_key, expected_work_period )
+                still_needs_work = self._controller.write_synchronous( 'sync_tag_display_maintenance', service_key, expected_work_period )
                 
-                finish_time = HydrusTime.GetNowPrecise()
+                finish_time = HydrusTime.get_now_precise()
                 
                 actual_work_period = finish_time - start_time
                 
@@ -605,7 +605,7 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 time.sleep( 1 )
                 
                 self._last_last_new_data_event_time = self._last_new_data_event_time
-                self._last_new_data_event_time = HydrusTime.GetNow()
+                self._last_new_data_event_time = HydrusTime.get_now()
                 
                 self._service_keys_to_needs_work = {}
                 
@@ -670,18 +670,18 @@ class TagDisplayManager( HydrusSerialisable.SerialisableBase ):
         self._dirty = False
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         serialisable_tag_display_types_to_service_keys_to_tag_filters = []
         
         for ( tag_display_type, service_keys_to_tag_filters ) in self._tag_display_types_to_service_keys_to_tag_filters.items():
             
-            serialisable_service_keys_to_tag_filters = [ ( service_key.hex(), tag_filter.GetSerialisableTuple() ) for ( service_key, tag_filter ) in service_keys_to_tag_filters.items() ]
+            serialisable_service_keys_to_tag_filters = [ ( service_key.hex(), tag_filter.get_serialisable_tuple() ) for ( service_key, tag_filter ) in service_keys_to_tag_filters.items() ]
             
             serialisable_tag_display_types_to_service_keys_to_tag_filters.append( ( tag_display_type, serialisable_service_keys_to_tag_filters ) )
             
         
-        serialisable_tag_autocomplete_options = HydrusSerialisable.SerialisableList( self._tag_service_keys_to_tag_autocomplete_options.values() ).GetSerialisableTuple()
+        serialisable_tag_autocomplete_options = HydrusSerialisable.SerialisableList( self._tag_service_keys_to_tag_autocomplete_options.values() ).get_serialisable_tuple()
         
         serialisable_info = [
             serialisable_tag_display_types_to_service_keys_to_tag_filters,
@@ -691,7 +691,7 @@ class TagDisplayManager( HydrusSerialisable.SerialisableBase ):
         return serialisable_info
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         [
             serialisable_tag_display_types_to_service_keys_to_tag_filters,
@@ -703,16 +703,16 @@ class TagDisplayManager( HydrusSerialisable.SerialisableBase ):
             for ( serialisable_service_key, serialisable_tag_filter ) in serialisable_service_keys_to_tag_filters:
                 
                 service_key = bytes.fromhex( serialisable_service_key )
-                tag_filter = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tag_filter )
+                tag_filter = HydrusSerialisable.create_from_serialisable_tuple( serialisable_tag_filter )
                 
                 self._tag_display_types_to_service_keys_to_tag_filters[ tag_display_type ][ service_key ] = tag_filter
                 
             
         
-        self._tag_service_keys_to_tag_autocomplete_options = { tag_autocomplete_options.GetServiceKey() : tag_autocomplete_options for tag_autocomplete_options in HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tag_autocomplete_options ) }
+        self._tag_service_keys_to_tag_autocomplete_options = { tag_autocomplete_options.GetServiceKey() : tag_autocomplete_options for tag_autocomplete_options in HydrusSerialisable.create_from_serialisable_tuple( serialisable_tag_autocomplete_options ) }
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -722,7 +722,7 @@ class TagDisplayManager( HydrusSerialisable.SerialisableBase ):
             
             new_serialisable_info = [
                 serialisable_tag_display_types_to_service_keys_to_tag_filters,
-                tag_autocomplete_options_list.GetSerialisableTuple()
+                tag_autocomplete_options_list.get_serialisable_tuple()
             ]
             
             return ( 2, new_serialisable_info )
@@ -738,8 +738,8 @@ class TagDisplayManager( HydrusSerialisable.SerialisableBase ):
             service_keys_to_ordered_sibling_service_keys = collections.defaultdict( list )
             service_keys_to_ordered_parent_service_keys = collections.defaultdict( list )
             
-            serialisable_service_keys_to_ordered_sibling_service_keys = HydrusSerialisable.SerialisableBytesDictionary( service_keys_to_ordered_sibling_service_keys ).GetSerialisableTuple()
-            serialisable_service_keys_to_ordered_parent_service_keys = HydrusSerialisable.SerialisableBytesDictionary( service_keys_to_ordered_parent_service_keys ).GetSerialisableTuple()
+            serialisable_service_keys_to_ordered_sibling_service_keys = HydrusSerialisable.SerialisableBytesDictionary( service_keys_to_ordered_sibling_service_keys ).get_serialisable_tuple()
+            serialisable_service_keys_to_ordered_parent_service_keys = HydrusSerialisable.SerialisableBytesDictionary( service_keys_to_ordered_parent_service_keys ).get_serialisable_tuple()
             
             new_serialisable_info = [
                 serialisable_tag_display_types_to_service_keys_to_tag_filters,
@@ -808,14 +808,14 @@ class TagDisplayManager( HydrusSerialisable.SerialisableBase ):
                 
                 tag_filter = self._tag_display_types_to_service_keys_to_tag_filters[ tag_display_type ][ service_key ]
                 
-                tags = tag_filter.Filter( tags )
+                tags = tag_filter.filter( tags )
                 
             
             if service_key != CC.COMBINED_TAG_SERVICE_KEY and CC.COMBINED_TAG_SERVICE_KEY in self._tag_display_types_to_service_keys_to_tag_filters[ tag_display_type ]:
                 
                 tag_filter = self._tag_display_types_to_service_keys_to_tag_filters[ tag_display_type ][ CC.COMBINED_TAG_SERVICE_KEY ]
                 
-                tags = tag_filter.Filter( tags )
+                tags = tag_filter.filter( tags )
                 
             
             return tags
@@ -859,7 +859,7 @@ class TagDisplayManager( HydrusSerialisable.SerialisableBase ):
         
         with self._lock:
             
-            return self._tag_display_types_to_service_keys_to_tag_filters[ tag_display_type ][ service_key ].Duplicate()
+            return self._tag_display_types_to_service_keys_to_tag_filters[ tag_display_type ][ service_key ].duplicate()
             
         
     
@@ -874,7 +874,7 @@ class TagDisplayManager( HydrusSerialisable.SerialisableBase ):
             
             tag_filter = self._tag_display_types_to_service_keys_to_tag_filters[ tag_display_type ][ service_key ]
             
-            tag_filter.SetRules( tags, HC.FILTER_BLACKLIST )
+            tag_filter.set_rules( tags, HC.FILTER_BLACKLIST )
             
             self._dirty = True
             

@@ -267,12 +267,12 @@ def add_extra_comments_to_job_status( job_status: ClientThreading.JobStatus ):
     
     if num_thumb_refits is not None:
         
-        extra_comments.append( 'thumbs needing regen: {}'.format( HydrusNumbers.ToHumanInt( num_thumb_refits ) ) )
+        extra_comments.append( 'thumbs needing regen: {}'.format( HydrusNumbers.to_human_int( num_thumb_refits ) ) )
         
     
     if num_bad_files is not None:
         
-        extra_comments.append( 'missing or invalid files: {}'.format( HydrusNumbers.ToHumanInt( num_bad_files ) ) )
+        extra_comments.append( 'missing or invalid files: {}'.format( HydrusNumbers.to_human_int( num_bad_files ) ) )
         
     
     sub_status_message = '\n'.join( extra_comments )
@@ -312,19 +312,19 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         CG.client_controller.WaitUntilViewFree()
         
-        if CG.client_controller.CurrentlyIdle():
+        if CG.client_controller.currently_idle():
             
             if not self._controller.new_options.GetBoolean( 'file_maintenance_during_idle' ):
                 
                 return False
                 
             
-            if not self._controller.GoodTimeToStartBackgroundWork():
+            if not self._controller.good_time_to_start_background_work():
                 
                 return False
                 
             
-            return self._idle_work_rules.CanStartRequest( self._work_tracker )
+            return self._idle_work_rules.can_start_request( self._work_tracker )
             
         else:
             
@@ -333,7 +333,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 return False
                 
             
-            return self._active_work_rules.CanStartRequest( self._work_tracker )
+            return self._active_work_rules.can_start_request( self._work_tracker )
             
         
     
@@ -377,18 +377,18 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             file_is_missing = True
             
-            HydrusData.DebugPrint( 'Missing file: {}!'.format( hash.hex() ) )
+            HydrusData.debug_print( 'Missing file: {}!'.format( hash.hex() ) )
             
         
         if not file_is_missing and job_type in ( REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_REMOVE_RECORD, REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_TRY_URL, REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_TRY_URL_ELSE_REMOVE_RECORD, REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_SILENT_DELETE ):
             
-            actual_hash = HydrusFileHandling.GetHashFromPath( path )
+            actual_hash = HydrusFileHandling.get_hash_from_path( path )
             
             if hash != actual_hash:
                 
                 file_is_invalid = True
                 
-                HydrusData.DebugPrint( 'Invalid file: {} actually had hash {}!'.format( hash.hex(), actual_hash.hex() ) )
+                HydrusData.debug_print( 'Invalid file: {} actually had hash {}!'.format( hash.hex(), actual_hash.hex() ) )
                 
             
         
@@ -396,11 +396,11 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         if file_was_bad:
             
-            error_dir = os.path.join( self._controller.GetDBDir(), 'missing_and_invalid_files' )
+            error_dir = os.path.join( self._controller.get_db_dir(), 'missing_and_invalid_files' )
             
-            HydrusPaths.MakeSureDirectoryExists( error_dir )
+            HydrusPaths.make_sure_directory_exists( error_dir )
             
-            pretty_timestamp = time.strftime( '%Y-%m-%d %H-%M-%S', time.localtime( HydrusTime.SecondiseMS( self._controller.GetBootTimestampMS() ) ) )
+            pretty_timestamp = time.strftime( '%Y-%m-%d %H-%M-%S', time.localtime( HydrusTime.secondise_ms( self._controller.get_boot_timestamp_ms() ) ) )
             
             missing_hashes_filename = '{} missing hashes.txt'.format( pretty_timestamp )
             
@@ -428,8 +428,8 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     
                 except Exception as e:
                     
-                    HydrusData.Print( 'Tried to export tags for missing file {}, but encountered this error:'.format( hash.hex() ) )
-                    HydrusData.PrintException( e, do_wait = False )
+                    HydrusData.print_text( 'Tried to export tags for missing file {}, but encountered this error:'.format( hash.hex() ) )
+                    HydrusData.print_exception( e, do_wait = False )
                     
                 
             
@@ -459,8 +459,8 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     
                 except Exception as e:
                     
-                    HydrusData.Print( 'Tried to export URLs for missing file {}, but encountered this error:'.format( hash.hex() ) )
-                    HydrusData.PrintException( e, do_wait = False )
+                    HydrusData.print_text( 'Tried to export URLs for missing file {}, but encountered this error:'.format( hash.hex() ) )
+                    HydrusData.print_exception( e, do_wait = False )
                     
                 
             
@@ -530,13 +530,13 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             if do_export:
                 
-                HydrusPaths.MakeSureDirectoryExists( error_dir )
+                HydrusPaths.make_sure_directory_exists( error_dir )
                 
                 dest_path = os.path.join( error_dir, os.path.basename( path ) )
                 
                 try:
                     
-                    HydrusPaths.MergeFile( path, dest_path )
+                    HydrusPaths.merge_file( path, dest_path )
                     
                 except Exception as e:
                     
@@ -551,7 +551,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     message += '\n' * 2
                     message += 'To stop spam, this message will only show one time per program boot. The error may happen again, silently.'
                     
-                    HydrusData.ShowText( message )
+                    HydrusData.show_text( message )
                     
                 
             
@@ -592,7 +592,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, content_update )
                     
-                    self._controller.WriteSynchronous( 'content_updates', content_update_package )
+                    self._controller.write_synchronous( 'content_updates', content_update_package )
                     
                     message = f'During file maintenance, failed to physically delete {media_result.GetHash().hex()}!'
                     
@@ -605,7 +605,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                         message += ' Wanted to leave no deletion record.'
                         
                     
-                    HydrusData.Print( message )
+                    HydrusData.print_text( message )
                     
                     if not self._pubbed_message_about_archive_delete_lock:
                         
@@ -613,7 +613,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                         message += '\n' * 2
                         message += 'To stop spam, this message will only show one time per program boot. The error may happen again, silently.'
                         
-                        HydrusData.ShowText( message )
+                        HydrusData.show_text( message )
                         
                         self._pubbed_message_about_archive_delete_lock = True
                         
@@ -624,19 +624,19 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_update )
                     
-                    self._controller.WriteSynchronous( 'content_updates', content_update_package )
+                    self._controller.write_synchronous( 'content_updates', content_update_package )
                     
-                    HydrusData.Print( f'During file maintenance, physically deleted {media_result.GetHash().hex()}!' )
+                    HydrusData.print_text( f'During file maintenance, physically deleted {media_result.GetHash().hex()}!' )
                     
                     if not leave_deletion_record:
                         
-                        HydrusData.Print( f'Clearing delete record for {media_result.GetHash().hex()}!' )
+                        HydrusData.print_text( f'Clearing delete record for {media_result.GetHash().hex()}!' )
                         
                         content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_CLEAR_DELETE_RECORD, ( hash, ) )
                         
                         content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_update )
                         
-                        self._controller.WriteSynchronous( 'content_updates', content_update_package )
+                        self._controller.write_synchronous( 'content_updates', content_update_package )
                         
                     
                     if not self._pubbed_message_about_bad_file_record_delete:
@@ -656,7 +656,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                         message += '\n' * 2
                         message += 'To stop spam, this message will only show one time per program boot. The error may happen again, silently.'
                         
-                        HydrusData.ShowText( message )
+                        HydrusData.show_text( message )
                         
                     
             
@@ -677,7 +677,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             cleared_jobs = [ ( hash, job_type, None ) for hash in hashes ]
             
-            self._controller.WriteSynchronous( 'file_maintenance_clear_jobs', cleared_jobs )
+            self._controller.write_synchronous( 'file_maintenance_clear_jobs', cleared_jobs )
             
         
     
@@ -698,7 +698,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             path = self._controller.client_files_manager.GetFilePath( hash, mime )
             
-            HydrusPaths.TryToGiveFileNicePermissionBits( path )
+            HydrusPaths.try_to_give_file_nice_permission_bits( path )
             
         except HydrusExceptions.FileMissingException:
             
@@ -722,9 +722,9 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             try:
                 
-                raw_pil_image = HydrusImageOpening.RawOpenPILImage( path )
+                raw_pil_image = HydrusImageOpening.raw_open_pil_image( path )
                 
-                has_exif = HydrusImageMetadata.HasEXIF( raw_pil_image )
+                has_exif = HydrusImageMetadata.has_exif( raw_pil_image )
                 
             except:
                 
@@ -785,7 +785,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 try:
                     
-                    has_icc_profile = HydrusPSDHandling.PSDHasICCProfile( path )
+                    has_icc_profile = HydrusPSDHandling.psd_has_icc_profile( path )
                     
                 except:
                     
@@ -795,14 +795,14 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 try:
                     
-                    raw_pil_image = HydrusImageOpening.RawOpenPILImage( path )
+                    raw_pil_image = HydrusImageOpening.raw_open_pil_image( path )
                     
                 except:
                     
                     return None
                     
                 
-                has_icc_profile = HydrusImageMetadata.HasICCProfile( raw_pil_image )
+                has_icc_profile = HydrusImageMetadata.has_icc_profile( raw_pil_image )
                 
             
             additional_data = has_icc_profile
@@ -850,13 +850,13 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             path = self._controller.client_files_manager.GetFilePath( hash, original_mime )
             
-            ( size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) = HydrusFileHandling.GetFileInfo( path, ok_to_look_for_hydrus_updates = True )
+            ( size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) = HydrusFileHandling.get_file_info( path, ok_to_look_for_hydrus_updates = True )
             
             additional_data = ( size, mime, width, height, duration_ms, num_frames, has_audio, num_words )
             
             if mime != original_mime and not media_result.GetFileInfoManager().FiletypeIsForced():
                 
-                if not HydrusPaths.PathIsFree( path ):
+                if not HydrusPaths.path_is_free( path ):
                     
                     time.sleep( 0.5 )
                     
@@ -865,7 +865,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 if needed_to_dupe_the_file:
                     
-                    self._controller.WriteSynchronous( 'file_maintenance_add_jobs_hashes', { hash }, REGENERATE_FILE_DATA_JOB_DELETE_NEIGHBOUR_DUPES, HydrusTime.GetNow() + 3600 )
+                    self._controller.write_synchronous( 'file_maintenance_add_jobs_hashes', { hash }, REGENERATE_FILE_DATA_JOB_DELETE_NEIGHBOUR_DUPES, HydrusTime.get_now() + 3600 )
                     
                 
             
@@ -897,7 +897,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             path = self._controller.client_files_manager.GetFilePath( hash, mime )
             
-            file_modified_timestamp_ms = HydrusFileHandling.GetFileModifiedTimestampMS( path )
+            file_modified_timestamp_ms = HydrusFileHandling.get_file_modified_timestamp_ms( path )
             
             additional_data = file_modified_timestamp_ms
             
@@ -923,7 +923,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             path = self._controller.client_files_manager.GetFilePath( hash, mime )
             
-            ( md5, sha1, sha512 ) = HydrusFileHandling.GetExtraHashesFromPath( path )
+            ( md5, sha1, sha512 ) = HydrusFileHandling.get_extra_hashes_from_path( path )
             
             additional_data = ( md5, sha1, sha512 )
             
@@ -998,7 +998,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             try:
                 
-                pixel_hash = HydrusImageHandling.GetImagePixelHash( path, mime )
+                pixel_hash = HydrusImageHandling.get_image_pixel_hash( path, mime )
                 
             except:
                 
@@ -1033,11 +1033,11 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         try:
             
-            thumbnail_mime = HydrusFileHandling.GetThumbnailMime( thumbnail_path )
+            thumbnail_mime = HydrusFileHandling.get_thumbnail_mime( thumbnail_path )
             
-            numpy_image = HydrusImageHandling.GenerateNumPyImage( thumbnail_path, thumbnail_mime )
+            numpy_image = HydrusImageHandling.generate_numpy_image( thumbnail_path, thumbnail_mime )
             
-            return HydrusBlurhash.GetBlurhashFromNumPy( numpy_image )
+            return HydrusBlurhash.get_blurhash_from_numpy( numpy_image )
             
         except:
             
@@ -1053,7 +1053,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         if mime not in HC.FILES_THAT_HAVE_PERCEPTUAL_HASH:
             
-            self._controller.WriteSynchronous( 'file_maintenance_add_jobs_hashes', { hash }, REGENERATE_FILE_DATA_JOB_CHECK_SIMILAR_FILES_MEMBERSHIP )
+            self._controller.write_synchronous( 'file_maintenance_add_jobs_hashes', { hash }, REGENERATE_FILE_DATA_JOB_CHECK_SIMILAR_FILES_MEMBERSHIP )
             
             return []
             
@@ -1079,14 +1079,14 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         self._idle_work_rules = HydrusNetworking.BandwidthRules()
         
-        self._idle_work_rules.AddRule( HC.BANDWIDTH_TYPE_REQUESTS, file_maintenance_idle_throttle_time_delta, file_maintenance_idle_throttle_files * NORMALISED_BIG_JOB_WEIGHT )
+        self._idle_work_rules.add_rule( HC.BANDWIDTH_TYPE_REQUESTS, file_maintenance_idle_throttle_time_delta, file_maintenance_idle_throttle_files * NORMALISED_BIG_JOB_WEIGHT )
         
         file_maintenance_active_throttle_files = self._controller.new_options.GetInteger( 'file_maintenance_active_throttle_files' )
         file_maintenance_active_throttle_time_delta = self._controller.new_options.GetInteger( 'file_maintenance_active_throttle_time_delta' )
         
         self._active_work_rules = HydrusNetworking.BandwidthRules()
         
-        self._active_work_rules.AddRule( HC.BANDWIDTH_TYPE_REQUESTS, file_maintenance_active_throttle_time_delta, file_maintenance_active_throttle_files * NORMALISED_BIG_JOB_WEIGHT )
+        self._active_work_rules.add_rule( HC.BANDWIDTH_TYPE_REQUESTS, file_maintenance_active_throttle_time_delta, file_maintenance_active_throttle_files * NORMALISED_BIG_JOB_WEIGHT )
         
     
     def _RunJob( self, media_results_to_job_types, job_status, job_done_hook = None ):
@@ -1102,11 +1102,11 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             big_pauser = HydrusThreading.BigJobPauser( wait_time = 0.8 )
             
-            last_time_jobs_were_cleared = HydrusTime.GetNow()
+            last_time_jobs_were_cleared = HydrusTime.get_now()
             
             for ( media_result, job_types ) in media_results_to_job_types.items():
                 
-                big_pauser.Pause()
+                big_pauser.pause()
                 
                 hash = media_result.GetHash()
                 
@@ -1119,7 +1119,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     if HG.file_report_mode:
                         
-                        HydrusData.ShowText( 'file maintenance: {} for {}'.format( regen_file_enum_to_str_lookup[ job_type ], hash.hex() ) )
+                        HydrusData.show_text( 'file maintenance: {} for {}'.format( regen_file_enum_to_str_lookup[ job_type ], hash.hex() ) )
                         
                     
                     if job_done_hook is not None:
@@ -1251,7 +1251,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                         
                     except IOError as e:
                         
-                        HydrusData.PrintException( e )
+                        HydrusData.print_exception( e )
                         
                         job_status = ClientThreading.JobStatus()
                         
@@ -1272,7 +1272,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                         
                     except Exception as e:
                         
-                        HydrusData.PrintException( e )
+                        HydrusData.print_exception( e )
                         
                         job_status = ClientThreading.JobStatus()
                         
@@ -1288,7 +1288,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                         
                     finally:
                         
-                        self._work_tracker.ReportRequestUsed( num_requests = regen_file_enum_to_job_weight_lookup[ job_type ] )
+                        self._work_tracker.report_request_used( num_requests = regen_file_enum_to_job_weight_lookup[ job_type ] )
                         
                         if clear_job:
                             
@@ -1297,11 +1297,11 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                         
                     
                 
-                if HydrusTime.TimeHasPassed( last_time_jobs_were_cleared + 10 ) or len( cleared_jobs ) > 256:
+                if HydrusTime.time_has_passed( last_time_jobs_were_cleared + 10 ) or len( cleared_jobs ) > 256:
                     
-                    self._controller.WriteSynchronous( 'file_maintenance_clear_jobs', cleared_jobs )
+                    self._controller.write_synchronous( 'file_maintenance_clear_jobs', cleared_jobs )
                     
-                    last_time_jobs_were_cleared = HydrusTime.GetNow()
+                    last_time_jobs_were_cleared = HydrusTime.get_now()
                     
                     cleared_jobs = []
                     
@@ -1311,7 +1311,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             if len( cleared_jobs ) > 0:
                 
-                self._controller.Write( 'file_maintenance_clear_jobs', cleared_jobs )
+                self._controller.write( 'file_maintenance_clear_jobs', cleared_jobs )
                 
             
         
@@ -1320,7 +1320,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         with self._lock:
             
-            self._controller.WriteSynchronous( 'file_maintenance_cancel_jobs', job_type )
+            self._controller.write_synchronous( 'file_maintenance_cancel_jobs', job_type )
             
             self._reset_background_event.set()
             
@@ -1348,7 +1348,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         job_status = ClientThreading.JobStatus( cancellable = True )
         
-        job_types_to_counts = CG.client_controller.Read( 'file_maintenance_get_job_counts' )
+        job_types_to_counts = CG.client_controller.read( 'file_maintenance_get_job_counts' )
         
         # in a dict so the hook has scope to alter it
         vr_status = {}
@@ -1363,7 +1363,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             num_jobs_done = vr_status[ 'num_jobs_done' ]
             
-            status_text = HydrusNumbers.ValueRangeToPrettyString( num_jobs_done, total_num_jobs_to_do )
+            status_text = HydrusNumbers.value_range_to_pretty_string( num_jobs_done, total_num_jobs_to_do )
             
             job_status.SetStatusText( status_text )
             
@@ -1386,7 +1386,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 while True:
                     
-                    hashes_to_job_types = self._controller.Read( 'file_maintenance_get_jobs', mandated_job_types )
+                    hashes_to_job_types = self._controller.read( 'file_maintenance_get_jobs', mandated_job_types )
                     
                     if len( hashes_to_job_types ) == 0:
                         
@@ -1409,7 +1409,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     hashes = set( hashes_to_job_types.keys() )
                     
-                    media_results = self._controller.Read( 'media_results', hashes )
+                    media_results = self._controller.read( 'media_results', hashes )
                     
                     hashes_to_media_results = { media_result.GetHash() : media_result for media_result in media_results }
                     
@@ -1421,11 +1421,11 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                         
                         message = 'There appears to be a problem with your file metadata store. Some files that were supposed to be undergoing maintenance did not return the correct metadata. Extra information has been printed to the log; please let hydev know.'
                         
-                        HydrusData.Print( message )
-                        HydrusData.Print( 'Desired hashes:' )
-                        HydrusData.Print( '\n'.join( sorted( [ h.hex() for h in hashes ] ) ) )
-                        HydrusData.Print( 'Received hashes:' )
-                        HydrusData.Print( '\n'.join( sorted( [ h.hex() for h in hashes_to_media_results.keys() ] ) ) )
+                        HydrusData.print_text( message )
+                        HydrusData.print_text( 'Desired hashes:' )
+                        HydrusData.print_text( '\n'.join( sorted( [ h.hex() for h in hashes ] ) ) )
+                        HydrusData.print_text( 'Received hashes:' )
+                        HydrusData.print_text( '\n'.join( sorted( [ h.hex() for h in hashes_to_media_results.keys() ] ) ) )
                         
                         raise Exception( message )
                         
@@ -1448,7 +1448,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 if not work_done:
                     
-                    HydrusData.ShowText( 'No file maintenance due!' )
+                    HydrusData.show_text( 'No file maintenance due!' )
                     
                 
                 self._controller.pub( 'notify_files_maintenance_done' )
@@ -1502,7 +1502,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             with self._maintenance_lock:
                 
-                hashes_to_job_types = self._controller.Read( 'file_maintenance_get_jobs' )
+                hashes_to_job_types = self._controller.read( 'file_maintenance_get_jobs' )
                 
                 if len( hashes_to_job_types ) > 0:
                     
@@ -1516,7 +1516,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                         
                         hashes = set( hashes_to_job_types.keys() )
                         
-                        media_results = self._controller.Read( 'media_results', hashes )
+                        media_results = self._controller.read( 'media_results', hashes )
                         
                         hashes_to_media_results = { media_result.GetHash() : media_result for media_result in media_results }
                         
@@ -1585,7 +1585,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         if self._serious_error_encountered and pub_job_status:
             
-            HydrusData.ShowText( 'Sorry, the file maintenance system has encountered a serious error and will perform no more jobs this program boot. Please shut the client down and check your hard drive health immediately.' )
+            HydrusData.show_text( 'Sorry, the file maintenance system has encountered a serious error and will perform no more jobs this program boot. Please shut the client down and check your hard drive health immediately.' )
             
             return
             
@@ -1605,7 +1605,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             num_jobs_done = vr_status[ 'num_jobs_done' ]
             
-            status_text = '{} - {}'.format( HydrusNumbers.ValueRangeToPrettyString( num_jobs_done, total_num_jobs_to_do ), regen_file_enum_to_str_lookup[ job_type ] )
+            status_text = '{} - {}'.format( HydrusNumbers.value_range_to_pretty_string( num_jobs_done, total_num_jobs_to_do ), regen_file_enum_to_str_lookup[ job_type ] )
             
             job_status.SetStatusText( status_text )
             
@@ -1648,7 +1648,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         with self._lock:
             
-            self._controller.Write( 'file_maintenance_add_jobs_hashes', hashes, job_type, time_can_start )
+            self._controller.write( 'file_maintenance_add_jobs_hashes', hashes, job_type, time_can_start )
             
         
         self.WakeIfNotWorking()
@@ -1658,7 +1658,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         with self._lock:
             
-            self._controller.Write( 'file_maintenance_add_jobs', hash_ids, job_type, time_can_start )
+            self._controller.write( 'file_maintenance_add_jobs', hash_ids, job_type, time_can_start )
             
         
         self.WakeIfNotWorking()

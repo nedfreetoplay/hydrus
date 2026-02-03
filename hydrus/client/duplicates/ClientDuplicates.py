@@ -119,7 +119,7 @@ class DuplicateContentMergeOptions( HydrusSerialisable.SerialisableBase ):
         self._sync_file_modified_date_action = HC.CONTENT_MERGE_ACTION_NONE
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         if CG.client_controller.IsBooted():
             
@@ -132,7 +132,7 @@ class DuplicateContentMergeOptions( HydrusSerialisable.SerialisableBase ):
         serialisable_tag_service_actions = [ ( service_key.hex(), action, tag_filter.GetSerialisableTuple() ) for ( service_key, action, tag_filter ) in self._tag_service_actions ]
         serialisable_rating_service_actions = [ ( service_key.hex(), action ) for ( service_key, action ) in self._rating_service_actions ]
         
-        serialisable_sync_note_import_options = self._sync_note_import_options.GetSerialisableTuple()
+        serialisable_sync_note_import_options = self._sync_note_import_options.get_serialisable_tuple()
         
         return (
             serialisable_tag_service_actions,
@@ -145,7 +145,7 @@ class DuplicateContentMergeOptions( HydrusSerialisable.SerialisableBase ):
         )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         (
             serialisable_tag_service_actions,
@@ -157,12 +157,12 @@ class DuplicateContentMergeOptions( HydrusSerialisable.SerialisableBase ):
             self._sync_file_modified_date_action
         ) = serialisable_info
         
-        self._tag_service_actions = [ ( bytes.fromhex( serialisable_service_key ), action, HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tag_filter ) ) for ( serialisable_service_key, action, serialisable_tag_filter ) in serialisable_tag_service_actions ]
+        self._tag_service_actions = [ ( bytes.fromhex( serialisable_service_key ), action, HydrusSerialisable.create_from_serialisable_tuple( serialisable_tag_filter ) ) for ( serialisable_service_key, action, serialisable_tag_filter ) in serialisable_tag_service_actions ]
         self._rating_service_actions = [ ( bytes.fromhex( serialisable_service_key ), action ) for ( serialisable_service_key, action ) in serialisable_rating_service_actions ]
-        self._sync_note_import_options = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_sync_note_import_options )
+        self._sync_note_import_options = HydrusSerialisable.create_from_serialisable_tuple( serialisable_sync_note_import_options )
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -245,7 +245,7 @@ class DuplicateContentMergeOptions( HydrusSerialisable.SerialisableBase ):
             sync_notes_action = HC.CONTENT_MERGE_ACTION_NONE
             sync_note_import_options = NoteImportOptions.NoteImportOptions()
             
-            serialisable_sync_note_import_options = sync_note_import_options.GetSerialisableTuple()
+            serialisable_sync_note_import_options = sync_note_import_options.get_serialisable_tuple()
             
             new_serialisable_info = ( serialisable_tag_service_actions, serialisable_rating_service_actions, sync_notes_action, serialisable_sync_note_import_options, sync_archive_action, sync_urls_action )
             

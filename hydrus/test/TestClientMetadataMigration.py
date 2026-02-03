@@ -62,7 +62,7 @@ class TestSingleFileMetadataRouter( unittest.TestCase ):
         
         #
         
-        hash = HydrusData.GenerateKey()
+        hash = HydrusData.generate_key()
         size = 40960
         mime = HC.IMAGE_JPEG
         width = 640
@@ -151,7 +151,7 @@ class TestSingleFileMetadataRouter( unittest.TestCase ):
         os.unlink( expected_input_path_1 )
         os.unlink( expected_input_path_2 )
         
-        result = HydrusText.DeserialiseNewlinedTexts( text )
+        result = HydrusText.deserialise_newlined_texts( text )
         expected_result = string_processor.ProcessStrings( set( rows_1 ).union( rows_2 ) )
         
         self.assertTrue( len( result ) > 0 )
@@ -199,7 +199,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         #
         
-        hash = HydrusData.GenerateKey()
+        hash = HydrusData.generate_key()
         size = 40960
         mime = HC.IMAGE_JPEG
         width = 640
@@ -290,7 +290,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         # simple
         
-        hash = HydrusData.GenerateKey()
+        hash = HydrusData.generate_key()
         
         media_result = HF.GetFakeMediaResult( hash )
         
@@ -327,7 +327,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         # simple
         
-        hash = HydrusData.GenerateKey()
+        hash = HydrusData.generate_key()
         size = 40960
         mime = HC.IMAGE_JPEG
         width = 640
@@ -389,14 +389,14 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
     
     def test_media_timestamps( self ):
         
-        archived_timestamp_ms = HydrusTime.GetNowMS() - 3600000
-        file_modified_timestamp_ms = HydrusTime.GetNowMS() - 2400000
-        site_dot_com_modified_timestamp_ms = HydrusTime.GetNowMS() - 2500000
+        archived_timestamp_ms = HydrusTime.get_now_ms() - 3600000
+        file_modified_timestamp_ms = HydrusTime.get_now_ms() - 2400000
+        site_dot_com_modified_timestamp_ms = HydrusTime.get_now_ms() - 2500000
         timestamp_data_stub = ClientTime.TimestampData.STATICSimpleStub( HC.TIMESTAMP_TYPE_ARCHIVED )
         
         # simple
         
-        hash = HydrusData.GenerateKey()
+        hash = HydrusData.generate_key()
         size = 40960
         mime = HC.IMAGE_JPEG
         width = 640
@@ -441,7 +441,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         result = importer.Import( media_result )
         
-        self.assertEqual( set( result ), { str( HydrusTime.SecondiseMS( archived_timestamp_ms ) ) } )
+        self.assertEqual( set( result ), { str( HydrusTime.secondise_ms( archived_timestamp_ms ) ) } )
         
         # with string processor
         
@@ -457,8 +457,8 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         result = importer.Import( media_result )
         
         self.assertTrue( len( result ) > 0 )
-        self.assertNotEqual( set( result ), { str( HydrusTime.SecondiseMS( archived_timestamp_ms ) ) } )
-        self.assertEqual( set( result ), set( string_processor.ProcessStrings( { str( HydrusTime.SecondiseMS( archived_timestamp_ms ) ) } ) ) )
+        self.assertNotEqual( set( result ), { str( HydrusTime.secondise_ms( archived_timestamp_ms ) ) } )
+        self.assertEqual( set( result ), set( string_processor.ProcessStrings( { str( HydrusTime.secondise_ms( archived_timestamp_ms ) ) } ) ) )
         
         # test modified date/aggregate
         
@@ -469,7 +469,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         result = importer.Import( media_result )
         
-        self.assertEqual( set( result ), { str( HydrusTime.SecondiseMS( file_modified_timestamp_ms ) ) } )
+        self.assertEqual( set( result ), { str( HydrusTime.secondise_ms( file_modified_timestamp_ms ) ) } )
         
         #
         
@@ -480,7 +480,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         result = importer.Import( media_result )
         
-        self.assertEqual( set( result ), { str( HydrusTime.SecondiseMS( site_dot_com_modified_timestamp_ms ) ) } )
+        self.assertEqual( set( result ), { str( HydrusTime.secondise_ms( site_dot_com_modified_timestamp_ms ) ) } )
         
         #
         
@@ -491,7 +491,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         result = importer.Import( media_result )
         
-        self.assertEqual( set( result ), { str( HydrusTime.SecondiseMS( min( site_dot_com_modified_timestamp_ms, file_modified_timestamp_ms ) ) ) } )
+        self.assertEqual( set( result ), { str( HydrusTime.secondise_ms( min( site_dot_com_modified_timestamp_ms, file_modified_timestamp_ms ) ) ) } )
         
     
     def test_media_txt( self ):
@@ -865,7 +865,7 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
     def test_media_timestamps( self ):
         
         hash = os.urandom( 32 )
-        timestamp = HydrusTime.GetNow() - 3600
+        timestamp = HydrusTime.get_now() - 3600
         
         rows = [ str( timestamp ) ]
         
@@ -937,7 +937,7 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
         
         os.unlink( expected_output_path )
         
-        self.assertEqual( set( rows ), set( HydrusText.DeserialiseNewlinedTexts( text ) ) )
+        self.assertEqual( set( rows ), set( HydrusText.deserialise_newlined_texts( text ) ) )
         
         # with suffix
         
@@ -956,7 +956,7 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
         
         os.unlink( expected_output_path )
         
-        self.assertEqual( set( rows ), set( HydrusText.DeserialiseNewlinedTexts( text ) ) )
+        self.assertEqual( set( rows ), set( HydrusText.deserialise_newlined_texts( text ) ) )
         
         # diff separator
         
@@ -994,7 +994,7 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
         
         os.unlink( expected_output_path )
         
-        self.assertEqual( set( rows ), set( HydrusText.DeserialiseNewlinedTexts( text ) ) )
+        self.assertEqual( set( rows ), set( HydrusText.deserialise_newlined_texts( text ) ) )
         
     
     def test_media_json( self ):

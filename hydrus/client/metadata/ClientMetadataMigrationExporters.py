@@ -56,17 +56,17 @@ class SingleFileMetadataExporterMediaNotes( SingleFileMetadataExporterMedia, Hyd
         self._forced_name = forced_name
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         return self._forced_name
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         self._forced_name = serialisable_info
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -116,7 +116,7 @@ class SingleFileMetadataExporterMediaNotes( SingleFileMetadataExporterMedia, Hyd
             names_and_notes.append( ( name, text ) )
             
         
-        media_result = CG.client_controller.Read( 'media_result', hash )
+        media_result = CG.client_controller.read( 'media_result', hash )
         
         note_import_options = NoteImportOptions.NoteImportOptions()
         
@@ -128,7 +128,7 @@ class SingleFileMetadataExporterMediaNotes( SingleFileMetadataExporterMedia, Hyd
         
         if content_update_package.HasContent():
             
-            CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+            CG.client_controller.write_synchronous( 'content_updates', content_update_package )
             
         
     
@@ -178,12 +178,12 @@ class SingleFileMetadataExporterMediaTags( SingleFileMetadataExporterMedia, Hydr
         self._service_key = service_key
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         return self._service_key.hex()
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         serialisable_service_key = serialisable_info
         
@@ -227,13 +227,13 @@ class SingleFileMetadataExporterMediaTags( SingleFileMetadataExporterMedia, Hydr
         
         hashes = { hash }
         
-        tags = HydrusTags.CleanTags( rows )
+        tags = HydrusTags.clean_tags( rows )
         
         if len( tags ) > 0:
             
             content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_MAPPINGS, add_content_action, ( tag, hashes ) ) for tag in tags ]
             
-            CG.client_controller.WriteSynchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( self._service_key, content_updates ) )
+            CG.client_controller.write_synchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( self._service_key, content_updates ) )
             
         
     
@@ -277,16 +277,16 @@ class SingleFileMetadataExporterMediaTimestamps( SingleFileMetadataExporterMedia
         self._timestamp_data_stub = timestamp_data_stub
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        return self._timestamp_data_stub.GetSerialisableTuple()
+        return self._timestamp_data_stub.get_serialisable_tuple()
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         serialisable_timestamp_data_stub = serialisable_info
         
-        self._timestamp_data_stub = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_timestamp_data_stub )
+        self._timestamp_data_stub = HydrusSerialisable.create_from_serialisable_tuple( serialisable_timestamp_data_stub )
         
     
     def Export( self, hash: bytes, rows: collections.abc.Collection[ str ] ):
@@ -307,18 +307,18 @@ class SingleFileMetadataExporterMediaTimestamps( SingleFileMetadataExporterMedia
             return
             
         
-        if timestamp > HydrusTime.GetNow():
+        if timestamp > HydrusTime.get_now():
             
             return
             
         
-        timestamp_data = self._timestamp_data_stub.Duplicate()
+        timestamp_data = self._timestamp_data_stub.duplicate()
         
-        new_timestamp_data = ClientTime.TimestampData( timestamp_type = timestamp_data.timestamp_type, location = timestamp_data.location, timestamp_ms = HydrusTime.MillisecondiseS( timestamp ) )
+        new_timestamp_data = ClientTime.TimestampData( timestamp_type = timestamp_data.timestamp_type, location = timestamp_data.location, timestamp_ms = HydrusTime.millisecondise_s( timestamp ) )
         
         content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_TIMESTAMP, HC.CONTENT_UPDATE_SET, ( ( hash, ), new_timestamp_data ) ) ]
         
-        CG.client_controller.WriteSynchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_updates ) )
+        CG.client_controller.write_synchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_updates ) )
         
     
     def GetExampleStrings( self ):
@@ -359,12 +359,12 @@ class SingleFileMetadataExporterMediaURLs( SingleFileMetadataExporterMedia, Hydr
         super().__init__()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         return list()
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         gumpf = serialisable_info
         
@@ -402,7 +402,7 @@ class SingleFileMetadataExporterMediaURLs( SingleFileMetadataExporterMedia, Hydr
         
         content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_URLS, HC.CONTENT_UPDATE_ADD, ( urls, hashes ) ) ]
         
-        CG.client_controller.WriteSynchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_updates ) )
+        CG.client_controller.write_synchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_updates ) )
         
     
     def GetExampleStrings( self ):
@@ -486,21 +486,21 @@ class SingleFileMetadataExporterJSON( SingleFileMetadataExporterSidecar, HydrusS
         self._nested_object_names = nested_object_names
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         serialisable_filename_string_converter = self._filename_string_converter.GetSerialisableTuple()
         
         return ( self._remove_actual_filename_ext, self._suffix, serialisable_filename_string_converter, self._nested_object_names )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( self._remove_actual_filename_ext, self._suffix, serialisable_filename_string_converter, self._nested_object_names ) = serialisable_info
         
-        self._filename_string_converter = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_filename_string_converter )
+        self._filename_string_converter = HydrusSerialisable.create_from_serialisable_tuple( serialisable_filename_string_converter )
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -509,7 +509,7 @@ class SingleFileMetadataExporterJSON( SingleFileMetadataExporterSidecar, HydrusS
             remove_actual_filename_ext = False
             filename_string_converter = ClientStrings.StringConverter( example_string = '0123456789abcdef.jpg.json' )
             
-            serialisable_filename_string_converter = filename_string_converter.GetSerialisableTuple()
+            serialisable_filename_string_converter = filename_string_converter.get_serialisable_tuple()
             
             new_serialisable_info = ( remove_actual_filename_ext, suffix, serialisable_filename_string_converter, nested_object_names )
             
@@ -644,21 +644,21 @@ class SingleFileMetadataExporterTXT( SingleFileMetadataExporterSidecar, HydrusSe
         self._separator = separator
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         serialisable_filename_string_converter = self._filename_string_converter.GetSerialisableTuple()
         
         return ( self._remove_actual_filename_ext, self._suffix, serialisable_filename_string_converter, self._separator )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( self._remove_actual_filename_ext, self._suffix, serialisable_filename_string_converter, self._separator ) = serialisable_info
         
-        self._filename_string_converter = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_filename_string_converter )
+        self._filename_string_converter = HydrusSerialisable.create_from_serialisable_tuple( serialisable_filename_string_converter )
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -667,7 +667,7 @@ class SingleFileMetadataExporterTXT( SingleFileMetadataExporterSidecar, HydrusSe
             remove_actual_filename_ext = False
             filename_string_converter = ClientStrings.StringConverter( example_string = '0123456789abcdef.jpg.txt' )
             
-            serialisable_filename_string_converter = filename_string_converter.GetSerialisableTuple()
+            serialisable_filename_string_converter = filename_string_converter.get_serialisable_tuple()
             
             new_serialisable_info = ( remove_actual_filename_ext, suffix, serialisable_filename_string_converter )
             

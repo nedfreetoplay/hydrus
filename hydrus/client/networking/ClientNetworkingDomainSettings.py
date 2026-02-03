@@ -58,18 +58,18 @@ class DomainSettings( HydrusSerialisable.SerialisableBase ):
         return tuple( sorted( self._domain_settings.items() ) ).__hash__()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_info = self._domain_settings.GetSerialisableTuple()
+        serialisable_info = self._domain_settings.get_serialisable_tuple()
         
         return serialisable_info
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         serialisable_domain_settings = serialisable_info
         
-        self._domain_settings = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_domain_settings )
+        self._domain_settings = HydrusSerialisable.create_from_serialisable_tuple( serialisable_domain_settings )
         
     
     def ClearSetting( self, domain_setting_type ):
@@ -152,25 +152,25 @@ class DomainStatus( HydrusSerialisable.SerialisableBase ):
         return tuple( sorted( self._domain_events_ms.items() ) ).__hash__()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_info = self._domain_events_ms.GetSerialisableTuple()
+        serialisable_info = self._domain_events_ms.get_serialisable_tuple()
         
         return serialisable_info
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         serialisable_domain_events_ms = serialisable_info
         
-        self._domain_events_ms = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_domain_events_ms )
+        self._domain_events_ms = HydrusSerialisable.create_from_serialisable_tuple( serialisable_domain_events_ms )
         
     
     def CleanseOldRecords( self, time_delta_s: float ):
         
         with self._lock:
             
-            dead_time = HydrusTime.GetNowMS() - HydrusTime.MillisecondiseS( time_delta_s )
+            dead_time = HydrusTime.get_now_ms() - HydrusTime.millisecondise_s( time_delta_s )
             
             for key in list( self._domain_events_ms.keys() ):
                 
@@ -204,7 +204,7 @@ class DomainStatus( HydrusSerialisable.SerialisableBase ):
             
             if event_type in self._domain_events_ms:
                 
-                dead_time = HydrusTime.GetNowMS() - HydrusTime.MillisecondiseS( time_delta_s )
+                dead_time = HydrusTime.get_now_ms() - HydrusTime.millisecondise_s( time_delta_s )
                 
                 return len( [ 1 for event_ms in self._domain_events_ms[ event_type ] if event_ms > dead_time ] )
                 
@@ -224,7 +224,7 @@ class DomainStatus( HydrusSerialisable.SerialisableBase ):
                 self._domain_events_ms[ event_type ] = []
                 
             
-            self._domain_events_ms[ event_type ].append( HydrusTime.GetNowMS() )
+            self._domain_events_ms[ event_type ].append( HydrusTime.get_now_ms() )
             
         
     

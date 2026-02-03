@@ -56,16 +56,16 @@ def DoMoveOrDuplicateLocalFiles( dest_service_key: bytes, action: int, media_res
         CG.client_controller.pub( 'message', job_status )
         
     
-    now_ms = HydrusTime.GetNowMS()
+    now_ms = HydrusTime.get_now_ms()
     
-    for ( num_done, num_to_do, block_of_media_results ) in HydrusLists.SplitListIntoChunksRich( media_results, BLOCK_SIZE ):
+    for ( num_done, num_to_do, block_of_media_results ) in HydrusLists.split_list_into_chunks_rich( media_results, BLOCK_SIZE ):
         
         if job_status.IsCancelled():
             
             break
             
         
-        job_status.SetStatusText( HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do ) )
+        job_status.SetStatusText( HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do ) )
         job_status.SetGauge( num_done, num_to_do )
         
         content_updates = []
@@ -88,7 +88,7 @@ def DoMoveOrDuplicateLocalFiles( dest_service_key: bytes, action: int, media_res
             content_updates.append( ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_UNDELETE, undelete_hashes ) )
             
         
-        CG.client_controller.WriteSynchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( dest_service_key, content_updates ) )
+        CG.client_controller.write_synchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( dest_service_key, content_updates ) )
         
         if action in ( HC.CONTENT_UPDATE_MOVE, HC.CONTENT_UPDATE_MOVE_MERGE ):
             
@@ -96,10 +96,10 @@ def DoMoveOrDuplicateLocalFiles( dest_service_key: bytes, action: int, media_res
             
             content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE_FROM_SOURCE_AFTER_MIGRATE, block_of_hashes, reason = 'Moved to {}'.format( dest_service_name ) ) ]
             
-            CG.client_controller.WriteSynchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( source_service_key, content_updates ) )
+            CG.client_controller.write_synchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( source_service_key, content_updates ) )
             
         
-        pauser.Pause()
+        pauser.pause()
         
     
     job_status.FinishAndDismiss()

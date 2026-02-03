@@ -202,12 +202,12 @@ class TestCheckerOptions( unittest.TestCase ):
         self.assertTrue( static_checker_options.IsDead( bare_file_seed_cache, last_check_time ) )
         
         # normal situation
-        last_check_time = HydrusTime.GetNow() - 5
+        last_check_time = HydrusTime.get_now() - 5
         
         self.assertEqual( static_checker_options.GetNextCheckTime( new_thread_file_seed_cache, last_check_time ), last_check_time + 3600 )
         
         # after a long pause
-        last_check_time = HydrusTime.GetNow() - 100000
+        last_check_time = HydrusTime.get_now() - 100000
         
         self.assertEqual( static_checker_options.GetNextCheckTime( new_thread_file_seed_cache, last_check_time ), last_check_time + 3600 * ( 100000 // 3600 ) )
         
@@ -406,7 +406,7 @@ class TestNoteImportOptions( unittest.TestCase ):
     
     def test_basics( self ):
         
-        example_hash = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
         existing_names_to_notes = { 'notes' : 'here is a note' }
         
         media_result = GetNotesMediaResult( example_hash, existing_names_to_notes )
@@ -559,14 +559,14 @@ class TestPresentationImportOptions( unittest.TestCase ):
     
     def test_presentation_import_options( self ):
         
-        new_and_inboxed_hash = HydrusData.GenerateKey()
-        new_and_archived_hash = HydrusData.GenerateKey()
-        already_in_and_inboxed_hash = HydrusData.GenerateKey()
-        already_in_and_archived_hash = HydrusData.GenerateKey()
-        new_and_inboxed_but_trashed_hash = HydrusData.GenerateKey()
-        skipped_hash = HydrusData.GenerateKey()
-        deleted_hash = HydrusData.GenerateKey()
-        failed_hash = HydrusData.GenerateKey()
+        new_and_inboxed_hash = HydrusData.generate_key()
+        new_and_archived_hash = HydrusData.generate_key()
+        already_in_and_inboxed_hash = HydrusData.generate_key()
+        already_in_and_archived_hash = HydrusData.generate_key()
+        new_and_inboxed_but_trashed_hash = HydrusData.generate_key()
+        skipped_hash = HydrusData.generate_key()
+        deleted_hash = HydrusData.generate_key()
+        failed_hash = HydrusData.generate_key()
         
         hashes_and_statuses = [
             ( new_and_inboxed_hash, CC.STATUS_SUCCESSFUL_AND_NEW ),
@@ -891,7 +891,7 @@ class TestTagImportOptions( unittest.TestCase ):
     def test_basics( self ):
         
         some_tags = { 'bodysuit', 'character:samus aran', 'series:metroid' }
-        example_hash = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
         example_service_key = TG.test_controller.example_tag_repo_service_key
         
         media_result = GetTagsMediaResult( example_hash, True, example_service_key, set() )
@@ -905,7 +905,7 @@ class TestTagImportOptions( unittest.TestCase ):
         
         blacklist = default_tag_import_options.GetTagBlacklist()
         
-        self.assertEqual( blacklist.Filter( some_tags ), some_tags )
+        self.assertEqual( blacklist.filter( some_tags ), some_tags )
         
         whitelist = default_tag_import_options.GetTagWhitelist()
         
@@ -934,7 +934,7 @@ class TestTagImportOptions( unittest.TestCase ):
         
         tag_blacklist = HydrusTags.TagFilter()
         
-        tag_blacklist.SetRule( 'series:', HC.FILTER_BLACKLIST )
+        tag_blacklist.set_rule( 'series:', HC.FILTER_BLACKLIST )
         
         service_keys_to_service_tag_import_options = { example_service_key : TagImportOptionsLegacy.ServiceTagImportOptions( get_tags = True ) }
         
@@ -975,7 +975,7 @@ class TestTagImportOptions( unittest.TestCase ):
     def test_external_tags( self ):
         
         some_tags = set()
-        example_hash = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
         example_service_key = TG.test_controller.example_tag_repo_service_key
         
         external_filterable_tags = { 'bodysuit', 'character:samus aran', 'series:metroid' }
@@ -1006,7 +1006,7 @@ class TestTagImportOptions( unittest.TestCase ):
         
         get_tags_filter = HydrusTags.TagFilter()
         
-        get_tags_filter.SetRule( 'series:', HC.FILTER_BLACKLIST )
+        get_tags_filter.set_rule( 'series:', HC.FILTER_BLACKLIST )
         
         service_keys_to_service_tag_import_options = { example_service_key : TagImportOptionsLegacy.ServiceTagImportOptions( get_tags = True, get_tags_filter = get_tags_filter ) }
         
@@ -1029,7 +1029,7 @@ class TestTagImportOptions( unittest.TestCase ):
     def test_services( self ):
         
         some_tags = { 'bodysuit', 'character:samus aran', 'series:metroid' }
-        example_hash = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
         example_service_key_1 = CC.DEFAULT_LOCAL_TAG_SERVICE_KEY
         example_service_key_2 = TG.test_controller.example_tag_repo_service_key
         
@@ -1060,7 +1060,7 @@ class TestTagImportOptions( unittest.TestCase ):
     def test_overwrite_deleted_filterable( self ):
         
         some_tags = { 'bodysuit', 'character:samus aran', 'series:metroid' }
-        example_hash = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
         example_service_key = TG.test_controller.example_tag_repo_service_key
         
         media_result = GetTagsMediaResult( example_hash, True, example_service_key, { 'bodysuit', 'series:metroid' } )
@@ -1107,7 +1107,7 @@ class TestTagImportOptions( unittest.TestCase ):
     def test_overwrite_deleted_additional( self ):
         
         some_tags = { 'bodysuit', 'character:samus aran', 'series:metroid' }
-        example_hash = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
         example_service_key = TG.test_controller.example_tag_repo_service_key
         
         media_result = GetTagsMediaResult( example_hash, True, example_service_key, { 'bodysuit', 'series:metroid' } )
@@ -1156,8 +1156,8 @@ class TestServiceTagImportOptions( unittest.TestCase ):
     def test_basics( self ):
         
         some_tags = { 'bodysuit', 'character:samus aran', 'series:metroid' }
-        example_hash = HydrusData.GenerateKey()
-        example_service_key = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
+        example_service_key = HydrusData.generate_key()
         
         media_result = GetTagsMediaResult( example_hash, True, example_service_key, set() )
         
@@ -1178,8 +1178,8 @@ class TestServiceTagImportOptions( unittest.TestCase ):
     def test_get_tags_filtering( self ):
         
         some_tags = { 'bodysuit', 'character:samus aran', 'series:metroid' }
-        example_hash = HydrusData.GenerateKey()
-        example_service_key = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
+        example_service_key = HydrusData.generate_key()
         
         media_result = GetTagsMediaResult( example_hash, True, example_service_key, set() )
         
@@ -1193,7 +1193,7 @@ class TestServiceTagImportOptions( unittest.TestCase ):
         
         only_namespaced = HydrusTags.TagFilter()
         
-        only_namespaced.SetRule( '', HC.FILTER_BLACKLIST )
+        only_namespaced.set_rule( '', HC.FILTER_BLACKLIST )
         
         service_tag_import_options = TagImportOptionsLegacy.ServiceTagImportOptions( get_tags = True, get_tags_filter = only_namespaced )
         
@@ -1203,9 +1203,9 @@ class TestServiceTagImportOptions( unittest.TestCase ):
         
         only_samus = HydrusTags.TagFilter()
         
-        only_samus.SetRule( '', HC.FILTER_BLACKLIST )
-        only_samus.SetRule( ':', HC.FILTER_BLACKLIST )
-        only_samus.SetRule( 'character:samus aran', HC.FILTER_WHITELIST )
+        only_samus.set_rule( '', HC.FILTER_BLACKLIST )
+        only_samus.set_rule( ':', HC.FILTER_BLACKLIST )
+        only_samus.set_rule( 'character:samus aran', HC.FILTER_WHITELIST )
         
         service_tag_import_options = TagImportOptionsLegacy.ServiceTagImportOptions( get_tags = True, get_tags_filter = only_samus )
         
@@ -1215,8 +1215,8 @@ class TestServiceTagImportOptions( unittest.TestCase ):
     def test_additional( self ):
         
         some_tags = { 'bodysuit', 'character:samus aran', 'series:metroid' }
-        example_hash = HydrusData.GenerateKey()
-        example_service_key = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
+        example_service_key = HydrusData.generate_key()
         
         media_result = GetTagsMediaResult( example_hash, True, example_service_key, set() )
         
@@ -1230,8 +1230,8 @@ class TestServiceTagImportOptions( unittest.TestCase ):
     def test_overwrite_deleted_get_tags_filtering( self ):
         
         some_tags = { 'bodysuit', 'character:samus aran', 'series:metroid' }
-        example_hash = HydrusData.GenerateKey()
-        example_service_key = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
+        example_service_key = HydrusData.generate_key()
         
         media_result = GetTagsMediaResult( example_hash, True, example_service_key, { 'bodysuit', 'series:metroid' } )
         
@@ -1257,8 +1257,8 @@ class TestServiceTagImportOptions( unittest.TestCase ):
     def test_overwrite_deleted_additional( self ):
         
         some_tags = set()
-        example_hash = HydrusData.GenerateKey()
-        example_service_key = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
+        example_service_key = HydrusData.generate_key()
         
         media_result = GetTagsMediaResult( example_hash, True, example_service_key, { 'bodysuit', 'series:metroid' } )
         
@@ -1284,8 +1284,8 @@ class TestServiceTagImportOptions( unittest.TestCase ):
     def test_application( self ):
         
         some_tags = { 'bodysuit', 'character:samus aran', 'series:metroid' }
-        example_hash = HydrusData.GenerateKey()
-        example_service_key = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
+        example_service_key = HydrusData.generate_key()
         
         inbox_media_result = GetTagsMediaResult( example_hash, True, example_service_key, set() )
         archive_media_result = GetTagsMediaResult( example_hash, False, example_service_key, set() )
@@ -1319,8 +1319,8 @@ class TestServiceTagImportOptions( unittest.TestCase ):
         
         some_tags = { 'bodysuit', 'character:samus aran', 'series:metroid' }
         existing_tags = { 'character:samus aran', 'series:metroid' }
-        example_hash = HydrusData.GenerateKey()
-        example_service_key = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
+        example_service_key = HydrusData.generate_key()
         
         media_result = GetTagsMediaResult( example_hash, True, example_service_key, set() )
         
@@ -1339,7 +1339,7 @@ class TestServiceTagImportOptions( unittest.TestCase ):
         
         only_unnamespaced = HydrusTags.TagFilter()
         
-        only_unnamespaced.SetRule( ':', HC.FILTER_BLACKLIST )
+        only_unnamespaced.set_rule( ':', HC.FILTER_BLACKLIST )
         
         TG.test_controller.SetRead( 'filter_existing_tags', existing_tags )
         

@@ -128,7 +128,7 @@ def generate_thumbnail_numpy( path, target_resolution, mime, duration_ms, num_fr
                 
             elif cover_mime == HC.IMAGE_SVG:
                 
-                thumbnail_numpy = HydrusSVGHandling.GenerateThumbnailNumPyFromSVGPath( temp_path, target_resolution )
+                thumbnail_numpy = HydrusSVGHandling.generate_thumbnail_numpy_from_svg_path( temp_path, target_resolution )
                 
             else:
                 
@@ -171,7 +171,7 @@ def generate_thumbnail_numpy( path, target_resolution, mime, duration_ms, num_fr
         
         try:
             
-            thumbnail_numpy = HydrusKritaHandling.GenerateThumbnailNumPyFromKraPath( path, target_resolution )
+            thumbnail_numpy = HydrusKritaHandling.generate_thumbnail_numpy_from_kra_path( path, target_resolution )
             
         except Exception as e:
             
@@ -184,7 +184,7 @@ def generate_thumbnail_numpy( path, target_resolution, mime, duration_ms, num_fr
         
         try:
             
-            thumbnail_numpy = HydrusPaintNETHandling.GenerateThumbnailNumPyFromPaintNET( path, target_resolution )
+            thumbnail_numpy = HydrusPaintNETHandling.generate_thumbnail_numpy_from_paint_net( path, target_resolution )
             
         except Exception as e:
             
@@ -199,7 +199,7 @@ def generate_thumbnail_numpy( path, target_resolution, mime, duration_ms, num_fr
         
         try:
             
-            HydrusProcreateHandling.ExtractZippedThumbnailToPath( path, temp_path )
+            HydrusProcreateHandling.extract_zipped_thumbnail_to_path( path, temp_path )
             
             thumbnail_numpy = HydrusImageHandling.generate_thumbnail_numpy_from_static_image_path( temp_path, target_resolution, HC.IMAGE_PNG )
             
@@ -218,7 +218,7 @@ def generate_thumbnail_numpy( path, target_resolution, mime, duration_ms, num_fr
         
         try:
             
-            thumbnail_numpy = HydrusPSDHandling.GenerateThumbnailNumPyFromPSDPath( path, target_resolution )
+            thumbnail_numpy = HydrusPSDHandling.generate_thumbnail_numpy_from_psd_path( path, target_resolution )
             
         except Exception as e:
             
@@ -231,7 +231,7 @@ def generate_thumbnail_numpy( path, target_resolution, mime, duration_ms, num_fr
         
         try:
             
-            thumbnail_numpy = HydrusSVGHandling.GenerateThumbnailNumPyFromSVGPath( path, target_resolution )
+            thumbnail_numpy = HydrusSVGHandling.generate_thumbnail_numpy_from_svg_path( path, target_resolution )
             
         except Exception as e:
             
@@ -244,7 +244,7 @@ def generate_thumbnail_numpy( path, target_resolution, mime, duration_ms, num_fr
         
         try:
             
-            thumbnail_numpy = HydrusPDFHandling.GenerateThumbnailNumPyFromPDFPath( path, target_resolution )
+            thumbnail_numpy = HydrusPDFHandling.generate_thumbnail_numpy_from_pdf_path( path, target_resolution )
             
         except Exception as e:
             
@@ -257,7 +257,7 @@ def generate_thumbnail_numpy( path, target_resolution, mime, duration_ms, num_fr
         
         try:
             
-            thumbnail_numpy = HydrusOfficeOpenXMLHandling.GenerateThumbnailNumPyFromOfficePath( path, target_resolution )
+            thumbnail_numpy = HydrusOfficeOpenXMLHandling.generate_thumbnail_numpy_from_office_path( path, target_resolution )
             
         except HydrusExceptions.NoThumbnailFileException:
             
@@ -294,7 +294,7 @@ def generate_thumbnail_numpy( path, target_resolution, mime, duration_ms, num_fr
             
             desired_thumb_frame_index = int( ( percentage_in / 100.0 ) * ( num_frames - 1 ) )
             
-            thumbnail_numpy = HydrusUgoiraHandling.GenerateThumbnailNumPyFromUgoiraPath( path, target_resolution, desired_thumb_frame_index )
+            thumbnail_numpy = HydrusUgoiraHandling.generate_thumbnail_numpy_from_ugoira_path( path, target_resolution, desired_thumb_frame_index )
             
         except Exception as e:
             
@@ -319,7 +319,7 @@ def generate_thumbnail_numpy( path, target_resolution, mime, duration_ms, num_fr
                 
             finally:
                 
-                renderer.Stop()
+                renderer.stop()
                 
             
         except Exception as e:
@@ -345,7 +345,7 @@ def generate_thumbnail_numpy( path, target_resolution, mime, duration_ms, num_fr
                     
                 finally:
                     
-                    renderer.Stop()
+                    renderer.stop()
                     
                 
             except Exception as e:
@@ -492,7 +492,7 @@ def get_file_info( path, mime = None, ok_to_look_for_hydrus_updates = False ):
         
         try:
             
-            ( width, height ) = HydrusKritaHandling.GetKraProperties( path )
+            ( width, height ) = HydrusKritaHandling.get_kra_properties( path )
             
         except HydrusExceptions.NoResolutionFileException:
             
@@ -503,7 +503,7 @@ def get_file_info( path, mime = None, ok_to_look_for_hydrus_updates = False ):
         
         try:
             
-            ( width, height ) = HydrusPaintNETHandling.GetPaintNETResolution( path )
+            ( width, height ) = HydrusPaintNETHandling.get_paint_net_resolution( path )
             
         except HydrusExceptions.NoResolutionFileException:
             
@@ -514,7 +514,7 @@ def get_file_info( path, mime = None, ok_to_look_for_hydrus_updates = False ):
         
         try:
             
-            ( width, height ) = HydrusProcreateHandling.GetProcreateResolution( path )
+            ( width, height ) = HydrusProcreateHandling.get_procreate_resolution( path )
             
         except:
             
@@ -525,7 +525,7 @@ def get_file_info( path, mime = None, ok_to_look_for_hydrus_updates = False ):
         
         try:
             
-            ( width, height ) = HydrusSVGHandling.GetSVGResolution( path )
+            ( width, height ) = HydrusSVGHandling.get_svg_resolution( path )
             
         except HydrusExceptions.NoResolutionFileException:
             
@@ -536,7 +536,7 @@ def get_file_info( path, mime = None, ok_to_look_for_hydrus_updates = False ):
         
         try:
             
-            ( num_words, ( width, height ) ) = HydrusPDFHandling.GetPDFInfo( path )
+            ( num_words, ( width, height ) ) = HydrusPDFHandling.get_pdf_info( path )
             
         except HydrusExceptions.LimitedSupportFileException:
             
@@ -547,7 +547,7 @@ def get_file_info( path, mime = None, ok_to_look_for_hydrus_updates = False ):
         
         try:
             
-            ( num_words, ( width, height ) ) = HydrusOfficeOpenXMLHandling.GetPPTXInfo( path )
+            ( num_words, ( width, height ) ) = HydrusOfficeOpenXMLHandling.get_pptx_info( path )
             
         except HydrusExceptions.LimitedSupportFileException:
             
@@ -558,7 +558,7 @@ def get_file_info( path, mime = None, ok_to_look_for_hydrus_updates = False ):
         
         try:
             
-            num_words = HydrusOfficeOpenXMLHandling.GetDOCXInfo( path )
+            num_words = HydrusOfficeOpenXMLHandling.get_docx_info( path )
             
         except HydrusExceptions.LimitedSupportFileException:
             
@@ -569,7 +569,7 @@ def get_file_info( path, mime = None, ok_to_look_for_hydrus_updates = False ):
         
         try:
             
-            num_words = HydrusOLEHandling.OfficeOLEDocumentWordCount( path )
+            num_words = HydrusOLEHandling.office_ole_document_word_count( path )
             
         except HydrusExceptions.LimitedSupportFileException:
             
@@ -578,13 +578,13 @@ def get_file_info( path, mime = None, ok_to_look_for_hydrus_updates = False ):
         
     elif mime == HC.APPLICATION_FLASH:
         
-        ( ( width, height ), duration_ms, num_frames ) = HydrusFlashHandling.GetFlashProperties( path )
+        ( ( width, height ), duration_ms, num_frames ) = HydrusFlashHandling.get_flash_properties( path )
         
     elif mime == HC.APPLICATION_PSD:
         
         try:
             
-            ( width, height ) = HydrusPSDHandling.GetPSDResolution( path )
+            ( width, height ) = HydrusPSDHandling.get_psd_resolution( path )
             
         except Exception as e:
             
@@ -594,11 +594,11 @@ def get_file_info( path, mime = None, ok_to_look_for_hydrus_updates = False ):
         
     elif mime == HC.ANIMATION_UGOIRA: # must be before VIEWABLE_ANIMATIONS
         
-        ( ( width, height ), duration_ms, num_frames ) = HydrusUgoiraHandling.GetUgoiraProperties( path )
+        ( ( width, height ), duration_ms, num_frames ) = HydrusUgoiraHandling.get_ugoira_properties( path )
         
     elif mime in HC.VIDEO or mime in HC.HEIF_TYPE_SEQUENCES or mime in ( HC.IMAGE_AVIF_SEQUENCE, HC.ANIMATION_JXL ):
         
-        ( ( width, height ), duration_ms, num_frames, has_audio ) = HydrusVideoHandling.GetFFMPEGVideoProperties( path )
+        ( ( width, height ), duration_ms, num_frames, has_audio ) = HydrusVideoHandling.get_ffmpeg_video_properties( path )
         
     elif mime in HC.VIEWABLE_ANIMATIONS:
         
@@ -610,9 +610,9 @@ def get_file_info( path, mime = None, ok_to_look_for_hydrus_updates = False ):
         
     elif mime in HC.AUDIO:
         
-        ffmpeg_lines = HydrusVideoHandling.GetFFMPEGInfoLines( path )
+        ffmpeg_lines = HydrusVideoHandling.get_ffmpeg_info_lines( path )
         
-        ( file_duration_in_s, stream_duration_in_s ) = HydrusVideoHandling.ParseFFMPEGDuration( ffmpeg_lines )
+        ( file_duration_in_s, stream_duration_in_s ) = HydrusVideoHandling.parse_ffmpeg_duration( ffmpeg_lines )
         
         if file_duration_in_s is None:
             
@@ -815,19 +815,19 @@ def get_mime( path, ok_to_look_for_hydrus_updates = False ):
                     return opendoc_mime
                     
                 
-                microsoft_mime = HydrusOfficeOpenXMLHandling.MimeFromMicrosoftOpenXMLDocument( path )
+                microsoft_mime = HydrusOfficeOpenXMLHandling.mime_from_microsoft_open_xml_document( path )
                 
                 if microsoft_mime is not None:
                     
                     return microsoft_mime
                     
                 
-                if HydrusProcreateHandling.ZipLooksLikeProcreate( path ):
+                if HydrusProcreateHandling.zip_looks_like_procreate( path ):
                     
                     return HC.APPLICATION_PROCREATE
                     
                 
-                if HydrusUgoiraHandling.ZipLooksLikeUgoira( path ):
+                if HydrusUgoiraHandling.zip_looks_like_ugoira( path ):
                     
                     return HC.ANIMATION_UGOIRA
                     
@@ -841,7 +841,7 @@ def get_mime( path, ok_to_look_for_hydrus_updates = False ):
                 
             if mime in ( HC.UNDETERMINED_WM, HC.UNDETERMINED_MP4 ):
                 
-                return HydrusVideoHandling.GetMime( path )
+                return HydrusVideoHandling.get_mime( path )
                 
             elif mime == HC.UNDETERMINED_PNG:
                 
@@ -868,7 +868,7 @@ def get_mime( path, ok_to_look_for_hydrus_updates = False ):
             elif mime == HC.UNDETERMINED_JXL:
                 
                 # disabled animated jxl for now--ffmpeg getting in an infinite loop!
-                if HydrusVideoHandling.FileIsAnimated( path ):
+                if HydrusVideoHandling.file_is_animated( path ):
                     
                     return HC.ANIMATION_JXL
                     
@@ -890,7 +890,7 @@ def get_mime( path, ok_to_look_for_hydrus_updates = False ):
                 
             if mime == HC.UNDETERMINED_OLE:
                 
-                return HydrusOLEHandling.MimeFromOLEFile( path )
+                return HydrusOLEHandling.mime_from_ole_file( path )
                 
             else:
                 
@@ -933,7 +933,7 @@ def get_mime( path, ok_to_look_for_hydrus_updates = False ):
         
         try:
             
-            mime = HydrusVideoHandling.GetMime( path )
+            mime = HydrusVideoHandling.get_mime( path )
             
             if mime != HC.APPLICATION_UNKNOWN:
                 

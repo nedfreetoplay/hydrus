@@ -110,18 +110,18 @@ class PresentationImportOptions( HydrusSerialisable.SerialisableBase ):
         return False
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_location_context = self._location_context.GetSerialisableTuple()
+        serialisable_location_context = self._location_context.get_serialisable_tuple()
         
         return ( serialisable_location_context, self._presentation_status, self._presentation_inbox )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( serialisable_location_context, self._presentation_status, self._presentation_inbox ) = serialisable_info
         
-        self._location_context = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_location_context )
+        self._location_context = HydrusSerialisable.create_from_serialisable_tuple( serialisable_location_context )
         
     
     def _ShouldPresentGivenStatusAndInbox( self, status, inbox ):
@@ -159,7 +159,7 @@ class PresentationImportOptions( HydrusSerialisable.SerialisableBase ):
         return True
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -177,7 +177,7 @@ class PresentationImportOptions( HydrusSerialisable.SerialisableBase ):
                 location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
                 
             
-            serialisable_location_context = location_context.GetSerialisableTuple()
+            serialisable_location_context = location_context.get_serialisable_tuple()
             
             new_serialisable_info = ( serialisable_location_context, presentation_status, presentation_inbox )
             
@@ -317,7 +317,7 @@ class PresentationImportOptions( HydrusSerialisable.SerialisableBase ):
         
         if len( needs_inbox_lookup ) > 0:
             
-            inbox_hashes = CG.client_controller.Read( 'inbox_hashes', needs_inbox_lookup )
+            inbox_hashes = CG.client_controller.read( 'inbox_hashes', needs_inbox_lookup )
             
             for ( hash, status ) in hashes_and_statuses:
                 
@@ -352,7 +352,7 @@ class PresentationImportOptions( HydrusSerialisable.SerialisableBase ):
             
             if not location_context.IsAllKnownFiles():
                 
-                presented_hashes = CG.client_controller.Read( 'filter_hashes', location_context, presented_hashes )
+                presented_hashes = CG.client_controller.read( 'filter_hashes', location_context, presented_hashes )
                 
             
         

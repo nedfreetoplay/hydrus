@@ -49,7 +49,7 @@ class EditFileImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         if file_import_options.IsDefault():
             
-            file_import_options = CG.client_controller.new_options.GetDefaultFileImportOptions( FileImportOptionsLegacy.IMPORT_TYPE_LOUD ).Duplicate()
+            file_import_options = CG.client_controller.new_options.GetDefaultFileImportOptions( FileImportOptionsLegacy.IMPORT_TYPE_LOUD ).duplicate()
             
             file_import_options.SetIsDefault( True )
             
@@ -1246,7 +1246,7 @@ class EditServiceTagImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _UpdateAdditionalTagsButtonLabel( self ):
         
-        button_label = HydrusNumbers.ToHumanInt( len( self._additional_tags ) ) + ' additional tags'
+        button_label = HydrusNumbers.to_human_int( len( self._additional_tags ) ) + ' additional tags'
         
         self._additional_button.setText( button_label )
         
@@ -1613,7 +1613,7 @@ Please note that once you know what tags you like, you can (and should) set up t
             
         else:
             
-            label = 'whitelist of {} tags'.format( HydrusNumbers.ToHumanInt( len( self._tag_whitelist ) ) )
+            label = 'whitelist of {} tags'.format( HydrusNumbers.to_human_int( len( self._tag_whitelist ) ) )
             
         
         self._tag_whitelist_button.setText( label )
@@ -1774,7 +1774,7 @@ class EditImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def SetFileImportOptions( self, file_import_options: FileImportOptionsLegacy.FileImportOptionsLegacy ):
         
-        file_import_options = file_import_options.Duplicate()
+        file_import_options = file_import_options.duplicate()
         
         if self._file_import_options_panel is not None:
             
@@ -1792,7 +1792,7 @@ class EditImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def SetNoteImportOptions( self, note_import_options: NoteImportOptions.NoteImportOptions ):
         
-        note_import_options = note_import_options.Duplicate()
+        note_import_options = note_import_options.duplicate()
         
         if self._note_import_options_panel is not None:
             
@@ -1810,7 +1810,7 @@ class EditImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def SetTagImportOptions( self, tag_import_options: TagImportOptionsLegacy.TagImportOptionsLegacy ):
         
-        tag_import_options = tag_import_options.Duplicate()
+        tag_import_options = tag_import_options.duplicate()
         
         if self._tag_import_options_panel is not None:
             
@@ -1861,21 +1861,21 @@ class ImportOptionsButton( ClientGUICommon.ButtonWithMenuArrow ):
     
     def _CopyFileImportOptions( self ):
         
-        json_string = self._file_import_options.DumpToString()
+        json_string = self._file_import_options.dump_to_string()
         
         CG.client_controller.pub( 'clipboard', 'text', json_string )
         
     
     def _CopyNoteImportOptions( self ):
         
-        json_string = self._note_import_options.DumpToString()
+        json_string = self._note_import_options.dump_to_string()
         
         CG.client_controller.pub( 'clipboard', 'text', json_string )
         
     
     def _CopyTagImportOptions( self ):
         
-        json_string = self._tag_import_options.DumpToString()
+        json_string = self._tag_import_options.dump_to_string()
         
         CG.client_controller.pub( 'clipboard', 'text', json_string )
         
@@ -1931,7 +1931,7 @@ class ImportOptionsButton( ClientGUICommon.ButtonWithMenuArrow ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             
@@ -1940,7 +1940,7 @@ class ImportOptionsButton( ClientGUICommon.ButtonWithMenuArrow ):
         
         try:
             
-            file_import_options = HydrusSerialisable.CreateFromString( raw_text )
+            file_import_options = HydrusSerialisable.create_from_string( raw_text )
             
             if not isinstance( file_import_options, FileImportOptionsLegacy.FileImportOptionsLegacy ):
                 
@@ -1972,7 +1972,7 @@ class ImportOptionsButton( ClientGUICommon.ButtonWithMenuArrow ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             
@@ -1981,7 +1981,7 @@ class ImportOptionsButton( ClientGUICommon.ButtonWithMenuArrow ):
         
         try:
             
-            note_import_options = HydrusSerialisable.CreateFromString( raw_text )
+            note_import_options = HydrusSerialisable.create_from_string( raw_text )
             
             if not isinstance( note_import_options, NoteImportOptions.NoteImportOptions ):
                 
@@ -2013,7 +2013,7 @@ class ImportOptionsButton( ClientGUICommon.ButtonWithMenuArrow ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             
@@ -2022,7 +2022,7 @@ class ImportOptionsButton( ClientGUICommon.ButtonWithMenuArrow ):
         
         try:
             
-            tag_import_options = HydrusSerialisable.CreateFromString( raw_text )
+            tag_import_options = HydrusSerialisable.create_from_string( raw_text )
             
             if not isinstance( tag_import_options, TagImportOptionsLegacy.TagImportOptionsLegacy ):
                 
@@ -2286,7 +2286,7 @@ class ImportOptionsButton( ClientGUICommon.ButtonWithMenuArrow ):
                 
             else:
                 
-                label = HydrusText.ElideText( f'{label} ({summaries[0]})', 48 )
+                label = HydrusText.elide_text( f'{label} ({summaries[0]})', 48 )
                 
             
         

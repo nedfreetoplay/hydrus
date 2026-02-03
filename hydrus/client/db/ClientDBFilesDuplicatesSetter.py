@@ -29,7 +29,7 @@ class ClientDBFilesDuplicatesSetter( ClientDBModule.ClientDBModule ):
         self.modules_content_updates = modules_content_updates
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         tables_and_columns = []
         

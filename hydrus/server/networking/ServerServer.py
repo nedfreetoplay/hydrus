@@ -6,7 +6,7 @@ class HydrusServiceRestricted( HydrusServer.HydrusService ):
     
     def _InitRoot( self ):
         
-        root = HydrusServer.HydrusService._InitRoot( self )
+        root = HydrusServer.HydrusService._init_root( self )
         
         root.putChild( b'busy', ServerServerResources.HydrusResourceBusyCheck() )
         

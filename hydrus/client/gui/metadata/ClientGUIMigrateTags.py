@@ -98,7 +98,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         if self._hashes is not None:
             
-            self._migration_source_file_filtering_type.addItem( '{} files'.format( HydrusNumbers.ToHumanInt( len( self._hashes ) ) ), self.HASHES_LOCATION )
+            self._migration_source_file_filtering_type.addItem( '{} files'.format( HydrusNumbers.to_human_int( len( self._hashes ) ) ), self.HASHES_LOCATION )
             
             self._migration_source_file_filtering_type.SetValue( self.HASHES_LOCATION )
             
@@ -358,7 +358,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY )
                 hashes = self._hashes
                 
-                extra_filter_info_strings.append( 'for {} files'.format( HydrusNumbers.ToHumanInt( len( hashes ) ) ) )
+                extra_filter_info_strings.append( 'for {} files'.format( HydrusNumbers.to_human_int( len( hashes ) ) ) )
                 
             else:
                 
@@ -377,7 +377,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             tag_filter = self._migration_source_tag_filter.GetValue()
             
-            extra_filter_info_strings.append( 'for tags "{}"'.format( HydrusText.ElideText( tag_filter.ToPermittedString(), 96 ) ) )
+            extra_filter_info_strings.append( 'for tags "{}"'.format( HydrusText.elide_text( tag_filter.to_permitted_string(), 96 ) ) )
             
             if source_service_key == self.HTA_SERVICE_KEY:
                 
@@ -420,8 +420,8 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             left_tag_pair_filter = self._migration_source_left_tag_pair_filter.GetValue()
             right_tag_pair_filter = self._migration_source_right_tag_pair_filter.GetValue()
             
-            left_s = left_tag_pair_filter.ToPermittedString()
-            right_s = right_tag_pair_filter.ToPermittedString()
+            left_s = left_tag_pair_filter.to_permitted_string()
+            right_s = right_tag_pair_filter.to_permitted_string()
             
             if left_s == right_s:
                 
@@ -553,7 +553,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 migration_job = ClientMigration.MigrationJob( CG.client_controller, title, source, destination )
                 
-                CG.client_controller.CallToThread( migration_job.Run )
+                CG.client_controller.call_to_thread( migration_job.Run )
                 
             
         
@@ -585,7 +585,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
                         
                         try:
                             
-                            hash_type = hta.GetHashType()
+                            hash_type = hta.get_hash_type()
                             
                             self._dest_archive_hash_type_override = hash_type
                             
@@ -604,7 +604,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
                             
                             hta = HydrusTagArchive.HydrusTagPairArchive( path )
                             
-                            pair_type = hta.GetPairType()
+                            pair_type = hta.get_pair_type()
                             
                         except Exception as e:
                             
@@ -662,7 +662,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
                         
                         hta = HydrusTagArchive.HydrusTagArchive( path )
                         
-                        hash_type = hta.GetHashType()
+                        hash_type = hta.get_hash_type()
                         
                     except Exception as e:
                         
@@ -681,7 +681,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
                         
                         hta = HydrusTagArchive.HydrusTagPairArchive( path )
                         
-                        pair_type = hta.GetPairType()
+                        pair_type = hta.get_pair_type()
                         
                     except Exception as e:
                         

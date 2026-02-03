@@ -76,7 +76,7 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
                 
                 if alternates_group_id is not None:
                     
-                    alternates_media_ids = self._STS( self._Execute( 'SELECT media_id FROM alternate_file_group_members WHERE alternates_group_id = ?;', ( alternates_group_id, ) ) )
+                    alternates_media_ids = self._sts( self._execute( 'SELECT media_id FROM alternate_file_group_members WHERE alternates_group_id = ?;', ( alternates_group_id, ) ) )
                     
                     alternates_media_ids.discard( media_id )
                     
@@ -125,7 +125,7 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
                 
                 table_join = self.GetPotentialDuplicatePairsTableJoinOnFileService( db_location_context )
                 
-                for ( smaller_media_id, larger_media_id ) in self._Execute( 'SELECT smaller_media_id, larger_media_id FROM {} WHERE smaller_media_id = ? OR larger_media_id = ?;'.format( table_join ), ( media_id, media_id ) ).fetchall():
+                for ( smaller_media_id, larger_media_id ) in self._execute( 'SELECT smaller_media_id, larger_media_id FROM {} WHERE smaller_media_id = ? OR larger_media_id = ?;'.format( table_join ), ( media_id, media_id ) ).fetchall():
                     
                     if smaller_media_id != media_id:
                         
@@ -155,7 +155,7 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
         return dupe_hash_ids
         
     
-    def _GetInitialIndexGenerationDict( self ) -> dict:
+    def _get_initial_index_generation_dict( self ) -> dict:
         
         index_generation_dict = {}
         
@@ -170,7 +170,7 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
         return index_generation_dict
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict( self ) -> dict:
         
         return {
             'main.alternate_file_groups' : ( 'CREATE TABLE IF NOT EXISTS {} ( alternates_group_id INTEGER PRIMARY KEY );', 469 ),
@@ -193,7 +193,7 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
         smaller_alternates_group_id = min( alternates_group_id_a, alternates_group_id_b )
         larger_alternates_group_id = max( alternates_group_id_a, alternates_group_id_b )
         
-        result = self._Execute( 'SELECT 1 FROM duplicate_false_positives WHERE smaller_alternates_group_id = ? AND larger_alternates_group_id = ?;', ( smaller_alternates_group_id, larger_alternates_group_id ) ).fetchone()
+        result = self._execute( 'SELECT 1 FROM duplicate_false_positives WHERE smaller_alternates_group_id = ? AND larger_alternates_group_id = ?;', ( smaller_alternates_group_id, larger_alternates_group_id ) ).fetchone()
         
         false_positive_pair_found = result is not None
         
@@ -210,11 +210,11 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
             allowed_hash_ids = set( allowed_hash_ids )
             
         
-        with self._MakeTemporaryIntegerTable( allowed_hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
+        with self._make_temporary_integer_table( allowed_hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
             
-            explicit_king_hash_ids = self._STS( self._Execute( 'SELECT king_hash_id FROM {} CROSS JOIN duplicate_files ON ( {}.hash_id = duplicate_files.king_hash_id );'.format( temp_hash_ids_table_name, temp_hash_ids_table_name ) ) )
+            explicit_king_hash_ids = self._sts( self._execute( 'SELECT king_hash_id FROM {} CROSS JOIN duplicate_files ON ( {}.hash_id = duplicate_files.king_hash_id );'.format( temp_hash_ids_table_name, temp_hash_ids_table_name ) ) )
             
-            all_duplicate_member_hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM {} CROSS JOIN duplicate_file_members USING ( hash_id );'.format( temp_hash_ids_table_name ) ) )
+            all_duplicate_member_hash_ids = self._sts( self._execute( 'SELECT hash_id FROM {} CROSS JOIN duplicate_file_members USING ( hash_id );'.format( temp_hash_ids_table_name ) ) )
             
         
         all_non_king_hash_ids = all_duplicate_member_hash_ids.difference( explicit_king_hash_ids )
@@ -233,9 +233,9 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
         
         all_media_ids = { i for i in itertools.chain.from_iterable( media_id_pairs ) }
         
-        with self._MakeTemporaryIntegerTable( all_media_ids, 'media_id' ) as temp_media_ids_table_name:
+        with self._make_temporary_integer_table( all_media_ids, 'media_id' ) as temp_media_ids_table_name:
             
-            hash_ids_to_media_ids = dict( self._Execute( 'SELECT hash_id, media_id FROM {} CROSS JOIN {} USING ( media_id );'.format( temp_media_ids_table_name, 'duplicate_file_members' ) ) )
+            hash_ids_to_media_ids = dict( self._execute( 'SELECT hash_id, media_id FROM {} CROSS JOIN {} USING ( media_id );'.format( temp_media_ids_table_name, 'duplicate_file_members' ) ) )
             
         
         all_hash_ids = set( hash_ids_to_media_ids.keys() )
@@ -254,14 +254,14 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
         Which of these actually exist in storage?
         """
         
-        existing_pairs = set( self._Execute( f'SELECT smaller_media_id, larger_media_id FROM {potential_pair_ids_table_name} CROSS JOIN potential_duplicate_pairs ON ( {potential_pair_ids_table_name}.smaller_media_id = potential_duplicate_pairs.smaller_media_id AND {potential_pair_ids_table_name}.larger_media_id = potential_duplicate_pairs.larger_media_id );' ) )
+        existing_pairs = set( self._execute( f'SELECT smaller_media_id, larger_media_id FROM {potential_pair_ids_table_name} CROSS JOIN potential_duplicate_pairs ON ( {potential_pair_ids_table_name}.smaller_media_id = potential_duplicate_pairs.smaller_media_id AND {potential_pair_ids_table_name}.larger_media_id = potential_duplicate_pairs.larger_media_id );' ) )
         
         return existing_pairs
         
     
     def GetAlternatesGroupId( self, media_id, do_not_create = False ):
         
-        result = self._Execute( 'SELECT alternates_group_id FROM alternate_file_group_members WHERE media_id = ?;', ( media_id, ) ).fetchone()
+        result = self._execute( 'SELECT alternates_group_id FROM alternate_file_group_members WHERE media_id = ?;', ( media_id, ) ).fetchone()
         
         if result is None:
             
@@ -270,11 +270,11 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
                 return None
                 
             
-            self._Execute( 'INSERT INTO alternate_file_groups DEFAULT VALUES;' )
+            self._execute( 'INSERT INTO alternate_file_groups DEFAULT VALUES;' )
             
-            alternates_group_id = self._GetLastRowId()
+            alternates_group_id = self._get_last_row_id()
             
-            self._Execute( 'INSERT INTO alternate_file_group_members ( alternates_group_id, media_id ) VALUES ( ?, ? );', ( alternates_group_id, media_id ) )
+            self._execute( 'INSERT INTO alternate_file_group_members ( alternates_group_id, media_id ) VALUES ( ?, ? );', ( alternates_group_id, media_id ) )
             
         else:
             
@@ -286,7 +286,7 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
     
     def GetAlternateMediaIds( self, alternates_group_id ):
         
-        media_ids = self._STS( self._Execute( 'SELECT media_id FROM alternate_file_group_members WHERE alternates_group_id = ?;', ( alternates_group_id, ) ) )
+        media_ids = self._sts( self._execute( 'SELECT media_id FROM alternate_file_group_members WHERE alternates_group_id = ?;', ( alternates_group_id, ) ) )
         
         return media_ids
         
@@ -338,7 +338,7 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
             
             if not db_location_context.SingleTableIsFast():
                 
-                hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM {} WHERE media_id = ?;'.format( table_join ), ( media_id, ) ) )
+                hash_ids = self._sts( self._execute( 'SELECT hash_id FROM {} WHERE media_id = ?;'.format( table_join ), ( media_id, ) ) )
                 
                 hash_ids = self.modules_files_storage.FilterHashIds( db_location_context.location_context, hash_ids )
                 
@@ -348,14 +348,14 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
             table_join = db_location_context.GetTableJoinLimitedByFileDomain( table_join )
             
         
-        hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM {} WHERE media_id = ?;'.format( table_join ), ( media_id, ) ) )
+        hash_ids = self._sts( self._execute( 'SELECT hash_id FROM {} WHERE media_id = ?;'.format( table_join ), ( media_id, ) ) )
         
         return hash_ids
         
     
     def GetDuplicatesHashIds( self, media_ids, db_location_context: ClientDBFilesStorage.DBLocationContext = None ):
         
-        with self._MakeTemporaryIntegerTable( media_ids, 'media_id' ) as temp_media_ids_table_name:
+        with self._make_temporary_integer_table( media_ids, 'media_id' ) as temp_media_ids_table_name:
             
             table_join = '{} CROSS JOIN {} USING ( media_id )'.format( temp_media_ids_table_name, 'duplicate_file_members' )
             
@@ -364,7 +364,7 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
                 table_join = db_location_context.GetTableJoinLimitedByFileDomain( table_join )
                 
             
-            hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM {};'.format( table_join ) ) )
+            hash_ids = self._sts( self._execute( 'SELECT hash_id FROM {};'.format( table_join ) ) )
             
         
         return hash_ids
@@ -374,7 +374,7 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
         
         false_positive_alternates_group_ids = set()
         
-        results = self._Execute( 'SELECT smaller_alternates_group_id, larger_alternates_group_id FROM duplicate_false_positives WHERE smaller_alternates_group_id = ? OR larger_alternates_group_id = ?;', ( alternates_group_id, alternates_group_id ) ).fetchall()
+        results = self._execute( 'SELECT smaller_alternates_group_id, larger_alternates_group_id FROM duplicate_false_positives WHERE smaller_alternates_group_id = ? OR larger_alternates_group_id = ?;', ( alternates_group_id, alternates_group_id ) ).fetchall()
         
         for ( smaller_alternates_group_id, larger_alternates_group_id ) in results:
             
@@ -401,7 +401,7 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
             
             db_location_context = self.modules_files_storage.GetDBLocationContext( location_context )
             
-            all_potential_pairs = self._Execute( 'SELECT DISTINCT smaller_media_id, larger_media_id FROM potential_duplicate_pairs WHERE smaller_media_id = ? OR larger_media_id = ?;', ( media_id, media_id, ) ).fetchall()
+            all_potential_pairs = self._execute( 'SELECT DISTINCT smaller_media_id, larger_media_id FROM potential_duplicate_pairs WHERE smaller_media_id = ? OR larger_media_id = ?;', ( media_id, media_id, ) ).fetchall()
             
             potential_pairs = self.FilterMediaIdPairs( location_context, all_potential_pairs )
             
@@ -442,7 +442,7 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
                         smaller_media_id = min( media_id, alt_media_id )
                         larger_media_id = max( media_id, alt_media_id )
                         
-                        result = self._Execute( 'SELECT 1 FROM confirmed_alternate_pairs WHERE smaller_media_id = ? AND larger_media_id = ?;', ( smaller_media_id, larger_media_id ) ).fetchone()
+                        result = self._execute( 'SELECT 1 FROM confirmed_alternate_pairs WHERE smaller_media_id = ? AND larger_media_id = ?;', ( smaller_media_id, larger_media_id ) ).fetchone()
                         
                         if result is not None:
                             
@@ -618,7 +618,7 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
             
             query = 'SELECT smaller_alternates_group_id, larger_alternates_group_id FROM duplicate_false_positives;'
             
-            for ( alternates_group_id_a, alternates_group_id_b ) in self._Execute( query ):
+            for ( alternates_group_id_a, alternates_group_id_b ) in self._execute( query ):
                 
                 alternates_group_ids_to_false_positives[ alternates_group_id_a ].append( alternates_group_id_b )
                 alternates_group_ids_to_false_positives[ alternates_group_id_b ].append( alternates_group_id_a )
@@ -669,7 +669,7 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
             
             query = 'SELECT alternates_group_id, COUNT( * ) FROM alternate_file_group_members GROUP BY alternates_group_id;'
             
-            results = self._Execute( query ).fetchall()
+            results = self._execute( query ).fetchall()
             
             for ( alternates_group_id, count ) in results:
                 
@@ -708,7 +708,7 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
             
             media_ids = []
             
-            for ( media_id, count ) in self._Execute( query ):
+            for ( media_id, count ) in self._execute( query ):
                 
                 count -= 1
                 
@@ -729,12 +729,12 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
             
             media_ids_to_counts = collections.Counter()
             
-            for ( media_id, count ) in self._Execute( smaller_query ):
+            for ( media_id, count ) in self._execute( smaller_query ):
                 
                 media_ids_to_counts[ media_id ] += count
                 
             
-            for ( media_id, count ) in self._Execute( larger_query ):
+            for ( media_id, count ) in self._execute( larger_query ):
                 
                 media_ids_to_counts[ media_id ] += count
                 
@@ -749,7 +749,7 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
     
     def GetKingHashId( self, media_id ) -> int:
         
-        ( king_hash_id, ) = self._Execute( 'SELECT king_hash_id FROM duplicate_files WHERE media_id = ?;', ( media_id, ) ).fetchone()
+        ( king_hash_id, ) = self._execute( 'SELECT king_hash_id FROM duplicate_files WHERE media_id = ?;', ( media_id, ) ).fetchone()
         
         return king_hash_id
         
@@ -759,22 +759,22 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
         This guy won't filter to the db location context when it is complicated, but he will always return kings.
         """
         
-        with self._MakeTemporaryIntegerTable( media_ids, 'media_id' ) as temp_media_ids_table_name:
+        with self._make_temporary_integer_table( media_ids, 'media_id' ) as temp_media_ids_table_name:
             
             if db_location_context.SingleTableIsFast():
                 
                 files_table_name = db_location_context.GetSingleFilesTableName()
                 
-                return self._STS( self._Execute( f'SELECT king_hash_id FROM {temp_media_ids_table_name} CROSS JOIN duplicate_files USING ( media_id ) CROSS JOIN {files_table_name} ON ( duplicate_files.king_hash_id = {files_table_name}.hash_id );' ) )
+                return self._sts( self._execute( f'SELECT king_hash_id FROM {temp_media_ids_table_name} CROSS JOIN duplicate_files USING ( media_id ) CROSS JOIN {files_table_name} ON ( duplicate_files.king_hash_id = {files_table_name}.hash_id );' ) )
                 
             
-            return self._STS( self._Execute( f'SELECT king_hash_id FROM {temp_media_ids_table_name} CROSS JOIN duplicate_files USING ( media_id );' ) )
+            return self._sts( self._execute( f'SELECT king_hash_id FROM {temp_media_ids_table_name} CROSS JOIN duplicate_files USING ( media_id );' ) )
             
         
     
     def GetMediaId( self, hash_id, do_not_create = False ):
         
-        result = self._Execute( 'SELECT media_id FROM duplicate_file_members WHERE hash_id = ?;', ( hash_id, ) ).fetchone()
+        result = self._execute( 'SELECT media_id FROM duplicate_file_members WHERE hash_id = ?;', ( hash_id, ) ).fetchone()
         
         if result is None:
             
@@ -784,22 +784,22 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
                 
             
             # adding safety check to catch desynced database
-            result = self._Execute( 'SELECT media_id FROM duplicate_files WHERE king_hash_id = ?;', ( hash_id, ) ).fetchone()
+            result = self._execute( 'SELECT media_id FROM duplicate_files WHERE king_hash_id = ?;', ( hash_id, ) ).fetchone()
             
             if result is None:
                 
-                self._Execute( 'INSERT INTO duplicate_files ( king_hash_id ) VALUES ( ? );', ( hash_id, ) )
+                self._execute( 'INSERT INTO duplicate_files ( king_hash_id ) VALUES ( ? );', ( hash_id, ) )
                 
-                media_id = self._GetLastRowId()
+                media_id = self._get_last_row_id()
                 
             else:
                 
                 ( media_id, ) = result
                 
-                HydrusData.Print( f'When looking for the media_id {media_id} of hash_id {hash_id}, it did not have a member row but did have a definiton row!' )
+                HydrusData.print_text( f'When looking for the media_id {media_id} of hash_id {hash_id}, it did not have a member row but did have a definiton row!' )
                 
             
-            self._Execute( 'INSERT INTO duplicate_file_members ( media_id, hash_id ) VALUES ( ?, ? );', ( media_id, hash_id ) )
+            self._execute( 'INSERT INTO duplicate_file_members ( media_id, hash_id ) VALUES ( ?, ? );', ( media_id, hash_id ) )
             
         else:
             
@@ -1027,7 +1027,7 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
         return table_join
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         tables_and_columns = []
         
@@ -1042,7 +1042,7 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
     
     def IsKing( self, hash_id: int   ):
         
-        result = self._Execute( 'SELECT king_hash_id FROM duplicate_file_members CROSS JOIN duplicate_files USING ( media_id ) WHERE hash_id = ?;', ( hash_id, ) ).fetchone()
+        result = self._execute( 'SELECT king_hash_id FROM duplicate_file_members CROSS JOIN duplicate_files USING ( media_id ) WHERE hash_id = ?;', ( hash_id, ) ).fetchone()
         
         if result is None:
             
@@ -1080,7 +1080,7 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
         smaller_media_id = min( media_id_a, media_id_b )
         larger_media_id = max( media_id_a, media_id_b )
         
-        result = self._Execute( 'SELECT 1 FROM confirmed_alternate_pairs WHERE smaller_media_id = ? AND larger_media_id = ?;', ( smaller_media_id, larger_media_id ) ).fetchone()
+        result = self._execute( 'SELECT 1 FROM confirmed_alternate_pairs WHERE smaller_media_id = ? AND larger_media_id = ?;', ( smaller_media_id, larger_media_id ) ).fetchone()
         
         return result is not None
         

@@ -154,13 +154,13 @@ def DumpToPNG( width, payload_bytes, title, payload_description, text, path ):
     finished_image = numpy.concatenate( ( top_image, payload_image ) )
     
     # this is to deal with unicode paths, which cv2 can't handle
-    ( os_file_handle, temp_path ) = HydrusTemp.GetTempPath( suffix = '.png' )
+    ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path( suffix = '.png' )
     
     try:
         
         cv2.imwrite( temp_path, finished_image, [ cv2.IMWRITE_PNG_COMPRESSION, 9 ] )
         
-        HydrusPaths.MirrorFile( temp_path, path )
+        HydrusPaths.mirror_file( temp_path, path )
         
     except Exception as e:
         
@@ -170,24 +170,24 @@ def DumpToPNG( width, payload_bytes, title, payload_description, text, path ):
         
     finally:
         
-        HydrusTemp.CleanUpTempPath( os_file_handle, temp_path )
+        HydrusTemp.clean_ip_temp_path( os_file_handle, temp_path )
         
     
 def GetPayloadBytesAndLength( payload_obj ):
     
     if isinstance( payload_obj, bytes ):
         
-        return ( HydrusCompression.CompressBytesToBytes( payload_obj ), len( payload_obj ) )
+        return ( HydrusCompression.compress_bytes_to_bytes( payload_obj ), len( payload_obj ) )
         
     elif isinstance( payload_obj, str ):
         
-        return ( HydrusCompression.CompressStringToBytes( payload_obj ), len( payload_obj ) )
+        return ( HydrusCompression.compress_string_to_bytes( payload_obj ), len( payload_obj ) )
         
     else:
         
         payload_string = payload_obj.DumpToString()
         
-        return ( HydrusCompression.CompressStringToBytes( payload_string ), len( payload_string ) )
+        return ( HydrusCompression.compress_string_to_bytes( payload_string ), len( payload_string ) )
         
     
 def GetPayloadTypeString( payload_obj ):
@@ -209,7 +209,7 @@ def GetPayloadTypeString( payload_obj ):
             type_string_counts[ GetPayloadTypeString( o ) ] += 1
             
         
-        type_string = ', '.join( ( HydrusNumbers.ToHumanInt( count ) + ' ' + s for ( s, count ) in list(type_string_counts.items()) ) )
+        type_string = ', '.join( ( HydrusNumbers.to_human_int( count ) + ' ' + s for ( s, count ) in list(type_string_counts.items()) ) )
         
         return 'A list of ' + type_string
         
@@ -226,7 +226,7 @@ def GetPayloadDescriptionAndBytes( payload_obj ):
     
     ( payload_bytes, payload_length ) = GetPayloadBytesAndLength( payload_obj )
     
-    payload_description = GetPayloadTypeString( payload_obj ) + ' - ' + HydrusData.ToHumanBytes( payload_length )
+    payload_description = GetPayloadTypeString( payload_obj ) + ' - ' + HydrusData.to_human_bytes( payload_length )
     
     return ( payload_description, payload_bytes )
     
@@ -241,11 +241,11 @@ def LoadFromQtImage( qt_image: QG.QImage ):
 def LoadFromPNG( path ):
     
     # this is to deal with unicode paths, which cv2 can't handle
-    ( os_file_handle, temp_path ) = HydrusTemp.GetTempPath()
+    ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path()
     
     try:
         
-        HydrusPaths.MirrorFile( path, temp_path )
+        HydrusPaths.mirror_file( path, temp_path )
         
         try:
             
@@ -263,11 +263,11 @@ def LoadFromPNG( path ):
                 
                 # dequantize = False because we don't want to convert our greyscale bytes to RGB
                 
-                pil_image = HydrusImageHandling.GeneratePILImage( temp_path, dequantize = False )
+                pil_image = HydrusImageHandling.generate_pil_image( temp_path, dequantize = False )
                 
                 # leave strip_useless_alpha = True in here just to catch the very odd LA situation
                 
-                numpy_image = HydrusImageHandling.GenerateNumPyImageFromPILImage( pil_image )
+                numpy_image = HydrusImageHandling.generate_numpy_image_from_pil_image( pil_image )
                 
             except Exception as e:
                 
@@ -279,7 +279,7 @@ def LoadFromPNG( path ):
         
     finally:
         
-        HydrusTemp.CleanUpTempPath( os_file_handle, temp_path )
+        HydrusTemp.clean_ip_temp_path( os_file_handle, temp_path )
         
     
     return LoadFromNumPyImage( numpy_image )
@@ -332,7 +332,7 @@ def LoadFromNumPyImage( numpy_image: numpy.ndarray ):
         
     except Exception as e:
         
-        HydrusData.PrintException( e )
+        HydrusData.print_exception( e )
         
         message = 'The image loaded, but it did not seem to be a hydrus serialised png! The error was: {}'.format( repr( e ) )
         message += '\n' * 2
@@ -349,7 +349,7 @@ def LoadStringFromPNG( path: str ) -> str:
     
     try:
         
-        payload_string = HydrusCompression.DecompressBytesToString( payload_bytes )
+        payload_string = HydrusCompression.decompress_bytes_to_string( payload_bytes )
         
     except:
         

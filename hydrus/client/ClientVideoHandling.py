@@ -13,7 +13,7 @@ class AnimationRendererPIL( object ):
         
         if HG.media_load_report_mode:
             
-            HydrusData.ShowText( 'Loading animation: ' + path )
+            HydrusData.show_text( 'Loading animation: ' + path )
             
         
         self._path = path
@@ -47,12 +47,12 @@ class AnimationRendererPIL( object ):
         
         if HG.media_load_report_mode:
             
-            HydrusData.ShowText( 'Loading animation with PIL' )
+            HydrusData.show_text( 'Loading animation with PIL' )
             
         
         # dequantize = False since we'll be doing that later for each frame in turn
         # if we do it now, it collapses down to a one frame object
-        self._pil_image = HydrusImageHandling.GeneratePILImage( self._path, dequantize = False )
+        self._pil_image = HydrusImageHandling.generate_pil_image( self._path, dequantize = False )
         
         self._pil_global_palette = self._pil_image.palette
         
@@ -128,16 +128,16 @@ class AnimationRendererPIL( object ):
             
         else:
             
-            time_started = HydrusTime.GetNowFloat()
+            time_started = HydrusTime.get_now_float()
             
             try:
                 
-                current_frame = HydrusImageNormalisation.DequantizePILImage( self._pil_image )
+                current_frame = HydrusImageNormalisation.dequantize_pil_image( self._pil_image )
                 
                 # don't have to worry about pasting alpha-having transparent frames over the previous frame--PIL seems to handle this these days!
                 self._pil_canvas = current_frame
                 
-                numpy_image = HydrusImageHandling.GenerateNumPyImageFromPILImage( self._pil_canvas, strip_useless_alpha = False )
+                numpy_image = HydrusImageHandling.generate_numpy_image_from_pil_image( self._pil_canvas, strip_useless_alpha = False )
                 
             except:
                 
@@ -146,7 +146,7 @@ class AnimationRendererPIL( object ):
                 
                 self._frames_we_could_not_render.add( self._current_render_index )
                 
-                time_to_error = HydrusTime.GetNowFloat() - time_started
+                time_to_error = HydrusTime.get_now_float() - time_started
                 
                 if time_to_error > 2.0:
                     
@@ -162,7 +162,7 @@ class AnimationRendererPIL( object ):
         
         try:
             
-            resized_numpy_image = HydrusImageHandling.ResizeNumPyImage( numpy_image, self._target_resolution )
+            resized_numpy_image = HydrusImageHandling.resize_numpy_image( numpy_image, self._target_resolution )
             
         except:
             
@@ -171,7 +171,7 @@ class AnimationRendererPIL( object ):
             
             numpy_image = self._GetRecoveryFrame()
             
-            resized_numpy_image = HydrusImageHandling.ResizeNumPyImage( numpy_image, self._target_resolution )
+            resized_numpy_image = HydrusImageHandling.resize_numpy_image( numpy_image, self._target_resolution )
             
         
         self._last_valid_numpy_frame = numpy_image

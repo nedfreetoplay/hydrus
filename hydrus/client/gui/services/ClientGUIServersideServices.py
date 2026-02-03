@@ -25,9 +25,9 @@ class EditServersideService( ClientGUIScrolledPanels.EditPanel ):
         
         super().__init__( parent )
         
-        duplicate_serverside_service = serverside_service.Duplicate()
+        duplicate_serverside_service = serverside_service.duplicate()
         
-        ( self._service_key, self._service_type, name, port, self._dictionary ) = duplicate_serverside_service.ToTuple()
+        ( self._service_key, self._service_type, name, port, self._dictionary ) = duplicate_serverside_service.to_tuple()
         
         self._service_panel = self._ServicePanel( self, name, port, self._dictionary )
         
@@ -66,7 +66,7 @@ class EditServersideService( ClientGUIScrolledPanels.EditPanel ):
         
         ( name, port, dictionary_part ) = self._service_panel.GetValue()
         
-        dictionary = self._dictionary.Duplicate()
+        dictionary = self._dictionary.duplicate()
         
         dictionary.update( dictionary_part )
         
@@ -77,7 +77,7 @@ class EditServersideService( ClientGUIScrolledPanels.EditPanel ):
             dictionary.update( dictionary_part )
             
         
-        return HydrusNetwork.GenerateService( self._service_key, self._service_type, name, port, dictionary )
+        return HydrusNetwork.generate_service( self._service_key, self._service_type, name, port, dictionary )
         
     
     class _ServicePanel( ClientGUICommon.StaticBox ):
@@ -321,15 +321,15 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
     
     def _Add( self, service_type ):
         
-        service_key = HydrusData.GenerateKey()
+        service_key = HydrusData.generate_key()
         
         port = self._GetNextPort()
         
         name = 'new service'
         
-        dictionary = HydrusNetwork.GenerateDefaultServiceDictionary( service_type )
+        dictionary = HydrusNetwork.generate_default_service_dictionary( service_type )
         
-        service = HydrusNetwork.GenerateService( service_key, service_type, name, port, dictionary )
+        service = HydrusNetwork.generate_service( service_key, service_type, name, port, dictionary )
         
         with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit serverside service' ) as dlg_edit:
             
@@ -400,7 +400,7 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
                 
                 edited_service = panel.GetValue()
                 
-                if edited_service.GetName() != original_name:
+                if edited_service.get_name() != original_name:
                     
                     self._services_listctrl.SetNonDupeName( edited_service )
                     
@@ -475,7 +475,7 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         with HG.dirty_object_lock:
             
-            CG.client_controller.WriteSynchronous( 'update_server_services', admin_service_key, services, service_keys_to_access_keys, self._deletee_service_keys )
+            CG.client_controller.write_synchronous( 'update_server_services', admin_service_key, services, service_keys_to_access_keys, self._deletee_service_keys )
             
             CG.client_controller.RefreshServices()
             

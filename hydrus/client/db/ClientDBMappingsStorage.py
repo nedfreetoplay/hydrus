@@ -85,7 +85,7 @@ class ClientDBMappingsStorage( ClientDBModule.ClientDBModule ):
         super().__init__( 'client mappings storage', cursor )
         
     
-    def _GetServiceIndexGenerationDict( self, service_id ) -> dict:
+    def _get_service_index_generation_dict( self, service_id ) -> dict:
         
         ( current_mappings_table_name, deleted_mappings_table_name, pending_mappings_table_name, petitioned_mappings_table_name ) = GenerateMappingsTableNames( service_id )
         
@@ -110,7 +110,7 @@ class ClientDBMappingsStorage( ClientDBModule.ClientDBModule ):
         return index_generation_dict
         
     
-    def _GetServiceTableGenerationDict( self, service_id ) -> dict:
+    def _get_service_table_generation_dict( self, service_id ) -> dict:
         
         ( current_mappings_table_name, deleted_mappings_table_name, pending_mappings_table_name, petitioned_mappings_table_name ) = GenerateMappingsTableNames( service_id )
         
@@ -122,12 +122,12 @@ class ClientDBMappingsStorage( ClientDBModule.ClientDBModule ):
         }
         
     
-    def _GetServiceIdsWeGenerateDynamicTablesFor( self ):
+    def _get_service_ids_we_generate_dynamic_tables_for( self ):
         
         return self.modules_services.GetServiceIds( HC.REAL_TAG_SERVICES )
         
     
-    def _GetServiceTablePrefixes( self ):
+    def _get_service_table_prefixes( self ):
         
         return {
             MAPPINGS_CURRENT_PREFIX,
@@ -141,10 +141,10 @@ class ClientDBMappingsStorage( ClientDBModule.ClientDBModule ):
         
         ( current_mappings_table_name, deleted_mappings_table_name, pending_mappings_table_name, petitioned_mappings_table_name ) = GenerateMappingsTableNames( service_id )
         
-        self._Execute( 'DELETE FROM {};'.format( current_mappings_table_name ) )
-        self._Execute( 'DELETE FROM {};'.format( deleted_mappings_table_name ) )
-        self._Execute( 'DELETE FROM {};'.format( pending_mappings_table_name ) )
-        self._Execute( 'DELETE FROM {};'.format( petitioned_mappings_table_name ) )
+        self._execute( 'DELETE FROM {};'.format( current_mappings_table_name ) )
+        self._execute( 'DELETE FROM {};'.format( deleted_mappings_table_name ) )
+        self._execute( 'DELETE FROM {};'.format( pending_mappings_table_name ) )
+        self._execute( 'DELETE FROM {};'.format( petitioned_mappings_table_name ) )
         
     
     def DropMappingsTables( self, service_id: int ):
@@ -185,7 +185,7 @@ class ClientDBMappingsStorage( ClientDBModule.ClientDBModule ):
                 
                 if action == HC.CONTENT_UPDATE_ADD:
                     
-                    result = self._Execute( 'SELECT 1 FROM {} WHERE tag_id = ? AND hash_id = ?;'.format( current_mappings_table_name ), ( tag_id, hash_id ) ).fetchone()
+                    result = self._execute( 'SELECT 1 FROM {} WHERE tag_id = ? AND hash_id = ?;'.format( current_mappings_table_name ), ( tag_id, hash_id ) ).fetchone()
                     
                     if result is None:
                         
@@ -198,7 +198,7 @@ class ClientDBMappingsStorage( ClientDBModule.ClientDBModule ):
                     
                 elif action == HC.CONTENT_UPDATE_DELETE:
                     
-                    result = self._Execute( 'SELECT 1 FROM {} WHERE tag_id = ? AND hash_id = ?;'.format( deleted_mappings_table_name ), ( tag_id, hash_id ) ).fetchone()
+                    result = self._execute( 'SELECT 1 FROM {} WHERE tag_id = ? AND hash_id = ?;'.format( deleted_mappings_table_name ), ( tag_id, hash_id ) ).fetchone()
                     
                     if result is None:
                         
@@ -211,7 +211,7 @@ class ClientDBMappingsStorage( ClientDBModule.ClientDBModule ):
                     
                 elif action == HC.CONTENT_UPDATE_PEND:
                     
-                    result = self._Execute( 'SELECT 1 FROM {} WHERE tag_id = ? AND hash_id = ?;'.format( petitioned_mappings_table_name ), ( tag_id, hash_id ) ).fetchone()
+                    result = self._execute( 'SELECT 1 FROM {} WHERE tag_id = ? AND hash_id = ?;'.format( petitioned_mappings_table_name ), ( tag_id, hash_id ) ).fetchone()
                     
                     if result is not None:
                         
@@ -220,11 +220,11 @@ class ClientDBMappingsStorage( ClientDBModule.ClientDBModule ):
                         continue
                         
                     
-                    result = self._Execute( 'SELECT 1 FROM {} WHERE tag_id = ? AND hash_id = ?;'.format( current_mappings_table_name ), ( tag_id, hash_id ) ).fetchone()
+                    result = self._execute( 'SELECT 1 FROM {} WHERE tag_id = ? AND hash_id = ?;'.format( current_mappings_table_name ), ( tag_id, hash_id ) ).fetchone()
                     
                     if result is None:
                         
-                        result = self._Execute( 'SELECT 1 FROM {} WHERE tag_id = ? AND hash_id = ?;'.format( pending_mappings_table_name ), ( tag_id, hash_id ) ).fetchone()
+                        result = self._execute( 'SELECT 1 FROM {} WHERE tag_id = ? AND hash_id = ?;'.format( pending_mappings_table_name ), ( tag_id, hash_id ) ).fetchone()
                         
                         if result is None:
                             
@@ -242,7 +242,7 @@ class ClientDBMappingsStorage( ClientDBModule.ClientDBModule ):
                     
                 elif action == HC.CONTENT_UPDATE_RESCIND_PEND:
                     
-                    result = self._Execute( 'SELECT 1 FROM {} WHERE tag_id = ? AND hash_id = ?;'.format( pending_mappings_table_name ), ( tag_id, hash_id ) ).fetchone()
+                    result = self._execute( 'SELECT 1 FROM {} WHERE tag_id = ? AND hash_id = ?;'.format( pending_mappings_table_name ), ( tag_id, hash_id ) ).fetchone()
                     
                     if result is None:
                         
@@ -257,14 +257,14 @@ class ClientDBMappingsStorage( ClientDBModule.ClientDBModule ):
                     
                     # we are technically ok with deleting things that are not current yet, so do not need to check for that!
                     
-                    result = self._Execute( 'SELECT 1 FROM {} WHERE tag_id = ? AND hash_id = ?;'.format( pending_mappings_table_name ), ( tag_id, hash_id ) ).fetchone()
+                    result = self._execute( 'SELECT 1 FROM {} WHERE tag_id = ? AND hash_id = ?;'.format( pending_mappings_table_name ), ( tag_id, hash_id ) ).fetchone()
                     
                     if result is not None: # but not if they are pending lol
                         
                         continue
                         
                     
-                    result = self._Execute( 'SELECT 1 FROM {} WHERE tag_id = ? AND hash_id = ?;'.format( petitioned_mappings_table_name ), ( tag_id, hash_id ) ).fetchone()
+                    result = self._execute( 'SELECT 1 FROM {} WHERE tag_id = ? AND hash_id = ?;'.format( petitioned_mappings_table_name ), ( tag_id, hash_id ) ).fetchone()
                     
                     if result is None:
                         
@@ -277,7 +277,7 @@ class ClientDBMappingsStorage( ClientDBModule.ClientDBModule ):
                     
                 elif action == HC.CONTENT_UPDATE_RESCIND_PETITION:
                     
-                    result = self._Execute( 'SELECT 1 FROM {} WHERE tag_id = ? AND hash_id = ?;'.format( petitioned_mappings_table_name ), ( tag_id, hash_id ) ).fetchone()
+                    result = self._execute( 'SELECT 1 FROM {} WHERE tag_id = ? AND hash_id = ?;'.format( petitioned_mappings_table_name ), ( tag_id, hash_id ) ).fetchone()
                     
                     if result is None:
                         
@@ -295,47 +295,47 @@ class ClientDBMappingsStorage( ClientDBModule.ClientDBModule ):
                 
             else:
                 
-                with self._MakeTemporaryIntegerTable( hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
+                with self._make_temporary_integer_table( hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
                     
                     if action == HC.CONTENT_UPDATE_ADD:
                         
-                        existing_hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM {} CROSS JOIN {} USING ( hash_id ) WHERE tag_id = ?;'.format( temp_hash_ids_table_name, current_mappings_table_name ), ( tag_id, ) ) )
+                        existing_hash_ids = self._sts( self._execute( 'SELECT hash_id FROM {} CROSS JOIN {} USING ( hash_id ) WHERE tag_id = ?;'.format( temp_hash_ids_table_name, current_mappings_table_name ), ( tag_id, ) ) )
                         
                         valid_hash_ids = set( hash_ids ).difference( existing_hash_ids )
                         
                     elif action == HC.CONTENT_UPDATE_DELETE:
                         
-                        existing_hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM {} CROSS JOIN {} USING ( hash_id ) WHERE tag_id = ?;'.format( temp_hash_ids_table_name, deleted_mappings_table_name ), ( tag_id, ) ) )
+                        existing_hash_ids = self._sts( self._execute( 'SELECT hash_id FROM {} CROSS JOIN {} USING ( hash_id ) WHERE tag_id = ?;'.format( temp_hash_ids_table_name, deleted_mappings_table_name ), ( tag_id, ) ) )
                         
                         valid_hash_ids = set( hash_ids ).difference( existing_hash_ids )
                         
                     elif action == HC.CONTENT_UPDATE_PEND:
                         
                         # prohibited hash_ids
-                        existing_hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM {} CROSS JOIN {} USING ( hash_id ) WHERE tag_id = ?;'.format( temp_hash_ids_table_name, current_mappings_table_name ), ( tag_id, ) ) )
+                        existing_hash_ids = self._sts( self._execute( 'SELECT hash_id FROM {} CROSS JOIN {} USING ( hash_id ) WHERE tag_id = ?;'.format( temp_hash_ids_table_name, current_mappings_table_name ), ( tag_id, ) ) )
                         # existing_hash_ids
-                        existing_hash_ids.update( self._STI( self._Execute( 'SELECT hash_id FROM {} CROSS JOIN {} USING ( hash_id ) WHERE tag_id = ?;'.format( temp_hash_ids_table_name, pending_mappings_table_name ), ( tag_id, ) ) ) )
+                        existing_hash_ids.update( self._sti( self._execute( 'SELECT hash_id FROM {} CROSS JOIN {} USING ( hash_id ) WHERE tag_id = ?;'.format( temp_hash_ids_table_name, pending_mappings_table_name ), ( tag_id, ) ) ) )
                         # conflicting_hash_ids
-                        existing_hash_ids.update( self._STI( self._Execute( 'SELECT hash_id FROM {} CROSS JOIN {} USING ( hash_id ) WHERE tag_id = ?;'.format( temp_hash_ids_table_name, petitioned_mappings_table_name ), ( tag_id, ) ) ) )
+                        existing_hash_ids.update( self._sti( self._execute( 'SELECT hash_id FROM {} CROSS JOIN {} USING ( hash_id ) WHERE tag_id = ?;'.format( temp_hash_ids_table_name, petitioned_mappings_table_name ), ( tag_id, ) ) ) )
                         
                         valid_hash_ids = set( hash_ids ).difference( existing_hash_ids )
                         
                     elif action == HC.CONTENT_UPDATE_RESCIND_PEND:
                         
-                        valid_hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM {} CROSS JOIN {} USING ( hash_id ) WHERE tag_id = ?;'.format( temp_hash_ids_table_name, pending_mappings_table_name ), ( tag_id, ) ) )
+                        valid_hash_ids = self._sts( self._execute( 'SELECT hash_id FROM {} CROSS JOIN {} USING ( hash_id ) WHERE tag_id = ?;'.format( temp_hash_ids_table_name, pending_mappings_table_name ), ( tag_id, ) ) )
                         
                     elif action == HC.CONTENT_UPDATE_PETITION:
                         
                         # we are technically ok with deleting tags that don't exist yet!
-                        existing_hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM {} CROSS JOIN {} USING ( hash_id ) WHERE tag_id = ?;'.format( temp_hash_ids_table_name, petitioned_mappings_table_name ), ( tag_id, ) ) )
+                        existing_hash_ids = self._sts( self._execute( 'SELECT hash_id FROM {} CROSS JOIN {} USING ( hash_id ) WHERE tag_id = ?;'.format( temp_hash_ids_table_name, petitioned_mappings_table_name ), ( tag_id, ) ) )
                         # but we won't conflict with pending!
-                        existing_hash_ids.update( self._STI( self._Execute( 'SELECT hash_id FROM {} CROSS JOIN {} USING ( hash_id ) WHERE tag_id = ?;'.format( temp_hash_ids_table_name, pending_mappings_table_name ), ( tag_id, ) ) ) )
+                        existing_hash_ids.update( self._sti( self._execute( 'SELECT hash_id FROM {} CROSS JOIN {} USING ( hash_id ) WHERE tag_id = ?;'.format( temp_hash_ids_table_name, pending_mappings_table_name ), ( tag_id, ) ) ) )
                         
                         valid_hash_ids = set( hash_ids ).difference( existing_hash_ids )
                         
                     elif action == HC.CONTENT_UPDATE_RESCIND_PETITION:
                         
-                        valid_hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM {} CROSS JOIN {} USING ( hash_id ) WHERE tag_id = ?;'.format( temp_hash_ids_table_name, petitioned_mappings_table_name ), ( tag_id, ) ) )
+                        valid_hash_ids = self._sts( self._execute( 'SELECT hash_id FROM {} CROSS JOIN {} USING ( hash_id ) WHERE tag_id = ?;'.format( temp_hash_ids_table_name, petitioned_mappings_table_name ), ( tag_id, ) ) )
                         
                     else:
                         
@@ -364,18 +364,18 @@ class ClientDBMappingsStorage( ClientDBModule.ClientDBModule ):
     
     def GenerateMappingsTables( self, service_id: int ):
         
-        table_generation_dict = self._GetServiceTableGenerationDict( service_id )
+        table_generation_dict = self._get_service_table_generation_dict( service_id )
         
         for ( table_name, ( create_query_without_name, version_added ) ) in table_generation_dict.items():
             
-            self._CreateTable( create_query_without_name, table_name )
+            self._create_table( create_query_without_name, table_name )
             
         
-        index_generation_dict = self._GetServiceIndexGenerationDict( service_id )
+        index_generation_dict = self._get_service_index_generation_dict( service_id )
         
-        for ( table_name, columns, unique, version_added ) in self._FlattenIndexGenerationDict( index_generation_dict ):
+        for ( table_name, columns, unique, version_added ) in self._flatten_index_generation_dict( index_generation_dict ):
             
-            self._CreateIndex( table_name, columns, unique = unique )
+            self._create_index( table_name, columns, unique = unique )
             
         
     
@@ -383,7 +383,7 @@ class ClientDBMappingsStorage( ClientDBModule.ClientDBModule ):
         
         ( current_mappings_table_name, deleted_mappings_table_name, pending_mappings_table_name, petitioned_mappings_table_name ) = GenerateMappingsTableNames( service_id )
         
-        result = self._Execute( 'SELECT COUNT( DISTINCT hash_id ) FROM {};'.format( current_mappings_table_name ) ).fetchone()
+        result = self._execute( 'SELECT COUNT( DISTINCT hash_id ) FROM {};'.format( current_mappings_table_name ) ).fetchone()
         
         ( count, ) = result
         
@@ -394,7 +394,7 @@ class ClientDBMappingsStorage( ClientDBModule.ClientDBModule ):
         
         ( current_mappings_table_name, deleted_mappings_table_name, pending_mappings_table_name, petitioned_mappings_table_name ) = GenerateMappingsTableNames( service_id )
         
-        result = self._Execute( 'SELECT COUNT( * ) FROM {};'.format( deleted_mappings_table_name ) ).fetchone()
+        result = self._execute( 'SELECT COUNT( * ) FROM {};'.format( deleted_mappings_table_name ) ).fetchone()
         
         ( count, ) = result
         
@@ -450,7 +450,7 @@ class ClientDBMappingsStorage( ClientDBModule.ClientDBModule ):
         
         ( current_mappings_table_name, deleted_mappings_table_name, pending_mappings_table_name, petitioned_mappings_table_name ) = GenerateMappingsTableNames( service_id )
         
-        result = self._Execute( 'SELECT COUNT( * ) FROM {};'.format( pending_mappings_table_name ) ).fetchone()
+        result = self._execute( 'SELECT COUNT( * ) FROM {};'.format( pending_mappings_table_name ) ).fetchone()
         
         ( count, ) = result
         
@@ -461,14 +461,14 @@ class ClientDBMappingsStorage( ClientDBModule.ClientDBModule ):
         
         ( current_mappings_table_name, deleted_mappings_table_name, pending_mappings_table_name, petitioned_mappings_table_name ) = GenerateMappingsTableNames( service_id )
         
-        result = self._Execute( 'SELECT COUNT( * ) FROM {};'.format( petitioned_mappings_table_name ) ).fetchone()
+        result = self._execute( 'SELECT COUNT( * ) FROM {};'.format( petitioned_mappings_table_name ) ).fetchone()
         
         ( count, ) = result
         
         return count
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         tables_and_columns = []
         

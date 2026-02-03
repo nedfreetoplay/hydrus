@@ -32,7 +32,7 @@ def AppendSlideshowMenu( win: CAC.ApplicationCommandProcessorMixin, menu: QW.QMe
     
     for slideshow_duration in slideshow_durations:
         
-        pretty_duration = HydrusTime.TimeDeltaToPrettyTimeDelta( slideshow_duration )
+        pretty_duration = HydrusTime.timedelta_to_pretty_timedelta( slideshow_duration )
         
         ClientGUIMenus.AppendMenuItem( slideshow_menu, pretty_duration, f'Start a slideshow that changes media every {pretty_duration}.', win.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_START_SLIDESHOW, slideshow_duration ) )
         

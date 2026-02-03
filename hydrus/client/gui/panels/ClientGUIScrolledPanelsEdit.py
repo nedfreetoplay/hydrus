@@ -254,7 +254,7 @@ class EditDefaultImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 note_import_options = self._url_class_keys_to_note_import_options[ url_class_key ]
                 
-                json_string = note_import_options.DumpToString()
+                json_string = note_import_options.dump_to_string()
                 
                 CG.client_controller.pub( 'clipboard', 'text', json_string )
                 
@@ -275,7 +275,7 @@ class EditDefaultImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 tag_import_options = self._url_class_keys_to_tag_import_options[ url_class_key ]
                 
-                json_string = tag_import_options.DumpToString()
+                json_string = tag_import_options.dump_to_string()
                 
                 CG.client_controller.pub( 'clipboard', 'text', json_string )
                 
@@ -362,7 +362,7 @@ class EditDefaultImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 note_import_options = self._file_post_default_import_options_button.GetNoteImportOptions()
                 
             
-            note_import_options = note_import_options.Duplicate()
+            note_import_options = note_import_options.duplicate()
             
             note_import_options.SetIsDefault( True )
             
@@ -391,7 +391,7 @@ class EditDefaultImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 tag_import_options = self._file_post_default_import_options_button.GetTagImportOptions()
                 
             
-            tag_import_options = tag_import_options.Duplicate()
+            tag_import_options = tag_import_options.duplicate()
             
             tag_import_options.SetIsDefault( True )
             
@@ -452,7 +452,7 @@ class EditDefaultImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            unknown_import_options = HydrusSerialisable.CreateFromString( raw_text )
+            unknown_import_options = HydrusSerialisable.create_from_string( raw_text )
             
             if isinstance( unknown_import_options, TagImportOptionsLegacy.TagImportOptionsLegacy ):
                 
@@ -471,7 +471,7 @@ class EditDefaultImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 url_class_key = url_class.GetClassKey()
                 
-                insert_dict[ url_class_key ] = unknown_import_options.Duplicate()
+                insert_dict[ url_class_key ] = unknown_import_options.duplicate()
                 
             
             self._list_ctrl.UpdateDatas()
@@ -864,7 +864,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 else:
                     
-                    file_desc = '{} files'.format( HydrusNumbers.ToHumanInt( num_to_delete ) )
+                    file_desc = '{} files'.format( HydrusNumbers.to_human_int( num_to_delete ) )
                     
                 
                 if self._num_actionable_local_file_service_domains == 1:
@@ -878,7 +878,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 text = template.format( file_desc, deletee_service.GetName() )
                 
-                content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, chunk_of_hashes ) for chunk_of_hashes in HydrusLists.SplitListIntoChunks( hashes, 16 ) ]
+                content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, chunk_of_hashes ) for chunk_of_hashes in HydrusLists.split_list_into_chunks( hashes, 16 ) ]
                 
                 content_update_packages = [ ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( deletee_file_service_key, content_update ) for content_update in content_updates ]
                 
@@ -897,7 +897,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     h = [ m.GetHash() for m in self._media if CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY in m.GetLocationsManager().GetCurrent() ]
                     
-                    content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, chunk_of_hashes ) for chunk_of_hashes in HydrusLists.SplitListIntoChunks( h, 16 ) ]
+                    content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, chunk_of_hashes ) for chunk_of_hashes in HydrusLists.split_list_into_chunks( h, 16 ) ]
                     
                     content_update_packages = [ ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( deletee_file_service_key, content_update ) for content_update in content_updates ]
                     
@@ -920,7 +920,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
                         
                     else:
                         
-                        file_desc = '{} files'.format( HydrusNumbers.ToHumanInt( num_to_delete ) )
+                        file_desc = '{} files'.format( HydrusNumbers.to_human_int( num_to_delete ) )
                         
                     
                     if deletee_service.HasPermission( HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_MODERATE ):
@@ -968,12 +968,12 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 else:
                     
-                    suffix = '{} {}files'.format( HydrusNumbers.ToHumanInt( num_to_delete ), suffix )
+                    suffix = '{} {}files'.format( HydrusNumbers.to_human_int( num_to_delete ), suffix )
                     
                 
                 text = 'Permanently delete {}?'.format( suffix )
                 
-                content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, chunk_of_hashes ) for chunk_of_hashes in HydrusLists.SplitListIntoChunks( hashes, 16 ) ]
+                content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, chunk_of_hashes ) for chunk_of_hashes in HydrusLists.split_list_into_chunks( hashes, 16 ) ]
                 
                 content_update_packages = [ ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_update ) for content_update in content_updates ]
                 
@@ -1007,10 +1007,10 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 else:
                     
-                    text = 'Permanently delete these ' + HydrusNumbers.ToHumanInt( num_to_delete ) + ' files and do not save a deletion record?'
+                    text = 'Permanently delete these ' + HydrusNumbers.to_human_int( num_to_delete ) + ' files and do not save a deletion record?'
                     
                 
-                chunks_of_hashes = list( HydrusLists.SplitListIntoChunks( hashes, 16 ) ) # iterator, so list it to use it more than once, jej
+                chunks_of_hashes = list( HydrusLists.split_list_into_chunks( hashes, 16 ) ) # iterator, so list it to use it more than once, jej
                 
                 content_update_packages = []
                 
@@ -1267,7 +1267,7 @@ class EditFilesForcedFiletypePanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 count = original_mimes_count[ mime ]
                 
-                original_filetype_statements.append( f'{HydrusNumbers.ToHumanInt(count)} {HC.mime_string_lookup[ mime ]}')
+                original_filetype_statements.append( f'{HydrusNumbers.to_human_int(count)} {HC.mime_string_lookup[ mime ]}')
                 
             
         
@@ -1287,7 +1287,7 @@ class EditFilesForcedFiletypePanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     count = forced_mimes_count[ mime ]
                     
-                    forced_filetype_statements.append( f'{HydrusNumbers.ToHumanInt(count)} {HC.mime_string_lookup[ mime ]}')
+                    forced_filetype_statements.append( f'{HydrusNumbers.to_human_int(count)} {HC.mime_string_lookup[ mime ]}')
                     
                 
             
@@ -1299,7 +1299,7 @@ class EditFilesForcedFiletypePanel( ClientGUIScrolledPanels.EditPanel ):
                 
             else:
                 
-                forced_filetype_summary = f'{HydrusNumbers.ToHumanInt(total_forced_mimes_count)} are currently being forced, to: {forced_filetype_summary}.'
+                forced_filetype_summary = f'{HydrusNumbers.to_human_int(total_forced_mimes_count)} are currently being forced, to: {forced_filetype_summary}.'
                 
             
         
@@ -1309,7 +1309,7 @@ class EditFilesForcedFiletypePanel( ClientGUIScrolledPanels.EditPanel ):
         text += '\n\n'
         text += 'This will override what hydrus thinks the filetype is for all of these files. Files will be renamed to receive their new file extensions. The original filetype is not forgotten, and this can be undone.'
         text += '\n\n'
-        text += f'Of the {HydrusNumbers.ToHumanInt( total_file_count )} files, there are {original_filetype_summary}. {forced_filetype_summary}'
+        text += f'Of the {HydrusNumbers.to_human_int( total_file_count )} files, there are {original_filetype_summary}. {forced_filetype_summary}'
         
         st = ClientGUICommon.BetterStaticText( self, text )
         st.setWordWrap( True )
@@ -1426,7 +1426,7 @@ class EditFileNotesPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolle
             return
             
         
-        name = HydrusData.GetNonDupeName( name, existing_names )
+        name = HydrusData.get_non_dupe_name( name, existing_names )
         
         self._AddNotePanel( name, '' )
         
@@ -1505,7 +1505,7 @@ class EditFileNotesPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolle
             
             for item in names_and_notes:
                 
-                if not HydrusLists.IsAListLikeCollection( item ):
+                if not HydrusLists.is_a_list_like_collection( item ):
                     
                     continue
                     
@@ -1619,7 +1619,7 @@ class EditFileNotesPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolle
             return
             
         
-        name = HydrusData.GetNonDupeName( name, existing_names )
+        name = HydrusData.get_non_dupe_name( name, existing_names )
         
         self._notebook.setTabText( index, name )
         
@@ -1646,7 +1646,7 @@ class EditFileNotesPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolle
     
     def GetValue( self ) -> tuple[ dict[ str, str ], set[ str ] ]:
         
-        names_to_notes = { self._notebook.tabText( i ) : HydrusText.CleanNoteText( typing.cast( QW.QPlainTextEdit, self._notebook.widget( i ) ).toPlainText() ) for i in range( self._notebook.count() ) }
+        names_to_notes = { self._notebook.tabText( i ) : HydrusText.clean_note_text( typing.cast( QW.QPlainTextEdit, self._notebook.widget( i ) ).toPlainText() ) for i in range( self._notebook.count() ) }
         
         names_to_notes = { name : text for ( name, text ) in names_to_notes.items() if text != '' }
         
@@ -2226,7 +2226,7 @@ class EditURLsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPane
             normalised_urls.extend( weird_urls )
             
         
-        normalised_urls = HydrusLists.DedupeList( normalised_urls )
+        normalised_urls = HydrusLists.dedupe_list( normalised_urls )
         
         for normalised_url in normalised_urls:
             
@@ -2277,7 +2277,7 @@ class EditURLsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPane
         
         try:
             
-            urls = HydrusText.DeserialiseNewlinedTexts( raw_text )
+            urls = HydrusText.deserialise_newlined_texts( raw_text )
             
             self._EnterURLs( urls, only_add = True )
             

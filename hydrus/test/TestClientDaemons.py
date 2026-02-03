@@ -25,7 +25,7 @@ from hydrus.client.search import ClientSearchTagContext
 from hydrus.test import TestGlobals as TG
 from hydrus.test import HelperFunctions
 
-with open( HydrusStaticDir.GetStaticPath( 'hydrus.png' ), 'rb' ) as f:
+with open( HydrusStaticDir.get_static_path( 'hydrus.png' ), 'rb' ) as f:
     
     EXAMPLE_FILE = f.read()
     
@@ -34,8 +34,8 @@ class TestDaemons( unittest.TestCase ):
     
     def test_export_folders_daemon( self ):
         
-        test_dir_source = HydrusTemp.GetSubTempDir( 'export_folder_test_source' )
-        test_dir_dest = HydrusTemp.GetSubTempDir( 'export_folder_test_dest' )
+        test_dir_source = HydrusTemp.get_sub_temp_dir( 'export_folder_test_source' )
+        test_dir_dest = HydrusTemp.get_sub_temp_dir( 'export_folder_test_dest' )
         
         try:
             
@@ -44,11 +44,11 @@ class TestDaemons( unittest.TestCase ):
             # db read metadata
             # client files export with correct filename
             
-            HydrusPaths.MakeSureDirectoryExists( test_dir_dest )
+            HydrusPaths.make_sure_directory_exists( test_dir_dest )
             
             fake_file_path = os.path.join( test_dir_source, '0' )
             
-            HydrusPaths.MirrorFile( HydrusStaticDir.GetStaticPath( 'hydrus.png' ), fake_file_path )
+            HydrusPaths.mirror_file( HydrusStaticDir.get_static_path( 'hydrus.png' ), fake_file_path )
             
             #
             
@@ -67,8 +67,8 @@ class TestDaemons( unittest.TestCase ):
                 phrase = '{hash}'
             )
             
-            hash_1 = HydrusData.GenerateKey()
-            hash_2 = HydrusData.GenerateKey()
+            hash_1 = HydrusData.generate_key()
+            hash_2 = HydrusData.generate_key()
             mime = HC.IMAGE_JPEG
             
             fake_media_result_1 = HelperFunctions.GetFakeMediaResult( hash_1, mime )
@@ -161,17 +161,17 @@ class TestDaemons( unittest.TestCase ):
     
     def test_import_folders_daemon( self ):
         
-        test_dir = HydrusTemp.GetSubTempDir( 'import_folder_test' )
+        test_dir = HydrusTemp.get_sub_temp_dir( 'import_folder_test' )
         
         try:
             
-            HydrusPaths.MakeSureDirectoryExists( test_dir )
+            HydrusPaths.make_sure_directory_exists( test_dir )
             
-            hydrus_png_path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+            hydrus_png_path = HydrusStaticDir.get_static_path( 'hydrus.png' )
             
-            HydrusPaths.MirrorFile( hydrus_png_path, os.path.join( test_dir, '0' ) )
-            HydrusPaths.MirrorFile( hydrus_png_path, os.path.join( test_dir, '1' ) ) # previously imported
-            HydrusPaths.MirrorFile( hydrus_png_path, os.path.join( test_dir, '2' ) )
+            HydrusPaths.mirror_file( hydrus_png_path, os.path.join( test_dir, '0' ) )
+            HydrusPaths.mirror_file( hydrus_png_path, os.path.join( test_dir, '1' ) ) # previously imported
+            HydrusPaths.mirror_file( hydrus_png_path, os.path.join( test_dir, '2' ) )
             
             with open( os.path.join( test_dir, '3' ), 'wb' ) as f: f.write( b'blarg' ) # broken
             with open( os.path.join( test_dir, '4' ), 'wb' ) as f: f.write( b'blarg' ) # previously failed

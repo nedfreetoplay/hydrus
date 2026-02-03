@@ -269,12 +269,12 @@ class RecentTagsPanel( QW.QWidget ):
         
         def do_it( service_key ):
             
-            recent_tags = CG.client_controller.Read( 'recent_tags', service_key )
+            recent_tags = CG.client_controller.read( 'recent_tags', service_key )
             
             CG.client_controller.CallAfterQtSafe( self, qt_code, recent_tags )
             
         
-        CG.client_controller.CallToThread( do_it, self._service_key )
+        CG.client_controller.call_to_thread( do_it, self._service_key )
         
     
     def _UpdateTagDisplay( self ):
@@ -292,7 +292,7 @@ class RecentTagsPanel( QW.QWidget ):
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            CG.client_controller.Write( 'push_recent_tags', self._service_key, None )
+            CG.client_controller.write( 'push_recent_tags', self._service_key, None )
             
             self._last_fetched_tags = []
             
@@ -402,19 +402,19 @@ class RelatedTagsPanel( QW.QWidget ):
                     
                 else:
                     
-                    tags_s = 'tags ({} skipped)'.format( HydrusNumbers.ToHumanInt( num_skipped ) )
+                    tags_s = 'tags ({} skipped)'.format( HydrusNumbers.to_human_int( num_skipped ) )
                     
                 
                 if num_done == num_to_do:
                     
-                    num_done_s = 'Searched {} {} in '.format( HydrusNumbers.ToHumanInt( num_done ), tags_s )
+                    num_done_s = 'Searched {} {} in '.format( HydrusNumbers.to_human_int( num_done ), tags_s )
                     
                 else:
                     
-                    num_done_s = '{} {} searched fully in '.format( HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do ), tags_s )
+                    num_done_s = '{} {} searched fully in '.format( HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do ), tags_s )
                     
                 
-                label = '{}{}.'.format( num_done_s, HydrusTime.TimeDeltaToPrettyTimeDelta( total_time_took ) )
+                label = '{}{}.'.format( num_done_s, HydrusTime.timedelta_to_pretty_timedelta( total_time_took ) )
                 
                 self._status_label.setText( label )
                 
@@ -425,7 +425,7 @@ class RelatedTagsPanel( QW.QWidget ):
                 self._have_done_search_with_this_media = True
                 
             
-            start_time = HydrusTime.GetNowPrecise()
+            start_time = HydrusTime.get_now_precise()
             
             concurrence_threshold = CG.client_controller.new_options.GetInteger( 'related_tags_concurrence_threshold_percent' ) / 100
             search_tag_slices_weight_dict = { ':' : 1.0, '' : 1.0 }
@@ -435,7 +435,7 @@ class RelatedTagsPanel( QW.QWidget ):
             
             for ( tag_slice, weight_percent ) in related_tags_search_tag_slices_weight_percent:
                 
-                if HydrusTags.IsNamespaceTagSlice( tag_slice ):
+                if HydrusTags.is_namespace_tag_slice( tag_slice ):
                     
                     tag_slice = tag_slice[ : -1 ]
                     
@@ -445,7 +445,7 @@ class RelatedTagsPanel( QW.QWidget ):
             
             for ( tag_slice, weight_percent ) in related_tags_result_tag_slices_weight_percent:
                 
-                if HydrusTags.IsNamespaceTagSlice( tag_slice ):
+                if HydrusTags.is_namespace_tag_slice( tag_slice ):
                     
                     tag_slice = tag_slice[ : -1 ]
                     
@@ -453,7 +453,7 @@ class RelatedTagsPanel( QW.QWidget ):
                 result_tag_slices_weight_dict[ tag_slice ] = weight_percent / 100
                 
             
-            ( num_done, num_to_do, num_skipped, predicates ) = CG.client_controller.Read(
+            ( num_done, num_to_do, num_skipped, predicates ) = CG.client_controller.read(
                 'related_tags',
                 file_service_key,
                 tag_service_key,
@@ -465,7 +465,7 @@ class RelatedTagsPanel( QW.QWidget ):
                 other_tags_to_exclude = other_tags_to_exclude
             )
             
-            total_time_took = HydrusTime.GetNowPrecise() - start_time
+            total_time_took = HydrusTime.get_now_precise() - start_time
             
             predicates = ClientSearchPredicate.SortPredicates( predicates )
             
@@ -507,7 +507,7 @@ class RelatedTagsPanel( QW.QWidget ):
         
         tag_service_key = self._service_key
         
-        CG.client_controller.CallToThread( do_it, file_service_key, tag_service_key, search_tags, other_tags_to_exclude )
+        CG.client_controller.call_to_thread( do_it, file_service_key, tag_service_key, search_tags, other_tags_to_exclude )
         
     
     def _UpdateTagDisplay( self ):
@@ -519,21 +519,21 @@ class RelatedTagsPanel( QW.QWidget ):
     
     def RefreshQuick( self ):
         
-        max_time_to_take = HydrusTime.SecondiseMSFloat( self._new_options.GetInteger( 'related_tags_search_1_duration_ms' ) )
+        max_time_to_take = HydrusTime.secondise_ms_float( self._new_options.GetInteger( 'related_tags_search_1_duration_ms' ) )
         
         self._FetchRelatedTagsNew( max_time_to_take )
         
     
     def RefreshMedium( self ):
         
-        max_time_to_take = HydrusTime.SecondiseMSFloat( self._new_options.GetInteger( 'related_tags_search_2_duration_ms' ) )
+        max_time_to_take = HydrusTime.secondise_ms_float( self._new_options.GetInteger( 'related_tags_search_2_duration_ms' ) )
         
         self._FetchRelatedTagsNew( max_time_to_take )
         
     
     def RefreshThorough( self ):
         
-        max_time_to_take = HydrusTime.SecondiseMSFloat( self._new_options.GetInteger( 'related_tags_search_3_duration_ms' ) )
+        max_time_to_take = HydrusTime.secondise_ms_float( self._new_options.GetInteger( 'related_tags_search_3_duration_ms' ) )
         
         self._FetchRelatedTagsNew( max_time_to_take )
         
@@ -647,12 +647,12 @@ class FileLookupScriptTagsPanel( QW.QWidget ):
                 self._fetch_button.setEnabled( True )
                 
             
-            scripts = CG.client_controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_PARSE_ROOT_FILE_LOOKUP )
+            scripts = CG.client_controller.read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_PARSE_ROOT_FILE_LOOKUP )
             
             CG.client_controller.CallAfterQtSafe( self, qt_code )
             
         
-        CG.client_controller.CallToThread( do_it )
+        CG.client_controller.call_to_thread( do_it )
         
     
     def _SetTags( self, tags ):
@@ -702,7 +702,7 @@ class FileLookupScriptTagsPanel( QW.QWidget ):
             file_identifier = script.ConvertMediaToFileIdentifier( m )
             
         
-        stop_time = HydrusTime.GetNow() + 30
+        stop_time = HydrusTime.get_now() + 30
         
         job_status = ClientThreading.JobStatus( cancellable = True, stop_time = stop_time )
         
@@ -710,7 +710,7 @@ class FileLookupScriptTagsPanel( QW.QWidget ):
         
         self._SetTags( [] )
         
-        CG.client_controller.CallToThread( self.THREADFetchTags, script, job_status, file_identifier )
+        CG.client_controller.call_to_thread( self.THREADFetchTags, script, job_status, file_identifier )
         
     
     def MediaUpdated( self ):

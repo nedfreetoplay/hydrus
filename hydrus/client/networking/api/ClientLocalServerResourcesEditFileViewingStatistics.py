@@ -29,7 +29,7 @@ class HydrusResourceClientAPIRestrictedEditFileViewingStatisticsIncrementFileVie
             raise HydrusExceptions.InsufficientCredentialsException( 'Sorry, the user has disabled file viewing statistics on this client!' )
             
         
-        canvas_type = request.parsed_request_args.GetValue( 'canvas_type', int )
+        canvas_type = request.parsed_request_args.get_value( 'canvas_type', int )
         
         if canvas_type not in ( CC.CANVAS_MEDIA_VIEWER, CC.CANVAS_PREVIEW, CC.CANVAS_CLIENT_API ):
             
@@ -38,22 +38,22 @@ class HydrusResourceClientAPIRestrictedEditFileViewingStatisticsIncrementFileVie
         
         if 'timestamp' in request.parsed_request_args:
             
-            timestamp = request.parsed_request_args.GetValueOrNone( 'timestamp', float )
+            timestamp = request.parsed_request_args.get_value_or_none( 'timestamp', float )
             
-            view_timestamp_ms = HydrusTime.MillisecondiseS( timestamp )
+            view_timestamp_ms = HydrusTime.millisecondise_s( timestamp )
             
         elif 'timestamp_ms' in request.parsed_request_args:
             
-            view_timestamp_ms = request.parsed_request_args.GetValueOrNone( 'timestamp_ms', int )
+            view_timestamp_ms = request.parsed_request_args.get_value_or_none( 'timestamp_ms', int )
             
         else:
             
-            view_timestamp_ms = HydrusTime.GetNowMS()
+            view_timestamp_ms = HydrusTime.get_now_ms()
             
         
-        views_delta = request.parsed_request_args.GetValue( 'views', int, default_value = 1 )
+        views_delta = request.parsed_request_args.get_value( 'views', int, default_value = 1 )
         
-        viewtime_float = request.parsed_request_args.GetValue( 'viewtime', float )
+        viewtime_float = request.parsed_request_args.get_value( 'viewtime', float )
         
         if views_delta < 0:
             
@@ -78,7 +78,7 @@ class HydrusResourceClientAPIRestrictedEditFileViewingStatisticsIncrementFileVie
         
         content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_updates )
         
-        CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+        CG.client_controller.write_synchronous( 'content_updates', content_update_package )
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
@@ -95,7 +95,7 @@ class HydrusResourceClientAPIRestrictedEditFileViewingStatisticsSetFileViewingSt
             raise HydrusExceptions.InsufficientCredentialsException( 'Sorry, the user has disabled file viewing statistics on this client!' )
             
         
-        canvas_type = request.parsed_request_args.GetValue( 'canvas_type', int )
+        canvas_type = request.parsed_request_args.get_value( 'canvas_type', int )
         
         if canvas_type not in ( CC.CANVAS_MEDIA_VIEWER, CC.CANVAS_PREVIEW, CC.CANVAS_CLIENT_API ):
             
@@ -104,22 +104,22 @@ class HydrusResourceClientAPIRestrictedEditFileViewingStatisticsSetFileViewingSt
         
         if 'timestamp' in request.parsed_request_args:
             
-            timestamp = request.parsed_request_args.GetValueOrNone( 'timestamp', float )
+            timestamp = request.parsed_request_args.get_value_or_none( 'timestamp', float )
             
-            view_timestamp_ms = HydrusTime.MillisecondiseS( timestamp )
+            view_timestamp_ms = HydrusTime.millisecondise_s( timestamp )
             
         elif 'timestamp_ms' in request.parsed_request_args:
             
-            view_timestamp_ms = request.parsed_request_args.GetValueOrNone( 'timestamp_ms', int )
+            view_timestamp_ms = request.parsed_request_args.get_value_or_none( 'timestamp_ms', int )
             
         else:
             
             view_timestamp_ms = None
             
         
-        views = request.parsed_request_args.GetValue( 'views', int )
+        views = request.parsed_request_args.get_value( 'views', int )
         
-        viewtime_float = request.parsed_request_args.GetValue( 'viewtime', float )
+        viewtime_float = request.parsed_request_args.get_value( 'viewtime', float )
         
         if views < 0:
             
@@ -144,7 +144,7 @@ class HydrusResourceClientAPIRestrictedEditFileViewingStatisticsSetFileViewingSt
         
         content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_updates )
         
-        CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+        CG.client_controller.write_synchronous( 'content_updates', content_update_package )
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         

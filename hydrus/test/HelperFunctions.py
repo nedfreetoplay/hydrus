@@ -74,7 +74,7 @@ def GetFakeMediaResult( hash: bytes, mime = None, include_some_tags = True ):
     
     times_manager = ClientMediaManagers.TimesManager()
     
-    import_timestamp_ms = random.randint( HydrusTime.GetNowMS() - 1000000000, HydrusTime.GetNowMS() - 15 )
+    import_timestamp_ms = random.randint( HydrusTime.get_now_ms() - 1000000000, HydrusTime.get_now_ms() - 15 )
     
     file_modified_timestamp_ms = random.randint( import_timestamp_ms - 50000000, import_timestamp_ms - 1 )
     

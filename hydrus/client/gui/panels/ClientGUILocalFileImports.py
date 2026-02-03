@@ -271,7 +271,7 @@ class ReviewLocalFileImports( ClientGUIScrolledPanels.ReviewPanel ):
     
     def _ConvertPathToDisplayTuple( self, local_file_parse: LocalFileParse ):
         
-        pretty_index = HydrusNumbers.ToHumanInt( local_file_parse.index )
+        pretty_index = HydrusNumbers.to_human_int( local_file_parse.index )
         
         path = local_file_parse.path
         
@@ -281,7 +281,7 @@ class ReviewLocalFileImports( ClientGUIScrolledPanels.ReviewPanel ):
             
         else:
             
-            pretty_size = HydrusData.ToHumanBytes( local_file_parse.size )
+            pretty_size = HydrusData.to_human_bytes( local_file_parse.size )
             
         
         pretty_mime = local_file_parse.GetPrettyMime()
@@ -374,7 +374,7 @@ class ReviewLocalFileImports( ClientGUIScrolledPanels.ReviewPanel ):
             
             ( unparsed_paths_queue, parsed_paths_queue, search_subdirectories, comparable_sidecar_prefixes ) = args
             
-            start_time = HydrusTime.GetNowFloat()
+            start_time = HydrusTime.get_now_float()
             
             while not unparsed_paths_queue.empty():
                 
@@ -430,13 +430,13 @@ class ReviewLocalFileImports( ClientGUIScrolledPanels.ReviewPanel ):
                     
                     if not os.path.exists( path ):
                         
-                        HydrusData.Print( 'Missing file: ' + path )
+                        HydrusData.print_text( 'Missing file: ' + path )
                         
                         local_file_parse.result = RESULT_MISSING
                         
-                    elif not HydrusPaths.PathIsFree( path ):
+                    elif not HydrusPaths.path_is_free( path ):
                         
-                        HydrusData.Print( 'File currently in use: ' + path )
+                        HydrusData.print_text( 'File currently in use: ' + path )
                         
                         local_file_parse.result = RESULT_OCCUPIED
                         
@@ -455,13 +455,13 @@ class ReviewLocalFileImports( ClientGUIScrolledPanels.ReviewPanel ):
                         
                         if size == 0:
                             
-                            HydrusData.Print( 'Empty file: ' + path )
+                            HydrusData.print_text( 'Empty file: ' + path )
                             
                             local_file_parse.result = RESULT_EMPTY
                             
                         elif path.endswith( os.path.sep + 'Thumbs.db' ) or path.endswith( os.path.sep + 'thumbs.db' ):
                             
-                            HydrusData.Print( 'In import parse, skipping Thumbs.db: ' + path )
+                            HydrusData.print_text( 'In import parse, skipping Thumbs.db: ' + path )
                             
                             local_file_parse.result = RESULT_UNIMPORTABLE
                             
@@ -471,12 +471,12 @@ class ReviewLocalFileImports( ClientGUIScrolledPanels.ReviewPanel ):
                             
                             try:
                                 
-                                mime = HydrusFileHandling.GetMime( path )
+                                mime = HydrusFileHandling.get_mime( path )
                                 
                             except Exception as e:
                                 
-                                HydrusData.Print( 'Problem parsing mime for: ' + path )
-                                HydrusData.PrintException( e )
+                                HydrusData.print_text( 'Problem parsing mime for: ' + path )
+                                HydrusData.print_exception( e )
                                 
                                 mime = HC.APPLICATION_UNKNOWN
                                 
@@ -489,7 +489,7 @@ class ReviewLocalFileImports( ClientGUIScrolledPanels.ReviewPanel ):
                                 
                             else:
                                 
-                                HydrusData.Print( 'During file import scan, unparsable file: ' + path )
+                                HydrusData.print_text( 'During file import scan, unparsable file: ' + path )
                                 
                                 local_file_parse.result = RESULT_UNIMPORTABLE
                                 
@@ -499,7 +499,7 @@ class ReviewLocalFileImports( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 parsed_paths_queue.put( local_file_parse )
                 
-                if HydrusTime.TimeHasPassedFloat( start_time + 0.1 ):
+                if HydrusTime.time_has_passed_float( start_time + 0.1 ):
                     
                     break
                     
@@ -625,11 +625,11 @@ class ReviewLocalFileImports( ClientGUIScrolledPanels.ReviewPanel ):
             
         elif num_files_done < num_total_paths:
             
-            message = f'{HydrusNumbers.ValueRangeToPrettyString( num_files_done, num_total_paths )} files parsed'
+            message = f'{HydrusNumbers.value_range_to_pretty_string( num_files_done, num_total_paths )} files parsed'
             
         else:
             
-            message = f'{HydrusNumbers.ToHumanInt( num_total_paths )} files parsed'
+            message = f'{HydrusNumbers.to_human_int( num_total_paths )} files parsed'
             
         
         if num_bad_files > 0:
@@ -638,7 +638,7 @@ class ReviewLocalFileImports( ClientGUIScrolledPanels.ReviewPanel ):
             
             if num_good_files > 0:
                 
-                message += f'{HydrusNumbers.ToHumanInt( num_good_files )} good | {HydrusNumbers.ToHumanInt( num_bad_files )} bad'
+                message += f'{HydrusNumbers.to_human_int( num_good_files )} good | {HydrusNumbers.to_human_int( num_bad_files )} bad'
                 
             elif num_bad_files == num_files_done:
                 
@@ -651,22 +651,22 @@ class ReviewLocalFileImports( ClientGUIScrolledPanels.ReviewPanel ):
             
             if num_empty_files > 0:
                 
-                bad_comments.append( HydrusNumbers.ToHumanInt( num_empty_files ) + ' were empty' )
+                bad_comments.append( HydrusNumbers.to_human_int( num_empty_files ) + ' were empty' )
                 
             
             if num_missing > 0:
                 
-                bad_comments.append( HydrusNumbers.ToHumanInt( num_missing ) + ' were missing' )
+                bad_comments.append( HydrusNumbers.to_human_int( num_missing ) + ' were missing' )
                 
             
             if num_unimportable > 0:
                 
-                bad_comments.append( HydrusNumbers.ToHumanInt( num_unimportable ) + ' had unsupported file types' )
+                bad_comments.append( HydrusNumbers.to_human_int( num_unimportable ) + ' had unsupported file types' )
                 
             
             if num_occupied > 0:
                 
-                bad_comments.append( HydrusNumbers.ToHumanInt( num_occupied ) + ' were inaccessible (maybe in use by another process)' )
+                bad_comments.append( HydrusNumbers.to_human_int( num_occupied ) + ' were inaccessible (maybe in use by another process)' )
                 
             
             message += ', '.join( bad_comments )
@@ -674,7 +674,7 @@ class ReviewLocalFileImports( ClientGUIScrolledPanels.ReviewPanel ):
         
         if num_sidecars > 0:
             
-            message += f' - and looks like {HydrusNumbers.ToHumanInt( num_sidecars )} txt/json/xml sidecars'
+            message += f' - and looks like {HydrusNumbers.to_human_int( num_sidecars )} txt/json/xml sidecars'
             
         
         message += '.'

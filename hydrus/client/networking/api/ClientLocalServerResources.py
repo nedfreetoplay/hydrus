@@ -56,14 +56,14 @@ class HydrusResourceClientAPI( HydrusServerResources.HydrusResource ):
     
     def _reportRequestStarted( self, request: HydrusServerRequest.HydrusRequest ):
         
-        HydrusServerResources.HydrusResource._reportRequestStarted( self, request )
+        HydrusServerResources.HydrusResource._report_request_started( self, request )
         
         CG.client_controller.ResetIdleTimerFromClientAPI()
         
     
     def _checkService( self, request: HydrusServerRequest.HydrusRequest ):
         
-        HydrusServerResources.HydrusResource._checkService( self, request )
+        HydrusServerResources.HydrusResource._check_Service( self, request )
         
         if self.BLOCKED_WHEN_BUSY and HG.client_busy.locked():
             
@@ -81,7 +81,7 @@ class HydrusResourceClientAPIRestricted( HydrusResourceClientAPI ):
     
     def _callbackCheckAccountRestrictions( self, request: HydrusServerRequest.HydrusRequest ):
         
-        HydrusResourceClientAPI._callbackCheckAccountRestrictions( self, request )
+        HydrusResourceClientAPI._callback_check_account_restrictions( self, request )
         
         self._CheckAPIPermissions( request )
         

@@ -11,7 +11,7 @@ def ConvertClientToServerUpdateToContentUpdates( client_to_server_update: Hydrus
     
     content_updates = []
     
-    for ( action, content, reason ) in client_to_server_update.IterateAllActionsAndContentsAndReasons():
+    for ( action, content, reason ) in client_to_server_update.iterate_all_actions_and_contents_and_reasons():
         
         content_type = content.GetContentType()
         
@@ -463,7 +463,7 @@ class ContentUpdatePackage( object ):
             s += ', '.join( locations ) + '->'
             
         
-        s += ', '.join( actions ) + extra_words + ' ' + HydrusNumbers.ToHumanInt( num_files ) + ' files'
+        s += ', '.join( actions ) + extra_words + ' ' + HydrusNumbers.to_human_int( num_files ) + ' files'
         
         return s
         

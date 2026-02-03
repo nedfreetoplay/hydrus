@@ -53,7 +53,7 @@ class EditPotentialDuplicatesSearchContextPanel( ClientGUICommon.StaticBox ):
         
         if page_key is None:
             
-            page_key = HydrusData.GenerateKey()
+            page_key = HydrusData.generate_key()
             
         
         self._tag_autocomplete_1 = ClientGUIACDropdown.AutoCompleteDropdownTagsRead( self, page_key, file_search_context_1, allow_all_known_files = False, only_allow_local_file_domains = True, only_allow_combined_local_file_domains = True, allow_multiple_file_domains = False, synchronised = synchronised, force_system_everything = True )
@@ -234,11 +234,11 @@ class EditPotentialDuplicatesSearchContextPanel( ClientGUICommon.StaticBox ):
                 return ( [], job_status )
                 
             
-            start_time = HydrusTime.GetNowPrecise()
+            start_time = HydrusTime.get_now_precise()
             
-            count = CG.client_controller.Read( 'potential_duplicates_count_fragmentary', potential_duplicate_pairs_fragmentary_search )
+            count = CG.client_controller.read( 'potential_duplicates_count_fragmentary', potential_duplicate_pairs_fragmentary_search )
             
-            actual_work_period = HydrusTime.GetNowPrecise() - start_time
+            actual_work_period = HydrusTime.get_now_precise() - start_time
             
             potential_duplicate_pairs_fragmentary_search.NotifyWorkTimeForAutothrottle( actual_work_period, 0.5 )
             
@@ -287,7 +287,7 @@ class EditPotentialDuplicatesSearchContextPanel( ClientGUICommon.StaticBox ):
         
         def work_callable():
             
-            potential_duplicate_id_pairs_and_distances: ClientPotentialDuplicatesSearchContext.PotentialDuplicateIdPairsAndDistances = CG.client_controller.Read( 'potential_duplicate_id_pairs_and_distances', location_context )
+            potential_duplicate_id_pairs_and_distances: ClientPotentialDuplicatesSearchContext.PotentialDuplicateIdPairsAndDistances = CG.client_controller.read( 'potential_duplicate_id_pairs_and_distances', location_context )
             
             return potential_duplicate_id_pairs_and_distances
             
@@ -377,7 +377,7 @@ class EditPotentialDuplicatesSearchContextPanel( ClientGUICommon.StaticBox ):
                 
                 if self._potential_duplicate_pairs_fragmentary_search.SearchDone():
                     
-                    text = f'{HydrusNumbers.ToHumanInt( num_pairs_in_search_space )} pairs; {HydrusNumbers.ToHumanInt( self._num_potential_duplicate_pairs )} match'
+                    text = f'{HydrusNumbers.to_human_int( num_pairs_in_search_space )} pairs; {HydrusNumbers.to_human_int( self._num_potential_duplicate_pairs )} match'
                     
                 else:
                     
@@ -395,21 +395,21 @@ class EditPotentialDuplicatesSearchContextPanel( ClientGUICommon.StaticBox ):
                     
                     estimate = estimate_base * estimate_base_multiplier
                     
-                    text = f'{HydrusNumbers.ToHumanInt(num_pairs_in_search_space)} pairs; ~{HydrusNumbers.ToHumanInt( estimate )} match'
+                    text = f'{HydrusNumbers.to_human_int(num_pairs_in_search_space)} pairs; ~{HydrusNumbers.to_human_int( estimate )} match'
                     
                 
             else:
                 
                 if self._potential_duplicate_pairs_fragmentary_search.SearchDone():
                     
-                    text = f'{HydrusNumbers.ToHumanInt(num_pairs_in_search_space)} pairs searched; {HydrusNumbers.ToHumanInt( self._num_potential_duplicate_pairs )} match'
+                    text = f'{HydrusNumbers.to_human_int(num_pairs_in_search_space)} pairs searched; {HydrusNumbers.to_human_int( self._num_potential_duplicate_pairs )} match'
                     
                 else:
                     
                     value = num_pairs_searched
                     range = num_pairs_in_search_space
                     
-                    text = f'{HydrusNumbers.ValueRangeToPrettyString(value, range)} pairs searched; {HydrusNumbers.ToHumanInt( self._num_potential_duplicate_pairs )} match{HC.UNICODE_ELLIPSIS}'
+                    text = f'{HydrusNumbers.value_range_to_pretty_string(value, range)} pairs searched; {HydrusNumbers.to_human_int( self._num_potential_duplicate_pairs )} match{HC.UNICODE_ELLIPSIS}'
                     
                 
             

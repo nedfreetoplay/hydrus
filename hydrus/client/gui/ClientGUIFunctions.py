@@ -172,7 +172,7 @@ def ConvertQtImageToNumPy( qt_image: QG.QImage, strip_useless_alpha = True ):
     
     if strip_useless_alpha:
         
-        numpy_image = HydrusImageNormalisation.StripOutAnyUselessAlphaChannel( numpy_image )
+        numpy_image = HydrusImageNormalisation.strip_out_any_useless_alpha_channel( numpy_image )
         
     
     return numpy_image
@@ -303,12 +303,12 @@ def GetTextSizeFromPainter( painter: QG.QPainter, text: str ):
             
             from hydrus.core import HydrusData
             
-            HydrusData.ShowText( 'Hey, I think hydrus stumbled across an invalid tag! Please run _database->check and repair->fix invalid tags_ immediately, or you may get errors!' )
+            HydrusData.show_text( 'Hey, I think hydrus stumbled across an invalid tag! Please run _database->check and repair->fix invalid tags_ immediately, or you may get errors!' )
             
             bad_text = repr( text )
-            bad_text = HydrusText.ElideText( bad_text, 24 )
+            bad_text = HydrusText.elide_text( bad_text, 24 )
             
-            HydrusData.ShowText( 'The bad text was: {}'.format( bad_text ) )
+            HydrusData.show_text( 'The bad text was: {}'.format( bad_text ) )
             
             ClientTags.have_shown_invalid_tag_warning = True
             

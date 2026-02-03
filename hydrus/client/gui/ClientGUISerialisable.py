@@ -50,7 +50,7 @@ class PNGExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             ( payload_bytes, payload_length ) = ClientSerialisable.GetPayloadBytesAndLength( self._payload_obj )
             
-            payload_description += ' - {}'.format( HydrusData.ToHumanBytes( payload_length ) )
+            payload_description += ' - {}'.format( HydrusData.to_human_bytes( payload_length ) )
             
         
         self._payload_description.setText( payload_description )
@@ -67,7 +67,7 @@ class PNGExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
         elif isinstance( self._payload_obj, HydrusSerialisable.SerialisableBaseNamed ):
             
-            name = self._payload_obj.GetName()
+            name = self._payload_obj.get_name()
             
         else:
             
@@ -85,7 +85,7 @@ class PNGExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             filename = name + '.png'
             
-            filename = HydrusPaths.SanitizeFilename( filename, True )
+            filename = HydrusPaths.sanitize_filename( filename, True )
             
             path = os.path.join( last_png_export_dir, filename )
             

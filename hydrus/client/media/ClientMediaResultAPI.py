@@ -47,11 +47,11 @@ def PopulateMetadataAPIDict( metadata_list: list[ dict ], hashes: list[ bytes ],
     
     if include_milliseconds:
         
-        time_converter = HydrusTime.SecondiseMSFloat
+        time_converter = HydrusTime.secondise_ms_float
         
     else:
         
-        time_converter = HydrusTime.SecondiseMS
+        time_converter = HydrusTime.secondise_ms
         
     
     services_manager = CG.client_controller.services_manager
@@ -121,7 +121,7 @@ def PopulateMetadataAPIDict( metadata_list: list[ dict ], hashes: list[ bytes ],
                 
                 if width is not None and height is not None and width > 0 and height > 0:
                     
-                    ( expected_thumbnail_width, expected_thumbnail_height ) = HydrusImageHandling.GetThumbnailResolution( ( width, height ), thumbnail_bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
+                    ( expected_thumbnail_width, expected_thumbnail_height ) = HydrusImageHandling.get_thumbnail_resolution( ( width, height ), thumbnail_bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
                     
                     metadata_dict[ 'thumbnail_width' ] = expected_thumbnail_width
                     metadata_dict[ 'thumbnail_height' ] = expected_thumbnail_height
@@ -247,11 +247,11 @@ def PopulateMetadataAPIDict( metadata_list: list[ dict ], hashes: list[ bytes ],
                 
                 storage_statuses_to_tags = tags_manager.GetStatusesToTags( tag_service_key, ClientTags.TAG_DISPLAY_STORAGE )
                 
-                storage_tags_json_serialisable = { str( status ) : sorted( tags, key = HydrusText.HumanTextSortKey ) for ( status, tags ) in storage_statuses_to_tags.items() if len( tags ) > 0 }
+                storage_tags_json_serialisable = { str( status ) : sorted( tags, key = HydrusText.human_text_sort_key ) for ( status, tags ) in storage_statuses_to_tags.items() if len( tags ) > 0 }
                 
                 display_statuses_to_tags = tags_manager.GetStatusesToTags( tag_service_key, ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL )
                 
-                display_tags_json_serialisable = { str( status ) : sorted( tags, key = HydrusText.HumanTextSortKey ) for ( status, tags ) in display_statuses_to_tags.items() if len( tags ) > 0 }
+                display_tags_json_serialisable = { str( status ) : sorted( tags, key = HydrusText.human_text_sort_key ) for ( status, tags ) in display_statuses_to_tags.items() if len( tags ) > 0 }
                 
                 tags_dict_object = {
                     'name' : service_keys_to_names[ tag_service_key ],
@@ -279,8 +279,8 @@ def PopulateMetadataAPIDict( metadata_list: list[ dict ], hashes: list[ bytes ],
             ]:
                 
                 views = fvsm.GetViews( canvas_type )
-                viewtime = HydrusTime.SecondiseMSFloat( fvsm.GetViewtimeMS( canvas_type ) )
-                last_viewed_timestamp = HydrusTime.SecondiseMSFloat( times_manager.GetLastViewedTimestampMS( canvas_type ) )
+                viewtime = HydrusTime.secondise_ms_float( fvsm.GetViewtimeMS( canvas_type ) )
+                last_viewed_timestamp = HydrusTime.secondise_ms_float( times_manager.GetLastViewedTimestampMS( canvas_type ) )
                 
                 json_object = {
                     'canvas_type' : canvas_type,
@@ -303,7 +303,7 @@ def PopulateMetadataAPIDict( metadata_list: list[ dict ], hashes: list[ bytes ],
             
             for ( service_key, statuses_to_tags ) in service_keys_to_statuses_to_tags.items():
                 
-                statuses_to_tags_json_serialisable = { str( status ) : sorted( tags, key = HydrusText.HumanTextSortKey ) for ( status, tags ) in statuses_to_tags.items() if len( tags ) > 0 }
+                statuses_to_tags_json_serialisable = { str( status ) : sorted( tags, key = HydrusText.human_text_sort_key ) for ( status, tags ) in statuses_to_tags.items() if len( tags ) > 0 }
                 
                 if len( statuses_to_tags_json_serialisable ) > 0:
                     
@@ -324,7 +324,7 @@ def PopulateMetadataAPIDict( metadata_list: list[ dict ], hashes: list[ bytes ],
             
             for ( service_key, statuses_to_tags ) in service_keys_to_statuses_to_tags.items():
                 
-                statuses_to_tags_json_serialisable = { str( status ) : sorted( tags, key = HydrusText.HumanTextSortKey ) for ( status, tags ) in statuses_to_tags.items() if len( tags ) > 0 }
+                statuses_to_tags_json_serialisable = { str( status ) : sorted( tags, key = HydrusText.human_text_sort_key ) for ( status, tags ) in statuses_to_tags.items() if len( tags ) > 0 }
                 
                 if len( statuses_to_tags_json_serialisable ) > 0:
                     

@@ -40,14 +40,14 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
         self._InitCaches()
         
     
-    def _GetInitialIndexGenerationDict( self ) -> dict:
+    def _get_initial_index_generation_dict( self ) -> dict:
         
         index_generation_dict = {}
         
         return index_generation_dict
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict( self ) -> dict:
         
         return {
             'main.file_inbox' : ( 'CREATE TABLE IF NOT EXISTS {} ( hash_id INTEGER PRIMARY KEY );', 400 )
@@ -58,9 +58,9 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
         
         # TODO: see about making this guy a 'property' or whatever and initialising on first request?
         # this, otherwise, is asking it on every reconnection, which is not ideal
-        if self._Execute( 'SELECT 1 FROM sqlite_master WHERE name = ?;', ( 'file_inbox', ) ).fetchone() is not None:
+        if self._execute( 'SELECT 1 FROM sqlite_master WHERE name = ?;', ( 'file_inbox', ) ).fetchone() is not None:
             
-            self.inbox_hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM file_inbox;' ) )
+            self.inbox_hash_ids = self._sts( self._execute( 'SELECT hash_id FROM file_inbox;' ) )
             
         
     
@@ -75,11 +75,11 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
         
         if len( archiveable_hash_ids ) > 0:
             
-            self._ExecuteMany( 'DELETE FROM file_inbox WHERE hash_id = ?;', ( ( hash_id, ) for hash_id in archiveable_hash_ids ) )
+            self._execute_many( 'DELETE FROM file_inbox WHERE hash_id = ?;', ( ( hash_id, ) for hash_id in archiveable_hash_ids ) )
             
             self.inbox_hash_ids.difference_update( archiveable_hash_ids )
             
-            now_ms = HydrusTime.GetNowMS()
+            now_ms = HydrusTime.get_now_ms()
             
             self.modules_files_metadata_timestamps.SetSimpleTimestampsMS( HC.TIMESTAMP_TYPE_ARCHIVED, [ ( hash_id, now_ms ) for hash_id in archiveable_hash_ids ] )
             
@@ -87,11 +87,11 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
             
             update_rows = list( service_ids_to_counts.items() )
             
-            self._ExecuteMany( 'UPDATE service_info SET info = info - ? WHERE service_id = ? AND info_type = ?;', [ ( count, service_id, HC.SERVICE_INFO_NUM_INBOX ) for ( service_id, count ) in update_rows ] )
+            self._execute_many( 'UPDATE service_info SET info = info - ? WHERE service_id = ? AND info_type = ?;', [ ( count, service_id, HC.SERVICE_INFO_NUM_INBOX ) for ( service_id, count ) in update_rows ] )
             
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         tables_and_columns = []
         
@@ -118,7 +118,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
         
         if len( inboxable_hash_ids ) > 0:
             
-            self._ExecuteMany( 'INSERT OR IGNORE INTO file_inbox VALUES ( ? );', ( ( hash_id, ) for hash_id in inboxable_hash_ids ) )
+            self._execute_many( 'INSERT OR IGNORE INTO file_inbox VALUES ( ? );', ( ( hash_id, ) for hash_id in inboxable_hash_ids ) )
             
             self.inbox_hash_ids.update( inboxable_hash_ids )
             
@@ -128,7 +128,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
             
             if len( service_ids_to_counts ) > 0:
                 
-                self._ExecuteMany( 'UPDATE service_info SET info = info + ? WHERE service_id = ? AND info_type = ?;', [ ( count, service_id, HC.SERVICE_INFO_NUM_INBOX ) for ( service_id, count ) in service_ids_to_counts.items() ] )
+                self._execute_many( 'UPDATE service_info SET info = info + ? WHERE service_id = ? AND info_type = ?;', [ ( count, service_id, HC.SERVICE_INFO_NUM_INBOX ) for ( service_id, count ) in service_ids_to_counts.items() ] )
                 
             
         
@@ -153,19 +153,19 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
             
             self.modules_files_metadata_timestamps.SetSimpleTimestampsMS( HC.TIMESTAMP_TYPE_ARCHIVED, [ ( hash_id, imported_timestamp_ms ) ] )
             
-            HydrusData.Print( f'Filling in import archive time for {hash_id}: {imported_timestamp_ms}!' )
+            HydrusData.print_text( f'Filling in import archive time for {hash_id}: {imported_timestamp_ms}!' )
             
             num_fixed += 1
             
             if job_status is not None:
                 
-                job_status.SetStatusText( f'missing import archive timestamps: {HydrusNumbers.ToHumanInt(num_fixed)} fixed' )
+                job_status.SetStatusText( f'missing import archive timestamps: {HydrusNumbers.to_human_int(num_fixed)} fixed' )
                 
             
         
         if num_fixed > 0:
             
-            HydrusData.ShowText( f'{HydrusNumbers.ToHumanInt( num_fixed )} missing import archive times fixed!' )
+            HydrusData.show_text( f'{HydrusNumbers.to_human_int( num_fixed )} missing import archive times fixed!' )
             
         
         if job_status is not None:
@@ -210,19 +210,19 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
             
             self.modules_files_metadata_timestamps.SetSimpleTimestampsMS( HC.TIMESTAMP_TYPE_ARCHIVED, [ ( hash_id, archive_time_ms ) ] )
             
-            HydrusData.Print( f'Filling in legacy archive time for {hash_id}: {archive_time_ms}!' )
+            HydrusData.print_text( f'Filling in legacy archive time for {hash_id}: {archive_time_ms}!' )
             
             num_fixed += 1
             
             if job_status is not None:
                 
-                job_status.SetStatusText( f'missing legacy archive timestamps: {HydrusNumbers.ToHumanInt(num_fixed)} fixed' )
+                job_status.SetStatusText( f'missing legacy archive timestamps: {HydrusNumbers.to_human_int(num_fixed)} fixed' )
                 
             
         
         if num_fixed > 0:
             
-            HydrusData.ShowText( f'{HydrusNumbers.ToHumanInt( num_fixed )} missing legacy archive times fixed!' )
+            HydrusData.show_text( f'{HydrusNumbers.to_human_int( num_fixed )} missing legacy archive times fixed!' )
             
         
         if job_status is not None:
@@ -245,9 +245,9 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
             
             BLOCK_SIZE = 4096
             
-            for ( num_done, num_to_do, batch_of_hash_ids ) in HydrusLists.SplitListIntoChunksRich( current_archived_hash_ids, BLOCK_SIZE ):
+            for ( num_done, num_to_do, batch_of_hash_ids ) in HydrusLists.split_list_into_chunks_rich( current_archived_hash_ids, BLOCK_SIZE ):
                 
-                message = f'Searching current files: {HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do )}'
+                message = f'Searching current files: {HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do )}'
                 
                 CG.client_controller.frame_splash_status.SetSubtext( message )
                 
@@ -292,9 +292,9 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
             
             BLOCK_SIZE = 4096
             
-            for ( num_done, num_to_do, batch_of_hash_ids ) in HydrusLists.SplitListIntoChunksRich( deleted_hash_ids, BLOCK_SIZE ):
+            for ( num_done, num_to_do, batch_of_hash_ids ) in HydrusLists.split_list_into_chunks_rich( deleted_hash_ids, BLOCK_SIZE ):
                 
-                message = f'Searching deleted files: {HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do )}'
+                message = f'Searching deleted files: {HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do )}'
                 
                 CG.client_controller.frame_splash_status.SetSubtext( message )
                 

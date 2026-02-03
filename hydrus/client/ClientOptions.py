@@ -121,9 +121,9 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_info = self._dictionary.GetSerialisableTuple()
+        serialisable_info = self._dictionary.get_serialisable_tuple()
         
         return serialisable_info
         
@@ -581,7 +581,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         self._dictionary[ 'keys' ] = {
             'default_tag_service_tab' : CC.DEFAULT_LOCAL_TAG_SERVICE_KEY.hex(),
             'default_tag_service_search_page' : CC.COMBINED_TAG_SERVICE_KEY.hex(),
-            'default_gug_key' : HydrusData.GenerateKey().hex(),
+            'default_gug_key' : HydrusData.generate_key().hex(),
             'options_ratings_panel_template_service_key' : CC.PREVIEW_RATINGS_SERVICE_KEY.hex(),
         }
         
@@ -750,7 +750,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         
         # the cleantags here converts to unicode, which is important!
         
-        example_tags = HydrusTags.CleanTags( [ 'creator:creator', 'series:series', 'title:title' ] )
+        example_tags = HydrusTags.clean_tags( [ 'creator:creator', 'series:series', 'title:title' ] )
         
         from hydrus.client.gui.metadata import ClientGUITagSummaryGenerator
         
@@ -766,7 +766,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         
         separator = '-'
         
-        example_tags = HydrusTags.CleanTags( [ 'volume:3', 'chapter:10', 'page:330', 'page:331' ] )
+        example_tags = HydrusTags.clean_tags( [ 'volume:3', 'chapter:10', 'page:330', 'page:331' ] )
         
         tsg = ClientGUITagSummaryGenerator.TagSummaryGenerator( namespace_info = namespace_info, separator = separator, example_tags = example_tags )
         
@@ -783,7 +783,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         
         separator = ' - '
         
-        example_tags = HydrusTags.CleanTags( [ 'creator:creator', 'series:series', 'title:title', 'volume:1', 'chapter:1', 'page:1' ] )
+        example_tags = HydrusTags.clean_tags( [ 'creator:creator', 'series:series', 'title:title', 'volume:1', 'chapter:1', 'page:1' ] )
         
         tsg = ClientGUITagSummaryGenerator.TagSummaryGenerator( namespace_info = namespace_info, separator = separator, example_tags = example_tags )
         
@@ -919,9 +919,9 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         self._dictionary[ 'default_export_files_metadata_routers' ] = HydrusSerialisable.SerialisableList()
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
-        loaded_dictionary = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_info )
+        loaded_dictionary = HydrusSerialisable.create_from_serialisable_tuple( serialisable_info )
         
         for ( key, value ) in loaded_dictionary.items():
             
@@ -936,11 +936,11 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
-            loaded_dictionary = HydrusSerialisable.CreateFromSerialisableTuple( old_serialisable_info )
+            loaded_dictionary = HydrusSerialisable.create_from_serialisable_tuple( old_serialisable_info )
             
             if 'media_view' in loaded_dictionary:
                 
@@ -999,7 +999,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                 
                 try:
                     
-                    db_dir = HG.controller.GetDBDir()
+                    db_dir = HG.controller.get_db_dir()
                     
                     p = os.path.relpath( a_p, db_dir )
                     
@@ -1021,7 +1021,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                 return p
                 
             
-            loaded_dictionary = HydrusSerialisable.CreateFromSerialisableTuple( old_serialisable_info )
+            loaded_dictionary = HydrusSerialisable.create_from_serialisable_tuple( old_serialisable_info )
             
             if 'client_files_locations_ideal_weights' in loaded_dictionary:
                 
@@ -1054,7 +1054,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         
         if version == 3:
             
-            loaded_dictionary = HydrusSerialisable.CreateFromSerialisableTuple( old_serialisable_info )
+            loaded_dictionary = HydrusSerialisable.create_from_serialisable_tuple( old_serialisable_info )
             
             if 'media_view' in loaded_dictionary:
                 
@@ -1089,7 +1089,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
             serialisable_dictionary = old_serialisable_info
             
-            loaded_dictionary = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_dictionary )
+            loaded_dictionary = HydrusSerialisable.create_from_serialisable_tuple( serialisable_dictionary )
             
             if 'key_list' in loaded_dictionary and 'default_neighbouring_txt_tag_service_keys' in loaded_dictionary[ 'key_list' ]:
                 
@@ -1122,7 +1122,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
             serialisable_dictionary = old_serialisable_info
             
-            loaded_dictionary = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_dictionary )
+            loaded_dictionary = HydrusSerialisable.create_from_serialisable_tuple( serialisable_dictionary )
             
             if 'default_tag_sort' in loaded_dictionary:
                 
@@ -1398,7 +1398,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                 
             else:
                 
-                HydrusData.Print( f'Could not find {frame_key} in the frame locations options!' )
+                HydrusData.print_text( f'Could not find {frame_key} in the frame locations options!' )
                 
                 return ( False, False, None, None, ( -1, -1 ), 'topleft', False, False )
                 

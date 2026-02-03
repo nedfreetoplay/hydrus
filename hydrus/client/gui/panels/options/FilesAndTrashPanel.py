@@ -92,7 +92,7 @@ class FilesAndTrashPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         self._delete_to_recycle_bin.setChecked( HC.options[ 'delete_to_recycle_bin' ] )
         
-        self._ms_to_wait_between_physical_file_deletes.SetValue( HydrusTime.SecondiseMSFloat( self._new_options.GetInteger( 'ms_to_wait_between_physical_file_deletes' ) ) )
+        self._ms_to_wait_between_physical_file_deletes.SetValue( HydrusTime.secondise_ms_float( self._new_options.GetInteger( 'ms_to_wait_between_physical_file_deletes' ) ) )
         
         self._confirm_trash.setChecked( HC.options[ 'confirm_trash' ] )
         tt = 'If there is only one place to delete the file from, you will get no delete dialog--it will just be deleted immediately. Applies the same way to undelete.'
@@ -264,7 +264,7 @@ class FilesAndTrashPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         self._new_options.SetBoolean( 'only_show_delete_from_all_local_domains_when_filtering', self._only_show_delete_from_all_local_domains_when_filtering.isChecked() )
         self._new_options.SetBoolean( 'archive_delete_commit_panel_delays_multiple_delete_choices', self._archive_delete_commit_panel_delays_multiple_delete_choices.isChecked() )
         
-        self._new_options.SetInteger( 'ms_to_wait_between_physical_file_deletes', HydrusTime.MillisecondiseS( self._ms_to_wait_between_physical_file_deletes.GetValue() ) )
+        self._new_options.SetInteger( 'ms_to_wait_between_physical_file_deletes', HydrusTime.millisecondise_s( self._ms_to_wait_between_physical_file_deletes.GetValue() ) )
         
         self._new_options.SetBoolean( 'confirm_multiple_local_file_services_copy', self._confirm_multiple_local_file_services_copy.isChecked() )
         self._new_options.SetBoolean( 'confirm_multiple_local_file_services_move', self._confirm_multiple_local_file_services_move.isChecked() )

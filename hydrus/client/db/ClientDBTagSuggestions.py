@@ -20,7 +20,7 @@ class ClientDBRecentTags( ClientDBModule.ClientDBModule ):
         super().__init__( 'client recent tags', cursor )
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict( self ) -> dict:
         
         return {
             'main.recent_tags' : ( 'CREATE TABLE IF NOT EXISTS {} ( service_id INTEGER, tag_id INTEGER, timestamp_ms INTEGER, PRIMARY KEY ( service_id, tag_id ) );', 546 )
@@ -29,7 +29,7 @@ class ClientDBRecentTags( ClientDBModule.ClientDBModule ):
     
     def Drop( self, service_id ):
         
-        self._Execute( 'DELETE FROM recent_tags WHERe service_id = ?;', ( service_id, ) )
+        self._execute( 'DELETE FROM recent_tags WHERe service_id = ?;', ( service_id, ) )
         
     
     def GetRecentTags( self, service_key ):
@@ -38,7 +38,7 @@ class ClientDBRecentTags( ClientDBModule.ClientDBModule ):
         
         # we could be clever and do LIMIT and ORDER BY in the delete, but not all compilations of SQLite have that turned on, so let's KISS
         
-        tag_ids_to_timestamps_ms = { tag_id : timestamp_ms for ( tag_id, timestamp_ms ) in self._Execute( 'SELECT tag_id, timestamp_ms FROM recent_tags WHERE service_id = ?;', ( service_id, ) ) }
+        tag_ids_to_timestamps_ms = { tag_id : timestamp_ms for ( tag_id, timestamp_ms ) in self._execute( 'SELECT tag_id, timestamp_ms FROM recent_tags WHERE service_id = ?;', ( service_id, ) ) }
         
         def sort_key( key ):
             
@@ -58,7 +58,7 @@ class ClientDBRecentTags( ClientDBModule.ClientDBModule ):
         
         if len( decayed ) > 0:
             
-            self._ExecuteMany( 'DELETE FROM recent_tags WHERE service_id = ? AND tag_id = ?;', ( ( service_id, tag_id ) for tag_id in decayed ) )
+            self._execute_many( 'DELETE FROM recent_tags WHERE service_id = ? AND tag_id = ?;', ( ( service_id, tag_id ) for tag_id in decayed ) )
             
         
         sorted_recent_tag_ids = newest_first[ : num_we_want ]
@@ -70,7 +70,7 @@ class ClientDBRecentTags( ClientDBModule.ClientDBModule ):
         return sorted_recent_tags
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         tables_and_columns = []
         
@@ -88,15 +88,15 @@ class ClientDBRecentTags( ClientDBModule.ClientDBModule ):
         
         if tags is None:
             
-            self._Execute( 'DELETE FROM recent_tags WHERE service_id = ?;', ( service_id, ) )
+            self._execute( 'DELETE FROM recent_tags WHERE service_id = ?;', ( service_id, ) )
             
         else:
             
-            now_ms = HydrusTime.GetNowMS()
+            now_ms = HydrusTime.get_now_ms()
             
             tag_ids = [ self.modules_tags.GetTagId( tag ) for tag in tags ]
             
-            self._ExecuteMany( 'REPLACE INTO recent_tags ( service_id, tag_id, timestamp_ms ) VALUES ( ?, ?, ? );', ( ( service_id, tag_id, now_ms ) for tag_id in tag_ids ) )
+            self._execute_many( 'REPLACE INTO recent_tags ( service_id, tag_id, timestamp_ms ) VALUES ( ?, ?, ? );', ( ( service_id, tag_id, now_ms ) for tag_id in tag_ids ) )
             
         
     

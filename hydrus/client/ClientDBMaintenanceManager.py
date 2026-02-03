@@ -25,14 +25,14 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             return True
             
         
-        if CG.client_controller.CurrentlyIdle():
+        if CG.client_controller.currently_idle():
             
             if not self._controller.new_options.GetBoolean( 'database_deferred_delete_maintenance_during_idle' ):
                 
                 return False
                 
             
-            if not self._controller.GoodTimeToStartBackgroundWork():
+            if not self._controller.good_time_to_start_background_work():
                 
                 return False
                 
@@ -59,7 +59,7 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             rest_ratio = CG.client_controller.new_options.GetInteger( 'deferred_table_delete_rest_percentage_work_hard' ) / 100
             
-        elif CG.client_controller.CurrentlyIdle():
+        elif CG.client_controller.currently_idle():
             
             rest_ratio = CG.client_controller.new_options.GetInteger( 'deferred_table_delete_rest_percentage_idle' ) / 100
             
@@ -77,15 +77,15 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         if self._is_working_hard:
             
-            return HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'deferred_table_delete_work_time_ms_work_hard' ) )
+            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'deferred_table_delete_work_time_ms_work_hard' ) )
             
-        elif CG.client_controller.CurrentlyIdle():
+        elif CG.client_controller.currently_idle():
             
-            return HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'deferred_table_delete_work_time_ms_idle' ) )
+            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'deferred_table_delete_work_time_ms_idle' ) )
             
         else:
             
-            return HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'deferred_table_delete_work_time_ms_normal' ) )
+            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'deferred_table_delete_work_time_ms_normal' ) )
             
         
     
@@ -135,32 +135,32 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             if able_to_work:
                 
-                time_to_stop = HydrusTime.GetNowFloat() + expected_work_period
+                time_to_stop = HydrusTime.get_now_float() + expected_work_period
                 
-                start_time = HydrusTime.GetNowFloat()
+                start_time = HydrusTime.get_now_float()
                 
                 try:
                     
-                    still_work_to_do = CG.client_controller.WriteSynchronous( 'do_deferred_table_delete_work', time_to_stop )
+                    still_work_to_do = CG.client_controller.write_synchronous( 'do_deferred_table_delete_work', time_to_stop )
                     
                 except Exception as e:
                     
                     self._serious_error_encountered = True
                     
-                    HydrusData.PrintException( e )
+                    HydrusData.print_exception( e )
                     
                     message = 'There was an unexpected problem during deferred table delete database maintenance work! This maintenance system will not run again this program boot. A full traceback of this error should be written to the log.'
                     message += '\n' * 2
                     message += str( e )
                     
-                    HydrusData.ShowText( message )
+                    HydrusData.show_text( message )
                     
                 finally:
                     
                     self._controller.pub( 'notify_deferred_delete_database_maintenance_work_complete' )
                     
                 
-                actual_work_period = HydrusTime.GetNowFloat() - start_time
+                actual_work_period = HydrusTime.get_now_float() - start_time
                 
                 with self._lock:
                     

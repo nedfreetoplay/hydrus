@@ -220,7 +220,7 @@ class SidebarImporterHDD( SidebarImporter ):
         
         if not for_session_close and CG.client_controller.new_options.GetBoolean( 'confirm_non_empty_downloader_page_close' ) and num_items > 0:
             
-            raise HydrusExceptions.VetoException( f'This is a local import page holding {HydrusNumbers.ToHumanInt( num_items )} import objects.' )
+            raise HydrusExceptions.VetoException( f'This is a local import page holding {HydrusNumbers.to_human_int( num_items )} import objects.' )
             
         
     
@@ -532,7 +532,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
         
         added = gallery_import.GetCreationTime()
         
-        pretty_added = HydrusTime.TimestampToPrettyTimeDelta( added, show_seconds = False )
+        pretty_added = HydrusTime.timestamp_to_pretty_timedelta( added, show_seconds = False )
         
         return ( pretty_query_text, pretty_source, pretty_files_paused, pretty_gallery_paused, pretty_status, pretty_progress, pretty_added )
         
@@ -717,7 +717,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
                 
                 all_media_results = []
                 
-                start_time = HydrusTime.GetNowFloat()
+                start_time = HydrusTime.get_now_float()
                 
                 hashes = new_highlight.GetPresentedHashes()
                 
@@ -732,14 +732,14 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
                 
                 have_published_job_status = False
                 
-                for ( i, block_of_hashes ) in enumerate( HydrusLists.SplitIteratorIntoChunks( hashes, BLOCK_SIZE ) ):
+                for ( i, block_of_hashes ) in enumerate( HydrusLists.split_iterator_into_chunks( hashes, BLOCK_SIZE ) ):
                     
                     num_done = i * BLOCK_SIZE
                     
-                    job_status.SetStatusText( 'Loading files: {}'.format( HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do ) ) )
+                    job_status.SetStatusText( 'Loading files: {}'.format( HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do ) ) )
                     job_status.SetGauge( num_done, num_to_do )
                     
-                    if not have_published_job_status and HydrusTime.TimeHasPassedFloat( start_time + 2 ):
+                    if not have_published_job_status and HydrusTime.time_has_passed_float( start_time + 2 ):
                         
                         CG.client_controller.pub( 'message', job_status )
                         
@@ -751,7 +751,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
                         return all_media_results
                         
                     
-                    block_of_media_results = CG.client_controller.Read( 'media_results', block_of_hashes, sorted = True )
+                    block_of_media_results = CG.client_controller.read( 'media_results', block_of_hashes, sorted = True )
                     
                     all_media_results.extend( block_of_media_results )
                     
@@ -866,12 +866,12 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
                 
             
         
-        message = 'Remove the ' + HydrusNumbers.ToHumanInt( len( removees ) ) + ' selected queries?'
+        message = 'Remove the ' + HydrusNumbers.to_human_int( len( removees ) ) + ' selected queries?'
         
         if num_working > 0:
             
             message += '\n' * 2
-            message += HydrusNumbers.ToHumanInt( num_working ) + ' are still working.'
+            message += HydrusNumbers.to_human_int( num_working ) + ' are still working.'
             
         
         if self._highlighted_gallery_import is not None and self._highlighted_gallery_import in removees:
@@ -1072,7 +1072,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
             
             self._ClearExistingHighlightAndPanel()
             
-            media_results = CG.client_controller.Read( 'media_results', hashes, sorted = True )
+            media_results = CG.client_controller.read( 'media_results', hashes, sorted = True )
             
             panel = ClientGUIMediaResultsPanelThumbnails.MediaResultsPanelThumbnails( self._page, self._page_key, self._page_manager, media_results )
             
@@ -1166,7 +1166,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
                     
                     if file_import_options_string is None:
                         
-                        file_import_options_string = file_import_options.DumpToString()
+                        file_import_options_string = file_import_options.dump_to_string()
                         
                     
                     # not the same object, let's see if they have the same value
@@ -1189,7 +1189,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
                     
                     if note_import_options_string is None:
                         
-                        note_import_options_string = note_import_options.DumpToString()
+                        note_import_options_string = note_import_options.dump_to_string()
                         
                     
                     # not the same object, let's see if they have the same value
@@ -1212,7 +1212,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
                     
                     if tag_import_options_string is None:
                         
-                        tag_import_options_string = tag_import_options.DumpToString()
+                        tag_import_options_string = tag_import_options.dump_to_string()
                         
                     
                     # not the same object, let's see if they have the same value
@@ -1239,11 +1239,11 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
         # TODO: Surely this can be optimised, especially with our new multi-column list tech
         # perhaps break any sort to a ten second timer or something
         
-        if HydrusTime.TimeHasPassedFloat( self._next_update_time ):
+        if HydrusTime.time_has_passed_float( self._next_update_time ):
             
             num_items = len( self._gallery_importers_listctrl.GetData() )
             
-            min_time = HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'gallery_page_status_update_time_minimum_ms' ) )
+            min_time = HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'gallery_page_status_update_time_minimum_ms' ) )
             denominator = CG.client_controller.new_options.GetInteger( 'gallery_page_status_update_time_ratio_denominator' )
             
             try:
@@ -1255,7 +1255,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
                 update_period = 1.0
                 
             
-            self._next_update_time = HydrusTime.GetNowFloat() + update_period
+            self._next_update_time = HydrusTime.get_now_float() + update_period
             
             #
             
@@ -1276,7 +1276,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
                 
                 ( num_done, num_total ) = file_seed_cache_status.GetValueRange()
                 
-                text_top = '{} queries - {}'.format( HydrusNumbers.ToHumanInt( num_gallery_imports ), HydrusNumbers.ValueRangeToPrettyString( num_done, num_total ) )
+                text_top = '{} queries - {}'.format( HydrusNumbers.to_human_int( num_gallery_imports ), HydrusNumbers.value_range_to_pretty_string( num_done, num_total ) )
                 text_bottom = file_seed_cache_status.GetStatusText()
                 
             
@@ -1335,12 +1335,12 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
         
         if num_working > 0:
             
-            raise HydrusExceptions.VetoException( HydrusNumbers.ToHumanInt( num_working ) + ' queries are still importing.' )
+            raise HydrusExceptions.VetoException( HydrusNumbers.to_human_int( num_working ) + ' queries are still importing.' )
             
         
         if not for_session_close and CG.client_controller.new_options.GetBoolean( 'confirm_non_empty_downloader_page_close' ) and num_items > 0:
             
-            raise HydrusExceptions.VetoException( f'This is a gallery downloader page holding {HydrusNumbers.ToHumanInt(num_items)} import objects.' )
+            raise HydrusExceptions.VetoException( f'This is a gallery downloader page holding {HydrusNumbers.to_human_int(num_items)} import objects.' )
             
         
     
@@ -1681,7 +1681,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
         
         added = watcher.GetCreationTime()
         
-        pretty_added = HydrusTime.TimestampToPrettyTimeDelta( added, show_seconds = False )
+        pretty_added = HydrusTime.timestamp_to_pretty_timedelta( added, show_seconds = False )
         
         ( status_enum, pretty_watcher_status ) = self._multiple_watcher_import.GetWatcherSimpleStatus( watcher )
         
@@ -1898,7 +1898,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
             
             def work_callable():
                 
-                start_time = HydrusTime.GetNowFloat()
+                start_time = HydrusTime.get_now_float()
                 
                 all_media_results = []
                 
@@ -1915,14 +1915,14 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                     return all_media_results
                     
                 
-                for ( i, block_of_hashes ) in enumerate( HydrusLists.SplitIteratorIntoChunks( hashes, BLOCK_SIZE ) ):
+                for ( i, block_of_hashes ) in enumerate( HydrusLists.split_iterator_into_chunks( hashes, BLOCK_SIZE ) ):
                     
                     num_done = i * BLOCK_SIZE
                     
-                    job_status.SetStatusText( 'Loading files: {}'.format( HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do ) ) )
+                    job_status.SetStatusText( 'Loading files: {}'.format( HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do ) ) )
                     job_status.SetGauge( num_done, num_to_do )
                     
-                    if not have_published_job_status and HydrusTime.TimeHasPassedFloat( start_time + 2 ):
+                    if not have_published_job_status and HydrusTime.time_has_passed_float( start_time + 2 ):
                         
                         CG.client_controller.pub( 'message', job_status )
                         
@@ -1934,7 +1934,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                         return all_media_results
                         
                     
-                    block_of_media_results = CG.client_controller.Read( 'media_results', block_of_hashes, sorted = True )
+                    block_of_media_results = CG.client_controller.read( 'media_results', block_of_hashes, sorted = True )
                     
                     all_media_results.extend( block_of_media_results )
                     
@@ -2074,18 +2074,18 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                 
             
         
-        message = 'Remove the ' + HydrusNumbers.ToHumanInt( len( removees ) ) + ' selected watchers?'
+        message = 'Remove the ' + HydrusNumbers.to_human_int( len( removees ) ) + ' selected watchers?'
         
         if num_working > 0:
             
             message += '\n' * 2
-            message += HydrusNumbers.ToHumanInt( num_working ) + ' are still working.'
+            message += HydrusNumbers.to_human_int( num_working ) + ' are still working.'
             
         
         if num_alive > 0:
             
             message += '\n' * 2
-            message += HydrusNumbers.ToHumanInt( num_alive ) + ' are not yet DEAD.'
+            message += HydrusNumbers.to_human_int( num_alive ) + ' are not yet DEAD.'
             
         
         if self._highlighted_watcher is not None and self._highlighted_watcher in removees:
@@ -2229,7 +2229,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
             
             self._ClearExistingHighlightAndPanel()
             
-            media_results = CG.client_controller.Read( 'media_results', hashes, sorted = True )
+            media_results = CG.client_controller.read( 'media_results', hashes, sorted = True )
             
             panel = ClientGUIMediaResultsPanelThumbnails.MediaResultsPanelThumbnails( self._page, self._page_key, self._page_manager, media_results )
             
@@ -2317,7 +2317,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                     
                     if checker_options_string is None:
                         
-                        checker_options_string = checker_options.DumpToString()
+                        checker_options_string = checker_options.dump_to_string()
                         
                     
                     # not the same object, let's see if they have the same value
@@ -2340,7 +2340,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                     
                     if file_import_options_string is None:
                         
-                        file_import_options_string = file_import_options.DumpToString()
+                        file_import_options_string = file_import_options.dump_to_string()
                         
                     
                     # not the same object, let's see if they have the same value
@@ -2363,7 +2363,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                     
                     if note_import_options_string is None:
                         
-                        note_import_options_string = note_import_options.DumpToString()
+                        note_import_options_string = note_import_options.dump_to_string()
                         
                     
                     # not the same object, let's see if they have the same value
@@ -2386,7 +2386,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                     
                     if tag_import_options_string is None:
                         
-                        tag_import_options_string = tag_import_options.DumpToString()
+                        tag_import_options_string = tag_import_options.dump_to_string()
                         
                     
                     # not the same object, let's see if they have the same value
@@ -2413,11 +2413,11 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
         # TODO: Surely this can be optimised, especially with our new multi-column list tech
         # perhaps break any sort to a ten second timer or something
         
-        if HydrusTime.TimeHasPassedFloat( self._next_update_time ):
+        if HydrusTime.time_has_passed_float( self._next_update_time ):
             
             num_items = len( self._watchers_listctrl.GetData() )
             
-            min_time = HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'watcher_page_status_update_time_minimum_ms' ) )
+            min_time = HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'watcher_page_status_update_time_minimum_ms' ) )
             denominator = CG.client_controller.new_options.GetInteger( 'watcher_page_status_update_time_ratio_denominator' )
             
             try:
@@ -2429,7 +2429,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                 update_period = 1.0
                 
             
-            self._next_update_time = HydrusTime.GetNowFloat() + update_period
+            self._next_update_time = HydrusTime.get_now_float() + update_period
             
             #
             
@@ -2453,14 +2453,14 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                     
                 else:
                     
-                    num_dead_text = HydrusNumbers.ToHumanInt( num_dead ) + ' DEAD - '
+                    num_dead_text = HydrusNumbers.to_human_int( num_dead ) + ' DEAD - '
                     
                 
                 file_seed_cache_status = self._multiple_watcher_import.GetTotalStatus()
                 
                 ( num_done, num_total ) = file_seed_cache_status.GetValueRange()
                 
-                text_top = '{} watchers - {}'.format( HydrusNumbers.ToHumanInt( num_watchers ), HydrusNumbers.ValueRangeToPrettyString( num_done, num_total ) )
+                text_top = '{} watchers - {}'.format( HydrusNumbers.to_human_int( num_watchers ), HydrusNumbers.value_range_to_pretty_string( num_done, num_total ) )
                 text_bottom = file_seed_cache_status.GetStatusText()
                 
             
@@ -2519,12 +2519,12 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
         
         if num_working > 0:
             
-            raise HydrusExceptions.VetoException( HydrusNumbers.ToHumanInt( num_working ) + ' watchers are still importing.' )
+            raise HydrusExceptions.VetoException( HydrusNumbers.to_human_int( num_working ) + ' watchers are still importing.' )
             
         
         if not for_session_close and CG.client_controller.new_options.GetBoolean( 'confirm_non_empty_downloader_page_close' ) and num_items > 0:
             
-            raise HydrusExceptions.VetoException( f'This is a watcher page holding {HydrusNumbers.ToHumanInt(num_items)} import objects.' )
+            raise HydrusExceptions.VetoException( f'This is a watcher page holding {HydrusNumbers.to_human_int(num_items)} import objects.' )
             
         
     
@@ -2919,7 +2919,7 @@ class SidebarImporterSimpleDownloader( SidebarImporter ):
         
         if not for_session_close and CG.client_controller.new_options.GetBoolean( 'confirm_non_empty_downloader_page_close' ) and num_items > 0:
             
-            raise HydrusExceptions.VetoException( f'This is a simple urls import page holding {HydrusNumbers.ToHumanInt( num_items )} import objects.' )
+            raise HydrusExceptions.VetoException( f'This is a simple urls import page holding {HydrusNumbers.to_human_int( num_items )} import objects.' )
             
         
     
@@ -3119,7 +3119,7 @@ class SidebarImporterURLs( SidebarImporter ):
         
         if not for_session_close and CG.client_controller.new_options.GetBoolean( 'confirm_non_empty_downloader_page_close' ) and num_items > 0:
             
-            raise HydrusExceptions.VetoException( f'This is a urls import page holding {HydrusNumbers.ToHumanInt( num_items )} import objects.' )
+            raise HydrusExceptions.VetoException( f'This is a urls import page holding {HydrusNumbers.to_human_int( num_items )} import objects.' )
             
         
     

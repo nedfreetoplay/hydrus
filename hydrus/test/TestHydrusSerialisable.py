@@ -44,7 +44,7 @@ class TestSerialisables( unittest.TestCase ):
         self.assertEqual( serialisable_type, obj.SERIALISABLE_TYPE )
         self.assertEqual( version, obj.SERIALISABLE_VERSION )
         
-        dupe_obj = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tuple )
+        dupe_obj = HydrusSerialisable.create_from_serialisable_tuple( serialisable_tuple )
         
         self.assertIsNot( obj, dupe_obj )
         
@@ -52,11 +52,11 @@ class TestSerialisables( unittest.TestCase ):
         
         #
         
-        json_string = obj.DumpToString()
+        json_string = obj.dump_to_string()
         
         self.assertIsInstance( json_string, str )
         
-        dupe_obj = HydrusSerialisable.CreateFromString( json_string )
+        dupe_obj = HydrusSerialisable.create_from_string( json_string )
         
         self.assertIsNot( obj, dupe_obj )
         
@@ -64,11 +64,11 @@ class TestSerialisables( unittest.TestCase ):
         
         #
         
-        network_bytes = obj.DumpToNetworkBytes()
+        network_bytes = obj.dump_to_network_bytes()
         
         self.assertIsInstance( network_bytes, bytes )
         
-        dupe_obj = HydrusSerialisable.CreateFromNetworkBytes( network_bytes )
+        dupe_obj = HydrusSerialisable.create_from_network_bytes( network_bytes )
         
         self.assertIsNot( obj, dupe_obj )
         
@@ -115,10 +115,10 @@ class TestSerialisables( unittest.TestCase ):
         
         db = HydrusSerialisable.SerialisableBytesDictionary()
         
-        db[ HydrusData.GenerateKey() ] = HydrusData.GenerateKey()
-        db[ HydrusData.GenerateKey() ] = [ HydrusData.GenerateKey() for i in range( 10 ) ]
-        db[ 1 ] = HydrusData.GenerateKey()
-        db[ 2 ] = [ HydrusData.GenerateKey() for i in range( 10 ) ]
+        db[ HydrusData.generate_key() ] = HydrusData.generate_key()
+        db[ HydrusData.generate_key() ] = [ HydrusData.generate_key() for i in range( 10 ) ]
+        db[ 1 ] = HydrusData.generate_key()
+        db[ 2 ] = [ HydrusData.generate_key() for i in range( 10 ) ]
         
         self.assertEqual( len( list(db.keys()) ), 4 )
         
@@ -144,9 +144,9 @@ class TestSerialisables( unittest.TestCase ):
         acs.append( ( CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_ARCHIVE_FILE ), 'archive file' ) )
         acs.append( ( CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_MEDIA_SEEK_DELTA, simple_data = ( -1, 2500 ) ), 'seek media (back 2.5 seconds)' ) )
         acs.append( ( CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_MEDIA_SEEK_DELTA, simple_data = ( 1, 800 ) ), 'seek media (forwards 800 milliseconds)' ) )
-        acs.append( ( CAC.ApplicationCommand( CAC.APPLICATION_COMMAND_TYPE_CONTENT, ( HydrusData.GenerateKey(), HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_FLIP, 'test' ) ), 'flip on/off tag mappings "test" for unknown service!' ) )
+        acs.append( ( CAC.ApplicationCommand( CAC.APPLICATION_COMMAND_TYPE_CONTENT, ( HydrusData.generate_key(), HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_FLIP, 'test' ) ), 'flip on/off tag mappings "test" for unknown service!' ) )
         acs.append( ( CAC.ApplicationCommand( CAC.APPLICATION_COMMAND_TYPE_CONTENT, ( CC.DEFAULT_LOCAL_TAG_SERVICE_KEY, HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_FLIP, 'test' ) ), 'flip on/off tag mappings "test" for my tags' ) )
-        acs.append( ( CAC.ApplicationCommand( CAC.APPLICATION_COMMAND_TYPE_CONTENT, ( HydrusData.GenerateKey(), HC.CONTENT_TYPE_RATINGS, HC.CONTENT_UPDATE_SET, 0.4 ) ), 'set ratings uncertain rating, "0.4" for unknown service!' ) )
+        acs.append( ( CAC.ApplicationCommand( CAC.APPLICATION_COMMAND_TYPE_CONTENT, ( HydrusData.generate_key(), HC.CONTENT_TYPE_RATINGS, HC.CONTENT_UPDATE_SET, 0.4 ) ), 'set ratings uncertain rating, "0.4" for unknown service!' ) )
         
         for ( ac, s ) in acs:
             
@@ -239,7 +239,7 @@ class TestSerialisables( unittest.TestCase ):
         
         #
         
-        local_hash_has_values = HydrusData.GenerateKey()
+        local_hash_has_values = HydrusData.generate_key()
         
         file_info_manager = ClientMediaManagers.FileInfoManager( 1, local_hash_has_values, size, mime, width, height, duration_ms, num_frames, has_audio, num_words )
         
@@ -247,7 +247,7 @@ class TestSerialisables( unittest.TestCase ):
         
         #
         
-        other_local_hash_has_values = HydrusData.GenerateKey()
+        other_local_hash_has_values = HydrusData.generate_key()
         
         file_info_manager = ClientMediaManagers.FileInfoManager( 2, other_local_hash_has_values, size, mime, width, height, duration_ms, num_frames, has_audio, num_words )
         
@@ -255,7 +255,7 @@ class TestSerialisables( unittest.TestCase ):
         
         #
         
-        local_hash_empty = HydrusData.GenerateKey()
+        local_hash_empty = HydrusData.generate_key()
         
         file_info_manager = ClientMediaManagers.FileInfoManager( 3, local_hash_empty, size, mime, width, height, duration_ms, num_frames, has_audio, num_words )
         
@@ -263,7 +263,7 @@ class TestSerialisables( unittest.TestCase ):
         
         #
         
-        trashed_hash_empty = HydrusData.GenerateKey()
+        trashed_hash_empty = HydrusData.generate_key()
         
         file_info_manager = ClientMediaManagers.FileInfoManager( 4, trashed_hash_empty, size, mime, width, height, duration_ms, num_frames, has_audio, num_words )
         
@@ -271,7 +271,7 @@ class TestSerialisables( unittest.TestCase ):
         
         #
         
-        deleted_hash_empty = HydrusData.GenerateKey()
+        deleted_hash_empty = HydrusData.generate_key()
         
         file_info_manager = ClientMediaManagers.FileInfoManager( 5, deleted_hash_empty, size, mime, width, height, duration_ms, num_frames, has_audio, num_words )
         
@@ -279,7 +279,7 @@ class TestSerialisables( unittest.TestCase ):
         
         #
         
-        one_hash = HydrusData.GenerateKey()
+        one_hash = HydrusData.generate_key()
         
         file_info_manager = ClientMediaManagers.FileInfoManager( 6, one_hash, size, mime, width, height, duration_ms, num_frames, has_audio, num_words )
         
@@ -287,7 +287,7 @@ class TestSerialisables( unittest.TestCase ):
         
         #
         
-        two_hash = HydrusData.GenerateKey()
+        two_hash = HydrusData.generate_key()
         
         file_info_manager = ClientMediaManagers.FileInfoManager( 7, two_hash, size, mime, width, height, duration_ms, num_frames, has_audio, num_words )
         
@@ -487,7 +487,7 @@ class TestSerialisables( unittest.TestCase ):
             
         
         command_1 = CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_ARCHIVE_FILE )
-        command_2 = CAC.ApplicationCommand( CAC.APPLICATION_COMMAND_TYPE_CONTENT, ( HydrusData.GenerateKey(), HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_FLIP, 'test' ) )
+        command_2 = CAC.ApplicationCommand( CAC.APPLICATION_COMMAND_TYPE_CONTENT, ( HydrusData.generate_key(), HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_FLIP, 'test' ) )
         command_3 = CAC.ApplicationCommand( CAC.APPLICATION_COMMAND_TYPE_CONTENT, ( CC.DEFAULT_LOCAL_TAG_SERVICE_KEY, HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_FLIP, 'test' ) )
         
         k_shortcut_1 = ClientGUIShortcuts.Shortcut( ClientGUIShortcuts.SHORTCUT_TYPE_KEYBOARD_SPECIAL, ClientGUIShortcuts.SHORTCUT_KEY_SPECIAL_SPACE, ClientGUIShortcuts.SHORTCUT_PRESS_TYPE_PRESS, [] )
@@ -541,7 +541,7 @@ class TestSerialisables( unittest.TestCase ):
         
         self._dump_and_load_and_test( sub, test )
         
-        gug_key_and_name = ( HydrusData.GenerateKey(), 'muh test gug' )
+        gug_key_and_name = ( HydrusData.generate_key(), 'muh test gug' )
         
         query_headers = []
         
@@ -562,9 +562,9 @@ class TestSerialisables( unittest.TestCase ):
         
         service_tag_import_options = TagImportOptionsLegacy.ServiceTagImportOptions( get_tags = False, additional_tags = { 'test additional tag', 'and another' } )
         
-        tag_import_options = TagImportOptionsLegacy.TagImportOptionsLegacy( service_keys_to_service_tag_import_options = { HydrusData.GenerateKey() : service_tag_import_options } )
+        tag_import_options = TagImportOptionsLegacy.TagImportOptionsLegacy( service_keys_to_service_tag_import_options = { HydrusData.generate_key() : service_tag_import_options } )
         
-        no_work_until = HydrusTime.GetNow() - 86400 * 20
+        no_work_until = HydrusTime.get_now() - 86400 * 20
         
         sub.SetTuple( gug_key_and_name, checker_options, initial_file_limit, periodic_file_limit, paused, file_import_options, tag_import_options, no_work_until )
         
@@ -604,128 +604,128 @@ class TestSerialisables( unittest.TestCase ):
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( tags ), { 'smile', 'blue eyes', 'title:test title', 'series:neon genesis evangelion', 'series:kill la kill' } )
+        self.assertEqual( tag_filter.filter( tags ), { 'smile', 'blue eyes', 'title:test title', 'series:neon genesis evangelion', 'series:kill la kill' } )
         
         #
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( '', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( ':', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( '', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( ':', HC.FILTER_BLACKLIST )
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( tags ), set() )
+        self.assertEqual( tag_filter.filter( tags ), set() )
         
         #
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( '', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( ':', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( 'series:', HC.FILTER_WHITELIST )
+        tag_filter.set_rule( '', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( ':', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( 'series:', HC.FILTER_WHITELIST )
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( tags ), { 'series:neon genesis evangelion', 'series:kill la kill' } )
+        self.assertEqual( tag_filter.filter( tags ), { 'series:neon genesis evangelion', 'series:kill la kill' } )
         
         #
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( '', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( ':', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( 'series:kill la kill', HC.FILTER_WHITELIST )
+        tag_filter.set_rule( '', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( ':', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( 'series:kill la kill', HC.FILTER_WHITELIST )
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( tags ), { 'series:kill la kill' } )
+        self.assertEqual( tag_filter.filter( tags ), { 'series:kill la kill' } )
         
         #
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( '', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( ':', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( 'smile', HC.FILTER_WHITELIST )
+        tag_filter.set_rule( '', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( ':', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( 'smile', HC.FILTER_WHITELIST )
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( tags ), { 'smile' } )
+        self.assertEqual( tag_filter.filter( tags ), { 'smile' } )
         
         #
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( ':', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( ':', HC.FILTER_BLACKLIST )
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( tags ), { 'smile', 'blue eyes' } )
+        self.assertEqual( tag_filter.filter( tags ), { 'smile', 'blue eyes' } )
         
         #
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( ':', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( 'series:', HC.FILTER_WHITELIST )
+        tag_filter.set_rule( ':', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( 'series:', HC.FILTER_WHITELIST )
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( tags ), { 'smile', 'blue eyes', 'series:neon genesis evangelion', 'series:kill la kill' } )
+        self.assertEqual( tag_filter.filter( tags ), { 'smile', 'blue eyes', 'series:neon genesis evangelion', 'series:kill la kill' } )
         
         #
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( ':', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( 'series:kill la kill', HC.FILTER_WHITELIST )
+        tag_filter.set_rule( ':', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( 'series:kill la kill', HC.FILTER_WHITELIST )
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( tags ), { 'smile', 'blue eyes', 'series:kill la kill' } )
+        self.assertEqual( tag_filter.filter( tags ), { 'smile', 'blue eyes', 'series:kill la kill' } )
         
         #
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( 'series:', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( 'series:', HC.FILTER_BLACKLIST )
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( tags ), { 'smile', 'blue eyes', 'title:test title' } )
+        self.assertEqual( tag_filter.filter( tags ), { 'smile', 'blue eyes', 'title:test title' } )
         
         #
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( 'series:', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( 'series:neon genesis evangelion', HC.FILTER_WHITELIST )
+        tag_filter.set_rule( 'series:', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( 'series:neon genesis evangelion', HC.FILTER_WHITELIST )
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( tags ), { 'smile', 'blue eyes', 'title:test title', 'series:neon genesis evangelion' } )
+        self.assertEqual( tag_filter.filter( tags ), { 'smile', 'blue eyes', 'title:test title', 'series:neon genesis evangelion' } )
         
         #
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( '', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( '', HC.FILTER_BLACKLIST )
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( tags ), { 'title:test title', 'series:neon genesis evangelion', 'series:kill la kill' } )
+        self.assertEqual( tag_filter.filter( tags ), { 'title:test title', 'series:neon genesis evangelion', 'series:kill la kill' } )
         
         #
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( '', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( 'blue eyes', HC.FILTER_WHITELIST )
+        tag_filter.set_rule( '', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( 'blue eyes', HC.FILTER_WHITELIST )
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( tags ), { 'title:test title', 'series:neon genesis evangelion', 'series:kill la kill', 'blue eyes' } )
+        self.assertEqual( tag_filter.filter( tags ), { 'title:test title', 'series:neon genesis evangelion', 'series:kill la kill', 'blue eyes' } )
         
         # blacklist namespace test
         
@@ -735,31 +735,31 @@ class TestSerialisables( unittest.TestCase ):
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( 'nintendo', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( 'nintendo', HC.FILTER_BLACKLIST )
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( blacklist_tags ), { 'studio:nintendo' } )
+        self.assertEqual( tag_filter.filter( blacklist_tags ), { 'studio:nintendo' } )
         
         #
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( 'nintendo', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( 'nintendo', HC.FILTER_BLACKLIST )
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( blacklist_tags, apply_unnamespaced_rules_to_namespaced_tags = True ), set() )
+        self.assertEqual( tag_filter.filter( blacklist_tags, apply_unnamespaced_rules_to_namespaced_tags = True ), set() )
         
         #
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( 'nintendo', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( 'studio:nintendo', HC.FILTER_WHITELIST )
+        tag_filter.set_rule( 'nintendo', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( 'studio:nintendo', HC.FILTER_WHITELIST )
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( blacklist_tags, apply_unnamespaced_rules_to_namespaced_tags = True ), { 'studio:nintendo' } )
+        self.assertEqual( tag_filter.filter( blacklist_tags, apply_unnamespaced_rules_to_namespaced_tags = True ), { 'studio:nintendo' } )
         
     

@@ -29,7 +29,7 @@ def ConvertGalleryIdentifierToGUGKeyAndName( gallery_identifier ):
             
         
     
-    return ( HydrusData.GenerateKey(), gug_name )
+    return ( HydrusData.generate_key(), gug_name )
     
 def ConvertGalleryIdentifierToGUGName( gallery_identifier ):
     
@@ -144,12 +144,12 @@ class GalleryIdentifier( HydrusSerialisable.SerialisableBase ):
         return text
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         return ( self._site_type, self._additional_info )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( self._site_type, self._additional_info ) = serialisable_info
         
@@ -226,7 +226,7 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
                         
                         job_status.SetStatusText( 'initialising downloader' )
                         
-                        job_status_pub_job = self._controller.CallLater( 2.0, self._controller.pub, 'message', job_status )
+                        job_status_pub_job = self._controller.call_later( 2.0, self._controller.pub, 'message', job_status )
                         
                     
                     num_before = len( hashes_still_to_download_in_this_run )
@@ -267,7 +267,7 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
             
             total_done = total_hashes_in_this_run - len( hashes_still_to_download_in_this_run )
             
-            job_status.SetStatusText( 'downloading files: {}'.format( HydrusNumbers.ValueRangeToPrettyString( total_done, total_hashes_in_this_run ) ) )
+            job_status.SetStatusText( 'downloading files: {}'.format( HydrusNumbers.value_range_to_pretty_string( total_done, total_hashes_in_this_run ) ) )
             job_status.SetGauge( total_done, total_hashes_in_this_run )
             
             try:
@@ -275,7 +275,7 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
                 errors_occured = []
                 file_successful = False
                 
-                media_result = self._controller.Read( 'media_result', hash )
+                media_result = self._controller.read( 'media_result', hash )
                 
                 service_keys = list( media_result.GetLocationsManager().GetCurrent() )
                 
@@ -307,7 +307,7 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
                             
                             if file_repository.IsFunctional():
                                 
-                                ( os_file_handle, temp_path ) = HydrusTemp.GetTempPath()
+                                ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path()
                                 
                                 try:
                                     
@@ -346,7 +346,7 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
                                     
                                 finally:
                                     
-                                    HydrusTemp.CleanUpTempPath( os_file_handle, temp_path )
+                                    HydrusTemp.clean_ip_temp_path( os_file_handle, temp_path )
                                     
                                 
                             
@@ -385,10 +385,10 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     if total_successful_hashes_in_this_run > 0:
                         
-                        job_status.SetStatusText( HydrusNumbers.ToHumanInt( total_successful_hashes_in_this_run ) + ' files downloaded' )
+                        job_status.SetStatusText( HydrusNumbers.to_human_int( total_successful_hashes_in_this_run ) + ' files downloaded' )
                         
                     
-                    job_status_pub_job.Cancel()
+                    job_status_pub_job.cancel()
                     
                     job_status.FinishAndDismiss( 1 )
                     

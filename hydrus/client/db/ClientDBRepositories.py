@@ -111,7 +111,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
             
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict( self ) -> dict:
         
         # TODO: move some remote thumb calls from ClientDB to here
         return {
@@ -119,7 +119,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         }
         
     
-    def _GetServiceIndexGenerationDict( self, service_id ) -> dict:
+    def _get_service_index_generation_dict( self, service_id ) -> dict:
         
         ( repository_updates_table_name, repository_unregistered_updates_table_name, repository_updates_processed_table_name ) = GenerateRepositoryUpdatesTableNames( service_id )
         
@@ -136,7 +136,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         return index_generation_dict
         
     
-    def _GetServiceTableGenerationDict( self, service_id ) -> dict:
+    def _get_service_table_generation_dict( self, service_id ) -> dict:
         
         ( repository_updates_table_name, repository_unregistered_updates_table_name, repository_updates_processed_table_name ) = GenerateRepositoryUpdatesTableNames( service_id )
         ( hash_id_map_table_name, tag_id_map_table_name ) = GenerateRepositoryDefinitionTableNames( service_id )
@@ -150,7 +150,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         }
         
     
-    def _GetServiceTablePrefixes( self ):
+    def _get_service_table_prefixes( self ):
         
         return {
             REPOSITORY_HASH_ID_MAP_PREFIX,
@@ -161,7 +161,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         }
         
     
-    def _GetServiceIdsWeGenerateDynamicTablesFor( self ):
+    def _get_service_ids_we_generate_dynamic_tables_for( self ):
         
         return self.modules_services.GetServiceIds( HC.REPOSITORIES )
         
@@ -173,7 +173,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         self._ScheduleRepositoryUpdateFileMaintenance( service_id, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_REMOVE_RECORD )
         self._ScheduleRepositoryUpdateFileMaintenance( service_id, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_METADATA )
         
-        self._cursor_transaction_wrapper.CommitAndBegin()
+        self._cursor_transaction_wrapper.commit_and_begin()
         
         message = 'A critical error was discovered with one of your repositories: its definition reference is in an invalid state. Your repository should now be paused, and all update files have been scheduled for an integrity and metadata check. Please permit file maintenance to check them, or tell it to do so manually, before unpausing your repository. Once unpaused, it will reprocess your definition files and attempt to fill the missing entries. If this error occurs again once that is complete, please inform hydrus dev.'
         message += '\n' * 2
@@ -192,13 +192,13 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         
         if hash_ids is None:
             
-            hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM {};'.format( repository_unregistered_updates_table_name ) ) )
+            hash_ids = self._sts( self._execute( 'SELECT hash_id FROM {};'.format( repository_unregistered_updates_table_name ) ) )
             
         else:
             
-            with self._MakeTemporaryIntegerTable( hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
+            with self._make_temporary_integer_table( hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
                 
-                hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( temp_hash_ids_table_name, repository_unregistered_updates_table_name ) ) )
+                hash_ids = self._sts( self._execute( 'SELECT hash_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( temp_hash_ids_table_name, repository_unregistered_updates_table_name ) ) )
                 
             
         
@@ -206,11 +206,11 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
             
             service_type = self.modules_services.GetService( service_id ).GetServiceType()
             
-            with self._MakeTemporaryIntegerTable( hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
+            with self._make_temporary_integer_table( hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
                 
-                hash_ids_to_mimes = { hash_id : mime for ( hash_id, mime ) in self._Execute( 'SELECT hash_id, mime FROM {} CROSS JOIN files_info USING ( hash_id );'.format( temp_hash_ids_table_name ) ) }
+                hash_ids_to_mimes = { hash_id : mime for ( hash_id, mime ) in self._execute( 'SELECT hash_id, mime FROM {} CROSS JOIN files_info USING ( hash_id );'.format( temp_hash_ids_table_name ) ) }
                 
-                current_rows = set( self._Execute( 'SELECT hash_id, content_type FROM {} CROSS JOIN {} USING ( hash_id );'.format( temp_hash_ids_table_name, repository_updates_processed_table_name ) ) )
+                current_rows = set( self._execute( 'SELECT hash_id, content_type FROM {} CROSS JOIN {} USING ( hash_id );'.format( temp_hash_ids_table_name, repository_updates_processed_table_name ) ) )
                 
             
             correct_rows = set()
@@ -234,7 +234,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
             if len( deletee_rows ) > 0:
                 
                 # these were registered wrong at some point
-                self._ExecuteMany( 'DELETE FROM {} WHERE hash_id = ? AND content_type = ?;'.format( repository_updates_processed_table_name ), deletee_rows )
+                self._execute_many( 'DELETE FROM {} WHERE hash_id = ? AND content_type = ?;'.format( repository_updates_processed_table_name ), deletee_rows )
                 
             
             insert_rows = correct_rows.difference( current_rows )
@@ -243,12 +243,12 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
                 
                 processed = False
                 
-                self._ExecuteMany( 'INSERT OR IGNORE INTO {} ( hash_id, content_type, processed ) VALUES ( ?, ?, ? );'.format( repository_updates_processed_table_name ), ( ( hash_id, content_type, processed ) for ( hash_id, content_type ) in insert_rows ) )
+                self._execute_many( 'INSERT OR IGNORE INTO {} ( hash_id, content_type, processed ) VALUES ( ?, ?, ? );'.format( repository_updates_processed_table_name ), ( ( hash_id, content_type, processed ) for ( hash_id, content_type ) in insert_rows ) )
                 
             
             if len( hash_ids_to_mimes ) > 0:
                 
-                self._ExecuteMany( 'DELETE FROM {} WHERE hash_id = ?;'.format( repository_unregistered_updates_table_name ), ( ( hash_id, ) for hash_id in hash_ids_to_mimes.keys() ) )
+                self._execute_many( 'DELETE FROM {} WHERE hash_id = ?;'.format( repository_unregistered_updates_table_name ), ( ( hash_id, ) for hash_id in hash_ids_to_mimes.keys() ) )
                 
             
             if len( deletee_rows ) + len( insert_rows ) > 0:
@@ -267,7 +267,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         
         ( repository_updates_table_name, repository_unregistered_updates_table_name, repository_updates_processed_table_name ) = GenerateRepositoryUpdatesTableNames( service_id )
         
-        self._ExecuteMany( 'UPDATE {} SET processed = ? WHERE content_type = ?;'.format( repository_updates_processed_table_name ), ( ( False, content_type ) for content_type in content_types ) )
+        self._execute_many( 'UPDATE {} SET processed = ? WHERE content_type = ?;'.format( repository_updates_processed_table_name ), ( ( False, content_type ) for content_type in content_types ) )
         
         self._ClearOutstandingWorkCache( service_id )
         
@@ -278,14 +278,14 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         
         table_join = self.modules_files_storage.GetTableJoinLimitedByFileDomain( self.modules_services.local_update_service_id, repository_updates_table_name, HC.CONTENT_STATUS_CURRENT )
         
-        update_hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM {};'.format( table_join ) ) )
+        update_hash_ids = self._sts( self._execute( 'SELECT hash_id FROM {};'.format( table_join ) ) )
         
         self.modules_hashes_local_cache.SyncHashIds( update_hash_ids )
         
         # so we are also going to pull from here in case there are orphan records!!!
         other_table_join = self.modules_files_storage.GetTableJoinLimitedByFileDomain( self.modules_services.hydrus_local_file_storage_service_id, repository_updates_table_name, HC.CONTENT_STATUS_CURRENT )
         
-        other_update_hash_ids = self._STL( self._Execute( 'SELECT hash_id FROM {};'.format( other_table_join ) ) )
+        other_update_hash_ids = self._stl( self._execute( 'SELECT hash_id FROM {};'.format( other_table_join ) ) )
         
         update_hash_ids.update( other_update_hash_ids )
         
@@ -298,7 +298,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         
         inserts = []
         
-        for ( update_index, update_hashes ) in metadata_slice.GetUpdateIndicesAndHashes():
+        for ( update_index, update_hashes ) in metadata_slice.get_update_indices_and_hashes():
             
             hash_ids = self.modules_hashes_local_cache.GetHashIds( update_hashes )
             
@@ -309,9 +309,9 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
             
             ( repository_updates_table_name, repository_unregistered_updates_table_name, repository_updates_processed_table_name ) = GenerateRepositoryUpdatesTableNames( service_id )
             
-            self._ExecuteMany( 'INSERT OR IGNORE INTO {} ( update_index, hash_id ) VALUES ( ?, ? );'.format( repository_updates_table_name ), inserts )
+            self._execute_many( 'INSERT OR IGNORE INTO {} ( update_index, hash_id ) VALUES ( ?, ? );'.format( repository_updates_table_name ), inserts )
             
-            self._ExecuteMany( 'INSERT OR IGNORE INTO {} ( hash_id ) VALUES ( ? );'.format( repository_unregistered_updates_table_name ), ( ( hash_id, ) for ( update_index, hash_id ) in inserts ) )
+            self._execute_many( 'INSERT OR IGNORE INTO {} ( hash_id ) VALUES ( ? );'.format( repository_unregistered_updates_table_name ), ( ( hash_id, ) for ( update_index, hash_id ) in inserts ) )
             
         
         self._RegisterLocalUpdates( service_id )
@@ -343,18 +343,18 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
     
     def GenerateRepositoryTables( self, service_id: int ):
         
-        table_generation_dict = self._GetServiceTableGenerationDict( service_id )
+        table_generation_dict = self._get_service_table_generation_dict( service_id )
         
         for ( table_name, ( create_query_without_name, version_added ) ) in table_generation_dict.items():
             
-            self._CreateTable( create_query_without_name, table_name )
+            self._create_table( create_query_without_name, table_name )
             
         
-        index_generation_dict = self._GetServiceIndexGenerationDict( service_id )
+        index_generation_dict = self._get_service_index_generation_dict( service_id )
         
-        for ( table_name, columns, unique, version_added ) in self._FlattenIndexGenerationDict( index_generation_dict ):
+        for ( table_name, columns, unique, version_added ) in self._flatten_index_generation_dict( index_generation_dict ):
             
-            self._CreateIndex( table_name, columns, unique = unique )
+            self._create_index( table_name, columns, unique = unique )
             
         
     
@@ -364,14 +364,14 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         
         ( repository_updates_table_name, repository_unregistered_updates_table_name, repository_updates_processed_table_name ) = GenerateRepositoryUpdatesTableNames( service_id )
         
-        ( num_updates, ) = self._Execute( 'SELECT COUNT( * ) FROM {}'.format( repository_updates_table_name ) ).fetchone()
+        ( num_updates, ) = self._execute( 'SELECT COUNT( * ) FROM {}'.format( repository_updates_table_name ) ).fetchone()
         
         table_join = self.modules_files_storage.GetTableJoinLimitedByFileDomain( self.modules_services.local_update_service_id, repository_updates_table_name, HC.CONTENT_STATUS_CURRENT )
         
-        ( num_local_updates, ) = self._Execute( 'SELECT COUNT( * ) FROM {};'.format( table_join ) ).fetchone()
+        ( num_local_updates, ) = self._execute( 'SELECT COUNT( * ) FROM {};'.format( table_join ) ).fetchone()
         
-        content_types_to_num_updates = collections.Counter( dict( self._Execute( 'SELECT content_type, COUNT( * ) FROM {} GROUP BY content_type;'.format( repository_updates_processed_table_name ) ) ) )
-        content_types_to_num_processed_updates = collections.Counter( dict( self._Execute( 'SELECT content_type, COUNT( * ) FROM {} WHERE processed = ? GROUP BY content_type;'.format( repository_updates_processed_table_name ), ( True, ) ) ) )
+        content_types_to_num_updates = collections.Counter( dict( self._execute( 'SELECT content_type, COUNT( * ) FROM {} GROUP BY content_type;'.format( repository_updates_processed_table_name ) ) ) )
+        content_types_to_num_processed_updates = collections.Counter( dict( self._execute( 'SELECT content_type, COUNT( * ) FROM {} WHERE processed = ? GROUP BY content_type;'.format( repository_updates_processed_table_name ), ( True, ) ) ) )
         
         # little helpful thing that pays off later
         for content_type in content_types_to_num_updates:
@@ -394,24 +394,24 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         
         ( repository_updates_table_name, repository_unregistered_updates_table_name, repository_updates_processed_table_name ) = GenerateRepositoryUpdatesTableNames( service_id )
         
-        result = self._Execute( 'SELECT 1 FROM {} WHERE content_type = ? AND processed = ?;'.format( repository_updates_processed_table_name ), ( HC.CONTENT_TYPE_DEFINITIONS, True ) ).fetchone()
+        result = self._execute( 'SELECT 1 FROM {} WHERE content_type = ? AND processed = ?;'.format( repository_updates_processed_table_name ), ( HC.CONTENT_TYPE_DEFINITIONS, True ) ).fetchone()
         
         this_is_first_definitions_work = result is None
         
-        result = self._Execute( 'SELECT 1 FROM {} WHERE content_type != ? AND processed = ?;'.format( repository_updates_processed_table_name ), ( HC.CONTENT_TYPE_DEFINITIONS, True ) ).fetchone()
+        result = self._execute( 'SELECT 1 FROM {} WHERE content_type != ? AND processed = ?;'.format( repository_updates_processed_table_name ), ( HC.CONTENT_TYPE_DEFINITIONS, True ) ).fetchone()
         
         this_is_first_content_work = result is None
         
         min_unregistered_update_index = None
         
-        result = self._Execute( 'SELECT MIN( update_index ) FROM {} CROSS JOIN {} USING ( hash_id );'.format( repository_unregistered_updates_table_name, repository_updates_table_name ) ).fetchone()
+        result = self._execute( 'SELECT MIN( update_index ) FROM {} CROSS JOIN {} USING ( hash_id );'.format( repository_unregistered_updates_table_name, repository_updates_table_name ) ).fetchone()
         
         if result is not None:
             
             ( min_unregistered_update_index, ) = result
             
         
-        predicate_phrase = 'processed = ? AND content_type IN {}'.format( HydrusLists.SplayListForDB( content_types_to_process ) )
+        predicate_phrase = 'processed = ? AND content_type IN {}'.format( HydrusLists.splay_list_for_db( content_types_to_process ) )
         
         if min_unregistered_update_index is not None:
             
@@ -423,10 +423,10 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         
         query = 'SELECT update_index, hash_id, content_type FROM {} CROSS JOIN {} USING ( hash_id ) WHERE {};'.format( repository_updates_processed_table_name, repository_updates_table_name, predicate_phrase )
         
-        rows = self._Execute( query, ( False, ) ).fetchall()
+        rows = self._execute( query, ( False, ) ).fetchall()
         
-        update_indices_to_unprocessed_hash_ids = HydrusData.BuildKeyToSetDict( ( ( update_index, hash_id ) for ( update_index, hash_id, content_type ) in rows ) )
-        hash_ids_to_content_types_to_process = HydrusData.BuildKeyToSetDict( ( ( hash_id, content_type ) for ( update_index, hash_id, content_type ) in rows ) )
+        update_indices_to_unprocessed_hash_ids = HydrusData.build_key_to_set_dict( ( ( update_index, hash_id ) for ( update_index, hash_id, content_type ) in rows ) )
+        hash_ids_to_content_types_to_process = HydrusData.build_key_to_set_dict( ( ( hash_id, content_type ) for ( update_index, hash_id, content_type ) in rows ) )
         
         all_hash_ids = set( hash_ids_to_content_types_to_process.keys() )
         
@@ -485,11 +485,11 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         
         ( repository_updates_table_name, repository_unregistered_updates_table_name, repository_updates_processed_table_name ) = GenerateRepositoryUpdatesTableNames( service_id )
         
-        all_hash_ids = self._STL( self._Execute( 'SELECT hash_id FROM {} ORDER BY update_index ASC;'.format( repository_updates_table_name ) ) )
+        all_hash_ids = self._stl( self._execute( 'SELECT hash_id FROM {} ORDER BY update_index ASC;'.format( repository_updates_table_name ) ) )
         
         table_join = self.modules_files_storage.GetTableJoinLimitedByFileDomain( self.modules_services.local_update_service_id, repository_updates_table_name, HC.CONTENT_STATUS_CURRENT )
         
-        existing_hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM {};'.format( table_join ) ) )
+        existing_hash_ids = self._sts( self._execute( 'SELECT hash_id FROM {};'.format( table_join ) ) )
         
         needed_hash_ids = [ hash_id for hash_id in all_hash_ids if hash_id not in existing_hash_ids ]
         
@@ -498,7 +498,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         return needed_hashes
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         tables_and_columns = []
         
@@ -542,7 +542,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
             
             if content_type not in content_types_to_outstanding_local_processing:
                 
-                result = self._STL( self._Execute( 'SELECT 1 FROM {} WHERE content_type = ? AND processed = ?;'.format( repository_updates_processed_table_name ), ( content_type, False ) ).fetchmany( 20 ) )
+                result = self._stl( self._execute( 'SELECT 1 FROM {} WHERE content_type = ? AND processed = ?;'.format( repository_updates_processed_table_name ), ( content_type, False ) ).fetchmany( 20 ) )
                 
                 content_types_to_outstanding_local_processing[ content_type ] = len( result ) >= 20
                 
@@ -560,7 +560,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         
         hash_id_map_table_name = GenerateRepositoryFileDefinitionTableName( service_id )
         
-        result = self._Execute( 'SELECT hash_id FROM {} WHERE service_hash_id = ?;'.format( hash_id_map_table_name ), ( service_hash_id, ) ).fetchone()
+        result = self._execute( 'SELECT hash_id FROM {} WHERE service_hash_id = ?;'.format( hash_id_map_table_name ), ( service_hash_id, ) ).fetchone()
         
         if result is None:
             
@@ -576,10 +576,10 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         
         hash_id_map_table_name = GenerateRepositoryFileDefinitionTableName( service_id )
         
-        with self._MakeTemporaryIntegerTable( service_hash_ids, 'service_hash_id' ) as temp_table_name:
+        with self._make_temporary_integer_table( service_hash_ids, 'service_hash_id' ) as temp_table_name:
             
             # temp service hashes to lookup
-            hash_ids_potentially_dupes = self._STL( self._Execute( 'SELECT hash_id FROM {} CROSS JOIN {} USING ( service_hash_id );'.format( temp_table_name, hash_id_map_table_name ) ) )
+            hash_ids_potentially_dupes = self._stl( self._execute( 'SELECT hash_id FROM {} CROSS JOIN {} USING ( service_hash_id );'.format( temp_table_name, hash_id_map_table_name ) ) )
             
         
         # every service_id can only exist once, but technically a hash_id could be mapped to two service_ids
@@ -589,7 +589,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
             
             for service_hash_id in service_hash_ids:
                 
-                result = self._Execute( 'SELECT hash_id FROM {} WHERE service_hash_id = ?;'.format( hash_id_map_table_name ), ( service_hash_id, ) ).fetchone()
+                result = self._execute( 'SELECT hash_id FROM {} WHERE service_hash_id = ?;'.format( hash_id_map_table_name ), ( service_hash_id, ) ).fetchone()
                 
                 if result is None:
                     
@@ -609,7 +609,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         
         tag_id_map_table_name = GenerateRepositoryTagDefinitionTableName( service_id )
         
-        result = self._Execute( 'SELECT tag_id FROM {} WHERE service_tag_id = ?;'.format( tag_id_map_table_name ), ( service_tag_id, ) ).fetchone()
+        result = self._execute( 'SELECT tag_id FROM {} WHERE service_tag_id = ?;'.format( tag_id_map_table_name ), ( service_tag_id, ) ).fetchone()
         
         if result is None:
             
@@ -629,7 +629,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
             
             ( repository_updates_table_name, repository_unregistered_updates_table_name, repository_updates_processed_table_name ) = GenerateRepositoryUpdatesTableNames( service_id )
             
-            self._ExecuteMany( 'INSERT OR IGNORE INTO {} ( hash_id ) VALUES ( ? );'.format( repository_unregistered_updates_table_name ), ( ( hash_id, ) for hash_id in hash_ids ) )
+            self._execute_many( 'INSERT OR IGNORE INTO {} ( hash_id ) VALUES ( ? );'.format( repository_unregistered_updates_table_name ), ( ( hash_id, ) for hash_id in hash_ids ) )
             
             self._RegisterLocalUpdates( service_id, hash_ids )
             
@@ -649,7 +649,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         
         service_id = self.modules_services.GetServiceId( service_key )
         
-        precise_time_to_stop = HydrusTime.GetNowPrecise() + work_period
+        precise_time_to_stop = HydrusTime.get_now_precise() + work_period
         
         ( hash_id_map_table_name, tag_id_map_table_name ) = GenerateRepositoryDefinitionTableNames( service_id )
         
@@ -659,7 +659,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
             
             i = definition_iterator_dict[ 'service_hash_ids_to_hashes' ]
             
-            for chunk in HydrusLists.SplitIteratorIntoAutothrottledChunks( i, 50, precise_time_to_stop ):
+            for chunk in HydrusLists.split_iterator_into_autothrottled_chunks( i, 50, precise_time_to_stop ):
                 
                 inserts = []
                 
@@ -670,11 +670,11 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
                     inserts.append( ( service_hash_id, hash_id ) )
                     
                 
-                self._ExecuteMany( 'REPLACE INTO {} ( service_hash_id, hash_id ) VALUES ( ?, ? );'.format( hash_id_map_table_name ), inserts )
+                self._execute_many( 'REPLACE INTO {} ( service_hash_id, hash_id ) VALUES ( ?, ? );'.format( hash_id_map_table_name ), inserts )
                 
                 num_rows_processed += len( inserts )
                 
-                if HydrusTime.TimeHasPassedPrecise( precise_time_to_stop ) or job_status.IsCancelled():
+                if HydrusTime.time_has_passed_precise( precise_time_to_stop ) or job_status.IsCancelled():
                     
                     return num_rows_processed
                     
@@ -687,7 +687,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
             
             i = definition_iterator_dict[ 'service_tag_ids_to_tags' ]
             
-            for chunk in HydrusLists.SplitIteratorIntoAutothrottledChunks( i, 50, precise_time_to_stop ):
+            for chunk in HydrusLists.split_iterator_into_autothrottled_chunks( i, 50, precise_time_to_stop ):
                 
                 inserts = []
                 
@@ -707,11 +707,11 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
                     inserts.append( ( service_tag_id, tag_id ) )
                     
                 
-                self._ExecuteMany( 'REPLACE INTO {} ( service_tag_id, tag_id ) VALUES ( ?, ? );'.format( tag_id_map_table_name ), inserts )
+                self._execute_many( 'REPLACE INTO {} ( service_tag_id, tag_id ) VALUES ( ?, ? );'.format( tag_id_map_table_name ), inserts )
                 
                 num_rows_processed += len( inserts )
                 
-                if HydrusTime.TimeHasPassedPrecise( precise_time_to_stop ) or job_status.IsCancelled():
+                if HydrusTime.time_has_passed_precise( precise_time_to_stop ) or job_status.IsCancelled():
                     
                     return num_rows_processed
                     
@@ -745,35 +745,35 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         
         service_id = self.modules_services.GetServiceId( service_key )
         
-        all_future_update_hash_ids = self.modules_hashes_local_cache.GetHashIds( metadata.GetUpdateHashes() )
+        all_future_update_hash_ids = self.modules_hashes_local_cache.GetHashIds( metadata.get_update_hashes() )
         
         ( repository_updates_table_name, repository_unregistered_updates_table_name, repository_updates_processed_table_name ) = GenerateRepositoryUpdatesTableNames( service_id )
         
         #
         
-        current_update_hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM {};'.format( repository_updates_table_name ) ) )
+        current_update_hash_ids = self._sts( self._execute( 'SELECT hash_id FROM {};'.format( repository_updates_table_name ) ) )
         
-        self._Execute( 'DELETE FROM {};'.format( repository_updates_table_name ) )
+        self._execute( 'DELETE FROM {};'.format( repository_updates_table_name ) )
         
         #
         
-        self._Execute( 'DELETE FROM {};'.format( repository_unregistered_updates_table_name ) )
+        self._execute( 'DELETE FROM {};'.format( repository_unregistered_updates_table_name ) )
         
         # we want to keep 'yes we processed this' records on a full metadata resync
         
         good_current_hash_ids = current_update_hash_ids.intersection( all_future_update_hash_ids )
         
-        current_processed_table_update_hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM {};'.format( repository_updates_processed_table_name ) ) )
+        current_processed_table_update_hash_ids = self._sts( self._execute( 'SELECT hash_id FROM {};'.format( repository_updates_processed_table_name ) ) )
         
         deletee_processed_table_update_hash_ids = current_processed_table_update_hash_ids.difference( good_current_hash_ids )
         
-        self._ExecuteMany( 'DELETE FROM {} WHERE hash_id = ?;'.format( repository_updates_processed_table_name ), ( ( hash_id, ) for hash_id in deletee_processed_table_update_hash_ids ) )
+        self._execute_many( 'DELETE FROM {} WHERE hash_id = ?;'.format( repository_updates_processed_table_name ), ( ( hash_id, ) for hash_id in deletee_processed_table_update_hash_ids ) )
         
         #
         
         inserts = []
         
-        for ( update_index, update_hashes ) in metadata.GetUpdateIndicesAndHashes():
+        for ( update_index, update_hashes ) in metadata.get_update_indices_and_hashes():
             
             for update_hash in update_hashes:
                 
@@ -783,8 +783,8 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
                 
             
         
-        self._ExecuteMany( 'INSERT OR IGNORE INTO {} ( update_index, hash_id ) VALUES ( ?, ? );'.format( repository_updates_table_name ), inserts )
-        self._ExecuteMany( 'INSERT OR IGNORE INTO {} ( hash_id ) VALUES ( ? );'.format( repository_unregistered_updates_table_name ), ( ( hash_id, ) for hash_id in all_future_update_hash_ids ) )
+        self._execute_many( 'INSERT OR IGNORE INTO {} ( update_index, hash_id ) VALUES ( ?, ? );'.format( repository_updates_table_name ), inserts )
+        self._execute_many( 'INSERT OR IGNORE INTO {} ( hash_id ) VALUES ( ? );'.format( repository_unregistered_updates_table_name ), ( ( hash_id, ) for hash_id in all_future_update_hash_ids ) )
         
         self._RegisterLocalUpdates( service_id )
         
@@ -795,7 +795,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         
         update_hash_id = self.modules_hashes_local_cache.GetHashId( update_hash )
         
-        self._ExecuteMany( 'UPDATE {} SET processed = ? WHERE hash_id = ? AND content_type = ?;'.format( repository_updates_processed_table_name ), ( ( True, update_hash_id, content_type ) for content_type in content_types ) )
+        self._execute_many( 'UPDATE {} SET processed = ? WHERE hash_id = ? AND content_type = ?;'.format( repository_updates_processed_table_name ), ( ( True, update_hash_id, content_type ) for content_type in content_types ) )
         
         for content_type in content_types:
             

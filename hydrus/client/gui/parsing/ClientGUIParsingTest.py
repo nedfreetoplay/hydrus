@@ -187,7 +187,7 @@ class TestPanel( QW.QWidget ):
             return
             
         
-        CG.client_controller.CallToThread( do_it, url )
+        CG.client_controller.call_to_thread( do_it, url )
         
     
     def _Paste( self ):
@@ -207,7 +207,7 @@ class TestPanel( QW.QWidget ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem loading!', str(e) )
             
@@ -236,7 +236,7 @@ class TestPanel( QW.QWidget ):
             parse_phrase = ''
             good_type_found = True
             
-            if HydrusText.LooksLikeJSON( example_data ):
+            if HydrusText.looks_like_json( example_data ):
                 
                 # prioritise this, so if the JSON contains some HTML, it'll overwrite here. decent compromise
                 
@@ -244,7 +244,7 @@ class TestPanel( QW.QWidget ):
                 
                 parse_phrase = 'looks like JSON'
                 
-            elif HydrusText.LooksLikeHTML( example_data ):
+            elif HydrusText.looks_like_html( example_data ):
                 
                 # can't just throw this at bs4 to see if it 'works', as it'll just wrap any unparsable string in some bare <html><body><p> tags
                 
@@ -256,7 +256,7 @@ class TestPanel( QW.QWidget ):
                 
                 if example_bytes is not None:
                     
-                    ( os_file_handle, temp_path ) = HydrusTemp.GetTempPath()
+                    ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path()
                     
                     try:
                         
@@ -265,7 +265,7 @@ class TestPanel( QW.QWidget ):
                             f.write( example_bytes )
                             
                         
-                        mime = HydrusFileHandling.GetMime( temp_path )
+                        mime = HydrusFileHandling.get_mime( temp_path )
                         
                     except:
                         
@@ -273,7 +273,7 @@ class TestPanel( QW.QWidget ):
                         
                     finally:
                         
-                        HydrusTemp.CleanUpTempPath( os_file_handle, temp_path )
+                        HydrusTemp.clean_ip_temp_path( os_file_handle, temp_path )
                         
                     
                 else:
@@ -284,7 +284,7 @@ class TestPanel( QW.QWidget ):
             
             if good_type_found:
                 
-                description = HydrusData.ToHumanBytes( len( example_data ) ) + ' total, ' + parse_phrase
+                description = HydrusData.to_human_bytes( len( example_data ) ) + ' total, ' + parse_phrase
                 
                 example_data_to_show = example_data
                 
@@ -539,18 +539,18 @@ class TestPanelPageParser( TestPanel ):
                     parse_phrase = 'uncertain data type'
                     
                     # can't just throw this at bs4 to see if it 'works', as it'll just wrap any unparsable string in some bare <html><body><p> tags
-                    if HydrusText.LooksLikeHTML( post_conversion_example_data ):
+                    if HydrusText.looks_like_html( post_conversion_example_data ):
                         
                         parse_phrase = 'looks like HTML'
                         
                     
                     # put this second, so if the JSON contains some HTML, it'll overwrite here. decent compromise
-                    if HydrusText.LooksLikeJSON( example_data ):
+                    if HydrusText.looks_like_json( example_data ):
                         
                         parse_phrase = 'looks like JSON'
                         
                     
-                    description = HydrusData.ToHumanBytes( len( post_conversion_example_data ) ) + ' total, ' + parse_phrase
+                    description = HydrusData.to_human_bytes( len( post_conversion_example_data ) ) + ' total, ' + parse_phrase
                     
                 except Exception as e:
                     
@@ -675,7 +675,7 @@ class TestPanelPageParserSubsidiary( TestPanelPageParser ):
                     preview = 'PREVIEW:' + '\n' + str( preview[:self.MAX_CHARS_IN_PREVIEW] )
                     
                 
-                description = HydrusNumbers.ToHumanInt( len( separation_example_data ) ) + ' subsidiary posts parsed'
+                description = HydrusNumbers.to_human_int( len( separation_example_data ) ) + ' subsidiary posts parsed'
                 
             except Exception as e:
                 

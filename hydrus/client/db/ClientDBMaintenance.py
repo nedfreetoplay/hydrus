@@ -28,20 +28,20 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
     
     def _DropTable( self, deletee_table_name: str ):
         
-        self._Execute( f'DROP TABLE {deletee_table_name};' )
+        self._execute( f'DROP TABLE {deletee_table_name};' )
         
-        self._Execute( 'DELETE FROM deferred_delete_tables WHERE name = ?;', ( deletee_table_name, ) )
+        self._execute( 'DELETE FROM deferred_delete_tables WHERE name = ?;', ( deletee_table_name, ) )
         
-        HydrusData.Print( f'Deferred delete table {deletee_table_name} successfully dropped.' )
+        HydrusData.print_text( f'Deferred delete table {deletee_table_name} successfully dropped.' )
         
     
     def _GetDeferredDeleteTableName( self ) -> tuple[ str | None, int | None ]:
         
-        result = self._Execute( 'SELECT name, num_rows FROM deferred_delete_tables WHERE num_rows IS NOT NULL ORDER BY num_rows ASC;' ).fetchone()
+        result = self._execute( 'SELECT name, num_rows FROM deferred_delete_tables WHERE num_rows IS NOT NULL ORDER BY num_rows ASC;' ).fetchone()
         
         if result is None:
             
-            result = self._Execute( 'SELECT name, num_rows FROM deferred_delete_tables;' ).fetchone()
+            result = self._execute( 'SELECT name, num_rows FROM deferred_delete_tables;' ).fetchone()
             
         
         if result is None:
@@ -56,7 +56,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
             
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict( self ) -> dict:
         
         return {
             'main.last_shutdown_work_time' : ( 'CREATE TABLE IF NOT EXISTS {} ( last_shutdown_work_time INTEGER );', 400 ),
@@ -202,13 +202,13 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
     
     def _GetTablePKColumnNames( self, table_name: str ):
         
-        results = self._Execute( f'PRAGMA table_info( {table_name} );' ).fetchall()
+        results = self._execute( f'PRAGMA table_info( {table_name} );' ).fetchall()
         
         pk_column_names = [ name for ( cid, name, column_type, nullability, default_value, pk ) in results if pk > 0 ]
         
         if len( pk_column_names ) == 0:
             
-            results = self._Execute( f'PRAGMA table_xinfo( {table_name} );' ).fetchall()
+            results = self._execute( f'PRAGMA table_xinfo( {table_name} );' ).fetchall()
             
             if 'docid' in [ name for ( cid, name, column_type, nullability, default_value, pk, hidden ) in results ]:
                 
@@ -224,7 +224,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
         num_rows_found = 0
         BLOCK_SIZE = max( 1, min( 10000, int( minimum_row_count / 10 ) ) )
         
-        cursor = self._Execute( 'SELECT 1 FROM {};'.format( name ) )
+        cursor = self._execute( 'SELECT 1 FROM {};'.format( name ) )
         
         while num_rows_found < minimum_row_count:
             
@@ -245,7 +245,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
     
     def _TableIsEmpty( self, name ):
         
-        result = self._Execute( 'SELECT 1 FROM {};'.format( name ) ).fetchone()
+        result = self._execute( 'SELECT 1 FROM {};'.format( name ) ).fetchone()
         
         return result is None
         
@@ -264,25 +264,25 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
                 
                 CG.client_controller.pub( 'modal_message', job_status )
                 
-                for name in HydrusLists.IterateListRandomlyAndFast( names_to_analyze ):
+                for name in HydrusLists.iterate_list_randomly_and_fast( names_to_analyze ):
                     
                     CG.client_controller.frame_splash_status.SetText( 'analyzing ' + name )
                     job_status.SetStatusText( 'analyzing ' + name )
                     
                     time.sleep( 0.02 )
                     
-                    started = HydrusTime.GetNowPrecise()
+                    started = HydrusTime.get_now_precise()
                     
                     self.AnalyzeTable( name )
                     
-                    time_took = HydrusTime.GetNowPrecise() - started
+                    time_took = HydrusTime.get_now_precise() - started
                     
                     if time_took > 1:
                         
-                        HydrusData.Print( 'Analyzed ' + name + ' in ' + HydrusTime.TimeDeltaToPrettyTimeDelta( time_took ) )
+                        HydrusData.print_text( 'Analyzed ' + name + ' in ' + HydrusTime.timedelta_to_pretty_timedelta( time_took ) )
                         
                     
-                    p1 = CG.client_controller.ShouldStopThisWork( maintenance_mode, stop_time = stop_time )
+                    p1 = CG.client_controller.should_stop_this_work( maintenance_mode, stop_time = stop_time )
                     p2 = job_status.IsCancelled()
                     
                     if p1 or p2:
@@ -291,11 +291,11 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
                         
                     
                 
-                self._Execute( 'ANALYZE sqlite_master;' ) # this reloads the current stats into the query planner
+                self._execute( 'ANALYZE sqlite_master;' ) # this reloads the current stats into the query planner
                 
                 job_status.SetStatusText( 'done!' )
                 
-                HydrusData.Print( job_status.ToString() )
+                HydrusData.print_text( job_status.ToString() )
                 
             finally:
                 
@@ -310,7 +310,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
         
         do_it = True
         
-        result = self._Execute( 'SELECT num_rows FROM analyze_timestamps WHERE name = ?;', ( name, ) ).fetchone()
+        result = self._execute( 'SELECT num_rows FROM analyze_timestamps WHERE name = ?;', ( name, ) ).fetchone()
         
         if result is not None:
             
@@ -325,14 +325,14 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
         
         if do_it:
             
-            self._Execute( 'ANALYZE ' + name + ';' )
+            self._execute( 'ANALYZE ' + name + ';' )
             
-            ( num_rows, ) = self._Execute( 'SELECT COUNT( * ) FROM ' + name + ';' ).fetchone()
+            ( num_rows, ) = self._execute( 'SELECT COUNT( * ) FROM ' + name + ';' ).fetchone()
             
         
-        self._Execute( 'DELETE FROM analyze_timestamps WHERE name = ?;', ( name, ) )
+        self._execute( 'DELETE FROM analyze_timestamps WHERE name = ?;', ( name, ) )
         
-        self._Execute( 'INSERT OR IGNORE INTO analyze_timestamps ( name, num_rows, timestamp_ms ) VALUES ( ?, ?, ? );', ( name, num_rows, HydrusTime.GetNowMS() ) )
+        self._execute( 'INSERT OR IGNORE INTO analyze_timestamps ( name, num_rows, timestamp_ms ) VALUES ( ?, ?, ? );', ( name, num_rows, HydrusTime.get_now_ms() ) )
         
     
     def CheckDBIntegrity( self ):
@@ -350,20 +350,20 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
             CG.client_controller.pub( 'modal_message', job_status )
             
             job_status.SetStatusTitle( prefix_string + 'running' )
-            job_status.SetStatusText( 'errors found so far: ' + HydrusNumbers.ToHumanInt( num_errors ) )
+            job_status.SetStatusText( 'errors found so far: ' + HydrusNumbers.to_human_int( num_errors ) )
             
-            db_names = [ name for ( index, name, path ) in self._Execute( 'PRAGMA database_list;' ) if name not in ( 'mem', 'temp', 'durable_temp' ) ]
+            db_names = [ name for ( index, name, path ) in self._execute( 'PRAGMA database_list;' ) if name not in ( 'mem', 'temp', 'durable_temp' ) ]
             
             for db_name in db_names:
                 
-                for ( text, ) in self._Execute( 'PRAGMA ' + db_name + '.integrity_check;' ):
+                for ( text, ) in self._execute( 'PRAGMA ' + db_name + '.integrity_check;' ):
                     
                     ( i_paused, should_quit ) = job_status.WaitIfNeeded()
                     
                     if should_quit:
                         
                         job_status.SetStatusTitle( prefix_string + 'cancelled' )
-                        job_status.SetStatusText( 'errors found: ' + HydrusNumbers.ToHumanInt( num_errors ) )
+                        job_status.SetStatusText( 'errors found: ' + HydrusNumbers.to_human_int( num_errors ) )
                         
                         return
                         
@@ -372,24 +372,24 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
                         
                         if num_errors == 0:
                             
-                            HydrusData.Print( 'During a db integrity check, these errors were discovered:' )
+                            HydrusData.print_text( 'During a db integrity check, these errors were discovered:' )
                             
                         
-                        HydrusData.Print( text )
+                        HydrusData.print_text( text )
                         
                         num_errors += 1
                         
                     
-                    job_status.SetStatusText( 'errors found so far: ' + HydrusNumbers.ToHumanInt( num_errors ) )
+                    job_status.SetStatusText( 'errors found so far: ' + HydrusNumbers.to_human_int( num_errors ) )
                     
                 
             
         finally:
             
             job_status.SetStatusTitle( prefix_string + 'completed' )
-            job_status.SetStatusText( 'errors found: ' + HydrusNumbers.ToHumanInt( num_errors ) )
+            job_status.SetStatusText( 'errors found: ' + HydrusNumbers.to_human_int( num_errors ) )
             
-            HydrusData.Print( job_status.ToString() )
+            HydrusData.print_text( job_status.ToString() )
             
             job_status.Finish()
             
@@ -399,11 +399,11 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
         
         all_table_names = set()
         
-        db_names = [ name for ( index, name, path ) in self._Execute( 'PRAGMA database_list;' ) if name not in ( 'mem', 'temp', 'durable_temp' ) ]
+        db_names = [ name for ( index, name, path ) in self._execute( 'PRAGMA database_list;' ) if name not in ( 'mem', 'temp', 'durable_temp' ) ]
         
         for db_name in db_names:
             
-            table_names = self._STS( self._Execute( 'SELECT name FROM {}.sqlite_master WHERE type = ?;'.format( db_name ), ( 'table', ) ) )
+            table_names = self._sts( self._execute( 'SELECT name FROM {}.sqlite_master WHERE type = ?;'.format( db_name ), ( 'table', ) ) )
             
             table_names = { f'{db_name}.{table_name}' for table_name in table_names }
             
@@ -414,19 +414,19 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
         
         for module in self._modules:
             
-            surplus_table_names = module.GetSurplusServiceTableNames( all_table_names )
+            surplus_table_names = module.get_surplus_service_table_names( all_table_names )
             
             all_surplus_table_names.update( surplus_table_names )
             
         
         if len( all_surplus_table_names ) == 0:
             
-            HydrusData.ShowText( 'No orphan tables!' )
+            HydrusData.show_text( 'No orphan tables!' )
             
         
         for table_name in all_surplus_table_names:
             
-            HydrusData.ShowText( f'Cleared orphan table "{table_name}"' )
+            HydrusData.show_text( f'Cleared orphan table "{table_name}"' )
             
             self.DeferredDropTable( table_name )
             
@@ -434,7 +434,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
     
     def DeferredDropTable( self, table_name: str ):
         
-        if not self._TableExists( table_name ):
+        if not self._table_exists( table_name ):
             
             return
             
@@ -448,9 +448,9 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
         
         new_table_name = 'deferred_delete_{}_{}'.format( table_name_without_schema, os.urandom( 16 ).hex() )
         
-        self._Execute( f'ALTER TABLE {table_name} RENAME TO {new_table_name};' )
+        self._execute( f'ALTER TABLE {table_name} RENAME TO {new_table_name};' )
         
-        result = self._Execute( 'SELECT num_rows FROM analyze_timestamps WHERE name = ?;', ( table_name_without_schema, ) ).fetchone()
+        result = self._execute( 'SELECT num_rows FROM analyze_timestamps WHERE name = ?;', ( table_name_without_schema, ) ).fetchone()
         
         if result is None:
             
@@ -461,7 +461,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
             ( num_rows, ) = result
             
         
-        self._Execute( 'INSERT INTO deferred_delete_tables ( name, num_rows ) VALUES ( ?, ? );', ( new_table_name, num_rows ) )
+        self._execute( 'INSERT INTO deferred_delete_tables ( name, num_rows ) VALUES ( ?, ? );', ( new_table_name, num_rows ) )
         
         self._cursor_transaction_wrapper.pub_after_job( 'notify_deferred_delete_database_maintenance_new_work' )
         
@@ -483,10 +483,10 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
             return still_work_to_do
             
         
-        if not self._TableExists( deletee_table_name ):
+        if not self._table_exists( deletee_table_name ):
             
             # weird situation, let's bail out now
-            self._Execute( 'DELETE FROM deferred_delete_tables WHERE name = ?;', ( deletee_table_name, ) )
+            self._execute( 'DELETE FROM deferred_delete_tables WHERE name = ?;', ( deletee_table_name, ) )
             
             return still_work_to_do
             
@@ -496,22 +496,22 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
         if len( pk_column_names ) == 0:
             
             # weird situation, let's burn CPU time as needed and bail out now
-            self._Execute( f'DROP TABLE {deletee_table_name};' )
+            self._execute( f'DROP TABLE {deletee_table_name};' )
             
-            self._Execute( 'DELETE FROM deferred_delete_tables WHERE name = ?;', ( deletee_table_name, ) )
+            self._execute( 'DELETE FROM deferred_delete_tables WHERE name = ?;', ( deletee_table_name, ) )
             
             return still_work_to_do
             
         
         num_we_want_to_delete = 10
         
-        while not HydrusTime.TimeHasPassedFloat( time_to_stop ):
+        while not HydrusTime.time_has_passed_float( time_to_stop ):
             
-            time_started = HydrusTime.GetNowPrecise()
+            time_started = HydrusTime.get_now_precise()
             
             ( select_query, delete_query ) = self._GetSimpleDeferredDeleteQueries( deletee_table_name, pk_column_names, num_we_want_to_delete )
             
-            deletee_rows = self._Execute( select_query ).fetchall()
+            deletee_rows = self._execute( select_query ).fetchall()
             
             if len( deletee_rows ) == 0:
                 
@@ -521,7 +521,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
                 
             else:
                 
-                self._ExecuteMany( delete_query, deletee_rows )
+                self._execute_many( delete_query, deletee_rows )
                 
                 if num_rows_still_to_delete is not None:
                     
@@ -533,14 +533,14 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
                         num_rows_still_to_delete = None
                         
                     
-                    self._Execute( 'UPDATE deferred_delete_tables SET num_rows = ? WHERE name = ?;', ( num_rows_still_to_delete, deletee_table_name ) )
+                    self._execute( 'UPDATE deferred_delete_tables SET num_rows = ? WHERE name = ?;', ( num_rows_still_to_delete, deletee_table_name ) )
                     
                 
-                time_this_cycle_took = HydrusTime.GetNowPrecise() - time_started
+                time_this_cycle_took = HydrusTime.get_now_precise() - time_started
                 
                 n_per_second = num_we_want_to_delete / time_this_cycle_took
                 
-                remaining_time = time_to_stop - HydrusTime.GetNowFloat()
+                remaining_time = time_to_stop - HydrusTime.get_now_float()
                 
                 if remaining_time > 0:
                     
@@ -565,14 +565,14 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
     
     def GetDeferredDeleteTableData( self ):
         
-        data = self._Execute( 'SELECT name, num_rows FROM deferred_delete_tables;' ).fetchall()
+        data = self._execute( 'SELECT name, num_rows FROM deferred_delete_tables;' ).fetchall()
         
         return data
         
     
     def GetLastShutdownWorkTime( self ):
         
-        result = self._Execute( 'SELECT last_shutdown_work_time FROM last_shutdown_work_time;' ).fetchone()
+        result = self._execute( 'SELECT last_shutdown_work_time FROM last_shutdown_work_time;' ).fetchone()
         
         if result is None:
             
@@ -586,13 +586,13 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
     
     def GetTableNamesDueAnalysis( self, force_reanalyze = False ) -> list:
         
-        db_names = [ name for ( index, name, path ) in self._Execute( 'PRAGMA database_list;' ) if name not in ( 'mem', 'temp', 'durable_temp' ) ]
+        db_names = [ name for ( index, name, path ) in self._execute( 'PRAGMA database_list;' ) if name not in ( 'mem', 'temp', 'durable_temp' ) ]
         
         all_names = set()
         
         for db_name in db_names:
             
-            all_names.update( ( name for ( name, ) in self._Execute( 'SELECT name FROM {}.sqlite_master WHERE type = ?;'.format( db_name ), ( 'table', ) ) ) )
+            all_names.update( ( name for ( name, ) in self._execute( 'SELECT name FROM {}.sqlite_master WHERE type = ?;'.format( db_name ), ( 'table', ) ) ) )
             
         
         all_names.discard( 'sqlite_stat1' )
@@ -617,7 +617,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
             boundaries.append( ( 10000000, False, 12 * 30 * 86400 ) )
             # anything bigger than 10M rows will now not be analyzed
             
-            existing_names_to_info = { name : ( num_rows, HydrusTime.SecondiseMS( timestamp_ms ) ) for ( name, num_rows, timestamp_ms ) in self._Execute( 'SELECT name, num_rows, timestamp_ms FROM analyze_timestamps;' ) }
+            existing_names_to_info = { name : ( num_rows, HydrusTime.secondise_ms( timestamp_ms ) ) for ( name, num_rows, timestamp_ms ) in self._execute( 'SELECT name, num_rows, timestamp_ms FROM analyze_timestamps;' ) }
             
             names_to_analyze = []
             
@@ -634,7 +634,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
                             continue
                             
                         
-                        if not HydrusTime.TimeHasPassed( timestamp + period ):
+                        if not HydrusTime.time_has_passed( timestamp + period ):
                             
                             continue
                             
@@ -667,7 +667,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
         return names_to_analyze
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         tables_and_columns = []
         
@@ -682,11 +682,11 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
             
             path = os.path.join( self._db_dir, filename )
             
-            ( page_size, ) = self._Execute( 'PRAGMA {}.page_size;'.format( name ) ).fetchone()
-            ( page_count, ) = self._Execute( 'PRAGMA {}.page_count;'.format( name ) ).fetchone()
-            ( freelist_count, ) = self._Execute( 'PRAGMA {}.freelist_count;'.format( name ) ).fetchone()
+            ( page_size, ) = self._execute( 'PRAGMA {}.page_size;'.format( name ) ).fetchone()
+            ( page_count, ) = self._execute( 'PRAGMA {}.page_count;'.format( name ) ).fetchone()
+            ( freelist_count, ) = self._execute( 'PRAGMA {}.freelist_count;'.format( name ) ).fetchone()
             
-            result = self._Execute( 'SELECT timestamp_ms FROM vacuum_timestamps WHERE name = ?;', ( name, ) ).fetchone()
+            result = self._execute( 'SELECT timestamp_ms FROM vacuum_timestamps WHERE name = ?;', ( name, ) ).fetchone()
             
             if result is None:
                 
@@ -713,16 +713,16 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
     
     def RegisterShutdownWork( self ):
         
-        self._Execute( 'DELETE FROM last_shutdown_work_time;' )
+        self._execute( 'DELETE FROM last_shutdown_work_time;' )
         
-        self._Execute( 'INSERT INTO last_shutdown_work_time ( last_shutdown_work_time ) VALUES ( ? );', ( HydrusTime.GetNow(), ) )
+        self._execute( 'INSERT INTO last_shutdown_work_time ( last_shutdown_work_time ) VALUES ( ? );', ( HydrusTime.get_now(), ) )
         
     
     def RegisterSuccessfulVacuum( self, name: str ):
         
-        self._Execute( 'DELETE FROM vacuum_timestamps WHERE name = ?;', ( name, ) )
+        self._execute( 'DELETE FROM vacuum_timestamps WHERE name = ?;', ( name, ) )
         
-        self._Execute( 'INSERT OR IGNORE INTO vacuum_timestamps ( name, timestamp_ms ) VALUES ( ?, ? );', ( name, HydrusTime.GetNowMS() ) )
+        self._execute( 'INSERT OR IGNORE INTO vacuum_timestamps ( name, timestamp_ms ) VALUES ( ?, ? );', ( name, HydrusTime.get_now_ms() ) )
         
     
     def TouchAnalyzeNewTables( self ):

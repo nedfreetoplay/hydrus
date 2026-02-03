@@ -223,7 +223,7 @@ class Page( QW.QWidget ):
                 raise HydrusExceptions.CancelledException()
                 
             
-            status = f'Loading initial files{HC.UNICODE_ELLIPSIS} {HydrusNumbers.ValueRangeToPrettyString( len( self._initial_media_results_loaded ), len( self._initial_hashes ) )}'
+            status = f'Loading initial files{HC.UNICODE_ELLIPSIS} {HydrusNumbers.value_range_to_pretty_string( len( self._initial_media_results_loaded ), len( self._initial_hashes ) )}'
             
             self._SetPrettyStatus( status, override = True )
             
@@ -234,7 +234,7 @@ class Page( QW.QWidget ):
         
         def work_callable( block_of_hashes ):
             
-            block_of_media_results = CG.client_controller.Read( 'media_results', block_of_hashes )
+            block_of_media_results = CG.client_controller.read( 'media_results', block_of_hashes )
             
             return block_of_media_results
             
@@ -304,7 +304,7 @@ class Page( QW.QWidget ):
         
         self._current_session_page_container = page_container
         self._current_session_page_container_hashes_hash = self._GetCurrentSessionPageHashesHash()
-        self._current_session_page_container_timestamp = HydrusTime.GetNow()
+        self._current_session_page_container_timestamp = HydrusTime.get_now()
         
     
     def _SetPrettyStatus( self, status: str, override = False ):
@@ -545,7 +545,7 @@ class Page( QW.QWidget ):
             hashes = list( self._initial_hashes )
             hashes.extend( ( media_result.GetHash() for media_result in self._pre_initialisation_media_results ) )
             
-            hashes = HydrusLists.DedupeList( hashes )
+            hashes = HydrusLists.dedupe_list( hashes )
             
             return hashes
             
@@ -585,15 +585,15 @@ class Page( QW.QWidget ):
         
         if num_files > 0:
             
-            name_for_menu = '{} - {} files'.format( name_for_menu, HydrusNumbers.ToHumanInt( num_files ) )
+            name_for_menu = '{} - {} files'.format( name_for_menu, HydrusNumbers.to_human_int( num_files ) )
             
         
         if num_value != num_range:
             
-            name_for_menu = '{} - {}'.format( name_for_menu, HydrusNumbers.ValueRangeToPrettyString( num_value, num_range ) )
+            name_for_menu = '{} - {}'.format( name_for_menu, HydrusNumbers.value_range_to_pretty_string( num_value, num_range ) )
             
         
-        return HydrusText.ElideText( name_for_menu, 32, elide_center = True ) if elide else name_for_menu
+        return HydrusText.elide_text( name_for_menu, 32, elide_center = True ) if elide else name_for_menu
         
     
     def GetNumFileSummary( self ):
@@ -668,7 +668,7 @@ class Page( QW.QWidget ):
         
         # this is the only place this is generated. this will be its key/name/id from now on
         # we won't regen the hash for identifier since it could change due to object updates etc...
-        page_data_hash = page_data.GetSerialisedHash()
+        page_data_hash = page_data.get_serialised_hash()
         
         page_container = ClientGUISession.GUISessionContainerPageSingle( name, page_data_hash )
         
@@ -950,7 +950,7 @@ class Page( QW.QWidget ):
         
         if self._initial_hashes is not None and len( self._initial_hashes ) > 0:
             
-            self._initial_hash_blocks_still_to_load = list( HydrusLists.SplitListIntoChunks( self._initial_hashes, 100 ) )
+            self._initial_hash_blocks_still_to_load = list( HydrusLists.split_list_into_chunks( self._initial_hashes, 100 ) )
             
             self._DoInitialMediaResultsLoadWork()
             
@@ -1000,7 +1000,7 @@ def ConvertReasonsAndPagesToStatement( reasons_and_pages: list ) -> str:
                 
             else:
                 
-                message_block = f'pages{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( names )}say: {reason}'
+                message_block = f'pages{HydrusText.convert_many_strings_to_nice_insertable_human_summary( names )}say: {reason}'
                 
             
             message_blocks.append( message_block )
@@ -1183,7 +1183,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
     
     def _ClosePage( self, index, polite = True, delete_page = False ):
         
-        CG.client_controller.ResetIdleTimer()
+        CG.client_controller.reset_idle_timer()
         CG.client_controller.ResetPageChangeTimer()
         
         if index < 0 or index > self.count() - 1:
@@ -1285,7 +1285,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
                 
                 statement = ConvertReasonsAndPagesToStatement( reasons_and_pages )
                 
-                message = f'Are you sure you want to close {HydrusNumbers.ToHumanInt( actual_num_pages )} {pages_description}?'
+                message = f'Are you sure you want to close {HydrusNumbers.to_human_int( actual_num_pages )} {pages_description}?'
                 message += '\n' * 2
                 message += statement
                 
@@ -1303,7 +1303,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
                 
             else:
                 
-                message = f'Close {HydrusNumbers.ToHumanInt( actual_num_pages )} {pages_description}?'
+                message = f'Close {HydrusNumbers.to_human_int( actual_num_pages )} {pages_description}?'
                 
                 result = ClientGUIDialogsQuick.GetYesNo( self, message )
                 
@@ -1344,7 +1344,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
             
             hashes = page.GetHashes()
             
-            message = f'This will collect the {HydrusNumbers.ToHumanInt(len(hashes))} files in this page and place them, in current order, in a single new search page. This can work on a page of pages.'
+            message = f'This will collect the {HydrusNumbers.to_human_int(len(hashes))} files in this page and place them, in current order, in a single new search page. This can work on a page of pages.'
             message += '\n\n'
             message += 'The old page will be closed, no matter its type.'
             
@@ -1376,9 +1376,9 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
             hashes.extend( page.GetHashes() )
             
         
-        hashes = HydrusLists.DedupeList( hashes )
+        hashes = HydrusLists.dedupe_list( hashes )
         
-        message = f'This will collect the {HydrusNumbers.ToHumanInt(len(hashes))} files in view in the {HydrusNumbers.ToHumanInt(len(closees))} pages and place them, in current order, in a single new search page.'
+        message = f'This will collect the {HydrusNumbers.to_human_int(len(hashes))} files in view in the {HydrusNumbers.to_human_int(len(closees))} pages and place them, in current order, in a single new search page.'
         message += '\n\n'
         message += 'All the pages harvested from will be closed, no matter their type.'
         
@@ -1619,7 +1619,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
             full_page_name = full_page_name[:256]
             
         
-        page_name = HydrusText.ElideText( full_page_name, max_page_name_chars )
+        page_name = HydrusText.elide_text( full_page_name, max_page_name_chars )
         
         do_tooltip = len( page_name ) != len( full_page_name ) or CG.client_controller.new_options.GetBoolean( 'elide_page_tab_names' )
         
@@ -1633,7 +1633,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
         
         if a or b or c:
             
-            num_string += HydrusNumbers.ToHumanInt( num_files )
+            num_string += HydrusNumbers.to_human_int( num_files )
             
         
         if import_page_progress_display:
@@ -1645,7 +1645,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
                     num_string += ' - '
                     
                 
-                num_string += HydrusNumbers.ValueRangeToPrettyString( num_value, num_range )
+                num_string += HydrusNumbers.value_range_to_pretty_string( num_value, num_range )
                 
             
         
@@ -1842,7 +1842,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
             
             if CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
                 
-                label = 'page weight: {}'.format( HydrusNumbers.ToHumanInt( page.GetTotalWeight() ) )
+                label = 'page weight: {}'.format( HydrusNumbers.to_human_int( page.GetTotalWeight() ) )
                 
                 ClientGUIMenus.AppendMenuLabel( menu, label, label )
                 
@@ -2049,7 +2049,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
                 
             
         
-        existing_session_names = CG.client_controller.Read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_GUI_SESSION_CONTAINER )
+        existing_session_names = CG.client_controller.read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_GUI_SESSION_CONTAINER )
         
         if len( existing_session_names ) > 0 or click_over_page_of_pages:
             
@@ -2210,11 +2210,11 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
         
         try:
             
-            session = session = CG.client_controller.Read( 'gui_session', name, timestamp_ms )
+            session = session = CG.client_controller.read( 'gui_session', name, timestamp_ms )
             
         except Exception as e:
             
-            HydrusData.ShowText( 'While trying to load session "{}" (ts {}), this error happened:'.format( name, timestamp_ms ) )
+            HydrusData.show_text( 'While trying to load session "{}" (ts {}), this error happened:'.format( name, timestamp_ms ) )
             HydrusData.ShowException( e )
             
             return
@@ -2245,11 +2245,11 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
         
         try:
             
-            session = CG.client_controller.Read( 'gui_session', name )
+            session = CG.client_controller.read( 'gui_session', name )
             
         except Exception as e:
             
-            HydrusData.ShowText( 'While trying to load session "{}", this error happened:'.format( name ) )
+            HydrusData.show_text( 'While trying to load session "{}", this error happened:'.format( name ) )
             HydrusData.ShowException( e )
             
             return
@@ -2303,7 +2303,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
             
             if num_pages_held > 0:
                 
-                message += f'\n\nIt is holding {HydrusNumbers.ToHumanInt( num_pages_held )} pages.'
+                message += f'\n\nIt is holding {HydrusNumbers.to_human_int( num_pages_held )} pages.'
                 
             else:
                 
@@ -2503,7 +2503,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
         
         for ( reason, pages ) in reasons_to_pages.items():
             
-            pages.sort( key = lambda p: HydrusText.HumanTextSortKey( p.GetName() ) )
+            pages.sort( key = lambda p: HydrusText.human_text_sort_key( p.GetName() ) )
             
         
         reasons_and_pages = sorted( reasons_to_pages.items(), key = lambda a: len( a[1] ) )
@@ -2554,7 +2554,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
             hashes.extend( page.GetHashes() )
             
         
-        hashes = HydrusLists.DedupeList( hashes )
+        hashes = HydrusLists.dedupe_list( hashes )
         
         return hashes
         
@@ -2577,15 +2577,15 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
         
         if num_files > 0:
             
-            name_for_menu = '{} - {} files'.format( name_for_menu, HydrusNumbers.ToHumanInt( num_files ) )
+            name_for_menu = '{} - {} files'.format( name_for_menu, HydrusNumbers.to_human_int( num_files ) )
             
         
         if num_value != num_range:
             
-            name_for_menu = '{} - {}'.format( name_for_menu, HydrusNumbers.ValueRangeToPrettyString( num_value, num_range ) )
+            name_for_menu = '{} - {}'.format( name_for_menu, HydrusNumbers.value_range_to_pretty_string( num_value, num_range ) )
             
         
-        return HydrusText.ElideText( name_for_menu, 32, elide_center = True ) if elide else name_for_menu
+        return HydrusText.elide_text( name_for_menu, 32, elide_center = True ) if elide else name_for_menu
         
     
     def GetNumFileSummary( self ):
@@ -2829,14 +2829,14 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
         
         ( num_files, ( num_value, num_range ) ) = self.GetNumFileSummary()
         
-        num_string = HydrusNumbers.ToHumanInt( num_files )
+        num_string = HydrusNumbers.to_human_int( num_files )
         
         if num_range > 0 and num_value != num_range:
             
-            num_string += ', ' + HydrusNumbers.ValueRangeToPrettyString( num_value, num_range )
+            num_string += ', ' + HydrusNumbers.value_range_to_pretty_string( num_value, num_range )
             
         
-        return HydrusNumbers.ToHumanInt( self.count() ) + ' pages, ' + num_string + ' files'
+        return HydrusNumbers.to_human_int( self.count() ) + ' pages, ' + num_string + ' files'
         
     
     def GetSerialisablePage( self, only_changed_page_data, about_to_save ):
@@ -3022,7 +3022,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
     
     def InsertSessionNotebook( self, forced_insertion_index: int, session: ClientGUISession.GUISessionContainer, notebook_page_container: ClientGUISession.GUISessionContainerPageNotebook, select_first_page: bool, session_is_clean = True ):
         
-        name = notebook_page_container.GetName()
+        name = notebook_page_container.get_name()
         
         page = self.NewPagesNotebook( name, forced_insertion_index = forced_insertion_index, give_it_a_blank_page = False, select_page = select_first_page )
         
@@ -3076,7 +3076,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.ShowText( 'The page with name "{}" and hash "{}" failed to load because its data was missing!'.format( page_container.GetName(), page_data_hash.hex() ) )
+            HydrusData.show_text( 'The page with name "{}" and hash "{}" failed to load because its data was missing!'.format( page_container.get_name(), page_data_hash.hex() ) )
             
             return None
             
@@ -3214,7 +3214,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
         
         if do_add:
             
-            media_results = CG.client_controller.Read( 'media_results', hashes, sorted = True )
+            media_results = CG.client_controller.read( 'media_results', hashes, sorted = True )
             
             dest_page.AddMediaResults( media_results )
             
@@ -3241,7 +3241,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
         
         current_page = self.currentWidget()
         
-        i_have_done_a_recent_move = not HydrusTime.TimeHasPassed( self._time_of_last_move_selection_event + 3 )
+        i_have_done_a_recent_move = not HydrusTime.time_has_passed( self._time_of_last_move_selection_event + 3 )
         
         if isinstance( current_page, PagesNotebook ) and not i_have_done_a_recent_move:
             
@@ -3259,7 +3259,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
                 
                 self.setCurrentIndex( new_index )
                 
-                self._time_of_last_move_selection_event = HydrusTime.GetNow()
+                self._time_of_last_move_selection_event = HydrusTime.get_now()
                 
             
             return True
@@ -3277,7 +3277,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
         
         current_page = self.currentWidget()
         
-        i_have_done_a_recent_move = not HydrusTime.TimeHasPassed( self._time_of_last_move_selection_event + 3 )
+        i_have_done_a_recent_move = not HydrusTime.time_has_passed( self._time_of_last_move_selection_event + 3 )
         
         if isinstance( current_page, PagesNotebook ) and not i_have_done_a_recent_move:
             
@@ -3300,7 +3300,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
             
             self.setCurrentIndex( new_index )
             
-            self._time_of_last_move_selection_event = HydrusTime.GetNow()
+            self._time_of_last_move_selection_event = HydrusTime.get_now()
             
         
         return True
@@ -3317,7 +3317,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
         
         # the 'too many pages open' thing used to be here
         
-        CG.client_controller.ResetIdleTimer()
+        CG.client_controller.reset_idle_timer()
         CG.client_controller.ResetPageChangeTimer()
         
         if initial_hashes is None:
@@ -3558,7 +3558,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
             return current_page.NewPagesNotebook( name = name, forced_insertion_index = forced_insertion_index, on_deepest_notebook = on_deepest_notebook, give_it_a_blank_page = give_it_a_blank_page )
             
         
-        CG.client_controller.ResetIdleTimer()
+        CG.client_controller.reset_idle_timer()
         CG.client_controller.ResetPageChangeTimer()
         
         page = PagesNotebook( self, name )
@@ -3701,7 +3701,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
             
             def work_callable():
                 
-                media_results = CG.client_controller.Read( 'media_results', hashes, sorted = True )
+                media_results = CG.client_controller.read( 'media_results', hashes, sorted = True )
                 
                 return media_results
                 

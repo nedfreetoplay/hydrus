@@ -153,7 +153,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
                 if len( hashes ) > 1:
                     
-                    message = 'Archive ' + HydrusNumbers.ToHumanInt( len( hashes ) ) + ' files?'
+                    message = 'Archive ' + HydrusNumbers.to_human_int( len( hashes ) ) + ' files?'
                     
                     result = ClientGUIDialogsQuick.GetYesNo( self, message )
                     
@@ -164,7 +164,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                     
                 
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_ARCHIVE, hashes ) ) )
+            CG.client_controller.write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_ARCHIVE, hashes ) ) )
             
         
     
@@ -261,7 +261,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
         
         def do_it( content_update_packages ):
             
-            display_time = HydrusTime.GetNow() + 3
+            display_time = HydrusTime.get_now() + 3
             message_pubbed = False
             
             job_status = ClientThreading.JobStatus() # not cancellable, this stuff isn't a nice mix
@@ -275,20 +275,20 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
                 job_status.SetGauge( i, num_to_do )
                 
-                if not message_pubbed and HydrusTime.TimeHasPassed( display_time ):
+                if not message_pubbed and HydrusTime.time_has_passed( display_time ):
                     
                     CG.client_controller.pub( 'message', job_status )
                     
                     message_pubbed = True
                     
                 
-                CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+                CG.client_controller.write_synchronous( 'content_updates', content_update_package )
                 
             
             job_status.FinishAndDismiss()
             
         
-        CG.client_controller.CallToThread( do_it, content_update_packages )
+        CG.client_controller.call_to_thread( do_it, content_update_packages )
         
     
     def _DeselectSelect( self, media_to_deselect, media_to_select ):
@@ -452,7 +452,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                     
                 else:
                     
-                    inbox_phrase = '{} in inbox and {} archived'.format( HydrusNumbers.ToHumanInt( num_inbox ), HydrusNumbers.ToHumanInt( num_selected - num_inbox ) )
+                    inbox_phrase = '{} in inbox and {} archived'.format( HydrusNumbers.to_human_int( num_inbox ), HydrusNumbers.to_human_int( num_selected - num_inbox ) )
                     
                 
                 pretty_total_size = self._GetPrettyTotalSize( only_selected = True )
@@ -489,7 +489,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
         
         total_duration = sum( ( media.GetDurationMS() for media in media_source ) )
         
-        return HydrusTime.MillisecondsDurationToPrettyTime( total_duration )
+        return HydrusTime.milliseconds_duration_to_pretty_time( total_duration )
         
     
     def _GetPrettyTotalSize( self, only_selected = False ):
@@ -515,18 +515,18 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
             else:
                 
-                return HydrusData.ToHumanBytes( 0 )
+                return HydrusData.to_human_bytes( 0 )
                 
             
         else:
             
             if unknown_size:
                 
-                return HydrusData.ToHumanBytes( total_size ) + ' + some unknown size'
+                return HydrusData.to_human_bytes( total_size ) + ' + some unknown size'
                 
             else:
                 
-                return HydrusData.ToHumanBytes( total_size )
+                return HydrusData.to_human_bytes( total_size )
                 
             
         
@@ -600,7 +600,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                     
                     collections_suffix = 's' if num_collections > 1 else ''
                     
-                    return 'file{} in {} collection{}'.format( suffix, HydrusNumbers.ToHumanInt( num_collections ), collections_suffix )
+                    return 'file{} in {} collection{}'.format( suffix, HydrusNumbers.to_human_int( num_collections ), collections_suffix )
                     
                 else:
                     
@@ -841,7 +841,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
                 if len( hashes ) > 1:
                     
-                    message = 'Send {} files to inbox?'.format( HydrusNumbers.ToHumanInt( len( hashes ) ) )
+                    message = 'Send {} files to inbox?'.format( HydrusNumbers.to_human_int( len( hashes ) ) )
                     
                     result = ClientGUIDialogsQuick.GetYesNo( self, message )
                     
@@ -852,7 +852,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                     
                 
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_INBOX, hashes ) ) )
+            CG.client_controller.write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_INBOX, hashes ) ) )
             
         
     
@@ -884,7 +884,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
                 launch_path = new_options.GetMimeLaunch( mime )
                 
-                HydrusPaths.LaunchFile( path, launch_path )
+                HydrusPaths.launch_file( path, launch_path )
                 
                 return
                 
@@ -983,7 +983,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             
             num_files = self._GetNumSelected()
             
-            title = 'manage tags for ' + HydrusNumbers.ToHumanInt( num_files ) + ' files'
+            title = 'manage tags for ' + HydrusNumbers.to_human_int( num_files ) + ' files'
             frame_key = 'manage_tags_dialog'
             
             with ClientGUITopLevelWindowsPanels.DialogManage( self, title, frame_key ) as dlg:
@@ -1037,7 +1037,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                         
                         content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, pending_content_updates )
                         
-                        CG.client_controller.Write( 'content_updates', content_update_package )
+                        CG.client_controller.write( 'content_updates', content_update_package )
                         
                     
                 
@@ -1110,7 +1110,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
                 if not MAC_QUARTZ_OK:
                     
-                    HydrusData.ShowText( 'Sorry, could not do the Quick Look integration--it looks like your venv does not support it. If you are running from source, try rebuilding it!' )
+                    HydrusData.show_text( 'Sorry, could not do the Quick Look integration--it looks like your venv does not support it. If you are running from source, try rebuilding it!' )
                     
                 
                 ClientMacIntegration.show_quicklook_for_path( path )
@@ -1146,7 +1146,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                     
                 else:
                     
-                    message = 'Enter a reason for these {} files to be removed from {}.'.format( HydrusNumbers.ToHumanInt( len( hashes ) ), remote_service.GetName() )
+                    message = 'Enter a reason for these {} files to be removed from {}.'.format( HydrusNumbers.to_human_int( len( hashes ) ), remote_service.GetName() )
                     
                 
                 try:
@@ -1162,7 +1162,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
                 content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( remote_service_key, content_update )
                 
-                CG.client_controller.Write( 'content_updates', content_update_package )
+                CG.client_controller.write( 'content_updates', content_update_package )
                 
                 self.setFocus( QC.Qt.FocusReason.OtherFocusReason )
                 
@@ -1172,7 +1172,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
                 content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( remote_service_key, content_update )
                 
-                CG.client_controller.Write( 'content_updates', content_update_package )
+                CG.client_controller.write( 'content_updates', content_update_package )
                 
             
         
@@ -1258,17 +1258,17 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             
             if job_type == ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_METADATA:
                 
-                message = 'This will reparse the {} selected files\' metadata.'.format( HydrusNumbers.ToHumanInt( num_files ) )
+                message = 'This will reparse the {} selected files\' metadata.'.format( HydrusNumbers.to_human_int( num_files ) )
                 message += '\n' * 2
                 message += 'If the files were imported before some more recent improvement in the parsing code (such as EXIF rotation or bad video resolution or duration or frame count calculation), this will update them.'
                 
             elif job_type == ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FORCE_THUMBNAIL:
                 
-                message = 'This will force-regenerate the {} selected files\' thumbnails.'.format( HydrusNumbers.ToHumanInt( num_files ) )
+                message = 'This will force-regenerate the {} selected files\' thumbnails.'.format( HydrusNumbers.to_human_int( num_files ) )
                 
             elif job_type == ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_REFIT_THUMBNAIL:
                 
-                message = 'This will regenerate the {} selected files\' thumbnails, but only if they are the wrong size.'.format( HydrusNumbers.ToHumanInt( num_files ) )
+                message = 'This will regenerate the {} selected files\' thumbnails, but only if they are the wrong size.'.format( HydrusNumbers.to_human_int( num_files ) )
                 
             else:
                 
@@ -1280,7 +1280,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             if num_files > 50:
                 
                 message += '\n' * 2
-                message += 'You have selected {} files, so this job may take some time. You can run it all now or schedule it to the overall file maintenance queue for later spread-out processing.'.format( HydrusNumbers.ToHumanInt( num_files ) )
+                message += 'You have selected {} files, so this job may take some time. You can run it all now or schedule it to the overall file maintenance queue for later spread-out processing.'.format( HydrusNumbers.to_human_int( num_files ) )
                 
                 yes_tuples = []
                 
@@ -1316,13 +1316,13 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
                 media_results = [ m.GetMediaResult() for m in flat_media ]
                 
-                CG.client_controller.CallToThread( CG.client_controller.files_maintenance_manager.RunJobImmediately, media_results, job_type )
+                CG.client_controller.call_to_thread( CG.client_controller.files_maintenance_manager.RunJobImmediately, media_results, job_type )
                 
             else:
                 
                 hashes = { media.GetHash() for media in flat_media }
                 
-                CG.client_controller.CallToThread( CG.client_controller.files_maintenance_manager.ScheduleJob, hashes, job_type )
+                CG.client_controller.call_to_thread( CG.client_controller.files_maintenance_manager.ScheduleJob, hashes, job_type )
                 
             
         
@@ -1361,7 +1361,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
         
         hashes = self._GetSelectedHashes( discriminant = CC.DISCRIMINANT_NOT_LOCAL )
         
-        CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_RESCIND_PEND, hashes ) ) )
+        CG.client_controller.write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_RESCIND_PEND, hashes ) ) )
         
     
     def _RescindPetitionFiles( self, file_service_key ):
@@ -1370,7 +1370,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
         
         if hashes is not None and len( hashes ) > 0:   
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( file_service_key, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_RESCIND_PETITION, hashes ) ) )
+            CG.client_controller.write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( file_service_key, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_RESCIND_PETITION, hashes ) ) )
             
         
     
@@ -1380,7 +1380,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
         
         if hashes is not None and len( hashes ) > 0:   
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( file_service_key, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_RESCIND_PEND, hashes ) ) )
+            CG.client_controller.write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( file_service_key, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_RESCIND_PEND, hashes ) ) )
             
         
     
@@ -1494,7 +1494,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 flat_media = ClientMedia.FlattenMedia( media_group )
                 
             
-            num_files_str = HydrusNumbers.ToHumanInt( len( flat_media ) )
+            num_files_str = HydrusNumbers.to_human_int( len( flat_media ) )
             
             if len( flat_media ) < 2:
                 
@@ -1518,7 +1518,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             
             media_result_pairs = [ ( media_a.GetMediaResult(), media_b.GetMediaResult() ) for ( media_a, media_b ) in media_pairs ]
             
-            num_files_str = HydrusNumbers.ToHumanInt( len( self._GetSelectedFlatMedia() ) )
+            num_files_str = HydrusNumbers.to_human_int( len( self._GetSelectedFlatMedia() ) )
             
         
         if len( media_result_pairs ) == 0:
@@ -1533,7 +1533,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             
             if len( media_result_pairs ) > 1 and duplicate_type in ( HC.DUPLICATE_FALSE_POSITIVE, HC.DUPLICATE_ALTERNATE ):
                 
-                media_result_pairs_str = HydrusNumbers.ToHumanInt( len( media_result_pairs ) )
+                media_result_pairs_str = HydrusNumbers.to_human_int( len( media_result_pairs ) )
                 
                 message = 'Are you sure you want to {} for the {} selected files? The relationship will be applied between every pair combination in the file selection ({} pairs).'.format( yes_no_text, num_files_str, media_result_pairs_str )
                 
@@ -1648,7 +1648,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
         
         if len( pair_info ) > 0:
             
-            CG.client_controller.WriteSynchronous( 'duplicate_pair_status', pair_info )
+            CG.client_controller.write_synchronous( 'duplicate_pair_status', pair_info )
             
             return True
             
@@ -1736,7 +1736,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             
             media_pairs = [ ( better_media, worse_media ) for worse_media in worse_flat_media ]
             
-            message = 'Are you sure you want to set the focused file as better than the {} other files in the selection?'.format( HydrusNumbers.ToHumanInt( len( worse_flat_media ) ) )
+            message = 'Are you sure you want to set the focused file as better than the {} other files in the selection?'.format( HydrusNumbers.to_human_int( len( worse_flat_media ) ) )
             
             result = ClientGUIDialogsQuick.GetYesNo( self, message )
             
@@ -1783,7 +1783,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             
             if do_it:
                 
-                CG.client_controller.WriteSynchronous( 'duplicate_set_king', focused_hash )
+                CG.client_controller.write_synchronous( 'duplicate_set_king', focused_hash )
                 
             
         else:
@@ -1932,7 +1932,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             return
             
         
-        CG.client_controller.CallToThread( ipfs_service.PinDirectory, hashes, note )
+        CG.client_controller.call_to_thread( ipfs_service.PinDirectory, hashes, note )
         
     
     def _UploadFiles( self, file_service_key ):
@@ -1941,7 +1941,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
         
         if hashes is not None and len( hashes ) > 0:   
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( file_service_key, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_PEND, hashes ) ) )
+            CG.client_controller.write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( file_service_key, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_PEND, hashes ) ) )
             
         
     

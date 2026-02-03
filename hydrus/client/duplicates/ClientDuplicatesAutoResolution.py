@@ -68,9 +68,9 @@ def ActionAutoResolutionReviewPairs( rule: "DuplicatesAutoResolutionRule", decis
     approve_pairs = [ ( decision.media_result_a, decision.media_result_b ) for decision in decisions if decision.approved ]
     deny_pairs = [ ( decision.media_result_a, decision.media_result_b ) for decision in decisions if not decision.approved ]
     
-    for ( num_done, num_to_do, chunk ) in HydrusLists.SplitListIntoChunksRich( approve_pairs, 4 ):
+    for ( num_done, num_to_do, chunk ) in HydrusLists.split_list_into_chunks_rich( approve_pairs, 4 ):
         
-        message = f'approving: {HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do )}'
+        message = f'approving: {HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do )}'
         
         if status_hook is not None:
             
@@ -78,12 +78,12 @@ def ActionAutoResolutionReviewPairs( rule: "DuplicatesAutoResolutionRule", decis
             
         
         # this is safe to run on a bunch of related pairs like AB, AC, DB--the db figures that out
-        CG.client_controller.WriteSynchronous( 'duplicates_auto_resolution_approve_pending_pairs', rule, chunk )
+        CG.client_controller.write_synchronous( 'duplicates_auto_resolution_approve_pending_pairs', rule, chunk )
         
     
-    for ( num_done, num_to_do, chunk ) in HydrusLists.SplitListIntoChunksRich( deny_pairs, 4 ):
+    for ( num_done, num_to_do, chunk ) in HydrusLists.split_list_into_chunks_rich( deny_pairs, 4 ):
         
-        message = f'denying: {HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do )}'
+        message = f'denying: {HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do )}'
         
         if status_hook is not None:
             
@@ -91,7 +91,7 @@ def ActionAutoResolutionReviewPairs( rule: "DuplicatesAutoResolutionRule", decis
             
         
         # this is safe to run on a bunch of related pairs like AB, AC, DB--the db figures that out
-        CG.client_controller.WriteSynchronous( 'duplicates_auto_resolution_deny_pending_pairs', rule, chunk )
+        CG.client_controller.write_synchronous( 'duplicates_auto_resolution_deny_pending_pairs', rule, chunk )
         
     
 
@@ -158,11 +158,11 @@ class DuplicatesAutoResolutionRule( HydrusSerialisable.SerialisableBaseNamed ):
         return f'Duplicates Auto-Resolution Rule: {self._name} ({self._id})'
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_potential_duplicates_search_context = self._potential_duplicates_search_context.GetSerialisableTuple()
-        serialisable_pair_selector = self._pair_selector.GetSerialisableTuple()
-        serialisable_custom_duplicate_content_merge_options = None if self._custom_duplicate_content_merge_options is None else self._custom_duplicate_content_merge_options.GetSerialisableTuple()
+        serialisable_potential_duplicates_search_context = self._potential_duplicates_search_context.get_serialisable_tuple()
+        serialisable_pair_selector = self._pair_selector.get_serialisable_tuple()
+        serialisable_custom_duplicate_content_merge_options = None if self._custom_duplicate_content_merge_options is None else self._custom_duplicate_content_merge_options.get_serialisable_tuple()
         
         return (
             self._id,
@@ -178,7 +178,7 @@ class DuplicatesAutoResolutionRule( HydrusSerialisable.SerialisableBaseNamed ):
         )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         (
             self._id,
@@ -193,12 +193,12 @@ class DuplicatesAutoResolutionRule( HydrusSerialisable.SerialisableBaseNamed ):
             serialisable_custom_duplicate_content_merge_options
         ) = serialisable_info
         
-        self._potential_duplicates_search_context = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_potential_duplicates_search_context )
-        self._pair_selector = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_pair_selector )
-        self._custom_duplicate_content_merge_options = None if serialisable_custom_duplicate_content_merge_options is None else HydrusSerialisable.CreateFromSerialisableTuple( serialisable_custom_duplicate_content_merge_options )
+        self._potential_duplicates_search_context = HydrusSerialisable.create_from_serialisable_tuple( serialisable_potential_duplicates_search_context )
+        self._pair_selector = HydrusSerialisable.create_from_serialisable_tuple( serialisable_pair_selector )
+        self._custom_duplicate_content_merge_options = None if serialisable_custom_duplicate_content_merge_options is None else HydrusSerialisable.create_from_serialisable_tuple( serialisable_custom_duplicate_content_merge_options )
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -453,17 +453,17 @@ class DuplicatesAutoResolutionRule( HydrusSerialisable.SerialisableBaseNamed ):
         
         if not_searched > 0:
             
-            result += f'{HydrusNumbers.ToHumanInt( not_searched )} to search, '
+            result += f'{HydrusNumbers.to_human_int( not_searched )} to search, '
             
         
         if not_tested > 0:
             
-            result += f'{HydrusNumbers.ToHumanInt( not_tested )} still to test, '
+            result += f'{HydrusNumbers.to_human_int( not_tested )} still to test, '
             
         
         if ready_to_action > 0:
             
-            result += f'{HydrusNumbers.ToHumanInt( ready_to_action )} ready to resolve, '
+            result += f'{HydrusNumbers.to_human_int( ready_to_action )} ready to resolve, '
             
         
         if not_searched + not_tested + ready_to_action == 0:
@@ -471,21 +471,21 @@ class DuplicatesAutoResolutionRule( HydrusSerialisable.SerialisableBaseNamed ):
             result += 'Done! '
             
         
-        result += f'{HydrusNumbers.ToHumanInt( actioned )} pairs resolved'
+        result += f'{HydrusNumbers.to_human_int( actioned )} pairs resolved'
         
         if failed_test > 0:
             
-            result += f' ({HydrusNumbers.ToHumanInt( failed_test )} failed the test)'
+            result += f' ({HydrusNumbers.to_human_int( failed_test )} failed the test)'
             
         
         if denied > 0:
             
-            result += f' ({HydrusNumbers.ToHumanInt( denied )} denied by user)'
+            result += f' ({HydrusNumbers.to_human_int( denied )} denied by user)'
             
         
         if not_match > 0:
             
-            result += f' ({HydrusNumbers.ToHumanInt( not_match )} did not match the search)'
+            result += f' ({HydrusNumbers.to_human_int( not_match )} did not match the search)'
             
         
         return result
@@ -1178,9 +1178,9 @@ def GetDefaultRuleSuggestionsVisuallySimilar() -> list[ DuplicatesAutoResolution
     
     #
     
-    duplicates_auto_resolution_rule = duplicates_auto_resolution_rule.Duplicate()
+    duplicates_auto_resolution_rule = duplicates_auto_resolution_rule.duplicate()
     
-    duplicates_auto_resolution_rule.SetName( 'visually similar pairs - only earlier imports' )
+    duplicates_auto_resolution_rule.set_name( 'visually similar pairs - only earlier imports' )
     
     comparators = list( duplicates_auto_resolution_rule.GetPairSelector().GetComparators() )
     
@@ -1351,14 +1351,14 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _AbleToWorkIdleNormal( self ) -> bool:
         
-        if CG.client_controller.CurrentlyIdle():
+        if CG.client_controller.currently_idle():
             
             if not CG.client_controller.new_options.GetBoolean( 'duplicates_auto_resolution_during_idle' ):
                 
                 return False
                 
             
-            if not CG.client_controller.GoodTimeToStartBackgroundWork():
+            if not CG.client_controller.good_time_to_start_background_work():
                 
                 return False
                 
@@ -1395,7 +1395,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 with self._edit_work_lock:
                     
-                    start_time = HydrusTime.GetNowFloat()
+                    start_time = HydrusTime.get_now_float()
                     
                     try:
                         
@@ -1405,23 +1405,23 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
                         
                         time.sleep( 5 )
                         
-                        HydrusData.Print( 'While doing auto-resolution work, we discovered an id that should not exist. If you just deleted one yourself this second, let hydev know as this should not happen. You might need to run the "orphan rule" maintenance job off the cog icon on the duplicates resolution sidebar panel.' )
-                        HydrusData.PrintException( e )
+                        HydrusData.print_text( 'While doing auto-resolution work, we discovered an id that should not exist. If you just deleted one yourself this second, let hydev know as this should not happen. You might need to run the "orphan rule" maintenance job off the cog icon on the duplicates resolution sidebar panel.' )
+                        HydrusData.print_exception( e )
                         
                     except Exception as e:
                         
                         self._serious_error_encountered = True
                         
-                        HydrusData.PrintException( e )
+                        HydrusData.print_exception( e )
                         
                         message = 'There was an unexpected problem during duplicates auto-resolution work! This system will shut down and not start again until the program in restarted. A full traceback of this error should be written to the log.'
                         message += '\n' * 2
                         message += str( e )
                         
-                        HydrusData.ShowText( message )
+                        HydrusData.show_text( message )
                         
                     
-                    actual_work_period = HydrusTime.GetNowFloat() - start_time
+                    actual_work_period = HydrusTime.get_now_float() - start_time
                     
                 
                 with self._lock:
@@ -1495,7 +1495,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
             return 600
             
         
-        if CG.client_controller.CurrentlyIdle():
+        if CG.client_controller.currently_idle():
             
             rest_ratio = 1
             
@@ -1521,7 +1521,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
             return 600
             
         
-        if self._controller.CurrentlyIdle():
+        if self._controller.currently_idle():
             
             rest_ratio = CG.client_controller.new_options.GetInteger( 'duplicates_auto_resolution_rest_percentage_idle' ) / 100
             
@@ -1542,25 +1542,25 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
             return 0.5
             
         
-        if self._controller.CurrentlyIdle():
+        if self._controller.currently_idle():
             
-            return HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'duplicates_auto_resolution_work_time_ms_idle' ) )
+            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'duplicates_auto_resolution_work_time_ms_idle' ) )
             
         else:
             
-            return HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'duplicates_auto_resolution_work_time_ms_active' ) )
+            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'duplicates_auto_resolution_work_time_ms_active' ) )
             
         
     
     def _WorkRules( self, allowed_work_period: float ):
         
-        time_to_stop = HydrusTime.GetNowFloat() + allowed_work_period
+        time_to_stop = HydrusTime.get_now_float() + allowed_work_period
         
         still_work_to_do = False
         
-        rules = CG.client_controller.Read( 'duplicates_auto_resolution_rules_with_counts' )
+        rules = CG.client_controller.read( 'duplicates_auto_resolution_rules_with_counts' )
         
-        rules = sorted( rules, key = lambda r: HydrusText.HumanTextSortKey( r.GetName() ) )
+        rules = sorted( rules, key = lambda r: HydrusText.human_text_sort_key( r.GetName() ) )
         
         with self._lock:
             
@@ -1585,9 +1585,9 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     while rule.HasSearchWorkToDo():
                         
-                        ( still_work_to_do_here, matching_pairs_produced_here ) = CG.client_controller.WriteSynchronous( 'duplicates_auto_resolution_do_search_work', rule )
+                        ( still_work_to_do_here, matching_pairs_produced_here ) = CG.client_controller.write_synchronous( 'duplicates_auto_resolution_do_search_work', rule )
                         
-                        if HydrusTime.TimeHasPassedFloat( time_to_stop ):
+                        if HydrusTime.time_has_passed_float( time_to_stop ):
                             
                             return True
                             
@@ -1601,7 +1601,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
                         
                     
                 
-                if HydrusTime.TimeHasPassedFloat( time_to_stop ):
+                if HydrusTime.time_has_passed_float( time_to_stop ):
                     
                     return True
                     
@@ -1620,11 +1620,11 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     while rule.HasResolutionWorkToDo():
                         
-                        media_result_pair = CG.client_controller.Read( 'duplicates_auto_resolution_resolution_pair', rule )
+                        media_result_pair = CG.client_controller.read( 'duplicates_auto_resolution_resolution_pair', rule )
                         
                         if previous_pair is not None and media_result_pair == previous_pair:
                             
-                            raise Exception( f'Rule {rule.GetName()} read the same resolution pair twice in a row! Please let hydev know.' )
+                            raise Exception( f'Rule {rule.get_name()} read the same resolution pair twice in a row! Please let hydev know.' )
                             
                         
                         if media_result_pair is None:
@@ -1647,15 +1647,15 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
                             
                             if result is None:
                                 
-                                CG.client_controller.WriteSynchronous( 'duplicates_auto_resolution_commit_resolution_pair_failed', rule, media_result_pair )
+                                CG.client_controller.write_synchronous( 'duplicates_auto_resolution_commit_resolution_pair_failed', rule, media_result_pair )
                                 
                             else:
                                 
-                                CG.client_controller.WriteSynchronous( 'duplicates_auto_resolution_commit_resolution_pair_passed', rule, result )
+                                CG.client_controller.write_synchronous( 'duplicates_auto_resolution_commit_resolution_pair_passed', rule, result )
                                 
                             
                         
-                        if HydrusTime.TimeHasPassedFloat( time_to_stop ):
+                        if HydrusTime.time_has_passed_float( time_to_stop ):
                             
                             return True
                             
@@ -1670,7 +1670,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
                     
                 
             
-            if HydrusTime.TimeHasPassedFloat( time_to_stop ):
+            if HydrusTime.time_has_passed_float( time_to_stop ):
                 
                 return True
                 
@@ -1696,7 +1696,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
     
     def GetRules( self ) -> list[ DuplicatesAutoResolutionRule ]:
         
-        rules = CG.client_controller.Read( 'duplicates_auto_resolution_rules_with_counts' )
+        rules = CG.client_controller.read( 'duplicates_auto_resolution_rules_with_counts' )
         
         return rules
         
@@ -1753,14 +1753,14 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
     
     def PausePlayRule( self, rule ):
         
-        CG.client_controller.WriteSynchronous( 'duplicate_auto_resolution_flip_pause_play', rule )
+        CG.client_controller.write_synchronous( 'duplicate_auto_resolution_flip_pause_play', rule )
         
     
     def ResetRuleDenied( self, rules: collections.abc.Collection[ DuplicatesAutoResolutionRule ] ):
         
         for rule in rules:
             
-            CG.client_controller.WriteSynchronous( 'duplicates_auto_resolution_reset_rule_denied', rule )
+            CG.client_controller.write_synchronous( 'duplicates_auto_resolution_reset_rule_denied', rule )
             
         
     
@@ -1768,7 +1768,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
         
         for rule in rules:
             
-            CG.client_controller.WriteSynchronous( 'duplicates_auto_resolution_reset_rule_search_progress', rule )
+            CG.client_controller.write_synchronous( 'duplicates_auto_resolution_reset_rule_search_progress', rule )
             
         
     
@@ -1776,7 +1776,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
         
         for rule in rules:
             
-            CG.client_controller.WriteSynchronous( 'duplicates_auto_resolution_reset_rule_test_progress', rule )
+            CG.client_controller.write_synchronous( 'duplicates_auto_resolution_reset_rule_test_progress', rule )
             
         
     
@@ -1787,7 +1787,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
             self._working_hard_rules = set()
             
         
-        CG.client_controller.Write( 'duplicates_auto_resolution_set_rules', rules )
+        CG.client_controller.write( 'duplicates_auto_resolution_set_rules', rules )
         
     
     def SetWorkingHard( self, rule: DuplicatesAutoResolutionRule, work_hard: bool ):

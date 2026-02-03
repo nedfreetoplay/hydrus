@@ -120,17 +120,17 @@ class NumberTest( HydrusSerialisable.SerialisableBase ):
         return self.ToString()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         return ( self.operator, self.value, self.extra_value )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( self.operator, self.value, self.extra_value ) = serialisable_info
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -378,7 +378,7 @@ class NumberTest( HydrusSerialisable.SerialisableBase ):
         
         if absolute_number_renderer is None:
             
-            absolute_number_renderer = HydrusNumbers.ToHumanInt
+            absolute_number_renderer = HydrusNumbers.to_human_int
             
         
         if replacement_value_string is None:
@@ -403,7 +403,7 @@ class NumberTest( HydrusSerialisable.SerialisableBase ):
         
         if self.operator == NUMBER_TEST_OPERATOR_APPROXIMATE_PERCENT:
             
-            result += f' {HC.UNICODE_PLUS_OR_MINUS}{HydrusNumbers.FloatToPercentage(self.extra_value)}'
+            result += f' {HC.UNICODE_PLUS_OR_MINUS}{HydrusNumbers.float_to_percentage(self.extra_value)}'
             
         elif self.operator == NUMBER_TEST_OPERATOR_APPROXIMATE_ABSOLUTE:
             

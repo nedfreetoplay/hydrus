@@ -93,7 +93,7 @@ class ListBoxItemTagSlice( ListBoxItem ):
     
     def GetRowsOfPresentationTextsWithNamespaces( self, render_for_user: bool, sibling_decoration_allowed: bool, sibling_connector_string: str, sibling_connector_namespace: str | None, parent_decoration_allowed: bool, show_parent_rows: bool ) -> list[ list[ tuple[ str, str, str ] ] ]:
         
-        presentation_text = HydrusTags.ConvertTagSliceToPrettyString( self._tag_slice )
+        presentation_text = HydrusTags.convert_tag_slice_to_pretty_string( self._tag_slice )
         
         if self._tag_slice in ( '', ':' ):
             
@@ -101,7 +101,7 @@ class ListBoxItemTagSlice( ListBoxItem ):
             
         else:
             
-            ( namespace, subtag ) = HydrusTags.SplitTag( self._tag_slice )
+            ( namespace, subtag ) = HydrusTags.split_tag( self._tag_slice )
             
         
         return [ [ ( presentation_text, 'namespace', namespace ) ] ]
@@ -137,15 +137,15 @@ class ListBoxItemNamespaceColour( ListBoxItem ):
         
         if self._namespace is None:
             
-            return [ HydrusTags.ConvertTagSliceToPrettyString( ':' ) ]
+            return [ HydrusTags.convert_tag_slice_to_pretty_string( ':' ) ]
             
         elif self._namespace == '':
             
-            return [ HydrusTags.ConvertTagSliceToPrettyString( '' ) ]
+            return [ HydrusTags.convert_tag_slice_to_pretty_string( '' ) ]
             
         else:
             
-            return [ HydrusTags.ConvertTagSliceToPrettyString( '{}:'.format( self._namespace ) ) ]
+            return [ HydrusTags.convert_tag_slice_to_pretty_string( '{}:'.format( self._namespace ) ) ]
             
         
     
@@ -194,7 +194,7 @@ class ListBoxItemTextTag( ListBoxItem ):
         
         if isinstance( other, ListBoxItemTextTag ):
             
-            return HydrusText.HumanTextSortKey( self.GetCopyableTexts()[0] ) < HydrusText.HumanTextSortKey( other.GetCopyableTexts()[0] )
+            return HydrusText.human_text_sort_key( self.GetCopyableTexts()[0] ) < HydrusText.human_text_sort_key( other.GetCopyableTexts()[0] )
             
         
         return NotImplemented
@@ -202,7 +202,7 @@ class ListBoxItemTextTag( ListBoxItem ):
     
     def _AppendIdealTagTextWithNamespace( self, texts_with_namespaces, sibling_connector_string: str, sibling_connector_namespace: str | None, render_for_user ):
         
-        ( namespace, subtag ) = HydrusTags.SplitTag( self._ideal_tag )
+        ( namespace, subtag ) = HydrusTags.split_tag( self._ideal_tag )
         
         if sibling_connector_namespace is None:
             
@@ -219,7 +219,7 @@ class ListBoxItemTextTag( ListBoxItem ):
         
         for parent in self._parent_tags:
             
-            ( namespace, subtag ) = HydrusTags.SplitTag( parent )
+            ( namespace, subtag ) = HydrusTags.split_tag( parent )
             
             tag_text = ClientTags.RenderTag( parent, render_for_user )
             
@@ -231,7 +231,7 @@ class ListBoxItemTextTag( ListBoxItem ):
     
     def _AppendParentSuffixTagTextWithNamespace( self, texts_with_namespaces ):
         
-        parents_text = ' ({} parents)'.format( HydrusNumbers.ToHumanInt( len( self._parent_tags ) ) )
+        parents_text = ' ({} parents)'.format( HydrusNumbers.to_human_int( len( self._parent_tags ) ) )
         
         texts_with_namespaces.append( ( parents_text, 'namespace', '' ) )
         
@@ -279,7 +279,7 @@ class ListBoxItemTextTag( ListBoxItem ):
         
         # this should be with counts or whatever, but we need to think about this more lad
         
-        ( namespace, subtag ) = HydrusTags.SplitTag( self._tag )
+        ( namespace, subtag ) = HydrusTags.split_tag( self._tag )
         
         tag_text = ClientTags.RenderTag( self._tag, render_for_user )
         
@@ -357,7 +357,7 @@ class ListBoxItemTextTagWithCounts( ListBoxItemTextTag ):
         
         if isinstance( other, ListBoxItemTextTagWithCounts ):
             
-            return HydrusText.HumanTextSortKey( self.GetCopyableTexts( with_counts = False )[0] ) < HydrusText.HumanTextSortKey( other.GetCopyableTexts( with_counts = False )[0] )
+            return HydrusText.human_text_sort_key( self.GetCopyableTexts( with_counts = False )[0] ) < HydrusText.human_text_sort_key( other.GetCopyableTexts( with_counts = False )[0] )
             
         
         return NotImplemented
@@ -403,7 +403,7 @@ class ListBoxItemTextTagWithCounts( ListBoxItemTextTag ):
         
         # this should be with counts or whatever, but we need to think about this more lad
         
-        ( namespace, subtag ) = HydrusTags.SplitTag( self._tag )
+        ( namespace, subtag ) = HydrusTags.split_tag( self._tag )
         
         tag_text = ClientTags.RenderTag( self._tag, render_for_user )
         
@@ -411,22 +411,22 @@ class ListBoxItemTextTagWithCounts( ListBoxItemTextTag ):
             
             if self._current_count > 0:
                 
-                tag_text += ' ({})'.format( HydrusNumbers.ToHumanInt( self._current_count ) )
+                tag_text += ' ({})'.format( HydrusNumbers.to_human_int( self._current_count ) )
                 
             
             if self._pending_count > 0:
                 
-                tag_text += ' (+{})'.format( HydrusNumbers.ToHumanInt( self._pending_count ) )
+                tag_text += ' (+{})'.format( HydrusNumbers.to_human_int( self._pending_count ) )
                 
             
             if self._petitioned_count > 0:
                 
-                tag_text += ' (-{})'.format( HydrusNumbers.ToHumanInt( self._petitioned_count ) )
+                tag_text += ' (-{})'.format( HydrusNumbers.to_human_int( self._petitioned_count ) )
                 
             
             if self._deleted_count > 0:
                 
-                tag_text += ' (X{})'.format( HydrusNumbers.ToHumanInt( self._deleted_count ) )
+                tag_text += ' (X{})'.format( HydrusNumbers.to_human_int( self._deleted_count ) )
                 
             
         else:
@@ -499,7 +499,7 @@ class ListBoxItemPredicate( ListBoxItem ):
         
         if isinstance( other, ListBoxItem ):
             
-            return HydrusText.HumanTextSortKey( self.GetCopyableTexts()[0] ) < HydrusText.HumanTextSortKey( other.GetCopyableTexts()[0] )
+            return HydrusText.human_text_sort_key( self.GetCopyableTexts()[0] ) < HydrusText.human_text_sort_key( other.GetCopyableTexts()[0] )
             
         
         return NotImplemented
@@ -532,7 +532,7 @@ class ListBoxItemPredicate( ListBoxItem ):
             
         elif self._predicate.GetType() == ClientSearchPredicate.PREDICATE_TYPE_PARENT:
             
-            texts = [ HydrusTags.CleanTag( self._predicate.GetValue() ) ]
+            texts = [ HydrusTags.clean_tag( self._predicate.GetValue() ) ]
             
         elif self._predicate.GetType() == ClientSearchPredicate.PREDICATE_TYPE_WILDCARD:
             
@@ -594,7 +594,7 @@ class ListBoxItemPredicate( ListBoxItem ):
             
             ideal_sibling = self._predicate.GetIdealSibling()
             
-            ( ideal_namespace, ideal_subtag ) = HydrusTags.SplitTag( ideal_sibling )
+            ( ideal_namespace, ideal_subtag ) = HydrusTags.split_tag( ideal_sibling )
             
             if sibling_connector_namespace is None:
                 
@@ -618,7 +618,7 @@ class ListBoxItemPredicate( ListBoxItem ):
                 
             elif parent_decoration_allowed:
                 
-                parents_text = ' ({} parents)'.format( HydrusNumbers.ToHumanInt( len( parent_preds ) ) )
+                parents_text = ' ({} parents)'.format( HydrusNumbers.to_human_int( len( parent_preds ) ) )
                 
                 first_row_of_texts_and_namespaces.append( ( parents_text, 'namespace', '' ) )
                 

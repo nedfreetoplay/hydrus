@@ -288,7 +288,7 @@ class ThumbnailPairListModelPendingAutoResolutionAction( ThumbnailPairListModel 
     
     def SetRule( self, rule: ClientDuplicatesAutoResolution.DuplicatesAutoResolutionRule ):
         
-        if rule.DumpToString() != self._rule.DumpToString():
+        if rule.dump_to_string() != self._rule.dump_to_string():
             
             self._rule = rule
             
@@ -329,11 +329,11 @@ class ThumbnailPairListModelDeniedAutoResolutionAction( ThumbnailPairListModel )
                 
                 timestamp_ms = self._data_rows[ row ][ col ]
                 
-                timestamp = HydrusTime.SecondiseMS( timestamp_ms )
+                timestamp = HydrusTime.secondise_ms( timestamp_ms )
                 
-                s = HydrusTime.TimestampToPrettyTime( timestamp )
+                s = HydrusTime.timestamp_to_pretty_time( timestamp )
                 s += '\n'
-                s += HydrusTime.TimestampToPrettyTimeDelta( timestamp, force_no_iso = True )
+                s += HydrusTime.timestamp_to_pretty_timedelta( timestamp, force_no_iso = True )
                 
                 return s
                 
@@ -389,13 +389,13 @@ class ThumbnailPairListModelTakenAutoResolutionAction( ThumbnailPairListModel ):
                 
                 ( duplicate_type, timestamp_ms ) = self._data_rows[ row ][ col ]
                 
-                timestamp = HydrusTime.SecondiseMS( timestamp_ms )
+                timestamp = HydrusTime.secondise_ms( timestamp_ms )
                 
                 s = HC.duplicate_type_auto_resolution_action_description_lookup[ duplicate_type ]
                 s += '\n'
-                s += HydrusTime.TimestampToPrettyTime( timestamp )
+                s += HydrusTime.timestamp_to_pretty_time( timestamp )
                 s += '\n'
-                s += HydrusTime.TimestampToPrettyTimeDelta( timestamp, force_no_iso = True )
+                s += HydrusTime.timestamp_to_pretty_timedelta( timestamp, force_no_iso = True )
                 
                 return s
                 

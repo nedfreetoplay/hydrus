@@ -104,7 +104,7 @@ class TagPairActionContext( object ):
             current_pairs = self._current_statuses_to_pairs[ HC.CONTENT_STATUS_CURRENT ].union( self._current_statuses_to_pairs[ HC.CONTENT_STATUS_PENDING ] ).difference( self._current_statuses_to_pairs[ HC.CONTENT_STATUS_PETITIONED ] )
             
         
-        as_to_bs = HydrusData.BuildKeyToListDict( current_pairs )
+        as_to_bs = HydrusData.build_key_to_list_dict( current_pairs )
         
         pre_existing_loop_strings = []
         a_to_a_loop_strings = []
@@ -159,7 +159,7 @@ class TagPairActionContext( object ):
                                     current_pairs = self._current_statuses_to_pairs[ HC.CONTENT_STATUS_CURRENT ].union( self._current_statuses_to_pairs[ HC.CONTENT_STATUS_PENDING ] ).difference( self._current_statuses_to_pairs[ HC.CONTENT_STATUS_PETITIONED ] )
                                     
                                 
-                                as_to_bs = HydrusData.BuildKeyToListDict( current_pairs )
+                                as_to_bs = HydrusData.build_key_to_list_dict( current_pairs )
                                 
                                 continue
                                 
@@ -220,18 +220,18 @@ class TagPairActionContext( object ):
             
             message = 'Hey, somehow the "Enter some Pairs" routine was called before the related underlying pairs\' groups were loaded. This should not happen! Please tell hydev about this.'
             message += '\n'
-            message += f'I have queued up the needed fetch. Please write down what you were doing to get into this state and see if trying it again works. The missing tags were: {HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( missing_tags, no_trailing_whitespace = True )}'
+            message += f'I have queued up the needed fetch. Please write down what you were doing to get into this state and see if trying it again works. The missing tags were: {HydrusText.convert_many_strings_to_nice_insertable_human_summary( missing_tags, no_trailing_whitespace = True )}'
             
             ClientGUIDialogsMessage.ShowWarning( widget, message )
             
-            CG.client_controller.CallToThread( self.InformTagsInterest, all_tags )
+            CG.client_controller.call_to_thread( self.InformTagsInterest, all_tags )
             
             return
             
         
         pairs = list( pairs )
         
-        pairs.sort( key = lambda c_p1: HydrusText.HumanTextSortKey( c_p1[1] ) )
+        pairs.sort( key = lambda c_p1: HydrusText.human_text_sort_key( c_p1[1] ) )
         
         pairs_to_pend = []
         pairs_to_petition = []
@@ -542,7 +542,7 @@ class TagPairActionContext( object ):
             
             while not self.IsReady():
                 
-                if HydrusThreading.IsThreadShuttingDown():
+                if HydrusThreading.is_thread_shutting_down():
                     
                     return
                     
@@ -588,7 +588,7 @@ class TagPairActionContext( object ):
             
         
         # don't call the qt directly; we may still need to wait for IsReady on stuff that was already fetching before we were called
-        CG.client_controller.CallToThread( wait_for_preload )
+        CG.client_controller.call_to_thread( wait_for_preload )
         
     
     def GetContentUpdates( self ) -> list[ ClientContentUpdates.ContentUpdate ]:
@@ -717,7 +717,7 @@ class TagPairActionContext( object ):
             
             while not self.IsReady():
                 
-                if HydrusThreading.IsThreadShuttingDown():
+                if HydrusThreading.is_thread_shutting_down():
                     
                     return set()
                     
@@ -914,7 +914,7 @@ class TagPairActionContext( object ):
             self._tags_being_fetched.update( unfetched_tags )
             
         
-        CG.client_controller.CallToThread( do_it_with_notify )
+        CG.client_controller.call_to_thread( do_it_with_notify )
         
     
     def IsReady( self ) -> bool:
@@ -943,7 +943,7 @@ class ParentActionContext( TagPairActionContext ):
         
         try:
             
-            statuses_to_pairs = CG.client_controller.Read( 'tag_parents', self._service_key, tags = tags, where_chain_includes_pending_or_petitioned = where_chain_includes_pending_or_petitioned )
+            statuses_to_pairs = CG.client_controller.read( 'tag_parents', self._service_key, tags = tags, where_chain_includes_pending_or_petitioned = where_chain_includes_pending_or_petitioned )
             
         except HydrusExceptions.ShutdownException:
             
@@ -1022,7 +1022,7 @@ class SiblingActionContext( TagPairActionContext ):
         
         try:
             
-            statuses_to_pairs = CG.client_controller.Read( 'tag_siblings', self._service_key, tags = tags, where_chain_includes_pending_or_petitioned = where_chain_includes_pending_or_petitioned )
+            statuses_to_pairs = CG.client_controller.read( 'tag_siblings', self._service_key, tags = tags, where_chain_includes_pending_or_petitioned = where_chain_includes_pending_or_petitioned )
             
         except HydrusExceptions.ShutdownException:
             
