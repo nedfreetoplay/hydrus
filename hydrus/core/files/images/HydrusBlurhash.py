@@ -85,9 +85,9 @@ def xyz_to_lab( x, y, z ):
     return L, a, b
     
 
-def ConvertBlurhashToSortableChromaticMagnitude( blurhash: str, reverse: bool ):
+def convert_blurhash_to_sortable_chromatic_magnitude( blurhash: str, reverse: bool ):
     
-    ( r, g, b ) = GetAverageColourFromBlurhash( blurhash )
+    ( r, g, b ) = get_average_colour_from_blurhash( blurhash )
     
     ( l, a, b ) = xyz_to_lab( *rgb_to_xyz( r, g, b ) )
     
@@ -97,27 +97,27 @@ def ConvertBlurhashToSortableChromaticMagnitude( blurhash: str, reverse: bool ):
     return ( cm, l )
     
 
-def ConvertBlurhashToSortableBlueYellow( blurhash: str, reverse: bool ):
+def convert_blurhash_to_sortable_blue_yellow( blurhash: str, reverse: bool ):
     
-    ( r, g, b ) = GetAverageColourFromBlurhash( blurhash )
+    ( r, g, b ) = get_average_colour_from_blurhash( blurhash )
     
     ( l, a, b ) = xyz_to_lab( *rgb_to_xyz( r, g, b ) )
     
     return ( b, -l )
     
 
-def ConvertBlurhashToSortableGreenRed( blurhash: str, reverse: bool ):
+def convert_blurhash_to_sortable_green_red( blurhash: str, reverse: bool ):
     
-    ( r, g, b ) = GetAverageColourFromBlurhash( blurhash )
+    ( r, g, b ) = get_average_colour_from_blurhash( blurhash )
     
     ( l, a, b ) = xyz_to_lab( *rgb_to_xyz( r, g, b ) )
     
     return ( a, -l )
     
 
-def ConvertBlurhashToSortableHue( blurhash: str, reverse: bool ):
+def convert_blurhash_to_sortable_hue( blurhash: str, reverse: bool ):
     
-    ( r, g, b ) = GetAverageColourFromBlurhash( blurhash )
+    ( r, g, b ) = get_average_colour_from_blurhash( blurhash )
     
     ( h, s, l ) = rgb_to_hsl( r, g, b )
     
@@ -134,9 +134,9 @@ def ConvertBlurhashToSortableHue( blurhash: str, reverse: bool ):
     return ( initial, h, - s )
     
 
-def ConvertBlurhashToSortableLightness( blurhash: str, reverse: bool ):
+def convert_blurhash_to_sortable_lightness( blurhash: str, reverse: bool ):
     
-    ( r, g, b ) = GetAverageColourFromBlurhash( blurhash )
+    ( r, g, b ) = get_average_colour_from_blurhash( blurhash )
     
     ( l, a, b ) = xyz_to_lab( *rgb_to_xyz( r, g, b ) )
     
@@ -146,7 +146,7 @@ def ConvertBlurhashToSortableLightness( blurhash: str, reverse: bool ):
     return ( l, cm )
     
 
-def GetAverageColourFromBlurhash( blurhash: str ):
+def get_average_colour_from_blurhash( blurhash: str ):
     
     # ok blurhash is basically a DCT, and the the second to sixth bytes are the DC component, which is average colour
     
@@ -161,7 +161,7 @@ def GetAverageColourFromBlurhash( blurhash: str ):
     return ( r, g, b )
     
 
-def GetBlurhashFromNumPy( numpy_image: numpy.ndarray ) -> str:
+def get_blurhash_from_numpy( numpy_image: numpy.ndarray ) -> str:
     
     media_height = numpy_image.shape[0]
     media_width = numpy_image.shape[1]
@@ -199,7 +199,7 @@ def GetBlurhashFromNumPy( numpy_image: numpy.ndarray ) -> str:
     return external_blurhash.blurhash_encode( numpy_image, components_x, components_y )
     
 
-def GetNumpyFromBlurhash( blurhash, width, height ) -> numpy.ndarray:
+def get_numpy_from_blurhash( blurhash, width, height ) -> numpy.ndarray:
     
     # this thing is super slow, they recommend even in the documentation to render small and scale up
     if width > 32 or height > 32:

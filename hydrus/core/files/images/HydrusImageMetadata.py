@@ -2,7 +2,7 @@ from PIL import Image as PILImage
 
 from hydrus.core import HydrusExceptions
 
-def GetEmbeddedFileText( pil_image: PILImage.Image ) -> str | None:
+def get_embedded_file_text( pil_image: PILImage.Image ) -> str | None:
     
     def render_dict( d, prefix ):
         
@@ -70,7 +70,7 @@ def GetEmbeddedFileText( pil_image: PILImage.Image ) -> str | None:
     return None
     
 
-def GetEXIFDict( pil_image: PILImage.Image ) -> dict | None:
+def get_exif_dict( pil_image: PILImage.Image ) -> dict | None:
     
     if pil_image.format in ( 'JPEG', 'JXL', 'TIFF', 'PNG', 'WEBP', 'HEIF', 'AVIF', 'MPO' ):
         
@@ -92,9 +92,9 @@ def GetEXIFDict( pil_image: PILImage.Image ) -> dict | None:
     return None
     
 
-def GetICCProfileBytes( pil_image: PILImage.Image ) -> bytes:
+def get_icc_profile_bytes( pil_image: PILImage.Image ) -> bytes:
     
-    if HasICCProfile( pil_image ):
+    if has_icc_profile( pil_image ):
         
         return pil_image.info[ 'icc_profile' ]
         
@@ -104,7 +104,7 @@ def GetICCProfileBytes( pil_image: PILImage.Image ) -> bytes:
 
 # bigger number is worse quality
 # this is very rough and misses some finesse
-def GetJPEGQuantizationQualityEstimate( pil_image: PILImage.Image ):
+def get_jpeg_quantization_quality_estimate( pil_image: PILImage.Image ):
     
     if hasattr( pil_image, 'quantization' ):
         
@@ -137,7 +137,7 @@ def GetJPEGQuantizationQualityEstimate( pil_image: PILImage.Image ):
         
         try:
             
-            subsampling_value = GetJpegSubsamplingRaw( pil_image )
+            subsampling_value = get_jpeg_subsampling_raw( pil_image )
             
             quality = quality ** ( 1 / subsampling_quality_lookup[ subsampling_value ] )
             
@@ -211,7 +211,7 @@ subsampling_str_lookup = {
     SUBSAMPLING_GREYSCALE : 'greyscale (no subsampling)'
 }
 
-def GetJpegSubsamplingRaw( pil_image: PILImage.Image ) -> int:
+def get_jpeg_subsampling_raw( pil_image: PILImage.Image ) -> int:
     
     if pil_image.mode == 'L':
         
@@ -230,21 +230,21 @@ def GetJpegSubsamplingRaw( pil_image: PILImage.Image ) -> int:
     return result
     
 
-def HasEXIF( pil_image: PILImage.Image ) -> bool:
+def has_exif( pil_image: PILImage.Image ) -> bool:
     
-    result = GetEXIFDict( pil_image )
-    
-    return result is not None
-    
-
-def HasHumanReadableEmbeddedMetadata( pil_image: PILImage.Image ) -> bool:
-    
-    result = GetEmbeddedFileText( pil_image )
+    result = get_exif_dict( pil_image )
     
     return result is not None
     
 
-def HasICCProfile( pil_image: PILImage.Image ) -> bool:
+def has_human_readable_embedded_metadata( pil_image: PILImage.Image ) -> bool:
+    
+    result = get_embedded_file_text( pil_image )
+    
+    return result is not None
+    
+
+def has_icc_profile( pil_image: PILImage.Image ) -> bool:
     
     if 'icc_profile' in pil_image.info:
         
