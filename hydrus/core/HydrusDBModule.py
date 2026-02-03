@@ -14,10 +14,10 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
         
         self.name = name
         
-        self._SetCursor( cursor )
+        self._set_cursor( cursor )
         
     
-    def _FlattenIndexGenerationDict( self, index_generation_dict: dict ):
+    def _flatten_index_generation_dict( self, index_generation_dict: dict ):
         
         tuples = []
         
@@ -29,7 +29,7 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
         return tuples
         
     
-    def _CreateTable( self, create_query_without_name: str, table_name: str ):
+    def _create_table( self, create_query_without_name: str, table_name: str ):
         
         if 'fts4(' in create_query_without_name.lower():
             
@@ -49,7 +49,7 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
                 
             
             # little test here to make sure we stay idempotent if the primary table actually already exists--don't want to delete things that are actually good!
-            if self._Execute( 'SELECT 1 FROM {} WHERE name = ?;'.format( sqlite_master_table ), ( raw_table_name, ) ).fetchone() is None:
+            if self._execute( 'SELECT 1 FROM {} WHERE name = ?;'.format( sqlite_master_table ), ( raw_table_name, ) ).fetchone() is None:
                 
                 possible_suffixes = [ '_content', '_docsize', '_segdir', '_segments', '_stat' ]
                 
@@ -57,138 +57,138 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
                 
                 for possible_subtable_name in possible_subtable_names:
                     
-                    if self._Execute( 'SELECT 1 FROM {} WHERE name = ?;'.format( sqlite_master_table ), ( possible_subtable_name, ) ).fetchone() is not None:
+                    if self._execute( 'SELECT 1 FROM {} WHERE name = ?;'.format( sqlite_master_table ), ( possible_subtable_name, ) ).fetchone() is not None:
                         
-                        self._Execute( 'DROP TABLE {};'.format( possible_subtable_name ) )
+                        self._execute( 'DROP TABLE {};'.format( possible_subtable_name ) )
                         
                     
                 
             
         
-        self._Execute( create_query_without_name.format( table_name ) )
+        self._execute( create_query_without_name.format( table_name ) )
         
     
-    def _DoLastShutdownWasBadWork( self ):
+    def _do_last_shutdown_was_bad_work( self ):
         
         pass
         
     
-    def _GetCriticalTableNames( self ) -> collections.abc.Collection[ str ]:
+    def _get_critical_table_names( self ) -> collections.abc.Collection[ str ]:
         
         return set()
         
     
-    def _GetInitialIndexGenerationDict( self ) -> dict:
+    def _get_initial_index_generation_dict( self ) -> dict:
         
         return {}
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict( self ) -> dict:
         
         return {}
         
     
-    def _GetServiceIndexGenerationDict( self, service_id ) -> dict:
+    def _get_service_index_generation_dict( self, service_id ) -> dict:
         
         return {}
         
     
-    def _GetServiceTableGenerationDict( self, service_id ) -> dict:
+    def _get_service_table_generation_dict( self, service_id ) -> dict:
         
         return {}
         
     
-    def _GetServicesIndexGenerationDict( self ) -> dict:
+    def _get_services_index_generation_dict( self ) -> dict:
         
         index_generation_dict = {}
         
-        for service_id in self._GetServiceIdsWeGenerateDynamicTablesFor():
+        for service_id in self._get_service_ids_we_generate_dynamic_tables_for():
             
-            index_generation_dict.update( self._GetServiceIndexGenerationDict( service_id ) )
+            index_generation_dict.update( self._get_service_index_generation_dict( service_id ) )
             
         
         return index_generation_dict
         
     
-    def _GetServicesTableGenerationDict( self ) -> dict:
+    def _get_services_table_generation_dict( self ) -> dict:
         
         table_generation_dict = {}
         
-        for service_id in self._GetServiceIdsWeGenerateDynamicTablesFor():
+        for service_id in self._get_service_ids_we_generate_dynamic_tables_for():
             
-            table_generation_dict.update( self._GetServiceTableGenerationDict( service_id ) )
+            table_generation_dict.update( self._get_service_table_generation_dict( service_id ) )
             
         
         return table_generation_dict
         
     
-    def _GetServiceTablePrefixes( self ) -> collections.abc.Collection[ str ]:
+    def _get_service_table_prefixes( self ) -> collections.abc.Collection[ str ]:
         
         return set()
         
     
-    def _GetServiceIdsWeGenerateDynamicTablesFor( self ):
+    def _get_service_ids_we_generate_dynamic_tables_for( self ):
         
         return []
         
     
-    def _PresentMissingIndicesWarningToUser( self, index_names ):
+    def _present_missing_indices_warning_to_user( self, index_names ):
         
         raise NotImplementedError()
         
     
-    def _PresentMissingTablesWarningToUser( self, table_names ):
+    def _present_missing_tables_warning_to_user( self, table_names ):
         
         raise NotImplementedError()
         
     
-    def _RepairRepopulateTables( self, table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper ):
+    def _repair_repopulate_tables( self, table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper ):
         
         pass
         
     
-    def CreateInitialIndices( self ):
+    def create_initial_indices( self ):
         
-        index_generation_dict = self._GetInitialIndexGenerationDict()
+        index_generation_dict = self._get_initial_index_generation_dict()
         
-        for ( table_name, columns, unique, version_added ) in self._FlattenIndexGenerationDict( index_generation_dict ):
+        for ( table_name, columns, unique, version_added ) in self._flatten_index_generation_dict( index_generation_dict ):
             
-            self._CreateIndex( table_name, columns, unique = unique )
+            self._create_index( table_name, columns, unique = unique )
             
         
     
-    def CreateInitialTables( self ):
+    def create_initial_tables( self ):
         
-        table_generation_dict = self._GetInitialTableGenerationDict()
+        table_generation_dict = self._get_initial_table_generation_dict()
         
         for ( table_name, ( create_query_without_name, version_added ) ) in table_generation_dict.items():
             
-            self._CreateTable( create_query_without_name, table_name )
+            self._create_table( create_query_without_name, table_name )
             
         
     
-    def DoLastShutdownWasBadWork( self ):
+    def do_last_shutdown_was_bad_work( self ):
         
-        self._DoLastShutdownWasBadWork()
+        self._do_last_shutdown_was_bad_work()
         
     
-    def GetExpectedServiceTableNames( self ) -> collections.abc.Collection[ str ]:
+    def get_expected_service_table_names( self ) -> collections.abc.Collection[ str ]:
         
-        table_generation_dict = self._GetServicesTableGenerationDict()
+        table_generation_dict = self._get_services_table_generation_dict()
         
         return list( table_generation_dict.keys() )
         
     
-    def GetExpectedInitialTableNames( self ) -> collections.abc.Collection[ str ]:
+    def get_expected_initial_table_names( self ) -> collections.abc.Collection[ str ]:
         
-        table_generation_dict = self._GetInitialTableGenerationDict()
+        table_generation_dict = self._get_initial_table_generation_dict()
         
         return list( table_generation_dict.keys() )
         
     
-    def GetSurplusServiceTableNames( self, all_table_names ) -> set[ str ]:
+    def get_surplus_service_table_names( self, all_table_names ) -> set[ str ]:
         
-        prefixes = self._GetServiceTablePrefixes()
+        prefixes = self._get_service_table_prefixes()
         
         if len( prefixes ) == 0:
             
@@ -202,7 +202,7 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
         
         all_service_table_names = { table_name for table_name in all_service_table_names if True in ( table_name.startswith( prefix ) for prefix in prefixes ) }
         
-        good_service_table_names = self.GetExpectedServiceTableNames()
+        good_service_table_names = self.get_expected_service_table_names()
         
         good_service_table_names = { name if '.' not in name else name.split( '.', 1 )[1] for name in good_service_table_names }
         
@@ -211,26 +211,26 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
         return surplus_table_names
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         # could also do another one of these for orphan tables that have service id in the name.
         
         raise NotImplementedError()
         
     
-    def Repair( self, current_db_version, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper ):
+    def repair( self, current_db_version, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper ):
         
         # core, initial tables first
         
-        table_generation_dict = self._GetInitialTableGenerationDict()
+        table_generation_dict = self._get_initial_table_generation_dict()
         
-        missing_table_rows = [ ( table_name, create_query_without_name ) for ( table_name, ( create_query_without_name, version_added ) ) in table_generation_dict.items() if version_added <= current_db_version and not self._TableExists( table_name ) ]
+        missing_table_rows = [ ( table_name, create_query_without_name ) for ( table_name, ( create_query_without_name, version_added ) ) in table_generation_dict.items() if version_added <= current_db_version and not self._table_exists( table_name ) ]
         
         if len( missing_table_rows ) > 0:
             
             missing_table_names = sorted( [ missing_table_row[0] for missing_table_row in missing_table_rows ] )
             
-            critical_table_names = self._GetCriticalTableNames()
+            critical_table_names = self._get_critical_table_names()
             
             missing_critical_table_names = set( missing_table_names ).intersection( critical_table_names )
             
@@ -241,77 +241,77 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
                 raise HydrusExceptions.DBAccessException( message )
                 
             
-            self._PresentMissingTablesWarningToUser( missing_table_names )
+            self._present_missing_tables_warning_to_user( missing_table_names )
             
             for ( table_name, create_query_without_name ) in missing_table_rows:
                 
-                self._CreateTable( create_query_without_name, table_name )
+                self._create_table( create_query_without_name, table_name )
                 
-                cursor_transaction_wrapper.CommitAndBegin()
+                cursor_transaction_wrapper.commit_and_begin()
                 
             
-            self._RepairRepopulateTables( missing_table_names, cursor_transaction_wrapper )
+            self._repair_repopulate_tables( missing_table_names, cursor_transaction_wrapper )
             
-            cursor_transaction_wrapper.CommitAndBegin()
+            cursor_transaction_wrapper.commit_and_begin()
             
         
         # now indices for those tables
         
-        index_generation_dict = self._GetInitialIndexGenerationDict()
+        index_generation_dict = self._get_initial_index_generation_dict()
         
-        missing_index_rows = [ ( self._GenerateIdealIndexName( table_name, columns ), table_name, columns, unique ) for ( table_name, columns, unique, version_added ) in self._FlattenIndexGenerationDict( index_generation_dict ) if version_added <= current_db_version and not self._IdealIndexExists( table_name, columns ) ]
+        missing_index_rows = [ ( self._generate_ideal_index_name( table_name, columns ), table_name, columns, unique ) for ( table_name, columns, unique, version_added ) in self._flatten_index_generation_dict( index_generation_dict ) if version_added <= current_db_version and not self._ideal_index_exists( table_name, columns ) ]
         
         if len( missing_index_rows ):
             
-            self._PresentMissingIndicesWarningToUser( sorted( [ index_name for ( index_name, table_name, columns, unique ) in missing_index_rows ] ) )
+            self._present_missing_indices_warning_to_user( sorted( [ index_name for ( index_name, table_name, columns, unique ) in missing_index_rows ] ) )
             
             for ( index_name, table_name, columns, unique ) in missing_index_rows:
                 
-                self._CreateIndex( table_name, columns, unique = unique )
+                self._create_index( table_name, columns, unique = unique )
                 
-                cursor_transaction_wrapper.CommitAndBegin()
+                cursor_transaction_wrapper.commit_and_begin()
                 
             
         
         # now do service tables, same thing over again
         
-        table_generation_dict = self._GetServicesTableGenerationDict()
+        table_generation_dict = self._get_services_table_generation_dict()
         
-        missing_table_rows = [ ( table_name, create_query_without_name ) for ( table_name, ( create_query_without_name, version_added ) ) in table_generation_dict.items() if version_added <= current_db_version and not self._TableExists( table_name ) ]
+        missing_table_rows = [ ( table_name, create_query_without_name ) for ( table_name, ( create_query_without_name, version_added ) ) in table_generation_dict.items() if version_added <= current_db_version and not self._table_exists( table_name ) ]
         
         if len( missing_table_rows ) > 0:
             
             missing_table_names = sorted( [ missing_table_row[0] for missing_table_row in missing_table_rows ] )
             
-            self._PresentMissingTablesWarningToUser( missing_table_names )
+            self._present_missing_tables_warning_to_user( missing_table_names )
             
             for ( table_name, create_query_without_name ) in missing_table_rows:
                 
-                self._CreateTable( create_query_without_name, table_name )
+                self._create_table( create_query_without_name, table_name )
                 
-                cursor_transaction_wrapper.CommitAndBegin()
+                cursor_transaction_wrapper.commit_and_begin()
                 
             
-            self._RepairRepopulateTables( missing_table_names, cursor_transaction_wrapper )
+            self._repair_repopulate_tables( missing_table_names, cursor_transaction_wrapper )
             
-            cursor_transaction_wrapper.CommitAndBegin()
+            cursor_transaction_wrapper.commit_and_begin()
             
         
         # now indices for those tables
         
-        index_generation_dict = self._GetServicesIndexGenerationDict()
+        index_generation_dict = self._get_services_index_generation_dict()
         
-        missing_index_rows = [ ( self._GenerateIdealIndexName( table_name, columns ), table_name, columns, unique ) for ( table_name, columns, unique, version_added ) in self._FlattenIndexGenerationDict( index_generation_dict ) if version_added <= current_db_version and not self._IdealIndexExists( table_name, columns ) ]
+        missing_index_rows = [ ( self._generate_ideal_index_name( table_name, columns ), table_name, columns, unique ) for ( table_name, columns, unique, version_added ) in self._flatten_index_generation_dict( index_generation_dict ) if version_added <= current_db_version and not self._ideal_index_exists( table_name, columns ) ]
         
         if len( missing_index_rows ):
             
-            self._PresentMissingIndicesWarningToUser( sorted( [ index_name for ( index_name, table_name, columns, unique ) in missing_index_rows ] ) )
+            self._present_missing_indices_warning_to_user( sorted( [ index_name for ( index_name, table_name, columns, unique ) in missing_index_rows ] ) )
             
             for ( index_name, table_name, columns, unique ) in missing_index_rows:
                 
-                self._CreateIndex( table_name, columns, unique = unique )
+                self._create_index( table_name, columns, unique = unique )
                 
-                cursor_transaction_wrapper.CommitAndBegin()
+                cursor_transaction_wrapper.commit_and_begin()
                 
             
         

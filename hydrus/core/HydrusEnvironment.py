@@ -2,7 +2,7 @@ import os
 
 from hydrus.core import HydrusData
 
-def DumpEnv( env = None ):
+def dump_env( env = None ):
     
     if env is None:
         
@@ -30,5 +30,5 @@ def DumpEnv( env = None ):
             
         
     
-    HydrusData.ShowText( 'Full environment:\n' + '\n'.join( rows ) )
+    HydrusData.show_text( 'Full environment:\n' + '\n'.join( rows ) )
     

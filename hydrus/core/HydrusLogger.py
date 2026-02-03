@@ -36,7 +36,7 @@ class HydrusLogger( object ):
         
         self._problem_with_previous_stdout = False
         
-        self._OpenLog()
+        self._open_log()
         
         sys.stdout = self
         sys.stderr = self
@@ -46,7 +46,7 @@ class HydrusLogger( object ):
     
     def __exit__( self, exc_type, exc_val, exc_tb ):
         
-        self._CloseLog()
+        self._close_log()
         
         sys.stdout = self._previous_sys_stdout
         sys.stderr = self._previous_sys_stderr
@@ -59,7 +59,7 @@ class HydrusLogger( object ):
         return False
         
     
-    def _CloseLog( self ) -> None:
+    def _close_log( self ) -> None:
         
         if self._currently_crash_reporting:
             
@@ -69,7 +69,7 @@ class HydrusLogger( object ):
         self._log_file.close()
         
     
-    def _GetLogPath( self ) -> str:
+    def _get_log_path( self ) -> str:
         
         current_time_struct = time.localtime()
         
@@ -82,9 +82,9 @@ class HydrusLogger( object ):
         return log_path
         
     
-    def _OpenLog( self ) -> None:
+    def _open_log( self ) -> None:
         
-        self._log_path = self._GetLogPath()
+        self._log_path = self._get_log_path()
         
         is_new_file = not os.path.exists( self._log_path )
         
@@ -101,19 +101,19 @@ class HydrusLogger( object ):
             
         
     
-    def _SwitchToANewLogFileIfDue( self ) -> None:
+    def _switch_to_a_new_log_file_if_due( self ) -> None:
         
-        correct_log_path = self._GetLogPath()
+        correct_log_path = self._get_log_path()
         
         if correct_log_path != self._log_path:
             
-            self._CloseLog()
+            self._close_log()
             
-            self._OpenLog()
+            self._open_log()
             
         
     
-    def FlipCrashReporting( self ):
+    def flip_crash_reporting( self ):
         
         if self._currently_crash_reporting:
             
@@ -150,7 +150,7 @@ class HydrusLogger( object ):
             
             self._log_file.flush()
             
-            self._SwitchToANewLogFileIfDue()
+            self._switch_to_a_new_log_file_if_due()
             
         
     
@@ -159,7 +159,7 @@ class HydrusLogger( object ):
         return False
         
     
-    def CurrentlyCrashReporting( self ):
+    def currently_crash_reporting( self ):
         
         return self._currently_crash_reporting
         

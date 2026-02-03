@@ -35,26 +35,26 @@ CURRENT_PROFILE_LOCK = threading.Lock()
 # this mode appears to just profile all calls mate and would be useful to catch the various hooks I don't usually have easy access to. we'd just dump one mega-profile to log on completion
 # and py 3.12 has the ability to do this for all threads, so we could even have a super mode there too
 
-def FlipProfileMode( name ):
+def flip_profile_mode( name ):
     
     if profile_mode:
         
         start_new_mode = profile_mode_name != name
         
-        StopProfileMode()
+        stop_profile_mode()
         
         if start_new_mode:
             
-            StartProfileMode( name )
+            start_profile_mode( name )
             
         
     else:
         
-        StartProfileMode( name )
+        start_profile_mode( name )
         
     
 
-def FlipQueryPlannerMode():
+def flip_query_planner_mode():
     
     global query_planner_mode
     global query_planner_start_time
@@ -63,14 +63,14 @@ def FlipQueryPlannerMode():
     
     if not query_planner_mode:
         
-        now = HydrusTime.GetNow()
+        now = HydrusTime.get_now()
         
         query_planner_start_time = now
         query_planner_query_count = 0
         
         query_planner_mode = True
         
-        HydrusData.ShowText( 'Query Planner mode on!' )
+        HydrusData.show_text( 'Query Planner mode on!' )
         
     else:
         
@@ -78,19 +78,19 @@ def FlipQueryPlannerMode():
         
         queries_planned = set()
         
-        HydrusData.ShowText( 'Query Planning done: {} queries analyzed'.format( HydrusNumbers.ToHumanInt( query_planner_query_count ) ) )
+        HydrusData.show_text( 'Query Planning done: {} queries analyzed'.format( HydrusNumbers.to_human_int( query_planner_query_count ) ) )
         
     
 
-def IsProfileMode( name ):
+def is_profile_mode( name ):
     
     return profile_mode and profile_mode_name == name
     
 
-def PrintProfile( summary, profile_text = None ):
+def print_profile( summary, profile_text = None ):
     
-    name = HG.controller.GetName()
-    db_dir = HG.controller.GetDBDir()
+    name = HG.controller.get_name()
+    db_dir = HG.controller.get_db_dir()
     
     pretty_timestamp = time.strftime( '%Y-%m-%d %H-%M-%S', time.localtime( profile_start_time ) )
     
@@ -112,7 +112,7 @@ def PrintProfile( summary, profile_text = None ):
         
     
 
-def PrintQueryPlan( query, plan_lines ):
+def print_query_plan( query, plan_lines ):
     
     global queries_planned
     global query_planner_query_count
@@ -124,8 +124,8 @@ def PrintQueryPlan( query, plan_lines ):
         return
         
     
-    name = HG.controller.GetName()
-    db_dir = HG.controller.GetDBDir()
+    name = HG.controller.get_name()
+    db_dir = HG.controller.get_db_dir()
     
     queries_planned.add( query )
     
@@ -162,7 +162,7 @@ def PrintQueryPlan( query, plan_lines ):
         
     
 
-def Profile( summary, func, min_duration_ms = 20, show_summary = False ):
+def profile( summary, func, min_duration_ms = 20, show_summary = False ):
     
     global CURRENT_PROFILE_LOCK
     global profile_counter_lock
@@ -175,16 +175,16 @@ def Profile( summary, func, min_duration_ms = 20, show_summary = False ):
         
         try:
             
-            started = HydrusTime.GetNowPrecise()
+            started = HydrusTime.get_now_precise()
             
             profile = cProfile.Profile()
             
             profile.runcall( func )
             
-            finished = HydrusTime.GetNowPrecise()
+            finished = HydrusTime.get_now_precise()
             
             time_took = finished - started
-            time_took_ms = HydrusTime.MillisecondiseS( time_took )
+            time_took_ms = HydrusTime.millisecondise_s( time_took )
             
             if time_took_ms > min_duration_ms:
                 
@@ -217,10 +217,10 @@ def Profile( summary, func, min_duration_ms = 20, show_summary = False ):
                 
                 if show_summary:
                     
-                    HydrusData.ShowText( summary )
+                    HydrusData.show_text( summary )
                     
                 
-                PrintProfile( summary, profile_text = profile_text )
+                print_profile( summary, profile_text = profile_text )
                 
             else:
                 
@@ -231,7 +231,7 @@ def Profile( summary, func, min_duration_ms = 20, show_summary = False ):
                 
                 if show_summary:
                     
-                    PrintProfile( summary + '\n\n' )
+                    print_profile( summary + '\n\n' )
                     
                 
             
@@ -244,14 +244,14 @@ def Profile( summary, func, min_duration_ms = 20, show_summary = False ):
         
     else:
         
-        started = HydrusTime.GetNowPrecise()
+        started = HydrusTime.get_now_precise()
         
         func()
         
-        finished = HydrusTime.GetNowPrecise()
+        finished = HydrusTime.get_now_precise()
         
         time_took = finished - started
-        time_took_ms = HydrusTime.MillisecondiseS( time_took )
+        time_took_ms = HydrusTime.millisecondise_s( time_took )
         
         if time_took_ms > min_duration_ms:
             
@@ -268,24 +268,24 @@ def Profile( summary, func, min_duration_ms = 20, show_summary = False ):
                 
             
         
-        PrintProfile( f'EXCLUSIVE: {summary} took {HydrusTime.TimeDeltaToPrettyTimeDelta( time_took )}\n\n')
+        print_profile( f'EXCLUSIVE: {summary} took {HydrusTime.timedelta_to_pretty_timedelta( time_took )}\n\n')
         
     
 
-def StartProfileMode( name ):
+def start_profile_mode( name ):
     
     global profile_mode
     global profile_mode_name
     
     if profile_mode:
         
-        StopProfileMode()
+        stop_profile_mode()
         
     
     profile_mode = True
     profile_mode_name = name
     
-    now = HydrusTime.GetNow()
+    now = HydrusTime.get_now()
     
     global profile_counter_lock
     
@@ -300,10 +300,10 @@ def StartProfileMode( name ):
         profile_fast_count = 0
         
     
-    HydrusData.ShowText( f'Profile mode "{name}" on!' )
+    HydrusData.show_text( f'Profile mode "{name}" on!' )
     
 
-def StopProfileMode():
+def stop_profile_mode():
     
     global profile_mode
     global profile_mode_name
@@ -320,5 +320,5 @@ def StopProfileMode():
         ( slow, fast ) = ( profile_slow_count, profile_fast_count )
         
     
-    HydrusData.ShowText( f'Profiling "{old_name}" done: {HydrusNumbers.ToHumanInt( slow )} slow jobs, {HydrusNumbers.ToHumanInt( fast )} fast jobs' )
+    HydrusData.show_text( f'Profiling "{old_name}" done: {HydrusNumbers.to_human_int( slow )} slow jobs, {HydrusNumbers.to_human_int( fast )} fast jobs' )
     

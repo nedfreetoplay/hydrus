@@ -22,7 +22,7 @@ except Exception as e:
 
 ORIGINAL_PATH = None
 
-def AddBaseDirToEnvPath():
+def add_base_dir_to_env_path():
     
     # doing it separate and early here is a thing to get mpv (and others) working with a frozen build, helping load the dll/so from the base dir using ctypes
     
@@ -36,7 +36,7 @@ def AddBaseDirToEnvPath():
         
     
 
-def DoPreImportEnvWork():
+def do_pre_import_env_work():
     
     try:
         

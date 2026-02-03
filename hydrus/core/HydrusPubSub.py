@@ -25,7 +25,7 @@ class HydrusPubSub( object ):
         self._topics_to_method_names = {}
         
     
-    def _GetCallableTuples( self, topic ):
+    def _get_callable_tuples( self, topic ):
         
         # this now does the obj as well so we have a strong direct ref to it throughout procesing
         
@@ -66,12 +66,12 @@ class HydrusPubSub( object ):
         return callable_tuples
         
     
-    def DoingWork( self ):
+    def doing_work( self ):
         
         return self._doing_work
         
     
-    def Process( self ):
+    def process( self ):
         
         # only do one list of callables at a time
         # we don't want to map a topic to its callables until the previous topic's callables have been fully executed
@@ -102,17 +102,17 @@ class HydrusPubSub( object ):
                     
                     # do all this _outside_ the lock, lol
                     
-                    callable_tuples = self._GetCallableTuples( topic )
+                    callable_tuples = self._get_callable_tuples( topic )
                     
                     # don't want to report the showtext we just send here!
                     not_a_report = topic != 'message'
                     
                     if HG.pubsub_report_mode and not_a_report:
                         
-                        HydrusData.ShowText( ( topic, args, kwargs, callable_tuples ) )
+                        HydrusData.show_text( ( topic, args, kwargs, callable_tuples ) )
                         
                     
-                    if HydrusProfiling.IsProfileMode( 'ui' ) and not_a_report:
+                    if HydrusProfiling.is_profile_mode( 'ui' ) and not_a_report:
                         
                         summary = 'Profiling pubsub: {}'.format( topic )
                         
@@ -120,7 +120,7 @@ class HydrusPubSub( object ):
                             
                             try:
                                 
-                                HydrusProfiling.Profile( summary, HydrusData.Call( callable, *args, **kwargs ), min_duration_ms = HG.pubsub_profile_min_job_time_ms )
+                                HydrusProfiling.profile( summary, HydrusData.Call( callable, *args, **kwargs ), min_duration_ms = HG.pubsub_profile_min_job_time_ms )
                                 
                             except HydrusExceptions.ShutdownException:
                                 
@@ -171,7 +171,7 @@ class HydrusPubSub( object ):
         
         with self._lock:
             
-            callable_tuples = self._GetCallableTuples( topic )
+            callable_tuples = self._get_callable_tuples( topic )
             
         
         for ( obj, callable ) in callable_tuples:
@@ -192,19 +192,19 @@ class HydrusPubSub( object ):
             
         
     
-    def WaitOnPub( self ):
+    def wait_on_pub( self ):
         
         self._received_job_event.wait( 0.5 )
         
         self._received_job_event.clear()
         
     
-    def Wake( self ):
+    def wake( self ):
         
         self._received_job_event.set()
         
     
-    def WaitUntilFree( self ):
+    def wait_until_free( self ):
         
         while True:
             
@@ -212,7 +212,7 @@ class HydrusPubSub( object ):
                 
                 raise HydrusExceptions.ShutdownException( 'Application shutting down!' )
                 
-            elif not ( self.WorkToDo() or self.DoingWork() ):
+            elif not ( self.work_to_do() or self.doing_work() ):
                 
                 return
                 
@@ -224,7 +224,7 @@ class HydrusPubSub( object ):
             
         
     
-    def WorkToDo( self ):
+    def work_to_do( self ):
         
         with self._lock:
             

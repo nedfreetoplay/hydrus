@@ -11,7 +11,7 @@ from hydrus.core import HydrusTime
 TEMP_PATH_LOCK = threading.Lock()
 IN_USE_TEMP_PATHS = set()
 
-def CleanUpTempPath( os_file_handle, temp_path ):
+def clean_ip_temp_path( os_file_handle, temp_path ):
     
     try:
         
@@ -25,7 +25,7 @@ def CleanUpTempPath( os_file_handle, temp_path ):
             
         except OSError:
             
-            HydrusData.Print( 'Could not close the temporary file ' + temp_path )
+            HydrusData.print_text( 'Could not close the temporary file ' + temp_path )
             
             return
             
@@ -38,7 +38,7 @@ def CleanUpTempPath( os_file_handle, temp_path ):
             path_stat = os.stat( temp_path )
             
             # this can be needed on a Windows device
-            HydrusPaths.TryToMakeFileWriteable( temp_path, path_stat )
+            HydrusPaths.try_to_make_file_writeable( temp_path, path_stat )
             
         
         os.remove( temp_path )
@@ -47,12 +47,12 @@ def CleanUpTempPath( os_file_handle, temp_path ):
         
         with TEMP_PATH_LOCK:
             
-            IN_USE_TEMP_PATHS.add( ( HydrusTime.GetNow(), temp_path ) )
+            IN_USE_TEMP_PATHS.add( ( HydrusTime.get_now(), temp_path ) )
             
         
     
 
-def CleanUpOldTempPaths():
+def clean_up_old_temp_paths():
     
     with TEMP_PATH_LOCK:
         
@@ -62,7 +62,7 @@ def CleanUpOldTempPaths():
             
             ( time_failed, temp_path ) = row
             
-            if HydrusTime.TimeHasPassed( time_failed + 60 ):
+            if HydrusTime.time_has_passed( time_failed + 60 ):
                 
                 try:
                     
@@ -72,7 +72,7 @@ def CleanUpOldTempPaths():
                     
                 except OSError:
                     
-                    if HydrusTime.TimeHasPassed( time_failed + 1200 ):
+                    if HydrusTime.time_has_passed( time_failed + 1200 ):
                         
                         IN_USE_TEMP_PATHS.discard( row )
                         
@@ -82,38 +82,38 @@ def CleanUpOldTempPaths():
         
     
 
-def GetCurrentSQLiteTempDir():
+def get_current_sqlite_temp_dir():
     
     if 'SQLITE_TMPDIR' in os.environ:
         
         return os.environ[ 'SQLITE_TMPDIR' ]
         
     
-    return GetCurrentTempDir()
+    return get_current_temp_dir()
     
 
-def GetCurrentTempDir():
+def get_current_temp_dir():
     
     return tempfile.gettempdir()
     
 
-def InitialiseHydrusTempDir():
+def initialise_hydrus_temp_dir():
     
     return tempfile.mkdtemp( prefix = 'hydrus' )
     
 
-def SetEnvTempDir( path ):
+def set_env_temp_dir( path ):
     
     try:
         
-        HydrusPaths.MakeSureDirectoryExists( path )
+        HydrusPaths.make_sure_directory_exists( path )
         
     except Exception as e:
         
         raise Exception( f'Could not create the temp dir "{path}"!' )
         
     
-    if not HydrusPaths.DirectoryIsWriteable( path ):
+    if not HydrusPaths.directory_is_writeable( path ):
         
         raise Exception( f'The given temp directory, "{path}", does not seem to be writeable-to!' )
         
@@ -129,18 +129,18 @@ def SetEnvTempDir( path ):
     tempfile.tempdir = path
     
 
-def GetSubTempDir( prefix = '' ):
+def get_sub_temp_dir( prefix = '' ):
     
-    hydrus_temp_dir = HG.controller.GetHydrusTempDir()
+    hydrus_temp_dir = HG.controller.get_hydrus_temp_dir()
     
     return tempfile.mkdtemp( prefix = prefix, dir = hydrus_temp_dir )
     
 
-def GetTempPath( suffix = '', dir = None ):
+def get_temp_path( suffix = '', dir = None ):
     
     if dir is None:
         
-        dir = HG.controller.GetHydrusTempDir()
+        dir = HG.controller.get_hydrus_temp_dir()
         
     
     return tempfile.mkstemp( suffix = suffix, prefix = 'hydrus', dir = dir )

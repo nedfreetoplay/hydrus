@@ -18,7 +18,7 @@ def default_dict_list(): return collections.defaultdict( list )
 
 def default_dict_set(): return collections.defaultdict( set )
 
-def BuildKeyToListDict( pairs ):
+def build_key_to_list_dict( pairs ):
     
     d = collections.defaultdict( list )
     
@@ -27,7 +27,7 @@ def BuildKeyToListDict( pairs ):
     return d
     
 
-def BuildKeyToSetDict( pairs ):
+def build_key_to_set_dict( pairs ):
     
     d = collections.defaultdict( set )
     
@@ -36,7 +36,7 @@ def BuildKeyToSetDict( pairs ):
     return d
     
 
-def BytesToNoneOrHex( b: bytes | None ):
+def bytes_to_none_or_hex( b: bytes | None ):
     
     if b is None:
         
@@ -48,7 +48,7 @@ def BytesToNoneOrHex( b: bytes | None ):
         
     
 
-def HexToNoneOrBytes( h: str | None ):
+def hex_to_none_or_bytes( h: str | None ):
     
     if h is None:
         
@@ -60,7 +60,7 @@ def HexToNoneOrBytes( h: str | None ):
         
     
 
-def CalculateScoreFromRating( count, rating ):
+def calculate_score_from_rating( count, rating ):
     
     # https://www.evanmiller.org/how-not-to-sort-by-average-rating.html
     
@@ -75,7 +75,7 @@ def CalculateScoreFromRating( count, rating ):
     return score
     
 
-def CheckProgramIsNotShuttingDown():
+def check_program_is_not_shutting_down():
     
     if HG.model_shutdown:
         
@@ -83,7 +83,7 @@ def CheckProgramIsNotShuttingDown():
         
     
 
-def CleanRunningFile( db_path, instance ):
+def clean_running_file( db_path, instance ):
     
     # just to be careful
     
@@ -106,25 +106,25 @@ status_to_prefix = {
     HC.CONTENT_STATUS_DELETED : '(X) '
 }
 
-def ConvertValueRangeToBytes( value, range ):
+def convert_value_range_to_bytes( value, range ):
     
-    return ToHumanBytes( value ) + '/' + ToHumanBytes( range )
+    return to_human_bytes( value ) + '/' + to_human_bytes( range )
     
 
-def DebugPrint( debug_info ):
+def debug_print( debug_info ):
     
-    Print( debug_info )
+    print_text( debug_info )
     
     sys.stdout.flush()
     sys.stderr.flush()
     
 
-def GenerateKey():
+def generate_key():
     
     return os.urandom( HC.HYDRUS_KEY_LENGTH )
     
 
-def Get64BitHammingDistance( perceptual_hash1, perceptual_hash2 ):
+def get_64_bit_hamming_distance( perceptual_hash1, perceptual_hash2 ):
     
     # old slow strategy:
     
@@ -170,7 +170,7 @@ def Get64BitHammingDistance( perceptual_hash1, perceptual_hash2 ):
     
     # another option is https://www.valuedlessons.com/2009/01/popcount-in-python-with-benchmarks.html, which is just an array where the byte value is an address on a list to the answer
     
-def GetNicelyDivisibleNumberForZoom( zoom, no_bigger_than ):
+def get_nicely_divisible_number_for_zoom( zoom, no_bigger_than ):
     
     # it is most convenient to have tiles that line up with the current zoom ratio
     # 768 is a convenient size for meaty GPU blitting, but as a number it doesn't make for nice multiplication
@@ -206,14 +206,14 @@ def GetNicelyDivisibleNumberForZoom( zoom, no_bigger_than ):
     return frac.numerator
     
 
-def GetEmptyDataDict():
+def get_empty_data_dict():
     
     data = collections.defaultdict( default_dict_list )
     
     return data
     
 
-def GetNonDupeName( original_name: str, disallowed_names: set[ str ], do_casefold: bool = False ):
+def get_non_dupe_name( original_name: str, disallowed_names: set[ str ], do_casefold: bool = False ):
     
     if do_casefold:
         
@@ -246,7 +246,7 @@ def GetNonDupeName( original_name: str, disallowed_names: set[ str ], do_casefol
     return non_dupe_name
     
 
-def GetTypeName( obj_type ):
+def get_type_name( obj_type ):
     
     if hasattr( obj_type, '__name__' ):
         
@@ -258,7 +258,7 @@ def GetTypeName( obj_type ):
         
     
 
-def LastShutdownWasBad( db_path, instance ):
+def last_shutdown_was_bad( db_path, instance ):
     
     path = os.path.join( db_path, instance + '_running' )
     
@@ -271,7 +271,7 @@ def LastShutdownWasBad( db_path, instance ):
         return False
         
 
-def MergeKeyToListDicts( key_to_list_dicts ):
+def merge_key_to_list_dicts( key_to_list_dicts ):
     
     result = collections.defaultdict( list )
     
@@ -283,7 +283,7 @@ def MergeKeyToListDicts( key_to_list_dicts ):
     return result
     
 
-def Print( text ):
+def print_text( text ):
     
     try:
         
@@ -295,16 +295,16 @@ def Print( text ):
         
     
 
-ShowText = Print
+show_text = print_text
 
-def PrintException( e, do_wait = True ):
+def print_exception( e, do_wait = True ):
     
     ( etype, value, tb ) = sys.exc_info()
     
-    PrintExceptionTuple( etype, value, tb, do_wait = do_wait )
+    print_exception_tuple( etype, value, tb, do_wait = do_wait )
     
 
-def PrintExceptionTuple( etype, value, tb, do_wait = True ):
+def print_exception_tuple( etype, value, tb, do_wait = True ):
     
     if etype is None:
         
@@ -346,7 +346,7 @@ def PrintExceptionTuple( etype, value, tb, do_wait = True ):
 {stack}
 =================== End ==================='''
     
-    DebugPrint( '\n' + message )
+    debug_print( '\n' + message )
     
     if do_wait:
         
@@ -356,10 +356,10 @@ def PrintExceptionTuple( etype, value, tb, do_wait = True ):
     return message
     
 
-ShowException = PrintException
-ShowExceptionTuple = PrintExceptionTuple
+ShowException = print_exception
+ShowExceptionTuple = print_exception_tuple
 
-def BaseToHumanBytes( size, sig_figs = 3 ):
+def base_to_human_bytes( size, sig_figs = 3 ):
     
     #
     #               ░█▓▓▓▓▓▒  ░▒░   ▒   ▒ ░  ░ ░▒ ░░     ░▒  ░  ░▒░ ▒░▒▒▒░▓▓▒▒▓  
@@ -417,7 +417,7 @@ def BaseToHumanBytes( size, sig_figs = 3 ):
     
     if size < 1024:
         
-        return HydrusNumbers.ToHumanInt( size ) + 'B'
+        return HydrusNumbers.to_human_int( size ) + 'B'
         
     
     suffixes = ( '', 'K', 'M', 'G', 'T', 'P' )
@@ -474,7 +474,7 @@ def BaseToHumanBytes( size, sig_figs = 3 ):
     return '{} {}B'.format( d, suffix )
     
 
-ToHumanBytes = BaseToHumanBytes
+to_human_bytes = base_to_human_bytes
 
 class HydrusYAMLBase( yaml.YAMLObject ):
     
@@ -500,12 +500,12 @@ class Call( object ):
     
     def __repr__( self ):
         
-        label = self._GetLabel()
+        label = self._get_label()
         
         return 'Call: {}'.format( label )
         
     
-    def _GetLabel( self ) -> str:
+    def _get_label( self ) -> str:
         
         if self._label is None:
             
@@ -520,12 +520,12 @@ class Call( object ):
         return label
         
     
-    def GetLabel( self ) -> str:
+    def get_label( self ) -> str:
         
-        return self._GetLabel()
+        return self._get_label()
         
     
-    def SetLabel( self, label: str ):
+    def set_label( self, label: str ):
         
         self._label = label
         
