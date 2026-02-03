@@ -10,25 +10,25 @@ from hydrus.core.files.images import HydrusImageHandling
 
 import xml.etree.ElementTree as ET
 
-def GenerateThumbnailNumPyFromPaintNET( path: str, target_resolution: tuple[ int, int ] ) -> numpy.ndarray:
+def generate_thumbnail_numpy_from_paint_net( path: str, target_resolution: tuple[ int, int ] ) -> numpy.ndarray:
     
-    pil_image = ThumbnailPILImageFromPaintNET( path )
+    pil_image = thumbnail_pil_image_from_paint_net( path )
     
     # noinspection PyUnresolvedReferences
     thumbnail_pil_image = pil_image.resize( target_resolution, PILImage.Resampling.LANCZOS )
     
-    numpy_image = HydrusImageHandling.GenerateNumPyImageFromPILImage( thumbnail_pil_image )
+    numpy_image = HydrusImageHandling.generate_numpy_image_from_pil_image( thumbnail_pil_image )
     
     return numpy_image
     
 
-def GetPaintNETResolution( path: str ):
+def get_paint_net_resolution( path: str ):
     
     try:
         
-        xml_header = GetPaintNETXMLHeader( path )
+        xml_header = get_paint_net_xml_header( path )
         
-        return GetPaintNETResolutionFromXMLHeader( xml_header )
+        return get_paint_net_resolution_from_xml_header( xml_header )
         
     except:
         
@@ -36,7 +36,7 @@ def GetPaintNETResolution( path: str ):
         
     
 
-def GetPaintNETResolutionFromXMLHeader( xml_header: str ):
+def get_paint_net_resolution_from_xml_header( xml_header: str ):
     
     try:
         
@@ -53,7 +53,7 @@ def GetPaintNETResolutionFromXMLHeader( xml_header: str ):
     return ( width, height )
     
 
-def GetPaintNETXMLHeader( path:str ):
+def get_paint_net_xml_header( path:str ):
     
     with open( path, 'rb' ) as f:
         
@@ -74,11 +74,11 @@ def GetPaintNETXMLHeader( path:str ):
     return xml_header
     
 
-def ThumbnailPILImageFromPaintNET( path: str ):
+def thumbnail_pil_image_from_paint_net( path: str ):
     
     try:
         
-        xml_header = GetPaintNETXMLHeader( path )
+        xml_header = get_paint_net_xml_header( path )
         
         root = ET.fromstring( xml_header )
         
@@ -99,5 +99,5 @@ def ThumbnailPILImageFromPaintNET( path: str ):
         raise HydrusExceptions.NoThumbnailFileException( f'Could not decode thumb bytes from this Paint.NET xml!' )
         
     
-    return HydrusImageHandling.GeneratePILImage( BytesIO( png_bytes ), human_file_description = f'Preview image inside Paint.NET "{path}"' )
+    return HydrusImageHandling.generate_pil_image( BytesIO( png_bytes ), human_file_description = f'Preview image inside Paint.NET "{path}"' )
     

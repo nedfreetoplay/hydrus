@@ -9,11 +9,11 @@ PROCREATE_DOCUMENT_ARCHIVE = 'Document.archive'
 # object key in plist to start from (trunk)
 PROCREATE_PROJECT_KEY = 1
 
-def ExtractZippedThumbnailToPath( path_to_zip, temp_path_file ):
+def extract_zipped_thumbnail_to_path( path_to_zip, temp_path_file ):
     
     try:
         
-        HydrusArchiveHandling.ExtractSingleFileFromZip( path_to_zip, PROCREATE_THUMBNAIL_FILE_PATH, temp_path_file )
+        HydrusArchiveHandling.extract_single_file_from_zip( path_to_zip, PROCREATE_THUMBNAIL_FILE_PATH, temp_path_file )
         
     except KeyError:
         
@@ -21,26 +21,26 @@ def ExtractZippedThumbnailToPath( path_to_zip, temp_path_file ):
         
     
 
-def GetProcreatePlist( path ):
+def get_procreate_plist( path ):
     
-    plist_file = HydrusArchiveHandling.GetZipAsPath( path, PROCREATE_DOCUMENT_ARCHIVE )
+    plist_file = HydrusArchiveHandling.get_zip_as_path( path, PROCREATE_DOCUMENT_ARCHIVE )
 
     if not plist_file.exists():
         
         raise HydrusExceptions.DamagedOrUnusualFileException( 'Procreate file has no plist!' )
         
     
-    with HydrusArchiveHandling.GetZipAsPath( path, PROCREATE_DOCUMENT_ARCHIVE ).open('rb') as document:
+    with HydrusArchiveHandling.get_zip_as_path( path, PROCREATE_DOCUMENT_ARCHIVE ).open('rb') as document:
         
         return plistlib.load( document )
         
     
 
-def ZipLooksLikeProcreate( path ) -> bool:
+def zip_looks_like_procreate( path ) -> bool:
     
     try:
         
-        document = GetProcreatePlist( path )
+        document = get_procreate_plist( path )
         
         objects = document['$objects']
         
@@ -56,13 +56,13 @@ def ZipLooksLikeProcreate( path ) -> bool:
         
     
 
-def GetProcreateResolution( path ): 
+def get_procreate_resolution( path ): 
     
     # TODO: animation stuff from plist
     
     try:
         
-        document = GetProcreatePlist( path )
+        document = get_procreate_plist( path )
         
         objects = document['$objects']
         

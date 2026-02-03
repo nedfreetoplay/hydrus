@@ -10,7 +10,7 @@ from hydrus.core.files import HydrusAudioHandling
 from hydrus.core.files import HydrusFFMPEG
 from hydrus.core.processes import HydrusSubprocess
 
-def FileIsAnimated( path ):
+def file_is_animated( path ):
     
     # TODO: this guy can be better, or at least it deserves some work
     # surely we can have some sort of lines-inspection before we try the 'render first second' stuff, at least to discard obvious first stuff?
@@ -20,7 +20,7 @@ def FileIsAnimated( path ):
     
     try:
         
-        ( resolution, duration_in_ms, num_frames, has_audio ) = GetFFMPEGVideoProperties( path )
+        ( resolution, duration_in_ms, num_frames, has_audio ) = get_ffmpeg_video_properties( path )
         
         return num_frames > 1
         
@@ -31,7 +31,7 @@ def FileIsAnimated( path ):
     
 
 # bits of this were originally cribbed from moviepy
-def GetFFMPEGInfoLines( path, count_frames_manually = False, only_first_second = False ):
+def get_ffmpeg_info_lines( path, count_frames_manually = False, only_first_second = False ):
     
     # open the file in a pipe, provoke an error, read output
     
@@ -57,11 +57,11 @@ def GetFFMPEGInfoLines( path, count_frames_manually = False, only_first_second =
             
         
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         
-        ( stdout, stderr ) = HydrusSubprocess.RunSubprocess( cmd )
+        ( stdout, stderr ) = HydrusSubprocess.run_subprocess( cmd )
         
     except HydrusExceptions.SubprocessTimedOut:
         
@@ -69,42 +69,42 @@ def GetFFMPEGInfoLines( path, count_frames_manually = False, only_first_second =
         
     except FileNotFoundError as e:
         
-        raise HydrusFFMPEG.HandleFFMPEGFileNotFoundAndGenerateException( e, path )
+        raise HydrusFFMPEG.handle_ffmpeg_file_not_found_and_generate_exception( e, path )
         
     
     text = stderr
     
     if text is None or len( text ) == 0:
         
-        raise HydrusFFMPEG.HandleFFMPEGNoContentAndGenerateException( path, stdout, stderr )
+        raise HydrusFFMPEG.handle_ffmpeg_no_content_and_generate_exception( path, stdout, stderr )
         
     
     lines = text.splitlines()
     
-    HydrusFFMPEG.CheckFFMPEGError( lines )
+    HydrusFFMPEG.check_ffmpeg_error( lines )
     
     return lines
     
 
-def GetFFMPEGVideoProperties( path, force_count_frames_manually = False ):
+def get_ffmpeg_video_properties( path, force_count_frames_manually = False ):
     
-    lines_for_first_second = GetFFMPEGInfoLines( path, count_frames_manually = True, only_first_second = True )
+    lines_for_first_second = get_ffmpeg_info_lines( path, count_frames_manually = True, only_first_second = True )
     
-    ( has_video, video_format ) = ParseFFMPEGVideoFormat( lines_for_first_second )
+    ( has_video, video_format ) = parse_ffmpeg_video_format( lines_for_first_second )
     
     if not has_video:
         
         raise HydrusExceptions.DamagedOrUnusualFileException( 'Wanted to parse video data, but file did not appear to have a video stream!' )
         
     
-    resolution = ParseFFMPEGVideoResolution( lines_for_first_second )
+    resolution = parse_ffmpeg_video_resolution( lines_for_first_second )
     
-    ( file_duration_in_s, stream_duration_in_s ) = ParseFFMPEGDuration( lines_for_first_second )
+    ( file_duration_in_s, stream_duration_in_s ) = parse_ffmpeg_duration( lines_for_first_second )
     
     # this will have to be fixed when I add audio, and dynamically accounted for on dual vid/audio rendering
     duration_s = stream_duration_in_s
     
-    ( fps, confident_fps ) = ParseFFMPEGFPS( lines_for_first_second )
+    ( fps, confident_fps ) = parse_ffmpeg_fps( lines_for_first_second )
     
     if duration_s is None and not confident_fps:
         
@@ -143,9 +143,9 @@ def GetFFMPEGVideoProperties( path, force_count_frames_manually = False ):
     
     if force_count_frames_manually:
         
-        lines = GetFFMPEGInfoLines( path, count_frames_manually = True )
+        lines = get_ffmpeg_info_lines( path, count_frames_manually = True )
         
-        num_frames = ParseFFMPEGNumFramesManually( lines )
+        num_frames = parse_ffmpeg_num_frames_manually( lines )
         
         if num_frames > 0 and duration_s is not None:
             
@@ -169,28 +169,28 @@ def GetFFMPEGVideoProperties( path, force_count_frames_manually = False ):
         num_frames = int( duration_s * fps )
         
     
-    duration_in_ms = HydrusTime.MillisecondiseS( duration_s )
+    duration_in_ms = HydrusTime.millisecondise_s( duration_s )
     
-    has_audio = VideoHasAudio( path, lines_for_first_second )
+    has_audio = video_has_audio( path, lines_for_first_second )
     
     return ( resolution, duration_in_ms, num_frames, has_audio )
     
 
-def GetMime( path ):
+def get_mime( path ):
     
-    lines = GetFFMPEGInfoLines( path )
+    lines = get_ffmpeg_info_lines( path )
     
     try:
         
-        mime_text = ParseFFMPEGMimeText( lines )
+        mime_text = parse_ffmpeg_mime_text( lines )
         
     except HydrusExceptions.UnsupportedFileException:
         
         return HC.APPLICATION_UNKNOWN
         
     
-    ( has_video, video_format ) = ParseFFMPEGVideoFormat( lines )
-    ( has_audio, audio_format ) = HydrusAudioHandling.ParseFFMPEGAudio( lines )
+    ( has_video, video_format ) = parse_ffmpeg_video_format( lines )
+    ( has_audio, audio_format ) = HydrusAudioHandling.parse_ffmpeg_audio( lines )
     
     if not ( has_video or has_audio ):
         
@@ -260,7 +260,7 @@ def GetMime( path ):
         
     elif 'mp4' in mime_text:
         
-        container = ParseFFMPEGMetadataContainer( lines )
+        container = parse_ffmpeg_metadata_container( lines )
         
         if container == 'M4A':
             
@@ -308,7 +308,7 @@ def GetMime( path ):
         
     elif 'rm' in mime_text:
         
-        if ParseFFMPEGHasVideo( lines ):
+        if parse_ffmpeg_has_video( lines ):
             
             return HC.VIDEO_REALMEDIA
             
@@ -319,7 +319,7 @@ def GetMime( path ):
         
     elif mime_text == 'asf':
         
-        if ParseFFMPEGHasVideo( lines ):
+        if parse_ffmpeg_has_video( lines ):
             
             return HC.VIDEO_WMV
             
@@ -340,14 +340,14 @@ def GetMime( path ):
     return HC.APPLICATION_UNKNOWN
     
 
-def HasVideoStream( path ) -> bool:
+def has_video_stream( path ) -> bool:
     
-    lines = GetFFMPEGInfoLines( path )
+    lines = get_ffmpeg_info_lines( path )
     
-    return ParseFFMPEGHasVideo( lines )
+    return parse_ffmpeg_has_video( lines )
     
 
-def ParseFFMPEGDuration( lines ):
+def parse_ffmpeg_duration( lines ):
     
     # get duration (in seconds)
     #   Duration: 00:00:02.46, start: 0.033000, bitrate: 1069 kb/s
@@ -418,13 +418,13 @@ def ParseFFMPEGDuration( lines ):
         raise HydrusExceptions.DamagedOrUnusualFileException( 'Error reading duration!' )
         
     
-def ParseFFMPEGFPS( lines, png_ok = False ):
+def parse_ffmpeg_fps( lines, png_ok = False ):
     
     try:
         
-        line = ParseFFMPEGVideoLine( lines, png_ok = png_ok )
+        line = parse_ffmpeg_video_line( lines, png_ok = png_ok )
         
-        ( possible_results, confident ) = ParseFFMPEGFPSPossibleResults( line )
+        ( possible_results, confident ) = parse_ffmpeg_fps_possible_results( line )
         
         if len( possible_results ) == 0:
             
@@ -444,15 +444,15 @@ def ParseFFMPEGFPS( lines, png_ok = False ):
         
     
 
-def ParseFFMPEGFPSFromFirstSecond( lines_for_first_second ):
+def parse_ffmpeg_fps_from_first_second( lines_for_first_second ):
     
     try:
         
-        line = ParseFFMPEGVideoLine( lines_for_first_second )
+        line = parse_ffmpeg_video_line( lines_for_first_second )
         
-        ( possible_results, confident ) = ParseFFMPEGFPSPossibleResults( line )
+        ( possible_results, confident ) = parse_ffmpeg_fps_possible_results( line )
         
-        num_frames_in_first_second = ParseFFMPEGNumFramesManually( lines_for_first_second )
+        num_frames_in_first_second = parse_ffmpeg_num_frames_manually( lines_for_first_second )
         
         if len( possible_results ) == 0:
             
@@ -498,7 +498,7 @@ def ParseFFMPEGFPSFromFirstSecond( lines_for_first_second ):
         
     
 
-def ParseFFMPEGFPSPossibleResults( video_line ) -> tuple[ set[ float ], bool ]:
+def parse_ffmpeg_fps_possible_results( video_line ) -> tuple[ set[ float ], bool ]:
     
     def that_fps_string_is_likely_stupid( fps: str ) -> bool:
         
@@ -565,11 +565,11 @@ def ParseFFMPEGFPSPossibleResults( video_line ) -> tuple[ set[ float ], bool ]:
     
     return ( possible_results, confident )
     
-def ParseFFMPEGHasVideo( lines ) -> bool:
+def parse_ffmpeg_has_video( lines ) -> bool:
     
     try:
         
-        ParseFFMPEGVideoLine( lines )
+        parse_ffmpeg_video_line( lines )
         
     except HydrusExceptions.UnsupportedFileException:
         
@@ -578,7 +578,7 @@ def ParseFFMPEGHasVideo( lines ) -> bool:
     
     return True
     
-def ParseFFMPEGMetadataContainer( lines ) -> str:
+def parse_ffmpeg_metadata_container( lines ) -> str:
     
     #  Metadata:
     #    major_brand     : isom
@@ -616,7 +616,7 @@ def ParseFFMPEGMetadataContainer( lines ) -> str:
     
     return ''
     
-def ParseFFMPEGMimeText( lines ):
+def parse_ffmpeg_mime_text( lines ):
     
     try:
         
@@ -635,7 +635,7 @@ def ParseFFMPEGMimeText( lines ):
         raise HydrusExceptions.DamagedOrUnusualFileException( 'Error reading file type!' )
         
     
-def ParseFFMPEGNumFramesManually( lines ) -> int:
+def parse_ffmpeg_num_frames_manually( lines ) -> int:
     
     frame_lines = [ line for line in lines if line.startswith( 'frame=' ) ]
     
@@ -669,11 +669,11 @@ def ParseFFMPEGNumFramesManually( lines ) -> int:
     return num_frames
     
 
-def ParseFFMPEGVideoFormat( lines ):
+def parse_ffmpeg_video_format( lines ):
     
     try:
         
-        line = ParseFFMPEGVideoLine( lines )
+        line = parse_ffmpeg_video_line( lines )
         
     except HydrusExceptions.UnsupportedFileException:
         
@@ -699,7 +699,7 @@ def ParseFFMPEGVideoFormat( lines ):
     return ( True, video_format )
     
 
-def ParseFFMPEGVideoLine( lines, png_ok = False ) -> str:
+def parse_ffmpeg_video_line( lines, png_ok = False ) -> str:
     
     if png_ok:
         
@@ -724,11 +724,11 @@ def ParseFFMPEGVideoLine( lines, png_ok = False ) -> str:
     return line
     
 
-def ParseFFMPEGVideoResolution( lines, png_ok = False ) -> tuple[ int, int ]:
+def parse_ffmpeg_video_resolution( lines, png_ok = False ) -> tuple[ int, int ]:
     
     try:
         
-        line = ParseFFMPEGVideoLine( lines, png_ok = png_ok )
+        line = parse_ffmpeg_video_line( lines, png_ok = png_ok )
         
         # get the size, of the form 460x320 (w x h)
         match = re.search(" [0-9]*x[0-9]*([, ])", line)
@@ -785,9 +785,9 @@ def ParseFFMPEGVideoResolution( lines, png_ok = False ) -> tuple[ int, int ]:
         
     
 
-def VideoHasAudio( path, info_lines ) -> bool:
+def video_has_audio( path, info_lines ) -> bool:
     
-    ( audio_found, audio_format ) = HydrusAudioHandling.ParseFFMPEGAudio( info_lines )
+    ( audio_found, audio_format ) = HydrusAudioHandling.parse_ffmpeg_audio( info_lines )
     
     if not audio_found:
         
@@ -808,7 +808,7 @@ def VideoHasAudio( path, info_lines ) -> bool:
         '-' ] )
         
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         
@@ -817,7 +817,7 @@ def VideoHasAudio( path, info_lines ) -> bool:
             # silent PCM data is just 00 bytes
             # every now and then, you'll get a couple ffs for some reason, but this is not legit audio data
             
-            for chunk_of_pcm_data in streamer.IterateChunks():
+            for chunk_of_pcm_data in streamer.iterate_chunks():
                 
                 # iterating over bytes gives you ints, recall
                 # this used to be 'if not 0 or 255', but I found some that had 1 too, so let's just change the tolerance to reduce false positives
@@ -830,7 +830,7 @@ def VideoHasAudio( path, info_lines ) -> bool:
         
     except FileNotFoundError as e:
         
-        raise HydrusFFMPEG.HandleFFMPEGFileNotFoundAndGenerateException( e, path )
+        raise HydrusFFMPEG.handle_ffmpeg_file_not_found_and_generate_exception( e, path )
         
     
 
@@ -846,7 +846,7 @@ class VideoRendererFFMPEG( object ):
         
         self._path = path
         self._mime = mime
-        self._duration_s = HydrusTime.SecondiseMSFloat( duration_ms )
+        self._duration_s = HydrusTime.secondise_ms_float( duration_ms )
         self._num_frames = num_frames
         self._target_resolution = target_resolution
         self._clip_rect = clip_rect
@@ -903,7 +903,7 @@ class VideoRendererFFMPEG( object ):
         
         if self.process_reader is not None:
             
-            self.process_reader.CloseProcess()
+            self.process_reader.close_process()
             
             self.process_reader = None
             
@@ -972,7 +972,7 @@ class VideoRendererFFMPEG( object ):
         ] )
         
         
-        HydrusData.CheckProgramIsNotShuttingDown()
+        HydrusData.check_program_is_not_shutting_down()
         
         try:
             
@@ -980,7 +980,7 @@ class VideoRendererFFMPEG( object ):
             
         except FileNotFoundError as e:
             
-            raise HydrusFFMPEG.HandleFFMPEGFileNotFoundAndGenerateException( e, self._path )
+            raise HydrusFFMPEG.handle_ffmpeg_file_not_found_and_generate_exception( e, self._path )
             
         
         if skip_frames > 0:
@@ -1001,7 +1001,7 @@ class VideoRendererFFMPEG( object ):
                 
                 try:
                     
-                    frame_of_data = self.process_reader.ReadChunk()
+                    frame_of_data = self.process_reader.read_chunk()
                     
                 except HydrusExceptions.SubprocessTimedOut:
                     
@@ -1028,7 +1028,7 @@ class VideoRendererFFMPEG( object ):
             
             ( w, h ) = self._target_resolution
             
-            frame_of_data = self.process_reader.ReadChunk()
+            frame_of_data = self.process_reader.read_chunk()
             
             if len( frame_of_data ) != w * h * self.depth:
                 
@@ -1092,7 +1092,7 @@ class VideoRendererFFMPEG( object ):
             
         
     
-    def Stop( self ) -> None:
+    def stop( self ) -> None:
         
         self.close()
         

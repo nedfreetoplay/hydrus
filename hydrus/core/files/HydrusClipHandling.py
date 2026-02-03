@@ -3,13 +3,13 @@ import sqlite3
 from hydrus.core import HydrusExceptions
 from hydrus.core import HydrusTemp
 
-def ExtractDBPNGToPath( path, temp_path ):
+def extract_db_png_to_path( path, temp_path ):
     
-    ( os_file_handle, sqlite_temp_path ) = HydrusTemp.GetTempPath()
+    ( os_file_handle, sqlite_temp_path ) = HydrusTemp.get_temp_path()
     
     try:
         
-        ( db, c ) = GetSQLiteDB( path, sqlite_temp_path )
+        ( db, c ) = get_sq_lite_db( path, sqlite_temp_path )
         
         try:
             
@@ -33,20 +33,20 @@ def ExtractDBPNGToPath( path, temp_path ):
         
     finally:
         
-        HydrusTemp.CleanUpTempPath( os_file_handle, sqlite_temp_path )
+        HydrusTemp.clean_ip_temp_path( os_file_handle, sqlite_temp_path )
         
     
 
-def GetClipProperties( path ):
+def get_clip_properties( path ):
     
-    ( os_file_handle, sqlite_temp_path ) = HydrusTemp.GetTempPath()
+    ( os_file_handle, sqlite_temp_path ) = HydrusTemp.get_temp_path()
     
     num_frames = None
     duration_ms = None
     
     try:
         
-        ( db, c ) = GetSQLiteDB( path, sqlite_temp_path )
+        ( db, c ) = get_sq_lite_db( path, sqlite_temp_path )
         
         try:
             
@@ -89,7 +89,7 @@ def GetClipProperties( path ):
         
     finally:
         
-        HydrusTemp.CleanUpTempPath( os_file_handle, sqlite_temp_path )
+        HydrusTemp.clean_ip_temp_path( os_file_handle, sqlite_temp_path )
         
     
     # ok the deal here is that width and height is in the canvas units, which might be mm or inches instead of pixels
@@ -134,7 +134,7 @@ def GetClipProperties( path ):
     return ( ( round( width_float * unit_conversion_multiplier ), round( height_float * unit_conversion_multiplier ) ), duration_ms, num_frames )
     
 
-def GetSQLiteDB( path, sqlite_temp_path ):
+def get_sq_lite_db( path, sqlite_temp_path ):
     
     with open( path, 'rb' ) as f:
         

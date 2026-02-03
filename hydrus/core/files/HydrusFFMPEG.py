@@ -23,7 +23,7 @@ if not os.path.exists( FFMPEG_PATH ):
     FFMPEG_PATH = os.path.basename( FFMPEG_PATH )
     
 
-def CheckFFMPEGError( lines ):
+def check_ffmpeg_error( lines ):
     
     if len( lines ) == 0:
         
@@ -41,15 +41,15 @@ def CheckFFMPEGError( lines ):
         
     
 
-def GetFFMPEGVersion():
+def get_ffmpeg_version():
     
     cmd = [ FFMPEG_PATH, '-version' ]
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         
-        ( stdout, stderr ) = HydrusSubprocess.RunSubprocess( cmd )
+        ( stdout, stderr ) = HydrusSubprocess.run_subprocess( cmd )
         
     except FileNotFoundError:
         
@@ -88,16 +88,16 @@ def GetFFMPEGVersion():
     
     message = 'FFMPEG was recently contacted to fetch version information. While FFMPEG could be found, the response could not be understood. Significant debug information has been printed to the log, which hydrus_dev would be interested in.'
     
-    HydrusData.ShowText( message )
+    HydrusData.show_text( message )
     
     message += '\n' * 2
     message += 'STDOUT Response: {}'.format( stdout )
     message += '\n' * 2
     message += 'STDERR Response: {}'.format( stderr )
     
-    HydrusData.Print( message )
+    HydrusData.print_text( message )
     
-    HydrusEnvironment.DumpEnv()
+    HydrusEnvironment.dump_env()
     
     global FFMPEG_NO_CONTENT_ERROR_PUBBED
     
@@ -106,7 +106,7 @@ def GetFFMPEGVersion():
     return 'unknown'
     
 
-def HandleFFMPEGFileNotFoundAndGenerateException( e, path ):
+def handle_ffmpeg_file_not_found_and_generate_exception( e, path ):
     
     global FFMPEG_MISSING_ERROR_PUBBED
     
@@ -127,7 +127,7 @@ def HandleFFMPEGFileNotFoundAndGenerateException( e, path ):
         message += '\n' * 2
         message += 'You can check your current FFMPEG status through help->about.'
         
-        HydrusData.ShowText( message )
+        HydrusData.show_text( message )
         
         FFMPEG_MISSING_ERROR_PUBBED = True
         
@@ -135,7 +135,7 @@ def HandleFFMPEGFileNotFoundAndGenerateException( e, path ):
     return FileNotFoundError( 'Cannot interact with media because FFMPEG not found--are you sure it is installed? Full error: ' + str( e ) )
     
 
-def HandleFFMPEGNoContentAndGenerateException( path, stdout, stderr ):
+def handle_ffmpeg_no_content_and_generate_exception( path, stdout, stderr ):
     
     global FFMPEG_NO_CONTENT_ERROR_PUBBED
     
@@ -143,16 +143,16 @@ def HandleFFMPEGNoContentAndGenerateException( path, stdout, stderr ):
         
         message = f'FFMPEG, which hydrus uses to parse and render some media, and here was trying to look at "{path}", did not return any data on a recent file metadata check! More debug info has been written to the log.'
         
-        HydrusData.ShowText( message )
+        HydrusData.show_text( message )
         
         message += '\n' * 2
         message += 'STDOUT Response: {}'.format( stdout )
         message += '\n' * 2
         message += 'STDERR Response: {}'.format( stderr )
         
-        HydrusData.DebugPrint( message )
+        HydrusData.debug_print( message )
         
-        HydrusEnvironment.DumpEnv()
+        HydrusEnvironment.dump_env()
         
         FFMPEG_NO_CONTENT_ERROR_PUBBED = True
         
@@ -160,7 +160,7 @@ def HandleFFMPEGNoContentAndGenerateException( path, stdout, stderr ):
     return HydrusExceptions.DataMissing( 'Cannot interact with media because FFMPEG did not return any content.' )
     
 
-def RenderImageToImagePath( path, temp_image_path ):
+def render_image_to_image_path( path, temp_image_path ):
     
     # -y to overwrite the temp path
     
@@ -174,11 +174,11 @@ def RenderImageToImagePath( path, temp_image_path ):
         cmd = [ FFMPEG_PATH, "-xerror", '-y', "-i", path, temp_image_path ]
         
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         
-        HydrusSubprocess.RunSubprocess( cmd )
+        HydrusSubprocess.run_subprocess( cmd )
         
     except HydrusExceptions.SubprocessTimedOut:
         
@@ -186,21 +186,21 @@ def RenderImageToImagePath( path, temp_image_path ):
         
     except FileNotFoundError as e:
         
-        raise HandleFFMPEGFileNotFoundAndGenerateException( e, path )
+        raise handle_ffmpeg_file_not_found_and_generate_exception( e, path )
         
     
 
-def RenderImageToRawRGBABytes( path ):
+def render_image_to_raw_rgba_bytes( path ):
     
     # no dimensions here, so called is responsible for reshaping numpy array or whatever
     
     cmd = [ FFMPEG_PATH, "-xerror", '-i', path, '-f', 'rawvideo', '-pix_fmt', 'rgba', '-' ]
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         
-        ( stdout, stderr ) = HydrusSubprocess.RunSubprocess( cmd, bufsize = 1024 * 512, text = False )
+        ( stdout, stderr ) = HydrusSubprocess.run_subprocess( cmd, bufsize = 1024 * 512, text = False )
         
     except HydrusExceptions.SubprocessTimedOut:
         
@@ -208,21 +208,21 @@ def RenderImageToRawRGBABytes( path ):
         
     except FileNotFoundError as e:
         
-        raise HandleFFMPEGFileNotFoundAndGenerateException( e, path )
+        raise handle_ffmpeg_file_not_found_and_generate_exception( e, path )
         
     
     return stdout
     
 
-def RenderImageToPNGBytes( path ):
+def render_image_to_png_bytes( path ):
     
     cmd = [ FFMPEG_PATH, "-xerror", '-i', path, '-f', 'image2pipe', '-vcodec', 'png', '-' ]
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         
-        ( stdout, stderr ) = HydrusSubprocess.RunSubprocess( cmd, bufsize = 1024 * 512, text = False )
+        ( stdout, stderr ) = HydrusSubprocess.run_subprocess( cmd, bufsize = 1024 * 512, text = False )
         
     except HydrusExceptions.SubprocessTimedOut:
         
@@ -230,7 +230,7 @@ def RenderImageToPNGBytes( path ):
         
     except FileNotFoundError as e:
         
-        raise HandleFFMPEGFileNotFoundAndGenerateException( e, path )
+        raise handle_ffmpeg_file_not_found_and_generate_exception( e, path )
         
     
     return stdout

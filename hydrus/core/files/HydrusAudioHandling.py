@@ -1,6 +1,6 @@
 import re
 
-def ParseFFMPEGAudio( lines ):
+def parse_ffmpeg_audio( lines ):
     
     # the ^\sStream is to exclude the 'title' line, when it exists, includes the string 'Audio: ', ha ha
     lines_audio = [ line for line in lines if re.search( r'^\s*Stream', line ) is not None and 'Audio: ' in line ]

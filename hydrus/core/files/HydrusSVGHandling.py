@@ -1,14 +1,14 @@
 from hydrus.core import HydrusExceptions
 
-def BaseGenerateThumbnailNumPyFromSVGPath( path: str, target_resolution: tuple[int, int] ) -> bytes:
+def base_generate_thumbnail_numpy_from_svg_path( path: str, target_resolution: tuple[int, int] ) -> bytes:
     
     raise HydrusExceptions.NoThumbnailFileException()
     
 
-def BaseGetSVGResolution( path: str ):
+def base_get_svg_resolution( path: str ):
     
     raise HydrusExceptions.NoResolutionFileException()
     
 
-GenerateThumbnailNumPyFromSVGPath = BaseGenerateThumbnailNumPyFromSVGPath
-GetSVGResolution = BaseGetSVGResolution
+generate_thumbnail_numpy_from_svg_path = base_generate_thumbnail_numpy_from_svg_path
+get_svg_resolution = base_get_svg_resolution

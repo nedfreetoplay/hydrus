@@ -1,14 +1,14 @@
 from hydrus.core import HydrusExceptions
 
-def BaseGenerateThumbnailNumPyFromPDFPath( path: str, target_resolution: tuple[int, int] ) -> bytes:
+def base_generate_thumbnail_numpy_from_pdf_path( path: str, target_resolution: tuple[int, int] ) -> bytes:
     
     raise HydrusExceptions.NoThumbnailFileException()
     
 
-def BaseGetPDFInfo( path: str ):
+def base_get_pdf_info( path: str ):
     
     raise HydrusExceptions.LimitedSupportFileException()
     
 
-GenerateThumbnailNumPyFromPDFPath = BaseGenerateThumbnailNumPyFromPDFPath
-GetPDFInfo = BaseGetPDFInfo
+generate_thumbnail_numpy_from_pdf_path = base_generate_thumbnail_numpy_from_pdf_path
+get_pdf_info = base_get_pdf_info

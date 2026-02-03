@@ -10,13 +10,13 @@ import xml.etree.ElementTree as ET
 KRITA_FILE_THUMB = "preview.png"
 KRITA_FILE_MERGED = "mergedimage.png"
 
-def MergedPILImageFromKra( path ):
+def merged_pil_image_from_kra( path ):
     
     try:
         
-        zip_path_file_obj = HydrusArchiveHandling.GetZipAsPath( path, KRITA_FILE_MERGED ).open( 'rb' )
+        zip_path_file_obj = HydrusArchiveHandling.get_zip_as_path( path, KRITA_FILE_MERGED ).open( 'rb' )
         
-        return HydrusImageHandling.GeneratePILImage( zip_path_file_obj )
+        return HydrusImageHandling.generate_pil_image( zip_path_file_obj )
         
     except FileNotFoundError:
         
@@ -24,13 +24,13 @@ def MergedPILImageFromKra( path ):
         
     
 
-def ThumbnailPILImageFromKra( path ):
+def thumbnail_pil_image_from_kra( path ):
     
     try:
         
-        zip_path_file_obj = HydrusArchiveHandling.GetZipAsPath( path, KRITA_FILE_THUMB ).open( 'rb' )
+        zip_path_file_obj = HydrusArchiveHandling.get_zip_as_path( path, KRITA_FILE_THUMB ).open( 'rb' )
         
-        return HydrusImageHandling.GeneratePILImage( zip_path_file_obj )
+        return HydrusImageHandling.generate_pil_image( zip_path_file_obj )
         
     except FileNotFoundError:
         
@@ -38,33 +38,33 @@ def ThumbnailPILImageFromKra( path ):
         
     
 
-def GenerateThumbnailNumPyFromKraPath( path: str, target_resolution: tuple[ int, int ] ) -> numpy.ndarray:
+def generate_thumbnail_numpy_from_kra_path( path: str, target_resolution: tuple[ int, int ] ) -> numpy.ndarray:
     
     try:
         
-        pil_image = MergedPILImageFromKra( path )
+        pil_image = merged_pil_image_from_kra( path )
         
     except:
         
-        pil_image = ThumbnailPILImageFromKra( path )
+        pil_image = thumbnail_pil_image_from_kra( path )
         
     
     # noinspection PyUnresolvedReferences
     thumbnail_pil_image = pil_image.resize( target_resolution, PILImage.Resampling.LANCZOS )
     
-    numpy_image = HydrusImageHandling.GenerateNumPyImageFromPILImage( thumbnail_pil_image )
+    numpy_image = HydrusImageHandling.generate_numpy_image_from_pil_image( thumbnail_pil_image )
     
     return numpy_image
     
 
 # TODO: animation and frame stuff which is also in the maindoc.xml
-def GetKraProperties( path ):
+def get_kra_properties( path ):
     
     DOCUMENT_INFO_FILE = "maindoc.xml"
     
     try:
         
-        data_file = HydrusArchiveHandling.GetZipAsPath( path, DOCUMENT_INFO_FILE ).open( 'rb' )
+        data_file = HydrusArchiveHandling.get_zip_as_path( path, DOCUMENT_INFO_FILE ).open( 'rb' )
         
         root = ET.parse( data_file )
         
