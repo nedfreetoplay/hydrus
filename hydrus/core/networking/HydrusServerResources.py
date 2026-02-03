@@ -18,7 +18,7 @@ from hydrus.core import HydrusSerialisable
 from hydrus.core import HydrusTemp
 from hydrus.core.networking import HydrusServerRequest
 
-def GetServerSummaryTexts( service ):
+def get_server_summary_texts( service ):
     
     name = service.GetName()
     service_type = service.GetServiceType()
@@ -55,15 +55,15 @@ def GetServerSummaryTexts( service ):
         welcome_text_5
     )
     
-def GenerateEris( service ):
+def generate_eris( service ):
     
     if hasattr( service, 'UseNormieEris' ) and service.UseNormieEris():
         
-        return GenerateNormieEris( service )
+        return generate_normie_eris( service )
         
     name = service.GetName()
     
-    server_summary_texts = GetServerSummaryTexts( service )
+    server_summary_texts = get_server_summary_texts( service )
     
     return '''<html><head><title>{}</title></head><body><pre>
                          <font color="red">8888  8888888</font>
@@ -236,11 +236,11 @@ def GenerateEris( service ):
     )
     
 
-def GenerateNormieEris( service ):
+def generate_normie_eris( service ):
     
     name = service.GetName()
     
-    server_summary_texts = GetServerSummaryTexts( service )
+    server_summary_texts = get_server_summary_texts( service )
     
     style_block_full_of_braces = '''<style type="text/css">
 <!--
@@ -378,7 +378,7 @@ class HydrusDomain( object ):
         self._local_only = local_only
         
     
-    def CheckValid( self, client_ip ):
+    def check_valid( self, client_ip ):
         
         # >::ffff:127.0.0.1
         #▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓█▓▓▓▓█████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
@@ -417,7 +417,7 @@ class HydrusDomain( object ):
             
         
     
-    def IsLocal( self ):
+    def is_local( self ):
         
         return self._local_only
         
@@ -433,23 +433,23 @@ class HydrusResource( Resource ):
         self._domain = domain
         
     
-    def _callbackCheckAccountRestrictions( self, request: HydrusServerRequest.HydrusRequest ):
+    def _callback_check_account_restrictions( self, request: HydrusServerRequest.HydrusRequest ):
         
         return request
         
     
-    def _callbackCheckServiceRestrictions( self, request: HydrusServerRequest.HydrusRequest ):
+    def _callback_check_service_restrictions( self, request: HydrusServerRequest.HydrusRequest ):
         
         self._domain.CheckValid( request.getClientIP() )
         
-        self._checkService( request )
+        self._check_Service( request )
         
-        self._checkUserAgent( request )
+        self._check_user_agent( request )
         
         return request
         
     
-    def _callbackDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _callback_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         def wrap_thread_result( response_context ):
             
@@ -458,13 +458,13 @@ class HydrusResource( Resource ):
             return request
             
         
-        if HydrusProfiling.IsProfileMode( 'client_api' ):
+        if HydrusProfiling.is_profile_mode( 'client_api' ):
             
-            d = deferToThread( self._profileJob, self._threadDoGETJob, request )
+            d = deferToThread( self._profile_job, self._thread_do_get_job, request )
             
         else:
             
-            d = deferToThread( self._threadDoGETJob, request )
+            d = deferToThread( self._thread_do_get_job, request )
             
         
         d.addCallback( wrap_thread_result )
@@ -472,7 +472,7 @@ class HydrusResource( Resource ):
         return d
         
     
-    def _callbackDoOPTIONSJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _callback_do_options_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         def wrap_thread_result( response_context ):
             
@@ -481,13 +481,13 @@ class HydrusResource( Resource ):
             return request
             
         
-        if HydrusProfiling.IsProfileMode( 'client_api' ):
+        if HydrusProfiling.is_profile_mode( 'client_api' ):
             
-            d = deferToThread( self._profileJob, self._threadDoOPTIONSJob, request )
+            d = deferToThread( self._profile_job, self._thread_do_options_job, request )
             
         else:
             
-            d = deferToThread( self._threadDoOPTIONSJob, request )
+            d = deferToThread( self._thread_do_options_job, request )
             
         
         d.addCallback( wrap_thread_result )
@@ -495,7 +495,7 @@ class HydrusResource( Resource ):
         return d
         
     
-    def _callbackDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _callback_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         def wrap_thread_result( response_context ):
             
@@ -504,13 +504,13 @@ class HydrusResource( Resource ):
             return request
             
         
-        if HydrusProfiling.IsProfileMode( 'client_api' ):
+        if HydrusProfiling.is_profile_mode( 'client_api' ):
             
-            d = deferToThread( self._profileJob, self._threadDoPOSTJob, request )
+            d = deferToThread( self._profile_job, self._thread_do_post_job, request )
             
         else:
             
-            d = deferToThread( self._threadDoPOSTJob, request )
+            d = deferToThread( self._thread_do_post_job, request )
             
         
         d.addCallback( wrap_thread_result )
@@ -518,29 +518,29 @@ class HydrusResource( Resource ):
         return d
         
     
-    def _callbackEstablishAccountFromHeader( self, request: HydrusServerRequest.HydrusRequest ):
+    def _callback_establish_account_from_header( self, request: HydrusServerRequest.HydrusRequest ):
         
         return request
         
     
-    def _callbackEstablishAccountFromArgs( self, request: HydrusServerRequest.HydrusRequest ):
+    def _callback_establish_account_from_args( self, request: HydrusServerRequest.HydrusRequest ):
         
         return request
         
     
-    def _callbackParseGETArgs( self, request: HydrusServerRequest.HydrusRequest ):
+    def _callback_parse_get_args( self, request: HydrusServerRequest.HydrusRequest ):
         
         return request
         
     
-    def _callbackParsePOSTArgs( self, request: HydrusServerRequest.HydrusRequest ):
+    def _callback_parse_post_args( self, request: HydrusServerRequest.HydrusRequest ):
         
         return request
         
     
-    def _callbackRenderResponseContext( self, request: HydrusServerRequest.HydrusRequest ):
+    def _callback_render_response_context( self, request: HydrusServerRequest.HydrusRequest ):
         
-        self._CleanUpTempFile( request )
+        self._clean_up_temp_file( request )
         
         if request.channel is None:
             
@@ -560,9 +560,9 @@ class HydrusResource( Resource ):
         
         response_context: ResponseContext = request.hydrus_response_context
         
-        if response_context.HasPath():
+        if response_context.has_path():
             
-            path = response_context.GetPath()
+            path = response_context.get_path()
             
             if not os.path.exists( path ):
                 
@@ -571,30 +571,30 @@ class HydrusResource( Resource ):
             
             filesize = os.path.getsize( path )
             
-            offset_and_block_size_pairs = self._parseRangeHeader( request, filesize )
+            offset_and_block_size_pairs = self._parse_range_header( request, filesize )
             
         else:
             
             offset_and_block_size_pairs = []
             
         
-        status_code = response_context.GetStatusCode()
+        status_code = response_context.get_status_code()
         
-        if status_code == 200 and response_context.HasPath() and len( offset_and_block_size_pairs ) > 0:
+        if status_code == 200 and response_context.has_path() and len( offset_and_block_size_pairs ) > 0:
             
             status_code = 206
             
         
         request.setResponseCode( status_code )
         
-        for ( k, v, kwargs ) in response_context.GetCookies():
+        for ( k, v, kwargs ) in response_context.get_cookies():
             
             request.addCookie( k, v, **kwargs )
             
         
         do_finish = True
         
-        if response_context.IsAttachmentDownload():
+        if response_context.is_attachment_download():
             
             content_disposition_type = 'attachment'
             
@@ -603,7 +603,7 @@ class HydrusResource( Resource ):
             content_disposition_type = 'inline'
             
         
-        max_age = response_context.GetMaxAge()
+        max_age = response_context.get_max_age()
 
         if max_age is not None:
             
@@ -611,13 +611,13 @@ class HydrusResource( Resource ):
             
             request.setHeader( 'Cache-Control', 'max-age={}'.format( max_age ) )
             
-        if response_context.HasPath():
+        if response_context.has_path():
             
-            path = response_context.GetPath()
+            path = response_context.get_path()
             
             filesize = os.path.getsize( path )
             
-            mime = response_context.GetMime()
+            mime = response_context.get_mime()
             
             content_type = HC.mime_mimetype_string_lookup[ mime ]
             
@@ -669,11 +669,11 @@ class HydrusResource( Resource ):
             
             do_finish = False
             
-        elif response_context.HasBody():
+        elif response_context.has_body():
             
-            mime = response_context.GetMime()
+            mime = response_context.get_mime()
             
-            body_bytes = response_context.GetBodyBytes()
+            body_bytes = response_context.get_body_bytes()
             
             content_type = HC.mime_mimetype_string_lookup[ mime ]
             
@@ -702,8 +702,8 @@ class HydrusResource( Resource ):
                 
             
         
-        self._reportDataUsed( request, content_length )
-        self._reportRequestUsed( request )
+        self._report_data_used( request, content_length )
+        self._report_request_used( request )
         
         if do_finish:
             
@@ -711,12 +711,12 @@ class HydrusResource( Resource ):
             
         
     
-    def _checkService( self, request: HydrusServerRequest.HydrusRequest ):
+    def _check_Service( self, request: HydrusServerRequest.HydrusRequest ):
         
         return request
         
     
-    def _checkUserAgent( self, request: HydrusServerRequest.HydrusRequest ):
+    def _check_user_agent( self, request: HydrusServerRequest.HydrusRequest ):
         
         request.is_hydrus_user_agent = False
         
@@ -769,7 +769,7 @@ class HydrusResource( Resource ):
             
         
     
-    def _profileJob( self, call, request: HydrusServerRequest.HydrusRequest ):
+    def _profile_job( self, call, request: HydrusServerRequest.HydrusRequest ):
         
         def do_it():
             
@@ -778,17 +778,17 @@ class HydrusResource( Resource ):
         
         summary = 'Profiling {}: {}'.format( self._service.GetName(), request.path )
         
-        HydrusProfiling.Profile( summary, do_it, min_duration_ms = HG.server_profile_min_job_time_ms )
+        HydrusProfiling.profile( summary, do_it, min_duration_ms = HG.server_profile_min_job_time_ms )
         
         return request.profile_result
         
     
-    def _DecompressionBombsOK( self, request: HydrusServerRequest.HydrusRequest ):
+    def _decompression_bombs_ok( self, request: HydrusServerRequest.HydrusRequest ):
         
         return False
         
     
-    def _errbackDisconnected( self, failure, request: HydrusServerRequest.HydrusRequest, request_deferred: defer.Deferred ):
+    def _errback_disconnected( self, failure, request: HydrusServerRequest.HydrusRequest, request_deferred: defer.Deferred ):
         
         request_deferred.cancel()
         
@@ -820,7 +820,7 @@ class HydrusResource( Resource ):
             
         
     
-    def _errbackHandleProcessingError( self, failure, request: HydrusServerRequest.HydrusRequest ):
+    def _errback_handle_processing_error( self, failure, request: HydrusServerRequest.HydrusRequest ):
         
         try:
             
@@ -838,7 +838,7 @@ class HydrusResource( Resource ):
                 e = e.db_e # could well be a DataException, which we want to promote
                 
             
-            try: self._CleanUpTempFile( request )
+            try: self._clean_up_temp_file( request )
             except: pass
             
             error_summary = str( e )
@@ -899,7 +899,7 @@ class HydrusResource( Resource ):
                 
                 status_code = 500
                 
-                HydrusData.DebugPrint( failure.getTraceback() )
+                HydrusData.debug_print( failure.getTraceback() )
                 
                 error_summary = f'The "{self._service.GetName()}" encountered an error it could not handle!\n\nHere is a full traceback of what happened. If you are using the hydrus client, it will be saved to your log. Please forward it to hydrus_dev@proton.me:\n\n' + failure.getTraceback()
                 
@@ -922,11 +922,11 @@ class HydrusResource( Resource ):
             
             request.hydrus_response_context = response_context
             
-            self._callbackRenderResponseContext( request )
+            self._callback_render_response_context( request )
             
         except:
             
-            try: HydrusData.DebugPrint( failure.getTraceback() )
+            try: HydrusData.debug_print( failure.getTraceback() )
             except: pass
             
             if hasattr( request, 'channel' ) and request.channel is not None:
@@ -948,7 +948,7 @@ class HydrusResource( Resource ):
         return request
         
     
-    def _parseHydrusNetworkAccessKey( self, request, key_required = True ):
+    def _parse_hydrus_network_access_key( self, request, key_required = True ):
         
         if not request.requestHeaders.hasHeader( 'Hydrus-Key' ):
             
@@ -978,7 +978,7 @@ class HydrusResource( Resource ):
         return access_key
         
     
-    def _parseRangeHeader( self, request, filesize ):
+    def _parse_range_header( self, request, filesize ):
         
         offset_and_block_size_pairs = []
         
@@ -1076,40 +1076,40 @@ class HydrusResource( Resource ):
         return offset_and_block_size_pairs
         
     
-    def _reportDataUsed( self, request, num_bytes ):
+    def _report_data_used( self, request, num_bytes ):
         
         self._service.ReportDataUsed( num_bytes )
         
-        HG.controller.ReportDataUsed( num_bytes )
+        HG.controller.report_data_used( num_bytes )
         
     
-    def _reportRequestStarted( self, request: HydrusServerRequest.HydrusRequest ):
+    def _report_request_started( self, request: HydrusServerRequest.HydrusRequest ):
         
         pass
         
     
-    def _reportRequestUsed( self, request: HydrusServerRequest.HydrusRequest ):
+    def _report_request_used( self, request: HydrusServerRequest.HydrusRequest ):
         
         self._service.ReportRequestUsed()
         
-        HG.controller.ReportRequestUsed()
+        HG.controller.report_request_used()
         
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         raise HydrusExceptions.NotFoundException( 'This service does not support that request!' )
         
     
-    def _threadDoOPTIONSJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_options_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         allowed_methods = []
         
-        if self.__class__._threadDoGETJob is not HydrusResource._threadDoGETJob:
+        if self.__class__._thread_do_get_job is not HydrusResource._thread_do_get_job:
             
             allowed_methods.append( 'GET' )
             
         
-        if self.__class__._threadDoPOSTJob is not HydrusResource._threadDoPOSTJob:
+        if self.__class__._thread_do_post_job is not HydrusResource._thread_do_post_job:
             
             allowed_methods.append( 'POST' )
             
@@ -1146,18 +1146,18 @@ class HydrusResource( Resource ):
         return response_context
         
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         raise HydrusExceptions.NotFoundException( 'This service does not support that request!' )
         
     
-    def _CleanUpTempFile( self, request: HydrusServerRequest.HydrusRequest ):
+    def _clean_up_temp_file( self, request: HydrusServerRequest.HydrusRequest ):
         
         if hasattr( request, 'temp_file_info' ):
             
             ( os_file_handle, temp_path ) = request.temp_file_info
             
-            HydrusTemp.CleanUpTempPath( os_file_handle, temp_path )
+            HydrusTemp.clean_ip_temp_path( os_file_handle, temp_path )
             
             del request.temp_file_info
             
@@ -1165,27 +1165,27 @@ class HydrusResource( Resource ):
     
     def render_GET( self, request: HydrusServerRequest.HydrusRequest ):
         
-        self._reportRequestStarted( request )
+        self._report_request_started( request )
         
         d = defer.Deferred()
         
-        d.addCallback( self._callbackCheckServiceRestrictions )
+        d.addCallback( self._callback_check_service_restrictions )
         
-        d.addCallback( self._callbackEstablishAccountFromHeader )
+        d.addCallback( self._callback_establish_account_from_header )
         
-        d.addCallback( self._callbackParseGETArgs )
+        d.addCallback( self._callback_parse_get_args )
         
-        d.addCallback( self._callbackEstablishAccountFromArgs )
+        d.addCallback( self._callback_establish_account_from_args )
         
-        d.addCallback( self._callbackCheckAccountRestrictions )
+        d.addCallback( self._callback_check_account_restrictions )
         
-        d.addCallback( self._callbackDoGETJob )
+        d.addCallback( self._callback_do_get_job )
         
-        d.addCallback( self._callbackRenderResponseContext )
+        d.addCallback( self._callback_render_response_context )
         
-        d.addErrback( self._errbackHandleProcessingError, request )
+        d.addErrback( self._errback_handle_processing_error, request )
         
-        request.notifyFinish().addErrback( self._errbackDisconnected, request, d )
+        request.notifyFinish().addErrback( self._errback_disconnected, request, d )
         
         reactor.callLater( 0, d.callback, request )
         
@@ -1194,19 +1194,19 @@ class HydrusResource( Resource ):
     
     def render_OPTIONS( self, request: HydrusServerRequest.HydrusRequest ):
         
-        self._reportRequestStarted( request )
+        self._report_request_started( request )
         
         d = defer.Deferred()
         
-        d.addCallback( self._callbackCheckServiceRestrictions )
+        d.addCallback( self._callback_check_service_restrictions )
         
-        d.addCallback( self._callbackDoOPTIONSJob )
+        d.addCallback( self._callback_do_options_job )
         
-        d.addCallback( self._callbackRenderResponseContext )
+        d.addCallback( self._callback_render_response_context )
         
-        d.addErrback( self._errbackHandleProcessingError, request )
+        d.addErrback( self._errback_handle_processing_error, request )
         
-        request.notifyFinish().addErrback( self._errbackDisconnected, request, d )
+        request.notifyFinish().addErrback( self._errback_disconnected, request, d )
         
         reactor.callLater( 0, d.callback, request )
         
@@ -1215,27 +1215,27 @@ class HydrusResource( Resource ):
     
     def render_POST( self, request: HydrusServerRequest.HydrusRequest ):
         
-        self._reportRequestStarted( request )
+        self._report_request_started( request )
         
         d = defer.Deferred()
         
-        d.addCallback( self._callbackCheckServiceRestrictions )
+        d.addCallback( self._callback_check_service_restrictions )
         
-        d.addCallback( self._callbackEstablishAccountFromHeader )
+        d.addCallback( self._callback_establish_account_from_header )
         
-        d.addCallback( self._callbackParsePOSTArgs )
+        d.addCallback( self._callback_parse_post_args )
         
-        d.addCallback( self._callbackEstablishAccountFromArgs )
+        d.addCallback( self._callback_establish_account_from_args )
         
-        d.addCallback( self._callbackCheckAccountRestrictions )
+        d.addCallback( self._callback_check_account_restrictions )
         
-        d.addCallback( self._callbackDoPOSTJob )
+        d.addCallback( self._callback_do_post_job )
         
-        d.addCallback( self._callbackRenderResponseContext )
+        d.addCallback( self._callback_render_response_context )
         
-        d.addErrback( self._errbackHandleProcessingError, request )
+        d.addErrback( self._errback_handle_processing_error, request )
         
-        request.notifyFinish().addErrback( self._errbackDisconnected, request, d )
+        request.notifyFinish().addErrback( self._errback_disconnected, request, d )
         
         reactor.callLater( 0, d.callback, request )
         
@@ -1244,7 +1244,7 @@ class HydrusResource( Resource ):
     
 class HydrusResourceRobotsTXT( HydrusResource ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         body = '''User-agent: *
 Disallow: /'''
@@ -1256,9 +1256,9 @@ Disallow: /'''
     
 class HydrusResourceWelcome( HydrusResource ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
-        body = GenerateEris( self._service )
+        body = generate_eris( self._service )
         
         response_context = ResponseContext( 200, mime = HC.TEXT_HTML, body = body )
         
@@ -1275,7 +1275,7 @@ class ResponseContext( object ):
             
         elif isinstance( body, HydrusSerialisable.SerialisableBase ):
             
-            body_bytes = body.DumpToNetworkBytes()
+            body_bytes = body.dump_to_network_bytes()
             
         elif isinstance( body, str ):
             
@@ -1316,52 +1316,52 @@ class ResponseContext( object ):
         self._max_age = max_age
         
     
-    def GetBodyBytes( self ):
+    def get_body_bytes( self ):
         
         return self._body_bytes
         
     
-    def GetCookies( self ):
+    def get_cookies( self ):
         
         return self._cookies
         
     
-    def GetMime( self ):
+    def get_mime( self ):
         
         return self._mime
         
     
-    def GetPath( self ):
+    def get_path( self ):
         
         return self._path
         
     
-    def GetStatusCode( self ):
+    def get_status_code( self ):
         
         return self._status_code
         
 
-    def GetMaxAge( self ):
+    def get_max_age( self ):
         
         return self._max_age
         
     
-    def SetMaxAge( self, age ):
+    def set_max_age( self, age ):
         
         self._max_age = age
         
     
-    def HasBody( self ):
+    def has_body( self ):
         
         return self._body_bytes is not None
         
     
-    def HasPath( self ):
+    def has_path( self ):
         
         return self._path is not None
         
     
-    def IsAttachmentDownload( self ):
+    def is_attachment_download( self ):
         
         return self._is_attachment
         

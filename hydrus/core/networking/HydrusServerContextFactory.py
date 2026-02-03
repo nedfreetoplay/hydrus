@@ -78,7 +78,7 @@ def load_certs_ordered( pem_bytes: bytes ) -> list[ crypto.X509 ]:
     return ordered
     
 
-def GenerateSSLContextFactory( ssl_cert_path, ssl_key_path ):
+def generate_ssl_context_factory( ssl_cert_path, ssl_key_path ):
     
     if HG.twisted_is_broke:
         
