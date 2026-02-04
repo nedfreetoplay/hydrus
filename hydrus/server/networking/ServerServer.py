@@ -4,7 +4,7 @@ from hydrus.server.networking import ServerServerResources
 
 class HydrusServiceRestricted( HydrusServer.HydrusService ):
     
-    def _InitRoot( self ):
+    def _init_root( self ):
         
         root = HydrusServer.HydrusService._init_root( self )
         
@@ -48,9 +48,9 @@ class HydrusServiceRestricted( HydrusServer.HydrusService ):
     
 class HydrusServiceAdmin( HydrusServiceRestricted ):
     
-    def _InitRoot( self ):
+    def _init_root( self ):
         
-        root = HydrusServiceRestricted._InitRoot( self )
+        root = HydrusServiceRestricted._init_root( self )
         
         root.putChild( b'backup', ServerServerResources.HydrusResourceRestrictedBackup( self._service, HydrusServer.REMOTE_DOMAIN ) )
         root.putChild( b'lock_on', ServerServerResources.HydrusResourceRestrictedLockOn( self._service, HydrusServer.REMOTE_DOMAIN ) )
@@ -66,9 +66,9 @@ class HydrusServiceAdmin( HydrusServiceRestricted ):
 
 class HydrusServiceRepository( HydrusServiceRestricted ):
     
-    def _InitRoot( self ):
+    def _init_root( self ):
         
-        root = HydrusServiceRestricted._InitRoot( self )
+        root = HydrusServiceRestricted._init_root( self )
         
         root.putChild( b'num_petitions', ServerServerResources.HydrusResourceRestrictedNumPetitions( self._service, HydrusServer.REMOTE_DOMAIN ) )
         root.putChild( b'petition', ServerServerResources.HydrusResourceRestrictedPetition( self._service, HydrusServer.REMOTE_DOMAIN ) )
@@ -82,9 +82,9 @@ class HydrusServiceRepository( HydrusServiceRestricted ):
     
 class HydrusServiceRepositoryFile( HydrusServiceRepository ):
     
-    def _InitRoot( self ):
+    def _init_root( self ):
         
-        root = HydrusServiceRepository._InitRoot( self )
+        root = HydrusServiceRepository._init_root( self )
         
         root.putChild( b'file', ServerServerResources.HydrusResourceRestrictedRepositoryFile( self._service, HydrusServer.REMOTE_DOMAIN ) )
         root.putChild( b'ip', ServerServerResources.HydrusResourceRestrictedIP( self._service, HydrusServer.REMOTE_DOMAIN ) )
@@ -95,9 +95,9 @@ class HydrusServiceRepositoryFile( HydrusServiceRepository ):
     
 class HydrusServiceRepositoryTag( HydrusServiceRepository ):
     
-    def _InitRoot( self ):
+    def _init_root( self ):
         
-        root = HydrusServiceRepository._InitRoot( self )
+        root = HydrusServiceRepository._init_root( self )
         
         root.putChild( b'tag_filter', ServerServerResources.HydrusResourceRestrictedTagFilter( self._service, HydrusServer.REMOTE_DOMAIN ) )
         

@@ -5,13 +5,13 @@ from hydrus.core.files import HydrusFilesPhysicalStorage
 
 from hydrus.server import ServerGlobals as SG
 
-def GetAllHashes( file_type ):
+def get_all_hashes( file_type ):
     
-    return { bytes.fromhex( os.path.split( path )[1] ) for path in IterateAllPaths( file_type ) }
+    return { bytes.fromhex( os.path.split( path )[1] ) for path in iterate_all_paths( file_type ) }
     
-def GetExpectedFilePath( hash ):
+def get_expected_file_path( hash ):
     
-    files_dir = SG.server_controller.GetFilesDir()
+    files_dir = SG.server_controller.get_files_dir()
     
     hash_encoded = hash.hex()
     
@@ -21,9 +21,9 @@ def GetExpectedFilePath( hash ):
     
     return path
     
-def GetExpectedThumbnailPath( hash ):
+def get_expected_thumbnail_path( hash ):
     
-    files_dir = SG.server_controller.GetFilesDir()
+    files_dir = SG.server_controller.get_files_dir()
     
     hash_encoded = hash.hex()
     
@@ -33,9 +33,9 @@ def GetExpectedThumbnailPath( hash ):
     
     return path
     
-def GetFilePath( hash ):
+def get_file_path( hash ):
     
-    path = GetExpectedFilePath( hash )
+    path = get_expected_file_path( hash )
     
     if not os.path.exists( path ):
         
@@ -44,9 +44,9 @@ def GetFilePath( hash ):
     
     return path
     
-def GetThumbnailPath( hash ):
+def get_thumbnail_path( hash ):
     
-    path = GetExpectedThumbnailPath( hash )
+    path = get_expected_thumbnail_path( hash )
     
     if not os.path.exists( path ):
         
@@ -55,9 +55,9 @@ def GetThumbnailPath( hash ):
     
     return path
     
-def IterateAllPaths( file_type ):
+def iterate_all_paths( file_type ):
     
-    files_dir = SG.server_controller.GetFilesDir()
+    files_dir = SG.server_controller.get_files_dir()
     
     for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( '', prefix_length = 2 ):
         

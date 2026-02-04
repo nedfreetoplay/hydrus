@@ -171,7 +171,7 @@ def boot():
     
     try:
         
-        HG.server_action = ServerController.ProcessStartingAction( db_dir, HG.server_action )
+        HG.server_action = ServerController.process_starting_action( db_dir, HG.server_action )
         
     except HydrusExceptions.ShutdownException as e:
         
@@ -193,7 +193,7 @@ def boot():
             
             if HG.server_action in ( 'stop', 'restart' ):
                 
-                ServerController.ShutdownSiblingInstance( db_dir )
+                ServerController.shutdown_sibling_instance( db_dir )
                 
             
             if HG.server_action in ( 'start', 'restart' ):
@@ -207,7 +207,7 @@ def boot():
                 
                 controller = ServerController.Controller( db_dir, logger )
                 
-                controller.Run()
+                controller.run()
                 
             
         except ( HydrusExceptions.DBCredentialsException, HydrusExceptions.ShutdownException ) as e:

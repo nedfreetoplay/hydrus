@@ -174,7 +174,7 @@ class TestServer( unittest.TestCase ):
         
         # file
         
-        path = ServerFiles.GetExpectedFilePath( self._file_hash )
+        path = ServerFiles.get_expected_file_path( self._file_hash )
         
         HydrusPaths.make_sure_directory_exists( os.path.dirname( path ) )
         
@@ -238,7 +238,7 @@ class TestServer( unittest.TestCase ):
         
         # thumbnail
         
-        path = ServerFiles.GetExpectedThumbnailPath( self._file_hash )
+        path = ServerFiles.get_expected_thumbnail_path( self._file_hash )
         
         HydrusPaths.make_sure_directory_exists( os.path.dirname( path ) )
         
@@ -310,7 +310,7 @@ class TestServer( unittest.TestCase ):
         
         definitions_update_hash = hashlib.sha256( definitions_update_network_bytes ).digest()
         
-        path = ServerFiles.GetExpectedFilePath( definitions_update_hash )
+        path = ServerFiles.get_expected_file_path( definitions_update_hash )
         
         HydrusPaths.make_sure_directory_exists( path )
         
@@ -341,7 +341,7 @@ class TestServer( unittest.TestCase ):
         
         content_update_hash = hashlib.sha256( content_update_network_bytes ).digest()
         
-        path = ServerFiles.GetExpectedFilePath( content_update_hash )
+        path = ServerFiles.get_expected_file_path( content_update_hash )
         
         with open( path, 'wb' ) as f:
             
