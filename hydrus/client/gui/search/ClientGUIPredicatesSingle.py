@@ -2324,7 +2324,7 @@ class PredicateSystemRatingIncDec( PanelPredicateSystemSingle ):
             
             name = service.get_name()
             
-        except:
+        except Exception as e:
             
             name = 'unknown service'
             
@@ -3307,7 +3307,7 @@ class PanelPredicateSystemTagAdvanced( PanelPredicateSystemSingle ):
             
             HydrusTags.check_tag_not_empty( tag )
             
-        except:
+        except Exception as e:
             
             tag = 'invalid tag'
             

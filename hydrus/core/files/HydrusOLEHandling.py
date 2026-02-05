@@ -7,7 +7,7 @@ try:
 
     OLEFILE_OK = True
     
-except:
+except Exception as e:
     
     OLEFILE_OK = False
     
@@ -147,7 +147,7 @@ def mime_from_ole_file(path: str):
                 
             return HC.UNDETERMINED_OLE
             
-    except:
+    except Exception as e:
         
         return HC.UNDETERMINED_OLE
         
@@ -174,7 +174,7 @@ def office_ole_document_word_count( path: str ):
             num_words = ole.get_metadata().num_words
             
         
-    except:
+    except Exception as e:
         
         num_words = None
         

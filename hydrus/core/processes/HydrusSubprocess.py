@@ -310,7 +310,7 @@ def subprocess_communicate( cmd, process: subprocess.Popen, timeout: int ):
                 
                 process.kill()
                 
-            except:
+            except Exception as e:
                 
                 pass
                 

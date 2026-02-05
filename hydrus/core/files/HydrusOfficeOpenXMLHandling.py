@@ -52,7 +52,7 @@ def mime_from_microsoft_open_xml_document(path: str):
             return None
             
         
-    except:
+    except Exception as e:
         
         return None
         
@@ -124,7 +124,7 @@ def get_pptx_info( path: str ):
         
         ( width, height ) = power_point_resolution( path )
         
-    except:
+    except Exception as e:
         
         ( width, height ) = ( None, None )
     
@@ -132,7 +132,7 @@ def get_pptx_info( path: str ):
         
         num_words = office_document_word_count( path )
         
-    except:
+    except Exception as e:
         
         num_words = None
         
@@ -145,7 +145,7 @@ def get_docx_info( path:str ):
         
         num_words = office_document_word_count( path )
         
-    except:
+    except Exception as e:
         
         num_words = None
         

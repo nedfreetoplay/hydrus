@@ -255,7 +255,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 
                 serialisable_info = json.loads( dump )
                 
-            except:
+            except Exception as e:
                 
                 self._execute( 'DELETE FROM json_dumps_hashed WHERE hash = ?;', ( sqlite3.Binary( hash ), ) )
                 
@@ -328,7 +328,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 
                 serialisable_info = json.loads( dump )
                 
-            except:
+            except Exception as e:
                 
                 self._execute( 'DELETE FROM json_dumps WHERE dump_type = ?;', ( dump_type, ) )
                 
@@ -377,7 +377,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                     
                     objs.append( HydrusSerialisable.create_from_serialisable_tuple( ( dump_type, dump_name, version, serialisable_info ) ) )
                     
-                except:
+                except Exception as e:
                     
                     self._execute( 'DELETE FROM json_dumps_named WHERE dump_type = ? AND dump_name = ? AND timestamp_ms = ?;', ( dump_type, dump_name, object_timestamp_ms ) )
                     
@@ -416,7 +416,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 
                 serialisable_info = json.loads( dump )
                 
-            except:
+            except Exception as e:
                 
                 self._execute( 'DELETE FROM json_dumps_named WHERE dump_type = ? AND dump_name = ? AND timestamp_ms = ?;', ( dump_type, dump_name, object_timestamp_ms ) )
                 
@@ -574,7 +574,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 
                 self._execute( 'INSERT INTO json_dumps_hashed ( hash, dump_type, version, dump ) VALUES ( ?, ?, ?, ? );', ( sqlite3.Binary( hash ), dump_type, version, dump_buffer ) )
                 
-            except:
+            except Exception as e:
                 
                 HydrusData.debug_print( dump )
                 HydrusData.show_text( 'Had a problem saving a hashed JSON object. The dump has been printed to the log.' )
@@ -583,7 +583,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                     
                     HydrusData.print_text( 'Dump had length {}!'.format( HydrusData.to_human_bytes( len( dump_buffer ) ) ) )
                     
-                except:
+                except Exception as e:
                     
                     pass
                     
@@ -677,7 +677,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 
                 self._execute( 'INSERT INTO json_dumps_named ( dump_type, dump_name, version, timestamp_ms, dump ) VALUES ( ?, ?, ?, ?, ? );', ( dump_type, dump_name, version, object_timestamp_ms, dump_buffer ) )
                 
-            except:
+            except Exception as e:
                 
                 HydrusData.debug_print( dump )
                 HydrusData.show_text( 'Had a problem saving a JSON object. The dump has been printed to the log.' )
@@ -686,7 +686,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                     
                     HydrusData.print_text( 'Dump had length {}!'.format( HydrusData.to_human_bytes( len( dump_buffer ) ) ) )
                     
-                except:
+                except Exception as e:
                     
                     pass
                     
@@ -772,7 +772,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 
                 self._execute( 'INSERT INTO json_dumps ( dump_type, version, dump ) VALUES ( ?, ?, ? );', ( dump_type, version, dump_buffer ) )
                 
-            except:
+            except Exception as e:
                 
                 HydrusData.debug_print( dump )
                 HydrusData.show_text( 'Had a problem saving a JSON object. The dump has been printed to the log.' )
@@ -831,7 +831,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 
                 self._execute( 'REPLACE INTO json_dict ( name, dump ) VALUES ( ?, ? );', ( name, dump_buffer ) )
                 
-            except:
+            except Exception as e:
                 
                 HydrusData.debug_print( dump )
                 HydrusData.show_text( 'Had a problem saving a JSON object. The dump has been printed to the log.' )

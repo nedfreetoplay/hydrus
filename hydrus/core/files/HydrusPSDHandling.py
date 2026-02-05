@@ -145,7 +145,7 @@ def parse_ffmpeg_psd_resolution( lines ) -> tuple[ int, int ]:
         
         return ( width, height )
         
-    except:
+    except Exception as e:
         
         raise HydrusExceptions.NoResolutionFileException( 'Error parsing resolution!' )
         

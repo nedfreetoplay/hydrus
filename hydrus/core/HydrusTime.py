@@ -20,7 +20,7 @@ def date_time_to_pretty_time( dt: datetime.datetime, include_24h_time = True, in
         
         result = dt.strftime( phrase )
         
-    except:
+    except Exception as e:
         
         return f'unknown time {dt}'
         
@@ -39,7 +39,7 @@ def date_time_to_timestamp( dt: datetime.datetime ) -> int:
         
         timestamp = int( dt.timestamp() )
         
-    except:
+    except Exception as e:
         
         try:
             
@@ -67,7 +67,7 @@ def date_time_to_timestamp( dt: datetime.datetime ) -> int:
             
             timestamp = int( time_delta.total_seconds() )
             
-        except:
+        except Exception as e:
             
             timestamp = get_now()
             
@@ -213,7 +213,7 @@ def calendar_delta_to_datetime( years : int, months : int, days : int, hours : i
         
         dayrange = calendar.monthrange( new_year, new_month )
         
-    except:
+    except Exception as e:
         
         dayrange = ( 0, 30 )
         
@@ -448,7 +448,7 @@ def timestamp_to_pretty_expires( timestamp ):
             return 'expires ' + time_delta_string
             
         
-    except:
+    except Exception as e:
         
         return 'unparseable time {}'.format( timestamp )
         
@@ -566,7 +566,7 @@ def timestamp_ms_to_pretty_time( timestamp_ms: int | None, in_utc = False, inclu
         
         dt = timestamp_ms_to_datetime( timestamp_ms, timezone = timezone )
         
-    except:
+    except Exception as e:
         
         return 'unparseable ms time {}'.format( timestamp_ms )
         
@@ -598,7 +598,7 @@ def timestamp_to_pretty_time( timestamp: float | None, in_utc = False, include_2
         
         dt = timestamp_to_datetime( timestamp, timezone = timezone )
         
-    except:
+    except Exception as e:
         
         return 'unparseable time {}'.format( timestamp )
         
@@ -652,7 +652,7 @@ def timestamp_to_pretty_timedelta( timestamp, just_now_string = 'now', just_now_
                 
             
         
-    except:
+    except Exception as e:
         
         return 'unparseable time {}'.format( timestamp )
         

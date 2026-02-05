@@ -15,7 +15,7 @@ def set_requests_ca_bundle_env(pem_path = None):
             
             pem_path = certifi.where()
             
-        except:
+        except Exception as e:
             
             pass
             

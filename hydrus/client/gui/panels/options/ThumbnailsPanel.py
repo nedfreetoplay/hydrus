@@ -209,7 +209,7 @@ class ThumbnailsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
             self._new_options.set_string('thumbnail_scroll_rate', thumbnail_scroll_rate)
             
-        except:
+        except Exception as e:
             
             pass
             

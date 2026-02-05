@@ -256,8 +256,19 @@ class HydrusTagArchive( object ):
     
     def delete_tags( self, hash ):
         
+<<<<<<< HEAD
         try: hash_id = self._get_hash_id( hash, read_only = True )
         except: return
+=======
+        try:
+            
+            hash_id = self._GetHashId( hash, read_only = True )
+            
+        except Exception as e:
+            
+            return
+            
+>>>>>>> 955f2e8e9df1d901351bb3dcf4c0a50e99048667
         
         self._c.execute( 'DELETE FROM mappings WHERE hash_id = ?;', ( hash_id, ) )
         
@@ -276,7 +287,7 @@ class HydrusTagArchive( object ):
             
             tag_id = self._get_tag_id( tag, read_only = True )
             
-        except:
+        except Exception as e:
             
             return set()
             
@@ -349,7 +360,7 @@ class HydrusTagArchive( object ):
             
             hash_id = self._get_hash_id( hash, read_only = True )
             
-        except:
+        except Exception as e:
             
             return set()
             
@@ -365,7 +376,7 @@ class HydrusTagArchive( object ):
             
             return True
             
-        except:
+        except Exception as e:
             
             return False
             

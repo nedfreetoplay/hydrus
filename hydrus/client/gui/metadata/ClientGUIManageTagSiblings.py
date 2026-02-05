@@ -445,7 +445,7 @@ class ManageTagSiblings( ClientGUIScrolledPanels.ManagePanel ):
                         HydrusTags.clean_tag( tags[ ( 2 * i ) + 1 ] )
                     )
                     
-                except:
+                except Exception as e:
                     
                     continue
                     

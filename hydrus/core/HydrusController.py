@@ -598,7 +598,7 @@ class HydrusController( object ):
             
             self._init_hydrus_temp_dir()
             
-        except:
+        except Exception as e:
             
             HydrusData.print_text( 'Failed to initialise temp folder.' )
             

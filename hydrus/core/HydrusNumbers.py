@@ -105,7 +105,7 @@ def to_human_int( num ):
         
         num = int( num )
         
-    except:
+    except Exception as e:
         
         return 'unknown'
         

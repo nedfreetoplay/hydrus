@@ -44,7 +44,7 @@ def generate_thumbnail_numpy_from_kra_path( path: str, target_resolution: tuple[
         
         pil_image = merged_pil_image_from_kra( path )
         
-    except:
+    except Exception as e:
         
         pil_image = thumbnail_pil_image_from_kra( path )
         
@@ -76,7 +76,7 @@ def get_kra_properties( path ):
         
         return ( width, height )
         
-    except:
+    except Exception as e:
         
         raise HydrusExceptions.NoResolutionFileException( f'This krita file had no {DOCUMENT_INFO_FILE} or it contains no resolution!' )
         
