@@ -497,7 +497,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                             
                             add_it = can_parse
                             
-                        except Exception as e:
+                        except:
                             
                             continue
                             
@@ -726,7 +726,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 has_exif = HydrusImageMetadata.has_exif( raw_pil_image )
                 
-            except Exception as e:
+            except:
                 
                 has_exif = False
                 
@@ -787,7 +787,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     has_icc_profile = HydrusPSDHandling.psd_has_icc_profile( path )
                     
-                except Exception as e:
+                except:
                     
                     return None
                     
@@ -797,7 +797,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     raw_pil_image = HydrusImageOpening.raw_open_pil_image( path )
                     
-                except Exception as e:
+                except:
                     
                     return None
                     
@@ -1000,7 +1000,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 pixel_hash = HydrusImageHandling.get_image_pixel_hash( path, mime )
                 
-            except Exception as e:
+            except:
                 
                 return None
                 
@@ -1039,7 +1039,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             return HydrusBlurhash.get_blurhash_from_numpy( numpy_image )
             
-        except Exception as e:
+        except:
             
             return None
             

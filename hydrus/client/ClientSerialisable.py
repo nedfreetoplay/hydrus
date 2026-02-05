@@ -312,7 +312,7 @@ def load_from_numpy_image(numpy_image: numpy.ndarray):
             
             payload_and_header_bytes = complete_data[ width * top_height : ]
             
-        except Exception as e:
+        except:
             
             raise Exception( 'Header bytes were invalid!' )
             
@@ -325,7 +325,7 @@ def load_from_numpy_image(numpy_image: numpy.ndarray):
             
             payload_bytes = payload_and_header_bytes[ 4 : 4 + payload_bytes_length ]
             
-        except Exception as e:
+        except:
             
             raise Exception( 'Payload bytes were invalid!' )
             
@@ -351,7 +351,7 @@ def load_string_from_png(path: str) -> str:
         
         payload_string = HydrusCompression.decompress_bytes_to_string( payload_bytes )
         
-    except Exception as e:
+    except:
         
         # older payloads were not compressed
         payload_string = str( payload_bytes, 'utf-8' )

@@ -1001,7 +1001,7 @@ class PopupMessageManager( QW.QFrame ):
                     
                 
             
-        except Exception as e:
+        except:
             
             text = 'The popup message manager experienced a fatal error and will now stop working! Please restart the client as soon as possible! If this keeps happening, please email the details and your client.log to the hydrus developer.'
             
@@ -1098,7 +1098,7 @@ class PopupMessageManager( QW.QFrame ):
                 self._CheckPending()
                 
             
-        except Exception as e:
+        except:
             
             HydrusData.print_text( traceback.format_exc() )
             
@@ -1261,7 +1261,7 @@ class PopupMessageManager( QW.QFrame ):
                 self._SizeAndPositionAndShow()
                 
             
-        except Exception as e:
+        except:
             
             self._update_job.cancel()
             
@@ -1459,7 +1459,7 @@ class PopupMessageDialogPanel( QW.QWidget ):
                 self._Update()
                 
             
-        except Exception as e:
+        except:
             
             self._update_job.cancel()
             

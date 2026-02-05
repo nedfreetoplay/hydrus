@@ -12,14 +12,8 @@ try:
     
     import locale
     
-    try:
-        
-        locale.setlocale( locale.LC_ALL, '' )
-        
-    except Exception as e:
-        
-        pass
-        
+    try: locale.setlocale( locale.LC_ALL, '' )
+    except: pass
     
     import os
     import threading
@@ -222,7 +216,7 @@ def boot():
             
             HydrusData.print_text( error )
             
-        except Exception as e:
+        except:
             
             import traceback
             

@@ -24,7 +24,7 @@ def file_is_animated( path ):
         
         return num_frames > 1
         
-    except Exception as e:
+    except:
         
         return False
         
@@ -413,7 +413,7 @@ def parse_ffmpeg_duration( lines ):
         
         return ( file_duration_s, stream_duration_s )
         
-    except Exception as e:
+    except:
         
         raise HydrusExceptions.DamagedOrUnusualFileException( 'Error reading duration!' )
         
@@ -438,7 +438,7 @@ def parse_ffmpeg_fps( lines, png_ok = False ):
         
         return ( fps, confident )
         
-    except Exception as e:
+    except:
         
         raise HydrusExceptions.DamagedOrUnusualFileException( 'Error estimating framerate!' )
         
@@ -492,7 +492,7 @@ def parse_ffmpeg_fps_from_first_second( lines_for_first_second ):
         
         return ( fps, confident )
         
-    except Exception as e:
+    except:
         
         raise HydrusExceptions.DamagedOrUnusualFileException( 'Error estimating framerate!' )
         
@@ -630,7 +630,7 @@ def parse_ffmpeg_mime_text( lines ):
         
         return mime_text
         
-    except Exception as e:
+    except:
         
         raise HydrusExceptions.DamagedOrUnusualFileException( 'Error reading file type!' )
         
@@ -661,7 +661,7 @@ def parse_ffmpeg_num_frames_manually( lines ) -> int:
         
         num_frames = int( frames_string )
         
-    except Exception as e:
+    except:
         
         raise HydrusExceptions.DamagedOrUnusualFileException( 'Video was unable to render correctly--could not parse ffmpeg output line: "{}"'.format( final_line ) )
         
@@ -691,7 +691,7 @@ def parse_ffmpeg_video_format( lines ):
             return ( False, 'none' )
             
         
-    except Exception as e:
+    except:
         
         video_format = 'unknown'
         
@@ -779,7 +779,7 @@ def parse_ffmpeg_video_resolution( lines, png_ok = False ) -> tuple[ int, int ]:
         
         return ( width, height )
         
-    except Exception as e:
+    except:
         
         raise HydrusExceptions.DamagedOrUnusualFileException( 'Error parsing resolution!' )
         

@@ -96,7 +96,7 @@ class ThumbnailPairListModel( QC.QAbstractTableModel ):
                     raise Exception()
                     
                 
-            except Exception as e:
+            except:
                 
                 return
                 

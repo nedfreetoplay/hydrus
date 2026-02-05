@@ -158,8 +158,6 @@ SERIALISABLE_TYPE_IMPORT_OPTIONS_MANAGER = 144
 SERIALISABLE_TYPE_PREFETCH_IMPORT_OPTIONS = 145
 SERIALISABLE_TYPE_DOMAIN_SETTINGS = 146
 SERIALISABLE_TYPE_DOMAIN_STATUS = 147
-SERIALISABLE_TYPE_FILE_FILTERING_IMPORT_OPTIONS = 148
-SERIALISABLE_TYPE_LOCATION_IMPORT_OPTIONS = 149
 
 SERIALISABLE_TYPES_TO_OBJECT_TYPES = {}
 
@@ -340,7 +338,7 @@ class SerialisableBase( object ):
                 ( current_version, serialisable_info ) = self._update_serialisable_info( current_version, serialisable_info )
                 
             
-        except Exception as e:
+        except:
             
             raise HydrusExceptions.SerialisationException( 'Could not update this object of type {} from version {} to {}!'.format( self.SERIALISABLE_NAME, original_version, self.SERIALISABLE_VERSION ) )
             
@@ -349,7 +347,7 @@ class SerialisableBase( object ):
             
             self._initialise_from_serialisable_info( serialisable_info )
             
-        except Exception as e:
+        except:
             
             if object_is_newer:
                 

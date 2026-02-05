@@ -24,7 +24,7 @@ try:
     
     DATEPARSER_OK = True
     
-except Exception as e:
+except:
     
     DATEPARSER_OK = False
     
@@ -786,7 +786,7 @@ def parse_value( parse_result: SystemPredParseResult, spec ):
                 
                 string = original_string
                 
-            except Exception as e:
+            except:
                 
                 pass
                 
@@ -973,7 +973,7 @@ def parse_value( parse_result: SystemPredParseResult, spec ):
             
             HydrusTags.check_tag_not_empty( tag )
             
-        except Exception as e:
+        except:
             
             tag = 'invalid tag'
             

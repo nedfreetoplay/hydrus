@@ -207,7 +207,7 @@ def is_encrypted_zip( path_to_zip ):
             return False
             
         
-    except Exception as e:
+    except:
         
         raise HydrusExceptions.DamagedOrUnusualFileException( 'Could not open this zip at all!' )
         
@@ -354,7 +354,7 @@ def zip_looks_like_cbz( path_to_zip ):
                 reader.read()
                 
             
-        except Exception as e:
+        except:
             
             return False
             
@@ -412,7 +412,7 @@ def mime_from_open_document( path ):
         
         return filetype if filetype in HC.OPEN_DOCUMENT_ZIPS else None
         
-    except Exception as e:
+    except:
         
         return None
         

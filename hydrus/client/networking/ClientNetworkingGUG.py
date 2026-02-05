@@ -377,7 +377,7 @@ class NestedGalleryURLGenerator( HydrusSerialisable.SerialisableBaseNamed ):
             
             example_urls = self.GetExampleURLs()
             
-        except Exception as e:
+        except:
             
             return False
             

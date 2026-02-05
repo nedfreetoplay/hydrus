@@ -7,21 +7,15 @@ try:
     # I don't know if it needs to be before locale.setlocale, but I know that it works if it does
     import dateparser
     
-except Exception as e:
+except:
     
     pass
     
 
 import locale
 
-try:
-    
-    locale.setlocale( locale.LC_ALL, '' )
-    
-except Exception as e:
-    
-    pass
-    
+try: locale.setlocale( locale.LC_ALL, '' )
+except: pass
 
 from hydrus.client.gui import QtInit
 from qtpy import QtWidgets as QW
@@ -43,8 +37,6 @@ import traceback
 from twisted.internet import reactor
 
 def boot():
-    
-    everything_went_ok = False
     
     args = sys.argv[1:]
     
@@ -88,9 +80,7 @@ def boot():
             
             app.exec_()
             
-            everything_went_ok = controller.was_successful
-            
-        except Exception as e:
+        except:
             
             HydrusData.debug_print( traceback.format_exc() )
             
@@ -104,7 +94,7 @@ def boot():
                 
                 controller.pubimmediate( 'wake_daemons' )
                 
-            except Exception as e:
+            except:
                 
                 pass
                 
@@ -117,13 +107,13 @@ def boot():
                 
                 controller.TidyUp()
                 
-            except Exception as e:
+            except:
                 
                 pass
                 
             
         
-    except Exception as e:
+    except:
         
         HydrusData.debug_print( traceback.format_exc() )
         
@@ -142,9 +132,18 @@ def boot():
             input( 'Press any key to exit.' )
             
         
-        if not everything_went_ok:
+        try:
             
-            sys.exit( 1 )
+            if controller.was_successful:
+                
+                sys.exit( 0 )
+                
             
+        except:
+            
+            pass
+            
+        
+        sys.exit( 1 )
         
     

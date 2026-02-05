@@ -4108,7 +4108,7 @@ class ReviewServicesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 previous_service_key = page.GetServiceKey()
                 
             
-        except Exception as e:
+        except:
             
             previous_service_key = None
             

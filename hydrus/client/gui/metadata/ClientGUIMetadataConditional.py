@@ -358,7 +358,7 @@ class AutoCompleteDropdownMetadataConditional( ClientGUIACDropdown.AutocompleteD
                         predicates.append( pat.GetImmediateFileSearchPredicate( allow_auto_wildcard_conversion = True ) )
                         
                     
-                except Exception as e:
+                except:
                     
                     continue
                     

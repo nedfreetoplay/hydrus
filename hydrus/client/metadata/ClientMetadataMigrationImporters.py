@@ -264,7 +264,7 @@ class SingleFileMetadataImporterMediaTags( SingleFileMetadataImporterMedia, Hydr
             
             name = CG.client_controller.services_manager.get_name(self._service_key)
             
-        except Exception as e:
+        except:
             
             name = 'unknown service'
             

@@ -39,7 +39,7 @@ class NetworkSessionManagerLegacy( HydrusSerialisable.SerialisableBase ):
                 
                 session = pickle.loads( bytes.fromhex( pickled_session_hex ) )
                 
-            except Exception as e:
+            except:
                 
                 # new version of requests uses a diff format, wew
                 

@@ -416,7 +416,7 @@ class ReviewLocalFileImports( ClientGUIScrolledPanels.ReviewPanel ):
                             
                             sidecar_local_file_parse.size = os.path.getsize( sidecar_path )
                             
-                        except Exception as e:
+                        except:
                             
                             sidecar_local_file_parse.size = 0
                             
@@ -446,7 +446,7 @@ class ReviewLocalFileImports( ClientGUIScrolledPanels.ReviewPanel ):
                             
                             size = os.path.getsize( path )
                             
-                        except Exception as e:
+                        except:
                             
                             size = 0
                             

@@ -207,7 +207,7 @@ class RegexInput( QW.QWidget ):
             
             self._regex_text.setObjectName( 'HydrusValid' )
             
-        except Exception as e:
+        except:
             
             self._regex_text.setObjectName( 'HydrusInvalid' )
             

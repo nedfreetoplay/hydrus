@@ -241,7 +241,7 @@ def get_frame_durations_ms_pil_animation( path, human_file_description = None ):
             
             break
             
-        except Exception as e:
+        except:
             
             # seek and fellows can raise OSError on a truncated file lmao
             # trying to keep walking through such a gif using PIL is rife with trouble (although mpv may be ok at a later stage), so let's fudge a solution
@@ -400,7 +400,7 @@ def get_webp_frame_durations_ms( path ):
                 
                 times_to_play = int.from_bytes( loop_bytes, byteorder = 'little' )
                 
-            except Exception as e:
+            except:
                 
                 pass
                 
@@ -425,7 +425,7 @@ def get_webp_frame_durations_ms( path ):
                     raise Exception( 'Zero-duration frame!' )
                     
                 
-            except Exception as e:
+            except:
                 
                 duration_ms = fallback_frame_duration_ms
                 
@@ -452,7 +452,7 @@ def pil_animation_has_duration( path ):
             return False
             
         
-    except Exception as e:
+    except:
         
         return False
         

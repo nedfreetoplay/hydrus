@@ -517,7 +517,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
             
             show_warning = gug.IsMultiDomainNGUG()
             
-        except Exception as e:
+        except:
             
             show_warning = False
             
@@ -701,7 +701,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
                 pretty_delay = 'bandwidth: ' + HydrusTime.timedelta_to_pretty_timedelta( estimate )
                 
             
-        except Exception as e:
+        except:
             
             pretty_delay = 'could not determine bandwidth--there may be a problem with some of the urls in this query'
             
@@ -737,7 +737,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
                 delay = estimate
                 
             
-        except Exception as e:
+        except:
             
             delay = 0
             
@@ -1999,7 +1999,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                         
                     
                 
-            except Exception as e:
+            except:
                 
                 pretty_delay = 'could not determine bandwidth, there may be an error with the sub or its urls'
                 
@@ -2102,7 +2102,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                         
                     
                 
-            except Exception as e:
+            except:
                 
                 delay = 0
                 

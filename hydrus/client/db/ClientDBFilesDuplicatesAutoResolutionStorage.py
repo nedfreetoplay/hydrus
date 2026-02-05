@@ -404,7 +404,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
             
             existing_rule = self._rule_ids_to_rules[ rule_id ]
             
-        except Exception as e:
+        except:
             
             return
             

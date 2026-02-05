@@ -35,7 +35,7 @@ def get_ugoira_properties( path_to_zip ):
         
         return get_ugoira_properties_from_json( path_to_zip )
         
-    except Exception as e:
+    except:
         
         pass
         
@@ -46,7 +46,7 @@ def get_ugoira_properties( path_to_zip ):
         
         ( width, height ) = pil_image.size
         
-    except Exception as e:
+    except:
         
         ( width, height ) = ( 100, 100 )
         
@@ -55,7 +55,7 @@ def get_ugoira_properties( path_to_zip ):
         
         num_frames = len(get_frame_paths_from_ugoira_zip( path_to_zip ))
         
-    except Exception as e:
+    except:
         
         num_frames = None
         
@@ -75,7 +75,7 @@ def zip_looks_like_ugoira( path_to_zip ):
             return True
             
         
-    except Exception as e:
+    except:
         
         pass
         
@@ -160,7 +160,7 @@ def zip_looks_like_ugoira( path_to_zip ):
                 reader.read()
                 
             
-        except Exception as e:
+        except:
             
             return False
             
@@ -212,7 +212,7 @@ def get_ugoira_frame_data_json( path: str ) -> list[ UgoiraFrame ] | None:
             return ugoiraJson['frames']
             
         
-    except Exception as e:
+    except:
         
         return None
         
@@ -250,7 +250,7 @@ def get_frame_paths_ugoira( path ):
             return [data['file'] for data in frameData]
             
         
-    except Exception as e:
+    except:
         
         pass
         

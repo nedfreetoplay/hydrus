@@ -10,7 +10,7 @@ try:
     import cbor2
     import base64
     CBOR_AVAILABLE = True
-except Exception as e:
+except:
     pass
 
 from hydrus.core import HydrusConstants as HC

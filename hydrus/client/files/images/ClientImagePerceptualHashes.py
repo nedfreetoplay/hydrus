@@ -32,7 +32,7 @@ def GenerateUsefulShapePerceptualHashes( path, mime ):
         
         return GenerateUsefulShapePerceptualHashesNumPy( numpy_image )
         
-    except Exception as e:
+    except:
         
         return set()
         

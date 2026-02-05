@@ -57,7 +57,7 @@ class HydrusPubSub( object ):
                         
                     
                 
-            except Exception as e:
+            except:
                 
                 pass
                 

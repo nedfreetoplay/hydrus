@@ -321,7 +321,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
     
     mediaCleared = QC.Signal()
     mediaChanged = QC.Signal( ClientMedia.MediaSingleton )
-    haveDestroyedAllMediaWindows = QC.Signal()
+    readyToDestroy = QC.Signal()
     
     def __init__( self, parent, location_context: ClientLocation.LocationContext ):
         
@@ -367,9 +367,9 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         self.installEventFilter( self._click_drag_reporting_filter )
         
-        self._media_container = ClientGUICanvasMedia.MediaContainer( self, self, self.CANVAS_TYPE, self._background_colour_generator, self._click_drag_reporting_filter )
+        self._media_container = ClientGUICanvasMedia.MediaContainer( self, self.CANVAS_TYPE, self._background_colour_generator, self._click_drag_reporting_filter )
         
-        self._media_container.haveDestroyedAllMediaWindows.connect( self.haveDestroyedAllMediaWindows )
+        self._media_container.readyToDestroy.connect( self.readyToDestroy )
         
         self._last_drag_pos = None
         self._current_drag_is_touch = False
@@ -796,11 +796,6 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
     def GetMedia( self ):
         
         return self._current_media
-        
-    
-    def HandleMouseMoveWithoutEvent( self, is_dragging: bool ):
-        
-        pass
         
     
     def ManageNotes( self, canvas_key, name_to_start_on = None ):
@@ -1862,14 +1857,6 @@ class CanvasPanel( Canvas ):
             
             ClientGUIMediaMenus.AddShareMenu( self, self, menu, self._current_media, [ self._current_media ] )
             
-            ClientGUIMenus.AppendSeparator( menu )
-            
-            player_menu = ClientGUIMenus.GenerateMenu( menu )
-            
-            ClientGUIMenus.AppendMenuLabel( player_menu, f'This is a {self._media_container.GetCurrentMediaPlayerLabel()}.' )
-            
-            ClientGUIMenus.AppendMenu( menu, player_menu, 'player' )
-            
         
         CGC.core().PopupMenu( self, menu )
         
@@ -2037,7 +2024,7 @@ class CanvasPanelWithHovers( CanvasPanel ):
             
             ( VBOX_SPACING, VBOX_MARGIN ) = self._top_right_hover.GetVboxSpacingAndMargin()
             
-        except Exception as e:
+        except:
             
             QFRAME_PADDING = 2
             ( VBOX_SPACING, VBOX_MARGIN ) = ( 2, 2 )
@@ -2428,7 +2415,7 @@ class CanvasWithHovers( Canvas ):
                 
                 ( NOTE_SPACING, NOTE_MARGIN ) = self._right_notes_hover.GetNoteSpacingAndMargin()
                 
-            except Exception as e:
+            except:
                 
                 QFRAME_PADDING = 2
                 ( NOTE_SPACING, NOTE_MARGIN ) = ( 2, 2 )
@@ -2564,7 +2551,7 @@ class CanvasWithHovers( Canvas ):
                 
                 QFRAME_PADDING = self._right_notes_hover.frameWidth()
                 
-            except Exception as e:
+            except:
                 
                 QFRAME_PADDING = 2
                 
@@ -2678,7 +2665,7 @@ class CanvasWithHovers( Canvas ):
                 
                 ( VBOX_SPACING, VBOX_MARGIN ) = self._top_right_hover.GetVboxSpacingAndMargin()
                 
-            except Exception as e:
+            except:
                 
                 QFRAME_PADDING = 2
                 ( VBOX_SPACING, VBOX_MARGIN ) = ( 2, 2 )
@@ -2981,9 +2968,7 @@ class CanvasWithHovers( Canvas ):
             
         
     
-    def HandleMouseMoveWithoutEvent( self, left_down: bool ):
-        
-        is_dragging = left_down and self._last_drag_pos is not None
+    def mouseMoveEvent( self, event ):
         
         current_focus_tlw = QW.QApplication.activeWindow()
         
@@ -3002,7 +2987,9 @@ class CanvasWithHovers( Canvas ):
         event_pos = self.mapFromGlobal( QG.QCursor.pos() )
         
         mouse_currently_shown = self.cursor().shape() == QC.Qt.CursorShape.ArrowCursor
+        show_mouse = mouse_currently_shown
         
+        is_dragging = event.buttons() & QC.Qt.MouseButton.LeftButton and self._last_drag_pos is not None
         has_moved = event_pos != self._last_motion_pos
         
         we_are_hiding_an_anchored_drag = False
@@ -3064,13 +3051,6 @@ class CanvasWithHovers( Canvas ):
             
             self._RestartCursorHideWait()
             
-        
-    
-    def mouseMoveEvent( self, event ):
-        
-        left_down = bool( event.buttons() & QC.Qt.MouseButton.LeftButton )
-        
-        self.HandleMouseMoveWithoutEvent( left_down )
         
         super().mouseMoveEvent( event )
         
@@ -4056,7 +4036,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
                 # TODO: fix this ugly, temporary hack from refactoring
                 first_media = self._media_list.GetMediaByHashes( { first_hash } )[0]
                 
-            except Exception as e:
+            except:
                 
                 first_media = self._media_list.GetFirst()
                 
@@ -4275,7 +4255,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
             
             period = float( period_str )
             
-        except Exception as e:
+        except:
             
             ClientGUIDialogsMessage.ShowWarning( self, 'Could not parse that slideshow period!' )
             
@@ -4537,14 +4517,6 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
             ClientGUIMediaMenus.AddOpenMenu( self, self, menu, self._current_media, [ self._current_media ] )
             
             ClientGUIMediaMenus.AddShareMenu( self, self, menu, self._current_media, [ self._current_media ] )
-            
-            ClientGUIMenus.AppendSeparator( menu )
-            
-            player_menu = ClientGUIMenus.GenerateMenu( menu )
-            
-            ClientGUIMenus.AppendMenuLabel( player_menu, f'This is a {self._media_container.GetCurrentMediaPlayerLabel()}.' )
-            
-            ClientGUIMenus.AppendMenu( menu, player_menu, 'player' )
             
             CGC.core().PopupMenu( self, menu )
             

@@ -749,7 +749,7 @@ class EditGUGsPanel( ClientGUIScrolledPanels.EditPanel ):
             
             url_class = CG.client_controller.network_engine.domain_manager.GetURLClass( example_url )
             
-        except Exception as e:
+        except:
             
             example_url = 'unable to parse example url'
             url_class = None

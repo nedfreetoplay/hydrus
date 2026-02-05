@@ -586,7 +586,7 @@ def populate_jpeg_quality_storage( jpeg_hash ):
             
             quality_result = HydrusImageMetadata.get_jpeg_quantization_quality_estimate( raw_pil_image )
             
-        except Exception as e:
+        except:
             
             pass
             
@@ -598,8 +598,6 @@ def populate_jpeg_quality_storage( jpeg_hash ):
         jpeg_quality_storage.add_data(jpeg_hash, jpeg_quality)
         
     
-
-HAVE_SHOWN_VISUAL_DUPLICATES_ERROR = False
 
 def GetDuplicateComparisonStatementsSlow( shown_media_result: ClientMediaResult.MediaResult, comparison_media_result: ClientMediaResult.MediaResult, they_are_pixel_duplicates: bool ):
     
@@ -738,20 +736,9 @@ def GetDuplicateComparisonStatementsSlow( shown_media_result: ClientMediaResult.
                 
             except Exception as e:
                 
-                global HAVE_SHOWN_VISUAL_DUPLICATES_ERROR
+                HydrusData.ShowException( e, do_wait = False )
                 
-<<<<<<< HEAD
                 HydrusData.show_text( 'The "A and B are visual duplicates" test threw an error! Please let hydev know the details.' )
-=======
-                if not HAVE_SHOWN_VISUAL_DUPLICATES_ERROR:
-                    
-                    HAVE_SHOWN_VISUAL_DUPLICATES_ERROR = True
-                    
-                    HydrusData.ShowText( 'The "A and B are visual duplicates" test threw an error! You should have more info in your log. Please let hydev know the details.' )
-                    
-                    HydrusData.ShowException( e, do_wait = False )
-                    
->>>>>>> 955f2e8e9df1d901351bb3dcf4c0a50e99048667
                 
             
         
@@ -785,7 +772,7 @@ def GetVisualData( media_result: ClientMediaResult.MediaResult ) -> ClientVisual
             
             visual_data = ClientVisualData.GenerateImageVisualDataNumPy( numpy_image )
             
-        except Exception as e:
+        except:
             
             HydrusData.print_text( f'Hey, the media with hash {hash.hex()} failed to generate visual data! Hydev would be interested in seeing this file!' )
             
@@ -824,7 +811,7 @@ def GetVisualDataTiled( media_result: ClientMediaResult.MediaResult ) -> ClientV
             
             visual_data_tiled = ClientVisualData.GenerateImageVisualDataTiledNumPy( numpy_image )
             
-        except Exception as e:
+        except:
             
             HydrusData.print_text( f'Hey, the media with hash {hash.hex()} failed to generate tiled visual data! Hydev would be interested in seeing this file!' )
             

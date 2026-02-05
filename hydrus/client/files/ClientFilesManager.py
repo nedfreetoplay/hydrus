@@ -240,7 +240,7 @@ class ClientFilesManager( object ):
                 
                 needed_to_copy_file = False
                 
-            except Exception as e:
+            except:
                 
                 HydrusPaths.mirror_file( old_path, new_path )
                 
@@ -747,7 +747,7 @@ class ClientFilesManager( object ):
                         
                         HydrusPaths.make_sure_directory_exists( dir_to_test )
                         
-                    except Exception as e:
+                    except:
                         
                         text = 'Attempting to create the database\'s client_files folder structure in {} failed!'.format( dir_to_test )
                         
@@ -757,7 +757,7 @@ class ClientFilesManager( object ):
                         
                     
                 
-            except Exception as e:
+            except:
                 
                 text = 'Attempting to create the database\'s client_files folder structure failed!'
                 
@@ -1034,7 +1034,7 @@ class ClientFilesManager( object ):
                                 
                                 is_an_orphan = CG.client_controller.read( 'is_an_orphan', orphan_type, hash )
                                 
-                            except Exception as e:
+                            except:
                                 
                                 is_an_orphan = True
                                 
@@ -1565,7 +1565,7 @@ class ClientFilesManager( object ):
                 do_it = True
                 
             
-        except Exception as e:
+        except:
             
             do_it = True
             

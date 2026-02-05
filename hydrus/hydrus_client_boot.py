@@ -11,21 +11,15 @@ try:
     # I don't know if it needs to be before locale.setlocale, but I know that it works if it does
     import dateparser
     
-except Exception as e:
+except:
     
     pass
     
 
 import locale
 
-try:
-    
-    locale.setlocale( locale.LC_ALL, '' )
-    
-except Exception as e:
-    
-    pass
-    
+try: locale.setlocale( locale.LC_ALL, '' )
+except: pass
 
 import sys
 
@@ -175,7 +169,7 @@ except Exception as e:
         HydrusData.debug_print( title )
         HydrusData.print_exception( e )
         
-    except Exception as e:
+    except:
         
         print( title )
         print( 'Note for hydev: HydrusData did not import; probably a very early import (Qt?) issue!' )
@@ -220,7 +214,7 @@ except Exception as e:
         ClientGUIDialogsMessage.ShowCritical( None, title, str( e ) )
         ClientGUIDialogsMessage.ShowCritical( None, title, 'Here is the full error:\n\n' + traceback.format_exc() )
         
-    except Exception as e:
+    except:
         
         message = 'Could not start up Qt to show the error visually!'
         
@@ -228,7 +222,7 @@ except Exception as e:
             
             HydrusData.print_text( message )
             
-        except Exception as e:
+        except:
             
             print( message )
             
@@ -263,7 +257,7 @@ def boot():
             
             controller.run()
             
-        except Exception as e:
+        except:
             
             HydrusData.print_text( 'hydrus client failed' )
             

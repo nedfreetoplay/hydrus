@@ -42,14 +42,14 @@ if not PIL_HAS_HEIF:
             
             pillow_heif.options.DISABLE_SECURITY_LIMITS = True # no 512MB/768MB bitmap limit for file loading
             
-        except Exception as e:
+        except:
             
             pass
             
         
         HEIF_PLUGIN_OK = True
         
-    except Exception as e:
+    except:
         
         HydrusData.print_text( 'Could not register HEIF Opener with plugin library.' )
         
@@ -77,7 +77,7 @@ if not PIL_HAS_AVIF:
         
         AVIF_PLUGIN_OK = True
         
-    except Exception as e:
+    except:
         
         try:
             
@@ -96,13 +96,13 @@ if not PIL_HAS_AVIF:
                     
                     HydrusData.print_text( 'AVIF Opener registered with legacy library.' )
                     
-                except Exception as e:
+                except:
                     
                     HydrusData.print_text( 'Could not register AVIF Opener with main or legacy library.' )
                     
                 
             
-        except Exception as e:
+        except:
             
             HydrusData.print_text( 'Could not register AVIF Opener with main or legacy plugin library.' )
             
@@ -174,7 +174,7 @@ def set_enable_load_truncated_images( value: bool ):
             
             HydrusData.print_text( f'Could not set the PIL image trunctation value to {value}--perhaps this version of PIL ({PIL.__version__})does not support it?' )
             
-        except Exception as e:
+        except:
             
             HydrusData.print_text( f'Could not set the PIL image trunctation value to {value}, and could not determine the PIL version! Something is busted!' )
             
@@ -757,7 +757,7 @@ def is_decompression_bomb( path, human_file_description = None ) -> bool:
         
         return True
         
-    except Exception as e:
+    except:
         
         # pil was unable to load it, which does not mean it was a decomp bomb
         return False

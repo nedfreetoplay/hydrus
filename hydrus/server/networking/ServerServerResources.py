@@ -65,7 +65,7 @@ class HydrusResourceHydrusNetwork( HydrusServerResources.HydrusResource ):
                 
                 mime = HC.mime_enum_lookup[ content_type ]
                 
-            except Exception as e:
+            except:
                 
                 raise HydrusExceptions.BadRequestException( 'Did not recognise Content-Type header!' )
                 
@@ -244,7 +244,7 @@ class HydrusResourceRestricted( HydrusResourceHydrusNetwork ):
                     session_key = bytes.fromhex( session_key_hex )
                     
                 
-            except Exception as e:
+            except:
                 
                 raise HydrusExceptions.BadRequestException( 'Problem parsing cookies for Session Cookie!' )
                 

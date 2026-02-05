@@ -730,7 +730,7 @@ class HydrusResource( Resource ):
                 
                 user_agents = user_agent_text.split( ' ' )
                 
-            except Exception as e:
+            except:
                 
                 return # crazy user agent string, so just assume not a hydrus client
                 
@@ -800,7 +800,7 @@ class HydrusResource( Resource ):
                 request.producer.stopProducing()
                 
             
-        except Exception as e:
+        except:
             
             pass
             
@@ -813,7 +813,7 @@ class HydrusResource( Resource ):
                 
                 c()
                 
-            except Exception as e:
+            except:
                 
                 pass
                 
@@ -838,19 +838,8 @@ class HydrusResource( Resource ):
                 e = e.db_e # could well be a DataException, which we want to promote
                 
             
-<<<<<<< HEAD
             try: self._clean_up_temp_file( request )
             except: pass
-=======
-            try:
-                
-                self._CleanUpTempFile( request )
-                
-            except Exception as e:
-                
-                pass
-                
->>>>>>> 955f2e8e9df1d901351bb3dcf4c0a50e99048667
             
             error_summary = str( e )
             
@@ -935,53 +924,24 @@ class HydrusResource( Resource ):
             
             self._callback_render_response_context( request )
             
-        except Exception as e:
+        except:
             
-<<<<<<< HEAD
             try: HydrusData.debug_print( failure.getTraceback() )
             except: pass
-=======
-            try:
-                
-                HydrusData.DebugPrint( failure.getTraceback() )
-                
-            except Exception as e:
-                
-                pass
-                
->>>>>>> 955f2e8e9df1d901351bb3dcf4c0a50e99048667
             
             if hasattr( request, 'channel' ) and request.channel is not None:
                 
-                try:
-                    
-                    request.setResponseCode( 500 )
-                    
-                except Exception as e:
-                    
-                    pass
-                    
+                try: request.setResponseCode( 500 )
+                except: pass
                 
-                try:
-                    
-                    request.write( failure.getTraceback() )
-                    
-                except Exception as e:
-                    
-                    pass
-                    
+                try: request.write( failure.getTraceback() )
+                except: pass
                 
             
             if not request.finished:
                 
-                try:
-                    
-                    request.finish()
-                    
-                except Exception as e:
-                    
-                    pass
-                    
+                try: request.finish()
+                except: pass
                 
             
         
@@ -1010,7 +970,7 @@ class HydrusResource( Resource ):
             
             access_key = bytes.fromhex( hex_key )
             
-        except Exception as e:
+        except:
             
             raise HydrusExceptions.BadRequestException( 'Could not parse the hydrus key!' )
             

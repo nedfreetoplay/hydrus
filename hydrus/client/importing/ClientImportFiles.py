@@ -13,7 +13,6 @@ from hydrus.client import ClientConstants as CC
 from hydrus.client import ClientGlobals as CG
 from hydrus.client.files import ClientFiles
 from hydrus.client.files.images import ClientImagePerceptualHashes
-from hydrus.client.importing.options import FileFilteringImportOptions
 from hydrus.client.importing.options import FileImportOptionsLegacy
 
 class FileImportStatus( object ):
@@ -41,7 +40,7 @@ class FileImportStatus( object ):
         return FileImportStatus( self.status, self.hash, mime = self.mime, note = self.note )
         
     
-    def ShouldImport( self, file_filtering_import_options: FileFilteringImportOptions.FileFilteringImportOptions ):
+    def ShouldImport( self, file_import_options: FileImportOptionsLegacy.FileImportOptionsLegacy ):
         
         if self.status == CC.STATUS_UNKNOWN:
             
@@ -50,7 +49,7 @@ class FileImportStatus( object ):
         
         if self.status == CC.STATUS_DELETED:
             
-            if not file_filtering_import_options.ExcludesDeleted():
+            if not file_import_options.ExcludesDeleted():
                 
                 return True
                 
@@ -146,9 +145,7 @@ class FileImportJob( object ):
         
         ( size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) = self._file_info
         
-        file_filtering_import_options = self._file_import_options.GetFileFilteringImportOptions()
-        
-        file_filtering_import_options.CheckFileIsValid( size, mime, width, height )
+        self._file_import_options.CheckFileIsValid( size, mime, width, height )
         
     
     def DoWork( self, status_hook = None ) -> FileImportStatus:
@@ -160,7 +157,7 @@ class FileImportJob( object ):
         
         self.GeneratePreImportHashAndStatus( status_hook = status_hook )
         
-        if self._pre_import_file_status.ShouldImport( self._file_import_options.GetFileFilteringImportOptions() ):
+        if self._pre_import_file_status.ShouldImport( self._file_import_options ):
             
             self.GenerateInfo( status_hook = status_hook )
             
@@ -199,7 +196,7 @@ class FileImportJob( object ):
                     status_hook( 'importing to database' )
                     
                 
-                self._file_import_options.GetLocationImportOptions().CheckReadyToImport()
+                self._file_import_options.CheckReadyToImport()
                 
                 self._post_import_file_status = CG.client_controller.write_synchronous( 'import_file', self )
                 
@@ -278,9 +275,7 @@ class FileImportJob( object ):
         
         new_options = CG.client_controller.new_options
         
-        file_filtering_import_options = self._file_import_options.GetFileFilteringImportOptions()
-        
-        if mime in HC.DECOMPRESSION_BOMB_IMAGES and not file_filtering_import_options.AllowsDecompressionBombs():
+        if mime in HC.DECOMPRESSION_BOMB_IMAGES and not self._file_import_options.AllowsDecompressionBombs():
             
             if HG.file_import_report_mode:
                 
@@ -343,7 +338,7 @@ class FileImportJob( object ):
                 
                 self._blurhash = HydrusBlurhash.get_blurhash_from_numpy( thumbnail_numpy )
                 
-            except Exception as e:
+            except:
                 
                 pass
                 
@@ -400,7 +395,7 @@ class FileImportJob( object ):
                 
                 has_exif = HydrusImageMetadata.has_exif( raw_pil_image )
                 
-            except Exception as e:
+            except:
                 
                 pass
                 
@@ -430,7 +425,7 @@ class FileImportJob( object ):
                     has_icc_profile = HydrusImageMetadata.has_icc_profile( raw_pil_image )
                     
                 
-            except Exception as e:
+            except:
                 
                 pass
                 
@@ -446,7 +441,7 @@ class FileImportJob( object ):
                 
                 self._pixel_hash = HydrusImageHandling.get_image_pixel_hash( self._temp_path, mime )
                 
-            except Exception as e:
+            except:
                 
                 pass
                 
@@ -526,7 +521,7 @@ class FileImportJob( object ):
             
             media_result = CG.client_controller.read( 'media_result', self._post_import_file_status.hash )
             
-            content_update_package = self._file_import_options.GetLocationImportOptions().GetAlreadyInDBPostImportContentUpdatePackage( media_result )
+            content_update_package = self._file_import_options.GetAlreadyInDBPostImportContentUpdatePackage( media_result )
             
             CG.client_controller.write_synchronous( 'content_updates', content_update_package )
             

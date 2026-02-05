@@ -187,14 +187,8 @@ class TestServer( unittest.TestCase ):
         
         self.assertEqual( response, EXAMPLE_FILE )
         
-        try:
-            
-            os.remove( path )
-            
-        except Exception as e:
-            
-            pass
-            
+        try: os.remove( path )
+        except: pass
         
         #
         
@@ -257,14 +251,8 @@ class TestServer( unittest.TestCase ):
         
         self.assertEqual( response, EXAMPLE_THUMBNAIL )
         
-        try:
-            
-            os.remove( path )
-            
-        except Exception as e:
-            
-            pass
-            
+        try: os.remove( path )
+        except: pass
         
     
     def _test_repo( self, service ):
@@ -333,14 +321,8 @@ class TestServer( unittest.TestCase ):
         
         response = service.request(HC.GET, 'update', {'update_hash' : definitions_update_hash})
         
-        try:
-            
-            os.remove( path )
-            
-        except Exception as e:
-            
-            pass
-            
+        try: os.remove( path )
+        except: pass
         
         self.assertEqual( response, definitions_update_network_bytes )
         
@@ -368,14 +350,8 @@ class TestServer( unittest.TestCase ):
         
         response = service.request(HC.GET, 'update', {'update_hash' : content_update_hash})
         
-        try:
-            
-            os.remove( path )
-            
-        except Exception as e:
-            
-            pass
-            
+        try: os.remove( path )
+        except: pass
         
         self.assertEqual( response, content_update_network_bytes )
         
