@@ -106,7 +106,7 @@ class HydrusSearchProvider( QAbstractLocatorSearchProvider ):
         query = query.strip()
         
         # if user has typed something, we are now in search mode and want to test against this
-        if 0 < len( query ) < CG.client_controller.new_options.GetInteger( 'command_palette_num_chars_for_results_threshold' ):
+        if 0 < len( query ) < CG.client_controller.new_options.get_integer('command_palette_num_chars_for_results_threshold'):
             
             return False
             
@@ -143,7 +143,7 @@ class FavSearchesSearchProvider( HydrusSearchProvider ):
             
             ( folder, name, fsc, sync, sort, collect ) = fav_search
             
-            if CG.client_controller.new_options.GetBoolean( 'command_palette_fav_searches_open_new_page' ):
+            if CG.client_controller.new_options.get_boolean('command_palette_fav_searches_open_new_page'):
                 
                 CG.client_controller.gui.NewPageQueryFileSearchContext( 
                     fsc,
@@ -176,7 +176,7 @@ class FavSearchesSearchProvider( HydrusSearchProvider ):
             return
             
         
-        if query == "" and not CG.client_controller.new_options.GetBoolean( 'command_palette_initially_show_favourite_searches' ):
+        if query == "" and not CG.client_controller.new_options.get_boolean('command_palette_initially_show_favourite_searches'):
             
             return
             
@@ -220,9 +220,9 @@ class FavSearchesSearchProvider( HydrusSearchProvider ):
         
         if result:
             
-            if CG.client_controller.new_options.GetNoneableInteger( 'command_palette_limit_favourite_searches_results' ) is not None:
+            if CG.client_controller.new_options.get_noneable_integer('command_palette_limit_favourite_searches_results') is not None:
                 
-                result = result[ : CG.client_controller.new_options.GetNoneableInteger( 'command_palette_limit_favourite_searches_results' ) ]
+                result = result[ : CG.client_controller.new_options.get_noneable_integer('command_palette_limit_favourite_searches_results')]
                 
             
             self.resultsAvailable.emit( jobID, result )
@@ -295,7 +295,7 @@ class PagesSearchProvider( HydrusSearchProvider ):
             return
             
         
-        if query == "" and not CG.client_controller.new_options.GetBoolean( 'command_palette_initially_show_all_pages' ):
+        if query == "" and not CG.client_controller.new_options.get_boolean('command_palette_initially_show_all_pages'):
             
             return
             
@@ -329,7 +329,7 @@ class PagesSearchProvider( HydrusSearchProvider ):
                     widget = typing.cast( ClientGUIPages.Page, widget )
                     
                 
-                if not is_page_of_pages or CG.client_controller.new_options.GetBoolean( 'command_palette_show_page_of_pages' ):
+                if not is_page_of_pages or CG.client_controller.new_options.get_boolean('command_palette_show_page_of_pages'):
                     
                     selectable_media_page = widget
                     
@@ -363,9 +363,9 @@ class PagesSearchProvider( HydrusSearchProvider ):
                     
                 
             
-            if CG.client_controller.new_options.GetNoneableInteger( 'command_palette_limit_page_results' ) is not None:
+            if CG.client_controller.new_options.get_noneable_integer('command_palette_limit_page_results') is not None:
                 
-                result = result[ : CG.client_controller.new_options.GetNoneableInteger( 'command_palette_limit_page_results' ) ]
+                result = result[ : CG.client_controller.new_options.get_noneable_integer('command_palette_limit_page_results')]
                 
             
             return result
@@ -443,7 +443,7 @@ class PagesHistorySearchProvider( HydrusSearchProvider ):
             return
             
         
-        if query == "" and not CG.client_controller.new_options.GetBoolean( 'command_palette_initially_show_history' ):
+        if query == "" and not CG.client_controller.new_options.get_boolean('command_palette_initially_show_history'):
             
             return
             
@@ -478,9 +478,9 @@ class PagesHistorySearchProvider( HydrusSearchProvider ):
                     
                 
             
-            if CG.client_controller.new_options.GetNoneableInteger( 'command_palette_limit_history_results' ) is not None:
+            if CG.client_controller.new_options.get_noneable_integer('command_palette_limit_history_results') is not None:
                 
-                result = result[ : CG.client_controller.new_options.GetNoneableInteger( 'command_palette_limit_history_results' ) ]
+                result = result[ : CG.client_controller.new_options.get_noneable_integer('command_palette_limit_history_results')]
                 
             
             return result
@@ -574,7 +574,7 @@ class MainMenuSearchProvider( HydrusSearchProviderCrazyLaggy ):
             return
             
         
-        if not CG.client_controller.new_options.GetBoolean( 'command_palette_show_main_menu' ):
+        if not CG.client_controller.new_options.get_boolean('command_palette_show_main_menu'):
             
             return
             
@@ -708,7 +708,7 @@ class MediaMenuSearchProvider( HydrusSearchProviderCrazyLaggy ):
             return
             
         
-        if not CG.client_controller.new_options.GetBoolean( 'command_palette_show_media_menu' ):
+        if not CG.client_controller.new_options.get_boolean('command_palette_show_media_menu'):
             
             return
             

@@ -109,7 +109,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
                 
                 dictionary = HydrusSerialisable.create_from_string( dictionary_string )
                 
-                service = ClientServices.GenerateService( service_key, service_type, name, dictionary )
+                service = ClientServices.generate_service(service_key, service_type, name, dictionary)
                 
                 self._service_ids_to_services[ service_id ] = service
                 
@@ -145,7 +145,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
         
         service_id = self._get_last_row_id()
         
-        service = ClientServices.GenerateService( service_key, service_type, name, dictionary )
+        service = ClientServices.generate_service(service_key, service_type, name, dictionary)
         
         self._service_ids_to_services[ service_id ] = service
         self._service_keys_to_service_ids[ service_key ] = service_id
@@ -186,7 +186,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
         
         if service_id in self._service_ids_to_services:
             
-            service_key = self._service_ids_to_services[ service_id ].GetServiceKey()
+            service_key = self._service_ids_to_services[ service_id ].get_service_key()
             
             del self._service_ids_to_services[ service_id ]
             
@@ -201,7 +201,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
     
     def FileServiceIsCoveredByHydrusLocalFileStorage( self, service_id ) -> bool:
         
-        service_type = self.GetService( service_id ).GetServiceType()
+        service_type = self.GetService( service_id ).get_service_type()
         
         return service_type in HC.FILE_SERVICES_COVERED_BY_HYDRUS_LOCAL_FILE_STORAGE
         
@@ -211,7 +211,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
         location_context = file_search_context.GetLocationContext()
         tag_context = file_search_context.GetTagContext()
         
-        ( file_service_keys, file_location_is_cross_referenced ) = location_context.GetCoveringCurrentFileServiceKeys()
+        ( file_service_keys, file_location_is_cross_referenced ) = location_context.get_covering_current_file_service_keys()
         
         search_file_service_ids = []
         
@@ -254,7 +254,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
     
     def GetNonDupeName( self, name ) -> str:
         
-        existing_names = { service.GetName() for service in self._service_ids_to_services.values() }
+        existing_names = {service.get_name() for service in self._service_ids_to_services.values()}
         
         return HydrusData.get_non_dupe_name( name, existing_names, do_casefold = True )
         
@@ -271,7 +271,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
     
     def GetServices( self, limited_types = HC.ALL_SERVICES ):
         
-        return [ service for service in self._service_ids_to_services.values() if service.GetServiceType() in limited_types ]
+        return [service for service in self._service_ids_to_services.values() if service.get_service_type() in limited_types]
         
     
     def GetServiceId( self, service_key: bytes ) -> int:
@@ -286,7 +286,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
     
     def GetServiceIds( self, service_types ) -> set[ int ]:
         
-        return { service_id for ( service_id, service ) in self._service_ids_to_services.items() if service.GetServiceType() in service_types }
+        return {service_id for ( service_id, service ) in self._service_ids_to_services.items() if service.get_service_type() in service_types}
         
     
     def GetServiceIdsToServiceKeys( self ) -> dict[ int, bytes ]:
@@ -296,7 +296,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
     
     def GetServiceKey( self, service_id: int ) -> bytes:
         
-        return self.GetService( service_id ).GetServiceKey()
+        return self.GetService( service_id ).get_service_key()
         
     
     def GetServiceKeys( self ) -> set[ bytes ]:
@@ -308,7 +308,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
         
         if service_id in self._service_ids_to_services:
             
-            return self._service_ids_to_services[ service_id ].GetServiceType()
+            return self._service_ids_to_services[ service_id ].get_service_type()
             
         
         raise HydrusExceptions.DataMissing( 'Service id error in database: id "{}" does not exist!'.format( service_id ) )
@@ -316,7 +316,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
     
     def GetServiceTypesToServiceIds( self, service_specifier: ClientServices.ServiceSpecifier ):
         
-        service_types = service_specifier.GetServiceTypes()
+        service_types = service_specifier.get_service_types()
         
         if len( service_types ) > 0:
             
@@ -324,7 +324,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
             
         else:
             
-            service_keys = service_specifier.GetServiceKeys()
+            service_keys = service_specifier.get_service_keys()
             
             service_ids = [ self._service_keys_to_service_ids[ service_key ] for service_key in service_keys  if service_key in self._service_keys_to_service_ids ]
             
@@ -333,7 +333,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
         
         for service_id in service_ids:
             
-            service_types_to_service_ids[ self._service_ids_to_services[ service_id ].GetServiceType() ].append( service_id )
+            service_types_to_service_ids[ self._service_ids_to_services[ service_id ].get_service_type()].append(service_id)
             
         
         return service_types_to_service_ids
@@ -346,7 +346,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
     
     def LocationContextIsCoveredByHydrusLocalFileStorage( self, location_context: ClientLocation.LocationContext ):
         
-        if location_context.IncludesDeleted():
+        if location_context.includes_deleted():
             
             return False
             
@@ -366,7 +366,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
     
     def UpdateService( self, service: ClientServices.Service ):
         
-        ( service_key, service_type, name, dictionary ) = service.ToTuple()
+        ( service_key, service_type, name, dictionary ) = service.to_tuple()
         
         service_id = self.GetServiceId( service_key )
         
@@ -376,5 +376,5 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
         
         self._service_ids_to_services[ service_id ] = service
         
-        service.SetClean()
+        service.set_clean()
         

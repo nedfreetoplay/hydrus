@@ -54,13 +54,13 @@ class GUISessionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         self._default_gui_session.SetValue( HC.options['default_gui_session'] )
         
-        self._last_session_save_period_minutes.setValue( self._new_options.GetInteger( 'last_session_save_period_minutes' ) )
+        self._last_session_save_period_minutes.setValue(self._new_options.get_integer('last_session_save_period_minutes'))
         
-        self._only_save_last_session_during_idle.setChecked( self._new_options.GetBoolean( 'only_save_last_session_during_idle' ) )
+        self._only_save_last_session_during_idle.setChecked(self._new_options.get_boolean('only_save_last_session_during_idle'))
         
-        self._number_of_gui_session_backups.setValue( self._new_options.GetInteger( 'number_of_gui_session_backups' ) )
+        self._number_of_gui_session_backups.setValue(self._new_options.get_integer('number_of_gui_session_backups'))
         
-        self._show_session_size_warnings.setChecked( self._new_options.GetBoolean( 'show_session_size_warnings' ) )
+        self._show_session_size_warnings.setChecked(self._new_options.get_boolean('show_session_size_warnings'))
         
         #
         
@@ -88,12 +88,12 @@ class GUISessionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         HC.options[ 'default_gui_session' ] = self._default_gui_session.GetValue()
         
-        self._new_options.SetInteger( 'last_session_save_period_minutes', self._last_session_save_period_minutes.value() )
+        self._new_options.set_integer('last_session_save_period_minutes', self._last_session_save_period_minutes.value())
         
-        self._new_options.SetInteger( 'number_of_gui_session_backups', self._number_of_gui_session_backups.value() )
+        self._new_options.set_integer('number_of_gui_session_backups', self._number_of_gui_session_backups.value())
         
-        self._new_options.SetBoolean( 'show_session_size_warnings', self._show_session_size_warnings.isChecked() )
+        self._new_options.set_boolean('show_session_size_warnings', self._show_session_size_warnings.isChecked())
         
-        self._new_options.SetBoolean( 'only_save_last_session_during_idle', self._only_save_last_session_during_idle.isChecked() )
+        self._new_options.set_boolean('only_save_last_session_during_idle', self._only_save_last_session_during_idle.isChecked())
         
     

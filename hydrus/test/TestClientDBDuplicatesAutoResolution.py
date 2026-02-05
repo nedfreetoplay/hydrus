@@ -43,7 +43,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
     @classmethod
     def _delete_db( cls ):
         
-        cls._db.Shutdown()
+        cls._db.shutdown()
         
         while not cls._db.LoopIsFinished():
             
@@ -260,7 +260,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         rule_1.SetOperationMode( ClientDuplicatesAutoResolution.DUPLICATES_AUTO_RESOLUTION_RULE_OPERATION_MODE_WORK_BUT_NO_ACTION )
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
         
         predicates = [
             ClientSearchPredicate.Predicate( predicate_type = ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_EVERYTHING )
@@ -288,7 +288,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         mc = ClientMetadataConditional.MetadataConditional()
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext(
-            ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ),
+            ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY),
             ClientSearchTagContext.TagContext(),
             predicates = [
                 ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = { HC.IMAGE_JPEG } )
@@ -337,7 +337,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         self._compare_counts_cache( rule_1_read.GetCountsCacheDuplicate(), { ClientDuplicatesAutoResolution.DUPLICATE_STATUS_MATCHES_SEARCH_PASSED_TEST_READY_TO_ACTION : 1, ClientDuplicatesAutoResolution.DUPLICATE_STATUS_MATCHES_SEARCH_FAILED_TEST : 1 } )
         
-        rule_1 = rule_1_read.Duplicate()
+        rule_1 = rule_1_read.duplicate()
         
         potential_duplicates_search_context.SetPixelDupesPreference( ClientDuplicates.SIMILAR_FILES_PIXEL_DUPES_REQUIRED )
         
@@ -362,7 +362,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         rule_1.SetOperationMode( ClientDuplicatesAutoResolution.DUPLICATES_AUTO_RESOLUTION_RULE_OPERATION_MODE_WORK_BUT_NO_ACTION )
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
         
         predicates = [
             ClientSearchPredicate.Predicate( predicate_type = ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_EVERYTHING )
@@ -390,7 +390,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         mc = ClientMetadataConditional.MetadataConditional()
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext(
-            ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ),
+            ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY),
             ClientSearchTagContext.TagContext(),
             predicates = [
                 ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = { HC.IMAGE_JPEG } )
@@ -439,7 +439,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         self._compare_counts_cache( rule_1_read.GetCountsCacheDuplicate(), { ClientDuplicatesAutoResolution.DUPLICATE_STATUS_MATCHES_SEARCH_PASSED_TEST_READY_TO_ACTION : 1, ClientDuplicatesAutoResolution.DUPLICATE_STATUS_MATCHES_SEARCH_FAILED_TEST : 1 } )
         
-        rule_1 = rule_1_read.Duplicate()
+        rule_1 = rule_1_read.duplicate()
         
         selector = ClientDuplicatesAutoResolutionComparators.PairSelector()
         
@@ -448,7 +448,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         mc = ClientMetadataConditional.MetadataConditional()
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext(
-            ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ),
+            ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY),
             ClientSearchTagContext.TagContext(),
             predicates = [
                 ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = { HC.IMAGE_PNG } )
@@ -482,7 +482,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         rule_1.SetOperationMode( ClientDuplicatesAutoResolution.DUPLICATES_AUTO_RESOLUTION_RULE_OPERATION_MODE_WORK_BUT_NO_ACTION )
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
         
         predicates = [
             ClientSearchPredicate.Predicate( predicate_type = ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_EVERYTHING )
@@ -510,7 +510,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         mc = ClientMetadataConditional.MetadataConditional()
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext(
-            ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ),
+            ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY),
             ClientSearchTagContext.TagContext(),
             predicates = [
                 ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = { HC.IMAGE_JPEG } )
@@ -559,7 +559,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         self._compare_counts_cache( rule_1_read.GetCountsCacheDuplicate(), { ClientDuplicatesAutoResolution.DUPLICATE_STATUS_MATCHES_SEARCH_PASSED_TEST_READY_TO_ACTION : 1, ClientDuplicatesAutoResolution.DUPLICATE_STATUS_MATCHES_SEARCH_FAILED_TEST : 1 } )
         
-        rule_1 = rule_1_read.Duplicate()
+        rule_1 = rule_1_read.duplicate()
         
         rule_1.SetOperationMode( ClientDuplicatesAutoResolution.DUPLICATES_AUTO_RESOLUTION_RULE_OPERATION_MODE_FULLY_AUTOMATIC )
         
@@ -677,7 +677,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         rule_1.SetOperationMode( ClientDuplicatesAutoResolution.DUPLICATES_AUTO_RESOLUTION_RULE_OPERATION_MODE_FULLY_AUTOMATIC )
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
         
         predicates = [
             ClientSearchPredicate.Predicate( predicate_type = ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = ( HC.IMAGE_JPEG, ) )
@@ -740,7 +740,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         rule_1.SetOperationMode( ClientDuplicatesAutoResolution.DUPLICATES_AUTO_RESOLUTION_RULE_OPERATION_MODE_FULLY_AUTOMATIC )
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
         
         predicates = [
             ClientSearchPredicate.Predicate( predicate_type = ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_EVERYTHING )
@@ -768,7 +768,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         mc = ClientMetadataConditional.MetadataConditional()
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext(
-            ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ),
+            ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY),
             ClientSearchTagContext.TagContext(),
             predicates = [
                 ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = { HC.IMAGE_JPEG } )
@@ -821,7 +821,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
             ( hashes[3], True, { HC.DUPLICATE_POTENTIAL : 1 } )
         ]:
             
-            result = self._read( 'file_duplicate_info', ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ), hash )
+            result = self._read( 'file_duplicate_info', ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY), hash)
             
             self.assertEqual( result[ 'is_king' ], is_king )
             
@@ -832,8 +832,8 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         ( media_result_1, media_result_2, duplicate_type, timestamp_ms ) = actioned_pairs_with_info[0]
         
-        self.assertEqual( media_result_1.GetHash(), hashes[0] )
-        self.assertEqual( media_result_2.GetHash(), hashes[1] )
+        self.assertEqual(media_result_1.get_hash(), hashes[0])
+        self.assertEqual(media_result_2.get_hash(), hashes[1])
         self.assertEqual( duplicate_type, HC.DUPLICATE_BETTER )
         
     
@@ -855,7 +855,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         rule_1.SetOperationMode( ClientDuplicatesAutoResolution.DUPLICATES_AUTO_RESOLUTION_RULE_OPERATION_MODE_WORK_BUT_NO_ACTION )
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
         
         predicates = [
             ClientSearchPredicate.Predicate( predicate_type = ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_EVERYTHING )
@@ -883,7 +883,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         mc = ClientMetadataConditional.MetadataConditional()
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext(
-            ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ),
+            ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY),
             ClientSearchTagContext.TagContext(),
             predicates = [
                 ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = { HC.IMAGE_JPEG } )
@@ -934,7 +934,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
             ( hashes[3], True, { HC.DUPLICATE_POTENTIAL : 1 } )
         ]:
             
-            result = self._read( 'file_duplicate_info', ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ), hash )
+            result = self._read( 'file_duplicate_info', ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY), hash)
             
             self.assertEqual( result[ 'is_king' ], is_king )
             
@@ -973,7 +973,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
             ( hashes[3], True, { HC.DUPLICATE_POTENTIAL : 1 } )
         ]:
             
-            result = self._read( 'file_duplicate_info', ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ), hash )
+            result = self._read( 'file_duplicate_info', ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY), hash)
             
             self.assertEqual( result[ 'is_king' ], is_king )
             
@@ -984,8 +984,8 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         ( media_result_1, media_result_2, duplicate_type, timestamp_ms ) = actioned_pairs_with_info[0]
         
-        self.assertEqual( media_result_1.GetHash(), hashes[0] )
-        self.assertEqual( media_result_2.GetHash(), hashes[1] )
+        self.assertEqual(media_result_1.get_hash(), hashes[0])
+        self.assertEqual(media_result_2.get_hash(), hashes[1])
         self.assertEqual( duplicate_type, HC.DUPLICATE_BETTER )
         
     
@@ -1018,7 +1018,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
             ( hashes[3], True, { HC.DUPLICATE_POTENTIAL : 1 } )
         ]:
             
-            result = self._read( 'file_duplicate_info', ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ), hash )
+            result = self._read( 'file_duplicate_info', ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY), hash)
             
             self.assertEqual( result[ 'is_king' ], is_king )
             

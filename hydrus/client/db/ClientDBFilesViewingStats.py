@@ -64,10 +64,10 @@ class ClientDBFilesViewingStats( ClientDBModule.ClientDBModule ):
     
     def CullFileViewingStatistics( self ):
         
-        media_min_ms = CG.client_controller.new_options.GetNoneableInteger( 'file_viewing_statistics_media_min_time_ms' )
-        media_max_ms = CG.client_controller.new_options.GetNoneableInteger( 'file_viewing_statistics_media_max_time_ms' )
-        preview_min_ms = CG.client_controller.new_options.GetNoneableInteger( 'file_viewing_statistics_preview_min_time_ms' )
-        preview_max_ms = CG.client_controller.new_options.GetNoneableInteger( 'file_viewing_statistics_preview_max_time_ms' )
+        media_min_ms = CG.client_controller.new_options.get_noneable_integer('file_viewing_statistics_media_min_time_ms')
+        media_max_ms = CG.client_controller.new_options.get_noneable_integer('file_viewing_statistics_media_max_time_ms')
+        preview_min_ms = CG.client_controller.new_options.get_noneable_integer('file_viewing_statistics_preview_min_time_ms')
+        preview_max_ms = CG.client_controller.new_options.get_noneable_integer('file_viewing_statistics_preview_max_time_ms')
         
         if media_min_ms is not None and media_max_ms is not None and media_min_ms > media_max_ms:
             
@@ -180,7 +180,7 @@ class ClientDBFilesViewingStats( ClientDBModule.ClientDBModule ):
         
         if job_status is not None:
             
-            cancelled_hook = job_status.IsCancelled
+            cancelled_hook = job_status.is_cancelled
             
         
         last_viewed_timestamp_predicates = []

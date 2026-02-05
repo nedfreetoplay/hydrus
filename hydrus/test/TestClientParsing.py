@@ -524,139 +524,139 @@ class TestStringConverter( unittest.TestCase ):
         
         string_converter = ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_REMOVE_TEXT_FROM_BEGINNING, 1 ) ] )
         
-        self.assertEqual( string_converter.Convert( '0123456789' ), '123456789' )
+        self.assertEqual(string_converter.convert('0123456789'), '123456789')
         
         #
         
         string_converter = ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_REMOVE_TEXT_FROM_END, 1 ) ] )
         
-        self.assertEqual( string_converter.Convert( '0123456789' ), '012345678' )
+        self.assertEqual(string_converter.convert('0123456789'), '012345678')
         
         #
         
         string_converter = ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_CLIP_TEXT_FROM_BEGINNING, 7 ) ] )
         
-        self.assertEqual( string_converter.Convert( '0123456789' ), '0123456' )
+        self.assertEqual(string_converter.convert('0123456789'), '0123456')
         
         #
         
         string_converter = ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_CLIP_TEXT_FROM_END, 7 ) ] )
         
-        self.assertEqual( string_converter.Convert( '0123456789' ), '3456789' )
+        self.assertEqual(string_converter.convert('0123456789'), '3456789')
         
         #
         
         string_converter = ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_PREPEND_TEXT, 'abc' ) ] )
         
-        self.assertEqual( string_converter.Convert( '0123456789' ), 'abc0123456789' )
+        self.assertEqual(string_converter.convert('0123456789'), 'abc0123456789')
         
         #
         
         string_converter = ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_APPEND_TEXT, 'xyz' ) ] )
         
-        self.assertEqual( string_converter.Convert( '0123456789' ), '0123456789xyz' )
+        self.assertEqual(string_converter.convert('0123456789'), '0123456789xyz')
         
         #
         
         string_converter = ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_APPEND_RANDOM, ( 'a', 5 ) ) ] )
         
-        self.assertEqual( string_converter.Convert( 'bbbbb' ), 'bbbbbaaaaa' )
+        self.assertEqual(string_converter.convert('bbbbb'), 'bbbbbaaaaa')
         
         #
         
         string_converter = ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_ENCODE, ClientStrings.ENCODING_TYPE_URL_PERCENT ) ] )
         
-        self.assertEqual( string_converter.Convert( '01234 56789' ), '01234%2056789' )
+        self.assertEqual(string_converter.convert('01234 56789'), '01234%2056789')
         
         #
         
         string_converter = ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_DECODE, ClientStrings.ENCODING_TYPE_URL_PERCENT ) ] )
         
-        self.assertEqual( string_converter.Convert( '01234%2056789' ), '01234 56789' )
+        self.assertEqual(string_converter.convert('01234%2056789'), '01234 56789')
         
         #
         
         string_converter = ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_ENCODE, ClientStrings.ENCODING_TYPE_UNICODE_ESCAPE ) ] )
         
-        self.assertEqual( string_converter.Convert( '01234\u039456789' ), '01234\\u039456789' )
+        self.assertEqual(string_converter.convert('01234\u039456789'), '01234\\u039456789')
         
         #
         
         string_converter = ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_DECODE, ClientStrings.ENCODING_TYPE_UNICODE_ESCAPE ) ] )
         
-        self.assertEqual( string_converter.Convert( '01234\\u039456789' ), '01234\u039456789' )
+        self.assertEqual(string_converter.convert('01234\\u039456789'), '01234\u039456789')
         
         #
         
         string_converter = ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_ENCODE, ClientStrings.ENCODING_TYPE_HTML_ENTITIES ) ] )
         
-        self.assertEqual( string_converter.Convert( '01234&56789' ), '01234&amp;56789' )
+        self.assertEqual(string_converter.convert('01234&56789'), '01234&amp;56789')
         
         #
         
         string_converter = ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_DECODE, ClientStrings.ENCODING_TYPE_HTML_ENTITIES ) ] )
         
-        self.assertEqual( string_converter.Convert( '01234&amp;56789' ), '01234&56789' )
+        self.assertEqual(string_converter.convert('01234&amp;56789'), '01234&56789')
         
         #
         
         string_converter = ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_ENCODE, ClientStrings.ENCODING_TYPE_HEX_UTF8 ) ] )
         
-        self.assertEqual( string_converter.Convert( 'hello world' ), '68656c6c6f20776f726c64' )
+        self.assertEqual(string_converter.convert('hello world'), '68656c6c6f20776f726c64')
         
         #
         
         string_converter = ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_ENCODE, ClientStrings.ENCODING_TYPE_BASE64_UTF8 ) ] )
         
-        self.assertEqual( string_converter.Convert( 'hello world' ), 'aGVsbG8gd29ybGQ=' )
-        self.assertEqual( string_converter.Convert( '\uffff' ), '77+/' )
+        self.assertEqual(string_converter.convert('hello world'), 'aGVsbG8gd29ybGQ=')
+        self.assertEqual(string_converter.convert('\uffff'), '77+/')
         
         #
         
         string_converter = ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_ENCODE, ClientStrings.ENCODING_TYPE_BASE64URL_UTF8 ) ] )
         
-        self.assertEqual( string_converter.Convert( 'hello world' ), 'aGVsbG8gd29ybGQ' ) # never outputs '=' padding
-        self.assertEqual( string_converter.Convert( '\uffff' ), '77-_' )
+        self.assertEqual(string_converter.convert('hello world'), 'aGVsbG8gd29ybGQ') # never outputs '=' padding
+        self.assertEqual(string_converter.convert('\uffff'), '77-_')
         
         #
         
         string_converter = ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_DECODE, ClientStrings.ENCODING_TYPE_HEX_UTF8 ) ] )
         
-        self.assertEqual( string_converter.Convert( '68656c6c6f20776f726c64' ), 'hello world' )
+        self.assertEqual(string_converter.convert('68656c6c6f20776f726c64'), 'hello world')
         
         #
         
         string_converter = ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_DECODE, ClientStrings.ENCODING_TYPE_BASE64_UTF8 ) ] )
         
-        self.assertEqual( string_converter.Convert( 'aGVsbG8gd29ybGQ=' ), 'hello world' )
-        self.assertEqual( string_converter.Convert( 'aGVsbG8gd29ybGQ' ), 'hello world' )
-        self.assertEqual( string_converter.Convert( '77+/' ), '\uffff' )
+        self.assertEqual(string_converter.convert('aGVsbG8gd29ybGQ='), 'hello world')
+        self.assertEqual(string_converter.convert('aGVsbG8gd29ybGQ'), 'hello world')
+        self.assertEqual(string_converter.convert('77+/'), '\uffff')
         
         #
         
         string_converter = ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_DECODE, ClientStrings.ENCODING_TYPE_BASE64URL_UTF8 ) ] )
         
-        self.assertEqual( string_converter.Convert( 'aGVsbG8gd29ybGQ=' ), 'hello world' )
-        self.assertEqual( string_converter.Convert( 'aGVsbG8gd29ybGQ' ), 'hello world' )
-        self.assertEqual( string_converter.Convert( '77-_' ), '\uffff' )
+        self.assertEqual(string_converter.convert('aGVsbG8gd29ybGQ='), 'hello world')
+        self.assertEqual(string_converter.convert('aGVsbG8gd29ybGQ'), 'hello world')
+        self.assertEqual(string_converter.convert('77-_'), '\uffff')
         
         #
         
         string_converter = ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_REVERSE, None ) ] )
         
-        self.assertEqual( string_converter.Convert( '0123456789' ), '9876543210' )
+        self.assertEqual(string_converter.convert('0123456789'), '9876543210')
         
         #
         
         string_converter = ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_REGEX_SUB, ( '\\d', 'd' ) ) ] )
         
-        self.assertEqual( string_converter.Convert( 'abc123' ), 'abcddd' )
+        self.assertEqual(string_converter.convert('abc123'), 'abcddd')
         
         #
         
         string_converter = ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_DATE_DECODE, ( '%Y-%m-%d %H:%M:%S', HC.TIMEZONE_UTC, 0 ) ) ] )
         
-        self.assertEqual( string_converter.Convert( '1970-01-02 00:00:00' ), '86400' )
+        self.assertEqual(string_converter.convert('1970-01-02 00:00:00'), '86400')
         
         #
         
@@ -664,21 +664,21 @@ class TestStringConverter( unittest.TestCase ):
             
             string_converter = ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_DATEPARSER_DECODE, None ) ] )
             
-            self.assertEqual( string_converter.Convert( '1970-01-02 00:00:00 UTC' ), '86400' )
-            self.assertEqual( string_converter.Convert( 'January 12, 2012 10:00 PM EST' ), '1326423600' )
+            self.assertEqual(string_converter.convert('1970-01-02 00:00:00 UTC'), '86400')
+            self.assertEqual(string_converter.convert('January 12, 2012 10:00 PM EST'), '1326423600')
             
         
         #
         
         string_converter = ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_DATE_ENCODE, ( '%Y-%m-%d %H:%M:%S', 0 ) ) ] )
         
-        self.assertEqual( string_converter.Convert( '86400' ), '1970-01-02 00:00:00' )
+        self.assertEqual(string_converter.convert('86400'), '1970-01-02 00:00:00')
         
         #
         
         string_converter = ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_INTEGER_ADDITION, 5 ) ] )
         
-        self.assertEqual( string_converter.Convert( '4' ), '9' )
+        self.assertEqual(string_converter.convert('4'), '9')
         
     
     def test_compound( self ):
@@ -689,7 +689,7 @@ class TestStringConverter( unittest.TestCase ):
         
         string_converter = ClientStrings.StringConverter( conversions = conversions )
         
-        self.assertEqual( string_converter.Convert( '0123456789' ), '123456789' )
+        self.assertEqual(string_converter.convert('0123456789'), '123456789')
         
         #
         
@@ -697,7 +697,7 @@ class TestStringConverter( unittest.TestCase ):
         
         string_converter = ClientStrings.StringConverter( conversions = conversions )
         
-        self.assertEqual( string_converter.Convert( '0123456789' ), '12345678' )
+        self.assertEqual(string_converter.convert('0123456789'), '12345678')
         
         #
         
@@ -705,7 +705,7 @@ class TestStringConverter( unittest.TestCase ):
         
         string_converter = ClientStrings.StringConverter( conversions = conversions )
         
-        self.assertEqual( string_converter.Convert( '0123456789' ), '1234567' )
+        self.assertEqual(string_converter.convert('0123456789'), '1234567')
         
         #
         
@@ -713,7 +713,7 @@ class TestStringConverter( unittest.TestCase ):
         
         string_converter = ClientStrings.StringConverter( conversions = conversions )
         
-        self.assertEqual( string_converter.Convert( '0123456789' ), '234567' )
+        self.assertEqual(string_converter.convert('0123456789'), '234567')
         
         #
         
@@ -721,7 +721,7 @@ class TestStringConverter( unittest.TestCase ):
         
         string_converter = ClientStrings.StringConverter( conversions = conversions )
         
-        self.assertEqual( string_converter.Convert( '0123456789' ), 'abc234567' )
+        self.assertEqual(string_converter.convert('0123456789'), 'abc234567')
         
         #
         
@@ -729,7 +729,7 @@ class TestStringConverter( unittest.TestCase ):
         
         string_converter = ClientStrings.StringConverter( conversions = conversions )
         
-        self.assertEqual( string_converter.Convert( '0123456789' ), 'abc234567x z' )
+        self.assertEqual(string_converter.convert('0123456789'), 'abc234567x z')
         
         #
         
@@ -737,7 +737,7 @@ class TestStringConverter( unittest.TestCase ):
         
         string_converter = ClientStrings.StringConverter( conversions = conversions )
         
-        self.assertEqual( string_converter.Convert( '0123456789' ), 'abc234567x%20z' )
+        self.assertEqual(string_converter.convert('0123456789'), 'abc234567x%20z')
         
         #
         
@@ -745,7 +745,7 @@ class TestStringConverter( unittest.TestCase ):
         
         string_converter = ClientStrings.StringConverter( conversions = conversions )
         
-        self.assertEqual( string_converter.Convert( '0123456789' ), 'abc234567x z' )
+        self.assertEqual(string_converter.convert('0123456789'), 'abc234567x z')
         
         #
         
@@ -753,7 +753,7 @@ class TestStringConverter( unittest.TestCase ):
         
         string_converter = ClientStrings.StringConverter( conversions = conversions )
         
-        self.assertEqual( string_converter.Convert( '0123456789' ), 'z x765432cba' )
+        self.assertEqual(string_converter.convert('0123456789'), 'z x765432cba')
         
         #
         
@@ -761,7 +761,7 @@ class TestStringConverter( unittest.TestCase ):
         
         string_converter = ClientStrings.StringConverter( conversions = conversions )
         
-        self.assertEqual( string_converter.Convert( '0123456789' ), 'z xddddddcba' )
+        self.assertEqual(string_converter.convert('0123456789'), 'z xddddddcba')
         
     
 
@@ -780,24 +780,24 @@ class TestStringJoiner( unittest.TestCase ):
         #
         
         joiner = ClientStrings.StringJoiner( joiner = '', join_tuple_size = None )
-        self.assertEqual( joiner.Join( texts ), [ 'abcdefghij' ] )
-        self.assertEqual( joiner.ToString(), 'joining all strings using ""' )
+        self.assertEqual(joiner.join(texts), ['abcdefghij'])
+        self.assertEqual(joiner.to_string(), 'joining all strings using ""')
         
         joiner = ClientStrings.StringJoiner( joiner = ',', join_tuple_size = None )
-        self.assertEqual( joiner.Join( texts ), [ 'ab,cd,ef,gh,ij' ] )
-        self.assertEqual( joiner.ToString(), 'joining all strings using ","' )
+        self.assertEqual(joiner.join(texts), ['ab,cd,ef,gh,ij'])
+        self.assertEqual(joiner.to_string(), 'joining all strings using ","')
         
         joiner = ClientStrings.StringJoiner( joiner = '--', join_tuple_size = 2 )
-        self.assertEqual( joiner.Join( texts ), [ 'ab--cd', 'ef--gh' ] )
-        self.assertEqual( joiner.ToString(), 'joining every 2 strings using "--"' )
+        self.assertEqual(joiner.join(texts), ['ab--cd', 'ef--gh'])
+        self.assertEqual(joiner.to_string(), 'joining every 2 strings using "--"')
         
         joiner = ClientStrings.StringJoiner( joiner = r'\n', join_tuple_size = None )
-        self.assertEqual( joiner.Join( texts ), [ 'ab\ncd\nef\ngh\nij' ] )
-        self.assertEqual( joiner.ToString(), 'joining all strings using "\\n"' )
+        self.assertEqual(joiner.join(texts), ['ab\ncd\nef\ngh\nij'])
+        self.assertEqual(joiner.to_string(), 'joining all strings using "\\n"')
         
         joiner = ClientStrings.StringJoiner( joiner = '\\\\', join_tuple_size = None )
-        self.assertEqual( joiner.Join( texts ), [ 'ab\\cd\\ef\\gh\\ij' ] )
-        self.assertEqual( joiner.ToString(), 'joining all strings using "\\\\"' )
+        self.assertEqual(joiner.join(texts), ['ab\\cd\\ef\\gh\\ij'])
+        self.assertEqual(joiner.to_string(), 'joining all strings using "\\\\"')
         
     
 class TestStringMatch( unittest.TestCase ):
@@ -806,113 +806,113 @@ class TestStringMatch( unittest.TestCase ):
         
         all_string_match = ClientStrings.StringMatch()
         
-        self.assertTrue( all_string_match.Matches( '123' ) )
-        self.assertTrue( all_string_match.Matches( 'abc' ) )
-        self.assertTrue( all_string_match.Matches( 'abc123' ) )
+        self.assertTrue(all_string_match.matches('123'))
+        self.assertTrue(all_string_match.matches('abc'))
+        self.assertTrue(all_string_match.matches('abc123'))
         
         #
         
         min_string_match = ClientStrings.StringMatch( min_chars = 4 )
         
-        self.assertFalse( min_string_match.Matches( '123' ) )
-        self.assertFalse( min_string_match.Matches( 'abc' ) )
-        self.assertTrue( min_string_match.Matches( 'abc123' ) )
+        self.assertFalse(min_string_match.matches('123'))
+        self.assertFalse(min_string_match.matches('abc'))
+        self.assertTrue(min_string_match.matches('abc123'))
         
         #
         
         max_string_match = ClientStrings.StringMatch( max_chars = 4 )
         
-        self.assertTrue( max_string_match.Matches( '123' ) )
-        self.assertTrue( max_string_match.Matches( 'abc' ) )
-        self.assertFalse( max_string_match.Matches( 'abc123' ) )
+        self.assertTrue(max_string_match.matches('123'))
+        self.assertTrue(max_string_match.matches('abc'))
+        self.assertFalse(max_string_match.matches('abc123'))
         
         #
         
         min_max_string_match = ClientStrings.StringMatch( min_chars = 4, max_chars = 10 )
         
-        self.assertFalse( min_max_string_match.Matches( '123' ) )
-        self.assertFalse( min_max_string_match.Matches( 'abc' ) )
-        self.assertTrue( min_max_string_match.Matches( 'abc123' ) )
+        self.assertFalse(min_max_string_match.matches('123'))
+        self.assertFalse(min_max_string_match.matches('abc'))
+        self.assertTrue(min_max_string_match.matches('abc123'))
         
         #
         
         alpha_string_match = ClientStrings.StringMatch( match_type = ClientStrings.STRING_MATCH_FLEXIBLE, match_value = ClientStrings.FLEXIBLE_MATCH_ALPHA )
         
-        self.assertFalse( alpha_string_match.Matches( '123' ) )
-        self.assertTrue( alpha_string_match.Matches( 'abc' ) )
-        self.assertFalse( alpha_string_match.Matches( 'abc123' ) )
+        self.assertFalse(alpha_string_match.matches('123'))
+        self.assertTrue(alpha_string_match.matches('abc'))
+        self.assertFalse(alpha_string_match.matches('abc123'))
         
         #
         
         alphanum_string_match = ClientStrings.StringMatch( match_type = ClientStrings.STRING_MATCH_FLEXIBLE, match_value = ClientStrings.FLEXIBLE_MATCH_ALPHANUMERIC )
         
-        self.assertTrue( alphanum_string_match.Matches( '123' ) )
-        self.assertTrue( alphanum_string_match.Matches( 'abc' ) )
-        self.assertTrue( alphanum_string_match.Matches( 'abc123' ) )
-        self.assertFalse( alphanum_string_match.Matches( 'abc123@' ) )
+        self.assertTrue(alphanum_string_match.matches('123'))
+        self.assertTrue(alphanum_string_match.matches('abc'))
+        self.assertTrue(alphanum_string_match.matches('abc123'))
+        self.assertFalse(alphanum_string_match.matches('abc123@'))
         
         #
         
         num_string_match = ClientStrings.StringMatch( match_type = ClientStrings.STRING_MATCH_FLEXIBLE, match_value = ClientStrings.FLEXIBLE_MATCH_NUMERIC )
         
-        self.assertTrue( num_string_match.Matches( '123' ) )
-        self.assertFalse( num_string_match.Matches( 'abc' ) )
-        self.assertFalse( num_string_match.Matches( 'abc123' ) )
+        self.assertTrue(num_string_match.matches('123'))
+        self.assertFalse(num_string_match.matches('abc'))
+        self.assertFalse(num_string_match.matches('abc123'))
         
         #
         
         hex_string_match = ClientStrings.StringMatch( match_type = ClientStrings.STRING_MATCH_FLEXIBLE, match_value = ClientStrings.FLEXIBLE_MATCH_HEX )
         
-        self.assertTrue( hex_string_match.Matches( '123' ) )
-        self.assertTrue( hex_string_match.Matches( 'abc' ) )
-        self.assertTrue( hex_string_match.Matches( 'abc123' ) )
-        self.assertFalse( hex_string_match.Matches( 'abc123z' ) )
+        self.assertTrue(hex_string_match.matches('123'))
+        self.assertTrue(hex_string_match.matches('abc'))
+        self.assertTrue(hex_string_match.matches('abc123'))
+        self.assertFalse(hex_string_match.matches('abc123z'))
         
         #
         
         base64_string_match = ClientStrings.StringMatch( match_type = ClientStrings.STRING_MATCH_FLEXIBLE, match_value = ClientStrings.FLEXIBLE_MATCH_BASE64 )
         
-        self.assertTrue( base64_string_match.Matches( '123' ) )
-        self.assertTrue( base64_string_match.Matches( 'abc' ) )
-        self.assertTrue( base64_string_match.Matches( 'abc123+/' ) )
-        self.assertTrue( base64_string_match.Matches( 'abc123+/=' ) )
-        self.assertFalse( base64_string_match.Matches( 'abc123+]' ) )
+        self.assertTrue(base64_string_match.matches('123'))
+        self.assertTrue(base64_string_match.matches('abc'))
+        self.assertTrue(base64_string_match.matches('abc123+/'))
+        self.assertTrue(base64_string_match.matches('abc123+/='))
+        self.assertFalse(base64_string_match.matches('abc123+]'))
         
         #
         
         base64_string_match = ClientStrings.StringMatch( match_type = ClientStrings.STRING_MATCH_FLEXIBLE, match_value = ClientStrings.FLEXIBLE_MATCH_BASE64_URL_ENCODED )
         
-        self.assertTrue( base64_string_match.Matches( '123' ) )
-        self.assertTrue( base64_string_match.Matches( 'abc' ) )
-        self.assertTrue( base64_string_match.Matches( 'abc123%2B%2F' ) )
-        self.assertTrue( base64_string_match.Matches( 'abc123%2B%2F%3D' ) )
-        self.assertFalse( base64_string_match.Matches( 'abc123%2B]' ) )
+        self.assertTrue(base64_string_match.matches('123'))
+        self.assertTrue(base64_string_match.matches('abc'))
+        self.assertTrue(base64_string_match.matches('abc123%2B%2F'))
+        self.assertTrue(base64_string_match.matches('abc123%2B%2F%3D'))
+        self.assertFalse(base64_string_match.matches('abc123%2B]'))
         
         #
         
         base64_string_match = ClientStrings.StringMatch( match_type = ClientStrings.STRING_MATCH_FLEXIBLE, match_value = ClientStrings.FLEXIBLE_MATCH_BASE64URL )
         
-        self.assertTrue( base64_string_match.Matches( '123' ) )
-        self.assertTrue( base64_string_match.Matches( 'abc' ) )
-        self.assertTrue( base64_string_match.Matches( 'abc123-' ) )
-        self.assertTrue( base64_string_match.Matches( 'abc123_=' ) )
-        self.assertFalse( base64_string_match.Matches( 'abc123+]' ) )
+        self.assertTrue(base64_string_match.matches('123'))
+        self.assertTrue(base64_string_match.matches('abc'))
+        self.assertTrue(base64_string_match.matches('abc123-'))
+        self.assertTrue(base64_string_match.matches('abc123_='))
+        self.assertFalse(base64_string_match.matches('abc123+]'))
         
         #
         
         fixed_string_match = ClientStrings.StringMatch( match_type = ClientStrings.STRING_MATCH_FIXED, match_value = '123' )
         
-        self.assertTrue( fixed_string_match.Matches( '123' ) )
-        self.assertFalse( fixed_string_match.Matches( 'abc' ) )
-        self.assertFalse( fixed_string_match.Matches( 'abc123' ) )
+        self.assertTrue(fixed_string_match.matches('123'))
+        self.assertFalse(fixed_string_match.matches('abc'))
+        self.assertFalse(fixed_string_match.matches('abc123'))
         
         #
         
         re_string_match = ClientStrings.StringMatch( match_type = ClientStrings.STRING_MATCH_REGEX, match_value = '\\d' )
         
-        self.assertTrue( re_string_match.Matches( '123' ) )
-        self.assertFalse( re_string_match.Matches( 'abc' ) )
-        self.assertTrue( re_string_match.Matches( 'abc123' ) )
+        self.assertTrue(re_string_match.matches('123'))
+        self.assertFalse(re_string_match.matches('abc'))
+        self.assertTrue(re_string_match.matches('abc123'))
         
     
 class TestStringSlicer( unittest.TestCase ):
@@ -935,118 +935,118 @@ class TestStringSlicer( unittest.TestCase ):
         #
         
         slicer = ClientStrings.StringSlicer( index_start = 0, index_end = 1 )
-        self.assertEqual( slicer.Slice( test_list ), [ a ] )
-        self.assertEqual( slicer.ToString(), 'selecting the 1st string' )
+        self.assertEqual(slicer.slice(test_list), [a])
+        self.assertEqual(slicer.to_string(), 'selecting the 1st string')
         
         slicer = ClientStrings.StringSlicer( index_start = 3, index_end = 4 )
-        self.assertEqual( slicer.Slice( test_list ), [ d ] )
-        self.assertEqual( slicer.ToString(), 'selecting the 4th string' )
+        self.assertEqual(slicer.slice(test_list), [d])
+        self.assertEqual(slicer.to_string(), 'selecting the 4th string')
         
         slicer = ClientStrings.StringSlicer( index_start = -3, index_end = -2 )
-        self.assertEqual( slicer.Slice( test_list ), [ h ] )
-        self.assertEqual( slicer.ToString(), 'selecting the 3rd from last string' )
+        self.assertEqual(slicer.slice(test_list), [h])
+        self.assertEqual(slicer.to_string(), 'selecting the 3rd from last string')
         
         slicer = ClientStrings.StringSlicer( index_start = -1 )
-        self.assertEqual( slicer.Slice( test_list ), [ j ] )
-        self.assertEqual( slicer.ToString(), 'selecting the last string' )
+        self.assertEqual(slicer.slice(test_list), [j])
+        self.assertEqual(slicer.to_string(), 'selecting the last string')
         
         slicer = ClientStrings.StringSlicer( index_start = 15, index_end = 16 )
-        self.assertEqual( slicer.Slice( test_list ), [] )
-        self.assertEqual( slicer.ToString(), 'selecting the 16th string' )
+        self.assertEqual(slicer.slice(test_list), [])
+        self.assertEqual(slicer.to_string(), 'selecting the 16th string')
         
         slicer = ClientStrings.StringSlicer( index_start = -15, index_end = -14 )
-        self.assertEqual( slicer.Slice( test_list ), [] )
-        self.assertEqual( slicer.ToString(), 'selecting the 15th from last string' )
+        self.assertEqual(slicer.slice(test_list), [])
+        self.assertEqual(slicer.to_string(), 'selecting the 15th from last string')
         
         #
         
         slicer = ClientStrings.StringSlicer( index_start = 0 )
-        self.assertEqual( slicer.Slice( test_list ), test_list )
-        self.assertEqual( slicer.ToString(), 'selecting the 1st string and onwards' )
+        self.assertEqual(slicer.slice(test_list), test_list)
+        self.assertEqual(slicer.to_string(), 'selecting the 1st string and onwards')
         
         slicer = ClientStrings.StringSlicer( index_start = 3 )
-        self.assertEqual( slicer.Slice( test_list ), [ d, e, f, g, h, i, j ] )
-        self.assertEqual( slicer.ToString(), 'selecting the 4th string and onwards' )
+        self.assertEqual(slicer.slice(test_list), [d, e, f, g, h, i, j])
+        self.assertEqual(slicer.to_string(), 'selecting the 4th string and onwards')
         
         slicer = ClientStrings.StringSlicer( index_start = -3 )
-        self.assertEqual( slicer.Slice( test_list ), [ h, i, j ] )
-        self.assertEqual( slicer.ToString(), 'selecting the 3rd from last string and onwards' )
+        self.assertEqual(slicer.slice(test_list), [h, i, j])
+        self.assertEqual(slicer.to_string(), 'selecting the 3rd from last string and onwards')
         
         slicer = ClientStrings.StringSlicer( index_start = 15 )
-        self.assertEqual( slicer.Slice( test_list ), [] )
-        self.assertEqual( slicer.ToString(), 'selecting the 16th string and onwards' )
+        self.assertEqual(slicer.slice(test_list), [])
+        self.assertEqual(slicer.to_string(), 'selecting the 16th string and onwards')
         
         slicer = ClientStrings.StringSlicer( index_start = -15 )
-        self.assertEqual( slicer.Slice( test_list ), test_list )
-        self.assertEqual( slicer.ToString(), 'selecting the 15th from last string and onwards' )
+        self.assertEqual(slicer.slice(test_list), test_list)
+        self.assertEqual(slicer.to_string(), 'selecting the 15th from last string and onwards')
         
         #
         
         slicer = ClientStrings.StringSlicer( index_end = 0 )
-        self.assertEqual( slicer.Slice( test_list ), [] )
-        self.assertEqual( slicer.ToString(), 'selecting nothing' )
+        self.assertEqual(slicer.slice(test_list), [])
+        self.assertEqual(slicer.to_string(), 'selecting nothing')
         
         slicer = ClientStrings.StringSlicer( index_end = 3 )
-        self.assertEqual( slicer.Slice( test_list ), [ a, b, c ] )
-        self.assertEqual( slicer.ToString(), 'selecting up to and including the 3rd string' )
+        self.assertEqual(slicer.slice(test_list), [a, b, c])
+        self.assertEqual(slicer.to_string(), 'selecting up to and including the 3rd string')
         
         slicer = ClientStrings.StringSlicer( index_end = -3 )
-        self.assertEqual( slicer.Slice( test_list ), [ a, b, c, d, e, f, g ] )
-        self.assertEqual( slicer.ToString(), 'selecting up to and including the 4th from last string' )
+        self.assertEqual(slicer.slice(test_list), [a, b, c, d, e, f, g])
+        self.assertEqual(slicer.to_string(), 'selecting up to and including the 4th from last string')
         
         slicer = ClientStrings.StringSlicer( index_end = 15 )
-        self.assertEqual( slicer.Slice( test_list ), test_list )
-        self.assertEqual( slicer.ToString(), 'selecting up to and including the 15th string' )
+        self.assertEqual(slicer.slice(test_list), test_list)
+        self.assertEqual(slicer.to_string(), 'selecting up to and including the 15th string')
         
         slicer = ClientStrings.StringSlicer( index_end = -15 )
-        self.assertEqual( slicer.Slice( test_list ), [] )
-        self.assertEqual( slicer.ToString(), 'selecting up to and including the 16th from last string' )
+        self.assertEqual(slicer.slice(test_list), [])
+        self.assertEqual(slicer.to_string(), 'selecting up to and including the 16th from last string')
         
         #
         
         slicer = ClientStrings.StringSlicer( index_start = 0, index_end = 5 )
-        self.assertEqual( slicer.Slice( test_list ), [ a, b, c, d, e ] )
-        self.assertEqual( slicer.ToString(), 'selecting the 1st string up to and including the 5th string' )
+        self.assertEqual(slicer.slice(test_list), [a, b, c, d, e])
+        self.assertEqual(slicer.to_string(), 'selecting the 1st string up to and including the 5th string')
         
         slicer = ClientStrings.StringSlicer( index_start = 3, index_end = 5 )
-        self.assertEqual( slicer.Slice( test_list ), [ d, e ] )
-        self.assertEqual( slicer.ToString(), 'selecting the 4th string up to and including the 5th string' )
+        self.assertEqual(slicer.slice(test_list), [d, e])
+        self.assertEqual(slicer.to_string(), 'selecting the 4th string up to and including the 5th string')
         
         slicer = ClientStrings.StringSlicer( index_start = -5, index_end = -3 )
-        self.assertEqual( slicer.Slice( test_list ), [ f, g ] )
-        self.assertEqual( slicer.ToString(), 'selecting the 5th from last string up to and including the 4th from last string' )
+        self.assertEqual(slicer.slice(test_list), [f, g])
+        self.assertEqual(slicer.to_string(), 'selecting the 5th from last string up to and including the 4th from last string')
         
         slicer = ClientStrings.StringSlicer( index_start = 3, index_end = -3 )
-        self.assertEqual( slicer.Slice( test_list ), [ d, e, f, g ] )
-        self.assertEqual( slicer.ToString(), 'selecting the 4th string up to and including the 4th from last string' )
+        self.assertEqual(slicer.slice(test_list), [d, e, f, g])
+        self.assertEqual(slicer.to_string(), 'selecting the 4th string up to and including the 4th from last string')
         
         #
         
         slicer = ClientStrings.StringSlicer( index_start = 3, index_end = 3 )
-        self.assertEqual( slicer.Slice( test_list ), [] )
-        self.assertEqual( slicer.ToString(), 'selecting nothing' )
+        self.assertEqual(slicer.slice(test_list), [])
+        self.assertEqual(slicer.to_string(), 'selecting nothing')
         
         slicer = ClientStrings.StringSlicer( index_start = 5, index_end = 3 )
-        self.assertEqual( slicer.Slice( test_list ), [] )
-        self.assertEqual( slicer.ToString(), 'selecting nothing' )
+        self.assertEqual(slicer.slice(test_list), [])
+        self.assertEqual(slicer.to_string(), 'selecting nothing')
         
         slicer = ClientStrings.StringSlicer( index_start = -3, index_end = -3 )
-        self.assertEqual( slicer.Slice( test_list ), [] )
-        self.assertEqual( slicer.ToString(), 'selecting nothing' )
+        self.assertEqual(slicer.slice(test_list), [])
+        self.assertEqual(slicer.to_string(), 'selecting nothing')
         
         slicer = ClientStrings.StringSlicer( index_start = -3, index_end = -5 )
-        self.assertEqual( slicer.Slice( test_list ), [] )
-        self.assertEqual( slicer.ToString(), 'selecting nothing' )
+        self.assertEqual(slicer.slice(test_list), [])
+        self.assertEqual(slicer.to_string(), 'selecting nothing')
         
         #
         
         slicer = ClientStrings.StringSlicer( index_start = 15, index_end = 20 )
-        self.assertEqual( slicer.Slice( test_list ), [] )
-        self.assertEqual( slicer.ToString(), 'selecting the 16th string up to and including the 20th string' )
+        self.assertEqual(slicer.slice(test_list), [])
+        self.assertEqual(slicer.to_string(), 'selecting the 16th string up to and including the 20th string')
         
         slicer = ClientStrings.StringSlicer( index_start = -15, index_end = -12 )
-        self.assertEqual( slicer.Slice( test_list ), [] )
-        self.assertEqual( slicer.ToString(), 'selecting the 15th from last string up to and including the 13th from last string' )
+        self.assertEqual(slicer.slice(test_list), [])
+        self.assertEqual(slicer.to_string(), 'selecting the 15th from last string up to and including the 13th from last string')
         
     
 class TestStringSorter( unittest.TestCase ):
@@ -1067,7 +1067,7 @@ class TestStringSorter( unittest.TestCase ):
                 
                 random.shuffle( test_list )
                 
-                self.assertEqual( sorter.Sort( test_list ), correct )
+                self.assertEqual(sorter.sort(test_list), correct)
                 
             
         
@@ -1124,23 +1124,23 @@ class TestStringSplitter( unittest.TestCase ):
         
         splitter = ClientStrings.StringSplitter( separator = ', ' )
         
-        self.assertEqual( splitter.Split( '123' ), [ '123' ] )
-        self.assertEqual( splitter.Split( '1,2,3' ), [ '1,2,3' ] )
-        self.assertEqual( splitter.Split( '1, 2, 3' ), [ '1', '2', '3' ] )
+        self.assertEqual(splitter.split('123'), ['123'])
+        self.assertEqual(splitter.split('1,2,3'), ['1,2,3'])
+        self.assertEqual(splitter.split('1, 2, 3'), ['1', '2', '3'])
         
         splitter = ClientStrings.StringSplitter( separator = ', ', max_splits = 2 )
         
-        self.assertEqual( splitter.Split( '123' ), [ '123' ] )
-        self.assertEqual( splitter.Split( '1,2,3' ), [ '1,2,3' ] )
-        self.assertEqual( splitter.Split( '1, 2, 3, 4' ), [ '1', '2', '3, 4' ] )
+        self.assertEqual(splitter.split('123'), ['123'])
+        self.assertEqual(splitter.split('1,2,3'), ['1,2,3'])
+        self.assertEqual(splitter.split('1, 2, 3, 4'), ['1', '2', '3, 4'])
         
         splitter = ClientStrings.StringSplitter( separator = r'\n' )
         
-        self.assertEqual( splitter.Split( '1\n2' ), [ '1', '2' ] )
+        self.assertEqual(splitter.split('1\n2'), ['1', '2'])
         
         splitter = ClientStrings.StringSplitter( separator = '\\\\' )
         
-        self.assertEqual( splitter.Split( '1\\2' ), [ '1', '2' ] )
+        self.assertEqual(splitter.split('1\\2'), ['1', '2'])
         
     
 class TestStringProcessor( unittest.TestCase ):
@@ -1149,9 +1149,9 @@ class TestStringProcessor( unittest.TestCase ):
         
         processor = ClientStrings.StringProcessor()
         
-        self.assertEqual( processor.ProcessStrings( [] ), [] )
-        self.assertEqual( processor.ProcessStrings( [ 'test' ] ), [ 'test' ] )
-        self.assertEqual( processor.ProcessStrings( [ 'test', 'test', '', 'test2' ] ), [ 'test', 'test', '', 'test2' ] )
+        self.assertEqual(processor.process_strings([]), [])
+        self.assertEqual(processor.process_strings(['test']), ['test'])
+        self.assertEqual(processor.process_strings(['test', 'test', '', 'test2']), ['test', 'test', '', 'test2'])
         
         processing_steps = []
         
@@ -1163,10 +1163,10 @@ class TestStringProcessor( unittest.TestCase ):
         
         processing_steps.append( ClientStrings.StringConverter( conversions = conversions ) )
         
-        processor.SetProcessingSteps( processing_steps )
+        processor.set_processing_steps(processing_steps)
         
         expected_result = [ '1abc', '123abc' ]
         
-        self.assertEqual( processor.ProcessStrings( [ '1,a,2,3', 'test', '123' ] ), expected_result )
+        self.assertEqual(processor.process_strings(['1,a,2,3', 'test', '123']), expected_result)
         
     

@@ -39,18 +39,18 @@ from hydrus.client.metadata import ClientTags
 
 def ApplyContentApplicationCommandToMedia( win: QW.QWidget, command: CAC.ApplicationCommand, media: collections.abc.Collection[ ClientMedia.MediaSingleton ] ):
     
-    if not command.IsContentCommand():
+    if not command.is_content_command():
         
         return
         
     
-    service_key = command.GetContentServiceKey()
-    action = command.GetContentAction()
-    value = command.GetContentValue()
+    service_key = command.get_content_service_key()
+    action = command.get_content_action()
+    value = command.get_content_value()
     
     try:
         
-        service = CG.client_controller.services_manager.GetService( service_key )
+        service = CG.client_controller.services_manager.get_service(service_key)
         
     except HydrusExceptions.DataMissing:
         
@@ -59,7 +59,7 @@ def ApplyContentApplicationCommandToMedia( win: QW.QWidget, command: CAC.Applica
         return command_processed
         
     
-    service_type = service.GetServiceType()
+    service_type = service.get_service_type()
     
     if service_type == HC.LOCAL_FILE_DOMAIN:
         
@@ -103,7 +103,7 @@ def ApplyContentApplicationCommandToMedia( win: QW.QWidget, command: CAC.Applica
                 
                 if service_type == HC.LOCAL_RATING_NUMERICAL:
                     
-                    one_star_value = service.GetOneStarValue()
+                    one_star_value = service.get_one_star_value()
                     
                     content_updates = GetContentUpdatesForAppliedContentApplicationCommandRatingsNumericalIncDec( service_key, one_star_value, action, media, BLOCK_SIZE = 256 )
                     
@@ -126,7 +126,7 @@ def ApplyContentApplicationCommandToMedia( win: QW.QWidget, command: CAC.Applica
             
             job_status = ClientThreading.JobStatus()
             
-            job_status.SetStatusTitle( f'setting {command.ToString()}' )
+            job_status.set_status_title(f'setting {command.to_string()}')
             
             start_time = HydrusTime.get_now_float()
             have_pubbed_message = False
@@ -142,12 +142,12 @@ def ApplyContentApplicationCommandToMedia( win: QW.QWidget, command: CAC.Applica
                     have_pubbed_message = True
                     
                 
-                job_status.SetGauge( i, num_to_do )
+                job_status.set_gauge(i, num_to_do)
                 
                 CG.client_controller.write_synchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( service_key, content_update ) )
                 
             
-            job_status.FinishAndDismiss()
+            job_status.finish_and_dismiss()
             
         
         CG.client_controller.call_to_thread( do_it )
@@ -171,7 +171,7 @@ def ClearDeleteRecord( win, media ):
         
         for chunk_of_media in HydrusLists.split_iterator_into_chunks( clearable_media, 64 ):
             
-            clearee_hashes = [ m.GetHash() for m in chunk_of_media ]
+            clearee_hashes = [m.get_hash() for m in chunk_of_media]
             
             content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_CLEAR_DELETE_RECORD, clearee_hashes )
             
@@ -264,7 +264,7 @@ def CopyHashesToClipboard( win: QW.QWidget, hash_type: str, medias: collections.
             text_lines = desired_hashes
             
         
-        if CG.client_controller.new_options.GetBoolean( 'prefix_hash_when_copying' ):
+        if CG.client_controller.new_options.get_boolean('prefix_hash_when_copying'):
             
             text_lines = [ '{}:{}'.format( hash_type, hex_hash ) for hex_hash in text_lines ]
             
@@ -275,11 +275,11 @@ def CopyHashesToClipboard( win: QW.QWidget, hash_type: str, medias: collections.
         
         job_status = ClientThreading.JobStatus()
         
-        job_status.SetStatusText( '{} {} hashes copied'.format( HydrusNumbers.to_human_int( len( desired_hashes ) ), hash_type ) )
+        job_status.set_status_text('{} {} hashes copied'.format(HydrusNumbers.to_human_int(len(desired_hashes)), hash_type))
         
         CG.client_controller.pub( 'message', job_status )
         
-        job_status.FinishAndDismiss( 2 )
+        job_status.finish_and_dismiss(2)
         
     
 
@@ -315,7 +315,7 @@ def DoClearFileViewingStats( win: QW.QWidget, flat_medias: collections.abc.Colle
 
 def DoOpenKnownURLFromShortcut( win, media ):
     
-    urls = media.GetLocationsManager().GetURLs()
+    urls = media.GetLocationsManager().get_urls()
     
     matched_labels_and_urls = []
     unmatched_urls = []
@@ -371,7 +371,7 @@ def DoOpenKnownURLFromShortcut( win, media ):
             
         
     
-    ClientPaths.LaunchURLInWebBrowser( url )
+    ClientPaths.launch_url_in_web_browser(url)
     
 
 # this isn't really a 'media' guy, and it edits the options in place, so maybe move/edit/whatever!
@@ -379,7 +379,7 @@ def EditDuplicateContentMergeOptions( win: QW.QWidget, duplicate_type: int ):
     
     new_options = CG.client_controller.new_options
     
-    duplicate_content_merge_options = new_options.GetDuplicateContentMergeOptions( duplicate_type )
+    duplicate_content_merge_options = new_options.get_duplicate_content_merge_options(duplicate_type)
     
     with ClientGUITopLevelWindowsPanels.DialogEdit( win, 'edit duplicate merge options' ) as dlg:
         
@@ -395,7 +395,7 @@ def EditDuplicateContentMergeOptions( win: QW.QWidget, duplicate_type: int ):
             
             duplicate_content_merge_options = ctrl.GetValue()
             
-            new_options.SetDuplicateContentMergeOptions( duplicate_type, duplicate_content_merge_options )
+            new_options.set_duplicate_content_merge_options(duplicate_type, duplicate_content_merge_options)
             
         
     
@@ -461,7 +461,7 @@ def EditFileTimestamps( win: QW.QWidget, ordered_medias: list[ ClientMedia.Media
                         
                         job_status = ClientThreading.JobStatus( cancellable = True )
                         
-                        job_status.SetStatusTitle( 'setting file modified dates' )
+                        job_status.set_status_title('setting file modified dates')
                         
                         time_started = HydrusTime.get_now()
                         showed_popup = False
@@ -470,8 +470,8 @@ def EditFileTimestamps( win: QW.QWidget, ordered_medias: list[ ClientMedia.Media
                         
                         for ( i, m ) in enumerate( medias_to_alter_modified_dates ):
                             
-                            job_status.SetStatusText( HydrusNumbers.value_range_to_pretty_string( i, num_to_do ) )
-                            job_status.SetGauge( i, num_to_do )
+                            job_status.set_status_text(HydrusNumbers.value_range_to_pretty_string(i, num_to_do))
+                            job_status.set_gauge(i, num_to_do)
                             
                             if not showed_popup and HydrusTime.time_has_passed( time_started + 3 ):
                                 
@@ -480,7 +480,7 @@ def EditFileTimestamps( win: QW.QWidget, ordered_medias: list[ ClientMedia.Media
                                 showed_popup = True
                                 
                             
-                            if job_status.IsCancelled():
+                            if job_status.is_cancelled():
                                 
                                 break
                                 
@@ -490,7 +490,7 @@ def EditFileTimestamps( win: QW.QWidget, ordered_medias: list[ ClientMedia.Media
                             CG.client_controller.client_files_manager.UpdateFileModifiedTimestampMS( m, final_time_ms )
                             
                         
-                        job_status.FinishAndDismiss()
+                        job_status.finish_and_dismiss()
                         
                     
                     CG.client_controller.call_to_thread( do_it )
@@ -806,7 +806,7 @@ def GetContentUpdatesForAppliedContentApplicationCommandTags( win: QW.QWidget, s
 
 def MoveOrDuplicateLocalFiles( win: QW.QWidget, dest_service_key: bytes, action: int, media: collections.abc.Collection[ ClientMedia.MediaSingleton ], source_service_key: bytes | None = None ):
     
-    dest_service_name = CG.client_controller.services_manager.GetName( dest_service_key )
+    dest_service_name = CG.client_controller.services_manager.get_name(dest_service_key)
     
     applicable_media = [ m for m in media if CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY in m.GetLocationsManager().GetCurrent() and m.GetMime() not in HC.HYDRUS_UPDATE_FILES ]
     
@@ -830,12 +830,12 @@ def MoveOrDuplicateLocalFiles( win: QW.QWidget, dest_service_key: bytes, action:
     
     ( local_duplicable_to_file_service_keys, local_moveable_from_and_to_file_service_keys, local_mergable_from_and_to_file_service_keys ) = ClientGUIMediaSimpleActions.GetLocalFileActionServiceKeys( applicable_media )
     
-    do_yes_no = CG.client_controller.new_options.GetBoolean( 'confirm_multiple_local_file_services_copy' )
+    do_yes_no = CG.client_controller.new_options.get_boolean('confirm_multiple_local_file_services_copy')
     yes_no_text = 'Add {} files to {}?'.format( HydrusNumbers.to_human_int( len( applicable_media ) ), dest_service_name )
     
     if action in ( HC.CONTENT_UPDATE_MOVE, HC.CONTENT_UPDATE_MOVE_MERGE ):
         
-        do_yes_no = CG.client_controller.new_options.GetBoolean( 'confirm_multiple_local_file_services_move' )
+        do_yes_no = CG.client_controller.new_options.get_boolean('confirm_multiple_local_file_services_move')
         
         if action == HC.CONTENT_UPDATE_MOVE:
             
@@ -885,7 +885,7 @@ def MoveOrDuplicateLocalFiles( win: QW.QWidget, dest_service_key: bytes, action:
                 
                 for potential_source_service_key in potential_move_source_service_keys:
                     
-                    potential_source_service_name = CG.client_controller.services_manager.GetName( potential_source_service_key )
+                    potential_source_service_name = CG.client_controller.services_manager.get_name(potential_source_service_key)
                     
                     if action == HC.CONTENT_UPDATE_MOVE:
                         
@@ -920,7 +920,7 @@ def MoveOrDuplicateLocalFiles( win: QW.QWidget, dest_service_key: bytes, action:
                 
             
         
-        source_service_name = CG.client_controller.services_manager.GetName( source_service_key )
+        source_service_name = CG.client_controller.services_manager.get_name(source_service_key)
         
         # source service name is done, now let's see if we have a merge/move difference
         
@@ -993,7 +993,7 @@ def OpenURLs( win: QW.QWidget, urls ):
             
             job_status = ClientThreading.JobStatus( pausable = True, cancellable = True )
             
-            job_status.SetStatusTitle( 'Opening URLs' )
+            job_status.set_status_title('Opening URLs')
             
             CG.client_controller.pub( 'message', job_status )
             
@@ -1004,18 +1004,18 @@ def OpenURLs( win: QW.QWidget, urls ):
                 
                 if job_status is not None:
                     
-                    ( i_paused, should_quit ) = job_status.WaitIfNeeded()
+                    ( i_paused, should_quit ) = job_status.wait_if_needed()
                     
                     if should_quit:
                         
                         return
                         
                     
-                    job_status.SetStatusText( HydrusNumbers.value_range_to_pretty_string( i, num_urls ) )
-                    job_status.SetGauge( i, num_urls )
+                    job_status.set_status_text(HydrusNumbers.value_range_to_pretty_string(i, num_urls))
+                    job_status.set_gauge(i, num_urls)
                     
                 
-                ClientPaths.LaunchURLInWebBrowser( url )
+                ClientPaths.launch_url_in_web_browser(url)
                 
                 time.sleep( 1 )
                 
@@ -1024,7 +1024,7 @@ def OpenURLs( win: QW.QWidget, urls ):
             
             if job_status is not None:
                 
-                job_status.FinishAndDismiss( 1 )
+                job_status.finish_and_dismiss(1)
                 
             
         
@@ -1038,7 +1038,7 @@ def OpenMediaURLs( win: QW.QWidget, medias ):
     
     for media in medias:
         
-        media_urls = media.GetLocationsManager().GetURLs()
+        media_urls = media.GetLocationsManager().get_urls()
         
         urls.update( media_urls )
         
@@ -1052,7 +1052,7 @@ def OpenMediaURLClassURLs( win: QW.QWidget, medias, url_class ):
     
     for media in medias:
         
-        media_urls = media.GetLocationsManager().GetURLs()
+        media_urls = media.GetLocationsManager().get_urls()
         
         for url in media_urls:
             
@@ -1073,7 +1073,7 @@ def RedownloadURLClassURLsForceRefetch( win: QW.QWidget, medias, url_class ):
     
     for media in medias:
         
-        media_urls = media.GetLocationsManager().GetURLs()
+        media_urls = media.GetLocationsManager().get_urls()
         
         for url in media_urls:
             
@@ -1090,7 +1090,7 @@ def RedownloadURLClassURLsForceRefetch( win: QW.QWidget, medias, url_class ):
         return
         
     
-    message = f'Open a new search page and force metadata redownload for {len( urls )} "{url_class.GetName()}" URLs? This is inefficient and should only be done to fill in known gaps in one-time jobs.'
+    message = f'Open a new search page and force metadata redownload for {len( urls )} "{url_class.get_name()}" URLs? This is inefficient and should only be done to fill in known gaps in one-time jobs.'
     message += '\n' * 2
     message += 'DO NOT USE THIS TO RECHECK TEN THOUSAND URLS EVERY MONTH JUST FOR MAYBE A FEW NEW TAGS.'
     
@@ -1130,7 +1130,7 @@ def SetFilesForcedFiletypes( win: QW.QWidget, medias: collections.abc.Collection
                 
                 job_status = ClientThreading.JobStatus( cancellable = True )
                 
-                job_status.SetStatusTitle( 'forcing filetypes' )
+                job_status.set_status_title('forcing filetypes')
                 
                 BLOCK_SIZE = 64
                 
@@ -1143,15 +1143,15 @@ def SetFilesForcedFiletypes( win: QW.QWidget, medias: collections.abc.Collection
                 
                 for ( num_done, num_to_do, block_of_media ) in HydrusLists.split_list_into_chunks_rich( medias, BLOCK_SIZE ):
                     
-                    if job_status.IsCancelled():
+                    if job_status.is_cancelled():
                         
                         break
                         
                     
-                    job_status.SetStatusText( HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do ) )
-                    job_status.SetGauge( num_done, num_to_do )
+                    job_status.set_status_text(HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do))
+                    job_status.set_gauge(num_done, num_to_do)
                     
-                    hashes = { media.GetHash() for media in block_of_media }
+                    hashes = {media.get_hash() for media in block_of_media}
                     
                     CG.client_controller.write_synchronous( 'force_filetype', hashes, forced_mime )
                     
@@ -1159,7 +1159,7 @@ def SetFilesForcedFiletypes( win: QW.QWidget, medias: collections.abc.Collection
                     
                     for media in block_of_media:
                         
-                        hash = media.GetHash()
+                        hash = media.get_hash()
                         
                         current_mime = media.GetMime()
                         mime_to_move_to = forced_mime
@@ -1185,7 +1185,7 @@ def SetFilesForcedFiletypes( win: QW.QWidget, medias: collections.abc.Collection
                     pauser.pause()
                     
                 
-                job_status.FinishAndDismiss()
+                job_status.finish_and_dismiss()
                 
             
             def publish_callable( result ):
@@ -1220,7 +1220,7 @@ def ShowFileEmbeddedMetadata( win: QW.QWidget, media: ClientMedia.MediaSingleton
             
             try:
                 
-                file_text = ClientPDFHandling.GetHumanReadableEmbeddedMetadata( path )
+                file_text = ClientPDFHandling.get_human_readable_embedded_metadata(path)
                 
             except HydrusExceptions.LimitedSupportFileException:
                 
@@ -1274,9 +1274,9 @@ def UndeleteMedia( win, media ):
     
     media_deleted_service_keys = HydrusLists.mass_union( ( m.GetLocationsManager().GetDeleted() for m in undeletable_media ) )
     
-    local_file_services = CG.client_controller.services_manager.GetServices( ( HC.LOCAL_FILE_DOMAIN, ) )
+    local_file_services = CG.client_controller.services_manager.get_services((HC.LOCAL_FILE_DOMAIN,))
     
-    undeletable_services = [ local_file_service for local_file_service in local_file_services if local_file_service.GetServiceKey() in media_deleted_service_keys ]
+    undeletable_services = [local_file_service for local_file_service in local_file_services if local_file_service.get_service_key() in media_deleted_service_keys]
     
     if len( undeletable_services ) > 0:
         
@@ -1288,12 +1288,12 @@ def UndeleteMedia( win, media ):
             
             for ( i, service ) in enumerate( undeletable_services ):
                 
-                choice_tuples.append( ( service.GetName(), service, 'Undelete back to {}.'.format( service.GetName() ) ) )
+                choice_tuples.append((service.get_name(), service, 'Undelete back to {}.'.format(service.get_name())))
                 
             
             if len( choice_tuples ) > 1:
                 
-                service = CG.client_controller.services_manager.GetService( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+                service = CG.client_controller.services_manager.get_service(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
                 
                 choice_tuples.append( ( 'all the above', service, 'Undelete back to all services the files have been deleted from.' ) )
                 
@@ -1315,7 +1315,7 @@ def UndeleteMedia( win, media ):
             
             if HC.options[ 'confirm_trash' ]:
                 
-                result = ClientGUIDialogsQuick.GetYesNo( win, 'Undelete this file back to {}?'.format( undelete_service.GetName() ) )
+                result = ClientGUIDialogsQuick.GetYesNo(win, 'Undelete this file back to {}?'.format(undelete_service.get_name()))
                 
                 if result == QW.QDialog.DialogCode.Accepted:
                     
@@ -1332,9 +1332,9 @@ def UndeleteMedia( win, media ):
             
             for chunk_of_media in HydrusLists.split_iterator_into_chunks( undeletable_media, 64 ):
                 
-                service_key = undelete_service.GetServiceKey()
+                service_key = undelete_service.get_service_key()
                 
-                undeletee_hashes = [ m.GetHash() for m in chunk_of_media if service_key in m.GetLocationsManager().GetDeleted() ]
+                undeletee_hashes = [m.get_hash() for m in chunk_of_media if service_key in m.GetLocationsManager().GetDeleted()]
                 
                 content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_UNDELETE, undeletee_hashes )
                 

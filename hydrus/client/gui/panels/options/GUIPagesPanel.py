@@ -122,47 +122,47 @@ class GUIPagesPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         #
         
-        self._show_all_my_files_on_page_chooser.setChecked( self._new_options.GetBoolean( 'show_all_my_files_on_page_chooser' ) )
-        self._show_all_my_files_on_page_chooser_at_top.setChecked( self._new_options.GetBoolean( 'show_all_my_files_on_page_chooser_at_top' ) )
-        self._show_local_files_on_page_chooser.setChecked( self._new_options.GetBoolean( 'show_local_files_on_page_chooser' ) )
-        self._show_local_files_on_page_chooser_at_top.setChecked( self._new_options.GetBoolean( 'show_local_files_on_page_chooser_at_top' ) )
+        self._show_all_my_files_on_page_chooser.setChecked(self._new_options.get_boolean('show_all_my_files_on_page_chooser'))
+        self._show_all_my_files_on_page_chooser_at_top.setChecked(self._new_options.get_boolean('show_all_my_files_on_page_chooser_at_top'))
+        self._show_local_files_on_page_chooser.setChecked(self._new_options.get_boolean('show_local_files_on_page_chooser'))
+        self._show_local_files_on_page_chooser_at_top.setChecked(self._new_options.get_boolean('show_local_files_on_page_chooser_at_top'))
         
-        self._confirm_all_page_closes.setChecked( self._new_options.GetBoolean( 'confirm_all_page_closes' ) )
-        self._confirm_non_empty_downloader_page_close.setChecked( self._new_options.GetBoolean( 'confirm_non_empty_downloader_page_close' ) )
+        self._confirm_all_page_closes.setChecked(self._new_options.get_boolean('confirm_all_page_closes'))
+        self._confirm_non_empty_downloader_page_close.setChecked(self._new_options.get_boolean('confirm_non_empty_downloader_page_close'))
         
-        self._default_new_page_goes.SetValue( self._new_options.GetInteger( 'default_new_page_goes' ) )
-        self._close_page_focus_goes.SetValue( self._new_options.GetInteger( 'close_page_focus_goes' ) )
+        self._default_new_page_goes.SetValue(self._new_options.get_integer('default_new_page_goes'))
+        self._close_page_focus_goes.SetValue(self._new_options.get_integer('close_page_focus_goes'))
         
-        self._notebook_tab_alignment.SetValue( self._new_options.GetInteger( 'notebook_tab_alignment' ) )
+        self._notebook_tab_alignment.SetValue(self._new_options.get_integer('notebook_tab_alignment'))
         
-        self._max_page_name_chars.setValue( self._new_options.GetInteger( 'max_page_name_chars' ) )
+        self._max_page_name_chars.setValue(self._new_options.get_integer('max_page_name_chars'))
         
-        self._elide_page_tab_names.setChecked( self._new_options.GetBoolean( 'elide_page_tab_names' ) )
+        self._elide_page_tab_names.setChecked(self._new_options.get_boolean('elide_page_tab_names'))
         
-        self._page_file_count_display.SetValue( self._new_options.GetInteger( 'page_file_count_display' ) )
+        self._page_file_count_display.SetValue(self._new_options.get_integer('page_file_count_display'))
         
-        self._import_page_progress_display.setChecked( self._new_options.GetBoolean( 'import_page_progress_display' ) )
+        self._import_page_progress_display.setChecked(self._new_options.get_boolean('import_page_progress_display'))
         
-        self._rename_page_of_pages_on_pick_new.setChecked( self._new_options.GetBoolean( 'rename_page_of_pages_on_pick_new' ) )
-        self._rename_page_of_pages_on_send.setChecked( self._new_options.GetBoolean( 'rename_page_of_pages_on_send' ) )
+        self._rename_page_of_pages_on_pick_new.setChecked(self._new_options.get_boolean('rename_page_of_pages_on_pick_new'))
+        self._rename_page_of_pages_on_send.setChecked(self._new_options.get_boolean('rename_page_of_pages_on_send'))
         
-        self._decorate_page_of_pages_tab_names.setChecked( self._new_options.GetBoolean( 'decorate_page_of_pages_tab_names' ) )
-        self._page_of_pages_decorator.setText( self._new_options.GetString( 'page_of_pages_decorator' ) )
+        self._decorate_page_of_pages_tab_names.setChecked(self._new_options.get_boolean('decorate_page_of_pages_tab_names'))
+        self._page_of_pages_decorator.setText(self._new_options.get_string('page_of_pages_decorator'))
         
-        self._page_drop_chase_normally.setChecked( self._new_options.GetBoolean( 'page_drop_chase_normally' ) )
-        self._page_drop_chase_with_shift.setChecked( self._new_options.GetBoolean( 'page_drop_chase_with_shift' ) )
-        self._page_drag_change_tab_normally.setChecked( self._new_options.GetBoolean( 'page_drag_change_tab_normally' ) )
-        self._page_drag_change_tab_with_shift.setChecked( self._new_options.GetBoolean( 'page_drag_change_tab_with_shift' ) )
+        self._page_drop_chase_normally.setChecked(self._new_options.get_boolean('page_drop_chase_normally'))
+        self._page_drop_chase_with_shift.setChecked(self._new_options.get_boolean('page_drop_chase_with_shift'))
+        self._page_drag_change_tab_normally.setChecked(self._new_options.get_boolean('page_drag_change_tab_normally'))
+        self._page_drag_change_tab_with_shift.setChecked(self._new_options.get_boolean('page_drag_change_tab_with_shift'))
         
-        self._wheel_scrolls_tab_bar.setChecked( self._new_options.GetBoolean( 'wheel_scrolls_tab_bar' ) )
+        self._wheel_scrolls_tab_bar.setChecked(self._new_options.get_boolean('wheel_scrolls_tab_bar'))
         
-        self._disable_page_tab_dnd.setChecked( self._new_options.GetBoolean( 'disable_page_tab_dnd' ) )
+        self._disable_page_tab_dnd.setChecked(self._new_options.get_boolean('disable_page_tab_dnd'))
         
-        self._page_nav_history_max_entries.setValue( self._new_options.GetInteger( 'page_nav_history_max_entries' ) )
+        self._page_nav_history_max_entries.setValue(self._new_options.get_integer('page_nav_history_max_entries'))
         
-        self._force_hide_page_signal_on_new_page.setChecked( self._new_options.GetBoolean( 'force_hide_page_signal_on_new_page' ) )
+        self._force_hide_page_signal_on_new_page.setChecked(self._new_options.get_boolean('force_hide_page_signal_on_new_page'))
         
-        self._set_search_focus_on_page_change.setChecked( self._new_options.GetBoolean( 'set_search_focus_on_page_change' ) )
+        self._set_search_focus_on_page_change.setChecked(self._new_options.get_boolean('set_search_focus_on_page_change'))
         
         self._hide_preview.setChecked( HC.options[ 'hide_preview' ] )
         
@@ -267,44 +267,44 @@ class GUIPagesPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def UpdateOptions( self ):
         
-        self._new_options.SetInteger( 'notebook_tab_alignment', self._notebook_tab_alignment.GetValue() )
+        self._new_options.set_integer('notebook_tab_alignment', self._notebook_tab_alignment.GetValue())
         
-        self._new_options.SetBoolean( 'show_all_my_files_on_page_chooser', self._show_all_my_files_on_page_chooser.isChecked() )
-        self._new_options.SetBoolean( 'show_all_my_files_on_page_chooser_at_top', self._show_all_my_files_on_page_chooser_at_top.isChecked() )
-        self._new_options.SetBoolean( 'show_local_files_on_page_chooser', self._show_local_files_on_page_chooser.isChecked() )
-        self._new_options.SetBoolean( 'show_local_files_on_page_chooser_at_top', self._show_local_files_on_page_chooser_at_top.isChecked() )
+        self._new_options.set_boolean('show_all_my_files_on_page_chooser', self._show_all_my_files_on_page_chooser.isChecked())
+        self._new_options.set_boolean('show_all_my_files_on_page_chooser_at_top', self._show_all_my_files_on_page_chooser_at_top.isChecked())
+        self._new_options.set_boolean('show_local_files_on_page_chooser', self._show_local_files_on_page_chooser.isChecked())
+        self._new_options.set_boolean('show_local_files_on_page_chooser_at_top', self._show_local_files_on_page_chooser_at_top.isChecked())
         
-        self._new_options.SetBoolean( 'confirm_all_page_closes', self._confirm_all_page_closes.isChecked() )
-        self._new_options.SetBoolean( 'confirm_non_empty_downloader_page_close', self._confirm_non_empty_downloader_page_close.isChecked() )
+        self._new_options.set_boolean('confirm_all_page_closes', self._confirm_all_page_closes.isChecked())
+        self._new_options.set_boolean('confirm_non_empty_downloader_page_close', self._confirm_non_empty_downloader_page_close.isChecked())
         
-        self._new_options.SetInteger( 'default_new_page_goes', self._default_new_page_goes.GetValue() )
-        self._new_options.SetInteger( 'close_page_focus_goes', self._close_page_focus_goes.GetValue() )
+        self._new_options.set_integer('default_new_page_goes', self._default_new_page_goes.GetValue())
+        self._new_options.set_integer('close_page_focus_goes', self._close_page_focus_goes.GetValue())
         
-        self._new_options.SetInteger( 'max_page_name_chars', self._max_page_name_chars.value() )
+        self._new_options.set_integer('max_page_name_chars', self._max_page_name_chars.value())
         
-        self._new_options.SetBoolean( 'elide_page_tab_names', self._elide_page_tab_names.isChecked() )
+        self._new_options.set_boolean('elide_page_tab_names', self._elide_page_tab_names.isChecked())
         
-        self._new_options.SetInteger( 'page_file_count_display', self._page_file_count_display.GetValue() )
-        self._new_options.SetBoolean( 'import_page_progress_display', self._import_page_progress_display.isChecked() )
-        self._new_options.SetBoolean( 'rename_page_of_pages_on_pick_new', self._rename_page_of_pages_on_pick_new.isChecked() )
-        self._new_options.SetBoolean( 'rename_page_of_pages_on_send', self._rename_page_of_pages_on_send.isChecked() )
+        self._new_options.set_integer('page_file_count_display', self._page_file_count_display.GetValue())
+        self._new_options.set_boolean('import_page_progress_display', self._import_page_progress_display.isChecked())
+        self._new_options.set_boolean('rename_page_of_pages_on_pick_new', self._rename_page_of_pages_on_pick_new.isChecked())
+        self._new_options.set_boolean('rename_page_of_pages_on_send', self._rename_page_of_pages_on_send.isChecked())
         
-        self._new_options.SetBoolean( 'decorate_page_of_pages_tab_names', self._decorate_page_of_pages_tab_names.isChecked() )
-        self._new_options.SetString( 'page_of_pages_decorator', self._page_of_pages_decorator.text() )
+        self._new_options.set_boolean('decorate_page_of_pages_tab_names', self._decorate_page_of_pages_tab_names.isChecked())
+        self._new_options.set_string('page_of_pages_decorator', self._page_of_pages_decorator.text())
         
-        self._new_options.SetBoolean( 'disable_page_tab_dnd', self._disable_page_tab_dnd.isChecked() )
-        self._new_options.SetBoolean( 'force_hide_page_signal_on_new_page', self._force_hide_page_signal_on_new_page.isChecked() )
+        self._new_options.set_boolean('disable_page_tab_dnd', self._disable_page_tab_dnd.isChecked())
+        self._new_options.set_boolean('force_hide_page_signal_on_new_page', self._force_hide_page_signal_on_new_page.isChecked())
         
-        self._new_options.SetBoolean( 'page_drop_chase_normally', self._page_drop_chase_normally.isChecked() )
-        self._new_options.SetBoolean( 'page_drop_chase_with_shift', self._page_drop_chase_with_shift.isChecked() )
-        self._new_options.SetBoolean( 'page_drag_change_tab_normally', self._page_drag_change_tab_normally.isChecked() )
-        self._new_options.SetBoolean( 'page_drag_change_tab_with_shift', self._page_drag_change_tab_with_shift.isChecked() )
+        self._new_options.set_boolean('page_drop_chase_normally', self._page_drop_chase_normally.isChecked())
+        self._new_options.set_boolean('page_drop_chase_with_shift', self._page_drop_chase_with_shift.isChecked())
+        self._new_options.set_boolean('page_drag_change_tab_normally', self._page_drag_change_tab_normally.isChecked())
+        self._new_options.set_boolean('page_drag_change_tab_with_shift', self._page_drag_change_tab_with_shift.isChecked())
         
-        self._new_options.SetBoolean( 'wheel_scrolls_tab_bar', self._wheel_scrolls_tab_bar.isChecked() )
+        self._new_options.set_boolean('wheel_scrolls_tab_bar', self._wheel_scrolls_tab_bar.isChecked())
         
-        self._new_options.SetBoolean( 'set_search_focus_on_page_change', self._set_search_focus_on_page_change.isChecked() )
+        self._new_options.set_boolean('set_search_focus_on_page_change', self._set_search_focus_on_page_change.isChecked())
         
-        self._new_options.SetInteger( 'page_nav_history_max_entries', self._page_nav_history_max_entries.value() )
+        self._new_options.set_integer('page_nav_history_max_entries', self._page_nav_history_max_entries.value())
         
         HC.options[ 'hide_preview' ] = self._hide_preview.isChecked()
         

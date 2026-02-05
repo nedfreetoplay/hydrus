@@ -38,7 +38,7 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
         
         super().__init__( parent )
         
-        if CG.client_controller.new_options.GetBoolean( 'use_listbook_for_tag_service_panels' ):
+        if CG.client_controller.new_options.get_boolean('use_listbook_for_tag_service_panels'):
             
             self._tag_services = ClientGUIListBook.ListBook( self )
             
@@ -49,16 +49,16 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
         
         #
         
-        default_tag_service_key = CG.client_controller.new_options.GetKey( 'default_tag_service_tab' )
+        default_tag_service_key = CG.client_controller.new_options.get_key('default_tag_service_tab')
         
-        services = list( CG.client_controller.services_manager.GetServices( ( HC.LOCAL_TAG, ) ) )
+        services = list(CG.client_controller.services_manager.get_services((HC.LOCAL_TAG,)))
         
-        services.extend( CG.client_controller.services_manager.GetServices( ( HC.TAG_REPOSITORY, ) ) )
+        services.extend(CG.client_controller.services_manager.get_services((HC.TAG_REPOSITORY,)))
         
         for service in services:
             
-            name = service.GetName()
-            service_key = service.GetServiceKey()
+            name = service.get_name()
+            service_key = service.get_service_key()
             
             page = self._Panel( self._tag_services, service_key, tags )
             
@@ -67,7 +67,7 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
             if service_key == default_tag_service_key:
                 
                 # Py 3.11/PyQt6 6.5.0/two tabs/total tab characters > ~12/select second tab during init = first tab disappears bug
-                CG.client_controller.CallAfterQtSafe( self._tag_services, self._tag_services.setCurrentWidget, page )
+                CG.client_controller.call_after_qt_safe(self._tag_services, self._tag_services.setCurrentWidget, page)
                 
             
         
@@ -84,11 +84,11 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
     
     def _SaveDefaultTagServiceKey( self ):
         
-        if CG.client_controller.new_options.GetBoolean( 'save_default_tag_service_tab_on_change' ):
+        if CG.client_controller.new_options.get_boolean('save_default_tag_service_tab_on_change'):
             
             current_page = typing.cast( ManageTagParents._Panel, self._tag_services.currentWidget() )
             
-            CG.client_controller.new_options.SetKey( 'default_tag_service_tab', current_page.GetServiceKey() )
+            CG.client_controller.new_options.set_key('default_tag_service_tab', current_page.GetServiceKey())
             
         
     
@@ -148,9 +148,9 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
             
             self._service_key = service_key
             
-            self._service = CG.client_controller.services_manager.GetService( self._service_key )
+            self._service = CG.client_controller.services_manager.get_service(self._service_key)
             
-            self._i_am_local_tag_service = self._service.GetServiceType() == HC.LOCAL_TAG
+            self._i_am_local_tag_service = self._service.get_service_type() == HC.LOCAL_TAG
             
             self._parent_action_context = ClientGUITagActions.ParentActionContext( self._service_key )
             
@@ -202,7 +202,7 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
             self._children.setMinimumHeight( preview_height )
             self._parents.setMinimumHeight( preview_height )
             
-            default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+            default_location_context = CG.client_controller.new_options.get_default_local_location_context()
             
             self._children_input = ClientGUIACDropdown.AutoCompleteDropdownTagsWrite( self, self.EnterChildren, default_location_context, service_key, show_paste_button = True )
             
@@ -454,7 +454,7 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
             
             try:
                 
-                raw_text = CG.client_controller.GetClipboardText()
+                raw_text = CG.client_controller.get_clipboard_text()
                 
             except HydrusExceptions.DataMissing as e:
                 
@@ -695,8 +695,8 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
                     
                 else:
                     
-                    synced_names = sorted( ( CG.client_controller.services_manager.GetName( s_k ) for ( s_k, work_to_do ) in service_keys_to_work_to_do.items() if not work_to_do ) )
-                    unsynced_names = sorted( ( CG.client_controller.services_manager.GetName( s_k ) for ( s_k, work_to_do ) in service_keys_to_work_to_do.items() if work_to_do ) )
+                    synced_names = sorted((CG.client_controller.services_manager.get_name(s_k) for (s_k, work_to_do) in service_keys_to_work_to_do.items() if not work_to_do))
+                    unsynced_names = sorted((CG.client_controller.services_manager.get_name(s_k) for (s_k, work_to_do) in service_keys_to_work_to_do.items() if work_to_do))
                     
                     synced_string = ', '.join( ( '"{}"'.format( name ) for name in synced_names ) )
                     unsynced_string = ', '.join( ( '"{}"'.format( name ) for name in unsynced_names ) )
@@ -719,7 +719,7 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
                             
                         
                     
-                    if CG.client_controller.new_options.GetBoolean( 'tag_display_maintenance_during_active' ):
+                    if CG.client_controller.new_options.get_boolean('tag_display_maintenance_during_active'):
                         
                         maintenance_part = 'Parents are set to sync all the time in the background.'
                         
@@ -736,7 +736,7 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
                         
                         looking_good = False
                         
-                        if CG.client_controller.new_options.GetBoolean( 'tag_display_maintenance_during_idle' ):
+                        if CG.client_controller.new_options.get_boolean('tag_display_maintenance_during_idle'):
                             
                             maintenance_part = 'Parents are set to sync only when you are not using the client.'
                             changes_part = 'It may take some time for changes here to apply.'
@@ -754,7 +754,7 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
                 
                 if not self._i_am_local_tag_service:
                     
-                    account = self._service.GetAccount()
+                    account = self._service.get_account()
                     
                     if account.IsUnknown():
                         
@@ -764,7 +764,7 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
                         
                         status_text = '{}\n\n{}'.format( s, status_text )
                         
-                    elif not account.HasPermission( HC.CONTENT_TYPE_TAG_SIBLINGS, HC.PERMISSION_ACTION_PETITION ):
+                    elif not account.has_permission(HC.CONTENT_TYPE_TAG_SIBLINGS, HC.PERMISSION_ACTION_PETITION):
                         
                         looking_good = False
                         

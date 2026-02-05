@@ -95,11 +95,11 @@ class HydrusResourceClientAPIRestrictedManageDatabaseMrBones( HydrusResourceClie
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        location_context = ClientLocalServerCore.ParseLocationContext( request, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
+        location_context = ClientLocalServerCore.ParseLocationContext(request, ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY))
         
         tag_service_key = ClientLocalServerCore.ParseTagServiceKey( request )
         
-        if tag_service_key == CC.COMBINED_TAG_SERVICE_KEY and location_context.IsAllKnownFiles():
+        if tag_service_key == CC.COMBINED_TAG_SERVICE_KEY and location_context.is_all_known_files():
             
             raise HydrusExceptions.BadRequestException( 'Sorry, search for all known tags over all known files is not supported!' )
             
@@ -111,7 +111,7 @@ class HydrusResourceClientAPIRestrictedManageDatabaseMrBones( HydrusResourceClie
         
         job_status = ClientThreading.JobStatus( cancellable = True )
         
-        request.disconnect_callables.append( job_status.Cancel )
+        request.disconnect_callables.append(job_status.cancel)
         
         boned_stats = CG.client_controller.read( 'boned_stats', file_search_context = file_search_context, job_status = job_status )
         
@@ -132,7 +132,7 @@ class HydrusResourceClientAPIRestrictedManageDatabaseGetClientOptions( HydrusRes
         
         from hydrus.client import ClientDefaults
         
-        OLD_OPTIONS_DEFAULT = ClientDefaults.GetClientDefaultOptions()
+        OLD_OPTIONS_DEFAULT = ClientDefaults.get_client_default_options()
         
         old_options = CG.client_controller.options
         
@@ -141,29 +141,29 @@ class HydrusResourceClientAPIRestrictedManageDatabaseGetClientOptions( HydrusRes
         new_options: ClientOptions.ClientOptions = CG.client_controller.new_options
 
         options_dict = {
-            'booleans' : new_options.GetAllBooleans(),
-            'strings' : new_options.GetAllStrings(),
-            'noneable_strings' : new_options.GetAllNoneableStrings(),
-            'integers' : new_options.GetAllIntegers(),
-            'noneable_integers' : new_options.GetAllNoneableIntegers(),
-            'keys' : new_options.GetAllKeysHex(),
-            'colors' : new_options.GetAllColours(),
-            'media_zooms' : new_options.GetMediaZooms(),
-            'slideshow_durations' : new_options.GetSlideshowDurations(),
+            'booleans' : new_options.get_all_booleans(),
+            'strings' : new_options.get_all_strings(),
+            'noneable_strings' : new_options.get_all_noneable_strings(),
+            'integers' : new_options.get_all_integers(),
+            'noneable_integers' : new_options.get_all_noneable_integers(),
+            'keys' : new_options.get_all_keys_hex(),
+            'colors' : new_options.get_all_colours(),
+            'media_zooms' : new_options.get_media_zooms(),
+            'slideshow_durations' : new_options.get_slideshow_durations(),
             'default_file_import_options' : {
-                'loud' : new_options.GetDefaultFileImportOptions('loud').GetSummary(),
-                'quiet' : new_options.GetDefaultFileImportOptions('quiet').GetSummary()
+                'loud' : new_options.get_default_file_import_options('loud').GetSummary(),
+                'quiet' : new_options.get_default_file_import_options('quiet').GetSummary()
             },
-            'default_namespace_sorts' : [ sort.ToDictForAPI() for sort in new_options.GetDefaultNamespaceSorts() ],
-            'default_sort' : new_options.GetDefaultSort().ToDictForAPI(),
-            'default_tag_sort' : new_options.GetDefaultTagSort( CC.TAG_PRESENTATION_SEARCH_PAGE ).ToDictForAPI(),
-            'default_tag_sort_search_page' : new_options.GetDefaultTagSort( CC.TAG_PRESENTATION_SEARCH_PAGE ).ToDictForAPI(),
-            'default_tag_sort_search_page_manage_tags' : new_options.GetDefaultTagSort( CC.TAG_PRESENTATION_SEARCH_PAGE_MANAGE_TAGS ).ToDictForAPI(),
-            'default_tag_sort_media_viewer' : new_options.GetDefaultTagSort( CC.TAG_PRESENTATION_MEDIA_VIEWER ).ToDictForAPI(),
-            'default_tag_sort_media_vewier_manage_tags' : new_options.GetDefaultTagSort( CC.TAG_PRESENTATION_MEDIA_VIEWER_MANAGE_TAGS ).ToDictForAPI(),
-            'fallback_sort' : new_options.GetFallbackSort().ToDictForAPI(),
-            'suggested_tags_favourites' : new_options.GetAllSuggestedTagsFavourites(),
-            'default_local_location_context' : new_options.GetDefaultLocalLocationContext().ToDictForAPI()
+            'default_namespace_sorts' : [sort.to_dict_for_api() for sort in new_options.get_default_namespace_sorts()],
+            'default_sort' : new_options.get_default_sort().to_dict_for_api(),
+            'default_tag_sort' : new_options.get_default_tag_sort(CC.TAG_PRESENTATION_SEARCH_PAGE).to_dict_for_api(),
+            'default_tag_sort_search_page' : new_options.get_default_tag_sort(CC.TAG_PRESENTATION_SEARCH_PAGE).to_dict_for_api(),
+            'default_tag_sort_search_page_manage_tags' : new_options.get_default_tag_sort(CC.TAG_PRESENTATION_SEARCH_PAGE_MANAGE_TAGS).to_dict_for_api(),
+            'default_tag_sort_media_viewer' : new_options.get_default_tag_sort(CC.TAG_PRESENTATION_MEDIA_VIEWER).to_dict_for_api(),
+            'default_tag_sort_media_vewier_manage_tags' : new_options.get_default_tag_sort(CC.TAG_PRESENTATION_MEDIA_VIEWER_MANAGE_TAGS).to_dict_for_api(),
+            'fallback_sort' : new_options.get_fallback_sort().to_dict_for_api(),
+            'suggested_tags_favourites' : new_options.get_all_suggested_tags_favourites(),
+            'default_local_location_context' : new_options.get_default_local_location_context().to_dict_for_api()
         }
 
         body_dict = {

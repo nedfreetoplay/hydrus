@@ -82,7 +82,7 @@ class CanvasFrame( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindow
                 
                 event.ignore()
                 
-                CG.client_controller.CallLaterQtSafe( self, 5.0, 'closing old media viewer safety check', self.close )
+                CG.client_controller.call_later_qt_safe(self, 5.0, 'closing old media viewer safety check', self.close)
                 
             
             return
@@ -109,7 +109,7 @@ class CanvasFrame( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindow
             # WE ARE CLOSING
             
             # only affect media viewer TLWs
-            if CG.client_controller.new_options.GetBoolean( 'save_window_size_and_position_on_close' ):
+            if CG.client_controller.new_options.get_boolean('save_window_size_and_position_on_close'):
                 
                 ClientGUITopLevelWindows.SaveTLWSizeAndPosition( self, self._frame_key )
                 
@@ -131,7 +131,7 @@ class CanvasFrame( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindow
                 event.ignore()
                 
                 # just in case somehow the signal doesn't fire
-                CG.client_controller.CallLaterQtSafe( self, 5.0, 'closing old media viewer safety check', self.close )
+                CG.client_controller.call_later_qt_safe(self, 5.0, 'closing old media viewer safety check', self.close)
                 
             
         else:
@@ -178,13 +178,13 @@ class CanvasFrame( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindow
         self._canvas_window.PauseMedia()
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ):
+    def process_application_command( self, command: CAC.ApplicationCommand ):
         
         command_processed = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_EXIT_APPLICATION:
                 
@@ -232,7 +232,7 @@ class CanvasFrame( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindow
                 
             elif action == CAC.SIMPLE_GLOBAL_FORCE_ANIMATION_SCANBAR_SHOW:
                 
-                CG.client_controller.new_options.FlipBoolean( 'force_animation_scanbar_show' )
+                CG.client_controller.new_options.flip_boolean('force_animation_scanbar_show')
                 
             else:
                 

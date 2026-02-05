@@ -201,14 +201,14 @@ def CheckFileService( file_service_key: bytes ):
     
     try:
         
-        service = CG.client_controller.services_manager.GetService( file_service_key )
+        service = CG.client_controller.services_manager.get_service(file_service_key)
         
     except:
         
         raise HydrusExceptions.BadRequestException( 'Could not find the file service "{}"!'.format( file_service_key.hex() ) )
         
     
-    if service.GetServiceType() not in HC.ALL_FILE_SERVICES:
+    if service.get_service_type() not in HC.ALL_FILE_SERVICES:
         
         raise HydrusExceptions.BadRequestException( 'Sorry, the service key "{}" did not give a file service!'.format( file_service_key.hex() ) )
         
@@ -220,14 +220,14 @@ def CheckTagService( tag_service_key: bytes ):
     
     try:
         
-        service = CG.client_controller.services_manager.GetService( tag_service_key )
+        service = CG.client_controller.services_manager.get_service(tag_service_key)
         
     except:
         
         raise HydrusExceptions.BadRequestException( 'Could not find the tag service "{}"!'.format( tag_service_key.hex() ) )
         
     
-    if service.GetServiceType() not in HC.ALL_TAG_SERVICES:
+    if service.get_service_type() not in HC.ALL_TAG_SERVICES:
         
         raise HydrusExceptions.BadRequestException( 'Sorry, the service key "{}" did not give a tag service!'.format( tag_service_key.hex() ) )
         
@@ -259,14 +259,14 @@ def CheckUploadableService( service_key: bytes ):
     
     try:
         
-        service = CG.client_controller.services_manager.GetService( service_key )
+        service = CG.client_controller.services_manager.get_service(service_key)
         
     except:
         
         raise HydrusExceptions.BadRequestException( 'Could not find the service "{}"!'.format( service_key.hex() ) )
         
     
-    if service.GetServiceType() not in ( HC.IPFS, HC.FILE_REPOSITORY, HC.TAG_REPOSITORY ):
+    if service.get_service_type() not in (HC.IPFS, HC.FILE_REPOSITORY, HC.TAG_REPOSITORY):
         
         raise HydrusExceptions.BadRequestException( f'Sorry, the service key "{service_key.hex()}" was not for an uploadable service!' )
         
@@ -290,32 +290,32 @@ def GetServicesDict():
         HC.LOCAL_FILE_TRASH_DOMAIN
     ]
     
-    services = CG.client_controller.services_manager.GetServices( service_types )
+    services = CG.client_controller.services_manager.get_services(service_types)
     
     services_dict = {}
     
     for service in services:
         
         service_dict = {
-            'name' : service.GetName(),
-            'type' : service.GetServiceType(),
-            'type_pretty' : HC.service_string_lookup[ service.GetServiceType() ]
+            'name' : service.get_name(),
+            'type' : service.get_service_type(),
+            'type_pretty' : HC.service_string_lookup[ service.get_service_type()]
         }
         
         rating_colour_jobs = []
         
-        if service.GetServiceType() in HC.RATINGS_SERVICES:
+        if service.get_service_type() in HC.RATINGS_SERVICES:
             
             service = typing.cast( ClientServices.ServiceLocalRating, service )
             
-            service_dict[ 'show_in_thumbnail' ] = service.GetShowInThumbnail()
-            service_dict[ 'show_in_thumbnail_even_when_null' ] = service.GetShowInThumbnailEvenWhenNull()
+            service_dict[ 'show_in_thumbnail' ] = service.get_show_in_thumbnail()
+            service_dict[ 'show_in_thumbnail_even_when_null' ] = service.get_show_in_thumbnail_even_when_null()
             
-            if service.GetServiceType() in HC.STAR_RATINGS_SERVICES:
+            if service.get_service_type() in HC.STAR_RATINGS_SERVICES:
                 
                 service = typing.cast( ClientServices.ServiceLocalRatingStars, service )
                 
-                star_type = service.GetStarType()
+                star_type = service.get_star_type()
                 
                 if star_type.HasShape():
                     
@@ -336,7 +336,7 @@ def GetServicesDict():
                 ]
                 
             
-            if service.GetServiceType() == HC.LOCAL_RATING_INCDEC:
+            if service.get_service_type() == HC.LOCAL_RATING_INCDEC:
                 
                 rating_colour_jobs = [
                     ( 'like', ClientRatings.LIKE ),
@@ -350,7 +350,7 @@ def GetServicesDict():
                 
                 for ( json_name, rating_state ) in rating_colour_jobs:
                     
-                    ( pen_rgb, brush_rgb ) = service.GetColour( rating_state )
+                    ( pen_rgb, brush_rgb ) = service.get_colour(rating_state)
                     
                     pen_hex_value = '#' + bytes( pen_rgb ).hex().upper()
                     brush_hex_value = '#' + bytes( brush_rgb ).hex().upper()
@@ -364,12 +364,12 @@ def GetServicesDict():
                 service_dict[ 'colours' ] = colours_dict
                 
             
-            if service.GetServiceType() == HC.LOCAL_RATING_NUMERICAL:
+            if service.get_service_type() == HC.LOCAL_RATING_NUMERICAL:
                 
                 service = typing.cast( ClientServices.ServiceLocalRatingNumerical, service )
                 
-                allows_zero = service.AllowZero()
-                num_stars = service.GetNumStars()
+                allows_zero = service.allow_zero()
+                num_stars = service.get_num_stars()
                 
                 service_dict[ 'allows_zero' ] = allows_zero
                 service_dict[ 'min_stars' ] = 0 if allows_zero else 1
@@ -377,7 +377,7 @@ def GetServicesDict():
                 
             
         
-        services_dict[ service.GetServiceKey().hex() ] = service_dict
+        services_dict[ service.get_service_key().hex()] = service_dict
         
     
     return services_dict
@@ -387,7 +387,7 @@ def GetServiceKeyFromName( service_name: str ):
     
     try:
         
-        service_key = CG.client_controller.services_manager.GetServiceKeyFromName( HC.ALL_SERVICES, service_name )
+        service_key = CG.client_controller.services_manager.get_service_key_from_name(HC.ALL_SERVICES, service_name)
         
     except HydrusExceptions.DataMissing:
         
@@ -720,7 +720,7 @@ def ParseClientAPISearchPredicates( request ) -> list[ ClientSearchPredicate.Pre
 
 def ParsePotentialDuplicatesSearchContext( request: HydrusServerRequest.HydrusRequest ) -> ClientPotentialDuplicatesSearchContext.PotentialDuplicatesSearchContext:
     
-    location_context = ParseLocationContext( request, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
+    location_context = ParseLocationContext(request, ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY))
     
     tag_service_key_1 = request.parsed_request_args.get_value( 'tag_service_key_1', bytes, default_value = CC.COMBINED_TAG_SERVICE_KEY )
     tag_service_key_2 = request.parsed_request_args.get_value( 'tag_service_key_2', bytes, default_value = CC.COMBINED_TAG_SERVICE_KEY )
@@ -830,13 +830,13 @@ def ParseLocalFileDomainLocationContext( request: HydrusServerRequest.HydrusRequ
     
     custom_location_context = ParseLocationContext( request, ClientLocation.LocationContext(), deleted_allowed = False )
     
-    if not custom_location_context.IsEmpty():
+    if not custom_location_context.is_empty():
         
         for service_key in custom_location_context.current_service_keys:
             
-            service = CG.client_controller.services_manager.GetService( service_key )
+            service = CG.client_controller.services_manager.get_service(service_key)
             
-            if service.GetServiceType() not in ( HC.LOCAL_FILE_DOMAIN, ):
+            if service.get_service_type() not in (HC.LOCAL_FILE_DOMAIN,):
                 
                 raise HydrusExceptions.BadRequestException( 'Sorry, any custom file domain here must only declare local file domains.' )
                 

@@ -14,11 +14,11 @@ from hydrus.client.metadata import ClientContentUpdates
 from hydrus.client import ClientConstants as CC
 from hydrus.client import ClientGlobals as CG
 
-def DAEMONCheckExportFolders():
+def daemon_check_export_folders():
     
     controller = CG.client_controller
     
-    if not controller.new_options.GetBoolean( 'pause_export_folders_sync' ):
+    if not controller.new_options.get_boolean('pause_export_folders_sync'):
         
         HG.export_folders_running = True
         
@@ -30,7 +30,7 @@ def DAEMONCheckExportFolders():
                 
                 export_folder = controller.read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER, name )
                 
-                if controller.new_options.GetBoolean( 'pause_export_folders_sync' ) or HydrusThreading.is_thread_shutting_down():
+                if controller.new_options.get_boolean('pause_export_folders_sync') or HydrusThreading.is_thread_shutting_down():
                     
                     break
                     
@@ -45,7 +45,7 @@ def DAEMONCheckExportFolders():
         
     
 
-def DAEMONMaintainTrash():
+def daemon_maintain_trash():
     
     # TODO: Looking at it, this whole thing is whack
     # rewrite it to be a database command that returns 'more work to do' and then just spam it until done
@@ -157,25 +157,24 @@ class ManagerWithMainLoop( object ):
     
     def __str__( self ):
         
-        return f'MainLoop: {self.GetName()}'
+        return f'MainLoop: {self.get_name()}'
         
     
-    def _CheckShutdown( self ):
+    def _check_shutdown(self):
         
         if HydrusThreading.is_thread_shutting_down() or self._shutdown or self._serious_error_encountered:
             
             raise HydrusExceptions.ShutdownException()
-            
         
     
-    def _DoMainLoop( self ):
+    def _do_main_loop(self):
         
         # temporary method for while I harmonise the different mainloops into this class
         
         raise NotImplementedError()
         
     
-    def DoPreMainLoopWait( self ):
+    def do_pre_main_loop_wait(self):
         
         with self._lock:
             
@@ -187,7 +186,7 @@ class ManagerWithMainLoop( object ):
             
             with self._lock:
                 
-                self._CheckShutdown()
+                self._check_shutdown()
                 
             
             self._wake_from_idle_sleep_event.wait( 1 )
@@ -199,18 +198,18 @@ class ManagerWithMainLoop( object ):
             
         
     
-    def GetName( self ) -> str:
+    def get_name(self) -> str:
         
         raise NotImplementedError()
         
     
-    def MainLoop( self ):
+    def main_loop(self):
         
         try:
             
-            self.DoPreMainLoopWait()
+            self.do_pre_main_loop_wait()
             
-            self._DoMainLoop()
+            self._do_main_loop()
             
             # we want to push towards:
             # have work to do?
@@ -230,33 +229,33 @@ class ManagerWithMainLoop( object ):
             
         
     
-    def IsShutdown( self ):
+    def is_shutdown(self):
         
         return self._mainloop_is_finished
         
     
-    def Shutdown( self ):
+    def shutdown(self):
         
         with self._lock:
             
             self._shutdown = True
             
         
-        self.Wake()
+        self.wake()
         
     
-    def Start( self ):
+    def start(self):
         
-        self._controller.call_to_thread_long_running( self.MainLoop )
+        self._controller.call_to_thread_long_running(self.main_loop)
         
     
-    def Wake( self ):
+    def wake(self):
         
         self._wake_from_work_sleep_event.set()
         self._wake_from_idle_sleep_event.set()
         
     
-    def WakeIfNotWorking( self ):
+    def wake_if_not_working(self):
         
         self._wake_from_idle_sleep_event.set()
         

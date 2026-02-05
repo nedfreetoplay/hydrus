@@ -16,7 +16,7 @@ def ResizeNumPyImageForMediaViewer( mime, numpy_image, target_resolution ):
     ( target_width, target_height ) = target_resolution
     new_options = CG.client_controller.new_options
     
-    ( scale_up_quality, scale_down_quality ) = new_options.GetMediaZoomQuality( mime )
+    ( scale_up_quality, scale_down_quality ) = new_options.get_media_zoom_quality(mime)
     
     ( image_height, image_width, depth ) = numpy_image.shape
     

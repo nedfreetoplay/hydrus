@@ -18,7 +18,7 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         self._controller.sub( self, 'WakeIfNotWorking', 'notify_deferred_delete_database_maintenance_new_work' )
         
     
-    def _AbleToDoBackgroundMaintenance( self ):
+    def _able_to_do_background_maintenance(self):
         
         if self._is_working_hard:
             
@@ -27,7 +27,7 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         if CG.client_controller.currently_idle():
             
-            if not self._controller.new_options.GetBoolean( 'database_deferred_delete_maintenance_during_idle' ):
+            if not self._controller.new_options.get_boolean('database_deferred_delete_maintenance_during_idle'):
                 
                 return False
                 
@@ -39,7 +39,7 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
         else:
             
-            if not self._controller.new_options.GetBoolean( 'database_deferred_delete_maintenance_during_active' ):
+            if not self._controller.new_options.get_boolean('database_deferred_delete_maintenance_during_active'):
                 
                 return False
                 
@@ -48,7 +48,7 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         return True
         
     
-    def _GetWaitPeriod( self, expected_work_period: float, actual_work_period: float, still_work_to_do: bool ):
+    def _get_wait_period(self, expected_work_period: float, actual_work_period: float, still_work_to_do: bool):
         
         if not still_work_to_do:
             
@@ -57,15 +57,15 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         if self._is_working_hard:
             
-            rest_ratio = CG.client_controller.new_options.GetInteger( 'deferred_table_delete_rest_percentage_work_hard' ) / 100
+            rest_ratio = CG.client_controller.new_options.get_integer('deferred_table_delete_rest_percentage_work_hard') / 100
             
         elif CG.client_controller.currently_idle():
             
-            rest_ratio = CG.client_controller.new_options.GetInteger( 'deferred_table_delete_rest_percentage_idle' ) / 100
+            rest_ratio = CG.client_controller.new_options.get_integer('deferred_table_delete_rest_percentage_idle') / 100
             
         else:
             
-            rest_ratio = CG.client_controller.new_options.GetInteger( 'deferred_table_delete_rest_percentage_normal' ) / 100
+            rest_ratio = CG.client_controller.new_options.get_integer('deferred_table_delete_rest_percentage_normal') / 100
             
         
         reasonable_work_period = min( 5 * expected_work_period, actual_work_period )
@@ -73,23 +73,23 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         return reasonable_work_period * rest_ratio
         
     
-    def _GetWorkPeriod( self ):
+    def _get_work_period(self):
         
         if self._is_working_hard:
             
-            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'deferred_table_delete_work_time_ms_work_hard' ) )
+            return HydrusTime.secondise_ms_float(CG.client_controller.new_options.get_integer('deferred_table_delete_work_time_ms_work_hard'))
             
         elif CG.client_controller.currently_idle():
             
-            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'deferred_table_delete_work_time_ms_idle' ) )
+            return HydrusTime.secondise_ms_float(CG.client_controller.new_options.get_integer('deferred_table_delete_work_time_ms_idle'))
             
         else:
             
-            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'deferred_table_delete_work_time_ms_normal' ) )
+            return HydrusTime.secondise_ms_float(CG.client_controller.new_options.get_integer('deferred_table_delete_work_time_ms_normal'))
             
         
     
-    def FlipWorkingHard( self ):
+    def flip_working_hard(self):
         
         with self._lock:
             
@@ -98,15 +98,15 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         self._controller.pub( 'notify_deferred_delete_database_maintenance_state_change' )
         
-        self.Wake()
+        self.wake()
         
     
-    def GetName( self ) -> str:
+    def get_name(self) -> str:
         
         return 'db maintenance'
         
     
-    def IsWorkingHard( self ) -> bool:
+    def is_working_hard(self) -> bool:
         
         with self._lock:
             
@@ -114,7 +114,7 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
         
     
-    def _DoMainLoop( self ):
+    def _do_main_loop(self):
         
         while True:
             
@@ -122,15 +122,15 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             with self._lock:
                 
-                self._CheckShutdown()
+                self._check_shutdown()
                 
             
-            self._controller.WaitUntilViewFree()
+            self._controller.wait_until_view_free()
             
             with self._lock:
                 
-                able_to_work = self._AbleToDoBackgroundMaintenance()
-                expected_work_period = self._GetWorkPeriod()
+                able_to_work = self._able_to_do_background_maintenance()
+                expected_work_period = self._get_work_period()
                 
             
             if able_to_work:
@@ -164,7 +164,7 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 with self._lock:
                     
-                    wait_period = self._GetWaitPeriod( expected_work_period, actual_work_period, still_work_to_do )
+                    wait_period = self._get_wait_period(expected_work_period, actual_work_period, still_work_to_do)
                     
                 
                 if still_work_to_do:

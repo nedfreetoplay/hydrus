@@ -2769,7 +2769,7 @@ class ServerService( object ):
         
         with self._lock:
             
-            self._bandwidth_tracker.ReportDataUsed( num_bytes )
+            self._bandwidth_tracker.report_data_used(num_bytes)
             
             self._set_dirty()
             
@@ -2779,7 +2779,7 @@ class ServerService( object ):
         
         with self._lock:
             
-            self._bandwidth_tracker.ReportRequestUsed()
+            self._bandwidth_tracker.report_request_used()
             
             self._set_dirty()
             
@@ -3269,7 +3269,7 @@ class ServerServiceAdmin( ServerServiceRestricted ):
         
         with self._lock:
             
-            self._server_bandwidth_tracker.ReportDataUsed( num_bytes )
+            self._server_bandwidth_tracker.report_data_used(num_bytes)
             
             self._set_dirty()
             
@@ -3279,7 +3279,7 @@ class ServerServiceAdmin( ServerServiceRestricted ):
         
         with self._lock:
             
-            self._server_bandwidth_tracker.ReportRequestUsed()
+            self._server_bandwidth_tracker.report_request_used()
             
             self._set_dirty()
             

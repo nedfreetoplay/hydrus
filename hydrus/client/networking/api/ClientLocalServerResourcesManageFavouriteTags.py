@@ -20,7 +20,7 @@ class HydrusResourceClientAPIRestrictedManageFavouriteTagsGetFavouriteTags( Hydr
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        favourite_tags = CG.client_controller.new_options.GetStringList( 'favourite_tags' )
+        favourite_tags = CG.client_controller.new_options.get_string_list('favourite_tags')
         
         body_dict = {
             'favourite_tags': favourite_tags
@@ -42,7 +42,7 @@ class HydrusResourceClientAPIRestrictedManageFavouriteTagsSetFavouriteTags( Hydr
     
     def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        favourite_tags = CG.client_controller.new_options.GetStringList( 'favourite_tags' )
+        favourite_tags = CG.client_controller.new_options.get_string_list('favourite_tags')
         
         if 'set' in request.parsed_request_args:
             
@@ -71,7 +71,7 @@ class HydrusResourceClientAPIRestrictedManageFavouriteTagsSetFavouriteTags( Hydr
         
         favourite_tags = sorted( favourite_tags, key = HydrusText.human_text_sort_key )
         
-        CG.client_controller.new_options.SetStringList( 'favourite_tags', favourite_tags )
+        CG.client_controller.new_options.set_string_list('favourite_tags', favourite_tags)
         
         CG.client_controller.pub( 'notify_new_favourite_tags' )
         

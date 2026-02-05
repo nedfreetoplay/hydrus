@@ -263,7 +263,7 @@ class ShortcutAwareToolTipMixin( object ):
                 
                 shortcuts = names_to_shortcuts[ name ]
                 
-                shortcut_strings = sorted( ( shortcut.ToString() for shortcut in shortcuts ) )
+                shortcut_strings = sorted((shortcut.to_string() for shortcut in shortcuts))
                 
                 if name in ClientGUIShortcuts.shortcut_names_to_pretty_names:
                     
@@ -966,7 +966,7 @@ class BetterHyperLink( BetterStaticText ):
     
     def Activated( self ):
         
-        ClientPaths.LaunchURLInWebBrowser( self._url )
+        ClientPaths.launch_url_in_web_browser(self._url)
         
     
     def get_link_color( self ):
@@ -1090,14 +1090,14 @@ class CheckboxManagerOptions( CheckboxManager ):
         
         new_options = CG.client_controller.new_options
         
-        return new_options.GetBoolean( self._boolean_name )
+        return new_options.get_boolean(self._boolean_name)
         
     
     def Invert( self ):
         
         new_options = CG.client_controller.new_options
         
-        new_options.InvertBoolean( self._boolean_name )
+        new_options.invert_boolean(self._boolean_name)
         
         if self._boolean_name == 'advanced_mode':
             

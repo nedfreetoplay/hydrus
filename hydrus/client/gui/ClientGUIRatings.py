@@ -144,14 +144,14 @@ def DrawNumerical( painter: QG.QPainter, x: int, y: int, service_key, rating_sta
         
         try:
             
-            service = CG.client_controller.services_manager.GetService( service_key )
+            service = CG.client_controller.services_manager.get_service(service_key)
             
             if pad_px is None:
                 
-                pad_px = service.GetCustomPad()
+                pad_px = service.get_custom_pad()
                 
             
-            draw_fractional_beside = service.GetShowFractionBesideStars()
+            draw_fractional_beside = service.get_show_fraction_beside_stars()
             
         except HydrusExceptions.DataMissing:
             
@@ -272,23 +272,23 @@ def GetIconSize( canvas_type, service_type = ClientGUICommon.HC.LOCAL_RATING_LIK
     
     if canvas_type in CC.CANVAS_MEDIA_VIEWER_TYPES:
         
-        rating_icon_size_px = CG.client_controller.new_options.GetFloat( 'media_viewer_rating_icon_size_px' )
-        rating_incdec_height_px = CG.client_controller.new_options.GetFloat( 'media_viewer_rating_incdec_height_px' )
+        rating_icon_size_px = CG.client_controller.new_options.get_float('media_viewer_rating_icon_size_px')
+        rating_incdec_height_px = CG.client_controller.new_options.get_float('media_viewer_rating_incdec_height_px')
         
     elif canvas_type == CC.CANVAS_PREVIEW:
         
-        rating_icon_size_px = CG.client_controller.new_options.GetFloat( 'preview_window_rating_icon_size_px' )
-        rating_incdec_height_px = CG.client_controller.new_options.GetFloat( 'preview_window_rating_incdec_height_px' )
+        rating_icon_size_px = CG.client_controller.new_options.get_float('preview_window_rating_icon_size_px')
+        rating_incdec_height_px = CG.client_controller.new_options.get_float('preview_window_rating_incdec_height_px')
         
     elif canvas_type == CC.CANVAS_DIALOG:
         
-        rating_icon_size_px = CG.client_controller.new_options.GetFloat( 'dialog_rating_icon_size_px' )
-        rating_incdec_height_px = CG.client_controller.new_options.GetFloat( 'dialog_rating_incdec_height_px' )
+        rating_icon_size_px = CG.client_controller.new_options.get_float('dialog_rating_icon_size_px')
+        rating_incdec_height_px = CG.client_controller.new_options.get_float('dialog_rating_incdec_height_px')
         
     else:
         
-        rating_icon_size_px = CG.client_controller.new_options.GetFloat( 'draw_thumbnail_rating_icon_size_px' )
-        rating_incdec_height_px = CG.client_controller.new_options.GetFloat( 'thumbnail_rating_incdec_height_px' )
+        rating_icon_size_px = CG.client_controller.new_options.get_float('draw_thumbnail_rating_icon_size_px')
+        rating_incdec_height_px = CG.client_controller.new_options.get_float('thumbnail_rating_incdec_height_px')
         
     
     if service_type == ClientGUICommon.HC.LOCAL_RATING_INCDEC:
@@ -356,11 +356,11 @@ def GetNumericalWidth( service_key, star_width, pad_px = None, draw_collapsed = 
     
     try:
         
-        service = CG.client_controller.services_manager.GetService( service_key )
+        service = CG.client_controller.services_manager.get_service(service_key)
         
-        num_stars = service.GetNumStars()
+        num_stars = service.get_num_stars()
         
-        draw_fractional_beside = service.GetShowFractionBesideStars()
+        draw_fractional_beside = service.get_show_fraction_beside_stars()
         
         if draw_collapsed or draw_fractional_beside:
             
@@ -396,7 +396,7 @@ def GetNumericalWidth( service_key, star_width, pad_px = None, draw_collapsed = 
             
             try:
                 
-                pad_px = service.GetCustomPad()
+                pad_px = service.get_custom_pad()
                 
             except HydrusExceptions.DataMissing: 
                 
@@ -416,9 +416,9 @@ def GetPenAndBrushColours( service_key, rating_state ):
     
     try:
         
-        service = CG.client_controller.services_manager.GetService( service_key )
+        service = CG.client_controller.services_manager.get_service(service_key)
         
-        colour = service.GetColour( rating_state )
+        colour = service.get_colour(rating_state)
         
     except HydrusExceptions.DataMissing:
         
@@ -437,16 +437,16 @@ def GetStars( service_key, rating_state, rating ):
     
     try:
         
-        service = CG.client_controller.services_manager.GetService( service_key )
+        service = CG.client_controller.services_manager.get_service(service_key)
         
     except HydrusExceptions.DataMissing:
         
         return ( ClientRatings.FAT_STAR, 0 )
         
     
-    star_type = service.GetStarType()
+    star_type = service.get_star_type()
     
-    num_stars = service.GetNumStars()
+    num_stars = service.get_num_stars()
     
     stars = []
     
@@ -458,7 +458,7 @@ def GetStars( service_key, rating_state, rating ):
         
     else:
         
-        num_stars_on = service.ConvertRatingToStars( rating )
+        num_stars_on = service.convert_rating_to_stars(rating)
         
         num_stars_off = num_stars - num_stars_on
         
@@ -486,7 +486,7 @@ class RatingIncDec( QW.QWidget ):
         
         self._service_key = service_key
         
-        self._service = CG.client_controller.services_manager.GetService( self._service_key )
+        self._service = CG.client_controller.services_manager.get_service(self._service_key)
         
         self._widget_event_filter = QP.WidgetEventFilter( self )
         
@@ -521,13 +521,13 @@ class RatingIncDec( QW.QWidget ):
         
         if self.isEnabled():
             
-            text = CG.client_controller.services_manager.GetName( self._service_key )
+            text = CG.client_controller.services_manager.get_name(self._service_key)
             
             try:
                 
-                service = CG.client_controller.services_manager.GetService( self._service_key )
+                service = CG.client_controller.services_manager.get_service(self._service_key)
                 
-                tt = '{} - {}'.format( service.GetName(), service.ConvertRatingStateAndRatingToString( self._rating_state, self._rating ) )
+                tt = '{} - {}'.format(service.get_name(), service.convert_rating_state_and_rating_to_string(self._rating_state, self._rating))
                 
             except HydrusExceptions.DataMissing:
                 
@@ -772,9 +772,9 @@ class RatingLike( QW.QWidget ):
             
             try:
                 
-                service = CG.client_controller.services_manager.GetService( self._service_key )
+                service = CG.client_controller.services_manager.get_service(self._service_key)
                 
-                tt = '{} - {}'.format( service.GetName(), service.ConvertRatingStateToString( self._rating_state ) )
+                tt = '{} - {}'.format(service.get_name(), service.convert_rating_state_to_string(self._rating_state))
                 
             except HydrusExceptions.DataMissing:
                 
@@ -933,12 +933,12 @@ class RatingNumerical( QW.QWidget ):
         
         try:
             
-            service = CG.client_controller.services_manager.GetService( self._service_key )
+            service = CG.client_controller.services_manager.get_service(self._service_key)
             
-            self._num_stars = service.GetNumStars()
-            self._allow_zero = service.AllowZero()
-            self._custom_pad = service.GetCustomPad()
-            self._draw_fraction = service.GetShowFractionBesideStars()
+            self._num_stars = service.get_num_stars()
+            self._allow_zero = service.allow_zero()
+            self._custom_pad = service.get_custom_pad()
+            self._draw_fraction = service.get_show_fraction_beside_stars()
             
         except HydrusExceptions.DataMissing:
             
@@ -1061,13 +1061,13 @@ class RatingNumerical( QW.QWidget ):
         
         if self.isEnabled():
             
-            text = CG.client_controller.services_manager.GetName( self._service_key )
+            text = CG.client_controller.services_manager.get_name(self._service_key)
             
             try:
                 
-                service = CG.client_controller.services_manager.GetService( self._service_key )
+                service = CG.client_controller.services_manager.get_service(self._service_key)
                 
-                tt = '{} - {}'.format( service.GetName(), service.ConvertRatingStateAndRatingToString( self._rating_state, self._rating ) )
+                tt = '{} - {}'.format(service.get_name(), service.convert_rating_state_and_rating_to_string(self._rating_state, self._rating))
                 
             except HydrusExceptions.DataMissing:
                 
@@ -1164,9 +1164,9 @@ class RatingNumerical( QW.QWidget ):
         else: 
             
             self._icon_size = size
-            self._custom_pad = CG.client_controller.services_manager.GetService( self._service_key ).GetCustomPad()
-            self._num_stars = CG.client_controller.services_manager.GetService( self._service_key ).GetNumStars()
-            self._draw_fraction = CG.client_controller.services_manager.GetService( self._service_key ).GetShowFractionBesideStars()
+            self._custom_pad = CG.client_controller.services_manager.get_service(self._service_key).get_custom_pad()
+            self._num_stars = CG.client_controller.services_manager.get_service(self._service_key).get_num_stars()
+            self._draw_fraction = CG.client_controller.services_manager.get_service(self._service_key).get_show_fraction_beside_stars()
             
         
         my_width = GetNumericalWidth( self._service_key, self._icon_size.width(), self._custom_pad, False, self._rating_state, self._rating )
@@ -1284,7 +1284,7 @@ class RatingPreviewServiceWrapper:
         self._test_service = None
         self._modifiable_dict = dictionary
         
-        if not CG.client_controller.services_manager.ServiceExists( self._original_service_key ):
+        if not CG.client_controller.services_manager.service_exists(self._original_service_key):
             
             self._original_service_key = CC.PREVIEW_RATINGS_SERVICE_KEY
             
@@ -1293,7 +1293,7 @@ class RatingPreviewServiceWrapper:
     
     def _CloneColours( self, service_key: bytes ):
         
-        colours = CG.client_controller.services_manager.GetService( service_key ).GetColours()
+        colours = CG.client_controller.services_manager.get_service(service_key).get_colours()
         
         self._modifiable_dict[ 'colours' ] = colours
         
@@ -1308,20 +1308,20 @@ class RatingPreviewServiceWrapper:
     
     def _CloneFromOriginal( self ):
         
-        rating_service = CG.client_controller.services_manager.GetService( self._original_service_key )
+        rating_service = CG.client_controller.services_manager.get_service(self._original_service_key)
         
-        self._service_type = rating_service.GetServiceType() if self._service_type is None else self._service_type
+        self._service_type = rating_service.get_service_type() if self._service_type is None else self._service_type
         
-        self._service_name = 'example service templated from ' + rating_service.GetName()
+        self._service_name = 'example service templated from ' + rating_service.get_name()
         
-        self._modifiable_dict = rating_service.GetSerialisableDictionary() if self._modifiable_dict is None else self._modifiable_dict
+        self._modifiable_dict = rating_service.get_serialisable_dictionary() if self._modifiable_dict is None else self._modifiable_dict
         
         self._ReloadExampleService()
         
     
     def _ReloadExampleService( self ):
         
-        self._test_service = CG.client_controller.services_manager.SetTestServiceData( self._service_key, self._service_type, self._modifiable_dict, self._service_name )
+        self._test_service = CG.client_controller.services_manager.set_test_service_data(self._service_key, self._service_type, self._modifiable_dict, self._service_name)
         
     
     def GetServiceKey( self ):
@@ -1358,7 +1358,7 @@ class RatingPreviewServiceWrapper:
     
     def SetServiceTemplate( self, service_key: bytes ):
         
-        CG.client_controller.new_options.SetKey( 'options_ratings_panel_template_service_key' , service_key )
+        CG.client_controller.new_options.set_key('options_ratings_panel_template_service_key', service_key)
         
         self._CloneColours( service_key )
         self._CloneShape( service_key )

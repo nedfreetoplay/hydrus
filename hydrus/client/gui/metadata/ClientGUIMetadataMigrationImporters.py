@@ -410,7 +410,7 @@ class EditSingleFileMetadataImporterPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            name = CG.client_controller.services_manager.GetName( self._service_key )
+            name = CG.client_controller.services_manager.get_name(self._service_key)
             
         except HydrusExceptions.DataMissing:
             

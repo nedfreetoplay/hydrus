@@ -250,7 +250,7 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
     
     def __init__( self, parent, service_key ):
         
-        self._clientside_admin_service = CG.client_controller.services_manager.GetService( service_key )
+        self._clientside_admin_service = CG.client_controller.services_manager.get_service(service_key)
         
         super().__init__( parent )
         
@@ -273,7 +273,7 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         #
         
-        response = self._clientside_admin_service.Request( HC.GET, 'services' )
+        response = self._clientside_admin_service.request(HC.GET, 'services')
         
         serverside_services = response[ 'services' ]
         
@@ -299,9 +299,9 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
     
     def _ConvertServiceToDisplayTuple( self, service ):
         
-        port = service.GetPort()
-        name = service.GetName()
-        service_type = service.GetServiceType()
+        port = service.get_port()
+        name = service.get_name()
+        service_type = service.get_service_type()
         
         pretty_port = str( port )
         pretty_name = name
@@ -312,9 +312,9 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
     
     def _ConvertServiceToSortTuple( self, service ):
         
-        port = service.GetPort()
-        name = service.GetName()
-        service_type = service.GetServiceType()
+        port = service.get_port()
+        name = service.get_name()
+        service_type = service.get_service_type()
         
         return ( port, name, service_type )
         
@@ -368,7 +368,7 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
             
             for service in self._services_listctrl.GetData( only_selected = True ):
                 
-                self._deletee_service_keys.append( service.GetServiceKey() )
+                self._deletee_service_keys.append(service.get_service_key())
                 
             
             self._services_listctrl.DeleteSelected()
@@ -414,7 +414,7 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
     
     def _GetNextPort( self ):
         
-        existing_ports = [ service.GetPort() for service in self._services_listctrl.GetData() ]
+        existing_ports = [service.get_port() for service in self._services_listctrl.GetData()]
         
         largest_port = max( existing_ports )
         
@@ -430,9 +430,9 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
     
     def _SetNonDupePort( self, new_service ):
         
-        existing_ports = [ service.GetPort() for service in self._services_listctrl.GetData() if service.GetServiceKey() != new_service.GetServiceKey() ]
+        existing_ports = [service.get_port() for service in self._services_listctrl.GetData() if service.get_service_key() != new_service.get_service_key()]
         
-        new_port = new_service.GetPort()
+        new_port = new_service.get_port()
         
         if new_port in existing_ports:
             
@@ -446,7 +446,7 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         services = self._services_listctrl.GetData()
         
-        unique_ports = { service.GetPort() for service in services }
+        unique_ports = {service.get_port() for service in services}
         
         if len( unique_ports ) < len( services ):
             
@@ -460,7 +460,7 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         try:
             
-            response = self._clientside_admin_service.Request( HC.POST, 'services', { 'services' : services } )
+            response = self._clientside_admin_service.request(HC.POST, 'services', {'services' : services})
             
         except Exception as e:
             
@@ -471,13 +471,13 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         service_keys_to_access_keys = dict( response[ 'service_keys_to_access_keys' ] )
         
-        admin_service_key = self._clientside_admin_service.GetServiceKey()
+        admin_service_key = self._clientside_admin_service.get_service_key()
         
         with HG.dirty_object_lock:
             
             CG.client_controller.write_synchronous( 'update_server_services', admin_service_key, services, service_keys_to_access_keys, self._deletee_service_keys )
             
-            CG.client_controller.RefreshServices()
+            CG.client_controller.refresh_services()
             
         
     

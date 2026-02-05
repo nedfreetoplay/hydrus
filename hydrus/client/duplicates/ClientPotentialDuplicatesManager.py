@@ -74,16 +74,16 @@ class PotentialDuplicatesMaintenanceManager( ClientDaemons.ManagerWithMainLoop )
         CG.client_controller.sub( self, 'WakeIfNotWorking', 'notify_file_potential_search_reset' )
         
     
-    def _DoMainLoop( self ):
+    def _do_main_loop(self):
         
         while True:
             
             with self._lock:
                 
-                self._CheckShutdown()
+                self._check_shutdown()
                 
             
-            self._controller.WaitUntilViewFree()
+            self._controller.wait_until_view_free()
             
             if self._need_to_rebalance_tree.is_set():
                 
@@ -111,7 +111,7 @@ class PotentialDuplicatesMaintenanceManager( ClientDaemons.ManagerWithMainLoop )
                 
                 start_time = HydrusTime.get_now_precise()
                 
-                search_distance = CG.client_controller.new_options.GetInteger( 'similar_files_duplicate_pairs_search_distance' )
+                search_distance = CG.client_controller.new_options.get_integer('similar_files_duplicate_pairs_search_distance')
                 
                 ( still_search_work_to_do, num_done ) = CG.client_controller.write_synchronous( 'maintain_similar_files_search_for_potential_duplicates', search_distance, work_period = expected_work_period )
                 
@@ -159,7 +159,7 @@ class PotentialDuplicatesMaintenanceManager( ClientDaemons.ManagerWithMainLoop )
             
             with self._lock:
                 
-                self._CheckShutdown()
+                self._check_shutdown()
                 
             
             wake_event.wait( wait_time )
@@ -178,11 +178,11 @@ class PotentialDuplicatesMaintenanceManager( ClientDaemons.ManagerWithMainLoop )
         
         if self._controller.currently_idle():
             
-            rest_ratio = CG.client_controller.new_options.GetInteger( 'potential_duplicates_search_rest_percentage_idle' ) / 100
+            rest_ratio = CG.client_controller.new_options.get_integer('potential_duplicates_search_rest_percentage_idle') / 100
             
         else:
             
-            rest_ratio = CG.client_controller.new_options.GetInteger( 'potential_duplicates_search_rest_percentage_active' ) / 100
+            rest_ratio = CG.client_controller.new_options.get_integer('potential_duplicates_search_rest_percentage_active') / 100
             
         
         reasonable_work_period = min( 5 * expected_work_period, actual_work_period )
@@ -199,11 +199,11 @@ class PotentialDuplicatesMaintenanceManager( ClientDaemons.ManagerWithMainLoop )
         
         if self._controller.currently_idle():
             
-            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'potential_duplicates_search_work_time_ms_idle' ) )
+            return HydrusTime.secondise_ms_float(CG.client_controller.new_options.get_integer('potential_duplicates_search_work_time_ms_idle'))
             
         else:
             
-            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'potential_duplicates_search_work_time_ms_active' ) )
+            return HydrusTime.secondise_ms_float(CG.client_controller.new_options.get_integer('potential_duplicates_search_work_time_ms_active'))
             
         
     
@@ -216,14 +216,14 @@ class PotentialDuplicatesMaintenanceManager( ClientDaemons.ManagerWithMainLoop )
         
         if self._controller.currently_idle():
             
-            if self._controller.new_options.GetBoolean( 'maintain_similar_files_duplicate_pairs_during_idle' ):
+            if self._controller.new_options.get_boolean('maintain_similar_files_duplicate_pairs_during_idle'):
                 
                 return True
                 
             
         else:
             
-            if self._controller.new_options.GetBoolean( 'maintain_similar_files_duplicate_pairs_during_active' ):
+            if self._controller.new_options.get_boolean('maintain_similar_files_duplicate_pairs_during_active'):
                 
                 return True
                 
@@ -234,7 +234,7 @@ class PotentialDuplicatesMaintenanceManager( ClientDaemons.ManagerWithMainLoop )
     
     def _WorkToDo( self ):
         
-        search_distance = CG.client_controller.new_options.GetInteger( 'similar_files_duplicate_pairs_search_distance' )
+        search_distance = CG.client_controller.new_options.get_integer('similar_files_duplicate_pairs_search_distance')
         
         similar_files_maintenance_status = PotentialDuplicatesMaintenanceNumbersStore.instance().GetMaintenanceNumbers()
         
@@ -243,7 +243,7 @@ class PotentialDuplicatesMaintenanceManager( ClientDaemons.ManagerWithMainLoop )
         return there_is_stuff_to_search
         
     
-    def GetName( self ) -> str:
+    def get_name(self) -> str:
         
         return 'potential duplicates search'
         
@@ -269,6 +269,6 @@ class PotentialDuplicatesMaintenanceManager( ClientDaemons.ManagerWithMainLoop )
             self._work_hard.clear()
             
         
-        self.Wake()
+        self.wake()
         
     

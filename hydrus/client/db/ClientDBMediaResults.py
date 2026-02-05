@@ -133,7 +133,7 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
         
         for media_result in cached_hash_ids_to_media_results.values():
             
-            result = self.modules_files_timestamps.GetTimestampMS( media_result.GetHashId(), ClientTime.TimestampData.STATICSimpleStub( HC.TIMESTAMP_TYPE_MODIFIED_FILE ) )
+            result = self.modules_files_timestamps.GetTimestampMS(media_result.GetHashId(), ClientTime.TimestampData.static_simple_stub(HC.TIMESTAMP_TYPE_MODIFIED_FILE))
             
             media_result.GetTimesManager().SetFileModifiedTimestampMS( result )
             

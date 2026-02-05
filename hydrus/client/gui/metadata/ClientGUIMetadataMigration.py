@@ -125,9 +125,9 @@ class EditSingleFileMetadataRouterPanel( ClientGUIScrolledPanels.EditPanel ):
         test_object_pretty = self._test_context_factory.GetTestObjectString( test_object )
         importer_strings_output = sorted( self._test_context_factory.GetExampleTestStringsForTestObject( importer, test_object ) )
         
-        if string_processor.MakesChanges():
+        if string_processor.makes_changes():
             
-            processed_strings_output = string_processor.ProcessStrings( importer_strings_output )
+            processed_strings_output = string_processor.process_strings(importer_strings_output)
             
         else:
             
@@ -151,9 +151,9 @@ class EditSingleFileMetadataRouterPanel( ClientGUIScrolledPanels.EditPanel ):
         test_object_pretty = self._test_context_factory.GetTestObjectString( test_object )
         importer_strings_output = sorted( self._test_context_factory.GetExampleTestStringsForTestObject( importer, test_object ) )
         
-        if string_processor.MakesChanges():
+        if string_processor.makes_changes():
             
-            processed_strings_output = string_processor.ProcessStrings( importer_strings_output )
+            processed_strings_output = string_processor.process_strings(importer_strings_output)
             
         else:
             
@@ -279,9 +279,9 @@ class SingleFileMetadataRoutersControl( ClientGUIListBoxes.AddEditDeleteListBox 
         
         if isinstance( exporter, ClientMetadataMigrationExporters.SingleFileMetadataExporterMediaTags ):
             
-            if not CG.client_controller.services_manager.ServiceExists( exporter.GetServiceKey() ):
+            if not CG.client_controller.services_manager.service_exists(exporter.GetServiceKey()):
                 
-                exporter.SetServiceKey( CG.client_controller.services_manager.GetDefaultLocalTagService().GetServiceKey() )
+                exporter.SetServiceKey(CG.client_controller.services_manager.get_default_local_tag_service().get_service_key())
                 
             
         

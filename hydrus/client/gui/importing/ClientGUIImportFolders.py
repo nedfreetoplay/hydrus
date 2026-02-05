@@ -179,7 +179,7 @@ class EditImportFoldersPanel( ClientGUIScrolledPanels.EditPanel ):
         
         import_folders = self._import_folders.GetData()
         
-        names = { import_folder.GetName() for import_folder in import_folders }
+        names = {import_folder.get_name() for import_folder in import_folders}
         
         return names
         
@@ -338,7 +338,7 @@ class EditImportFolderPanel( ClientGUIScrolledPanels.EditPanel ):
             self._location_failed.SetPath( action_locations[ CC.STATUS_ERROR ] )
             
         
-        good_tag_service_keys_to_filename_tagging_options = { service_key : filename_tagging_options for ( service_key, filename_tagging_options ) in list(tag_service_keys_to_filename_tagging_options.items()) if CG.client_controller.services_manager.ServiceExists( service_key ) }
+        good_tag_service_keys_to_filename_tagging_options = {service_key : filename_tagging_options for ( service_key, filename_tagging_options ) in list(tag_service_keys_to_filename_tagging_options.items()) if CG.client_controller.services_manager.service_exists(service_key)}
         
         self._filename_tagging_options.AddDatas( list( good_tag_service_keys_to_filename_tagging_options.items() ) )
         
@@ -519,7 +519,7 @@ class EditImportFolderPanel( ClientGUIScrolledPanels.EditPanel ):
             ClientGUIDialogsMessage.ShowWarning( self, f'The path you have entered--"{path}"--does not exist! The dialog will not force you to correct it, but this import folder will do no work as long as the location is missing!' )
             
         
-        ( dirs_that_allow_internal_work, dirs_that_cannot_be_touched ) = CG.client_controller.GetImportSensitiveDirectories()
+        ( dirs_that_allow_internal_work, dirs_that_cannot_be_touched ) = CG.client_controller.get_import_sensitive_directories()
         
         sensitive_paths = list( dirs_that_allow_internal_work ) + list( dirs_that_cannot_be_touched )
         
@@ -604,7 +604,7 @@ class EditImportFolderPanel( ClientGUIScrolledPanels.EditPanel ):
         
         ( service_key, filename_tagging_options ) = data
         
-        name = CG.client_controller.services_manager.GetName( service_key )
+        name = CG.client_controller.services_manager.get_name(service_key)
         
         display_tuple = ( name, )
         

@@ -60,7 +60,7 @@ def RenderTag( tag, render_for_user: bool ):
         
         new_options = CG.client_controller.new_options
         
-        if new_options.GetBoolean( 'replace_tag_underscores_with_spaces' ):
+        if new_options.get_boolean('replace_tag_underscores_with_spaces'):
             
             tag = tag.replace( '_', ' ' )
             
@@ -79,9 +79,9 @@ def RenderTag( tag, render_for_user: bool ):
             # TODO: this is garbage. figure out a factory that does this without the options check for every tag, then update the factory on options update
             # same with the underscore stuff above
             
-            if new_options.GetBoolean( 'show_namespaces' ) or ( new_options.GetBoolean( 'show_number_namespaces' ) and namespace.isdecimal() ) or ( new_options.GetBoolean( 'show_subtag_number_namespaces' ) and subtag.isdecimal() ):
+            if new_options.get_boolean('show_namespaces') or (new_options.get_boolean('show_number_namespaces') and namespace.isdecimal()) or (new_options.get_boolean('show_subtag_number_namespaces') and subtag.isdecimal()):
                 
-                connector = new_options.GetString( 'namespace_connector' )
+                connector = new_options.get_string('namespace_connector')
                 
             else:
                 
@@ -98,7 +98,7 @@ def RenderTag( tag, render_for_user: bool ):
     
     if render_for_user:
         
-        if new_options.GetBoolean( 'replace_tag_emojis_with_boxes' ):
+        if new_options.get_boolean('replace_tag_emojis_with_boxes'):
             
             result = emoji_pattern.sub( '□', result )
             

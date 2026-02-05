@@ -65,7 +65,7 @@ class HydrusResourceClientAPIRestrictedAddTagsAddTags( HydrusResourceClientAPIRe
                     continue
                     
                 
-                if service.GetServiceType() == HC.LOCAL_TAG:
+                if service.get_service_type() == HC.LOCAL_TAG:
                     
                     content_action = HC.CONTENT_UPDATE_ADD
                     
@@ -107,7 +107,7 @@ class HydrusResourceClientAPIRestrictedAddTagsAddTags( HydrusResourceClientAPIRe
                         raise HydrusExceptions.BadRequestException( 'Sorry, got an action, "{}", that was not an integer!'.format( parsed_content_action ) )
                         
                     
-                    if service.GetServiceType() == HC.LOCAL_TAG:
+                    if service.get_service_type() == HC.LOCAL_TAG:
                         
                         if content_action not in ( HC.CONTENT_UPDATE_ADD, HC.CONTENT_UPDATE_DELETE ):
                             
@@ -275,13 +275,13 @@ class HydrusResourceClientAPIRestrictedAddTagsSearchTags( HydrusResourceClientAP
             
             autocomplete_search_text = parsed_autocomplete_text.GetSearchText( True )
             
-            location_context = ClientLocalServerCore.ParseLocationContext( request, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
+            location_context = ClientLocalServerCore.ParseLocationContext(request, ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY))
             
             file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, tag_context = tag_context )
             
             job_status = ClientThreading.JobStatus( cancellable = True )
             
-            request.disconnect_callables.append( job_status.Cancel )
+            request.disconnect_callables.append(job_status.cancel)
             
             search_namespaces_into_full_tags = parsed_autocomplete_text.GetTagAutocompleteOptions().SearchNamespacesIntoFullTags()
             

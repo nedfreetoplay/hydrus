@@ -111,7 +111,7 @@ class EditDuplicatesAutoResolutionRulesPanel( ClientGUIScrolledPanels.EditPanel 
         
         duplicates_auto_resolution_rule = ClientDuplicatesAutoResolution.DuplicatesAutoResolutionRule( name )
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
         
         predicates = [
             ClientSearchPredicate.Predicate( predicate_type = ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = ( HC.GENERAL_IMAGE, ) ),
@@ -232,7 +232,7 @@ class EditDuplicatesAutoResolutionRulesPanel( ClientGUIScrolledPanels.EditPanel 
     
     def _GetExistingNames( self ):
         
-        return { duplicates_auto_resolution_rule.GetName() for duplicates_auto_resolution_rule in self._duplicates_auto_resolution_rules.GetData() }
+        return {duplicates_auto_resolution_rule.get_name() for duplicates_auto_resolution_rule in self._duplicates_auto_resolution_rules.GetData()}
         
     
     def _ImportRule( self, duplicates_auto_resolution_rule: ClientDuplicatesAutoResolution.DuplicatesAutoResolutionRule ):
@@ -545,7 +545,7 @@ class EditPairActionsWidget( ClientGUICommon.StaticBox ):
         
         if duplicates_content_merge_options is None:
             
-            duplicates_content_merge_options = CG.client_controller.new_options.GetDuplicateContentMergeOptions( action )
+            duplicates_content_merge_options = CG.client_controller.new_options.get_duplicate_content_merge_options(action)
             
         else:
             
@@ -582,7 +582,7 @@ class EditPairActionsWidget( ClientGUICommon.StaticBox ):
         
         if current_action != action:
             
-            duplicates_content_merge_options = CG.client_controller.new_options.GetDuplicateContentMergeOptions( action )
+            duplicates_content_merge_options = CG.client_controller.new_options.get_duplicate_content_merge_options(action)
             
             self._custom_duplicate_content_merge_options.SetValue( action, duplicates_content_merge_options )
             
@@ -655,7 +655,7 @@ class EditPairComparatorOneFilePanel( ClientGUIScrolledPanels.EditPanel ):
         
         self.widget().setLayout( vbox )
         
-        CG.client_controller.CallAfterQtSafe( self, ClientGUIFunctions.SetFocusLater, self._metadata_conditional )
+        CG.client_controller.call_after_qt_safe(self, ClientGUIFunctions.SetFocusLater, self._metadata_conditional)
         
     
     def GetValue( self ):
@@ -1507,7 +1507,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
                 
                 job_status = ClientThreading.JobStatus()
                 
-                job_status.SetStatusText( 'Waiting for current rules work to finish.' )
+                job_status.set_status_text('Waiting for current rules work to finish.')
                 
                 CG.client_controller.pub( 'message', job_status )
                 
@@ -1525,7 +1525,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
                     
                 finally:
                     
-                    job_status.FinishAndDismiss()
+                    job_status.finish_and_dismiss()
                     
                 
                 # we have the lock
@@ -1536,13 +1536,13 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
                     
                     rules = CG.client_controller.duplicates_auto_resolution_manager.GetRules()
                     
-                    CG.client_controller.CallBlockingToQtFireAndForgetNoResponse( self, do_it_qt, rules )
+                    CG.client_controller.call_blocking_to_qt_fire_and_forget_no_response(self, do_it_qt, rules)
                     
                 finally:
                     
                     edit_work_lock.release()
                     
-                    CG.client_controller.duplicates_auto_resolution_manager.Wake()
+                    CG.client_controller.duplicates_auto_resolution_manager.wake()
                     
                 
             
@@ -1552,9 +1552,9 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
     
     def _FlipBoolean( self, name ):
         
-        CG.client_controller.new_options.FlipBoolean( name )
+        CG.client_controller.new_options.flip_boolean(name)
         
-        CG.client_controller.duplicates_auto_resolution_manager.Wake()
+        CG.client_controller.duplicates_auto_resolution_manager.wake()
         
     
     def _FlipWorkingHard( self ):
@@ -1582,14 +1582,14 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
         
         check_manager = ClientGUICommon.CheckboxManagerCalls(
             lambda: self._FlipBoolean( 'duplicates_auto_resolution_during_idle' ),
-            lambda: CG.client_controller.new_options.GetBoolean( 'duplicates_auto_resolution_during_idle' )
+            lambda: CG.client_controller.new_options.get_boolean('duplicates_auto_resolution_during_idle')
         )
         
         menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCheck( 'work on these rules during idle time', 'Allow the client to work on auto-resolution rules when you are not using the program.', check_manager ) )
         
         check_manager = ClientGUICommon.CheckboxManagerCalls(
             lambda: self._FlipBoolean( 'duplicates_auto_resolution_during_active' ),
-            lambda: CG.client_controller.new_options.GetBoolean( 'duplicates_auto_resolution_during_active' )
+            lambda: CG.client_controller.new_options.get_boolean('duplicates_auto_resolution_during_active')
         )
         
         menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCheck( 'work on these rules during normal time', 'Allow the client to work on auto-resolution rules when you are using the program.', check_manager ) )

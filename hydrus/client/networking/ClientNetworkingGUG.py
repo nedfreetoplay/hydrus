@@ -104,7 +104,7 @@ class GalleryURLGenerator( HydrusSerialisable.SerialisableBaseNamed ):
             raise HydrusExceptions.GUGException( 'Replacement phrase not in URL template!' )
             
         
-        if CG.client_controller.new_options.GetBoolean( 'replace_percent_twenty_with_space_in_gug_input' ):
+        if CG.client_controller.new_options.get_boolean('replace_percent_twenty_with_space_in_gug_input'):
             
             query_text = query_text.replace( '%20', ' ' )
             
@@ -283,7 +283,7 @@ class NestedGalleryURLGenerator( HydrusSerialisable.SerialisableBaseNamed ):
             
             if gug is not None:
                 
-                gug.CheckFunctional()
+                gug.check_functional()
                 
             
         
@@ -400,7 +400,7 @@ class NestedGalleryURLGenerator( HydrusSerialisable.SerialisableBaseNamed ):
     def RepairGUGs( self, available_gugs ):
         
         available_keys_to_gugs = { gug.GetGUGKey() : gug for gug in available_gugs }
-        available_names_to_gugs = { gug.GetName() : gug for gug in available_gugs }
+        available_names_to_gugs = {gug.get_name() : gug for gug in available_gugs}
         
         good_gug_keys_and_names = []
         
@@ -419,7 +419,7 @@ class NestedGalleryURLGenerator( HydrusSerialisable.SerialisableBaseNamed ):
                 continue
                 
             
-            good_gug_keys_and_names.append( ( gug.GetGUGKey(), gug.GetName() ) )
+            good_gug_keys_and_names.append(( gug.GetGUGKey(), gug.get_name()))
             
         
         self._gug_keys_and_names = good_gug_keys_and_names

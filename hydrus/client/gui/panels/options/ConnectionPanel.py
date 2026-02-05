@@ -19,7 +19,7 @@ class ConnectionPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         general = ClientGUICommon.StaticBox( self, 'general' )
         
-        if self._new_options.GetBoolean( 'advanced_mode' ):
+        if self._new_options.get_boolean('advanced_mode'):
             
             network_timeout_min = 1
             network_timeout_max = 86400 * 30
@@ -89,30 +89,30 @@ class ConnectionPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         #
         
-        self._set_requests_ca_bundle_env.setChecked( self._new_options.GetBoolean( 'set_requests_ca_bundle_env' ) )
-        self._do_not_verify_regular_https.setChecked( not self._new_options.GetBoolean( 'verify_regular_https' ) )
+        self._set_requests_ca_bundle_env.setChecked(self._new_options.get_boolean('set_requests_ca_bundle_env'))
+        self._do_not_verify_regular_https.setChecked(not self._new_options.get_boolean('verify_regular_https'))
         
-        self._http_proxy.SetValue( self._new_options.GetNoneableString( 'http_proxy' ) )
-        self._https_proxy.SetValue( self._new_options.GetNoneableString( 'https_proxy' ) )
-        self._no_proxy.SetValue( self._new_options.GetNoneableString( 'no_proxy' ) )
+        self._http_proxy.SetValue(self._new_options.get_noneable_string('http_proxy'))
+        self._https_proxy.SetValue(self._new_options.get_noneable_string('https_proxy'))
+        self._no_proxy.SetValue(self._new_options.get_noneable_string('no_proxy'))
         
-        self._max_connection_attempts_allowed.setValue( self._new_options.GetInteger( 'max_connection_attempts_allowed' ) )
-        self._max_request_attempts_allowed_get.setValue( self._new_options.GetInteger( 'max_request_attempts_allowed_get' ) )
-        self._network_timeout.setValue( self._new_options.GetInteger( 'network_timeout' ) )
-        self._connection_error_wait_time.setValue( self._new_options.GetInteger( 'connection_error_wait_time' ) )
-        self._serverside_bandwidth_wait_time.setValue( self._new_options.GetInteger( 'serverside_bandwidth_wait_time' ) )
+        self._max_connection_attempts_allowed.setValue(self._new_options.get_integer('max_connection_attempts_allowed'))
+        self._max_request_attempts_allowed_get.setValue(self._new_options.get_integer('max_request_attempts_allowed_get'))
+        self._network_timeout.setValue(self._new_options.get_integer('network_timeout'))
+        self._connection_error_wait_time.setValue(self._new_options.get_integer('connection_error_wait_time'))
+        self._serverside_bandwidth_wait_time.setValue(self._new_options.get_integer('serverside_bandwidth_wait_time'))
         
-        number = self._new_options.GetInteger( 'domain_network_infrastructure_error_number' )
-        time_delta = self._new_options.GetInteger( 'domain_network_infrastructure_error_time_delta' )
+        number = self._new_options.get_integer('domain_network_infrastructure_error_number')
+        time_delta = self._new_options.get_integer('domain_network_infrastructure_error_time_delta')
         
         self._domain_network_infrastructure_error_velocity.SetValue( ( number, time_delta ) )
         
-        self._max_network_jobs.setValue( self._new_options.GetInteger( 'max_network_jobs' ) )
-        self._max_network_jobs_per_domain.setValue( self._new_options.GetInteger( 'max_network_jobs_per_domain' ) )
+        self._max_network_jobs.setValue(self._new_options.get_integer('max_network_jobs'))
+        self._max_network_jobs_per_domain.setValue(self._new_options.get_integer('max_network_jobs_per_domain'))
         
         #
         
-        if self._new_options.GetBoolean( 'advanced_mode' ):
+        if self._new_options.get_boolean('advanced_mode'):
             
             label = 'As you are in advanced mode, these options have very low and high limits. Be very careful about lowering delay time or raising max number of connections too far, as things will break.'
             
@@ -188,25 +188,25 @@ class ConnectionPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def UpdateOptions( self ):
         
-        self._new_options.SetBoolean( 'set_requests_ca_bundle_env', self._set_requests_ca_bundle_env.isChecked() )
-        self._new_options.SetBoolean( 'verify_regular_https', not self._do_not_verify_regular_https.isChecked() )
+        self._new_options.set_boolean('set_requests_ca_bundle_env', self._set_requests_ca_bundle_env.isChecked())
+        self._new_options.set_boolean('verify_regular_https', not self._do_not_verify_regular_https.isChecked())
         
-        self._new_options.SetNoneableString( 'http_proxy', self._http_proxy.GetValue() )
-        self._new_options.SetNoneableString( 'https_proxy', self._https_proxy.GetValue() )
-        self._new_options.SetNoneableString( 'no_proxy', self._no_proxy.GetValue() )
+        self._new_options.set_noneable_string('http_proxy', self._http_proxy.GetValue())
+        self._new_options.set_noneable_string('https_proxy', self._https_proxy.GetValue())
+        self._new_options.set_noneable_string('no_proxy', self._no_proxy.GetValue())
         
-        self._new_options.SetInteger( 'max_connection_attempts_allowed', self._max_connection_attempts_allowed.value() )
-        self._new_options.SetInteger( 'max_request_attempts_allowed_get', self._max_request_attempts_allowed_get.value() )
-        self._new_options.SetInteger( 'network_timeout', self._network_timeout.value() )
-        self._new_options.SetInteger( 'connection_error_wait_time', self._connection_error_wait_time.value() )
-        self._new_options.SetInteger( 'serverside_bandwidth_wait_time', self._serverside_bandwidth_wait_time.value() )
+        self._new_options.set_integer('max_connection_attempts_allowed', self._max_connection_attempts_allowed.value())
+        self._new_options.set_integer('max_request_attempts_allowed_get', self._max_request_attempts_allowed_get.value())
+        self._new_options.set_integer('network_timeout', self._network_timeout.value())
+        self._new_options.set_integer('connection_error_wait_time', self._connection_error_wait_time.value())
+        self._new_options.set_integer('serverside_bandwidth_wait_time', self._serverside_bandwidth_wait_time.value())
         
         ( number, time_delta ) = self._domain_network_infrastructure_error_velocity.GetValue()
         
-        self._new_options.SetInteger( 'domain_network_infrastructure_error_number', number )
-        self._new_options.SetInteger( 'domain_network_infrastructure_error_time_delta', time_delta )
+        self._new_options.set_integer('domain_network_infrastructure_error_number', number)
+        self._new_options.set_integer('domain_network_infrastructure_error_time_delta', time_delta)
         
-        self._new_options.SetInteger( 'max_network_jobs', self._max_network_jobs.value() )
-        self._new_options.SetInteger( 'max_network_jobs_per_domain', self._max_network_jobs_per_domain.value() )
+        self._new_options.set_integer('max_network_jobs', self._max_network_jobs.value())
+        self._new_options.set_integer('max_network_jobs_per_domain', self._max_network_jobs_per_domain.value())
         
     

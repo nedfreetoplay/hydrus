@@ -23,18 +23,18 @@ class EditTagAutocompleteOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         self._original_tag_autocomplete_options = tag_autocomplete_options
         services_manager = CG.client_controller.services_manager
         
-        all_real_tag_service_keys = services_manager.GetServiceKeys( HC.REAL_TAG_SERVICES )
+        all_real_tag_service_keys = services_manager.get_service_keys(HC.REAL_TAG_SERVICES)
         
         #
         
         self._write_autocomplete_tag_domain = ClientGUICommon.BetterChoice( self )
         self._write_autocomplete_tag_domain.setToolTip( ClientGUIFunctions.WrapToolTip( 'A manage tags autocomplete will start with this domain. Typically only useful with this service or "all known tags".' ) )
         
-        self._write_autocomplete_tag_domain.addItem( services_manager.GetName( CC.COMBINED_TAG_SERVICE_KEY ), CC.COMBINED_TAG_SERVICE_KEY )
+        self._write_autocomplete_tag_domain.addItem(services_manager.get_name(CC.COMBINED_TAG_SERVICE_KEY), CC.COMBINED_TAG_SERVICE_KEY)
         
         for service_key in all_real_tag_service_keys:
             
-            self._write_autocomplete_tag_domain.addItem( services_manager.GetName( service_key ), service_key )
+            self._write_autocomplete_tag_domain.addItem(services_manager.get_name(service_key), service_key)
             
         
         self._override_write_autocomplete_location_context = QW.QCheckBox( self )
@@ -223,7 +223,7 @@ class EditTagDisplayManagerPanel( ClientGUIScrolledPanels.EditPanel ):
         
         self._original_tag_display_manager = tag_display_manager
         
-        if CG.client_controller.new_options.GetBoolean( 'use_listbook_for_tag_service_panels' ):
+        if CG.client_controller.new_options.get_boolean('use_listbook_for_tag_service_panels'):
             
             self._tag_services = ClientGUIListBook.ListBook( self )
             
@@ -238,12 +238,12 @@ class EditTagDisplayManagerPanel( ClientGUIScrolledPanels.EditPanel ):
         
         #
         
-        services = list( CG.client_controller.services_manager.GetServices( ( HC.COMBINED_TAG, HC.LOCAL_TAG, HC.TAG_REPOSITORY ) ) )
+        services = list(CG.client_controller.services_manager.get_services((HC.COMBINED_TAG, HC.LOCAL_TAG, HC.TAG_REPOSITORY)))
         
         for service in services:
             
-            service_key = service.GetServiceKey()
-            name = service.GetName()
+            service_key = service.get_service_key()
+            name = service.get_name()
             
             page = self._Panel( self._tag_services, self._original_tag_display_manager, service_key )
             

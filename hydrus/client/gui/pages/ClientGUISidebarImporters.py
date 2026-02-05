@@ -87,7 +87,7 @@ def AddPresentationSubmenu( menu: QW.QMenu, importer_name: str, single_selected_
     
     presentation_import_options = PresentationImportOptions.PresentationImportOptions()
     
-    presentation_import_options.SetLocationContext( ClientLocation.LocationContext.STATICCreateSimple( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY ) )
+    presentation_import_options.SetLocationContext(ClientLocation.LocationContext.static_create_simple(CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY))
     
     sets_of_options.append( presentation_import_options )
     
@@ -218,7 +218,7 @@ class SidebarImporterHDD( SidebarImporter ):
         
         num_items = len( self._hdd_import.GetFileSeedCache() )
         
-        if not for_session_close and CG.client_controller.new_options.GetBoolean( 'confirm_non_empty_downloader_page_close' ) and num_items > 0:
+        if not for_session_close and CG.client_controller.new_options.get_boolean('confirm_non_empty_downloader_page_close') and num_items > 0:
             
             raise HydrusExceptions.VetoException( f'This is a local import page holding {HydrusNumbers.to_human_int( num_items )} import objects.' )
             
@@ -252,7 +252,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
         
         self._loading_highlight_job_status = ClientThreading.JobStatus( cancellable = True )
         
-        self._loading_highlight_job_status.Finish()
+        self._loading_highlight_job_status.finish()
         
         #
         
@@ -384,7 +384,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
     
     def _CanClearHighlight( self ):
         
-        return self._highlighted_gallery_import is not None or not self._loading_highlight_job_status.IsDone()
+        return self._highlighted_gallery_import is not None or not self._loading_highlight_job_status.is_done()
         
     
     def _CanHighlight( self ):
@@ -434,9 +434,9 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
     
     def _ClearExistingHighlight( self ):
         
-        if not self._loading_highlight_job_status.IsDone():
+        if not self._loading_highlight_job_status.is_done():
             
-            self._loading_highlight_job_status.Cancel()
+            self._loading_highlight_job_status.cancel()
             
         
         if self._highlighted_gallery_import is not None:
@@ -478,9 +478,9 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
             
             pretty_query_text = f'* {pretty_query_text}'
             
-        elif not self._loading_highlight_job_status.IsDone():
+        elif not self._loading_highlight_job_status.is_done():
             
-            downloader = self._loading_highlight_job_status.GetIfHasVariable( 'downloader' )
+            downloader = self._loading_highlight_job_status.get_if_has_variable('downloader')
             
             if downloader is not None and gallery_import == downloader:
                 
@@ -497,11 +497,11 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
         
         if files_finished:
             
-            pretty_files_paused = CG.client_controller.new_options.GetString( 'stop_character' )
+            pretty_files_paused = CG.client_controller.new_options.get_string('stop_character')
             
         elif files_paused:
             
-            pretty_files_paused = CG.client_controller.new_options.GetString( 'pause_character' )
+            pretty_files_paused = CG.client_controller.new_options.get_string('pause_character')
             
         else:
             
@@ -513,11 +513,11 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
         
         if gallery_finished:
             
-            pretty_gallery_paused = CG.client_controller.new_options.GetString( 'stop_character' )
+            pretty_gallery_paused = CG.client_controller.new_options.get_string('stop_character')
             
         elif gallery_paused:
             
-            pretty_gallery_paused = CG.client_controller.new_options.GetString( 'pause_character' )
+            pretty_gallery_paused = CG.client_controller.new_options.get_string('pause_character')
             
         else:
             
@@ -528,9 +528,9 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
         
         file_seed_cache_status = gallery_import.GetFileSeedCache().GetStatus()
         
-        pretty_progress = file_seed_cache_status.GetStatusText( simple = True )
+        pretty_progress = file_seed_cache_status.get_status_text(simple = True)
         
-        added = gallery_import.GetCreationTime()
+        added = gallery_import.get_creation_time()
         
         pretty_added = HydrusTime.timestamp_to_pretty_timedelta( added, show_seconds = False )
         
@@ -587,7 +587,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
         
         progress = ( num_total, num_done )
         
-        added = gallery_import.GetCreationTime()
+        added = gallery_import.get_creation_time()
         
         return ( query_text, pretty_source, sort_files_paused, sort_gallery_paused, sort_status, progress, added )
         
@@ -699,9 +699,9 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
             
             name = new_highlight.GetQueryText()
             
-            self._loading_highlight_job_status.SetStatusTitle( f'Loading {name}' )
+            self._loading_highlight_job_status.set_status_title(f'Loading {name}')
             
-            self._loading_highlight_job_status.SetVariable( 'downloader', new_highlight )
+            self._loading_highlight_job_status.set_variable('downloader', new_highlight)
             
             self._gallery_importers_listctrl_panel.UpdateButtons()
             
@@ -721,7 +721,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
                 
                 hashes = new_highlight.GetPresentedHashes()
                 
-                if job_status.IsCancelled():
+                if job_status.is_cancelled():
                     
                     return all_media_results
                     
@@ -736,8 +736,8 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
                     
                     num_done = i * BLOCK_SIZE
                     
-                    job_status.SetStatusText( 'Loading files: {}'.format( HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do ) ) )
-                    job_status.SetGauge( num_done, num_to_do )
+                    job_status.set_status_text('Loading files: {}'.format(HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do)))
+                    job_status.set_gauge(num_done, num_to_do)
                     
                     if not have_published_job_status and HydrusTime.time_has_passed_float( start_time + 2 ):
                         
@@ -746,7 +746,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
                         have_published_job_status = True
                         
                     
-                    if job_status.IsCancelled():
+                    if job_status.is_cancelled():
                         
                         return all_media_results
                         
@@ -756,8 +756,8 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
                     all_media_results.extend( block_of_media_results )
                     
                 
-                job_status.SetStatusText( 'Done!' )
-                job_status.DeleteGauge()
+                job_status.set_status_text('Done!')
+                job_status.delete_gauge()
                 
                 return all_media_results
                 
@@ -766,7 +766,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
                 
                 try:
                     
-                    if job_status != self._loading_highlight_job_status or job_status.IsCancelled():
+                    if job_status != self._loading_highlight_job_status or job_status.is_cancelled():
                         
                         return
                         
@@ -791,7 +791,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
                     
                     self._gallery_importers_listctrl.UpdateDatas()
                     
-                    job_status.FinishAndDismiss()
+                    job_status.finish_and_dismiss()
                     
                 
             
@@ -837,7 +837,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
         
         results = self._multiple_gallery_import.PendQueries( queries )
         
-        if len( results ) > 0 and self._highlighted_gallery_import is None and CG.client_controller.new_options.GetBoolean( 'highlight_new_query' ):
+        if len( results ) > 0 and self._highlighted_gallery_import is None and CG.client_controller.new_options.get_boolean('highlight_new_query'):
             
             first_result = results[ 0 ]
             
@@ -1118,9 +1118,9 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
             
         else:
             
-            if not self._loading_highlight_job_status.IsDone():
+            if not self._loading_highlight_job_status.is_done():
                 
-                downloader = self._loading_highlight_job_status.GetIfHasVariable( 'downloader' )
+                downloader = self._loading_highlight_job_status.get_if_has_variable('downloader')
                 
                 if downloader is not None and downloader == gallery_import:
                     
@@ -1243,8 +1243,8 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
             
             num_items = len( self._gallery_importers_listctrl.GetData() )
             
-            min_time = HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'gallery_page_status_update_time_minimum_ms' ) )
-            denominator = CG.client_controller.new_options.GetInteger( 'gallery_page_status_update_time_ratio_denominator' )
+            min_time = HydrusTime.secondise_ms_float(CG.client_controller.new_options.get_integer('gallery_page_status_update_time_minimum_ms'))
+            denominator = CG.client_controller.new_options.get_integer('gallery_page_status_update_time_ratio_denominator')
             
             try:
                 
@@ -1338,7 +1338,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
             raise HydrusExceptions.VetoException( HydrusNumbers.to_human_int( num_working ) + ' queries are still importing.' )
             
         
-        if not for_session_close and CG.client_controller.new_options.GetBoolean( 'confirm_non_empty_downloader_page_close' ) and num_items > 0:
+        if not for_session_close and CG.client_controller.new_options.get_boolean('confirm_non_empty_downloader_page_close') and num_items > 0:
             
             raise HydrusExceptions.VetoException( f'This is a gallery downloader page holding {HydrusNumbers.to_human_int(num_items)} import objects.' )
             
@@ -1353,7 +1353,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
         
         new_query = self._multiple_gallery_import.PendSubscriptionGapDownloader( gug_key_and_name, query_text, file_import_options, tag_import_options, note_import_options, file_limit )
         
-        if new_query is not None and self._highlighted_gallery_import is None and CG.client_controller.new_options.GetBoolean( 'highlight_new_query' ):
+        if new_query is not None and self._highlighted_gallery_import is None and CG.client_controller.new_options.get_boolean('highlight_new_query'):
             
             self._HighlightGalleryImport( new_query )
             
@@ -1385,7 +1385,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
         
         self._loading_highlight_job_status = ClientThreading.JobStatus( cancellable = True )
         
-        self._loading_highlight_job_status.Finish()
+        self._loading_highlight_job_status.finish()
         
         checker_options = self._multiple_watcher_import.GetCheckerOptions()
         file_import_options = self._multiple_watcher_import.GetFileImportOptions()
@@ -1518,7 +1518,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
         
         for url in urls:
             
-            result = self._multiple_watcher_import.AddURL( url, filterable_tags = filterable_tags, additional_service_keys_to_tags = additional_service_keys_to_tags )
+            result = self._multiple_watcher_import.add_url(url, filterable_tags = filterable_tags, additional_service_keys_to_tags = additional_service_keys_to_tags)
             
             if result is not None and first_result is None:
                 
@@ -1526,7 +1526,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                 
             
         
-        if first_result is not None and self._highlighted_watcher is None and CG.client_controller.new_options.GetBoolean( 'highlight_new_watcher' ):
+        if first_result is not None and self._highlighted_watcher is None and CG.client_controller.new_options.get_boolean('highlight_new_watcher'):
             
             self._HighlightWatcher( first_result )
             
@@ -1536,7 +1536,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
     
     def _CanClearHighlight( self ):
         
-        return self._highlighted_watcher is not None or not self._loading_highlight_job_status.IsDone()
+        return self._highlighted_watcher is not None or not self._loading_highlight_job_status.is_done()
         
     
     def _CanHighlight( self ):
@@ -1594,9 +1594,9 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
     
     def _ClearExistingHighlight( self ):
         
-        if not self._loading_highlight_job_status.IsDone():
+        if not self._loading_highlight_job_status.is_done():
             
-            self._loading_highlight_job_status.Cancel()
+            self._loading_highlight_job_status.cancel()
             
         
         if self._highlighted_watcher is not None:
@@ -1638,9 +1638,9 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
             
             pretty_subject = f'* {pretty_subject}'
             
-        elif not self._loading_highlight_job_status.IsDone():
+        elif not self._loading_highlight_job_status.is_done():
             
-            downloader = self._loading_highlight_job_status.GetIfHasVariable( 'downloader' )
+            downloader = self._loading_highlight_job_status.get_if_has_variable('downloader')
             
             if downloader is not None and downloader == watcher:
                 
@@ -1652,7 +1652,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
         
         if files_paused:
             
-            pretty_files_paused = CG.client_controller.new_options.GetString( 'pause_character' )
+            pretty_files_paused = CG.client_controller.new_options.get_string('pause_character')
             
         else:
             
@@ -1664,11 +1664,11 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
         
         if checking_dead:
             
-            pretty_checking_paused = CG.client_controller.new_options.GetString( 'stop_character' )
+            pretty_checking_paused = CG.client_controller.new_options.get_string('stop_character')
             
         elif checking_paused:
             
-            pretty_checking_paused = CG.client_controller.new_options.GetString( 'pause_character' )
+            pretty_checking_paused = CG.client_controller.new_options.get_string('pause_character')
             
         else:
             
@@ -1677,7 +1677,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
         
         file_seed_cache_status = watcher.GetFileSeedCache().GetStatus()
         
-        pretty_progress = file_seed_cache_status.GetStatusText( simple = True )
+        pretty_progress = file_seed_cache_status.get_status_text(simple = True)
         
         added = watcher.GetCreationTime()
         
@@ -1882,9 +1882,9 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
             
             name = new_highlight.GetSubject()
             
-            self._loading_highlight_job_status.SetStatusTitle( f'Loading {name}' )
+            self._loading_highlight_job_status.set_status_title(f'Loading {name}')
             
-            self._loading_highlight_job_status.SetVariable( 'downloader', new_highlight )
+            self._loading_highlight_job_status.set_variable('downloader', new_highlight)
             
             self._watchers_listctrl_panel.UpdateButtons()
             
@@ -1910,7 +1910,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                 
                 have_published_job_status = False
                 
-                if job_status.IsCancelled():
+                if job_status.is_cancelled():
                     
                     return all_media_results
                     
@@ -1919,8 +1919,8 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                     
                     num_done = i * BLOCK_SIZE
                     
-                    job_status.SetStatusText( 'Loading files: {}'.format( HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do ) ) )
-                    job_status.SetGauge( num_done, num_to_do )
+                    job_status.set_status_text('Loading files: {}'.format(HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do)))
+                    job_status.set_gauge(num_done, num_to_do)
                     
                     if not have_published_job_status and HydrusTime.time_has_passed_float( start_time + 2 ):
                         
@@ -1929,7 +1929,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                         have_published_job_status = True
                         
                     
-                    if job_status.IsCancelled():
+                    if job_status.is_cancelled():
                         
                         return all_media_results
                         
@@ -1939,8 +1939,8 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                     all_media_results.extend( block_of_media_results )
                     
                 
-                job_status.SetStatusText( 'Done!' )
-                job_status.DeleteGauge()
+                job_status.set_status_text('Done!')
+                job_status.delete_gauge()
                 
                 return all_media_results
                 
@@ -1949,7 +1949,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                 
                 try:
                     
-                    if job_status != self._loading_highlight_job_status or job_status.IsCancelled():
+                    if job_status != self._loading_highlight_job_status or job_status.is_cancelled():
                         
                         return
                         
@@ -1974,7 +1974,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                     
                     self._watchers_listctrl.UpdateDatas()
                     
-                    job_status.FinishAndDismiss()
+                    job_status.finish_and_dismiss()
                     
                 
             
@@ -2016,7 +2016,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
             
             for watcher in watchers:
                 
-                ClientPaths.LaunchURLInWebBrowser( watcher.GetURL() )
+                ClientPaths.launch_url_in_web_browser(watcher.GetURL())
                 
             
         
@@ -2275,9 +2275,9 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
             
         else:
             
-            if not self._loading_highlight_job_status.IsDone():
+            if not self._loading_highlight_job_status.is_done():
                 
-                downloader = self._loading_highlight_job_status.GetIfHasVariable( 'downloader' )
+                downloader = self._loading_highlight_job_status.get_if_has_variable('downloader')
                 
                 if downloader is not None and downloader == watcher:
                     
@@ -2417,8 +2417,8 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
             
             num_items = len( self._watchers_listctrl.GetData() )
             
-            min_time = HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'watcher_page_status_update_time_minimum_ms' ) )
-            denominator = CG.client_controller.new_options.GetInteger( 'watcher_page_status_update_time_ratio_denominator' )
+            min_time = HydrusTime.secondise_ms_float(CG.client_controller.new_options.get_integer('watcher_page_status_update_time_minimum_ms'))
+            denominator = CG.client_controller.new_options.get_integer('watcher_page_status_update_time_ratio_denominator')
             
             try:
                 
@@ -2461,7 +2461,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                 ( num_done, num_total ) = file_seed_cache_status.GetValueRange()
                 
                 text_top = '{} watchers - {}'.format( HydrusNumbers.to_human_int( num_watchers ), HydrusNumbers.value_range_to_pretty_string( num_done, num_total ) )
-                text_bottom = file_seed_cache_status.GetStatusText()
+                text_bottom = file_seed_cache_status.get_status_text()
                 
             
             self._watchers_status_st_top.setText( text_top )
@@ -2522,7 +2522,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
             raise HydrusExceptions.VetoException( HydrusNumbers.to_human_int( num_working ) + ' watchers are still importing.' )
             
         
-        if not for_session_close and CG.client_controller.new_options.GetBoolean( 'confirm_non_empty_downloader_page_close' ) and num_items > 0:
+        if not for_session_close and CG.client_controller.new_options.get_boolean('confirm_non_empty_downloader_page_close') and num_items > 0:
             
             raise HydrusExceptions.VetoException( f'This is a watcher page holding {HydrusNumbers.to_human_int(num_items)} import objects.' )
             
@@ -2550,7 +2550,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
     
     def Start( self ):
         
-        self._multiple_watcher_import.Start( self._page_key )
+        self._multiple_watcher_import.start(self._page_key)
         
     
 
@@ -2693,7 +2693,7 @@ class SidebarImporterSimpleDownloader( SidebarImporter ):
         
         ( url, simple_downloader_formula ) = job
         
-        pretty_job = simple_downloader_formula.GetName() + ': ' + url
+        pretty_job = simple_downloader_formula.get_name() + ': ' + url
         
         return pretty_job
         
@@ -2704,14 +2704,14 @@ class SidebarImporterSimpleDownloader( SidebarImporter ):
             
             simple_downloader_formula = data
             
-            return simple_downloader_formula.GetName()
+            return simple_downloader_formula.get_name()
             
         
         def edit_callable( data ):
             
             simple_downloader_formula = data
             
-            name = simple_downloader_formula.GetName()
+            name = simple_downloader_formula.get_name()
             
             try:
                 
@@ -2756,9 +2756,9 @@ class SidebarImporterSimpleDownloader( SidebarImporter ):
             return edit_callable( data )
             
         
-        formulae = list( CG.client_controller.new_options.GetSimpleDownloaderFormulae() )
+        formulae = list(CG.client_controller.new_options.get_simple_downloader_formulae())
         
-        formulae.sort( key = lambda o: o.GetName() )
+        formulae.sort(key = lambda o: o.get_name())
         
         with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit simple downloader formulae' ) as dlg:
             
@@ -2771,7 +2771,7 @@ class SidebarImporterSimpleDownloader( SidebarImporter ):
             control.AddSeparator()
             control.AddImportExportButtons( ( ClientParsing.SimpleDownloaderParsingFormula, ) )
             control.AddSeparator()
-            control.AddDefaultsButton( ClientDefaults.GetDefaultSimpleDownloaderFormulae )
+            control.AddDefaultsButton(ClientDefaults.get_default_simple_downloader_formulae)
             
             control.AddDatas( formulae )
             
@@ -2783,7 +2783,7 @@ class SidebarImporterSimpleDownloader( SidebarImporter ):
                 
                 formulae = control.GetData()
                 
-                CG.client_controller.new_options.SetSimpleDownloaderFormulae( formulae )
+                CG.client_controller.new_options.set_simple_downloader_formulae(formulae)
                 
             
         
@@ -2816,13 +2816,13 @@ class SidebarImporterSimpleDownloader( SidebarImporter ):
         
         select_name = self._simple_downloader_import.GetFormulaName()
         
-        simple_downloader_formulae = list( CG.client_controller.new_options.GetSimpleDownloaderFormulae() )
+        simple_downloader_formulae = list(CG.client_controller.new_options.get_simple_downloader_formulae())
         
-        simple_downloader_formulae.sort( key = lambda o: o.GetName() )
+        simple_downloader_formulae.sort(key = lambda o: o.get_name())
         
         for ( i, simple_downloader_formula ) in enumerate( simple_downloader_formulae ):
             
-            name = simple_downloader_formula.GetName()
+            name = simple_downloader_formula.get_name()
             
             self._formulae.addItem( name, simple_downloader_formula )
             
@@ -2917,7 +2917,7 @@ class SidebarImporterSimpleDownloader( SidebarImporter ):
         
         num_items = len( self._simple_downloader_import.GetFileSeedCache() )
         
-        if not for_session_close and CG.client_controller.new_options.GetBoolean( 'confirm_non_empty_downloader_page_close' ) and num_items > 0:
+        if not for_session_close and CG.client_controller.new_options.get_boolean('confirm_non_empty_downloader_page_close') and num_items > 0:
             
             raise HydrusExceptions.VetoException( f'This is a simple urls import page holding {HydrusNumbers.to_human_int( num_items )} import objects.' )
             
@@ -2927,10 +2927,10 @@ class SidebarImporterSimpleDownloader( SidebarImporter ):
         
         formula = self._formulae.GetValue()
         
-        formula_name = formula.GetName()
+        formula_name = formula.get_name()
         
         self._simple_downloader_import.SetFormulaName( formula_name )
-        CG.client_controller.new_options.SetString( 'favourite_simple_downloader_formula', formula_name )
+        CG.client_controller.new_options.set_string('favourite_simple_downloader_formula', formula_name)
         
     
     def PauseQueue( self ):
@@ -3117,7 +3117,7 @@ class SidebarImporterURLs( SidebarImporter ):
         
         num_items = len( self._urls_import.GetFileSeedCache() )
         
-        if not for_session_close and CG.client_controller.new_options.GetBoolean( 'confirm_non_empty_downloader_page_close' ) and num_items > 0:
+        if not for_session_close and CG.client_controller.new_options.get_boolean('confirm_non_empty_downloader_page_close') and num_items > 0:
             
             raise HydrusExceptions.VetoException( f'This is a urls import page holding {HydrusNumbers.to_human_int( num_items )} import objects.' )
             

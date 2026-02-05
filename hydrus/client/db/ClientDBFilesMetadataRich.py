@@ -46,12 +46,12 @@ class ClientDBFilesMetadataRich( ClientDBModule.ClientDBModule ):
         
         # returns hashes in order, to be nice to UI
         
-        if location_context.IsEmpty():
+        if location_context.is_empty():
             
             return []
             
         
-        if location_context.IsAllKnownFiles():
+        if location_context.is_all_known_files():
             
             return list( hashes )
             

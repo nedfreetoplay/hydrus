@@ -74,7 +74,7 @@ class RatingsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         #
         
-        self._example_star_service = ClientGUIRatings.RatingPreviewServiceWrapper( self._new_options.GetKey( 'options_ratings_panel_template_service_key' ), CC.PREVIEW_RATINGS_SERVICE_KEY, HC.LOCAL_RATING_NUMERICAL )
+        self._example_star_service = ClientGUIRatings.RatingPreviewServiceWrapper(self._new_options.get_key('options_ratings_panel_template_service_key'), CC.PREVIEW_RATINGS_SERVICE_KEY, HC.LOCAL_RATING_NUMERICAL)
         self._example_incdec_service = ClientGUIRatings.RatingPreviewServiceWrapper( CC.PREVIEW_RATINGS_SERVICE_KEY )
         
         self._media_viewer_star_example = ClientGUIRatings.RatingNumericalExample( self, self._example_star_service.GetServiceKey(), CC.CANVAS_DIALOG )
@@ -131,35 +131,35 @@ class RatingsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         self._service_template_dropdown = ClientGUICommon.BetterChoice( example_select_panel )
         
-        for service in CG.client_controller.services_manager.GetServices( ( HC.LOCAL_RATING_LIKE, HC.LOCAL_RATING_NUMERICAL ) ):
+        for service in CG.client_controller.services_manager.get_services((HC.LOCAL_RATING_LIKE, HC.LOCAL_RATING_NUMERICAL)):
             
-            self._service_template_dropdown.addItem( service.GetName(), service.GetServiceKey() )
+            self._service_template_dropdown.addItem(service.get_name(), service.get_service_key())
             
-        self._service_template_dropdown.SetValue( self._new_options.GetKey( 'options_ratings_panel_template_service_key' ) )
+        self._service_template_dropdown.SetValue(self._new_options.get_key('options_ratings_panel_template_service_key'))
         self._service_template_dropdown.currentIndexChanged.connect( lambda: self._example_star_service.SetServiceTemplate( self._service_template_dropdown.GetValue() ) )
         self._service_template_dropdown.currentIndexChanged.connect( self._UpdateWidgets )
         
         #
         
-        self._media_viewer_rating_icon_size_px.setValue( self._new_options.GetFloat( 'media_viewer_rating_icon_size_px' ) )
-        self._media_viewer_rating_incdec_height_px.setValue( self._new_options.GetFloat( 'media_viewer_rating_incdec_height_px' ) )
+        self._media_viewer_rating_icon_size_px.setValue(self._new_options.get_float('media_viewer_rating_icon_size_px'))
+        self._media_viewer_rating_incdec_height_px.setValue(self._new_options.get_float('media_viewer_rating_incdec_height_px'))
         self._media_viewer_rating_icon_size_px.editingFinished.emit()
         self._media_viewer_rating_incdec_height_px.editingFinished.emit()
         
-        self._draw_thumbnail_rating_background.setChecked( self._new_options.GetBoolean( 'draw_thumbnail_rating_background' ) )
-        self._draw_thumbnail_numerical_ratings_collapsed_always.setChecked( self._new_options.GetBoolean( 'draw_thumbnail_numerical_ratings_collapsed_always' ) )
-        self._draw_thumbnail_rating_icon_size_px.setValue( self._new_options.GetFloat( 'draw_thumbnail_rating_icon_size_px' ) )
-        self._draw_thumbnail_rating_incdec_height_px.setValue( self._new_options.GetFloat( 'thumbnail_rating_incdec_height_px' ) )
+        self._draw_thumbnail_rating_background.setChecked(self._new_options.get_boolean('draw_thumbnail_rating_background'))
+        self._draw_thumbnail_numerical_ratings_collapsed_always.setChecked(self._new_options.get_boolean('draw_thumbnail_numerical_ratings_collapsed_always'))
+        self._draw_thumbnail_rating_icon_size_px.setValue(self._new_options.get_float('draw_thumbnail_rating_icon_size_px'))
+        self._draw_thumbnail_rating_incdec_height_px.setValue(self._new_options.get_float('thumbnail_rating_incdec_height_px'))
         self._draw_thumbnail_rating_icon_size_px.editingFinished.emit()
         self._draw_thumbnail_rating_incdec_height_px.editingFinished.emit()
         
-        self._preview_window_rating_icon_size_px.setValue( self._new_options.GetFloat( 'preview_window_rating_icon_size_px' ) )
-        self._preview_window_rating_incdec_height_px.setValue( self._new_options.GetFloat( 'preview_window_rating_incdec_height_px' ) )
+        self._preview_window_rating_icon_size_px.setValue(self._new_options.get_float('preview_window_rating_icon_size_px'))
+        self._preview_window_rating_incdec_height_px.setValue(self._new_options.get_float('preview_window_rating_incdec_height_px'))
         self._preview_window_rating_icon_size_px.editingFinished.emit()
         self._preview_window_rating_incdec_height_px.editingFinished.emit()
         
-        self._dialog_rating_icon_size_px.setValue( self._new_options.GetFloat( 'dialog_rating_icon_size_px' ) )
-        self._dialog_rating_incdec_height_px.setValue( self._new_options.GetFloat( 'dialog_rating_incdec_height_px' ) )
+        self._dialog_rating_icon_size_px.setValue(self._new_options.get_float('dialog_rating_icon_size_px'))
+        self._dialog_rating_incdec_height_px.setValue(self._new_options.get_float('dialog_rating_incdec_height_px'))
         self._dialog_rating_icon_size_px.editingFinished.emit()
         self._dialog_rating_incdec_height_px.editingFinished.emit()
         
@@ -275,18 +275,18 @@ class RatingsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def UpdateOptions( self ):
         
-        self._new_options.SetFloat( 'media_viewer_rating_icon_size_px', self._media_viewer_rating_icon_size_px.value() )
-        self._new_options.SetFloat( 'media_viewer_rating_incdec_height_px', self._media_viewer_rating_incdec_height_px.value() )
+        self._new_options.set_float('media_viewer_rating_icon_size_px', self._media_viewer_rating_icon_size_px.value())
+        self._new_options.set_float('media_viewer_rating_incdec_height_px', self._media_viewer_rating_incdec_height_px.value())
         
-        self._new_options.SetBoolean( 'draw_thumbnail_rating_background', self._draw_thumbnail_rating_background.isChecked() )
-        self._new_options.SetBoolean( 'draw_thumbnail_numerical_ratings_collapsed_always', self._draw_thumbnail_numerical_ratings_collapsed_always.isChecked() )
-        self._new_options.SetFloat( 'draw_thumbnail_rating_icon_size_px', self._draw_thumbnail_rating_icon_size_px.value() )
-        self._new_options.SetFloat( 'thumbnail_rating_incdec_height_px', self._draw_thumbnail_rating_incdec_height_px.value() )
+        self._new_options.set_boolean('draw_thumbnail_rating_background', self._draw_thumbnail_rating_background.isChecked())
+        self._new_options.set_boolean('draw_thumbnail_numerical_ratings_collapsed_always', self._draw_thumbnail_numerical_ratings_collapsed_always.isChecked())
+        self._new_options.set_float('draw_thumbnail_rating_icon_size_px', self._draw_thumbnail_rating_icon_size_px.value())
+        self._new_options.set_float('thumbnail_rating_incdec_height_px', self._draw_thumbnail_rating_incdec_height_px.value())
         
-        self._new_options.SetFloat( 'preview_window_rating_icon_size_px', self._preview_window_rating_icon_size_px.value() )
-        self._new_options.SetFloat( 'preview_window_rating_incdec_height_px', self._preview_window_rating_incdec_height_px.value() )
+        self._new_options.set_float('preview_window_rating_icon_size_px', self._preview_window_rating_icon_size_px.value())
+        self._new_options.set_float('preview_window_rating_incdec_height_px', self._preview_window_rating_incdec_height_px.value())
         
-        self._new_options.SetFloat( 'dialog_rating_icon_size_px', self._dialog_rating_icon_size_px.value() )
-        self._new_options.SetFloat( 'dialog_rating_incdec_height_px', self._dialog_rating_incdec_height_px.value() )
+        self._new_options.set_float('dialog_rating_icon_size_px', self._dialog_rating_icon_size_px.value())
+        self._new_options.set_float('dialog_rating_incdec_height_px', self._dialog_rating_incdec_height_px.value())
         
     

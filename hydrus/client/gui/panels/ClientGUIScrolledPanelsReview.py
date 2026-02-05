@@ -1089,7 +1089,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         
         lain_path = HydrusStaticDir.get_static_path( 'lain.jpg' )
         
-        lain_qt_pixmap = ClientRendering.GenerateHydrusBitmap( lain_path, HC.IMAGE_JPEG ).GetQtPixmap()
+        lain_qt_pixmap = ClientRendering.generate_hydrus_bitmap(lain_path, HC.IMAGE_JPEG).get_qt_pixmap()
         
         win = QW.QLabel( self, pixmap = lain_qt_pixmap )
         
@@ -1098,7 +1098,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         self._select_from_list = QW.QCheckBox( self )
         self._select_from_list.setToolTip( ClientGUIFunctions.WrapToolTip( 'If the payload includes multiple objects (most do), select what you want to import.' ) )
         
-        if CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+        if CG.client_controller.new_options.get_boolean('advanced_mode'):
             
             self._select_from_list.setChecked( True )
             
@@ -1128,7 +1128,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
             
             try:
                 
-                payload = ClientSerialisable.LoadFromPNG( path )
+                payload = ClientSerialisable.load_from_png(path)
                 
             except Exception as e:
                 
@@ -1256,7 +1256,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         
         for url_class in url_classes:
             
-            if url_class.GetName() in url_class_names_seen:
+            if url_class.get_name() in url_class_names_seen:
                 
                 continue
                 
@@ -1270,7 +1270,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 new_url_classes.append( url_class )
                 
-                url_class_names_seen.add( url_class.GetName() )
+                url_class_names_seen.add(url_class.get_name())
                 
             
         
@@ -1283,7 +1283,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         
         for gug in gugs:
             
-            if gug.GetName() in gug_names_seen:
+            if gug.get_name() in gug_names_seen:
                 
                 continue
                 
@@ -1296,7 +1296,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 new_gugs.append( gug )
                 
-                gug_names_seen.add( gug.GetName() )
+                gug_names_seen.add(gug.get_name())
                 
             
         
@@ -1309,7 +1309,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         
         for parser in parsers:
             
-            if parser.GetName() in parser_names_seen:
+            if parser.get_name() in parser_names_seen:
                 
                 continue
                 
@@ -1322,7 +1322,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 new_parsers.append( parser )
                 
-                parser_names_seen.add( parser.GetName() )
+                parser_names_seen.add(parser.get_name())
                 
             
         
@@ -1335,7 +1335,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         
         for login_script in login_scripts:
             
-            if login_script.GetName() in login_script_names_seen:
+            if login_script.get_name() in login_script_names_seen:
                 
                 continue
                 
@@ -1348,7 +1348,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 new_login_scripts.append( login_script )
                 
-                login_script_names_seen.add( login_script.GetName() )
+                login_script_names_seen.add(login_script.get_name())
                 
             
         
@@ -1424,10 +1424,10 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         if self._select_from_list.isChecked():
             
             choice_tuples = []
-            choice_tuples.extend( [ ( 'GUG: ' + gug.GetName(), gug, True ) for gug in new_gugs ] )
-            choice_tuples.extend( [ ( 'URL Class: ' + url_class.GetName(), url_class, True ) for url_class in new_url_classes ] )
-            choice_tuples.extend( [ ( 'Parser: ' + parser.GetName(), parser, True ) for parser in new_parsers ] )
-            choice_tuples.extend( [ ( 'Login Script: ' + login_script.GetName(), login_script, True ) for login_script in new_login_scripts ] )
+            choice_tuples.extend([( 'GUG: ' + gug.get_name(), gug, True) for gug in new_gugs])
+            choice_tuples.extend([( 'URL Class: ' + url_class.get_name(), url_class, True) for url_class in new_url_classes])
+            choice_tuples.extend([( 'Parser: ' + parser.get_name(), parser, True) for parser in new_parsers])
+            choice_tuples.extend([( 'Login Script: ' + login_script.get_name(), login_script, True) for login_script in new_login_scripts])
             choice_tuples.extend( [ ( 'Domain Metadata: ' + domain_metadata.GetDomain(), domain_metadata, True ) for domain_metadata in new_domain_metadatas ] )
             
             try:
@@ -1533,14 +1533,14 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
     
     def _Paste( self ):
         
-        if CG.client_controller.ClipboardHasImage():
+        if CG.client_controller.clipboard_has_image():
             
             try:
                 
-                qt_image = CG.client_controller.GetClipboardImage()
+                qt_image = CG.client_controller.get_clipboard_image()
                 
                 payload_description = 'clipboard image data'
-                payload = ClientSerialisable.LoadFromQtImage( qt_image )
+                payload = ClientSerialisable.load_from_qt_image(qt_image)
                 
             except Exception as e:
                 
@@ -1549,11 +1549,11 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
                 return
                 
             
-        elif CG.client_controller.ClipboardHasLocalPaths():
+        elif CG.client_controller.clipboard_has_local_paths():
             
             try:
                 
-                paths = CG.client_controller.GetClipboardLocalPaths()
+                paths = CG.client_controller.get_clipboard_local_paths()
                 
                 self._ImportPaths( paths )
                 
@@ -1570,7 +1570,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
             
             try:
                 
-                raw_text = CG.client_controller.GetClipboardText()
+                raw_text = CG.client_controller.get_clipboard_text()
                 
                 payload_description = 'clipboard text data'
                 payload = HydrusCompression.compress_string_to_bytes( raw_text )
@@ -1836,7 +1836,7 @@ class ReviewFileHistory( ClientGUIScrolledPanels.ReviewPanel ):
         panel_vbox = QP.VBoxLayout()
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext(
-            location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+            location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
         )
         
         page_key = b'mr bones placeholder'
@@ -1969,7 +1969,7 @@ class ReviewFileHistory( ClientGUIScrolledPanels.ReviewPanel ):
     
     def _CancelCurrentSearch( self ):
         
-        self._job_status.Cancel()
+        self._job_status.cancel()
         
         self._cancel_button.setEnabled( False )
         
@@ -2005,7 +2005,7 @@ class ReviewFileHistory( ClientGUIScrolledPanels.ReviewPanel ):
                     
                     return
                     
-                elif job_status.IsCancelled():
+                elif job_status.is_cancelled():
                     
                     self._status_st.setText( 'Cancelled!' )
                     
@@ -2055,7 +2055,7 @@ class ReviewFileHistory( ClientGUIScrolledPanels.ReviewPanel ):
         
         self._file_history_chart_panel.setVisible( False )
         
-        self._job_status.Cancel()
+        self._job_status.cancel()
         
         job_status = ClientThreading.JobStatus()
         
@@ -2122,7 +2122,7 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
         
         page_key = HydrusData.generate_key()
         
-        default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+        default_location_context = CG.client_controller.new_options.get_default_local_location_context()
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = default_location_context )
         
@@ -2428,7 +2428,7 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
         
         self._select_all_media_files.setEnabled( False )
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context )
         
@@ -2455,7 +2455,7 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
         
         self._select_repo_files.setEnabled( False )
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_UPDATE_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple(CC.LOCAL_UPDATE_SERVICE_KEY)
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context )
         
@@ -2535,7 +2535,7 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
         
         boned_path = HydrusStaticDir.get_static_path( 'boned.jpg' )
         
-        boned_qt_pixmap = ClientRendering.GenerateHydrusBitmap( boned_path, HC.IMAGE_JPEG ).GetQtPixmap()
+        boned_qt_pixmap = ClientRendering.generate_hydrus_bitmap(boned_path, HC.IMAGE_JPEG).get_qt_pixmap()
         
         self._mr_bones_image = QW.QLabel( self, pixmap = boned_qt_pixmap )
         
@@ -2612,7 +2612,7 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
         panel_vbox = QP.VBoxLayout()
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext(
-            location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+            location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
         )
         
         page_key = b'mr bones placeholder'
@@ -2661,7 +2661,7 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
     
     def _CancelCurrentSearch( self ):
         
-        self._job_status.Cancel()
+        self._job_status.cancel()
         
         self._cancel_button.setEnabled( False )
         
@@ -2677,7 +2677,7 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
         
         def publish_callable( boned_stats ):
             
-            if job_status.IsCancelled():
+            if job_status.is_cancelled():
                 
                 self._SetCancelled()
                 
@@ -2703,7 +2703,7 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
         
         self._SetToLoading()
         
-        self._job_status.Cancel()
+        self._job_status.cancel()
         
         job_status = ClientThreading.JobStatus()
         
@@ -2859,18 +2859,18 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = 'Current:' ), CC.FLAGS_ON_LEFT )
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.to_human_int( num_total ) ), CC.FLAGS_ON_RIGHT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( current_num_percent ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = ClientData.convert_zoom_to_percentage(current_num_percent)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( size_total ) ), CC.FLAGS_ON_RIGHT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( current_size_percent ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = ClientData.convert_zoom_to_percentage(current_size_percent)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( current_average_filesize ) ), CC.FLAGS_ON_RIGHT )
                 
                 #
                 
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = 'Deleted:' ), CC.FLAGS_ON_LEFT )
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.to_human_int( num_deleted ) ), CC.FLAGS_ON_RIGHT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( deleted_num_percent ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = ClientData.convert_zoom_to_percentage(deleted_num_percent)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( size_deleted ) ), CC.FLAGS_ON_RIGHT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( deleted_size_percent ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = ClientData.convert_zoom_to_percentage(deleted_size_percent)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( deleted_average_filesize ) ), CC.FLAGS_ON_RIGHT )
                 
                 #
@@ -2886,18 +2886,18 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = 'Inbox:' ), CC.FLAGS_ON_LEFT )
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.to_human_int( num_inbox ) ), CC.FLAGS_ON_RIGHT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( inbox_num_percent ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = ClientData.convert_zoom_to_percentage(inbox_num_percent)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( size_inbox ) ), CC.FLAGS_ON_RIGHT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( inbox_size_percent ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = ClientData.convert_zoom_to_percentage(inbox_size_percent)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( inbox_average_filesize ) ), CC.FLAGS_ON_RIGHT )
                 
                 #
                 
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = 'Archive:' ), CC.FLAGS_ON_LEFT )
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.to_human_int( num_archive ) ), CC.FLAGS_ON_RIGHT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( archive_num_percent ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = ClientData.convert_zoom_to_percentage(archive_num_percent)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( size_archive ) ), CC.FLAGS_ON_RIGHT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( archive_size_percent ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = ClientData.convert_zoom_to_percentage(archive_size_percent)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( archive_average_filesize ) ), CC.FLAGS_ON_RIGHT )
                 
             else:
@@ -2942,18 +2942,18 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = 'Inbox:' ), CC.FLAGS_ON_LEFT )
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.to_human_int( num_inbox ) ), CC.FLAGS_ON_RIGHT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( inbox_num_percent ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = ClientData.convert_zoom_to_percentage(inbox_num_percent)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( size_inbox ) ), CC.FLAGS_ON_RIGHT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( inbox_size_percent ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = ClientData.convert_zoom_to_percentage(inbox_size_percent)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( inbox_average_filesize ) ), CC.FLAGS_ON_RIGHT )
                 
                 #
                 
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = 'Archive:' ), CC.FLAGS_ON_LEFT )
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.to_human_int( num_archive ) ), CC.FLAGS_ON_RIGHT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( archive_num_percent ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = ClientData.convert_zoom_to_percentage(archive_num_percent)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( size_archive ) ), CC.FLAGS_ON_RIGHT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( archive_size_percent ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = ClientData.convert_zoom_to_percentage(archive_size_percent)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( archive_average_filesize ) ), CC.FLAGS_ON_RIGHT )
                 
             
@@ -2995,7 +2995,7 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
         
         current_fsc = self._tag_autocomplete.GetFileSearchContext()
         
-        special_message_is_appropriate = len( current_fsc.GetPredicates() ) == 0 and current_fsc.GetLocationContext() == ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+        special_message_is_appropriate = len( current_fsc.GetPredicates() ) == 0 and current_fsc.GetLocationContext() == ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
         
         if special_message_is_appropriate:
             
@@ -3171,7 +3171,7 @@ class ThreadsPanel( QW.QWidget ):
     
     def _ConvertDataToDisplayTuple( self, thread ):
         
-        name = thread.GetName()
+        name = thread.get_name()
         thread_type = repr( type( thread ) )
         current_job = repr( thread.GetCurrentJobSummary() )
         
@@ -3186,7 +3186,7 @@ class ThreadsPanel( QW.QWidget ):
     
     def _ConvertDataToSortTuple( self, thread ):
         
-        name = thread.GetName()
+        name = thread.get_name()
         thread_type = repr( type( thread ) )
         current_job = repr( thread.GetCurrentJobSummary() )
         
@@ -3303,7 +3303,7 @@ class ReviewDeferredDeleteTableData( ClientGUIScrolledPanels.ReviewPanel ):
     
     def _FlipWorkingHard( self ):
         
-        self._controller.database_maintenance_manager.FlipWorkingHard()
+        self._controller.database_maintenance_manager.flip_working_hard()
         
         self._UpdateButtonLabel()
         
@@ -3345,7 +3345,7 @@ class ReviewDeferredDeleteTableData( ClientGUIScrolledPanels.ReviewPanel ):
     
     def _UpdateButtonLabel( self ):
         
-        if self._controller.database_maintenance_manager.IsWorkingHard():
+        if self._controller.database_maintenance_manager.is_working_hard():
             
             label = 'slow down'
             enabled = True

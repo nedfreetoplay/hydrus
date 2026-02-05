@@ -61,19 +61,19 @@ class TestServer( unittest.TestCase ):
         cls._serverside_tag_service = HydrusNetwork.generate_service( HydrusData.generate_key(), HC.TAG_REPOSITORY, 'tag repo', HC.DEFAULT_SERVICE_PORT )
         cls._serverside_admin_service = HydrusNetwork.generate_service( HydrusData.generate_key(), HC.SERVER_ADMIN, 'server admin', HC.DEFAULT_SERVER_ADMIN_PORT )
         
-        cls._clientside_file_service = ClientServices.GenerateService( HydrusData.generate_key(), HC.FILE_REPOSITORY, 'file repo' )
-        cls._clientside_tag_service = ClientServices.GenerateService( HydrusData.generate_key(), HC.TAG_REPOSITORY, 'tag repo' )
-        cls._clientside_admin_service = ClientServices.GenerateService( HydrusData.generate_key(), HC.SERVER_ADMIN, 'server admin' )
+        cls._clientside_file_service = ClientServices.generate_service(HydrusData.generate_key(), HC.FILE_REPOSITORY, 'file repo')
+        cls._clientside_tag_service = ClientServices.generate_service(HydrusData.generate_key(), HC.TAG_REPOSITORY, 'tag repo')
+        cls._clientside_admin_service = ClientServices.generate_service(HydrusData.generate_key(), HC.SERVER_ADMIN, 'server admin')
         
-        cls._clientside_file_service.SetCredentials( HydrusNetwork.Credentials( '127.0.0.1', HC.DEFAULT_SERVICE_PORT + 1, cls._access_key ) )
-        cls._clientside_tag_service.SetCredentials( HydrusNetwork.Credentials( '127.0.0.1', HC.DEFAULT_SERVICE_PORT, cls._access_key ) )
-        cls._clientside_admin_service.SetCredentials( HydrusNetwork.Credentials( '127.0.0.1', HC.DEFAULT_SERVER_ADMIN_PORT, cls._access_key ) )
+        cls._clientside_file_service.set_credentials(HydrusNetwork.Credentials('127.0.0.1', HC.DEFAULT_SERVICE_PORT + 1, cls._access_key))
+        cls._clientside_tag_service.set_credentials(HydrusNetwork.Credentials('127.0.0.1', HC.DEFAULT_SERVICE_PORT, cls._access_key))
+        cls._clientside_admin_service.set_credentials(HydrusNetwork.Credentials('127.0.0.1', HC.DEFAULT_SERVER_ADMIN_PORT, cls._access_key))
         
         services_manager = TG.test_controller.services_manager
         
-        services_manager._keys_to_services[ cls._clientside_file_service.GetServiceKey() ] = cls._clientside_file_service
-        services_manager._keys_to_services[ cls._clientside_tag_service.GetServiceKey() ] = cls._clientside_tag_service
-        services_manager._keys_to_services[ cls._clientside_admin_service.GetServiceKey() ] = cls._clientside_admin_service
+        services_manager._keys_to_services[ cls._clientside_file_service.get_service_key()] = cls._clientside_file_service
+        services_manager._keys_to_services[ cls._clientside_tag_service.get_service_key()] = cls._clientside_tag_service
+        services_manager._keys_to_services[ cls._clientside_admin_service.get_service_key()] = cls._clientside_admin_service
         
         account_key = HydrusData.generate_key()
         account_type = HydrusNetwork.AccountType.generate_admin_account_type( HC.SERVER_ADMIN )
@@ -183,7 +183,7 @@ class TestServer( unittest.TestCase ):
             f.write( EXAMPLE_FILE )
             
         
-        response = service.Request( HC.GET, 'file', { 'hash' : self._file_hash } )
+        response = service.request(HC.GET, 'file', {'hash' : self._file_hash})
         
         self.assertEqual( response, EXAMPLE_FILE )
         
@@ -196,7 +196,7 @@ class TestServer( unittest.TestCase ):
         
         TG.test_controller.ClearWrites( 'file' )
         
-        service.Request( HC.POST, 'file', file_body_path = path )
+        service.request(HC.POST, 'file', file_body_path = path)
         
         written = TG.test_controller.GetWrite( 'file' )
         
@@ -219,7 +219,7 @@ class TestServer( unittest.TestCase ):
         
         TG.test_controller.SetRead( 'ip', ( ip, timestamp ) )
         
-        response = service.Request( HC.GET, 'ip', { 'hash' : self._file_hash } )
+        response = service.request(HC.GET, 'ip', {'hash' : self._file_hash})
         
         self.assertEqual( response[ 'ip' ], ip )
         self.assertEqual( response[ 'timestamp' ], timestamp )
@@ -232,7 +232,7 @@ class TestServer( unittest.TestCase ):
         
         content = HydrusNetwork.Content( content_type = HC.CONTENT_TYPE_FILES, content_data = ( test_hash, ) )
         
-        response = service.Request( HC.GET, 'account_key_from_content', { 'subject_content' : content } )
+        response = service.request(HC.GET, 'account_key_from_content', {'subject_content' : content})
         
         self.assertEqual( repr( response[ 'subject_account_key' ] ), repr( self._account.get_account_key() ) )
         
@@ -247,7 +247,7 @@ class TestServer( unittest.TestCase ):
             f.write( EXAMPLE_THUMBNAIL )
             
         
-        response = service.Request( HC.GET, 'thumbnail', { 'hash' : self._file_hash } )
+        response = service.request(HC.GET, 'thumbnail', {'hash' : self._file_hash})
         
         self.assertEqual( response, EXAMPLE_THUMBNAIL )
         
@@ -257,7 +257,7 @@ class TestServer( unittest.TestCase ):
     
     def _test_repo( self, service ):
         
-        service_key = service.GetServiceKey()
+        service_key = service.get_service_key()
         
         # num_petitions
         
@@ -265,7 +265,7 @@ class TestServer( unittest.TestCase ):
         
         TG.test_controller.SetRead( 'num_petitions', num_petitions )
         
-        response = service.Request( HC.GET, 'num_petitions' )
+        response = service.request(HC.GET, 'num_petitions')
         
         self.assertEqual( response[ 'num_petitions' ], num_petitions )
         
@@ -286,13 +286,13 @@ class TestServer( unittest.TestCase ):
         
         TG.test_controller.SetRead( 'petition', petition )
         
-        response = service.Request( HC.GET, 'petition', { 'content_type' : HC.CONTENT_TYPE_FILES, 'status' : HC.CONTENT_UPDATE_PETITION } )
+        response = service.request(HC.GET, 'petition', {'content_type' : HC.CONTENT_TYPE_FILES, 'status' : HC.CONTENT_UPDATE_PETITION})
         
         self.assertEqual( response[ 'petition' ].GetSerialisableTuple(), petition.get_serialisable_tuple() )
         
         TG.test_controller.SetRead( 'petition', petition )
         
-        response = service.Request( HC.GET, 'petition', { 'content_type' : HC.CONTENT_TYPE_FILES, 'status' : HC.CONTENT_UPDATE_PETITION, 'account_key' : petitioner_account.get_account_key(), reason : reason } )
+        response = service.request(HC.GET, 'petition', {'content_type' : HC.CONTENT_TYPE_FILES, 'status' : HC.CONTENT_UPDATE_PETITION, 'account_key' : petitioner_account.get_account_key(), reason : reason})
         
         self.assertEqual( response[ 'petition' ].GetSerialisableTuple(), petition.get_serialisable_tuple() )
         
@@ -319,7 +319,7 @@ class TestServer( unittest.TestCase ):
             f.write( definitions_update_network_bytes )
             
         
-        response = service.Request( HC.GET, 'update', { 'update_hash' : definitions_update_hash } )
+        response = service.request(HC.GET, 'update', {'update_hash' : definitions_update_hash})
         
         try: os.remove( path )
         except: pass
@@ -348,7 +348,7 @@ class TestServer( unittest.TestCase ):
             f.write( content_update_network_bytes )
             
         
-        response = service.Request( HC.GET, 'update', { 'update_hash' : content_update_hash } )
+        response = service.request(HC.GET, 'update', {'update_hash' : content_update_hash})
         
         try: os.remove( path )
         except: pass
@@ -363,7 +363,7 @@ class TestServer( unittest.TestCase ):
         
         service._metadata = metadata
         
-        response = service.Request( HC.GET, 'metadata_slice', { 'since' : 0 } )
+        response = service.request(HC.GET, 'metadata_slice', {'since' : 0})
         
         self.assertEqual( response[ 'metadata_slice' ].GetSerialisableTuple(), metadata.get_serialisable_tuple() )
         
@@ -394,7 +394,7 @@ class TestServer( unittest.TestCase ):
         
         TG.test_controller.SetRead( 'access_key', self._access_key )
         
-        response = service.Request( HC.GET, 'access_key', { 'registration_key' : registration_key } )
+        response = service.request(HC.GET, 'access_key', {'registration_key' : registration_key})
         
         self.assertEqual( response[ 'access_key' ], self._access_key )
         
@@ -411,7 +411,7 @@ class TestServer( unittest.TestCase ):
         
         # account
         
-        response = service.Request( HC.GET, 'account' )
+        response = service.request(HC.GET, 'account')
         
         self.assertEqual( repr( response[ 'account' ] ), repr( self._account ) )
         
@@ -419,7 +419,7 @@ class TestServer( unittest.TestCase ):
         
         TG.test_controller.SetRead( 'account', self._account )
         
-        response = service.Request( HC.GET, 'other_account', { 'subject_account_key' : self._account.get_account_key() } )
+        response = service.request(HC.GET, 'other_account', {'subject_account_key' : self._account.get_account_key()})
         
         self.assertEqual( repr( response[ 'account' ] ), repr( self._account ) )
         
@@ -429,19 +429,19 @@ class TestServer( unittest.TestCase ):
         
         TG.test_controller.SetRead( 'account_info', account_info )
         
-        response = service.Request( HC.GET, 'account_info', { 'subject_account_key' : HydrusData.generate_key() } )
+        response = service.request(HC.GET, 'account_info', {'subject_account_key' : HydrusData.generate_key()})
         
         self.assertEqual( response[ 'account_info' ], account_info )
         
         # account_types
         
-        account_types = [ HydrusNetwork.AccountType.generate_admin_account_type( service.GetServiceType() ) ]
+        account_types = [HydrusNetwork.AccountType.generate_admin_account_type(service.get_service_type())]
         
         TG.test_controller.SetRead( 'account_types', account_types )
         
         TG.test_controller.ClearWrites( 'account_types' )
         
-        response = service.Request( HC.GET, 'account_types' )
+        response = service.request(HC.GET, 'account_types')
         
         self.assertEqual( response[ 'account_types' ][0].GetAccountTypeKey(), account_types[0].get_account_type_key() )
         
@@ -449,7 +449,7 @@ class TestServer( unittest.TestCase ):
         
         account_types.append( empty_account_type )
         
-        service.Request( HC.POST, 'account_types', { 'account_types' : account_types, 'deletee_account_type_keys_to_new_account_type_keys' : {} } )
+        service.request(HC.POST, 'account_types', {'account_types' : account_types, 'deletee_account_type_keys_to_new_account_type_keys' : {}})
         
         written = TG.test_controller.GetWrite( 'account_types' )
         
@@ -466,7 +466,7 @@ class TestServer( unittest.TestCase ):
         
         TG.test_controller.SetRead( 'registration_keys', [ registration_key ] )
         
-        response = service.Request( HC.GET, 'registration_keys', { 'num' : 1, 'account_type_key' : os.urandom( 32 ), 'expires' : HydrusTime.get_now() + 1200 } )
+        response = service.request(HC.GET, 'registration_keys', {'num' : 1, 'account_type_key' : os.urandom(32), 'expires' : HydrusTime.get_now() + 1200})
         
         self.assertEqual( response[ 'registration_keys' ], [ registration_key ] )
         
@@ -479,32 +479,32 @@ class TestServer( unittest.TestCase ):
         
         TG.test_controller.SetRead( 'access_key', access_key )
         
-        response = service.Request( HC.GET, 'access_key', { 'registration_key' : b'init' } )
+        response = service.request(HC.GET, 'access_key', {'registration_key' : b'init'})
         
         self.assertEqual( response[ 'access_key' ], access_key )
         
         #
         
-        response = service.Request( HC.GET, 'busy' )
+        response = service.request(HC.GET, 'busy')
         
         self.assertEqual( response, b'0' )
         
-        response = service.Request( HC.POST, 'lock_on' )
+        response = service.request(HC.POST, 'lock_on')
         
-        response = service.Request( HC.GET, 'busy' )
+        response = service.request(HC.GET, 'busy')
         
         self.assertEqual( response, b'1' )
         
-        response = service.Request( HC.POST, 'lock_off' )
+        response = service.request(HC.POST, 'lock_off')
         
-        response = service.Request( HC.GET, 'busy' )
+        response = service.request(HC.GET, 'busy')
         
         self.assertEqual( response, b'0' )
         
         #
         
-        response = service.Request( HC.POST, 'backup' )
-        response = service.Request( HC.POST, 'vacuum' )
+        response = service.request(HC.POST, 'backup')
+        response = service.request(HC.POST, 'vacuum')
         
         #
         
@@ -522,7 +522,7 @@ class TestServer( unittest.TestCase ):
         
         content = HydrusNetwork.Content( content_type = HC.CONTENT_TYPE_MAPPING, content_data = ( test_tag, test_hash ) )
         
-        response = service.Request( HC.GET, 'account_key_from_content', { 'subject_content' : content } )
+        response = service.request(HC.GET, 'account_key_from_content', {'subject_content' : content})
         
         self.assertEqual( repr( response[ 'subject_account_key' ] ), repr( self._account.get_account_key() ) )
         

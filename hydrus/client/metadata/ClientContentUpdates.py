@@ -250,7 +250,7 @@ class ContentUpdate( object ):
             
             ( hashes, timestamp_data ) = self._row
             
-            value_string = timestamp_data.ToString()
+            value_string = timestamp_data.to_string()
             
         elif self._data_type == HC.CONTENT_TYPE_MAPPINGS:
             
@@ -347,14 +347,14 @@ class ContentUpdatePackage( object ):
             
             try:
                 
-                service = CG.client_controller.services_manager.GetService( service_key )
+                service = CG.client_controller.services_manager.get_service(service_key)
                 
             except HydrusExceptions.DataMissing:
                 
                 continue
                 
             
-            if service.GetServiceType() == HC.LOCAL_TAG:
+            if service.get_service_type() == HC.LOCAL_TAG:
                 
                 action = HC.CONTENT_UPDATE_ADD
                 
@@ -431,14 +431,14 @@ class ContentUpdatePackage( object ):
             
             if len( content_updates ) > 0:
                 
-                name = CG.client_controller.services_manager.GetName( service_key )
+                name = CG.client_controller.services_manager.get_name(service_key)
                 
                 locations.add( name )
                 
             
             for content_update in content_updates:
                 
-                ( data_type, action, row ) = content_update.ToTuple()
+                ( data_type, action, row ) = content_update.to_tuple()
                 
                 if data_type == HC.CONTENT_TYPE_MAPPINGS:
                     

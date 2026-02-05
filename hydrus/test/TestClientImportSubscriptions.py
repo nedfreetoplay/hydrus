@@ -63,7 +63,7 @@ class TestSubscription( unittest.TestCase ):
         domain_manager = ClientNetworkingDomain.NetworkDomainManager()
         login_manager = ClientNetworkingLogin.NetworkLoginManager()
         
-        ClientDefaults.SetDefaultDomainManagerData( domain_manager )
+        ClientDefaults.set_default_domain_manager_data(domain_manager)
         
         engine = ClientNetworking.NetworkEngine( mock_controller, bandwidth_manager, session_manager, domain_manager, login_manager )
         

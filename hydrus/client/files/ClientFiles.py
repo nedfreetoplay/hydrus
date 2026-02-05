@@ -171,7 +171,7 @@ def HasHumanReadableEmbeddedMetadata( path, mime, human_file_description = None 
     
     if mime == HC.APPLICATION_PDF:
         
-        has_human_readable_embedded_metadata = ClientPDFHandling.HasHumanReadableEmbeddedMetadata( path )
+        has_human_readable_embedded_metadata = ClientPDFHandling.has_human_readable_embedded_metadata(path)
         
     else:
         

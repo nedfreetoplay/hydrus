@@ -75,7 +75,7 @@ class MultilineStringConversionTestPanel( QW.QWidget ):
         
         try:
             
-            results = self._string_processor.ProcessStrings( texts )
+            results = self._string_processor.process_strings(texts)
             
         except HydrusExceptions.ParseException as e:
             
@@ -115,7 +115,7 @@ class MultilineStringConversionTestPanel( QW.QWidget ):
         
         try:
             
-            results = self._string_processor.ProcessStrings( texts, max_steps_allowed = step_index + 1 )
+            results = self._string_processor.process_strings(texts, max_steps_allowed =step_index + 1)
             
         except:
             
@@ -185,7 +185,7 @@ class SingleStringConversionTestPanel( QW.QWidget ):
     
     def _UpdateResults( self ):
         
-        processing_steps = self._string_processor.GetProcessingSteps()
+        processing_steps = self._string_processor.get_processing_steps()
         
         current_selected_index = self._example_results.currentIndex()
         
@@ -204,7 +204,7 @@ class SingleStringConversionTestPanel( QW.QWidget ):
             
             try:
                 
-                results = self._string_processor.ProcessStrings( [ example_string ], max_steps_allowed = i + 1, no_slicing = True )
+                results = self._string_processor.process_strings([example_string], max_steps_allowed =i + 1, no_slicing = True)
                 
             except Exception as e:
                 
@@ -235,7 +235,7 @@ class SingleStringConversionTestPanel( QW.QWidget ):
                     
                 
             
-            tab_label = '{} ({})'.format( processing_steps[i].ToString( simple = True ), HydrusNumbers.to_human_int( len( results ) ) )
+            tab_label = '{} ({})'.format(processing_steps[i].to_string(simple = True), HydrusNumbers.to_human_int(len(results)))
             
             self._example_results.addTab( results_list, tab_label )
             
@@ -286,7 +286,7 @@ class SingleStringConversionTestPanel( QW.QWidget ):
         
         self._string_processor = string_processor
         
-        if True in ( isinstance( processing_step, ClientStrings.StringSlicer ) for processing_step in self._string_processor.GetProcessingSteps() ):
+        if True in (isinstance( processing_step, ClientStrings.StringSlicer ) for processing_step in self._string_processor.get_processing_steps()):
             
             self.setToolTip( ClientGUIFunctions.WrapToolTip( 'String Slicing is ignored here.' ) )
             
@@ -376,9 +376,9 @@ class EditStringConverterPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            default_string_converter = CG.client_controller.new_options.GetRawSerialisable( 'last_used_string_conversion_step' )
+            default_string_converter = CG.client_controller.new_options.get_raw_serialisable('last_used_string_conversion_step')
             
-            default_conversions = default_string_converter.GetConversions()
+            default_conversions = default_string_converter.get_conversions()
             
             if len( default_conversions ) > 0:
                 
@@ -395,7 +395,7 @@ class EditStringConverterPanel( ClientGUIScrolledPanels.EditPanel ):
             
             string_converter = self._GetValue()
             
-            example_string_at_this_point = string_converter.Convert( self._example_string.text() )
+            example_string_at_this_point = string_converter.convert(self._example_string.text())
             
         except:
             
@@ -416,7 +416,7 @@ class EditStringConverterPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 new_default_string_converter = ClientStrings.StringConverter( conversions = [ ( conversion_type, data ) ] )
                 
-                CG.client_controller.new_options.SetRawSerialisable( 'last_used_string_conversion_step', new_default_string_converter )
+                CG.client_controller.new_options.set_raw_serialisable('last_used_string_conversion_step', new_default_string_converter)
                 
                 enumerated_conversion = ( number, conversion_type, data )
                 
@@ -466,13 +466,13 @@ class EditStringConverterPanel( ClientGUIScrolledPanels.EditPanel ):
         ( number, conversion_type, data ) = conversion
         
         pretty_number = HydrusNumbers.to_human_int( number )
-        pretty_conversion = ClientStrings.StringConverter.ConversionToString( ( conversion_type, data ) )
+        pretty_conversion = ClientStrings.StringConverter.conversion_to_string((conversion_type, data))
         
         string_converter = self._GetValue()
         
         try:
             
-            pretty_result = string_converter.Convert( self._example_string.text(), number )
+            pretty_result = string_converter.convert(self._example_string.text(), number)
             
         except HydrusExceptions.StringConvertException as e:
             
@@ -556,7 +556,7 @@ class EditStringConverterPanel( ClientGUIScrolledPanels.EditPanel ):
             
             string_converter = self._GetValue()
             
-            example_string_at_this_point = string_converter.Convert( self._example_string.text(), number - 1 )
+            example_string_at_this_point = string_converter.convert(self._example_string.text(), number - 1)
             
         except:
             
@@ -575,7 +575,7 @@ class EditStringConverterPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 new_default_string_converter = ClientStrings.StringConverter( conversions = [ ( conversion_type, data ) ] )
                 
-                CG.client_controller.new_options.SetRawSerialisable( 'last_used_string_conversion_step', new_default_string_converter )
+                CG.client_controller.new_options.set_raw_serialisable('last_used_string_conversion_step', new_default_string_converter)
                 
                 new_data_row = ( number, conversion_type, data )
                 
@@ -1081,7 +1081,7 @@ class EditStringConverterPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 string_converter = ClientStrings.StringConverter( conversions, self._example_text )
                 
-                example_conversion = string_converter.Convert( self._example_text )
+                example_conversion = string_converter.convert(self._example_text)
                 
                 try:
                     
@@ -1275,13 +1275,13 @@ class EditStringJoinerPanel( ClientGUIScrolledPanels.EditPanel ):
         
         string_joiner = self._GetValue()
         
-        self._summary_st.setText( string_joiner.ToString() )
+        self._summary_st.setText(string_joiner.to_string())
         
         texts = [ self._example_strings.item( i ).text() for i in range( self._example_strings.count() ) ]
         
         try:
             
-            joined_texts = string_joiner.Join( texts )
+            joined_texts = string_joiner.join(texts)
             
             self._joiner.setObjectName( '' )
             
@@ -1309,8 +1309,8 @@ class EditStringJoinerPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def SetValue( self, string_joiner: ClientStrings.StringJoiner ):
         
-        joiner = string_joiner.GetJoiner()
-        join_tuple_size = string_joiner.GetJoinTupleSize()
+        joiner = string_joiner.get_joiner()
+        join_tuple_size = string_joiner.get_join_tuple_size()
         
         self._joiner.setText( joiner )
         self._join_tuple_size.SetValue( join_tuple_size )
@@ -1510,7 +1510,7 @@ class EditStringMatchPanel( ClientGUIScrolledPanels.EditPanel ):
             
             try:
                 
-                string_match.Test( self._example_string.text() )
+                string_match.test(self._example_string.text())
                 
                 self._example_string_matches.setText( 'Example matches ok!' )
                 self._example_string_matches.setObjectName( 'HydrusValid' )
@@ -1533,7 +1533,7 @@ class EditStringMatchPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            string_match.Test( string_match.GetExampleString() )
+            string_match.test(string_match.get_example_string())
             
         except HydrusExceptions.StringMatchException:
             
@@ -1545,7 +1545,7 @@ class EditStringMatchPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def SetValue( self, string_match: ClientStrings.StringMatch ):
         
-        ( match_type, match_value, min_chars, max_chars, example_string ) = string_match.ToTuple()
+        ( match_type, match_value, min_chars, max_chars, example_string ) = string_match.to_tuple()
         
         self._match_type.SetValue( match_type )
         
@@ -1721,13 +1721,13 @@ class EditStringSlicerPanel( ClientGUIScrolledPanels.EditPanel ):
         
         string_slicer = self._GetValue()
         
-        self._summary_st.setText( string_slicer.ToString() )
+        self._summary_st.setText(string_slicer.to_string())
         
         texts = [ self._example_strings.item( i ).text() for i in range( self._example_strings.count() ) ]
         
         try:
             
-            sliced_texts = string_slicer.Slice( texts )
+            sliced_texts = string_slicer.slice(texts)
             
         except Exception as e:
             
@@ -1751,14 +1751,14 @@ class EditStringSlicerPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def SetValue( self, string_slicer: ClientStrings.StringSlicer ):
         
-        ( index_start, index_end ) = string_slicer.GetIndexStartEnd()
+        ( index_start, index_end ) = string_slicer.get_index_start_end()
         
         self._index_single.setValue( index_start if index_start is not None else 0 )
         
         self._index_start.SetValue( index_start )
         self._index_end.SetValue( index_end )
         
-        if string_slicer.SelectsOne():
+        if string_slicer.selects_one():
             
             self._select_type.SetValue( SELECT_SINGLE )
             
@@ -1873,7 +1873,7 @@ class EditStringSorterPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            sorted_texts = string_sorter.Sort( texts )
+            sorted_texts = string_sorter.sort(texts)
             
         except Exception as e:
             
@@ -1920,9 +1920,9 @@ class EditStringSorterPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def SetValue( self, string_sorter: ClientStrings.StringSorter ):
         
-        sort_type = string_sorter.GetSortType()
-        asc = string_sorter.GetAscending()
-        regex = string_sorter.GetRegex()
+        sort_type = string_sorter.get_sort_type()
+        asc = string_sorter.get_ascending()
+        regex = string_sorter.get_regex()
         
         self._sort_type.SetValue( sort_type )
         self._asc.setChecked( asc )
@@ -2023,7 +2023,7 @@ class EditStringSplitterPanel( ClientGUIScrolledPanels.EditPanel ):
             
             try:
                 
-                results = string_splitter.Split( self._example_string.text() )
+                results = string_splitter.split(self._example_string.text())
                 
                 self._separator.setObjectName( '' )
                 
@@ -2059,8 +2059,8 @@ class EditStringSplitterPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def SetValue( self, string_splitter: ClientStrings.StringSplitter ):
         
-        separator = string_splitter.GetSeparator()
-        max_splits = string_splitter.GetMaxSplits()
+        separator = string_splitter.get_separator()
+        max_splits = string_splitter.get_max_splits()
         
         self._separator.setText( separator )
         self._max_splits.SetValue( max_splits )
@@ -2077,7 +2077,7 @@ class EditStringTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
         
         message = 'This works the same as any tag filter elsewhere in the program. Note that it converts your texts to valid hydrus tags, so everything is coming out lowercase with trimmed whitespace, and invalid tags will never pass.'
         
-        tag_filter = string_tag_filter.GetTagFilter()
+        tag_filter = string_tag_filter.get_tag_filter()
         
         self._tag_filter_button = ClientGUITagFilter.TagFilterButton( self, message, tag_filter )
         
@@ -2137,7 +2137,7 @@ class EditStringTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            string_tag_filter.Test( self._example_string.text() )
+            string_tag_filter.test(self._example_string.text())
             
             self._example_string_matches.setText( 'Example matches ok!' )
             self._example_string_matches.setObjectName( 'HydrusValid' )
@@ -2159,7 +2159,7 @@ class EditStringTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            string_match.Test( string_match.GetExampleString() )
+            string_match.test(string_match.get_example_string())
             
         except HydrusExceptions.StringMatchException:
             
@@ -2329,7 +2329,7 @@ class EditStringProcessorPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _ConvertDataToListBoxString( self, string_processing_step: ClientStrings.StringProcessingStep ):
         
-        return string_processing_step.ToString( with_type = True )
+        return string_processing_step.to_string(with_type = True)
         
     
     def _GetExampleTextForStringProcessingStep( self, string_processing_step: ClientStrings.StringProcessingStep ):
@@ -2338,7 +2338,7 @@ class EditStringProcessorPanel( ClientGUIScrolledPanels.EditPanel ):
         
         current_string_processor = self._GetValue()
         
-        current_string_processing_steps = current_string_processor.GetProcessingSteps()
+        current_string_processing_steps = current_string_processor.get_processing_steps()
         
         if string_processing_step in current_string_processing_steps:
             
@@ -2360,7 +2360,7 @@ class EditStringProcessorPanel( ClientGUIScrolledPanels.EditPanel ):
         
         current_string_processor = self._GetValue()
         
-        current_string_processing_steps = current_string_processor.GetProcessingSteps()
+        current_string_processing_steps = current_string_processor.get_processing_steps()
         
         if string_processing_step in current_string_processing_steps:
             
@@ -2382,7 +2382,7 @@ class EditStringProcessorPanel( ClientGUIScrolledPanels.EditPanel ):
         
         string_processor = ClientStrings.StringProcessor()
         
-        string_processor.SetProcessingSteps( processing_steps )
+        string_processor.set_processing_steps(processing_steps)
         
         return string_processor
         
@@ -2404,7 +2404,7 @@ class EditStringProcessorPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def SetValue( self, string_processor: ClientStrings.StringProcessor ):
         
-        processing_steps = string_processor.GetProcessingSteps()
+        processing_steps = string_processor.get_processing_steps()
         
         self._processing_steps.AddDatas( processing_steps )
         

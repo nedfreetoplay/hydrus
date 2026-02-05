@@ -618,7 +618,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 if force_timestamp_ms is None:
                     
                     store_backups = True
-                    backup_depth = CG.client_controller.new_options.GetInteger( 'number_of_gui_session_backups' )
+                    backup_depth = CG.client_controller.new_options.get_integer('number_of_gui_session_backups')
                     
                 
             
@@ -719,7 +719,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                         
                     
                 
-                if not obj.IsDirty():
+                if not obj.is_dirty():
                     
                     return
                     
@@ -745,7 +745,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                         
                     
                 
-                if not obj.IsDirty():
+                if not obj.is_dirty():
                     
                     return
                     

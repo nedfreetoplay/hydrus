@@ -225,7 +225,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
                 ( possible_suggested_file_service_key, ) = self._location_context.current_service_keys
                 
-                if CG.client_controller.services_manager.GetServiceType( possible_suggested_file_service_key ) in HC.SPECIFIC_LOCAL_FILE_SERVICES + ( HC.FILE_REPOSITORY, ):
+                if CG.client_controller.services_manager.get_service_type(possible_suggested_file_service_key) in HC.SPECIFIC_LOCAL_FILE_SERVICES + (HC.FILE_REPOSITORY,):
                     
                     file_service_key = possible_suggested_file_service_key
                     
@@ -241,7 +241,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             media_to_delete = [ m for m in media_to_delete if only_those_in_file_service_key in m.GetLocationsManager().GetCurrent() ]
             
         
-        if file_service_key is None or CG.client_controller.services_manager.GetServiceType( file_service_key ) in HC.LOCAL_FILE_SERVICES:
+        if file_service_key is None or CG.client_controller.services_manager.get_service_type(file_service_key) in HC.LOCAL_FILE_SERVICES:
             
             default_reason = 'Deleted from Media Page.'
             
@@ -266,14 +266,14 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             
             job_status = ClientThreading.JobStatus() # not cancellable, this stuff isn't a nice mix
             
-            job_status.SetStatusTitle( 'deleting files' )
+            job_status.set_status_title('deleting files')
             # no text, the content update packages are not always a nice mix
             
             num_to_do = len( content_update_packages )
             
             for ( i, content_update_package ) in enumerate( content_update_packages ):
                 
-                job_status.SetGauge( i, num_to_do )
+                job_status.set_gauge(i, num_to_do)
                 
                 if not message_pubbed and HydrusTime.time_has_passed( display_time ):
                     
@@ -285,7 +285,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 CG.client_controller.write_synchronous( 'content_updates', content_update_package )
                 
             
-            job_status.FinishAndDismiss()
+            job_status.finish_and_dismiss()
             
         
         CG.client_controller.call_to_thread( do_it, content_update_packages )
@@ -326,7 +326,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
     
     def _DownloadHashes( self, hashes ):
         
-        CG.client_controller.quick_download_manager.DownloadFiles( hashes )
+        CG.client_controller.quick_download_manager.download_files(hashes)
         
     
     def _EndShiftSelect( self ):
@@ -424,7 +424,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             
             s += f' - {selected_files_string} selected, '
             
-            if len( self._selected_media ) == 1 and len( list(self._selected_media)[0].GetHashes() ) == 1 and CG.client_controller.new_options.GetBoolean( 'show_extended_single_file_info_in_status_bar' ):
+            if len( self._selected_media ) == 1 and len( list(self._selected_media)[0].GetHashes() ) == 1 and CG.client_controller.new_options.get_boolean('show_extended_single_file_info_in_status_bar'):
                 
                 # TODO: Were I feeling clever, this guy would also emit a tooltip, which we can calculate here no prob
                 
@@ -487,7 +487,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             return ''
             
         
-        total_duration = sum( ( media.GetDurationMS() for media in media_source ) )
+        total_duration = sum((media.get_duration_ms() for media in media_source))
         
         return HydrusTime.milliseconds_duration_to_pretty_time( total_duration )
         
@@ -503,7 +503,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             media_source = self._sorted_media
             
         
-        total_size = sum( [ media.GetSize() for media in media_source ] )
+        total_size = sum([media.get_size() for media in media_source])
         
         unknown_size = False in ( media.IsSizeDefinite() for media in media_source )
         
@@ -744,11 +744,11 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                     
                     focus_it = False
                     
-                    if CG.client_controller.new_options.GetBoolean( 'focus_preview_on_ctrl_click' ):
+                    if CG.client_controller.new_options.get_boolean('focus_preview_on_ctrl_click'):
                         
-                        if CG.client_controller.new_options.GetBoolean( 'focus_preview_on_ctrl_click_only_static' ):
+                        if CG.client_controller.new_options.get_boolean('focus_preview_on_ctrl_click_only_static'):
                             
-                            focus_it = media.GetDurationMS() is None
+                            focus_it = media.get_duration_ms() is None
                             
                         else:
                             
@@ -793,11 +793,11 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
                 focus_it = False
                 
-                if CG.client_controller.new_options.GetBoolean( 'focus_preview_on_shift_click' ):
+                if CG.client_controller.new_options.get_boolean('focus_preview_on_shift_click'):
                     
-                    if CG.client_controller.new_options.GetBoolean( 'focus_preview_on_shift_click_only_static' ):
+                    if CG.client_controller.new_options.get_boolean('focus_preview_on_shift_click_only_static'):
                         
-                        focus_it = media.GetDurationMS() is None
+                        focus_it = media.get_duration_ms() is None
                         
                     else:
                         
@@ -869,7 +869,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             
             new_options = CG.client_controller.new_options
             
-            ( media_show_action, media_start_paused, media_start_with_embed ) = new_options.GetMediaShowAction( media.GetMime() )
+            ( media_show_action, media_start_paused, media_start_with_embed ) = new_options.get_media_show_action(media.GetMime())
             
             if media_show_action == CC.MEDIA_VIEWER_ACTION_DO_NOT_SHOW_ON_ACTIVATION_OPEN_EXTERNALLY:
                 
@@ -882,7 +882,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
                 new_options = CG.client_controller.new_options
                 
-                launch_path = new_options.GetMimeLaunch( mime )
+                launch_path = new_options.get_mime_launch(mime)
                 
                 HydrusPaths.launch_file( path, launch_path )
                 
@@ -963,7 +963,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
         
         if len( flat_media ) > 0:
             
-            if len( CG.client_controller.services_manager.GetServices( HC.RATINGS_SERVICES ) ) > 0:
+            if len(CG.client_controller.services_manager.get_services(HC.RATINGS_SERVICES)) > 0:
                 
                 with ClientGUIDialogsManage.DialogManageRatings( self, flat_media ) as dlg:
                     
@@ -1086,7 +1086,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
                 self.focusMediaPaused.emit()
                 
-                ClientPaths.LaunchPathInWebBrowser( path )
+                ClientPaths.launch_path_in_web_browser(path)
                 
             
         
@@ -1134,19 +1134,19 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
         
         if hashes is not None and len( hashes ) > 0:
             
-            remote_service = CG.client_controller.services_manager.GetService( remote_service_key )
+            remote_service = CG.client_controller.services_manager.get_service(remote_service_key)
             
-            service_type = remote_service.GetServiceType()
+            service_type = remote_service.get_service_type()
             
             if service_type == HC.FILE_REPOSITORY:
                 
                 if len( hashes ) == 1:
                     
-                    message = 'Enter a reason for this file to be removed from {}.'.format( remote_service.GetName() )
+                    message = 'Enter a reason for this file to be removed from {}.'.format(remote_service.get_name())
                     
                 else:
                     
-                    message = 'Enter a reason for these {} files to be removed from {}.'.format( HydrusNumbers.to_human_int( len( hashes ) ), remote_service.GetName() )
+                    message = 'Enter a reason for these {} files to be removed from {}.'.format(HydrusNumbers.to_human_int( len( hashes ) ), remote_service.get_name())
                     
                 
                 try:
@@ -1185,7 +1185,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             
             if len( self._selected_media ) == 0:
                 
-                number_of_unselected_medias_to_present_tags_for = CG.client_controller.new_options.GetNoneableInteger( 'number_of_unselected_medias_to_present_tags_for' )
+                number_of_unselected_medias_to_present_tags_for = CG.client_controller.new_options.get_noneable_integer('number_of_unselected_medias_to_present_tags_for')
                 
                 if number_of_unselected_medias_to_present_tags_for is None:
                     
@@ -1352,7 +1352,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
         
         flat_media = list( singleton_media ) + ClientMedia.FlattenMedia( collected_media )
         
-        hashes = [ m.GetHash() for m in flat_media ]
+        hashes = [m.get_hash() for m in flat_media]
         
         self.filesRemoved.emit( hashes )
         
@@ -1467,13 +1467,13 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             
             yes_no_text = 'apply "{}"'.format( HC.duplicate_type_string_lookup[ duplicate_type ] )
             
-            if duplicate_type in [ HC.DUPLICATE_BETTER, HC.DUPLICATE_SAME_QUALITY ] or ( CG.client_controller.new_options.GetBoolean( 'advanced_mode' ) and duplicate_type == HC.DUPLICATE_ALTERNATE ):
+            if duplicate_type in [ HC.DUPLICATE_BETTER, HC.DUPLICATE_SAME_QUALITY ] or (CG.client_controller.new_options.get_boolean('advanced_mode') and duplicate_type == HC.DUPLICATE_ALTERNATE):
                 
                 yes_no_text += ' (with default duplicate metadata merge options)'
                 
                 new_options = CG.client_controller.new_options
                 
-                duplicate_content_merge_options = new_options.GetDuplicateContentMergeOptions( duplicate_type )
+                duplicate_content_merge_options = new_options.get_duplicate_content_merge_options(duplicate_type)
                 
             
         else:
@@ -1588,19 +1588,19 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             
             for ( media_result_a, media_result_b ) in media_result_pairs:
                 
-                hash_a = media_result_a.GetHash()
-                hash_b = media_result_b.GetHash()
+                hash_a = media_result_a.get_hash()
+                hash_b = media_result_b.get_hash()
                 
                 if hash_a not in hashes_to_duplicated_media_results:
                     
-                    hashes_to_duplicated_media_results[ hash_a ] = media_result_a.Duplicate()
+                    hashes_to_duplicated_media_results[ hash_a ] = media_result_a.duplicate()
                     
                 
                 first_duplicated_media_result = hashes_to_duplicated_media_results[ hash_a ]
                 
                 if hash_b not in hashes_to_duplicated_media_results:
                     
-                    hashes_to_duplicated_media_results[ hash_b ] = media_result_b.Duplicate()
+                    hashes_to_duplicated_media_results[ hash_b ] = media_result_b.duplicate()
                     
                 
                 second_duplicated_media_result = hashes_to_duplicated_media_results[ hash_b ]
@@ -1660,7 +1660,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
         
         duplicate_types = [ HC.DUPLICATE_BETTER, HC.DUPLICATE_SAME_QUALITY ]
         
-        if CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+        if CG.client_controller.new_options.get_boolean('advanced_mode'):
             
             duplicate_types.append( HC.DUPLICATE_ALTERNATE )
             
@@ -1678,7 +1678,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
         
         new_options = CG.client_controller.new_options
         
-        duplicate_content_merge_options = new_options.GetDuplicateContentMergeOptions( duplicate_type )
+        duplicate_content_merge_options = new_options.get_duplicate_content_merge_options(duplicate_type)
         
         with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit duplicate merge options' ) as dlg:
             
@@ -1919,7 +1919,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             return
             
         
-        ipfs_service = CG.client_controller.services_manager.GetService( file_service_key )
+        ipfs_service = CG.client_controller.services_manager.get_service(file_service_key)
         
         try:
             
@@ -1932,7 +1932,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             return
             
         
-        CG.client_controller.call_to_thread( ipfs_service.PinDirectory, hashes, note )
+        CG.client_controller.call_to_thread(ipfs_service.pin_directory, hashes, note)
         
     
     def _UploadFiles( self, file_service_key ):
@@ -1990,9 +1990,9 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
     
     def GetColour( self, colour_type ):
         
-        if CG.client_controller.new_options.GetBoolean( 'override_stylesheet_colours' ):
+        if CG.client_controller.new_options.get_boolean('override_stylesheet_colours'):
             
-            bg_colour = CG.client_controller.new_options.GetColour( colour_type )
+            bg_colour = CG.client_controller.new_options.get_colour(colour_type)
             
         else:
             
@@ -2016,7 +2016,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
         
         do_activate_window_test = False
         
-        if CG.client_controller.new_options.GetBoolean( 'focus_media_tab_on_viewer_close_if_possible' ):
+        if CG.client_controller.new_options.get_boolean('focus_media_tab_on_viewer_close_if_possible'):
             
             if CG.client_controller.gui.GetPageFromPageKey( self._page_key ) is not None:
                 
@@ -2026,14 +2026,14 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             do_activate_window_test = True
             
         
-        if CG.client_controller.new_options.GetBoolean( 'focus_media_thumb_on_viewer_close' ):
+        if CG.client_controller.new_options.get_boolean('focus_media_thumb_on_viewer_close'):
             
             self.SetFocusedMedia( media )
             
             do_activate_window_test = True
             
         
-        if do_activate_window_test and CG.client_controller.new_options.GetBoolean( 'activate_main_gui_on_focusing_viewer_close' ):
+        if do_activate_window_test and CG.client_controller.new_options.get_boolean('activate_main_gui_on_focusing_viewer_close'):
             
             self.activateWindow()
             
@@ -2054,13 +2054,13 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ):
+    def process_application_command( self, command: CAC.ApplicationCommand ):
         
         command_processed = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_COPY_FILE_BITMAP:
                 
@@ -2071,13 +2071,13 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
                 focus_singleton = self._GetFocusSingleton()
                 
-                bitmap_type = command.GetSimpleData()
+                bitmap_type = command.get_simple_data()
                 
                 ClientGUIMediaSimpleActions.CopyMediaBitmap( focus_singleton, bitmap_type )
                 
             elif action == CAC.SIMPLE_COPY_FILES:
                 
-                file_command_target = command.GetSimpleData()
+                file_command_target = command.get_simple_data()
                 
                 medias = self._GetMediasForFileCommandTarget( file_command_target )
                 
@@ -2088,7 +2088,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
             elif action == CAC.SIMPLE_COPY_FILE_PATHS:
                 
-                file_command_target = command.GetSimpleData()
+                file_command_target = command.get_simple_data()
                 
                 medias = self._GetMediasForFileCommandTarget( file_command_target )
                 
@@ -2099,7 +2099,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
             elif action == CAC.SIMPLE_COPY_FILE_HASHES:
                 
-                ( file_command_target, hash_type ) = command.GetSimpleData()
+                ( file_command_target, hash_type ) = command.get_simple_data()
                 
                 medias = self._GetMediasForFileCommandTarget( file_command_target )
                 
@@ -2110,7 +2110,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
             elif action == CAC.SIMPLE_COPY_FILE_SERVICE_FILENAMES:
                 
-                hacky_ipfs_dict = command.GetSimpleData()
+                hacky_ipfs_dict = command.get_simple_data()
                 
                 file_command_target = hacky_ipfs_dict[ 'file_command_target' ]
                 ipfs_service_key = hacky_ipfs_dict[ 'ipfs_service_key' ]
@@ -2124,7 +2124,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
             elif action == CAC.SIMPLE_COPY_FILE_ID:
                 
-                file_command_target = command.GetSimpleData()
+                file_command_target = command.get_simple_data()
                 
                 medias = self._GetMediasForFileCommandTarget( file_command_target )
                 
@@ -2146,7 +2146,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
                 ordered_selected_media = self._GetSelectedMediaOrdered()
                 
-                ( rearrange_type, rearrange_data ) = command.GetSimpleData()
+                ( rearrange_type, rearrange_data ) = command.get_simple_data()
                 
                 insertion_index = None
                 
@@ -2216,7 +2216,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                     
                     hash = media.GetHash()
                     
-                    duplicate_type = command.GetSimpleData()
+                    duplicate_type = command.get_simple_data()
                     
                     ClientGUIMediaSimpleActions.ShowDuplicatesInNewPage( self._location_context, hash, duplicate_type )
                     
@@ -2519,9 +2519,9 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
                 hashes = self._GetSelectedHashes( ordered = True )
                 
-                if CG.client_controller.new_options.GetBoolean( 'open_files_to_duplicate_filter_uses_all_my_files' ):
+                if CG.client_controller.new_options.get_boolean('open_files_to_duplicate_filter_uses_all_my_files'):
                     
-                    location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+                    location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
                     
                 else:
                     
@@ -2534,7 +2534,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
                 media = self._GetSelectedFlatMedia()
                 
-                hamming_distance = command.GetSimpleData()
+                hamming_distance = command.get_simple_data()
                 
                 if hamming_distance is None:
                     
@@ -2584,7 +2584,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 command_processed = False
                 
             
-        elif command.IsContentCommand():
+        elif command.is_content_command():
             
             command_processed = ClientGUIMediaModalActions.ApplyContentApplicationCommandToMedia( self, command, self._GetSelectedFlatMedia() )
             
@@ -2636,7 +2636,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             
             for service_update in service_updates:
                 
-                ( action, row ) = service_update.ToTuple()
+                ( action, row ) = service_update.to_tuple()
                 
                 if action in ( HC.SERVICE_UPDATE_DELETE_PENDING, HC.SERVICE_UPDATE_RESET ):
                     
@@ -2806,7 +2806,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
                 painter.eraseRect( painter.viewport() )
                 
-                background_pixmap = CG.client_controller.bitmap_manager.GetMediaBackgroundPixmap()
+                background_pixmap = CG.client_controller.bitmap_manager.get_media_background_pixmap()
                 
                 if background_pixmap is not None:
                     

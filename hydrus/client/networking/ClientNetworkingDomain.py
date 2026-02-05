@@ -353,7 +353,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
                 
                 try:
                     
-                    url_class.Test( url )
+                    url_class.test(url)
                     
                     return url_class
                     
@@ -374,7 +374,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
         
         for url_domain_mask in self._url_domain_masks_to_url_classes.keys():
             
-            if url_domain_mask.Matches( domain ):
+            if url_domain_mask.matches(domain):
                 
                 url_domain_masks.append( url_domain_mask )
                 
@@ -489,7 +489,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
         
         self._gug_keys_to_gugs = { gug.GetGUGKey() : gug for gug in self._gugs }
-        self._gug_names_to_gugs = { gug.GetName() : gug for gug in self._gugs }
+        self._gug_names_to_gugs = {gug.get_name() : gug for gug in self._gugs}
         
         self._parser_keys_to_parsers = { parser.GetParserKey() : parser for parser in self._parsers }
         
@@ -497,7 +497,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
         
         for parser in self._parsers:
             
-            namespaces.update( parser.GetNamespaces() )
+            namespaces.update(parser.get_namespaces())
             
         
         self._parser_namespaces = sorted( namespaces )
@@ -522,7 +522,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             for url_class in url_classes:
                 
-                name = url_class.GetName()
+                name = url_class.get_name()
                 
                 if url_class.IsPostURL():
                     
@@ -569,7 +569,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
                 
                 url_class_key = url_class.GetClassKey()
                 
-                name = url_class.GetName()
+                name = url_class.get_name()
                 
                 if name in url_class_names_to_display and url_class_names_to_display[ name ]:
                     
@@ -629,7 +629,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             gugs = HydrusSerialisable.create_from_serialisable_tuple( serialisable_gugs )
             
-            gug_keys_to_display = [ gug.GetGUGKey() for gug in gugs if 'ugoira' not in gug.GetName() ]
+            gug_keys_to_display = [gug.GetGUGKey() for gug in gugs if 'ugoira' not in gug.get_name()]
             
             serialisable_gug_keys_to_display = [ gug_key.hex() for gug_key in gug_keys_to_display ]
             
@@ -669,7 +669,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             for gug in new_gugs:
                 
-                gug.SetNonDupeName( [ g.GetName() for g in gugs ] )
+                gug.SetNonDupeName([g.get_name() for g in gugs])
                 
                 gugs.append( gug )
                 
@@ -686,7 +686,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             for parser in new_parsers:
                 
-                parser.SetNonDupeName( [ p.GetName() for p in parsers ] )
+                parser.SetNonDupeName([p.get_name() for p in parsers])
                 
                 parsers.append( parser )
                 
@@ -703,7 +703,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             for url_class in new_url_classes:
                 
-                url_class.SetNonDupeName( [ u.GetName() for u in url_classes ] )
+                url_class.SetNonDupeName([u.get_name() for u in url_classes])
                 
                 url_classes.append( url_class )
                 
@@ -755,7 +755,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             gug_key_and_name = new_gug.GetGUGKeyAndName()
             
-            dupe_gugs = [ gug.Duplicate() for gug in self._gugs ]
+            dupe_gugs = [gug.duplicate() for gug in self._gugs]
             
             for dupe_gug in dupe_gugs:
                 
@@ -777,16 +777,16 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             # absent irrelevant variables, do we have the exact same object already in?
             
-            new_name = new_parser.GetName()
+            new_name = new_parser.get_name()
             new_parser_key = new_parser.GetParserKey()
             new_example_urls = new_parser.GetExampleURLs()
             new_example_parsing_context = new_parser.GetExampleParsingContext()
             
-            dupe_parsers = [ ( parser.Duplicate(), parser ) for parser in self._parsers ]
+            dupe_parsers = [(parser.duplicate(), parser) for parser in self._parsers]
             
             for ( dupe_parser, parser ) in dupe_parsers:
                 
-                dupe_parser.SetName( new_name )
+                dupe_parser.set_name(new_name)
                 dupe_parser.SetParserKey( new_parser_key )
                 dupe_parser.SetExampleURLs( new_example_urls )
                 dupe_parser.SetExampleParsingContext( new_example_parsing_context )
@@ -819,15 +819,15 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             # absent irrelevant variables, do we have the exact same object already in?
             
-            name = new_url_class.GetName()
+            name = new_url_class.get_name()
             match_key = new_url_class.GetClassKey()
             example_url = new_url_class.GetExampleURL()
             
-            dupe_url_classes = [ url_class.Duplicate() for url_class in self._url_classes ]
+            dupe_url_classes = [url_class.duplicate() for url_class in self._url_classes]
             
             for dupe_url_class in dupe_url_classes:
                 
-                dupe_url_class.SetName( name )
+                dupe_url_class.set_name(name)
                 dupe_url_class.SetClassKey( match_key )
                 dupe_url_class.SetExampleURL( example_url )
                 
@@ -887,14 +887,14 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             for existing_url_class in self._url_classes:
                 
-                if existing_url_class.GetName().startswith( prefix ):
+                if existing_url_class.get_name().startswith(prefix):
                     
                     continue
                     
                 
                 for new_url_class in new_url_classes:
                     
-                    if new_url_class.Matches( existing_url_class.GetExampleURL() ) and existing_url_class.Matches( new_url_class.GetExampleURL() ):
+                    if new_url_class.matches(existing_url_class.GetExampleURL()) and existing_url_class.matches(new_url_class.GetExampleURL()):
                         
                         # the url matches match each other, so they are doing the same job
                         
@@ -908,9 +908,9 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             for renamee in renamees:
                 
-                existing_names = [ url_class.GetName() for url_class in self._url_classes if url_class != renamee ]
+                existing_names = [url_class.get_name() for url_class in self._url_classes if url_class != renamee]
                 
-                renamee.SetName( prefix + renamee.GetName() )
+                renamee.set_name(prefix + renamee.get_name())
                 
                 renamee.SetNonDupeName( existing_names )
                 
@@ -960,7 +960,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
     
     def ConvertURLsToMediaViewerTuples( self, urls ):
         
-        show_unmatched_urls_in_media_viewer = CG.client_controller.new_options.GetBoolean( 'show_unmatched_urls_in_media_viewer' )
+        show_unmatched_urls_in_media_viewer = CG.client_controller.new_options.get_boolean('show_unmatched_urls_in_media_viewer')
         
         url_tuples = []
         unmatched_url_tuples = []
@@ -1058,7 +1058,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
         
         with self._lock:
             
-            gugs = [ gug for gug in self._gugs if gug.GetName() not in deletee_names ]
+            gugs = [gug for gug in self._gugs if gug.get_name() not in deletee_names]
             
         
         self.SetGUGs( gugs )
@@ -1068,7 +1068,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
         
         with self._lock:
             
-            parsers = [ parser for parser in self._parsers if parser.GetName() not in deletee_names ]
+            parsers = [parser for parser in self._parsers if parser.get_name() not in deletee_names]
             
         
         self.SetParsers( parsers )
@@ -1078,7 +1078,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
         
         with self._lock:
             
-            url_classes = [ url_class for url_class in self._url_classes if url_class.GetName() not in deletee_names ]
+            url_classes = [url_class for url_class in self._url_classes if url_class.get_name() not in deletee_names]
             
         
         self.SetURLClasses( url_classes )
@@ -1092,7 +1092,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             for url_class in self._url_classes:
                 
-                if url_class.GetName() == url_class_name:
+                if url_class.get_name() == url_class_name:
                     
                     the_url_class = url_class
                     
@@ -1104,7 +1104,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             for parser in self._parsers:
                 
-                if parser.GetName() == parser_name:
+                if parser.get_name() == parser_name:
                     
                     the_parser = parser
                     
@@ -1147,14 +1147,14 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
                 
                 if domain in self._domains_to_network_infrastructure_errors:
                     
-                    number_of_errors = CG.client_controller.new_options.GetInteger( 'domain_network_infrastructure_error_number' )
+                    number_of_errors = CG.client_controller.new_options.get_integer('domain_network_infrastructure_error_number')
                     
                     if number_of_errors == 0:
                         
                         return True
                         
                     
-                    error_time_delta = CG.client_controller.new_options.GetInteger( 'domain_network_infrastructure_error_time_delta' )
+                    error_time_delta = CG.client_controller.new_options.get_integer('domain_network_infrastructure_error_time_delta')
                     
                     network_infrastructure_errors = self._domains_to_network_infrastructure_errors[ domain ]
                     
@@ -1209,8 +1209,8 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
         
         with self._lock:
             
-            gug_key = CG.client_controller.new_options.GetKey( 'default_gug_key' )
-            gug_name = CG.client_controller.new_options.GetString( 'default_gug_name' )
+            gug_key = CG.client_controller.new_options.get_key('default_gug_key')
+            gug_name = CG.client_controller.new_options.get_string('default_gug_name')
             
             return ( gug_key, gug_name )
             
@@ -1342,7 +1342,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             for parser in self._parsers:
                 
-                if parser.GetName() == name:
+                if parser.get_name() == name:
                     
                     return parser
                     
@@ -1424,7 +1424,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             for url_class in self._url_classes:
                 
-                if url_class.GetName().casefold() == name_search:
+                if url_class.get_name().casefold() == name_search:
                     
                     return url_class
                     
@@ -1561,11 +1561,11 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
                         url_to_fetch_name = url_to_fetch_match.GetName()
                         
                     
-                    message = f'Request for URL to fetch and parser:\n{url} ({url_name})\n->\n{url_to_fetch} ({url_to_fetch_name}): {parser.GetName()}'
+                    message = f'Request for URL to fetch and parser:\n{url} ({url_name})\n->\n{url_to_fetch} ({url_to_fetch_name}): {parser.get_name()}'
                     
                 else:
                     
-                    message = f'Request for URL to fetch and parser:\n{url} ({url_name})\n->\n(no transformation): {parser.GetName()}'
+                    message = f'Request for URL to fetch and parser:\n{url} ({url_name})\n->\n(no transformation): {parser.get_name()}'
                     
                 
                 ClientNetworkingFunctions.NetworkReportMode( message )
@@ -1677,13 +1677,13 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             from hydrus.client import ClientDefaults
             
-            default_gugs = ClientDefaults.GetDefaultGUGs()
+            default_gugs = ClientDefaults.get_default_gugs()
             
-            existing_gug_names_to_keys = { gug.GetName() : gug.GetGUGKey() for gug in self._gugs }
+            existing_gug_names_to_keys = {gug.get_name() : gug.GetGUGKey() for gug in self._gugs}
             
             for gug in default_gugs:
                 
-                gug_name = gug.GetName()
+                gug_name = gug.get_name()
                 
                 if gug_name in existing_gug_names_to_keys:
                     
@@ -1697,8 +1697,8 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             existing_gugs = list( self._gugs )
             
-            new_gugs = [ gug for gug in existing_gugs if gug.GetName() not in gug_names ]
-            new_gugs.extend( [ gug for gug in default_gugs if gug.GetName() in gug_names ] )
+            new_gugs = [gug for gug in existing_gugs if gug.get_name() not in gug_names]
+            new_gugs.extend([gug for gug in default_gugs if gug.get_name() in gug_names])
             
         
         self.SetGUGs( new_gugs )
@@ -1710,13 +1710,13 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             from hydrus.client import ClientDefaults
             
-            default_parsers = ClientDefaults.GetDefaultParsers()
+            default_parsers = ClientDefaults.get_default_parsers()
             
-            existing_parser_names_to_keys = { parser.GetName() : parser.GetParserKey() for parser in self._parsers }
+            existing_parser_names_to_keys = {parser.get_name() : parser.GetParserKey() for parser in self._parsers}
             
             for parser in default_parsers:
                 
-                name = parser.GetName()
+                name = parser.get_name()
                 
                 if name in existing_parser_names_to_keys:
                     
@@ -1730,8 +1730,8 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             existing_parsers = list( self._parsers )
             
-            new_parsers = [ parser for parser in existing_parsers if parser.GetName() not in parser_names ]
-            new_parsers.extend( [ parser for parser in default_parsers if parser.GetName() in parser_names ] )
+            new_parsers = [parser for parser in existing_parsers if parser.get_name() not in parser_names]
+            new_parsers.extend([parser for parser in default_parsers if parser.get_name() in parser_names])
             
         
         self.SetParsers( new_parsers )
@@ -1743,13 +1743,13 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             from hydrus.client import ClientDefaults
             
-            default_url_classes = ClientDefaults.GetDefaultURLClasses()
+            default_url_classes = ClientDefaults.get_default_url_classes()
             
-            existing_class_names_to_keys = { url_class.GetName() : url_class.GetClassKey() for url_class in self._url_classes }
+            existing_class_names_to_keys = {url_class.get_name() : url_class.GetClassKey() for url_class in self._url_classes}
             
             for url_class in default_url_classes:
                 
-                name = url_class.GetName()
+                name = url_class.get_name()
                 
                 if name in existing_class_names_to_keys:
                     
@@ -1768,8 +1768,8 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             existing_url_classes = list( self._url_classes )
             
-            new_url_classes = [ url_class for url_class in existing_url_classes if url_class.GetName() not in url_class_names ]
-            new_url_classes.extend( [ url_class for url_class in default_url_classes if url_class.GetName() in url_class_names ] )
+            new_url_classes = [url_class for url_class in existing_url_classes if url_class.get_name() not in url_class_names]
+            new_url_classes.extend([url_class for url_class in default_url_classes if url_class.get_name() in url_class_names])
             
         
         self.SetURLClasses( new_url_classes )
@@ -1783,7 +1783,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             for url_class in self._url_classes:
                 
-                if url_class.GetName() == url_class_name:
+                if url_class.get_name() == url_class_name:
                     
                     url_class_to_link = url_class
                     
@@ -1800,7 +1800,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             for parser in self._parsers:
                 
-                if parser.GetName() == parser_name:
+                if parser.get_name() == parser_name:
                     
                     parser_to_link = parser
                     
@@ -1826,7 +1826,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
         
         with self._lock:
             
-            existing_gug_names_to_gugs = { gug.GetName() : gug for gug in self._gugs }
+            existing_gug_names_to_gugs = {gug.get_name() : gug for gug in self._gugs}
             
         
         if original_name in existing_gug_names_to_gugs:
@@ -1835,11 +1835,11 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             del existing_gug_names_to_gugs[ original_name ]
             
-            gug.SetName( new_name )
+            gug.set_name(new_name)
             
             gug.SetNonDupeName( set( existing_gug_names_to_gugs.keys() ) )
             
-            existing_gug_names_to_gugs[ gug.GetName() ] = gug
+            existing_gug_names_to_gugs[ gug.get_name()] = gug
             
             new_gugs = list( existing_gug_names_to_gugs.values() )
             
@@ -1978,8 +1978,8 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             ( gug_key, gug_name ) = gug_key_and_name
             
-            CG.client_controller.new_options.SetKey( 'default_gug_key', gug_key )
-            CG.client_controller.new_options.SetString( 'default_gug_name', gug_name )
+            CG.client_controller.new_options.set_key('default_gug_key', gug_key)
+            CG.client_controller.new_options.set_string('default_gug_name', gug_name)
             
         
     
@@ -2082,7 +2082,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             self._parsers.extend( parsers )
             
-            self._parsers.sort( key = lambda p: p.GetName() )
+            self._parsers.sort(key = lambda p: p.get_name())
             
             # delete orphans
             
@@ -2130,7 +2130,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             self._url_classes.extend( url_classes )
             
-            self._url_classes.sort( key = lambda u: u.GetName() )
+            self._url_classes.sort(key = lambda u: u.get_name())
             
             #
             
@@ -2259,7 +2259,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
         
         parsers = list( parsers )
         
-        parsers.sort( key = lambda p: p.GetName() )
+        parsers.sort(key = lambda p: p.get_name())
         
         new_url_class_keys_to_parser_keys = {}
         
@@ -2296,7 +2296,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
                         continue
                         
                     
-                    if url_class.Matches( example_url ):
+                    if url_class.matches(example_url):
                         
                         # we have a match. this is the 'correct' match for this example url, and we should not search any more, so we break below
                         
@@ -2500,17 +2500,17 @@ class DomainValidationPopupProcess( object ):
                 
                 # generate question
                 
-                question = 'For the network context ' + network_context.ToString() + ', can the client set this header?'
+                question = 'For the network context ' + network_context.to_string() + ', can the client set this header?'
                 question += '\n' * 2
                 question += key + ': ' + value
                 question += '\n' * 2
                 question += reason
                 
-                job_status.SetVariable( 'popup_yes_no_question', question )
+                job_status.set_variable('popup_yes_no_question', question)
                 
                 CG.client_controller.pub( 'message', job_status )
                 
-                result = job_status.GetIfHasVariable( 'popup_yes_no_answer' )
+                result = job_status.get_if_has_variable('popup_yes_no_answer')
                 
                 while result is None:
                     
@@ -2521,7 +2521,7 @@ class DomainValidationPopupProcess( object ):
                     
                     time.sleep( 0.25 )
                     
-                    result = job_status.GetIfHasVariable( 'popup_yes_no_answer' )
+                    result = job_status.get_if_has_variable('popup_yes_no_answer')
                     
                 
                 if result:

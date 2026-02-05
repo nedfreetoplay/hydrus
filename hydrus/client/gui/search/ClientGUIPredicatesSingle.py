@@ -49,7 +49,7 @@ class StaticSystemPredicateButton( QW.QWidget ):
         
         if forced_label is None:
             
-            label = ', '.join( ( predicate.ToString() for predicate in self._predicates ) )
+            label = ', '.join((predicate.to_string() for predicate in self._predicates))
             
         else:
             
@@ -320,7 +320,7 @@ class PanelPredicateSystemSingle( PanelPredicateSystem ):
             return predicate
             
         
-        custom_defaults = CG.client_controller.new_options.GetCustomDefaultSystemPredicates( comparable_predicate = default_predicate )
+        custom_defaults = CG.client_controller.new_options.get_custom_default_system_predicates(comparable_predicate = default_predicate)
         
         if len( custom_defaults ) > 0:
             
@@ -334,7 +334,7 @@ class PanelPredicateSystemSingle( PanelPredicateSystem ):
         
         default_predicate = self.GetDefaultPredicate()
         
-        CG.client_controller.new_options.ClearCustomDefaultSystemPredicates( comparable_predicate = default_predicate )
+        CG.client_controller.new_options.clear_custom_default_system_predicates(comparable_predicate = default_predicate)
         
     
     def GetDefaultPredicate( self ) -> ClientSearchPredicate.Predicate:
@@ -351,14 +351,14 @@ class PanelPredicateSystemSingle( PanelPredicateSystem ):
         
         predicates = self.GetPredicates()
         
-        CG.client_controller.new_options.SetCustomDefaultSystemPredicates( comparable_predicates = predicates )
+        CG.client_controller.new_options.set_custom_default_system_predicates(comparable_predicates = predicates)
         
     
     def UsesCustomDefault( self ) -> bool:
         
         default_predicate = self.GetDefaultPredicate()
         
-        custom_defaults = CG.client_controller.new_options.GetCustomDefaultSystemPredicates( comparable_predicate = default_predicate )
+        custom_defaults = CG.client_controller.new_options.get_custom_default_system_predicates(comparable_predicate = default_predicate)
         
         return len( custom_defaults ) > 0
         
@@ -898,9 +898,9 @@ class PanelPredicateSystemFileService( PanelPredicateSystemSingle ):
         
         self._status = ClientGUICommon.BetterRadioBox( self, choice_tuples, vertical = True )
         
-        services = CG.client_controller.services_manager.GetServices( HC.REAL_FILE_SERVICES )
+        services = CG.client_controller.services_manager.get_services(HC.REAL_FILE_SERVICES)
         
-        choice_tuples = [ ( service.GetName(), service.GetServiceKey() ) for service in services ]
+        choice_tuples = [(service.get_name(), service.get_service_key()) for service in services]
         
         self._file_service_key = ClientGUICommon.BetterRadioBox( self, choice_tuples, vertical = True )
         
@@ -1657,7 +1657,7 @@ class PanelPredicateSystemKnownURLsURLClass( PanelPredicateSystemSingle ):
             
             if url_class.ShouldAssociateWithFiles():
                 
-                self._url_classes.addItem( url_class.GetName(), url_class )
+                self._url_classes.addItem(url_class.get_name(), url_class)
                 
             
         
@@ -1708,7 +1708,7 @@ class PanelPredicateSystemKnownURLsURLClass( PanelPredicateSystemSingle ):
         
         rule = url_class
         
-        url_class_name = url_class.GetName()
+        url_class_name = url_class.get_name()
         
         description = f'has url with class {url_class_name}' if operator else f'does not have url with class {url_class_name}'
         
@@ -2266,8 +2266,8 @@ class PredicateSystemRatingAdvanced( PanelPredicateSystemSingle ):
         service_specifier_primary = self._service_specifier_primary.GetValue()
         service_specifier_secondary = self._service_specifier_secondary.GetValue()
         
-        primary_keys = service_specifier_primary.GetSpecificKeys()
-        secondary_keys = service_specifier_secondary.GetSpecificKeys()
+        primary_keys = service_specifier_primary.get_specific_keys()
+        secondary_keys = service_specifier_secondary.get_specific_keys()
         
         if not primary_keys.issubset( secondary_keys ):
             
@@ -2320,9 +2320,9 @@ class PredicateSystemRatingIncDec( PanelPredicateSystemSingle ):
         
         try:
             
-            service = CG.client_controller.services_manager.GetService( self._service_key )
+            service = CG.client_controller.services_manager.get_service(self._service_key)
             
-            name = service.GetName()
+            name = service.get_name()
             
         except:
             
@@ -2443,9 +2443,9 @@ class PredicateSystemRatingLike( PanelPredicateSystemSingle ):
         
         try:
             
-            service = CG.client_controller.services_manager.GetService( self._service_key )
+            service = CG.client_controller.services_manager.get_service(self._service_key)
             
-            name = service.GetName()
+            name = service.get_name()
             
         except HydrusExceptions.DataMissing:
             
@@ -2598,9 +2598,9 @@ class PredicateSystemRatingNumerical( PanelPredicateSystemSingle ):
         
         try:
             
-            service = CG.client_controller.services_manager.GetService( self._service_key )
+            service = CG.client_controller.services_manager.get_service(self._service_key)
             
-            name = service.GetName()
+            name = service.get_name()
             
         except HydrusExceptions.DataMissing:
             
@@ -2896,11 +2896,11 @@ class PanelPredicateSystemSimilarToData( PanelPredicateSystemSingle ):
     
     def _Paste( self ):
         
-        if CG.client_controller.ClipboardHasImage():
+        if CG.client_controller.clipboard_has_image():
             
             try:
                 
-                qt_image = CG.client_controller.GetClipboardImage()
+                qt_image = CG.client_controller.get_clipboard_image()
                 
                 numpy_image = ClientGUIFunctions.ConvertQtImageToNumPy( qt_image )
                 
@@ -2919,9 +2919,9 @@ class PanelPredicateSystemSimilarToData( PanelPredicateSystemSingle ):
             
         else:
             
-            if CG.client_controller.ClipboardHasLocalPaths():
+            if CG.client_controller.clipboard_has_local_paths():
                 
-                paths = CG.client_controller.GetClipboardLocalPaths()
+                paths = CG.client_controller.get_clipboard_local_paths()
                 
                 if len( paths ) == 0:
                     
@@ -2936,7 +2936,7 @@ class PanelPredicateSystemSimilarToData( PanelPredicateSystemSingle ):
                 
                 try:
                     
-                    raw_text = CG.client_controller.GetClipboardText()
+                    raw_text = CG.client_controller.get_clipboard_text()
                     
                 except HydrusExceptions.DataMissing as e:
                     
@@ -3173,9 +3173,9 @@ class PanelPredicateSystemTagAdvanced( PanelPredicateSystemSingle ):
         
         self._service_key_or_none.addItem( 'current tag domain', None )
         
-        for service in CG.client_controller.services_manager.GetServices( HC.ALL_TAG_SERVICES ):
+        for service in CG.client_controller.services_manager.get_services(HC.ALL_TAG_SERVICES):
             
-            self._service_key_or_none.addItem( service.GetName(), service.GetServiceKey() )
+            self._service_key_or_none.addItem(service.get_name(), service.get_service_key())
             
         
         self._tag_display_type = ClientGUICommon.BetterRadioBox(
@@ -3216,7 +3216,7 @@ class PanelPredicateSystemTagAdvanced( PanelPredicateSystemSingle ):
         self._tag_autocomplete = ClientGUIACDropdown.AutoCompleteDropdownTagsWrite(
             self,
             self._AutoCompleteEntersTags,
-            ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ),
+            ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY),
             CC.COMBINED_TAG_SERVICE_KEY
         )
         

@@ -37,13 +37,13 @@ def DoMoveOrDuplicateLocalFiles( dest_service_key: bytes, action: int, media_res
         return
         
     
-    dest_service_name = CG.client_controller.services_manager.GetName( dest_service_key )
+    dest_service_name = CG.client_controller.services_manager.get_name(dest_service_key)
     
     job_status = ClientThreading.JobStatus( cancellable = True )
     
     title = 'moving files' if action == HC.CONTENT_UPDATE_MOVE else 'adding files'
     
-    job_status.SetStatusTitle( title )
+    job_status.set_status_title(title)
     
     BLOCK_SIZE = 16
     
@@ -60,13 +60,13 @@ def DoMoveOrDuplicateLocalFiles( dest_service_key: bytes, action: int, media_res
     
     for ( num_done, num_to_do, block_of_media_results ) in HydrusLists.split_list_into_chunks_rich( media_results, BLOCK_SIZE ):
         
-        if job_status.IsCancelled():
+        if job_status.is_cancelled():
             
             break
             
         
-        job_status.SetStatusText( HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do ) )
-        job_status.SetGauge( num_done, num_to_do )
+        job_status.set_status_text(HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do))
+        job_status.set_gauge(num_done, num_to_do)
         
         content_updates = []
         undelete_hashes = set()
@@ -75,7 +75,7 @@ def DoMoveOrDuplicateLocalFiles( dest_service_key: bytes, action: int, media_res
             
             if dest_service_key in m.GetLocationsManager().GetDeleted():
                 
-                undelete_hashes.add( m.GetHash() )
+                undelete_hashes.add(m.get_hash())
                 
             elif dest_service_key not in m.GetLocationsManager().GetCurrent():
                 
@@ -92,7 +92,7 @@ def DoMoveOrDuplicateLocalFiles( dest_service_key: bytes, action: int, media_res
         
         if action in ( HC.CONTENT_UPDATE_MOVE, HC.CONTENT_UPDATE_MOVE_MERGE ):
             
-            block_of_hashes = [ m.GetHash() for m in block_of_media_results if source_service_key in m.GetLocationsManager().GetCurrent() ]
+            block_of_hashes = [m.get_hash() for m in block_of_media_results if source_service_key in m.GetLocationsManager().GetCurrent()]
             
             content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE_FROM_SOURCE_AFTER_MIGRATE, block_of_hashes, reason = 'Moved to {}'.format( dest_service_name ) ) ]
             
@@ -102,5 +102,5 @@ def DoMoveOrDuplicateLocalFiles( dest_service_key: bytes, action: int, media_res
         pauser.pause()
         
     
-    job_status.FinishAndDismiss()
+    job_status.finish_and_dismiss()
     

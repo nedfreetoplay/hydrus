@@ -21,7 +21,7 @@ class ReviewTagDisplayMaintenancePanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         super().__init__( parent )
         
-        if CG.client_controller.new_options.GetBoolean( 'use_listbook_for_tag_service_panels' ):
+        if CG.client_controller.new_options.get_boolean('use_listbook_for_tag_service_panels'):
             
             self._tag_services = ClientGUIListBook.ListBook( self )
             
@@ -36,14 +36,14 @@ class ReviewTagDisplayMaintenancePanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         #
         
-        services = list( CG.client_controller.services_manager.GetServices( HC.REAL_TAG_SERVICES ) )
+        services = list(CG.client_controller.services_manager.get_services(HC.REAL_TAG_SERVICES))
         
-        default_tag_service_key = CG.client_controller.new_options.GetKey( 'default_tag_service_tab' )
+        default_tag_service_key = CG.client_controller.new_options.get_key('default_tag_service_tab')
         
         for service in services:
             
-            service_key = service.GetServiceKey()
-            name = service.GetName()
+            service_key = service.get_service_key()
+            name = service.get_name()
             
             page = self._Panel( self._tag_services, service_key )
             
@@ -51,7 +51,7 @@ class ReviewTagDisplayMaintenancePanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             if service_key == default_tag_service_key:
                 
-                CG.client_controller.CallAfterQtSafe( self._tag_services, self._tag_services.setCurrentWidget, page )
+                CG.client_controller.call_after_qt_safe(self._tag_services, self._tag_services.setCurrentWidget, page)
                 
             
         
@@ -83,17 +83,17 @@ class ReviewTagDisplayMaintenancePanel( ClientGUIScrolledPanels.ReviewPanel ):
     
     def _ServicePageChanged( self ):
         
-        if CG.client_controller.new_options.GetBoolean( 'save_default_tag_service_tab_on_change' ):
+        if CG.client_controller.new_options.get_boolean('save_default_tag_service_tab_on_change'):
             
             current_page = typing.cast( ReviewTagDisplayMaintenancePanel._Panel, self._tag_services.currentWidget() )
             
-            CG.client_controller.new_options.SetKey( 'default_tag_service_tab', current_page.GetServiceKey() )
+            CG.client_controller.new_options.set_key('default_tag_service_tab', current_page.GetServiceKey())
             
         
     
     def _UpdateStatusText( self ):
         
-        if CG.client_controller.new_options.GetBoolean( 'tag_display_maintenance_during_active' ):
+        if CG.client_controller.new_options.get_boolean('tag_display_maintenance_during_active'):
             
             self._sync_status.setText( 'Siblings and parents are set to sync all the time. If there is work to do here, it should be cleared out in real time as you watch.' )
             
@@ -101,7 +101,7 @@ class ReviewTagDisplayMaintenancePanel( ClientGUIScrolledPanels.ReviewPanel ):
             
         else:
             
-            if CG.client_controller.new_options.GetBoolean( 'tag_display_maintenance_during_idle' ):
+            if CG.client_controller.new_options.get_boolean('tag_display_maintenance_during_idle'):
                 
                 self._sync_status.setText( 'Siblings and parents are only set to sync during idle time. If there is work to do here, it should be cleared out when you are not using the client.' )
                 
@@ -277,7 +277,7 @@ class ReviewTagDisplayMaintenancePanel( ClientGUIScrolledPanels.ReviewPanel ):
                     
                 else:
                     
-                    if not CG.client_controller.new_options.GetBoolean( 'tag_display_maintenance_during_active' ):
+                    if not CG.client_controller.new_options.get_boolean('tag_display_maintenance_during_active'):
                         
                         self._go_faster_button.setText( 'work now!' )
                         

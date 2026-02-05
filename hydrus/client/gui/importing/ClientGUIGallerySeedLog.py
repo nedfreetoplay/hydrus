@@ -61,7 +61,7 @@ def ImportFromClipboard( win: QW.QWidget, gallery_seed_log: ClientImportGalleryS
     
     try:
         
-        raw_text = CG.client_controller.GetClipboardText()
+        raw_text = CG.client_controller.get_clipboard_text()
         
     except HydrusExceptions.DataMissing as e:
         
@@ -92,7 +92,7 @@ def ImportFromPNG( win: QW.QWidget, gallery_seed_log: ClientImportGallerySeeds.G
             
             try:
                 
-                payload_string = ClientSerialisable.LoadStringFromPNG( path )
+                payload_string = ClientSerialisable.load_string_from_png(path)
                 
                 urls = GetURLsFromURLsString( payload_string )
                 
@@ -305,7 +305,7 @@ class EditGallerySeedLogPanel( ClientGUIScrolledPanels.EditPanel ):
         
         CG.client_controller.sub( self, 'NotifyGallerySeedsUpdated', 'gallery_seed_log_gallery_seeds_updated' )
         
-        CG.client_controller.CallAfterQtSafe( self, self._UpdateText )
+        CG.client_controller.call_after_qt_safe(self, self._UpdateText)
         
     
     def _ConvertGallerySeedToDisplayTuple( self, gallery_seed ):
@@ -559,7 +559,7 @@ class EditGallerySeedLogPanel( ClientGUIScrolledPanels.EditPanel ):
             
             for gallery_seed in gallery_seeds:
                 
-                ClientPaths.LaunchURLInWebBrowser( gallery_seed.url )
+                ClientPaths.launch_url_in_web_browser(gallery_seed.url)
                 
             
         
@@ -703,7 +703,7 @@ class GallerySeedLogButton( ClientGUICommon.ButtonWithMenuArrow ):
                 
             else: # throw up a dialog that edits the gallery_seed log but can be cancelled
                 
-                dupe_gallery_seed_log = gallery_seed_log.Duplicate()
+                dupe_gallery_seed_log = gallery_seed_log.duplicate()
                 
                 with ClientGUITopLevelWindowsPanels.DialogEdit( self, title ) as dlg:
                     

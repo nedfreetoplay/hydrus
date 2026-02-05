@@ -13,9 +13,9 @@ class ShowKeys( ClientGUITopLevelWindows.Frame ):
         if key_type == 'registration': title = 'Registration Tokens'
         elif key_type == 'access': title = 'Access Keys'
         
-        tlw = CG.client_controller.GetMainTLW()
+        tlw = CG.client_controller.get_main_tlw()
         
-        super().__init__( tlw, CG.client_controller.PrepStringForDisplay( title ) )
+        super().__init__(tlw, CG.client_controller.prep_string_for_display(title))
         
         self._key_type = key_type
         self._keys = keys

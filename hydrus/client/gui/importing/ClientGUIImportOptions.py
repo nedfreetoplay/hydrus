@@ -49,7 +49,7 @@ class EditFileImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         if file_import_options.IsDefault():
             
-            file_import_options = CG.client_controller.new_options.GetDefaultFileImportOptions( FileImportOptionsLegacy.IMPORT_TYPE_LOUD ).duplicate()
+            file_import_options = CG.client_controller.new_options.get_default_file_import_options(FileImportOptionsLegacy.IMPORT_TYPE_LOUD).duplicate()
             
             file_import_options.SetIsDefault( True )
             
@@ -176,7 +176,7 @@ class EditFileImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         destination_location_context = file_import_options.GetDestinationLocationContext()
         
-        destination_location_context.FixMissingServices( CG.client_controller.services_manager.FilterValidServiceKeys )
+        destination_location_context.fix_missing_services(CG.client_controller.services_manager.filter_valid_service_keys)
         
         self._destination_location_context = ClientGUILocation.LocationSearchContextButton( destination_panel, destination_location_context )
         
@@ -287,7 +287,7 @@ class EditFileImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         rows.append( ( '-- even for \'already in db\' files?: ', self._do_archive_on_already_in_db_files ) )
         rows.append( ( 're-add \'already in db\' files to import destinations?: ', self._do_import_destinations_on_already_in_db_files ) )
         
-        if show_downloader_options and CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+        if show_downloader_options and CG.client_controller.new_options.get_boolean('advanced_mode'):
             
             rows.append( ( 'associate primary urls: ', self._associate_primary_urls ) )
             rows.append( ( 'associate (and trust) additional source urls: ', self._associate_source_urls ) )
@@ -348,8 +348,8 @@ class EditFileImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _LoadDefaultOptions( self ):
         
-        loud_file_import_options = CG.client_controller.new_options.GetDefaultFileImportOptions( FileImportOptionsLegacy.IMPORT_TYPE_LOUD )
-        quiet_file_import_options = CG.client_controller.new_options.GetDefaultFileImportOptions( FileImportOptionsLegacy.IMPORT_TYPE_QUIET )
+        loud_file_import_options = CG.client_controller.new_options.get_default_file_import_options(FileImportOptionsLegacy.IMPORT_TYPE_LOUD)
+        quiet_file_import_options = CG.client_controller.new_options.get_default_file_import_options(FileImportOptionsLegacy.IMPORT_TYPE_QUIET)
         
         choice_tuples = []
         
@@ -416,7 +416,7 @@ class EditFileImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         destination_location_context = file_import_options.GetDestinationLocationContext()
         
-        destination_location_context.FixMissingServices( CG.client_controller.services_manager.FilterValidServiceKeys )
+        destination_location_context.fix_missing_services(CG.client_controller.services_manager.filter_valid_service_keys)
         
         self._destination_location_context.SetValue( destination_location_context )
         
@@ -511,7 +511,7 @@ If you have a very large (10k+ files) file import page, consider hiding some or 
         
         location_context = self._destination_location_context.GetValue()
         
-        if location_context.IsEmpty():
+        if location_context.is_empty():
             
             self._destination_location_context_st.setText( 'This will not import anywhere! Any import queue using this File Import Options will halt!' )
             
@@ -800,7 +800,7 @@ class EditNoteImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
             url_class_keys_to_url_classes = { url_class.GetClassKey() : url_class for url_class in url_classes }
             
-            url_class_names_and_default_note_import_options = sorted( ( ( url_class_keys_to_url_classes[ url_class_key ].GetName(), url_class_keys_to_default_note_import_options[ url_class_key ] ) for url_class_key in list( url_class_keys_to_default_note_import_options.keys() ) if url_class_key in url_class_keys_to_url_classes ) )
+            url_class_names_and_default_note_import_options = sorted(((url_class_keys_to_url_classes[ url_class_key ].get_name(), url_class_keys_to_default_note_import_options[ url_class_key]) for url_class_key in list(url_class_keys_to_default_note_import_options.keys()) if url_class_key in url_class_keys_to_url_classes))
             
             choice_tuples.extend( url_class_names_and_default_note_import_options )
             
@@ -1073,7 +1073,7 @@ class EditServiceTagImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         self._service_key = service_key
         self._show_downloader_options = show_downloader_options
         
-        name = CG.client_controller.services_manager.GetName( self._service_key )
+        name = CG.client_controller.services_manager.get_name(self._service_key)
         
         main_box = ClientGUICommon.StaticBox( self, name )
         
@@ -1104,7 +1104,7 @@ class EditServiceTagImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         self._get_tags_checkbox = QW.QCheckBox( 'get tags', downloader_options_panel )
         
-        if CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+        if CG.client_controller.new_options.get_boolean('advanced_mode'):
             
             message = None
             
@@ -1389,7 +1389,7 @@ class EditTagImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         #
         
-        if not CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+        if not CG.client_controller.new_options.get_boolean('advanced_mode'):
             
             st = ClientGUICommon.BetterStaticText( default_panel, label = 'Most of the time, you want to rely on the default tag import options!' )
             
@@ -1473,11 +1473,11 @@ class EditTagImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _InitialiseServices( self, tag_import_options ):
         
-        services = CG.client_controller.services_manager.GetServices( HC.REAL_TAG_SERVICES )
+        services = CG.client_controller.services_manager.get_services(HC.REAL_TAG_SERVICES)
         
         for service in services:
             
-            service_key = service.GetServiceKey()
+            service_key = service.get_service_key()
             
             service_tag_import_options = tag_import_options.GetServiceTagImportOptions( service_key )
             
@@ -1510,7 +1510,7 @@ class EditTagImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
             url_class_keys_to_url_classes = { url_class.GetClassKey() : url_class for url_class in url_classes }
             
-            url_class_names_and_default_tag_import_options = sorted( ( ( url_class_keys_to_url_classes[ url_class_key ].GetName(), url_class_keys_to_default_tag_import_options[ url_class_key ] ) for url_class_key in list( url_class_keys_to_default_tag_import_options.keys() ) if url_class_key in url_class_keys_to_url_classes ) )
+            url_class_names_and_default_tag_import_options = sorted(((url_class_keys_to_url_classes[ url_class_key ].get_name(), url_class_keys_to_default_tag_import_options[ url_class_key]) for url_class_key in list(url_class_keys_to_default_tag_import_options.keys()) if url_class_key in url_class_keys_to_url_classes))
             
             choice_tuples.extend( url_class_names_and_default_tag_import_options )
             
@@ -1927,7 +1927,7 @@ class ImportOptionsButton( ClientGUICommon.ButtonWithMenuArrow ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -1968,7 +1968,7 @@ class ImportOptionsButton( ClientGUICommon.ButtonWithMenuArrow ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -2009,7 +2009,7 @@ class ImportOptionsButton( ClientGUICommon.ButtonWithMenuArrow ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             

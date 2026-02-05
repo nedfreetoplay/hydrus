@@ -17,9 +17,9 @@ def ManageServiceOptionsTagFilter(
     new_tags_to_allow: collections.abc.Collection[ str ] | None = None
 ):
     
-    service: ClientServices.ServiceRepository = CG.client_controller.services_manager.GetService( service_key )
+    service: ClientServices.ServiceRepository = CG.client_controller.services_manager.get_service(service_key)
     
-    tag_filter = service.GetTagFilter().duplicate()
+    tag_filter = service.get_tag_filter().duplicate()
     
     if new_tags_to_block is not None:
         
@@ -47,32 +47,32 @@ def ManageServiceOptionsTagFilter(
             
             job_status = ClientThreading.JobStatus()
             
-            job_status.SetStatusTitle( 'setting tag filter' )
-            job_status.SetStatusText( 'uploading' + HC.UNICODE_ELLIPSIS )
+            job_status.set_status_title('setting tag filter')
+            job_status.set_status_text('uploading' + HC.UNICODE_ELLIPSIS)
             
             CG.client_controller.pub( 'message', job_status )
             
             def work_callable():
                 
-                service.Request( HC.POST, 'tag_filter', { 'tag_filter' : tag_filter } )
+                service.request(HC.POST, 'tag_filter', {'tag_filter' : tag_filter})
                 
                 return 1
                 
             
             def publish_callable( gumpf ):
                 
-                job_status.SetStatusText( 'done!' )
+                job_status.set_status_text('done!')
                 
-                job_status.FinishAndDismiss( 5 )
+                job_status.finish_and_dismiss(5)
                 
-                service.SetAccountRefreshDueNow()
+                service.set_account_refresh_due_now()
                 
             
             def errback_ui_cleanup_callable():
                 
-                job_status.SetStatusText( 'error!' )
+                job_status.set_status_text('error!')
                 
-                job_status.Finish()
+                job_status.finish()
                 
             
             job = ClientGUIAsync.AsyncQtJob( win, work_callable, publish_callable, errback_ui_cleanup_callable = errback_ui_cleanup_callable )

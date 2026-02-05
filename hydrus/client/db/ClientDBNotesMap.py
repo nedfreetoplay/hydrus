@@ -52,7 +52,7 @@ class ClientDBNotesMap( ClientDBModule.ClientDBModule ):
         
         if job_status is not None:
             
-            cancelled_hook = job_status.IsCancelled
+            cancelled_hook = job_status.is_cancelled
             
         
         # as note name is rare, we force this to run opposite to typical: notes to temp hashes
@@ -75,7 +75,7 @@ class ClientDBNotesMap( ClientDBModule.ClientDBModule ):
         
         if job_status is not None:
             
-            cancelled_hook = job_status.IsCancelled
+            cancelled_hook = job_status.is_cancelled
             
         
         nonzero_hash_ids = set()
@@ -121,7 +121,7 @@ class ClientDBNotesMap( ClientDBModule.ClientDBModule ):
         
         if job_status is not None:
             
-            cancelled_hook = job_status.IsCancelled
+            cancelled_hook = job_status.is_cancelled
             
         
         query = 'SELECT hash_id FROM {} WHERE NOT EXISTS ( SELECT 1 FROM file_notes WHERE file_notes.hash_id = {}.hash_id );'.format( hash_ids_table_name, hash_ids_table_name )
@@ -137,7 +137,7 @@ class ClientDBNotesMap( ClientDBModule.ClientDBModule ):
         
         if job_status is not None:
             
-            cancelled_hook = job_status.IsCancelled
+            cancelled_hook = job_status.is_cancelled
             
         
         query = 'SELECT hash_id FROM {} WHERE EXISTS ( SELECT 1 FROM file_notes WHERE file_notes.hash_id = {}.hash_id );'.format( hash_ids_table_name, hash_ids_table_name )

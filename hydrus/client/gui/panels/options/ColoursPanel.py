@@ -68,7 +68,7 @@ class ColoursPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
                 
                 ctrl.setMaximumWidth( 20 )
                 
-                ctrl.SetColour( self._new_options.GetColour( colour_type, colourset ) )
+                ctrl.SetColour(self._new_options.get_colour(colour_type, colourset))
                 
                 self._gui_colours[ colourset ][ colour_type ] = ctrl
                 
@@ -113,8 +113,8 @@ class ColoursPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         #
         
-        self._override_stylesheet_colours.setChecked( self._new_options.GetBoolean( 'override_stylesheet_colours' ) )
-        self._current_colourset.SetValue( self._new_options.GetString( 'current_colourset' ) )
+        self._override_stylesheet_colours.setChecked(self._new_options.get_boolean('override_stylesheet_colours'))
+        self._current_colourset.SetValue(self._new_options.get_string('current_colourset'))
         
         #
         
@@ -148,18 +148,18 @@ class ColoursPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def UpdateOptions( self ):
         
-        self._new_options.SetBoolean( 'override_stylesheet_colours', self._override_stylesheet_colours.isChecked() )
+        self._new_options.set_boolean('override_stylesheet_colours', self._override_stylesheet_colours.isChecked())
         
         for colourset in self._gui_colours:
             
             for ( colour_type, ctrl ) in list(self._gui_colours[ colourset ].items()):
                 
-                colour = ctrl.GetColour()
+                colour = ctrl.get_colour()
                 
-                self._new_options.SetColour( colour_type, colourset, colour )
+                self._new_options.set_colour(colour_type, colourset, colour)
                 
             
         
-        self._new_options.SetString( 'current_colourset', self._current_colourset.GetValue() )
+        self._new_options.set_string('current_colourset', self._current_colourset.GetValue())
         
     

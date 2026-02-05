@@ -209,7 +209,7 @@ class FileSystemPredicates( object ):
                     dt_day_of_start = HydrusTime.get_date_time( year, month, day, 0, 0 )
                     
                     day_of_start_timestamp_ms = HydrusTime.date_time_to_timestamp_ms( dt_day_of_start )
-                    day_of_end_timestamp_ms = HydrusTime.date_time_to_timestamp_ms( ClientTime.CalendarDelta( dt_day_of_start, day_delta = 1 ) )
+                    day_of_end_timestamp_ms = HydrusTime.date_time_to_timestamp_ms(ClientTime.calendar_delta(dt_day_of_start, day_delta = 1))
                     
                     # the before/since semantic logic is:
                     # '<' 2022-05-05 means 'before that date'
@@ -230,8 +230,8 @@ class FileSystemPredicates( object ):
                         
                     elif operator == HC.UNICODE_APPROX_EQUAL:
                         
-                        previous_month_timestamp_ms = HydrusTime.date_time_to_timestamp_ms( ClientTime.CalendarDelta( dt, month_delta = -1 ) )
-                        next_month_timestamp_ms = HydrusTime.date_time_to_timestamp_ms( ClientTime.CalendarDelta( dt, month_delta = 1 ) )
+                        previous_month_timestamp_ms = HydrusTime.date_time_to_timestamp_ms(ClientTime.calendar_delta(dt, month_delta = -1))
+                        next_month_timestamp_ms = HydrusTime.date_time_to_timestamp_ms(ClientTime.calendar_delta(dt, month_delta = 1))
                         
                         self._system_pred_types_to_timestamp_ranges_ms[ predicate_type ][ '>' ] = previous_month_timestamp_ms
                         self._system_pred_types_to_timestamp_ranges_ms[ predicate_type ][ '<' ] = next_month_timestamp_ms
@@ -490,7 +490,7 @@ class FileSystemPredicates( object ):
         
         if self._limit is None and apply_implicit_limit:
             
-            forced_search_limit = CG.client_controller.new_options.GetNoneableInteger( 'forced_search_limit' )
+            forced_search_limit = CG.client_controller.new_options.get_noneable_integer('forced_search_limit')
             
             return forced_search_limit
             
@@ -583,7 +583,7 @@ class FileSearchContext( HydrusSerialisable.SerialisableBase ):
         
         if location_context is None:
             
-            location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+            location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
             
         
         if tag_context is None:
@@ -725,7 +725,7 @@ class FileSearchContext( HydrusSerialisable.SerialisableBase ):
             
             file_service_key = bytes.fromhex( file_service_key_hex )
             
-            location_context = ClientLocation.LocationContext.STATICCreateSimple( file_service_key )
+            location_context = ClientLocation.LocationContext.static_create_simple(file_service_key)
             
             serialisable_location_context = location_context.get_serialisable_tuple()
             
@@ -737,7 +737,7 @@ class FileSearchContext( HydrusSerialisable.SerialisableBase ):
     
     def FixMissingServices( self, filter_method ):
         
-        self._location_context.FixMissingServices( filter_method )
+        self._location_context.fix_missing_services(filter_method)
         self._tag_context.FixMissingServices( filter_method )
         
     

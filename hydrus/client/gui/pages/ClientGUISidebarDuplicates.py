@@ -76,7 +76,7 @@ class FilterPanel( QW.QWidget ):
         menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCall( 'edit duplicate metadata merge options for \'this is better\'', 'edit what content is merged when you filter files', HydrusData.Call( self._EditMergeOptions, HC.DUPLICATE_BETTER ) ) )
         menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCall( 'edit duplicate metadata merge options for \'same quality\'', 'edit what content is merged when you filter files', HydrusData.Call( self._EditMergeOptions, HC.DUPLICATE_SAME_QUALITY ) ) )
         
-        if new_options.GetBoolean( 'advanced_mode' ):
+        if new_options.get_boolean('advanced_mode'):
             
             menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCall( 'edit duplicate metadata merge options for \'alternates\' (advanced!)', 'edit what content is merged when you filter files', HydrusData.Call( self._EditMergeOptions, HC.DUPLICATE_ALTERNATE ) ) )
             
@@ -156,7 +156,7 @@ class FilterPanel( QW.QWidget ):
         
         new_options = CG.client_controller.new_options
         
-        duplicate_content_merge_options = new_options.GetDuplicateContentMergeOptions( duplicate_type )
+        duplicate_content_merge_options = new_options.get_duplicate_content_merge_options(duplicate_type)
         
         with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit duplicate merge options' ) as dlg:
             
@@ -172,7 +172,7 @@ class FilterPanel( QW.QWidget ):
                 
                 duplicate_content_merge_options = ctrl.GetValue()
                 
-                new_options.SetDuplicateContentMergeOptions( duplicate_type, duplicate_content_merge_options )
+                new_options.set_duplicate_content_merge_options(duplicate_type, duplicate_content_merge_options)
                 
             
         
@@ -201,7 +201,7 @@ class FilterPanel( QW.QWidget ):
             
         else:
             
-            no_more_than = CG.client_controller.new_options.GetInteger( 'duplicate_filter_max_batch_size' )
+            no_more_than = CG.client_controller.new_options.get_integer('duplicate_filter_max_batch_size')
             
             potential_duplicate_pair_factory = ClientPotentialDuplicatesPairFactory.PotentialDuplicatePairFactoryDBMixed(
                 potential_duplicates_search_context,
@@ -347,12 +347,12 @@ class PreparationPanel( QW.QWidget ):
         submenu_template_items = []
         
         check_manager = ClientGUICommon.CheckboxManagerOptions( 'maintain_similar_files_duplicate_pairs_during_idle' )
-        check_manager.AddNotifyCall( CG.client_controller.potential_duplicates_manager.Wake )
+        check_manager.AddNotifyCall(CG.client_controller.potential_duplicates_manager.wake)
         
         submenu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCheck( 'during idle time', 'Tell the client to find potential duplicate pairs in its idle time maintenance.', check_manager ) )
         
         check_manager = ClientGUICommon.CheckboxManagerOptions( 'maintain_similar_files_duplicate_pairs_during_active' )
-        check_manager.AddNotifyCall( CG.client_controller.potential_duplicates_manager.Wake )
+        check_manager.AddNotifyCall(CG.client_controller.potential_duplicates_manager.wake)
         
         submenu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCheck( 'during normal time', 'Tell the client to find potential duplicate pairs all the time.', check_manager ) )
         
@@ -462,7 +462,7 @@ class PreparationPanel( QW.QWidget ):
             
             self._eligible_files.setText( '{} eligible files in the system.'.format(HydrusNumbers.to_human_int(total_num_files)) )
             
-            search_distance = CG.client_controller.new_options.GetInteger( 'similar_files_duplicate_pairs_search_distance' )
+            search_distance = CG.client_controller.new_options.get_integer('similar_files_duplicate_pairs_search_distance')
             
             num_searched = sum( ( count for ( value, count ) in searched_distances_to_count.items() if value >= search_distance ) )
             
@@ -487,7 +487,7 @@ class PreparationPanel( QW.QWidget ):
                 
                 percent_done = num_searched / total_num_files
                 
-                if CG.client_controller.new_options.GetBoolean( 'hide_duplicates_needs_work_message_when_reasonably_caught_up' ) and percent_done > 0.99:
+                if CG.client_controller.new_options.get_boolean('hide_duplicates_needs_work_message_when_reasonably_caught_up') and percent_done > 0.99:
                     
                     show_percentage_page_name = False
                     
@@ -521,7 +521,7 @@ class PreparationPanel( QW.QWidget ):
         
         self._maintenance_status_updater.update()
         
-        CG.client_controller.potential_duplicates_manager.WakeIfNotWorking()
+        CG.client_controller.potential_duplicates_manager.wake_if_not_working()
         
     
     def _RegenerateMaintenanceNumbers( self ):
@@ -609,7 +609,7 @@ class PreparationPanel( QW.QWidget ):
     
     def _UpdateSearchStatus( self ):
         
-        search_distance = CG.client_controller.new_options.GetInteger( 'similar_files_duplicate_pairs_search_distance' )
+        search_distance = CG.client_controller.new_options.get_integer('similar_files_duplicate_pairs_search_distance')
         
         if self._max_hamming_distance_for_potential_discovery_spinctrl.value() != search_distance:
             
@@ -630,7 +630,7 @@ class PreparationPanel( QW.QWidget ):
             self._max_hamming_distance_for_potential_discovery_button.setText( button_label )
             
         
-        is_working_hard = CG.client_controller.potential_duplicates_manager.IsWorkingHard()
+        is_working_hard = CG.client_controller.potential_duplicates_manager.is_working_hard()
         
         self._start_search_button.setVisible( not is_working_hard )
         self._pause_search_button.setVisible( is_working_hard )
@@ -640,11 +640,11 @@ class PreparationPanel( QW.QWidget ):
         
         search_distance = self._max_hamming_distance_for_potential_discovery_spinctrl.value()
         
-        CG.client_controller.new_options.SetInteger( 'similar_files_duplicate_pairs_search_distance', search_distance )
+        CG.client_controller.new_options.set_integer('similar_files_duplicate_pairs_search_distance', search_distance)
         
         self._maintenance_status_updater.update()
         
-        CG.client_controller.potential_duplicates_manager.Wake()
+        CG.client_controller.potential_duplicates_manager.wake()
         
     
     def NotifyNewMaintenanceNumbers( self ):

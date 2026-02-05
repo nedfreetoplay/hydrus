@@ -127,13 +127,13 @@ class EditDuplicateContentMergeOptionsWidget( ClientGUICommon.StaticBox ):
         
         choice_tuples = []
         
-        for service in services_manager.GetServices( HC.RATINGS_SERVICES ):
+        for service in services_manager.get_services(HC.RATINGS_SERVICES):
             
-            service_key = service.GetServiceKey()
+            service_key = service.get_service_key()
             
             if service_key not in self._service_keys_to_rating_options:
                 
-                name = service.GetName()
+                name = service.get_name()
                 
                 choice_tuples.append( ( name, service_key ) )
                 
@@ -156,9 +156,9 @@ class EditDuplicateContentMergeOptionsWidget( ClientGUICommon.StaticBox ):
             
             if self._duplicate_action == HC.DUPLICATE_BETTER:
                 
-                service = services_manager.GetService( service_key )
+                service = services_manager.get_service(service_key)
                 
-                service_type = service.GetServiceType()
+                service_type = service.get_service_type()
                 
                 if service_type == HC.LOCAL_RATING_INCDEC:
                     
@@ -203,13 +203,13 @@ class EditDuplicateContentMergeOptionsWidget( ClientGUICommon.StaticBox ):
         
         choice_tuples = []
         
-        for service in services_manager.GetServices( HC.REAL_TAG_SERVICES ):
+        for service in services_manager.get_services(HC.REAL_TAG_SERVICES):
             
-            service_key = service.GetServiceKey()
+            service_key = service.get_service_key()
             
             if service_key not in self._service_keys_to_tag_options:
                 
-                name = service.GetName()
+                name = service.get_name()
                 
                 choice_tuples.append( ( name, service_key ) )
                 
@@ -232,9 +232,9 @@ class EditDuplicateContentMergeOptionsWidget( ClientGUICommon.StaticBox ):
             
             if self._duplicate_action == HC.DUPLICATE_BETTER:
                 
-                service = services_manager.GetService( service_key )
+                service = services_manager.get_service(service_key)
                 
-                if service.GetServiceType() == HC.TAG_REPOSITORY:
+                if service.get_service_type() == HC.TAG_REPOSITORY:
                     
                     possible_actions = [ HC.CONTENT_MERGE_ACTION_COPY, HC.CONTENT_MERGE_ACTION_TWO_WAY_MERGE ]
                     
@@ -287,11 +287,11 @@ class EditDuplicateContentMergeOptionsWidget( ClientGUICommon.StaticBox ):
         
         try:
             
-            service = CG.client_controller.services_manager.GetService( service_key )
+            service = CG.client_controller.services_manager.get_service(service_key)
             
-            service_name = service.GetName()
+            service_name = service.get_name()
             
-            service_type = service.GetServiceType()
+            service_type = service.get_service_type()
             
         except HydrusExceptions.DataMissing:
             
@@ -323,7 +323,7 @@ class EditDuplicateContentMergeOptionsWidget( ClientGUICommon.StaticBox ):
         
         try:
             
-            service_name = CG.client_controller.services_manager.GetName( service_key )
+            service_name = CG.client_controller.services_manager.get_name(service_key)
             
         except HydrusExceptions.DataMissing:
             
@@ -400,9 +400,9 @@ class EditDuplicateContentMergeOptionsWidget( ClientGUICommon.StaticBox ):
         
         if self._duplicate_action == HC.DUPLICATE_BETTER:
             
-            service = CG.client_controller.services_manager.GetService( service_key )
+            service = CG.client_controller.services_manager.get_service(service_key)
             
-            service_type = service.GetServiceType()
+            service_type = service.get_service_type()
             
             if service_type == HC.LOCAL_RATING_INCDEC:
                 
@@ -455,9 +455,9 @@ class EditDuplicateContentMergeOptionsWidget( ClientGUICommon.StaticBox ):
         
         if self._duplicate_action == HC.DUPLICATE_BETTER:
             
-            service = CG.client_controller.services_manager.GetService( service_key )
+            service = CG.client_controller.services_manager.get_service(service_key)
             
-            if service.GetServiceType() == HC.TAG_REPOSITORY:
+            if service.get_service_type() == HC.TAG_REPOSITORY:
                 
                 possible_actions = [ HC.CONTENT_MERGE_ACTION_COPY, HC.CONTENT_MERGE_ACTION_TWO_WAY_MERGE ]
                 
@@ -533,13 +533,13 @@ class EditDuplicateContentMergeOptionsWidget( ClientGUICommon.StaticBox ):
         
         services_manager = CG.client_controller.services_manager
         
-        self._service_keys_to_tag_options = { service_key : ( action, tag_filter ) for ( service_key, action, tag_filter ) in tag_service_options if services_manager.ServiceExists( service_key ) }
+        self._service_keys_to_tag_options = {service_key : ( action, tag_filter ) for ( service_key, action, tag_filter ) in tag_service_options if services_manager.service_exists(service_key)}
         
         self._tag_service_actions.SetData( list( self._service_keys_to_tag_options.keys() ) )
         
         self._tag_service_actions.Sort()
         
-        self._service_keys_to_rating_options = { service_key : action for ( service_key, action ) in rating_service_options if services_manager.ServiceExists( service_key ) }
+        self._service_keys_to_rating_options = {service_key : action for ( service_key, action ) in rating_service_options if services_manager.service_exists(service_key)}
         
         self._rating_service_actions.SetData( list( self._service_keys_to_rating_options.keys() ) )
         

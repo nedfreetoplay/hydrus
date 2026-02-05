@@ -117,9 +117,9 @@ class DownloaderExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         existing_data = self._listctrl.GetData()
         
-        choosable_gugs = [ gug for gug in self._network_engine.domain_manager.GetGUGs() if gug.IsFunctional() and gug not in existing_data ]
+        choosable_gugs = [gug for gug in self._network_engine.domain_manager.GetGUGs() if gug.is_functional() and gug not in existing_data]
         
-        choice_tuples = [ ( gug.GetName(), gug, False ) for gug in choosable_gugs ]
+        choice_tuples = [(gug.get_name(), gug, False) for gug in choosable_gugs]
         
         try:
             
@@ -154,7 +154,7 @@ class DownloaderExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         choosable_login_scripts = [ ls for ls in self._network_engine.login_manager.GetLoginScripts() if ls not in existing_data ]
         
-        choice_tuples = [ ( login_script.GetName(), login_script, False ) for login_script in choosable_login_scripts ]
+        choice_tuples = [(login_script.get_name(), login_script, False) for login_script in choosable_login_scripts]
         
         try:
             
@@ -174,7 +174,7 @@ class DownloaderExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         choosable_parsers = [ p for p in self._network_engine.domain_manager.GetParsers() if p not in existing_data ]
         
-        choice_tuples = [ ( parser.GetName(), parser, False ) for parser in choosable_parsers ]
+        choice_tuples = [(parser.get_name(), parser, False) for parser in choosable_parsers]
         
         try:
             
@@ -194,7 +194,7 @@ class DownloaderExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         choosable_url_classes = [ u for u in self._network_engine.domain_manager.GetURLClasses() if u not in existing_data ]
         
-        choice_tuples = [ ( url_class.GetName(), url_class, False ) for url_class in choosable_url_classes ]
+        choice_tuples = [(url_class.get_name(), url_class, False) for url_class in choosable_url_classes]
         
         try:
             
@@ -226,7 +226,7 @@ class DownloaderExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
         else:
             
-            name = content.GetName()
+            name = content.get_name()
             
         
         t = content.SERIALISABLE_NAME
@@ -303,7 +303,7 @@ class DownloaderExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         existing_data = self._listctrl.GetData()
         
-        possible_new_gugs = [ gug for gug in self._network_engine.domain_manager.GetGUGs() if gug.IsFunctional() and gug not in existing_data and gug not in gugs_to_include ]
+        possible_new_gugs = [gug for gug in self._network_engine.domain_manager.GetGUGs() if gug.is_functional() and gug not in existing_data and gug not in gugs_to_include]
         
         interesting_gug_keys_and_names = list( itertools.chain.from_iterable( [ gug.GetGUGKeysAndNames() for gug in gugs_to_include if isinstance( gug, ClientNetworkingGUG.NestedGalleryURLGenerator ) ] ) )
         
@@ -1129,7 +1129,7 @@ class EditContentParsersPanel( ClientGUICommon.StaticBox ):
     
     def _GetExistingNames( self ):
         
-        names = { content_parser.GetName() for content_parser in self._content_parsers.GetData() }
+        names = {content_parser.get_name() for content_parser in self._content_parsers.GetData()}
         
         return names
         
@@ -1552,7 +1552,7 @@ class EditPageParserPanel( ClientGUIScrolledPanels.EditPanel ):
                 example_data = 'fetch failed: {}'.format( e ) + '\n' * 2 + stuff_read
                 
             
-            CG.client_controller.CallAfterQtSafe( self, qt_tidy_up, example_data, example_bytes, error )
+            CG.client_controller.call_after_qt_safe(self, qt_tidy_up, example_data, example_bytes, error)
             
         
         raw_url = self._test_url.text().strip()
@@ -1712,7 +1712,7 @@ class EditParsersPanel( ClientGUIScrolledPanels.EditPanel ):
         parsers_panel.AddSeparator()
         parsers_panel.AddImportExportButtons( ( ClientParsing.PageParser, ), self._AddParser )
         parsers_panel.AddSeparator()
-        parsers_panel.AddDefaultsButton( ClientDefaults.GetDefaultParsers, self._AddParser )
+        parsers_panel.AddDefaultsButton(ClientDefaults.get_default_parsers, self._AddParser)
         
         #
         
@@ -1823,7 +1823,7 @@ class EditParsersPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _GetExistingNames( self ):
         
-        names = { parser.GetName() for parser in self._parsers.GetData() }
+        names = {parser.get_name() for parser in self._parsers.GetData()}
         
         return names
         

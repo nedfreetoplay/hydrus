@@ -155,7 +155,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         
         ( thumbnail_span_width, thumbnail_span_height ) = self._GetThumbnailSpanDimensions()
         
-        thumbnail_scroll_rate = float( CG.client_controller.new_options.GetString( 'thumbnail_scroll_rate' ) )
+        thumbnail_scroll_rate = float(CG.client_controller.new_options.get_string('thumbnail_scroll_rate'))
         
         self.verticalScrollBar().setSingleStep( int( round( thumbnail_span_height * thumbnail_scroll_rate ) ) )
         
@@ -237,7 +237,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         canvas_width = int( my_width * dpr )
         canvas_height = int( self._num_rows_per_canvas_page * thumbnail_span_height * dpr )
         
-        canvas_page = CG.client_controller.bitmap_manager.GetQtImage( canvas_width, canvas_height, 32 )
+        canvas_page = CG.client_controller.bitmap_manager.get_qt_image(canvas_width, canvas_height, 32)
         
         canvas_page.setDevicePixelRatio( dpr )
         
@@ -292,7 +292,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         
         painter.setCompositionMode( QG.QPainter.CompositionMode.CompositionMode_Source )
         
-        if new_options.GetNoneableString( 'media_background_bmp_path' ) is not None:
+        if new_options.get_noneable_string('media_background_bmp_path') is not None:
             
             painter.setBackground( QG.QBrush( QC.Qt.GlobalColor.transparent ) )
             
@@ -315,7 +315,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         
         thumbnail_cache = CG.client_controller.thumbnails_cache
         
-        thumbnail_margin = CG.client_controller.new_options.GetInteger( 'thumbnail_margin' )
+        thumbnail_margin = CG.client_controller.new_options.get_integer('thumbnail_margin')
         
         for ( thumbnail_index, thumbnail ) in page_thumbnails:
             
@@ -326,7 +326,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                 continue
                 
             
-            hash = display_media.GetHash()
+            hash = display_media.get_hash()
             
             if hash in self._hashes_faded and thumbnail_cache.HasThumbnailCached( thumbnail ):
                 
@@ -340,7 +340,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                 
                 y = ( thumbnail_row - ( page_index * self._num_rows_per_canvas_page ) ) * thumbnail_span_height + thumbnail_margin
                 
-                painter.drawImage( x, y, thumbnail.GetQtImage( thumbnail, self, self.devicePixelRatio() ) )
+                painter.drawImage(x, y, thumbnail.get_qt_image(thumbnail, self, self.devicePixelRatio()))
                 
             else:
                 
@@ -395,15 +395,15 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                 continue
                 
             
-            hash = display_media.GetHash()
+            hash = display_media.get_hash()
             
             self._hashes_faded.add( hash )
             
             self._StopFading( hash )
             
-            bitmap = thumbnail.GetQtImage( thumbnail, self, self.devicePixelRatio() )
+            bitmap = thumbnail.get_qt_image(thumbnail, self, self.devicePixelRatio())
             
-            fade_thumbnails = CG.client_controller.new_options.GetBoolean( 'fade_thumbnails' )
+            fade_thumbnails = CG.client_controller.new_options.get_boolean('fade_thumbnails')
             
             if fade_thumbnails:
                 
@@ -440,7 +440,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         
         ( thumbnail_span_width, thumbnail_span_height ) = self._GetThumbnailSpanDimensions()
         
-        thumbnail_margin = CG.client_controller.new_options.GetInteger( 'thumbnail_margin' )
+        thumbnail_margin = CG.client_controller.new_options.get_integer('thumbnail_margin')
         
         ( x, y ) = ( column * thumbnail_span_width + thumbnail_margin, row * thumbnail_span_height + thumbnail_margin )
         
@@ -458,10 +458,10 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
     
     def _GetThumbnailSpanDimensions( self ):
         
-        thumbnail_border = CG.client_controller.new_options.GetInteger( 'thumbnail_border' )
-        thumbnail_margin = CG.client_controller.new_options.GetInteger( 'thumbnail_margin' )
+        thumbnail_border = CG.client_controller.new_options.get_integer('thumbnail_border')
+        thumbnail_margin = CG.client_controller.new_options.get_integer('thumbnail_margin')
         
-        return ClientData.AddPaddingToDimensions( HC.options[ 'thumbnail_dimensions' ], ( thumbnail_border + thumbnail_margin ) * 2 )
+        return ClientData.add_padding_to_dimensions(HC.options['thumbnail_dimensions'], (thumbnail_border + thumbnail_margin) * 2)
         
     
     def _GetThumbnailUnderMouse( self, mouse_event ):
@@ -476,7 +476,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         x_mod = x % t_span_x
         y_mod = y % t_span_y
         
-        thumbnail_margin = CG.client_controller.new_options.GetInteger( 'thumbnail_margin' )
+        thumbnail_margin = CG.client_controller.new_options.get_integer('thumbnail_margin')
         
         if x_mod <= thumbnail_margin or y_mod <= thumbnail_margin or x_mod > t_span_x - thumbnail_margin or y_mod > t_span_y - thumbnail_margin:
             
@@ -854,7 +854,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
             
             new_options = CG.client_controller.new_options
             
-            percent_visible = new_options.GetInteger( 'thumbnail_visibility_scroll_percent' ) / 100
+            percent_visible = new_options.get_integer('thumbnail_visibility_scroll_percent') / 100
             
             if y < visible_rect_y:
                 
@@ -914,7 +914,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                 
                 if len( self._selected_media ) == 0:
                     
-                    max_number = CG.client_controller.new_options.GetNoneableInteger( 'number_of_unselected_medias_to_present_tags_for' )
+                    max_number = CG.client_controller.new_options.get_noneable_integer('number_of_unselected_medias_to_present_tags_for')
                     
                     if max_number is None:
                         
@@ -984,7 +984,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                         
                         self._my_current_drag_object = QG.QDrag( self )
                         
-                        CG.client_controller.CallLaterQtSafe( self, 0.1, 'doing DnD check', self._CheckDnDIsOK, self._my_current_drag_object )
+                        CG.client_controller.call_later_qt_safe(self, 0.1, 'doing DnD check', self._CheckDnDIsOK, self._my_current_drag_object)
                         
                         result = ClientGUIDragDrop.DoFileExportDragDrop( self._my_current_drag_object, self._page_key, media, alt_down )
                         
@@ -1026,7 +1026,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                 
             else:
                 
-                can_download = not locations_manager.GetCurrent().isdisjoint( CG.client_controller.services_manager.GetRemoteFileServiceKeys() )
+                can_download = not locations_manager.GetCurrent().isdisjoint(CG.client_controller.services_manager.get_remote_file_service_keys())
                 
                 if can_download:
                     
@@ -1047,7 +1047,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
     
     def GetTotalFileSize( self ):
         
-        return sum( ( m.GetSize() for m in self._sorted_media ) )
+        return sum((m.get_size() for m in self._sorted_media))
         
     
     def MaintainPageCache( self ):
@@ -1098,17 +1098,17 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         self._RedrawMedia( affected_media )
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ):
+    def process_application_command( self, command: CAC.ApplicationCommand ):
         
         command_processed = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_MOVE_THUMBNAIL_FOCUS:
                 
-                ( move_direction, selection_status ) = command.GetSimpleData()
+                ( move_direction, selection_status ) = command.get_simple_data()
                 
                 shift = selection_status == CAC.SELECTION_STATUS_SHIFT
                 
@@ -1168,7 +1168,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                 
             elif action == CAC.SIMPLE_SELECT_FILES:
                 
-                file_filter = command.GetSimpleData()
+                file_filter = command.get_simple_data()
                 
                 self._Select( file_filter )
                 
@@ -1184,7 +1184,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         
         if not command_processed:
             
-            return super().ProcessApplicationCommand( command )
+            return super().process_application_command( command )
             
         else:
             
@@ -1276,24 +1276,24 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         
         services_manager = CG.client_controller.services_manager
         
-        services = services_manager.GetServices()
+        services = services_manager.get_services()
         
-        file_repositories: list[ ClientServices.ServiceRepository ] = [ service for service in services if service.GetServiceType() == HC.FILE_REPOSITORY ]
+        file_repositories: list[ ClientServices.ServiceRepository ] = [service for service in services if service.get_service_type() == HC.FILE_REPOSITORY]
         
-        ipfs_services = [ service for service in services if service.GetServiceType() == HC.IPFS ]
+        ipfs_services = [service for service in services if service.get_service_type() == HC.IPFS]
         
-        local_ratings_services = [ service for service in services if service.GetServiceType() in HC.RATINGS_SERVICES ]
+        local_ratings_services = [service for service in services if service.get_service_type() in HC.RATINGS_SERVICES]
         
         i_can_post_ratings = len( local_ratings_services ) > 0
         
-        local_media_file_service_keys = { service.GetServiceKey() for service in services if service.GetServiceType() == HC.LOCAL_FILE_DOMAIN }
+        local_media_file_service_keys = {service.get_service_key() for service in services if service.get_service_type() == HC.LOCAL_FILE_DOMAIN}
         
-        file_repository_service_keys = { repository.GetServiceKey() for repository in file_repositories }
-        upload_permission_file_service_keys = { repository.GetServiceKey() for repository in file_repositories if repository.HasPermission( HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_CREATE ) }
-        petition_resolve_permission_file_service_keys = { repository.GetServiceKey() for repository in file_repositories if repository.HasPermission( HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_MODERATE ) }
-        petition_permission_file_service_keys = { repository.GetServiceKey() for repository in file_repositories if repository.HasPermission( HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_PETITION ) } - petition_resolve_permission_file_service_keys
-        user_manage_permission_file_service_keys = { repository.GetServiceKey() for repository in file_repositories if repository.HasPermission( HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_MODERATE ) }
-        ipfs_service_keys = { service.GetServiceKey() for service in ipfs_services }
+        file_repository_service_keys = {repository.get_service_key() for repository in file_repositories}
+        upload_permission_file_service_keys = {repository.get_service_key() for repository in file_repositories if repository.has_permission(HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_CREATE)}
+        petition_resolve_permission_file_service_keys = {repository.get_service_key() for repository in file_repositories if repository.has_permission(HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_MODERATE)}
+        petition_permission_file_service_keys = {repository.get_service_key() for repository in file_repositories if repository.has_permission(HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_PETITION)} - petition_resolve_permission_file_service_keys
+        user_manage_permission_file_service_keys = {repository.get_service_key() for repository in file_repositories if repository.has_permission(HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_MODERATE)}
+        ipfs_service_keys = {service.get_service_key() for service in ipfs_services}
         
         if multiple_selected:
             
@@ -1344,7 +1344,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         
         # info about the files
         
-        remote_service_keys = CG.client_controller.services_manager.GetRemoteFileServiceKeys()
+        remote_service_keys = CG.client_controller.services_manager.get_remote_file_service_keys()
         
         groups_of_current_remote_service_keys = [ locations_manager.GetCurrent().intersection( remote_service_keys ) for locations_manager in selected_locations_managers ]
         groups_of_pending_remote_service_keys = [ locations_manager.GetPending().intersection( remote_service_keys ) for locations_manager in selected_locations_managers ]
@@ -1644,7 +1644,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         
         user_command_deletable_file_service_keys = local_media_file_service_keys.union( [ CC.LOCAL_UPDATE_SERVICE_KEY ] )
         
-        local_file_service_keys_we_are_in = sorted( current_file_service_keys.intersection( user_command_deletable_file_service_keys ), key = CG.client_controller.services_manager.GetName )
+        local_file_service_keys_we_are_in = sorted(current_file_service_keys.intersection( user_command_deletable_file_service_keys ), key = CG.client_controller.services_manager.get_name)
         
         if len( local_file_service_keys_we_are_in ) > 0:
             
@@ -1652,7 +1652,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
             
             for file_service_key in local_file_service_keys_we_are_in:
                 
-                service_name = CG.client_controller.services_manager.GetName( file_service_key )
+                service_name = CG.client_controller.services_manager.get_name(file_service_key)
                 
                 ClientGUIMenus.AppendMenuItem( delete_menu, f'from {service_name}', f'Delete the selected files from {service_name}.', self._Delete, file_service_key )
                 
@@ -1770,7 +1770,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                 
                 if len_interesting_local_service_keys > 0:
                     
-                    ClientGUIMediaMenus.AddLocalFilesMoveAddToMenu( self, locations_menu, local_file_service_keys, local_duplicable_to_file_service_keys, local_moveable_from_and_to_file_service_keys, local_mergable_from_and_to_file_service_keys, multiple_selected, self.ProcessApplicationCommand )
+                    ClientGUIMediaMenus.AddLocalFilesMoveAddToMenu( self, locations_menu, local_file_service_keys, local_duplicable_to_file_service_keys, local_moveable_from_and_to_file_service_keys, local_mergable_from_and_to_file_service_keys, multiple_selected, self.process_application_command )
                     
                 
                 if len_interesting_remote_service_keys > 0:
@@ -1875,7 +1875,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         
         ( thumbnail_span_width, thumbnail_span_height ) = self._GetThumbnailSpanDimensions()
         
-        thumbnail_scroll_rate = float( CG.client_controller.new_options.GetString( 'thumbnail_scroll_rate' ) )
+        thumbnail_scroll_rate = float(CG.client_controller.new_options.get_string('thumbnail_scroll_rate'))
         
         self.verticalScrollBar().setSingleStep( int( round( thumbnail_span_height * thumbnail_scroll_rate ) ) )
         
@@ -1895,7 +1895,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         
         ( thumbnail_span_width, thumbnail_span_height ) = self._GetThumbnailSpanDimensions()
         
-        thumbnail_margin = CG.client_controller.new_options.GetInteger( 'thumbnail_margin' )
+        thumbnail_margin = CG.client_controller.new_options.get_integer('thumbnail_margin')
         
         hashes = list( self._hashes_to_thumbnails_waiting_to_be_drawn.keys() )
         
@@ -2068,7 +2068,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                 
                 painter.eraseRect( painter.viewport() )
                 
-                background_pixmap = CG.client_controller.bitmap_manager.GetMediaBackgroundPixmap()
+                background_pixmap = CG.client_controller.bitmap_manager.get_media_background_pixmap()
                 
                 if background_pixmap is not None:
                     
@@ -2142,10 +2142,10 @@ def ShouldShowRatingInThumbnail( media: ClientMedia.Media, service_key: bytes ) 
     
     try:
         
-        service = CG.client_controller.services_manager.GetService( service_key )
+        service = CG.client_controller.services_manager.get_service(service_key)
         
-        show_in_thumbnail = service.GetShowInThumbnail()
-        show_in_thumbnail_even_when_null = service.GetShowInThumbnailEvenWhenNull()
+        show_in_thumbnail = service.get_show_in_thumbnail()
+        show_in_thumbnail_even_when_null = service.get_show_in_thumbnail_even_when_null()
         
         if not show_in_thumbnail:
             
@@ -2158,7 +2158,7 @@ def ShouldShowRatingInThumbnail( media: ClientMedia.Media, service_key: bytes ) 
             
         else:
             
-            service_type = service.GetServiceType()
+            service_type = service.get_service_type()
             
             if service_type == HC.LOCAL_RATING_LIKE:
                 
@@ -2227,15 +2227,15 @@ class Thumbnail( Selectable ):
             thumbnail_hydrus_bmp = CG.client_controller.thumbnails_cache.GetThumbnail( media.GetDisplayMedia().GetMediaResult() )
             
         
-        thumbnail_border = CG.client_controller.new_options.GetInteger( 'thumbnail_border' )
+        thumbnail_border = CG.client_controller.new_options.get_integer('thumbnail_border')
         
-        ( width, height ) = ClientData.AddPaddingToDimensions( HC.options[ 'thumbnail_dimensions' ], thumbnail_border * 2 )
+        ( width, height ) = ClientData.add_padding_to_dimensions(HC.options['thumbnail_dimensions'], thumbnail_border * 2)
         
         qt_image_width = int( width * device_pixel_ratio )
         
         qt_image_height = int( height * device_pixel_ratio )
         
-        qt_image = CG.client_controller.bitmap_manager.GetQtImage( qt_image_width, qt_image_height, 24 )
+        qt_image = CG.client_controller.bitmap_manager.get_qt_image(qt_image_width, qt_image_height, 24)
         
         qt_image.setDevicePixelRatio( device_pixel_ratio )
         
@@ -2331,7 +2331,7 @@ class Thumbnail( Selectable ):
         
         try:
             
-            raw_thumbnail_qt_image = thumbnail_hydrus_bmp.GetQtImage()
+            raw_thumbnail_qt_image = thumbnail_hydrus_bmp.get_qt_image()
             
         except Exception as e:
             
@@ -2340,10 +2340,10 @@ class Thumbnail( Selectable ):
             
             thumbnail_hydrus_bmp = CG.client_controller.thumbnails_cache.GetHydrusPlaceholderThumbnail()
             
-            raw_thumbnail_qt_image = thumbnail_hydrus_bmp.GetQtImage()
+            raw_thumbnail_qt_image = thumbnail_hydrus_bmp.get_qt_image()
             
         
-        thumbnail_dpr_percent = new_options.GetInteger( 'thumbnail_dpr_percent' )
+        thumbnail_dpr_percent = new_options.get_integer('thumbnail_dpr_percent')
         
         if thumbnail_dpr_percent != 100:
             
@@ -2371,8 +2371,8 @@ class Thumbnail( Selectable ):
         
         if len( tags ) > 0:
             
-            upper_tag_summary_generator = new_options.GetTagSummaryGenerator( 'thumbnail_top' )
-            lower_tag_summary_generator = new_options.GetTagSummaryGenerator( 'thumbnail_bottom_right' )
+            upper_tag_summary_generator = new_options.get_tag_summary_generator('thumbnail_top')
+            lower_tag_summary_generator = new_options.get_tag_summary_generator('thumbnail_bottom_right')
             
             if self._last_tags is not None and self._last_tags == tags:
                 
@@ -2499,8 +2499,8 @@ class Thumbnail( Selectable ):
         locations_manager = media.GetLocationsManager()
         
         # ratings
-        THUMBNAIL_RATING_ICON_SET_SIZE = round( new_options.GetFloat( 'draw_thumbnail_rating_icon_size_px' ) )
-        THUMBNAIL_RATING_INCDEC_SET_HEIGHT = round( new_options.GetFloat( 'thumbnail_rating_incdec_height_px' ) )
+        THUMBNAIL_RATING_ICON_SET_SIZE = round(new_options.get_float('draw_thumbnail_rating_icon_size_px'))
+        THUMBNAIL_RATING_INCDEC_SET_HEIGHT = round(new_options.get_float('thumbnail_rating_incdec_height_px'))
         STAR_DX = THUMBNAIL_RATING_ICON_SET_SIZE
         STAR_DY = THUMBNAIL_RATING_ICON_SET_SIZE
         
@@ -2508,16 +2508,16 @@ class Thumbnail( Selectable ):
         
         ICON_MARGIN = 1
         
-        draw_thumbnail_rating_background = new_options.GetBoolean( 'draw_thumbnail_rating_background' )
+        draw_thumbnail_rating_background = new_options.get_boolean('draw_thumbnail_rating_background')
         
         current_top_right_y = thumbnail_border
         
         services_manager = CG.client_controller.services_manager
         
         
-        like_services = services_manager.GetServices( ( HC.LOCAL_RATING_LIKE, ) )
+        like_services = services_manager.get_services((HC.LOCAL_RATING_LIKE,))
         
-        like_services_to_show = [ like_service for like_service in like_services if ShouldShowRatingInThumbnail( media, like_service.GetServiceKey() ) ]
+        like_services_to_show = [like_service for like_service in like_services if ShouldShowRatingInThumbnail(media, like_service.get_service_key())]
         
         num_to_show = len( like_services_to_show )
         
@@ -2539,7 +2539,7 @@ class Thumbnail( Selectable ):
             
             for like_service in like_services_to_show:
                 
-                service_key = like_service.GetServiceKey()
+                service_key = like_service.get_service_key()
                 
                 rating_state = ClientRatings.GetLikeStateFromMedia( ( media, ), service_key )
                 
@@ -2552,19 +2552,19 @@ class Thumbnail( Selectable ):
             
         
         
-        numerical_services = services_manager.GetServices( ( HC.LOCAL_RATING_NUMERICAL, ) )
+        numerical_services = services_manager.get_services((HC.LOCAL_RATING_NUMERICAL,))
         
-        draw_collapsed_numerical_ratings = new_options.GetBoolean( 'draw_thumbnail_numerical_ratings_collapsed_always' )
+        draw_collapsed_numerical_ratings = new_options.get_boolean('draw_thumbnail_numerical_ratings_collapsed_always')
         
-        numerical_services_to_show = [ numerical_service for numerical_service in numerical_services if ShouldShowRatingInThumbnail( media, numerical_service.GetServiceKey() ) ]
+        numerical_services_to_show = [numerical_service for numerical_service in numerical_services if ShouldShowRatingInThumbnail(media, numerical_service.get_service_key())]
         
         for numerical_service in numerical_services_to_show:
             
-            service_key = numerical_service.GetServiceKey()
+            service_key = numerical_service.get_service_key()
             
             numerical_service = typing.cast( ClientServices.ServiceLocalRatingNumerical, numerical_service )
             
-            custom_pad = numerical_service.GetCustomPad()
+            custom_pad = numerical_service.get_custom_pad()
             
             ( rating_state, rating ) = ClientRatings.GetNumericalStateFromMedia( ( media, ), service_key )
             
@@ -2590,9 +2590,9 @@ class Thumbnail( Selectable ):
             
         
         
-        incdec_services = services_manager.GetServices( ( HC.LOCAL_RATING_INCDEC, ) )
+        incdec_services = services_manager.get_services((HC.LOCAL_RATING_INCDEC,))
         
-        incdec_services_to_show = [ incdec_service for incdec_service in incdec_services if ShouldShowRatingInThumbnail( media, incdec_service.GetServiceKey() ) ]
+        incdec_services_to_show = [incdec_service for incdec_service in incdec_services if ShouldShowRatingInThumbnail(media, incdec_service.get_service_key())]
         
         num_to_show = len( incdec_services_to_show )
         
@@ -2611,7 +2611,7 @@ class Thumbnail( Selectable ):
             
             for incdec_service in incdec_services_to_show:
                 
-                service_key = incdec_service.GetServiceKey()
+                service_key = incdec_service.get_service_key()
                 
                 ( rating_state, rating ) = ClientRatings.GetIncDecStateFromMedia( ( media, ), service_key )
                 
@@ -2730,7 +2730,7 @@ class Thumbnail( Selectable ):
         
         services_manager = CG.client_controller.services_manager
         
-        remote_file_service_keys = CG.client_controller.services_manager.GetRemoteFileServiceKeys()
+        remote_file_service_keys = CG.client_controller.services_manager.get_remote_file_service_keys()
         
         current = locations_manager.GetCurrent().intersection( remote_file_service_keys )
         pending = locations_manager.GetPending().intersection( remote_file_service_keys )
@@ -2740,7 +2740,7 @@ class Thumbnail( Selectable ):
         
         #
         
-        service_types = [ services_manager.GetService( service_key ).GetServiceType() for service_key in current_to_display ]
+        service_types = [services_manager.get_service(service_key).get_service_type() for service_key in current_to_display]
         
         if HC.FILE_REPOSITORY in service_types:
             
@@ -2754,7 +2754,7 @@ class Thumbnail( Selectable ):
         
         #
         
-        service_types = [ services_manager.GetService( service_key ).GetServiceType() for service_key in pending ]
+        service_types = [services_manager.get_service(service_key).get_service_type() for service_key in pending]
         
         if HC.FILE_REPOSITORY in service_types:
             
@@ -2768,7 +2768,7 @@ class Thumbnail( Selectable ):
         
         #
         
-        service_types = [ services_manager.GetService( service_key ).GetServiceType() for service_key in petitioned ]
+        service_types = [services_manager.get_service(service_key).get_service_type() for service_key in petitioned]
         
         if HC.FILE_REPOSITORY in service_types:
             

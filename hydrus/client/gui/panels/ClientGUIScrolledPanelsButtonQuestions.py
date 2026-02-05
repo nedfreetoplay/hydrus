@@ -102,7 +102,7 @@ class QuestionYesNoNoPanel( ClientGUIScrolledPanels.ResizingScrolledPanel ):
                 self._yes.setEnabled( True )
                 
             
-            CG.client_controller.CallLaterQtSafe( self, 1.2, 'delayed button enable', do_it )
+            CG.client_controller.call_later_qt_safe(self, 1.2, 'delayed button enable', do_it)
             
             self._yes.setEnabled( False )
             

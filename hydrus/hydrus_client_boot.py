@@ -255,7 +255,7 @@ def boot():
             
             controller = ClientController.Controller( db_dir, logger )
             
-            controller.Run()
+            controller.run()
             
         except:
             

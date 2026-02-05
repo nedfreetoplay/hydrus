@@ -236,7 +236,7 @@ class HDDImport( HydrusSerialisable.SerialisableBase ):
                 
                 try:
                     
-                    ClientPaths.DeletePath( path )
+                    ClientPaths.delete_path(path)
                     
                 except Exception as e:
                     
@@ -257,7 +257,7 @@ class HDDImport( HydrusSerialisable.SerialisableBase ):
                         
                         try:
                             
-                            ClientPaths.DeletePath( possible_sidecar_path )
+                            ClientPaths.delete_path(possible_sidecar_path)
                             
                         except Exception as e:
                             
@@ -449,7 +449,7 @@ class HDDImport( HydrusSerialisable.SerialisableBase ):
                 
                 self._WorkOnFiles()
                 
-                CG.client_controller.WaitUntilViewFree()
+                CG.client_controller.wait_until_view_free()
                 
                 self._SerialisableChangeMade()
                 
@@ -581,7 +581,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 if os.path.exists( path ) and not os.path.isdir( path ):
                     
-                    ClientPaths.DeletePath( path )
+                    ClientPaths.delete_path(path)
                     
                 
                 possible_sidecar_paths = set()
@@ -595,7 +595,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                     
                     if os.path.exists( possible_sidecar_path ):
                         
-                        ClientPaths.DeletePath( possible_sidecar_path )
+                        ClientPaths.delete_path(possible_sidecar_path)
                         
                     
                 
@@ -672,7 +672,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
         
         new_paths = [ path for ( path, file_seed ) in paths_to_file_seeds.items() if not self._file_seed_cache.HasFileSeed( file_seed ) ]
         
-        job_status.SetStatusText( f'checking: found {HydrusNumbers.to_human_int( len( new_paths ) )} new files' )
+        job_status.set_status_text(f'checking: found {HydrusNumbers.to_human_int(len(new_paths))} new files')
         
         old_new_paths = HydrusPaths.filter_older_modified_files( new_paths, self._last_modified_time_skip_period )
         
@@ -680,7 +680,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
         
         file_seeds = [ paths_to_file_seeds[ path ] for path in free_old_new_paths ]
         
-        job_status.SetStatusText( f'checking: found {HydrusNumbers.to_human_int( len( file_seeds ) )} new files to import' )
+        job_status.set_status_text(f'checking: found {HydrusNumbers.to_human_int(len(file_seeds))} new files to import')
         
         self._file_seed_cache.AddFileSeeds( file_seeds )
         
@@ -750,9 +750,9 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             
             file_seed = self._file_seed_cache.GetNextFileSeed( CC.STATUS_UNKNOWN )
             
-            p1 = CG.client_controller.new_options.GetBoolean( 'pause_import_folders_sync' ) or self._paused
+            p1 = CG.client_controller.new_options.get_boolean('pause_import_folders_sync') or self._paused
             p2 = HydrusThreading.is_thread_shutting_down()
-            p3 = job_status.IsCancelled()
+            p3 = job_status.is_cancelled()
             
             if file_seed is None or p1 or p2 or p3:
                 
@@ -773,8 +773,8 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                 time_to_save = HydrusTime.get_now() + SAVE_PERIOD
                 
             
-            job_status.SetStatusText( 'importing: ' + HydrusNumbers.value_range_to_pretty_string( num_files_imported, num_total ) )
-            job_status.SetGauge( num_files_imported, num_total )  
+            job_status.set_status_text('importing: ' + HydrusNumbers.value_range_to_pretty_string(num_files_imported, num_total))
+            job_status.set_gauge(num_files_imported, num_total)  
             
             path = file_seed.file_seed_data
             
@@ -825,7 +825,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                         
                         for ( tag_service_key, filename_tagging_options ) in self._tag_service_keys_to_filename_tagging_options.items():
                             
-                            if not CG.client_controller.services_manager.ServiceExists( tag_service_key ):
+                            if not CG.client_controller.services_manager.service_exists(tag_service_key):
                                 
                                 continue
                                 
@@ -1168,7 +1168,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             return
             
         
-        if CG.client_controller.new_options.GetBoolean( 'pause_import_folders_sync' ) or self._paused:
+        if CG.client_controller.new_options.get_boolean('pause_import_folders_sync') or self._paused:
             
             return
             
@@ -1191,7 +1191,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             
             pubbed_job_status = False
             
-            job_status.SetStatusTitle( 'import folder - ' + self._name )
+            job_status.set_status_title('import folder - ' + self._name)
             
             due_by_check_now = self._check_now
             due_by_period = self._check_regularly and HydrusTime.time_has_passed( self._last_checked + self._period )
@@ -1243,7 +1243,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             CG.client_controller.write_synchronous( 'serialisable', self )
             
         
-        job_status.FinishAndDismiss()
+        job_status.finish_and_dismiss()
         
     
     def GetFileSeedCache( self ):
@@ -1376,7 +1376,7 @@ class ImportFoldersManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _DoWork( self ):
         
-        if self._controller.new_options.GetBoolean( 'pause_import_folders_sync' ):
+        if self._controller.new_options.get_boolean('pause_import_folders_sync'):
             
             return
             
@@ -1465,7 +1465,7 @@ class ImportFoldersManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _GetTimeUntilNextWork( self ):
         
-        if self._controller.new_options.GetBoolean( 'pause_import_folders_sync' ):
+        if self._controller.new_options.get_boolean('pause_import_folders_sync'):
             
             return 1800
             
@@ -1485,18 +1485,18 @@ class ImportFoldersManager( ClientDaemons.ManagerWithMainLoop ):
         return max( HydrusTime.time_until( next_work_time ), 1 )
         
     
-    def GetName( self ) -> str:
+    def get_name(self) -> str:
         
         return 'import folders'
         
     
-    def _DoMainLoop( self ):
+    def _do_main_loop(self):
         
         while True:
             
-            self._CheckShutdown()
+            self._check_shutdown()
             
-            self._controller.WaitUntilViewFree()
+            self._controller.wait_until_view_free()
             
             try:
                 
@@ -1543,6 +1543,6 @@ class ImportFoldersManager( ClientDaemons.ManagerWithMainLoop ):
             self._import_folder_names_to_next_work_time_cache = {}
             
         
-        self.Wake()
+        self.wake()
         
     

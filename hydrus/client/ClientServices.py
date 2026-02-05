@@ -31,7 +31,7 @@ from hydrus.client.networking import ClientNetworkingJobs
 SHORT_DELAY_PERIOD = 50000
 ACCOUNT_SYNC_PERIOD = 250000
 
-def ConvertNumericalRatingToPrettyString( lower, upper, rating, rounded_result = False, out_of = True ):
+def convert_numerical_rating_to_pretty_string(lower, upper, rating, rounded_result = False, out_of = True):
     
     rating_converted = ( rating * ( upper - lower ) ) + lower
     
@@ -50,7 +50,7 @@ def ConvertNumericalRatingToPrettyString( lower, upper, rating, rounded_result =
     return s
     
 
-def GenerateDefaultServiceDictionary( service_type ):
+def generate_default_service_dictionary(service_type):
     
     dictionary = HydrusSerialisable.SerialisableDictionary()
     
@@ -143,11 +143,11 @@ def GenerateDefaultServiceDictionary( service_type ):
     
     return dictionary
     
-def GenerateService( service_key, service_type, name, dictionary = None ):
+def generate_service(service_key, service_type, name, dictionary = None):
     
     if dictionary is None:
         
-        dictionary = GenerateDefaultServiceDictionary( service_type )
+        dictionary = generate_default_service_dictionary(service_type)
         
     
     if service_type == HC.LOCAL_TAG:
@@ -249,27 +249,27 @@ class ServiceSpecifier( HydrusSerialisable.SerialisableBase ):
         self._service_keys = { bytes.fromhex( key_hex ) for key_hex in serialisable_service_keys }
         
     
-    def GetServiceKeys( self ):
+    def get_service_keys(self):
         
         return self._service_keys
         
     
-    def GetServiceTypes( self ):
+    def get_service_types(self):
         
         return self._service_types
         
     
-    def GetSpecificKeys( self ) -> set[ bytes ]:
+    def get_specific_keys(self) -> set[ bytes]:
         
         try:
             
             if len( self._service_types ) > 0:
                 
-                service_keys = CG.client_controller.services_manager.GetServiceKeys( self._service_types )
+                service_keys = CG.client_controller.services_manager.get_service_keys(self._service_types)
                 
             else:
                 
-                service_keys = CG.client_controller.services_manager.FilterValidServiceKeys( self._service_keys )
+                service_keys = CG.client_controller.services_manager.filter_valid_service_keys(self._service_keys)
                 
                 if len( service_keys ) != self._service_keys:
                     
@@ -285,30 +285,30 @@ class ServiceSpecifier( HydrusSerialisable.SerialisableBase ):
         return set( service_keys )
         
     
-    def IsAllRatings( self ):
+    def is_all_ratings(self):
         
         return self._service_types == set( HC.LOCAL_RATINGS_SERVICES )
         
     
-    def IsEmpty( self ):
+    def is_empty(self):
         
         return len( self._service_types ) == 0 and len( self._service_keys ) == 0
         
     
-    def IsOneServiceKey( self ):
+    def is_one_service_key(self):
         
         return len( self._service_types ) == 0 and len( self._service_keys ) == 1
         
     
-    def ToString( self ) -> str:
+    def to_string(self) -> str:
         
-        if self.IsEmpty():
+        if self.is_empty():
             
             return '(no services selected)'
             
         elif len( self._service_types ) > 0:
             
-            if self.IsAllRatings():
+            if self.is_all_ratings():
                 
                 return 'ratings'
                 
@@ -325,7 +325,7 @@ class ServiceSpecifier( HydrusSerialisable.SerialisableBase ):
                     
                     ( service_key, ) = self._service_keys
                     
-                    name = CG.client_controller.services_manager.GetServiceName( service_key )
+                    name = CG.client_controller.services_manager.get_service_name(service_key)
                     
                 except:
                     
@@ -350,7 +350,7 @@ class Service( object ):
         
         if dictionary is None:
             
-            dictionary = GenerateDefaultServiceDictionary( service_type )
+            dictionary = generate_default_service_dictionary(service_type)
             
         
         self._service_key = service_key
@@ -360,7 +360,7 @@ class Service( object ):
         self._dirty = False
         self._lock = threading.Lock()
         
-        self._LoadFromDictionary( dictionary )
+        self._load_from_dictionary(dictionary)
         
     
     def __hash__( self ):
@@ -368,19 +368,19 @@ class Service( object ):
         return self._service_key.__hash__()
         
     
-    def _CheckFunctional( self ):
+    def _check_functional(self):
         
         pass
         
     
-    def _GetSerialisableDictionary( self ):
+    def _get_serialisable_dictionary(self):
         
         return HydrusSerialisable.SerialisableDictionary()
         
     
-    def _LoadFromDictionary( self, dictionary ):
+    def _load_from_dictionary(self, dictionary):
         
-        default_dictionary = GenerateDefaultServiceDictionary( self._service_type )
+        default_dictionary = generate_default_service_dictionary(self._service_type)
         
         for ( key, value ) in default_dictionary.items():
             
@@ -391,44 +391,44 @@ class Service( object ):
             
         
     
-    def _SetDirty( self ):
+    def _set_dirty(self):
         
         self._dirty = True
         
         CG.client_controller.pub( 'service_updated', self )
         
     
-    def CheckFunctional( self ):
+    def check_functional(self):
         
         with self._lock:
             
-            self._CheckFunctional()
+            self._check_functional()
             
         
     
-    def Duplicate( self ) -> 'Service':
+    def duplicate(self) -> 'Service':
         
         with self._lock:
             
-            dictionary = self._GetSerialisableDictionary()
+            dictionary = self._get_serialisable_dictionary()
             
-            duplicate = GenerateService( self._service_key, self._service_type, self._name, dictionary )
+            duplicate = generate_service(self._service_key, self._service_type, self._name, dictionary)
             
             return duplicate
             
         
     
-    def GetSerialisableDictionary( self ) -> HydrusSerialisable.SerialisableDictionary:
+    def get_serialisable_dictionary(self) -> HydrusSerialisable.SerialisableDictionary:
         
         with self._lock:
             
             self._dirty = False
             
-            return self._GetSerialisableDictionary()
+            return self._get_serialisable_dictionary()
             
         
     
-    def GetName( self ) -> str:
+    def get_name(self) -> str:
         
         with self._lock:
             
@@ -436,7 +436,7 @@ class Service( object ):
             
         
     
-    def GetServiceKey( self ) -> bytes:
+    def get_service_key(self) -> bytes:
         
         with self._lock:
             
@@ -444,7 +444,7 @@ class Service( object ):
             
         
     
-    def GetServiceType( self ) -> int:
+    def get_service_type(self) -> int:
         
         with self._lock:
             
@@ -452,13 +452,13 @@ class Service( object ):
             
         
     
-    def GetStatusInfo( self ) -> tuple[ bool, str ]:
+    def get_status_info(self) -> tuple[ bool, str]:
         
         with self._lock:
             
             try:
                 
-                self._CheckFunctional()
+                self._check_functional()
                 
                 return ( True, 'service is functional' )
                 
@@ -469,7 +469,7 @@ class Service( object ):
             
         
     
-    def IsDirty( self ) -> bool:
+    def is_dirty(self) -> bool:
         
         with self._lock:
             
@@ -477,13 +477,13 @@ class Service( object ):
             
         
     
-    def IsFunctional( self ) -> bool:
+    def is_functional(self) -> bool:
         
         with self._lock:
             
             try:
                 
-                self._CheckFunctional()
+                self._check_functional()
                 
                 return True
                 
@@ -494,7 +494,7 @@ class Service( object ):
             
         
     
-    def SetClean( self ):
+    def set_clean(self):
         
         with self._lock:
             
@@ -502,7 +502,7 @@ class Service( object ):
             
         
     
-    def SetName( self, name ):
+    def set_name(self, name):
         
         with self._lock:
             
@@ -510,28 +510,28 @@ class Service( object ):
             
         
     
-    def ToTuple( self ) -> tuple:
+    def to_tuple(self) -> tuple:
         
-        dictionary = self._GetSerialisableDictionary()
+        dictionary = self._get_serialisable_dictionary()
         
         return ( self._service_key, self._service_type, self._name, dictionary )
         
     
 class ServiceLocalServerService( Service ):
     
-    def _CheckFunctional( self ):
+    def _check_functional(self):
         
         if not self._bandwidth_rules.CanStartRequest( self._bandwidth_tracker ):
             
             raise HydrusExceptions.BandwidthException( 'bandwidth exceeded' )
             
         
-        Service._CheckFunctional( self )
+        Service._check_functional(self)
         
     
-    def _GetSerialisableDictionary( self ):
+    def _get_serialisable_dictionary(self):
         
-        dictionary = Service._GetSerialisableDictionary( self )
+        dictionary = Service._get_serialisable_dictionary(self)
         
         dictionary[ 'port' ] = self._port
         dictionary[ 'upnp_port' ] = self._upnp_port
@@ -549,9 +549,9 @@ class ServiceLocalServerService( Service ):
         return dictionary
         
     
-    def _LoadFromDictionary( self, dictionary ):
+    def _load_from_dictionary(self, dictionary):
         
-        Service._LoadFromDictionary( self, dictionary )
+        Service._load_from_dictionary(self, dictionary)
         
         self._port = dictionary[ 'port' ]
         self._upnp_port = dictionary[ 'upnp_port' ]
@@ -569,7 +569,7 @@ class ServiceLocalServerService( Service ):
         # this should support the same serverservice interface so we can just toss it at the regular serverengine and all the bandwidth will work ok
         
     
-    def AllowsNonLocalConnections( self ):
+    def allows_non_local_connections(self):
         
         with self._lock:
             
@@ -577,7 +577,7 @@ class ServiceLocalServerService( Service ):
             
         
     
-    def BandwidthOK( self ):
+    def bandwidth_ok(self):
         
         with self._lock:
             
@@ -585,7 +585,7 @@ class ServiceLocalServerService( Service ):
             
         
     
-    def GetUPnPPort( self ):
+    def get_upnp_port(self):
         
         with self._lock:
             
@@ -593,7 +593,7 @@ class ServiceLocalServerService( Service ):
             
         
     
-    def GetPort( self ):
+    def get_port(self):
         
         with self._lock:
             
@@ -601,7 +601,7 @@ class ServiceLocalServerService( Service ):
             
         
     
-    def LogsRequests( self ):
+    def logs_requests(self):
         
         with self._lock:
             
@@ -609,23 +609,23 @@ class ServiceLocalServerService( Service ):
             
         
     
-    def ReportDataUsed( self, num_bytes ):
+    def report_data_used(self, num_bytes):
         
         with self._lock:
             
-            self._bandwidth_tracker.ReportDataUsed( num_bytes )
+            self._bandwidth_tracker.report_data_used(num_bytes)
             
         
     
-    def ReportRequestUsed( self ):
+    def report_request_used(self):
         
         with self._lock:
             
-            self._bandwidth_tracker.ReportRequestUsed()
+            self._bandwidth_tracker.report_request_used()
             
         
     
-    def SupportsCORS( self ):
+    def supports_cors(self):
         
         with self._lock:
             
@@ -633,7 +633,7 @@ class ServiceLocalServerService( Service ):
             
         
     
-    def UseHTTPS( self ):
+    def use_https(self):
         
         with self._lock:
             
@@ -641,7 +641,7 @@ class ServiceLocalServerService( Service ):
             
         
     
-    def UseNormieEris( self ):
+    def use_normie_eris(self):
         
         with self._lock:
             
@@ -662,9 +662,9 @@ class ServiceLocalTag( Service ):
 
 class ServiceLocalRating( Service ):
     
-    def _GetSerialisableDictionary( self ):
+    def _get_serialisable_dictionary(self):
         
-        dictionary = Service._GetSerialisableDictionary( self )
+        dictionary = Service._get_serialisable_dictionary(self)
         
         dictionary[ 'colours' ] = list(self._colours.items())
         dictionary[ 'show_in_thumbnail' ] = self._show_in_thumbnail
@@ -673,16 +673,16 @@ class ServiceLocalRating( Service ):
         return dictionary
         
     
-    def _LoadFromDictionary( self, dictionary ):
+    def _load_from_dictionary(self, dictionary):
         
-        Service._LoadFromDictionary( self, dictionary )
+        Service._load_from_dictionary(self, dictionary)
         
         self._colours = dict( dictionary[ 'colours' ] )
         self._show_in_thumbnail = dictionary[ 'show_in_thumbnail' ]
         self._show_in_thumbnail_even_when_null = dictionary[ 'show_in_thumbnail_even_when_null' ]
         
     
-    def GetColour( self, rating_state ):
+    def get_colour(self, rating_state):
         
         with self._lock:
             
@@ -690,7 +690,7 @@ class ServiceLocalRating( Service ):
             
         
     
-    def GetColours( self ):
+    def get_colours(self):
         
         with self._lock:
             
@@ -699,7 +699,7 @@ class ServiceLocalRating( Service ):
         
     
 
-    def GetShowInThumbnail( self ):
+    def get_show_in_thumbnail(self):
         
         with self._lock:
             
@@ -707,7 +707,7 @@ class ServiceLocalRating( Service ):
             
         
     
-    def GetShowInThumbnailEvenWhenNull( self ):
+    def get_show_in_thumbnail_even_when_null(self):
         
         with self._lock:
             
@@ -715,7 +715,7 @@ class ServiceLocalRating( Service ):
             
         
     
-    def ConvertNoneableRatingToString( self, rating: float | None ):
+    def convert_noneable_rating_to_string(self, rating: float | None):
         
         raise NotImplementedError()
         
@@ -723,7 +723,7 @@ class ServiceLocalRating( Service ):
 
 class ServiceLocalRatingIncDec( ServiceLocalRating ):
     
-    def ConvertNoneableRatingToString( self, rating: int | None ):
+    def convert_noneable_rating_to_string(self, rating: int | None):
         
         if rating is None:
             
@@ -737,7 +737,7 @@ class ServiceLocalRatingIncDec( ServiceLocalRating ):
         return 'unknown'
         
     
-    def ConvertRatingStateAndRatingToString( self, rating_state: int, rating: float ):
+    def convert_rating_state_and_rating_to_string(self, rating_state: int, rating: float):
         
         if rating_state == ClientRatings.SET:
             
@@ -760,9 +760,9 @@ class ServiceLocalRatingIncDec( ServiceLocalRating ):
 
 class ServiceLocalRatingStars( ServiceLocalRating ):
     
-    def _GetSerialisableDictionary( self ):
+    def _get_serialisable_dictionary(self):
         
-        dictionary = ServiceLocalRating._GetSerialisableDictionary( self )
+        dictionary = ServiceLocalRating._get_serialisable_dictionary(self)
         
         dictionary[ 'shape' ] = self._shape
         dictionary[ 'rating_svg' ] = self._rating_svg
@@ -770,20 +770,20 @@ class ServiceLocalRatingStars( ServiceLocalRating ):
         return dictionary
         
     
-    def _LoadFromDictionary( self, dictionary ):
+    def _load_from_dictionary(self, dictionary):
         
-        ServiceLocalRating._LoadFromDictionary( self, dictionary )
+        ServiceLocalRating._load_from_dictionary(self, dictionary)
         
         self._shape = dictionary[ 'shape' ]
         self._rating_svg = dictionary[ 'rating_svg' ]
         
     
-    def ConvertNoneableRatingToString( self, rating: float | None ):
+    def convert_noneable_rating_to_string(self, rating: float | None):
         
         raise NotImplementedError()
         
     
-    def GetStarType( self ) -> ClientRatings.StarType:
+    def get_star_type(self) -> ClientRatings.StarType:
         
         with self._lock:
             
@@ -794,7 +794,7 @@ class ServiceLocalRatingStars( ServiceLocalRating ):
 
 class ServiceLocalRatingLike( ServiceLocalRatingStars ):
     
-    def ConvertNoneableRatingToString( self, rating: float | None ):
+    def convert_noneable_rating_to_string(self, rating: float | None):
         
         if rating is None:
             
@@ -815,7 +815,7 @@ class ServiceLocalRatingLike( ServiceLocalRatingStars ):
         return 'unknown'
         
     
-    def ConvertRatingStateToString( self, rating_state: int ):
+    def convert_rating_state_to_string(self, rating_state: int):
         
         if rating_state == ClientRatings.LIKE:
             
@@ -842,9 +842,9 @@ class ServiceLocalRatingLike( ServiceLocalRatingStars ):
 
 class ServiceLocalRatingNumerical( ServiceLocalRatingStars ):
     
-    def _GetSerialisableDictionary( self ):
+    def _get_serialisable_dictionary(self):
         
-        dictionary = ServiceLocalRatingStars._GetSerialisableDictionary( self )
+        dictionary = ServiceLocalRatingStars._get_serialisable_dictionary(self)
         
         dictionary[ 'num_stars' ] = self._num_stars
         dictionary[ 'allow_zero' ] = self._allow_zero
@@ -854,9 +854,9 @@ class ServiceLocalRatingNumerical( ServiceLocalRatingStars ):
         return dictionary
         
     
-    def _LoadFromDictionary( self, dictionary ):
+    def _load_from_dictionary(self, dictionary):
         
-        ServiceLocalRatingStars._LoadFromDictionary( self, dictionary )
+        ServiceLocalRatingStars._load_from_dictionary(self, dictionary)
         
         self._num_stars = dictionary[ 'num_stars' ]
         self._allow_zero = dictionary[ 'allow_zero' ]
@@ -864,7 +864,7 @@ class ServiceLocalRatingNumerical( ServiceLocalRatingStars ):
         self._show_fraction_beside_stars = dictionary[ 'show_fraction_beside_stars' ]
         
     
-    def AllowZero( self ):
+    def allow_zero(self):
         
         with self._lock:
             
@@ -872,7 +872,7 @@ class ServiceLocalRatingNumerical( ServiceLocalRatingStars ):
             
         
     
-    def ConvertNoneableRatingToString( self, rating: float | None ):
+    def convert_noneable_rating_to_string(self, rating: float | None):
         
         if rating is None:
             
@@ -880,7 +880,7 @@ class ServiceLocalRatingNumerical( ServiceLocalRatingStars ):
             
         elif isinstance( rating, float ):
             
-            rating_value = self.ConvertRatingToStars( rating )
+            rating_value = self.convert_rating_to_stars(rating)
             rating_range = self._num_stars
             
             return HydrusNumbers.value_range_to_pretty_string( rating_value, rating_range )
@@ -889,11 +889,11 @@ class ServiceLocalRatingNumerical( ServiceLocalRatingStars ):
         return 'unknown'
         
     
-    def ConvertRatingStateAndRatingToString( self, rating_state: int, rating: float ):
+    def convert_rating_state_and_rating_to_string(self, rating_state: int, rating: float):
         
         if rating_state == ClientRatings.SET:
             
-            return self.ConvertNoneableRatingToString( rating )
+            return self.convert_noneable_rating_to_string(rating)
             
         elif rating_state == ClientRatings.MIXED:
             
@@ -909,17 +909,17 @@ class ServiceLocalRatingNumerical( ServiceLocalRatingStars ):
             
         
     
-    def ConvertRatingToStars( self, rating: float ) -> int:
+    def convert_rating_to_stars(self, rating: float) -> int:
         
         return ClientRatings.ConvertRatingToStars( self._num_stars, self._allow_zero, rating )
         
     
-    def ConvertStarsToRating( self, stars: int ):
+    def convert_stars_to_rating(self, stars: int):
         
         return ClientRatings.ConvertStarsToRating( self._num_stars, self._allow_zero, stars )
         
     
-    def GetNumStars( self ):
+    def get_num_stars(self):
         
         with self._lock:
             
@@ -927,7 +927,7 @@ class ServiceLocalRatingNumerical( ServiceLocalRatingStars ):
             
         
     
-    def GetCustomPad( self ):
+    def get_custom_pad(self):
         
         with self._lock:
             
@@ -935,7 +935,7 @@ class ServiceLocalRatingNumerical( ServiceLocalRatingStars ):
             
         
     
-    def GetOneStarValue( self ):
+    def get_one_star_value(self):
         
         num_choices = self._num_stars
         
@@ -949,7 +949,7 @@ class ServiceLocalRatingNumerical( ServiceLocalRatingStars ):
         return one_star_value
         
     
-    def GetShowFractionBesideStars( self ):
+    def get_show_fraction_beside_stars(self):
         
         with self._lock:
             
@@ -966,7 +966,7 @@ class ServiceRemote( Service ):
         self.network_context = ClientNetworkingContexts.NetworkContext( CC.NETWORK_CONTEXT_HYDRUS, self._service_key )
         
     
-    def _DelayFutureRequests( self, reason, duration_s = None ):
+    def _delay_future_requests(self, reason, duration_s = None):
         
         if reason == '':
             
@@ -975,7 +975,7 @@ class ServiceRemote( Service ):
         
         if duration_s is None:
             
-            duration_s = self._GetErrorWaitPeriod()
+            duration_s = self._get_error_wait_period()
             
         
         next_no_requests_until = HydrusTime.get_now() + duration_s
@@ -986,10 +986,10 @@ class ServiceRemote( Service ):
             self._no_requests_until = HydrusTime.get_now() + duration_s
             
         
-        self._SetDirty()
+        self._set_dirty()
         
     
-    def _GetBaseURL( self ):
+    def _get_base_url(self):
         
         full_host = self._credentials.get_ported_address()
         
@@ -998,22 +998,22 @@ class ServiceRemote( Service ):
         return base_url
         
     
-    def _GetErrorWaitPeriod( self ):
+    def _get_error_wait_period(self):
         
         return 3600 * 4
         
     
-    def _CheckFunctional( self, including_external_communication = True, including_bandwidth = True ):
+    def _check_functional(self, including_external_communication = True, including_bandwidth = True):
         
         if including_external_communication:
             
-            self._CheckCanCommunicateExternally( including_bandwidth = including_bandwidth )
+            self._check_can_communicate_externally(including_bandwidth = including_bandwidth)
             
         
-        Service._CheckFunctional( self )
+        Service._check_functional(self)
         
     
-    def _CheckCanCommunicateExternally( self, including_bandwidth = True ):
+    def _check_can_communicate_externally(self, including_bandwidth = True):
         
         if not HydrusTime.time_has_passed( self._no_requests_until ):
             
@@ -1022,7 +1022,7 @@ class ServiceRemote( Service ):
         
         if including_bandwidth:
             
-            example_nj = ClientNetworkingJobs.NetworkJobHydrus( self._service_key, 'GET', self._GetBaseURL() )
+            example_nj = ClientNetworkingJobs.NetworkJobHydrus(self._service_key, 'GET', self._get_base_url())
             
             can_start = CG.client_controller.network_engine.bandwidth_manager.CanDoWork( example_nj.GetNetworkContexts(), threshold = 60 )
             
@@ -1033,14 +1033,14 @@ class ServiceRemote( Service ):
             
         
     
-    def _CredentialsAreChanging( self ):
+    def _credentials_are_changing(self):
         
         pass
         
     
-    def _GetSerialisableDictionary( self ):
+    def _get_serialisable_dictionary(self):
         
-        dictionary = Service._GetSerialisableDictionary( self )
+        dictionary = Service._get_serialisable_dictionary(self)
         
         dictionary[ 'credentials' ] = self._credentials
         dictionary[ 'no_requests_reason' ] = self._no_requests_reason
@@ -1049,24 +1049,24 @@ class ServiceRemote( Service ):
         return dictionary
         
     
-    def _LoadFromDictionary( self, dictionary ):
+    def _load_from_dictionary(self, dictionary):
         
-        Service._LoadFromDictionary( self, dictionary )
+        Service._load_from_dictionary(self, dictionary)
         
         self._credentials = dictionary[ 'credentials' ]
         self._no_requests_reason = dictionary[ 'no_requests_reason' ]
         self._no_requests_until = dictionary[ 'no_requests_until' ]
         
     
-    def DelayFutureRequests( self, reason, duration_s = None ):
+    def delay_future_requests(self, reason, duration_s = None):
         
         with self._lock:
             
-            self._DelayFutureRequests( reason, duration_s = None )
+            self._delay_future_requests(reason, duration_s = None)
             
         
     
-    def GetBandwidthCurrentMonthSummary( self ):
+    def get_bandwidth_current_month_summary(self):
         
         with self._lock:
             
@@ -1074,23 +1074,23 @@ class ServiceRemote( Service ):
             
         
     
-    def GetBandwidthStringsAndGaugeTuples( self ):
+    def get_bandwidth_strings_and_gauge_tuples(self):
         
         with self._lock:
             
-            return CG.client_controller.network_engine.bandwidth_manager.GetBandwidthStringsAndGaugeTuples( self.network_context )
+            return CG.client_controller.network_engine.bandwidth_manager.get_bandwidth_strings_and_gauge_tuples(self.network_context)
             
         
     
-    def GetBaseURL( self ):
+    def get_base_url(self):
         
         with self._lock:
             
-            return self._GetBaseURL()
+            return self._get_base_url()
             
         
     
-    def GetCredentials( self ):
+    def get_credentials(self):
         
         with self._lock:
             
@@ -1098,24 +1098,24 @@ class ServiceRemote( Service ):
             
         
     
-    def SetCredentials( self, credentials: HydrusNetwork.Credentials ):
+    def set_credentials(self, credentials: HydrusNetwork.Credentials):
         
         with self._lock:
             
             if credentials.dump_to_string() != self._credentials.dump_to_string():
                 
-                self._CredentialsAreChanging()
+                self._credentials_are_changing()
                 
             
             self._credentials = credentials
             
-            self._SetDirty()
+            self._set_dirty()
             
         
     
 class ServiceRestricted( ServiceRemote ):
     
-    def _DealWithAccountError( self ):
+    def _deal_with_account_error(self):
         
         account_key = self._account.get_account_key()
         
@@ -1127,12 +1127,12 @@ class ServiceRestricted( ServiceRemote ):
         
         CG.client_controller.network_engine.session_manager.ClearSession( self.network_context )
         
-        self._SetDirty()
+        self._set_dirty()
         
         CG.client_controller.pub( 'important_dirt_to_clean' )
         
     
-    def _DealWithFundamentalNetworkError( self ):
+    def _deal_with_fundamental_network_error(self):
         
         account_key = self._account.get_account_key()
         
@@ -1140,12 +1140,12 @@ class ServiceRestricted( ServiceRemote ):
         
         self._next_account_sync = HydrusTime.get_now() + ACCOUNT_SYNC_PERIOD
         
-        self._SetDirty()
+        self._set_dirty()
         
         CG.client_controller.pub( 'important_dirt_to_clean' )
         
     
-    def _GetErrorWaitPeriod( self ):
+    def _get_error_wait_period(self):
         
         if self._account.has_permission( HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_MODERATE ):
             
@@ -1157,11 +1157,11 @@ class ServiceRestricted( ServiceRemote ):
             
         
     
-    def _CanSyncAccount( self, including_external_communication = True ):
+    def _can_sync_account(self, including_external_communication = True):
         
         try:
             
-            self._CheckFunctional( including_external_communication = including_external_communication, including_account = False )
+            self._check_functional(including_external_communication = including_external_communication, including_account = False)
             
             return True
             
@@ -1171,7 +1171,7 @@ class ServiceRestricted( ServiceRemote ):
             
         
     
-    def _CheckFunctional( self, including_external_communication = True, including_bandwidth = True, including_account = True ):
+    def _check_functional(self, including_external_communication = True, including_bandwidth = True, including_account = True):
         
         if self._network_sync_paused:
             
@@ -1183,20 +1183,20 @@ class ServiceRestricted( ServiceRemote ):
             self._account.check_functional()
             
         
-        ServiceRemote._CheckFunctional( self, including_external_communication = including_external_communication, including_bandwidth = including_bandwidth )
+        ServiceRemote._check_functional(self, including_external_communication = including_external_communication, including_bandwidth = including_bandwidth)
         
     
-    def _CheckCanCommunicateExternally( self, including_bandwidth = True ):
+    def _check_can_communicate_externally(self, including_bandwidth = True):
         
         if not self._credentials.has_access_key():
             
             raise HydrusExceptions.MissingCredentialsException( 'this service has no access key set' )
             
         
-        ServiceRemote._CheckCanCommunicateExternally( self, including_bandwidth = including_bandwidth )
+        ServiceRemote._check_can_communicate_externally(self, including_bandwidth = including_bandwidth)
         
     
-    def _CredentialsAreChanging( self ):
+    def _credentials_are_changing(self):
         
         account_key = self._account.get_account_key()
         
@@ -1204,14 +1204,14 @@ class ServiceRestricted( ServiceRemote ):
         
         self._next_account_sync = HydrusTime.get_now()
         
-        self._SetDirty()
+        self._set_dirty()
         
         CG.client_controller.pub( 'notify_account_sync_due' )
         
     
-    def _GetSerialisableDictionary( self ):
+    def _get_serialisable_dictionary(self):
         
-        dictionary = ServiceRemote._GetSerialisableDictionary( self )
+        dictionary = ServiceRemote._get_serialisable_dictionary(self)
         
         dictionary[ 'account' ] = HydrusNetwork.Account.generate_serialisable_tuple_from_account( self._account )
         dictionary[ 'next_account_sync' ] = self._next_account_sync
@@ -1221,9 +1221,9 @@ class ServiceRestricted( ServiceRemote ):
         return dictionary
         
     
-    def _LoadFromDictionary( self, dictionary ):
+    def _load_from_dictionary(self, dictionary):
         
-        ServiceRemote._LoadFromDictionary( self, dictionary )
+        ServiceRemote._load_from_dictionary(self, dictionary)
         
         self._account = HydrusNetwork.Account.generate_account_from_serialisable_tuple( dictionary[ 'account' ] )
         self._next_account_sync = dictionary[ 'next_account_sync' ]
@@ -1250,33 +1250,33 @@ class ServiceRestricted( ServiceRemote ):
         self._service_options = HydrusSerialisable.SerialisableDictionary( dictionary[ 'service_options' ] )
         
     
-    def _SetNewTagFilter( self, tag_filter: HydrusTags.TagFilter ):
+    def _set_new_tag_filter(self, tag_filter: HydrusTags.TagFilter):
         
         self._service_options[ 'tag_filter' ] = tag_filter
         
     
-    def _UpdateServiceOptions( self, service_options ):
+    def _update_service_options(self, service_options):
         
         self._service_options.update( service_options )
         
     
-    def CanSyncAccount( self, including_external_communication = True ):
+    def can_sync_account(self, including_external_communication = True):
         
         with self._lock:
             
-            return self._CanSyncAccount( including_external_communication = including_external_communication )
+            return self._can_sync_account(including_external_communication = including_external_communication)
             
         
     
-    def CheckFunctional( self, including_external_communication = True, including_bandwidth = True, including_account = True ):
+    def check_functional(self, including_external_communication = True, including_bandwidth = True, including_account = True):
         
         with self._lock:
             
-            self._CheckFunctional( including_external_communication = including_external_communication, including_bandwidth = including_bandwidth, including_account = including_account )
+            self._check_functional(including_external_communication = including_external_communication, including_bandwidth = including_bandwidth, including_account = including_account)
             
         
     
-    def GetAccount( self ):
+    def get_account(self):
         
         with self._lock:
             
@@ -1284,7 +1284,7 @@ class ServiceRestricted( ServiceRemote ):
             
         
     
-    def GetNextAccountSyncStatus( self ):
+    def get_next_account_sync_status(self):
         
         if HydrusTime.time_has_passed( self._next_account_sync ):
             
@@ -1298,13 +1298,13 @@ class ServiceRestricted( ServiceRemote ):
         return 'next account sync ' + s
         
     
-    def GetStatusInfo( self ) -> tuple[ bool, str ]:
+    def get_status_info(self) -> tuple[ bool, str]:
         
         with self._lock:
             
             try:
                 
-                self._CheckFunctional( including_account = False )
+                self._check_functional(including_account = False)
                 
                 return ( True, 'service is functional' )
                 
@@ -1315,7 +1315,7 @@ class ServiceRestricted( ServiceRemote ):
             
         
     
-    def HasPermission( self, content_type, action ):
+    def has_permission(self, content_type, action):
         
         with self._lock:
             
@@ -1323,9 +1323,9 @@ class ServiceRestricted( ServiceRemote ):
             
         
     
-    def IsDirty( self ):
+    def is_dirty(self):
         
-        if ServiceRemote.IsDirty( self ):
+        if ServiceRemote.is_dirty(self):
             
             return True
             
@@ -1336,13 +1336,13 @@ class ServiceRestricted( ServiceRemote ):
             
         
     
-    def IsFunctional( self, including_external_communication = True, including_bandwidth = True, including_account = True ):
+    def is_functional(self, including_external_communication = True, including_bandwidth = True, including_account = True):
         
         with self._lock:
             
             try:
                 
-                self._CheckFunctional( including_external_communication = including_external_communication, including_bandwidth = including_bandwidth, including_account = including_account )
+                self._check_functional(including_external_communication = including_external_communication, including_bandwidth = including_bandwidth, including_account = including_account)
                 
                 return True
                 
@@ -1353,7 +1353,7 @@ class ServiceRestricted( ServiceRemote ):
             
         
     
-    def IsPausedNetworkSync( self ):
+    def is_paused_network_sync(self):
         
         with self._lock:
             
@@ -1361,13 +1361,13 @@ class ServiceRestricted( ServiceRemote ):
             
         
     
-    def PausePlayNetworkSync( self ):
+    def pause_play_network_sync(self):
         
         with self._lock:
             
             self._network_sync_paused = not self._network_sync_paused
             
-            self._SetDirty()
+            self._set_dirty()
             
             paused = self._network_sync_paused
             
@@ -1380,7 +1380,7 @@ class ServiceRestricted( ServiceRemote ):
             
         
     
-    def Request( self, method, command, request_args = None, request_headers = None, report_hooks = None, temp_path = None, file_body_path = None ):
+    def request(self, method, command, request_args = None, request_headers = None, report_hooks = None, temp_path = None, file_body_path = None):
         
         if request_args is None: request_args = {}
         if request_headers is None: request_headers = {}
@@ -1424,7 +1424,7 @@ class ServiceRestricted( ServiceRemote ):
                 command_and_query = command
                 
             
-            url = self.GetBaseURL() + command_and_query
+            url = self.get_base_url() + command_and_query
             
             if method == HC.GET:
                 
@@ -1478,8 +1478,8 @@ class ServiceRestricted( ServiceRemote ):
                     account = parsed_args[ 'account' ]
                     
                     # because the account was one behind when it was serialised! mostly do this just to sync up nicely with the service bandwidth tracker
-                    account.ReportDataUsed( data_used )
-                    account.ReportRequestUsed()
+                    account.report_data_used(data_used)
+                    account.report_request_used()
                     
                 
                 response = parsed_args
@@ -1497,7 +1497,7 @@ class ServiceRestricted( ServiceRemote ):
                 
                 if isinstance( e, HydrusExceptions.ServerBusyException ):
                     
-                    self._DelayFutureRequests( 'server was busy', duration_s = 5 * 60 )
+                    self._delay_future_requests('server was busy', duration_s =5 * 60)
                     
                 elif isinstance( e, HydrusExceptions.SessionException ):
                     
@@ -1505,19 +1505,19 @@ class ServiceRestricted( ServiceRemote ):
                     
                 elif isinstance( e, ( HydrusExceptions.MissingCredentialsException, HydrusExceptions.InsufficientCredentialsException, HydrusExceptions.ConflictException ) ):
                     
-                    self._DealWithAccountError()
+                    self._deal_with_account_error()
                     
                 elif isinstance( e, HydrusExceptions.NetworkVersionException ):
                     
-                    self._DealWithFundamentalNetworkError()
+                    self._deal_with_fundamental_network_error()
                     
                 elif isinstance( e, HydrusExceptions.BandwidthException ):
                     
-                    self._DelayFutureRequests( 'service has exceeded bandwidth', duration_s = ACCOUNT_SYNC_PERIOD )
+                    self._delay_future_requests('service has exceeded bandwidth', duration_s = ACCOUNT_SYNC_PERIOD)
                     
                 elif isinstance( e, HydrusExceptions.ServerException ):
                     
-                    self._DelayFutureRequests( str( e ) )
+                    self._delay_future_requests(str(e))
                     
                 
             
@@ -1525,26 +1525,26 @@ class ServiceRestricted( ServiceRemote ):
             
         
     
-    def SetAccountRefreshDueNow( self ):
+    def set_account_refresh_due_now(self):
         
         with self._lock:
             
             self._next_account_sync = HydrusTime.get_now() - 1
             
-            self._SetDirty()
+            self._set_dirty()
             
         
         CG.client_controller.pub( 'notify_account_sync_due' )
         
     
-    def SetClean( self ):
+    def set_clean(self):
         
-        ServiceRemote.SetClean( self )
+        ServiceRemote.set_clean(self)
         
         self._account.set_clean()
         
     
-    def SyncAccount( self, force = False ):
+    def sync_account(self, force = False):
         
         with self._lock:
             
@@ -1562,13 +1562,13 @@ class ServiceRestricted( ServiceRemote ):
                 
             else:
                 
-                if not self._CanSyncAccount():
+                if not self._can_sync_account():
                     
                     do_it = False
                     
                     self._next_account_sync = HydrusTime.get_now() + SHORT_DELAY_PERIOD
                     
-                    self._SetDirty()
+                    self._set_dirty()
                     
                 else:
                     
@@ -1581,7 +1581,7 @@ class ServiceRestricted( ServiceRemote ):
             
             try:
                 
-                account_response = self.Request( HC.GET, 'account' )
+                account_response = self.request(HC.GET, 'account')
                 
                 with self._lock:
                     
@@ -1606,13 +1606,13 @@ class ServiceRestricted( ServiceRemote ):
                 
                 try:
                     
-                    options_response = self.Request( HC.GET, 'options' )
+                    options_response = self.request(HC.GET, 'options')
                     
                     with self._lock:
                         
                         service_options = options_response[ 'service_options' ]
                         
-                        self._UpdateServiceOptions( service_options )
+                        self._update_service_options(service_options)
                         
                     
                 except HydrusExceptions.SerialisationException:
@@ -1624,13 +1624,13 @@ class ServiceRestricted( ServiceRemote ):
                     
                     try:
                         
-                        tag_filter_response = self.Request( HC.GET, 'tag_filter' )
+                        tag_filter_response = self.request(HC.GET, 'tag_filter')
                         
                         with self._lock:
                             
                             tag_filter = tag_filter_response[ 'tag_filter' ]
                             
-                            if 'tag_filter' in self._service_options and CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+                            if 'tag_filter' in self._service_options and CG.client_controller.new_options.get_boolean('advanced_mode'):
                                 
                                 old_tag_filter = self._service_options[ 'tag_filter' ]
                                 
@@ -1651,7 +1651,7 @@ class ServiceRestricted( ServiceRemote ):
                                     
                                 
                             
-                            self._SetNewTagFilter( tag_filter )
+                            self._set_new_tag_filter(tag_filter)
                             
                         
                     except Exception: # any exception, screw it
@@ -1692,7 +1692,7 @@ class ServiceRestricted( ServiceRemote ):
                     
                     self._next_account_sync = HydrusTime.get_now() + ACCOUNT_SYNC_PERIOD
                     
-                    self._SetDirty()
+                    self._set_dirty()
                     
                 
                 CG.client_controller.pub( 'notify_new_permissions' )
@@ -1713,11 +1713,11 @@ class ServiceRepository( ServiceRestricted ):
         self._is_mostly_caught_up = None
         
     
-    def _CanSyncDownload( self ):
+    def _can_sync_download(self):
         
         try:
             
-            self._CheckFunctional()
+            self._check_functional()
             
             return not self._update_downloading_paused
             
@@ -1727,30 +1727,30 @@ class ServiceRepository( ServiceRestricted ):
             
         
     
-    def _CanSyncProcess( self ):
+    def _can_sync_process(self):
         
-        return not ( self._update_processing_paused or CG.client_controller.new_options.GetBoolean( 'pause_repo_sync' ) )
+        return not (self._update_processing_paused or CG.client_controller.new_options.get_boolean('pause_repo_sync'))
         
     
-    def _CheckFunctional( self, including_external_communication = True, including_bandwidth = True, including_account = True ):
+    def _check_functional(self, including_external_communication = True, including_bandwidth = True, including_account = True):
         
-        if CG.client_controller.new_options.GetBoolean( 'pause_repo_sync' ):
+        if CG.client_controller.new_options.get_boolean('pause_repo_sync'):
             
             raise HydrusExceptions.ConflictException( 'All repositories are paused!' )
             
         
-        ServiceRestricted._CheckFunctional( self, including_external_communication = including_external_communication, including_bandwidth = including_bandwidth, including_account = including_account )
+        ServiceRestricted._check_functional(self, including_external_communication = including_external_communication, including_bandwidth = including_bandwidth, including_account = including_account)
         
     
-    def _DealWithFundamentalNetworkError( self ):
+    def _deal_with_fundamental_network_error(self):
         
         self._update_downloading_paused = True
         self._do_a_full_metadata_resync = True
         
-        ServiceRestricted._DealWithFundamentalNetworkError( self )
+        ServiceRestricted._deal_with_fundamental_network_error(self)
         
     
-    def _GetContentTypesWeAreProcessing( self ):
+    def _get_content_types_we_are_processing(self):
         
         content_types = { content_type for ( content_type, paused ) in self._update_processing_content_types_paused.items() if not paused }
         content_types.add( HC.CONTENT_TYPE_DEFINITIONS )
@@ -1758,9 +1758,9 @@ class ServiceRepository( ServiceRestricted ):
         return content_types
         
     
-    def _GetSerialisableDictionary( self ):
+    def _get_serialisable_dictionary(self):
         
-        dictionary = ServiceRestricted._GetSerialisableDictionary( self )
+        dictionary = ServiceRestricted._get_serialisable_dictionary(self)
         
         dictionary[ 'metadata' ] = self._metadata
         dictionary[ 'do_a_full_metadata_resync' ] = self._do_a_full_metadata_resync
@@ -1771,9 +1771,9 @@ class ServiceRepository( ServiceRestricted ):
         return dictionary
         
     
-    def _LoadFromDictionary( self, dictionary ):
+    def _load_from_dictionary(self, dictionary):
         
-        ServiceRestricted._LoadFromDictionary( self, dictionary )
+        ServiceRestricted._load_from_dictionary(self, dictionary)
         
         self._metadata = dictionary[ 'metadata' ]
         
@@ -1817,7 +1817,7 @@ class ServiceRepository( ServiceRestricted ):
         self._update_processing_content_types_paused = dict( dictionary[ 'update_processing_content_types_paused' ] )
         
     
-    def _LogFinalRowSpeed( self, precise_timestamp, total_rows, row_name ):
+    def _log_final_row_speed(self, precise_timestamp, total_rows, row_name):
         
         if total_rows == 0:
             
@@ -1833,7 +1833,7 @@ class ServiceRepository( ServiceRestricted ):
         HydrusData.print_text( summary )
         
     
-    def _ReportOngoingRowSpeed( self, job_status, rows_done, total_rows, precise_timestamp, rows_done_in_last_packet, row_name ):
+    def _report_ongoing_row_speed(self, job_status, rows_done, total_rows, precise_timestamp, rows_done_in_last_packet, row_name):
         
         it_took = HydrusTime.get_now_precise() - precise_timestamp
         
@@ -1842,14 +1842,14 @@ class ServiceRepository( ServiceRestricted ):
         popup_message = '{} {}: processing at {} rows/s'.format( row_name, HydrusNumbers.value_range_to_pretty_string( rows_done, total_rows ), rows_s )
         
         CG.client_controller.frame_splash_status.SetText( popup_message, print_to_log = False )
-        job_status.SetStatusText( popup_message, 2 )
+        job_status.set_status_text(popup_message, 2)
         
     
-    def _SyncDownloadMetadata( self ):
+    def _sync_download_metadata(self):
         
         with self._lock:
             
-            if not self._CanSyncDownload():
+            if not self._can_sync_download():
                 
                 return
                 
@@ -1878,13 +1878,13 @@ class ServiceRepository( ServiceRestricted ):
             
             try:
                 
-                response = self.Request( HC.GET, 'metadata', { 'since' : next_update_index } )
+                response = self.request(HC.GET, 'metadata', {'since' : next_update_index})
                 
                 metadata_slice = response[ 'metadata_slice' ]
                 
             except HydrusExceptions.CancelledException as e:
                 
-                self._DelayFutureRequests( str( e ) )
+                self._delay_future_requests(str(e))
                 
                 return
                 
@@ -1919,16 +1919,16 @@ class ServiceRepository( ServiceRestricted ):
                 
                 self._is_mostly_caught_up = None
                 
-                self._SetDirty()
+                self._set_dirty()
                 
             
         
     
-    def _SyncDownloadUpdates( self, stop_time ):
+    def _sync_download_updates(self, stop_time):
         
         with self._lock:
             
-            if not self._CanSyncDownload():
+            if not self._can_sync_download():
                 
                 return
                 
@@ -1945,7 +1945,7 @@ class ServiceRepository( ServiceRestricted ):
             
             try:
                 
-                job_status.SetStatusTitle( name + ' sync: downloading updates' )
+                job_status.set_status_title(name + ' sync: downloading updates')
                 
                 CG.client_controller.pub( 'message', job_status )
                 
@@ -1954,24 +1954,24 @@ class ServiceRepository( ServiceRestricted ):
                     status = HydrusNumbers.value_range_to_pretty_string( i, len( update_hashes ) )
                     
                     CG.client_controller.frame_splash_status.SetText( status, print_to_log = False )
-                    job_status.SetStatusText( status )
-                    job_status.SetGauge( i, len( update_hashes ) )
+                    job_status.set_status_text(status)
+                    job_status.set_gauge(i, len(update_hashes))
                     
                     with self._lock:
                         
-                        if not self._CanSyncDownload():
+                        if not self._can_sync_download():
                             
                             return
                             
                         
                     
-                    ( i_paused, should_quit ) = job_status.WaitIfNeeded()
+                    ( i_paused, should_quit ) = job_status.wait_if_needed()
                     
                     if should_quit:
                         
                         with self._lock:
                             
-                            self._DelayFutureRequests( 'download was recently cancelled', duration_s = 3 * 60 )
+                            self._delay_future_requests('download was recently cancelled', duration_s =3 * 60)
                             
                         
                         return
@@ -1979,17 +1979,17 @@ class ServiceRepository( ServiceRestricted ):
                     
                     try:
                         
-                        update_network_string = self.Request( HC.GET, 'update', { 'update_hash' : update_hash } )
+                        update_network_string = self.request(HC.GET, 'update', {'update_hash' : update_hash})
                         
                     except HydrusExceptions.CancelledException as e:
                         
-                        self._DelayFutureRequests( str( e ) )
+                        self._delay_future_requests(str(e))
                         
                         return
                         
                     except HydrusExceptions.NetworkException as e:
                         
-                        self._DelayFutureRequests( str( e ) )
+                        self._delay_future_requests(str(e))
                         
                         HydrusData.print_text( 'Attempting to download an update for ' + name + ' resulted in a network error:' )
                         
@@ -2007,7 +2007,7 @@ class ServiceRepository( ServiceRestricted ):
                         
                         with self._lock:
                             
-                            self._DelayFutureRequests( 'had an unusual update response' )
+                            self._delay_future_requests('had an unusual update response')
                             
                         
                         return
@@ -2021,7 +2021,7 @@ class ServiceRepository( ServiceRestricted ):
                         
                         with self._lock:
                             
-                            self._DealWithFundamentalNetworkError()
+                            self._deal_with_fundamental_network_error()
                             
                         
                         message = 'Update ' + update_hash.hex() + ' downloaded from the ' + self._name + ' repository failed to load! This is a serious error!'
@@ -2047,7 +2047,7 @@ class ServiceRepository( ServiceRestricted ):
                         
                         with self._lock:
                             
-                            self._DealWithFundamentalNetworkError()
+                            self._deal_with_fundamental_network_error()
                             
                         
                         message = 'Update ' + update_hash.hex() + ' downloaded from the ' + self._name + ' was not a valid update--it was a ' + repr( update ) + '! This is a serious error!'
@@ -2067,7 +2067,7 @@ class ServiceRepository( ServiceRestricted ):
                         
                         with self._lock:
                             
-                            self._DealWithFundamentalNetworkError()
+                            self._deal_with_fundamental_network_error()
                             
                         
                         message = 'While downloading updates for the ' + self._name + ' repository, one failed to import! The error follows:'
@@ -2080,21 +2080,21 @@ class ServiceRepository( ServiceRestricted ):
                         
                     
                 
-                job_status.SetStatusText( 'finished' )
-                job_status.DeleteGauge()
+                job_status.set_status_text('finished')
+                job_status.delete_gauge()
                 
             finally:
                 
-                job_status.FinishAndDismiss( 5 )
+                job_status.finish_and_dismiss(5)
                 
             
         
     
-    def _SyncProcessUpdates( self, maintenance_mode = HC.MAINTENANCE_IDLE, stop_time = None ):
+    def _sync_process_updates(self, maintenance_mode = HC.MAINTENANCE_IDLE, stop_time = None):
         
         with self._lock:
             
-            if not self._CanSyncProcess():
+            if not self._can_sync_process():
                 
                 return
                 
@@ -2113,9 +2113,9 @@ class ServiceRepository( ServiceRestricted ):
             
             title = '{} sync: processing updates'.format( self._name )
             
-            job_status.SetStatusTitle( title )
+            job_status.set_status_title(title)
             
-            content_types_to_process = self._GetContentTypesWeAreProcessing()
+            content_types_to_process = self._get_content_types_we_are_processing()
             
             ( this_is_first_definitions_work, definition_hashes_and_content_types, this_is_first_content_work, content_hashes_and_content_types ) = CG.client_controller.read( 'repository_update_hashes_to_process', self._service_key, content_types_to_process )
             
@@ -2157,8 +2157,8 @@ class ServiceRepository( ServiceRestricted ):
                     
                     status = 'processing: {}'.format( progress_string )
                     
-                    job_status.SetStatusText( status )
-                    job_status.SetGauge( num_updates_done, num_updates_to_do )
+                    job_status.set_status_text(status)
+                    job_status.set_gauge(num_updates_done, num_updates_to_do)
                     
                     try:
                         
@@ -2206,20 +2206,20 @@ class ServiceRepository( ServiceRestricted ):
                         
                         this_work_start_time = HydrusTime.get_now_precise()
                         
-                        if CG.client_controller.CurrentlyVeryIdle():
+                        if CG.client_controller.currently_very_idle():
                             
-                            expected_work_period = HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_very_idle' ) )
-                            rest_ratio = CG.client_controller.new_options.GetInteger( 'repository_processing_rest_percentage_very_idle' ) / 100
+                            expected_work_period = HydrusTime.secondise_ms_float(CG.client_controller.new_options.get_integer('repository_processing_work_time_ms_very_idle'))
+                            rest_ratio = CG.client_controller.new_options.get_integer('repository_processing_rest_percentage_very_idle') / 100
                             
                         elif CG.client_controller.currently_idle():
                             
-                            expected_work_period = HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_idle' ) )
-                            rest_ratio = CG.client_controller.new_options.GetInteger( 'repository_processing_rest_percentage_idle' ) / 100
+                            expected_work_period = HydrusTime.secondise_ms_float(CG.client_controller.new_options.get_integer('repository_processing_work_time_ms_idle'))
+                            rest_ratio = CG.client_controller.new_options.get_integer('repository_processing_rest_percentage_idle') / 100
                             
                         else:
                             
-                            expected_work_period = HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_normal' ) )
-                            rest_ratio = CG.client_controller.new_options.GetInteger( 'repository_processing_rest_percentage_normal' ) / 100
+                            expected_work_period = HydrusTime.secondise_ms_float(CG.client_controller.new_options.get_integer('repository_processing_work_time_ms_normal'))
+                            rest_ratio = CG.client_controller.new_options.get_integer('repository_processing_rest_percentage_normal') / 100
                             
                         
                         start_time = HydrusTime.get_now_precise()
@@ -2240,7 +2240,7 @@ class ServiceRepository( ServiceRestricted ):
                             did_definition_analyze = True
                             
                         
-                        if CG.client_controller.should_stop_this_work( maintenance_mode, stop_time = stop_time ) or job_status.IsCancelled():
+                        if CG.client_controller.should_stop_this_work( maintenance_mode, stop_time = stop_time ) or job_status.is_cancelled():
                             
                             return
                             
@@ -2249,7 +2249,7 @@ class ServiceRepository( ServiceRestricted ):
                         
                         time.sleep( reasonable_work_time * rest_ratio )
                         
-                        self._ReportOngoingRowSpeed( job_status, rows_done_in_this_update, rows_in_this_update, this_work_start_time, num_rows_done, 'definitions' )
+                        self._report_ongoing_row_speed(job_status, rows_done_in_this_update, rows_in_this_update, this_work_start_time, num_rows_done, 'definitions')
                         
                     
                     num_updates_done += 1
@@ -2264,10 +2264,10 @@ class ServiceRepository( ServiceRestricted ):
                 
             finally:
                 
-                self._LogFinalRowSpeed( definition_start_time, total_definition_rows_completed, 'definitions' )
+                self._log_final_row_speed(definition_start_time, total_definition_rows_completed, 'definitions')
                 
             
-            if CG.client_controller.should_stop_this_work( maintenance_mode, stop_time = stop_time ) or job_status.IsCancelled():
+            if CG.client_controller.should_stop_this_work( maintenance_mode, stop_time = stop_time ) or job_status.is_cancelled():
                 
                 return
                 
@@ -2286,8 +2286,8 @@ class ServiceRepository( ServiceRestricted ):
                     
                     status = 'processing: {}'.format( progress_string )
                     
-                    job_status.SetStatusText( status )
-                    job_status.SetGauge( num_updates_done, num_updates_to_do )
+                    job_status.set_status_text(status)
+                    job_status.set_gauge(num_updates_done, num_updates_to_do)
                     
                     try:
                         
@@ -2356,20 +2356,20 @@ class ServiceRepository( ServiceRestricted ):
                         
                         this_work_start_time = HydrusTime.get_now_precise()
                         
-                        if CG.client_controller.CurrentlyVeryIdle():
+                        if CG.client_controller.currently_very_idle():
                             
-                            expected_work_period = HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_very_idle' ) )
-                            rest_ratio = CG.client_controller.new_options.GetInteger( 'repository_processing_rest_percentage_very_idle' ) / 100
+                            expected_work_period = HydrusTime.secondise_ms_float(CG.client_controller.new_options.get_integer('repository_processing_work_time_ms_very_idle'))
+                            rest_ratio = CG.client_controller.new_options.get_integer('repository_processing_rest_percentage_very_idle') / 100
                             
                         elif CG.client_controller.currently_idle():
                             
-                            expected_work_period = HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_idle' ) )
-                            rest_ratio = CG.client_controller.new_options.GetInteger( 'repository_processing_rest_percentage_idle' ) / 100
+                            expected_work_period = HydrusTime.secondise_ms_float(CG.client_controller.new_options.get_integer('repository_processing_work_time_ms_idle'))
+                            rest_ratio = CG.client_controller.new_options.get_integer('repository_processing_rest_percentage_idle') / 100
                             
                         else:
                             
-                            expected_work_period = HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_normal' ) )
-                            rest_ratio = CG.client_controller.new_options.GetInteger( 'repository_processing_rest_percentage_normal' ) / 100
+                            expected_work_period = HydrusTime.secondise_ms_float(CG.client_controller.new_options.get_integer('repository_processing_work_time_ms_normal'))
+                            rest_ratio = CG.client_controller.new_options.get_integer('repository_processing_rest_percentage_normal') / 100
                             
                         
                         start_time = HydrusTime.get_now_precise()
@@ -2390,7 +2390,7 @@ class ServiceRepository( ServiceRestricted ):
                             did_content_analyze = True
                             
                         
-                        if CG.client_controller.should_stop_this_work( maintenance_mode, stop_time = stop_time ) or job_status.IsCancelled():
+                        if CG.client_controller.should_stop_this_work( maintenance_mode, stop_time = stop_time ) or job_status.is_cancelled():
                             
                             return
                             
@@ -2399,7 +2399,7 @@ class ServiceRepository( ServiceRestricted ):
                         
                         time.sleep( reasonable_work_time * rest_ratio )
                         
-                        self._ReportOngoingRowSpeed( job_status, rows_done_in_this_update, rows_in_this_update, this_work_start_time, num_rows_done, 'content rows' )
+                        self._report_ongoing_row_speed(job_status, rows_done_in_this_update, rows_in_this_update, this_work_start_time, num_rows_done, 'content rows')
                         
                     
                     num_updates_done += 1
@@ -2414,7 +2414,7 @@ class ServiceRepository( ServiceRestricted ):
                 
             finally:
                 
-                self._LogFinalRowSpeed( content_start_time, total_content_rows_completed, 'content rows' )
+                self._log_final_row_speed(content_start_time, total_content_rows_completed, 'content rows')
                 
             
         except HydrusExceptions.ShutdownException:
@@ -2435,7 +2435,7 @@ class ServiceRepository( ServiceRestricted ):
                 
                 self._update_processing_paused = True
                 
-                self._SetDirty()
+                self._set_dirty()
                 
             
             CG.client_controller.pub( 'important_dirt_to_clean' )
@@ -2449,22 +2449,22 @@ class ServiceRepository( ServiceRestricted ):
                     
                     self._is_mostly_caught_up = None
                     
-                    self._SetDirty()
+                    self._set_dirty()
                     
                 
                 CG.client_controller.pub( 'notify_force_refresh_tags_data' )
                 CG.client_controller.pub( 'notify_new_tag_display_application' )
                 
             
-            job_status.DeleteStatusText()
-            job_status.DeleteStatusText( level = 2 )
-            job_status.DeleteGauge()
+            job_status.delete_status_text()
+            job_status.delete_status_text(level = 2)
+            job_status.delete_gauge()
             
-            job_status.FinishAndDismiss( 3 )
+            job_status.finish_and_dismiss(3)
             
         
     
-    def _UpdateServiceOptions( self, service_options ):
+    def _update_service_options(self, service_options):
         
         if 'update_period' in service_options and 'update_period' in self._service_options and service_options[ 'update_period' ] != self._service_options[ 'update_period' ]:
             
@@ -2473,14 +2473,14 @@ class ServiceRepository( ServiceRestricted ):
             self._metadata.calculate_new_next_update_due( update_period )
             
         
-        ServiceRestricted._UpdateServiceOptions( self, service_options )
+        ServiceRestricted._update_service_options(self, service_options)
         
     
-    def CanDoIdleShutdownWork( self ):
+    def can_do_idle_shutdown_work(self):
         
         with self._lock:
             
-            if not self._CanSyncProcess():
+            if not self._can_sync_process():
                 
                 return False
                 
@@ -2488,7 +2488,7 @@ class ServiceRepository( ServiceRestricted ):
             service_key = self._service_key
             
         
-        content_types_we_are_processing = self._GetContentTypesWeAreProcessing()
+        content_types_we_are_processing = self._get_content_types_we_are_processing()
         
         ( num_local_updates, num_updates, content_types_to_num_processed_updates, content_types_to_num_updates ) = CG.client_controller.read( 'repository_progress', service_key )
         
@@ -2508,23 +2508,23 @@ class ServiceRepository( ServiceRestricted ):
         return False
         
     
-    def CanSyncDownload( self ):
+    def can_sync_download(self):
         
         with self._lock:
             
-            return self._CanSyncDownload()
+            return self._can_sync_download()
             
         
     
-    def CanSyncProcess( self ):
+    def can_sync_process(self):
         
         with self._lock:
             
-            return self._CanSyncProcess()
+            return self._can_sync_process()
             
         
     
-    def DoAFullMetadataResync( self ):
+    def do_a_full_metadata_resync(self):
         
         with self._lock:
             
@@ -2533,14 +2533,14 @@ class ServiceRepository( ServiceRestricted ):
             
             self._metadata.update_asap()
             
-            self._SetDirty()
+            self._set_dirty()
             
         
         CG.client_controller.pub( 'important_dirt_to_clean' )
         CG.client_controller.pub( 'notify_new_permissions' )
         
     
-    def GetMetadata( self ):
+    def get_metadata(self):
         
         with self._lock:
             
@@ -2548,7 +2548,7 @@ class ServiceRepository( ServiceRestricted ):
             
         
     
-    def GetNextUpdateDueString( self ):
+    def get_next_update_due_string(self):
         
         with self._lock:
             
@@ -2556,7 +2556,7 @@ class ServiceRepository( ServiceRestricted ):
             
         
     
-    def GetNullificationPeriod( self ) -> int:
+    def get_nullification_period(self) -> int:
         
         with self._lock:
             
@@ -2578,7 +2578,7 @@ class ServiceRepository( ServiceRestricted ):
             
         
     
-    def GetTagFilter( self ) -> HydrusTags.TagFilter:
+    def get_tag_filter(self) -> HydrusTags.TagFilter:
         
         with self._lock:
             
@@ -2605,7 +2605,7 @@ class ServiceRepository( ServiceRestricted ):
             
         
     
-    def GetUpdateHashes( self ):
+    def get_update_hashes(self):
         
         with self._lock:
             
@@ -2613,7 +2613,7 @@ class ServiceRepository( ServiceRestricted ):
             
         
     
-    def GetUpdatePeriod( self ) -> int:
+    def get_update_period(self) -> int:
         
         with self._lock:
             
@@ -2635,7 +2635,7 @@ class ServiceRepository( ServiceRestricted ):
             
         
     
-    def IsDueAFullMetadataResync( self ):
+    def is_due_a_full_metadata_resync(self):
         
         with self._lock:
             
@@ -2643,7 +2643,7 @@ class ServiceRepository( ServiceRestricted ):
             
         
     
-    def IsMostlyCaughtUp( self ):
+    def is_mostly_caught_up(self):
         
         # if a user is more than two weeks behind, let's assume they aren't 'caught up'
         CAUGHT_UP_BUFFER = 14 * 86400
@@ -2681,7 +2681,7 @@ class ServiceRepository( ServiceRestricted ):
             service_key = self._service_key
             
         
-        content_types_to_process = self._GetContentTypesWeAreProcessing()
+        content_types_to_process = self._get_content_types_we_are_processing()
         
         ( this_is_first_definitions_work, definition_hashes_and_content_types, this_is_first_content_work, content_hashes_and_content_types ) = CG.client_controller.read( 'repository_update_hashes_to_process', self._service_key, content_types_to_process )
         
@@ -2706,7 +2706,7 @@ class ServiceRepository( ServiceRestricted ):
             
         
     
-    def IsPausedUpdateDownloading( self ):
+    def is_paused_update_downloading(self):
         
         with self._lock:
             
@@ -2714,7 +2714,7 @@ class ServiceRepository( ServiceRestricted ):
             
         
     
-    def IsPausedUpdateProcessing( self, content_type = None ):
+    def is_paused_update_processing(self, content_type = None):
         
         with self._lock:
             
@@ -2729,13 +2729,13 @@ class ServiceRepository( ServiceRestricted ):
             
         
     
-    def PausePlayUpdateDownloading( self ):
+    def pause_play_update_downloading(self):
         
         with self._lock:
             
             self._update_downloading_paused = not self._update_downloading_paused
             
-            self._SetDirty()
+            self._set_dirty()
             
             paused = self._update_downloading_paused
             
@@ -2748,7 +2748,7 @@ class ServiceRepository( ServiceRestricted ):
             
         
     
-    def PausePlayUpdateProcessing( self, content_type = None ):
+    def pause_play_update_processing(self, content_type = None):
         
         with self._lock:
             
@@ -2761,7 +2761,7 @@ class ServiceRepository( ServiceRestricted ):
                 self._update_processing_content_types_paused[ content_type ] = not self._update_processing_content_types_paused[ content_type ]
                 
             
-            self._SetDirty()
+            self._set_dirty()
             
             paused = self._update_processing_paused
             
@@ -2776,7 +2776,7 @@ class ServiceRepository( ServiceRestricted ):
             
         
     
-    def Reset( self ):
+    def reset(self):
         
         with self._lock:
             
@@ -2791,7 +2791,7 @@ class ServiceRepository( ServiceRestricted ):
             
             self._is_mostly_caught_up = None
             
-            self._SetDirty()
+            self._set_dirty()
             
         
         CG.client_controller.pub( 'notify_account_sync_due' )
@@ -2800,7 +2800,7 @@ class ServiceRepository( ServiceRestricted ):
         CG.client_controller.write( 'reset_repository', self )
         
     
-    def SetTagFilter( self, tag_filter: HydrusTags.TagFilter ):
+    def set_tag_filter(self, tag_filter: HydrusTags.TagFilter):
         
         with self._lock:
             
@@ -2813,19 +2813,19 @@ class ServiceRepository( ServiceRestricted ):
             
         
     
-    def SyncRemote( self, stop_time = None ):
+    def sync_remote(self, stop_time = None):
         
         with self._sync_remote_lock:
             
             try:
                 
-                self._SyncDownloadMetadata()
+                self._sync_download_metadata()
                 
-                self._SyncDownloadUpdates( stop_time )
+                self._sync_download_updates(stop_time)
                 
                 if self._is_mostly_caught_up is not None and self._is_mostly_caught_up:
                     
-                    self.SyncThumbnails( stop_time )
+                    self.sync_thumbnails(stop_time)
                     
                 
             except HydrusExceptions.ShutdownException:
@@ -2836,7 +2836,7 @@ class ServiceRepository( ServiceRestricted ):
                 
                 with self._lock:
                     
-                    self._DelayFutureRequests( str( e ) )
+                    self._delay_future_requests(str(e))
                     
                 
                 HydrusData.show_text( 'The service "{}" encountered an error while trying to sync! The error was "{}". It will not do any work for a little while. If the fix is not obvious, please elevate this to hydrus dev.'.format( self._name, str( e ) ) )
@@ -2845,7 +2845,7 @@ class ServiceRepository( ServiceRestricted ):
                 
             finally:
                 
-                if self.IsDirty():
+                if self.is_dirty():
                     
                     CG.client_controller.pub( 'important_dirt_to_clean' )
                     
@@ -2853,15 +2853,15 @@ class ServiceRepository( ServiceRestricted ):
             
         
     
-    def SyncProcessUpdates( self, maintenance_mode = HC.MAINTENANCE_IDLE, stop_time = None ):
+    def sync_process_updates(self, maintenance_mode = HC.MAINTENANCE_IDLE, stop_time = None):
         
         with self._sync_processing_lock:
             
-            self._SyncProcessUpdates( maintenance_mode = maintenance_mode, stop_time = stop_time )
+            self._sync_process_updates(maintenance_mode = maintenance_mode, stop_time = stop_time)
             
         
     
-    def SyncThumbnails( self, stop_time ):
+    def sync_thumbnails(self, stop_time):
         
         with self._lock:
             
@@ -2870,7 +2870,7 @@ class ServiceRepository( ServiceRestricted ):
                 return
                 
             
-            if not self._CanSyncDownload():
+            if not self._can_sync_download():
                 
                 return
                 
@@ -2891,7 +2891,7 @@ class ServiceRepository( ServiceRestricted ):
             
             try:
                 
-                job_status.SetStatusTitle( name + ' sync: downloading thumbnails' )
+                job_status.set_status_title(name + ' sync: downloading thumbnails')
                 
                 CG.client_controller.pub( 'message', job_status )
                 
@@ -2900,24 +2900,24 @@ class ServiceRepository( ServiceRestricted ):
                     status = HydrusNumbers.value_range_to_pretty_string( i, num_to_do )
                     
                     CG.client_controller.frame_splash_status.SetText( status, print_to_log = False )
-                    job_status.SetStatusText( status )
-                    job_status.SetGauge( i, num_to_do )
+                    job_status.set_status_text(status)
+                    job_status.set_gauge(i, num_to_do)
                     
                     with self._lock:
                         
-                        if not self._CanSyncDownload():
+                        if not self._can_sync_download():
                             
                             break
                             
                         
                     
-                    ( i_paused, should_quit ) = job_status.WaitIfNeeded()
+                    ( i_paused, should_quit ) = job_status.wait_if_needed()
                     
                     if should_quit:
                         
                         with self._lock:
                             
-                            self._DelayFutureRequests( 'download was recently cancelled', duration_s = 3 * 60 )
+                            self._delay_future_requests('download was recently cancelled', duration_s =3 * 60)
                             
                         
                         return
@@ -2925,13 +2925,13 @@ class ServiceRepository( ServiceRestricted ):
                     
                     try:
                         
-                        thumbnail_bytes = self.Request( HC.GET, 'thumbnail', { 'hash' : thumbnail_hash } )
+                        thumbnail_bytes = self.request(HC.GET, 'thumbnail', {'hash' : thumbnail_hash})
                         
                     except HydrusExceptions.CancelledException as e:
                         
                         with self._lock:
                             
-                            self._DelayFutureRequests( str( e ) )
+                            self._delay_future_requests(str(e))
                             
                         
                         return
@@ -2952,18 +2952,18 @@ class ServiceRepository( ServiceRestricted ):
                     client_files_manager.AddThumbnailFromBytes( thumbnail_hash, thumbnail_bytes )
                     
                 
-                job_status.SetStatusText( 'finished' )
-                job_status.DeleteGauge()
+                job_status.set_status_text('finished')
+                job_status.delete_gauge()
                 
             finally:
                 
-                job_status.FinishAndDismiss( 5 )
+                job_status.finish_and_dismiss(5)
                 
             
         
     
 
-def GetIPFSConfigValue( api_base_url, config_key ):
+def get_ipfs_config_value(api_base_url, config_key):
     
     url = f'{api_base_url}config?arg={config_key}'
     
@@ -2980,7 +2980,7 @@ def GetIPFSConfigValue( api_base_url, config_key ):
     return j[ 'Value' ]
     
 
-def SetIPFSConfigValueBool( api_base_url, config_key, value: bool ):
+def set_ipfs_config_value_bool(api_base_url, config_key, value: bool):
     
     value_json = 'true' if value else 'false'
     
@@ -3003,7 +3003,7 @@ def SetIPFSConfigValueBool( api_base_url, config_key, value: bool ):
         
     
 
-def GetTSize( api_base_url, multihash ):
+def get_t_size(api_base_url, multihash):
     
     url = f'{api_base_url}dag/stat?arg={multihash}&progress=false'
     
@@ -3022,23 +3022,23 @@ def GetTSize( api_base_url, multihash ):
 
 class ServiceIPFS( ServiceRemote ):
     
-    def _GetSerialisableDictionary( self ):
+    def _get_serialisable_dictionary(self):
         
-        dictionary = ServiceRemote._GetSerialisableDictionary( self )
+        dictionary = ServiceRemote._get_serialisable_dictionary(self)
         
         dictionary[ 'multihash_prefix' ] = self._multihash_prefix
         
         return dictionary
         
     
-    def _LoadFromDictionary( self, dictionary ):
+    def _load_from_dictionary(self, dictionary):
         
-        ServiceRemote._LoadFromDictionary( self, dictionary )
+        ServiceRemote._load_from_dictionary(self, dictionary)
         
         self._multihash_prefix = dictionary[ 'multihash_prefix' ]
         
     
-    def _GetAPIBaseURL( self ):
+    def _get_api_base_url(self):
         
         full_host = self._credentials.get_ported_address()
         
@@ -3047,11 +3047,11 @@ class ServiceIPFS( ServiceRemote ):
         return api_base_url
         
     
-    def GetDaemonVersion( self ):
+    def get_daemon_version(self):
         
         with self._lock:
             
-            api_base_url = self._GetAPIBaseURL()
+            api_base_url = self._get_api_base_url()
             
         
         url = api_base_url + 'version'
@@ -3069,7 +3069,7 @@ class ServiceIPFS( ServiceRemote ):
         return j[ 'Version' ]
         
     
-    def GetMultihashPrefix( self ):
+    def get_multihash_prefix(self):
         
         with self._lock:
             
@@ -3077,11 +3077,11 @@ class ServiceIPFS( ServiceRemote ):
             
         
     
-    def IsPinned( self, multihash ):
+    def is_pinned(self, multihash):
         
         with self._lock:
             
-            api_base_url = self._GetAPIBaseURL()
+            api_base_url = self._get_api_base_url()
             
         
         # check if it is pinned. if we try to unpin something not pinned, the daemon 500s
@@ -3124,17 +3124,17 @@ class ServiceIPFS( ServiceRemote ):
         return file_is_pinned
         
     
-    def PinDirectory( self, hashes, note ):
+    def pin_directory(self, hashes, note):
         
         job_status = ClientThreading.JobStatus( pausable = True, cancellable = True )
         
-        job_status.SetStatusTitle( 'creating ipfs directory on ' + self._name )
+        job_status.set_status_title('creating ipfs directory on ' + self._name)
         
         CG.client_controller.pub( 'message', job_status )
         
         with self._lock:
             
-            api_base_url = self._GetAPIBaseURL()
+            api_base_url = self._get_api_base_url()
             
         
         try:
@@ -3148,17 +3148,17 @@ class ServiceIPFS( ServiceRemote ):
             
             for ( i, hash ) in enumerate( hashes ):
                 
-                ( i_paused, should_quit ) = job_status.WaitIfNeeded()
+                ( i_paused, should_quit ) = job_status.wait_if_needed()
                 
                 if should_quit:
                     
-                    job_status.SetStatusText( 'cancelled!' )
+                    job_status.set_status_text('cancelled!')
                     
                     return
                     
                 
-                job_status.SetStatusText( 'ensuring files are pinned: ' + HydrusNumbers.value_range_to_pretty_string( i, len( hashes ) ) )
-                job_status.SetGauge( i, len( hashes ) )
+                job_status.set_status_text('ensuring files are pinned: ' + HydrusNumbers.value_range_to_pretty_string(i, len(hashes)))
+                job_status.set_gauge(i, len(hashes))
                 
                 media_result = CG.client_controller.read( 'media_result', hash )
                 
@@ -3170,7 +3170,7 @@ class ServiceIPFS( ServiceRemote ):
                     
                     try:
                         
-                        multihash = self.PinFile( hash, mime )
+                        multihash = self.pin_file(hash, mime)
                         
                     except Exception as e:
                         
@@ -3180,7 +3180,7 @@ class ServiceIPFS( ServiceRemote ):
                 
                 try:
                     
-                    tsize = GetTSize( api_base_url, multihash )
+                    tsize = get_t_size(api_base_url, multihash)
                     
                 except Exception as e:
                     
@@ -3200,8 +3200,8 @@ class ServiceIPFS( ServiceRemote ):
                 )
                 
             
-            job_status.SetStatusText( 'creating directory' )
-            job_status.DeleteGauge()
+            job_status.set_status_text('creating directory')
+            job_status.delete_gauge()
             
             dag_json_encoded = json.dumps( dag_object )
             
@@ -3231,14 +3231,14 @@ class ServiceIPFS( ServiceRemote ):
             
             CG.client_controller.write_synchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( self._service_key, content_updates ) )
             
-            job_status.SetStatusText( 'done!' )
+            job_status.set_status_text('done!')
             
             with self._lock:
                 
                 text = self._multihash_prefix + directory_multihash
                 
             
-            job_status.SetVariable( 'popup_clipboard', ( 'copy multihash to clipboard', text ) )
+            job_status.set_variable('popup_clipboard', ('copy multihash to clipboard', text))
             
             return directory_multihash
             
@@ -3246,23 +3246,23 @@ class ServiceIPFS( ServiceRemote ):
             
             HydrusData.ShowException( e )
             
-            job_status.SetErrorException( e )
+            job_status.set_error_exception(e)
             
-            job_status.Cancel()
+            job_status.cancel()
             
         finally:
             
-            job_status.DeleteGauge()
+            job_status.delete_gauge()
             
-            job_status.Finish()
+            job_status.finish()
             
         
     
-    def PinFile( self, hash, mime ):
+    def pin_file(self, hash, mime):
         
         with self._lock:
             
-            api_base_url = self._GetAPIBaseURL()
+            api_base_url = self._get_api_base_url()
             
         
         client_files_manager = CG.client_controller.client_files_manager
@@ -3328,14 +3328,14 @@ class ServiceIPFS( ServiceRemote ):
         return multihash
         
     
-    def UnpinDirectory( self, multihash ):
+    def unpin_directory(self, multihash):
         
         with self._lock:
             
-            api_base_url = self._GetAPIBaseURL()
+            api_base_url = self._get_api_base_url()
             
         
-        if self.IsPinned( multihash ):
+        if self.is_pinned(multihash):
             
             url = f'{api_base_url}pin/rm?arg={multihash}'
             
@@ -3351,14 +3351,14 @@ class ServiceIPFS( ServiceRemote ):
         CG.client_controller.write_synchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( self._service_key, content_updates ) )
         
     
-    def UnpinFile( self, hash, multihash ):
+    def unpin_file(self, hash, multihash):
         
         with self._lock:
             
-            api_base_url = self._GetAPIBaseURL()
+            api_base_url = self._get_api_base_url()
             
         
-        if self.IsPinned( multihash ):
+        if self.is_pinned(multihash):
             
             url = f'{api_base_url}pin/rm?arg={multihash}'
             
@@ -3385,12 +3385,12 @@ class ServicesManager( object ):
         self._keys_to_services: dict[ bytes, Service ] = {}
         self._services_sorted = []
         
-        self.RefreshServices()
+        self.refresh_services()
         
         self._controller.sub( self, 'RefreshServices', 'notify_new_services_data' )
         
     
-    def _GetService( self, service_key: bytes ) -> Service:
+    def _get_service(self, service_key: bytes) -> Service:
         
         try:
             
@@ -3402,29 +3402,29 @@ class ServicesManager( object ):
             
         
     
-    def _SetServices( self, services: collections.abc.Collection[ Service ] ):
+    def _set_services(self, services: collections.abc.Collection[ Service]):
         
-        self._keys_to_services = { service.GetServiceKey() : service for service in services }
+        self._keys_to_services = {service.get_service_key() : service for service in services}
         
-        self._keys_to_services[ CC.TEST_SERVICE_KEY ] = GenerateService( CC.TEST_SERVICE_KEY, HC.TEST_SERVICE, 'test service' )
-        self._keys_to_services[ CC.PREVIEW_RATINGS_SERVICE_KEY ] = GenerateService( CC.PREVIEW_RATINGS_SERVICE_KEY, HC.LOCAL_RATING_NUMERICAL, 'preview rating object service' )
+        self._keys_to_services[ CC.TEST_SERVICE_KEY ] = generate_service(CC.TEST_SERVICE_KEY, HC.TEST_SERVICE, 'test service')
+        self._keys_to_services[ CC.PREVIEW_RATINGS_SERVICE_KEY ] = generate_service(CC.PREVIEW_RATINGS_SERVICE_KEY, HC.LOCAL_RATING_NUMERICAL, 'preview rating object service')
         
-        key = lambda s: s.GetName().lower()
+        key = lambda s: s.get_name().lower()
         
         self._services_sorted = sorted( services, key = key )
         
     
-    def Filter( self, service_keys: collections.abc.Iterable[ bytes ], desired_types: collections.abc.Iterable[ int ] ):
+    def filter(self, service_keys: collections.abc.Iterable[ bytes], desired_types: collections.abc.Iterable[ int]):
         
         with self._lock:
             
-            filtered_service_keys = [ service_key for service_key in service_keys if service_key in self._keys_to_services and self._keys_to_services[ service_key ].GetServiceType() in desired_types ]
+            filtered_service_keys = [service_key for service_key in service_keys if service_key in self._keys_to_services and self._keys_to_services[ service_key ].get_service_type() in desired_types]
             
             return filtered_service_keys
             
         
     
-    def FilterValidServiceKeys( self, service_keys: collections.abc.Iterable[ bytes ] ):
+    def filter_valid_service_keys(self, service_keys: collections.abc.Iterable[ bytes]):
         
         with self._lock:
             
@@ -3434,88 +3434,88 @@ class ServicesManager( object ):
             
         
     
-    def GetDefaultLocalTagService( self ) -> Service:
+    def get_default_local_tag_service(self) -> Service:
         
         # I can replace this with 'default_local_location_context' kind of thing at some point, but for now we'll merge in here
         
-        return self.GetServices( ( HC.LOCAL_TAG, ) )[0]
+        return self.get_services((HC.LOCAL_TAG,))[0]
         
     
-    def GetLocalMediaFileServices( self ):
+    def get_local_media_file_services(self):
         
         with self._lock:
             
-            return [ service for service in self._services_sorted if service.GetServiceType() == HC.LOCAL_FILE_DOMAIN ]
+            return [service for service in self._services_sorted if service.get_service_type() == HC.LOCAL_FILE_DOMAIN]
             
         
     
-    def GetName( self, service_key: bytes ):
+    def get_name(self, service_key: bytes):
         
         with self._lock:
             
-            service = self._GetService( service_key )
+            service = self._get_service(service_key)
             
-            return service.GetName()
+            return service.get_name()
             
         
     
-    def GetRemoteFileServiceKeys( self ):
+    def get_remote_file_service_keys(self):
         
         with self._lock:
             
-            return { service_key for ( service_key, service ) in self._keys_to_services.items() if service.GetServiceType() in HC.REMOTE_FILE_SERVICES }
+            return {service_key for ( service_key, service ) in self._keys_to_services.items() if service.get_service_type() in HC.REMOTE_FILE_SERVICES}
             
         
     
-    def GetService( self, service_key: bytes ):
+    def get_service(self, service_key: bytes):
         
         with self._lock:
             
-            return self._GetService( service_key )
+            return self._get_service(service_key)
             
         
     
-    def GetServiceKeysToNames( self ):
+    def get_service_keys_to_names(self):
         
         with self._lock:
             
-            return { service_key : service.GetName() for ( service_key, service ) in self._keys_to_services.items() }
+            return {service_key : service.get_name() for (service_key, service) in self._keys_to_services.items()}
             
         
     
-    def GetServiceName( self, service_key: bytes ) -> str:
+    def get_service_name(self, service_key: bytes) -> str:
         
         with self._lock:
             
-            return self._GetService( service_key ).GetName()
+            return self._get_service(service_key).get_name()
             
         
     
-    def GetServiceType( self, service_key: bytes ) -> int:
+    def get_service_type(self, service_key: bytes) -> int:
         
         with self._lock:
             
-            return self._GetService( service_key ).GetServiceType()
+            return self._get_service(service_key).get_service_type()
             
         
     
-    def GetServiceKeyFromName( self, allowed_types: collections.abc.Collection[ int ], service_name: str ):
+    def get_service_key_from_name(self, allowed_types: collections.abc.Collection[ int], service_name: str):
         
         with self._lock:
             
             for service in self._services_sorted:
                 
-                if service.GetServiceType() in allowed_types and service.GetName() == service_name:
+                if service.get_service_type() in allowed_types and service.get_name() == service_name:
                     
-                    return service.GetServiceKey()
+                    return service.get_service_key()
                     
                 
             
             for service in self._services_sorted:
                 
-                if service.GetServiceType() in allowed_types and service.GetName().lower() == service_name.lower():
+                if service.get_service_type() in allowed_types and service.get_name().lower() == service_name.lower():
                     
-                    return service.GetServiceKey()
+                    return service.get_service_key()
                     
                 
             
@@ -3523,17 +3523,17 @@ class ServicesManager( object ):
             
         
     
-    def GetServiceKeys( self, desired_types: collections.abc.Collection[ int ] = HC.ALL_SERVICES ):
+    def get_service_keys(self, desired_types: collections.abc.Collection[ int] = HC.ALL_SERVICES):
         
         with self._lock:
             
-            filtered_service_keys = [ service.GetServiceKey() for service in self._services_sorted if service.GetServiceType() in desired_types ]
+            filtered_service_keys = [service.get_service_key() for service in self._services_sorted if service.get_service_type() in desired_types]
             
             return filtered_service_keys
             
         
     
-    def GetServices( self, desired_types: collections.abc.Collection[ int ] = HC.ALL_SERVICES, randomised: bool = False ) -> list[ Service ]:
+    def get_services(self, desired_types: collections.abc.Collection[ int] = HC.ALL_SERVICES, randomised: bool = False) -> list[ Service]:
         
         with self._lock:
             
@@ -3541,7 +3541,7 @@ class ServicesManager( object ):
             
             for desired_type in desired_types:
                 
-                services.extend( [ service for service in self._services_sorted if service.GetServiceType() == desired_type ] )
+                services.extend([service for service in self._services_sorted if service.get_service_type() == desired_type])
                 
             
             if randomised:
@@ -3553,19 +3553,19 @@ class ServicesManager( object ):
             
         
     
-    def RefreshServices( self ):
+    def refresh_services(self):
         
         with self._lock:
             
             services = self._controller.read( 'services' )
             
-            self._SetServices( services )
+            self._set_services(services)
             
         
         self._controller.pub( 'notify_new_services' )
         
     
-    def ServiceExists( self, service_key: bytes ):
+    def service_exists(self, service_key: bytes):
         
         with self._lock:
             
@@ -3573,7 +3573,7 @@ class ServicesManager( object ):
             
         
     
-    def SetTestServiceData( self, service_key: bytes, service_type: int, data: dict, name: str = 'test service' ):
+    def set_test_service_data(self, service_key: bytes, service_type: int, data: dict, name: str = 'test service'):
         
         with self._lock:
             
@@ -3581,7 +3581,7 @@ class ServicesManager( object ):
                 
                 raise HydrusExceptions.TooComplicatedM8( 'Please don\'t directly set any non system services!' )
                 
-            self._keys_to_services[ service_key ] = GenerateService( service_key, service_type, name, data )
+            self._keys_to_services[ service_key ] = generate_service(service_key, service_type, name, data)
             
         
     
@@ -3594,7 +3594,7 @@ class ServiceUpdate( object ):
         self._row = row
         
     
-    def ToTuple( self ):
+    def to_tuple(self):
         
         return ( self._action, self._row )
         

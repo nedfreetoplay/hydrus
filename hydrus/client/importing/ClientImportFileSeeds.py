@@ -102,7 +102,7 @@ def FileURLMappingHasUntrustworthyNeighbours( hash: bytes, lookup_urls: collecti
     
     media_result = CG.client_controller.read( 'media_result', hash )
     
-    existing_file_urls = media_result.GetLocationsManager().GetURLs()
+    existing_file_urls = media_result.GetLocationsManager().get_urls()
     
     existing_file_urls = [ url for url in existing_file_urls if ClientNetworkingFunctions.LooksLikeAFullURL( url ) ]
     
@@ -693,11 +693,11 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
         
         source_timestamp = parsed_post.GetTimestamp( HC.TIMESTAMP_TYPE_MODIFIED_DOMAIN )
         
-        if source_timestamp is not None and ClientTime.TimestampIsSensible( source_timestamp ):
+        if source_timestamp is not None and ClientTime.timestamp_is_sensible(source_timestamp):
             
             source_timestamp = min( HydrusTime.get_now() - 30, source_timestamp )
             
-            self.source_time = ClientTime.MergeModifiedTimes( self.source_time, source_timestamp )
+            self.source_time = ClientTime.merge_modified_times(self.source_time, source_timestamp)
             
         
         self._UpdateModified()
@@ -862,9 +862,9 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                     
                 
             
-            if ClientTime.TimestampIsSensible( last_modified_time ):
+            if ClientTime.timestamp_is_sensible(last_modified_time):
                 
-                self.source_time = ClientTime.MergeModifiedTimes( self.source_time, last_modified_time )
+                self.source_time = ClientTime.merge_modified_times(self.source_time, last_modified_time)
                 
             
             status_hook( 'importing file' )
@@ -1645,7 +1645,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                                 if should_download_file:
                                     
                                     # this could become an url class property on the post url url class
-                                    override_bandwidth = CG.client_controller.new_options.GetBoolean( 'override_bandwidth_on_file_urls_from_post_urls' )
+                                    override_bandwidth = CG.client_controller.new_options.get_boolean('override_bandwidth_on_file_urls_from_post_urls')
                                     
                                     self.DownloadAndImportRawFile( file_url, file_import_options, loud_or_quiet, network_job_factory, network_job_presentation_context_factory, status_hook, override_bandwidth = override_bandwidth, spawning_url = url_to_fetch, forced_referral_url = url_for_child_referral, file_seed_cache = file_seed_cache )
                                     
@@ -1855,18 +1855,18 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                         domain_modified_timestamp = self.source_time
                         
                     
-                    if ClientTime.TimestampIsSensible( domain_modified_timestamp ):
+                    if ClientTime.timestamp_is_sensible(domain_modified_timestamp):
                         
-                        timestamp_data = ClientTime.TimestampData.STATICDomainModifiedTime( domain, HydrusTime.millisecondise_s( domain_modified_timestamp ) )
+                        timestamp_data = ClientTime.TimestampData.static_domain_modified_time(domain, HydrusTime.millisecondise_s(domain_modified_timestamp))
                         
                         content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_TIMESTAMP, HC.CONTENT_UPDATE_ADD, ( ( hash, ), timestamp_data ) )
                         
                         content_update_package.AddContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_update )
                         
                     
-                    if self._cloudflare_last_modified_time is not None and ClientTime.TimestampIsSensible( self._cloudflare_last_modified_time ):
+                    if self._cloudflare_last_modified_time is not None and ClientTime.timestamp_is_sensible(self._cloudflare_last_modified_time):
                         
-                        timestamp_data = ClientTime.TimestampData.STATICDomainModifiedTime( 'cloudflare.com', HydrusTime.millisecondise_s( self._cloudflare_last_modified_time ) )
+                        timestamp_data = ClientTime.TimestampData.static_domain_modified_time('cloudflare.com', HydrusTime.millisecondise_s(self._cloudflare_last_modified_time))
                         
                         content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_TIMESTAMP, HC.CONTENT_UPDATE_ADD, ( ( hash, ), timestamp_data ) )
                         
@@ -2041,7 +2041,7 @@ class FileSeedCacheStatus( HydrusSerialisable.SerialisableBase ):
                     status_text += HydrusNumbers.to_human_int( total_processed )
                     
                 
-                show_new_on_file_seed_short_summary = CG.client_controller.new_options.GetBoolean( 'show_new_on_file_seed_short_summary' )
+                show_new_on_file_seed_short_summary = CG.client_controller.new_options.get_boolean('show_new_on_file_seed_short_summary')
                 
                 if show_new_on_file_seed_short_summary and num_successful_and_new:
                     
@@ -2055,7 +2055,7 @@ class FileSeedCacheStatus( HydrusSerialisable.SerialisableBase ):
                     simple_status_strings.append( '{}Ign'.format( HydrusNumbers.to_human_int( num_ignored ) ) )
                     
                 
-                show_deleted_on_file_seed_short_summary = CG.client_controller.new_options.GetBoolean( 'show_deleted_on_file_seed_short_summary' )
+                show_deleted_on_file_seed_short_summary = CG.client_controller.new_options.get_boolean('show_deleted_on_file_seed_short_summary')
                 
                 if show_deleted_on_file_seed_short_summary and num_deleted > 0:
                     
@@ -3220,7 +3220,7 @@ class FileSeedCache( HydrusSerialisable.SerialisableBase ):
         
         with self._lock:
             
-            hashes = [ file_seed.GetHash() for file_seed in self._file_seeds if file_seed.HasHash() ]
+            hashes = [file_seed.get_hash() for file_seed in self._file_seeds if file_seed.HasHash()]
             
         
         return hashes
@@ -3273,7 +3273,7 @@ class FileSeedCache( HydrusSerialisable.SerialisableBase ):
         
         with self._lock:
             
-            hashes_and_statuses = [ ( file_seed.GetHash(), file_seed.status ) for file_seed in self._file_seeds if file_seed.HasHash() ]
+            hashes_and_statuses = [(file_seed.get_hash(), file_seed.status) for file_seed in self._file_seeds if file_seed.HasHash()]
             
         
         return presentation_import_options.GetPresentedHashes( hashes_and_statuses )
@@ -3455,7 +3455,7 @@ class FileSeedCache( HydrusSerialisable.SerialisableBase ):
             
             for file_seed in self._file_seeds:
                 
-                file_seed_copy = file_seed.Duplicate()
+                file_seed_copy = file_seed.duplicate()
                 
                 file_seed_copy.Normalise()
                 

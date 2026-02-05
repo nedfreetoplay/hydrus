@@ -136,8 +136,8 @@ class ImageRendererCache( object ):
         
         self._controller = controller
         
-        cache_size = self._controller.new_options.GetInteger( 'image_cache_size' )
-        cache_timeout = self._controller.new_options.GetInteger( 'image_cache_timeout' )
+        cache_size = self._controller.new_options.get_integer('image_cache_size')
+        cache_timeout = self._controller.new_options.get_integer('image_cache_timeout')
         
         # there was a good user submission about 'pinned', which may be something to explore again in future
         # I looked into adding pin tech to the datacache itself. not a bad idea, but I'm not sure how to handle various overflow events, so that needs careful thought
@@ -152,14 +152,14 @@ class ImageRendererCache( object ):
     
     def Clear( self ):
         
-        self._data_cache.Clear()
+        self._data_cache.clear()
         
     
     def ClearSpecificFiles( self, hashes ):
         
         for hash in hashes:
             
-            self._data_cache.DeleteData( hash )
+            self._data_cache.delete_data(hash)
             
         
     
@@ -169,7 +169,7 @@ class ImageRendererCache( object ):
         
         key = hash
         
-        result = self._data_cache.GetIfHasData( key )
+        result = self._data_cache.get_if_has_data(key)
         
         if result is None:
             
@@ -177,12 +177,12 @@ class ImageRendererCache( object ):
             
             # we are no longer going to let big lads flush the whole cache. they can render on demand
             
-            image_cache_storage_limit_percentage = self._controller.new_options.GetInteger( 'image_cache_storage_limit_percentage' )
-            acceptable_size = image_renderer.GetEstimatedMemoryFootprint() < self._data_cache.GetSizeLimit() * ( image_cache_storage_limit_percentage / 100 )
+            image_cache_storage_limit_percentage = self._controller.new_options.get_integer('image_cache_storage_limit_percentage')
+            acceptable_size = image_renderer.get_estimated_memory_footprint() < self._data_cache.get_size_limit() * (image_cache_storage_limit_percentage / 100)
             
             if acceptable_size:
                 
-                self._data_cache.AddData( key, image_renderer )
+                self._data_cache.add_data(key, image_renderer)
                 
             
         else:
@@ -197,23 +197,23 @@ class ImageRendererCache( object ):
         
         key = hash
         
-        return self._data_cache.HasData( key )
+        return self._data_cache.has_data(key)
         
     
     def NotifyNewOptions( self ):
         
-        cache_size = self._controller.new_options.GetInteger( 'image_cache_size' )
-        cache_timeout = self._controller.new_options.GetInteger( 'image_cache_timeout' )
+        cache_size = self._controller.new_options.get_integer('image_cache_size')
+        cache_timeout = self._controller.new_options.get_integer('image_cache_timeout')
         
-        self._data_cache.SetCacheSizeAndTimeout( cache_size, cache_timeout )
+        self._data_cache.set_cache_size_and_timeout(cache_size, cache_timeout)
         
     
     def PrefetchImageRenderers( self, media_results: list[ ClientMediaResult.MediaResult ] ):
         
-        image_cache_storage_limit_percentage = self._controller.new_options.GetInteger( 'image_cache_storage_limit_percentage' )
-        image_cache_prefetch_limit_percentage = self._controller.new_options.GetInteger( 'image_cache_prefetch_limit_percentage' )
+        image_cache_storage_limit_percentage = self._controller.new_options.get_integer('image_cache_storage_limit_percentage')
+        image_cache_prefetch_limit_percentage = self._controller.new_options.get_integer('image_cache_prefetch_limit_percentage')
         
-        cache_size = self._data_cache.GetSizeLimit()
+        cache_size = self._data_cache.get_size_limit()
         
         single_file_size_we_are_ok_with = cache_size * ( image_cache_storage_limit_percentage / 100 )
         total_size_we_are_ok_with = cache_size * ( image_cache_prefetch_limit_percentage / 100 )
@@ -225,15 +225,15 @@ class ImageRendererCache( object ):
             
             key = hash
             
-            result = self._data_cache.GetIfHasData( key )
+            result = self._data_cache.get_if_has_data(key)
             
             if result is not None:
                 
                 image_renderer = typing.cast( ClientRendering.ImageRenderer, result )
                 
-                if image_renderer.IsReady():
+                if image_renderer.is_ready():
                     
-                    total_size_we_have_prefetched_here += image_renderer.GetEstimatedMemoryFootprint()
+                    total_size_we_have_prefetched_here += image_renderer.get_estimated_memory_footprint()
                     
                 else:
                     
@@ -263,7 +263,7 @@ class ImageRendererCache( object ):
                     return # ok this guy is too bulky to save
                     
                 
-                successful = self._data_cache.TryToFlushEasySpaceForPrefetch( expected_size )
+                successful = self._data_cache.try_to_flush_easy_space_for_prefetch(expected_size)
                 
                 if successful:
                     
@@ -282,8 +282,8 @@ class ImageTileCache( object ):
         
         self._controller = controller
         
-        cache_size = self._controller.new_options.GetInteger( 'image_tile_cache_size' )
-        cache_timeout = self._controller.new_options.GetInteger( 'image_tile_cache_timeout' )
+        cache_size = self._controller.new_options.get_integer('image_tile_cache_size')
+        cache_timeout = self._controller.new_options.get_integer('image_tile_cache_timeout')
         
         self._data_cache = ClientCachesBase.DataCache( self._controller, 'image tile cache', cache_size, timeout = cache_timeout )
         
@@ -294,14 +294,14 @@ class ImageTileCache( object ):
     
     def Clear( self ):
         
-        self._data_cache.Clear()
+        self._data_cache.clear()
         
     
     def ClearSpecificFiles( self, hashes ):
         
         for hash in hashes:
             
-            keys = self._data_cache.GetAllKeys()
+            keys = self._data_cache.get_all_keys()
             
             for key in keys:
                 
@@ -309,7 +309,7 @@ class ImageTileCache( object ):
                 
                 if key[0] == hash:
                     
-                    self._data_cache.DeleteData( key )
+                    self._data_cache.delete_data(key)
                     
                 
             
@@ -329,15 +329,15 @@ class ImageTileCache( object ):
             target_resolution.height()
         )
         
-        result = self._data_cache.GetIfHasData( key )
+        result = self._data_cache.get_if_has_data(key)
         
         if result is None:
             
-            qt_pixmap = image_renderer.GetQtPixmap( clip_rect = clip_rect, target_resolution = target_resolution )
+            qt_pixmap = image_renderer.get_qt_pixmap(clip_rect = clip_rect, target_resolution = target_resolution)
             
             tile = ClientRendering.ImageTile( hash, clip_rect, qt_pixmap )
             
-            self._data_cache.AddData( key, tile )
+            self._data_cache.add_data(key, tile)
             
         else:
             
@@ -349,10 +349,10 @@ class ImageTileCache( object ):
     
     def NotifyNewOptions( self ):
         
-        cache_size = self._controller.new_options.GetInteger( 'image_tile_cache_size' )
-        cache_timeout = self._controller.new_options.GetInteger( 'image_tile_cache_timeout' )
+        cache_size = self._controller.new_options.get_integer('image_tile_cache_size')
+        cache_timeout = self._controller.new_options.get_integer('image_tile_cache_timeout')
         
-        self._data_cache.SetCacheSizeAndTimeout( cache_size, cache_timeout )
+        self._data_cache.set_cache_size_and_timeout(cache_size, cache_timeout)
         
     
 class ThumbnailCache( object ):
@@ -361,8 +361,8 @@ class ThumbnailCache( object ):
         
         self._controller = controller
         
-        cache_size = self._controller.new_options.GetInteger( 'thumbnail_cache_size' )
-        cache_timeout = self._controller.new_options.GetInteger( 'thumbnail_cache_timeout' )
+        cache_size = self._controller.new_options.get_integer('thumbnail_cache_size')
+        cache_timeout = self._controller.new_options.get_integer('thumbnail_cache_timeout')
         
         self._data_cache = ClientCachesBase.DataCache( self._controller, 'thumbnail cache', cache_size, timeout = cache_timeout )
         
@@ -382,7 +382,7 @@ class ThumbnailCache( object ):
         self._delayed_regeneration_queue_quick = set()
         self._delayed_regeneration_queue = []
         
-        self._allow_blurhash_fallback = self._controller.new_options.GetBoolean( 'allow_blurhash_fallback' )
+        self._allow_blurhash_fallback = self._controller.new_options.get_boolean('allow_blurhash_fallback')
         
         self._waterfall_event = threading.Event()
         
@@ -410,14 +410,14 @@ class ThumbnailCache( object ):
                     ( media_width, media_height ) = media_result.GetResolution()
                     
                     bounding_dimensions = self._controller.options[ 'thumbnail_dimensions' ]
-                    thumbnail_scale_type = self._controller.new_options.GetInteger( 'thumbnail_scale_type' )
-                    thumbnail_dpr_percent = CG.client_controller.new_options.GetInteger( 'thumbnail_dpr_percent' )
+                    thumbnail_scale_type = self._controller.new_options.get_integer('thumbnail_scale_type')
+                    thumbnail_dpr_percent = CG.client_controller.new_options.get_integer('thumbnail_dpr_percent')
                     
                     ( expected_width, expected_height ) = HydrusImageHandling.get_thumbnail_resolution( ( media_width, media_height ), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
                     
                     numpy_image = HydrusBlurhash.get_numpy_from_blurhash( blurhash, expected_width, expected_height )
                     
-                    hydrus_bitmap = ClientRendering.GenerateHydrusBitmapFromNumPyImage( numpy_image )
+                    hydrus_bitmap = ClientRendering.generate_hydrus_bitmap_from_num_py_image(numpy_image)
                     
                     return hydrus_bitmap
                     
@@ -501,8 +501,8 @@ class ThumbnailCache( object ):
         ( media_width, media_height ) = media_result.GetResolution()
         
         bounding_dimensions = self._controller.options[ 'thumbnail_dimensions' ]
-        thumbnail_scale_type = self._controller.new_options.GetInteger( 'thumbnail_scale_type' )
-        thumbnail_dpr_percent = CG.client_controller.new_options.GetInteger( 'thumbnail_dpr_percent' )
+        thumbnail_scale_type = self._controller.new_options.get_integer('thumbnail_scale_type')
+        thumbnail_dpr_percent = CG.client_controller.new_options.get_integer('thumbnail_dpr_percent')
         
         ( expected_width, expected_height ) = HydrusImageHandling.get_thumbnail_resolution( ( media_width, media_height ), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
         
@@ -546,7 +546,7 @@ class ThumbnailCache( object ):
                 
             
         
-        hydrus_bitmap = ClientRendering.GenerateHydrusBitmapFromNumPyImage( numpy_image )
+        hydrus_bitmap = ClientRendering.generate_hydrus_bitmap_from_num_py_image(numpy_image)
         
         return hydrus_bitmap
         
@@ -569,8 +569,8 @@ class ThumbnailCache( object ):
             
             job_status = ClientThreading.JobStatus()
             
-            job_status.SetStatusText( message )
-            job_status.SetFiles( [ hash ], 'broken thumbnail' )
+            job_status.set_status_text(message)
+            job_status.set_files([hash], 'broken thumbnail')
             
             CG.client_controller.pub( 'message', job_status )
             
@@ -645,7 +645,7 @@ class ThumbnailCache( object ):
             else:
                 
                 magic_score = self._magic_mime_thumbnail_ease_score_lookup[ display_media.GetMime() ]
-                hash = display_media.GetHash()
+                hash = display_media.get_hash()
                 
             
             return ( magic_score, hash )
@@ -669,7 +669,7 @@ class ThumbnailCache( object ):
             
             media_result = item
             
-            hash = media_result.GetHash()
+            hash = media_result.get_hash()
             mime = media_result.GetMime()
             
             magic_score = self._magic_mime_thumbnail_ease_score_lookup[ mime ]
@@ -688,7 +688,7 @@ class ThumbnailCache( object ):
         locations_manager = media_result.GetLocationsManager()
         
         we_have_file = locations_manager.IsLocal()
-        we_should_have_thumb = not locations_manager.GetCurrent().isdisjoint( CG.client_controller.services_manager.GetServiceKeys( ( HC.FILE_REPOSITORY, ) ) )
+        we_should_have_thumb = not locations_manager.GetCurrent().isdisjoint(CG.client_controller.services_manager.get_service_keys((HC.FILE_REPOSITORY,)))
         we_have_blurhash = media_result.GetFileInfoManager().blurhash is not None
         
         return we_have_file or we_should_have_thumb or we_have_blurhash
@@ -706,7 +706,7 @@ class ThumbnailCache( object ):
             
             cancelled_media_results = { media.GetMediaResult() for media in cancelled_display_medias }
             
-            outstanding_delayed_hashes = { media_result.GetHash() for media_result in cancelled_media_results if media_result in self._delayed_regeneration_queue_quick }
+            outstanding_delayed_hashes = {media_result.get_hash() for media_result in cancelled_media_results if media_result in self._delayed_regeneration_queue_quick}
             
             if len( outstanding_delayed_hashes ) > 0:
                 
@@ -723,13 +723,13 @@ class ThumbnailCache( object ):
         
         with self._lock:
             
-            self._data_cache.Clear()
+            self._data_cache.clear()
             
             self._special_thumbs = {}
             
             bounding_dimensions = self._controller.options[ 'thumbnail_dimensions' ]
-            thumbnail_scale_type = self._controller.new_options.GetInteger( 'thumbnail_scale_type' )
-            thumbnail_dpr_percent = CG.client_controller.new_options.GetInteger( 'thumbnail_dpr_percent' )
+            thumbnail_scale_type = self._controller.new_options.get_integer('thumbnail_scale_type')
+            thumbnail_dpr_percent = CG.client_controller.new_options.get_integer('thumbnail_dpr_percent')
             
             image_svg_hydrus_bitmap = None
             
@@ -737,13 +737,13 @@ class ThumbnailCache( object ):
                 
                 svg_thumbnail_path = HydrusStaticDir.get_static_path( 'image.svg' )
                 
-                numpy_image_resolution = ClientSVGHandling.GetSVGResolution( svg_thumbnail_path )
+                numpy_image_resolution = ClientSVGHandling._get_svg_resolution(svg_thumbnail_path)
                 
                 target_resolution = HydrusImageHandling.get_thumbnail_resolution( numpy_image_resolution, bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
                 
-                numpy_image = ClientSVGHandling.GenerateThumbnailNumPyFromSVGPath( svg_thumbnail_path, target_resolution )
+                numpy_image = ClientSVGHandling.generate_thumbnail_num_py_from_svg_path(svg_thumbnail_path, target_resolution)
                 
-                image_svg_hydrus_bitmap = ClientRendering.GenerateHydrusBitmapFromNumPyImage( numpy_image )
+                image_svg_hydrus_bitmap = ClientRendering.generate_hydrus_bitmap_from_num_py_image(numpy_image)
                 
             except Exception as e:
                 
@@ -767,7 +767,7 @@ class ThumbnailCache( object ):
                 
                 numpy_image = HydrusImageHandling.resize_numpy_image( numpy_image, target_resolution )
                 
-                hydrus_bitmap = ClientRendering.GenerateHydrusBitmapFromNumPyImage( numpy_image )
+                hydrus_bitmap = ClientRendering.generate_hydrus_bitmap_from_num_py_image(numpy_image)
                 
                 self._special_thumbs[ mime ] = hydrus_bitmap
                 
@@ -787,7 +787,7 @@ class ThumbnailCache( object ):
             
             for hash in hashes:
                 
-                self._data_cache.DeleteData( hash )
+                self._data_cache.delete_data(hash)
                 
             
         
@@ -841,7 +841,7 @@ class ThumbnailCache( object ):
                 
                 hash = media_result.GetHash()
                 
-                result = self._data_cache.GetIfHasData( hash )
+                result = self._data_cache.get_if_has_data(hash)
                 
                 if result is None:
                     
@@ -854,7 +854,7 @@ class ThumbnailCache( object ):
                         return default_thumb_hydrus_bitmap
                         
                     
-                    self._data_cache.AddData( hash, hydrus_bitmap )
+                    self._data_cache.add_data(hash, hydrus_bitmap)
                     
                 else:
                     
@@ -885,9 +885,9 @@ class ThumbnailCache( object ):
             
             if self._ShouldBeAbleToProvideThumb( media_result ):
                 
-                hash = media_result.GetHash()
+                hash = media_result.get_hash()
                 
-                return self._data_cache.HasData( hash )
+                return self._data_cache.has_data(hash)
                 
             else:
                 
@@ -903,12 +903,12 @@ class ThumbnailCache( object ):
     
     def NotifyNewOptions( self ):
         
-        cache_size = self._controller.new_options.GetInteger( 'thumbnail_cache_size' )
-        cache_timeout = self._controller.new_options.GetInteger( 'thumbnail_cache_timeout' )
+        cache_size = self._controller.new_options.get_integer('thumbnail_cache_size')
+        cache_timeout = self._controller.new_options.get_integer('thumbnail_cache_timeout')
         
-        self._data_cache.SetCacheSizeAndTimeout( cache_size, cache_timeout )
+        self._data_cache.set_cache_size_and_timeout(cache_size, cache_timeout)
         
-        allow_blurhash_fallback = self._controller.new_options.GetBoolean( 'allow_blurhash_fallback' )
+        allow_blurhash_fallback = self._controller.new_options.get_boolean('allow_blurhash_fallback')
         
         if allow_blurhash_fallback != self._allow_blurhash_fallback:
             
@@ -1016,7 +1016,7 @@ class ThumbnailCache( object ):
             
             if HG.file_report_mode:
                 
-                hash = media_result.GetHash()
+                hash = media_result.get_hash()
                 
                 HydrusData.show_text( 'Thumbnail {} now regenerating from source.'.format( hash.hex() ) )
                 
@@ -1031,7 +1031,7 @@ class ThumbnailCache( object ):
                 
             except Exception as e:
                 
-                hash = media_result.GetHash()
+                hash = media_result.get_hash()
                 
                 summary = 'The thumbnail for file {} was incorrect, but a later attempt to regenerate it or load the new file back failed.'.format( hash.hex() )
                 

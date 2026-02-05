@@ -23,10 +23,10 @@ class SystemTrayPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         #
         
-        self._always_show_system_tray_icon.setChecked( self._new_options.GetBoolean( 'always_show_system_tray_icon' ) )
-        self._minimise_client_to_system_tray.setChecked( self._new_options.GetBoolean( 'minimise_client_to_system_tray' ) )
-        self._close_client_to_system_tray.setChecked( self._new_options.GetBoolean( 'close_client_to_system_tray' ) )
-        self._start_client_in_system_tray.setChecked( self._new_options.GetBoolean( 'start_client_in_system_tray' ) )
+        self._always_show_system_tray_icon.setChecked(self._new_options.get_boolean('always_show_system_tray_icon'))
+        self._minimise_client_to_system_tray.setChecked(self._new_options.get_boolean('minimise_client_to_system_tray'))
+        self._close_client_to_system_tray.setChecked(self._new_options.get_boolean('close_client_to_system_tray'))
+        self._start_client_in_system_tray.setChecked(self._new_options.get_boolean('start_client_in_system_tray'))
         
         #
         
@@ -59,7 +59,7 @@ class SystemTrayPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
         elif not HC.PLATFORM_WINDOWS:
             
-            if not CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+            if not CG.client_controller.new_options.get_boolean('advanced_mode'):
                 
                 label = 'This is turned off for non-advanced non-Windows users for now.'
                 
@@ -84,9 +84,9 @@ class SystemTrayPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def UpdateOptions( self ):
         
-        self._new_options.SetBoolean( 'always_show_system_tray_icon', self._always_show_system_tray_icon.isChecked() )
-        self._new_options.SetBoolean( 'minimise_client_to_system_tray', self._minimise_client_to_system_tray.isChecked() )
-        self._new_options.SetBoolean( 'close_client_to_system_tray', self._close_client_to_system_tray.isChecked() )
-        self._new_options.SetBoolean( 'start_client_in_system_tray', self._start_client_in_system_tray.isChecked() )
+        self._new_options.set_boolean('always_show_system_tray_icon', self._always_show_system_tray_icon.isChecked())
+        self._new_options.set_boolean('minimise_client_to_system_tray', self._minimise_client_to_system_tray.isChecked())
+        self._new_options.set_boolean('close_client_to_system_tray', self._close_client_to_system_tray.isChecked())
+        self._new_options.set_boolean('start_client_in_system_tray', self._start_client_in_system_tray.isChecked())
         
     

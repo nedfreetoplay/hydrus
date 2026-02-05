@@ -59,7 +59,7 @@ class StringConverterButton( ClientGUICommon.BetterButton ):
     
     def _UpdateLabel( self ):
         
-        label = self._string_converter.ToString()
+        label = self._string_converter.to_string()
         
         self.setToolTip( ClientGUIFunctions.WrapToolTip( label ) )
         
@@ -121,7 +121,7 @@ class StringMatchButton( ClientGUICommon.BetterButton ):
     
     def _UpdateLabel( self ):
         
-        label = self._string_match.ToString()
+        label = self._string_match.to_string()
         
         self.setText( label )
         
@@ -176,11 +176,11 @@ class StringProcessorButton( ClientGUICommon.BetterButton ):
     
     def _UpdateLabel( self ):
         
-        statements = self._string_processor.GetProcessingStrings()
+        statements = self._string_processor.get_processing_strings()
         
         if len( statements ) == 0:
             
-            label = self._string_processor.ToString()
+            label = self._string_processor.to_string()
             
         else:
             
@@ -261,7 +261,7 @@ class StringProcessorWidget( QW.QWidget ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -336,8 +336,8 @@ class StringMatchToStringMatchDictControl( QW.QWidget ):
         
         ( key_string_match, value_string_match ) = data
         
-        pretty_key = key_string_match.ToString()
-        pretty_value = value_string_match.ToString()
+        pretty_key = key_string_match.to_string()
+        pretty_value = value_string_match.to_string()
         
         return ( pretty_key, pretty_value )
         
@@ -688,7 +688,7 @@ class StringToStringMatchDictControl( QW.QWidget ):
         
         ( key, string_match ) = data
         
-        pretty_string_match = string_match.ToString()
+        pretty_string_match = string_match.to_string()
         
         return ( key, pretty_string_match )
         

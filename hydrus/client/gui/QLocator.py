@@ -1114,7 +1114,7 @@ class QLocatorWidget(QW.QWidget):
         
         import hydrus.client.ClientGlobals as CG
         
-        self.providerDisplayOrder = CG.client_controller.new_options.GetIntegerList( 'command_palette_provider_order' )
+        self.providerDisplayOrder = CG.client_controller.new_options.get_integer_list('command_palette_provider_order')
         
     
     def updateResultListHeight(self):

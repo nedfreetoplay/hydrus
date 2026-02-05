@@ -436,7 +436,7 @@ class PotentialDuplicatePairFactoryMediaResults( PotentialDuplicatePairFactory )
     
     def GetLocationContext( self ) -> ClientLocation.LocationContext:
         
-        return ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+        return ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
         
     
     def GetPotentialDuplicateMediaResultPairsAndDistances( self ) -> ClientPotentialDuplicatesSearchContext.PotentialDuplicateMediaResultPairsAndDistances:

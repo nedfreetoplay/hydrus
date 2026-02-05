@@ -546,7 +546,7 @@ class TimesManager( object ):
             existing_timestamp_ms = self._GetSimpleTimestampMS( timestamp_data.timestamp_type )
             
         
-        if existing_timestamp_ms is None or ClientTime.ShouldUpdateModifiedTime( existing_timestamp_ms, timestamp_data.timestamp_ms ):
+        if existing_timestamp_ms is None or ClientTime.should_update_modified_time(existing_timestamp_ms, timestamp_data.timestamp_ms):
             
             self.SetTime( timestamp_data )
             
@@ -690,7 +690,7 @@ class FileViewingStatsManager( object ):
     
     def ProcessContentUpdate( self, content_update ):
         
-        ( data_type, action, row ) = content_update.ToTuple()
+        ( data_type, action, row ) = content_update.to_tuple()
         
         if action == HC.CONTENT_UPDATE_ADD:
             
@@ -789,7 +789,7 @@ class LocationsManager( object ):
     
     def _AddToService( self, service_key, do_undelete = False, forced_import_time_ms = None ):
         
-        service_type = CG.client_controller.services_manager.GetServiceType( service_key )
+        service_type = CG.client_controller.services_manager.get_service_type(service_key)
         
         if forced_import_time_ms is None:
             
@@ -826,7 +826,7 @@ class LocationsManager( object ):
                 
             
         
-        local_service_keys = CG.client_controller.services_manager.GetServiceKeys( ( HC.LOCAL_FILE_DOMAIN, ) )
+        local_service_keys = CG.client_controller.services_manager.get_service_keys((HC.LOCAL_FILE_DOMAIN,))
         
         if service_key in local_service_keys:
             
@@ -859,7 +859,7 @@ class LocationsManager( object ):
         
         if service_type in HC.FILE_SERVICES_COVERED_BY_COMBINED_DELETED_FILE:
             
-            all_service_keys_covered_by_combined_deleted_files = CG.client_controller.services_manager.GetServiceKeys( HC.FILE_SERVICES_COVERED_BY_COMBINED_DELETED_FILE )
+            all_service_keys_covered_by_combined_deleted_files = CG.client_controller.services_manager.get_service_keys(HC.FILE_SERVICES_COVERED_BY_COMBINED_DELETED_FILE)
             
             if len( self._deleted.intersection( all_service_keys_covered_by_combined_deleted_files ) ) == 0:
                 
@@ -870,7 +870,7 @@ class LocationsManager( object ):
     
     def _DeleteFromService( self, service_key: bytes, reason: str | None ):
         
-        service_type = CG.client_controller.services_manager.GetServiceType( service_key )
+        service_type = CG.client_controller.services_manager.get_service_type(service_key)
         
         if service_key in self._current:
             
@@ -902,7 +902,7 @@ class LocationsManager( object ):
         
         self._petitioned.discard( service_key )
         
-        local_service_keys = CG.client_controller.services_manager.GetServiceKeys( ( HC.LOCAL_FILE_DOMAIN, ) )
+        local_service_keys = CG.client_controller.services_manager.get_service_keys((HC.LOCAL_FILE_DOMAIN,))
         
         if service_key in local_service_keys:
             
@@ -1027,14 +1027,14 @@ class LocationsManager( object ):
         
         service_location_strings = []
         
-        local_file_services = list( CG.client_controller.services_manager.GetServices( ( HC.LOCAL_FILE_DOMAIN, ) ) )
+        local_file_services = list(CG.client_controller.services_manager.get_services((HC.LOCAL_FILE_DOMAIN,)))
         
-        local_file_services.sort( key = lambda s: s.GetName() )
+        local_file_services.sort(key = lambda s: s.get_name())
         
         for local_service in local_file_services:
             
-            name = local_service.GetName()
-            service_key = local_service.GetServiceKey()
+            name = local_service.get_name()
+            service_key = local_service.get_service_key()
             
             if service_key in self._current:
                 
@@ -1042,14 +1042,14 @@ class LocationsManager( object ):
                 
             
         
-        remote_file_services = list( CG.client_controller.services_manager.GetServices( ( HC.FILE_REPOSITORY, HC.IPFS ) ) )
+        remote_file_services = list(CG.client_controller.services_manager.get_services((HC.FILE_REPOSITORY, HC.IPFS)))
         
-        remote_file_services.sort( key = lambda s: s.GetName() )
+        remote_file_services.sort(key = lambda s: s.get_name())
         
         for remote_service in remote_file_services:
             
-            name = remote_service.GetName()
-            service_key = remote_service.GetServiceKey()
+            name = remote_service.get_name()
+            service_key = remote_service.get_service_key()
             
             if service_key in self._pending:
                 
@@ -1110,7 +1110,7 @@ class LocationsManager( object ):
     
     def IsInLocationContext( self, location_context: ClientLocation.LocationContext ):
         
-        if location_context.IsAllKnownFiles():
+        if location_context.is_all_known_files():
             
             return True
             
@@ -1151,7 +1151,7 @@ class LocationsManager( object ):
     
     def ProcessContentUpdate( self, service_key, content_update ):
         
-        ( data_type, action, row ) = content_update.ToTuple()
+        ( data_type, action, row ) = content_update.to_tuple()
         
         if data_type == HC.CONTENT_TYPE_FILES:
             
@@ -1161,7 +1161,7 @@ class LocationsManager( object ):
                     
                     if service_key == CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY:
                         
-                        service_keys = CG.client_controller.services_manager.GetServiceKeys( ( HC.LOCAL_FILE_DOMAIN, HC.HYDRUS_LOCAL_FILE_STORAGE ) )
+                        service_keys = CG.client_controller.services_manager.get_service_keys((HC.LOCAL_FILE_DOMAIN, HC.HYDRUS_LOCAL_FILE_STORAGE))
                         
                     else:
                         
@@ -1196,7 +1196,7 @@ class LocationsManager( object ):
                 
                 try:
                     
-                    service_type = CG.client_controller.services_manager.GetServiceType( service_key )
+                    service_type = CG.client_controller.services_manager.get_service_type(service_key)
                     
                 except HydrusExceptions.DataMissing:
                     
@@ -1234,7 +1234,7 @@ class LocationsManager( object ):
                 
                 if service_key == CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY:
                     
-                    for s_k in CG.client_controller.services_manager.GetServiceKeys( ( HC.LOCAL_FILE_DOMAIN, HC.COMBINED_LOCAL_FILE_DOMAINS ) ):
+                    for s_k in CG.client_controller.services_manager.get_service_keys((HC.LOCAL_FILE_DOMAIN, HC.COMBINED_LOCAL_FILE_DOMAINS)):
                         
                         if s_k in self._current:
                             
@@ -1244,7 +1244,7 @@ class LocationsManager( object ):
                     
                 elif service_key == CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY:
                     
-                    for s_k in CG.client_controller.services_manager.GetServiceKeys( ( HC.HYDRUS_LOCAL_FILE_STORAGE, HC.COMBINED_LOCAL_FILE_DOMAINS, HC.LOCAL_FILE_DOMAIN, HC.LOCAL_FILE_TRASH_DOMAIN, HC.LOCAL_FILE_UPDATE_DOMAIN ) ):
+                    for s_k in CG.client_controller.services_manager.get_service_keys((HC.HYDRUS_LOCAL_FILE_STORAGE, HC.COMBINED_LOCAL_FILE_DOMAINS, HC.LOCAL_FILE_DOMAIN, HC.LOCAL_FILE_TRASH_DOMAIN, HC.LOCAL_FILE_UPDATE_DOMAIN)):
                         
                         if s_k in self._current:
                             
@@ -1261,7 +1261,7 @@ class LocationsManager( object ):
                 
                 if service_key == CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY:
                     
-                    for s_k in CG.client_controller.services_manager.GetServiceKeys( ( HC.LOCAL_FILE_DOMAIN, ) ):
+                    for s_k in CG.client_controller.services_manager.get_service_keys((HC.LOCAL_FILE_DOMAIN,)):
                         
                         if s_k in self._deleted:
                             
@@ -1397,7 +1397,7 @@ class NotesManager( object ):
     
     def ProcessContentUpdate( self, content_update ):
         
-        ( data_type, action, row ) = content_update.ToTuple()
+        ( data_type, action, row ) = content_update.to_tuple()
         
         if action == HC.CONTENT_UPDATE_SET:
             
@@ -1448,7 +1448,7 @@ class RatingsManager( object ):
             
             try:
                 
-                service_type = CG.client_controller.services_manager.GetServiceType( service_key )
+                service_type = CG.client_controller.services_manager.get_service_type(service_key)
                 
             except HydrusExceptions.DataMissing:
                 
@@ -1470,14 +1470,14 @@ class RatingsManager( object ):
         
         try:
             
-            service = CG.client_controller.services_manager.GetService( service_key )
+            service = CG.client_controller.services_manager.get_service(service_key)
             
         except HydrusExceptions.DataMissing:
             
             return None
             
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         if service_key in self._service_keys_to_ratings:
             
@@ -1494,7 +1494,7 @@ class RatingsManager( object ):
                 
             elif service_type == HC.LOCAL_RATING_NUMERICAL:
                 
-                return service.ConvertRatingToStars( rating )
+                return service.convert_rating_to_stars(rating)
                 
             elif service_type == HC.LOCAL_RATING_INCDEC:
                 
@@ -1521,7 +1521,7 @@ class RatingsManager( object ):
     
     def ProcessContentUpdate( self, service_key, content_update ):
         
-        ( data_type, action, row ) = content_update.ToTuple()
+        ( data_type, action, row ) = content_update.to_tuple()
         
         if action == HC.CONTENT_UPDATE_ADD:
             

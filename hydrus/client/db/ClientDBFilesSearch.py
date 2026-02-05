@@ -304,7 +304,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
         
         with self._make_temporary_integer_table( namespace_ids, 'namespace_id' ) as temp_namespace_ids_table_name:
             
-            ( file_service_keys, file_location_is_cross_referenced ) = location_context.GetCoveringCurrentFileServiceKeys()
+            ( file_service_keys, file_location_is_cross_referenced ) = location_context.get_covering_current_file_service_keys()
             
             mapping_and_tag_table_names = set()
             
@@ -329,7 +329,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
             
             if job_status is not None:
                 
-                cancelled_hook = job_status.IsCancelled
+                cancelled_hook = job_status.is_cancelled
                 
             
             for group_of_hash_ids in HydrusLists.split_iterator_into_chunks( hash_ids, BLOCK_SIZE ):
@@ -353,7 +353,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
                     
                     loop_of_results = self._execute_cancellable( query, (), cancelled_hook )
                     
-                    if job_status is not None and job_status.IsCancelled():
+                    if job_status is not None and job_status.is_cancelled():
                         
                         return results
                         
@@ -408,7 +408,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
     
     def GetHashIdsFromTag( self, tag_display_type: int, location_context: ClientLocation.LocationContext, tag_context: ClientSearchTagContext.TagContext, tag, hash_ids = None, hash_ids_table_name = None, job_status = None ):
         
-        ( file_service_keys, file_location_is_cross_referenced ) = location_context.GetCoveringCurrentFileServiceKeys()
+        ( file_service_keys, file_location_is_cross_referenced ) = location_context.get_covering_current_file_service_keys()
         
         if not file_location_is_cross_referenced and hash_ids_table_name is not None:
             
@@ -484,10 +484,10 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
         
         if job_status is not None:
             
-            cancelled_hook = job_status.IsCancelled
+            cancelled_hook = job_status.is_cancelled
             
         
-        ( file_service_keys, file_location_is_cross_referenced ) = location_context.GetCoveringCurrentFileServiceKeys()
+        ( file_service_keys, file_location_is_cross_referenced ) = location_context.get_covering_current_file_service_keys()
         
         if not file_location_is_cross_referenced and hash_ids_table_name is not None:
             
@@ -647,7 +647,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
         
         if job_status is not None:
             
-            cancelled_hook = job_status.IsCancelled
+            cancelled_hook = job_status.is_cancelled
             
         
         if len( tag_ids ) == 1:
@@ -722,7 +722,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
         
         if job_status is not None:
             
-            cancelled_hook = job_status.IsCancelled
+            cancelled_hook = job_status.is_cancelled
             
         
         if len( tag_ids ) == 1:
@@ -783,7 +783,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
         
         results = set()
         
-        ( file_service_keys, file_location_is_cross_referenced ) = location_context.GetCoveringCurrentFileServiceKeys()
+        ( file_service_keys, file_location_is_cross_referenced ) = location_context.get_covering_current_file_service_keys()
         
         if not file_location_is_cross_referenced and hash_ids_table_name is not None:
             
@@ -860,12 +860,12 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
     
     def GetHashIdsThatHaveTagAsNumComplexLocation( self, tag_display_type: int, location_context: ClientLocation.LocationContext, tag_context: ClientSearchTagContext.TagContext, namespace_wildcard, num, operator, hash_ids = None, hash_ids_table_name = None, job_status = None ):
         
-        if location_context.IsEmpty():
+        if location_context.is_empty():
             
             return set()
             
         
-        ( file_service_keys, file_location_is_cross_referenced ) = location_context.GetCoveringCurrentFileServiceKeys()
+        ( file_service_keys, file_location_is_cross_referenced ) = location_context.get_covering_current_file_service_keys()
         
         if not file_location_is_cross_referenced and hash_ids_table_name is not None:
             
@@ -933,7 +933,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
     
     def GetHashIdsThatHaveTagsComplexLocation( self, tag_display_type: int, location_context: ClientLocation.LocationContext, tag_context: ClientSearchTagContext.TagContext, namespace_wildcard = '*', hash_ids_table_name = None, job_status = None ):
         
-        if location_context.IsEmpty():
+        if location_context.is_empty():
             
             return set()
             
@@ -965,7 +965,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
                 namespace_ids_table_name = temp_namespace_ids_table_name
                 
             
-            ( file_service_keys, file_location_is_cross_referenced ) = location_context.GetCoveringCurrentFileServiceKeys()
+            ( file_service_keys, file_location_is_cross_referenced ) = location_context.get_covering_current_file_service_keys()
             
             if not file_location_is_cross_referenced and hash_ids_table_name is not None:
                 
@@ -1031,7 +1031,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
         
         if job_status is not None:
             
-            cancelled_hook = job_status.IsCancelled
+            cancelled_hook = job_status.is_cancelled
             
         
         nonzero_tag_hash_ids = set()
@@ -1040,7 +1040,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
             
             nonzero_tag_hash_ids.update( self._sti( self._execute_cancellable( query, (), cancelled_hook ) ) )
             
-            if job_status is not None and job_status.IsCancelled():
+            if job_status is not None and job_status.is_cancelled():
                 
                 return set()
                 
@@ -1268,9 +1268,9 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                     
                     service_id = self.modules_services.GetServiceId( rating_service_key )
                     
-                    service = CG.client_controller.services_manager.GetService( rating_service_key )
+                    service = CG.client_controller.services_manager.get_service(rating_service_key)
                     
-                    service_type = service.GetServiceType()
+                    service_type = service.get_service_type()
                     
                     if service_type == HC.LOCAL_RATING_INCDEC:
                         
@@ -1444,7 +1444,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         location_context = file_search_context.GetLocationContext()
         tag_context = file_search_context.GetTagContext()
         
-        not_all_known_files = not location_context.IsAllKnownFiles()
+        not_all_known_files = not location_context.is_all_known_files()
         
         we_need_some_results = query_hash_ids is None
         we_need_to_cross_reference = not_all_known_files and not search_state.have_cross_referenced_file_locations
@@ -1453,7 +1453,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         
         if we_need_some_results or we_need_to_cross_reference:
             
-            if location_context.IsAllKnownFiles():
+            if location_context.is_all_known_files():
                 
                 query_hash_ids = intersection_update_qhi( query_hash_ids, self.modules_files_search_tags.GetHashIdsThatHaveTagsComplexLocation( ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, location_context, tag_context, job_status = job_status ) )
                 
@@ -1565,7 +1565,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         
         # hide update files
         
-        if file_search_context.GetLocationContext().IsHydrusLocalFileStorage():
+        if file_search_context.GetLocationContext().is_hydrus_local_file_storage():
             
             repo_update_hash_ids = set( self.modules_files_storage.GetCurrentHashIdsList( self.modules_services.local_update_service_id ) )
             
@@ -1613,9 +1613,9 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                     
                     service_id = self.modules_services.GetServiceId( rating_service_key )
                     
-                    service = CG.client_controller.services_manager.GetService( rating_service_key )
+                    service = CG.client_controller.services_manager.get_service(rating_service_key)
                     
-                    service_type = service.GetServiceType()
+                    service_type = service.get_service_type()
                     
                     if service_type == HC.LOCAL_RATING_INCDEC:
                         
@@ -1926,7 +1926,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                 
             
         
-        if job_status.IsCancelled():
+        if job_status.is_cancelled():
             
             return set()
             
@@ -1934,7 +1934,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         #
         
         file_location_is_all_local = self.modules_services.LocationContextIsCoveredByHydrusLocalFileStorage( location_context )
-        file_location_is_all_hydrus_local_file_storages_deleted = location_context.IsOneDomain() and CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY in location_context.deleted_service_keys
+        file_location_is_all_hydrus_local_file_storages_deleted = location_context.is_one_domain() and CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY in location_context.deleted_service_keys
         
         must_be_local = system_predicates.MustBeLocal() or system_predicates.MustBeArchive()
         must_not_be_local = system_predicates.MustNotBeLocal()
@@ -2052,7 +2052,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                 
             
         
-        if job_status.IsCancelled():
+        if job_status.is_cancelled():
             
             return set()
             
@@ -2087,7 +2087,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
             query_hash_ids.intersection_update( good_hash_ids )
             
         
-        if job_status.IsCancelled():
+        if job_status.is_cancelled():
             
             return set()
             
@@ -2126,7 +2126,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
             
             services = self.modules_services.GetServices( HC.REAL_TAG_SERVICES )
             
-            search_tag_service_keys = [ service.GetServiceKey() for service in services ]
+            search_tag_service_keys = [service.get_service_key() for service in services]
             
         else:
             
@@ -2174,9 +2174,9 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         
         if logical_operator == HC.LOGICAL_OPERATOR_ONLY:
             
-            service_keys_primary = service_specifier_primary.GetSpecificKeys()
+            service_keys_primary = service_specifier_primary.get_specific_keys()
             
-            service_keys_secondary = service_specifier_secondary.GetSpecificKeys().difference( service_keys_primary )
+            service_keys_secondary = service_specifier_secondary.get_specific_keys().difference(service_keys_primary)
             
             # if rated, we are saying: ALL of PRIMARY have, NONE of remainder SECONDARY have
             # if not rated, we are saying: NONE of PRIMARY have, ALL of remainder SECONDARY have
@@ -2213,7 +2213,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
             
             query_hash_ids = self._DoAdvancedRatingPredicate( first_predicate, query_hash_ids, job_status = job_status )
             
-            if job_status is not None and job_status.IsCancelled():
+            if job_status is not None and job_status.is_cancelled():
                 
                 return set()
                 
@@ -2231,7 +2231,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
             
             if job_status is not None:
                 
-                cancelled_hook = job_status.IsCancelled
+                cancelled_hook = job_status.is_cancelled
                 
             
             # could mount the query_hash_ids to a temp table here if we want, but most of the time I think this'll be fast
@@ -2474,7 +2474,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                     # I pass query_hash_ids here to make these inefficient sub-searches (like -tag) potentially much faster
                     or_query_hash_ids.update( self.GetHashIdsFromQuery( or_search_context, job_status, query_hash_ids = query_hash_ids, apply_implicit_limit = False, sort_by = None, limit_sort_by = None ) )
                     
-                    if job_status.IsCancelled():
+                    if job_status.is_cancelled():
                         
                         return set()
                         
@@ -2493,7 +2493,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         
         if job_status is not None:
             
-            cancelled_hook = job_status.IsCancelled
+            cancelled_hook = job_status.is_cancelled
             
         
         system_predicates = file_search_context.GetSystemPredicates()
@@ -2515,19 +2515,19 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                 
             else:
                 
-                service = CG.client_controller.services_manager.GetService( rating_service_key )
+                service = CG.client_controller.services_manager.get_service(rating_service_key)
                 
-                service_type = service.GetServiceType()
+                service_type = service.get_service_type()
                 
                 if service_type in HC.STAR_RATINGS_SERVICES:
                     
-                    if service.GetServiceType() == HC.LOCAL_RATING_LIKE:
+                    if service.get_service_type() == HC.LOCAL_RATING_LIKE:
                         
                         half_a_star_value = 0.5
                         
                     else:
                         
-                        one_star_value = service.GetOneStarValue()
+                        one_star_value = service.get_one_star_value()
                         
                         half_a_star_value = one_star_value / 2
                         
@@ -2675,7 +2675,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         system_predicates = file_search_context.GetSystemPredicates()
         
         location_context = file_search_context.GetLocationContext()
-        not_all_known_files = not location_context.IsAllKnownFiles()
+        not_all_known_files = not location_context.is_all_known_files()
         
         system_pred_type_to_timestamp_ranges_ms = system_predicates.GetTimestampRangesMS()
         
@@ -2683,7 +2683,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         
         if job_status is not None:
             
-            cancelled_hook = job_status.IsCancelled
+            cancelled_hook = job_status.is_cancelled
             
         
         if not_all_known_files:
@@ -2804,7 +2804,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         
         tag_service_key = tag_context.service_key
         
-        if location_context.IsEmpty():
+        if location_context.is_empty():
             
             return []
             
@@ -2899,7 +2899,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
             
             search_state.NotifyDoneOrPreds()
             
-            if job_status.IsCancelled():
+            if job_status.is_cancelled():
                 
                 return []
                 
@@ -2909,7 +2909,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         
         query_hash_ids = self._Do1PreInclusiveTagPreds( file_search_context, job_status, query_hash_ids, db_location_context, search_state )
         
-        if job_status.IsCancelled():
+        if job_status.is_cancelled():
             
             return []
             
@@ -2918,7 +2918,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         
         query_hash_ids = self._Do2InclusiveTagPreds( file_search_context, job_status, query_hash_ids, search_state )
         
-        if job_status.IsCancelled():
+        if job_status.is_cancelled():
             
             return []
             
@@ -2931,7 +2931,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
             
             search_state.NotifyDoneOrPreds()
             
-            if job_status.IsCancelled():
+            if job_status.is_cancelled():
                 
                 return []
                 
@@ -2947,7 +2947,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         
         #
         
-        if job_status.IsCancelled():
+        if job_status.is_cancelled():
             
             return []
             
@@ -2961,7 +2961,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
             
             search_state.NotifyDoneOrPreds()
             
-            if job_status.IsCancelled():
+            if job_status.is_cancelled():
                 
                 return []
                 
@@ -2971,7 +2971,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         
         query_hash_ids = self._Do5ExpensivePostFileCrossReferencePreds( file_search_context, job_status, query_hash_ids, db_location_context, search_state )
         
-        if job_status.IsCancelled():
+        if job_status.is_cancelled():
             
             return []
             
@@ -3071,7 +3071,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                 
                 if sort_data == CC.SORT_FILES_BY_IMPORT_TIME:
                     
-                    if location_context.IsOneDomain() and location_context.IncludesCurrent():
+                    if location_context.is_one_domain() and location_context.includes_current():
                         
                         file_service_key = list( location_context.current_service_keys )[0]
                         
@@ -3120,7 +3120,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                     
                 elif sort_data in ( CC.SORT_FILES_BY_MEDIA_VIEWS, CC.SORT_FILES_BY_MEDIA_VIEWTIME ):
                     
-                    desired_canvas_types = CG.client_controller.new_options.GetIntegerList( 'file_viewing_stats_interesting_canvas_types' )
+                    desired_canvas_types = CG.client_controller.new_options.get_integer_list('file_viewing_stats_interesting_canvas_types')
                     
                     desired_canvas_types_splayed = HydrusLists.splay_list_for_db( desired_canvas_types )
                     

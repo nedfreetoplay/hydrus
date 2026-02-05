@@ -496,7 +496,7 @@ class FilenameTaggingOptionsPanel( QW.QWidget ):
             
             self._tags = ClientGUIListBoxes.ListBoxTagsStringsAddRemove( self._tags_panel, self._service_key, tag_display_type = ClientTags.TAG_DISPLAY_STORAGE )
             
-            default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+            default_location_context = CG.client_controller.new_options.get_default_local_location_context()
             
             self._tag_autocomplete_all = ClientGUIACDropdown.AutoCompleteDropdownTagsWrite( self._tags_panel, self.EnterTags, default_location_context, service_key, show_paste_button = True )
             
@@ -627,7 +627,7 @@ class FilenameTaggingOptionsPanel( QW.QWidget ):
             
             try:
                 
-                raw_text = CG.client_controller.GetClipboardText()
+                raw_text = CG.client_controller.get_clipboard_text()
                 
             except HydrusExceptions.DataMissing as e:
                 
@@ -851,14 +851,14 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
         
         self._notebook.addTab( self._metadata_router_page, 'sidecars' )
         
-        services = CG.client_controller.services_manager.GetServices( HC.REAL_TAG_SERVICES )
+        services = CG.client_controller.services_manager.get_services(HC.REAL_TAG_SERVICES)
         
-        default_tag_service_key = CG.client_controller.new_options.GetKey( 'default_tag_service_tab' )
+        default_tag_service_key = CG.client_controller.new_options.get_key('default_tag_service_tab')
         
         for service in services:
             
-            service_key = service.GetServiceKey()
-            name = service.GetName()
+            service_key = service.get_service_key()
+            name = service.get_name()
             
             page = self._FilenameTaggingOptionsPanel( self._notebook, service_key, paths )
             
@@ -872,7 +872,7 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
             if service_key == default_tag_service_key:
                 
                 # Py 3.11/PyQt6 6.5.0/two tabs/total tab characters > ~12/select second tab = first tab disappears bug
-                CG.client_controller.CallAfterQtSafe( self, self._notebook.setCurrentWidget, page )
+                CG.client_controller.call_after_qt_safe(self, self._notebook.setCurrentWidget, page)
                 
             
         
@@ -886,7 +886,7 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
         
         self._notebook.currentChanged.connect( self._SaveDefaultTagServiceKey )
         
-        CG.client_controller.CallAfterQtSafe( self, self._SetSearchFocus )
+        CG.client_controller.call_after_qt_safe(self, self._SetSearchFocus)
         
     
     def _SaveDefaultTagServiceKey( self ):
@@ -896,13 +896,13 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
             return
             
         
-        if CG.client_controller.new_options.GetBoolean( 'save_default_tag_service_tab_on_change' ):
+        if CG.client_controller.new_options.get_boolean('save_default_tag_service_tab_on_change'):
             
             current_page: EditLocalImportFilenameTaggingPanel._FilenameTaggingOptionsPanel = self._notebook.currentWidget()
             
             if current_page in self._filename_tagging_option_pages:
                 
-                CG.client_controller.new_options.SetKey( 'default_tag_service_tab', current_page.GetServiceKey() )
+                CG.client_controller.new_options.set_key('default_tag_service_tab', current_page.GetServiceKey())
                 
             
         
@@ -1062,7 +1062,7 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
                 self._schedule_refresh_file_list_job = None
                 
             
-            self._schedule_refresh_file_list_job = CG.client_controller.CallLaterQtSafe( self, 0.5, 'refresh path list', self.RefreshFileList )
+            self._schedule_refresh_file_list_job = CG.client_controller.call_later_qt_safe(self, 0.5, 'refresh path list', self.RefreshFileList)
             
         
         def SetSearchFocus( self ):
@@ -1168,7 +1168,7 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
                     continue
                     
                 
-                processed_strings = router.GetStringProcessor().ProcessStrings( pre_processed_strings )
+                processed_strings = router.GetStringProcessor().process_strings(pre_processed_strings)
                 
                 exporter = router.GetExporter()
                 
@@ -1206,7 +1206,7 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
                 self._schedule_refresh_file_list_job = None
                 
             
-            self._schedule_refresh_file_list_job = CG.client_controller.CallLaterQtSafe( self, 0.5, 'refresh path list', self.RefreshFileList )
+            self._schedule_refresh_file_list_job = CG.client_controller.call_later_qt_safe(self, 0.5, 'refresh path list', self.RefreshFileList)
             
         
         def SetSearchFocus( self ):
@@ -1308,7 +1308,7 @@ class EditFilenameTaggingOptionPanel( ClientGUIScrolledPanels.EditPanel ):
             self._schedule_refresh_tags_job = None
             
         
-        self._schedule_refresh_tags_job = CG.client_controller.CallLaterQtSafe( self, 0.5, 'refresh tags', self.RefreshTags )
+        self._schedule_refresh_tags_job = CG.client_controller.call_later_qt_safe(self, 0.5, 'refresh tags', self.RefreshTags)
         
     
 class GalleryImportPanel( ClientGUICommon.StaticBox ):
@@ -1617,14 +1617,14 @@ class GUGKeyAndNameSelector( ClientGUICommon.BetterButton ):
         gugs = list( domain_manager.GetGUGs() )
         gug_keys_to_display = domain_manager.GetGUGKeysToDisplay()
         
-        gugs.sort( key = lambda g: g.GetName() )
+        gugs.sort(key = lambda g: g.get_name())
         
         functional_gugs = []
         non_functional_gugs = []
         
         for gug in gugs:
             
-            if gug.IsFunctional():
+            if gug.is_functional():
                 
                 functional_gugs.append( gug )
                 
@@ -1634,9 +1634,9 @@ class GUGKeyAndNameSelector( ClientGUICommon.BetterButton ):
                 
             
         
-        choice_tuples = [ ( gug.GetName(), gug ) for gug in functional_gugs if gug.GetGUGKey() in gug_keys_to_display ]
+        choice_tuples = [(gug.get_name(), gug) for gug in functional_gugs if gug.GetGUGKey() in gug_keys_to_display]
         
-        second_choice_tuples = [ ( gug.GetName(), gug ) for gug in functional_gugs if gug.GetGUGKey() not in gug_keys_to_display ]
+        second_choice_tuples = [(gug.get_name(), gug) for gug in functional_gugs if gug.GetGUGKey() not in gug_keys_to_display]
         
         if len( second_choice_tuples ) > 0:
             
@@ -1649,15 +1649,15 @@ class GUGKeyAndNameSelector( ClientGUICommon.BetterButton ):
             
             for gug in non_functional_gugs:
                 
-                s = gug.GetName()
+                s = gug.get_name()
                 
                 try:
                     
-                    gug.CheckFunctional()
+                    gug.check_functional()
                     
                 except HydrusExceptions.ParseException as e:
                     
-                    s = '{} ({})'.format( gug.GetName(), e )
+                    s = '{} ({})'.format(gug.get_name(), e)
                     
                 
                 non_functional_choice_tuples.append( ( s, gug ) )

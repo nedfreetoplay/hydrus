@@ -33,14 +33,14 @@ class PopupPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         #
         
-        self._popup_message_character_width.setValue( self._new_options.GetInteger( 'popup_message_character_width' ) )
+        self._popup_message_character_width.setValue(self._new_options.get_integer('popup_message_character_width'))
         
-        self._popup_message_force_min_width.setChecked( self._new_options.GetBoolean( 'popup_message_force_min_width' ) )
+        self._popup_message_force_min_width.setChecked(self._new_options.get_boolean('popup_message_force_min_width'))
         
-        self._freeze_message_manager_when_mouse_on_other_monitor.setChecked( self._new_options.GetBoolean( 'freeze_message_manager_when_mouse_on_other_monitor' ) )
-        self._freeze_message_manager_when_main_gui_minimised.setChecked( self._new_options.GetBoolean( 'freeze_message_manager_when_main_gui_minimised' ) )
+        self._freeze_message_manager_when_mouse_on_other_monitor.setChecked(self._new_options.get_boolean('freeze_message_manager_when_mouse_on_other_monitor'))
+        self._freeze_message_manager_when_main_gui_minimised.setChecked(self._new_options.get_boolean('freeze_message_manager_when_main_gui_minimised'))
         
-        self._notify_client_api_cookies.setChecked( self._new_options.GetBoolean( 'notify_client_api_cookies' ) )
+        self._notify_client_api_cookies.setChecked(self._new_options.get_boolean('notify_client_api_cookies'))
         
         #
         
@@ -66,13 +66,13 @@ class PopupPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def UpdateOptions( self ):
         
-        self._new_options.SetInteger( 'popup_message_character_width', self._popup_message_character_width.value() )
+        self._new_options.set_integer('popup_message_character_width', self._popup_message_character_width.value())
         
-        self._new_options.SetBoolean( 'popup_message_force_min_width', self._popup_message_force_min_width.isChecked() )
+        self._new_options.set_boolean('popup_message_force_min_width', self._popup_message_force_min_width.isChecked())
         
-        self._new_options.SetBoolean( 'freeze_message_manager_when_mouse_on_other_monitor', self._freeze_message_manager_when_mouse_on_other_monitor.isChecked() )
-        self._new_options.SetBoolean( 'freeze_message_manager_when_main_gui_minimised', self._freeze_message_manager_when_main_gui_minimised.isChecked() )
+        self._new_options.set_boolean('freeze_message_manager_when_mouse_on_other_monitor', self._freeze_message_manager_when_mouse_on_other_monitor.isChecked())
+        self._new_options.set_boolean('freeze_message_manager_when_main_gui_minimised', self._freeze_message_manager_when_main_gui_minimised.isChecked())
         
-        self._new_options.SetBoolean( 'notify_client_api_cookies', self._notify_client_api_cookies.isChecked() )
+        self._new_options.set_boolean('notify_client_api_cookies', self._notify_client_api_cookies.isChecked())
         
     

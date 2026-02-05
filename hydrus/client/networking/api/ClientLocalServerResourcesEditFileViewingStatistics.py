@@ -24,7 +24,7 @@ class HydrusResourceClientAPIRestrictedEditFileViewingStatisticsIncrementFileVie
     
     def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        if not CG.client_controller.new_options.GetBoolean( 'file_viewing_statistics_active' ):
+        if not CG.client_controller.new_options.get_boolean('file_viewing_statistics_active'):
             
             raise HydrusExceptions.InsufficientCredentialsException( 'Sorry, the user has disabled file viewing statistics on this client!' )
             
@@ -90,7 +90,7 @@ class HydrusResourceClientAPIRestrictedEditFileViewingStatisticsSetFileViewingSt
     
     def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        if not CG.client_controller.new_options.GetBoolean( 'file_viewing_statistics_active' ):
+        if not CG.client_controller.new_options.get_boolean('file_viewing_statistics_active'):
             
             raise HydrusExceptions.InsufficientCredentialsException( 'Sorry, the user has disabled file viewing statistics on this client!' )
             

@@ -82,35 +82,35 @@ class ThumbnailsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         self._thumbnail_width.setValue( thumbnail_width )
         self._thumbnail_height.setValue( thumbnail_height )
         
-        self._thumbnail_border.setValue( self._new_options.GetInteger( 'thumbnail_border' ) )
-        self._thumbnail_margin.setValue( self._new_options.GetInteger( 'thumbnail_margin' ) )
+        self._thumbnail_border.setValue(self._new_options.get_integer('thumbnail_border'))
+        self._thumbnail_margin.setValue(self._new_options.get_integer('thumbnail_margin'))
         
-        self._thumbnail_scale_type.SetValue( self._new_options.GetInteger( 'thumbnail_scale_type' ) )
-        self._thumbnail_dpr_percentage.setValue( self._new_options.GetInteger( 'thumbnail_dpr_percent' ) )
+        self._thumbnail_scale_type.SetValue(self._new_options.get_integer('thumbnail_scale_type'))
+        self._thumbnail_dpr_percentage.setValue(self._new_options.get_integer('thumbnail_dpr_percent'))
         
-        self._video_thumbnail_percentage_in.setValue( self._new_options.GetInteger( 'video_thumbnail_percentage_in' ) )
+        self._video_thumbnail_percentage_in.setValue(self._new_options.get_integer('video_thumbnail_percentage_in'))
         
-        self._allow_blurhash_fallback.setChecked( self._new_options.GetBoolean( 'allow_blurhash_fallback' ) )
+        self._allow_blurhash_fallback.setChecked(self._new_options.get_boolean('allow_blurhash_fallback'))
         
-        self._fade_thumbnails.setChecked( self._new_options.GetBoolean( 'fade_thumbnails' ) )
+        self._fade_thumbnails.setChecked(self._new_options.get_boolean('fade_thumbnails'))
         
-        self._focus_preview_on_ctrl_click.setChecked( self._new_options.GetBoolean( 'focus_preview_on_ctrl_click' ) )
-        self._focus_preview_on_ctrl_click_only_static.setChecked( self._new_options.GetBoolean( 'focus_preview_on_ctrl_click_only_static' ) )
-        self._focus_preview_on_shift_click.setChecked( self._new_options.GetBoolean( 'focus_preview_on_shift_click' ) )
-        self._focus_preview_on_shift_click_only_static.setChecked( self._new_options.GetBoolean( 'focus_preview_on_shift_click_only_static' ) )
+        self._focus_preview_on_ctrl_click.setChecked(self._new_options.get_boolean('focus_preview_on_ctrl_click'))
+        self._focus_preview_on_ctrl_click_only_static.setChecked(self._new_options.get_boolean('focus_preview_on_ctrl_click_only_static'))
+        self._focus_preview_on_shift_click.setChecked(self._new_options.get_boolean('focus_preview_on_shift_click'))
+        self._focus_preview_on_shift_click_only_static.setChecked(self._new_options.get_boolean('focus_preview_on_shift_click_only_static'))
         
-        self._thumbnail_visibility_scroll_percent.setValue( self._new_options.GetInteger( 'thumbnail_visibility_scroll_percent' ) )
+        self._thumbnail_visibility_scroll_percent.setValue(self._new_options.get_integer('thumbnail_visibility_scroll_percent'))
         
-        self._thumbnail_scroll_rate.setText( self._new_options.GetString( 'thumbnail_scroll_rate' ) )
+        self._thumbnail_scroll_rate.setText(self._new_options.get_string('thumbnail_scroll_rate'))
         
-        media_background_bmp_path = self._new_options.GetNoneableString( 'media_background_bmp_path' )
+        media_background_bmp_path = self._new_options.get_noneable_string('media_background_bmp_path')
         
         if media_background_bmp_path is not None:
             
             self._media_background_bmp_path.SetPath( media_background_bmp_path )
             
         
-        self._show_extended_single_file_info_in_status_bar.setChecked( self._new_options.GetBoolean( 'show_extended_single_file_info_in_status_bar' ) )
+        self._show_extended_single_file_info_in_status_bar.setChecked(self._new_options.get_boolean('show_extended_single_file_info_in_status_bar'))
         
         #
         
@@ -182,24 +182,24 @@ class ThumbnailsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         HC.options[ 'thumbnail_dimensions' ] = new_thumbnail_dimensions
         
-        self._new_options.SetInteger( 'thumbnail_border', self._thumbnail_border.value() )
-        self._new_options.SetInteger( 'thumbnail_margin', self._thumbnail_margin.value() )
+        self._new_options.set_integer('thumbnail_border', self._thumbnail_border.value())
+        self._new_options.set_integer('thumbnail_margin', self._thumbnail_margin.value())
         
-        self._new_options.SetInteger( 'thumbnail_scale_type', self._thumbnail_scale_type.GetValue() )
-        self._new_options.SetInteger( 'thumbnail_dpr_percent', self._thumbnail_dpr_percentage.value() )
+        self._new_options.set_integer('thumbnail_scale_type', self._thumbnail_scale_type.GetValue())
+        self._new_options.set_integer('thumbnail_dpr_percent', self._thumbnail_dpr_percentage.value())
         
-        self._new_options.SetInteger( 'video_thumbnail_percentage_in', self._video_thumbnail_percentage_in.value() )
+        self._new_options.set_integer('video_thumbnail_percentage_in', self._video_thumbnail_percentage_in.value())
         
-        self._new_options.SetBoolean( 'focus_preview_on_ctrl_click', self._focus_preview_on_ctrl_click.isChecked() )
-        self._new_options.SetBoolean( 'focus_preview_on_ctrl_click_only_static', self._focus_preview_on_ctrl_click_only_static.isChecked() )
-        self._new_options.SetBoolean( 'focus_preview_on_shift_click', self._focus_preview_on_shift_click.isChecked() )
-        self._new_options.SetBoolean( 'focus_preview_on_shift_click_only_static', self._focus_preview_on_shift_click_only_static.isChecked() )
+        self._new_options.set_boolean('focus_preview_on_ctrl_click', self._focus_preview_on_ctrl_click.isChecked())
+        self._new_options.set_boolean('focus_preview_on_ctrl_click_only_static', self._focus_preview_on_ctrl_click_only_static.isChecked())
+        self._new_options.set_boolean('focus_preview_on_shift_click', self._focus_preview_on_shift_click.isChecked())
+        self._new_options.set_boolean('focus_preview_on_shift_click_only_static', self._focus_preview_on_shift_click_only_static.isChecked())
         
-        self._new_options.SetBoolean( 'allow_blurhash_fallback', self._allow_blurhash_fallback.isChecked() )
+        self._new_options.set_boolean('allow_blurhash_fallback', self._allow_blurhash_fallback.isChecked())
         
-        self._new_options.SetBoolean( 'fade_thumbnails', self._fade_thumbnails.isChecked() )
+        self._new_options.set_boolean('fade_thumbnails', self._fade_thumbnails.isChecked())
         
-        self._new_options.SetBoolean( 'show_extended_single_file_info_in_status_bar', self._show_extended_single_file_info_in_status_bar.isChecked() )
+        self._new_options.set_boolean('show_extended_single_file_info_in_status_bar', self._show_extended_single_file_info_in_status_bar.isChecked())
         
         try:
             
@@ -207,14 +207,14 @@ class ThumbnailsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
             float( thumbnail_scroll_rate )
             
-            self._new_options.SetString( 'thumbnail_scroll_rate', thumbnail_scroll_rate )
+            self._new_options.set_string('thumbnail_scroll_rate', thumbnail_scroll_rate)
             
         except:
             
             pass
             
         
-        self._new_options.SetInteger( 'thumbnail_visibility_scroll_percent', self._thumbnail_visibility_scroll_percent.value() )
+        self._new_options.set_integer('thumbnail_visibility_scroll_percent', self._thumbnail_visibility_scroll_percent.value())
         
         media_background_bmp_path = self._media_background_bmp_path.GetPath()
         
@@ -223,6 +223,6 @@ class ThumbnailsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             media_background_bmp_path = None
             
         
-        self._new_options.SetNoneableString( 'media_background_bmp_path', media_background_bmp_path )
+        self._new_options.set_noneable_string('media_background_bmp_path', media_background_bmp_path)
         
     

@@ -227,9 +227,9 @@ class EditNetworkContextPanel( ClientGUIScrolledPanels.EditPanel ):
         
         self._context_data_services = ClientGUICommon.BetterChoice( self )
         
-        for service in CG.client_controller.services_manager.GetServices( HC.REPOSITORIES ):
+        for service in CG.client_controller.services_manager.get_services(HC.REPOSITORIES):
             
-            self._context_data_services.addItem( service.GetName(), service.GetServiceKey() )
+            self._context_data_services.addItem(service.get_name(), service.get_service_key())
             
         
         self._context_data_subscriptions = ClientGUICommon.BetterChoice( self )
@@ -429,7 +429,7 @@ class EditNetworkContextCustomHeadersPanel( ClientGUIScrolledPanels.EditPanel ):
         
         ( network_context, ( key, value ), approved, reason ) = data
         
-        pretty_network_context = network_context.ToString()
+        pretty_network_context = network_context.to_string()
         
         pretty_key_value = key + ': ' + value
         
@@ -446,7 +446,7 @@ class EditNetworkContextCustomHeadersPanel( ClientGUIScrolledPanels.EditPanel ):
         
         ( network_context, ( key, value ), approved, reason ) = data
         
-        pretty_network_context = network_context.ToString()
+        pretty_network_context = network_context.to_string()
         
         pretty_approved = ClientNetworkingDomain.valid_desc_lookup[ approved ]
         
@@ -594,7 +594,7 @@ class NetworkContextButton( ClientGUICommon.BetterButton ):
     
     def __init__( self, parent, network_context, limited_types = None, allow_default = True ):
         
-        super().__init__( parent, network_context.ToString(), self._Edit )
+        super().__init__(parent, network_context.to_string(), self._Edit)
         
         self._network_context = network_context
         self._limited_types = limited_types
@@ -620,7 +620,7 @@ class NetworkContextButton( ClientGUICommon.BetterButton ):
     
     def _Update( self ):
         
-        self.setText( self._network_context.ToString() )
+        self.setText(self._network_context.to_string())
         
     
     def GetValue( self ):
@@ -668,7 +668,7 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         #
         
-        last_review_bandwidth_search_distance = self._controller.new_options.GetNoneableInteger( 'last_review_bandwidth_search_distance' )
+        last_review_bandwidth_search_distance = self._controller.new_options.get_noneable_integer('last_review_bandwidth_search_distance')
         
         if last_review_bandwidth_search_distance is None:
             
@@ -684,7 +684,7 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         self._bandwidths.Sort()
         
-        self._update_job = CG.client_controller.CallRepeatingQtSafe( self, 0.5, 5.0, 'repeating all bandwidth status update', self._Update )
+        self._update_job = CG.client_controller.call_repeating_qt_safe(self, 0.5, 5.0, 'repeating all bandwidth status update', self._Update)
         
         #
         
@@ -738,7 +738,7 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         pretty_search_usage = HydrusData.to_human_bytes( search_usage_data ) + ' in ' + HydrusNumbers.to_human_int( search_usage_requests ) + ' requests'
         
-        pretty_network_context = network_context.ToString()
+        pretty_network_context = network_context.to_string()
         pretty_context_type = CC.network_context_type_string_lookup[ network_context.context_type ]
         
         if current_usage == 0:
@@ -847,7 +847,7 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         choice_tuples = [ ( 'global', ( ClientNetworkingContexts.GLOBAL_NETWORK_CONTEXT, self._controller.network_engine.bandwidth_manager.GetRules( ClientNetworkingContexts.GLOBAL_NETWORK_CONTEXT ) ) ) ]
         
-        choice_tuples.extend( [ ( network_context.ToString() + ' (' + str( len( bandwidth_rules.GetRules() ) ) + ' rules)', ( network_context, bandwidth_rules ) ) for ( network_context, bandwidth_rules ) in network_contexts_and_bandwidth_rules ] )
+        choice_tuples.extend([(network_context.to_string() + ' (' + str(len(bandwidth_rules.GetRules())) + ' rules)', (network_context, bandwidth_rules)) for (network_context, bandwidth_rules) in network_contexts_and_bandwidth_rules])
         
         try:
             
@@ -858,7 +858,7 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
             return
             
         
-        with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit bandwidth rules for ' + network_context.ToString() ) as dlg_2:
+        with ClientGUITopLevelWindowsPanels.DialogEdit(self, 'edit bandwidth rules for ' + network_context.to_string()) as dlg_2:
             
             summary = network_context.GetSummary()
             
@@ -883,7 +883,7 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            ClientDefaults.SetDefaultBandwidthManagerRules( self._controller.network_engine.bandwidth_manager )
+            ClientDefaults.set_default_bandwidth_manager_rules(self._controller.network_engine.bandwidth_manager)
             
         
     
@@ -935,7 +935,7 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
             last_review_bandwidth_search_distance = self._history_time_delta_threshold.GetValue()
             
         
-        self._controller.new_options.SetNoneableInteger( 'last_review_bandwidth_search_distance', last_review_bandwidth_search_distance )
+        self._controller.new_options.set_noneable_integer('last_review_bandwidth_search_distance', last_review_bandwidth_search_distance)
         
         self._update_job.wake()
         
@@ -946,7 +946,7 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             parent = self.window().parentWidget()
             
-            frame = ClientGUITopLevelWindowsPanels.FrameThatTakesScrollablePanel( parent, 'review bandwidth for ' + network_context.ToString() )
+            frame = ClientGUITopLevelWindowsPanels.FrameThatTakesScrollablePanel(parent, 'review bandwidth for ' + network_context.to_string())
             
             panel = ReviewNetworkContextBandwidthPanel( frame, self._controller, network_context )
             
@@ -973,7 +973,7 @@ class ReviewNetworkContextBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         description = CC.network_context_type_description_lookup[ self._network_context.context_type ]
         
-        self._name = ClientGUICommon.BetterStaticText( info_panel, label = self._network_context.ToString() )
+        self._name = ClientGUICommon.BetterStaticText(info_panel, label = self._network_context.to_string())
         self._description = ClientGUICommon.BetterStaticText( info_panel, label = description )
         
         #
@@ -1080,14 +1080,14 @@ class ReviewNetworkContextBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         #
         
-        self._rules_job = CG.client_controller.CallRepeatingQtSafe( self, 0.0, 5.0, 'repeating bandwidth rules update', self._UpdateRules )
+        self._rules_job = CG.client_controller.call_repeating_qt_safe(self, 0.0, 5.0, 'repeating bandwidth rules update', self._UpdateRules)
         
-        self._update_job = CG.client_controller.CallRepeatingQtSafe( self, 0.0, 1.0, 'repeating bandwidth status update', self._Update )
+        self._update_job = CG.client_controller.call_repeating_qt_safe(self, 0.0, 1.0, 'repeating bandwidth status update', self._Update)
         
     
     def _EditRules( self ):
         
-        with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit bandwidth rules for ' + self._network_context.ToString() ) as dlg:
+        with ClientGUITopLevelWindowsPanels.DialogEdit(self, 'edit bandwidth rules for ' + self._network_context.to_string()) as dlg:
             
             summary = self._network_context.GetSummary()
             
@@ -1477,7 +1477,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         session = self._session_manager.GetSession( network_context )
         
-        pretty_network_context = network_context.ToString()
+        pretty_network_context = network_context.to_string()
         
         number_of_cookies = len( session.cookies )
         pretty_number_of_cookies = HydrusNumbers.to_human_int( number_of_cookies )
@@ -1517,7 +1517,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         session = self._session_manager.GetSession( network_context )
         
-        pretty_network_context = network_context.ToString()
+        pretty_network_context = network_context.to_string()
         
         number_of_cookies = len( session.cookies )
         
@@ -1633,7 +1633,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -1722,7 +1722,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             parent = self.window().parentWidget()
             
-            frame = ClientGUITopLevelWindowsPanels.FrameThatTakesScrollablePanel( parent, 'review session for ' + network_context.ToString() )
+            frame = ClientGUITopLevelWindowsPanels.FrameThatTakesScrollablePanel(parent, 'review session for ' + network_context.to_string())
             
             panel = ReviewNetworkSessionPanel( frame, self._session_manager, network_context )
             
@@ -2018,7 +2018,7 @@ class ReviewNetworkSessionPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             

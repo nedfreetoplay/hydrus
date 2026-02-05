@@ -182,7 +182,7 @@ class DB( HydrusDB.HydrusDB ):
     
     def _add_service( self, service ):
         
-        ( service_key, service_type, name, port, dictionary ) = service.ToTuple()
+        ( service_key, service_type, name, port, dictionary ) = service.to_tuple()
         
         dictionary_string = dictionary.DumpToString()
         
@@ -1726,7 +1726,7 @@ class DB( HydrusDB.HydrusDB ):
         
         current_service_keys = { service_key for ( service_key, ) in self._execute( 'SELECT service_key FROM services;' ) }
         
-        future_service_keys = { service.GetServiceKey() for service in services }
+        future_service_keys = {service.get_service_key() for service in services}
         
         for service_key in current_service_keys:
             
@@ -1740,11 +1740,11 @@ class DB( HydrusDB.HydrusDB ):
         
         for service in services:
             
-            service_key = service.GetServiceKey()
+            service_key = service.get_service_key()
             
             if service_key in current_service_keys:
                 
-                ( service_key, service_type, name, port, dictionary ) = service.ToTuple()
+                ( service_key, service_type, name, port, dictionary ) = service.to_tuple()
                 
                 service_id = self._get_service_id( service_key )
                 
@@ -3129,24 +3129,24 @@ class DB( HydrusDB.HydrusDB ):
         
         petition_count_info = []
         
-        if account.HasPermission( HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_MODERATE ):
+        if account.has_permission(HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_MODERATE):
             
             petition_count_info.append( ( HC.CONTENT_TYPE_FILES, HC.CONTENT_STATUS_PETITIONED, HC.SERVICE_INFO_NUM_ACTIONABLE_FILE_DELETE_PETITIONS ) )
             
         
-        if account.HasPermission( HC.CONTENT_TYPE_MAPPINGS, HC.PERMISSION_ACTION_MODERATE ):
+        if account.has_permission(HC.CONTENT_TYPE_MAPPINGS, HC.PERMISSION_ACTION_MODERATE):
             
             petition_count_info.append( ( HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_STATUS_PETITIONED, HC.SERVICE_INFO_NUM_ACTIONABLE_MAPPING_DELETE_PETITIONS ) )
             
         
-        if account.HasPermission( HC.CONTENT_TYPE_TAG_PARENTS, HC.PERMISSION_ACTION_MODERATE ):
+        if account.has_permission(HC.CONTENT_TYPE_TAG_PARENTS, HC.PERMISSION_ACTION_MODERATE):
             
             petition_count_info.append( ( HC.CONTENT_TYPE_TAG_PARENTS, HC.CONTENT_STATUS_PENDING, HC.SERVICE_INFO_NUM_ACTIONABLE_PARENT_ADD_PETITIONS ) )
             
             petition_count_info.append( ( HC.CONTENT_TYPE_TAG_PARENTS, HC.CONTENT_STATUS_PETITIONED, HC.SERVICE_INFO_NUM_ACTIONABLE_PARENT_DELETE_PETITIONS ) )
             
         
-        if account.HasPermission( HC.CONTENT_TYPE_TAG_SIBLINGS, HC.PERMISSION_ACTION_MODERATE ):
+        if account.has_permission(HC.CONTENT_TYPE_TAG_SIBLINGS, HC.PERMISSION_ACTION_MODERATE):
             
             petition_count_info.append( ( HC.CONTENT_TYPE_TAG_SIBLINGS, HC.CONTENT_STATUS_PENDING, HC.SERVICE_INFO_NUM_ACTIONABLE_SIBLING_ADD_PETITIONS ) )
             
@@ -4154,7 +4154,7 @@ class DB( HydrusDB.HydrusDB ):
     
     def _repository_process_add_file( self, service, account, file_dict, timestamp ):
         
-        service_key = service.GetServiceKey()
+        service_key = service.get_service_key()
         
         service_id = self._get_service_id( service_key )
         
@@ -4162,8 +4162,8 @@ class DB( HydrusDB.HydrusDB ):
         
         account_id = self._get_account_id( account_key )
         
-        can_create_files = account.HasPermission( HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_CREATE )
-        can_moderate_files = account.HasPermission( HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_MODERATE )
+        can_create_files = account.has_permission(HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_CREATE)
+        can_moderate_files = account.has_permission(HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_MODERATE)
         
         # later add pend file here however that is neat
         
@@ -4899,7 +4899,7 @@ class DB( HydrusDB.HydrusDB ):
             
             self._execute( 'UPDATE accounts SET dictionary_string = ? WHERE account_key = ?;', ( dictionary_string, sqlite3.Binary( account_key ) ) )
             
-            account.SetClean()
+            account.set_clean()
             
         
     
@@ -4922,13 +4922,13 @@ class DB( HydrusDB.HydrusDB ):
         
         for service in services:
             
-            ( service_key, service_type, name, port, dictionary ) = service.ToTuple()
+            ( service_key, service_type, name, port, dictionary ) = service.to_tuple()
             
             dictionary_string = dictionary.DumpToString()
             
             self._execute( 'UPDATE services SET dictionary_string = ? WHERE service_key = ?;', ( dictionary_string, sqlite3.Binary( service_key ) ) )
             
-            service.SetClean()
+            service.set_clean()
             
         
     

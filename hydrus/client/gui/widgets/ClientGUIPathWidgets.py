@@ -134,7 +134,7 @@ class FilePickerCtrl( QW.QWidget ):
         
         options = QW.QFileDialog.Option.DontResolveSymlinks
         
-        if CG.client_controller.new_options.GetBoolean( 'use_qt_file_dialogs' ):
+        if CG.client_controller.new_options.get_boolean('use_qt_file_dialogs'):
             
             # careful here, QW.QFileDialog.Options doesn't exist on PyQt6
             options |= QW.QFileDialog.Option.DontUseNativeDialog

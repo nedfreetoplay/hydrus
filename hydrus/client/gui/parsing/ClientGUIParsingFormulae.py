@@ -377,7 +377,7 @@ class EditFormulaPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -410,7 +410,7 @@ class EditFormulaPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 try:
                     
-                    payload = ClientSerialisable.LoadFromPNG( path )
+                    payload = ClientSerialisable.load_from_png(path)
                     
                 except Exception as e:
                     
@@ -472,7 +472,7 @@ class EditHTMLTagRulePanel( ClientGUIScrolledPanels.EditPanel ):
         
         super().__init__( parent )
         
-        ( rule_type, tag_name, tag_attributes, tag_index, tag_depth, should_test_tag_string, tag_string_string_match ) = tag_rule.ToTuple()
+        ( rule_type, tag_name, tag_attributes, tag_index, tag_depth, should_test_tag_string, tag_string_string_match ) = tag_rule.to_tuple()
         
         if tag_name is None:
             

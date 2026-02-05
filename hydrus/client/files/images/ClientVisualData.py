@@ -45,7 +45,7 @@ class EdgeMap( ClientCachesBase.CacheableObject ):
         self.edge_map_b = edge_map_b
         
     
-    def GetEstimatedMemoryFootprint( self ) -> int:
+    def get_estimated_memory_footprint(self) -> int:
         
         # this is not a small object mate. maybe we'll scale down a little, let's see the accuracy of this thing
         
@@ -53,7 +53,7 @@ class EdgeMap( ClientCachesBase.CacheableObject ):
         return 4 * EDGE_MAP_NORMALISED_RESOLUTION[0] * EDGE_MAP_NORMALISED_RESOLUTION[1] * 3
         
     
-    def IsFinishedLoading( self ):
+    def is_finished_loading(self):
         
         return True
         
@@ -68,13 +68,13 @@ class LabHistograms( ClientCachesBase.CacheableObject ):
         self.b_hist = b_hist
         
     
-    def GetEstimatedMemoryFootprint( self ) -> int:
+    def get_estimated_memory_footprint(self) -> int:
         
         # float32
         return 4 * LAB_HISTOGRAM_NUM_BINS * 3
         
     
-    def IsFinishedLoading( self ):
+    def is_finished_loading(self):
         
         return True
         
@@ -94,10 +94,10 @@ class VisualData( ClientCachesBase.CacheableObject ):
         self.alpha_hist = alpha_hist
         
     
-    def GetEstimatedMemoryFootprint( self ) -> int:
+    def get_estimated_memory_footprint(self) -> int:
         
         # float32
-        return self.lab_histograms.GetEstimatedMemoryFootprint()
+        return self.lab_histograms.get_estimated_memory_footprint()
         
     
     def HasAlpha( self ):
@@ -105,7 +105,7 @@ class VisualData( ClientCachesBase.CacheableObject ):
         return self.alpha_hist is not None
         
     
-    def IsFinishedLoading( self ):
+    def is_finished_loading(self):
         
         return True
         
@@ -131,12 +131,12 @@ class VisualDataTiled( ClientCachesBase.CacheableObject ):
         self.edge_map = edge_map
         
     
-    def GetEstimatedMemoryFootprint( self ) -> int:
+    def get_estimated_memory_footprint(self) -> int:
         
-        return sum( ( histogram.GetEstimatedMemoryFootprint() for histogram in self.histograms ) ) + self.edge_map.GetEstimatedMemoryFootprint()
+        return sum((histogram.get_estimated_memory_footprint() for histogram in self.histograms)) + self.edge_map.get_estimated_memory_footprint()
         
     
-    def IsFinishedLoading( self ):
+    def is_finished_loading(self):
         
         return True
         

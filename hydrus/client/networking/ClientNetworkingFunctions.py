@@ -255,7 +255,7 @@ def ConvertPathTextToList( path: str ) -> list[ str ]:
     # https://img2.gelbooru.com//images/80/c8/80c8646b4a49395fb36c805f316c49a9.jpg
     # We have a bunch of legacy URLs where I collapsed starting // down to /. Oh well!
     
-    if CG.client_controller.new_options.GetBoolean( 'remove_leading_url_double_slashes' ):
+    if CG.client_controller.new_options.get_boolean('remove_leading_url_double_slashes'):
         
         # old legacy way
         while path.startswith( '/' ):
@@ -427,13 +427,13 @@ def GetCookie( cookies, search_domain, cookie_name_string_match ):
     
     for cookie in cookies:
         
-        if CookieDomainMatches( cookie, search_domain ) and cookie_name_string_match.Matches( cookie.name ):
+        if CookieDomainMatches( cookie, search_domain ) and cookie_name_string_match.matches(cookie.name):
             
             return cookie
             
         
     
-    raise HydrusExceptions.DataMissing( 'Cookie "' + cookie_name_string_match.ToString() + '" not found for domain ' + search_domain + '!' )
+    raise HydrusExceptions.DataMissing( 'Cookie "' + cookie_name_string_match.to_string() + '" not found for domain ' + search_domain + '!')
     
 
 def GetSearchURLs( url ):

@@ -59,7 +59,7 @@ class GUICore( QC.QObject ):
             
             # Ok, seems like Big Sur can't do menus at the moment lmao. it shows the menu but the mouse can't interact with it
             
-            if CG.client_controller.new_options.GetBoolean( 'do_macos_debug_dialog_menus' ):
+            if CG.client_controller.new_options.get_boolean('do_macos_debug_dialog_menus'):
                 
                 from hydrus.client.gui import ClientGUICoreMenuDebug
                 

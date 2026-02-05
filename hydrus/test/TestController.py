@@ -127,12 +127,12 @@ class MockServicesManager( object ):
     
     def __init__( self, services ):
         
-        self._service_keys_to_services = { service.GetServiceKey() : service for service in services }
+        self._service_keys_to_services = {service.get_service_key() : service for service in services}
         
     
     def GetName( self, service_key ):
         
-        return self._service_keys_to_services[ service_key ].GetName()
+        return self._service_keys_to_services[ service_key ].get_name()
         
     
     def GetService( self, service_key ):
@@ -229,7 +229,7 @@ class Controller( object ):
         
         self.new_options = ClientOptions.ClientOptions()
         
-        HC.options = ClientDefaults.GetClientDefaultOptions()
+        HC.options = ClientDefaults.get_client_default_options()
         
         self.options = HC.options
         
@@ -240,7 +240,7 @@ class Controller( object ):
         self._name_read_responses = {}
         
         self._name_read_responses[ 'messaging_sessions' ] = []
-        self._name_read_responses[ 'options' ] = ClientDefaults.GetClientDefaultOptions()
+        self._name_read_responses[ 'options' ] = ClientDefaults.get_client_default_options()
         self._name_read_responses[ 'file_system_predicates' ] = []
         self._name_read_responses[ 'media_results' ] = []
         
@@ -257,28 +257,28 @@ class Controller( object ):
         
         services = []
         
-        services.append( ClientServices.GenerateService( CC.CLIENT_API_SERVICE_KEY, HC.CLIENT_API_SERVICE, 'client api' ) )
-        services.append( ClientServices.GenerateService( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, HC.HYDRUS_LOCAL_FILE_STORAGE, 'hydrus local file storage' ) )
-        services.append( ClientServices.GenerateService( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, HC.COMBINED_LOCAL_FILE_DOMAINS, 'combined local file domains' ) )
-        services.append( ClientServices.GenerateService( CC.LOCAL_FILE_SERVICE_KEY, HC.LOCAL_FILE_DOMAIN, 'my files' ) )
-        services.append( ClientServices.GenerateService( CC.LOCAL_UPDATE_SERVICE_KEY, HC.LOCAL_FILE_UPDATE_DOMAIN, 'repository updates' ) )
-        services.append( ClientServices.GenerateService( CC.TRASH_SERVICE_KEY, HC.LOCAL_FILE_TRASH_DOMAIN, 'trash' ) )
-        services.append( ClientServices.GenerateService( CC.DEFAULT_LOCAL_TAG_SERVICE_KEY, HC.LOCAL_TAG, 'my tags' ) )
-        services.append( ClientServices.GenerateService( self.example_file_repo_service_key_1, HC.FILE_REPOSITORY, 'example file repo 1' ) )
-        services.append( ClientServices.GenerateService( self.example_file_repo_service_key_2, HC.FILE_REPOSITORY, 'example file repo 2' ) )
-        services.append( ClientServices.GenerateService( self.example_tag_repo_service_key, HC.TAG_REPOSITORY, 'example tag repo' ) )
-        services.append( ClientServices.GenerateService( CC.COMBINED_TAG_SERVICE_KEY, HC.COMBINED_TAG, 'all known tags' ) )
-        services.append( ClientServices.GenerateService( CC.COMBINED_FILE_SERVICE_KEY, HC.COMBINED_FILE, 'all known files' ) )
+        services.append(ClientServices.generate_service(CC.CLIENT_API_SERVICE_KEY, HC.CLIENT_API_SERVICE, 'client api'))
+        services.append(ClientServices.generate_service(CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, HC.HYDRUS_LOCAL_FILE_STORAGE, 'hydrus local file storage'))
+        services.append(ClientServices.generate_service(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, HC.COMBINED_LOCAL_FILE_DOMAINS, 'combined local file domains'))
+        services.append(ClientServices.generate_service(CC.LOCAL_FILE_SERVICE_KEY, HC.LOCAL_FILE_DOMAIN, 'my files'))
+        services.append(ClientServices.generate_service(CC.LOCAL_UPDATE_SERVICE_KEY, HC.LOCAL_FILE_UPDATE_DOMAIN, 'repository updates'))
+        services.append(ClientServices.generate_service(CC.TRASH_SERVICE_KEY, HC.LOCAL_FILE_TRASH_DOMAIN, 'trash'))
+        services.append(ClientServices.generate_service(CC.DEFAULT_LOCAL_TAG_SERVICE_KEY, HC.LOCAL_TAG, 'my tags'))
+        services.append(ClientServices.generate_service(self.example_file_repo_service_key_1, HC.FILE_REPOSITORY, 'example file repo 1'))
+        services.append(ClientServices.generate_service(self.example_file_repo_service_key_2, HC.FILE_REPOSITORY, 'example file repo 2'))
+        services.append(ClientServices.generate_service(self.example_tag_repo_service_key, HC.TAG_REPOSITORY, 'example tag repo'))
+        services.append(ClientServices.generate_service(CC.COMBINED_TAG_SERVICE_KEY, HC.COMBINED_TAG, 'all known tags'))
+        services.append(ClientServices.generate_service(CC.COMBINED_FILE_SERVICE_KEY, HC.COMBINED_FILE, 'all known files'))
         
-        service = typing.cast( ClientServices.ServiceLocalRatingLike, ClientServices.GenerateService( LOCAL_RATING_LIKE_SERVICE_KEY, HC.LOCAL_RATING_LIKE, 'example local rating like service' ) )
+        service = typing.cast(ClientServices.ServiceLocalRatingLike, ClientServices.generate_service(LOCAL_RATING_LIKE_SERVICE_KEY, HC.LOCAL_RATING_LIKE, 'example local rating like service'))
         service._shape = None
         service._rating_svg = 'star'
         services.append( service )
         
-        services.append( ClientServices.GenerateService( LOCAL_RATING_NUMERICAL_SERVICE_KEY, HC.LOCAL_RATING_NUMERICAL, 'example local rating numerical service' ) )
-        services.append( ClientServices.GenerateService( LOCAL_RATING_INCDEC_SERVICE_KEY, HC.LOCAL_RATING_INCDEC, 'example local rating inc/dec service' ) )
-        services.append( ClientServices.GenerateService( self.example_ipfs_service_key, HC.IPFS, 'example ipfs service' ) )
-        services.append( ClientServices.GenerateService( CC.COMBINED_DELETED_FILE_SERVICE_KEY, HC.COMBINED_DELETED_FILE, 'deleted from anywhere' ) ),
+        services.append(ClientServices.generate_service(LOCAL_RATING_NUMERICAL_SERVICE_KEY, HC.LOCAL_RATING_NUMERICAL, 'example local rating numerical service'))
+        services.append(ClientServices.generate_service(LOCAL_RATING_INCDEC_SERVICE_KEY, HC.LOCAL_RATING_INCDEC, 'example local rating inc/dec service'))
+        services.append(ClientServices.generate_service(self.example_ipfs_service_key, HC.IPFS, 'example ipfs service'))
+        services.append(ClientServices.generate_service(CC.COMBINED_DELETED_FILE_SERVICE_KEY, HC.COMBINED_DELETED_FILE, 'deleted from anywhere')),
         
         self._name_read_responses[ 'services' ] = services
         
@@ -319,7 +319,7 @@ class Controller( object ):
         session_manager = ClientNetworkingSessions.NetworkSessionManager()
         domain_manager = ClientNetworkingDomain.NetworkDomainManager()
         
-        ClientDefaults.SetDefaultDomainManagerData( domain_manager )
+        ClientDefaults.set_default_domain_manager_data(domain_manager)
         
         login_manager = ClientNetworkingLogin.NetworkLoginManager()
         
@@ -415,15 +415,15 @@ class Controller( object ):
                 
                 result = func( *args, **kwargs )
                 
-                job_status.SetVariable( 'result', result )
+                job_status.set_variable('result', result)
                 
             except Exception as e:
                 
-                job_status.SetErrorException( e )
+                job_status.set_error_exception(e)
                 
             finally:
                 
-                job_status.Finish()
+                job_status.finish()
                 
             
         
@@ -436,9 +436,9 @@ class Controller( object ):
         
         self.CallAfterQtSafe( win, qt_code, win, job_status )
         
-        done_event = job_status.GetDoneEvent()
+        done_event = job_status.get_done_event()
         
-        while not job_status.IsDone():
+        while not job_status.is_done():
             
             if not QP.isValid( win ):
                 
@@ -453,18 +453,18 @@ class Controller( object ):
             done_event.wait( 1.0 )
             
         
-        if job_status.HasVariable( 'result' ):
+        if job_status.has_variable('result'):
             
             # result can be None, for qt_code that has no return variable
             
-            result = job_status.GetIfHasVariable( 'result' )
+            result = job_status.get_if_has_variable('result')
             
             return result
             
         
-        if job_status.HadError():
+        if job_status.had_error():
             
-            e = job_status.GetErrorException()
+            e = job_status.get_error_exception()
             
             raise e
             
@@ -1080,13 +1080,13 @@ class Controller( object ):
             
             ( file_import_job, ) = args
             
-            if file_import_job.GetHash().hex() == 'a593942cb7ea9ffcd8ccf2f0fa23c338e23bfecd9a3e508dfc0bcf07501ead08': # 'blarg' in sha256 hex
+            if file_import_job.get_hash().hex() == 'a593942cb7ea9ffcd8ccf2f0fa23c338e23bfecd9a3e508dfc0bcf07501ead08': # 'blarg' in sha256 hex
                 
                 raise Exception( 'File failed to import for some reason!' )
                 
             else:
                 
-                h = file_import_job.GetHash()
+                h = file_import_job.get_hash()
                 
                 if h is None:
                     

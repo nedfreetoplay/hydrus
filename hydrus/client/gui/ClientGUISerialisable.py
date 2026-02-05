@@ -44,11 +44,11 @@ class PNGExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         if payload_description is None:
             
-            ( payload_description, payload_bytes ) = ClientSerialisable.GetPayloadDescriptionAndBytes( self._payload_obj )
+            ( payload_description, payload_bytes ) = ClientSerialisable.get_payload_description_and_bytes(self._payload_obj)
             
         else:
             
-            ( payload_bytes, payload_length ) = ClientSerialisable.GetPayloadBytesAndLength( self._payload_obj )
+            ( payload_bytes, payload_length ) = ClientSerialisable.get_payload_bytes_and_length(self._payload_obj)
             
             payload_description += ' - {}'.format( HydrusData.to_human_bytes( payload_length ) )
             
@@ -59,7 +59,7 @@ class PNGExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         self._width.setValue( 512 )
         
-        last_png_export_dir = CG.client_controller.new_options.GetNoneableString( 'last_png_export_dir' )
+        last_png_export_dir = CG.client_controller.new_options.get_noneable_string('last_png_export_dir')
         
         if title is not None:
             
@@ -158,7 +158,7 @@ class PNGExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
         width = self._width.value()
         
         payload_description = self._payload_description.text()
-        ( payload_bytes, payload_length ) = ClientSerialisable.GetPayloadBytesAndLength( self._payload_obj )
+        ( payload_bytes, payload_length ) = ClientSerialisable.get_payload_bytes_and_length(self._payload_obj)
         
         title = self._title.text()
         text = self._text.text()
@@ -168,7 +168,7 @@ class PNGExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             base_dir = os.path.dirname( path )
             
-            CG.client_controller.new_options.SetNoneableString( 'last_png_export_dir', base_dir )
+            CG.client_controller.new_options.set_noneable_string('last_png_export_dir', base_dir)
             
         
         if not path.endswith( '.png' ):
@@ -176,11 +176,11 @@ class PNGExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
             path += '.png'
             
         
-        ClientSerialisable.DumpToPNG( width, payload_bytes, title, payload_description, text, path )
+        ClientSerialisable.dump_to_png(width, payload_bytes, title, payload_description, text, path)
         
         self._export.setText( 'done!' )
         
-        CG.client_controller.CallLaterQtSafe( self._export, 2.0, 'png export set text', self._export.setText, 'export' )
+        CG.client_controller.call_later_qt_safe(self._export, 2.0, 'png export set text', self._export.setText, 'export')
         
     
 
@@ -204,7 +204,7 @@ class PNGsExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         #
         
-        last_png_export_dir = CG.client_controller.new_options.GetNoneableString( 'last_png_export_dir' )
+        last_png_export_dir = CG.client_controller.new_options.get_noneable_string('last_png_export_dir')
         
         if last_png_export_dir is not None:
             
@@ -270,14 +270,14 @@ class PNGsExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         if last_png_export_dir is not None and last_png_export_dir != '':
             
-            CG.client_controller.new_options.SetNoneableString( 'last_png_export_dir', last_png_export_dir )
+            CG.client_controller.new_options.set_noneable_string('last_png_export_dir', last_png_export_dir)
             
         
         for obj in self._payload_objs:
             
-            ( payload_description, payload_bytes ) = ClientSerialisable.GetPayloadDescriptionAndBytes( obj )
+            ( payload_description, payload_bytes ) = ClientSerialisable.get_payload_description_and_bytes(obj)
             
-            title = obj.GetName()
+            title = obj.get_name()
             text = ''
             path = os.path.join( directory, title )
             
@@ -286,11 +286,11 @@ class PNGsExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 path += '.png'
                 
             
-            ClientSerialisable.DumpToPNG( width, payload_bytes, title, payload_description, text, path )
+            ClientSerialisable.dump_to_png(width, payload_bytes, title, payload_description, text, path)
             
         
         self._export.setText( 'done!' )
         
-        CG.client_controller.CallLaterQtSafe( self._export, 2.0, 'png export set text', self._export.setText, 'export' )
+        CG.client_controller.call_later_qt_safe(self._export, 2.0, 'png export set text', self._export.setText, 'export')
         
     

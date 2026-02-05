@@ -114,11 +114,11 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
         
         file_search_context = self._page_manager.GetVariable( 'file_search_context' )
         
-        file_search_context.FixMissingServices( CG.client_controller.services_manager.FilterValidServiceKeys )
+        file_search_context.fix_missing_services(CG.client_controller.services_manager.filter_valid_service_keys)
         
         self._query_job_status = ClientThreading.JobStatus( cancellable = True )
         
-        self._query_job_status.Finish()
+        self._query_job_status.finish()
         
         self._search_panel = ClientGUICommon.StaticBox( self, 'search', start_expanded = True, can_expand = True )
         
@@ -166,7 +166,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
     
     def _CancelSearch( self ):
         
-        self._query_job_status.Cancel()
+        self._query_job_status.cancel()
         
         panel = ClientGUIMediaResultsPanelThumbnails.MediaResultsPanelThumbnails( self._page, self._page_key, self._page_manager, [] )
         
@@ -213,7 +213,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
     
     def _MakeCurrentSelectionTagsBox( self, sizer, **kwargs ):
         
-        tag_display_type = CG.client_controller.new_options.GetInteger( 'tag_list_tag_display_type_sidebar' )
+        tag_display_type = CG.client_controller.new_options.get_integer('tag_list_tag_display_type_sidebar')
         
         self._current_selection_tags_box = ClientGUIListBoxes.StaticBoxSorterForListBoxTags( self, 'selection tags', CC.TAG_PRESENTATION_SEARCH_PAGE )
         
@@ -223,7 +223,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
         
         file_search_context = self._page_manager.GetVariable( 'file_search_context' )
         
-        file_search_context.FixMissingServices( CG.client_controller.services_manager.FilterValidServiceKeys )
+        file_search_context.fix_missing_services(CG.client_controller.services_manager.filter_valid_service_keys)
         
         tag_service_key = file_search_context.GetTagContext().service_key
         
@@ -256,7 +256,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
             return
             
         
-        self._query_job_status.Cancel()
+        self._query_job_status.cancel()
         
         if len( file_search_context.GetPredicates() ) > 0:
             
@@ -288,7 +288,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
         
         if media_sort.CanSortAtDBLevel( file_search_context.GetLocationContext() ):
             
-            if CG.client_controller.new_options.GetBoolean( 'refresh_search_page_on_system_limited_sort_changed' ) and self._tag_autocomplete.IsSynchronised() and file_search_context.GetSystemPredicates().HasSystemLimit():
+            if CG.client_controller.new_options.get_boolean('refresh_search_page_on_system_limited_sort_changed') and self._tag_autocomplete.IsSynchronised() and file_search_context.GetSystemPredicates().HasSystemLimit():
                 
                 self._RefreshQuery()
                 
@@ -297,7 +297,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
     
     def _UpdateCancelButton( self ):
         
-        if self._query_job_status.IsDone():
+        if self._query_job_status.is_done():
             
             self._tag_autocomplete.ShowCancelSearchButton( False )
             
@@ -307,7 +307,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
             
             WAIT_PERIOD = 3.0
             
-            search_is_lagging = HydrusTime.time_has_passed_float( self._query_job_status.GetCreationTime() + WAIT_PERIOD )
+            search_is_lagging = HydrusTime.time_has_passed_float(self._query_job_status.get_creation_time() + WAIT_PERIOD)
             
             self._tag_autocomplete.ShowCancelSearchButton( search_is_lagging )
             
@@ -384,7 +384,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
         
         self._tag_autocomplete.CancelCurrentResultsFetchJob()
         
-        self._query_job_status.Cancel()
+        self._query_job_status.cancel()
         
     
     def CleanBeforeDestroy( self ):
@@ -393,7 +393,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
         
         self._tag_autocomplete.CancelCurrentResultsFetchJob()
         
-        self._query_job_status.Cancel()
+        self._query_job_status.cancel()
         
     
     def EnterPredicates( self, page_key, predicates ):
@@ -563,7 +563,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
             
         else:
             
-            interrupting_current_search = not self._query_job_status.IsDone()
+            interrupting_current_search = not self._query_job_status.is_done()
             
             if interrupting_current_search:
                 
@@ -604,13 +604,13 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
         
         file_search_context = self._page_manager.GetVariable( 'file_search_context' )
         
-        file_search_context.FixMissingServices( CG.client_controller.services_manager.FilterValidServiceKeys )
+        file_search_context.fix_missing_services(CG.client_controller.services_manager.filter_valid_service_keys)
         
         self.last_seen_predicates = file_search_context.GetPredicates()
         
         if len( self.last_seen_predicates ) > 0 and not file_search_context.IsComplete():
             
-            CG.client_controller.CallAfterQtSafe( self, self.RefreshQuery )
+            CG.client_controller.call_after_qt_safe(self, self.RefreshQuery)
             
         
     
@@ -625,18 +625,18 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
         
         def qt_code():
             
-            query_job_status.Finish()
+            query_job_status.finish()
             
             self.ShowFinishedQuery( query_job_status, media_results )
             
         
         QUERY_CHUNK_SIZE = 100
         
-        CG.client_controller.file_viewing_stats_manager.Flush()
+        CG.client_controller.file_viewing_stats_manager.flush()
         
         query_hash_ids = CG.client_controller.read( 'file_query_ids', file_search_context, job_status = query_job_status, limit_sort_by = sort_by )
         
-        if query_job_status.IsCancelled():
+        if query_job_status.is_cancelled():
             
             return
             
@@ -650,7 +650,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
         
         for ( num_done, num_to_do, sub_query_hash_ids ) in HydrusLists.split_list_into_chunks_rich( query_hash_ids, QUERY_CHUNK_SIZE ):
             
-            if query_job_status.IsCancelled():
+            if query_job_status.is_cancelled():
                 
                 return
                 
@@ -661,16 +661,16 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
             
             CG.client_controller.pub( 'set_num_query_results', page_key, num_done, num_to_do )
             
-            CG.client_controller.WaitUntilViewFree()
+            CG.client_controller.wait_until_view_free()
             
         
         file_search_context.SetComplete()
         
-        page_manager.SetVariable( 'file_search_context', file_search_context.duplicate() )
+        page_manager.set_variable('file_search_context', file_search_context.duplicate())
         
         page_manager.SetDirty()
         
-        CG.client_controller.CallAfterQtSafe( self, qt_code )
+        CG.client_controller.call_after_qt_safe(self, qt_code)
         
     
     def REPEATINGPageUpdate( self ):

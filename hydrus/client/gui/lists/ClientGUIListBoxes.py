@@ -599,7 +599,7 @@ class AddEditDeleteListBox( QW.QWidget ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -634,7 +634,7 @@ class AddEditDeleteListBox( QW.QWidget ):
                     
                     try:
                         
-                        payload = ClientSerialisable.LoadFromPNG( path )
+                        payload = ClientSerialisable.load_from_png(path)
                         
                     except Exception as e:
                         
@@ -752,7 +752,7 @@ class AddEditDeleteListBox( QW.QWidget ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -908,7 +908,7 @@ class AddEditDeleteListBoxUniqueNamedObjects( AddEditDeleteListBox ):
     
     def _SetNonDupeName( self, obj ):
         
-        disallowed_names = { o.GetName() for o in self.GetData() }
+        disallowed_names = {o.get_name() for o in self.GetData()}
         
         HydrusSerialisable.set_non_dupe_name( obj, disallowed_names )
         
@@ -1205,7 +1205,7 @@ class QueueListBox( QW.QWidget ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -1240,7 +1240,7 @@ class QueueListBox( QW.QWidget ):
                     
                     try:
                         
-                        payload = ClientSerialisable.LoadFromPNG( path )
+                        payload = ClientSerialisable.load_from_png(path)
                         
                     except Exception as e:
                         
@@ -2324,7 +2324,7 @@ class ListBox( QW.QScrollArea ):
             return
             
         
-        fades_can_ever_happen = QtInit.WE_ARE_QT6 and CG.client_controller.new_options.GetBoolean( 'fade_sibling_connector' )
+        fades_can_ever_happen = QtInit.WE_ARE_QT6 and CG.client_controller.new_options.get_boolean('fade_sibling_connector')
         
         current_visible_index = first_visible_positional_index
         
@@ -3038,20 +3038,20 @@ class ListBoxTags( ListBox ):
         
         if terms_may_have_sibling_or_parent_info:
             
-            self._show_parent_decorators = CG.client_controller.new_options.GetBoolean( 'show_parent_decorators_on_storage_taglists' )
-            self._show_sibling_decorators = CG.client_controller.new_options.GetBoolean( 'show_sibling_decorators_on_storage_taglists' )
+            self._show_parent_decorators = CG.client_controller.new_options.get_boolean('show_parent_decorators_on_storage_taglists')
+            self._show_sibling_decorators = CG.client_controller.new_options.get_boolean('show_sibling_decorators_on_storage_taglists')
             
-            self._extra_parent_rows_allowed = CG.client_controller.new_options.GetBoolean( 'expand_parents_on_storage_taglists' )
+            self._extra_parent_rows_allowed = CG.client_controller.new_options.get_boolean('expand_parents_on_storage_taglists')
             
         
         self._page_key = None # placeholder. if a subclass sets this, it changes menu behaviour to allow 'select this tag' menu pubsubs
         
-        self._sibling_connector_string = CG.client_controller.new_options.GetString( 'sibling_connector' )
+        self._sibling_connector_string = CG.client_controller.new_options.get_string('sibling_connector')
         self._sibling_connector_namespace = None
         
-        if not CG.client_controller.new_options.GetBoolean( 'fade_sibling_connector' ):
+        if not CG.client_controller.new_options.get_boolean('fade_sibling_connector'):
             
-            self._sibling_connector_namespace = CG.client_controller.new_options.GetNoneableString( 'sibling_connector_custom_namespace_colour' )
+            self._sibling_connector_namespace = CG.client_controller.new_options.get_noneable_string('sibling_connector_custom_namespace_colour')
             
         
         self._UpdateBackgroundColour()
@@ -3063,7 +3063,7 @@ class ListBoxTags( ListBox ):
     
     def _GetCurrentLocationContext( self ):
         
-        return ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+        return ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
         
     
     def _GetCurrentPagePredicates( self ) -> set[ ClientSearchPredicate.Predicate ]:
@@ -3085,9 +3085,9 @@ class ListBoxTags( ListBox ):
         
         new_options = CG.client_controller.new_options
         
-        if new_options.GetBoolean( 'override_stylesheet_colours' ):
+        if new_options.get_boolean('override_stylesheet_colours'):
             
-            return new_options.GetColour( CC.COLOUR_TAGS_BOX )
+            return new_options.get_colour(CC.COLOUR_TAGS_BOX)
             
         else:
             
@@ -3138,7 +3138,7 @@ class ListBoxTags( ListBox ):
     
     def _NewDuplicateFilterPage( self, predicates ):
         
-        activate_window = CG.client_controller.new_options.GetBoolean( 'activate_window_on_tag_search_page_activation' )
+        activate_window = CG.client_controller.new_options.get_boolean('activate_window_on_tag_search_page_activation')
         
         from hydrus.client.gui.search import ClientGUISearch
         
@@ -3160,7 +3160,7 @@ class ListBoxTags( ListBox ):
     
     def _NewSearchPages( self, pages_of_predicates ):
         
-        activate_window = CG.client_controller.new_options.GetBoolean( 'activate_window_on_tag_search_page_activation' )
+        activate_window = CG.client_controller.new_options.get_boolean('activate_window_on_tag_search_page_activation')
         
         from hydrus.client.gui.search import ClientGUISearch
         
@@ -3361,12 +3361,12 @@ class ListBoxTags( ListBox ):
     
     def NotifyNewOptions( self ):
         
-        new_sibling_connector_string = CG.client_controller.new_options.GetString( 'sibling_connector' )
+        new_sibling_connector_string = CG.client_controller.new_options.get_string('sibling_connector')
         new_sibling_connector_namespace = None
         
-        if not CG.client_controller.new_options.GetBoolean( 'fade_sibling_connector' ):
+        if not CG.client_controller.new_options.get_boolean('fade_sibling_connector'):
             
-            new_sibling_connector_namespace = CG.client_controller.new_options.GetNoneableString( 'sibling_connector_custom_namespace_colour' )
+            new_sibling_connector_namespace = CG.client_controller.new_options.get_noneable_string('sibling_connector_custom_namespace_colour')
             
         
         if new_sibling_connector_string != self._sibling_connector_string or new_sibling_connector_namespace != self._sibling_connector_namespace:
@@ -3602,7 +3602,7 @@ class ListBoxTags( ListBox ):
                 
                 def sp_publish_callable( service_keys_to_siblings_and_parents ):
                     
-                    service_keys_in_order = CG.client_controller.services_manager.GetServiceKeys( HC.REAL_TAG_SERVICES )
+                    service_keys_in_order = CG.client_controller.services_manager.get_service_keys(HC.REAL_TAG_SERVICES)
                     
                     all_siblings = set()
                     
@@ -3650,7 +3650,7 @@ class ListBoxTags( ListBox ):
                     num_parents = len( parents_to_service_keys )
                     num_children = len( children_to_service_keys )
                     
-                    service_keys_to_service_names = { service_key : CG.client_controller.services_manager.GetName( service_key ) for service_key in service_keys_in_order }
+                    service_keys_to_service_names = {service_key : CG.client_controller.services_manager.get_name(service_key) for service_key in service_keys_in_order}
                     
                     ALL_SERVICES_LABEL = 'all services'
                     
@@ -3849,7 +3849,7 @@ class ListBoxTags( ListBox ):
                             
                             ( p, ) = predicates
                             
-                            predicates_selection_string = p.ToString( with_count = False )
+                            predicates_selection_string = p.to_string(with_count = False)
                             
                         else:
                             
@@ -3888,7 +3888,7 @@ class ListBoxTags( ListBox ):
                                 
                                 ( p, ) = inverse_predicates
                                 
-                                inverse_selection_string = p.ToString( with_count = False )
+                                inverse_selection_string = p.to_string(with_count = False)
                                 
                                 text = 'require {} for the current search'.format( inverse_selection_string )
                                 desc = 'Stop disallowing the selected predicates from the current search.'
@@ -4053,11 +4053,11 @@ class ListBoxTags( ListBox ):
                     
                 
             
-            favourite_tags = set( CG.client_controller.new_options.GetStringList( 'favourite_tags' ) )
+            favourite_tags = set(CG.client_controller.new_options.get_string_list('favourite_tags'))
             
             favourite_tags.update( tags )
             
-            CG.client_controller.new_options.SetStringList( 'favourite_tags', sorted( favourite_tags, key = HydrusText.human_text_sort_key ) )
+            CG.client_controller.new_options.set_string_list('favourite_tags', sorted(favourite_tags, key = HydrusText.human_text_sort_key))
             
             CG.client_controller.pub( 'notify_new_favourite_tags' )
             
@@ -4075,16 +4075,16 @@ class ListBoxTags( ListBox ):
                 return
                 
             
-            favourite_tags = set( CG.client_controller.new_options.GetStringList( 'favourite_tags' ) )
+            favourite_tags = set(CG.client_controller.new_options.get_string_list('favourite_tags'))
             
             favourite_tags.difference_update( tags )
             
-            CG.client_controller.new_options.SetStringList( 'favourite_tags', sorted( favourite_tags, key = HydrusText.human_text_sort_key ) )
+            CG.client_controller.new_options.set_string_list('favourite_tags', sorted(favourite_tags, key = HydrusText.human_text_sort_key))
             
             CG.client_controller.pub( 'notify_new_favourite_tags' )
             
         
-        favourite_tags = list( CG.client_controller.new_options.GetStringList( 'favourite_tags' ) )
+        favourite_tags = list(CG.client_controller.new_options.get_string_list('favourite_tags'))
         
         to_add = set( selected_actual_tags ).difference( favourite_tags )
         to_remove = set( selected_actual_tags ).intersection( favourite_tags )
@@ -4164,9 +4164,9 @@ class ListBoxTags( ListBox ):
             
             ClientGUIMenus.AppendMenu( menu, submenu, 'maintenance' )
             
-            tag_repos: collections.abc.Collection[ ClientServices.ServiceRepository ] = CG.client_controller.services_manager.GetServices( ( HC.TAG_REPOSITORY, ) )
+            tag_repos: collections.abc.Collection[ ClientServices.ServiceRepository ] = CG.client_controller.services_manager.get_services((HC.TAG_REPOSITORY,))
             
-            we_are_admin = True in ( tag_repo.HasPermission( HC.CONTENT_TYPE_MAPPINGS, HC.PERMISSION_ACTION_MODERATE ) for tag_repo in tag_repos )
+            we_are_admin = True in (tag_repo.has_permission(HC.CONTENT_TYPE_MAPPINGS, HC.PERMISSION_ACTION_MODERATE) for tag_repo in tag_repos)
             
             noun = 'tags'
             
@@ -4179,19 +4179,19 @@ class ListBoxTags( ListBox ):
                 
                 for tag_repo in tag_repos:
                     
-                    if not tag_repo.HasPermission( HC.CONTENT_TYPE_MAPPINGS, HC.PERMISSION_ACTION_MODERATE ):
+                    if not tag_repo.has_permission(HC.CONTENT_TYPE_MAPPINGS, HC.PERMISSION_ACTION_MODERATE):
                         
                         continue
                         
                     
-                    service_key = tag_repo.GetServiceKey()
+                    service_key = tag_repo.get_service_key()
                     service_submenu = ClientGUIMenus.GenerateMenu( menu )
                     
-                    if tag_repo.HasPermission( HC.CONTENT_TYPE_OPTIONS, HC.PERMISSION_ACTION_MODERATE ):
+                    if tag_repo.has_permission(HC.CONTENT_TYPE_OPTIONS, HC.PERMISSION_ACTION_MODERATE):
                         
                         try:
                             
-                            tag_filter = tag_repo.GetTagFilter()
+                            tag_filter = tag_repo.get_tag_filter()
                             
                             tags_currently_ok = { tag for tag in selected_actual_tags if tag_filter.tag_ok( tag ) }
                             tags_currently_not_ok = { tag for tag in selected_actual_tags if tag not in tags_currently_ok }
@@ -4220,7 +4220,7 @@ class ListBoxTags( ListBox ):
                     
                     ClientGUIMenus.AppendMenuItem( service_submenu, f'delete all {HydrusText.convert_many_strings_to_nice_insertable_human_summary_single_line(selected_actual_tags,noun)}{HC.UNICODE_ELLIPSIS}', 'Delete every instance of this tag from the repository.', ClientGUIModalClientsideServiceActions.OpenPurgeTagsWindow, self, service_key, selected_actual_tags )
                     
-                    ClientGUIMenus.AppendMenu( menu, service_submenu, 'admin: ' + tag_repo.GetName() )
+                    ClientGUIMenus.AppendMenu(menu, service_submenu, 'admin: ' + tag_repo.get_name())
                     
                 
             
@@ -4844,7 +4844,7 @@ class ListBoxTagsMedia( ListBoxTagsDisplayCapable ):
         
         self._tag_presentation_location = tag_presentation_location
         
-        self._tag_sort = CG.client_controller.new_options.GetDefaultTagSort( self._tag_presentation_location )
+        self._tag_sort = CG.client_controller.new_options.get_default_tag_sort(self._tag_presentation_location)
         
         self._last_media_results = set()
         
@@ -5066,7 +5066,7 @@ class ListBoxTagsMedia( ListBoxTagsDisplayCapable ):
         
         super().AddAdditionalMenuItems( menu )
         
-        if CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+        if CG.client_controller.new_options.get_boolean('advanced_mode'):
             
             submenu = ClientGUIMenus.GenerateMenu( menu )
             
@@ -5297,7 +5297,7 @@ class StaticBoxSorterForListBoxTags( ClientGUICommon.StaticBox ):
         self._capped_due_to_setting = False
         
         # make this its own panel
-        self._tag_sort = ClientGUITagSorting.TagSortControl( self, CG.client_controller.new_options.GetDefaultTagSort( self._tag_presentation_location ), show_siblings = show_siblings_sort )
+        self._tag_sort = ClientGUITagSorting.TagSortControl(self, CG.client_controller.new_options.get_default_tag_sort(self._tag_presentation_location), show_siblings = show_siblings_sort)
         
         self._tag_sort.valueChanged.connect( self.EventSort )
         
@@ -5321,13 +5321,13 @@ class StaticBoxSorterForListBoxTags( ClientGUICommon.StaticBox ):
             
             if service_key != CC.COMBINED_TAG_SERVICE_KEY:
                 
-                title = '{} for {}'.format( title, CG.client_controller.services_manager.GetName( service_key ) )
+                title = '{} for {}'.format(title, CG.client_controller.services_manager.get_name(service_key))
                 
             
         
         if self._capped_due_to_setting:
             
-            max_number = CG.client_controller.new_options.GetNoneableInteger( 'number_of_unselected_medias_to_present_tags_for' )
+            max_number = CG.client_controller.new_options.get_noneable_integer('number_of_unselected_medias_to_present_tags_for')
             
             if max_number is not None:
                 
@@ -5390,7 +5390,7 @@ class ListBoxTagsMediaHoverFrame( ListBoxTagsMedia ):
     
     def __init__( self, parent, canvas_key, location_context: ClientLocation.LocationContext ):
         
-        tag_display_type = CG.client_controller.new_options.GetInteger( 'tag_list_tag_display_type_media_viewer_hover' )
+        tag_display_type = CG.client_controller.new_options.get_integer('tag_list_tag_display_type_media_viewer_hover')
         
         super().__init__( parent, tag_display_type, CC.TAG_PRESENTATION_MEDIA_VIEWER, include_counts = False )
         

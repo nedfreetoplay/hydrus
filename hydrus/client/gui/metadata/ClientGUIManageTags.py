@@ -63,7 +63,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             self._hashes.update( m.GetHashes() )
             
         
-        if CG.client_controller.new_options.GetBoolean( 'use_listbook_for_tag_service_panels' ):
+        if CG.client_controller.new_options.get_boolean('use_listbook_for_tag_service_panels'):
             
             self._tag_services = ClientGUIListBook.ListBook( self )
             
@@ -74,28 +74,28 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
         
         #
         
-        services = list( CG.client_controller.services_manager.GetServices( ( HC.LOCAL_TAG, ) ) )
+        services = list(CG.client_controller.services_manager.get_services((HC.LOCAL_TAG,)))
         
-        services.extend( CG.client_controller.services_manager.GetServices( ( HC.TAG_REPOSITORY, ) ) )
+        services.extend(CG.client_controller.services_manager.get_services((HC.TAG_REPOSITORY,)))
         
         if HG.gui_report_mode:
             
             HydrusData.show_text( f'Opening manage tags on these services: {services}' )
             
         
-        default_tag_service_key = CG.client_controller.new_options.GetKey( 'default_tag_service_tab' )
+        default_tag_service_key = CG.client_controller.new_options.get_key('default_tag_service_tab')
         
         for service in services:
             
-            service_key = service.GetServiceKey()
-            name = service.GetName()
+            service_key = service.get_service_key()
+            name = service.get_name()
             
             if HG.gui_report_mode:
                 
                 HydrusData.show_text( 'Opening manage tags panel on {}, {}, {}'.format( service, name, service_key.hex() ) )
                 
             
-            page = self._Panel( self._tag_services, self._location_context, service.GetServiceKey(), self._tag_presentation_location, self._current_media, self._immediate_commit, canvas_key = self._canvas_key )
+            page = self._Panel(self._tag_services, self._location_context, service.get_service_key(), self._tag_presentation_location, self._current_media, self._immediate_commit, canvas_key = self._canvas_key)
             
             self._tag_services.addTab( page, name )
             
@@ -111,7 +111,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             if service_key == default_tag_service_key:
                 
                 # Py 3.11/PyQt6 6.5.0/two tabs/total tab characters > ~12/select second tab during init = first tab disappears bug
-                CG.client_controller.CallAfterQtSafe( self._tag_services, self._tag_services.setCurrentWidget, page )
+                CG.client_controller.call_after_qt_safe(self._tag_services, self._tag_services.setCurrentWidget, page)
                 
             
         
@@ -128,7 +128,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
         
         self.widget().setLayout( vbox )
         
-        CG.client_controller.CallAfterQtSafe( self._tag_services, self._tag_services.currentChanged.connect, self.EventServiceChanged )
+        CG.client_controller.call_after_qt_safe(self._tag_services, self._tag_services.currentChanged.connect, self.EventServiceChanged)
         
         if self._canvas_key is not None:
             
@@ -139,7 +139,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
         
         self._UpdatePageTabNames()
         
-        CG.client_controller.CallAfterQtSafe( self, self._SetSearchFocus )
+        CG.client_controller.call_after_qt_safe(self, self._SetSearchFocus)
         
     
     def _GetContentUpdatePackages( self ):
@@ -172,7 +172,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             
             service_key = page.GetServiceKey()
             
-            service_name = CG.client_controller.services_manager.GetServiceName( service_key )
+            service_name = CG.client_controller.services_manager.get_service_name(service_key)
             
             num_tags = page.GetTagCount()
             
@@ -203,7 +203,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             
             if new_media_singleton is not None:
                 
-                self._current_media = ( new_media_singleton.Duplicate(), )
+                self._current_media = ( new_media_singleton.duplicate(),)
                 
                 for page in self._tag_services.GetPages():
                     
@@ -246,22 +246,22 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
         
         if current_page is not None:
             
-            CG.client_controller.CallAfterQtSafe( current_page, current_page.SetTagBoxFocus )
+            CG.client_controller.call_after_qt_safe(current_page, current_page.SetTagBoxFocus)
             
         
-        if CG.client_controller.new_options.GetBoolean( 'save_default_tag_service_tab_on_change' ):
+        if CG.client_controller.new_options.get_boolean('save_default_tag_service_tab_on_change'):
             
-            CG.client_controller.new_options.SetKey( 'default_tag_service_tab', current_page.GetServiceKey() )
+            CG.client_controller.new_options.set_key('default_tag_service_tab', current_page.GetServiceKey())
             
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ):
+    def process_application_command( self, command: CAC.ApplicationCommand ):
         
         command_processed = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_MANAGE_FILE_TAGS:
                 
@@ -374,9 +374,9 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             
             self._pending_content_update_packages = []
             
-            self._service = CG.client_controller.services_manager.GetService( self._tag_service_key )
+            self._service = CG.client_controller.services_manager.get_service(self._tag_service_key)
             
-            self._i_am_local_tag_service = self._service.GetServiceType() == HC.LOCAL_TAG
+            self._i_am_local_tag_service = self._service.get_service_type() == HC.LOCAL_TAG
             
             tags_panel = QW.QWidget( self )
             
@@ -422,7 +422,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             
             menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCall( 'migrate tags for these files', 'Migrate the tags for the files used to launch this manage tags panel.', self._MigrateTags ) )
             
-            if not self._i_am_local_tag_service and self._service.HasPermission( HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_MODERATE ):
+            if not self._i_am_local_tag_service and self._service.has_permission(HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_MODERATE):
                 
                 menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemSeparator() )
                 
@@ -523,7 +523,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             
             tags = HydrusTags.clean_tags( tags )
             
-            if not self._i_am_local_tag_service and self._service.HasPermission( HC.CONTENT_TYPE_MAPPINGS, HC.PERMISSION_ACTION_MODERATE ):
+            if not self._i_am_local_tag_service and self._service.has_permission(HC.CONTENT_TYPE_MAPPINGS, HC.PERMISSION_ACTION_MODERATE):
                 
                 forced_reason = 'Entered by a janitor.'
                 
@@ -746,7 +746,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                         'splitting filename/title/etc... into individual tags'
                     ]
                     
-                    suggestions = CG.client_controller.new_options.GetRecentPetitionReasons( HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_DELETE )
+                    suggestions = CG.client_controller.new_options.get_recent_petition_reasons(HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_DELETE)
                     
                     suggestions.extend( fixed_suggestions )
                     
@@ -761,7 +761,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                     
                     if reason not in fixed_suggestions:
                         
-                        CG.client_controller.new_options.PushRecentPetitionReason( HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_DELETE, reason )
+                        CG.client_controller.new_options.push_recent_petition_reason(HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_DELETE, reason)
                         
                     
                 else:
@@ -850,7 +850,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                     
                 
             
-            num_recent_tags = CG.client_controller.new_options.GetNoneableInteger( 'num_recent_tags' )
+            num_recent_tags = CG.client_controller.new_options.get_noneable_integer('num_recent_tags')
             
             if len( recent_tags ) > 0 and num_recent_tags is not None:
                 
@@ -941,7 +941,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
         
         def _FlipShowDeleted( self ):
             
-            CG.client_controller.new_options.FlipBoolean( 'manage_tags_show_deleted_mappings' )
+            CG.client_controller.new_options.flip_boolean('manage_tags_show_deleted_mappings')
             
             CG.client_controller.pub( 'notify_options_manage_tags_show_deleted_mappings' )
             
@@ -957,7 +957,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             
             def do_it( tag_service_key, hashes ):
                 
-                tlw = CG.client_controller.GetMainTLW()
+                tlw = CG.client_controller.get_main_tlw()
                 
                 frame = ClientGUITopLevelWindowsPanels.FrameThatTakesScrollablePanel( tlw, 'migrate tags' )
                 
@@ -966,7 +966,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                 frame.SetPanel( panel )
                 
             
-            CG.client_controller.CallAfterQtSafe( self, do_it, self._tag_service_key, hashes )
+            CG.client_controller.call_after_qt_safe(self, do_it, self._tag_service_key, hashes)
             
             self.OK()
             
@@ -1051,7 +1051,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
         
         def _UpdateShowDeleted( self ):
             
-            manage_tags_show_deleted_mappings = CG.client_controller.new_options.GetBoolean( 'manage_tags_show_deleted_mappings' )
+            manage_tags_show_deleted_mappings = CG.client_controller.new_options.get_boolean('manage_tags_show_deleted_mappings')
             
             self._tags_box.SetShow( 'deleted', manage_tags_show_deleted_mappings )
             
@@ -1064,7 +1064,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
         
         def AddTags( self, tags, only_add = False ):
             
-            if not self._new_options.GetBoolean( 'allow_remove_on_manage_tags_input' ):
+            if not self._new_options.get_boolean('allow_remove_on_manage_tags_input'):
                 
                 only_add = True
                 
@@ -1123,13 +1123,13 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             self.okSignal.emit()
             
         
-        def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ):
+        def process_application_command( self, command: CAC.ApplicationCommand ):
             
             command_processed = True
             
-            if command.IsSimpleCommand():
+            if command.is_simple_command():
                 
-                action = command.GetSimpleAction()
+                action = command.get_simple_action()
                 
                 if action == CAC.SIMPLE_SET_SEARCH_FOCUS:
                     
@@ -1185,7 +1185,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             
             if len( tags ) > 0:
                 
-                if self._new_options.GetBoolean( 'yes_no_on_remove_on_manage_tags' ):
+                if self._new_options.get_boolean('yes_no_on_remove_on_manage_tags'):
                     
                     if len( tags ) < 10:
                         

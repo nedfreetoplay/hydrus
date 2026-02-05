@@ -35,9 +35,9 @@ class RegexButton( ClientGUICommon.BetterButton ):
         
         submenu = ClientGUIMenus.GenerateMenu( menu )
         
-        ClientGUIMenus.AppendMenuItem( submenu, 'a good regex introduction', 'If you have never heard of regex before, hit this!', ClientPaths.LaunchURLInWebBrowser, 'https://www.regular-expressions.info/index.html' )
-        ClientGUIMenus.AppendMenuItem( submenu, 'a full interactive tutorial', 'If you want to work through a full lesson with problem solving on your end, hit this!', ClientPaths.LaunchURLInWebBrowser, 'https://www.regexone.com/' )
-        ClientGUIMenus.AppendMenuItem( submenu, 'regex sandbox', 'You can play around here before you do something for real.', ClientPaths.LaunchURLInWebBrowser, 'https://regexr.com/3cvmf' )
+        ClientGUIMenus.AppendMenuItem(submenu, 'a good regex introduction', 'If you have never heard of regex before, hit this!', ClientPaths.launch_url_in_web_browser, 'https://www.regular-expressions.info/index.html')
+        ClientGUIMenus.AppendMenuItem(submenu, 'a full interactive tutorial', 'If you want to work through a full lesson with problem solving on your end, hit this!', ClientPaths.launch_url_in_web_browser, 'https://www.regexone.com/')
+        ClientGUIMenus.AppendMenuItem(submenu, 'regex sandbox', 'You can play around here before you do something for real.', ClientPaths.launch_url_in_web_browser, 'https://regexr.com/3cvmf')
         
         ClientGUIMenus.AppendMenu( menu, submenu, 'regex help' )
         

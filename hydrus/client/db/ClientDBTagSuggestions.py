@@ -47,7 +47,7 @@ class ClientDBRecentTags( ClientDBModule.ClientDBModule ):
         
         newest_first = sorted( tag_ids_to_timestamps_ms.keys(), key = sort_key, reverse = True )
         
-        num_we_want = CG.client_controller.new_options.GetNoneableInteger( 'num_recent_tags' )
+        num_we_want = CG.client_controller.new_options.get_noneable_integer('num_recent_tags')
         
         if num_we_want is None:
             

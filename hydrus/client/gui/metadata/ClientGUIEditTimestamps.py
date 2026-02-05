@@ -311,7 +311,7 @@ class EditFileTimestampsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUISc
         
         ( hashes, datetime_value_range, user_has_edited ) = self._domain_modified_list_ctrl_data_dict[ domain ]
         
-        pretty_timestamp = datetime_value_range.ToString()
+        pretty_timestamp = datetime_value_range.to_string()
         
         display_tuple = ( domain, pretty_timestamp )
         
@@ -337,7 +337,7 @@ class EditFileTimestampsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUISc
         
         try:
             
-            pretty_name = CG.client_controller.services_manager.GetName( file_service_key )
+            pretty_name = CG.client_controller.services_manager.get_name(file_service_key)
             
         except HydrusExceptions.DataMissing:
             
@@ -345,7 +345,7 @@ class EditFileTimestampsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUISc
             
         
         pretty_timestamp_type = HC.timestamp_type_str_lookup[ timestamp_type ]
-        pretty_timestamp = datetime_value_range.ToString()
+        pretty_timestamp = datetime_value_range.to_string()
         
         display_tuple = ( pretty_name, pretty_timestamp_type, pretty_timestamp )
         
@@ -360,7 +360,7 @@ class EditFileTimestampsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUISc
         
         try:
             
-            pretty_name = CG.client_controller.services_manager.GetName( file_service_key )
+            pretty_name = CG.client_controller.services_manager.get_name(file_service_key)
             
         except HydrusExceptions.DataMissing:
             
@@ -612,7 +612,7 @@ class EditFileTimestampsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUISc
                 
                 hashes = [ media.GetHash() for media in self._ordered_medias if media.GetTimesManager().GetFileModifiedTimestampMS() is not None ]
                 
-                result_tuples.append( ( hashes, ClientTime.TimestampData.STATICFileModifiedTime( file_modified_timestamp_ms ), datetime_value_range.GetStepMS() ) )
+                result_tuples.append((hashes, ClientTime.TimestampData.static_file_modified_time(file_modified_timestamp_ms), datetime_value_range.GetStepMS()))
                 
             
         
@@ -628,7 +628,7 @@ class EditFileTimestampsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUISc
                 
                 hashes = [ media.GetHash() for media in self._ordered_medias if not media.HasInbox() and media.GetTimesManager().GetArchivedTimestampMS() is not None ]
                 
-                result_tuples.append( ( hashes, ClientTime.TimestampData.STATICArchivedTime( archive_timestamp_ms ), datetime_value_range.GetStepMS() ) )
+                result_tuples.append((hashes, ClientTime.TimestampData.static_archived_time(archive_timestamp_ms), datetime_value_range.GetStepMS()))
                 
             
         
@@ -644,7 +644,7 @@ class EditFileTimestampsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUISc
                 
                 hashes = [ media.GetHash() for media in self._ordered_medias if media.GetTimesManager().GetLastViewedTimestampMS( CC.CANVAS_MEDIA_VIEWER ) is not None ]
                 
-                result_tuples.append( ( hashes, ClientTime.TimestampData.STATICLastViewedTime( CC.CANVAS_MEDIA_VIEWER, last_viewed_media_viewer_timestamp_ms ), datetime_value_range.GetStepMS() ) )
+                result_tuples.append((hashes, ClientTime.TimestampData.static_last_viewed_time(CC.CANVAS_MEDIA_VIEWER, last_viewed_media_viewer_timestamp_ms), datetime_value_range.GetStepMS()))
                 
             
         
@@ -658,7 +658,7 @@ class EditFileTimestampsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUISc
                 
                 hashes = [ media.GetHash() for media in self._ordered_medias if media.GetTimesManager().GetLastViewedTimestampMS( CC.CANVAS_PREVIEW ) is not None ]
                 
-                result_tuples.append( ( hashes, ClientTime.TimestampData.STATICLastViewedTime( CC.CANVAS_PREVIEW, last_viewed_preview_viewer_timestamp_ms ), datetime_value_range.GetStepMS() ) )
+                result_tuples.append((hashes, ClientTime.TimestampData.static_last_viewed_time(CC.CANVAS_PREVIEW, last_viewed_preview_viewer_timestamp_ms), datetime_value_range.GetStepMS()))
                 
             
         
@@ -684,7 +684,7 @@ class EditFileTimestampsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUISc
             
             timestamp_ms = qt_datetime.toMSecsSinceEpoch()
             
-            result_tuples.append( ( hashes, ClientTime.TimestampData.STATICDomainModifiedTime( domain, timestamp_ms ), datetime_value_range.GetStepMS() ) )
+            result_tuples.append((hashes, ClientTime.TimestampData.static_domain_modified_time(domain, timestamp_ms), datetime_value_range.GetStepMS()))
             
         
         deletee_timestamp_domains = [ domain for domain in self._original_domain_modified_domains.difference( current_domains ) ]
@@ -729,7 +729,7 @@ class EditFileTimestampsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUISc
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -986,13 +986,13 @@ class EditFileTimestampsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUISc
         return self.GetContentUpdatePackage()
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ):
+    def process_application_command( self, command: CAC.ApplicationCommand ):
         
         command_processed = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_MANAGE_FILE_TIMESTAMPS:
                 

@@ -137,7 +137,7 @@ def ResultsFetch(
                         
                         ClientGUIACDropdown.AppendLoadingPredicate( exact_match_matches, 'loading full results' )
                         
-                        CG.client_controller.CallAfterQtSafe( win, prefetch_callable, job_status, exact_match_matches, parsed_autocomplete_text )
+                        CG.client_controller.call_after_qt_safe(win, prefetch_callable, job_status, exact_match_matches, parsed_autocomplete_text)
                         
                         #
                         
@@ -145,7 +145,7 @@ def ResultsFetch(
                         
                         predicates = CG.client_controller.read( 'autocomplete_predicates', ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, file_search_context, search_text = autocomplete_search_text, job_status = job_status, search_namespaces_into_full_tags = search_namespaces_into_full_tags )
                         
-                        if job_status.IsCancelled():
+                        if job_status.is_cancelled():
                             
                             return
                             
@@ -163,7 +163,7 @@ def ResultsFetch(
                         
                     
                 
-                if job_status.IsCancelled():
+                if job_status.is_cancelled():
                     
                     return
                     
@@ -181,7 +181,7 @@ def ResultsFetch(
             
             ClientGUIACDropdown.InsertOtherPredicatesForRead( matches, parsed_autocomplete_text, include_unusual_predicate_types, under_construction_or_predicate )
             
-            if job_status.IsCancelled():
+            if job_status.is_cancelled():
                 
                 return
                 
@@ -192,7 +192,7 @@ def ResultsFetch(
     
     ClientSearchPredicate.SetPredicatesInclusivity( results, parsed_autocomplete_text.inclusive )
     
-    CG.client_controller.CallAfterQtSafe( win, results_callable, job_status, parsed_autocomplete_text, results_cache, results )
+    CG.client_controller.call_after_qt_safe(win, results_callable, job_status, parsed_autocomplete_text, results_cache, results)
     
 
 class AutoCompleteDropdownMetadataConditional( ClientGUIACDropdown.AutocompleteDropdownTagsFileSearchContextORCapable ):
@@ -326,7 +326,7 @@ class AutoCompleteDropdownMetadataConditional( ClientGUIACDropdown.AutocompleteD
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -427,7 +427,7 @@ class AutoCompleteDropdownMetadataConditional( ClientGUIACDropdown.AutocompleteD
     
     def SetFetchedResults( self, job_status: ClientThreading.JobStatus, parsed_autocomplete_text: ClientSearchAutocomplete.ParsedAutocompleteText, results_cache: ClientSearchAutocomplete.PredicateResultsCache, results: list ):
         
-        if self._current_fetch_job_status is not None and self._current_fetch_job_status.GetKey() == job_status.GetKey():
+        if self._current_fetch_job_status is not None and self._current_fetch_job_status.get_key() == job_status.get_key():
             
             super().SetFetchedResults( job_status, parsed_autocomplete_text, results_cache, results )
             

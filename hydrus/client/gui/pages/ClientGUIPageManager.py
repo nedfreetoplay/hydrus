@@ -30,8 +30,8 @@ def CreatePageManager( page_name, page_type ):
     page_manager = PageManager( page_name )
     
     page_manager.SetType( page_type )
-    page_manager.SetVariable( 'media_sort', new_options.GetDefaultSort() )
-    page_manager.SetVariable( 'media_collect', new_options.GetDefaultCollect() )
+    page_manager.SetVariable( 'media_sort', new_options.get_default_sort())
+    page_manager.SetVariable( 'media_collect', new_options.get_default_collect())
     
     return page_manager
     
@@ -44,7 +44,7 @@ def CreatePageManagerDuplicateFilter(
     
     if location_context is None:
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
         
     
     if initial_predicates is None:
@@ -59,7 +59,7 @@ def CreatePageManagerDuplicateFilter(
     
     page_manager = CreatePageManager( page_name, ClientGUIPagesCore.PAGE_TYPE_DUPLICATE_FILTER )
     
-    synchronised = CG.client_controller.new_options.GetBoolean( 'default_search_synchronised' )
+    synchronised = CG.client_controller.new_options.get_boolean('default_search_synchronised')
     
     page_manager.SetVariable( 'synchronised', synchronised )
     
@@ -97,7 +97,7 @@ def CreatePageManagerImportSimpleDownloader():
     
     simple_downloader_import = ClientImportSimpleURLs.SimpleDownloaderImport()
     
-    formula_name = CG.client_controller.new_options.GetString( 'favourite_simple_downloader_formula' )
+    formula_name = CG.client_controller.new_options.get_string('favourite_simple_downloader_formula')
     
     simple_downloader_import.SetFormulaName( formula_name )
     
@@ -153,9 +153,9 @@ def CreatePageManagerImportURLs( page_name = None, destination_location_context 
 
 def CreatePageManagerPetitions( petition_service_key ):
     
-    petition_service = CG.client_controller.services_manager.GetService( petition_service_key )
+    petition_service = CG.client_controller.services_manager.get_service(petition_service_key)
     
-    page_name = petition_service.GetName() + ' petitions'
+    page_name = petition_service.get_name() + ' petitions'
     
     page_manager = CreatePageManager( page_name, ClientGUIPagesCore.PAGE_TYPE_PETITIONS )
     
@@ -173,7 +173,7 @@ def CreatePageManagerQuery( page_name, file_search_context: ClientSearchFileSear
     
     page_manager = CreatePageManager( page_name, ClientGUIPagesCore.PAGE_TYPE_QUERY )
     
-    synchronised = CG.client_controller.new_options.GetBoolean( 'default_search_synchronised' )
+    synchronised = CG.client_controller.new_options.get_boolean('default_search_synchronised')
     
     page_manager.SetVariable( 'file_search_context', file_search_context )
     page_manager.SetVariable( 'synchronised', synchronised )
@@ -401,7 +401,7 @@ class PageManager( HydrusSerialisable.SerialisableBase ):
                     del serialisable_keys[ 'duplicate_filter_file_domain' ]
                     
                 
-                location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )
+                location_context = ClientLocation.LocationContext.static_create_simple(CC.LOCAL_FILE_SERVICE_KEY)
                 
                 file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, predicates = [ ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_EVERYTHING ) ] )
                 
@@ -470,7 +470,7 @@ class PageManager( HydrusSerialisable.SerialisableBase ):
                 
                 del serialisable_keys[ 'file_service' ]
                 
-                location_context = ClientLocation.LocationContext.STATICCreateSimple( file_service_key )
+                location_context = ClientLocation.LocationContext.static_create_simple(file_service_key)
                 
                 serialisable_serialisables[ 'location_context' ] = location_context.get_serialisable_tuple()
                 
@@ -514,7 +514,7 @@ class PageManager( HydrusSerialisable.SerialisableBase ):
                 
                 variables[ 'dupe_search_type' ] = value
                 
-                default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+                default_location_context = CG.client_controller.new_options.get_default_local_location_context()
                 
                 file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = default_location_context, predicates = [ ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_EVERYTHING ) ] )
                 
@@ -746,17 +746,17 @@ class PageManager( HydrusSerialisable.SerialisableBase ):
             
             try:
                 
-                petition_service = CG.client_controller.services_manager.GetService( petition_service_key )
+                petition_service = CG.client_controller.services_manager.get_service(petition_service_key)
                 
-                petition_service_type = petition_service.GetServiceType()
+                petition_service_type = petition_service.get_service_type()
                 
                 if petition_service_type in HC.LOCAL_FILE_SERVICES or petition_service_type == HC.FILE_REPOSITORY:
                     
-                    location_context = ClientLocation.LocationContext.STATICCreateSimple( petition_service_key )
+                    location_context = ClientLocation.LocationContext.static_create_simple(petition_service_key)
                     
                 else:
                     
-                    location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY )
+                    location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_FILE_SERVICE_KEY)
                     
                 
                 return location_context
@@ -771,7 +771,7 @@ class PageManager( HydrusSerialisable.SerialisableBase ):
             return self._variables[ 'location_context' ]
             
         
-        return ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+        return ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
         
     
     def GetNumSeeds( self ):

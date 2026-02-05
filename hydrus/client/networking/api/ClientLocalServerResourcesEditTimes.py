@@ -90,12 +90,12 @@ class HydrusResourceClientAPIRestrictedEditTimesSetTime( HydrusResourceClientAPI
             
             file_service_key = request.parsed_request_args.get_value( 'file_service_key', bytes )
             
-            if not CG.client_controller.services_manager.ServiceExists( file_service_key ):
+            if not CG.client_controller.services_manager.service_exists(file_service_key):
                 
                 raise HydrusExceptions.BadRequestException( 'Sorry, do not know that service!' )
                 
             
-            if CG.client_controller.services_manager.GetServiceType( file_service_key ) not in HC.REAL_FILE_SERVICES:
+            if CG.client_controller.services_manager.get_service_type(file_service_key) not in HC.REAL_FILE_SERVICES:
                 
                 raise HydrusExceptions.BadRequestException( 'Sorry, you have to specify a file service service key!' )
                 
@@ -127,7 +127,7 @@ class HydrusResourceClientAPIRestrictedEditTimesSetTime( HydrusResourceClientAPI
                     
                     if result is None:
                         
-                        raise HydrusExceptions.BadRequestException( f'Sorry, if the timestamp type is other than 0 (web domain), then you cannot add new timestamps, only edit existing ones. I did not see the given timestamp type ({timestamp_data_stub.ToString()}) on one of the files you sent, specifically: {media_result.GetHash().hex()}' )
+                        raise HydrusExceptions.BadRequestException( f'Sorry, if the timestamp type is other than 0 (web domain), then you cannot add new timestamps, only edit existing ones. I did not see the given timestamp type ({timestamp_data_stub.to_string()}) on one of the files you sent, specifically: {media_result.get_hash().hex()}')
                         
                     
                 

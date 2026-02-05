@@ -132,7 +132,7 @@ class QtMediaPlayerVideoWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget
             
             current_timestamp_ms = self._media_player.position()
             
-            num_frames = self._media.GetNumFrames()
+            num_frames = self._media.get_num_frames()
             
             if num_frames is None or num_frames == 1:
                 
@@ -140,12 +140,12 @@ class QtMediaPlayerVideoWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget
                 
             else:
                 
-                current_frame_index = int( round( ( current_timestamp_ms / self._media.GetDurationMS() ) * num_frames ) )
+                current_frame_index = int(round((current_timestamp_ms / self._media.get_duration_ms()) * num_frames))
                 
                 current_frame_index = min( current_frame_index, num_frames - 1 )
                 
             
-            current_timestamp_ms = min( current_timestamp_ms, self._media.GetDurationMS() )
+            current_timestamp_ms = min(current_timestamp_ms, self._media.get_duration_ms())
             
             paused = self.IsPaused()
             
@@ -191,13 +191,13 @@ class QtMediaPlayerVideoWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget
         self._media_player.play()
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ):
+    def process_application_command( self, command: CAC.ApplicationCommand ):
         
         command_processed = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_PAUSE_MEDIA:
                 
@@ -209,7 +209,7 @@ class QtMediaPlayerVideoWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget
                 
             elif action == CAC.SIMPLE_MEDIA_SEEK_DELTA:
                 
-                ( direction, duration_ms ) = command.GetSimpleData()
+                ( direction, duration_ms ) = command.get_simple_data()
                 
                 self.SeekDelta( direction, duration_ms )
                 
@@ -250,7 +250,7 @@ class QtMediaPlayerVideoWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget
         
         new_timestamp_ms = max( 0, current_timestamp_ms + ( direction * duration_ms ) )
         
-        if new_timestamp_ms > self._media.GetDurationMS():
+        if new_timestamp_ms > self._media.get_duration_ms():
             
             new_timestamp_ms = 0
             
@@ -531,7 +531,7 @@ class QtMediaPlayerGraphicsView( CAC.ApplicationCommandProcessorMixin, QW.QWidge
             
             current_timestamp_ms = self._media_player.position()
             
-            num_frames = self._media.GetNumFrames()
+            num_frames = self._media.get_num_frames()
             
             if num_frames is None or num_frames == 1:
                 
@@ -539,12 +539,12 @@ class QtMediaPlayerGraphicsView( CAC.ApplicationCommandProcessorMixin, QW.QWidge
                 
             else:
                 
-                current_frame_index = int( round( ( current_timestamp_ms / self._media.GetDurationMS() ) * num_frames ) )
+                current_frame_index = int(round((current_timestamp_ms / self._media.get_duration_ms()) * num_frames))
                 
                 current_frame_index = min( current_frame_index, num_frames - 1 )
                 
             
-            current_timestamp_ms = min( current_timestamp_ms, self._media.GetDurationMS() )
+            current_timestamp_ms = min(current_timestamp_ms, self._media.get_duration_ms())
             
             paused = self.IsPaused()
             
@@ -590,13 +590,13 @@ class QtMediaPlayerGraphicsView( CAC.ApplicationCommandProcessorMixin, QW.QWidge
         self._media_player.play()
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ):
+    def process_application_command( self, command: CAC.ApplicationCommand ):
         
         command_processed = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_PAUSE_MEDIA:
                 
@@ -608,7 +608,7 @@ class QtMediaPlayerGraphicsView( CAC.ApplicationCommandProcessorMixin, QW.QWidge
                 
             elif action == CAC.SIMPLE_MEDIA_SEEK_DELTA:
                 
-                ( direction, duration_ms ) = command.GetSimpleData()
+                ( direction, duration_ms ) = command.get_simple_data()
                 
                 self.SeekDelta( direction, duration_ms )
                 
@@ -656,7 +656,7 @@ class QtMediaPlayerGraphicsView( CAC.ApplicationCommandProcessorMixin, QW.QWidge
         
         new_timestamp_ms = max( 0, current_timestamp_ms + ( direction * duration_ms ) )
         
-        if new_timestamp_ms > self._media.GetDurationMS():
+        if new_timestamp_ms > self._media.get_duration_ms():
             
             new_timestamp_ms = 0
             

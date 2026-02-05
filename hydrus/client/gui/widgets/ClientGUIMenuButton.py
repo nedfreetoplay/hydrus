@@ -361,7 +361,7 @@ class MenuChoiceButton( ClientGUICommon.BetterButton ):
     
     def wheelEvent( self, event ):
         
-        can_do_it = CG.client_controller.new_options.GetBoolean( 'menu_choice_buttons_can_mouse_scroll' )
+        can_do_it = CG.client_controller.new_options.get_boolean('menu_choice_buttons_can_mouse_scroll')
         
         if can_do_it:
             

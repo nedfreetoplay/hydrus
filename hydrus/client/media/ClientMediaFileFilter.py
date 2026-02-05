@@ -276,7 +276,7 @@ class FileFilter( HydrusSerialisable.SerialisableBase ):
                     
                 
             
-            hashes = { m.GetHash() for m in filtered_media }
+            hashes = {m.get_hash() for m in filtered_media}
             
             return hashes
             
@@ -388,7 +388,7 @@ class FileFilter( HydrusSerialisable.SerialisableBase ):
             
             file_service_key = self.filter_data
             
-            s = CG.client_controller.services_manager.GetName( file_service_key )
+            s = CG.client_controller.services_manager.get_name(file_service_key)
             
         elif self.filter_type == FILE_FILTER_TAGS:
             
@@ -398,7 +398,7 @@ class FileFilter( HydrusSerialisable.SerialisableBase ):
             
             if tag_service_key != CC.COMBINED_TAG_SERVICE_KEY:
                 
-                s = '{} on {}'.format( s, CG.client_controller.services_manager.GetName( tag_service_key ) )
+                s = '{} on {}'.format(s, CG.client_controller.services_manager.get_name(tag_service_key))
                 
             
             s = HydrusText.elide_text( s, 64 )
@@ -477,11 +477,11 @@ def ReportDeleteLockFailures( media_results: collections.abc.Collection[ ClientM
     
     message = 'Was unable to delete one or more files because of a delete lock!'
     
-    job_status.SetStatusText( message )
+    job_status.set_status_text(message)
     
     hashes = [ media_result.GetHash() for media_result in media_results ]
     
-    job_status.SetFiles( hashes, 'see them' )
+    job_status.set_files(hashes, 'see them')
     
     CG.client_controller.pub( 'message', job_status )
     

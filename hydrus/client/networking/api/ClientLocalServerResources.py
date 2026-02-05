@@ -51,14 +51,14 @@ class HydrusResourceClientAPI( HydrusServerResources.HydrusResource ):
     
     def _reportDataUsed( self, request, num_bytes ):
         
-        self._service.ReportDataUsed( num_bytes )
+        self._service.report_data_used(num_bytes)
         
     
     def _reportRequestStarted( self, request: HydrusServerRequest.HydrusRequest ):
         
         HydrusServerResources.HydrusResource._report_request_started( self, request )
         
-        CG.client_controller.ResetIdleTimerFromClientAPI()
+        CG.client_controller.reset_idle_timer_from_client_api()
         
     
     def _checkService( self, request: HydrusServerRequest.HydrusRequest ):
@@ -70,7 +70,7 @@ class HydrusResourceClientAPI( HydrusServerResources.HydrusResource ):
             raise HydrusExceptions.ServerBusyException( 'This server is busy, please try again later.' )
             
         
-        if not self._service.BandwidthOK():
+        if not self._service.bandwidth_ok():
             
             raise HydrusExceptions.BandwidthException( 'This service has run out of bandwidth. Please try again later.' )
             
@@ -129,7 +129,7 @@ class HydrusResourceClientAPIRestricted( HydrusResourceClientAPI ):
         
         try:
             
-            api_permissions = CG.client_controller.client_api_manager.GetPermissions( access_key )
+            api_permissions = CG.client_controller.client_api_manager.get_permissions( access_key )
             
         except HydrusExceptions.DataMissing as e:
             
@@ -187,7 +187,7 @@ class HydrusResourceClientAPIRestricted( HydrusResourceClientAPI ):
             
             try:
                 
-                access_key = CG.client_controller.client_api_manager.GetAccessKey( session_key )
+                access_key = CG.client_controller.client_api_manager.get_access_key( session_key )
                 
             except HydrusExceptions.DataMissing as e:
                 

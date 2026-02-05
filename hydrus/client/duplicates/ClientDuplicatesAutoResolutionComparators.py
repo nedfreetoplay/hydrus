@@ -433,8 +433,8 @@ class PairComparatorRelativeHardcoded( PairComparator ):
             
             jpeg_quality_storage = ClientDuplicatesComparisonStatements.JpegQualityStorage.instance()
             
-            a_jpeg_quality = typing.cast( ClientDuplicatesComparisonStatements.JpegQuality, jpeg_quality_storage.GetData( a_hash ) )
-            b_jpeg_quality = typing.cast( ClientDuplicatesComparisonStatements.JpegQuality, jpeg_quality_storage.GetData( b_hash ) )
+            a_jpeg_quality = typing.cast(ClientDuplicatesComparisonStatements.JpegQuality, jpeg_quality_storage.get_data(a_hash))
+            b_jpeg_quality = typing.cast(ClientDuplicatesComparisonStatements.JpegQuality, jpeg_quality_storage.get_data(b_hash))
             
             if a_jpeg_quality.quality is None or b_jpeg_quality.quality is None or a_jpeg_quality.quality <= 0 or b_jpeg_quality.quality <= 0:
                 
@@ -630,7 +630,7 @@ class PairComparatorOR( PairComparator ):
         
         for sub_comparator in self._sub_comparators:
             
-            if sub_comparator.Test( media_result_a, media_result_b ):
+            if sub_comparator.test(media_result_a, media_result_b):
                 
                 return True
                 
@@ -718,7 +718,7 @@ class PairComparatorAND( PairComparator ):
         
         for sub_comparator in self._sub_comparators:
             
-            if not sub_comparator.Test( media_result_a, media_result_b ):
+            if not sub_comparator.test(media_result_a, media_result_b):
                 
                 return False
                 

@@ -266,7 +266,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         job_status = ClientThreading.JobStatus()
         
-        job_status.SetStatusText( 'approving auto-resolution decisions' )
+        job_status.set_status_text('approving auto-resolution decisions')
         
         rule = self._rule
         
@@ -277,9 +277,9 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         def status_hook( status: str ):
             
-            job_status.SetStatusText( status )
+            job_status.set_status_text(status)
             
-            CG.client_controller.CallAfterQtSafe( self, sensitive_status_hook, status )
+            CG.client_controller.call_after_qt_safe(self, sensitive_status_hook, status)
             
         
         def work_callable():
@@ -292,7 +292,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 status_hook = status_hook
             )
             
-            job_status.FinishAndDismiss()
+            job_status.finish_and_dismiss()
             
             return 1
             
@@ -435,7 +435,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         job_status = ClientThreading.JobStatus()
         
-        job_status.SetStatusText( 'denying auto-resolution decisions' )
+        job_status.set_status_text('denying auto-resolution decisions')
         
         def sensitive_status_hook( status: str ):
             
@@ -444,9 +444,9 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         def status_hook( status: str ):
             
-            job_status.SetStatusText( status )
+            job_status.set_status_text(status)
             
-            CG.client_controller.CallAfterQtSafe( self, sensitive_status_hook, status )
+            CG.client_controller.call_after_qt_safe(self, sensitive_status_hook, status)
             
         
         def work_callable():
@@ -459,7 +459,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 status_hook = status_hook
             )
             
-            job_status.FinishAndDismiss()
+            job_status.finish_and_dismiss()
             
             return 1
             
@@ -672,7 +672,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         canvas_frame = ClientGUICanvasFrame.CanvasFrame( self.window(), set_parent = True )
         
         page_key = HydrusData.generate_key()
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
         media_results = [ media_result_1, media_result_2 ]
         
         media_results = [ mr for mr in media_results if mr.GetLocationsManager().IsLocal() ]
@@ -684,7 +684,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             return
             
         
-        first_hash = media_result_1.GetHash()
+        first_hash = media_result_1.get_hash()
         
         canvas_window = ClientGUICanvas.CanvasMediaListBrowser( canvas_frame, page_key, location_context, media_results, first_hash )
         
@@ -712,7 +712,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             return
             
         
-        all_hashes = set( itertools.chain.from_iterable( [ ( media_result_1.GetHash(), media_result_2.GetHash() ) for ( media_result_1, media_result_2 ) in selected_pairs ] ) )
+        all_hashes = set(itertools.chain.from_iterable([(media_result_1.get_hash(), media_result_2.get_hash()) for (media_result_1, media_result_2) in selected_pairs]))
         
         message = f'Are you sure you want to undo the auto-resolution actions covering these {HydrusNumbers.to_human_int( len( all_hashes ) )} files? This is a serious action and will reset all the duplicate file relationships these files have.\n\nThe only way to do this reliably is to completely dissolve the respective duplicate group(s), which may undo many other decisions. All the files in the duplicate group(s) (not just what you selected) will be queued up for search in the potential duplicates system once more. Any files that are in trash will be undeleted. This action will not remove the entries from this audit log nor undo any content merge.'
         

@@ -42,7 +42,7 @@ def EditNamespaceSort( win: QW.QWidget, sort_data ):
     
     if len( edited_namespaces ) > 0:
         
-        if CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+        if CG.client_controller.new_options.get_boolean('advanced_mode'):
             
             available_types = [
                 ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL,

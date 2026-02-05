@@ -320,12 +320,12 @@ class FileImportJob( object ):
                 
             
             bounding_dimensions = CG.client_controller.options[ 'thumbnail_dimensions' ]
-            thumbnail_scale_type = new_options.GetInteger( 'thumbnail_scale_type' )
-            thumbnail_dpr_percent = new_options.GetInteger( 'thumbnail_dpr_percent' )
+            thumbnail_scale_type = new_options.get_integer('thumbnail_scale_type')
+            thumbnail_dpr_percent = new_options.get_integer('thumbnail_dpr_percent')
             
             target_resolution = HydrusImageHandling.get_thumbnail_resolution( ( width, height ), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
             
-            percentage_in = new_options.GetInteger( 'video_thumbnail_percentage_in' )
+            percentage_in = new_options.get_integer('video_thumbnail_percentage_in')
             
             extra_description = f'File with hash "{self.GetHash().hex()}".'
             

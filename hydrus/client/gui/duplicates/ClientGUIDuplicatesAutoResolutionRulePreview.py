@@ -251,14 +251,14 @@ class PreviewPanel( ClientGUICommon.StaticBox ):
             
             ( potential_duplicate_pairs_fragmentary_search, job_status ) = args
             
-            if job_status.IsCancelled():
+            if job_status.is_cancelled():
                 
                 return ( [], job_status )
                 
             
             potential_duplicate_media_result_pairs_and_distances = CG.client_controller.read( 'potential_duplicate_media_result_pairs_and_distances_fragmentary', potential_duplicate_pairs_fragmentary_search )
             
-            potential_duplicate_media_result_pairs_and_distances.Sort( ClientDuplicates.DUPE_PAIR_SORT_MIN_FILESIZE, False )
+            potential_duplicate_media_result_pairs_and_distances.sort(ClientDuplicates.DUPE_PAIR_SORT_MIN_FILESIZE, False)
             
             return ( potential_duplicate_media_result_pairs_and_distances, job_status )
             
@@ -318,7 +318,7 @@ class PreviewPanel( ClientGUICommon.StaticBox ):
             ab_pair_that_passed = None
             pair_that_failed = None
             
-            if job_status.IsCancelled():
+            if job_status.is_cancelled():
                 
                 return ( ab_pair_that_passed, pair_that_failed, job_status )
                 
@@ -456,7 +456,7 @@ class PreviewPanel( ClientGUICommon.StaticBox ):
         
         self._potential_duplicate_pairs_fragmentary_search = self._potential_duplicate_pairs_fragmentary_search.SpawnNewSearch()
         
-        self._fetch_pairs_job_status.Cancel()
+        self._fetch_pairs_job_status.cancel()
         
         self._fetch_pairs_job_status = ClientThreading.JobStatus( cancellable = True )
         

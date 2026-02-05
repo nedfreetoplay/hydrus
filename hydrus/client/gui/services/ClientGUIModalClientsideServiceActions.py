@@ -32,10 +32,10 @@ class ReviewPurgeTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         # what about a listboxtags that has an auto-async thing to produce a count suffix, mate? surely this is doable in some way
         self._tags_to_remove = ClientGUIListBoxes.ListBoxTagsStringsAddRemove( self, service_key = service_key )
         
-        self._autocomplete = ClientGUIACDropdown.AutoCompleteDropdownTagsWrite( self, self._tags_to_remove.EnterTags, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY ), self._service_key, show_paste_button = True )
+        self._autocomplete = ClientGUIACDropdown.AutoCompleteDropdownTagsWrite(self, self._tags_to_remove.EnterTags, ClientLocation.LocationContext.static_create_simple(CC.COMBINED_FILE_SERVICE_KEY), self._service_key, show_paste_button = True)
         
         # forcing things in case options try to set default
-        self._autocomplete.SetLocationContext( ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY ) )
+        self._autocomplete.SetLocationContext(ClientLocation.LocationContext.static_create_simple(CC.COMBINED_FILE_SERVICE_KEY))
         self._autocomplete.SetTagServiceKey( self._service_key )
         
         self._autocomplete.externalCopyKeyPressEvent.connect( self._tags_to_remove.keyPressEvent )
@@ -121,7 +121,7 @@ def PurgeTags(
     reason: str
 ):
     
-    location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY )
+    location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_FILE_SERVICE_KEY)
     desired_hash_type = 'sha256'
     hashes = None
     content_statuses = [ HC.CONTENT_STATUS_CURRENT ]
@@ -130,11 +130,11 @@ def PurgeTags(
     source = ClientMigration.MigrationSourceTagServiceMappings( CG.client_controller, service_key, location_context, desired_hash_type, hashes, tag_filter, content_statuses )
     
     destination = ClientMigration.MigrationDestinationTagServiceMappings( CG.client_controller, service_key, content_action )
-    destination.SetReason( reason )
+    destination.set_reason(reason)
     
     migration_job = ClientMigration.MigrationJob( CG.client_controller, 'purging tags', source, destination )
     
-    CG.client_controller.call_to_thread( migration_job.Run )
+    CG.client_controller.call_to_thread(migration_job.run)
     
 
 def OpenPurgeTagsWindow(
@@ -155,7 +155,7 @@ def StartPurgeTagFilter(
     service_key: bytes
 ):
     
-    tag_filter: HydrusTags.TagFilter = CG.client_controller.services_manager.GetService( service_key ).GetTagFilter()
+    tag_filter: HydrusTags.TagFilter = CG.client_controller.services_manager.get_service(service_key).get_tag_filter()
     
     text = f'This will start a purge job based on the rules in the current tag filter, "syncing" the mappings store to the filter by petitioning everything that retroactively violates the rules. The current tag filter for this service is:'
     text += '\n' * 2

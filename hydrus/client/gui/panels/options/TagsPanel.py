@@ -27,7 +27,7 @@ class TagsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         favourites_st = ClientGUICommon.BetterStaticText( favourites_panel, desc )
         favourites_st.setWordWrap( True )
         
-        default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+        default_location_context = CG.client_controller.new_options.get_default_local_location_context()
         
         self._favourites = ClientGUIListBoxes.ListBoxTagsStringsAddRemove( favourites_panel, CC.COMBINED_TAG_SERVICE_KEY, tag_display_type = ClientTags.TAG_DISPLAY_STORAGE )
         self._favourites_input = ClientGUIACDropdown.AutoCompleteDropdownTagsWrite( favourites_panel, self._favourites.AddTags, default_location_context, CC.COMBINED_TAG_SERVICE_KEY, show_paste_button = True )
@@ -48,11 +48,11 @@ class TagsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         #
         
-        self._favourites.SetTags( self._new_options.GetStringList( 'favourite_tags' ) )
+        self._favourites.SetTags(self._new_options.get_string_list('favourite_tags'))
         
         #
         
-        self._num_to_show_in_ac_dropdown_children_tab.SetValue( self._new_options.GetNoneableInteger( 'num_to_show_in_ac_dropdown_children_tab' ) )
+        self._num_to_show_in_ac_dropdown_children_tab.SetValue(self._new_options.get_noneable_integer('num_to_show_in_ac_dropdown_children_tab'))
         
         #
         
@@ -98,10 +98,10 @@ class TagsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def UpdateOptions( self ):
         
-        self._new_options.SetStringList( 'favourite_tags', sorted( self._favourites.GetTags(), key = HydrusText.human_text_sort_key ) )
+        self._new_options.set_string_list('favourite_tags', sorted(self._favourites.GetTags(), key = HydrusText.human_text_sort_key))
         
         #
         
-        self._new_options.SetNoneableInteger( 'num_to_show_in_ac_dropdown_children_tab', self._num_to_show_in_ac_dropdown_children_tab.GetValue() )
+        self._new_options.set_noneable_integer('num_to_show_in_ac_dropdown_children_tab', self._num_to_show_in_ac_dropdown_children_tab.GetValue())
         
     

@@ -252,7 +252,7 @@ class NetworkLoginManager( HydrusSerialisable.SerialisableBase ):
     def _RecalcCache( self ):
         
         self._login_script_keys_to_login_scripts = { login_script.GetLoginScriptKey() : login_script for login_script in self._login_scripts }
-        self._login_script_names_to_login_scripts = { login_script.GetName() : login_script for login_script in self._login_scripts }
+        self._login_script_names_to_login_scripts = {login_script.get_name() : login_script for login_script in self._login_scripts}
         
         self._RevalidateCache()
         
@@ -285,7 +285,7 @@ class NetworkLoginManager( HydrusSerialisable.SerialisableBase ):
             
             login_script_key_and_name = new_login_script.GetLoginScriptKeyAndName()
             
-            dupe_login_scripts = [ login_script.Duplicate() for login_script in self._login_scripts ]
+            dupe_login_scripts = [login_script.duplicate() for login_script in self._login_scripts]
             
             for dupe_login_script in dupe_login_scripts:
                 
@@ -341,16 +341,16 @@ class NetworkLoginManager( HydrusSerialisable.SerialisableBase ):
                 
                 services_manager = self.engine.controller.services_manager
                 
-                if not services_manager.ServiceExists( service_key ):
+                if not services_manager.service_exists(service_key):
                     
                     raise HydrusExceptions.ValidationException( 'Service does not exist!' )
                     
                 
-                service = services_manager.GetService( service_key )
+                service = services_manager.get_service(service_key)
                 
                 try:
                     
-                    service.CheckFunctional( including_bandwidth = False, including_account = False )
+                    service.check_functional(including_bandwidth = False, including_account = False)
                     
                 except Exception as e:
                     
@@ -450,7 +450,7 @@ class NetworkLoginManager( HydrusSerialisable.SerialisableBase ):
         
         with self._lock:
             
-            login_scripts = [ login_script for login_script in self._login_scripts if login_script.GetName() not in login_script_names ]
+            login_scripts = [login_script for login_script in self._login_scripts if login_script.get_name() not in login_script_names]
             
         
         self.SetLoginScripts( login_scripts )
@@ -583,7 +583,7 @@ class NetworkLoginManager( HydrusSerialisable.SerialisableBase ):
             
             from hydrus.client import ClientDefaults
             
-            default_login_scripts = ClientDefaults.GetDefaultLoginScripts()
+            default_login_scripts = ClientDefaults.get_default_login_scripts()
             
             for login_script in default_login_scripts:
                 
@@ -592,8 +592,8 @@ class NetworkLoginManager( HydrusSerialisable.SerialisableBase ):
             
             existing_login_scripts = list( self._login_scripts )
             
-            new_login_scripts = [ login_script for login_script in existing_login_scripts if login_script.GetName() not in login_script_names ]
-            new_login_scripts.extend( [ login_script for login_script in default_login_scripts if login_script.GetName() in login_script_names ] )
+            new_login_scripts = [login_script for login_script in existing_login_scripts if login_script.get_name() not in login_script_names]
+            new_login_scripts.extend([login_script for login_script in default_login_scripts if login_script.get_name() in login_script_names])
             
         
         self.SetLoginScripts( new_login_scripts, auto_link_these_names = login_script_names )
@@ -704,7 +704,7 @@ class NetworkLoginManager( HydrusSerialisable.SerialisableBase ):
                             if old_login_script_key_and_name[1] == login_script_key_and_name[1]:
                                 
                                 # this is probably a newly overwritten script
-                                if auto_link or login_script.GetName() in auto_link_these_names:
+                                if auto_link or login_script.get_name() in auto_link_these_names:
                                     
                                     if validity == VALIDITY_INVALID:
                                         
@@ -721,7 +721,7 @@ class NetworkLoginManager( HydrusSerialisable.SerialisableBase ):
                             
                         else:
                             
-                            if auto_link or login_script.GetName() in auto_link_these_names:
+                            if auto_link or login_script.get_name() in auto_link_these_names:
                                 
                                 credentials = {}
                                 
@@ -935,7 +935,7 @@ class LoginCredentialDefinition( HydrusSerialisable.SerialisableBaseNamed ):
             
             try:
                 
-                self._string_match.Test( text )
+                self._string_match.test(text)
                 
             except HydrusExceptions.StringMatchException as e:
                 
@@ -999,26 +999,26 @@ class LoginProcessDomain( LoginProcess ):
         
         job_status = ClientThreading.JobStatus( cancellable = True )
         
-        job_status.SetStatusTitle( 'Logging in ' + login_domain )
+        job_status.set_status_title('Logging in ' + login_domain)
         
         CG.client_controller.pub( 'message', job_status )
         
         HydrusData.print_text( 'Starting login for ' + login_domain )
         
-        result = self.login_script.Start( self.engine, self.network_context, self.credentials, job_status = job_status )
+        result = self.login_script.start(self.engine, self.network_context, self.credentials, job_status = job_status)
         
         HydrusData.print_text( 'Finished login for ' + self.network_context.context_data + '. Result was: ' + result )
         
-        job_status.SetStatusText( result )
+        job_status.set_status_text(result)
         
-        job_status.FinishAndDismiss( 4 )
+        job_status.finish_and_dismiss(4)
         
     
 class LoginProcessHydrus( LoginProcess ):
     
     def _Start( self ):
         
-        self.login_script.Start( self.engine, self.network_context )
+        self.login_script.start(self.engine, self.network_context)
         
     
 class LoginScriptHydrus( object ):
@@ -1045,18 +1045,18 @@ class LoginScriptHydrus( object ):
         
         try:
             
-            service = engine.controller.services_manager.GetService( service_key )
+            service = engine.controller.services_manager.get_service(service_key)
             
         except HydrusExceptions.DataMissing:
             
             return
             
         
-        base_url = service.GetBaseURL()
+        base_url = service.get_base_url()
         
         url = base_url + 'session_key'
         
-        access_key = service.GetCredentials().GetAccessKey()
+        access_key = service.get_credentials().get_access_key()
         
         network_job = ClientNetworkingJobs.NetworkJobHydrus( service_key, 'GET', url )
         
@@ -1074,20 +1074,20 @@ class LoginScriptHydrus( object ):
             
             if self._IsLoggedIn( engine, network_context ):
                 
-                HydrusData.print_text( 'Successfully logged into ' + service.GetName() + '.' )
+                HydrusData.print_text( 'Successfully logged into ' + service.get_name() + '.')
                 
-            elif service.IsFunctional():
+            elif service.is_functional():
                 
-                ( is_ok, status_string ) = service.GetStatusInfo()
+                ( is_ok, status_string ) = service.get_status_info()
                 
-                service.DelayFutureRequests( 'Could not log in for unknown reason. Current service status: {}'.format( status_string ) )
+                service.delay_future_requests('Could not log in for unknown reason. Current service status: {}'.format(status_string))
                 
             
         except Exception as e:
             
             e_string = str( e )
             
-            service.DelayFutureRequests( e_string )
+            service.delay_future_requests(e_string)
             
         
     
@@ -1199,7 +1199,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 if validation_check:
                     
-                    raise HydrusExceptions.ValidationException( 'Missing cookie "' + cookie_name_string_match.ToString() + '"!' )
+                    raise HydrusExceptions.ValidationException( 'Missing cookie "' + cookie_name_string_match.to_string() + '"!')
                     
                 
                 return False
@@ -1209,13 +1209,13 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
             
             try:
                 
-                value_string_match.Test( cookie_text )
+                value_string_match.test(cookie_text)
                 
             except HydrusExceptions.StringMatchException as e:
                 
                 if validation_check:
                     
-                    raise HydrusExceptions.ValidationException( 'Cookie "' + cookie_name_string_match.ToString() + '" failed: ' + str( e ) + '!' )
+                    raise HydrusExceptions.ValidationException( 'Cookie "' + cookie_name_string_match.to_string() + '" failed: ' + str(e) + '!')
                     
                 
                 return False
@@ -1243,7 +1243,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
         
         #
         
-        cred_names_to_definitions = { credential_definition.GetName() : credential_definition for credential_definition in self._credential_definitions }
+        cred_names_to_definitions = {credential_definition.get_name() : credential_definition for credential_definition in self._credential_definitions}
         
         for ( pretty_name, text ) in given_credentials.items():
             
@@ -1254,13 +1254,13 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
             
             credential_definition = cred_names_to_definitions[ pretty_name ]
             
-            credential_definition.Test( text )
+            credential_definition.test(text)
             
         
     
     def CheckIsValid( self ):
         
-        defined_cred_names = { credential_definition.GetName() for credential_definition in self._credential_definitions }
+        defined_cred_names = {credential_definition.get_name() for credential_definition in self._credential_definitions}
         required_cred_names = { name for name in itertools.chain.from_iterable( ( step.GetRequiredCredentials() for step in self._login_steps ) ) }
         
         missing_definitions = required_cred_names.difference( defined_cred_names )
@@ -1286,7 +1286,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 missing_vars = sorted( missing_vars )
                 
-                raise HydrusExceptions.ValidationException( 'Missing temp variables for login step "' + login_step.GetName() + '": ' + ', '.join( missing_vars ) )
+                raise HydrusExceptions.ValidationException( 'Missing temp variables for login step "' + login_step.get_name() + '": ' + ', '.join(missing_vars))
                 
             
             temp_vars.update( set_vars )
@@ -1441,7 +1441,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
             
             if job_status is not None:
                 
-                if job_status.IsCancelled():
+                if job_status.is_cancelled():
                     
                     message = 'User cancelled the login process.'
                     
@@ -1450,12 +1450,12 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
                     return message
                     
                 
-                job_status.SetStatusText( login_step.GetName() )
+                job_status.set_status_text(login_step.get_name())
                 
             
             try:
                 
-                last_url_used = login_step.Start( engine, login_domain, given_credentials, temp_variables, referral_url = last_url_used, network_job_presentation_context_factory = network_job_presentation_context_factory, test_result_callable = test_result_callable )
+                last_url_used = login_step.start(engine, login_domain, given_credentials, temp_variables, referral_url = last_url_used, network_job_presentation_context_factory = network_job_presentation_context_factory, test_result_callable = test_result_callable)
                 
             except HydrusExceptions.ValidationException as e:
                 
@@ -1783,18 +1783,18 @@ class LoginStep( HydrusSerialisable.SerialisableBaseNamed ):
                     
                 except HydrusExceptions.DataMissing as e:
                     
-                    raise HydrusExceptions.ValidationException( 'Missing cookie "' + cookie_name_string_match.ToString() + '" on step "' + self._name + '"!' )
+                    raise HydrusExceptions.ValidationException( 'Missing cookie "' + cookie_name_string_match.to_string() + '" on step "' + self._name + '"!')
                     
                 
                 cookie_text = cookie.value
                 
                 try:
                     
-                    string_match.Test( cookie_text )
+                    string_match.test(cookie_text)
                     
                 except HydrusExceptions.StringMatchException as e:
                     
-                    raise HydrusExceptions.ValidationException( 'Cookie "' + cookie_name_string_match.ToString() + '" failed on step "' + self._name + '": ' + str( e ) + '!' )
+                    raise HydrusExceptions.ValidationException( 'Cookie "' + cookie_name_string_match.to_string() + '" failed on step "' + self._name + '": ' + str(e) + '!')
                     
                 
             

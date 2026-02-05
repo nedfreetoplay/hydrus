@@ -31,14 +31,14 @@ class MediaResult( object ):
         
         try:
             
-            service = CG.client_controller.services_manager.GetService( service_key )
+            service = CG.client_controller.services_manager.get_service(service_key)
             
         except HydrusExceptions.DataMissing:
             
             return
             
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         if service_type in HC.REAL_TAG_SERVICES:
             
@@ -148,13 +148,13 @@ class MediaResult( object ):
                 
                 from hydrus.client import ClientUgoiraHandling
                 
-                if ClientUgoiraHandling.HasFrameTimesNote( self ):
+                if ClientUgoiraHandling.has_frame_times_note(self):
                     
                     try:
                         
                         # this is more work than we'd normally want to do, but prettyinfolines is called on a per-file basis so I think we are good. a tiny no-latency json load per human click is fine
                         # we'll see how it goes
-                        frame_durations_ms = ClientUgoiraHandling.GetFrameDurationsMSFromNote( self )
+                        frame_durations_ms = ClientUgoiraHandling.get_frame_durations_ms_from_note(self)
                         
                         if frame_durations_ms is not None:
                             
@@ -238,7 +238,7 @@ class MediaResult( object ):
         
         # TODO: ultimately replace this with metadata conditionals for whatever the user likes, 'don't delete anything rated 5 stars', whatever
         
-        delete_lock_for_archived_files = CG.client_controller.new_options.GetBoolean( 'delete_lock_for_archived_files' )
+        delete_lock_for_archived_files = CG.client_controller.new_options.get_boolean('delete_lock_for_archived_files')
         
         if delete_lock_for_archived_files:
             
@@ -269,14 +269,14 @@ class MediaResult( object ):
         
         try:
             
-            service = CG.client_controller.services_manager.GetService( service_key )
+            service = CG.client_controller.services_manager.get_service(service_key)
             
         except HydrusExceptions.DataMissing:
             
             return
             
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         if service_type in HC.REAL_TAG_SERVICES:
             

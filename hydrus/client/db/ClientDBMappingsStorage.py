@@ -428,11 +428,11 @@ class ClientDBMappingsStorage( ClientDBModule.ClientDBModule ):
         
         # TODO: this can probably work better, e.g. if we have multiple local domains we can return hydrus local file storage or whatever
         
-        if location_context.IncludesDeleted() and not location_context.IncludesCurrent():
+        if location_context.includes_deleted() and not location_context.includes_current():
             
             known_fast_covering_file_service_id = self.modules_services.combined_deleted_file_service_id
             
-        elif location_context.IsOneDomain():
+        elif location_context.is_one_domain():
             
             file_service_key = list( location_context.current_service_keys )[0]
             

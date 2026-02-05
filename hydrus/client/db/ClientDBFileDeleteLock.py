@@ -21,7 +21,7 @@ class ClientDBFileDeleteLock( ClientDBModule.ClientDBModule ):
         # IN ORDER TO KISS, WE MUST NEVER MAKE THIS TOO COMPLICATED BRO
         # If we introduce the Metadata Conditional to the delete file lock, it must be a subset of MCs that support instant quick database lookup predicate generation 
         
-        if CG.client_controller.new_options.GetBoolean( 'delete_lock_for_archived_files' ):
+        if CG.client_controller.new_options.get_boolean('delete_lock_for_archived_files'):
             
             if not isinstance( hash_ids, set ):
                 
@@ -43,7 +43,7 @@ class ClientDBFileDeleteLock( ClientDBModule.ClientDBModule ):
         
         predicates = []
         
-        if CG.client_controller.new_options.GetBoolean( 'delete_lock_for_archived_files' ):
+        if CG.client_controller.new_options.get_boolean('delete_lock_for_archived_files'):
             
             predicates.append( f'EXISTS ( SELECT 1 FROM file_inbox WHERE {hash_ids_column_name} = file_inbox.hash_id )' )
             

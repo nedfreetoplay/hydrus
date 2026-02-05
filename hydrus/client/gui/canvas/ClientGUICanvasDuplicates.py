@@ -77,7 +77,7 @@ def THREADCommitDuplicatePairDecisions(
     job_status = ClientThreading.JobStatus()
     have_published_job_status = False
     
-    job_status.SetStatusTitle( 'committing duplicate decisions' )
+    job_status.set_status_title('committing duplicate decisions')
     
     num_to_do = len( duplicate_pair_decisions )
     
@@ -92,13 +92,13 @@ def THREADCommitDuplicatePairDecisions(
         
         num_done = i
         
-        job_status.SetStatusText( f'decisions: {HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do )}' )
-        job_status.SetGauge( num_done, num_to_do )
+        job_status.set_status_text(f'decisions: {HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do)}')
+        job_status.set_gauge(num_done, num_to_do)
         
         CommitDecision( potential_duplicate_pair_factory, duplicate_pair_decision )
         
     
-    job_status.FinishAndDismiss()
+    job_status.finish_and_dismiss()
     
 
 class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
@@ -147,7 +147,7 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
         self._right_notes_hover.AddHoverThatCanBeOnTop( self._duplicates_right_hover )
         
         self._duplicates_right_hover.showPairInPage.connect( self._ShowPairInPage )
-        self._duplicates_right_hover.sendApplicationCommand.connect( self.ProcessApplicationCommand )
+        self._duplicates_right_hover.sendApplicationCommand.connect( self.process_application_command )
         
         self._hovers.append( self._duplicates_right_hover )
         
@@ -170,7 +170,7 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
         CG.client_controller.sub( self, 'ProcessContentUpdatePackage', 'content_updates_gui' )
         CG.client_controller.sub( self, 'ProcessServiceUpdates', 'service_updates_gui' )
         
-        CG.client_controller.CallAfterQtSafe( self, self._LoadNextBatchOfPairs )
+        CG.client_controller.call_after_qt_safe(self, self._LoadNextBatchOfPairs)
         
     
     def _ApproveDenyAutoResolutionPair( self, approved: bool ):
@@ -195,19 +195,19 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
         
         if duplicate_type in ( HC.DUPLICATE_BETTER, HC.DUPLICATE_SAME_QUALITY ):
             
-            self._hashes_due_to_be_media_merged_in_this_batch.add( media_result_a.GetHash() )
+            self._hashes_due_to_be_media_merged_in_this_batch.add(media_result_a.get_hash())
             
         
         ( delete_a, delete_b ) = rule.GetDeleteInfo()
         
         if delete_a:
             
-            self._hashes_due_to_be_deleted_in_this_batch.add( media_result_a.GetHash() )
+            self._hashes_due_to_be_deleted_in_this_batch.add(media_result_a.get_hash())
             
         
         if delete_b:
             
-            self._hashes_due_to_be_deleted_in_this_batch.add( media_result_b.GetHash() )
+            self._hashes_due_to_be_deleted_in_this_batch.add(media_result_b.get_hash())
             
         
         duplicate_pair_decision = ClientPotentialDuplicatesPairFactory.DuplicatePairDecisionApproveDeny( media_result_a, media_result_b, approved )
@@ -305,7 +305,7 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
         
         content_update_packages = []
         
-        if CG.client_controller.new_options.GetBoolean( 'delete_lock_reinbox_deletees_after_duplicate_filter' ):
+        if CG.client_controller.new_options.get_boolean('delete_lock_reinbox_deletees_after_duplicate_filter'):
             
             content_update_package = ClientContentUpdates.ContentUpdatePackage()
             
@@ -371,9 +371,9 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
         
         new_options = CG.client_controller.new_options
         
-        if duplicate_type in [ HC.DUPLICATE_BETTER, HC.DUPLICATE_SAME_QUALITY ] or ( new_options.GetBoolean( 'advanced_mode' ) and duplicate_type == HC.DUPLICATE_ALTERNATE ):
+        if duplicate_type in [ HC.DUPLICATE_BETTER, HC.DUPLICATE_SAME_QUALITY ] or (new_options.get_boolean('advanced_mode') and duplicate_type == HC.DUPLICATE_ALTERNATE):
             
-            duplicate_content_merge_options = new_options.GetDuplicateContentMergeOptions( duplicate_type )
+            duplicate_content_merge_options = new_options.get_duplicate_content_merge_options(duplicate_type)
             
             with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit duplicate merge options' ) as dlg_2:
                 
@@ -758,7 +758,7 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
         
         media_results_to_prefetch = [ other_media.GetMediaResult() ]
         
-        duplicate_filter_prefetch_num_pairs = CG.client_controller.new_options.GetInteger( 'duplicate_filter_prefetch_num_pairs' )
+        duplicate_filter_prefetch_num_pairs = CG.client_controller.new_options.get_integer('duplicate_filter_prefetch_num_pairs')
         
         if duplicate_filter_prefetch_num_pairs > 0:
             
@@ -812,11 +812,11 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
         
         if duplicate_content_merge_options is None:
             
-            if duplicate_type in [ HC.DUPLICATE_BETTER, HC.DUPLICATE_SAME_QUALITY ] or ( CG.client_controller.new_options.GetBoolean( 'advanced_mode' ) and duplicate_type == HC.DUPLICATE_ALTERNATE ):
+            if duplicate_type in [ HC.DUPLICATE_BETTER, HC.DUPLICATE_SAME_QUALITY ] or (CG.client_controller.new_options.get_boolean('advanced_mode') and duplicate_type == HC.DUPLICATE_ALTERNATE):
                 
                 new_options = CG.client_controller.new_options
                 
-                duplicate_content_merge_options = new_options.GetDuplicateContentMergeOptions( duplicate_type )
+                duplicate_content_merge_options = new_options.get_duplicate_content_merge_options(duplicate_type)
                 
             else:
                 
@@ -1013,8 +1013,8 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
             
             ( media_result_1, media_result_2 ) = pair
             
-            hash_1 = media_result_1.GetHash()
-            hash_2 = media_result_2.GetHash()
+            hash_1 = media_result_1.get_hash()
+            hash_2 = media_result_2.get_hash()
             
             if hash_1 in self._hashes_due_to_be_media_merged_in_this_batch or hash_2 in self._hashes_due_to_be_media_merged_in_this_batch:
                 
@@ -1056,7 +1056,7 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
                     
                     just_do_it = False
                     
-                    just_do_it_threshold = CG.client_controller.new_options.GetNoneableInteger( 'duplicate_filter_auto_commit_batch_size' )
+                    just_do_it_threshold = CG.client_controller.new_options.get_noneable_integer('duplicate_filter_auto_commit_batch_size')
                     
                     if just_do_it_threshold is not None:
                         
@@ -1266,13 +1266,13 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
         return self._current_media == self._media_list.GetFirst()
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ):
+    def process_application_command( self, command: CAC.ApplicationCommand ):
         
         command_processed = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_DUPLICATE_FILTER_THIS_IS_BETTER_AND_DELETE_OTHER:
                 
@@ -1328,7 +1328,7 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
         
         if not command_processed:
             
-            command_processed = super().ProcessApplicationCommand( command )
+            command_processed = super().process_application_command( command )
             
         
         return command_processed

@@ -226,7 +226,7 @@ class EditNodes( QW.QWidget ):
         
         for node in nodes_to_dupe:
             
-            dupe_node = node.Duplicate()
+            dupe_node = node.duplicate()
             
             self._nodes.AddDatas( dupe_node )
             
@@ -276,7 +276,7 @@ class EditNodes( QW.QWidget ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -321,7 +321,7 @@ class EditParseNodeContentLinkPanel( ClientGUIScrolledPanels.EditPanel ):
         
         notebook = QW.QTabWidget( self )
         
-        ( name, formula, children ) = node.ToTuple()
+        ( name, formula, children ) = node.to_tuple()
         
         #
         
@@ -492,7 +492,7 @@ The formula should attempt to parse full or relative urls. If the url is relativ
                 
                 parsed_urls = node.ParseURLs( job_status, data, referral_url )
                 
-                CG.client_controller.CallAfterQtSafe( self, qt_code, parsed_urls )
+                CG.client_controller.call_after_qt_safe(self, qt_code, parsed_urls)
                 
             except Exception as e:
                 
@@ -552,7 +552,7 @@ class EditParsingScriptFileLookupPanel( ClientGUIScrolledPanels.EditPanel ):
         
         super().__init__( parent )
         
-        ( name, url, query_type, file_identifier_type, file_identifier_string_converter, file_identifier_arg_name, static_args, children ) = script.ToTuple()
+        ( name, url, query_type, file_identifier_type, file_identifier_string_converter, file_identifier_arg_name, static_args, children ) = script.to_tuple()
         
         #
         
@@ -777,7 +777,7 @@ And pass that html to a number of 'parsing children' that will each look through
             
         finally:
             
-            job_status.Finish()
+            job_status.finish()
             
         
     
@@ -802,7 +802,7 @@ And pass that html to a number of 'parsing children' that will each look through
                 
                 parsed_post = script.Parse( job_status, data )
                 
-                CG.client_controller.CallAfterQtSafe( self, qt_code, parsed_post )
+                CG.client_controller.call_after_qt_safe(self, qt_code, parsed_post)
                 
             except Exception as e:
                 
@@ -814,7 +814,7 @@ And pass that html to a number of 'parsing children' that will each look through
                 
             finally:
                 
-                job_status.Finish()
+                job_status.finish()
                 
             
         
@@ -1049,7 +1049,7 @@ class ManageParsingScriptsPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         for script in scripts_to_dupe:
             
-            dupe_script = script.Duplicate()
+            dupe_script = script.duplicate()
             
             self._scripts.SetNonDupeName( dupe_script )
             
@@ -1130,7 +1130,7 @@ class ManageParsingScriptsPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -1163,7 +1163,7 @@ class ManageParsingScriptsPanel( ClientGUIScrolledPanels.ManagePanel ):
                 
                 try:
                     
-                    payload = ClientSerialisable.LoadFromPNG( path )
+                    payload = ClientSerialisable.load_from_png(path)
                     
                 except Exception as e:
                     
@@ -1257,9 +1257,9 @@ class ScriptManagementControl( QW.QWidget ):
             
         else:
             
-            if self._job_status.HasVariable( 'script_status' ):
+            if self._job_status.has_variable('script_status'):
                 
-                status = self._job_status.GetIfHasVariable( 'script_status' )
+                status = self._job_status.get_if_has_variable('script_status')
                 
             else:
                 
@@ -1268,9 +1268,9 @@ class ScriptManagementControl( QW.QWidget ):
             
             self._status.setText( status )
             
-            if self._job_status.HasVariable( 'script_gauge' ):
+            if self._job_status.has_variable('script_gauge'):
                 
-                ( value, range ) = self._job_status.GetIfHasVariable( 'script_gauge' )
+                ( value, range ) = self._job_status.get_if_has_variable('script_gauge')
                 
             else:
                 
@@ -1280,7 +1280,7 @@ class ScriptManagementControl( QW.QWidget ):
             self._gauge.SetRange( range )
             self._gauge.SetValue( value )
             
-            urls = self._job_status.GetURLs()
+            urls = self._job_status.get_urls()
             
             if len( urls ) == 0:
                 
@@ -1297,7 +1297,7 @@ class ScriptManagementControl( QW.QWidget ):
                     
                 
             
-            if self._job_status.IsDone():
+            if self._job_status.is_done():
                 
                 if self._cancel_button.isEnabled():
                     
@@ -1333,7 +1333,7 @@ class ScriptManagementControl( QW.QWidget ):
             
             if self._job_status is not None:
                 
-                self._job_status.Cancel()
+                self._job_status.cancel()
                 
             
         
@@ -1347,7 +1347,7 @@ class ScriptManagementControl( QW.QWidget ):
                 return
                 
             
-            urls = self._job_status.GetURLs()
+            urls = self._job_status.get_urls()
             
         
         menu = ClientGUIMenus.GenerateMenu( self )
@@ -1357,7 +1357,7 @@ class ScriptManagementControl( QW.QWidget ):
         
         for url in urls:
             
-            ClientGUIMenus.AppendMenuItem( open_submenu, url, 'launch this url in your browser', ClientPaths.LaunchURLInWebBrowser, url )
+            ClientGUIMenus.AppendMenuItem(open_submenu, url, 'launch this url in your browser', ClientPaths.launch_url_in_web_browser, url)
             ClientGUIMenus.AppendMenuItem( copy_submenu, url, 'copy this url to your clipboard', CG.client_controller.pub, 'clipboard', 'text', url )
             
         

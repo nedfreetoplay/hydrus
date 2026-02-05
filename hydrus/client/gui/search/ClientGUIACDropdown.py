@@ -176,7 +176,7 @@ def ReadFetch(
             
             AppendLoadingPredicate( matches, 'loading system predicates' )
             
-            CG.client_controller.CallAfterQtSafe( win, prefetch_callable, job_status, matches, parsed_autocomplete_text )
+            CG.client_controller.call_after_qt_safe(win, prefetch_callable, job_status, matches, parsed_autocomplete_text)
             
             cache_valid = isinstance( results_cache, ClientSearchAutocomplete.PredicateResultsCacheSystem )
             
@@ -215,16 +215,16 @@ def ReadFetch(
             
             try:
                 
-                media = CG.client_controller.CallBlockingToQt( win, qt_media_callable )
+                media = CG.client_controller.call_blocking_to_qt(win, qt_media_callable)
                 
             except ( HydrusExceptions.QtDeadWindowException, HydrusExceptions.ShutdownException ):
                 
-                job_status.Cancel()
+                job_status.cancel()
                 
                 return
                 
             
-            if job_status.IsCancelled():
+            if job_status.is_cancelled():
                 
                 return
                 
@@ -285,7 +285,7 @@ def ReadFetch(
                     
                     AppendLoadingPredicate( exact_match_matches, 'loading full results' )
                     
-                    CG.client_controller.CallAfterQtSafe( win, prefetch_callable, job_status, exact_match_matches, parsed_autocomplete_text )
+                    CG.client_controller.call_after_qt_safe(win, prefetch_callable, job_status, exact_match_matches, parsed_autocomplete_text)
                     
                     #
                     
@@ -293,7 +293,7 @@ def ReadFetch(
                     
                     predicates = CG.client_controller.read( 'autocomplete_predicates', ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, file_search_context, search_text = autocomplete_search_text, job_status = job_status, search_namespaces_into_full_tags = search_namespaces_into_full_tags )
                     
-                    if job_status.IsCancelled():
+                    if job_status.is_cancelled():
                         
                         return
                         
@@ -311,7 +311,7 @@ def ReadFetch(
                     
                 
             
-            if job_status.IsCancelled():
+            if job_status.is_cancelled():
                 
                 return
                 
@@ -324,7 +324,7 @@ def ReadFetch(
                 
                 AppendLoadingPredicate( matches, 'calculating results' )
                 
-                CG.client_controller.CallAfterQtSafe( win, prefetch_callable, job_status, matches, parsed_autocomplete_text )
+                CG.client_controller.call_after_qt_safe(win, prefetch_callable, job_status, matches, parsed_autocomplete_text)
                 
                 # it is possible that media will change between calls to this, so don't cache it
                 
@@ -342,7 +342,7 @@ def ReadFetch(
                         
                     
                 
-                if job_status.IsCancelled():
+                if job_status.is_cancelled():
                     
                     return
                     
@@ -365,7 +365,7 @@ def ReadFetch(
                         pending_tags_to_count.update( itertools.chain.from_iterable( [ tags_manager.GetPending( tag_service_key, ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL ) for tags_manager in group_of_tags_managers ] ) )
                         
                     
-                    if job_status.IsCancelled():
+                    if job_status.is_cancelled():
                         
                         return
                         
@@ -378,7 +378,7 @@ def ReadFetch(
                 
                 tags_to_count = { tag : ( current_tags_to_count[ tag ], pending_tags_to_count[ tag ] ) for tag in tags_to_do }
                 
-                if job_status.IsCancelled():
+                if job_status.is_cancelled():
                     
                     return
                     
@@ -399,7 +399,7 @@ def ReadFetch(
                 
                 AppendLoadingPredicate( prefetch_matches, 'loading sibling data' )
                 
-                CG.client_controller.CallAfterQtSafe( win, prefetch_callable, job_status, prefetch_matches, parsed_autocomplete_text )
+                CG.client_controller.call_after_qt_safe(win, prefetch_callable, job_status, prefetch_matches, parsed_autocomplete_text)
                 
                 #
                 
@@ -410,14 +410,14 @@ def ReadFetch(
                 results_cache = ClientSearchAutocomplete.PredicateResultsCacheMedia( predicates )
                 
             
-            if job_status.IsCancelled():
+            if job_status.is_cancelled():
                 
                 return
                 
             
             predicates = results_cache.FilterPredicates( tag_service_key, autocomplete_search_text )
             
-            if job_status.IsCancelled():
+            if job_status.is_cancelled():
                 
                 return
                 
@@ -442,12 +442,12 @@ def ReadFetch(
     
     ClientSearchPredicate.SetPredicatesInclusivity( matches, parsed_autocomplete_text.inclusive )
     
-    if job_status.IsCancelled():
+    if job_status.is_cancelled():
         
         return
         
     
-    CG.client_controller.CallAfterQtSafe( win, results_callable, job_status, parsed_autocomplete_text, results_cache, matches )
+    CG.client_controller.call_after_qt_safe(win, results_callable, job_status, parsed_autocomplete_text, results_cache, matches)
     
 
 def PutAtTopOfMatches( matches: collections.abc.MutableSequence[ ClientSearchPredicate.Predicate ], predicate: ClientSearchPredicate.Predicate, insert_if_does_not_exist: bool = True ):
@@ -575,9 +575,9 @@ def WriteFetch(
                 
                 AppendLoadingPredicate( exact_match_matches, 'loading full results' )
                 
-                CG.client_controller.CallAfterQtSafe( win, prefetch_callable, job_status, exact_match_matches, parsed_autocomplete_text )
+                CG.client_controller.call_after_qt_safe(win, prefetch_callable, job_status, exact_match_matches, parsed_autocomplete_text)
                 
-                if job_status.IsCancelled():
+                if job_status.is_cancelled():
                     
                     return
                     
@@ -600,7 +600,7 @@ def WriteFetch(
                     
                 
             
-            if job_status.IsCancelled():
+            if job_status.is_cancelled():
                 
                 return
                 
@@ -615,7 +615,7 @@ def WriteFetch(
     
     InsertTagPredicates( matches, display_tag_service_key, parsed_autocomplete_text, allow_auto_wildcard_conversion )
     
-    CG.client_controller.CallAfterQtSafe( win, results_callable, job_status, parsed_autocomplete_text, results_cache, matches )
+    CG.client_controller.call_after_qt_safe(win, results_callable, job_status, parsed_autocomplete_text, results_cache, matches)
     
 
 class ListBoxTagsPredicatesAC( ClientGUIListBoxes.ListBoxTagsPredicates ):
@@ -721,7 +721,7 @@ class ListBoxTagsPredicatesAC( ClientGUIListBoxes.ListBoxTagsPredicates ):
             
             if len( self._predicates ) > 0:
                 
-                ac_select_first_with_count = CG.client_controller.new_options.GetBoolean( 'ac_select_first_with_count' )
+                ac_select_first_with_count = CG.client_controller.new_options.get_boolean('ac_select_first_with_count')
                 
                 if ac_select_first_with_count: # no matter what, selection preservation won't work well if we move selection down
                     
@@ -837,7 +837,7 @@ class AutoCompleteDropdown( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         if self.window() == CG.client_controller.gui:
             
-            use_float_mode = CG.client_controller.new_options.GetBoolean( 'autocomplete_float_main_gui' )
+            use_float_mode = CG.client_controller.new_options.get_boolean('autocomplete_float_main_gui')
             
         else:
             
@@ -969,12 +969,12 @@ class AutoCompleteDropdown( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         self._refresh_results_updater.Update()
         
-        CG.client_controller.CallLaterQtSafe( self, 0.05, 'hide/show dropdown', self._DropdownHideShow )
+        CG.client_controller.call_later_qt_safe(self, 0.05, 'hide/show dropdown', self._DropdownHideShow)
         
         # trying a second go to see if that improves some positioning
-        CG.client_controller.CallLaterQtSafe( self, 0.25, 'hide/show dropdown', self._DropdownHideShow )
+        CG.client_controller.call_later_qt_safe(self, 0.25, 'hide/show dropdown', self._DropdownHideShow)
         
-        CG.client_controller.CallLaterQtSafe( self, 0.05, 'do autocomplete background colour', self._UpdateBackgroundColour )
+        CG.client_controller.call_later_qt_safe(self, 0.05, 'do autocomplete background colour', self._UpdateBackgroundColour)
         
     
     def _BroadcastChoices( self, predicates, shift_down ):
@@ -991,7 +991,7 @@ class AutoCompleteDropdown( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         if self._current_fetch_job_status is not None:
             
-            self._current_fetch_job_status.Cancel()
+            self._current_fetch_job_status.cancel()
             
             self._current_fetch_job_status = None
             
@@ -1447,9 +1447,9 @@ class AutoCompleteDropdown( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         new_options = CG.client_controller.new_options
         
-        if new_options.GetBoolean( 'override_stylesheet_colours' ):
+        if new_options.get_boolean('override_stylesheet_colours'):
             
-            return new_options.GetColour( colour_type )
+            return new_options.get_colour(colour_type)
             
         else:
             
@@ -1521,13 +1521,13 @@ class AutoCompleteDropdown( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         self._DropdownHideShow()
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ):
+    def process_application_command( self, command: CAC.ApplicationCommand ):
         
         command_processed = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_AUTOCOMPLETE_IME_MODE:
                 
@@ -1671,14 +1671,14 @@ class ChildrenTab( ListBoxTagsPredicatesAC ):
             tag_service_key = self._service_key
             tags_to_child_predicates_cache = dict( self._tags_to_child_predicates_cache )
             
-            if location_context.IsOneDomain():
+            if location_context.is_one_domain():
                 
                 search_location_context = location_context
                 
             else:
                 
                 # let's not blat the db on some crazy multi-domain just for this un-numbered list
-                search_location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_TAG_SERVICE_KEY )
+                search_location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_TAG_SERVICE_KEY)
                 
             
             tag_context = ClientSearchTagContext.TagContext( service_key = tag_service_key )
@@ -1735,7 +1735,7 @@ class ChildrenTab( ListBoxTagsPredicatesAC ):
                 
                 child_predicates = [ predicate.GetCountlessCopy() for predicate in child_predicates ]
                 
-                num_to_show_in_ac_dropdown_children_tab = CG.client_controller.new_options.GetNoneableInteger( 'num_to_show_in_ac_dropdown_children_tab' )
+                num_to_show_in_ac_dropdown_children_tab = CG.client_controller.new_options.get_noneable_integer('num_to_show_in_ac_dropdown_children_tab')
                 
                 if num_to_show_in_ac_dropdown_children_tab is not None:
                     
@@ -1787,9 +1787,9 @@ class AutoCompleteDropdownTags( AutoCompleteDropdown ):
     
     def __init__( self, parent, location_context: ClientLocation.LocationContext, tag_context: ClientSearchTagContext.TagContext ):
         
-        location_context.FixMissingServices( CG.client_controller.services_manager.FilterValidServiceKeys )
+        location_context.fix_missing_services(CG.client_controller.services_manager.filter_valid_service_keys)
         
-        if not CG.client_controller.services_manager.ServiceExists( tag_context.service_key ):
+        if not CG.client_controller.services_manager.service_exists(tag_context.service_key):
             
             tag_context = ClientSearchTagContext.TagContext( service_key = CC.COMBINED_TAG_SERVICE_KEY )
             
@@ -1886,9 +1886,9 @@ class AutoCompleteDropdownTags( AutoCompleteDropdown ):
         
         tag_service_key = self._tag_context_button.GetValue().service_key
         
-        if location_context.IsAllKnownFiles() and tag_service_key == CC.COMBINED_TAG_SERVICE_KEY:
+        if location_context.is_all_known_files() and tag_service_key == CC.COMBINED_TAG_SERVICE_KEY:
             
-            top_local_tag_service_key = CG.client_controller.services_manager.GetDefaultLocalTagService().GetServiceKey()
+            top_local_tag_service_key = CG.client_controller.services_manager.get_default_local_tag_service().get_service_key()
             
             self._tag_context_button.SetTagServiceKey( top_local_tag_service_key )
             
@@ -1919,7 +1919,7 @@ class AutoCompleteDropdownTags( AutoCompleteDropdown ):
         
         location_context = location_context.duplicate()
         
-        location_context.FixMissingServices( CG.client_controller.services_manager.FilterValidServiceKeys )
+        location_context.fix_missing_services(CG.client_controller.services_manager.filter_valid_service_keys)
         
         if location_context == self._location_context_button.GetValue():
             
@@ -1928,11 +1928,11 @@ class AutoCompleteDropdownTags( AutoCompleteDropdown ):
         
         tag_service_key = self._tag_context_button.GetValue().service_key
         
-        if location_context.IsAllKnownFiles() and tag_service_key == CC.COMBINED_TAG_SERVICE_KEY:
+        if location_context.is_all_known_files() and tag_service_key == CC.COMBINED_TAG_SERVICE_KEY:
             
-            local_tag_services = CG.client_controller.services_manager.GetServices( ( HC.LOCAL_TAG, ) )
+            local_tag_services = CG.client_controller.services_manager.get_services((HC.LOCAL_TAG,))
             
-            self._tag_context_button.SetTagServiceKey( local_tag_services[0].GetServiceKey() )
+            self._tag_context_button.SetTagServiceKey(local_tag_services[0].get_service_key())
             
         
         self._location_context_button.SetValue( location_context )
@@ -1949,14 +1949,14 @@ class AutoCompleteDropdownTags( AutoCompleteDropdown ):
     
     def _SetTagContext( self, tag_context: ClientSearchTagContext.TagContext ):
         
-        if not CG.client_controller.services_manager.ServiceExists( tag_context.service_key ):
+        if not CG.client_controller.services_manager.service_exists(tag_context.service_key):
             
             tag_context.service_key = CC.COMBINED_TAG_SERVICE_KEY
             
         
-        if tag_context.service_key == CC.COMBINED_TAG_SERVICE_KEY and self._location_context_button.GetValue().IsAllKnownFiles():
+        if tag_context.service_key == CC.COMBINED_TAG_SERVICE_KEY and self._location_context_button.GetValue().is_all_known_files():
             
-            default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+            default_location_context = CG.client_controller.new_options.get_default_local_location_context()
             
             self._SetLocationContext( default_location_context )
             
@@ -1989,14 +1989,14 @@ class AutoCompleteDropdownTags( AutoCompleteDropdown ):
         
         tag_service_key = tag_context.service_key
         
-        if not CG.client_controller.services_manager.ServiceExists( tag_service_key ):
+        if not CG.client_controller.services_manager.service_exists(tag_service_key):
             
             tag_service_key = CC.COMBINED_TAG_SERVICE_KEY
             
         
-        if tag_service_key == CC.COMBINED_TAG_SERVICE_KEY and self._location_context_button.GetValue().IsAllKnownFiles():
+        if tag_service_key == CC.COMBINED_TAG_SERVICE_KEY and self._location_context_button.GetValue().is_all_known_files():
             
-            default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+            default_location_context = CG.client_controller.new_options.get_default_local_location_context()
             
             self._SetLocationContext( default_location_context )
             
@@ -2053,7 +2053,7 @@ class AutoCompleteDropdownTags( AutoCompleteDropdown ):
             return
             
         
-        favourite_tags = sorted( CG.client_controller.new_options.GetStringList( 'favourite_tags' ) )
+        favourite_tags = sorted(CG.client_controller.new_options.get_string_list('favourite_tags'))
         
         predicates = [ ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_TAG, value = tag ) for tag in favourite_tags ]
         
@@ -2062,7 +2062,7 @@ class AutoCompleteDropdownTags( AutoCompleteDropdown ):
     
     def SetFetchedResults( self, job_status: ClientThreading.JobStatus, parsed_autocomplete_text: ClientSearchAutocomplete.ParsedAutocompleteText, results_cache: ClientSearchAutocomplete.PredicateResultsCache, results: list ):
         
-        if self._current_fetch_job_status is not None and self._current_fetch_job_status.GetKey() == job_status.GetKey():
+        if self._current_fetch_job_status is not None and self._current_fetch_job_status.get_key() == job_status.get_key():
             
             preserve_single_selection = False
             
@@ -2094,7 +2094,7 @@ class AutoCompleteDropdownTags( AutoCompleteDropdown ):
     
     def SetPrefetchResults( self, job_status: ClientThreading.JobStatus, predicates: list[ ClientSearchPredicate.Predicate ], parsed_autocomplete_text: ClientSearchAutocomplete.ParsedAutocompleteText ):
         
-        if self._current_fetch_job_status is not None and self._current_fetch_job_status.GetKey() == job_status.GetKey():
+        if self._current_fetch_job_status is not None and self._current_fetch_job_status.get_key() == job_status.get_key():
             
             self._last_prefetch_job_status = self._current_fetch_job_status
             
@@ -2494,7 +2494,7 @@ class AutoCompleteDropdownTagsRead( AutocompleteDropdownTagsFileSearchContextORC
         self._or_advanced = ClientGUICommon.BetterButton( self._dropdown_window, 'advanced', self._AdvancedORInput )
         self._or_advanced.setToolTip( ClientGUIFunctions.WrapToolTip( 'You can paste complicated predicate strings in here and it will parse into proper logic.' ) )
         
-        if not CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+        if not CG.client_controller.new_options.get_boolean('advanced_mode'):
             
             self._or_advanced.hide()
             
@@ -2578,7 +2578,7 @@ class AutoCompleteDropdownTagsRead( AutocompleteDropdownTagsFileSearchContextORC
     
     def _ClearSearch( self ):
         
-        location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+        location_context = CG.client_controller.new_options.get_default_local_location_context()
         
         tag_context = ClientSearchTagContext.TagContext()
         
@@ -2692,7 +2692,7 @@ class AutoCompleteDropdownTagsRead( AutocompleteDropdownTagsFileSearchContextORC
         
         if self._fixed_results_list_height is None:
             
-            height_num_chars = CG.client_controller.new_options.GetInteger( 'ac_read_list_height_num_chars' )
+            height_num_chars = CG.client_controller.new_options.get_integer('ac_read_list_height_num_chars')
             
         else:
             
@@ -2710,7 +2710,7 @@ class AutoCompleteDropdownTagsRead( AutocompleteDropdownTagsFileSearchContextORC
         
         if self._fixed_results_list_height is None:
             
-            height_num_chars = CG.client_controller.new_options.GetInteger( 'ac_read_list_height_num_chars' )
+            height_num_chars = CG.client_controller.new_options.get_integer('ac_read_list_height_num_chars')
             
         else:
             
@@ -2786,7 +2786,7 @@ class AutoCompleteDropdownTagsRead( AutocompleteDropdownTagsFileSearchContextORC
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -2996,13 +2996,13 @@ class AutoCompleteDropdownTagsRead( AutocompleteDropdownTagsFileSearchContextORC
         return self._search_pause_play.IsOn()
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ):
+    def process_application_command( self, command: CAC.ApplicationCommand ):
         
         command_processed = True
         
-        if self._can_intercept_unusual_key_events and command.IsSimpleCommand():
+        if self._can_intercept_unusual_key_events and command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_SYNCHRONISED_WAIT_SWITCH:
                 
@@ -3020,7 +3020,7 @@ class AutoCompleteDropdownTagsRead( AutocompleteDropdownTagsFileSearchContextORC
         
         if not command_processed:
             
-            command_processed = super().ProcessApplicationCommand( command )
+            command_processed = super().process_application_command( command )
             
         
         return command_processed
@@ -3142,7 +3142,7 @@ class ListBoxTagsActiveSearchPredicates( ClientGUIListBoxes.ListBoxTagsPredicate
             
             if len( editable_and_invertible_predicates ) == 1:
                 
-                desc = list( editable_and_invertible_predicates )[0].ToString()
+                desc = list( editable_and_invertible_predicates )[0].to_string()
                 
             else:
                 
@@ -3500,26 +3500,26 @@ class AutoCompleteDropdownTagsWrite( AutoCompleteDropdownTags ):
     
     def _InitFavouritesList( self ) -> ListBoxTagsStringsAC:
         
-        height_num_chars = CG.client_controller.new_options.GetInteger( 'ac_write_list_height_num_chars' )
+        height_num_chars = CG.client_controller.new_options.get_integer('ac_write_list_height_num_chars')
         
         favs_list = ListBoxTagsStringsAC( self._dropdown_notebook, self.BroadcastChoices, self._display_tag_service_key, self._float_mode, tag_display_type = ClientTags.TAG_DISPLAY_STORAGE, height_num_chars = height_num_chars )
         
-        favs_list.SetExtraParentRowsAllowed( CG.client_controller.new_options.GetBoolean( 'expand_parents_on_storage_autocomplete_taglists' ) )
-        favs_list.SetParentDecoratorsAllowed( CG.client_controller.new_options.GetBoolean( 'show_parent_decorators_on_storage_autocomplete_taglists' ) )
-        favs_list.SetSiblingDecoratorsAllowed( CG.client_controller.new_options.GetBoolean( 'show_sibling_decorators_on_storage_autocomplete_taglists' ) )
+        favs_list.SetExtraParentRowsAllowed(CG.client_controller.new_options.get_boolean('expand_parents_on_storage_autocomplete_taglists'))
+        favs_list.SetParentDecoratorsAllowed(CG.client_controller.new_options.get_boolean('show_parent_decorators_on_storage_autocomplete_taglists'))
+        favs_list.SetSiblingDecoratorsAllowed(CG.client_controller.new_options.get_boolean('show_sibling_decorators_on_storage_autocomplete_taglists'))
         
         return favs_list
         
     
     def _InitSearchResultsList( self ):
         
-        height_num_chars = CG.client_controller.new_options.GetInteger( 'ac_write_list_height_num_chars' )
+        height_num_chars = CG.client_controller.new_options.get_integer('ac_write_list_height_num_chars')
         
         preds_list = ListBoxTagsPredicatesAC( self._dropdown_notebook, self.BroadcastChoices, self._float_mode, self._display_tag_service_key, tag_display_type = ClientTags.TAG_DISPLAY_STORAGE, height_num_chars = height_num_chars )
         
-        preds_list.SetExtraParentRowsAllowed( CG.client_controller.new_options.GetBoolean( 'expand_parents_on_storage_autocomplete_taglists' ) )
-        preds_list.SetParentDecoratorsAllowed( CG.client_controller.new_options.GetBoolean( 'show_parent_decorators_on_storage_autocomplete_taglists' ) )
-        preds_list.SetSiblingDecoratorsAllowed( CG.client_controller.new_options.GetBoolean( 'show_sibling_decorators_on_storage_autocomplete_taglists' ) )
+        preds_list.SetExtraParentRowsAllowed(CG.client_controller.new_options.get_boolean('expand_parents_on_storage_autocomplete_taglists'))
+        preds_list.SetParentDecoratorsAllowed(CG.client_controller.new_options.get_boolean('show_parent_decorators_on_storage_autocomplete_taglists'))
+        preds_list.SetSiblingDecoratorsAllowed(CG.client_controller.new_options.get_boolean('show_sibling_decorators_on_storage_autocomplete_taglists'))
         
         return preds_list
         
@@ -3528,7 +3528,7 @@ class AutoCompleteDropdownTagsWrite( AutoCompleteDropdownTags ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -3597,7 +3597,7 @@ class AutoCompleteDropdownTagsWrite( AutoCompleteDropdownTags ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -3618,7 +3618,7 @@ class AutoCompleteDropdownTagsWrite( AutoCompleteDropdownTags ):
                 
                 do_it = False
                 
-                if CG.client_controller.new_options.GetBoolean( 'skip_yesno_on_write_autocomplete_multiline_paste' ):
+                if CG.client_controller.new_options.get_boolean('skip_yesno_on_write_autocomplete_multiline_paste'):
                     
                     do_it = True
                     
@@ -3658,7 +3658,7 @@ class AutoCompleteDropdownTagsWrite( AutoCompleteDropdownTags ):
             return
             
         
-        favourite_tags = sorted( CG.client_controller.new_options.GetStringList( 'favourite_tags' ) )
+        favourite_tags = sorted(CG.client_controller.new_options.get_string_list('favourite_tags'))
         
         self._favourites_list.SetTags( favourite_tags )
         
@@ -3838,7 +3838,7 @@ class EditAdvancedORPredicates( ClientGUIScrolledPanels.EditPanel ):
                         
                     
                 
-                output = '\n'.join( ( pred.ToString() for pred in self._current_predicates ) )
+                output = '\n'.join((pred.to_string() for pred in self._current_predicates))
                 object_name = 'HydrusValid'
                 
             except ValueError as e:

@@ -143,30 +143,30 @@ class SpeedAndMemoryPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         #
         
-        self._thumbnail_cache_size.SetValue( self._new_options.GetInteger( 'thumbnail_cache_size' ) )
-        self._image_cache_size.SetValue( self._new_options.GetInteger( 'image_cache_size' ) )
-        self._image_tile_cache_size.SetValue( self._new_options.GetInteger( 'image_tile_cache_size' ) )
+        self._thumbnail_cache_size.SetValue(self._new_options.get_integer('thumbnail_cache_size'))
+        self._image_cache_size.SetValue(self._new_options.get_integer('image_cache_size'))
+        self._image_tile_cache_size.SetValue(self._new_options.get_integer('image_tile_cache_size'))
         
-        self._thumbnail_cache_timeout.SetValue( self._new_options.GetInteger( 'thumbnail_cache_timeout' ) )
-        self._image_cache_timeout.SetValue( self._new_options.GetInteger( 'image_cache_timeout' ) )
-        self._image_tile_cache_timeout.SetValue( self._new_options.GetInteger( 'image_tile_cache_timeout' ) )
+        self._thumbnail_cache_timeout.SetValue(self._new_options.get_integer('thumbnail_cache_timeout'))
+        self._image_cache_timeout.SetValue(self._new_options.get_integer('image_cache_timeout'))
+        self._image_tile_cache_timeout.SetValue(self._new_options.get_integer('image_tile_cache_timeout'))
         
-        self._ideal_tile_dimension.setValue( self._new_options.GetInteger( 'ideal_tile_dimension' ) )
+        self._ideal_tile_dimension.setValue(self._new_options.get_integer('ideal_tile_dimension'))
         
-        self._gallery_page_status_update_time_minimum.SetValue( HydrusTime.secondise_ms_float( self._new_options.GetInteger( 'gallery_page_status_update_time_minimum_ms' ) ) )
-        self._gallery_page_status_update_time_ratio_denominator.setValue( self._new_options.GetInteger( 'gallery_page_status_update_time_ratio_denominator' ) )
+        self._gallery_page_status_update_time_minimum.SetValue(HydrusTime.secondise_ms_float(self._new_options.get_integer('gallery_page_status_update_time_minimum_ms')))
+        self._gallery_page_status_update_time_ratio_denominator.setValue(self._new_options.get_integer('gallery_page_status_update_time_ratio_denominator'))
         
-        self._watcher_page_status_update_time_minimum.SetValue( HydrusTime.secondise_ms_float( self._new_options.GetInteger( 'watcher_page_status_update_time_minimum_ms' ) ) )
-        self._watcher_page_status_update_time_ratio_denominator.setValue( self._new_options.GetInteger( 'watcher_page_status_update_time_ratio_denominator' ) )
+        self._watcher_page_status_update_time_minimum.SetValue(HydrusTime.secondise_ms_float(self._new_options.get_integer('watcher_page_status_update_time_minimum_ms')))
+        self._watcher_page_status_update_time_ratio_denominator.setValue(self._new_options.get_integer('watcher_page_status_update_time_ratio_denominator'))
         
-        self._video_buffer_size.SetValue( self._new_options.GetInteger( 'video_buffer_size' ) )
+        self._video_buffer_size.SetValue(self._new_options.get_integer('video_buffer_size'))
         
-        self._media_viewer_prefetch_num_previous.setValue( self._new_options.GetInteger( 'media_viewer_prefetch_num_previous' ) )
-        self._media_viewer_prefetch_num_next.setValue( self._new_options.GetInteger( 'media_viewer_prefetch_num_next' ) )
-        self._duplicate_filter_prefetch_num_pairs.setValue( self._new_options.GetInteger( 'duplicate_filter_prefetch_num_pairs' ) )
+        self._media_viewer_prefetch_num_previous.setValue(self._new_options.get_integer('media_viewer_prefetch_num_previous'))
+        self._media_viewer_prefetch_num_next.setValue(self._new_options.get_integer('media_viewer_prefetch_num_next'))
+        self._duplicate_filter_prefetch_num_pairs.setValue(self._new_options.get_integer('duplicate_filter_prefetch_num_pairs'))
         
-        self._image_cache_storage_limit_percentage.setValue( self._new_options.GetInteger( 'image_cache_storage_limit_percentage' ) )
-        self._image_cache_prefetch_limit_percentage.setValue( self._new_options.GetInteger( 'image_cache_prefetch_limit_percentage' ) )
+        self._image_cache_storage_limit_percentage.setValue(self._new_options.get_integer('image_cache_storage_limit_percentage'))
+        self._image_cache_prefetch_limit_percentage.setValue(self._new_options.get_integer('image_cache_prefetch_limit_percentage'))
         
         #
         
@@ -382,7 +382,7 @@ class SpeedAndMemoryPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         resolution = ( int( 16 * unit_length ), int( 9 * unit_length ) )
         
-        self._image_cache_storage_limit_percentage_st.setText( '% - {} pixels, or a ~{} image'.format( HydrusNumbers.to_human_int( num_pixels ), ClientData.ResolutionToPrettyString( resolution ) ) )
+        self._image_cache_storage_limit_percentage_st.setText( '% - {} pixels, or a ~{} image'.format(HydrusNumbers.to_human_int( num_pixels ), ClientData.resolution_to_pretty_string(resolution)))
         
         num_pixels = cache_size * ( self._image_cache_prefetch_limit_percentage.value() / 100 ) / 3
         
@@ -398,7 +398,7 @@ class SpeedAndMemoryPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         small_resolution = ( int( 16 * unit_length ), int( 9 * unit_length ) )
         
-        self._image_cache_prefetch_limit_percentage_st.setText( '% - {} pixels: 5x ~{}, max ~{}'.format( HydrusNumbers.to_human_int( num_pixels ), ClientData.ResolutionToPrettyString( small_resolution ), ClientData.ResolutionToPrettyString( big_resolution ) ) )
+        self._image_cache_prefetch_limit_percentage_st.setText( '% - {} pixels: 5x ~{}, max ~{}'.format(HydrusNumbers.to_human_int( num_pixels ), ClientData.resolution_to_pretty_string(small_resolution), ClientData.resolution_to_pretty_string(big_resolution)))
         
         #
         
@@ -465,7 +465,7 @@ class SpeedAndMemoryPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         ( thumbnail_width, thumbnail_height ) = HC.options[ 'thumbnail_dimensions' ]
         
-        res_string = ClientData.ResolutionToPrettyString( ( thumbnail_width, thumbnail_height ) )
+        res_string = ClientData.resolution_to_pretty_string((thumbnail_width, thumbnail_height))
         
         estimated_bytes_per_thumb = 3 * thumbnail_width * thumbnail_height
         
@@ -485,29 +485,29 @@ class SpeedAndMemoryPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def UpdateOptions( self ):
         
-        self._new_options.SetInteger( 'thumbnail_cache_size', self._thumbnail_cache_size.GetValue() )
-        self._new_options.SetInteger( 'image_cache_size', self._image_cache_size.GetValue() )
-        self._new_options.SetInteger( 'image_tile_cache_size', self._image_tile_cache_size.GetValue() )
+        self._new_options.set_integer('thumbnail_cache_size', self._thumbnail_cache_size.GetValue())
+        self._new_options.set_integer('image_cache_size', self._image_cache_size.GetValue())
+        self._new_options.set_integer('image_tile_cache_size', self._image_tile_cache_size.GetValue())
         
-        self._new_options.SetInteger( 'thumbnail_cache_timeout', self._thumbnail_cache_timeout.GetValue() )
-        self._new_options.SetInteger( 'image_cache_timeout', self._image_cache_timeout.GetValue() )
-        self._new_options.SetInteger( 'image_tile_cache_timeout', self._image_tile_cache_timeout.GetValue() )
+        self._new_options.set_integer('thumbnail_cache_timeout', self._thumbnail_cache_timeout.GetValue())
+        self._new_options.set_integer('image_cache_timeout', self._image_cache_timeout.GetValue())
+        self._new_options.set_integer('image_tile_cache_timeout', self._image_tile_cache_timeout.GetValue())
         
-        self._new_options.SetInteger( 'ideal_tile_dimension', self._ideal_tile_dimension.value() )
+        self._new_options.set_integer('ideal_tile_dimension', self._ideal_tile_dimension.value())
         
-        self._new_options.SetInteger( 'media_viewer_prefetch_num_previous', self._media_viewer_prefetch_num_previous.value() )
-        self._new_options.SetInteger( 'media_viewer_prefetch_num_next', self._media_viewer_prefetch_num_next.value() )
-        self._new_options.SetInteger( 'duplicate_filter_prefetch_num_pairs', self._duplicate_filter_prefetch_num_pairs.value() )
+        self._new_options.set_integer('media_viewer_prefetch_num_previous', self._media_viewer_prefetch_num_previous.value())
+        self._new_options.set_integer('media_viewer_prefetch_num_next', self._media_viewer_prefetch_num_next.value())
+        self._new_options.set_integer('duplicate_filter_prefetch_num_pairs', self._duplicate_filter_prefetch_num_pairs.value())
         
-        self._new_options.SetInteger( 'image_cache_storage_limit_percentage', self._image_cache_storage_limit_percentage.value() )
-        self._new_options.SetInteger( 'image_cache_prefetch_limit_percentage', self._image_cache_prefetch_limit_percentage.value() )
+        self._new_options.set_integer('image_cache_storage_limit_percentage', self._image_cache_storage_limit_percentage.value())
+        self._new_options.set_integer('image_cache_prefetch_limit_percentage', self._image_cache_prefetch_limit_percentage.value())
         
-        self._new_options.SetInteger( 'gallery_page_status_update_time_minimum_ms', int( self._gallery_page_status_update_time_minimum.GetValue() * 1000 ) )
-        self._new_options.SetInteger( 'gallery_page_status_update_time_ratio_denominator', self._gallery_page_status_update_time_ratio_denominator.value() )
+        self._new_options.set_integer('gallery_page_status_update_time_minimum_ms', int(self._gallery_page_status_update_time_minimum.GetValue() * 1000))
+        self._new_options.set_integer('gallery_page_status_update_time_ratio_denominator', self._gallery_page_status_update_time_ratio_denominator.value())
         
-        self._new_options.SetInteger( 'watcher_page_status_update_time_minimum_ms', int( self._watcher_page_status_update_time_minimum.GetValue() * 1000 ) )
-        self._new_options.SetInteger( 'watcher_page_status_update_time_ratio_denominator', self._watcher_page_status_update_time_ratio_denominator.value() )
+        self._new_options.set_integer('watcher_page_status_update_time_minimum_ms', int(self._watcher_page_status_update_time_minimum.GetValue() * 1000))
+        self._new_options.set_integer('watcher_page_status_update_time_ratio_denominator', self._watcher_page_status_update_time_ratio_denominator.value())
         
-        self._new_options.SetInteger( 'video_buffer_size', self._video_buffer_size.GetValue() )
+        self._new_options.set_integer('video_buffer_size', self._video_buffer_size.GetValue())
         
     

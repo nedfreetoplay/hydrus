@@ -25,16 +25,16 @@ def AddRearrangeMenu( win: ClientGUIMediaResultsPanel.MediaResultsPanel, menu: Q
             rearrange_menu,
             'to start',
             'Move the selected thumbnails to the start of the media list.',
-            win.ProcessApplicationCommand,
-            CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_REARRANGE_THUMBNAILS, ( CAC.REARRANGE_THUMBNAILS_TYPE_COMMAND, CAC.MOVE_HOME ) )
+            win.process_application_command,
+            CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_REARRANGE_THUMBNAILS, ( CAC.REARRANGE_THUMBNAILS_TYPE_COMMAND, CAC.MOVE_HOME ) )
         )
         
         ClientGUIMenus.AppendMenuItem(
             rearrange_menu,
             'back one',
             'Move the selected thumbnails back one position.',
-            win.ProcessApplicationCommand,
-            CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_REARRANGE_THUMBNAILS, ( CAC.REARRANGE_THUMBNAILS_TYPE_COMMAND, CAC.MOVE_LEFT ) )
+            win.process_application_command,
+            CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_REARRANGE_THUMBNAILS, ( CAC.REARRANGE_THUMBNAILS_TYPE_COMMAND, CAC.MOVE_LEFT ) )
         )
         
     
@@ -50,8 +50,8 @@ def AddRearrangeMenu( win: ClientGUIMediaResultsPanel.MediaResultsPanel, menu: Q
                     rearrange_menu,
                     'to here',
                     'Move the selected thumbnails to the focused position (most likely the one you clicked on).',
-                    win.ProcessApplicationCommand,
-                    CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_REARRANGE_THUMBNAILS, ( CAC.REARRANGE_THUMBNAILS_TYPE_COMMAND, CAC.MOVE_TO_FOCUS ) )
+                    win.process_application_command,
+                    CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_REARRANGE_THUMBNAILS, ( CAC.REARRANGE_THUMBNAILS_TYPE_COMMAND, CAC.MOVE_TO_FOCUS ) )
                 )
                 
             
@@ -67,16 +67,16 @@ def AddRearrangeMenu( win: ClientGUIMediaResultsPanel.MediaResultsPanel, menu: Q
             rearrange_menu,
             'forward one',
             'Move the selected thumbnails forward one position.',
-            win.ProcessApplicationCommand,
-            CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_REARRANGE_THUMBNAILS, ( CAC.REARRANGE_THUMBNAILS_TYPE_COMMAND, CAC.MOVE_RIGHT ) )
+            win.process_application_command,
+            CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_REARRANGE_THUMBNAILS, ( CAC.REARRANGE_THUMBNAILS_TYPE_COMMAND, CAC.MOVE_RIGHT ) )
         )
         
         ClientGUIMenus.AppendMenuItem(
             rearrange_menu,
             'to end',
             'Move the selected thumbnails to the end of the media list.',
-            win.ProcessApplicationCommand,
-            CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_REARRANGE_THUMBNAILS, ( CAC.REARRANGE_THUMBNAILS_TYPE_COMMAND, CAC.MOVE_END ) )
+            win.process_application_command,
+            CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_REARRANGE_THUMBNAILS, ( CAC.REARRANGE_THUMBNAILS_TYPE_COMMAND, CAC.MOVE_END ) )
         )
         
     
@@ -130,9 +130,9 @@ def AddRemoveMenu( win: ClientGUIMediaResultsPanel.MediaResultsPanel, menu: QW.Q
             
             ClientGUIMenus.AppendSeparator( remove_menu )
             
-            all_specific_file_domains = ClientLocation.SortFileServiceKeysNicely( all_specific_file_domains )
+            all_specific_file_domains = ClientLocation.sort_file_service_keys_nicely(all_specific_file_domains)
             
-            all_specific_file_domains = ClientLocation.FilterOutRedundantMetaServices( all_specific_file_domains )
+            all_specific_file_domains = ClientLocation.filter_out_redundant_meta_services(all_specific_file_domains)
             
             for file_service_key in all_specific_file_domains:
                 
@@ -206,9 +206,9 @@ def AddSelectMenu( win: ClientGUIMediaResultsPanel.MediaResultsPanel, menu, filt
             
             ClientGUIMenus.AppendSeparator( select_menu )
             
-            all_specific_file_domains = ClientLocation.SortFileServiceKeysNicely( all_specific_file_domains )
+            all_specific_file_domains = ClientLocation.sort_file_service_keys_nicely(all_specific_file_domains)
             
-            all_specific_file_domains = ClientLocation.FilterOutRedundantMetaServices( all_specific_file_domains )
+            all_specific_file_domains = ClientLocation.filter_out_redundant_meta_services(all_specific_file_domains)
             
             for file_service_key in all_specific_file_domains:
                 

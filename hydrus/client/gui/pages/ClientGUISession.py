@@ -224,7 +224,7 @@ class GUISessionPageData( HydrusSerialisable.SerialisableBase ):
             
         else:
             
-            self._page_manager = page_manager.Duplicate() # duplicate, which _should_ freeze downloaders etc.. inside the MC
+            self._page_manager = page_manager.duplicate() # duplicate, which _should_ freeze downloaders etc.. inside the MC
             self._hashes = list( hashes )
             
         

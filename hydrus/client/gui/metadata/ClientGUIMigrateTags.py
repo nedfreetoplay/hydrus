@@ -56,15 +56,15 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         try:
             
-            service = CG.client_controller.services_manager.GetService( self._service_key )
+            service = CG.client_controller.services_manager.get_service(self._service_key)
             
         except HydrusExceptions.DataMissing:
             
-            services = CG.client_controller.services_manager.GetServices( ( HC.LOCAL_TAG, ) )
+            services = CG.client_controller.services_manager.get_services((HC.LOCAL_TAG,))
             
             service = next( iter( services ) )
             
-            self._service_key = service.GetServiceKey()
+            self._service_key = service.get_service_key()
             
         
         #
@@ -82,7 +82,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         self._migration_source = ClientGUICommon.BetterChoice( self._migration_panel )
         
-        location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+        location_context = CG.client_controller.new_options.get_default_local_location_context()
         
         self._migration_source_hash_type_st = ClientGUICommon.BetterStaticText( self._migration_panel, 'hash type: unknown' )
         
@@ -161,9 +161,9 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         self._migration_source_have_count_service = ClientGUICommon.BetterChoice( self._pair_have_count_panel )
         
-        for service in CG.client_controller.services_manager.GetServices( HC.REAL_TAG_SERVICES ):
+        for service in CG.client_controller.services_manager.get_services(HC.REAL_TAG_SERVICES):
             
-            self._migration_source_have_count_service.addItem( service.GetName(), service.GetServiceKey() )
+            self._migration_source_have_count_service.addItem(service.get_name(), service.get_service_key())
             
         
         #
@@ -355,7 +355,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             if file_filtering_type == self.HASHES_LOCATION:
                 
-                location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY )
+                location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_FILE_SERVICE_KEY)
                 hashes = self._hashes
                 
                 extra_filter_info_strings.append( 'for {} files'.format( HydrusNumbers.to_human_int( len( hashes ) ) ) )
@@ -365,13 +365,13 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 location_context = self._migration_source_location_context_button.GetValue()
                 hashes = None
                 
-                if location_context.IsAllKnownFiles():
+                if location_context.is_all_known_files():
                     
                     extra_filter_info_strings.append( 'for all known files' )
                     
                 else:
                     
-                    extra_filter_info_strings.append( 'for files in "{}"'.format( location_context.ToString( CG.client_controller.services_manager.GetName ) ) )
+                    extra_filter_info_strings.append( 'for files in "{}"'.format(location_context.to_string(CG.client_controller.services_manager.get_name)))
                     
                 
             
@@ -435,7 +435,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             needs_count_service_key = self._migration_source_have_count_service.GetValue()
             
-            needs_count_service_name = CG.client_controller.services_manager.GetName( needs_count_service_key )
+            needs_count_service_name = CG.client_controller.services_manager.get_name(needs_count_service_key)
             
             if content_type == HC.CONTENT_TYPE_TAG_SIBLINGS:
                 
@@ -520,9 +520,9 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         content_statuses_string = source_content_statuses_strings[ tuple( content_statuses ) ]
         content_type_string = HC.content_type_string_lookup[ content_type ]
-        source_name = source.GetName()
+        source_name = source.get_name()
         destination_action_string = destination_action_strings[ content_action ]
-        destination_name = destination.GetName()
+        destination_name = destination.get_name()
         
         title = f'taking {content_statuses_string} {content_type_string}{extra_info} from "{source_name}" and {destination_action_string} "{destination_name}"'
         
@@ -536,7 +536,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            if CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+            if CG.client_controller.new_options.get_boolean('advanced_mode'):
                 
                 do_it = True
                 
@@ -553,7 +553,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 migration_job = ClientMigration.MigrationJob( CG.client_controller, title, source, destination )
                 
-                CG.client_controller.call_to_thread( migration_job.Run )
+                CG.client_controller.call_to_thread(migration_job.run)
                 
             
         
@@ -746,9 +746,9 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
         else:
             
-            destination_service = CG.client_controller.services_manager.GetService( destination )
+            destination_service = CG.client_controller.services_manager.get_service(destination)
             
-            destination_service_type = destination_service.GetServiceType()
+            destination_service_type = destination_service.get_service_type()
             
             if destination_service_type == HC.LOCAL_TAG:
                 
@@ -858,9 +858,9 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             self._migration_source_archive_path_button.hide()
             self._migration_source_hash_type_st.hide()
             
-            source_service = CG.client_controller.services_manager.GetService( source )
+            source_service = CG.client_controller.services_manager.get_service(source)
             
-            source_service_type = source_service.GetServiceType()
+            source_service_type = source_service.get_service_type()
             
             self._migration_source_content_status_filter.addItem( 'current', ( HC.CONTENT_STATUS_CURRENT, ) )
             
@@ -887,10 +887,10 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         self._migration_source.clear()
         self._migration_destination.clear()
         
-        for service in CG.client_controller.services_manager.GetServices( HC.REAL_TAG_SERVICES ):
+        for service in CG.client_controller.services_manager.get_services(HC.REAL_TAG_SERVICES):
             
-            self._migration_source.addItem( service.GetName(), service.GetServiceKey() )
-            self._migration_destination.addItem( service.GetName(), service.GetServiceKey() )
+            self._migration_source.addItem(service.get_name(), service.get_service_key())
+            self._migration_destination.addItem(service.get_name(), service.get_service_key())
             
         
         self._source_archive_path = None

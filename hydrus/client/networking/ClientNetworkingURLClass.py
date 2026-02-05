@@ -61,7 +61,7 @@ def ConvertURLClassesIntoAPIPairs( url_classes ):
                 continue
                 
             
-            if other_url_class.Matches( api_url ):
+            if other_url_class.matches(api_url):
                 
                 pairs.append( ( url_class, other_url_class ) )
                 
@@ -112,7 +112,7 @@ class URLClassParameterFixedName( HydrusSerialisable.SerialisableBase ):
     
     def __repr__( self ):
         
-        text = f'URL Class Parameter - Fixed Name: {self._name}: {self._value_string_match.ToString()}'
+        text = f'URL Class Parameter - Fixed Name: {self._name}: {self._value_string_match.to_string()}'
         
         return text
         
@@ -156,7 +156,7 @@ class URLClassParameterFixedName( HydrusSerialisable.SerialisableBase ):
             
             try:
                 
-                result = self._default_value_string_processor.ProcessStrings( [ self._default_value ] )
+                result = self._default_value_string_processor.process_strings([self._default_value])
                 
                 return result[0]
                 
@@ -208,7 +208,7 @@ class URLClassParameterFixedName( HydrusSerialisable.SerialisableBase ):
     
     def MatchesValue( self, value ):
         
-        return self._value_string_match.Matches( value )
+        return self._value_string_match.matches(value)
         
     
     def SetDefaultValue( self, default_value: str | None ):
@@ -228,7 +228,7 @@ class URLClassParameterFixedName( HydrusSerialisable.SerialisableBase ):
     
     def TestValue( self, value ):
         
-        self._value_string_match.Test( value )
+        self._value_string_match.test(value)
         
     
 
@@ -864,7 +864,7 @@ class URLClass( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 try:
                     
-                    string_match.Test( path_component )
+                    string_match.test(path_component)
                     
                 except HydrusExceptions.StringMatchException as e:
                     
@@ -1125,7 +1125,7 @@ class URLClass( HydrusSerialisable.SerialisableBaseNamed ):
             
             def encode_fixed_string_match_param( s_m: ClientStrings.StringMatch ) -> ClientStrings.StringMatch:
                 
-                ( match_type, match_value, min_chars, max_chars, example_string ) = s_m.ToTuple()
+                ( match_type, match_value, min_chars, max_chars, example_string ) = s_m.to_tuple()
                 
                 if match_type == ClientStrings.STRING_MATCH_FIXED:
                     
@@ -1146,7 +1146,7 @@ class URLClass( HydrusSerialisable.SerialisableBaseNamed ):
             
             def encode_fixed_string_match_path( s_m: ClientStrings.StringMatch ) -> ClientStrings.StringMatch:
                 
-                ( match_type, match_value, min_chars, max_chars, example_string ) = s_m.ToTuple()
+                ( match_type, match_value, min_chars, max_chars, example_string ) = s_m.to_tuple()
                 
                 if match_type == ClientStrings.STRING_MATCH_FIXED:
                     
@@ -1262,7 +1262,7 @@ class URLClass( HydrusSerialisable.SerialisableBaseNamed ):
             
             keep_extra_parameters_for_server = True
             
-            if no_more_parameters_than_this or api_lookup_converter.MakesChanges() or url_type not in ( HC.URL_TYPE_GALLERY, HC.URL_TYPE_WATCHABLE ):
+            if no_more_parameters_than_this or api_lookup_converter.makes_changes() or url_type not in (HC.URL_TYPE_GALLERY, HC.URL_TYPE_WATCHABLE):
                 
                 keep_extra_parameters_for_server = False
                 
@@ -1382,7 +1382,7 @@ class URLClass( HydrusSerialisable.SerialisableBaseNamed ):
         
         request_url = self.Normalise( url, for_server = True )
         
-        return self._api_lookup_converter.Convert( request_url )
+        return self._api_lookup_converter.convert(request_url)
         
     
     def GetClassKey( self ):
@@ -1530,7 +1530,7 @@ class URLClass( HydrusSerialisable.SerialisableBaseNamed ):
             
             try:
                 
-                converted_referral_url = self._referral_url_converter.Convert( request_url )
+                converted_referral_url = self._referral_url_converter.convert(request_url)
                 
             except HydrusExceptions.StringConvertException:
                 
@@ -1839,7 +1839,7 @@ class URLClass( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 try:
                     
-                    self._single_value_parameters_string_match.Test( single_value_parameter )
+                    self._single_value_parameters_string_match.test(single_value_parameter)
                     
                 except HydrusExceptions.StringMatchException as e:
                     
@@ -1851,7 +1851,7 @@ class URLClass( HydrusSerialisable.SerialisableBaseNamed ):
     
     def UsesAPIURL( self ):
         
-        return self._api_lookup_converter.MakesChanges()
+        return self._api_lookup_converter.makes_changes()
         
     
 

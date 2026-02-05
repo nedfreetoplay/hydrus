@@ -202,9 +202,9 @@ class NetworkContext( HydrusSerialisable.SerialisableBase ):
                 
                 services_manager = CG.client_controller.services_manager
                 
-                if services_manager.ServiceExists( service_key ):
+                if services_manager.service_exists(service_key):
                     
-                    name = services_manager.GetName( service_key )
+                    name = services_manager.get_name(service_key)
                     
                 else:
                     

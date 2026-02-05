@@ -1143,7 +1143,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                 job = self._jobs.get( timeout = 1 )
                 
                 self._currently_doing_job = True
-                self._current_job_name = job.ToString()
+                self._current_job_name = job.to_string()
                 
                 self.publish_status_update()
                 
@@ -1151,14 +1151,14 @@ class HydrusDB( HydrusDBBase.DBBase ):
                     
                     if HG.db_report_mode:
                         
-                        summary = 'Running db job: ' + job.ToString()
+                        summary = 'Running db job: ' + job.to_string()
                         
                         HydrusData.show_text( summary )
                         
                     
                     if HydrusProfiling.is_profile_mode( 'db' ):
                         
-                        summary = 'Profiling db job: ' + job.ToString()
+                        summary = 'Profiling db job: ' + job.to_string()
                         
                         HydrusProfiling.profile( summary, HydrusData.Call( self._process_job, job ), min_duration_ms = HG.db_profile_min_job_time_ms )
                         

@@ -63,7 +63,7 @@ class CollectComboCtrl( QW.QComboBox ):
         
         if media_collect.DoesACollect():
             
-            CG.client_controller.CallAfterQtSafe( self, self.SetCollectByValue, media_collect )
+            CG.client_controller.call_after_qt_safe(self, self.SetCollectByValue, media_collect)
             
         
     
@@ -89,9 +89,9 @@ class CollectComboCtrl( QW.QComboBox ):
         
         text_and_data_tuples = set()
         
-        for media_sort in CG.client_controller.new_options.GetDefaultNamespaceSorts():
+        for media_sort in CG.client_controller.new_options.get_default_namespace_sorts():
             
-            namespaces = media_sort.GetNamespaces()
+            namespaces = media_sort.get_namespaces()
             
             try:
                 
@@ -107,11 +107,11 @@ class CollectComboCtrl( QW.QComboBox ):
         
         text_and_data_tuples = sorted( ( ( namespace, ( 'namespace', namespace ) ) for namespace in text_and_data_tuples ) )
         
-        star_ratings_services = CG.client_controller.services_manager.GetServices( HC.STAR_RATINGS_SERVICES )
+        star_ratings_services = CG.client_controller.services_manager.get_services(HC.STAR_RATINGS_SERVICES)
         
         for star_ratings_service in star_ratings_services:
             
-            text_and_data_tuples.append( ( star_ratings_service.GetName(), ( 'rating', star_ratings_service.GetServiceKey() ) ) )
+            text_and_data_tuples.append((star_ratings_service.get_name(), ('rating', star_ratings_service.get_service_key())))
             
         
         current_text_and_data_tuples = []
@@ -329,7 +329,7 @@ class MediaCollectControl( QW.QWidget ):
         
         if media_collect is None:
             
-            media_collect = CG.client_controller.new_options.GetDefaultCollect()
+            media_collect = CG.client_controller.new_options.get_default_collect()
             
         
         self._media_collect = media_collect
@@ -375,7 +375,7 @@ class MediaCollectControl( QW.QWidget ):
         
         service_types_in_order = [ HC.LOCAL_TAG, HC.TAG_REPOSITORY, HC.COMBINED_TAG ]
         
-        services = services_manager.GetServices( service_types_in_order )
+        services = services_manager.get_services(service_types_in_order)
         
         submenu_template_items = []
         
@@ -389,23 +389,23 @@ class MediaCollectControl( QW.QWidget ):
         
         for service in services:
             
-            if last_seen_service_type is not None and last_seen_service_type != service.GetServiceType():
+            if last_seen_service_type is not None and last_seen_service_type != service.get_service_type():
                 
                 submenu_template_items.append( ClientGUIMenuButton.MenuTemplateItemSeparator() )
                 
             
             new_tag_context = self._tag_context.duplicate()
             
-            new_tag_context.service_key = service.GetServiceKey()
+            new_tag_context.service_key = service.get_service_key()
             
             check_manager = ClientGUICommon.CheckboxManagerCalls(
                 HydrusData.Call( self.SetTagContext, new_tag_context ),
                 get_check_manager_lambda_1( new_tag_context )
             )
             
-            submenu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCheck( service.GetName(), 'Filter the namespaces by this tag domain.', check_manager ) )
+            submenu_template_items.append(ClientGUIMenuButton.MenuTemplateItemCheck(service.get_name(), 'Filter the namespaces by this tag domain.', check_manager))
             
-            last_seen_service_type = service.GetServiceType()
+            last_seen_service_type = service.get_service_type()
             
         
         menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemSubmenu( 'tag service', submenu_template_items ) )
@@ -663,7 +663,7 @@ class MediaSortControl( QW.QWidget ):
                 
             
         
-        default_namespace_sorts = CG.client_controller.new_options.GetDefaultNamespaceSorts()
+        default_namespace_sorts = CG.client_controller.new_options.get_default_namespace_sorts()
         
         if menu is not None:
             
@@ -695,7 +695,7 @@ class MediaSortControl( QW.QWidget ):
             ClientGUIMenus.AppendMenuItem( submenu, 'custom', 'Set a custom namespace sort', self._SetCustomNamespaceSortFromUser )
             
         
-        rating_service_keys = CG.client_controller.services_manager.GetServiceKeys( HC.RATINGS_SERVICES )
+        rating_service_keys = CG.client_controller.services_manager.get_service_keys(HC.RATINGS_SERVICES)
         
         if len( rating_service_keys ) > 0:
             
@@ -846,7 +846,7 @@ class MediaSortControl( QW.QWidget ):
             
             service_types_in_order = [ HC.LOCAL_TAG, HC.TAG_REPOSITORY, HC.COMBINED_TAG ]
             
-            services = services_manager.GetServices( service_types_in_order )
+            services = services_manager.get_services(service_types_in_order)
             
             submenu_template_items = []
             
@@ -860,23 +860,23 @@ class MediaSortControl( QW.QWidget ):
             
             for service in services:
                 
-                if last_seen_service_type is not None and last_seen_service_type != service.GetServiceType():
+                if last_seen_service_type is not None and last_seen_service_type != service.get_service_type():
                     
                     submenu_template_items.append( ClientGUIMenuButton.MenuTemplateItemSeparator() )
                     
                 
                 new_tag_context = self._tag_context.duplicate()
                 
-                new_tag_context.service_key = service.GetServiceKey()
+                new_tag_context.service_key = service.get_service_key()
                 
                 check_manager = ClientGUICommon.CheckboxManagerCalls(
                     HydrusData.Call( self.SetTagContext, new_tag_context ),
                     get_check_manager_lambda_1( new_tag_context )
                 )
                 
-                submenu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCheck( service.GetName(), 'Filter the namespaces by this tag domain.', check_manager ) )
+                submenu_template_items.append(ClientGUIMenuButton.MenuTemplateItemCheck(service.get_name(), 'Filter the namespaces by this tag domain.', check_manager))
                 
-                last_seen_service_type = service.GetServiceType()
+                last_seen_service_type = service.get_service_type()
                 
             
             menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemSubmenu( 'tag service', submenu_template_items ) )
@@ -936,7 +936,7 @@ class MediaSortControl( QW.QWidget ):
         media_sort = self._GetCurrentSort()
         
         # note we can't support this in 'all known files', but we don't make a song and dance about it here because it is advanced anyway
-        if media_sort.CanSortAtDBLevel( ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) ):
+        if media_sort.CanSortAtDBLevel(ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)):
             
             tt = 'This sort type is simple enough that if your search has a "system:limit is n", the database will be able to select the nth tallest/smallest/whatever according to your sort.'
             
@@ -954,11 +954,11 @@ class MediaSortControl( QW.QWidget ):
     
     def _UserChoseASort( self ):
         
-        if CG.client_controller.new_options.GetBoolean( 'save_page_sort_on_change' ):
+        if CG.client_controller.new_options.get_boolean('save_page_sort_on_change'):
             
             media_sort = self._GetCurrentSort()
             
-            CG.client_controller.new_options.SetDefaultSort( media_sort )
+            CG.client_controller.new_options.set_default_sort(media_sort)
             
         
         self._UpdateToolTip()
@@ -1027,7 +1027,7 @@ class MediaSortControl( QW.QWidget ):
     
     def wheelEvent( self, event ):
         
-        if CG.client_controller.new_options.GetBoolean( 'menu_choice_buttons_can_mouse_scroll' ):
+        if CG.client_controller.new_options.get_boolean('menu_choice_buttons_can_mouse_scroll'):
             
             if self._sort_type_button.rect().contains( self._sort_type_button.mapFromGlobal( QG.QCursor.pos() ) ):
                 

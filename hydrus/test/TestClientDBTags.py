@@ -545,7 +545,7 @@ class TestClientDBTags( unittest.TestCase ):
     @classmethod
     def _delete_db( cls ):
         
-        cls._db.Shutdown()
+        cls._db.shutdown()
         
         while not cls._db.LoopIsFinished():
             
@@ -593,9 +593,9 @@ class TestClientDBTags( unittest.TestCase ):
         self._processing_service_key = HydrusData.generate_key()
         self._public_service_key = HydrusData.generate_key()
         
-        services.append( ClientServices.GenerateService( self._my_service_key, HC.LOCAL_TAG, 'personal tags' ) )
-        services.append( ClientServices.GenerateService( self._processing_service_key, HC.LOCAL_TAG, 'processing tags' ) )
-        services.append( ClientServices.GenerateService( self._public_service_key, HC.TAG_REPOSITORY, 'public tags' ) )
+        services.append(ClientServices.generate_service(self._my_service_key, HC.LOCAL_TAG, 'personal tags'))
+        services.append(ClientServices.generate_service(self._processing_service_key, HC.LOCAL_TAG, 'processing tags'))
+        services.append(ClientServices.generate_service(self._public_service_key, HC.TAG_REPOSITORY, 'public tags'))
         
         self._write( 'update_services', services )
         
@@ -611,15 +611,15 @@ class TestClientDBTags( unittest.TestCase ):
         
         for media_result in media_results:
             
-            if media_result.GetHash() == self._samus_bad:
+            if media_result.get_hash() == self._samus_bad:
                 
                 self._samus_bad_hash_id = media_result.GetHashId()
                 
-            elif media_result.GetHash() == self._samus_both:
+            elif media_result.get_hash() == self._samus_both:
                 
                 self._samus_both_hash_id = media_result.GetHashId()
                 
-            elif media_result.GetHash() == self._samus_good:
+            elif media_result.get_hash() == self._samus_good:
                 
                 self._samus_good_hash_id = media_result.GetHashId()
                 
@@ -643,7 +643,7 @@ class TestClientDBTags( unittest.TestCase ):
     
     def _test_ac( self, search_text, tag_service_key, file_service_key, expected_storage_tags_to_counts, expected_display_tags_to_counts ):
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( file_service_key )
+        location_context = ClientLocation.LocationContext.static_create_simple(file_service_key)
         tag_context = ClientSearchTagContext.TagContext( tag_service_key )
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, tag_context = tag_context )
@@ -885,10 +885,10 @@ class TestClientDBTags( unittest.TestCase ):
         
         for other_service_key in other_service_keys:
             
-            services.append( ClientServices.GenerateService( other_service_key, HC.LOCAL_TAG, other_service_key.hex() ) )
+            services.append(ClientServices.generate_service(other_service_key, HC.LOCAL_TAG, other_service_key.hex()))
             
         
-        old_services = TG.test_controller.services_manager.GetServices()
+        old_services = TG.test_controller.services_manager.get_services()
         
         self._write( 'update_services', services )
         
@@ -897,7 +897,7 @@ class TestClientDBTags( unittest.TestCase ):
         # then, the database wanted to update that cached guy with the mappings updates we do
         # which then failed because the service key was not found here! aieeeeeeeeeeeee
         # this is entirely my fault for having a house of cards unit test environment
-        TG.test_controller.services_manager._SetServices( services )
+        TG.test_controller.services_manager._set_services(services)
         
         try:
             
@@ -970,7 +970,7 @@ class TestClientDBTags( unittest.TestCase ):
             
         finally:
             
-            TG.test_controller.services_manager._SetServices( old_services )
+            TG.test_controller.services_manager._set_services(old_services)
             
         
     

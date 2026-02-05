@@ -175,11 +175,11 @@ def RenderJSONParseRule( rule ):
         
     elif parse_rule_type == JSON_PARSE_RULE_TYPE_DICT_KEY:
         
-        s = f'get the entries that have keys matching "{parse_rule.ToString()}"'
+        s = f'get the entries that have keys matching "{parse_rule.to_string()}"'
         
     elif parse_rule_type == JSON_PARSE_RULE_TYPE_TEST_STRING_ITEMS:
         
-        s = f'get the values that match "{parse_rule.ToString()}"'
+        s = f'get the values that match "{parse_rule.to_string()}"'
         
     elif parse_rule_type == JSON_PARSE_RULE_TYPE_DEMINIFY_JSON:
         
@@ -288,7 +288,7 @@ class ParseFormula( HydrusSerialisable.SerialisableBase ):
             raw_texts = [ raw_text.strip() for raw_text in raw_texts ]
             
         
-        texts = self._string_processor.ProcessStrings( raw_texts )
+        texts = self._string_processor.process_strings(raw_texts)
         
         return texts
         
@@ -440,11 +440,11 @@ class ParseFormulaZipper( ParseFormula ):
             string_match = HydrusSerialisable.create_from_serialisable_tuple( serialisable_string_match )
             string_converter = HydrusSerialisable.create_from_serialisable_tuple( serialisable_string_converter )
             
-            processing_steps = [ processing_step for processing_step in ( string_match, string_converter ) if processing_step.MakesChanges() ]
+            processing_steps = [processing_step for processing_step in ( string_match, string_converter ) if processing_step.makes_changes()]
             
             string_processor = ClientStrings.StringProcessor()
             
-            string_processor.SetProcessingSteps( processing_steps )
+            string_processor.set_processing_steps(processing_steps)
             
             serialisable_string_processor = string_processor.get_serialisable_tuple()
             
@@ -570,11 +570,11 @@ class ParseFormulaContextVariable( ParseFormula ):
             string_match = HydrusSerialisable.create_from_serialisable_tuple( serialisable_string_match )
             string_converter = HydrusSerialisable.create_from_serialisable_tuple( serialisable_string_converter )
             
-            processing_steps = [ processing_step for processing_step in ( string_match, string_converter ) if processing_step.MakesChanges() ]
+            processing_steps = [processing_step for processing_step in ( string_match, string_converter ) if processing_step.makes_changes()]
             
             string_processor = ClientStrings.StringProcessor()
             
-            string_processor.SetProcessingSteps( processing_steps )
+            string_processor.set_processing_steps(processing_steps)
             
             serialisable_string_processor = string_processor.get_serialisable_tuple()
             
@@ -920,11 +920,11 @@ class ParseFormulaHTML( ParseFormula ):
             string_match = HydrusSerialisable.create_from_serialisable_tuple( serialisable_string_match )
             string_converter = HydrusSerialisable.create_from_serialisable_tuple( serialisable_string_converter )
             
-            processing_steps = [ processing_step for processing_step in ( string_match, string_converter ) if processing_step.MakesChanges() ]
+            processing_steps = [processing_step for processing_step in ( string_match, string_converter ) if processing_step.makes_changes()]
             
             string_processor = ClientStrings.StringProcessor()
             
-            string_processor.SetProcessingSteps( processing_steps )
+            string_processor.set_processing_steps(processing_steps)
             
             serialisable_string_processor = string_processor.get_serialisable_tuple()
             
@@ -990,7 +990,7 @@ class ParseFormulaHTML( ParseFormula ):
             header += '\n' + self._name
             
         
-        pretty_strings.extend( [ t_r.ToString() for t_r in self._tag_rules ] )
+        pretty_strings.extend([t_r.to_string() for t_r in self._tag_rules])
         
         if self._content_to_fetch == HTML_CONTENT_ATTRIBUTE:
             
@@ -1005,7 +1005,7 @@ class ParseFormulaHTML( ParseFormula ):
             pretty_strings.append( 'get the html of those tags' )
             
         
-        pretty_strings.extend( self._string_processor.GetProcessingStrings() )
+        pretty_strings.extend(self._string_processor.get_processing_strings())
         
         separator = '\n' + 'and then '
         
@@ -1204,7 +1204,7 @@ class ParseRuleHTML( HydrusSerialisable.SerialisableBase ):
                 
                 s = GetHTMLTagString( node )
                 
-                if self._tag_string_string_match.Matches( s ):
+                if self._tag_string_string_match.matches(s):
                     
                     new_nodes.append( node )
                     
@@ -1269,7 +1269,7 @@ class ParseRuleHTML( HydrusSerialisable.SerialisableBase ):
         
         if self._should_test_tag_string:
             
-            s += ' with strings that match ' + self._tag_string_string_match.ToString()
+            s += ' with strings that match ' + self._tag_string_string_match.to_string()
             
         
         return s
@@ -1410,7 +1410,7 @@ class ParseFormulaJSON( ParseFormula ):
                     
                     for ( key, value ) in pairs:
                         
-                        if string_match.Matches( key ):
+                        if string_match.matches(key):
                             
                             next_nodes_and_stacks.append( ( value, next_stack ) )
                             
@@ -1436,7 +1436,7 @@ class ParseFormulaJSON( ParseFormula ):
                         
                         string_match = parse_rule
                         
-                        if string_match.Matches( text ):
+                        if string_match.matches(text):
                             
                             next_nodes_and_stacks.append( ( node, stack ) ) # stack, not next_stack--this is only a filtering step
                             
@@ -1639,11 +1639,11 @@ class ParseFormulaJSON( ParseFormula ):
             string_match = HydrusSerialisable.create_from_serialisable_tuple( serialisable_string_match )
             string_converter = HydrusSerialisable.create_from_serialisable_tuple( serialisable_string_converter )
             
-            processing_steps = [ processing_step for processing_step in ( string_match, string_converter ) if processing_step.MakesChanges() ]
+            processing_steps = [processing_step for processing_step in ( string_match, string_converter ) if processing_step.makes_changes()]
             
             string_processor = ClientStrings.StringProcessor()
             
-            string_processor.SetProcessingSteps( processing_steps )
+            string_processor.set_processing_steps(processing_steps)
             
             serialisable_string_processor = string_processor.get_serialisable_tuple()
             
@@ -1717,7 +1717,7 @@ class ParseFormulaJSON( ParseFormula ):
             pretty_strings.append( 'get the dictionary keys' )
             
         
-        pretty_strings.extend( self._string_processor.GetProcessingStrings() )
+        pretty_strings.extend(self._string_processor.get_processing_strings())
         
         separator = '\n' + 'and then '
         
@@ -2169,11 +2169,11 @@ class ContentParser( HydrusSerialisable.SerialisableBase ):
                 
                 string_processor = formula.GetStringProcessor()
                 
-                processing_steps = string_processor.GetProcessingSteps()
+                processing_steps = string_processor.get_processing_steps()
                 
                 processing_steps.append( ClientStrings.StringSorter( sort_type = sort_type, asc = sort_asc ) )
                 
-                string_processor.SetProcessingSteps( processing_steps )
+                string_processor.set_processing_steps(processing_steps)
                 
                 serialisable_formula = formula.GetSerialisableTuple()
                 
@@ -2390,7 +2390,7 @@ class ContentParser( HydrusSerialisable.SerialisableBase ):
             
             ( veto_if_matches_found, string_match ) = self._additional_info
             
-            match_found = True in ( string_match.Matches( parsed_text ) for parsed_text in parsed_texts )
+            match_found = True in (string_match.matches(parsed_text) for parsed_text in parsed_texts)
             
             veto_if_missing = not veto_if_matches_found
             
@@ -2521,7 +2521,7 @@ class PageParser( HydrusSerialisable.SerialisableBaseNamed ):
         
         serialisable_subsidiary_page_parsers = HydrusSerialisable.SerialisableList( sorted( self._subsidiary_page_parsers, key = lambda spp: spp.GetPageParser().get_name().casefold() ) ).get_serialisable_tuple()
         
-        serialisable_content_parsers = HydrusSerialisable.SerialisableList( sorted( self._content_parsers, key = lambda p: p.GetName().casefold() ) ).get_serialisable_tuple()
+        serialisable_content_parsers = HydrusSerialisable.SerialisableList(sorted(self._content_parsers, key = lambda p: p.get_name().casefold())).get_serialisable_tuple()
         
         return ( self._name, serialisable_parser_key, serialisable_string_converter, serialisable_subsidiary_page_parsers, serialisable_content_parsers, self._example_urls, self._example_parsing_context )
         
@@ -2680,7 +2680,7 @@ class PageParser( HydrusSerialisable.SerialisableBaseNamed ):
         
         try:
             
-            converted_parsing_text = self._string_converter.Convert( parsing_text )
+            converted_parsing_text = self._string_converter.convert(parsing_text)
             
         except HydrusExceptions.StringConvertException as e:
             

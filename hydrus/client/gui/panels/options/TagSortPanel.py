@@ -21,10 +21,10 @@ class TagSortPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         self._tag_sort_panel = ClientGUICommon.StaticBox( self, 'tag sort' )
         
-        self._default_tag_sort_search_page = ClientGUITagSorting.TagSortControl( self._tag_sort_panel, self._new_options.GetDefaultTagSort( CC.TAG_PRESENTATION_SEARCH_PAGE ) )
-        self._default_tag_sort_search_page_manage_tags = ClientGUITagSorting.TagSortControl( self._tag_sort_panel, self._new_options.GetDefaultTagSort( CC.TAG_PRESENTATION_SEARCH_PAGE_MANAGE_TAGS ), show_siblings = True )
-        self._default_tag_sort_media_viewer = ClientGUITagSorting.TagSortControl( self._tag_sort_panel, self._new_options.GetDefaultTagSort( CC.TAG_PRESENTATION_MEDIA_VIEWER ) )
-        self._default_tag_sort_media_viewer_manage_tags = ClientGUITagSorting.TagSortControl( self._tag_sort_panel, self._new_options.GetDefaultTagSort( CC.TAG_PRESENTATION_MEDIA_VIEWER_MANAGE_TAGS ), show_siblings = True )
+        self._default_tag_sort_search_page = ClientGUITagSorting.TagSortControl(self._tag_sort_panel, self._new_options.get_default_tag_sort(CC.TAG_PRESENTATION_SEARCH_PAGE))
+        self._default_tag_sort_search_page_manage_tags = ClientGUITagSorting.TagSortControl(self._tag_sort_panel, self._new_options.get_default_tag_sort(CC.TAG_PRESENTATION_SEARCH_PAGE_MANAGE_TAGS), show_siblings = True)
+        self._default_tag_sort_media_viewer = ClientGUITagSorting.TagSortControl(self._tag_sort_panel, self._new_options.get_default_tag_sort(CC.TAG_PRESENTATION_MEDIA_VIEWER))
+        self._default_tag_sort_media_viewer_manage_tags = ClientGUITagSorting.TagSortControl(self._tag_sort_panel, self._new_options.get_default_tag_sort(CC.TAG_PRESENTATION_MEDIA_VIEWER_MANAGE_TAGS), show_siblings = True)
         
         #
         
@@ -34,7 +34,7 @@ class TagSortPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         #
         
-        self._user_namespace_group_by_sort.AddDatas( CG.client_controller.new_options.GetStringList( 'user_namespace_group_by_sort' ) )
+        self._user_namespace_group_by_sort.AddDatas(CG.client_controller.new_options.get_string_list('user_namespace_group_by_sort'))
         
         #
         
@@ -93,7 +93,7 @@ class TagSortPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         try:
             
-            text = CG.client_controller.GetClipboardText()
+            text = CG.client_controller.get_clipboard_text()
             
         except Exception as e:
             
@@ -107,13 +107,13 @@ class TagSortPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def UpdateOptions( self ):
         
-        self._new_options.SetDefaultTagSort( CC.TAG_PRESENTATION_SEARCH_PAGE, self._default_tag_sort_search_page.GetValue() )
-        self._new_options.SetDefaultTagSort( CC.TAG_PRESENTATION_SEARCH_PAGE_MANAGE_TAGS, self._default_tag_sort_search_page_manage_tags.GetValue() )
-        self._new_options.SetDefaultTagSort( CC.TAG_PRESENTATION_MEDIA_VIEWER, self._default_tag_sort_media_viewer.GetValue() )
-        self._new_options.SetDefaultTagSort( CC.TAG_PRESENTATION_MEDIA_VIEWER_MANAGE_TAGS, self._default_tag_sort_media_viewer_manage_tags.GetValue() )
+        self._new_options.set_default_tag_sort(CC.TAG_PRESENTATION_SEARCH_PAGE, self._default_tag_sort_search_page.GetValue())
+        self._new_options.set_default_tag_sort(CC.TAG_PRESENTATION_SEARCH_PAGE_MANAGE_TAGS, self._default_tag_sort_search_page_manage_tags.GetValue())
+        self._new_options.set_default_tag_sort(CC.TAG_PRESENTATION_MEDIA_VIEWER, self._default_tag_sort_media_viewer.GetValue())
+        self._new_options.set_default_tag_sort(CC.TAG_PRESENTATION_MEDIA_VIEWER_MANAGE_TAGS, self._default_tag_sort_media_viewer_manage_tags.GetValue())
         
         user_namespace_group_by_sort = self._user_namespace_group_by_sort.GetData()
         
-        self._new_options.SetStringList( 'user_namespace_group_by_sort', user_namespace_group_by_sort )
+        self._new_options.set_string_list('user_namespace_group_by_sort', user_namespace_group_by_sort)
         
     

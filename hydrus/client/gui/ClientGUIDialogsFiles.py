@@ -41,7 +41,7 @@ class FileDialog( QW.QFileDialog ):
         
         self.setOption( QW.QFileDialog.Option.DontResolveSymlinks, True )
         
-        if CG.client_controller.new_options.GetBoolean( 'use_qt_file_dialogs' ):
+        if CG.client_controller.new_options.get_boolean('use_qt_file_dialogs'):
             
             self.setOption( QW.QFileDialog.Option.DontUseNativeDialog, True )
             

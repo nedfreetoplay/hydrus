@@ -263,9 +263,9 @@ class NetworkSessionManager( HydrusSerialisable.SerialisableBase ):
         
         self._proxies_dict = {}
         
-        http_proxy = CG.client_controller.new_options.GetNoneableString( 'http_proxy' )
-        https_proxy = CG.client_controller.new_options.GetNoneableString( 'https_proxy' )
-        no_proxy = CG.client_controller.new_options.GetNoneableString( 'no_proxy' )
+        http_proxy = CG.client_controller.new_options.get_noneable_string('http_proxy')
+        https_proxy = CG.client_controller.new_options.get_noneable_string('https_proxy')
+        no_proxy = CG.client_controller.new_options.get_noneable_string('no_proxy')
         
         if http_proxy is not None:
             
@@ -300,7 +300,7 @@ class NetworkSessionManager( HydrusSerialisable.SerialisableBase ):
                 
                 del self._network_contexts_to_session_containers[ network_context ]
                 
-                session_container_name = session_container.GetName()
+                session_container_name = session_container.get_name()
                 
                 if session_container_name in self._session_container_names_to_session_containers:
                     
@@ -364,7 +364,7 @@ class NetworkSessionManager( HydrusSerialisable.SerialisableBase ):
             
             #
             
-            if not CG.client_controller.new_options.GetBoolean( 'verify_regular_https' ):
+            if not CG.client_controller.new_options.get_boolean('verify_regular_https'):
                 
                 session.verify = False
                 
@@ -466,7 +466,7 @@ class NetworkSessionManager( HydrusSerialisable.SerialisableBase ):
             
             if network_context in self._network_contexts_to_session_containers:
                 
-                self._dirty_session_container_names.add( self._network_contexts_to_session_containers[ network_context ].GetName() )
+                self._dirty_session_container_names.add(self._network_contexts_to_session_containers[ network_context ].get_name())
                 
             
         

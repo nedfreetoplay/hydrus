@@ -49,7 +49,7 @@ class DownloadingPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         self._process_subs_in_random_order = QW.QCheckBox( subscriptions )
         self._process_subs_in_random_order.setToolTip( ClientGUIFunctions.WrapToolTip( 'Processing in random order is useful whenever bandwidth is tight, as it stops an \'aardvark\' subscription from always getting first whack at what is available. Otherwise, they will be processed in smart alphabetical order.' ) )
         
-        checker_options = self._new_options.GetDefaultSubscriptionCheckerOptions()
+        checker_options = self._new_options.get_default_subscription_checker_options()
         
         self._subscription_checker_options = ClientGUIImport.CheckerOptionsButton( subscriptions, checker_options )
         
@@ -60,7 +60,7 @@ class DownloadingPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         self._watcher_page_wait_period = ClientGUICommon.BetterSpinBox( watchers, min=1, max=3600 )
         self._highlight_new_watcher = QW.QCheckBox( watchers )
         
-        checker_options = self._new_options.GetDefaultWatcherCheckerOptions()
+        checker_options = self._new_options.get_default_watcher_checker_options()
         
         self._watcher_checker_options = ClientGUIImport.CheckerOptionsButton( watchers, checker_options )
         
@@ -81,7 +81,7 @@ class DownloadingPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         self._show_new_on_file_seed_short_summary = QW.QCheckBox( misc )
         self._show_deleted_on_file_seed_short_summary = QW.QCheckBox( misc )
         
-        if self._new_options.GetBoolean( 'advanced_mode' ):
+        if self._new_options.get_boolean('advanced_mode'):
             
             delay_min = 1
             
@@ -108,35 +108,35 @@ class DownloadingPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         gallery_page_tt += '\n' * 2
         gallery_page_tt += 'If you do not understand this stuff, you can just leave it alone.'
         
-        self._gallery_page_wait_period_pages.setValue( self._new_options.GetInteger( 'gallery_page_wait_period_pages' ) )
+        self._gallery_page_wait_period_pages.setValue(self._new_options.get_integer('gallery_page_wait_period_pages'))
         self._gallery_page_wait_period_pages.setToolTip( ClientGUIFunctions.WrapToolTip( gallery_page_tt ) )
         self._gallery_file_limit.SetValue( HC.options['gallery_file_limit'] )
         
-        self._override_bandwidth_on_file_urls_from_post_urls.setChecked( self._new_options.GetBoolean( 'override_bandwidth_on_file_urls_from_post_urls' ) )
-        self._highlight_new_query.setChecked( self._new_options.GetBoolean( 'highlight_new_query' ) )
+        self._override_bandwidth_on_file_urls_from_post_urls.setChecked(self._new_options.get_boolean('override_bandwidth_on_file_urls_from_post_urls'))
+        self._highlight_new_query.setChecked(self._new_options.get_boolean('highlight_new_query'))
         
-        self._gallery_page_wait_period_subscriptions.setValue( self._new_options.GetInteger( 'gallery_page_wait_period_subscriptions' ) )
+        self._gallery_page_wait_period_subscriptions.setValue(self._new_options.get_integer('gallery_page_wait_period_subscriptions'))
         self._gallery_page_wait_period_subscriptions.setToolTip( ClientGUIFunctions.WrapToolTip( gallery_page_tt ) )
-        self._max_simultaneous_subscriptions.setValue( self._new_options.GetInteger( 'max_simultaneous_subscriptions' ) )
+        self._max_simultaneous_subscriptions.setValue(self._new_options.get_integer('max_simultaneous_subscriptions'))
         
-        self._subscription_file_error_cancel_threshold.SetValue( self._new_options.GetNoneableInteger( 'subscription_file_error_cancel_threshold' ) )
+        self._subscription_file_error_cancel_threshold.SetValue(self._new_options.get_noneable_integer('subscription_file_error_cancel_threshold'))
         
-        self._process_subs_in_random_order.setChecked( self._new_options.GetBoolean( 'process_subs_in_random_order' ) )
+        self._process_subs_in_random_order.setChecked(self._new_options.get_boolean('process_subs_in_random_order'))
         
-        self._remove_leading_url_double_slashes.setChecked( self._new_options.GetBoolean( 'remove_leading_url_double_slashes' ) )
-        self._replace_percent_twenty_with_space_in_gug_input.setChecked( self._new_options.GetBoolean( 'replace_percent_twenty_with_space_in_gug_input' ) )
-        self._pause_character.setText( self._new_options.GetString( 'pause_character' ) )
-        self._stop_character.setText( self._new_options.GetString( 'stop_character' ) )
-        self._show_new_on_file_seed_short_summary.setChecked( self._new_options.GetBoolean( 'show_new_on_file_seed_short_summary' ) )
-        self._show_deleted_on_file_seed_short_summary.setChecked( self._new_options.GetBoolean( 'show_deleted_on_file_seed_short_summary' ) )
+        self._remove_leading_url_double_slashes.setChecked(self._new_options.get_boolean('remove_leading_url_double_slashes'))
+        self._replace_percent_twenty_with_space_in_gug_input.setChecked(self._new_options.get_boolean('replace_percent_twenty_with_space_in_gug_input'))
+        self._pause_character.setText(self._new_options.get_string('pause_character'))
+        self._stop_character.setText(self._new_options.get_string('stop_character'))
+        self._show_new_on_file_seed_short_summary.setChecked(self._new_options.get_boolean('show_new_on_file_seed_short_summary'))
+        self._show_deleted_on_file_seed_short_summary.setChecked(self._new_options.get_boolean('show_deleted_on_file_seed_short_summary'))
         
-        self._watcher_page_wait_period.setValue( self._new_options.GetInteger( 'watcher_page_wait_period' ) )
+        self._watcher_page_wait_period.setValue(self._new_options.get_integer('watcher_page_wait_period'))
         self._watcher_page_wait_period.setToolTip( ClientGUIFunctions.WrapToolTip( gallery_page_tt ) )
-        self._highlight_new_watcher.setChecked( self._new_options.GetBoolean( 'highlight_new_watcher' ) )
+        self._highlight_new_watcher.setChecked(self._new_options.get_boolean('highlight_new_watcher'))
         
-        self._subscription_network_error_delay.SetValue( self._new_options.GetInteger( 'subscription_network_error_delay' ) )
-        self._subscription_other_error_delay.SetValue( self._new_options.GetInteger( 'subscription_other_error_delay' ) )
-        self._downloader_network_error_delay.SetValue( self._new_options.GetInteger( 'downloader_network_error_delay' ) )
+        self._subscription_network_error_delay.SetValue(self._new_options.get_integer('subscription_network_error_delay'))
+        self._subscription_other_error_delay.SetValue(self._new_options.get_integer('subscription_other_error_delay'))
+        self._downloader_network_error_delay.SetValue(self._new_options.get_integer('downloader_network_error_delay'))
         
         #
         
@@ -213,31 +213,31 @@ class DownloadingPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         CG.client_controller.network_engine.domain_manager.SetDefaultGUGKeyAndName( self._default_gug.GetValue() )
         
-        self._new_options.SetInteger( 'gallery_page_wait_period_pages', self._gallery_page_wait_period_pages.value() )
+        self._new_options.set_integer('gallery_page_wait_period_pages', self._gallery_page_wait_period_pages.value())
         HC.options[ 'gallery_file_limit' ] = self._gallery_file_limit.GetValue()
-        self._new_options.SetBoolean( 'highlight_new_query', self._highlight_new_query.isChecked() )
-        self._new_options.SetBoolean( 'override_bandwidth_on_file_urls_from_post_urls', self._override_bandwidth_on_file_urls_from_post_urls.isChecked() )
+        self._new_options.set_boolean('highlight_new_query', self._highlight_new_query.isChecked())
+        self._new_options.set_boolean('override_bandwidth_on_file_urls_from_post_urls', self._override_bandwidth_on_file_urls_from_post_urls.isChecked())
         
-        self._new_options.SetInteger( 'gallery_page_wait_period_subscriptions', self._gallery_page_wait_period_subscriptions.value() )
-        self._new_options.SetInteger( 'max_simultaneous_subscriptions', self._max_simultaneous_subscriptions.value() )
-        self._new_options.SetNoneableInteger( 'subscription_file_error_cancel_threshold', self._subscription_file_error_cancel_threshold.GetValue() )
-        self._new_options.SetBoolean( 'process_subs_in_random_order', self._process_subs_in_random_order.isChecked() )
+        self._new_options.set_integer('gallery_page_wait_period_subscriptions', self._gallery_page_wait_period_subscriptions.value())
+        self._new_options.set_integer('max_simultaneous_subscriptions', self._max_simultaneous_subscriptions.value())
+        self._new_options.set_noneable_integer('subscription_file_error_cancel_threshold', self._subscription_file_error_cancel_threshold.GetValue())
+        self._new_options.set_boolean('process_subs_in_random_order', self._process_subs_in_random_order.isChecked())
         
-        self._new_options.SetInteger( 'watcher_page_wait_period', self._watcher_page_wait_period.value() )
-        self._new_options.SetBoolean( 'highlight_new_watcher', self._highlight_new_watcher.isChecked() )
+        self._new_options.set_integer('watcher_page_wait_period', self._watcher_page_wait_period.value())
+        self._new_options.set_boolean('highlight_new_watcher', self._highlight_new_watcher.isChecked())
         
-        self._new_options.SetDefaultWatcherCheckerOptions( self._watcher_checker_options.GetValue() )
-        self._new_options.SetDefaultSubscriptionCheckerOptions( self._subscription_checker_options.GetValue() )
+        self._new_options.set_default_watcher_checker_options(self._watcher_checker_options.GetValue())
+        self._new_options.set_default_subscription_checker_options(self._subscription_checker_options.GetValue())
         
-        self._new_options.SetBoolean( 'remove_leading_url_double_slashes', self._remove_leading_url_double_slashes.isChecked() )
-        self._new_options.SetBoolean( 'replace_percent_twenty_with_space_in_gug_input', self._replace_percent_twenty_with_space_in_gug_input.isChecked() )
-        self._new_options.SetString( 'pause_character', self._pause_character.text() )
-        self._new_options.SetString( 'stop_character', self._stop_character.text() )
-        self._new_options.SetBoolean( 'show_new_on_file_seed_short_summary', self._show_new_on_file_seed_short_summary.isChecked() )
-        self._new_options.SetBoolean( 'show_deleted_on_file_seed_short_summary', self._show_deleted_on_file_seed_short_summary.isChecked() )
+        self._new_options.set_boolean('remove_leading_url_double_slashes', self._remove_leading_url_double_slashes.isChecked())
+        self._new_options.set_boolean('replace_percent_twenty_with_space_in_gug_input', self._replace_percent_twenty_with_space_in_gug_input.isChecked())
+        self._new_options.set_string('pause_character', self._pause_character.text())
+        self._new_options.set_string('stop_character', self._stop_character.text())
+        self._new_options.set_boolean('show_new_on_file_seed_short_summary', self._show_new_on_file_seed_short_summary.isChecked())
+        self._new_options.set_boolean('show_deleted_on_file_seed_short_summary', self._show_deleted_on_file_seed_short_summary.isChecked())
         
-        self._new_options.SetInteger( 'subscription_network_error_delay', self._subscription_network_error_delay.GetValue() )
-        self._new_options.SetInteger( 'subscription_other_error_delay', self._subscription_other_error_delay.GetValue() )
-        self._new_options.SetInteger( 'downloader_network_error_delay', self._downloader_network_error_delay.GetValue() )
+        self._new_options.set_integer('subscription_network_error_delay', self._subscription_network_error_delay.GetValue())
+        self._new_options.set_integer('subscription_other_error_delay', self._subscription_other_error_delay.GetValue())
+        self._new_options.set_integer('downloader_network_error_delay', self._downloader_network_error_delay.GetValue())
         
     

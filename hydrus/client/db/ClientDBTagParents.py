@@ -382,7 +382,7 @@ class ClientDBTagParents( ClientDBModule.ClientDBModule ):
                 
                 if service_id not in service_ids_to_service_keys:
                     
-                    service_ids_to_service_keys[ service_id ] = self.modules_services.GetService( service_id ).GetServiceKey()
+                    service_ids_to_service_keys[ service_id ] = self.modules_services.GetService( service_id ).get_service_key()
                     
                 
             

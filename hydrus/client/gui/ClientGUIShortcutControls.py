@@ -168,7 +168,7 @@ class EditShortcutSetPanel( ClientGUIScrolledPanels.EditPanel ):
         shortcut = typing.cast( ClientGUIShortcuts.Shortcut, shortcut )
         command = typing.cast( CAC.ApplicationCommand, command )
         
-        return ( shortcut.ToString( call_mouse_buttons_primary_secondary_override = self._call_mouse_buttons_primary_secondary ), command.ToString() )
+        return ( shortcut.ToString( call_mouse_buttons_primary_secondary_override = self._call_mouse_buttons_primary_secondary ), command.to_string() )
         
     
     _ConvertShortcutTupleToSortTuple = _ConvertShortcutTupleToDisplayTuple
@@ -204,8 +204,8 @@ class EditShortcutSetPanel( ClientGUIScrolledPanels.EditPanel ):
         
         for ( shortcut, command ) in shortcut_set.GetShortcutsAndCommands():
             
-            addee_shortcut = shortcut.Duplicate()
-            command = command.Duplicate()
+            addee_shortcut = shortcut.duplicate()
+            command = command.duplicate()
             
             while addee_shortcut in all_existing_shortcuts:
                 
@@ -312,13 +312,13 @@ class EditShortcutSetPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 message = 'The shortcut:'
                 message += '\n' * 2
-                message += shortcut.ToString()
+                message += shortcut.to_string()
                 message += '\n' * 2
                 message += 'is mapped twice:'
                 message += '\n' * 2
-                message += command.ToString()
+                message += command.to_string()
                 message += '\n' * 2
-                message += dupe_command.ToString()
+                message += dupe_command.to_string()
                 message += '\n' * 2
                 message += 'The system only supports one command per shortcut in a set for now, please remove one.'
                 

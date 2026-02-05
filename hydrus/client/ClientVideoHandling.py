@@ -25,10 +25,10 @@ class AnimationRendererPIL( object ):
         self._current_render_index = 0
         self._last_valid_numpy_frame = None
         
-        self._Initialise()
+        self._initialise()
         
     
-    def _GetRecoveryFrame( self ) -> numpy.ndarray:
+    def _get_recovery_frame(self) -> numpy.ndarray:
         
         if self._last_valid_numpy_frame is None:
             
@@ -43,7 +43,7 @@ class AnimationRendererPIL( object ):
         return numpy_image
         
     
-    def _Initialise( self ):
+    def _initialise(self):
         
         if HG.media_load_report_mode:
             
@@ -71,7 +71,7 @@ class AnimationRendererPIL( object ):
         '''
         
     
-    def _MoveRendererOnOneFrame( self ):
+    def _move_renderer_on_one_frame(self):
         
         self._current_render_index = ( self._current_render_index + 1 ) % self._num_frames
         
@@ -79,7 +79,7 @@ class AnimationRendererPIL( object ):
         
         if self._current_render_index == 0 or we_are_in_the_dangerzone:
             
-            self._RewindAnimation( reinitialise = True )
+            self._rewind_animation(reinitialise = True)
             
         else:
             
@@ -109,22 +109,22 @@ class AnimationRendererPIL( object ):
                     self._cannot_seek_to_or_beyond_this_index = min( self._cannot_seek_to_or_beyond_this_index, self._current_render_index )
                     
                 
-                self._RewindAnimation( reinitialise = True )
+                self._rewind_animation(reinitialise = True)
                 
             
         
     
-    def _RenderCurrentFrameAndResizeIt( self ) -> numpy.ndarray:
+    def _render_current_frame_and_resize_it(self) -> numpy.ndarray:
         
         we_are_in_the_dangerzone = self._cannot_seek_to_or_beyond_this_index is not None and self._current_render_index >= self._cannot_seek_to_or_beyond_this_index
         
         if we_are_in_the_dangerzone:
             
-            numpy_image = self._GetRecoveryFrame()
+            numpy_image = self._get_recovery_frame()
             
         elif self._current_render_index in self._frames_we_could_not_render:
             
-            numpy_image = self._GetRecoveryFrame()
+            numpy_image = self._get_recovery_frame()
             
         else:
             
@@ -156,7 +156,7 @@ class AnimationRendererPIL( object ):
                     self._cannot_seek_to_or_beyond_this_index = min( self._frames_we_could_not_render )
                     
                 
-                numpy_image = self._GetRecoveryFrame()
+                numpy_image = self._get_recovery_frame()
                 
             
         
@@ -169,7 +169,7 @@ class AnimationRendererPIL( object ):
             self._frames_we_could_not_render.add( self._current_render_index )
             self._cannot_seek_to_or_beyond_this_index = min( self._frames_we_could_not_render )
             
-            numpy_image = self._GetRecoveryFrame()
+            numpy_image = self._get_recovery_frame()
             
             resized_numpy_image = HydrusImageHandling.resize_numpy_image( numpy_image, self._target_resolution )
             
@@ -179,7 +179,7 @@ class AnimationRendererPIL( object ):
         return resized_numpy_image
         
     
-    def _RewindAnimation( self, reinitialise = False ):
+    def _rewind_animation(self, reinitialise = False):
         
         self._pil_image.seek( 0 )
         
@@ -187,7 +187,7 @@ class AnimationRendererPIL( object ):
         
         if reinitialise:
             
-            self._Initialise()
+            self._initialise()
             
         
     
@@ -198,9 +198,9 @@ class AnimationRendererPIL( object ):
     
     def read_frame( self ):
         
-        numpy_image = self._RenderCurrentFrameAndResizeIt()
+        numpy_image = self._render_current_frame_and_resize_it()
         
-        self._MoveRendererOnOneFrame()
+        self._move_renderer_on_one_frame()
         
         return numpy_image
         
@@ -218,16 +218,16 @@ class AnimationRendererPIL( object ):
             
         elif index < self._current_render_index:
             
-            self._RewindAnimation()
+            self._rewind_animation()
             
         
         while self._current_render_index < index:
             
-            self._MoveRendererOnOneFrame()
+            self._move_renderer_on_one_frame()
             
         
     
-    def Stop( self ):
+    def stop(self):
         
         pass
         

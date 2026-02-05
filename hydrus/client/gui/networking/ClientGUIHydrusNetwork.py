@@ -416,7 +416,7 @@ class ListAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         super().__init__( parent )
         
         self._service_key = service_key
-        self._service = CG.client_controller.services_manager.GetService( self._service_key )
+        self._service = CG.client_controller.services_manager.get_service(self._service_key)
         self._accounts = accounts
         
         self._accounts_box = ClientGUICommon.StaticBox( self, 'accounts' )
@@ -432,7 +432,7 @@ class ListAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         #
         
-        my_admin_account_key = self._service.GetAccount().GetAccountKey()
+        my_admin_account_key = self._service.get_account().GetAccountKey()
         
         accounts.sort( key = lambda a: ( a.get_account_type().get_title(), a.get_account_key().hex() ) )
         
@@ -498,7 +498,7 @@ class ReviewAccountsPanel( QW.QWidget ):
         super().__init__( parent )
         
         self._service_key = service_key
-        self._service = CG.client_controller.services_manager.GetService( self._service_key )
+        self._service = CG.client_controller.services_manager.get_service(self._service_key)
         self._account_identifiers = account_identifiers
         
         self._done_first_fetch = False
@@ -560,7 +560,7 @@ class ReviewAccountsPanel( QW.QWidget ):
             
             account_key = item.data( QC.Qt.ItemDataRole.UserRole )
             
-            my_admin_account = self._service.GetAccount()
+            my_admin_account = self._service.get_account()
             
             if account_key == my_admin_account.GetAccountKey():
                 
@@ -571,9 +571,9 @@ class ReviewAccountsPanel( QW.QWidget ):
                 
                 account = self._account_keys_to_accounts[ account_key ]
                 
-                account_info_components.append( account.ToString() )
+                account_info_components.append(account.to_string())
                 account_info_components.append( account.GetExpiresString() )
-                account_info_components.append( account.GetStatusInfo()[1] )
+                account_info_components.append(account.get_status_info()[1])
                 
                 ( message, message_created ) = account.GetMessageAndTimestamp()
                 
@@ -657,7 +657,7 @@ class ReviewAccountsPanel( QW.QWidget ):
                 
                 try:
                     
-                    result = service.Request( HC.GET, 'other_account', { 'subject_identifier' : account_identifier } )
+                    result = service.request(HC.GET, 'other_account', {'subject_identifier' : account_identifier})
                     
                 except Exception as e:
                     
@@ -681,7 +681,7 @@ class ReviewAccountsPanel( QW.QWidget ):
                     
                     try:
                         
-                        response = self._service.Request( HC.GET, 'account_info', { 'subject_account_key' : subject_account_key } )
+                        response = self._service.request(HC.GET, 'account_info', {'subject_account_key' : subject_account_key})
                         
                     except Exception as e:
                         
@@ -724,7 +724,7 @@ class ReviewAccountsPanel( QW.QWidget ):
                 key = lambda sak: ( self._account_keys_to_accounts[ sak ].GetAccountType().GetTitle(), sak.hex() )
             )
             
-            my_admin_account = self._service.GetAccount()
+            my_admin_account = self._service.get_account()
             
             my_admin_account_key = my_admin_account.GetAccountKey()
             
@@ -882,7 +882,7 @@ class ModifyAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         super().__init__( parent )
         
         self._service_key = service_key
-        self._service = CG.client_controller.services_manager.GetService( service_key )
+        self._service = CG.client_controller.services_manager.get_service(service_key)
         self._subject_identifiers = subject_identifiers
         self._account_types = []
         
@@ -1121,7 +1121,7 @@ class ModifyAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             for subject_account_key in subject_account_keys:
                 
-                service.Request( HC.POST, 'modify_account_account_type', { 'subject_account_key' : subject_account_key, 'account_type_key' : account_type_key } )
+                service.request(HC.POST, 'modify_account_account_type', {'subject_account_key' : subject_account_key, 'account_type_key' : account_type_key})
                 
             
             return 1
@@ -1201,7 +1201,7 @@ class ModifyAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             for subject_account_key in subject_account_keys:
                 
-                service.Request( HC.POST, 'modify_account_ban', { 'subject_account_key' : subject_account_key, 'reason' : reason, 'expires' : expires } )
+                service.request(HC.POST, 'modify_account_ban', {'subject_account_key' : subject_account_key, 'reason' : reason, 'expires' : expires})
                 
             
             return 1
@@ -1238,7 +1238,7 @@ class ModifyAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         message = 'Are you absolutely sure you want to delete all uploads for {} accounts? This will delete everything the user(s) have uploaded since the anonymisation date.'.format( HydrusNumbers.to_human_int( len( subject_account_keys ) ) )
         
-        if self._service.GetServiceType() == HC.TAG_REPOSITORY:
+        if self._service.get_service_type() == HC.TAG_REPOSITORY:
             
             message += '\n' * 2
             message += 'Note that if the user never had permission to add siblings and parents on their own (i.e. they could only ever _petition_ to add them), then their petitioned siblings and parents will not be deleted (janitor accounts take ownership of siblings and parents when they approve them).'
@@ -1259,7 +1259,7 @@ class ModifyAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             for subject_account_key in subject_account_keys:
                 
-                response = service.Request( HC.POST, 'modify_account_delete_all_content', { 'subject_account_key' : subject_account_key } )
+                response = service.request(HC.POST, 'modify_account_delete_all_content', {'subject_account_key' : subject_account_key})
                 
                 if response is not None and isinstance( response, dict ) and 'everything_was_deleted' in response:
                     
@@ -1313,7 +1313,7 @@ class ModifyAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             for ( subject_account_key, new_expires ) in subject_account_keys_and_new_expires:
                 
-                service.Request( HC.POST, 'modify_account_expires', { 'subject_account_key' : subject_account_key, 'expires' : new_expires } )
+                service.request(HC.POST, 'modify_account_expires', {'subject_account_key' : subject_account_key, 'expires' : new_expires})
                 
             
             return 1
@@ -1372,7 +1372,7 @@ class ModifyAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             for subject_account_key in subject_account_keys:
                 
-                service.Request( HC.POST, 'modify_account_set_message', { 'subject_account_key' : subject_account_key, 'message': message } )
+                service.request(HC.POST, 'modify_account_set_message', {'subject_account_key' : subject_account_key, 'message': message})
                 
             
             return 1
@@ -1431,7 +1431,7 @@ class ModifyAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             for subject_account_key in subject_account_keys:
                 
-                service.Request( HC.POST, 'modify_account_unban', { 'subject_account_key' : subject_account_key } )
+                service.request(HC.POST, 'modify_account_unban', {'subject_account_key' : subject_account_key})
                 
             
             return 1
@@ -1466,7 +1466,7 @@ class ModifyAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         def work_callable():
             
-            response = service.Request( HC.GET, 'account_types' )
+            response = service.request(HC.GET, 'account_types')
             
             account_types = response[ 'account_types' ]
             

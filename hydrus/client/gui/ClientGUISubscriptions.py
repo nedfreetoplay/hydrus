@@ -328,7 +328,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
         queries_panel.AddButton( 'check now', self._CheckNow, enabled_check_func = self._ListCtrlCanCheckNow )
         queries_panel.AddButton( 'reset', self._STARTReset, enabled_check_func = self._ListCtrlCanResetCache )
         
-        if CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+        if CG.client_controller.new_options.get_boolean('advanced_mode'):
             
             queries_panel.AddSeparator()
             
@@ -344,7 +344,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
         
         self._file_limits_panel = ClientGUICommon.StaticBox( self, 'synchronisation' )
         
-        if CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+        if CG.client_controller.new_options.get_boolean('advanced_mode'):
             
             limits_max = 50000
             
@@ -618,7 +618,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 
             
-            if not do_paused_queries and query_header.IsPaused():
+            if not do_paused_queries and query_header.is_paused():
                 
                 continue
                 
@@ -706,7 +706,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
             pretty_delay = 'could not determine bandwidth--there may be a problem with some of the urls in this query'
             
         
-        pretty_items = file_seed_cache_status.GetStatusText( simple = True )
+        pretty_items = file_seed_cache_status.get_status_text(simple = True)
         
         return ( pretty_name, pretty_paused, pretty_status, pretty_latest_new_file_time, pretty_last_check_time, pretty_next_check_time, pretty_file_velocity, pretty_delay, pretty_items )
         
@@ -812,7 +812,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 for query_log_container in query_log_containers:
                     
-                    self._names_to_edited_query_log_containers[ query_log_container.GetName() ] = query_log_container
+                    self._names_to_edited_query_log_containers[ query_log_container.get_name()] = query_log_container
                     
                 
                 self.setEnabled( True )
@@ -1110,7 +1110,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -1244,7 +1244,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
         
         for query_header in selected_query_headers:
             
-            query_header.PausePlay()
+            query_header.pause_play()
             
         
         self._query_headers.UpdateDatas( selected_query_headers )
@@ -1279,7 +1279,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
             
             query_log_container = self._names_to_edited_query_log_containers[ query_log_container_name ]
             
-            query_header.Reset( query_log_container )
+            query_header.reset(query_log_container)
             
         
         self._query_headers.UpdateDatas( query_headers )
@@ -1728,7 +1728,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         QP.AddToLayout( vbox, help_hbox, CC.FLAGS_ON_RIGHT )
         
-        if CG.client_controller.new_options.GetBoolean( 'pause_subs_sync' ):
+        if CG.client_controller.new_options.get_boolean('pause_subs_sync'):
             
             message = 'SUBSCRIPTIONS ARE CURRENTLY GLOBALLY PAUSED! CHECK THE NETWORK MENU TO UNPAUSE THEM.'
             
@@ -1757,7 +1757,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 query_log_containers = unknown_subscription.query_log_containers
                 
             
-            old_names_to_query_log_containers = { query_log_container.GetName() : query_log_container for query_log_container in query_log_containers }
+            old_names_to_query_log_containers = {query_log_container.get_name() : query_log_container for query_log_container in query_log_containers}
             
             there_were_missing_query_log_containers = False
             
@@ -1771,7 +1771,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 if old_query_log_container_name in old_names_to_query_log_containers:
                     
-                    old_names_to_query_log_containers[ old_query_log_container_name ].SetName( new_query_log_container_name )
+                    old_names_to_query_log_containers[ old_query_log_container_name ].set_name(new_query_log_container_name)
                     
                 else:
                     
@@ -1791,7 +1791,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 
             
-            new_names_to_query_log_containers = { query_log_container.GetName() : query_log_container for query_log_container in query_log_containers }
+            new_names_to_query_log_containers = {query_log_container.get_name() : query_log_container for query_log_container in query_log_containers}
             
             self._names_to_edited_query_log_containers.update( new_names_to_query_log_containers )
             
@@ -1895,7 +1895,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _ConvertSubscriptionToDisplayTuple( self, subscription ):
         
-        ( name, gug_key_and_name, query_headers, checker_options, initial_file_limit, periodic_file_limit, paused, file_import_options, tag_import_options, no_work_until, no_work_until_reason ) = subscription.ToTuple()
+        ( name, gug_key_and_name, query_headers, checker_options, initial_file_limit, periodic_file_limit, paused, file_import_options, tag_import_options, no_work_until, no_work_until_reason ) = subscription.to_tuple()
         
         pretty_site = gug_key_and_name[1]
         
@@ -1942,7 +1942,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 num_dead += 1
                 
-            elif query_header.IsPaused():
+            elif query_header.is_paused():
                 
                 num_paused += 1
                 
@@ -2011,7 +2011,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         file_seed_cache_status = ClientImportSubscriptionQuery.GenerateQueryHeadersStatus( query_headers )
         
-        pretty_items = file_seed_cache_status.GetStatusText( simple = True )
+        pretty_items = file_seed_cache_status.get_status_text(simple = True)
         
         if paused:
             
@@ -2027,7 +2027,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _ConvertSubscriptionToSortTuple( self, subscription ):
         
-        ( name, gug_key_and_name, query_headers, checker_options, initial_file_limit, periodic_file_limit, paused, file_import_options, tag_import_options, no_work_until, no_work_until_reason ) = subscription.ToTuple()
+        ( name, gug_key_and_name, query_headers, checker_options, initial_file_limit, periodic_file_limit, paused, file_import_options, tag_import_options, no_work_until, no_work_until_reason ) = subscription.to_tuple()
         
         pretty_site = gug_key_and_name[1]
         
@@ -2066,7 +2066,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 num_dead += 1
                 
-            elif query_header.IsPaused():
+            elif query_header.is_paused():
                 
                 num_paused += 1
                 
@@ -2145,7 +2145,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 for query_log_container in query_log_containers:
                     
-                    self._names_to_edited_query_log_containers[ query_log_container.GetName() ] = query_log_container
+                    self._names_to_edited_query_log_containers[ query_log_container.get_name()] = query_log_container
                     
                 
                 self.setEnabled( True )
@@ -2167,7 +2167,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         subscriptions = self._subscriptions.GetData()
         
-        names = { subscription.GetName() for subscription in subscriptions }
+        names = {subscription.get_name() for subscription in subscriptions}
         
         return names
         
@@ -2494,7 +2494,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         for subscription in subscriptions:
             
-            if not do_paused_subs and subscription.IsPaused():
+            if not do_paused_subs and subscription.is_paused():
                 
                 continue
                 
@@ -2520,7 +2520,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                         
                     
                 
-                if not do_paused_queries and query_header.IsPaused():
+                if not do_paused_queries and query_header.is_paused():
                     
                     continue
                     
@@ -2758,11 +2758,11 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     if len( dupe_query_texts_it_can_do ) == len( query_texts_we_want_to_dedupe_now ):
                         
-                        label = '{} (has all duplicate queries)'.format( subscription.GetName() )
+                        label = '{} (has all duplicate queries)'.format(subscription.get_name())
                         
                     else:
                         
-                        label = '{} (has {} duplicate queries)'.format( subscription.GetName(), HydrusNumbers.value_range_to_pretty_string( len( dupe_query_texts_it_can_do ), len( query_texts_we_want_to_dedupe_now ) ) )
+                        label = '{} (has {} duplicate queries)'.format(subscription.get_name(), HydrusNumbers.value_range_to_pretty_string(len(dupe_query_texts_it_can_do), len(query_texts_we_want_to_dedupe_now)))
                         
                     
                     choice_tuples.append( ( label, subscription, ', '.join( sorted( dupe_query_texts_it_can_do ) ) ) )
@@ -2778,7 +2778,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     master_subscription = choice_tuples[0][1]
                     
-                    message = 'Subscription "{}" will now dedupe the queries within itself. Is this ok?'.format( master_subscription.GetName() )
+                    message = 'Subscription "{}" will now dedupe the queries within itself. Is this ok?'.format(master_subscription.get_name())
                     
                     result = ClientGUIDialogsQuick.GetYesNo( self, message )
                     
@@ -2789,7 +2789,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 else:
                     
-                    choice_tuples.sort( key = lambda c_t: c_t[1].GetName() )
+                    choice_tuples.sort(key = lambda c_t: c_t[1].get_name())
                     
                     message = 'Which subscription is going to keep the queries? If the subscription cannot dedupe them all, you will be able to select another, to do the rest, in a moment.'
                     
@@ -2980,9 +2980,9 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
             for mergeable_group in mergeable_groups:
                 
-                mergeable_group.sort( key = lambda sub: sub.GetName() )
+                mergeable_group.sort(key = lambda sub: sub.get_name())
                 
-                choice_tuples = [ ( sub.GetName(), sub ) for sub in mergeable_group ]
+                choice_tuples = [(sub.get_name(), sub) for sub in mergeable_group]
                 
                 try:
                     
@@ -2993,9 +2993,9 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                     return
                     
                 
-                merged_sub = original_primary_sub.Duplicate()
+                merged_sub = original_primary_sub.duplicate()
                 
-                primary_sub_name = merged_sub.GetName()
+                primary_sub_name = merged_sub.get_name()
                 
                 mergeable_group.remove( original_primary_sub )
                 
@@ -3024,7 +3024,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                     pass
                     
                 
-                merged_sub.SetName( name )
+                merged_sub.set_name(name)
                 
                 primary_and_merged_replacement_tuples.append( ( original_primary_sub, merged_sub ) )
                 
@@ -3037,12 +3037,12 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
             for ( primary, merged_sub ) in primary_and_merged_replacement_tuples:
                 
-                if merged_sub.GetName() != primary.GetName():
+                if merged_sub.get_name() != primary.get_name():
                     
                     merged_sub.SetNonDupeName( existing_names, do_casefold = True )
                     
                 
-                existing_names.add( merged_sub.GetName() )
+                existing_names.add(merged_sub.get_name())
                 
             
             self._subscriptions.ReplaceDatas( primary_and_merged_replacement_tuples, sort_and_scroll = True )
@@ -3229,7 +3229,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 final_subscriptions.extend( unmerged )
                 
-                primary_sub.SetName( name )
+                primary_sub.set_name(name)
                 
                 final_subscriptions.append( primary_sub )
                 
@@ -3256,7 +3256,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
             final_subscriptions.extend( unmerged )
             
-            primary_sub.SetName( '{} (A)'.format( name ) )
+            primary_sub.set_name('{} (A)'.format(name))
             subscription.SetName( '{} (B)'.format( name ) )
             
             final_subscriptions.append( primary_sub )
@@ -3269,7 +3269,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
             final_subscription.SetNonDupeName( existing_names, do_casefold = True )
             
-            existing_names.add( final_subscription.GetName() )
+            existing_names.add(final_subscription.get_name())
             
         
         self._subscriptions.AddDatas( final_subscriptions, select_sort_and_scroll = True )

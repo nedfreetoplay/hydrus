@@ -133,7 +133,7 @@ def CopyMediaURLs( medias ):
     
     for media in medias:
         
-        media_urls = media.GetLocationsManager().GetURLs()
+        media_urls = media.GetLocationsManager().get_urls()
         
         urls.update( media_urls )
         
@@ -151,7 +151,7 @@ def CopyMediaURLClassURLs( medias, url_class ):
     
     for media in medias:
         
-        media_urls = media.GetLocationsManager().GetURLs()
+        media_urls = media.GetLocationsManager().get_urls()
         
         for url in media_urls:
             
@@ -185,11 +185,11 @@ def CopyServiceFilenamesToClipboard( service_key: bytes, medias: collections.abc
     
     prefix = ''
     
-    service = CG.client_controller.services_manager.GetService( service_key )
+    service = CG.client_controller.services_manager.get_service(service_key)
     
-    if service.GetServiceType() == HC.IPFS:
+    if service.get_service_type() == HC.IPFS:
         
-        prefix = service.GetMultihashPrefix()
+        prefix = service.get_multihash_prefix()
         
     
     filenames_or_none = [ media.GetLocationsManager().GetServiceFilename( service_key ) for media in flat_media ]
@@ -212,7 +212,7 @@ def CopyServiceFilenamesToClipboard( service_key: bytes, medias: collections.abc
 
 def GetLocalFileActionServiceKeys( media: collections.abc.Collection[ ClientMedia.MediaSingleton ] ):
     
-    local_media_file_service_keys = set( CG.client_controller.services_manager.GetServiceKeys( ( HC.LOCAL_FILE_DOMAIN, ) ) )
+    local_media_file_service_keys = set(CG.client_controller.services_manager.get_service_keys((HC.LOCAL_FILE_DOMAIN,)))
     
     local_duplicable_to_file_service_keys = collections.Counter()
     local_moveable_from_and_to_file_service_keys = collections.Counter()
@@ -271,7 +271,7 @@ def OpenExternally( media: ClientMedia.MediaSingleton | None ) -> bool:
     
     path = CG.client_controller.client_files_manager.GetFilePath( hash, mime )
     
-    launch_path = CG.client_controller.new_options.GetMimeLaunch( mime )
+    launch_path = CG.client_controller.new_options.get_mime_launch(mime)
     
     HydrusPaths.launch_file( path, launch_path )
     
@@ -295,7 +295,7 @@ def OpenFileLocation( media: ClientMedia.MediaSingleton | None ) -> bool:
     
     path = CG.client_controller.client_files_manager.GetFilePath( hash, mime )
     
-    ClientPaths.OpenFileLocation( path )
+    ClientPaths.open_file_location(path)
     
     return True
     
@@ -317,7 +317,7 @@ def OpenInWebBrowser( media: ClientMedia.MediaSingleton | None ) -> bool:
     
     path = CG.client_controller.client_files_manager.GetFilePath( hash, mime )
     
-    ClientPaths.LaunchPathInWebBrowser( path )
+    ClientPaths.launch_path_in_web_browser(path)
     
     return True
     
@@ -338,7 +338,7 @@ def OpenNativeFileProperties( media: ClientMedia.MediaSingleton | None ) -> bool
     
     path = CG.client_controller.client_files_manager.GetFilePath( hash, mime )
     
-    ClientPaths.OpenNativeFileProperties( path )
+    ClientPaths.open_native_file_properties(path)
     
     return True
 
@@ -360,7 +360,7 @@ def OpenFileWithDialog( media: ClientMedia.MediaSingleton | None ) -> bool:
     
     path = CG.client_controller.client_files_manager.GetFilePath( hash, mime )
     
-    ClientPaths.OpenFileWithDialog( path )
+    ClientPaths.open_file_with_dialog(path)
     
     return True
     
@@ -377,7 +377,7 @@ def ShowDuplicatesInNewPage( location_context: ClientLocation.LocationContext, h
         
     else:
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_FILE_SERVICE_KEY)
         
         hashes = CG.client_controller.read( 'file_duplicate_hashes', location_context, hash, duplicate_type )
         
@@ -396,7 +396,7 @@ def ShowDuplicatesInNewPage( location_context: ClientLocation.LocationContext, h
 
 def ShowFilesInNewDuplicatesFilterPage( hashes: collections.abc.Collection[ bytes ], location_context: ClientLocation.LocationContext ):
     
-    activate_window = CG.client_controller.new_options.GetBoolean( 'activate_window_on_tag_search_page_activation' )
+    activate_window = CG.client_controller.new_options.get_boolean('activate_window_on_tag_search_page_activation')
     
     predicates = [ ClientSearchPredicate.Predicate( predicate_type = ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_HASH, value = ( tuple( hashes ), 'sha256' ) ) ]
     
@@ -432,7 +432,7 @@ def ShowSimilarFilesInNewPage( media: collections.abc.Collection[ ClientMedia.Me
 
 def UndeleteFiles( hashes ):
     
-    local_file_service_keys = CG.client_controller.services_manager.GetServiceKeys( ( HC.LOCAL_FILE_DOMAIN, ) )
+    local_file_service_keys = CG.client_controller.services_manager.get_service_keys((HC.LOCAL_FILE_DOMAIN,))
     
     for chunk_of_hashes in HydrusLists.split_iterator_into_chunks( hashes, 64 ):
         
@@ -449,7 +449,7 @@ def UndeleteFiles( hashes ):
                 continue
                 
             
-            hash = media_result.GetHash()
+            hash = media_result.get_hash()
             
             for service_key in locations_manager.GetDeleted().intersection( local_file_service_keys ):
                 

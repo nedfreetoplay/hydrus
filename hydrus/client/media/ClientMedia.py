@@ -94,7 +94,7 @@ def GetBlurhashToSortableCall( sort_data: int ):
 
 def GetLocalFileServiceKeys( flat_medias: collections.abc.Collection[ "MediaSingleton" ] ):
     
-    local_media_file_service_keys = set( CG.client_controller.services_manager.GetServiceKeys( ( HC.LOCAL_FILE_DOMAIN, ) ) )
+    local_media_file_service_keys = set(CG.client_controller.services_manager.get_service_keys((HC.LOCAL_FILE_DOMAIN,)))
     
     local_file_service_keys_counter = collections.Counter()
     
@@ -262,11 +262,11 @@ def GetShowAction( media_result: ClientMediaResult.MediaResult, canvas_type: int
     
     if canvas_type == CC.CANVAS_PREVIEW:
         
-        action =  CG.client_controller.new_options.GetPreviewShowAction( mime )
+        action =  CG.client_controller.new_options.get_preview_show_action(mime)
         
     else:
         
-        action = CG.client_controller.new_options.GetMediaShowAction( mime )
+        action = CG.client_controller.new_options.get_media_show_action(mime)
         
     
     return action
@@ -539,7 +539,7 @@ class MediaCollect( HydrusSerialisable.SerialisableBase ):
     def ToString( self ):
         
         s_list = list( self.namespaces )
-        s_list.extend( [ CG.client_controller.services_manager.GetName( service_key ) for service_key in self.rating_service_keys if CG.client_controller.services_manager.ServiceExists( service_key ) ] )
+        s_list.extend([CG.client_controller.services_manager.get_name(service_key) for service_key in self.rating_service_keys if CG.client_controller.services_manager.service_exists(service_key)])
         
         if len( s_list ) == 0:
             
@@ -565,7 +565,7 @@ class MediaList( object ):
         
         for media_result in media_results:
             
-            hash = media_result.GetHash()
+            hash = media_result.get_hash()
             
             if hash in hashes_seen:
                 
@@ -823,7 +823,7 @@ class MediaList( object ):
                 
             else:
                 
-                hash = m.GetHash()
+                hash = m.get_hash()
                 
                 self._hashes.add( hash )
                 self._hashes_ordered.append( hash )
@@ -912,7 +912,7 @@ class MediaList( object ):
         
         for media_result in media_results:
             
-            hash = media_result.GetHash()
+            hash = media_result.get_hash()
             
             if hash in self._hashes:
                 
@@ -1322,7 +1322,7 @@ class MediaList( object ):
                     
                     if action in ( HC.CONTENT_UPDATE_DELETE, HC.CONTENT_UPDATE_DELETE_FROM_SOURCE_AFTER_MIGRATE ):
                         
-                        local_file_domains = CG.client_controller.services_manager.GetServiceKeys( ( HC.LOCAL_FILE_DOMAIN, ) )
+                        local_file_domains = CG.client_controller.services_manager.get_service_keys((HC.LOCAL_FILE_DOMAIN,))
                         all_local_file_services = set( list( local_file_domains ) + [ CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, CC.TRASH_SERVICE_KEY, CC.LOCAL_UPDATE_SERVICE_KEY ] )
                         
                         #
@@ -1330,12 +1330,12 @@ class MediaList( object ):
                         physically_deleted = service_key == CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY
                         possibly_trashed = ( service_key in local_file_domains or service_key == CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) and action == HC.CONTENT_UPDATE_DELETE
                         
-                        deleted_specifically_from_our_domain = self._location_context.IsOneDomain() and service_key in self._location_context.current_service_keys
+                        deleted_specifically_from_our_domain = self._location_context.is_one_domain() and service_key in self._location_context.current_service_keys
                         deleted_implicitly_from_our_domain = set( self._location_context.current_service_keys ).issubset( local_file_domains ) and service_key == CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY
                         deleted_from_our_domain = deleted_specifically_from_our_domain or deleted_implicitly_from_our_domain
                         
-                        we_are_looking_at_trash = self._location_context.IsOneDomain() and CC.TRASH_SERVICE_KEY in self._location_context.current_service_keys
-                        our_view_is_all_local = self._location_context.IncludesCurrent() and not self._location_context.IncludesDeleted() and self._location_context.current_service_keys.issubset( all_local_file_services )
+                        we_are_looking_at_trash = self._location_context.is_one_domain() and CC.TRASH_SERVICE_KEY in self._location_context.current_service_keys
+                        our_view_is_all_local = self._location_context.includes_current() and not self._location_context.includes_deleted() and self._location_context.current_service_keys.issubset(all_local_file_services)
                         
                         # case one, disappeared from hard drive and we are looking at local files
                         physically_deleted_and_local_view = physically_deleted and our_view_is_all_local
@@ -1347,7 +1347,7 @@ class MediaList( object ):
                         
                         user_says_remove_and_possibly_trashed_from_non_trash_local_view = HC.options[ 'remove_trashed_files' ] and possibly_trashed and not we_are_looking_at_trash
                         
-                        user_says_remove_and_moved_from_this_local_file_domain = CG.client_controller.new_options.GetBoolean( 'remove_local_domain_moved_files' ) and moved_from_this_domain_to_another
+                        user_says_remove_and_moved_from_this_local_file_domain = CG.client_controller.new_options.get_boolean('remove_local_domain_moved_files') and moved_from_this_domain_to_another
                         
                         if physically_deleted_and_local_view or user_says_remove_and_possibly_trashed_from_non_trash_local_view or deleted_from_repo_and_repo_view or user_says_remove_and_moved_from_this_local_file_domain:
                             
@@ -1392,7 +1392,7 @@ class MediaList( object ):
             
             for service_update in service_updates:
                 
-                ( action, row ) = service_update.ToTuple()
+                ( action, row ) = service_update.to_tuple()
                 
                 if action == HC.SERVICE_UPDATE_DELETE_PENDING:
                     
@@ -1413,7 +1413,7 @@ class MediaList( object ):
     
     def ResetService( self, service_key ):
         
-        if self._location_context.IsOneDomain() and service_key in self._location_context.current_service_keys:
+        if self._location_context.is_one_domain() and service_key in self._location_context.current_service_keys:
             
             self._RemoveMediaDirectly( self._singleton_media, self._collected_media )
             
@@ -1441,7 +1441,7 @@ class MediaList( object ):
             
             if self._secondary_media_sort is None:
                 
-                secondary_sort = CG.client_controller.new_options.GetFallbackSort()
+                secondary_sort = CG.client_controller.new_options.get_fallback_sort()
                 
             else:
                 
@@ -1454,7 +1454,7 @@ class MediaList( object ):
         
         for media in self._collected_media:
             
-            media.Sort( media_sort = media_sort, secondary_sort = secondary_sort )
+            media.sort(media_sort = media_sort, secondary_sort = secondary_sort)
             
         
         self._secondary_media_sort.Sort( self._location_context, self._tag_context, self._sorted_media )
@@ -1619,7 +1619,7 @@ class MediaCollection( MediaList, Media ):
         deleted_to_timestamps_ms = {}
         deleted_to_previously_imported_timestamps_ms = {}
         
-        for service_key in CG.client_controller.services_manager.GetServiceKeys( HC.REAL_FILE_SERVICES ):
+        for service_key in CG.client_controller.services_manager.get_service_keys(HC.REAL_FILE_SERVICES):
             
             current_timestamps_ms = [ timestamp_ms for timestamp_ms in ( times_manager.GetImportedTimestampMS( service_key ) for times_manager in all_timestamp_managers ) if timestamp_ms is not None ]
             
@@ -1684,10 +1684,10 @@ class MediaCollection( MediaList, Media ):
         
         self._RecalcArchiveInbox()
         
-        self._size = sum( [ media.GetSize() for media in self._sorted_media ] )
+        self._size = sum([media.get_size() for media in self._sorted_media])
         self._size_definite = False not in ( media.IsSizeDefinite() for media in self._sorted_media )
         
-        duration_sum = sum( [ media.GetDurationMS() for media in self._sorted_media if media.HasDuration() ] )
+        duration_sum = sum([media.get_duration_ms() for media in self._sorted_media if media.HasDuration()])
         
         if duration_sum > 0: self._duration = duration_sum
         else: self._duration = None
@@ -1704,7 +1704,7 @@ class MediaCollection( MediaList, Media ):
         
         for m in self._sorted_media:
             
-            ( width, height ) = m.GetResolution()
+            ( width, height ) = m.get_resolution()
             
             if width is not None and height is not None:
                 
@@ -1842,7 +1842,7 @@ class MediaCollection( MediaList, Media ):
     
     def GetNumFrames( self ):
         
-        num_frames = ( media.GetNumFrames() for media in self._sorted_media )
+        num_frames = (media.get_num_frames() for media in self._sorted_media)
         
         return sum( ( nf for nf in num_frames if nf is not None ) )
         
@@ -2101,7 +2101,7 @@ class MediaSingleton( Media ):
         
         new_options = CG.client_controller.new_options
         
-        tag_summary_generator = new_options.GetTagSummaryGenerator( 'media_viewer_top' )
+        tag_summary_generator = new_options.get_tag_summary_generator('media_viewer_top')
         
         tags = self.GetTagsManager().GetCurrentAndPending( CC.COMBINED_TAG_SERVICE_KEY, ClientTags.TAG_DISPLAY_SINGLE_MEDIA )
         
@@ -2393,7 +2393,7 @@ class MediaSort( HydrusSerialisable.SerialisableBase ):
     
     def CanSortAtDBLevel( self, location_context: ClientLocation.LocationContext ) -> bool:
         
-        if location_context.IsAllKnownFiles():
+        if location_context.is_all_known_files():
             
             return False
             
@@ -2474,7 +2474,7 @@ class MediaSort( HydrusSerialisable.SerialisableBase ):
                 
                 def sort_key( x ):
                     
-                    return x.GetHash().hex()
+                    return x.get_hash().hex()
                     
                 
             elif sort_data == CC.SORT_FILES_BY_PIXEL_HASH:
@@ -2534,10 +2534,10 @@ class MediaSort( HydrusSerialisable.SerialisableBase ):
                     # videos > images > pdfs
                     # heavy vids first, heavy images first
                     
-                    duration_ms = x.GetDurationMS()
-                    num_frames = x.GetNumFrames()
-                    size = x.GetSize()
-                    resolution = x.GetResolution()
+                    duration_ms = x.get_duration_ms()
+                    num_frames = x.get_num_frames()
+                    size = x.get_size()
+                    resolution = x.get_resolution()
                     
                     if duration_ms is None or duration_ms == 0:
                         
@@ -2556,7 +2556,7 @@ class MediaSort( HydrusSerialisable.SerialisableBase ):
                                 
                             else:
                                 
-                                ( width, height ) = x.GetResolution()
+                                ( width, height ) = x.get_resolution()
                                 
                                 if size is None or size == 0 or not x.HasUsefulResolution():
                                     
@@ -2600,14 +2600,14 @@ class MediaSort( HydrusSerialisable.SerialisableBase ):
                 
                 def sort_key( x ):
                     
-                    return deal_with_none( x.GetSize() )
+                    return deal_with_none(x.get_size())
                     
                 
             elif sort_data == CC.SORT_FILES_BY_DURATION:
                 
                 def sort_key( x ):
                     
-                    return deal_with_none( x.GetDurationMS() )
+                    return deal_with_none(x.get_duration_ms())
                     
                 
             elif sort_data == CC.SORT_FILES_BY_FRAMERATE:
@@ -2637,7 +2637,7 @@ class MediaSort( HydrusSerialisable.SerialisableBase ):
                 
                 def sort_key( x ):
                     
-                    return deal_with_none( x.GetNumFrames() )
+                    return deal_with_none(x.get_num_frames())
                     
                 
             elif sort_data == CC.SORT_FILES_BY_HAS_AUDIO:
@@ -2687,21 +2687,21 @@ class MediaSort( HydrusSerialisable.SerialisableBase ):
                 
                 def sort_key( x ):
                     
-                    return deal_with_none( x.GetResolution()[1] )
+                    return deal_with_none(x.get_resolution()[1])
                     
                 
             elif sort_data == CC.SORT_FILES_BY_WIDTH:
                 
                 def sort_key( x ):
                     
-                    return deal_with_none( x.GetResolution()[0] )
+                    return deal_with_none(x.get_resolution()[0])
                     
                 
             elif sort_data == CC.SORT_FILES_BY_RATIO:
                 
                 def sort_key( x ):
                     
-                    ( width, height ) = x.GetResolution()
+                    ( width, height ) = x.get_resolution()
                     
                     if not x.HasUsefulResolution():
                         
@@ -2717,7 +2717,7 @@ class MediaSort( HydrusSerialisable.SerialisableBase ):
                 
                 def sort_key( x ):
                     
-                    ( width, height ) = x.GetResolution()
+                    ( width, height ) = x.get_resolution()
                     
                     if width is None or height is None:
                         
@@ -2749,7 +2749,7 @@ class MediaSort( HydrusSerialisable.SerialisableBase ):
                 
             elif sort_data in ( CC.SORT_FILES_BY_MEDIA_VIEWS, CC.SORT_FILES_BY_MEDIA_VIEWTIME ):
                 
-                desired_canvas_types = CG.client_controller.new_options.GetIntegerList( 'file_viewing_stats_interesting_canvas_types' )
+                desired_canvas_types = CG.client_controller.new_options.get_integer_list('file_viewing_stats_interesting_canvas_types')
                 
                 if sort_data == CC.SORT_FILES_BY_MEDIA_VIEWS:
                     
@@ -2874,9 +2874,9 @@ class MediaSort( HydrusSerialisable.SerialisableBase ):
             
             try:
                 
-                service = CG.client_controller.services_manager.GetService( service_key )
+                service = CG.client_controller.services_manager.get_service(service_key)
                 
-                name = service.GetName()
+                name = service.get_name()
                 
             except HydrusExceptions.DataMissing:
                 
@@ -2912,7 +2912,7 @@ class MediaSort( HydrusSerialisable.SerialisableBase ):
                 
                 for mr in media_results_list:
                     
-                    HydrusData.show_text( ( mr.GetHash().hex(), sort_key( mr ) ) )
+                    HydrusData.show_text((mr.get_hash().hex(), sort_key(mr)))
                     
                 
             

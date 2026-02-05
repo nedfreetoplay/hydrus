@@ -238,7 +238,7 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
         
         text = 'fetching local file hashes'
         
-        job_status.SetStatusText( text )
+        job_status.set_status_text(text)
         CG.client_controller.frame_splash_status.SetSubtext( text )
         
         all_hash_ids = self._sts( self._execute( 'SELECT hash_id FROM local_hashes_cache;' ) )
@@ -268,7 +268,7 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
         
         for ( num_done, num_to_do, block_of_hash_ids ) in HydrusLists.split_list_into_chunks_rich( all_hash_ids, BLOCK_SIZE ):
             
-            if job_status.IsCancelled():
+            if job_status.is_cancelled():
                 
                 break
                 
@@ -278,7 +278,7 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
             text = 'syncing local hashes {}'.format( HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do ) )
             
             CG.client_controller.frame_splash_status.SetSubtext( text )
-            job_status.SetStatusText( text )
+            job_status.set_status_text(text)
             
             with self._make_temporary_integer_table( block_of_hash_ids, 'hash_id' ) as temp_table_name:
                 
@@ -352,14 +352,14 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
         
         if len( status_text_info ) > 0:
             
-            job_status.SetStatusText( '\n'.join( status_text_info ) )
+            job_status.set_status_text('\n'.join(status_text_info))
             
         else:
             
-            job_status.SetStatusText( 'Done with no errors found!' )
+            job_status.set_status_text('Done with no errors found!')
             
         
-        job_status.Finish()
+        job_status.finish()
         
     
     def SyncHashes( self, hashes: collections.abc.Collection[ bytes ] ):

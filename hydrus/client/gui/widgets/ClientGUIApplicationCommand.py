@@ -36,12 +36,12 @@ class LocalFilesSubPanel( QW.QWidget ):
         
         #
         
-        services = CG.client_controller.services_manager.GetServices( ( HC.LOCAL_FILE_DOMAIN, ) )
+        services = CG.client_controller.services_manager.get_services((HC.LOCAL_FILE_DOMAIN,))
         
         for service in services:
             
-            service_name = service.GetName()
-            service_key = service.GetServiceKey()
+            service_name = service.get_name()
+            service_key = service.get_service_key()
             
             self._service_keys.addItem( service_name, service_key )
             
@@ -101,7 +101,7 @@ class RatingLikeSubPanel( QW.QWidget ):
         
         #
         
-        services = CG.client_controller.services_manager.GetServices( ( HC.LOCAL_RATING_LIKE, ) )
+        services = CG.client_controller.services_manager.get_services((HC.LOCAL_RATING_LIKE,))
         
         if len( services ) == 0:
             
@@ -111,8 +111,8 @@ class RatingLikeSubPanel( QW.QWidget ):
             
             for service in services:
                 
-                service_name = service.GetName()
-                service_key = service.GetServiceKey()
+                service_name = service.get_name()
+                service_key = service.get_service_key()
                 
                 self._service_keys.addItem( service_name, service_key )
                 
@@ -212,7 +212,7 @@ class RatingNumericalSubPanel( QW.QWidget ):
         
         #
         
-        services = CG.client_controller.services_manager.GetServices( ( HC.LOCAL_RATING_NUMERICAL, ) )
+        services = CG.client_controller.services_manager.get_services((HC.LOCAL_RATING_NUMERICAL,))
         
         if len( services ) == 0:
             
@@ -222,8 +222,8 @@ class RatingNumericalSubPanel( QW.QWidget ):
             
             for service in services:
                 
-                service_name = service.GetName()
-                service_key = service.GetServiceKey()
+                service_name = service.get_name()
+                service_key = service.get_service_key()
                 
                 self._service_keys.addItem( service_name, service_key )
                 
@@ -268,13 +268,13 @@ class RatingNumericalSubPanel( QW.QWidget ):
         
         if service_key is not None:
             
-            service = CG.client_controller.services_manager.GetService( service_key )
+            service = CG.client_controller.services_manager.get_service(service_key)
             
             self._current_ratings_numerical_service = service
             
-            num_stars = service.GetNumStars()
+            num_stars = service.get_num_stars()
             
-            allow_zero = service.AllowZero()
+            allow_zero = service.allow_zero()
             
             if allow_zero:
                 
@@ -308,7 +308,7 @@ class RatingNumericalSubPanel( QW.QWidget ):
             
             value = self._ratings_numerical_slider.GetValue()
             
-            rating = self._current_ratings_numerical_service.ConvertStarsToRating( value )
+            rating = self._current_ratings_numerical_service.convert_stars_to_rating(value)
             
         
         return CAC.ApplicationCommand( CAC.APPLICATION_COMMAND_TYPE_CONTENT, ( service_key, HC.CONTENT_TYPE_RATINGS, action, rating ) )
@@ -328,7 +328,7 @@ class RatingNumericalSubPanel( QW.QWidget ):
             
         else:
             
-            slider_value = self._current_ratings_numerical_service.ConvertRatingToStars( rating )
+            slider_value = self._current_ratings_numerical_service.convert_rating_to_stars(rating)
             
             self._ratings_numerical_slider.SetValue( slider_value )
             
@@ -350,7 +350,7 @@ class RatingIncDecSubPanel( QW.QWidget ):
         
         #
         
-        services = CG.client_controller.services_manager.GetServices( ( HC.LOCAL_RATING_NUMERICAL, HC.LOCAL_RATING_INCDEC ) )
+        services = CG.client_controller.services_manager.get_services((HC.LOCAL_RATING_NUMERICAL, HC.LOCAL_RATING_INCDEC))
         
         if len( services ) == 0:
             
@@ -360,8 +360,8 @@ class RatingIncDecSubPanel( QW.QWidget ):
             
             for service in services:
                 
-                service_name = service.GetName()
-                service_key = service.GetServiceKey()
+                service_name = service.get_name()
+                service_key = service.get_service_key()
                 
                 self._service_keys.addItem( service_name, service_key )
                 
@@ -649,10 +649,10 @@ class SimpleSubPanel( QW.QWidget ):
         
         self._ipfs_service_key = ClientGUICommon.BetterChoice( self._ipfs_service_panel )
         
-        for service in CG.client_controller.services_manager.GetServices( ( HC.IPFS, ) ):
+        for service in CG.client_controller.services_manager.get_services((HC.IPFS,)):
             
-            name = service.GetName()
-            service_key = service.GetServiceKey()
+            name = service.get_name()
+            service_key = service.get_service_key()
             
             self._ipfs_service_key.addItem( name, service_key )
             
@@ -817,25 +817,25 @@ class SimpleSubPanel( QW.QWidget ):
                 simple_data = None
                 
             
-            return CAC.ApplicationCommand.STATICCreateSimpleCommand( action, simple_data = simple_data )
+            return CAC.ApplicationCommand.static_create_simple_command( action, simple_data = simple_data )
             
         
     
     def SetValue( self, command: CAC.ApplicationCommand ):
         
-        action = command.GetSimpleAction()
+        action = command.get_simple_action()
         
         self._simple_actions.SetValue( action )
         
         if action == CAC.SIMPLE_SHOW_DUPLICATES:
             
-            duplicate_type = command.GetSimpleData()
+            duplicate_type = command.get_simple_data()
             
             self._duplicate_type.SetValue( duplicate_type )
             
         elif action == CAC.SIMPLE_MEDIA_SEEK_DELTA:
             
-            ( direction, ms ) = command.GetSimpleData()
+            ( direction, ms ) = command.get_simple_data()
             
             self._seek_direction.SetValue( direction )
             
@@ -848,58 +848,58 @@ class SimpleSubPanel( QW.QWidget ):
             
         elif action == CAC.SIMPLE_MOVE_THUMBNAIL_FOCUS:
             
-            ( move_direction, selection_status ) = command.GetSimpleData()
+            ( move_direction, selection_status ) = command.get_simple_data()
             
             self._move_direction.SetValue( move_direction )
             self._selection_status.SetValue( selection_status )
             
         elif action == CAC.SIMPLE_SELECT_FILES:
             
-            file_filter = command.GetSimpleData()
+            file_filter = command.get_simple_data()
             
             self._file_filter.SetValue( file_filter )
             
         elif action == CAC.SIMPLE_OPEN_SIMILAR_LOOKING_FILES:
             
-            hamming_distance = command.GetSimpleData()
+            hamming_distance = command.get_simple_data()
             
             self._hamming_distance.setValue( hamming_distance )
             
         elif action == CAC.SIMPLE_REARRANGE_THUMBNAILS:
             
-            ( rearrange_type, rearrange_data ) = command.GetSimpleData()
+            ( rearrange_type, rearrange_data ) = command.get_simple_data()
             
             self._thumbnail_rearrange_type.SetValue( rearrange_data )
             
         elif action in ( CAC.SIMPLE_COPY_FILES, CAC.SIMPLE_COPY_FILE_PATHS, CAC.SIMPLE_COPY_FILE_ID ):
             
-            file_command_target = command.GetSimpleData()
+            file_command_target = command.get_simple_data()
             
             self._file_command_target.SetValue( file_command_target )
             
         elif action == CAC.SIMPLE_COPY_FILE_BITMAP:
             
-            bitmap_type = command.GetSimpleData()
+            bitmap_type = command.get_simple_data()
             
             self._bitmap_type.SetValue( bitmap_type )
             
         elif action == CAC.SIMPLE_COPY_FILE_HASHES:
             
-            ( file_command_target, hash_type ) = command.GetSimpleData()
+            ( file_command_target, hash_type ) = command.get_simple_data()
             
             self._file_command_target.SetValue( file_command_target )
             self._hash_type.SetValue( hash_type )
             
         elif action == CAC.SIMPLE_COPY_FILE_SERVICE_FILENAMES:
             
-            hacky_ipfs_dict = command.GetSimpleData()
+            hacky_ipfs_dict = command.get_simple_data()
             
             self._file_command_target.SetValue( hacky_ipfs_dict[ 'file_command_target' ] )
             self._ipfs_service_key.SetValue( hacky_ipfs_dict[ 'ipfs_service_key' ] )
             
         elif action in zoom_command_actions:
             
-            zoom_value_decimal = command.GetSimpleData()
+            zoom_value_decimal = command.get_simple_data()
             
             if zoom_value_decimal is None:
                 
@@ -933,18 +933,18 @@ class TagSubPanel( QW.QWidget ):
         self._tag_value = QW.QLineEdit( self )
         self._tag_value.setReadOnly( True )
         
-        default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+        default_location_context = CG.client_controller.new_options.get_default_local_location_context()
         
         self._tag_input = ClientGUIACDropdown.AutoCompleteDropdownTagsWrite( self, self.SetTags, default_location_context, CC.COMBINED_TAG_SERVICE_KEY )
         
         #
         
-        services = CG.client_controller.services_manager.GetServices( ( HC.LOCAL_TAG, HC.TAG_REPOSITORY ) )
+        services = CG.client_controller.services_manager.get_services((HC.LOCAL_TAG, HC.TAG_REPOSITORY))
         
         for service in services:
             
-            service_name = service.GetName()
-            service_key = service.GetServiceKey()
+            service_name = service.get_name()
+            service_key = service.get_service_key()
             
             self._service_keys.addItem( service_name, service_key )
             
@@ -1069,37 +1069,37 @@ class ApplicationCommandWidget( ClientGUIScrolledPanels.EditPanel ):
         
         #
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
             self._simple_sub_panel.SetValue( command )
             
             self._panel_choice.SetValue( self.PANEL_SIMPLE )
             
-        elif command.IsContentCommand():
+        elif command.is_content_command():
             
-            service_key = command.GetContentServiceKey()
+            service_key = command.get_content_service_key()
             
-            if CG.client_controller.services_manager.ServiceExists( service_key ):
+            if CG.client_controller.services_manager.service_exists(service_key):
                 
-                service = CG.client_controller.services_manager.GetService( service_key )
+                service = CG.client_controller.services_manager.get_service(service_key)
                 
-                action = command.GetContentAction()
-                value = command.GetContentValue()
+                action = command.get_content_action()
+                value = command.get_content_value()
                 
             else:
                 
                 ClientGUIDialogsMessage.ShowWarning( self, 'The service that this command relies upon no longer exists! This command will reset to a default form.' )
                 
-                local_tag_services = list( CG.client_controller.services_manager.GetServices( ( HC.LOCAL_TAG, ) ) )
+                local_tag_services = list(CG.client_controller.services_manager.get_services((HC.LOCAL_TAG,)))
                 
                 service = local_tag_services[0]
                 
-                service_key = service.GetServiceKey()
+                service_key = service.get_service_key()
                 action = HC.CONTENT_UPDATE_SET
                 value = 'tag'
                 
             
-            service_type = service.GetServiceType()
+            service_type = service.get_service_type()
             
             if service_type in HC.REAL_TAG_SERVICES:
                 

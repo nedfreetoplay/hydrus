@@ -292,11 +292,11 @@ class TabBar( QW.QTabBar ):
                 
                 if shift_down:
                     
-                    do_navigate = CG.client_controller.new_options.GetBoolean( 'page_drag_change_tab_with_shift' )
+                    do_navigate = CG.client_controller.new_options.get_boolean('page_drag_change_tab_with_shift')
                     
                 else:
                     
-                    do_navigate = CG.client_controller.new_options.GetBoolean( 'page_drag_change_tab_normally' )
+                    do_navigate = CG.client_controller.new_options.get_boolean('page_drag_change_tab_normally')
                     
                 
                 if do_navigate:
@@ -332,7 +332,7 @@ class TabBar( QW.QTabBar ):
         
         try:
             
-            if CG.client_controller.new_options.GetBoolean( 'wheel_scrolls_tab_bar' ):
+            if CG.client_controller.new_options.get_boolean('wheel_scrolls_tab_bar'):
                 
                 children = self.children()
                 
@@ -478,7 +478,7 @@ class TabWidgetWithDnD( QW.QTabWidget ):
         
         mouse_is_over_actual_page = self.currentWidget() and self.currentWidget().rect().contains( self.currentWidget().mapFromGlobal( self.mapToGlobal( e.position().toPoint() ) ) )
         
-        if mouse_is_over_actual_page or CG.client_controller.new_options.GetBoolean( 'disable_page_tab_dnd' ):
+        if mouse_is_over_actual_page or CG.client_controller.new_options.get_boolean('disable_page_tab_dnd'):
             
             QW.QTabWidget.mouseMoveEvent( self, e )
             
@@ -545,7 +545,7 @@ class TabWidgetWithDnD( QW.QTabWidget ):
         
         self._my_current_drag_object.setDragCursor( cursor.pixmap(), QC.Qt.DropAction.MoveAction )
         
-        CG.client_controller.CallLaterQtSafe( self, 0.1, 'checking DnD is ok', self._CheckDnDIsOK, self._my_current_drag_object )
+        CG.client_controller.call_later_qt_safe(self, 0.1, 'checking DnD is ok', self._CheckDnDIsOK, self._my_current_drag_object)
         
         self._my_current_drag_object.exec_( QC.Qt.DropAction.MoveAction )
         
@@ -592,11 +592,11 @@ class TabWidgetWithDnD( QW.QTabWidget ):
             
             if shift_down:
                 
-                do_navigate = CG.client_controller.new_options.GetBoolean( 'page_drag_change_tab_with_shift' )
+                do_navigate = CG.client_controller.new_options.get_boolean('page_drag_change_tab_with_shift')
                 
             else:
                 
-                do_navigate = CG.client_controller.new_options.GetBoolean( 'page_drag_change_tab_normally' )
+                do_navigate = CG.client_controller.new_options.get_boolean('page_drag_change_tab_normally')
                 
             
             if do_navigate:
@@ -762,11 +762,11 @@ class TabWidgetWithDnD( QW.QTabWidget ):
             
             if shift_down:
                 
-                follow_dropped_page = new_options.GetBoolean( 'page_drop_chase_with_shift' )
+                follow_dropped_page = new_options.get_boolean('page_drop_chase_with_shift')
                 
             else:
                 
-                follow_dropped_page = new_options.GetBoolean( 'page_drop_chase_normally' )
+                follow_dropped_page = new_options.get_boolean('page_drop_chase_normally')
                 
             
             if follow_dropped_page:
@@ -790,7 +790,7 @@ class TabWidgetWithDnD( QW.QTabWidget ):
                     page_key = source_notebook.GetPageKey()
                     
                 
-                CG.client_controller.CallAfterQtSafe( self, CG.client_controller.gui.ShowPage, page_key )
+                CG.client_controller.call_after_qt_safe(self, CG.client_controller.gui.ShowPage, page_key)
                 
             
         

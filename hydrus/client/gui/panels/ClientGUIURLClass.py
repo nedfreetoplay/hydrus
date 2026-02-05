@@ -121,7 +121,7 @@ class EditURLClassComponentPanel( ClientGUIScrolledPanels.EditPanel ):
         
         ( string_match, default_value ) = self._GetValue()
         
-        if default_value is not None and not string_match.Matches( default_value ):
+        if default_value is not None and not string_match.matches(default_value):
             
             raise HydrusExceptions.VetoException( 'That default value does not match the rule!' )
             
@@ -876,7 +876,7 @@ class EditURLClassPanel( ClientGUIScrolledPanels.EditPanel ):
         value_string_match = parameter.GetValueStringMatch()
         
         pretty_name = urllib.parse.unquote( name )
-        pretty_value_string_match = value_string_match.ToString()
+        pretty_value_string_match = value_string_match.to_string()
         
         if parameter.HasDefaultValue():
             
@@ -897,7 +897,7 @@ class EditURLClassPanel( ClientGUIScrolledPanels.EditPanel ):
         
         ( string_match, default ) = row
         
-        s = string_match.ToString()
+        s = string_match.to_string()
         
         if default is not None:
             
@@ -958,7 +958,7 @@ class EditURLClassPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 ( new_string_match, new_default_value ) = panel.GetValue()
                 
-                CG.client_controller.CallAfterQtSafe( self, self._UpdateControls ) # seems sometimes this doesn't kick in naturally
+                CG.client_controller.call_after_qt_safe(self, self._UpdateControls) # seems sometimes this doesn't kick in naturally
                 
                 new_row = ( new_string_match, new_default_value )
                 
@@ -1068,7 +1068,7 @@ class EditURLClassPanel( ClientGUIScrolledPanels.EditPanel ):
             
             for ( index, ( string_match, default ) ) in enumerate( self._path_components.GetData() ):
                 
-                if True in ( string_match.Matches( n ) for n in ( '0', '1', '10', '100', '42' ) ):
+                if True in (string_match.matches(n) for n in ('0', '1', '10', '100', '42')):
                     
                     choices.append( ( HydrusNumbers.int_to_pretty_ordinal_string( index + 1 ) + ' path component', ( ClientNetworkingURLClass.GALLERY_INDEX_TYPE_PATH_COMPONENT, index ) ) )
                     
@@ -1419,7 +1419,7 @@ class EditURLClassesPanel( ClientGUIScrolledPanels.EditPanel ):
         self._list_ctrl_panel.AddSeparator()
         self._list_ctrl_panel.AddImportExportButtons( ( ClientNetworkingURLClass.URLClass, ), self._AddURLClass )
         self._list_ctrl_panel.AddSeparator()
-        self._list_ctrl_panel.AddDefaultsButton( ClientDefaults.GetDefaultURLClasses, self._AddURLClass )
+        self._list_ctrl_panel.AddDefaultsButton(ClientDefaults.get_default_url_classes, self._AddURLClass)
         
         #
         
@@ -1483,7 +1483,7 @@ class EditURLClassesPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _ConvertDataToDisplayTuple( self, url_class ):
         
-        name = url_class.GetName()
+        name = url_class.get_name()
         url_type = url_class.GetURLType()
         
         try:
@@ -1543,7 +1543,7 @@ class EditURLClassesPanel( ClientGUIScrolledPanels.EditPanel ):
         
         url_classes = self._list_ctrl.GetData()
         
-        names = { url_class.GetName() for url_class in url_classes }
+        names = {url_class.get_name() for url_class in url_classes}
         
         return names
         

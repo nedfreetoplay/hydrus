@@ -67,7 +67,7 @@ class HydrusResourceClientAPIRestrictedAddFilesAddFile( HydrusResourceClientAPIR
         
         ( os_file_handle, temp_path ) = request.temp_file_info
         
-        file_import_options = CG.client_controller.new_options.GetDefaultFileImportOptions( FileImportOptionsLegacy.IMPORT_TYPE_QUIET ).duplicate()
+        file_import_options = CG.client_controller.new_options.get_default_file_import_options(FileImportOptionsLegacy.IMPORT_TYPE_QUIET).duplicate()
         
         custom_location_context = ClientLocalServerCore.ParseLocalFileDomainLocationContext( request )
         
@@ -104,7 +104,7 @@ class HydrusResourceClientAPIRestrictedAddFilesAddFile( HydrusResourceClientAPIR
             
             if delete_after_successful_import and file_import_status.status in CC.SUCCESSFUL_IMPORT_STATES:
                 
-                ClientPaths.DeletePath( path )
+                ClientPaths.delete_path(path)
                 
             
         
@@ -149,7 +149,7 @@ class HydrusResourceClientAPIRestrictedAddFilesClearDeletedFileRecord( HydrusRes
         
         media_results = [ media_result for media_result in media_results if CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY in media_result.GetLocationsManager().GetDeleted() ]
         
-        clearee_hashes = { m.GetHash() for m in media_results }
+        clearee_hashes = {m.get_hash() for m in media_results}
         
         content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_CLEAR_DELETE_RECORD, clearee_hashes )
         
@@ -167,7 +167,7 @@ class HydrusResourceClientAPIRestrictedAddFilesDeleteFiles( HydrusResourceClient
     
     def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        location_context = ClientLocalServerCore.ParseLocationContext( request, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ), deleted_allowed = False )
+        location_context = ClientLocalServerCore.ParseLocationContext(request, ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY), deleted_allowed = False)
         
         if 'reason' in request.parsed_request_args:
             
@@ -180,7 +180,7 @@ class HydrusResourceClientAPIRestrictedAddFilesDeleteFiles( HydrusResourceClient
         
         hashes = set( ClientLocalServerCore.ParseHashes( request ) )
         
-        location_context.LimitToServiceTypes( CG.client_controller.services_manager.GetServiceType, ( HC.HYDRUS_LOCAL_FILE_STORAGE, HC.COMBINED_LOCAL_FILE_DOMAINS, HC.LOCAL_FILE_DOMAIN ) )
+        location_context.limit_to_service_types(CG.client_controller.services_manager.get_service_type, (HC.HYDRUS_LOCAL_FILE_STORAGE, HC.COMBINED_LOCAL_FILE_DOMAINS, HC.LOCAL_FILE_DOMAIN))
         
         if CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY in location_context.current_service_keys:
             
@@ -192,7 +192,7 @@ class HydrusResourceClientAPIRestrictedAddFilesDeleteFiles( HydrusResourceClient
                 
                 message = 'Sorry, some of the files you selected are currently delete locked. Their hashes are:'
                 message += '\n' * 2
-                message += '\n'.join( sorted( [ m.GetHash().hex() for m in undeletable_media_results ] ) )
+                message += '\n'.join(sorted([m.get_hash().hex() for m in undeletable_media_results]))
                 
                 raise HydrusExceptions.ConflictException( message )
                 
@@ -232,7 +232,7 @@ class HydrusResourceClientAPIRestrictedAddFilesMigrateFiles( HydrusResourceClien
             
             if not CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY in media_result.GetLocationsManager().GetCurrent():
                 
-                raise HydrusExceptions.BadRequestException( f'The file "{media_result.GetHash().hex()} is not in any local file domains, so I cannot copy!' )
+                raise HydrusExceptions.BadRequestException( f'The file "{media_result.get_hash().hex()} is not in any local file domains, so I cannot copy!')
                 
             
         
@@ -269,18 +269,18 @@ class HydrusResourceClientAPIRestrictedAddFilesUndeleteFiles( HydrusResourceClie
     
     def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        location_context = ClientLocalServerCore.ParseLocationContext( request, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
+        location_context = ClientLocalServerCore.ParseLocationContext(request, ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY))
         
         hashes = set( ClientLocalServerCore.ParseHashes( request ) )
         
-        location_context.LimitToServiceTypes( CG.client_controller.services_manager.GetServiceType, ( HC.LOCAL_FILE_DOMAIN, HC.COMBINED_LOCAL_FILE_DOMAINS ) )
+        location_context.limit_to_service_types(CG.client_controller.services_manager.get_service_type, (HC.LOCAL_FILE_DOMAIN, HC.COMBINED_LOCAL_FILE_DOMAINS))
         
         media_results = CG.client_controller.read( 'media_results', hashes )
         
         # this is the only scan I have to do. all the stuff like 'can I undelete from here' and 'what does an undelete to combined local media mean' is all sorted at the db level no worries
         media_results = [ media_result for media_result in media_results if CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY in media_result.GetLocationsManager().GetCurrent() ]
         
-        hashes = { media_result.GetHash() for media_result in media_results }
+        hashes = {media_result.get_hash() for media_result in media_results}
         
         content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_UNDELETE, hashes )
         

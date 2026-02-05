@@ -72,7 +72,7 @@ class JobStatus( object ):
         return self._key.__hash__()
         
     
-    def _CheckCancelTests( self ):
+    def _check_cancel_tests(self):
         
         if self._cancel_tests_regular_checker.due():
             
@@ -80,14 +80,14 @@ class JobStatus( object ):
                 
                 if self._cancel_on_shutdown and HydrusThreading.is_thread_shutting_down():
                     
-                    self.Cancel()
+                    self.cancel()
                     
                     return
                     
                 
                 if CG.client_controller.should_stop_this_work( self._maintenance_mode, self._stop_time ):
                     
-                    self.Cancel()
+                    self.cancel()
                     
                     return
                     
@@ -99,14 +99,14 @@ class JobStatus( object ):
                     
                     if HydrusTime.time_has_passed( self._finish_and_dismiss_time ):
                         
-                        self.FinishAndDismiss()
+                        self.finish_and_dismiss()
                         
                     
                 
             
         
     
-    def AddURL( self, url ):
+    def add_url(self, url):
         
         with self._variable_lock:
             
@@ -117,39 +117,39 @@ class JobStatus( object ):
             
         
     
-    def Cancel( self ):
+    def cancel(self):
         
         self._cancelled = True
         
-        self.Finish()
+        self.finish()
         
     
-    def DeleteFiles( self ):
+    def delete_files(self):
         
-        self.DeleteVariable( 'attached_files' )
-        
-    
-    def DeleteGauge( self, level = 1 ):
-        
-        self.DeleteVariable( f'popup_gauge_{level}' )
+        self.delete_variable('attached_files')
         
     
-    def DeleteNetworkJob( self ):
+    def delete_gauge(self, level = 1):
         
-        self.DeleteVariable( 'network_job' )
-        
-    
-    def DeleteStatusText( self, level = 1 ):
-        
-        self.DeleteVariable( f'status_text_{level}' )
+        self.delete_variable(f'popup_gauge_{level}')
         
     
-    def DeleteStatusTitle( self ):
+    def delete_network_job(self):
         
-        self.DeleteVariable( 'status_title' )
+        self.delete_variable('network_job')
+        
+    
+    def delete_status_text(self, level = 1):
+        
+        self.delete_variable(f'status_text_{level}')
+        
+    
+    def delete_status_title(self):
+        
+        self.delete_variable('status_title')
         
 
-    def DeleteVariable( self, name ):
+    def delete_variable(self, name):
         
         with self._variable_lock:
             
@@ -162,7 +162,7 @@ class JobStatus( object ):
         self._ui_update_pauser.pause()
         
     
-    def Finish( self ):
+    def finish(self):
         
         self._job_finish_time = HydrusTime.get_now_float()
         
@@ -174,9 +174,9 @@ class JobStatus( object ):
         self._done_event.set()
         
     
-    def FinishAndDismiss( self, seconds = None ):
+    def finish_and_dismiss(self, seconds = None):
         
-        self.Finish()
+        self.finish()
         
         if seconds is None:
             
@@ -188,17 +188,17 @@ class JobStatus( object ):
             
         
     
-    def GetCreationTime( self ):
+    def get_creation_time(self):
         
         return self._creation_time
         
     
-    def GetDoneEvent( self ) -> threading.Event:
+    def get_done_event(self) -> threading.Event:
         
         return self._done_event
         
     
-    def GetErrorException( self ) -> Exception:
+    def get_error_exception(self) -> Exception:
         
         if self._exception is None:
             
@@ -210,12 +210,12 @@ class JobStatus( object ):
             
         
     
-    def GetFiles( self ):
+    def get_files(self):
         
-        return self.GetIfHasVariable( 'attached_files' )
+        return self.get_if_has_variable('attached_files')
         
     
-    def GetIfHasVariable( self, name ):
+    def get_if_has_variable(self, name):
         
         with self._variable_lock:
             
@@ -230,37 +230,37 @@ class JobStatus( object ):
             
         
     
-    def GetGauge( self, level = 1 ) -> tuple[ int | None, int | None ] | None:
+    def get_gauge(self, level = 1) -> tuple[int | None, int | None] | None:
         
-        return self.GetIfHasVariable( f'popup_gauge_{level}' )
+        return self.get_if_has_variable(f'popup_gauge_{level}')
         
     
-    def GetKey( self ):
+    def get_key(self):
         
         return self._key
         
     
-    def GetNetworkJob( self ):
+    def get_network_job(self):
         
-        return self.GetIfHasVariable( 'network_job' )
-        
-    
-    def GetStatusText( self, level = 1 ) -> str | None:
-        
-        return self.GetIfHasVariable( 'status_text_{}'.format( level ) )
+        return self.get_if_has_variable('network_job')
         
     
-    def GetStatusTitle( self ) -> str | None:
+    def get_status_text(self, level = 1) -> str | None:
         
-        return self.GetIfHasVariable( 'status_title' )
-        
-    
-    def GetTraceback( self ):
-        
-        return self.GetIfHasVariable( 'traceback' )
+        return self.get_if_has_variable('status_text_{}'.format(level))
         
     
-    def GetURLs( self ):
+    def get_status_title(self) -> str | None:
+        
+        return self.get_if_has_variable('status_title')
+        
+    
+    def get_traceback(self):
+        
+        return self.get_if_has_variable('traceback')
+        
+    
+    def get_urls(self):
         
         with self._variable_lock:
             
@@ -268,121 +268,121 @@ class JobStatus( object ):
             
         
     
-    def GetUserCallable( self ) -> HydrusData.Call | None:
+    def get_user_callable(self) -> HydrusData.Call | None:
         
-        return self.GetIfHasVariable( 'user_callable' )
+        return self.get_if_has_variable('user_callable')
         
     
-    def HadError( self ):
+    def had_error(self):
         
         return self._exception is not None
         
     
-    def HasVariable( self, name ):
+    def has_variable(self, name):
         
         with self._variable_lock: return name in self._variables
         
     
-    def IsCancellable( self ):
+    def is_cancellable(self):
         
         return self._cancellable
         
     
-    def IsCancelled( self ):
+    def is_cancelled(self):
         
-        self._CheckCancelTests()
+        self._check_cancel_tests()
         
         return self._cancelled
         
     
-    def IsDismissed( self ):
+    def is_dismissed(self):
         
-        self._CheckCancelTests()
+        self._check_cancel_tests()
         
         return self._dismissed
         
     
-    def IsDone( self ):
+    def is_done(self):
         
-        self._CheckCancelTests()
+        self._check_cancel_tests()
         
         return self._done_event.is_set()
         
     
-    def IsPausable( self ):
+    def is_pausable(self):
         
         return self._pausable
         
     
-    def IsPaused( self ):
+    def is_paused(self):
         
         return self._paused
         
     
-    def PausePlay( self ):
+    def pause_play(self):
         
         self._paused = not self._paused
         
     
-    def SetErrorException( self, e: Exception ):
+    def set_error_exception(self, e: Exception):
         
         self._exception = e
         
-        self.Cancel()
+        self.cancel()
         
     
-    def SetFiles( self, hashes: list[ bytes ], label: str ):
+    def set_files(self, hashes: list[ bytes], label: str):
         
         if len( hashes ) == 0:
             
-            self.DeleteFiles()
+            self.delete_files()
             
         else:
             
             hashes = HydrusLists.dedupe_list( list( hashes ) )
             
-            self.SetVariable( 'attached_files', ( hashes, label ) )
+            self.set_variable('attached_files', (hashes, label))
             
         
     
-    def SetGauge( self, num_done: int | None, num_to_do: int | None, level = 1 ):
+    def set_gauge(self, num_done: int | None, num_to_do: int | None, level = 1):
         
-        self.SetVariable( f'popup_gauge_{level}', ( num_done, num_to_do ) )
-        
-    
-    def SetNetworkJob( self, network_job ):
-        
-        self.SetVariable( 'network_job', network_job )
+        self.set_variable(f'popup_gauge_{level}', (num_done, num_to_do))
         
     
-    def SetStatusText( self, text: str, level = 1 ):
+    def set_network_job(self, network_job):
         
-        self.SetVariable( 'status_text_{}'.format( level ), text )
-        
-    
-    def SetStatusTitle( self, title: str ):
-        
-        self.SetVariable( 'status_title', title )
+        self.set_variable('network_job', network_job)
         
     
-    def SetTraceback( self, trace: str ):
+    def set_status_text(self, text: str, level = 1):
         
-        self.SetVariable( 'traceback', trace )
-        
-    
-    def SetUserCallable( self, call: HydrusData.Call ):
-        
-        self.SetVariable( 'user_callable', call )
+        self.set_variable('status_text_{}'.format(level), text)
         
     
-    def SetVariable( self, name, value ):
+    def set_status_title(self, title: str):
+        
+        self.set_variable('status_title', title)
+        
+    
+    def set_traceback(self, trace: str):
+        
+        self.set_variable('traceback', trace)
+        
+    
+    def set_user_callable(self, call: HydrusData.Call):
+        
+        self.set_variable('user_callable', call)
+        
+    
+    def set_variable(self, name, value):
         
         with self._variable_lock: self._variables[ name ] = value
         
         self._ui_update_pauser.pause()
         
     
-    def TimeRunning( self ):
+    def time_running(self):
         
         if self._job_finish_time is None:
             
@@ -394,32 +394,32 @@ class JobStatus( object ):
             
         
     
-    def ToString( self ):
+    def to_string(self):
         
         stuff_to_print = []
         
-        status_title = self.GetStatusTitle()
+        status_title = self.get_status_title()
         
         if status_title is not None:
             
             stuff_to_print.append( status_title )
             
         
-        status_text_1 = self.GetStatusText()
+        status_text_1 = self.get_status_text()
         
         if status_text_1 is not None:
             
             stuff_to_print.append( status_text_1 )
             
         
-        status_text_2 = self.GetStatusText( 2 )
+        status_text_2 = self.get_status_text(2)
         
         if status_text_2 is not None:
             
             stuff_to_print.append( status_text_2 )
             
         
-        trace = self.GetTraceback()
+        trace = self.get_traceback()
         
         if trace is not None:
             
@@ -438,26 +438,26 @@ class JobStatus( object ):
             
         
     
-    def WaitIfNeeded( self ):
+    def wait_if_needed(self):
         
         self._yield_pauser.pause()
         
         i_paused = False
         should_quit = False
         
-        while self.IsPaused():
+        while self.is_paused():
             
             i_paused = True
             
             time.sleep( 0.1 )
             
-            if self.IsDone():
+            if self.is_done():
                 
                 break
                 
             
         
-        if self.IsCancelled():
+        if self.is_cancelled():
             
             should_quit = True
             
@@ -592,7 +592,7 @@ class FileRWLock( object ):
         self.there_is_an_active_writer = False
         
     
-    def IsLocked( self ):
+    def is_locked(self):
         
         with self.lock:
             
@@ -600,7 +600,7 @@ class FileRWLock( object ):
             
         
     
-    def ReadersAreWorking( self ):
+    def readers_are_working(self):
         
         with self.lock:
             
@@ -608,7 +608,7 @@ class FileRWLock( object ):
             
         
     
-    def WritersAreWaitingOrWorking( self ):
+    def writers_are_waiting_or_working(self):
         
         with self.lock:
             
@@ -648,17 +648,17 @@ class QtAwareJob( HydrusThreading.SingleJob ):
             
         
         # yo if you change this, alter how profile_mode (ui) works
-        CG.client_controller.CallAfterQtSafe( self._window, qt_code )
+        CG.client_controller.call_after_qt_safe(self._window, qt_code)
         
     
-    def _MyWindowDead( self ):
+    def _my_window_dead(self):
         
         return self._window is None or not QP.isValid( self._window )
         
     
     def is_cancelled( self ):
         
-        my_window_dead = self._MyWindowDead()
+        my_window_dead = self._my_window_dead()
         
         if my_window_dead:
             
@@ -670,7 +670,7 @@ class QtAwareJob( HydrusThreading.SingleJob ):
     
     def is_dead( self ):
         
-        return self._MyWindowDead()
+        return self._my_window_dead()
         
     
 
@@ -685,7 +685,7 @@ class QtAwareRepeatingJob( HydrusThreading.RepeatingJob ):
         self._window = window
         
     
-    def _QTWork( self ):
+    def _qt_work(self):
         
         if self._window is None or not QP.isValid( self._window ):
             
@@ -700,17 +700,17 @@ class QtAwareRepeatingJob( HydrusThreading.RepeatingJob ):
     def _boot_worker( self ):
         
         # yo if you change this, alter how profile_mode (ui) works
-        CG.client_controller.CallAfterQtSafe( self._window, self._QTWork )
+        CG.client_controller.call_after_qt_safe(self._window, self._qt_work)
         
     
-    def _MyWindowDead( self ):
+    def _my_window_dead(self):
         
         return self._window is None or not QP.isValid( self._window )
         
     
     def is_cancelled( self ):
         
-        my_window_dead = self._MyWindowDead()
+        my_window_dead = self._my_window_dead()
         
         if my_window_dead:
             
@@ -722,6 +722,6 @@ class QtAwareRepeatingJob( HydrusThreading.RepeatingJob ):
     
     def is_dead( self ):
         
-        return self._MyWindowDead()
+        return self._my_window_dead()
         
     

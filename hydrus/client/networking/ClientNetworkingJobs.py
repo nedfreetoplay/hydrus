@@ -246,7 +246,7 @@ class NetworkJob( object ):
             return False
             
         
-        max_connection_attempts_allowed = CG.client_controller.new_options.GetInteger( 'max_connection_attempts_allowed' )
+        max_connection_attempts_allowed = CG.client_controller.new_options.get_integer('max_connection_attempts_allowed')
         
         return self._current_connection_attempt_number <= max_connection_attempts_allowed
         
@@ -260,7 +260,7 @@ class NetworkJob( object ):
         
         if self._method == 'GET':
             
-            max_attempts_allowed = CG.client_controller.new_options.GetInteger( 'max_request_attempts_allowed_get' )
+            max_attempts_allowed = CG.client_controller.new_options.get_integer('max_request_attempts_allowed_get')
             
         else:
             
@@ -284,9 +284,9 @@ class NetworkJob( object ):
                 
                 try:
                     
-                    last_modified_time = int( ClientTime.ParseDate( last_modified_string ) )
+                    last_modified_time = int(ClientTime.parse_date(last_modified_string))
                     
-                    if ClientTime.TimestampIsSensible( last_modified_time ):
+                    if ClientTime.timestamp_is_sensible(last_modified_time):
                         
                         self._response_last_modified = last_modified_time
                         
@@ -312,7 +312,7 @@ class NetworkJob( object ):
                     
                     last_modified_time = HydrusTime.date_time_to_timestamp( dt )
                     
-                    if ClientTime.TimestampIsSensible( last_modified_time ):
+                    if ClientTime.timestamp_is_sensible(last_modified_time):
                         
                         self._response_last_modified = last_modified_time
                         
@@ -351,7 +351,7 @@ class NetworkJob( object ):
     
     def _GetTimeouts( self ):
         
-        connect_timeout = CG.client_controller.new_options.GetInteger( 'network_timeout' )
+        connect_timeout = CG.client_controller.new_options.get_integer('network_timeout')
         
         read_timeout = connect_timeout * 6
         
@@ -691,7 +691,7 @@ class NetworkJob( object ):
         
         self._bandwidth_tracker.report_data_used( num_bytes )
         
-        self.engine.bandwidth_manager.ReportDataUsed( self._network_contexts, num_bytes )
+        self.engine.bandwidth_manager.report_data_used(self._network_contexts, num_bytes)
         
     
     def _ResetForAnotherAttempt( self ):
@@ -901,7 +901,7 @@ class NetworkJob( object ):
     
     def _WaitOnConnectionError( self, status_text: str ):
         
-        connection_error_wait_time = CG.client_controller.new_options.GetInteger( 'connection_error_wait_time' )
+        connection_error_wait_time = CG.client_controller.new_options.get_integer('connection_error_wait_time')
         
         self._connection_error_wake_time = HydrusTime.get_now() + ( ( self._current_connection_attempt_number - 1 ) * connection_error_wait_time )
         
@@ -920,7 +920,7 @@ class NetworkJob( object ):
     
     def _WaitOnNetworkTrafficPaused( self, status_text: str ):
         
-        while CG.client_controller.new_options.GetBoolean( 'pause_all_new_network_traffic' ) and not self._IsCancelled():
+        while CG.client_controller.new_options.get_boolean('pause_all_new_network_traffic') and not self._IsCancelled():
             
             with self._lock:
                 
@@ -946,7 +946,7 @@ class NetworkJob( object ):
         
         if num_seconds_to_wait is None:
             
-            serverside_bandwidth_wait_time = CG.client_controller.new_options.GetInteger( 'serverside_bandwidth_wait_time' )
+            serverside_bandwidth_wait_time = CG.client_controller.new_options.get_integer('serverside_bandwidth_wait_time')
             
             backoff_factor = 1.25
             problem_rating = ( self._current_connection_attempt_number + self._current_request_attempt_number ) - 1
@@ -1604,7 +1604,7 @@ class NetworkJob( object ):
                                 
                                 try:
                                     
-                                    timestamp = int( ClientTime.ParseDate( retry_after ) )
+                                    timestamp = int(ClientTime.parse_date(retry_after))
                                     
                                     num_seconds_to_wait = min( max( 60, timestamp - HydrusTime.get_now() ), 86400 )
                                     
@@ -1893,7 +1893,7 @@ class NetworkJob( object ):
                 
                 self._bandwidth_tracker.report_request_used()
                 
-                self.engine.bandwidth_manager.ReportRequestUsed( self._network_contexts )
+                self.engine.bandwidth_manager.report_request_used(self._network_contexts)
                 
                 return True
                 
@@ -2084,15 +2084,15 @@ class NetworkJobHydrus( NetworkJob ):
     
     def _ReportDataUsed( self, num_bytes ):
         
-        service = self.engine.controller.services_manager.GetService( self._service_key )
+        service = self.engine.controller.services_manager.get_service(self._service_key)
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         if service_type in HC.RESTRICTED_SERVICES:
             
-            account = service.GetAccount()
+            account = service.get_account()
             
-            account.ReportDataUsed( num_bytes )
+            account.report_data_used(num_bytes)
             
         
         NetworkJob._ReportDataUsed( self, num_bytes )
@@ -2102,20 +2102,20 @@ class NetworkJobHydrus( NetworkJob ):
         
         try:
             
-            service = self.engine.controller.services_manager.GetService( self._service_key )
+            service = self.engine.controller.services_manager.get_service(self._service_key)
             
         except HydrusExceptions.DataMissing:
             
             raise HydrusExceptions.CancelledException( 'Service no longer exists!' )
             
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         if service_type in HC.RESTRICTED_SERVICES:
             
-            account = service.GetAccount()
+            account = service.get_account()
             
-            account.ReportRequestUsed()
+            account.report_request_used()
             
         
         response = NetworkJob._SendRequestAndGetResponse( self )

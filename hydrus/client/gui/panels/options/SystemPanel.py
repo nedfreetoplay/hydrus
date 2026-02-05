@@ -32,11 +32,11 @@ class SystemPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         #
         
-        self._do_sleep_check.setChecked( self._new_options.GetBoolean( 'do_sleep_check' ) )
+        self._do_sleep_check.setChecked(self._new_options.get_boolean('do_sleep_check'))
         
-        self._wake_delay_period.setValue( self._new_options.GetInteger( 'wake_delay_period' ) )
+        self._wake_delay_period.setValue(self._new_options.get_integer('wake_delay_period'))
         
-        self._file_system_waits_on_wakeup.setChecked( self._new_options.GetBoolean( 'file_system_waits_on_wakeup' ) )
+        self._file_system_waits_on_wakeup.setChecked(self._new_options.get_boolean('file_system_waits_on_wakeup'))
         
         #
         
@@ -62,8 +62,8 @@ class SystemPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def UpdateOptions( self ):
         
-        self._new_options.SetBoolean( 'do_sleep_check', self._do_sleep_check.isChecked() )
-        self._new_options.SetInteger( 'wake_delay_period', self._wake_delay_period.value() )
-        self._new_options.SetBoolean( 'file_system_waits_on_wakeup', self._file_system_waits_on_wakeup.isChecked() )
+        self._new_options.set_boolean('do_sleep_check', self._do_sleep_check.isChecked())
+        self._new_options.set_integer('wake_delay_period', self._wake_delay_period.value())
+        self._new_options.set_boolean('file_system_waits_on_wakeup', self._file_system_waits_on_wakeup.isChecked())
         
     

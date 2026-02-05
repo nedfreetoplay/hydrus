@@ -61,11 +61,11 @@ class EditCheckerOptions( ClientGUIScrolledPanels.EditPanel ):
         
         defaults_panel = ClientGUICommon.StaticBox( self, 'reasonable defaults' )
         
-        defaults_1 = ClientGUICommon.BetterButton( defaults_panel, 'thread', self.SetValue, ClientDefaults.GetDefaultCheckerOptions( 'thread' ) )
-        defaults_2 = ClientGUICommon.BetterButton( defaults_panel, 'slow thread', self.SetValue, ClientDefaults.GetDefaultCheckerOptions( 'slow thread' ) )
-        defaults_3 = ClientGUICommon.BetterButton( defaults_panel, 'faster tag subscription', self.SetValue, ClientDefaults.GetDefaultCheckerOptions( 'fast tag subscription' ) )
-        defaults_4 = ClientGUICommon.BetterButton( defaults_panel, 'medium tag/artist subscription', self.SetValue, ClientDefaults.GetDefaultCheckerOptions( 'artist subscription' ) )
-        defaults_5 = ClientGUICommon.BetterButton( defaults_panel, 'slower tag subscription', self.SetValue, ClientDefaults.GetDefaultCheckerOptions( 'slow tag subscription' ) )
+        defaults_1 = ClientGUICommon.BetterButton(defaults_panel, 'thread', self.SetValue, ClientDefaults.get_default_checker_options('thread'))
+        defaults_2 = ClientGUICommon.BetterButton(defaults_panel, 'slow thread', self.SetValue, ClientDefaults.get_default_checker_options('slow thread'))
+        defaults_3 = ClientGUICommon.BetterButton(defaults_panel, 'faster tag subscription', self.SetValue, ClientDefaults.get_default_checker_options('fast tag subscription'))
+        defaults_4 = ClientGUICommon.BetterButton(defaults_panel, 'medium tag/artist subscription', self.SetValue, ClientDefaults.get_default_checker_options('artist subscription'))
+        defaults_5 = ClientGUICommon.BetterButton(defaults_panel, 'slower tag subscription', self.SetValue, ClientDefaults.get_default_checker_options('slow tag subscription'))
         
         #
         
@@ -86,7 +86,7 @@ class EditCheckerOptions( ClientGUIScrolledPanels.EditPanel ):
         
         #
         
-        if CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+        if CG.client_controller.new_options.get_boolean('advanced_mode'):
             
             never_faster_than_min = 1
             never_slower_than_min = 1
@@ -190,7 +190,7 @@ class EditCheckerOptions( ClientGUIScrolledPanels.EditPanel ):
         QP.AddToLayout( vbox, defaults_panel, CC.FLAGS_EXPAND_PERPENDICULAR )
         QP.AddToLayout( vbox, gridbox, CC.FLAGS_EXPAND_SIZER_PERPENDICULAR )
         
-        if CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+        if CG.client_controller.new_options.get_boolean('advanced_mode'):
             
             label = 'As you are in advanced mode, these options have extremely low limits. This is intended only for testing and small scale private network tasks. Do not use very fast check times for real world use on public websites, as it is wasteful and rude, hydrus will be overloaded with high-CPU parsing work, and you may get your IP banned.'
             
@@ -315,7 +315,7 @@ class EditCheckerOptions( ClientGUIScrolledPanels.EditPanel ):
     
     def SetValue( self, checker_options ):
         
-        ( intended_files_per_check, never_faster_than, never_slower_than, death_file_velocity ) = checker_options.ToTuple()
+        ( intended_files_per_check, never_faster_than, never_slower_than, death_file_velocity ) = checker_options.to_tuple()
         
         self._intended_files_per_check.setValue( intended_files_per_check )
         self._never_faster_than.SetValue( never_faster_than )
@@ -830,7 +830,7 @@ class DateTimesCtrl( QW.QWidget ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -874,7 +874,7 @@ class DateTimesCtrl( QW.QWidget ):
             
             try:
                 
-                timestamp = ClientTime.ParseDate( raw_text )
+                timestamp = ClientTime.parse_date(raw_text)
                 
                 timestamp_set = True
                 
@@ -1537,7 +1537,7 @@ class TimestampDataStubCtrl( QW.QWidget ):
         
         if timestamp_data_stub is None:
             
-            timestamp_data_stub = ClientTime.TimestampData.STATICSimpleStub( HC.TIMESTAMP_TYPE_ARCHIVED )
+            timestamp_data_stub = ClientTime.TimestampData.static_simple_stub(HC.TIMESTAMP_TYPE_ARCHIVED)
             
         
         self._show_aggregate_modified_time = show_aggregate_modified_time
@@ -1562,18 +1562,18 @@ class TimestampDataStubCtrl( QW.QWidget ):
         
         self._current_file_service = ClientGUICommon.BetterChoice( self )
         
-        for service in CG.client_controller.services_manager.GetServices( HC.REAL_FILE_SERVICES ):
+        for service in CG.client_controller.services_manager.get_services(HC.REAL_FILE_SERVICES):
             
-            self._current_file_service.addItem( service.GetName(), service.GetServiceKey() )
+            self._current_file_service.addItem(service.get_name(), service.get_service_key())
             
         
         #
         
         self._deleted_file_service = ClientGUICommon.BetterChoice( self )
         
-        for service in CG.client_controller.services_manager.GetServices( HC.FILE_SERVICES_WITH_DELETE_RECORD ):
+        for service in CG.client_controller.services_manager.get_services(HC.FILE_SERVICES_WITH_DELETE_RECORD):
             
-            self._deleted_file_service.addItem( service.GetName(), service.GetServiceKey() )
+            self._deleted_file_service.addItem(service.get_name(), service.get_service_key())
             
         
         #
@@ -1684,7 +1684,7 @@ class TimestampDataStubCtrl( QW.QWidget ):
         
         if timestamp_type in ClientTime.SIMPLE_TIMESTAMP_TYPES:
             
-            timestamp_data_stub = ClientTime.TimestampData.STATICSimpleStub( timestamp_type )
+            timestamp_data_stub = ClientTime.TimestampData.static_simple_stub(timestamp_type)
             
         else:
             

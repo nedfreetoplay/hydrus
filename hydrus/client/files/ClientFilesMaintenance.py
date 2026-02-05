@@ -262,8 +262,8 @@ def add_extra_comments_to_job_status( job_status: ClientThreading.JobStatus ):
     
     extra_comments = []
     
-    num_thumb_refits = job_status.GetIfHasVariable( 'num_thumb_refits' )
-    num_bad_files = job_status.GetIfHasVariable( 'num_bad_files' )
+    num_thumb_refits = job_status.get_if_has_variable('num_thumb_refits')
+    num_bad_files = job_status.get_if_has_variable('num_bad_files')
     
     if num_thumb_refits is not None:
         
@@ -279,7 +279,7 @@ def add_extra_comments_to_job_status( job_status: ClientThreading.JobStatus ):
     
     if len( sub_status_message ) > 0:
         
-        job_status.SetStatusText( sub_status_message, 2 )
+        job_status.set_status_text(sub_status_message, 2)
         
     
 
@@ -310,11 +310,11 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _AbleToDoBackgroundMaintenance( self ):
         
-        CG.client_controller.WaitUntilViewFree()
+        CG.client_controller.wait_until_view_free()
         
         if CG.client_controller.currently_idle():
             
-            if not self._controller.new_options.GetBoolean( 'file_maintenance_during_idle' ):
+            if not self._controller.new_options.get_boolean('file_maintenance_during_idle'):
                 
                 return False
                 
@@ -328,7 +328,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
         else:
             
-            if not self._controller.new_options.GetBoolean( 'file_maintenance_during_active' ):
+            if not self._controller.new_options.get_boolean('file_maintenance_during_active'):
                 
                 return False
                 
@@ -346,7 +346,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             return False
             
         
-        ( width, height ) = media_result.GetResolution()
+        ( width, height ) = media_result.get_resolution()
         
         if mime in HC.MIMES_THAT_ALWAYS_HAVE_GOOD_RESOLUTION and ( width is None or height is None )    :
             
@@ -361,7 +361,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _CheckFileIntegrity( self, media_result, job_type ):
         
-        hash = media_result.GetHash()
+        hash = media_result.get_hash()
         mime = media_result.GetMime()
         
         file_is_missing = False
@@ -433,7 +433,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     
                 
             
-            urls = media_result.GetLocationsManager().GetURLs()
+            urls = media_result.GetLocationsManager().get_urls()
             
             if len( urls ) > 0:
                 
@@ -564,7 +564,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 for url in useful_urls:
                     
-                    CG.client_controller.CallBlockingToQtTLW( qt_add_url, url )
+                    CG.client_controller.call_blocking_to_qt_tlw(qt_add_url, url)
                     
                 
             
@@ -594,7 +594,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     self._controller.write_synchronous( 'content_updates', content_update_package )
                     
-                    message = f'During file maintenance, failed to physically delete {media_result.GetHash().hex()}!'
+                    message = f'During file maintenance, failed to physically delete {media_result.get_hash().hex()}!'
                     
                     if leave_deletion_record:
                         
@@ -626,11 +626,11 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     self._controller.write_synchronous( 'content_updates', content_update_package )
                     
-                    HydrusData.print_text( f'During file maintenance, physically deleted {media_result.GetHash().hex()}!' )
+                    HydrusData.print_text( f'During file maintenance, physically deleted {media_result.get_hash().hex()}!')
                     
                     if not leave_deletion_record:
                         
-                        HydrusData.print_text( f'Clearing delete record for {media_result.GetHash().hex()}!' )
+                        HydrusData.print_text( f'Clearing delete record for {media_result.get_hash().hex()}!')
                         
                         content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_CLEAR_DELETE_RECORD, ( hash, ) )
                         
@@ -683,7 +683,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _DeleteNeighbourDupes( self, media_result ):
         
-        hash = media_result.GetHash()
+        hash = media_result.get_hash()
         mime = media_result.GetMime()
         
         self._controller.client_files_manager.DeleteNeighbourDupes( hash, mime )
@@ -691,7 +691,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _FixFilePermissions( self, media_result ):
         
-        hash = media_result.GetHash()
+        hash = media_result.get_hash()
         mime = media_result.GetMime()
         
         try:
@@ -708,7 +708,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _HasEXIF( self, media_result ):
         
-        hash = media_result.GetHash()
+        hash = media_result.get_hash()
         mime = media_result.GetMime()
         
         if mime not in HC.FILES_THAT_CAN_HAVE_EXIF:
@@ -743,7 +743,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _HasHumanReadableEmbeddedMetadata( self, media_result ):
         
-        hash = media_result.GetHash()
+        hash = media_result.get_hash()
         mime = media_result.GetMime()
         
         if mime not in HC.FILES_THAT_CAN_HAVE_HUMAN_READABLE_EMBEDDED_METADATA:
@@ -769,7 +769,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _HasICCProfile( self, media_result ):
         
-        hash = media_result.GetHash()
+        hash = media_result.get_hash()
         mime = media_result.GetMime()
         
         if mime not in HC.FILES_THAT_CAN_HAVE_ICC_PROFILE:
@@ -817,7 +817,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _HasTransparency( self, media_result ):
         
-        hash = media_result.GetHash()
+        hash = media_result.get_hash()
         mime = media_result.GetMime()
         
         if mime not in HC.MIMES_THAT_WE_CAN_CHECK_FOR_TRANSPARENCY:
@@ -829,7 +829,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             path = self._controller.client_files_manager.GetFilePath( hash, mime )
             
-            has_transparency = ClientFiles.HasTransparency( path, mime, duration_ms = media_result.GetDurationMS(), num_frames = media_result.GetNumFrames(), resolution = media_result.GetResolution() )
+            has_transparency = ClientFiles.HasTransparency(path, mime, duration_ms = media_result.get_duration_ms(), num_frames = media_result.get_num_frames(), resolution = media_result.get_resolution())
             
             additional_data = has_transparency
             
@@ -843,7 +843,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _RegenFileMetadata( self, media_result ):
         
-        hash = media_result.GetHash()
+        hash = media_result.get_hash()
         original_mime = media_result.GetMime()
         
         try:
@@ -885,7 +885,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _RegenFileModifiedTimestampMS( self, media_result ):
         
-        hash = media_result.GetHash()
+        hash = media_result.get_hash()
         mime = media_result.GetMime()
         
         if mime in HC.HYDRUS_UPDATE_FILES:
@@ -911,7 +911,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _RegenFileOtherHashes( self, media_result ):
         
-        hash = media_result.GetHash()
+        hash = media_result.get_hash()
         mime = media_result.GetMime()
         
         if mime in HC.HYDRUS_UPDATE_FILES:
@@ -977,7 +977,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _RegenPixelHash( self, media_result ):
         
-        hash = media_result.GetHash()
+        hash = media_result.get_hash()
         mime = media_result.GetMime()
         
         if mime not in HC.FILES_THAT_CAN_HAVE_PIXEL_HASH:
@@ -985,7 +985,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             return None
             
         
-        duration_ms = media_result.GetDurationMS()
+        duration_ms = media_result.get_duration_ms()
         
         if duration_ms is not None:
             
@@ -1048,7 +1048,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _RegenSimilarFilesMetadata( self, media_result ):
         
-        hash = media_result.GetHash()
+        hash = media_result.get_hash()
         mime = media_result.GetMime()
         
         if mime not in HC.FILES_THAT_HAVE_PERCEPTUAL_HASH:
@@ -1074,15 +1074,15 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _ReInitialiseWorkRules( self ):
         
-        file_maintenance_idle_throttle_files = self._controller.new_options.GetInteger( 'file_maintenance_idle_throttle_files' )
-        file_maintenance_idle_throttle_time_delta = self._controller.new_options.GetInteger( 'file_maintenance_idle_throttle_time_delta' )
+        file_maintenance_idle_throttle_files = self._controller.new_options.get_integer('file_maintenance_idle_throttle_files')
+        file_maintenance_idle_throttle_time_delta = self._controller.new_options.get_integer('file_maintenance_idle_throttle_time_delta')
         
         self._idle_work_rules = HydrusNetworking.BandwidthRules()
         
         self._idle_work_rules.add_rule( HC.BANDWIDTH_TYPE_REQUESTS, file_maintenance_idle_throttle_time_delta, file_maintenance_idle_throttle_files * NORMALISED_BIG_JOB_WEIGHT )
         
-        file_maintenance_active_throttle_files = self._controller.new_options.GetInteger( 'file_maintenance_active_throttle_files' )
-        file_maintenance_active_throttle_time_delta = self._controller.new_options.GetInteger( 'file_maintenance_active_throttle_time_delta' )
+        file_maintenance_active_throttle_files = self._controller.new_options.get_integer('file_maintenance_active_throttle_files')
+        file_maintenance_active_throttle_time_delta = self._controller.new_options.get_integer('file_maintenance_active_throttle_time_delta')
         
         self._active_work_rules = HydrusNetworking.BandwidthRules()
         
@@ -1108,9 +1108,9 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 big_pauser.pause()
                 
-                hash = media_result.GetHash()
+                hash = media_result.get_hash()
                 
-                if job_status.IsCancelled() or self._shutdown:
+                if job_status.is_cancelled() or self._shutdown:
                     
                     return
                     
@@ -1180,7 +1180,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                             
                             if was_regenerated:
                                 
-                                num_thumb_refits = job_status.GetIfHasVariable( 'num_thumb_refits' )
+                                num_thumb_refits = job_status.get_if_has_variable('num_thumb_refits')
                                 
                                 if num_thumb_refits is None:
                                     
@@ -1189,7 +1189,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                                 
                                 num_thumb_refits += 1
                                 
-                                job_status.SetVariable( 'num_thumb_refits', num_thumb_refits )
+                                job_status.set_variable('num_thumb_refits', num_thumb_refits)
                                 
                             
                         elif job_type == REGENERATE_FILE_DATA_JOB_DELETE_NEIGHBOUR_DUPES:
@@ -1228,7 +1228,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                             
                             if file_was_bad:
                                 
-                                num_bad_files = job_status.GetIfHasVariable( 'num_bad_files' )
+                                num_bad_files = job_status.get_if_has_variable('num_bad_files')
                                 
                                 if num_bad_files is None:
                                     
@@ -1237,7 +1237,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                                 
                                 num_bad_files += 1
                                 
-                                job_status.SetVariable( 'num_bad_files', num_bad_files )
+                                job_status.set_variable('num_bad_files', num_bad_files)
                                 
                             
                         
@@ -1259,9 +1259,9 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                         message += '\n' * 2
                         message += str( e )
                         
-                        job_status.SetStatusText( message )
+                        job_status.set_status_text(message)
                         
-                        job_status.SetFiles( [ hash ], 'I/O error file' )
+                        job_status.set_files([hash], 'I/O error file')
                         
                         CG.client_controller.pub( 'message', job_status )
                         
@@ -1280,9 +1280,9 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                         message += '\n' * 2
                         message += str( e )
                         
-                        job_status.SetStatusText( message )
+                        job_status.set_status_text(message)
                         
-                        job_status.SetFiles( [ hash ], 'failed file' )
+                        job_status.set_files([hash], 'failed file')
                         
                         CG.client_controller.pub( 'message', job_status )
                         
@@ -1365,14 +1365,14 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             status_text = HydrusNumbers.value_range_to_pretty_string( num_jobs_done, total_num_jobs_to_do )
             
-            job_status.SetStatusText( status_text )
+            job_status.set_status_text(status_text)
             
-            job_status.SetGauge( num_jobs_done, total_num_jobs_to_do )
+            job_status.set_gauge(num_jobs_done, total_num_jobs_to_do)
             
             add_extra_comments_to_job_status( job_status )
             
         
-        job_status.SetStatusTitle( 'file maintenance' )
+        job_status.set_status_title('file maintenance')
         
         message_pubbed = False
         work_done = False
@@ -1402,7 +1402,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                         message_pubbed = True
                         
                     
-                    if job_status.IsCancelled():
+                    if job_status.is_cancelled():
                         
                         return
                         
@@ -1411,7 +1411,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     media_results = self._controller.read( 'media_results', hashes )
                     
-                    hashes_to_media_results = { media_result.GetHash() : media_result for media_result in media_results }
+                    hashes_to_media_results = {media_result.get_hash() : media_result for media_result in media_results}
                     
                     try:
                         
@@ -1440,11 +1440,11 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
             finally:
                 
-                job_status.SetStatusText( 'done!' )
+                job_status.set_status_text('done!')
                 
-                job_status.DeleteGauge()
+                job_status.delete_gauge()
                 
-                job_status.FinishAndDismiss( 5 )
+                job_status.finish_and_dismiss(5)
                 
                 if not work_done:
                     
@@ -1456,12 +1456,12 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
         
     
-    def GetName( self ) -> str:
+    def get_name(self) -> str:
         
         return 'file maintenance'
         
     
-    def _DoMainLoop( self ):
+    def _do_main_loop(self):
         
         # TODO: locking on CheckShutdown is lax, let's be good and smooth it all out
         
@@ -1469,7 +1469,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             while True:
                 
-                self._CheckShutdown()
+                self._check_shutdown()
                 
                 if self._AbleToDoBackgroundMaintenance() or self._reset_background_event.is_set():
                     
@@ -1496,7 +1496,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         while True:
             
-            self._CheckShutdown()
+            self._check_shutdown()
             
             did_work = False
             
@@ -1518,7 +1518,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                         
                         media_results = self._controller.read( 'media_results', hashes )
                         
-                        hashes_to_media_results = { media_result.GetHash() : media_result for media_result in media_results }
+                        hashes_to_media_results = {media_result.get_hash() : media_result for media_result in media_results}
                         
                         media_results_to_job_types = { hashes_to_media_results[ hash ] : job_types for ( hash, job_types ) in hashes_to_job_types.items() }
                         
@@ -1546,7 +1546,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                             self._controller.pub( 'notify_files_maintenance_done' )
                             
                         
-                        self._CheckShutdown()
+                        self._check_shutdown()
                         
                     finally:
                         
@@ -1607,14 +1607,14 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             status_text = '{} - {}'.format( HydrusNumbers.value_range_to_pretty_string( num_jobs_done, total_num_jobs_to_do ), regen_file_enum_to_str_lookup[ job_type ] )
             
-            job_status.SetStatusText( status_text )
+            job_status.set_status_text(status_text)
             
-            job_status.SetGauge( num_jobs_done, total_num_jobs_to_do )
+            job_status.set_gauge(num_jobs_done, total_num_jobs_to_do)
             
             add_extra_comments_to_job_status( job_status )
             
         
-        job_status.SetStatusTitle( 'regenerating file data' )
+        job_status.set_status_title('regenerating file data')
         
         if pub_job_status:
             
@@ -1634,11 +1634,11 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
         finally:
             
-            job_status.SetStatusText( 'done!' )
+            job_status.set_status_text('done!')
             
-            job_status.DeleteGauge()
+            job_status.delete_gauge()
             
-            job_status.FinishAndDismiss( 5 )
+            job_status.finish_and_dismiss(5)
             
             self._controller.pub( 'notify_files_maintenance_done' )
             
@@ -1651,7 +1651,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             self._controller.write( 'file_maintenance_add_jobs_hashes', hashes, job_type, time_can_start )
             
         
-        self.WakeIfNotWorking()
+        self.wake_if_not_working()
         
     
     def ScheduleJobHashIds( self, hash_ids, job_type, time_can_start = 0 ):
@@ -1661,6 +1661,6 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             self._controller.write( 'file_maintenance_add_jobs', hash_ids, job_type, time_can_start )
             
         
-        self.WakeIfNotWorking()
+        self.wake_if_not_working()
         
     

@@ -522,7 +522,7 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
             
             file_relationships_dict[ 'king_is_on_file_domain' ] = len( filtered_hash_ids ) > 0
             
-            filtered_hash_ids = self.modules_files_storage.FilterHashIds( ClientLocation.LocationContext.STATICCreateSimple( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY ), { hash_id } )
+            filtered_hash_ids = self.modules_files_storage.FilterHashIds(ClientLocation.LocationContext.static_create_simple(CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY), {hash_id})
             
             file_relationships_dict[ 'king_is_local' ] = len( filtered_hash_ids ) > 0
             
@@ -871,7 +871,7 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
         
         ( tables, join_predicates ) = self.GetPotentialDuplicatePairsTableJoinGetInitialTablesAndPreds( pixel_dupes_preference, max_hamming_distance, master_potential_duplicate_pairs_table_name = master_potential_duplicate_pairs_table_name )
         
-        if not db_location_context.location_context.IsAllKnownFiles():
+        if not db_location_context.location_context.is_all_known_files():
             
             files_table_name = db_location_context.GetSingleFilesTableName()
             
@@ -890,7 +890,7 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
     
     def GetPotentialDuplicatePairsTableJoinOnFileService( self, db_location_context: ClientDBFilesStorage.DBLocationContext ):
         
-        if db_location_context.location_context.IsAllKnownFiles():
+        if db_location_context.location_context.is_all_known_files():
             
             table_join = 'potential_duplicate_pairs'
             
@@ -973,7 +973,7 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
         
         ( tables, join_predicates ) = self.GetPotentialDuplicatePairsTableJoinGetInitialTablesAndPreds( pixel_dupes_preference, max_hamming_distance, master_potential_duplicate_pairs_table_name = master_potential_duplicate_pairs_table_name )
         
-        if db_location_context.location_context.IsAllKnownFiles():
+        if db_location_context.location_context.is_all_known_files():
             
             tables.append( '{} AS results_table_for_this_query'.format( results_table_name ) )
             

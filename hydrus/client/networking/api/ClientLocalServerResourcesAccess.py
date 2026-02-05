@@ -30,7 +30,7 @@ class HydrusResourceClientAPIPermissionsRequest( ClientLocalServerResources.Hydr
         
         ClientAPI.last_api_permissions_request = api_permissions
         
-        access_key = api_permissions.GetAccessKey()
+        access_key = api_permissions.get_access_key()
         
         body_dict = {}
         
@@ -72,7 +72,7 @@ class HydrusResourceClientAPIRestrictedAccountSessionKey( HydrusResourceClientAP
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        new_session_key = CG.client_controller.client_api_manager.GenerateSessionKey( request.client_api_permissions.GetAccessKey() )
+        new_session_key = CG.client_controller.client_api_manager.generate_session_key(request.client_api_permissions.get_access_key())
         
         body_dict = {}
         
@@ -106,7 +106,7 @@ class HydrusResourceClientAPIRestrictedAccountVerify( HydrusResourceClientAPIRes
         
         body_dict = {}
         
-        body_dict[ 'name' ] = api_permissions.GetName()
+        body_dict[ 'name' ] = api_permissions.get_name()
         body_dict[ 'permits_everything' ] = api_permissions.PermitsEverything()
         body_dict[ 'basic_permissions' ] = sorted( basic_permissions ) # set->list for json
         body_dict[ 'human_description' ] = human_description
@@ -163,7 +163,7 @@ class HydrusResourceClientAPIRestrictedGetService( ClientLocalServerResources.Hy
             
             try:
                 
-                service_key = CG.client_controller.services_manager.GetServiceKeyFromName( allowed_service_types, service_name )
+                service_key = CG.client_controller.services_manager.get_service_key_from_name(allowed_service_types, service_name)
                 
             except HydrusExceptions.DataMissing:
                 
@@ -177,24 +177,24 @@ class HydrusResourceClientAPIRestrictedGetService( ClientLocalServerResources.Hy
         
         try:
             
-            service = CG.client_controller.services_manager.GetService( service_key )
+            service = CG.client_controller.services_manager.get_service(service_key)
             
         except HydrusExceptions.DataMissing:
             
             raise HydrusExceptions.NotFoundException( 'Sorry, did not find a service with key "{}"!'.format( service_key.hex() ) )
             
         
-        if service.GetServiceType() not in allowed_service_types:
+        if service.get_service_type() not in allowed_service_types:
             
             raise HydrusExceptions.BadRequestException( 'Sorry, for now, you cannot ask about this service!' )
             
         
         body_dict = {
             'service' : {
-                'name' : service.GetName(),
-                'type' : service.GetServiceType(),
-                'type_pretty' : HC.service_string_lookup[ service.GetServiceType() ],
-                'service_key' : service.GetServiceKey().hex()
+                'name' : service.get_name(),
+                'type' : service.get_service_type(),
+                'type_pretty' : HC.service_string_lookup[ service.get_service_type()],
+                'service_key' : service.get_service_key().hex()
             }
         }
         
@@ -242,17 +242,17 @@ class HydrusResourceClientAPIRestrictedGetServices( ClientLocalServerResources.H
         
         for ( service_types, name ) in jobs:
             
-            services = CG.client_controller.services_manager.GetServices( service_types )
+            services = CG.client_controller.services_manager.get_services(service_types)
             
             services_list = []
             
             for service in services:
                 
                 service_dict = {
-                    'name' : service.GetName(),
-                    'type' : service.GetServiceType(),
-                    'type_pretty' : HC.service_string_lookup[ service.GetServiceType() ],
-                    'service_key' : service.GetServiceKey().hex()
+                    'name' : service.get_name(),
+                    'type' : service.get_service_type(),
+                    'type_pretty' : HC.service_string_lookup[ service.get_service_type()],
+                    'service_key' : service.get_service_key().hex()
                 }
                 
                 services_list.append( service_dict )
@@ -305,7 +305,7 @@ class HydrusResourceClientAPIRestrictedGetServiceRatingSVG( ClientLocalServerRes
             
             try:
                 
-                service_key = CG.client_controller.services_manager.GetServiceKeyFromName( allowed_service_types, service_name )
+                service_key = CG.client_controller.services_manager.get_service_key_from_name(allowed_service_types, service_name)
                 
             except HydrusExceptions.DataMissing:
                 
@@ -319,21 +319,21 @@ class HydrusResourceClientAPIRestrictedGetServiceRatingSVG( ClientLocalServerRes
         
         try:
             
-            service = CG.client_controller.services_manager.GetService( service_key )
+            service = CG.client_controller.services_manager.get_service(service_key)
             
         except HydrusExceptions.DataMissing:
             
             raise HydrusExceptions.NotFoundException( 'Sorry, did not find a service with key "{}"!'.format( service_key.hex() ) )
             
         
-        if service.GetServiceType() not in allowed_service_types:
+        if service.get_service_type() not in allowed_service_types:
             
             raise HydrusExceptions.BadRequestException( 'This type of service cannot have a SVG associated with it!' )
             
         
         try:
             
-            star_type = service.GetStarType()
+            star_type = service.get_star_type()
             
             if star_type.HasRatingSVG():
                 
@@ -347,12 +347,12 @@ class HydrusResourceClientAPIRestrictedGetServiceRatingSVG( ClientLocalServerRes
                 
             else:
                 
-                raise HydrusExceptions.NotFoundException( 'Rating service "{}" does not use a SVG icon!'.format( service.GetName() ) )
+                raise HydrusExceptions.NotFoundException( 'Rating service "{}" does not use a SVG icon!'.format(service.get_name()))
                 
             
         except Exception as e:
             
-            raise HydrusExceptions.ServerException( 'There was a problem getting or reading the SVG file "{}" for rating service "{}", at path "{}"! Error follows: {}'.format( svg_name, service.GetName(), svg_path, str(e) ) )
+            raise HydrusExceptions.ServerException( 'There was a problem getting or reading the SVG file "{}" for rating service "{}", at path "{}"! Error follows: {}'.format(svg_name, service.get_name(), svg_path, str(e)))
             
         
         response_context = HydrusServerResources.ResponseContext( 200, mime = HC.IMAGE_SVG, body = svg_content )

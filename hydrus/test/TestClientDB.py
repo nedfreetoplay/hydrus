@@ -54,7 +54,7 @@ class TestClientDB( unittest.TestCase ):
     @classmethod
     def _delete_db( cls ):
         
-        cls._db.Shutdown()
+        cls._db.shutdown()
         
         while not cls._db.LoopIsFinished():
             
@@ -97,7 +97,7 @@ class TestClientDB( unittest.TestCase ):
         file_import_options = FileImportOptionsLegacy.FileImportOptionsLegacy()
         file_import_options.SetIsDefault( True )
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_FILE_SERVICE_KEY)
         tag_context = ClientSearchTagContext.TagContext( service_key = CC.DEFAULT_LOCAL_TAG_SERVICE_KEY )
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, tag_context = tag_context )
@@ -245,7 +245,7 @@ class TestClientDB( unittest.TestCase ):
         
         tag_context = ClientSearchTagContext.TagContext( service_key = HydrusData.generate_key() )
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( HydrusData.generate_key() )
+        location_context = ClientLocation.LocationContext.static_create_simple(HydrusData.generate_key())
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, tag_context = tag_context, predicates = [ ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_TAG, 'test' ) ] )
         
@@ -255,7 +255,7 @@ class TestClientDB( unittest.TestCase ):
         
         [ result ] = self._read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER )
         
-        self.assertEqual( result.GetName(), export_folder.get_name() )
+        self.assertEqual(result.get_name(), export_folder.get_name())
         
     
     def test_file_query_ids( self ):
@@ -268,7 +268,7 @@ class TestClientDB( unittest.TestCase ):
                 
                 predicates = [ ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_NAMESPACE, namespace, inclusive ) ]
                 
-                location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )
+                location_context = ClientLocation.LocationContext.static_create_simple(CC.LOCAL_FILE_SERVICE_KEY)
                 
                 search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, predicates = predicates )
                 
@@ -289,7 +289,7 @@ class TestClientDB( unittest.TestCase ):
                 
                 predicates = [ ClientSearchPredicate.Predicate( predicate_type, info ) ]
                 
-                location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )
+                location_context = ClientLocation.LocationContext.static_create_simple(CC.LOCAL_FILE_SERVICE_KEY)
                 
                 search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, predicates = predicates )
                 
@@ -310,7 +310,7 @@ class TestClientDB( unittest.TestCase ):
                 
                 predicates = [ ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_TAG, tag, inclusive ) ]
                 
-                location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )
+                location_context = ClientLocation.LocationContext.static_create_simple(CC.LOCAL_FILE_SERVICE_KEY)
                 
                 search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, predicates = predicates )
                 
@@ -329,7 +329,7 @@ class TestClientDB( unittest.TestCase ):
             
             for ( predicates, result ) in tests:
                 
-                location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )
+                location_context = ClientLocation.LocationContext.static_create_simple(CC.LOCAL_FILE_SERVICE_KEY)
                 
                 search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, predicates = predicates )
                 
@@ -709,9 +709,9 @@ class TestClientDB( unittest.TestCase ):
         
         services = self._read( 'services' )
         
-        services.append( ClientServices.GenerateService( TestController.LOCAL_RATING_LIKE_SERVICE_KEY, HC.LOCAL_RATING_LIKE, 'test like rating service' ) )
-        services.append( ClientServices.GenerateService( TestController.LOCAL_RATING_NUMERICAL_SERVICE_KEY, HC.LOCAL_RATING_NUMERICAL, 'test numerical rating service' ) )
-        services.append( ClientServices.GenerateService( TestController.LOCAL_RATING_INCDEC_SERVICE_KEY, HC.LOCAL_RATING_INCDEC, 'test inc/dec rating service' ) )
+        services.append(ClientServices.generate_service(TestController.LOCAL_RATING_LIKE_SERVICE_KEY, HC.LOCAL_RATING_LIKE, 'test like rating service'))
+        services.append(ClientServices.generate_service(TestController.LOCAL_RATING_NUMERICAL_SERVICE_KEY, HC.LOCAL_RATING_NUMERICAL, 'test numerical rating service'))
+        services.append(ClientServices.generate_service(TestController.LOCAL_RATING_INCDEC_SERVICE_KEY, HC.LOCAL_RATING_INCDEC, 'test inc/dec rating service'))
         
         self._write( 'update_services', services )
         
@@ -816,7 +816,7 @@ class TestClientDB( unittest.TestCase ):
         
         #
         
-        file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY ), tag_context = ClientSearchTagContext.TagContext() )
+        file_search_context = ClientSearchFileSearchContext.FileSearchContext(location_context = ClientLocation.LocationContext.static_create_simple(CC.LOCAL_FILE_SERVICE_KEY), tag_context = ClientSearchTagContext.TagContext())
         
         result = self._read( 'file_system_predicates', file_search_context )
         
@@ -1021,11 +1021,11 @@ class TestClientDB( unittest.TestCase ):
         
         new_service_key = HydrusData.generate_key()
         
-        services.append( ClientServices.GenerateService( new_service_key, HC.LOCAL_TAG, 'new service' ) )
+        services.append(ClientServices.generate_service(new_service_key, HC.LOCAL_TAG, 'new service'))
         
         empty_service_key = HydrusData.generate_key()
         
-        services.append( ClientServices.GenerateService( empty_service_key, HC.LOCAL_TAG, 'empty service' ) )
+        services.append(ClientServices.generate_service(empty_service_key, HC.LOCAL_TAG, 'empty service'))
         
         self._write( 'update_services', services )
         
@@ -1104,7 +1104,7 @@ class TestClientDB( unittest.TestCase ):
         
         page_manager = ClientGUIPageManager.CreatePageManagerImportHDD( [ 'some', 'paths' ], FileImportOptionsLegacy.FileImportOptionsLegacy(), [], { 'paths' : service_keys_to_tags }, True )
         
-        page_manager.GetVariable( 'hdd_import' ).PausePlay() # to stop trying to import 'some' 'paths'
+        page_manager.GetVariable( 'hdd_import' ).pause_play() # to stop trying to import 'some' 'paths'
         
         page_name = page_manager.GetPageName()
         
@@ -1152,7 +1152,7 @@ class TestClientDB( unittest.TestCase ):
         
         #
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple(CC.LOCAL_FILE_SERVICE_KEY)
         
         fsc = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, predicates = [] )
         
@@ -1174,7 +1174,7 @@ class TestClientDB( unittest.TestCase ):
         
         tag_context = ClientSearchTagContext.TagContext( service_key = CC.DEFAULT_LOCAL_TAG_SERVICE_KEY )
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple(CC.LOCAL_FILE_SERVICE_KEY)
         
         fsc = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, tag_context = tag_context, predicates = [] )
         
@@ -1194,7 +1194,7 @@ class TestClientDB( unittest.TestCase ):
         
         #
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple(CC.LOCAL_FILE_SERVICE_KEY)
         
         fsc = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, predicates = [ ClientSearchPredicate.SYSTEM_PREDICATE_ARCHIVE ] )
         
@@ -1214,7 +1214,7 @@ class TestClientDB( unittest.TestCase ):
         
         #
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple(CC.LOCAL_FILE_SERVICE_KEY)
         
         fsc = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, predicates = [ ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_TAG, 'tag', count = ClientSearchPredicate.PredicateCount.STATICCreateStaticCount( 1, 3 ) ) ] )
         
@@ -1234,7 +1234,7 @@ class TestClientDB( unittest.TestCase ):
         
         #
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple(CC.LOCAL_FILE_SERVICE_KEY)
         
         fsc = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, predicates = [ ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_RATING, ( '>', 0.2, TestController.LOCAL_RATING_NUMERICAL_SERVICE_KEY ) ), ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_FILE_SERVICE, ( True, HC.CONTENT_STATUS_CURRENT, CC.LOCAL_FILE_SERVICE_KEY ) ) ] )
         
@@ -1270,7 +1270,7 @@ class TestClientDB( unittest.TestCase ):
         
         for page_container in loaded_session.GetTopNotebook().GetPageContainers():
             
-            page_names.append( page_container.GetName() )
+            page_names.append(page_container.get_name())
             
         
         self.assertEqual( page_names, [ 'gallery', 'watcher', 'import', 'simple downloader', 'example tag repo petitions', 'search', 'search', 'files', 'wew lad', 'files' ] )
@@ -1321,9 +1321,9 @@ class TestClientDB( unittest.TestCase ):
             
             media_result = self._read( 'media_result', written_hash )
             
-            ( mr_file_info_manager, mr_tags_manager, mr_locations_manager, mr_ratings_manager ) = media_result.ToTuple()
+            ( mr_file_info_manager, mr_tags_manager, mr_locations_manager, mr_ratings_manager ) = media_result.to_tuple()
             
-            ( mr_hash_id, mr_hash, mr_size, mr_mime, mr_width, mr_height, mr_duration, mr_num_frames, mr_has_audio, mr_num_words ) = mr_file_info_manager.ToTuple()
+            ( mr_hash_id, mr_hash, mr_size, mr_mime, mr_width, mr_height, mr_duration, mr_num_frames, mr_has_audio, mr_num_words ) = mr_file_info_manager.to_tuple()
             
             mr_inbox = mr_locations_manager.inbox
             
@@ -1394,7 +1394,7 @@ class TestClientDB( unittest.TestCase ):
         
         ( item, ) = result
         
-        self.assertEqual( item.GetName(), 'imp 1' )
+        self.assertEqual(item.get_name(), 'imp 1')
         
     
     def test_init( self ):
@@ -1588,9 +1588,9 @@ class TestClientDB( unittest.TestCase ):
         
         media_result = self._read( 'media_result', hash )
         
-        ( mr_file_info_manager, mr_tags_manager, mr_locations_manager, mr_ratings_manager ) = media_result.ToTuple()
+        ( mr_file_info_manager, mr_tags_manager, mr_locations_manager, mr_ratings_manager ) = media_result.to_tuple()
         
-        ( mr_hash_id, mr_hash, mr_size, mr_mime, mr_width, mr_height, mr_duration, mr_num_frames, mr_has_audio, mr_num_words ) = mr_file_info_manager.ToTuple()
+        ( mr_hash_id, mr_hash, mr_size, mr_mime, mr_width, mr_height, mr_duration, mr_num_frames, mr_has_audio, mr_num_words ) = mr_file_info_manager.to_tuple()
         
         mr_inbox = mr_locations_manager.inbox
         
@@ -1610,9 +1610,9 @@ class TestClientDB( unittest.TestCase ):
         
         ( media_result, ) = self._read( 'media_results_from_ids', ( 1, ) )
         
-        ( mr_file_info_manager, mr_tags_manager, mr_locations_manager, mr_ratings_manager ) = media_result.ToTuple()
+        ( mr_file_info_manager, mr_tags_manager, mr_locations_manager, mr_ratings_manager ) = media_result.to_tuple()
         
-        ( mr_hash_id, mr_hash, mr_size, mr_mime, mr_width, mr_height, mr_duration, mr_num_frames, mr_has_audio, mr_num_words ) = mr_file_info_manager.ToTuple()
+        ( mr_hash_id, mr_hash, mr_size, mr_mime, mr_width, mr_height, mr_duration, mr_num_frames, mr_has_audio, mr_num_words ) = mr_file_info_manager.to_tuple()
         
         mr_inbox = mr_locations_manager.inbox
         
@@ -1684,7 +1684,7 @@ class TestClientDB( unittest.TestCase ):
         
         #
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
         
         predicates = [ ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = ( HC.APPLICATION_FLASH, ) ) ]
         
@@ -1725,9 +1725,9 @@ class TestClientDB( unittest.TestCase ):
         file_sk = HydrusData.generate_key()
         ipfs_sk = HydrusData.generate_key()
         
-        services.append( ClientServices.GenerateService( tag_sk, HC.TAG_REPOSITORY, 'test tag repo' ) )
-        services.append( ClientServices.GenerateService( file_sk, HC.FILE_REPOSITORY, 'test file repo' ) )
-        services.append( ClientServices.GenerateService( ipfs_sk, HC.IPFS, 'test ipfs' ) )
+        services.append(ClientServices.generate_service(tag_sk, HC.TAG_REPOSITORY, 'test tag repo'))
+        services.append(ClientServices.generate_service(file_sk, HC.FILE_REPOSITORY, 'test file repo'))
+        services.append(ClientServices.generate_service(ipfs_sk, HC.IPFS, 'test ipfs'))
         
         self._write( 'update_services', services )
         
@@ -1966,7 +1966,7 @@ class TestClientDB( unittest.TestCase ):
         
         old_services = list( services )
         
-        service = ClientServices.GenerateService( service_key, HC.TAG_REPOSITORY, 'new tag repo' )
+        service = ClientServices.generate_service(service_key, HC.TAG_REPOSITORY, 'new tag repo')
         
         service._account._account_type = HydrusNetwork.AccountType.generate_admin_account_type( HC.TAG_REPOSITORY )
         
@@ -2021,7 +2021,7 @@ class TestClientDB( unittest.TestCase ):
         
         result = self._read( 'services', ( HC.LOCAL_FILE_DOMAIN, HC.LOCAL_FILE_UPDATE_DOMAIN, HC.LOCAL_FILE_TRASH_DOMAIN, HC.HYDRUS_LOCAL_FILE_STORAGE, HC.COMBINED_LOCAL_FILE_DOMAINS, HC.LOCAL_TAG, HC.LOCAL_RATING_LIKE ) )
         
-        result_service_keys = { service.GetServiceKey() for service in result }
+        result_service_keys = {service.get_service_key() for service in result}
         
         self.assertEqual( { CC.TRASH_SERVICE_KEY, CC.LOCAL_FILE_SERVICE_KEY, CC.LOCAL_UPDATE_SERVICE_KEY, CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, CC.DEFAULT_LOCAL_TAG_SERVICE_KEY, CC.DEFAULT_LOCAL_DOWNLOADER_TAG_SERVICE_KEY, CC.DEFAULT_FAVOURITES_RATING_SERVICE_KEY }, result_service_keys )
         
@@ -2047,7 +2047,7 @@ class TestClientDB( unittest.TestCase ):
         
         old_services = list( services )
         
-        services.append( ClientServices.GenerateService( HydrusData.generate_key(), HC.TAG_REPOSITORY, 'new service' ) )
+        services.append(ClientServices.generate_service(HydrusData.generate_key(), HC.TAG_REPOSITORY, 'new service'))
         
         self._write( 'update_services', services )
         
@@ -2064,7 +2064,7 @@ class TestClientDB( unittest.TestCase ):
     
     def test_shortcuts( self ):
         
-        num_default = len( ClientDefaults.GetDefaultShortcuts() )
+        num_default = len(ClientDefaults.get_default_shortcuts())
         
         result = self._read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SHORTCUT_SET )
         
@@ -2072,11 +2072,11 @@ class TestClientDB( unittest.TestCase ):
         
         #
         
-        for ( i, shortcuts ) in enumerate( ClientDefaults.GetDefaultShortcuts() ):
+        for ( i, shortcuts ) in enumerate(ClientDefaults.get_default_shortcuts()):
             
             name = 'shortcuts ' + str( i )
             
-            shortcuts.SetName( name )
+            shortcuts.set_name(name)
             
             self._write( 'serialisable', shortcuts )
             

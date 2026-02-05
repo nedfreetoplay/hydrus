@@ -59,7 +59,7 @@ def AddAudioVolumeMenu( menu, canvas_type ):
         
         mute_volume_type = ClientGUIMediaControls.AUDIO_MEDIA_VIEWER
         
-        if CG.client_controller.new_options.GetBoolean( 'media_viewer_uses_its_own_audio_volume' ):
+        if CG.client_controller.new_options.get_boolean('media_viewer_uses_its_own_audio_volume'):
             
             volume_volume_type = ClientGUIMediaControls.AUDIO_MEDIA_VIEWER
             
@@ -68,7 +68,7 @@ def AddAudioVolumeMenu( menu, canvas_type ):
         
         mute_volume_type = ClientGUIMediaControls.AUDIO_PREVIEW
         
-        if CG.client_controller.new_options.GetBoolean( 'preview_uses_its_own_audio_volume' ):
+        if CG.client_controller.new_options.get_boolean('preview_uses_its_own_audio_volume'):
             
             volume_volume_type = ClientGUIMediaControls.AUDIO_PREVIEW
             
@@ -78,7 +78,7 @@ def AddAudioVolumeMenu( menu, canvas_type ):
     
     ( global_mute_option_name, global_volume_option_name ) = ClientGUIMediaControls.volume_types_to_option_names[ ClientGUIMediaControls.AUDIO_GLOBAL ]
     
-    if CG.client_controller.new_options.GetBoolean( global_mute_option_name ):
+    if CG.client_controller.new_options.get_boolean(global_mute_option_name):
         
         label = 'unmute global'
         
@@ -97,7 +97,7 @@ def AddAudioVolumeMenu( menu, canvas_type ):
         
         ( mute_option_name, volume_option_name ) = ClientGUIMediaControls.volume_types_to_option_names[ mute_volume_type ]
         
-        if CG.client_controller.new_options.GetBoolean( mute_option_name ):
+        if CG.client_controller.new_options.get_boolean(mute_option_name):
             
             label = 'unmute {}'.format( ClientGUIMediaControls.volume_types_str_lookup[ mute_volume_type ] )
             
@@ -118,7 +118,7 @@ def AddAudioVolumeMenu( menu, canvas_type ):
     # 0-100 inclusive
     volumes = list( range( 0, 110, 10 ) )
     
-    current_volume = CG.client_controller.new_options.GetInteger( volume_option_name )
+    current_volume = CG.client_controller.new_options.get_integer(volume_option_name)
     
     if current_volume not in volumes:
         
@@ -153,7 +153,7 @@ class CanvasBackgroundColourGenerator( object ):
     
     def _GetColourFromOptions( self ):
         
-        return self._my_canvas.GetColour( CC.COLOUR_MEDIA_BACKGROUND )
+        return self._my_canvas.get_colour(CC.COLOUR_MEDIA_BACKGROUND)
         
     
     def GetColour( self ) -> QG.QColor:
@@ -163,7 +163,7 @@ class CanvasBackgroundColourGenerator( object ):
     
     def CanDoTransparencyCheckerboard( self ) -> bool:
         
-        return CG.client_controller.new_options.GetBoolean( 'draw_transparency_checkerboard_media_canvas' )
+        return CG.client_controller.new_options.get_boolean('draw_transparency_checkerboard_media_canvas')
         
     
 
@@ -171,7 +171,7 @@ class CanvasBackgroundColourGeneratorDuplicates( CanvasBackgroundColourGenerator
     
     def CanDoTransparencyCheckerboard( self ) -> bool:
         
-        return CG.client_controller.new_options.GetBoolean( 'draw_transparency_checkerboard_media_canvas' ) or CG.client_controller.new_options.GetBoolean( 'draw_transparency_checkerboard_media_canvas_duplicates' )
+        return CG.client_controller.new_options.get_boolean('draw_transparency_checkerboard_media_canvas') or CG.client_controller.new_options.get_boolean('draw_transparency_checkerboard_media_canvas_duplicates')
         
     
     def GetColour( self ) -> QG.QColor:
@@ -184,11 +184,11 @@ class CanvasBackgroundColourGeneratorDuplicates( CanvasBackgroundColourGenerator
             
             if self._my_canvas.IsShowingFileA():
                 
-                duplicate_intensity = new_options.GetNoneableInteger( 'duplicate_background_switch_intensity_a' )
+                duplicate_intensity = new_options.get_noneable_integer('duplicate_background_switch_intensity_a')
                 
             else:
                 
-                duplicate_intensity = new_options.GetNoneableInteger( 'duplicate_background_switch_intensity_b' )
+                duplicate_intensity = new_options.get_noneable_integer('duplicate_background_switch_intensity_b')
                 
             
             return ClientGUIFunctions.GetLighterDarkerColour( normal_colour, duplicate_intensity )
@@ -420,7 +420,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
                 ( possible_suggested_file_service_key, ) = self._location_context.current_service_keys
                 
-                if CG.client_controller.services_manager.GetServiceType( possible_suggested_file_service_key ) in HC.SPECIFIC_LOCAL_FILE_SERVICES + ( HC.FILE_REPOSITORY, ):
+                if CG.client_controller.services_manager.get_service_type(possible_suggested_file_service_key) in HC.SPECIFIC_LOCAL_FILE_SERVICES + (HC.FILE_REPOSITORY,):
                     
                     file_service_key = possible_suggested_file_service_key
                     
@@ -525,7 +525,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             return
             
         
-        if len( CG.client_controller.services_manager.GetServices( HC.RATINGS_SERVICES ) ) > 0:
+        if len(CG.client_controller.services_manager.get_services(HC.RATINGS_SERVICES)) > 0:
             
             with ClientGUIDialogsManage.DialogManageRatings( self, ( self._current_media, ) ) as dlg:
                 
@@ -551,9 +551,9 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                     
                     child.activateWindow()
                     
-                    command = CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_SET_SEARCH_FOCUS )
+                    command = CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_SET_SEARCH_FOCUS )
                     
-                    panel.ProcessApplicationCommand( command )
+                    panel.process_application_command( command )
                     
                     return
                     
@@ -697,7 +697,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
     
     def BeginDrag( self ):
         
-        if self._current_media is not None and self._current_media.HasDuration() and CG.client_controller.new_options.GetBoolean( 'disallow_media_drags_on_duration_media' ):
+        if self._current_media is not None and self._current_media.HasDuration() and CG.client_controller.new_options.get_boolean('disallow_media_drags_on_duration_media'):
             
             return
             
@@ -714,7 +714,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         if self._current_media is not None:
             
-            if self._canvas_type in CC.CANVAS_MEDIA_VIEWER_TYPES and not self._new_options.GetBoolean( 'media_viewer_recenter_media_on_window_resize' ):
+            if self._canvas_type in CC.CANVAS_MEDIA_VIEWER_TYPES and not self._new_options.get_boolean('media_viewer_recenter_media_on_window_resize'):
                 
                 self._media_container.ZoomMaintainingZoom( self._current_media )
                 
@@ -738,11 +738,11 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
                 if my_size != media_container_size:
                     
-                    if self._new_options.GetBoolean( 'media_viewer_lock_current_zoom_type' ):
+                    if self._new_options.get_boolean('media_viewer_lock_current_zoom_type'):
                         
                         self._media_container.ZoomToZoomType()
                         
-                    elif self._new_options.GetBoolean( 'media_viewer_lock_current_zoom' ):
+                    elif self._new_options.get_boolean('media_viewer_lock_current_zoom'):
                         
                         self._media_container.ZoomMaintainingZoom( self._current_media )
                         
@@ -783,9 +783,9 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
     
     def GetColour( self, colour_type ):
         
-        if self._new_options.GetBoolean( 'override_stylesheet_colours' ):
+        if self._new_options.get_boolean('override_stylesheet_colours'):
             
-            return self._new_options.GetColour( colour_type )
+            return self._new_options.get_colour(colour_type)
             
         else:
             
@@ -877,13 +877,13 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         self._media_container.Pause()
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ):
+    def process_application_command( self, command: CAC.ApplicationCommand ):
         
         command_processed = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_MANAGE_FILE_RATINGS:
                 
@@ -920,7 +920,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                     return
                     
                 
-                bitmap_type = command.GetSimpleData()
+                bitmap_type = command.get_simple_data()
                 
                 ClientGUIMediaSimpleActions.CopyMediaBitmap( self._current_media, bitmap_type )
                 
@@ -947,7 +947,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
             elif action == CAC.SIMPLE_COPY_FILE_HASHES:
                 
-                ( file_command_target, hash_type ) = command.GetSimpleData()
+                ( file_command_target, hash_type ) = command.get_simple_data()
                 
                 if file_command_target in ( CAC.FILE_COMMAND_TARGET_FOCUSED_FILE, CAC.FILE_COMMAND_TARGET_SELECTED_FILES ):
                     
@@ -959,7 +959,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
             elif action == CAC.SIMPLE_COPY_FILE_SERVICE_FILENAMES:
                 
-                hacky_ipfs_dict = command.GetSimpleData()
+                hacky_ipfs_dict = command.get_simple_data()
                 
                 ipfs_service_key = hacky_ipfs_dict[ 'ipfs_service_key' ]
                 
@@ -1047,9 +1047,9 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                     
                     hash = self._current_media.GetHash()
                     
-                    if CG.client_controller.new_options.GetBoolean( 'open_files_to_duplicate_filter_uses_all_my_files' ):
+                    if CG.client_controller.new_options.get_boolean('open_files_to_duplicate_filter_uses_all_my_files'):
                         
-                        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+                        location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
                         
                     else:
                         
@@ -1065,7 +1065,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
                 if self._current_media is not None:
                     
-                    hamming_distance = command.GetSimpleData()
+                    hamming_distance = command.get_simple_data()
                     
                     if hamming_distance is None:
                         
@@ -1148,7 +1148,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                     
                     hash = self._current_media.GetHash()
                     
-                    duplicate_type = command.GetSimpleData()
+                    duplicate_type = command.get_simple_data()
                     
                     ClientGUIMediaSimpleActions.ShowDuplicatesInNewPage( self._location_context, hash, duplicate_type )
                     
@@ -1266,7 +1266,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
             elif action == CAC.SIMPLE_MEDIA_SEEK_DELTA:
                 
-                ( direction, ms ) = command.GetSimpleData()
+                ( direction, ms ) = command.get_simple_data()
                 
                 self._SeekDeltaCurrentMedia( direction, ms )
                 
@@ -1310,7 +1310,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
             elif action == CAC.SIMPLE_RESIZE_WINDOW_TO_MEDIA_ZOOMED:
                 
-                new_zoom = command.GetSimpleData()
+                new_zoom = command.get_simple_data()
                 
                 self._media_container.ZoomToZoomPercent( new_zoom )
                 
@@ -1318,7 +1318,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
             elif action == CAC.SIMPLE_RESIZE_WINDOW_TO_MEDIA_ZOOMED_VIEWER_CENTER:
                 
-                new_zoom = command.GetSimpleData()
+                new_zoom = command.get_simple_data()
                 
                 self._media_container.ZoomToZoomPercent( new_zoom, zoom_center_type_override = ClientGUICanvasMedia.ZOOM_CENTERPOINT_VIEWER_CENTER )
                 
@@ -1404,19 +1404,19 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
             elif action == CAC.SIMPLE_ZOOM_TO_PERCENTAGE:
                 
-                new_zoom = command.GetSimpleData()
+                new_zoom = command.get_simple_data()
                 
                 self._media_container.ZoomToZoomPercent( new_zoom )
                 
             elif action == CAC.SIMPLE_ZOOM_TO_PERCENTAGE_CENTER:
                 
-                new_zoom = command.GetSimpleData()
+                new_zoom = command.get_simple_data()
                 
                 self._media_container.ZoomToZoomPercent( new_zoom, zoom_center_type_override = ClientGUICanvasMedia.ZOOM_CENTERPOINT_VIEWER_CENTER )
                 
             elif action == CAC.SIMPLE_FLIP_ICC_PROFILE_APPLICATION:
                 
-                result = CG.client_controller.new_options.FlipBoolean( 'do_icc_profile_normalisation' )
+                result = CG.client_controller.new_options.flip_boolean('do_icc_profile_normalisation')
                 
                 from hydrus.core.files.images import HydrusImageNormalisation
                 
@@ -1426,15 +1426,15 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
                 if action == CAC.SIMPLE_FLIP_TRANSPARENCY_CHECKERBOARD_MEDIA_VIEWER:
                     
-                    CG.client_controller.new_options.FlipBoolean( 'draw_transparency_checkerboard_media_canvas' )
+                    CG.client_controller.new_options.flip_boolean('draw_transparency_checkerboard_media_canvas')
                     
                 elif action == CAC.SIMPLE_FLIP_TRANSPARENCY_CHECKERBOARD_MEDIA_VIEWER_DUPLICATE_FILTER:
                     
-                    CG.client_controller.new_options.FlipBoolean( 'draw_transparency_checkerboard_media_canvas_duplicates' )
+                    CG.client_controller.new_options.flip_boolean('draw_transparency_checkerboard_media_canvas_duplicates')
                     
                 elif action == CAC.SIMPLE_FLIP_TRANSPARENCY_CHECKERBOARD_GREENSCREEN:
                     
-                    CG.client_controller.new_options.FlipBoolean( 'draw_transparency_checkerboard_as_greenscreen' )
+                    CG.client_controller.new_options.flip_boolean('draw_transparency_checkerboard_as_greenscreen')
                     
                 else:
                     
@@ -1449,7 +1449,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 command_processed = False
                 
             
-        elif command.IsContentCommand():
+        elif command.is_content_command():
             
             if self._current_media is None:
                 
@@ -1544,9 +1544,9 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                         
                         self._last_geometry = self.window().geometry()
                         
-                        maintain_zoom = self._new_options.GetBoolean( 'media_viewer_lock_current_zoom' )
-                        maintain_zoom_type = not maintain_zoom and self._new_options.GetBoolean( 'media_viewer_lock_current_zoom_type' )
-                        maintain_pan = self._new_options.GetBoolean( 'media_viewer_lock_current_pan' )
+                        maintain_zoom = self._new_options.get_boolean('media_viewer_lock_current_zoom')
+                        maintain_zoom_type = not maintain_zoom and self._new_options.get_boolean('media_viewer_lock_current_zoom_type')
+                        maintain_pan = self._new_options.get_boolean('media_viewer_lock_current_pan')
                         
                     
                     self._media_container.SetMedia( self._current_media, maintain_zoom, maintain_zoom_type, maintain_pan, start_paused = start_paused )
@@ -1756,11 +1756,11 @@ class CanvasPanel( Canvas ):
         
         if self._current_media is not None:
             
-            services = CG.client_controller.services_manager.GetServices()
+            services = CG.client_controller.services_manager.get_services()
             
             locations_manager = self._current_media.GetLocationsManager()
             
-            local_ratings_services = [ service for service in services if service.GetServiceType() in HC.RATINGS_SERVICES ]
+            local_ratings_services = [service for service in services if service.get_service_type() in HC.RATINGS_SERVICES]
             
             i_can_post_ratings = len( local_ratings_services ) > 0
             
@@ -1804,16 +1804,16 @@ class CanvasPanel( Canvas ):
             
             ClientGUIMenus.AppendSeparator( menu )
             
-            local_file_service_keys = CG.client_controller.services_manager.GetServiceKeys( ( HC.LOCAL_FILE_DOMAIN, ) )
+            local_file_service_keys = CG.client_controller.services_manager.get_service_keys((HC.LOCAL_FILE_DOMAIN,))
             
             # brush this up to handle different service keys
             # undelete do an optional service key too
             
-            local_file_service_keys_we_are_in = sorted( locations_manager.GetCurrent().intersection( local_file_service_keys ), key = CG.client_controller.services_manager.GetName )
+            local_file_service_keys_we_are_in = sorted(locations_manager.GetCurrent().intersection( local_file_service_keys ), key = CG.client_controller.services_manager.get_name)
             
             for file_service_key in local_file_service_keys_we_are_in:
                 
-                ClientGUIMenus.AppendMenuItem( menu, 'delete from {}'.format( CG.client_controller.services_manager.GetName( file_service_key ) ), 'Delete this file.', self._Delete, file_service_key = file_service_key )
+                ClientGUIMenus.AppendMenuItem(menu, 'delete from {}'.format(CG.client_controller.services_manager.get_name(file_service_key)), 'Delete this file.', self._Delete, file_service_key = file_service_key)
                 
             
             if locations_manager.IsTrashed():
@@ -1943,7 +1943,7 @@ class CanvasPanelWithHovers( CanvasPanel ):
         self.mediaChanged.connect( self._top_right_hover.SetMedia )
         self.mediaCleared.connect( self._top_right_hover.ClearMedia )
         
-        self._top_right_hover.sendApplicationCommand.connect( self.ProcessApplicationCommand )
+        self._top_right_hover.sendApplicationCommand.connect( self.process_application_command )
         
         self._hovers.append( self._top_right_hover )
         
@@ -1990,7 +1990,7 @@ class CanvasPanelWithHovers( CanvasPanel ):
             #     self._DrawTopMiddle( painter )
                 
             
-            if new_options.GetBoolean( 'draw_top_right_hover_in_preview_window_background' ):
+            if new_options.get_boolean('draw_top_right_hover_in_preview_window_background'):
                 
                 current_y = self._DrawTopRight( painter )
                 
@@ -2034,8 +2034,8 @@ class CanvasPanelWithHovers( CanvasPanel ):
         
         # ratings
         
-        RATING_ICON_SET_SIZE = round( self._new_options.GetFloat( 'preview_window_rating_icon_size_px' ) )
-        RATING_INCDEC_SET_HEIGHT = round( self._new_options.GetFloat( 'preview_window_rating_incdec_height_px' ) )
+        RATING_ICON_SET_SIZE = round(self._new_options.get_float('preview_window_rating_icon_size_px'))
+        RATING_INCDEC_SET_HEIGHT = round(self._new_options.get_float('preview_window_rating_incdec_height_px'))
         STAR_DX = RATING_ICON_SET_SIZE
         STAR_DY = RATING_ICON_SET_SIZE
         STAR_PAD = ClientGUIPainterShapes.PAD
@@ -2043,7 +2043,7 @@ class CanvasPanelWithHovers( CanvasPanel ):
         services_manager = CG.client_controller.services_manager
         
         
-        like_services = services_manager.GetServices( ( HC.LOCAL_RATING_LIKE, ) )
+        like_services = services_manager.get_services((HC.LOCAL_RATING_LIKE,))
         
         like_services.reverse()
         
@@ -2051,7 +2051,7 @@ class CanvasPanelWithHovers( CanvasPanel ):
         
         for like_service in like_services:
             
-            service_key = like_service.GetServiceKey()
+            service_key = like_service.get_service_key()
             
             rating_state = ClientRatings.GetLikeStateFromMedia( ( self._current_media, ), service_key )
             
@@ -2066,15 +2066,15 @@ class CanvasPanelWithHovers( CanvasPanel ):
             
         
         
-        numerical_services = services_manager.GetServices( ( HC.LOCAL_RATING_NUMERICAL, ) )
+        numerical_services = services_manager.get_services((HC.LOCAL_RATING_NUMERICAL,))
         
         for numerical_service in numerical_services:
             
-            service_key = numerical_service.GetServiceKey()
+            service_key = numerical_service.get_service_key()
             
             numerical_service = typing.cast( ClientServices.ServiceLocalRatingNumerical, numerical_service )
             
-            custom_pad = numerical_service.GetCustomPad()
+            custom_pad = numerical_service.get_custom_pad()
             
             ( rating_state, rating ) = ClientRatings.GetNumericalStateFromMedia( ( self._current_media, ), service_key )
             
@@ -2088,7 +2088,7 @@ class CanvasPanelWithHovers( CanvasPanel ):
             
         
         
-        incdec_services = services_manager.GetServices( ( HC.LOCAL_RATING_INCDEC, ) )
+        incdec_services = services_manager.get_services((HC.LOCAL_RATING_INCDEC,))
         
         incdec_services.reverse()
         
@@ -2098,7 +2098,7 @@ class CanvasPanelWithHovers( CanvasPanel ):
         
         for incdec_service in incdec_services:
             
-            service_key = incdec_service.GetServiceKey()
+            service_key = incdec_service.get_service_key()
             
             ( rating_state, rating ) = ClientRatings.GetIncDecStateFromMedia( ( self._current_media, ), service_key )
             
@@ -2227,7 +2227,7 @@ class CanvasWithHovers( Canvas ):
         self.mediaChanged.connect( top_hover.SetMedia )
         self.mediaCleared.connect( top_hover.ClearMedia )
         
-        top_hover.sendApplicationCommand.connect( self.ProcessApplicationCommand )
+        top_hover.sendApplicationCommand.connect( self.process_application_command )
         
         self._media_container.zoomChanged.connect( top_hover.SetCurrentZoom )
         
@@ -2240,7 +2240,7 @@ class CanvasWithHovers( Canvas ):
         self.mediaChanged.connect( self._tags_hover.SetMedia )
         self.mediaCleared.connect( self._tags_hover.ClearMedia )
         
-        self._tags_hover.sendApplicationCommand.connect( self.ProcessApplicationCommand )
+        self._tags_hover.sendApplicationCommand.connect( self.process_application_command )
         
         self._hovers.append( self._tags_hover )
         
@@ -2251,7 +2251,7 @@ class CanvasWithHovers( Canvas ):
         self.mediaChanged.connect( self._top_right_hover.SetMedia )
         self.mediaCleared.connect( self._top_right_hover.ClearMedia )
         
-        self._top_right_hover.sendApplicationCommand.connect( self.ProcessApplicationCommand )
+        self._top_right_hover.sendApplicationCommand.connect( self.process_application_command )
         
         self._hovers.append( self._top_right_hover )
         
@@ -2262,13 +2262,13 @@ class CanvasWithHovers( Canvas ):
         self.mediaChanged.connect( self._right_notes_hover.SetMedia )
         self.mediaCleared.connect( self._right_notes_hover.ClearMedia )
         
-        self._right_notes_hover.sendApplicationCommand.connect( self.ProcessApplicationCommand )
+        self._right_notes_hover.sendApplicationCommand.connect( self.process_application_command )
         
         self._hovers.append( self._right_notes_hover )
         
         self._my_shortcuts_handler.AddWindowToFilter( self._right_notes_hover )
         
-        for name in self._new_options.GetStringList( 'default_media_viewer_custom_shortcuts' ):
+        for name in self._new_options.get_string_list('default_media_viewer_custom_shortcuts'):
             
             self._my_shortcuts_handler.AddShortcuts( name )
             
@@ -2321,17 +2321,17 @@ class CanvasWithHovers( Canvas ):
             
             new_options = CG.client_controller.new_options
             
-            if new_options.GetBoolean( 'draw_tags_hover_in_media_viewer_background' ):
+            if new_options.get_boolean('draw_tags_hover_in_media_viewer_background'):
                 
                 self._DrawTags( painter )
                 
             
-            if new_options.GetBoolean( 'draw_top_hover_in_media_viewer_background' ):
+            if new_options.get_boolean('draw_top_hover_in_media_viewer_background'):
                 
                 self._DrawTopMiddle( painter )
                 
             
-            if new_options.GetBoolean( 'draw_top_right_hover_in_media_viewer_background' ):
+            if new_options.get_boolean('draw_top_right_hover_in_media_viewer_background'):
                 
                 current_y = self._DrawTopRight( painter )
                 
@@ -2341,12 +2341,12 @@ class CanvasWithHovers( Canvas ):
                 current_y = 0
                 
             
-            if new_options.GetBoolean( 'draw_notes_hover_in_media_viewer_background' ):
+            if new_options.get_boolean('draw_notes_hover_in_media_viewer_background'):
                 
                 self._DrawNotes( painter, current_y )
                 
             
-            if new_options.GetBoolean( 'draw_bottom_right_index_in_media_viewer_background' ):
+            if new_options.get_boolean('draw_bottom_right_index_in_media_viewer_background'):
                 
                 self._DrawIndexAndZoom( painter )
                 
@@ -2370,7 +2370,7 @@ class CanvasWithHovers( Canvas ):
             
             # bottom-right index
             
-            bottom_right_string = ClientData.ConvertZoomToPercentage( self._media_container.GetCurrentZoom() )
+            bottom_right_string = ClientData.convert_zoom_to_percentage(self._media_container.GetCurrentZoom())
             
             index_string = self._GetIndexString()
             
@@ -2541,7 +2541,7 @@ class CanvasWithHovers( Canvas ):
             
             tags_i_want_to_display = list( tags_i_want_to_display )
             
-            tag_sort = CG.client_controller.new_options.GetDefaultTagSort( CC.TAG_PRESENTATION_MEDIA_VIEWER )
+            tag_sort = CG.client_controller.new_options.get_default_tag_sort(CC.TAG_PRESENTATION_MEDIA_VIEWER)
             
             ClientTagSorting.SortTags( tag_sort, tags_i_want_to_display )
             
@@ -2675,8 +2675,8 @@ class CanvasWithHovers( Canvas ):
             
             # ratings
             
-            RATING_ICON_SET_SIZE = round( self._new_options.GetFloat( 'media_viewer_rating_icon_size_px' ) )
-            RATING_INCDEC_SET_HEIGHT = round( self._new_options.GetFloat( 'media_viewer_rating_incdec_height_px' ) )
+            RATING_ICON_SET_SIZE = round(self._new_options.get_float('media_viewer_rating_icon_size_px'))
+            RATING_INCDEC_SET_HEIGHT = round(self._new_options.get_float('media_viewer_rating_incdec_height_px'))
             STAR_DX = RATING_ICON_SET_SIZE
             STAR_DY = RATING_ICON_SET_SIZE
             STAR_PAD = ClientGUIPainterShapes.PAD
@@ -2684,7 +2684,7 @@ class CanvasWithHovers( Canvas ):
             services_manager = CG.client_controller.services_manager
             
             
-            like_services = services_manager.GetServices( ( HC.LOCAL_RATING_LIKE, ) )
+            like_services = services_manager.get_services((HC.LOCAL_RATING_LIKE,))
             
             like_services.reverse()
             
@@ -2692,7 +2692,7 @@ class CanvasWithHovers( Canvas ):
             
             for like_service in like_services:
                 
-                service_key = like_service.GetServiceKey()
+                service_key = like_service.get_service_key()
                 
                 rating_state = ClientRatings.GetLikeStateFromMedia( ( self._current_media, ), service_key )
                 
@@ -2707,15 +2707,15 @@ class CanvasWithHovers( Canvas ):
                 
             
             
-            numerical_services = services_manager.GetServices( ( HC.LOCAL_RATING_NUMERICAL, ) )
+            numerical_services = services_manager.get_services((HC.LOCAL_RATING_NUMERICAL,))
             
             for numerical_service in numerical_services:
                 
-                service_key = numerical_service.GetServiceKey()
+                service_key = numerical_service.get_service_key()
                 
                 numerical_service = typing.cast( ClientServices.ServiceLocalRatingNumerical, numerical_service )
                 
-                custom_pad = numerical_service.GetCustomPad()
+                custom_pad = numerical_service.get_custom_pad()
                 
                 ( rating_state, rating ) = ClientRatings.GetNumericalStateFromMedia( ( self._current_media, ), service_key )
                 
@@ -2729,7 +2729,7 @@ class CanvasWithHovers( Canvas ):
                 
             
             
-            incdec_services = services_manager.GetServices( ( HC.LOCAL_RATING_INCDEC, ) )
+            incdec_services = services_manager.get_services((HC.LOCAL_RATING_INCDEC,))
             
             incdec_services.reverse()
             
@@ -2739,7 +2739,7 @@ class CanvasWithHovers( Canvas ):
             
             for incdec_service in incdec_services:
                 
-                service_key = incdec_service.GetServiceKey()
+                service_key = incdec_service.get_service_key()
                 
                 ( rating_state, rating ) = ClientRatings.GetIncDecStateFromMedia( ( self._current_media, ), service_key )
                 
@@ -2858,7 +2858,7 @@ class CanvasWithHovers( Canvas ):
         
         texts = [ line.text for line in lines ]
         
-        texts.insert( 1, ClientData.ConvertZoomToPercentage( self._media_container.GetCurrentZoom() ) )
+        texts.insert(1, ClientData.convert_zoom_to_percentage(self._media_container.GetCurrentZoom()))
         
         info_string = ' | '.join( texts )
         
@@ -2872,7 +2872,7 @@ class CanvasWithHovers( Canvas ):
     
     def _HideCursorCheck( self ):
         
-        hide_time_ms = CG.client_controller.new_options.GetNoneableInteger( 'media_viewer_cursor_autohide_time_ms' )
+        hide_time_ms = CG.client_controller.new_options.get_noneable_integer('media_viewer_cursor_autohide_time_ms')
         
         if hide_time_ms is None:
             
@@ -3002,7 +3002,7 @@ class CanvasWithHovers( Canvas ):
             
             if approx_distance > 0:
                 
-                touchscreen_canvas_drags_unanchor = CG.client_controller.new_options.GetBoolean( 'touchscreen_canvas_drags_unanchor' )
+                touchscreen_canvas_drags_unanchor = CG.client_controller.new_options.get_boolean('touchscreen_canvas_drags_unanchor')
                 
                 if not self._current_drag_is_touch and approx_distance > 50:
                     
@@ -3014,7 +3014,7 @@ class CanvasWithHovers( Canvas ):
                 # touch events obviously don't mix with warping well. the touch just warps it back and again and we get a massive delta!
                 
                 touch_anchor_override = touchscreen_canvas_drags_unanchor and self._current_drag_is_touch
-                anchor_and_hide_canvas_drags = CG.client_controller.new_options.GetBoolean( 'anchor_and_hide_canvas_drags' )
+                anchor_and_hide_canvas_drags = CG.client_controller.new_options.get_boolean('anchor_and_hide_canvas_drags')
                 
                 if anchor_and_hide_canvas_drags and not touch_anchor_override:
                     
@@ -3065,13 +3065,13 @@ class CanvasWithHovers( Canvas ):
         pass
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ):
+    def process_application_command( self, command: CAC.ApplicationCommand ):
         
         command_processed = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_CLOSE_MEDIA_VIEWER:
                 
@@ -3113,7 +3113,7 @@ class CanvasWithHovers( Canvas ):
         
         if not command_processed:
             
-            command_processed = super().ProcessApplicationCommand( command )
+            command_processed = super().process_application_command( command )
             
         
         return command_processed
@@ -3167,7 +3167,7 @@ class CanvasMediaList( CanvasWithHovers ):
             self.exitFocusMediaForced.emit( self._current_media )
             
         
-        if CG.client_controller.new_options.GetBoolean( 'activate_main_gui_on_focusing_viewer_close' ):
+        if CG.client_controller.new_options.get_boolean('activate_main_gui_on_focusing_viewer_close'):
             
             CG.client_controller.gui.activateWindow()
             
@@ -3180,7 +3180,7 @@ class CanvasMediaList( CanvasWithHovers ):
             CG.client_controller.gui.ShowPage( self._page_key )
             
         
-        if CG.client_controller.new_options.GetBoolean( 'activate_main_gui_on_focusing_viewer_close' ):
+        if CG.client_controller.new_options.get_boolean('activate_main_gui_on_focusing_viewer_close'):
             
             CG.client_controller.gui.activateWindow()
             
@@ -3214,8 +3214,8 @@ class CanvasMediaList( CanvasWithHovers ):
         previous = self._current_media
         next = self._current_media
         
-        num_to_go_back = CG.client_controller.new_options.GetInteger( 'media_viewer_prefetch_num_previous' )
-        num_to_go_forward = CG.client_controller.new_options.GetInteger( 'media_viewer_prefetch_num_next' )
+        num_to_go_back = CG.client_controller.new_options.get_integer('media_viewer_prefetch_num_previous')
+        num_to_go_forward = CG.client_controller.new_options.get_integer('media_viewer_prefetch_num_next')
         
         # if media_looked_at nukes the list, we want shorter delays, so do next first
         
@@ -3303,7 +3303,7 @@ class CanvasMediaList( CanvasWithHovers ):
     
     def EventFullscreenSwitch( self, event ):
         
-        self.ProcessApplicationCommand( CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_SWITCH_BETWEEN_FULLSCREEN_BORDERLESS_AND_REGULAR_FRAMED_WINDOW ) )
+        self.process_application_command( CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_SWITCH_BETWEEN_FULLSCREEN_BORDERLESS_AND_REGULAR_FRAMED_WINDOW ) )
         
     
     def NotifyWeAreClosing( self ):
@@ -3379,7 +3379,7 @@ def CommitArchiveDelete( deletee_location_context: ClientLocation.LocationContex
     
     job_status = ClientThreading.JobStatus()
     
-    job_status.SetStatusTitle( 'Committing Archive/Delete' )
+    job_status.set_status_title('Committing Archive/Delete')
     
     have_shown_popup = False
     
@@ -3388,9 +3388,9 @@ def CommitArchiveDelete( deletee_location_context: ClientLocation.LocationContex
     
     deletee_location_context = deletee_location_context.duplicate()
     
-    deletee_location_context.FixMissingServices( ClientLocation.ValidLocalDomainsFilter )
+    deletee_location_context.fix_missing_services(ClientLocation.valid_local_domains_filter)
     
-    if deletee_location_context.IncludesCurrent():
+    if deletee_location_context.includes_current():
         
         deletee_file_service_keys = deletee_location_context.current_service_keys
         
@@ -3409,18 +3409,18 @@ def CommitArchiveDelete( deletee_location_context: ClientLocation.LocationContex
             CG.client_controller.pub( 'message', job_status )
             
         
-        job_status.SetStatusText( f'Deleting: {HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do )}' )
-        job_status.SetGauge( num_done, num_to_do )
+        job_status.set_status_text(f'Deleting: {HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do)}')
+        job_status.set_gauge(num_done, num_to_do)
         
-        if CG.client_controller.new_options.GetBoolean( 'delete_lock_for_archived_files' ) and CG.client_controller.new_options.GetBoolean( 'delete_lock_reinbox_deletees_after_archive_delete' ):
+        if CG.client_controller.new_options.get_boolean('delete_lock_for_archived_files') and CG.client_controller.new_options.get_boolean('delete_lock_reinbox_deletees_after_archive_delete'):
             
-            block_of_deleted_hashes = [ m.GetHash() for m in block_of_deleted if not m.GetLocationsManager().inbox ]
+            block_of_deleted_hashes = [m.get_hash() for m in block_of_deleted if not m.GetLocationsManager().inbox]
             
             content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_INBOX, block_of_deleted_hashes ) )
             
             CG.client_controller.write_synchronous( 'content_updates', content_update_package )
             
-            CG.client_controller.WaitUntilViewFree()
+            CG.client_controller.wait_until_view_free()
             
         
         content_update_package = ClientContentUpdates.ContentUpdatePackage()
@@ -3429,14 +3429,14 @@ def CommitArchiveDelete( deletee_location_context: ClientLocation.LocationContex
         
         for deletee_file_service_key in deletee_file_service_keys:
             
-            block_of_deleted_hashes = [ m.GetHash() for m in block_of_deleted if deletee_file_service_key in m.GetLocationsManager().GetCurrent() ]
+            block_of_deleted_hashes = [m.get_hash() for m in block_of_deleted if deletee_file_service_key in m.GetLocationsManager().GetCurrent()]
             
             content_update_package.AddContentUpdate( deletee_file_service_key, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, block_of_deleted_hashes, reason = reason ) )
             
         
         CG.client_controller.write_synchronous( 'content_updates', content_update_package )
         
-        CG.client_controller.WaitUntilViewFree()
+        CG.client_controller.wait_until_view_free()
         
     
     kept_hashes = [ m.GetHash() for m in kept ]
@@ -3448,20 +3448,20 @@ def CommitArchiveDelete( deletee_location_context: ClientLocation.LocationContex
             CG.client_controller.pub( 'message', job_status )
             
         
-        job_status.SetStatusText( f'Archiving: {HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do )}' )
-        job_status.SetGauge( num_done, num_to_do )
+        job_status.set_status_text(f'Archiving: {HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do)}')
+        job_status.set_gauge(num_done, num_to_do)
         
         content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_ARCHIVE, block_of_kept_hashes ) )
         
         CG.client_controller.write_synchronous( 'content_updates', content_update_package )
         
-        CG.client_controller.WaitUntilViewFree()
+        CG.client_controller.wait_until_view_free()
         
     
-    job_status.SetStatusText( 'Done!' )
-    job_status.DeleteGauge()
+    job_status.set_status_text('Done!')
+    job_status.delete_gauge()
     
-    job_status.FinishAndDismiss( 2 )
+    job_status.finish_and_dismiss(2)
     
 
 class CanvasMediaListFilterArchiveDelete( CanvasMediaList ):
@@ -3487,7 +3487,7 @@ class CanvasMediaListFilterArchiveDelete( CanvasMediaList ):
         
         if first_media is not None:
             
-            CG.client_controller.CallAfterQtSafe( self, self.SetMedia, first_media ) # don't set this until we have a size > (20, 20)!
+            CG.client_controller.call_after_qt_safe(self, self.SetMedia, first_media) # don't set this until we have a size > (20, 20)!
             
         
     
@@ -3585,13 +3585,13 @@ class CanvasMediaListFilterArchiveDelete( CanvasMediaList ):
             
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ):
+    def process_application_command( self, command: CAC.ApplicationCommand ):
         
         command_processed = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action in ( CAC.SIMPLE_ARCHIVE_DELETE_FILTER_KEEP, CAC.SIMPLE_ARCHIVE_FILE ):
                 
@@ -3625,7 +3625,7 @@ class CanvasMediaListFilterArchiveDelete( CanvasMediaList ):
         
         if not command_processed:
             
-            command_processed = CanvasMediaList.ProcessApplicationCommand( self, command )
+            command_processed = CanvasMediaList.process_application_command( self, command )
             
         
         return command_processed
@@ -3681,9 +3681,9 @@ class CanvasMediaListFilterArchiveDelete( CanvasMediaList ):
             
             if len( deleted ) > 0:
                 
-                if CG.client_controller.new_options.GetBoolean( 'only_show_delete_from_all_local_domains_when_filtering' ):
+                if CG.client_controller.new_options.get_boolean('only_show_delete_from_all_local_domains_when_filtering'):
                     
-                    location_contexts_to_present_options_for = [ ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) ]
+                    location_contexts_to_present_options_for = [ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)]
                     
                 else:
                     
@@ -3691,7 +3691,7 @@ class CanvasMediaListFilterArchiveDelete( CanvasMediaList ):
                     
                     possible_location_context_at_top = self._location_context.duplicate()
                     
-                    possible_location_context_at_top.LimitToServiceTypes( CG.client_controller.services_manager.GetServiceType, ( HC.COMBINED_LOCAL_FILE_DOMAINS, HC.LOCAL_FILE_DOMAIN ) )
+                    possible_location_context_at_top.limit_to_service_types(CG.client_controller.services_manager.get_service_type, (HC.COMBINED_LOCAL_FILE_DOMAINS, HC.LOCAL_FILE_DOMAIN))
                     
                     if len( possible_location_context_at_top.current_service_keys ) > 0:
                         
@@ -3700,11 +3700,11 @@ class CanvasMediaListFilterArchiveDelete( CanvasMediaList ):
                     
                     current_local_service_keys = HydrusLists.mass_union( [ m.GetLocationsManager().GetCurrent() for m in deleted ] )
                     
-                    local_file_domain_service_keys = [ service_key for service_key in current_local_service_keys if CG.client_controller.services_manager.GetServiceType( service_key ) == HC.LOCAL_FILE_DOMAIN ]
+                    local_file_domain_service_keys = [service_key for service_key in current_local_service_keys if CG.client_controller.services_manager.get_service_type(service_key) == HC.LOCAL_FILE_DOMAIN]
                     
-                    location_contexts_to_present_options_for.extend( [ ClientLocation.LocationContext.STATICCreateSimple( service_key ) for service_key in local_file_domain_service_keys ] )
+                    location_contexts_to_present_options_for.extend([ClientLocation.LocationContext.static_create_simple(service_key) for service_key in local_file_domain_service_keys])
                     
-                    combined_local_file_domains_location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+                    combined_local_file_domains_location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
                     
                     if len( local_file_domain_service_keys ) > 1:
                         
@@ -3722,9 +3722,9 @@ class CanvasMediaListFilterArchiveDelete( CanvasMediaList ):
                     
                     if num_deletable > 0:
                         
-                        location_label = location_context.ToString( CG.client_controller.services_manager.GetName )
+                        location_label = location_context.to_string(CG.client_controller.services_manager.get_name)
                         
-                        if location_context == ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ):
+                        if location_context == ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY):
                             
                             if num_deletable == 1:
                                 
@@ -3771,17 +3771,17 @@ class CanvasMediaListFilterArchiveDelete( CanvasMediaList ):
                 
                 if HC.options[ 'remove_filtered_files' ]:
                     
-                    kept_hashes = [ m.GetHash() for m in kept ]
-                    deleted_hashes = [ m.GetHash() for m in deleted ]
+                    kept_hashes = [m.get_hash() for m in kept]
+                    deleted_hashes = [m.get_hash() for m in deleted]
                     
                     all_hashes = set()
                     
                     all_hashes.update( kept_hashes )
                     all_hashes.update( deleted_hashes )
                     
-                    if CG.client_controller.new_options.GetBoolean( 'remove_filtered_files_even_when_skipped' ):
+                    if CG.client_controller.new_options.get_boolean('remove_filtered_files_even_when_skipped'):
                         
-                        skipped_hashes = [ m.GetHash() for m in skipped ]
+                        skipped_hashes = [m.get_hash() for m in skipped]
                         
                         all_hashes.update( skipped_hashes )
                         
@@ -3899,13 +3899,13 @@ class CanvasMediaListNavigable( CanvasMediaList ):
             
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ):
+    def process_application_command( self, command: CAC.ApplicationCommand ):
         
         command_processed = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_REMOVE_FILE_FROM_VIEW:
                 
@@ -3959,7 +3959,7 @@ class CanvasMediaListNavigable( CanvasMediaList ):
         
         if not command_processed:
             
-            command_processed = CanvasMediaList.ProcessApplicationCommand( self, command )
+            command_processed = CanvasMediaList.process_application_command( self, command )
             
         
         return command_processed
@@ -4044,7 +4044,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
         
         if first_media is not None:
             
-            CG.client_controller.CallAfterQtSafe( self, self.SetMedia, first_media ) # don't set this until we have a size > (20, 20)!
+            CG.client_controller.call_after_qt_safe(self, self.SetMedia, first_media) # don't set this until we have a size > (20, 20)!
             
         
         CG.client_controller.sub( self, 'AddMediaResults', 'add_media_results' )
@@ -4075,14 +4075,14 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
                 
                 short_cutoff_periods = []
                 
-                slideshow_short_duration_loop_percentage = new_options.GetNoneableInteger( 'slideshow_short_duration_loop_percentage' )
+                slideshow_short_duration_loop_percentage = new_options.get_noneable_integer('slideshow_short_duration_loop_percentage')
                 
                 if slideshow_short_duration_loop_percentage is not None:
                     
                     short_cutoff_periods.append( self._normal_slideshow_period * ( slideshow_short_duration_loop_percentage / 100 ) )
                     
                 
-                slideshow_short_duration_loop_seconds = new_options.GetNoneableInteger( 'slideshow_short_duration_loop_seconds' )
+                slideshow_short_duration_loop_seconds = new_options.get_noneable_integer('slideshow_short_duration_loop_seconds')
                 
                 if slideshow_short_duration_loop_seconds is not None:
                     
@@ -4104,7 +4104,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
                         
                     
                 
-                slideshow_short_duration_cutoff_percentage = new_options.GetNoneableInteger( 'slideshow_short_duration_cutoff_percentage' )
+                slideshow_short_duration_cutoff_percentage = new_options.get_noneable_integer('slideshow_short_duration_cutoff_percentage')
                 
                 if slideshow_short_duration_cutoff_percentage is not None:
                     
@@ -4123,7 +4123,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
                 
                 # ok, we have a longer vid. maybe we want to permit a little overspill to show the whole thing
                 
-                slideshow_long_duration_overspill_percentage = new_options.GetNoneableInteger( 'slideshow_long_duration_overspill_percentage' )
+                slideshow_long_duration_overspill_percentage = new_options.get_noneable_integer('slideshow_long_duration_overspill_percentage')
                 
                 if slideshow_long_duration_overspill_percentage is not None:
                     
@@ -4163,7 +4163,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
             
             if self._media_container.CurrentlyPresentingMediaWithDuration():
                 
-                if CG.client_controller.new_options.GetBoolean( 'slideshow_always_play_duration_media_once_through' ):
+                if CG.client_controller.new_options.get_boolean('slideshow_always_play_duration_media_once_through'):
                     
                     if not self._media_container.HasPlayedOnceThrough():
                         
@@ -4186,7 +4186,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
                 return
                 
             
-            if CG.client_controller.new_options.GetBoolean( 'slideshows_progress_randomly' ):
+            if CG.client_controller.new_options.get_boolean('slideshows_progress_randomly'):
                 
                 self._ShowRandom()
                 
@@ -4289,13 +4289,13 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
         self._RegisterNextSlideshowPresentation()
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ):
+    def process_application_command( self, command: CAC.ApplicationCommand ):
         
         command_processed = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_PAUSE_PLAY_SLIDESHOW:
                 
@@ -4303,7 +4303,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
                 
             elif action == CAC.SIMPLE_START_SLIDESHOW:
                 
-                data = command.GetSimpleData()
+                data = command.get_simple_data()
                 
                 if data is None:
                     
@@ -4332,7 +4332,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
         
         if not command_processed:
             
-            command_processed = super().ProcessApplicationCommand( command )
+            command_processed = super().process_application_command( command )
             
         
         return command_processed
@@ -4344,11 +4344,11 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
             
             new_options = CG.client_controller.new_options
             
-            advanced_mode = new_options.GetBoolean( 'advanced_mode' )
+            advanced_mode = new_options.get_boolean('advanced_mode')
             
-            services = CG.client_controller.services_manager.GetServices()
+            services = CG.client_controller.services_manager.get_services()
             
-            local_ratings_services = [ service for service in services if service.GetServiceType() in HC.RATINGS_SERVICES ]
+            local_ratings_services = [service for service in services if service.get_service_type() in HC.RATINGS_SERVICES]
             
             i_can_post_ratings = len( local_ratings_services ) > 0
             
@@ -4404,16 +4404,16 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
                     ClientGUIMenus.AppendMenuItem( zoom_menu, 'zoom to max', 'Set the zoom to the maximum possible.', self._media_container.ZoomMax )
                     
                 
-                ClientGUIMenus.AppendMenu( menu, zoom_menu, 'zoom: {}'.format( ClientData.ConvertZoomToPercentage( self._media_container.GetCurrentZoom() ) ) )
+                ClientGUIMenus.AppendMenu(menu, zoom_menu, 'zoom: {}'.format(ClientData.convert_zoom_to_percentage(self._media_container.GetCurrentZoom())))
                 
             
             if self.parentWidget().isFullScreen():
                 
-                ClientGUIMenus.AppendMenuItem( menu, 'exit fullscreen', 'Make this media viewer a regular window with borders.', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_SWITCH_BETWEEN_FULLSCREEN_BORDERLESS_AND_REGULAR_FRAMED_WINDOW ) )
+                ClientGUIMenus.AppendMenuItem( menu, 'exit fullscreen', 'Make this media viewer a regular window with borders.', self.process_application_command, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_SWITCH_BETWEEN_FULLSCREEN_BORDERLESS_AND_REGULAR_FRAMED_WINDOW ) )
                 
             else:
                 
-                ClientGUIMenus.AppendMenuItem( menu, 'go fullscreen', 'Make this media viewer a fullscreen window without borders.', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_SWITCH_BETWEEN_FULLSCREEN_BORDERLESS_AND_REGULAR_FRAMED_WINDOW ) )
+                ClientGUIMenus.AppendMenuItem( menu, 'go fullscreen', 'Make this media viewer a fullscreen window without borders.', self.process_application_command, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_SWITCH_BETWEEN_FULLSCREEN_BORDERLESS_AND_REGULAR_FRAMED_WINDOW ) )
                 
             
             ClientGUICanvasMenus.AppendSlideshowMenu( self, menu, self._slideshow_is_running )
@@ -4441,12 +4441,12 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
             
             #
             
-            local_file_service_keys = CG.client_controller.services_manager.GetServiceKeys( ( HC.LOCAL_FILE_DOMAIN, ) )
+            local_file_service_keys = CG.client_controller.services_manager.get_service_keys((HC.LOCAL_FILE_DOMAIN,))
             
             # brush this up to handle different service keys
             # undelete do an optional service key too
             
-            local_file_service_keys_we_are_in = sorted( locations_manager.GetCurrent().intersection( local_file_service_keys ), key = CG.client_controller.services_manager.GetName )
+            local_file_service_keys_we_are_in = sorted(locations_manager.GetCurrent().intersection( local_file_service_keys ), key = CG.client_controller.services_manager.get_name)
             
             if len( local_file_service_keys_we_are_in ) > 0:
                 
@@ -4454,7 +4454,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
                 
                 for file_service_key in local_file_service_keys_we_are_in:
                     
-                    ClientGUIMenus.AppendMenuItem( delete_menu, 'from {}'.format( CG.client_controller.services_manager.GetName( file_service_key ) ), 'Delete this file.', self._Delete, file_service_key = file_service_key )
+                    ClientGUIMenus.AppendMenuItem(delete_menu, 'from {}'.format(CG.client_controller.services_manager.get_name(file_service_key)), 'Delete this file.', self._Delete, file_service_key = file_service_key)
                     
                 
                 ClientGUIMenus.AppendMenu( menu, delete_menu, 'delete' )
@@ -4507,7 +4507,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
                 
                 locations_menu = ClientGUIMenus.GenerateMenu( menu )
                 
-                ClientGUIMediaMenus.AddLocalFilesMoveAddToMenu( self, locations_menu, local_file_service_keys, local_duplicable_to_file_service_keys, local_moveable_from_and_to_file_service_keys, local_mergable_from_and_to_file_service_keys, multiple_selected, self.ProcessApplicationCommand )
+                ClientGUIMediaMenus.AddLocalFilesMoveAddToMenu( self, locations_menu, local_file_service_keys, local_duplicable_to_file_service_keys, local_moveable_from_and_to_file_service_keys, local_mergable_from_and_to_file_service_keys, multiple_selected, self.process_application_command )
                 
                 ClientGUIMenus.AppendMenu( menu, locations_menu, 'locations' )
                 

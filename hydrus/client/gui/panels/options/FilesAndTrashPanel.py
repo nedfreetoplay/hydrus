@@ -88,11 +88,11 @@ class FilesAndTrashPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         #
         
-        self._prefix_hash_when_copying.setChecked( self._new_options.GetBoolean( 'prefix_hash_when_copying' ) )
+        self._prefix_hash_when_copying.setChecked(self._new_options.get_boolean('prefix_hash_when_copying'))
         
         self._delete_to_recycle_bin.setChecked( HC.options[ 'delete_to_recycle_bin' ] )
         
-        self._ms_to_wait_between_physical_file_deletes.SetValue( HydrusTime.secondise_ms_float( self._new_options.GetInteger( 'ms_to_wait_between_physical_file_deletes' ) ) )
+        self._ms_to_wait_between_physical_file_deletes.SetValue(HydrusTime.secondise_ms_float(self._new_options.get_integer('ms_to_wait_between_physical_file_deletes')))
         
         self._confirm_trash.setChecked( HC.options[ 'confirm_trash' ] )
         tt = 'If there is only one place to delete the file from, you will get no delete dialog--it will just be deleted immediately. Applies the same way to undelete.'
@@ -100,32 +100,32 @@ class FilesAndTrashPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         self._confirm_archive.setChecked( HC.options[ 'confirm_archive' ] )
         
-        self._confirm_multiple_local_file_services_copy.setChecked( self._new_options.GetBoolean( 'confirm_multiple_local_file_services_copy' ) )
-        self._confirm_multiple_local_file_services_move.setChecked( self._new_options.GetBoolean( 'confirm_multiple_local_file_services_move' ) )
+        self._confirm_multiple_local_file_services_copy.setChecked(self._new_options.get_boolean('confirm_multiple_local_file_services_copy'))
+        self._confirm_multiple_local_file_services_move.setChecked(self._new_options.get_boolean('confirm_multiple_local_file_services_move'))
         
-        self._only_show_delete_from_all_local_domains_when_filtering.setChecked( self._new_options.GetBoolean( 'only_show_delete_from_all_local_domains_when_filtering' ) )
-        self._archive_delete_commit_panel_delays_multiple_delete_choices.setChecked( self._new_options.GetBoolean( 'archive_delete_commit_panel_delays_multiple_delete_choices' ) )
+        self._only_show_delete_from_all_local_domains_when_filtering.setChecked(self._new_options.get_boolean('only_show_delete_from_all_local_domains_when_filtering'))
+        self._archive_delete_commit_panel_delays_multiple_delete_choices.setChecked(self._new_options.get_boolean('archive_delete_commit_panel_delays_multiple_delete_choices'))
         
         self._remove_filtered_files.setChecked( HC.options[ 'remove_filtered_files' ] )
-        self._remove_filtered_files_even_when_skipped.setChecked( self._new_options.GetBoolean( 'remove_filtered_files_even_when_skipped' ) )
+        self._remove_filtered_files_even_when_skipped.setChecked(self._new_options.get_boolean('remove_filtered_files_even_when_skipped'))
         self._remove_trashed_files.setChecked( HC.options[ 'remove_trashed_files' ] )
-        self._remove_local_domain_moved_files.setChecked( self._new_options.GetBoolean( 'remove_local_domain_moved_files' ) )
+        self._remove_local_domain_moved_files.setChecked(self._new_options.get_boolean('remove_local_domain_moved_files'))
         self._trash_max_age.SetValue( HC.options[ 'trash_max_age' ] )
         self._trash_max_size.SetValue( HC.options[ 'trash_max_size' ] )
         
-        self._do_not_do_chmod_mode.setChecked( self._new_options.GetBoolean( 'do_not_do_chmod_mode' ) )
+        self._do_not_do_chmod_mode.setChecked(self._new_options.get_boolean('do_not_do_chmod_mode'))
         
-        self._delete_lock_for_archived_files.setChecked( self._new_options.GetBoolean( 'delete_lock_for_archived_files' ) )
-        self._delete_lock_reinbox_deletees_after_archive_delete.setChecked( self._new_options.GetBoolean( 'delete_lock_reinbox_deletees_after_archive_delete' ) )
-        self._delete_lock_reinbox_deletees_after_duplicate_filter.setChecked( self._new_options.GetBoolean( 'delete_lock_reinbox_deletees_after_duplicate_filter' ) )
-        self._delete_lock_reinbox_deletees_in_auto_resolution.setChecked( self._new_options.GetBoolean( 'delete_lock_reinbox_deletees_in_auto_resolution' ) )
+        self._delete_lock_for_archived_files.setChecked(self._new_options.get_boolean('delete_lock_for_archived_files'))
+        self._delete_lock_reinbox_deletees_after_archive_delete.setChecked(self._new_options.get_boolean('delete_lock_reinbox_deletees_after_archive_delete'))
+        self._delete_lock_reinbox_deletees_after_duplicate_filter.setChecked(self._new_options.get_boolean('delete_lock_reinbox_deletees_after_duplicate_filter'))
+        self._delete_lock_reinbox_deletees_in_auto_resolution.setChecked(self._new_options.get_boolean('delete_lock_reinbox_deletees_in_auto_resolution'))
         
-        self._use_advanced_file_deletion_dialog.setChecked( self._new_options.GetBoolean( 'use_advanced_file_deletion_dialog' ) )
+        self._use_advanced_file_deletion_dialog.setChecked(self._new_options.get_boolean('use_advanced_file_deletion_dialog'))
         
-        self._remember_last_advanced_file_deletion_special_action.setChecked( CG.client_controller.new_options.GetBoolean( 'remember_last_advanced_file_deletion_special_action' ) )
-        self._remember_last_advanced_file_deletion_reason.setChecked( CG.client_controller.new_options.GetBoolean( 'remember_last_advanced_file_deletion_reason' ) )
+        self._remember_last_advanced_file_deletion_special_action.setChecked(CG.client_controller.new_options.get_boolean('remember_last_advanced_file_deletion_special_action'))
+        self._remember_last_advanced_file_deletion_reason.setChecked(CG.client_controller.new_options.get_boolean('remember_last_advanced_file_deletion_reason'))
         
-        self._advanced_file_deletion_reasons.AddDatas( self._new_options.GetStringList( 'advanced_file_deletion_reasons' ) )
+        self._advanced_file_deletion_reasons.AddDatas(self._new_options.get_string_list('advanced_file_deletion_reasons'))
         
         #
         
@@ -247,38 +247,38 @@ class FilesAndTrashPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def UpdateOptions( self ):
         
-        self._new_options.SetBoolean( 'prefix_hash_when_copying', self._prefix_hash_when_copying.isChecked() )
+        self._new_options.set_boolean('prefix_hash_when_copying', self._prefix_hash_when_copying.isChecked())
         
         HC.options[ 'delete_to_recycle_bin' ] = self._delete_to_recycle_bin.isChecked()
         HC.options[ 'confirm_trash' ] = self._confirm_trash.isChecked()
         HC.options[ 'confirm_archive' ] = self._confirm_archive.isChecked()
         HC.options[ 'remove_filtered_files' ] = self._remove_filtered_files.isChecked()
-        self._new_options.SetBoolean( 'remove_filtered_files_even_when_skipped', self._remove_filtered_files_even_when_skipped.isChecked() )
+        self._new_options.set_boolean('remove_filtered_files_even_when_skipped', self._remove_filtered_files_even_when_skipped.isChecked())
         HC.options[ 'remove_trashed_files' ] = self._remove_trashed_files.isChecked()
-        self._new_options.SetBoolean( 'remove_local_domain_moved_files', self._remove_local_domain_moved_files.isChecked() )
+        self._new_options.set_boolean('remove_local_domain_moved_files', self._remove_local_domain_moved_files.isChecked())
         HC.options[ 'trash_max_age' ] = self._trash_max_age.GetValue()
         HC.options[ 'trash_max_size' ] = self._trash_max_size.GetValue()
         
-        self._new_options.SetBoolean( 'do_not_do_chmod_mode', self._do_not_do_chmod_mode.isChecked() )
+        self._new_options.set_boolean('do_not_do_chmod_mode', self._do_not_do_chmod_mode.isChecked())
         
-        self._new_options.SetBoolean( 'only_show_delete_from_all_local_domains_when_filtering', self._only_show_delete_from_all_local_domains_when_filtering.isChecked() )
-        self._new_options.SetBoolean( 'archive_delete_commit_panel_delays_multiple_delete_choices', self._archive_delete_commit_panel_delays_multiple_delete_choices.isChecked() )
+        self._new_options.set_boolean('only_show_delete_from_all_local_domains_when_filtering', self._only_show_delete_from_all_local_domains_when_filtering.isChecked())
+        self._new_options.set_boolean('archive_delete_commit_panel_delays_multiple_delete_choices', self._archive_delete_commit_panel_delays_multiple_delete_choices.isChecked())
         
-        self._new_options.SetInteger( 'ms_to_wait_between_physical_file_deletes', HydrusTime.millisecondise_s( self._ms_to_wait_between_physical_file_deletes.GetValue() ) )
+        self._new_options.set_integer('ms_to_wait_between_physical_file_deletes', HydrusTime.millisecondise_s(self._ms_to_wait_between_physical_file_deletes.GetValue()))
         
-        self._new_options.SetBoolean( 'confirm_multiple_local_file_services_copy', self._confirm_multiple_local_file_services_copy.isChecked() )
-        self._new_options.SetBoolean( 'confirm_multiple_local_file_services_move', self._confirm_multiple_local_file_services_move.isChecked() )
+        self._new_options.set_boolean('confirm_multiple_local_file_services_copy', self._confirm_multiple_local_file_services_copy.isChecked())
+        self._new_options.set_boolean('confirm_multiple_local_file_services_move', self._confirm_multiple_local_file_services_move.isChecked())
         
-        self._new_options.SetBoolean( 'delete_lock_for_archived_files', self._delete_lock_for_archived_files.isChecked() )
-        self._new_options.SetBoolean( 'delete_lock_reinbox_deletees_after_archive_delete', self._delete_lock_reinbox_deletees_after_archive_delete.isChecked() )
-        self._new_options.SetBoolean( 'delete_lock_reinbox_deletees_after_duplicate_filter', self._delete_lock_reinbox_deletees_after_duplicate_filter.isChecked() )
-        self._new_options.SetBoolean( 'delete_lock_reinbox_deletees_in_auto_resolution', self._delete_lock_reinbox_deletees_in_auto_resolution.isChecked() )
+        self._new_options.set_boolean('delete_lock_for_archived_files', self._delete_lock_for_archived_files.isChecked())
+        self._new_options.set_boolean('delete_lock_reinbox_deletees_after_archive_delete', self._delete_lock_reinbox_deletees_after_archive_delete.isChecked())
+        self._new_options.set_boolean('delete_lock_reinbox_deletees_after_duplicate_filter', self._delete_lock_reinbox_deletees_after_duplicate_filter.isChecked())
+        self._new_options.set_boolean('delete_lock_reinbox_deletees_in_auto_resolution', self._delete_lock_reinbox_deletees_in_auto_resolution.isChecked())
         
-        self._new_options.SetBoolean( 'use_advanced_file_deletion_dialog', self._use_advanced_file_deletion_dialog.isChecked() )
+        self._new_options.set_boolean('use_advanced_file_deletion_dialog', self._use_advanced_file_deletion_dialog.isChecked())
         
-        self._new_options.SetStringList( 'advanced_file_deletion_reasons', self._advanced_file_deletion_reasons.GetData() )
+        self._new_options.set_string_list('advanced_file_deletion_reasons', self._advanced_file_deletion_reasons.GetData())
         
-        CG.client_controller.new_options.SetBoolean( 'remember_last_advanced_file_deletion_special_action', self._remember_last_advanced_file_deletion_special_action.isChecked() )
-        CG.client_controller.new_options.SetBoolean( 'remember_last_advanced_file_deletion_reason', self._remember_last_advanced_file_deletion_reason.isChecked() )
+        CG.client_controller.new_options.set_boolean('remember_last_advanced_file_deletion_special_action', self._remember_last_advanced_file_deletion_special_action.isChecked())
+        CG.client_controller.new_options.set_boolean('remember_last_advanced_file_deletion_reason', self._remember_last_advanced_file_deletion_reason.isChecked())
         
     

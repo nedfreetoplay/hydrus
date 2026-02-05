@@ -250,7 +250,7 @@ class EditSingleFileMetadataExporterWidget( QW.QWidget ):
             
             try:
                 
-                CG.client_controller.services_manager.GetName( self._service_key )
+                CG.client_controller.services_manager.get_name(self._service_key)
                 
             except HydrusExceptions.DataMissing:
                 
@@ -353,7 +353,7 @@ class EditSingleFileMetadataExporterWidget( QW.QWidget ):
             
             self._service_selection_panel.setVisible( True )
             
-            if not CG.client_controller.services_manager.ServiceExists( self._service_key ):
+            if not CG.client_controller.services_manager.service_exists(self._service_key):
                 
                 message = 'Hey, the tag service for your exporter does not seem to exist! Maybe it was deleted. Please select a new one that does.'
                 
@@ -419,7 +419,7 @@ class EditSingleFileMetadataExporterWidget( QW.QWidget ):
         
         try:
             
-            name = CG.client_controller.services_manager.GetName( self._service_key )
+            name = CG.client_controller.services_manager.get_name(self._service_key)
             
         except HydrusExceptions.DataMissing:
             

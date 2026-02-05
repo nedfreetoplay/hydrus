@@ -2,7 +2,7 @@ import os
 
 from hydrus.core import HydrusData
 
-def SetRequestsCABundleEnv( pem_path = None ):
+def set_requests_ca_bundle_env(pem_path = None):
     
     # TODO: we could initialise this with a custom pem in launch args pretty easy if we wanted to!
     # but tbh the user can already set it in the launch env anyway so maybe whatever

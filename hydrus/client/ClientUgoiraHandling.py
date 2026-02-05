@@ -11,7 +11,7 @@ from hydrus.client.media import ClientMediaResult
 
 UGOIRA_DEFAULT_FRAME_DURATION_MS = 125
 
-def GetFrameDurationsMSUgoira( media: ClientMediaResult.MediaResult ): 
+def get_frame_durations_ms_ugoira(media: ClientMediaResult.MediaResult): 
     
     client_files_manager = CG.client_controller.client_files_manager
     
@@ -35,7 +35,7 @@ def GetFrameDurationsMSUgoira( media: ClientMediaResult.MediaResult ):
     
     try:
         
-        durations_ms = GetFrameDurationsMSFromNote( media )
+        durations_ms = get_frame_durations_ms_from_note(media)
         
         if durations_ms is not None:
             
@@ -52,7 +52,7 @@ def GetFrameDurationsMSUgoira( media: ClientMediaResult.MediaResult ):
     return [UGOIRA_DEFAULT_FRAME_DURATION_MS] * num_frames
     
 
-def GetFrameDurationsMSFromNote( media: ClientMediaResult.MediaResult ):
+def get_frame_durations_ms_from_note(media: ClientMediaResult.MediaResult):
     
     if not media.HasNotes():
         
@@ -111,7 +111,7 @@ def GetFrameDurationsMSFromNote( media: ClientMediaResult.MediaResult ):
     return None
     
 
-def HasFrameTimesNote( media_result: ClientMediaResult.MediaResult ):
+def has_frame_times_note(media_result: ClientMediaResult.MediaResult):
     
     if not media_result.HasNotes():
         
@@ -141,7 +141,7 @@ class UgoiraRenderer(object):
 
         self._next_render_index = index
 
-    def Stop(self):
+    def stop(self):
 
         pass
 
@@ -161,7 +161,7 @@ class UgoiraRenderer(object):
 
         return numpy_image
 
-def ConvertUgoiraToBytesForAPI( media: ClientMediaResult.MediaResult, format: int, quality: int ):
+def convert_ugoira_to_bytes_for_api(media: ClientMediaResult.MediaResult, format: int, quality: int):
     
     client_files_manager = CG.client_controller.client_files_manager
     
@@ -173,7 +173,7 @@ def ConvertUgoiraToBytesForAPI( media: ClientMediaResult.MediaResult, format: in
     
     frames = [HydrusImageHandling.generate_pil_image( zip.joinpath(frame_path_from_zip).open('rb') ) for frame_path_from_zip in frame_paths]
     
-    frame_durations_ms = GetFrameDurationsMSUgoira( media )
+    frame_durations_ms = get_frame_durations_ms_ugoira(media)
     
     file = io.BytesIO()
     

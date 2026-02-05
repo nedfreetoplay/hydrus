@@ -240,8 +240,8 @@ class PredicateCount( object ):
     
     def AddCounts( self, count: "PredicateCount" ):
         
-        ( self.min_current_count, self.max_current_count ) = ClientData.MergeCounts( self.min_current_count, self.max_current_count, count.min_current_count, count.max_current_count )
-        ( self.min_pending_count, self.max_pending_count) = ClientData.MergeCounts( self.min_pending_count, self.max_pending_count, count.min_pending_count, count.max_pending_count )
+        ( self.min_current_count, self.max_current_count ) = ClientData.merge_counts(self.min_current_count, self.max_current_count, count.min_current_count, count.max_current_count)
+        ( self.min_pending_count, self.max_pending_count) = ClientData.merge_counts(self.min_pending_count, self.max_pending_count, count.min_pending_count, count.max_pending_count)
         
     
     def Duplicate( self ):
@@ -453,7 +453,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
             
             value = list( value )
             
-            value.sort( key = lambda p: HydrusText.human_text_sort_key( p.ToString() ) )
+            value.sort(key = lambda p: HydrusText.human_text_sort_key(p.to_string()))
             
         
         if isinstance( value, ( list, set ) ):
@@ -724,7 +724,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
                 try:
                     
-                    self._value = tuple( sorted( self._value, key = lambda p: HydrusText.human_text_sort_key( p.ToString() ) ) )
+                    self._value = tuple(sorted(self._value, key = lambda p: HydrusText.human_text_sort_key(p.to_string())))
                     
                 except:
                     
@@ -1002,7 +1002,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
             
         elif self._predicate_type == PREDICATE_TYPE_SYSTEM_NUM_URLS:
             
-            return len( media_result.GetLocationsManager().GetURLs() )
+            return len(media_result.GetLocationsManager().get_urls())
             
         elif self._predicate_type == PREDICATE_TYPE_SYSTEM_IMPORT_TIME:
             
@@ -1242,7 +1242,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                         
                         try:
                             
-                            service_type = CG.client_controller.services_manager.GetServiceType( service_key )
+                            service_type = CG.client_controller.services_manager.get_service_type(service_key)
                             
                         except:
                             
@@ -1356,7 +1356,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
         
         if self._predicate_type == PREDICATE_TYPE_OR_CONTAINER:
             
-            or_connector_namespace = CG.client_controller.new_options.GetNoneableString( 'or_connector_custom_namespace_colour' )
+            or_connector_namespace = CG.client_controller.new_options.get_noneable_string('or_connector_custom_namespace_colour')
             
             texts_and_namespaces = [ ( prefix + 'OR:', 'or', or_connector_namespace ) ]
             
@@ -1666,13 +1666,13 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
             
             number_test: ClientNumberTest.NumberTest = self._value
             
-            return number_test.Test( len( media_result.GetLocationsManager().GetURLs() ) )
+            return number_test.Test(len(media_result.GetLocationsManager().get_urls()))
             
         elif self._predicate_type == PREDICATE_TYPE_SYSTEM_KNOWN_URLS:
             
             ( operator, rule_type, rule, description ) = self._value
             
-            urls = media_result.GetLocationsManager().GetURLs()
+            urls = media_result.GetLocationsManager().get_urls()
             
             if rule_type == 'url_class':
                 
@@ -1779,7 +1779,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 dt_day_of_start = HydrusTime.get_date_time( year, month, day, 0, 0 )
                 
                 day_of_start_timestamp_ms = HydrusTime.date_time_to_timestamp_ms( dt_day_of_start )
-                day_of_end_timestamp_ms = HydrusTime.date_time_to_timestamp_ms( ClientTime.CalendarDelta( dt_day_of_start, day_delta = 1 ) )
+                day_of_end_timestamp_ms = HydrusTime.date_time_to_timestamp_ms(ClientTime.calendar_delta(dt_day_of_start, day_delta = 1))
                 
                 # the before/since semantic logic is:
                 # '<' 2022-05-05 means 'before that date'
@@ -1800,8 +1800,8 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                     
                 elif operator == HC.UNICODE_APPROX_EQUAL:
                     
-                    previous_month_timestamp_ms = HydrusTime.date_time_to_timestamp_ms( ClientTime.CalendarDelta( dt, month_delta = -1 ) )
-                    next_month_timestamp_ms = HydrusTime.date_time_to_timestamp_ms( ClientTime.CalendarDelta( dt, month_delta = 1 ) )
+                    previous_month_timestamp_ms = HydrusTime.date_time_to_timestamp_ms(ClientTime.calendar_delta(dt, month_delta = -1))
+                    next_month_timestamp_ms = HydrusTime.date_time_to_timestamp_ms(ClientTime.calendar_delta(dt, month_delta = 1))
                     
                     min_timestamp_ms = previous_month_timestamp_ms
                     max_timestamp_ms = next_month_timestamp_ms
@@ -2457,9 +2457,9 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                         
                         try:
                             
-                            service = CG.client_controller.services_manager.GetService( service_key_or_none )
+                            service = CG.client_controller.services_manager.get_service(service_key_or_none)
                             
-                            name = service.GetName()
+                            name = service.get_name()
                             
                             base += f' in "{name}"'
                             
@@ -2531,16 +2531,16 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                         HC.LOGICAL_OPERATOR_ONLY : 'only ',
                     }.get( logical_operator, 'unknown ' )
                     
-                    if service_specifier_primary.IsOneServiceKey() and logical_operator != HC.LOGICAL_OPERATOR_ONLY:
+                    if service_specifier_primary.is_one_service_key() and logical_operator != HC.LOGICAL_OPERATOR_ONLY:
                         
                         base = ''
                         
                     
-                    base += service_specifier_primary.ToString()
+                    base += service_specifier_primary.to_string()
                     
-                    if logical_operator == HC.LOGICAL_OPERATOR_ONLY and not service_specifier_secondary.IsAllRatings():
+                    if logical_operator == HC.LOGICAL_OPERATOR_ONLY and not service_specifier_secondary.is_all_ratings():
                         
-                        base += f' (amongst {service_specifier_secondary.ToString()})'
+                        base += f' (amongst {service_specifier_secondary.to_string()})'
                         
                     
                     if rated:
@@ -2565,11 +2565,11 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                         
                         pretty_operator = ClientNumberTest.number_test_operator_to_pretty_str_lookup.get( ClientNumberTest.legacy_str_operator_to_number_test_operator_lookup.get( operator, 'unknown' ), 'unknown' )
                         
-                        service = CG.client_controller.services_manager.GetService( service_key )
+                        service = CG.client_controller.services_manager.get_service(service_key)
                         
-                        name = service.GetName()
+                        name = service.get_name()
                         
-                        if service.GetServiceType() == HC.LOCAL_RATING_INCDEC:
+                        if service.get_service_type() == HC.LOCAL_RATING_INCDEC:
                             
                             if operator == '>' and value == 0:
                                 
@@ -2581,7 +2581,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                                 
                             else:
                                 
-                                pretty_value = service.ConvertNoneableRatingToString( value )
+                                pretty_value = service.convert_noneable_rating_to_string(value)
                                 
                                 base = f'count for {name} {pretty_operator} {pretty_value}'
                                 
@@ -2598,7 +2598,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                                 
                             else:
                                 
-                                pretty_value = service.ConvertNoneableRatingToString( value )
+                                pretty_value = service.convert_noneable_rating_to_string(value)
                                 
                                 base = f'rating for {name} {pretty_operator} {pretty_value}'
                                 
@@ -2708,9 +2708,9 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                     
                     try:
                         
-                        service = CG.client_controller.services_manager.GetService( service_key )
+                        service = CG.client_controller.services_manager.get_service(service_key)
                         
-                        base += service.GetName()
+                        base += service.get_name()
                         
                     except HydrusExceptions.DataMissing:
                         
@@ -2925,7 +2925,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 base += 'OR: '
                 
             
-            base += ' OR '.join( ( or_predicate.ToString( render_for_user = render_for_user ) for or_predicate in or_predicates ) ) # pylint: disable=E1101
+            base += ' OR '.join((or_predicate.to_string(render_for_user = render_for_user) for or_predicate in or_predicates)) # pylint: disable=E1101
             
         elif self._predicate_type == PREDICATE_TYPE_LABEL:
             
@@ -3004,7 +3004,7 @@ def SetPredicatesInclusivity( predicates: list[ Predicate ], inclusive: bool ):
 
 def SortPredicates( predicates: list[ Predicate ] ):
     
-    key = lambda p: ( - p.GetCount().GetMinCount(), p.ToString() )
+    key = lambda p: ( - p.GetCount().GetMinCount(), p.to_string())
     
     predicates.sort( key = key )
     

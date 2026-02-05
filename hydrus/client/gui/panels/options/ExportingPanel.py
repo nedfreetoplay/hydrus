@@ -59,11 +59,11 @@ class ExportingPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         self._new_options = CG.client_controller.new_options
         
-        self._discord_dnd_fix.setChecked( self._new_options.GetBoolean( 'discord_dnd_fix' ) )
+        self._discord_dnd_fix.setChecked(self._new_options.get_boolean('discord_dnd_fix'))
         
-        self._discord_dnd_filename_pattern.setText( self._new_options.GetString( 'discord_dnd_filename_pattern' ) )
+        self._discord_dnd_filename_pattern.setText(self._new_options.get_string('discord_dnd_filename_pattern'))
         
-        self._secret_discord_dnd_fix.setChecked( self._new_options.GetBoolean( 'secret_discord_dnd_fix' ) )
+        self._secret_discord_dnd_fix.setChecked(self._new_options.get_boolean('secret_discord_dnd_fix'))
         
         if HC.options[ 'export_path' ] is not None:
             
@@ -75,11 +75,11 @@ class ExportingPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
                 
             
         
-        self._always_apply_ntfs_export_filename_rules.setChecked( self._new_options.GetBoolean( 'always_apply_ntfs_export_filename_rules' ) )
+        self._always_apply_ntfs_export_filename_rules.setChecked(self._new_options.get_boolean('always_apply_ntfs_export_filename_rules'))
         
-        self._export_path_character_limit.SetValue( self._new_options.GetNoneableInteger( 'export_path_character_limit' ) )
-        self._export_dirname_character_limit.SetValue( self._new_options.GetNoneableInteger( 'export_dirname_character_limit' ) )
-        self._export_filename_character_limit.setValue( self._new_options.GetInteger( 'export_filename_character_limit' ) )
+        self._export_path_character_limit.SetValue(self._new_options.get_noneable_integer('export_path_character_limit'))
+        self._export_dirname_character_limit.SetValue(self._new_options.get_noneable_integer('export_dirname_character_limit'))
+        self._export_filename_character_limit.setValue(self._new_options.get_integer('export_filename_character_limit'))
         
         #
         
@@ -157,14 +157,14 @@ class ExportingPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def UpdateOptions( self ):
         
-        self._new_options.SetBoolean( 'always_apply_ntfs_export_filename_rules', self._always_apply_ntfs_export_filename_rules.isChecked() )
-        self._new_options.SetNoneableInteger( 'export_path_character_limit', self._export_path_character_limit.GetValue() )
-        self._new_options.SetNoneableInteger( 'export_dirname_character_limit', self._export_dirname_character_limit.GetValue() )
-        self._new_options.SetInteger( 'export_filename_character_limit', self._export_filename_character_limit.value() )
+        self._new_options.set_boolean('always_apply_ntfs_export_filename_rules', self._always_apply_ntfs_export_filename_rules.isChecked())
+        self._new_options.set_noneable_integer('export_path_character_limit', self._export_path_character_limit.GetValue())
+        self._new_options.set_noneable_integer('export_dirname_character_limit', self._export_dirname_character_limit.GetValue())
+        self._new_options.set_integer('export_filename_character_limit', self._export_filename_character_limit.value())
         
-        self._new_options.SetBoolean( 'discord_dnd_fix', self._discord_dnd_fix.isChecked() )
-        self._new_options.SetString( 'discord_dnd_filename_pattern', self._discord_dnd_filename_pattern.text() )
-        self._new_options.SetBoolean( 'secret_discord_dnd_fix', self._secret_discord_dnd_fix.isChecked() )
+        self._new_options.set_boolean('discord_dnd_fix', self._discord_dnd_fix.isChecked())
+        self._new_options.set_string('discord_dnd_filename_pattern', self._discord_dnd_filename_pattern.text())
+        self._new_options.set_boolean('secret_discord_dnd_fix', self._secret_discord_dnd_fix.isChecked())
         
         path = str( self._export_location.GetPath() ).strip()
         

@@ -216,7 +216,7 @@ class SingleFileMetadataExporterMediaTags( SingleFileMetadataExporterMedia, Hydr
             return
             
         
-        if CG.client_controller.services_manager.GetServiceType( self._service_key ) == HC.LOCAL_TAG:
+        if CG.client_controller.services_manager.get_service_type(self._service_key) == HC.LOCAL_TAG:
             
             add_content_action = HC.CONTENT_UPDATE_ADD
             
@@ -246,7 +246,7 @@ class SingleFileMetadataExporterMediaTags( SingleFileMetadataExporterMedia, Hydr
         
         try:
             
-            name = CG.client_controller.services_manager.GetName( self._service_key )
+            name = CG.client_controller.services_manager.get_name(self._service_key)
             
         except:
             
@@ -271,7 +271,7 @@ class SingleFileMetadataExporterMediaTimestamps( SingleFileMetadataExporterMedia
         
         if timestamp_data_stub is None:
             
-            timestamp_data_stub = ClientTime.TimestampData.STATICSimpleStub( HC.TIMESTAMP_TYPE_ARCHIVED )
+            timestamp_data_stub = ClientTime.TimestampData.static_simple_stub(HC.TIMESTAMP_TYPE_ARCHIVED)
             
         
         self._timestamp_data_stub = timestamp_data_stub

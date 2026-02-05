@@ -56,16 +56,16 @@ def PopulateMetadataAPIDict( metadata_list: list[ dict ], hashes: list[ bytes ],
     
     services_manager = CG.client_controller.services_manager
     
-    rating_service_keys = services_manager.GetServiceKeys( HC.RATINGS_SERVICES )
-    tag_service_keys = services_manager.GetServiceKeys( HC.ALL_TAG_SERVICES )
-    service_keys_to_types = { service.GetServiceKey() : service.GetServiceType() for service in services_manager.GetServices() }
-    service_keys_to_names = services_manager.GetServiceKeysToNames()
+    rating_service_keys = services_manager.get_service_keys(HC.RATINGS_SERVICES)
+    tag_service_keys = services_manager.get_service_keys(HC.ALL_TAG_SERVICES)
+    service_keys_to_types = {service.get_service_key() : service.get_service_type() for service in services_manager.get_services()}
+    service_keys_to_names = services_manager.get_service_keys_to_names()
     
-    ipfs_service_keys = services_manager.GetServiceKeys( ( HC.IPFS, ) )
+    ipfs_service_keys = services_manager.get_service_keys((HC.IPFS,))
     
     thumbnail_bounding_dimensions = CG.client_controller.options[ 'thumbnail_dimensions' ]
-    thumbnail_scale_type = CG.client_controller.new_options.GetInteger( 'thumbnail_scale_type' )
-    thumbnail_dpr_percent = CG.client_controller.new_options.GetInteger( 'thumbnail_dpr_percent' )
+    thumbnail_scale_type = CG.client_controller.new_options.get_integer('thumbnail_scale_type')
+    thumbnail_dpr_percent = CG.client_controller.new_options.get_integer('thumbnail_dpr_percent')
     
     for hash in hashes:
         
@@ -190,7 +190,7 @@ def PopulateMetadataAPIDict( metadata_list: list[ dict ], hashes: list[ bytes ],
             metadata_dict[ 'has_human_readable_embedded_metadata' ] = file_info_manager.has_human_readable_embedded_metadata
             metadata_dict[ 'has_icc_profile' ] = file_info_manager.has_icc_profile
             
-            known_urls = sorted( locations_manager.GetURLs() )
+            known_urls = sorted(locations_manager.get_urls())
             
             metadata_dict[ 'known_urls' ] = known_urls
             

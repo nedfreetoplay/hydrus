@@ -110,7 +110,7 @@ class ClientDBFilesTimestamps( ClientDBModule.ClientDBModule ):
         
         if job_status is not None:
             
-            cancelled_hook = job_status.IsCancelled
+            cancelled_hook = job_status.is_cancelled
             
         
         if timestamp_type == HC.TIMESTAMP_TYPE_MODIFIED_AGGREGATE:
@@ -359,7 +359,7 @@ class ClientDBFilesTimestamps( ClientDBModule.ClientDBModule ):
             
             if existing_timestamp_ms is not None:
                 
-                should_update = ClientTime.ShouldUpdateModifiedTime( existing_timestamp_ms, timestamp_data.timestamp_ms )
+                should_update = ClientTime.should_update_modified_time(existing_timestamp_ms, timestamp_data.timestamp_ms)
                 
             
             if should_update:

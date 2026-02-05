@@ -51,22 +51,22 @@ class CommandPalettePanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         command_palette_provider_order = ClientGUICommon.StaticBox( self._command_palette_panel, 'search provider order' )
         self._command_palette_provider_order = ClientGUIListBoxes.QueueListBox( command_palette_provider_order, 6, self._GetPrettyProviderName, self._AddMissingSearchProviderDialog )
-        self._command_palette_provider_order.AddDatas( self._new_options.GetIntegerList( 'command_palette_provider_order' ) )
+        self._command_palette_provider_order.AddDatas(self._new_options.get_integer_list('command_palette_provider_order'))
         
         #
         
-        self._command_palette_num_chars_for_results_threshold.setValue( self._new_options.GetInteger( 'command_palette_num_chars_for_results_threshold' ) )
-        self._command_palette_show_page_of_pages.setChecked( self._new_options.GetBoolean( 'command_palette_show_page_of_pages' ) )
-        self._command_palette_initially_show_all_pages.setChecked( self._new_options.GetBoolean( 'command_palette_initially_show_all_pages' ) )
-        self._command_palette_limit_page_results.SetValue( self._new_options.GetNoneableInteger( 'command_palette_limit_page_results' ) )
-        self._command_palette_initially_show_history.setChecked( self._new_options.GetBoolean( 'command_palette_initially_show_history' ) )
-        self._command_palette_limit_history_results.SetValue( self._new_options.GetNoneableInteger( 'command_palette_limit_history_results' ) )
-        self._command_palette_initially_show_favourite_searches.setChecked( self._new_options.GetBoolean( 'command_palette_initially_show_favourite_searches' ) )
-        self._command_palette_fav_searches_open_new_page.setChecked( self._new_options.GetBoolean( 'command_palette_fav_searches_open_new_page' ))
-        self._command_palette_limit_favourite_searches_results.SetValue( self._new_options.GetNoneableInteger( 'command_palette_limit_favourite_searches_results' ) )
+        self._command_palette_num_chars_for_results_threshold.setValue(self._new_options.get_integer('command_palette_num_chars_for_results_threshold'))
+        self._command_palette_show_page_of_pages.setChecked(self._new_options.get_boolean('command_palette_show_page_of_pages'))
+        self._command_palette_initially_show_all_pages.setChecked(self._new_options.get_boolean('command_palette_initially_show_all_pages'))
+        self._command_palette_limit_page_results.SetValue(self._new_options.get_noneable_integer('command_palette_limit_page_results'))
+        self._command_palette_initially_show_history.setChecked(self._new_options.get_boolean('command_palette_initially_show_history'))
+        self._command_palette_limit_history_results.SetValue(self._new_options.get_noneable_integer('command_palette_limit_history_results'))
+        self._command_palette_initially_show_favourite_searches.setChecked(self._new_options.get_boolean('command_palette_initially_show_favourite_searches'))
+        self._command_palette_fav_searches_open_new_page.setChecked(self._new_options.get_boolean('command_palette_fav_searches_open_new_page'))
+        self._command_palette_limit_favourite_searches_results.SetValue(self._new_options.get_noneable_integer('command_palette_limit_favourite_searches_results'))
         
-        self._command_palette_show_main_menu.setChecked( self._new_options.GetBoolean( 'command_palette_show_main_menu' ) )
-        self._command_palette_show_media_menu.setChecked( self._new_options.GetBoolean( 'command_palette_show_media_menu' ) )
+        self._command_palette_show_main_menu.setChecked(self._new_options.get_boolean('command_palette_show_main_menu'))
+        self._command_palette_show_media_menu.setChecked(self._new_options.get_boolean('command_palette_show_media_menu'))
         
         #
         
@@ -158,17 +158,17 @@ class CommandPalettePanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def UpdateOptions( self ):
         
-        self._new_options.SetInteger( 'command_palette_num_chars_for_results_threshold', self._command_palette_num_chars_for_results_threshold.value() )
-        self._new_options.SetBoolean( 'command_palette_show_page_of_pages', self._command_palette_show_page_of_pages.isChecked() )
-        self._new_options.SetBoolean( 'command_palette_initially_show_all_pages', self._command_palette_initially_show_all_pages.isChecked() )
-        self._new_options.SetNoneableInteger( 'command_palette_limit_page_results', self._command_palette_limit_page_results.GetValue() )
-        self._new_options.SetBoolean( 'command_palette_initially_show_history', self._command_palette_initially_show_history.isChecked() )
-        self._new_options.SetNoneableInteger( 'command_palette_limit_history_results', self._command_palette_limit_history_results.GetValue() )
-        self._new_options.SetBoolean( 'command_palette_initially_show_favourite_searches', self._command_palette_initially_show_favourite_searches.isChecked() )
-        self._new_options.SetBoolean( 'command_palette_fav_searches_open_new_page', self._command_palette_fav_searches_open_new_page.isChecked() )
-        self._new_options.SetNoneableInteger( 'command_palette_limit_favourite_searches_results', self._command_palette_limit_favourite_searches_results.GetValue() )
-        self._new_options.SetBoolean( 'command_palette_show_main_menu', self._command_palette_show_main_menu.isChecked() )
-        self._new_options.SetBoolean( 'command_palette_show_media_menu', self._command_palette_show_media_menu.isChecked() )
-        self._new_options.SetIntegerList( 'command_palette_provider_order', self._command_palette_provider_order.GetData() )
+        self._new_options.set_integer('command_palette_num_chars_for_results_threshold', self._command_palette_num_chars_for_results_threshold.value())
+        self._new_options.set_boolean('command_palette_show_page_of_pages', self._command_palette_show_page_of_pages.isChecked())
+        self._new_options.set_boolean('command_palette_initially_show_all_pages', self._command_palette_initially_show_all_pages.isChecked())
+        self._new_options.set_noneable_integer('command_palette_limit_page_results', self._command_palette_limit_page_results.GetValue())
+        self._new_options.set_boolean('command_palette_initially_show_history', self._command_palette_initially_show_history.isChecked())
+        self._new_options.set_noneable_integer('command_palette_limit_history_results', self._command_palette_limit_history_results.GetValue())
+        self._new_options.set_boolean('command_palette_initially_show_favourite_searches', self._command_palette_initially_show_favourite_searches.isChecked())
+        self._new_options.set_boolean('command_palette_fav_searches_open_new_page', self._command_palette_fav_searches_open_new_page.isChecked())
+        self._new_options.set_noneable_integer('command_palette_limit_favourite_searches_results', self._command_palette_limit_favourite_searches_results.GetValue())
+        self._new_options.set_boolean('command_palette_show_main_menu', self._command_palette_show_main_menu.isChecked())
+        self._new_options.set_boolean('command_palette_show_media_menu', self._command_palette_show_media_menu.isChecked())
+        self._new_options.set_integer_list('command_palette_provider_order', self._command_palette_provider_order.GetData())
         
     

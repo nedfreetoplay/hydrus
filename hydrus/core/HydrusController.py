@@ -230,7 +230,7 @@ class HydrusController( object ):
         
         for job in self._daemon_jobs.values():
             
-            job.Cancel()
+            job.cancel()
             
         
         if not self._doing_fast_exit:
@@ -775,7 +775,7 @@ class HydrusController( object ):
         
         if self.db is not None:
             
-            self.db.Shutdown()
+            self.db.shutdown()
             
             if not self._doing_fast_exit:
                 
@@ -908,7 +908,7 @@ class HydrusController( object ):
         
         if name in self._daemon_jobs:
             
-            self._daemon_jobs[ name ].Wake()
+            self._daemon_jobs[ name ].wake()
             
         
     

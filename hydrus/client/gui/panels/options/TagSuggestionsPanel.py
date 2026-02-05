@@ -58,11 +58,11 @@ class TagSuggestionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         self._suggested_favourites_services = ClientGUICommon.BetterChoice( suggested_tags_favourites_panel )
         
-        tag_services = CG.client_controller.services_manager.GetServices( HC.REAL_TAG_SERVICES )
+        tag_services = CG.client_controller.services_manager.get_services(HC.REAL_TAG_SERVICES)
         
         for tag_service in tag_services:
             
-            self._suggested_favourites_services.addItem( tag_service.GetName(), tag_service.GetServiceKey() )
+            self._suggested_favourites_services.addItem(tag_service.get_name(), tag_service.get_service_key())
             
         
         self._suggested_favourites = ClientGUIListBoxes.ListBoxTagsStringsAddRemove( suggested_tags_favourites_panel, CC.COMBINED_TAG_SERVICE_KEY, tag_display_type = ClientTags.TAG_DISPLAY_STORAGE )
@@ -71,7 +71,7 @@ class TagSuggestionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         self._suggested_favourites_dict = {}
         
-        default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+        default_location_context = CG.client_controller.new_options.get_default_local_location_context()
         
         self._suggested_favourites_input = ClientGUIACDropdown.AutoCompleteDropdownTagsWrite( suggested_tags_favourites_panel, self._suggested_favourites.AddTags, default_location_context, CC.COMBINED_TAG_SERVICE_KEY, show_paste_button = True )
         
@@ -152,32 +152,32 @@ class TagSuggestionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         #
         
-        self._suggested_tags_width.setValue( self._new_options.GetInteger( 'suggested_tags_width' ) )
+        self._suggested_tags_width.setValue(self._new_options.get_integer('suggested_tags_width'))
         
-        self._suggested_tags_layout.SetValue( self._new_options.GetNoneableString( 'suggested_tags_layout' ) )
+        self._suggested_tags_layout.SetValue(self._new_options.get_noneable_string('suggested_tags_layout'))
         
-        self._default_suggested_tags_notebook_page.SetValue( self._new_options.GetString( 'default_suggested_tags_notebook_page' ) )
+        self._default_suggested_tags_notebook_page.SetValue(self._new_options.get_string('default_suggested_tags_notebook_page'))
         
         #
         
-        self._show_related_tags.setChecked( self._new_options.GetBoolean( 'show_related_tags' ) )
+        self._show_related_tags.setChecked(self._new_options.get_boolean('show_related_tags'))
         
-        self._related_tags_search_1_duration_ms.setValue( self._new_options.GetInteger( 'related_tags_search_1_duration_ms' ) )
-        self._related_tags_search_2_duration_ms.setValue( self._new_options.GetInteger( 'related_tags_search_2_duration_ms' ) )
-        self._related_tags_search_3_duration_ms.setValue( self._new_options.GetInteger( 'related_tags_search_3_duration_ms' ) )
+        self._related_tags_search_1_duration_ms.setValue(self._new_options.get_integer('related_tags_search_1_duration_ms'))
+        self._related_tags_search_2_duration_ms.setValue(self._new_options.get_integer('related_tags_search_2_duration_ms'))
+        self._related_tags_search_3_duration_ms.setValue(self._new_options.get_integer('related_tags_search_3_duration_ms'))
         
-        self._related_tags_concurrence_threshold_percent.setValue( self._new_options.GetInteger( 'related_tags_concurrence_threshold_percent' ) )
+        self._related_tags_concurrence_threshold_percent.setValue(self._new_options.get_integer('related_tags_concurrence_threshold_percent'))
 
-        ( related_tags_search_tag_slices_weight_percent, related_tags_result_tag_slices_weight_percent ) = self._new_options.GetRelatedTagsTagSliceWeights()
+        ( related_tags_search_tag_slices_weight_percent, related_tags_result_tag_slices_weight_percent ) = self._new_options.get_related_tags_tag_slice_weights()
         
         self._search_tag_slices_weights.SetData( related_tags_search_tag_slices_weight_percent )
         self._result_tag_slices_weights.SetData( related_tags_result_tag_slices_weight_percent )
         
-        self._show_file_lookup_script_tags.setChecked( self._new_options.GetBoolean( 'show_file_lookup_script_tags' ) )
+        self._show_file_lookup_script_tags.setChecked(self._new_options.get_boolean('show_file_lookup_script_tags'))
         
-        self._favourite_file_lookup_script.SetValue( self._new_options.GetNoneableString( 'favourite_file_lookup_script' ) )
+        self._favourite_file_lookup_script.SetValue(self._new_options.get_noneable_string('favourite_file_lookup_script'))
         
-        self._num_recent_tags.SetValue( self._new_options.GetNoneableInteger( 'num_recent_tags' ) )
+        self._num_recent_tags.SetValue(self._new_options.get_noneable_integer('num_recent_tags'))
         
         #
         
@@ -339,7 +339,7 @@ class TagSuggestionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             tag_slice = tag_slice + ':'
             
         
-        existing_tag_slices = { existing_tag_slice for ( existing_tag_slice, existing_weight ) in list_ctrl.GetData() }
+        existing_tag_slices = {existing_tag_slice for ( existing_tag_slice, existing_weight ) in list_ctrl.get_data()}
         
         if tag_slice in existing_tag_slices:
             
@@ -364,7 +364,7 @@ class TagSuggestionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
                 
                 new_data = ( tag_slice, weight )
                 
-                list_ctrl.AddData( new_data, select_sort_and_scroll = True )
+                list_ctrl.add_data(new_data, select_sort_and_scroll = True)
                 
             
         
@@ -381,7 +381,7 @@ class TagSuggestionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def _CanDeleteTagSliceWeight( self, list_ctrl ) -> bool:
         
-        selected_tag_slices_and_weights = list_ctrl.GetData( only_selected = True )
+        selected_tag_slices_and_weights = list_ctrl.get_data(only_selected = True)
         
         for ( tag_slice, weight ) in selected_tag_slices_and_weights:
             
@@ -488,7 +488,7 @@ class TagSuggestionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
         else:
             
-            favourites = self._new_options.GetSuggestedTagsFavourites( self._current_suggested_favourites_service )
+            favourites = self._new_options.get_suggested_tags_favourites(self._current_suggested_favourites_service)
             
         
         self._suggested_favourites.SetTagServiceKey( self._current_suggested_favourites_service )
@@ -501,34 +501,34 @@ class TagSuggestionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def UpdateOptions( self ):
         
-        self._new_options.SetInteger( 'suggested_tags_width', self._suggested_tags_width.value() )
-        self._new_options.SetNoneableString( 'suggested_tags_layout', self._suggested_tags_layout.GetValue() )
+        self._new_options.set_integer('suggested_tags_width', self._suggested_tags_width.value())
+        self._new_options.set_noneable_string('suggested_tags_layout', self._suggested_tags_layout.GetValue())
         
-        self._new_options.SetString( 'default_suggested_tags_notebook_page', self._default_suggested_tags_notebook_page.GetValue() )
+        self._new_options.set_string('default_suggested_tags_notebook_page', self._default_suggested_tags_notebook_page.GetValue())
         
         self._SaveCurrentSuggestedFavourites()
         
         for ( service_key, favourites ) in list(self._suggested_favourites_dict.items()):
             
-            self._new_options.SetSuggestedTagsFavourites( service_key, favourites )
+            self._new_options.set_suggested_tags_favourites(service_key, favourites)
             
         
-        self._new_options.SetBoolean( 'show_related_tags', self._show_related_tags.isChecked() )
+        self._new_options.set_boolean('show_related_tags', self._show_related_tags.isChecked())
         
-        self._new_options.SetInteger( 'related_tags_search_1_duration_ms', self._related_tags_search_1_duration_ms.value() )
-        self._new_options.SetInteger( 'related_tags_search_2_duration_ms', self._related_tags_search_2_duration_ms.value() )
-        self._new_options.SetInteger( 'related_tags_search_3_duration_ms', self._related_tags_search_3_duration_ms.value() )
+        self._new_options.set_integer('related_tags_search_1_duration_ms', self._related_tags_search_1_duration_ms.value())
+        self._new_options.set_integer('related_tags_search_2_duration_ms', self._related_tags_search_2_duration_ms.value())
+        self._new_options.set_integer('related_tags_search_3_duration_ms', self._related_tags_search_3_duration_ms.value())
         
-        self._new_options.SetInteger( 'related_tags_concurrence_threshold_percent', self._related_tags_concurrence_threshold_percent.value() )
+        self._new_options.set_integer('related_tags_concurrence_threshold_percent', self._related_tags_concurrence_threshold_percent.value())
         
         related_tags_search_tag_slices_weight_percent = self._search_tag_slices_weights.GetData()
         related_tags_result_tag_slices_weight_percent = self._result_tag_slices_weights.GetData()
         
-        self._new_options.SetRelatedTagsTagSliceWeights( related_tags_search_tag_slices_weight_percent, related_tags_result_tag_slices_weight_percent )
+        self._new_options.set_related_tags_tag_slice_weights(related_tags_search_tag_slices_weight_percent, related_tags_result_tag_slices_weight_percent)
         
-        self._new_options.SetBoolean( 'show_file_lookup_script_tags', self._show_file_lookup_script_tags.isChecked() )
-        self._new_options.SetNoneableString( 'favourite_file_lookup_script', self._favourite_file_lookup_script.GetValue() )
+        self._new_options.set_boolean('show_file_lookup_script_tags', self._show_file_lookup_script_tags.isChecked())
+        self._new_options.set_noneable_string('favourite_file_lookup_script', self._favourite_file_lookup_script.GetValue())
         
-        self._new_options.SetNoneableInteger( 'num_recent_tags', self._num_recent_tags.GetValue() )
+        self._new_options.set_noneable_integer('num_recent_tags', self._num_recent_tags.GetValue())
         
     

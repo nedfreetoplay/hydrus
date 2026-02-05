@@ -17,7 +17,7 @@ class NotesPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         self._start_note_editing_at_end = QW.QCheckBox( self )
         self._start_note_editing_at_end.setToolTip( ClientGUIFunctions.WrapToolTip( 'Otherwise, start the text cursor at the start of the document.' ) )
         
-        self._start_note_editing_at_end.setChecked( self._new_options.GetBoolean( 'start_note_editing_at_end' ) )
+        self._start_note_editing_at_end.setChecked(self._new_options.get_boolean('start_note_editing_at_end'))
         
         vbox = QP.VBoxLayout()
         
@@ -35,6 +35,6 @@ class NotesPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def UpdateOptions( self ):
         
-        self._new_options.SetBoolean( 'start_note_editing_at_end', self._start_note_editing_at_end.isChecked() )
+        self._new_options.set_boolean('start_note_editing_at_end', self._start_note_editing_at_end.isChecked())
         
     

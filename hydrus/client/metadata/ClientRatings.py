@@ -267,9 +267,9 @@ def GetStarType( service_key ) -> StarType:
     
     try:
         
-        service = CG.client_controller.services_manager.GetService( service_key )
+        service = CG.client_controller.services_manager.get_service(service_key)
         
-        star_type = service.GetStarType()
+        star_type = service.get_star_type()
         
     except HydrusExceptions.DataMissing:
         

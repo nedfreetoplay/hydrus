@@ -485,7 +485,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
         
         new_options = CG.client_controller.new_options
         
-        self._checker_options = new_options.GetDefaultSubscriptionCheckerOptions()
+        self._checker_options = new_options.get_default_subscription_checker_options()
         
         if HC.options[ 'gallery_file_limit' ] is None:
             
@@ -516,7 +516,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
     
     def _CanDoWorkNow( self ):
         
-        p1 = not ( self._paused or CG.client_controller.new_options.GetBoolean( 'pause_subs_sync' ) or CG.client_controller.new_options.GetBoolean( 'pause_all_new_network_traffic' ) )
+        p1 = not (self._paused or CG.client_controller.new_options.get_boolean('pause_subs_sync') or CG.client_controller.new_options.get_boolean('pause_all_new_network_traffic'))
         p2 = not ( HG.started_shutdown or HydrusThreading.is_thread_shutting_down() )
         p3 = self._NoDelays()
         
@@ -524,7 +524,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
             
             message = 'Subscription "{}" CanDoWork check.'.format( self._name )
             message += '\n'
-            message += 'Paused/Global/Network Pause: {}/{}/{}'.format( self._paused, CG.client_controller.new_options.GetBoolean( 'pause_subs_sync' ), CG.client_controller.new_options.GetBoolean( 'pause_all_new_network_traffic' ) )
+            message += 'Paused/Global/Network Pause: {}/{}/{}'.format(self._paused, CG.client_controller.new_options.get_boolean('pause_subs_sync'), CG.client_controller.new_options.get_boolean('pause_all_new_network_traffic'))
             message += '\n'
             message += 'Started/Thread shutdown: {}/{}'.format( HG.started_shutdown, HydrusThreading.is_thread_shutting_down() )
             message += '\n'
@@ -570,7 +570,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
         
         queries = list( self._queries )
         
-        if CG.client_controller.new_options.GetBoolean( 'process_subs_in_random_order' ):
+        if CG.client_controller.new_options.get_boolean('process_subs_in_random_order'):
             
             random.shuffle( queries )
             
@@ -851,7 +851,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
             
             gallery_identifier = HydrusSerialisable.create_from_serialisable_tuple( serialisable_gallery_identifier )
             
-            ( gug_key, gug_name ) = ClientDownloading.ConvertGalleryIdentifierToGUGKeyAndName( gallery_identifier )
+            ( gug_key, gug_name ) = ClientDownloading.convert_gallery_identifier_to_gug_key_and_name(gallery_identifier)
             
             serialisable_gug_key_and_name = ( gug_key.hex(), gug_name )
             
@@ -892,7 +892,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
         
         for query in self._queries:
             
-            if not query.IsPaused():
+            if not query.is_paused():
                 
                 return False
                 
@@ -1068,13 +1068,13 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
             
             if subscription._gug_key_and_name[1] == self._gug_key_and_name[1]:
                 
-                my_new_queries = [ query.Duplicate() for query in subscription._queries ]
+                my_new_queries = [query.duplicate() for query in subscription._queries]
                 
                 self._queries.extend( my_new_queries )
                 
             else:
                 
-                raise Exception( self._name + ' was told to merge an unmergeable subscription, ' + subscription.GetName() + '!' )
+                raise Exception(self._name + ' was told to merge an unmergeable subscription, ' + subscription.get_name() + '!')
                 
             
         
@@ -1088,7 +1088,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
         
         for query in self._queries:
             
-            query.Reset()
+            query.reset()
             
         
         self.ScrubDelay()
@@ -1178,7 +1178,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
     
     def SetTagImportOptions( self, tag_import_options ):
         
-        self._tag_import_options = tag_import_options.Duplicate()
+        self._tag_import_options = tag_import_options.duplicate()
         
     
     def SetTuple( self, gug_key_and_name, checker_options: ClientImportOptions.CheckerOptions, initial_file_limit, periodic_file_limit, paused, file_import_options: FileImportOptionsLegacy.FileImportOptionsLegacy, tag_import_options: TagImportOptionsLegacy.TagImportOptionsLegacy, no_work_until ):
@@ -1260,7 +1260,7 @@ def ConvertLegacySubscriptionToNew( legacy_subscription: SubscriptionLegacy ):
         
         query_header = ClientImportSubscriptionQuery.SubscriptionQueryHeader()
         
-        ( query_text, check_now, last_check_time, next_check_time, query_paused, status ) = query.ToTuple()
+        ( query_text, check_now, last_check_time, next_check_time, query_paused, status ) = query.to_tuple()
         
         query_header.SetQueryText( query_text )
         query_header.SetDisplayName( query.GetDisplayName() )

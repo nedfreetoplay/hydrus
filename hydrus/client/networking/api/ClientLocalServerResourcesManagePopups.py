@@ -13,26 +13,26 @@ from hydrus.client.networking.api import ClientLocalServerResources
 def JobStatusToDict( job_status: ClientThreading.JobStatus ):
         
         return_dict = {
-            'key' : job_status.GetKey().hex(),
-            'creation_time' : job_status.GetCreationTime(),
-            'status_title' : job_status.GetStatusTitle(),
-            'status_text_1' : job_status.GetStatusText( 1 ),
-            'status_text_2' : job_status.GetStatusText( 2 ),
-            'traceback' : job_status.GetTraceback(),
-            'had_error' : job_status.HadError(),
-            'is_cancellable' : job_status.IsCancellable(),
-            'is_cancelled' : job_status.IsCancelled(),
-            'is_done' : job_status.IsDone(),
-            'is_pausable' : job_status.IsPausable(),
-            'is_paused' : job_status.IsPaused(),
-            'nice_string' : job_status.ToString(),
-            'popup_gauge_1' : job_status.GetIfHasVariable( 'popup_gauge_1' ),
-            'popup_gauge_2' : job_status.GetIfHasVariable( 'popup_gauge_2' ),
-            'attached_files_mergable' : job_status.GetIfHasVariable( 'attached_files_mergable' ),
-            'api_data' : job_status.GetIfHasVariable( 'api_data' )
+            'key' : job_status.get_key().hex(),
+            'creation_time' : job_status.get_creation_time(),
+            'status_title' : job_status.get_status_title(),
+            'status_text_1' : job_status.get_status_text(1),
+            'status_text_2' : job_status.get_status_text(2),
+            'traceback' : job_status.get_traceback(),
+            'had_error' : job_status.had_error(),
+            'is_cancellable' : job_status.is_cancellable(),
+            'is_cancelled' : job_status.is_cancelled(),
+            'is_done' : job_status.is_done(),
+            'is_pausable' : job_status.is_pausable(),
+            'is_paused' : job_status.is_paused(),
+            'nice_string' : job_status.to_string(),
+            'popup_gauge_1' : job_status.get_if_has_variable('popup_gauge_1'),
+            'popup_gauge_2' : job_status.get_if_has_variable('popup_gauge_2'),
+            'attached_files_mergable' : job_status.get_if_has_variable('attached_files_mergable'),
+            'api_data' : job_status.get_if_has_variable('api_data')
         }
         
-        files_object = job_status.GetFiles()
+        files_object = job_status.get_files()
         
         if files_object is not None:
             
@@ -44,14 +44,14 @@ def JobStatusToDict( job_status: ClientThreading.JobStatus ):
             }
             
         
-        user_callable = job_status.GetUserCallable()
+        user_callable = job_status.get_user_callable()
         
         if user_callable is not None:
             
             return_dict[ 'user_callable_label' ] = user_callable.get_label()
             
         
-        network_job: ClientNetworkingJobs.NetworkJob = job_status.GetNetworkJob()
+        network_job: ClientNetworkingJobs.NetworkJob = job_status.get_network_job()
         
         if network_job is not None:
             
@@ -98,7 +98,7 @@ class HydrusResourceClientAPIRestrictedManagePopupsAddPopup( HydrusResourceClien
         
         if request.parsed_request_args.get_value( 'attached_files_mergable', bool, default_value = False ):
             
-            job_status.SetVariable( 'attached_files_mergable', True )
+            job_status.set_variable('attached_files_mergable', True)
             
         
         HandlePopupUpdate( job_status, request )
@@ -139,14 +139,14 @@ class HydrusResourceClientAPIRestrictedManagePopupsCallUserCallable( HydrusResou
         
         job_status = GetJobStatusFromRequest( request )
         
-        user_callable = job_status.GetUserCallable()
+        user_callable = job_status.get_user_callable()
         
         if user_callable is None:
             
             raise HydrusExceptions.BadRequestException('This job doesn\'t have a user callable!')
             
         
-        CG.client_controller.CallBlockingToQtTLW( user_callable )
+        CG.client_controller.call_blocking_to_qt_tlw(user_callable)
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
@@ -160,9 +160,9 @@ class HydrusResourceClientAPIRestrictedManagePopupsCancelPopup( HydrusResourceCl
         
         job_status = GetJobStatusFromRequest( request )
         
-        if job_status.IsCancellable():
+        if job_status.is_cancellable():
             
-            job_status.Cancel()
+            job_status.cancel()
             
         
         response_context = HydrusServerResources.ResponseContext( 200 )
@@ -177,9 +177,9 @@ class HydrusResourceClientAPIRestrictedManagePopupsDismissPopup( HydrusResourceC
         
         job_status = GetJobStatusFromRequest( request )
         
-        if job_status.IsDone():
+        if job_status.is_done():
             
-            job_status.FinishAndDismiss()
+            job_status.finish_and_dismiss()
             
         
         response_context = HydrusServerResources.ResponseContext( 200 )
@@ -194,7 +194,7 @@ class HydrusResourceClientAPIRestrictedManagePopupsFinishPopup( HydrusResourceCl
         
         job_status = GetJobStatusFromRequest( request )
         
-        job_status.Finish()
+        job_status.finish()
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
@@ -210,7 +210,7 @@ class HydrusResourceClientAPIRestrictedManagePopupsFinishAndDismissPopup( Hydrus
         
         seconds = request.parsed_request_args.get_value_or_none( 'seconds', int )
         
-        job_status.FinishAndDismiss( seconds )
+        job_status.finish_and_dismiss(seconds)
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
@@ -250,11 +250,11 @@ def HandlePopupUpdate( job_status: ClientThreading.JobStatus, request: HydrusSer
             
             if value is not None:
                 
-                job_status.SetVariable( name, value )
+                job_status.set_variable(name, value)
                 
             else:
                 
-                job_status.DeleteVariable( name )
+                job_status.delete_variable(name)
                 
             
         
@@ -265,11 +265,11 @@ def HandlePopupUpdate( job_status: ClientThreading.JobStatus, request: HydrusSer
         
         if status_title is not None:
             
-            job_status.SetStatusTitle( status_title )
+            job_status.set_status_title(status_title)
             
         else:
             
-            job_status.DeleteStatusTitle()
+            job_status.delete_status_title()
             
         
     
@@ -279,11 +279,11 @@ def HandlePopupUpdate( job_status: ClientThreading.JobStatus, request: HydrusSer
         
         if status_text is not None:
             
-            job_status.SetStatusText( status_text, 1 )
+            job_status.set_status_text(status_text, 1)
             
         else:
             
-            job_status.DeleteStatusText()
+            job_status.delete_status_text()
             
         
     
@@ -293,11 +293,11 @@ def HandlePopupUpdate( job_status: ClientThreading.JobStatus, request: HydrusSer
         
         if status_text_2 is not None:
             
-            job_status.SetStatusText( status_text_2, 2 )
+            job_status.set_status_text(status_text_2, 2)
             
         else:
             
-            job_status.DeleteStatusText( level = 2 )
+            job_status.delete_status_text(level = 2)
             
         
     
@@ -316,11 +316,11 @@ def HandlePopupUpdate( job_status: ClientThreading.JobStatus, request: HydrusSer
                     raise HydrusExceptions.BadRequestException( 'The parameter "{}" had an invalid number of items!'.format( name ) )
                     
                 
-                job_status.SetVariable( name, value )
+                job_status.set_variable(name, value)
                 
             else:
                 
-                job_status.DeleteVariable( name )
+                job_status.delete_variable(name)
                 
             
         
@@ -336,7 +336,7 @@ def HandlePopupUpdate( job_status: ClientThreading.JobStatus, request: HydrusSer
             raise HydrusExceptions.BadRequestException( '"files_label" is required to add files to a popup!' )
             
         
-        job_status.SetFiles( hashes, files_label )
+        job_status.set_files(hashes, files_label)
         
     
 

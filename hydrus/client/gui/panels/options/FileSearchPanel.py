@@ -22,7 +22,7 @@ class FileSearchPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         self._read_autocomplete_panel = ClientGUICommon.StaticBox( self, 'file search autocomplete' )
         
-        location_context = self._new_options.GetDefaultLocalLocationContext()
+        location_context = self._new_options.get_default_local_location_context()
         
         self._default_local_location_context = ClientGUILocation.LocationSearchContextButton( self._read_autocomplete_panel, location_context )
         self._default_local_location_context.setToolTip( ClientGUIFunctions.WrapToolTip( 'This initialised into a bunch of dialogs across the program as a fallback. You can probably leave it alone forever, but if you delete or move away from \'my files\' as your main place to do work, please update it here.' ) )
@@ -60,26 +60,26 @@ class FileSearchPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         self._default_tag_service_search_page.addItem( 'all known tags', CC.COMBINED_TAG_SERVICE_KEY )
         
-        services = CG.client_controller.services_manager.GetServices( HC.REAL_TAG_SERVICES )
+        services = CG.client_controller.services_manager.get_services(HC.REAL_TAG_SERVICES)
         
         for service in services:
             
-            self._default_tag_service_search_page.addItem( service.GetName(), service.GetServiceKey() )
+            self._default_tag_service_search_page.addItem(service.get_name(), service.get_service_key())
             
         
-        self._default_tag_service_search_page.SetValue( self._new_options.GetKey( 'default_tag_service_search_page' ) )
+        self._default_tag_service_search_page.SetValue(self._new_options.get_key('default_tag_service_search_page'))
         
-        self._default_search_synchronised.setChecked( self._new_options.GetBoolean( 'default_search_synchronised' ) )
+        self._default_search_synchronised.setChecked(self._new_options.get_boolean('default_search_synchronised'))
         
-        self._autocomplete_float_main_gui.setChecked( self._new_options.GetBoolean( 'autocomplete_float_main_gui' ) )
+        self._autocomplete_float_main_gui.setChecked(self._new_options.get_boolean('autocomplete_float_main_gui'))
         
-        self._ac_read_list_height_num_chars.setValue( self._new_options.GetInteger( 'ac_read_list_height_num_chars' ) )
+        self._ac_read_list_height_num_chars.setValue(self._new_options.get_integer('ac_read_list_height_num_chars'))
         
-        self._show_system_everything.setChecked( self._new_options.GetBoolean( 'show_system_everything' ) )
+        self._show_system_everything.setChecked(self._new_options.get_boolean('show_system_everything'))
         
-        self._forced_search_limit.SetValue( self._new_options.GetNoneableInteger( 'forced_search_limit' ) )
+        self._forced_search_limit.SetValue(self._new_options.get_noneable_integer('forced_search_limit'))
         
-        self._refresh_search_page_on_system_limited_sort_changed.setChecked( self._new_options.GetBoolean( 'refresh_search_page_on_system_limited_sort_changed' ) )
+        self._refresh_search_page_on_system_limited_sort_changed.setChecked(self._new_options.get_boolean('refresh_search_page_on_system_limited_sort_changed'))
         
         #
         
@@ -126,20 +126,20 @@ class FileSearchPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def UpdateOptions( self ):
         
-        self._new_options.SetKey( 'default_tag_service_search_page', self._default_tag_service_search_page.GetValue() )
+        self._new_options.set_key('default_tag_service_search_page', self._default_tag_service_search_page.GetValue())
         
-        self._new_options.SetDefaultLocalLocationContext( self._default_local_location_context.GetValue() )
+        self._new_options.set_default_local_location_context(self._default_local_location_context.GetValue())
         
-        self._new_options.SetBoolean( 'default_search_synchronised', self._default_search_synchronised.isChecked() )
+        self._new_options.set_boolean('default_search_synchronised', self._default_search_synchronised.isChecked())
         
-        self._new_options.SetBoolean( 'autocomplete_float_main_gui', self._autocomplete_float_main_gui.isChecked() )
+        self._new_options.set_boolean('autocomplete_float_main_gui', self._autocomplete_float_main_gui.isChecked())
         
-        self._new_options.SetInteger( 'ac_read_list_height_num_chars', self._ac_read_list_height_num_chars.value() )
+        self._new_options.set_integer('ac_read_list_height_num_chars', self._ac_read_list_height_num_chars.value())
         
-        self._new_options.SetBoolean( 'show_system_everything', self._show_system_everything.isChecked() )
+        self._new_options.set_boolean('show_system_everything', self._show_system_everything.isChecked())
         
-        self._new_options.SetNoneableInteger( 'forced_search_limit', self._forced_search_limit.GetValue() )
+        self._new_options.set_noneable_integer('forced_search_limit', self._forced_search_limit.GetValue())
         
-        self._new_options.SetBoolean( 'refresh_search_page_on_system_limited_sort_changed', self._refresh_search_page_on_system_limited_sort_changed.isChecked() )
+        self._new_options.set_boolean('refresh_search_page_on_system_limited_sort_changed', self._refresh_search_page_on_system_limited_sort_changed.isChecked())
         
     

@@ -221,9 +221,9 @@ def get_noneable_serialisable_tuple( obj_or_none ):
 
 def set_non_dupe_name( obj, disallowed_names, do_casefold = False ):
     
-    non_dupe_name = HydrusData.get_non_dupe_name( obj.GetName(), disallowed_names, do_casefold = do_casefold )
+    non_dupe_name = HydrusData.get_non_dupe_name(obj.get_name(), disallowed_names, do_casefold = do_casefold)
     
-    obj.SetName( non_dupe_name )
+    obj.set_name(non_dupe_name)
     
 
 def object_version_is_from_the_future( obj_tuple ):

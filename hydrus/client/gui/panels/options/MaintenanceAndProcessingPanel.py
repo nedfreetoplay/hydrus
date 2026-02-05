@@ -217,77 +217,77 @@ class MaintenanceAndProcessingPanel( ClientGUIOptionsPanelBase.OptionsPagePanel 
         self._idle_normal.setChecked( HC.options[ 'idle_normal' ] )
         self._idle_period.SetValue( HC.options['idle_period'] )
         self._idle_mouse_period.SetValue( HC.options['idle_mouse_period'] )
-        self._idle_mode_client_api_timeout.SetValue( self._new_options.GetNoneableInteger( 'idle_mode_client_api_timeout' ) )
-        self._system_busy_cpu_percent.setValue( self._new_options.GetInteger( 'system_busy_cpu_percent' ) )
-        self._system_busy_cpu_count.SetValue( self._new_options.GetNoneableInteger( 'system_busy_cpu_count' ) )
+        self._idle_mode_client_api_timeout.SetValue(self._new_options.get_noneable_integer('idle_mode_client_api_timeout'))
+        self._system_busy_cpu_percent.setValue(self._new_options.get_integer('system_busy_cpu_percent'))
+        self._system_busy_cpu_count.SetValue(self._new_options.get_noneable_integer('system_busy_cpu_count'))
         
         self._idle_shutdown.SetValue( HC.options[ 'idle_shutdown' ] )
         self._idle_shutdown_max_minutes.setValue( HC.options['idle_shutdown_max_minutes'] )
-        self._shutdown_work_period.SetValue( self._new_options.GetInteger( 'shutdown_work_period' ) )
+        self._shutdown_work_period.SetValue(self._new_options.get_integer('shutdown_work_period'))
         
-        self._file_maintenance_during_idle.setChecked( self._new_options.GetBoolean( 'file_maintenance_during_idle' ) )
+        self._file_maintenance_during_idle.setChecked(self._new_options.get_boolean('file_maintenance_during_idle'))
         
-        file_maintenance_idle_throttle_files = self._new_options.GetInteger( 'file_maintenance_idle_throttle_files' )
-        file_maintenance_idle_throttle_time_delta = self._new_options.GetInteger( 'file_maintenance_idle_throttle_time_delta' )
+        file_maintenance_idle_throttle_files = self._new_options.get_integer('file_maintenance_idle_throttle_files')
+        file_maintenance_idle_throttle_time_delta = self._new_options.get_integer('file_maintenance_idle_throttle_time_delta')
         
         file_maintenance_idle_throttle_velocity = ( file_maintenance_idle_throttle_files, file_maintenance_idle_throttle_time_delta )
         
         self._file_maintenance_idle_throttle_velocity.SetValue( file_maintenance_idle_throttle_velocity )
         
-        self._file_maintenance_during_active.setChecked( self._new_options.GetBoolean( 'file_maintenance_during_active' ) )
+        self._file_maintenance_during_active.setChecked(self._new_options.get_boolean('file_maintenance_during_active'))
         
-        file_maintenance_active_throttle_files = self._new_options.GetInteger( 'file_maintenance_active_throttle_files' )
-        file_maintenance_active_throttle_time_delta = self._new_options.GetInteger( 'file_maintenance_active_throttle_time_delta' )
+        file_maintenance_active_throttle_files = self._new_options.get_integer('file_maintenance_active_throttle_files')
+        file_maintenance_active_throttle_time_delta = self._new_options.get_integer('file_maintenance_active_throttle_time_delta')
         
         file_maintenance_active_throttle_velocity = ( file_maintenance_active_throttle_files, file_maintenance_active_throttle_time_delta )
         
         self._file_maintenance_active_throttle_velocity.SetValue( file_maintenance_active_throttle_velocity )
         
-        self._repository_processing_work_time_very_idle.SetValue( HydrusTime.secondise_ms_float( self._new_options.GetInteger( 'repository_processing_work_time_ms_very_idle' ) ) )
-        self._repository_processing_rest_percentage_very_idle.setValue( self._new_options.GetInteger( 'repository_processing_rest_percentage_very_idle' ) )
+        self._repository_processing_work_time_very_idle.SetValue(HydrusTime.secondise_ms_float(self._new_options.get_integer('repository_processing_work_time_ms_very_idle')))
+        self._repository_processing_rest_percentage_very_idle.setValue(self._new_options.get_integer('repository_processing_rest_percentage_very_idle'))
         
-        self._repository_processing_work_time_idle.SetValue( HydrusTime.secondise_ms_float( self._new_options.GetInteger( 'repository_processing_work_time_ms_idle' ) ) )
-        self._repository_processing_rest_percentage_idle.setValue( self._new_options.GetInteger( 'repository_processing_rest_percentage_idle' ) )
+        self._repository_processing_work_time_idle.SetValue(HydrusTime.secondise_ms_float(self._new_options.get_integer('repository_processing_work_time_ms_idle')))
+        self._repository_processing_rest_percentage_idle.setValue(self._new_options.get_integer('repository_processing_rest_percentage_idle'))
         
-        self._repository_processing_work_time_normal.SetValue( HydrusTime.secondise_ms_float( self._new_options.GetInteger( 'repository_processing_work_time_ms_normal' ) ) )
-        self._repository_processing_rest_percentage_normal.setValue( self._new_options.GetInteger( 'repository_processing_rest_percentage_normal' ) )
+        self._repository_processing_work_time_normal.SetValue(HydrusTime.secondise_ms_float(self._new_options.get_integer('repository_processing_work_time_ms_normal')))
+        self._repository_processing_rest_percentage_normal.setValue(self._new_options.get_integer('repository_processing_rest_percentage_normal'))
         
-        self._tag_display_maintenance_during_idle.setChecked( self._new_options.GetBoolean( 'tag_display_maintenance_during_idle' ) )
-        self._tag_display_maintenance_during_active.setChecked( self._new_options.GetBoolean( 'tag_display_maintenance_during_active' ) )
+        self._tag_display_maintenance_during_idle.setChecked(self._new_options.get_boolean('tag_display_maintenance_during_idle'))
+        self._tag_display_maintenance_during_active.setChecked(self._new_options.get_boolean('tag_display_maintenance_during_active'))
         
-        self._tag_display_processing_work_time_idle.SetValue( HydrusTime.secondise_ms_float( self._new_options.GetInteger( 'tag_display_processing_work_time_ms_idle' ) ) )
-        self._tag_display_processing_rest_percentage_idle.setValue( self._new_options.GetInteger( 'tag_display_processing_rest_percentage_idle' ) )
+        self._tag_display_processing_work_time_idle.SetValue(HydrusTime.secondise_ms_float(self._new_options.get_integer('tag_display_processing_work_time_ms_idle')))
+        self._tag_display_processing_rest_percentage_idle.setValue(self._new_options.get_integer('tag_display_processing_rest_percentage_idle'))
         
-        self._tag_display_processing_work_time_normal.SetValue( HydrusTime.secondise_ms_float( self._new_options.GetInteger( 'tag_display_processing_work_time_ms_normal' ) ) )
-        self._tag_display_processing_rest_percentage_normal.setValue( self._new_options.GetInteger( 'tag_display_processing_rest_percentage_normal' ) )
+        self._tag_display_processing_work_time_normal.SetValue(HydrusTime.secondise_ms_float(self._new_options.get_integer('tag_display_processing_work_time_ms_normal')))
+        self._tag_display_processing_rest_percentage_normal.setValue(self._new_options.get_integer('tag_display_processing_rest_percentage_normal'))
         
-        self._tag_display_processing_work_time_work_hard.SetValue( HydrusTime.secondise_ms_float( self._new_options.GetInteger( 'tag_display_processing_work_time_ms_work_hard' ) ) )
-        self._tag_display_processing_rest_percentage_work_hard.setValue( self._new_options.GetInteger( 'tag_display_processing_rest_percentage_work_hard' ) )
+        self._tag_display_processing_work_time_work_hard.SetValue(HydrusTime.secondise_ms_float(self._new_options.get_integer('tag_display_processing_work_time_ms_work_hard')))
+        self._tag_display_processing_rest_percentage_work_hard.setValue(self._new_options.get_integer('tag_display_processing_rest_percentage_work_hard'))
         
-        self._maintain_similar_files_duplicate_pairs_during_idle.setChecked( self._new_options.GetBoolean( 'maintain_similar_files_duplicate_pairs_during_idle' ) )
-        self._maintain_similar_files_duplicate_pairs_during_active.setChecked( self._new_options.GetBoolean( 'maintain_similar_files_duplicate_pairs_during_active' ) )
+        self._maintain_similar_files_duplicate_pairs_during_idle.setChecked(self._new_options.get_boolean('maintain_similar_files_duplicate_pairs_during_idle'))
+        self._maintain_similar_files_duplicate_pairs_during_active.setChecked(self._new_options.get_boolean('maintain_similar_files_duplicate_pairs_during_active'))
         
-        self._potential_duplicates_search_work_time_idle.SetValue( HydrusTime.secondise_ms_float( self._new_options.GetInteger( 'potential_duplicates_search_work_time_ms_idle' ) ) )
-        self._potential_duplicates_search_rest_percentage_idle.setValue( self._new_options.GetInteger( 'potential_duplicates_search_rest_percentage_idle' ) )
-        self._potential_duplicates_search_work_time_active.SetValue( HydrusTime.secondise_ms_float( self._new_options.GetInteger( 'potential_duplicates_search_work_time_ms_active' ) ) )
-        self._potential_duplicates_search_rest_percentage_active.setValue( self._new_options.GetInteger( 'potential_duplicates_search_rest_percentage_active' ) )
+        self._potential_duplicates_search_work_time_idle.SetValue(HydrusTime.secondise_ms_float(self._new_options.get_integer('potential_duplicates_search_work_time_ms_idle')))
+        self._potential_duplicates_search_rest_percentage_idle.setValue(self._new_options.get_integer('potential_duplicates_search_rest_percentage_idle'))
+        self._potential_duplicates_search_work_time_active.SetValue(HydrusTime.secondise_ms_float(self._new_options.get_integer('potential_duplicates_search_work_time_ms_active')))
+        self._potential_duplicates_search_rest_percentage_active.setValue(self._new_options.get_integer('potential_duplicates_search_rest_percentage_active'))
         
-        self._duplicates_auto_resolution_during_idle.setChecked( self._new_options.GetBoolean( 'duplicates_auto_resolution_during_idle' ) )
-        self._duplicates_auto_resolution_during_active.setChecked( self._new_options.GetBoolean( 'duplicates_auto_resolution_during_active' ) )
+        self._duplicates_auto_resolution_during_idle.setChecked(self._new_options.get_boolean('duplicates_auto_resolution_during_idle'))
+        self._duplicates_auto_resolution_during_active.setChecked(self._new_options.get_boolean('duplicates_auto_resolution_during_active'))
         
-        self._duplicates_auto_resolution_work_time_idle.SetValue( HydrusTime.secondise_ms_float( self._new_options.GetInteger( 'duplicates_auto_resolution_work_time_ms_idle' ) ) )
-        self._duplicates_auto_resolution_rest_percentage_idle.setValue( self._new_options.GetInteger( 'duplicates_auto_resolution_rest_percentage_idle' ) )
-        self._duplicates_auto_resolution_work_time_active.SetValue( HydrusTime.secondise_ms_float( self._new_options.GetInteger( 'duplicates_auto_resolution_work_time_ms_active' ) ) )
-        self._duplicates_auto_resolution_rest_percentage_active.setValue( self._new_options.GetInteger( 'duplicates_auto_resolution_rest_percentage_active' ) )
+        self._duplicates_auto_resolution_work_time_idle.SetValue(HydrusTime.secondise_ms_float(self._new_options.get_integer('duplicates_auto_resolution_work_time_ms_idle')))
+        self._duplicates_auto_resolution_rest_percentage_idle.setValue(self._new_options.get_integer('duplicates_auto_resolution_rest_percentage_idle'))
+        self._duplicates_auto_resolution_work_time_active.SetValue(HydrusTime.secondise_ms_float(self._new_options.get_integer('duplicates_auto_resolution_work_time_ms_active')))
+        self._duplicates_auto_resolution_rest_percentage_active.setValue(self._new_options.get_integer('duplicates_auto_resolution_rest_percentage_active'))
         
-        self._deferred_table_delete_work_time_idle.SetValue( HydrusTime.secondise_ms_float( self._new_options.GetInteger( 'deferred_table_delete_work_time_ms_idle' ) ) )
-        self._deferred_table_delete_rest_percentage_idle.setValue( self._new_options.GetInteger( 'deferred_table_delete_rest_percentage_idle' ) )
+        self._deferred_table_delete_work_time_idle.SetValue(HydrusTime.secondise_ms_float(self._new_options.get_integer('deferred_table_delete_work_time_ms_idle')))
+        self._deferred_table_delete_rest_percentage_idle.setValue(self._new_options.get_integer('deferred_table_delete_rest_percentage_idle'))
         
-        self._deferred_table_delete_work_time_normal.SetValue( HydrusTime.secondise_ms_float( self._new_options.GetInteger( 'deferred_table_delete_work_time_ms_normal' ) ) )
-        self._deferred_table_delete_rest_percentage_normal.setValue( self._new_options.GetInteger( 'deferred_table_delete_rest_percentage_normal' ) )
+        self._deferred_table_delete_work_time_normal.SetValue(HydrusTime.secondise_ms_float(self._new_options.get_integer('deferred_table_delete_work_time_ms_normal')))
+        self._deferred_table_delete_rest_percentage_normal.setValue(self._new_options.get_integer('deferred_table_delete_rest_percentage_normal'))
         
-        self._deferred_table_delete_work_time_work_hard.SetValue( HydrusTime.secondise_ms_float( self._new_options.GetInteger( 'deferred_table_delete_work_time_ms_work_hard' ) ) )
-        self._deferred_table_delete_rest_percentage_work_hard.setValue( self._new_options.GetInteger( 'deferred_table_delete_rest_percentage_work_hard' ) )
+        self._deferred_table_delete_work_time_work_hard.SetValue(HydrusTime.secondise_ms_float(self._new_options.get_integer('deferred_table_delete_work_time_ms_work_hard')))
+        self._deferred_table_delete_rest_percentage_work_hard.setValue(self._new_options.get_integer('deferred_table_delete_rest_percentage_work_hard'))
         
         #
         
@@ -526,76 +526,76 @@ class MaintenanceAndProcessingPanel( ClientGUIOptionsPanelBase.OptionsPagePanel 
         
         HC.options[ 'idle_period' ] = self._idle_period.GetValue()
         HC.options[ 'idle_mouse_period' ] = self._idle_mouse_period.GetValue()
-        self._new_options.SetNoneableInteger( 'idle_mode_client_api_timeout', self._idle_mode_client_api_timeout.GetValue() )
+        self._new_options.set_noneable_integer('idle_mode_client_api_timeout', self._idle_mode_client_api_timeout.GetValue())
         
-        self._new_options.SetInteger( 'system_busy_cpu_percent', self._system_busy_cpu_percent.value() )
-        self._new_options.SetNoneableInteger( 'system_busy_cpu_count', self._system_busy_cpu_count.GetValue() )
+        self._new_options.set_integer('system_busy_cpu_percent', self._system_busy_cpu_percent.value())
+        self._new_options.set_noneable_integer('system_busy_cpu_count', self._system_busy_cpu_count.GetValue())
         
         HC.options[ 'idle_shutdown' ] = self._idle_shutdown.GetValue()
         HC.options[ 'idle_shutdown_max_minutes' ] = self._idle_shutdown_max_minutes.value()
         
-        self._new_options.SetInteger( 'shutdown_work_period', self._shutdown_work_period.GetValue() )
+        self._new_options.set_integer('shutdown_work_period', self._shutdown_work_period.GetValue())
         
-        self._new_options.SetBoolean( 'file_maintenance_during_idle', self._file_maintenance_during_idle.isChecked() )
+        self._new_options.set_boolean('file_maintenance_during_idle', self._file_maintenance_during_idle.isChecked())
         
         file_maintenance_idle_throttle_velocity = self._file_maintenance_idle_throttle_velocity.GetValue()
         
         ( file_maintenance_idle_throttle_files, file_maintenance_idle_throttle_time_delta ) = file_maintenance_idle_throttle_velocity
         
-        self._new_options.SetInteger( 'file_maintenance_idle_throttle_files', file_maintenance_idle_throttle_files )
-        self._new_options.SetInteger( 'file_maintenance_idle_throttle_time_delta', file_maintenance_idle_throttle_time_delta )
+        self._new_options.set_integer('file_maintenance_idle_throttle_files', file_maintenance_idle_throttle_files)
+        self._new_options.set_integer('file_maintenance_idle_throttle_time_delta', file_maintenance_idle_throttle_time_delta)
         
-        self._new_options.SetBoolean( 'file_maintenance_during_active', self._file_maintenance_during_active.isChecked() )
+        self._new_options.set_boolean('file_maintenance_during_active', self._file_maintenance_during_active.isChecked())
         
         file_maintenance_active_throttle_velocity = self._file_maintenance_active_throttle_velocity.GetValue()
         
         ( file_maintenance_active_throttle_files, file_maintenance_active_throttle_time_delta ) = file_maintenance_active_throttle_velocity
         
-        self._new_options.SetInteger( 'file_maintenance_active_throttle_files', file_maintenance_active_throttle_files )
-        self._new_options.SetInteger( 'file_maintenance_active_throttle_time_delta', file_maintenance_active_throttle_time_delta )
+        self._new_options.set_integer('file_maintenance_active_throttle_files', file_maintenance_active_throttle_files)
+        self._new_options.set_integer('file_maintenance_active_throttle_time_delta', file_maintenance_active_throttle_time_delta)
         
-        self._new_options.SetInteger( 'repository_processing_work_time_ms_very_idle', HydrusTime.millisecondise_s( self._repository_processing_work_time_very_idle.GetValue() ) )
-        self._new_options.SetInteger( 'repository_processing_rest_percentage_very_idle', self._repository_processing_rest_percentage_very_idle.value() )
+        self._new_options.set_integer('repository_processing_work_time_ms_very_idle', HydrusTime.millisecondise_s(self._repository_processing_work_time_very_idle.GetValue()))
+        self._new_options.set_integer('repository_processing_rest_percentage_very_idle', self._repository_processing_rest_percentage_very_idle.value())
         
-        self._new_options.SetInteger( 'repository_processing_work_time_ms_idle', HydrusTime.millisecondise_s( self._repository_processing_work_time_idle.GetValue() ) )
-        self._new_options.SetInteger( 'repository_processing_rest_percentage_idle', self._repository_processing_rest_percentage_idle.value() )
+        self._new_options.set_integer('repository_processing_work_time_ms_idle', HydrusTime.millisecondise_s(self._repository_processing_work_time_idle.GetValue()))
+        self._new_options.set_integer('repository_processing_rest_percentage_idle', self._repository_processing_rest_percentage_idle.value())
         
-        self._new_options.SetInteger( 'repository_processing_work_time_ms_normal', HydrusTime.millisecondise_s( self._repository_processing_work_time_normal.GetValue() ) )
-        self._new_options.SetInteger( 'repository_processing_rest_percentage_normal', self._repository_processing_rest_percentage_normal.value() )
+        self._new_options.set_integer('repository_processing_work_time_ms_normal', HydrusTime.millisecondise_s(self._repository_processing_work_time_normal.GetValue()))
+        self._new_options.set_integer('repository_processing_rest_percentage_normal', self._repository_processing_rest_percentage_normal.value())
         
-        self._new_options.SetBoolean( 'tag_display_maintenance_during_idle', self._tag_display_maintenance_during_idle.isChecked() )
-        self._new_options.SetBoolean( 'tag_display_maintenance_during_active', self._tag_display_maintenance_during_active.isChecked() )
+        self._new_options.set_boolean('tag_display_maintenance_during_idle', self._tag_display_maintenance_during_idle.isChecked())
+        self._new_options.set_boolean('tag_display_maintenance_during_active', self._tag_display_maintenance_during_active.isChecked())
         
-        self._new_options.SetInteger( 'tag_display_processing_work_time_ms_idle', HydrusTime.millisecondise_s( self._tag_display_processing_work_time_idle.GetValue() ) )
-        self._new_options.SetInteger( 'tag_display_processing_rest_percentage_idle', self._tag_display_processing_rest_percentage_idle.value() )
+        self._new_options.set_integer('tag_display_processing_work_time_ms_idle', HydrusTime.millisecondise_s(self._tag_display_processing_work_time_idle.GetValue()))
+        self._new_options.set_integer('tag_display_processing_rest_percentage_idle', self._tag_display_processing_rest_percentage_idle.value())
         
-        self._new_options.SetInteger( 'tag_display_processing_work_time_ms_normal', HydrusTime.millisecondise_s( self._tag_display_processing_work_time_normal.GetValue() ) )
-        self._new_options.SetInteger( 'tag_display_processing_rest_percentage_normal', self._tag_display_processing_rest_percentage_normal.value() )
+        self._new_options.set_integer('tag_display_processing_work_time_ms_normal', HydrusTime.millisecondise_s(self._tag_display_processing_work_time_normal.GetValue()))
+        self._new_options.set_integer('tag_display_processing_rest_percentage_normal', self._tag_display_processing_rest_percentage_normal.value())
         
-        self._new_options.SetInteger( 'tag_display_processing_work_time_ms_work_hard', HydrusTime.millisecondise_s( self._tag_display_processing_work_time_work_hard.GetValue() ) )
-        self._new_options.SetInteger( 'tag_display_processing_rest_percentage_work_hard', self._tag_display_processing_rest_percentage_work_hard.value() )
+        self._new_options.set_integer('tag_display_processing_work_time_ms_work_hard', HydrusTime.millisecondise_s(self._tag_display_processing_work_time_work_hard.GetValue()))
+        self._new_options.set_integer('tag_display_processing_rest_percentage_work_hard', self._tag_display_processing_rest_percentage_work_hard.value())
         
-        self._new_options.SetBoolean( 'maintain_similar_files_duplicate_pairs_during_idle', self._maintain_similar_files_duplicate_pairs_during_idle.isChecked() )
-        self._new_options.SetInteger( 'potential_duplicates_search_work_time_ms_idle', HydrusTime.millisecondise_s( self._potential_duplicates_search_work_time_idle.GetValue() ) )
-        self._new_options.SetInteger( 'potential_duplicates_search_rest_percentage_idle', self._potential_duplicates_search_rest_percentage_idle.value() )
-        self._new_options.SetBoolean( 'maintain_similar_files_duplicate_pairs_during_active', self._maintain_similar_files_duplicate_pairs_during_active.isChecked() )
-        self._new_options.SetInteger( 'potential_duplicates_search_work_time_ms_active', HydrusTime.millisecondise_s( self._potential_duplicates_search_work_time_active.GetValue() ) )
-        self._new_options.SetInteger( 'potential_duplicates_search_rest_percentage_active', self._potential_duplicates_search_rest_percentage_active.value() )
+        self._new_options.set_boolean('maintain_similar_files_duplicate_pairs_during_idle', self._maintain_similar_files_duplicate_pairs_during_idle.isChecked())
+        self._new_options.set_integer('potential_duplicates_search_work_time_ms_idle', HydrusTime.millisecondise_s(self._potential_duplicates_search_work_time_idle.GetValue()))
+        self._new_options.set_integer('potential_duplicates_search_rest_percentage_idle', self._potential_duplicates_search_rest_percentage_idle.value())
+        self._new_options.set_boolean('maintain_similar_files_duplicate_pairs_during_active', self._maintain_similar_files_duplicate_pairs_during_active.isChecked())
+        self._new_options.set_integer('potential_duplicates_search_work_time_ms_active', HydrusTime.millisecondise_s(self._potential_duplicates_search_work_time_active.GetValue()))
+        self._new_options.set_integer('potential_duplicates_search_rest_percentage_active', self._potential_duplicates_search_rest_percentage_active.value())
         
-        self._new_options.SetBoolean( 'duplicates_auto_resolution_during_idle', self._duplicates_auto_resolution_during_idle.isChecked() )
-        self._new_options.SetInteger( 'duplicates_auto_resolution_work_time_ms_idle', HydrusTime.millisecondise_s( self._duplicates_auto_resolution_work_time_idle.GetValue() ) )
-        self._new_options.SetInteger( 'duplicates_auto_resolution_rest_percentage_idle', self._duplicates_auto_resolution_rest_percentage_idle.value() )
-        self._new_options.SetBoolean( 'duplicates_auto_resolution_during_active', self._duplicates_auto_resolution_during_active.isChecked() )
-        self._new_options.SetInteger( 'duplicates_auto_resolution_work_time_ms_active', HydrusTime.millisecondise_s( self._duplicates_auto_resolution_work_time_active.GetValue() ) )
-        self._new_options.SetInteger( 'duplicates_auto_resolution_rest_percentage_active', self._duplicates_auto_resolution_rest_percentage_active.value() )
+        self._new_options.set_boolean('duplicates_auto_resolution_during_idle', self._duplicates_auto_resolution_during_idle.isChecked())
+        self._new_options.set_integer('duplicates_auto_resolution_work_time_ms_idle', HydrusTime.millisecondise_s(self._duplicates_auto_resolution_work_time_idle.GetValue()))
+        self._new_options.set_integer('duplicates_auto_resolution_rest_percentage_idle', self._duplicates_auto_resolution_rest_percentage_idle.value())
+        self._new_options.set_boolean('duplicates_auto_resolution_during_active', self._duplicates_auto_resolution_during_active.isChecked())
+        self._new_options.set_integer('duplicates_auto_resolution_work_time_ms_active', HydrusTime.millisecondise_s(self._duplicates_auto_resolution_work_time_active.GetValue()))
+        self._new_options.set_integer('duplicates_auto_resolution_rest_percentage_active', self._duplicates_auto_resolution_rest_percentage_active.value())
         
-        self._new_options.SetInteger( 'deferred_table_delete_work_time_ms_idle', HydrusTime.millisecondise_s( self._deferred_table_delete_work_time_idle.GetValue() ) )
-        self._new_options.SetInteger( 'deferred_table_delete_rest_percentage_idle', self._deferred_table_delete_rest_percentage_idle.value() )
+        self._new_options.set_integer('deferred_table_delete_work_time_ms_idle', HydrusTime.millisecondise_s(self._deferred_table_delete_work_time_idle.GetValue()))
+        self._new_options.set_integer('deferred_table_delete_rest_percentage_idle', self._deferred_table_delete_rest_percentage_idle.value())
         
-        self._new_options.SetInteger( 'deferred_table_delete_work_time_ms_normal', HydrusTime.millisecondise_s( self._deferred_table_delete_work_time_normal.GetValue() ) )
-        self._new_options.SetInteger( 'deferred_table_delete_rest_percentage_normal', self._deferred_table_delete_rest_percentage_normal.value() )
+        self._new_options.set_integer('deferred_table_delete_work_time_ms_normal', HydrusTime.millisecondise_s(self._deferred_table_delete_work_time_normal.GetValue()))
+        self._new_options.set_integer('deferred_table_delete_rest_percentage_normal', self._deferred_table_delete_rest_percentage_normal.value())
         
-        self._new_options.SetInteger( 'deferred_table_delete_work_time_ms_work_hard', HydrusTime.millisecondise_s( self._deferred_table_delete_work_time_work_hard.GetValue() ) )
-        self._new_options.SetInteger( 'deferred_table_delete_rest_percentage_work_hard', self._deferred_table_delete_rest_percentage_work_hard.value() )
+        self._new_options.set_integer('deferred_table_delete_work_time_ms_work_hard', HydrusTime.millisecondise_s(self._deferred_table_delete_work_time_work_hard.GetValue()))
+        self._new_options.set_integer('deferred_table_delete_rest_percentage_work_hard', self._deferred_table_delete_rest_percentage_work_hard.value())
         
     

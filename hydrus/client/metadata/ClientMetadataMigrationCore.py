@@ -32,13 +32,13 @@ def GetSidecarPath( actual_file_path: str, remove_actual_filename_ext: bool, suf
     
     path = '.'.join( path_components )
     
-    if filename_string_converter.MakesChanges():
+    if filename_string_converter.makes_changes():
         
         try:
             
             ( d, f ) = os.path.split( path )
             
-            f = filename_string_converter.Convert( f )
+            f = filename_string_converter.convert(f)
             
             path = os.path.join( d, f )
             

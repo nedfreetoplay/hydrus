@@ -62,27 +62,27 @@ class DuplicatesPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         #
         
-        self._open_files_to_duplicate_filter_uses_all_my_files.setChecked( self._new_options.GetBoolean( 'open_files_to_duplicate_filter_uses_all_my_files' ) )
+        self._open_files_to_duplicate_filter_uses_all_my_files.setChecked(self._new_options.get_boolean('open_files_to_duplicate_filter_uses_all_my_files'))
         
-        self._hide_duplicates_needs_work_message_when_reasonably_caught_up.setChecked( self._new_options.GetBoolean( 'hide_duplicates_needs_work_message_when_reasonably_caught_up' ) )
+        self._hide_duplicates_needs_work_message_when_reasonably_caught_up.setChecked(self._new_options.get_boolean('hide_duplicates_needs_work_message_when_reasonably_caught_up'))
         
-        self._duplicate_comparison_score_higher_jpeg_quality.setValue( self._new_options.GetInteger( 'duplicate_comparison_score_higher_jpeg_quality' ) )
-        self._duplicate_comparison_score_much_higher_jpeg_quality.setValue( self._new_options.GetInteger( 'duplicate_comparison_score_much_higher_jpeg_quality' ) )
-        self._duplicate_comparison_score_higher_filesize.setValue( self._new_options.GetInteger( 'duplicate_comparison_score_higher_filesize' ) )
-        self._duplicate_comparison_score_much_higher_filesize.setValue( self._new_options.GetInteger( 'duplicate_comparison_score_much_higher_filesize' ) )
-        self._duplicate_comparison_score_higher_resolution.setValue( self._new_options.GetInteger( 'duplicate_comparison_score_higher_resolution' ) )
-        self._duplicate_comparison_score_much_higher_resolution.setValue( self._new_options.GetInteger( 'duplicate_comparison_score_much_higher_resolution' ) )
-        self._duplicate_comparison_score_more_tags.setValue( self._new_options.GetInteger( 'duplicate_comparison_score_more_tags' ) )
-        self._duplicate_comparison_score_older.setValue( self._new_options.GetInteger( 'duplicate_comparison_score_older' ) )
-        self._duplicate_comparison_score_nicer_ratio.setValue( self._new_options.GetInteger( 'duplicate_comparison_score_nicer_ratio' ) )
-        self._duplicate_comparison_score_has_audio.setValue( self._new_options.GetInteger( 'duplicate_comparison_score_has_audio' ) )
+        self._duplicate_comparison_score_higher_jpeg_quality.setValue(self._new_options.get_integer('duplicate_comparison_score_higher_jpeg_quality'))
+        self._duplicate_comparison_score_much_higher_jpeg_quality.setValue(self._new_options.get_integer('duplicate_comparison_score_much_higher_jpeg_quality'))
+        self._duplicate_comparison_score_higher_filesize.setValue(self._new_options.get_integer('duplicate_comparison_score_higher_filesize'))
+        self._duplicate_comparison_score_much_higher_filesize.setValue(self._new_options.get_integer('duplicate_comparison_score_much_higher_filesize'))
+        self._duplicate_comparison_score_higher_resolution.setValue(self._new_options.get_integer('duplicate_comparison_score_higher_resolution'))
+        self._duplicate_comparison_score_much_higher_resolution.setValue(self._new_options.get_integer('duplicate_comparison_score_much_higher_resolution'))
+        self._duplicate_comparison_score_more_tags.setValue(self._new_options.get_integer('duplicate_comparison_score_more_tags'))
+        self._duplicate_comparison_score_older.setValue(self._new_options.get_integer('duplicate_comparison_score_older'))
+        self._duplicate_comparison_score_nicer_ratio.setValue(self._new_options.get_integer('duplicate_comparison_score_nicer_ratio'))
+        self._duplicate_comparison_score_has_audio.setValue(self._new_options.get_integer('duplicate_comparison_score_has_audio'))
         
-        self._duplicate_filter_max_batch_size.setValue( self._new_options.GetInteger( 'duplicate_filter_max_batch_size' ) )
-        self._duplicate_filter_auto_commit_batch_size.SetValue( self._new_options.GetNoneableInteger( 'duplicate_filter_auto_commit_batch_size' ) )
+        self._duplicate_filter_max_batch_size.setValue(self._new_options.get_integer('duplicate_filter_max_batch_size'))
+        self._duplicate_filter_auto_commit_batch_size.SetValue(self._new_options.get_noneable_integer('duplicate_filter_auto_commit_batch_size'))
         
-        self._duplicate_background_switch_intensity_a.SetValue( self._new_options.GetNoneableInteger( 'duplicate_background_switch_intensity_a' ) )
-        self._duplicate_background_switch_intensity_b.SetValue( self._new_options.GetNoneableInteger( 'duplicate_background_switch_intensity_b' ) )
-        self._draw_transparency_checkerboard_media_canvas_duplicates.setChecked( self._new_options.GetBoolean( 'draw_transparency_checkerboard_media_canvas_duplicates' ) )
+        self._duplicate_background_switch_intensity_a.SetValue(self._new_options.get_noneable_integer('duplicate_background_switch_intensity_a'))
+        self._duplicate_background_switch_intensity_b.SetValue(self._new_options.get_noneable_integer('duplicate_background_switch_intensity_b'))
+        self._draw_transparency_checkerboard_media_canvas_duplicates.setChecked(self._new_options.get_boolean('draw_transparency_checkerboard_media_canvas_duplicates'))
         
         #
         
@@ -175,27 +175,27 @@ class DuplicatesPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def UpdateOptions( self ):
         
-        self._new_options.SetBoolean( 'open_files_to_duplicate_filter_uses_all_my_files', self._open_files_to_duplicate_filter_uses_all_my_files.isChecked() )
+        self._new_options.set_boolean('open_files_to_duplicate_filter_uses_all_my_files', self._open_files_to_duplicate_filter_uses_all_my_files.isChecked())
         
-        self._new_options.SetBoolean( 'hide_duplicates_needs_work_message_when_reasonably_caught_up', self._hide_duplicates_needs_work_message_when_reasonably_caught_up.isChecked() )
+        self._new_options.set_boolean('hide_duplicates_needs_work_message_when_reasonably_caught_up', self._hide_duplicates_needs_work_message_when_reasonably_caught_up.isChecked())
         
-        self._new_options.SetInteger( 'duplicate_comparison_score_higher_jpeg_quality', self._duplicate_comparison_score_higher_jpeg_quality.value() )
-        self._new_options.SetInteger( 'duplicate_comparison_score_much_higher_jpeg_quality', self._duplicate_comparison_score_much_higher_jpeg_quality.value() )
-        self._new_options.SetInteger( 'duplicate_comparison_score_higher_filesize', self._duplicate_comparison_score_higher_filesize.value() )
-        self._new_options.SetInteger( 'duplicate_comparison_score_much_higher_filesize', self._duplicate_comparison_score_much_higher_filesize.value() )
-        self._new_options.SetInteger( 'duplicate_comparison_score_higher_resolution', self._duplicate_comparison_score_higher_resolution.value() )
-        self._new_options.SetInteger( 'duplicate_comparison_score_much_higher_resolution', self._duplicate_comparison_score_much_higher_resolution.value() )
-        self._new_options.SetInteger( 'duplicate_comparison_score_more_tags', self._duplicate_comparison_score_more_tags.value() )
-        self._new_options.SetInteger( 'duplicate_comparison_score_older', self._duplicate_comparison_score_older.value() )
-        self._new_options.SetInteger( 'duplicate_comparison_score_nicer_ratio', self._duplicate_comparison_score_nicer_ratio.value() )
-        self._new_options.SetInteger( 'duplicate_comparison_score_has_audio', self._duplicate_comparison_score_has_audio.value() )
+        self._new_options.set_integer('duplicate_comparison_score_higher_jpeg_quality', self._duplicate_comparison_score_higher_jpeg_quality.value())
+        self._new_options.set_integer('duplicate_comparison_score_much_higher_jpeg_quality', self._duplicate_comparison_score_much_higher_jpeg_quality.value())
+        self._new_options.set_integer('duplicate_comparison_score_higher_filesize', self._duplicate_comparison_score_higher_filesize.value())
+        self._new_options.set_integer('duplicate_comparison_score_much_higher_filesize', self._duplicate_comparison_score_much_higher_filesize.value())
+        self._new_options.set_integer('duplicate_comparison_score_higher_resolution', self._duplicate_comparison_score_higher_resolution.value())
+        self._new_options.set_integer('duplicate_comparison_score_much_higher_resolution', self._duplicate_comparison_score_much_higher_resolution.value())
+        self._new_options.set_integer('duplicate_comparison_score_more_tags', self._duplicate_comparison_score_more_tags.value())
+        self._new_options.set_integer('duplicate_comparison_score_older', self._duplicate_comparison_score_older.value())
+        self._new_options.set_integer('duplicate_comparison_score_nicer_ratio', self._duplicate_comparison_score_nicer_ratio.value())
+        self._new_options.set_integer('duplicate_comparison_score_has_audio', self._duplicate_comparison_score_has_audio.value())
         
-        self._new_options.SetInteger( 'duplicate_filter_max_batch_size', self._duplicate_filter_max_batch_size.value() )
+        self._new_options.set_integer('duplicate_filter_max_batch_size', self._duplicate_filter_max_batch_size.value())
         
-        self._new_options.SetNoneableInteger( 'duplicate_filter_auto_commit_batch_size', self._duplicate_filter_auto_commit_batch_size.GetValue() )
+        self._new_options.set_noneable_integer('duplicate_filter_auto_commit_batch_size', self._duplicate_filter_auto_commit_batch_size.GetValue())
         
-        self._new_options.SetNoneableInteger( 'duplicate_background_switch_intensity_a', self._duplicate_background_switch_intensity_a.GetValue() )
-        self._new_options.SetNoneableInteger( 'duplicate_background_switch_intensity_b', self._duplicate_background_switch_intensity_b.GetValue() )
-        self._new_options.SetBoolean( 'draw_transparency_checkerboard_media_canvas_duplicates', self._draw_transparency_checkerboard_media_canvas_duplicates.isChecked() )
+        self._new_options.set_noneable_integer('duplicate_background_switch_intensity_a', self._duplicate_background_switch_intensity_a.GetValue())
+        self._new_options.set_noneable_integer('duplicate_background_switch_intensity_b', self._duplicate_background_switch_intensity_b.GetValue())
+        self._new_options.set_boolean('draw_transparency_checkerboard_media_canvas_duplicates', self._draw_transparency_checkerboard_media_canvas_duplicates.isChecked())
         
     

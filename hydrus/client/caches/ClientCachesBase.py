@@ -11,12 +11,12 @@ from hydrus.client import ClientGlobals as CG
 
 class CacheableObject( object ):
     
-    def GetEstimatedMemoryFootprint( self ) -> int:
+    def get_estimated_memory_footprint(self) -> int:
         
         raise NotImplementedError()
         
     
-    def IsFinishedLoading( self ):
+    def is_finished_loading(self):
         
         raise NotImplementedError()
         
@@ -41,7 +41,7 @@ class DataCache( object ):
         self._controller.sub( self, 'MaintainCache', 'memory_maintenance_pulse' )
         
     
-    def _Delete( self, key ):
+    def _delete(self, key):
         
         if key in self._keys_fifo:
             
@@ -65,25 +65,25 @@ class DataCache( object ):
             
         
     
-    def _DeleteItem( self ):
+    def _delete_item(self):
         
         ( deletee_key, last_access_time ) = self._keys_fifo.popitem( last = False )
         
-        self._Delete( deletee_key )
+        self._delete(deletee_key)
         
     
-    def _GetData( self, key ) -> CacheableObject:
+    def _get_data(self, key) -> CacheableObject:
         
         if key not in self._keys_to_data:
             
             raise Exception( 'Cache error! Looking for {}, but it was missing.'.format( key ) )
             
         
-        self._TouchKey( key )
+        self._touch_key(key)
 
         ( data, size_estimate ) = self._keys_to_data[ key ]
         
-        new_estimate = data.GetEstimatedMemoryFootprint()
+        new_estimate = data.get_estimated_memory_footprint()
         
         if new_estimate != size_estimate:
             
@@ -95,7 +95,7 @@ class DataCache( object ):
         return data
         
     
-    def _TouchKey( self, key ):
+    def _touch_key(self, key):
         
         # have to delete first, rather than overwriting, so the ordereddict updates its internal order
         if key in self._keys_fifo:
@@ -106,7 +106,7 @@ class DataCache( object ):
         self._keys_fifo[ key ] = HydrusTime.get_now()
         
     
-    def Clear( self ):
+    def clear(self):
         
         with self._lock:
             
@@ -117,7 +117,7 @@ class DataCache( object ):
             
         
     
-    def AddData( self, key, data: CacheableObject ):
+    def add_data(self, key, data: CacheableObject):
         
         with self._lock:
             
@@ -125,16 +125,16 @@ class DataCache( object ):
                 
                 while self._total_estimated_memory_footprint > self._cache_size:
                     
-                    self._DeleteItem()
+                    self._delete_item()
                     
                 
-                size_estimate = data.GetEstimatedMemoryFootprint()
+                size_estimate = data.get_estimated_memory_footprint()
                 
                 self._keys_to_data[ key ] = ( data, size_estimate )
                 
                 self._total_estimated_memory_footprint += size_estimate
                 
-                self._TouchKey( key )
+                self._touch_key(key)
                 
                 if HG.cache_report_mode:
                     
@@ -151,15 +151,15 @@ class DataCache( object ):
             
         
     
-    def DeleteData( self, key ):
+    def delete_data(self, key):
         
         with self._lock:
             
-            self._Delete( key )
+            self._delete(key)
             
         
     
-    def GetAllKeys( self ) -> list[ object ]:
+    def get_all_keys(self) -> list[ object]:
         
         with self._lock:
             
@@ -167,21 +167,21 @@ class DataCache( object ):
             
         
     
-    def GetData( self, key ) -> CacheableObject:
+    def get_data(self, key) -> CacheableObject:
         
         with self._lock:
             
-            return self._GetData( key )
+            return self._get_data(key)
             
         
     
-    def GetIfHasData( self, key ) -> CacheableObject | None:
+    def get_if_has_data(self, key) -> CacheableObject | None:
         
         with self._lock:
             
             if key in self._keys_to_data:
                 
-                return self._GetData( key )
+                return self._get_data(key)
                 
             else:
                 
@@ -190,7 +190,7 @@ class DataCache( object ):
             
         
     
-    def GetSizeLimit( self ) -> int:
+    def get_size_limit(self) -> int:
         
         with self._lock:
             
@@ -198,7 +198,7 @@ class DataCache( object ):
             
         
     
-    def HasData( self, key ) -> bool:
+    def has_data(self, key) -> bool:
         
         with self._lock:
             
@@ -206,13 +206,13 @@ class DataCache( object ):
             
         
     
-    def MaintainCache( self ) -> None:
+    def maintain_cache(self) -> None:
         
         with self._lock:
             
             while self._total_estimated_memory_footprint > self._cache_size:
                 
-                self._DeleteItem()
+                self._delete_item()
                 
             
             while True:
@@ -227,7 +227,7 @@ class DataCache( object ):
                     
                     if HydrusTime.time_has_passed( last_access_time + self._timeout ):
                         
-                        self._DeleteItem()
+                        self._delete_item()
                         
                     else:
                         
@@ -238,7 +238,7 @@ class DataCache( object ):
             
         
     
-    def SetCacheSizeAndTimeout( self, cache_size, timeout ) -> None:
+    def set_cache_size_and_timeout(self, cache_size, timeout) -> None:
         
         with self._lock:
             
@@ -246,18 +246,18 @@ class DataCache( object ):
             self._timeout = timeout
             
         
-        self.MaintainCache()
+        self.maintain_cache()
         
     
-    def TouchKey( self, key ):
+    def touch_key(self, key):
         
         with self._lock:
             
-            self._TouchKey( key )
+            self._touch_key(key)
             
         
     
-    def _DeleteLoadedItemsUntilFreeSpace( self, free_space_desired: int ) -> bool:
+    def _delete_loaded_items_until_free_space(self, free_space_desired: int) -> bool:
         
         current_free_space = self._cache_size - self._total_estimated_memory_footprint
         
@@ -270,13 +270,13 @@ class DataCache( object ):
             
             ( data, size_estimate ) = self._keys_to_data[ key ]
             
-            if not data.IsFinishedLoading():
+            if not data.is_finished_loading():
                 
                 # this guy is still rendering, let's not push him out for a different prefetch
                 continue
                 
             
-            self._Delete( key )
+            self._delete(key)
             
             current_free_space = self._cache_size - self._total_estimated_memory_footprint
             
@@ -290,7 +290,7 @@ class DataCache( object ):
         return False
         
     
-    def TryToFlushEasySpaceForPrefetch( self, free_space_desired: int ):
+    def try_to_flush_easy_space_for_prefetch(self, free_space_desired: int):
         
         # ok, caller wants to do a prefetch. question is, is there enough soft space in the fifo queue to jam another guy in?
         # or, are we actually pretty busy now with image rendering and stuff and we don't really want to cut too hard?
@@ -298,7 +298,7 @@ class DataCache( object ):
         
         with self._lock:
             
-            successful = self._DeleteLoadedItemsUntilFreeSpace( free_space_desired )
+            successful = self._delete_loaded_items_until_free_space(free_space_desired)
             
             return successful
             

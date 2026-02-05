@@ -24,7 +24,7 @@ def GetRealFileImportOptions( file_import_options: "FileImportOptionsLegacy", lo
     
     if file_import_options.IsDefault():
         
-        file_import_options = CG.client_controller.new_options.GetDefaultFileImportOptions( loud_or_quiet )
+        file_import_options = CG.client_controller.new_options.get_default_file_import_options(loud_or_quiet)
         
     
     return file_import_options
@@ -65,14 +65,14 @@ class FileImportOptionsLegacy( HydrusSerialisable.SerialisableBase ):
         
         try:
             
-            fallback = CG.client_controller.services_manager.GetLocalMediaFileServices()[0].GetServiceKey()
+            fallback = CG.client_controller.services_manager.get_local_media_file_services()[0].get_service_key()
             
         except:
             
             fallback = CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY
             
         
-        self._import_destination_location_context = ClientLocation.LocationContext.STATICCreateSimple( fallback )
+        self._import_destination_location_context = ClientLocation.LocationContext.static_create_simple(fallback)
         
         self._is_default = False
         
@@ -217,7 +217,7 @@ class FileImportOptionsLegacy( HydrusSerialisable.SerialisableBase ):
             
             ( exclude_deleted, do_not_check_known_urls_before_importing, do_not_check_hashes_before_importing, allow_decompression_bombs, min_size, max_size, max_gif_size, min_resolution, max_resolution ) = pre_import_options
             
-            import_destination_location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )
+            import_destination_location_context = ClientLocation.LocationContext.static_create_simple(CC.LOCAL_FILE_SERVICE_KEY)
             
             serialisable_import_destination_location_context = import_destination_location_context.get_serialisable_tuple()
             
@@ -403,7 +403,7 @@ class FileImportOptionsLegacy( HydrusSerialisable.SerialisableBase ):
             
             if too_thin or too_short:
                 
-                raise HydrusExceptions.FileImportRulesException( 'File had resolution ' + ClientData.ResolutionToPrettyString( ( width, height ) ) + ' but the lower limit is ' + ClientData.ResolutionToPrettyString( self._min_resolution ) )
+                raise HydrusExceptions.FileImportRulesException( 'File had resolution ' + ClientData.resolution_to_pretty_string((width, height)) + ' but the lower limit is ' + ClientData.resolution_to_pretty_string(self._min_resolution))
                 
             
         
@@ -416,14 +416,14 @@ class FileImportOptionsLegacy( HydrusSerialisable.SerialisableBase ):
             
             if too_wide or too_tall:
                 
-                raise HydrusExceptions.FileImportRulesException( 'File had resolution ' + ClientData.ResolutionToPrettyString( ( width, height ) ) + ' but the upper limit is ' + ClientData.ResolutionToPrettyString( self._max_resolution ) )
+                raise HydrusExceptions.FileImportRulesException( 'File had resolution ' + ClientData.resolution_to_pretty_string((width, height)) + ' but the upper limit is ' + ClientData.resolution_to_pretty_string(self._max_resolution))
                 
             
         
     
     def CheckReadyToImport( self ) -> None:
         
-        if self._import_destination_location_context.IsEmpty():
+        if self._import_destination_location_context.is_empty():
             
             raise HydrusExceptions.FileImportBlockException( 'There is no import destination set in the File Import Options!' )
             

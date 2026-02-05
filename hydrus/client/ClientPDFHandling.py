@@ -25,7 +25,7 @@ from hydrus.core.files import HydrusPDFHandling
 from hydrus.client import ClientGlobals as CG
 from hydrus.client.gui import ClientGUIFunctions
 
-def QtLoadPDF( path: str ):
+def qt_load_pdf(path: str):
     
     if not PDF_OK:
         
@@ -73,13 +73,13 @@ def QtLoadPDF( path: str ):
     return document
     
 
-def GenerateThumbnailNumPyFromPDFPath( path: str, target_resolution: tuple[int, int] ) -> bytes:
+def generate_thumbnail_num_py_from_pdf_path(path: str, target_resolution: tuple[int, int]) -> bytes:
     
     def qt_code() -> bytes:
         
         try:
             
-            document = QtLoadPDF( path )
+            document = qt_load_pdf(path)
             
             ( target_width, target_height ) = target_resolution
             
@@ -109,20 +109,20 @@ def GenerateThumbnailNumPyFromPDFPath( path: str, target_resolution: tuple[int, 
             
         
     
-    return CG.client_controller.CallBlockingToQtTLW( qt_code )
+    return CG.client_controller.call_blocking_to_qt_tlw(qt_code)
     
 
-HydrusPDFHandling.generate_thumbnail_numpy_from_pdf_path = GenerateThumbnailNumPyFromPDFPath
+HydrusPDFHandling.generate_thumbnail_numpy_from_pdf_path = generate_thumbnail_num_py_from_pdf_path
 
 PDF_ASSUMED_DPI = 300
 
-def GetHumanReadableEmbeddedMetadata( path ) -> str:
+def get_human_readable_embedded_metadata(path) -> str:
     
     def qt_code() -> str:
         
         try:
             
-            document = QtLoadPDF( path )
+            document = qt_load_pdf(path)
             
         except:
             
@@ -151,14 +151,14 @@ def GetHumanReadableEmbeddedMetadata( path ) -> str:
         return '\n'.join( result_components )
         
     
-    return CG.client_controller.CallBlockingToQtTLW( qt_code )
+    return CG.client_controller.call_blocking_to_qt_tlw(qt_code)
     
 
-def HasHumanReadableEmbeddedMetadata( path ) -> bool:
+def has_human_readable_embedded_metadata(path) -> bool:
     
     try:
         
-        text = GetHumanReadableEmbeddedMetadata( path )
+        text = get_human_readable_embedded_metadata(path)
         
     except HydrusExceptions.LimitedSupportFileException:
         
@@ -168,13 +168,13 @@ def HasHumanReadableEmbeddedMetadata( path ) -> bool:
     return len( text ) > 0
     
 
-def GetPDFInfo( path: str ):
+def _get_pdf_info(path: str):
     
     def qt_code():
         
         try:
             
-            document = QtLoadPDF( path )
+            document = qt_load_pdf(path)
             
         except:
             
@@ -183,7 +183,7 @@ def GetPDFInfo( path: str ):
         
         try:
             
-            ( width, height ) = GetPDFResolutionFromDocument( document )
+            ( width, height ) = get_pdf_resolution_from_document(document)
             
         except:
             
@@ -215,10 +215,10 @@ def GetPDFInfo( path: str ):
         return ( num_words, ( width, height ) )
         
     
-    return CG.client_controller.CallBlockingToQtTLW( qt_code )
+    return CG.client_controller.call_blocking_to_qt_tlw(qt_code)
     
 
-def GetPDFModifiedTimestampMS( path ):
+def get_pdf_modified_timestamp_ms(path):
     
     def qt_code():
         
@@ -228,7 +228,7 @@ def GetPDFModifiedTimestampMS( path ):
         
         try:
             
-            document = QtLoadPDF( path )
+            document = qt_load_pdf(path)
             
         except:
             
@@ -242,10 +242,10 @@ def GetPDFModifiedTimestampMS( path ):
         return modified_timestamp_ms
         
     
-    return CG.client_controller.CallBlockingToQtTLW( qt_code )
+    return CG.client_controller.call_blocking_to_qt_tlw(qt_code)
     
 
-def GetPDFResolutionFromDocument( document ):
+def get_pdf_resolution_from_document(document):
     
     pointSize = document.pagePointSize(0)
     
@@ -257,4 +257,4 @@ def GetPDFResolutionFromDocument( document ):
     return ( round( width ), round( height ) )
     
 
-HydrusPDFHandling.get_pdf_info = GetPDFInfo
+HydrusPDFHandling.get_pdf_info = _get_pdf_info

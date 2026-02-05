@@ -37,14 +37,14 @@ def GetDuplicateComparisonStatementsFast( shown_media_result: ClientMediaResult.
     
     new_options = CG.client_controller.new_options
     
-    duplicate_comparison_score_higher_filesize = new_options.GetInteger( 'duplicate_comparison_score_higher_filesize' )
-    duplicate_comparison_score_much_higher_filesize = new_options.GetInteger( 'duplicate_comparison_score_much_higher_filesize' )
-    duplicate_comparison_score_higher_resolution = new_options.GetInteger( 'duplicate_comparison_score_higher_resolution' )
-    duplicate_comparison_score_much_higher_resolution = new_options.GetInteger( 'duplicate_comparison_score_much_higher_resolution' )
-    duplicate_comparison_score_more_tags = new_options.GetInteger( 'duplicate_comparison_score_more_tags' )
-    duplicate_comparison_score_older = new_options.GetInteger( 'duplicate_comparison_score_older' )
-    duplicate_comparison_score_nicer_ratio = new_options.GetInteger( 'duplicate_comparison_score_nicer_ratio' )
-    duplicate_comparison_score_has_audio = new_options.GetInteger( 'duplicate_comparison_score_has_audio' )
+    duplicate_comparison_score_higher_filesize = new_options.get_integer('duplicate_comparison_score_higher_filesize')
+    duplicate_comparison_score_much_higher_filesize = new_options.get_integer('duplicate_comparison_score_much_higher_filesize')
+    duplicate_comparison_score_higher_resolution = new_options.get_integer('duplicate_comparison_score_higher_resolution')
+    duplicate_comparison_score_much_higher_resolution = new_options.get_integer('duplicate_comparison_score_much_higher_resolution')
+    duplicate_comparison_score_more_tags = new_options.get_integer('duplicate_comparison_score_more_tags')
+    duplicate_comparison_score_older = new_options.get_integer('duplicate_comparison_score_older')
+    duplicate_comparison_score_nicer_ratio = new_options.get_integer('duplicate_comparison_score_nicer_ratio')
+    duplicate_comparison_score_has_audio = new_options.get_integer('duplicate_comparison_score_has_audio')
     
     #
     
@@ -187,7 +187,7 @@ def GetDuplicateComparisonStatementsFast( shown_media_result: ClientMediaResult.
         if s_w == c_w and s_h == c_h:
             
             score = 0
-            statement = f'both are {ClientData.ResolutionToPrettyString(s_resolution)}'
+            statement = f'both are {ClientData.resolution_to_pretty_string(s_resolution)}'
             
             statements_and_scores[ 'resolution' ] = ( statement, score )
             
@@ -221,14 +221,14 @@ def GetDuplicateComparisonStatementsFast( shown_media_result: ClientMediaResult.
                 score = -duplicate_comparison_score_higher_resolution
                 
             
-            s_string = ClientData.ResolutionToPrettyString( s_resolution )
+            s_string = ClientData.resolution_to_pretty_string(s_resolution)
             
             if s_w % 2 == 1 or s_h % 2 == 1:
                 
                 s_string += ' (unusual)'
                 
             
-            c_string = ClientData.ResolutionToPrettyString( c_resolution )
+            c_string = ClientData.resolution_to_pretty_string(c_resolution)
             
             if c_w % 2 == 1 or c_h % 2 == 1:
                 
@@ -571,7 +571,7 @@ def populate_jpeg_quality_storage( jpeg_hash ):
     
     jpeg_quality_storage = JpegQualityStorage.instance()
     
-    if not jpeg_quality_storage.HasData( jpeg_hash ):
+    if not jpeg_quality_storage.has_data(jpeg_hash):
         
         path = CG.client_controller.client_files_manager.GetFilePath( jpeg_hash, HC.IMAGE_JPEG )
         
@@ -595,7 +595,7 @@ def populate_jpeg_quality_storage( jpeg_hash ):
         
         jpeg_quality = JpegQuality( subsampling, quality_label, quality )
         
-        jpeg_quality_storage.AddData( jpeg_hash, jpeg_quality )
+        jpeg_quality_storage.add_data(jpeg_hash, jpeg_quality)
         
     
 
@@ -606,8 +606,8 @@ def GetDuplicateComparisonStatementsSlow( shown_media_result: ClientMediaResult.
     s_hash = shown_media_result.GetHash()
     c_hash = comparison_media_result.GetHash()
     
-    duplicate_comparison_score_higher_jpeg_quality = new_options.GetInteger( 'duplicate_comparison_score_higher_jpeg_quality' )
-    duplicate_comparison_score_much_higher_jpeg_quality = new_options.GetInteger( 'duplicate_comparison_score_much_higher_jpeg_quality' )
+    duplicate_comparison_score_higher_jpeg_quality = new_options.get_integer('duplicate_comparison_score_higher_jpeg_quality')
+    duplicate_comparison_score_much_higher_jpeg_quality = new_options.get_integer('duplicate_comparison_score_much_higher_jpeg_quality')
     
     statements_and_scores = {}
     
@@ -623,8 +623,8 @@ def GetDuplicateComparisonStatementsSlow( shown_media_result: ClientMediaResult.
         
         jpeg_quality_storage = JpegQualityStorage.instance()
         
-        s_jpeg_quality = typing.cast( JpegQuality, jpeg_quality_storage.GetData( s_hash ) )
-        c_jpeg_quality = typing.cast( JpegQuality, jpeg_quality_storage.GetData( c_hash ) )
+        s_jpeg_quality = typing.cast(JpegQuality, jpeg_quality_storage.get_data(s_hash))
+        c_jpeg_quality = typing.cast(JpegQuality, jpeg_quality_storage.get_data(c_hash))
         
         s_subsampling_quality = HydrusImageMetadata.subsampling_quality_lookup.get( s_jpeg_quality.subsampling, 0 )
         c_subsampling_quality = HydrusImageMetadata.subsampling_quality_lookup.get( c_jpeg_quality.subsampling, 0 )
@@ -752,11 +752,11 @@ def GetVisualData( media_result: ClientMediaResult.MediaResult ) -> ClientVisual
     
     visual_data_cache = ClientVisualData.VisualDataStorage.instance()
     
-    if not visual_data_cache.HasData( hash ):
+    if not visual_data_cache.has_data(hash):
         
         image_renderer = CG.client_controller.images_cache.GetImageRenderer( media_result )
         
-        while not image_renderer.IsReady():
+        while not image_renderer.is_ready():
             
             if HydrusThreading.is_thread_shutting_down():
                 
@@ -766,7 +766,7 @@ def GetVisualData( media_result: ClientMediaResult.MediaResult ) -> ClientVisual
             time.sleep( 0.1 )
             
         
-        numpy_image = image_renderer.GetNumPyImage()
+        numpy_image = image_renderer.get_numpy_image()
         
         try:
             
@@ -779,10 +779,10 @@ def GetVisualData( media_result: ClientMediaResult.MediaResult ) -> ClientVisual
             raise
             
         
-        visual_data_cache.AddData( hash, visual_data )
+        visual_data_cache.add_data(hash, visual_data)
         
     
-    return typing.cast( ClientVisualData.VisualData, visual_data_cache.GetData( hash ) )
+    return typing.cast(ClientVisualData.VisualData, visual_data_cache.get_data(hash))
     
 
 def GetVisualDataTiled( media_result: ClientMediaResult.MediaResult ) -> ClientVisualData.VisualDataTiled:
@@ -791,11 +791,11 @@ def GetVisualDataTiled( media_result: ClientMediaResult.MediaResult ) -> ClientV
     
     visual_data_tiled_cache = ClientVisualData.VisualDataTiledStorage.instance()
     
-    if not visual_data_tiled_cache.HasData( hash ):
+    if not visual_data_tiled_cache.has_data(hash):
         
         image_renderer = CG.client_controller.images_cache.GetImageRenderer( media_result )
         
-        while not image_renderer.IsReady():
+        while not image_renderer.is_ready():
             
             if HydrusThreading.is_thread_shutting_down():
                 
@@ -805,7 +805,7 @@ def GetVisualDataTiled( media_result: ClientMediaResult.MediaResult ) -> ClientV
             time.sleep( 0.1 )
             
         
-        numpy_image = image_renderer.GetNumPyImage()
+        numpy_image = image_renderer.get_numpy_image()
         
         try:
             
@@ -818,10 +818,10 @@ def GetVisualDataTiled( media_result: ClientMediaResult.MediaResult ) -> ClientV
             raise
             
         
-        visual_data_tiled_cache.AddData( hash, visual_data_tiled )
+        visual_data_tiled_cache.add_data(hash, visual_data_tiled)
         
     
-    return typing.cast( ClientVisualData.VisualDataTiled, visual_data_tiled_cache.GetData( hash ) )
+    return typing.cast(ClientVisualData.VisualDataTiled, visual_data_tiled_cache.get_data(hash))
     
 
 class JpegQuality( ClientCachesBase.CacheableObject ):
@@ -834,12 +834,12 @@ class JpegQuality( ClientCachesBase.CacheableObject ):
         self.quality = quality
         
     
-    def GetEstimatedMemoryFootprint( self ) -> int:
+    def get_estimated_memory_footprint(self) -> int:
         
         return 64 # w/e
         
     
-    def IsFinishedLoading( self ):
+    def is_finished_loading(self):
         
         return True
         

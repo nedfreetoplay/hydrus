@@ -48,7 +48,7 @@ class Dialog( QP.Dialog ):
         
         if parent is not None and position == 'center':
             
-            CG.client_controller.CallAfterQtSafe( self, QP.CenterOnWindow, parent, self )
+            CG.client_controller.call_after_qt_safe(self, QP.CenterOnWindow, parent, self)
             
         
         CG.client_controller.reset_idle_timer()
@@ -162,9 +162,9 @@ class DialogGenerateNewAccounts( Dialog ):
         
         self._num.setValue( 1 )
         
-        service = CG.client_controller.services_manager.GetService( service_key )
+        service = CG.client_controller.services_manager.get_service(service_key)
         
-        response = service.Request( HC.GET, 'account_types' )
+        response = service.request(HC.GET, 'account_types')
         
         account_types = response[ 'account_types' ]
         
@@ -229,7 +229,7 @@ class DialogGenerateNewAccounts( Dialog ):
             expires = HydrusTime.get_now() + lifetime
             
         
-        service = CG.client_controller.services_manager.GetService( self._service_key )
+        service = CG.client_controller.services_manager.get_service(self._service_key)
         
         try:
             
@@ -240,7 +240,7 @@ class DialogGenerateNewAccounts( Dialog ):
                 request_args[ 'expires' ] = expires
                 
             
-            response = service.Request( HC.GET, 'registration_keys', request_args )
+            response = service.request(HC.GET, 'registration_keys', request_args)
             
             registration_keys = response[ 'registration_keys' ]
             
@@ -354,7 +354,7 @@ class DialogInputTags( Dialog ):
         
         self._tags = ClientGUIListBoxes.ListBoxTagsStringsAddRemove( self, service_key, tag_display_type = tag_display_type )
         
-        default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+        default_location_context = CG.client_controller.new_options.get_default_local_location_context()
         
         self._tag_autocomplete = ClientGUIACDropdown.AutoCompleteDropdownTagsWrite( self, self.EnterTags, default_location_context, service_key, show_paste_button = True )
         

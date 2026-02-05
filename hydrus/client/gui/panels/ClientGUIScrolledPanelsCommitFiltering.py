@@ -161,7 +161,7 @@ class QuestionArchiveDeleteFinishFilteringPanel( ClientGUIScrolledPanels.Resizin
                 QP.AddToLayout( vbox, st, CC.FLAGS_EXPAND_PERPENDICULAR )
                 
             
-            delay_delete_buttons = len( deletion_options ) > 0 and CG.client_controller.new_options.GetBoolean( 'archive_delete_commit_panel_delays_multiple_delete_choices' )
+            delay_delete_buttons = len( deletion_options ) > 0 and CG.client_controller.new_options.get_boolean('archive_delete_commit_panel_delays_multiple_delete_choices')
             delayed_delete_buttons = []
             
             for ( location_context, delete_label ) in deletion_options:
@@ -201,7 +201,7 @@ class QuestionArchiveDeleteFinishFilteringPanel( ClientGUIScrolledPanels.Resizin
             
             if len( delayed_delete_buttons ) > 0:
                 
-                CG.client_controller.CallLaterQtSafe( self, 1.2, 'delayed button enable', do_it )
+                CG.client_controller.call_later_qt_safe(self, 1.2, 'delayed button enable', do_it)
                 
             
         

@@ -90,7 +90,7 @@ class ClientDBFilesMaintenance( ClientDBModule.ClientDBModule ):
                             self.modules_files_maintenance_queue.AddJobs( { hash_id }, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_OTHER_HASHES )
                             
                         
-                        result = self.modules_files_timestamps.GetTimestampMS( hash_id, ClientTime.TimestampData.STATICSimpleStub( HC.TIMESTAMP_TYPE_MODIFIED_FILE ) )
+                        result = self.modules_files_timestamps.GetTimestampMS(hash_id, ClientTime.TimestampData.static_simple_stub(HC.TIMESTAMP_TYPE_MODIFIED_FILE))
                         
                         if result is None:
                             
@@ -110,7 +110,7 @@ class ClientDBFilesMaintenance( ClientDBModule.ClientDBModule ):
                     
                     if mime in HC.MIMES_WITH_THUMBNAILS and resolution_changed:
                         
-                        HydrusData.print_text( f'File Maintenance: File {hash.hex()} changed resolution from {ClientData.ResolutionToPrettyString( original_resolution )} to {ClientData.ResolutionToPrettyString( ( width, height ) )}.' )
+                        HydrusData.print_text( f'File Maintenance: File {hash.hex()} changed resolution from {ClientData.resolution_to_pretty_string(original_resolution)} to {ClientData.resolution_to_pretty_string((width, height))}.')
                         
                         self._ScheduleJobsForChangedAppearance( hash_id )
                         
@@ -193,7 +193,7 @@ class ClientDBFilesMaintenance( ClientDBModule.ClientDBModule ):
                     
                     file_modified_timestamp_ms = additional_data
                     
-                    self.modules_files_timestamps.SetTime( [ hash_id ], ClientTime.TimestampData.STATICFileModifiedTime( file_modified_timestamp_ms ) )
+                    self.modules_files_timestamps.SetTime([ hash_id ], ClientTime.TimestampData.static_file_modified_time(file_modified_timestamp_ms))
                     
                     new_modified_timestamps_info.add( ( hash_id, hash ) )
                     

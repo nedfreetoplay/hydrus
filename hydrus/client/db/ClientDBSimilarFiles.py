@@ -197,7 +197,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
         
         while len( process_queue ) > 0:
             
-            job_status.SetStatusText( 'generating new branch -- ' + HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do ), 2 )
+            job_status.set_status_text('generating new branch -- ' + HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do), 2)
             
             ( parent_id, perceptual_hash_id, perceptual_hash, children ) = process_queue.popleft()
             
@@ -268,7 +268,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
             num_done += 1
             
         
-        job_status.SetStatusText( 'branch constructed, now committing', 2 )
+        job_status.set_status_text('branch constructed, now committing', 2)
         
         self._execute_many( 'INSERT OR REPLACE INTO shape_vptree ( phash_id, parent_id, radius, inner_id, inner_population, outer_id, outer_population ) VALUES ( ?, ?, ?, ?, ?, ?, ? );', insert_rows )
         
@@ -462,7 +462,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
     
     def _RegenerateBranch( self, job_status, perceptual_hash_id ):
         
-        job_status.SetStatusText( 'reviewing existing branch', 2 )
+        job_status.set_status_text('reviewing existing branch', 2)
         
         # grab everything in the branch
         
@@ -482,7 +482,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
         
         # removal of old branch and maintenance schedule
         
-        job_status.SetStatusText( HydrusNumbers.to_human_int( len( unbalanced_nodes ) ) + ' leaves found--now clearing out old branch', 2 )
+        job_status.set_status_text(HydrusNumbers.to_human_int(len(unbalanced_nodes)) + ' leaves found--now clearing out old branch', 2)
         
         unbalanced_perceptual_hash_ids = { p_id for ( p_id, p_h ) in unbalanced_nodes }
         
@@ -807,11 +807,11 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
         
         try:
             
-            job_status.SetStatusTitle( 'regenerating similar file search data' )
+            job_status.set_status_title('regenerating similar file search data')
             
             CG.client_controller.pub( 'modal_message', job_status )
             
-            job_status.SetStatusText( 'gathering all leaves' )
+            job_status.set_status_text('gathering all leaves')
             
             self._execute( 'DELETE FROM shape_vptree;' )
             
@@ -890,7 +890,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
                     
                 
             
-            job_status.SetStatusText( HydrusNumbers.to_human_int( len( all_nodes ) ) + ' leaves found, now regenerating' )
+            job_status.set_status_text(HydrusNumbers.to_human_int(len(all_nodes)) + ' leaves found, now regenerating')
             
             ( root_id, root_perceptual_hash ) = self._PopBestRootNode( all_nodes ) #HydrusLists.RandomPop( all_nodes )
             
@@ -900,10 +900,10 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
             
         finally:
             
-            job_status.SetStatusText( 'done!' )
-            job_status.DeleteStatusText( level = 2 )
+            job_status.set_status_text('done!')
+            job_status.delete_status_text(level = 2)
             
-            job_status.FinishAndDismiss( 5 )
+            job_status.finish_and_dismiss(5)
             
         
     

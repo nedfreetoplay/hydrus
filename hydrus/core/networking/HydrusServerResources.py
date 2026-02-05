@@ -20,10 +20,10 @@ from hydrus.core.networking import HydrusServerRequest
 
 def get_server_summary_texts( service ):
     
-    name = service.GetName()
-    service_type = service.GetServiceType()
+    name = service.get_name()
+    service_type = service.get_service_type()
     
-    allows_non_local_connections = service.AllowsNonLocalConnections()
+    allows_non_local_connections = service.allows_non_local_connections()
     
     welcome_text_1 = 'This is <b>' + name + '</b>,'
     welcome_text_2 = 'a ' + HC.service_string_lookup[ service_type ] + '.'
@@ -57,11 +57,11 @@ def get_server_summary_texts( service ):
     
 def generate_eris( service ):
     
-    if hasattr( service, 'UseNormieEris' ) and service.UseNormieEris():
+    if hasattr( service, 'UseNormieEris' ) and service.use_normie_eris():
         
         return generate_normie_eris( service )
         
-    name = service.GetName()
+    name = service.get_name()
     
     server_summary_texts = get_server_summary_texts( service )
     
@@ -238,7 +238,7 @@ def generate_eris( service ):
 
 def generate_normie_eris( service ):
     
-    name = service.GetName()
+    name = service.get_name()
     
     server_summary_texts = get_server_summary_texts( service )
     
@@ -429,7 +429,7 @@ class HydrusResource( Resource ):
         super().__init__()
         
         self._service = service
-        self._service_key = self._service.GetServiceKey()
+        self._service_key = self._service.get_service_key()
         self._domain = domain
         
     
@@ -552,7 +552,7 @@ class HydrusResource( Resource ):
         
         if request.requestHeaders.hasHeader( 'Origin' ):
             
-            if self._service.SupportsCORS():
+            if self._service.supports_cors():
                 
                 request.setHeader( 'Access-Control-Allow-Origin', '*' )
                 
@@ -776,7 +776,7 @@ class HydrusResource( Resource ):
             request.profile_result = call( request )
             
         
-        summary = 'Profiling {}: {}'.format( self._service.GetName(), request.path )
+        summary = 'Profiling {}: {}'.format(self._service.get_name(), request.path)
         
         HydrusProfiling.profile( summary, do_it, min_duration_ms = HG.server_profile_min_job_time_ms )
         
@@ -901,7 +901,7 @@ class HydrusResource( Resource ):
                 
                 HydrusData.debug_print( failure.getTraceback() )
                 
-                error_summary = f'The "{self._service.GetName()}" encountered an error it could not handle!\n\nHere is a full traceback of what happened. If you are using the hydrus client, it will be saved to your log. Please forward it to hydrus_dev@proton.me:\n\n' + failure.getTraceback()
+                error_summary = f'The "{self._service.get_name()}" encountered an error it could not handle!\n\nHere is a full traceback of what happened. If you are using the hydrus client, it will be saved to your log. Please forward it to hydrus_dev@proton.me:\n\n' + failure.getTraceback()
                 
             
             # TODO: maybe pull the cbor stuff down to hydrus core here and respond with Dumps( blah, requested_mime ) instead
@@ -1078,7 +1078,7 @@ class HydrusResource( Resource ):
     
     def _report_data_used( self, request, num_bytes ):
         
-        self._service.ReportDataUsed( num_bytes )
+        self._service.report_data_used(num_bytes)
         
         HG.controller.report_data_used( num_bytes )
         
@@ -1090,7 +1090,7 @@ class HydrusResource( Resource ):
     
     def _report_request_used( self, request: HydrusServerRequest.HydrusRequest ):
         
-        self._service.ReportRequestUsed()
+        self._service.report_request_used()
         
         HG.controller.report_request_used()
         
@@ -1120,7 +1120,7 @@ class HydrusResource( Resource ):
             
             # this is a CORS request
             
-            if self._service.SupportsCORS():
+            if self._service.supports_cors():
                 
                 request.setHeader( 'Access-Control-Allow-Headers', '*' )
                 request.setHeader( 'Access-Control-Allow-Origin', '*' )

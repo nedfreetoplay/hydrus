@@ -201,7 +201,7 @@ class EditFavouriteSearchesPanel( ClientGUIScrolledPanels.EditPanel ):
         
         if initial_search_row_to_edit is not None:
             
-            CG.client_controller.CallLaterQtSafe( self, 0.5, 'add new favourite search', self._AddNewFavouriteSearch, initial_search_row_to_edit )
+            CG.client_controller.call_later_qt_safe(self, 0.5, 'add new favourite search', self._AddNewFavouriteSearch, initial_search_row_to_edit)
             
         
     
@@ -216,7 +216,7 @@ class EditFavouriteSearchesPanel( ClientGUIScrolledPanels.EditPanel ):
             foldername = None
             name = 'new favourite search'
             
-            default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+            default_location_context = CG.client_controller.new_options.get_default_local_location_context()
             
             file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = default_location_context )
             
@@ -262,7 +262,7 @@ class EditFavouriteSearchesPanel( ClientGUIScrolledPanels.EditPanel ):
             
         
         pretty_name = name
-        pretty_file_search_context = ', '.join( predicate.ToString() for predicate in file_search_context.GetPredicates() )
+        pretty_file_search_context = ', '.join(predicate.to_string() for predicate in file_search_context.GetPredicates())
         
         if media_sort is None:
             
@@ -270,7 +270,7 @@ class EditFavouriteSearchesPanel( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            pretty_media_sort = media_sort.ToString()
+            pretty_media_sort = media_sort.to_string()
             
         
         if media_collect is None:
@@ -279,7 +279,7 @@ class EditFavouriteSearchesPanel( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            pretty_media_collect = media_collect.ToString()
+            pretty_media_collect = media_collect.to_string()
             
         
         return ( pretty_foldername, pretty_name, pretty_file_search_context, pretty_media_sort, pretty_media_collect )

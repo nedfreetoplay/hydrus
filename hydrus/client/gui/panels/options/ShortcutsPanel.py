@@ -24,8 +24,8 @@ class ShortcutsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         self._new_options = new_options
         
-        call_mouse_buttons_primary_secondary = new_options.GetBoolean( 'call_mouse_buttons_primary_secondary' )
-        shortcuts_merge_non_number_numpad = new_options.GetBoolean( 'shortcuts_merge_non_number_numpad' )
+        call_mouse_buttons_primary_secondary = new_options.get_boolean('call_mouse_buttons_primary_secondary')
+        shortcuts_merge_non_number_numpad = new_options.get_boolean('shortcuts_merge_non_number_numpad')
         
         self._have_edited_anything = False
         
@@ -241,7 +241,7 @@ class ShortcutsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def _GetDisplayTuple( self, shortcuts ):
         
-        name = shortcuts.GetName()
+        name = shortcuts.get_name()
         
         if name in ClientGUIShortcuts.shortcut_names_to_descriptions:
             
@@ -259,12 +259,12 @@ class ShortcutsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def _GetExistingCustomShortcutNames( self ):
         
-        return { shortcuts.GetName() for shortcuts in self._custom_shortcuts.GetData() }
+        return {shortcuts.get_name() for shortcuts in self._custom_shortcuts.GetData()}
         
     
     def _GetSortTuple( self, shortcuts ):
         
-        name = shortcuts.GetName()
+        name = shortcuts.get_name()
         
         if name in ClientGUIShortcuts.shortcut_names_to_descriptions:
             
@@ -284,9 +284,9 @@ class ShortcutsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         from hydrus.client import ClientDefaults
         
-        defaults = ClientDefaults.GetDefaultShortcuts()
+        defaults = ClientDefaults.get_default_shortcuts()
         
-        names_to_sets = { shortcut_set.GetName() : shortcut_set for shortcut_set in defaults }
+        names_to_sets = {shortcut_set.get_name() : shortcut_set for shortcut_set in defaults}
         
         choice_tuples = [ ( name, name ) for name in names_to_sets ]
         
@@ -305,7 +305,7 @@ class ShortcutsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         for data in self._reserved_shortcuts.GetData():
             
-            if data.GetName() == name:
+            if data.get_name() == name:
                 
                 existing_data = data
                 
@@ -362,8 +362,8 @@ class ShortcutsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         call_mouse_buttons_primary_secondary = self._call_mouse_buttons_primary_secondary.isChecked()
         shortcuts_merge_non_number_numpad = self._shortcuts_merge_non_number_numpad.isChecked()
         
-        self._new_options.SetBoolean( 'call_mouse_buttons_primary_secondary', call_mouse_buttons_primary_secondary )
-        self._new_options.SetBoolean( 'shortcuts_merge_non_number_numpad', shortcuts_merge_non_number_numpad )
+        self._new_options.set_boolean('call_mouse_buttons_primary_secondary', call_mouse_buttons_primary_secondary)
+        self._new_options.set_boolean('shortcuts_merge_non_number_numpad', shortcuts_merge_non_number_numpad)
         
         if self._have_edited_anything:
             
@@ -372,7 +372,7 @@ class ShortcutsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             shortcut_sets.extend( self._reserved_shortcuts.GetData() )
             shortcut_sets.extend( self._custom_shortcuts.GetData() )
             
-            dupe_shortcut_sets = [ shortcut_set.Duplicate() for shortcut_set in shortcut_sets ]
+            dupe_shortcut_sets = [shortcut_set.duplicate() for shortcut_set in shortcut_sets]
             
             CG.client_controller.write( 'serialisables_overwrite', [ HydrusSerialisable.SERIALISABLE_TYPE_SHORTCUT_SET ], dupe_shortcut_sets )
             

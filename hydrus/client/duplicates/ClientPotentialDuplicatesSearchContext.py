@@ -543,7 +543,7 @@ class PotentialDuplicatePairsFragmentarySearch( object ):
     def DoingFileBasedSearchIsOK( self ):
         
         # don't do it for partial searches, and a sanity check
-        return self._is_searching_full_space and self.NumPairsInSearchSpace() > 10000 and not self.ThereIsJustABitLeftBro() and CG.client_controller.new_options.GetBoolean( 'potential_duplicate_pairs_search_can_do_file_search_based_optimisation' )
+        return self._is_searching_full_space and self.NumPairsInSearchSpace() > 10000 and not self.ThereIsJustABitLeftBro() and CG.client_controller.new_options.get_boolean('potential_duplicate_pairs_search_can_do_file_search_based_optimisation')
         
     
     def EstimatedNumHits( self ):
@@ -935,11 +935,11 @@ class PotentialDuplicatesSearchContext( HydrusSerialisable.SerialisableBase ):
             
             try:
                 
-                location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+                location_context = CG.client_controller.new_options.get_default_local_location_context()
                 
             except:
                 
-                location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+                location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
                 
             
         

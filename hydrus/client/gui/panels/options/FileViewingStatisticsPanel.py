@@ -33,7 +33,7 @@ class FileViewingStatisticsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         self._file_viewing_statistics_preview_max_time = ClientGUITime.NoneableTimeDeltaWidget( self, 60.0, hours = True, minutes = True, seconds = True, milliseconds = True )
         self._file_viewing_statistics_preview_max_time.setToolTip( ClientGUIFunctions.WrapToolTip( max_tt ) )
         
-        file_viewing_stats_interesting_canvas_types = self._new_options.GetIntegerList( 'file_viewing_stats_interesting_canvas_types' )
+        file_viewing_stats_interesting_canvas_types = self._new_options.get_integer_list('file_viewing_stats_interesting_canvas_types')
         
         self._file_viewing_stats_interesting_canvas_types = ClientGUICommon.BetterCheckBoxList( self )
         
@@ -54,15 +54,15 @@ class FileViewingStatisticsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         #
         
-        self._file_viewing_statistics_active.setChecked( self._new_options.GetBoolean( 'file_viewing_statistics_active' ) )
-        self._file_viewing_statistics_active_on_archive_delete_filter.setChecked( self._new_options.GetBoolean( 'file_viewing_statistics_active_on_archive_delete_filter' ) )
-        self._file_viewing_statistics_active_on_dupe_filter.setChecked( self._new_options.GetBoolean( 'file_viewing_statistics_active_on_dupe_filter' ) )
-        self._file_viewing_statistics_media_min_time.SetValue( HydrusTime.secondise_ms_float( self._new_options.GetNoneableInteger( 'file_viewing_statistics_media_min_time_ms' ) ) )
-        self._file_viewing_statistics_media_max_time.SetValue( HydrusTime.secondise_ms_float( self._new_options.GetNoneableInteger( 'file_viewing_statistics_media_max_time_ms' ) ) )
-        self._file_viewing_statistics_preview_min_time.SetValue( HydrusTime.secondise_ms_float( self._new_options.GetNoneableInteger( 'file_viewing_statistics_preview_min_time_ms' ) ) )
-        self._file_viewing_statistics_preview_max_time.SetValue( HydrusTime.secondise_ms_float( self._new_options.GetNoneableInteger( 'file_viewing_statistics_preview_max_time_ms' ) ) )
+        self._file_viewing_statistics_active.setChecked(self._new_options.get_boolean('file_viewing_statistics_active'))
+        self._file_viewing_statistics_active_on_archive_delete_filter.setChecked(self._new_options.get_boolean('file_viewing_statistics_active_on_archive_delete_filter'))
+        self._file_viewing_statistics_active_on_dupe_filter.setChecked(self._new_options.get_boolean('file_viewing_statistics_active_on_dupe_filter'))
+        self._file_viewing_statistics_media_min_time.SetValue(HydrusTime.secondise_ms_float(self._new_options.get_noneable_integer('file_viewing_statistics_media_min_time_ms')))
+        self._file_viewing_statistics_media_max_time.SetValue(HydrusTime.secondise_ms_float(self._new_options.get_noneable_integer('file_viewing_statistics_media_max_time_ms')))
+        self._file_viewing_statistics_preview_min_time.SetValue(HydrusTime.secondise_ms_float(self._new_options.get_noneable_integer('file_viewing_statistics_preview_min_time_ms')))
+        self._file_viewing_statistics_preview_max_time.SetValue(HydrusTime.secondise_ms_float(self._new_options.get_noneable_integer('file_viewing_statistics_preview_max_time_ms')))
         
-        self._file_viewing_stats_menu_display.SetValue( self._new_options.GetInteger( 'file_viewing_stats_menu_display' ) )
+        self._file_viewing_stats_menu_display.SetValue(self._new_options.get_integer('file_viewing_stats_menu_display'))
         
         #
         
@@ -90,15 +90,15 @@ class FileViewingStatisticsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def UpdateOptions( self ):
         
-        self._new_options.SetBoolean( 'file_viewing_statistics_active', self._file_viewing_statistics_active.isChecked() )
-        self._new_options.SetBoolean( 'file_viewing_statistics_active_on_archive_delete_filter', self._file_viewing_statistics_active_on_archive_delete_filter.isChecked() )
-        self._new_options.SetBoolean( 'file_viewing_statistics_active_on_dupe_filter', self._file_viewing_statistics_active_on_dupe_filter.isChecked() )
-        self._new_options.SetNoneableInteger( 'file_viewing_statistics_media_min_time_ms', HydrusTime.millisecondise_s( self._file_viewing_statistics_media_min_time.GetValue() ) )
-        self._new_options.SetNoneableInteger( 'file_viewing_statistics_media_max_time_ms', HydrusTime.millisecondise_s( self._file_viewing_statistics_media_max_time.GetValue() ) )
-        self._new_options.SetNoneableInteger( 'file_viewing_statistics_preview_min_time_ms', HydrusTime.millisecondise_s( self._file_viewing_statistics_preview_min_time.GetValue() ) )
-        self._new_options.SetNoneableInteger( 'file_viewing_statistics_preview_max_time_ms', HydrusTime.millisecondise_s( self._file_viewing_statistics_preview_max_time.GetValue() ) )
+        self._new_options.set_boolean('file_viewing_statistics_active', self._file_viewing_statistics_active.isChecked())
+        self._new_options.set_boolean('file_viewing_statistics_active_on_archive_delete_filter', self._file_viewing_statistics_active_on_archive_delete_filter.isChecked())
+        self._new_options.set_boolean('file_viewing_statistics_active_on_dupe_filter', self._file_viewing_statistics_active_on_dupe_filter.isChecked())
+        self._new_options.set_noneable_integer('file_viewing_statistics_media_min_time_ms', HydrusTime.millisecondise_s(self._file_viewing_statistics_media_min_time.GetValue()))
+        self._new_options.set_noneable_integer('file_viewing_statistics_media_max_time_ms', HydrusTime.millisecondise_s(self._file_viewing_statistics_media_max_time.GetValue()))
+        self._new_options.set_noneable_integer('file_viewing_statistics_preview_min_time_ms', HydrusTime.millisecondise_s(self._file_viewing_statistics_preview_min_time.GetValue()))
+        self._new_options.set_noneable_integer('file_viewing_statistics_preview_max_time_ms', HydrusTime.millisecondise_s(self._file_viewing_statistics_preview_max_time.GetValue()))
         
-        self._new_options.SetInteger( 'file_viewing_stats_menu_display', self._file_viewing_stats_menu_display.GetValue() )
-        self._new_options.SetIntegerList( 'file_viewing_stats_interesting_canvas_types', self._file_viewing_stats_interesting_canvas_types.GetValue() )
+        self._new_options.set_integer('file_viewing_stats_menu_display', self._file_viewing_stats_menu_display.GetValue())
+        self._new_options.set_integer_list('file_viewing_stats_interesting_canvas_types', self._file_viewing_stats_interesting_canvas_types.GetValue())
         
     

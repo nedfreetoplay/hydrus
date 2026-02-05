@@ -366,7 +366,7 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
                 self.ClearDeferredPhysicalDeleteIds( file_hash_id = hash_id, thumbnail_hash_id = hash_id )
                 
             
-        elif self.modules_services.GetService( service_id ).GetServiceType() in ( HC.FILE_REPOSITORY, HC.IPFS ):
+        elif self.modules_services.GetService( service_id ).get_service_type() in (HC.FILE_REPOSITORY, HC.IPFS):
             
             # it may be the case the files were just uploaded after being deleted
             self.DeferFilesDeleteIfNowOrphan( [ hash_id for ( hash_id, timestamp_ms ) in insert_rows ] )
@@ -512,7 +512,7 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
         
         ( current_files_table_name, deleted_files_table_name, pending_files_table_name, petitioned_files_table_name ) = GenerateFilesTableNames( service_id )
         
-        if self.modules_services.GetService( service_id ).GetServiceType() == HC.FILE_REPOSITORY:
+        if self.modules_services.GetService( service_id ).get_service_type() == HC.FILE_REPOSITORY:
             
             for ( block_of_hash_ids, num_done, num_to_do ) in HydrusDB.read_large_id_query_in_separate_chunks( self._c, 'SELECT hash_id FROM {};'.format( pending_files_table_name ), 1024 ):
                 
@@ -528,7 +528,7 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
         
         ( current_files_table_name, deleted_files_table_name, pending_files_table_name, petitioned_files_table_name ) = GenerateFilesTableNames( service_id )
         
-        if self.modules_services.GetService( service_id ).GetServiceType() == HC.FILE_REPOSITORY:
+        if self.modules_services.GetService( service_id ).get_service_type() == HC.FILE_REPOSITORY:
             
             for ( block_of_hash_ids, num_done, num_to_do ) in HydrusDB.read_large_id_query_in_separate_chunks( self._c, 'SELECT hash_id FROM {};'.format( pending_files_table_name ), 1024 ):
                 
@@ -605,12 +605,12 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
     
     def FilterHashIds( self, location_context: ClientLocation.LocationContext, hash_ids ) -> set:
         
-        if location_context.IsEmpty():
+        if location_context.is_empty():
             
             return set()
             
         
-        if location_context.IsAllKnownFiles():
+        if location_context.is_all_known_files():
             
             return hash_ids
             
@@ -717,13 +717,13 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
         
         services = self.modules_services.GetServices( ( HC.HYDRUS_LOCAL_FILE_STORAGE, HC.FILE_REPOSITORY ) )
         
-        current_service_keys = [ service.GetServiceKey() for service in services ]
+        current_service_keys = [service.get_service_key() for service in services]
         
         if ignore_service_id is not None:
             
             service = self.modules_services.GetService( ignore_service_id )
             
-            ignore_service_key = service.GetServiceKey()
+            ignore_service_key = service.get_service_key()
             
             if ignore_service_key in current_service_keys:
                 
@@ -731,7 +731,7 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
                 
             
         
-        location_context = ClientLocation.LocationContext.STATICCreateAllCurrent( current_service_keys )
+        location_context = ClientLocation.LocationContext.static_create_all_current(current_service_keys)
         
         current_hash_ids = self.FilterHashIds( location_context, hash_ids )
         
@@ -973,12 +973,12 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
     
     def GetDBLocationContext( self, location_context: ClientLocation.LocationContext ):
         
-        if location_context.IsEmpty():
+        if location_context.is_empty():
             
-            location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY )
+            location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_FILE_SERVICE_KEY)
             
         
-        if location_context.IsAllKnownFiles():
+        if location_context.is_all_known_files():
             
             # no table set, obviously
             
@@ -1085,7 +1085,7 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
     
     def GetLocationContextForAllServicesDeletedFiles( self ) -> ClientLocation.LocationContext:
         
-        deleted_service_keys = { service.GetServiceKey() for service in self.modules_services.GetServices( limited_types = HC.FILE_SERVICES_COVERED_BY_COMBINED_DELETED_FILE ) }
+        deleted_service_keys = {service.get_service_key() for service in self.modules_services.GetServices(limited_types = HC.FILE_SERVICES_COVERED_BY_COMBINED_DELETED_FILE)}
         
         location_context = ClientLocation.LocationContext( [], deleted_service_keys )
         
@@ -1341,7 +1341,7 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
         
         pending_changed = self._get_row_count() > 0
         
-        if self.modules_services.GetService( service_id ).GetServiceType() == HC.HYDRUS_LOCAL_FILE_STORAGE:
+        if self.modules_services.GetService( service_id ).get_service_type() == HC.HYDRUS_LOCAL_FILE_STORAGE:
             
             self.DeferFilesDeleteIfNowOrphan( hash_ids )
             

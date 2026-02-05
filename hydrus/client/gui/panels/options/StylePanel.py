@@ -60,8 +60,8 @@ class StylePanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         #
         
-        self._qt_style_name.SetValue( self._new_options.GetNoneableString( 'qt_style_name' ) )
-        self._qt_stylesheet_name.SetValue( self._new_options.GetNoneableString( 'qt_stylesheet_name' ) )
+        self._qt_style_name.SetValue(self._new_options.get_noneable_string('qt_style_name'))
+        self._qt_stylesheet_name.SetValue(self._new_options.get_noneable_string('qt_stylesheet_name'))
         
         #
         
@@ -143,7 +143,7 @@ class StylePanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def UpdateOptions( self ):
         
-        self._new_options.SetNoneableString( 'qt_style_name', self._qt_style_name.GetValue() )
-        self._new_options.SetNoneableString( 'qt_stylesheet_name', self._qt_stylesheet_name.GetValue() )
+        self._new_options.set_noneable_string('qt_style_name', self._qt_style_name.GetValue())
+        self._new_options.set_noneable_string('qt_stylesheet_name', self._qt_stylesheet_name.GetValue())
         
     

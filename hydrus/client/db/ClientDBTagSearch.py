@@ -474,7 +474,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         
         if job_status is not None:
             
-            cancelled_hook = job_status.IsCancelled
+            cancelled_hook = job_status.is_cancelled
             
         
         query = '{};'.format( self.GetQueryPhraseForTagIds( leaf.file_service_id, leaf.tag_service_id ) )
@@ -508,7 +508,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
                 
                 time.sleep( 0.1 )
                 
-                if job_status is not None and job_status.IsCancelled():
+                if job_status is not None and job_status.is_cancelled():
                     
                     return []
                     
@@ -520,7 +520,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         
         display_tag_service_id = self.modules_services.GetServiceId( tag_context.display_service_key )
         
-        if tag_context.IsAllKnownTags() and location_context.IsAllKnownFiles():
+        if tag_context.IsAllKnownTags() and location_context.is_all_known_files():
             
             return []
             
@@ -545,7 +545,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
                 tag_ids.update( self.GetAutocompleteTagIds( tag_display_type, leaf, special_search_text, exact_match, job_status = job_status ) )
                 
             
-            if job_status is not None and job_status.IsCancelled():
+            if job_status is not None and job_status.is_cancelled():
                 
                 return []
                 
@@ -554,7 +554,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
             
             for group_of_tag_ids in HydrusLists.split_iterator_into_chunks( tag_ids, 1000 ):
                 
-                if job_status is not None and job_status.IsCancelled():
+                if job_status is not None and job_status.is_cancelled():
                     
                     return []
                     
@@ -573,7 +573,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
                 all_predicates.extend( predicates )
                 
             
-            if job_status is not None and job_status.IsCancelled():
+            if job_status is not None and job_status.is_cancelled():
                 
                 return []
                 
@@ -673,7 +673,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
             
             with self._make_temporary_integer_table( batch_of_tag_ids, 'tag_id' ) as temp_tag_ids_table_name:
                 
-                if job_status is not None and job_status.IsCancelled():
+                if job_status is not None and job_status.is_cancelled():
                     
                     return set()
                     
@@ -832,7 +832,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         
         if job_status is not None:
             
-            cancelled_hook = job_status.IsCancelled
+            cancelled_hook = job_status.is_cancelled
             
         
         if tag_service_id == self.modules_services.combined_tag_service_id:
@@ -932,7 +932,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
                     
                 
             
-            if job_status is not None and job_status.IsCancelled():
+            if job_status is not None and job_status.is_cancelled():
                 
                 return set()
                 
@@ -949,7 +949,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         
         if job_status is not None:
             
-            cancelled_hook = job_status.IsCancelled
+            cancelled_hook = job_status.is_cancelled
             
         
         if tag_service_id == self.modules_services.combined_tag_service_id:
@@ -1046,7 +1046,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
                     
                 
             
-            if job_status is not None and job_status.IsCancelled():
+            if job_status is not None and job_status.is_cancelled():
                 
                 self._execute( 'DELETE FROM {};'.format( subtag_id_table_name ) )
                 
@@ -1169,14 +1169,14 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
             
             if job_status is not None:
                 
-                cancelled_hook = job_status.IsCancelled
+                cancelled_hook = job_status.is_cancelled
                 
             
             result_tag_ids = self._sts( self._execute_cancellable( query, query_args, cancelled_hook ) )
             
             if job_status is not None:
                 
-                if job_status.IsCancelled():
+                if job_status.is_cancelled():
                     
                     return set()
                     
@@ -1210,7 +1210,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         
         if job_status is not None:
             
-            cancelled_hook = job_status.IsCancelled
+            cancelled_hook = job_status.is_cancelled
             
         
         final_result_tag_ids = set()
@@ -1235,7 +1235,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
             
             if job_status is not None:
                 
-                if job_status.IsCancelled():
+                if job_status.is_cancelled():
                     
                     return set()
                     
@@ -1266,7 +1266,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         
         if job_status is not None:
             
-            cancelled_hook = job_status.IsCancelled
+            cancelled_hook = job_status.is_cancelled
             
         
         final_result_tag_ids = set()
@@ -1291,7 +1291,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
             
             if job_status is not None:
                 
-                if job_status.IsCancelled():
+                if job_status.is_cancelled():
                     
                     return set()
                     
@@ -1329,7 +1329,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
             
             for group_of_tag_ids in HydrusLists.split_iterator_into_chunks( tag_ids, 1000 ):
                 
-                if job_status is not None and job_status.IsCancelled():
+                if job_status is not None and job_status.is_cancelled():
                     
                     return []
                     
@@ -1348,7 +1348,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
                 all_predicates.extend( predicates )
                 
             
-            if job_status is not None and job_status.IsCancelled():
+            if job_status is not None and job_status.is_cancelled():
                 
                 return []
                 

@@ -27,9 +27,9 @@ class IncrementalTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
         self._medias = medias
         self._namespaces_to_medias_to_namespaced_subtags = collections.defaultdict( dict )
         
-        self._service = CG.client_controller.services_manager.GetService( self._service_key )
+        self._service = CG.client_controller.services_manager.get_service(self._service_key)
         
-        self._i_am_local_tag_service = self._service.GetServiceType() == HC.LOCAL_TAG
+        self._i_am_local_tag_service = self._service.get_service_type() == HC.LOCAL_TAG
         
         label = 'Here you can add numerical tags incrementally to a selection of files, for instance adding page:1 -> page:20 to twenty files.'
         
@@ -37,7 +37,7 @@ class IncrementalTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
         self._top_st.setWordWrap( True )
         
         self._namespace = QW.QLineEdit( self )
-        initial_namespace = CG.client_controller.new_options.GetString( 'last_incremental_tagging_namespace' )
+        initial_namespace = CG.client_controller.new_options.get_string('last_incremental_tagging_namespace')
         self._namespace.setText( initial_namespace )
         
         # let's make this dialog a reasonable landscape shape
@@ -45,11 +45,11 @@ class IncrementalTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
         self._namespace.setFixedWidth( width )
         
         self._prefix = QW.QLineEdit( self )
-        initial_prefix = CG.client_controller.new_options.GetString( 'last_incremental_tagging_prefix' )
+        initial_prefix = CG.client_controller.new_options.get_string('last_incremental_tagging_prefix')
         self._prefix.setText( initial_prefix )
         
         self._suffix = QW.QLineEdit( self )
-        initial_suffix = CG.client_controller.new_options.GetString( 'last_incremental_tagging_suffix' )
+        initial_suffix = CG.client_controller.new_options.get_string('last_incremental_tagging_suffix')
         self._suffix.setText( initial_suffix )
         
         self._tag_in_reverse = QW.QCheckBox( self )
@@ -210,7 +210,7 @@ class IncrementalTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
         
         namespace = self._namespace.text()
         
-        CG.client_controller.new_options.SetString( 'last_incremental_tagging_namespace', namespace )
+        CG.client_controller.new_options.set_string('last_incremental_tagging_namespace', namespace)
         
         self._UpdateSummary()
         
@@ -219,7 +219,7 @@ class IncrementalTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
         
         prefix = self._prefix.text()
         
-        CG.client_controller.new_options.SetString( 'last_incremental_tagging_prefix', prefix )
+        CG.client_controller.new_options.set_string('last_incremental_tagging_prefix', prefix)
         
         self._UpdateSummary()
         
@@ -228,7 +228,7 @@ class IncrementalTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
         
         suffix = self._suffix.text()
         
-        CG.client_controller.new_options.SetString( 'last_incremental_tagging_suffix', suffix )
+        CG.client_controller.new_options.set_string('last_incremental_tagging_suffix', suffix)
         
         self._UpdateSummary()
         

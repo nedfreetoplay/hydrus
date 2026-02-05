@@ -31,15 +31,15 @@ class TagPresentationPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         self._tag_banners_panel = ClientGUICommon.StaticBox( self, 'tag banners' )
         
-        tag_summary_generator = self._new_options.GetTagSummaryGenerator( 'thumbnail_top' )
+        tag_summary_generator = self._new_options.get_tag_summary_generator('thumbnail_top')
         
         self._thumbnail_top = ClientGUITagSummaryGenerator.TagSummaryGeneratorButton( self._tag_banners_panel, tag_summary_generator )
         
-        tag_summary_generator = self._new_options.GetTagSummaryGenerator( 'thumbnail_bottom_right' )
+        tag_summary_generator = self._new_options.get_tag_summary_generator('thumbnail_bottom_right')
         
         self._thumbnail_bottom_right = ClientGUITagSummaryGenerator.TagSummaryGeneratorButton( self._tag_banners_panel, tag_summary_generator )
         
-        tag_summary_generator = self._new_options.GetTagSummaryGenerator( 'media_viewer_top' )
+        tag_summary_generator = self._new_options.get_tag_summary_generator('media_viewer_top')
         
         self._media_viewer_top = ClientGUITagSummaryGenerator.TagSummaryGeneratorButton( self._tag_banners_panel, tag_summary_generator )
         
@@ -120,23 +120,23 @@ class TagPresentationPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         #
         
-        self._number_of_unselected_medias_to_present_tags_for.SetValue( self._new_options.GetNoneableInteger( 'number_of_unselected_medias_to_present_tags_for' ) )
+        self._number_of_unselected_medias_to_present_tags_for.SetValue(self._new_options.get_noneable_integer('number_of_unselected_medias_to_present_tags_for'))
         self._number_of_unselected_medias_to_present_tags_for.setToolTip( ClientGUIFunctions.WrapToolTip( 'The "selection tags" box on any search page will show the tags for all files when none are selected. To save CPU, very large pages will cap out and not try to generate (and regenerate on any changes) for everything.') )
         
-        self._show_namespaces.setChecked( new_options.GetBoolean( 'show_namespaces' ) )
-        self._show_number_namespaces.setChecked( new_options.GetBoolean( 'show_number_namespaces' ) )
-        self._show_subtag_number_namespaces.setChecked( new_options.GetBoolean( 'show_subtag_number_namespaces' ) )
-        self._namespace_connector.setText( new_options.GetString( 'namespace_connector' ) )
-        self._replace_tag_underscores_with_spaces.setChecked( new_options.GetBoolean( 'replace_tag_underscores_with_spaces' ) )
-        self._replace_tag_emojis_with_boxes.setChecked( new_options.GetBoolean( 'replace_tag_emojis_with_boxes' ) )
-        self._sibling_connector.setText( new_options.GetString( 'sibling_connector' ) )
-        self._fade_sibling_connector.setChecked( new_options.GetBoolean( 'fade_sibling_connector' ) )
-        self._sibling_connector_custom_namespace_colour.SetValue( new_options.GetNoneableString( 'sibling_connector_custom_namespace_colour' ) )
-        self._or_connector.setText( new_options.GetString( 'or_connector' ) )
-        self._or_connector_custom_namespace_colour.setText( new_options.GetNoneableString( 'or_connector_custom_namespace_colour' ) )
+        self._show_namespaces.setChecked(new_options.get_boolean('show_namespaces'))
+        self._show_number_namespaces.setChecked(new_options.get_boolean('show_number_namespaces'))
+        self._show_subtag_number_namespaces.setChecked(new_options.get_boolean('show_subtag_number_namespaces'))
+        self._namespace_connector.setText(new_options.get_string('namespace_connector'))
+        self._replace_tag_underscores_with_spaces.setChecked(new_options.get_boolean('replace_tag_underscores_with_spaces'))
+        self._replace_tag_emojis_with_boxes.setChecked(new_options.get_boolean('replace_tag_emojis_with_boxes'))
+        self._sibling_connector.setText(new_options.get_string('sibling_connector'))
+        self._fade_sibling_connector.setChecked(new_options.get_boolean('fade_sibling_connector'))
+        self._sibling_connector_custom_namespace_colour.SetValue(new_options.get_noneable_string('sibling_connector_custom_namespace_colour'))
+        self._or_connector.setText(new_options.get_string('or_connector'))
+        self._or_connector_custom_namespace_colour.setText(new_options.get_noneable_string('or_connector_custom_namespace_colour'))
         
-        self._tag_list_tag_display_type_sidebar.SetValue( new_options.GetInteger( 'tag_list_tag_display_type_sidebar' ) )
-        self._tag_list_tag_display_type_media_viewer_hover.SetValue( new_options.GetInteger( 'tag_list_tag_display_type_media_viewer_hover' ) )
+        self._tag_list_tag_display_type_sidebar.SetValue(new_options.get_integer('tag_list_tag_display_type_sidebar'))
+        self._tag_list_tag_display_type_media_viewer_hover.SetValue(new_options.get_integer('tag_list_tag_display_type_media_viewer_hover'))
         
         #
         
@@ -316,28 +316,28 @@ class TagPresentationPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def UpdateOptions( self ):
         
-        self._new_options.SetNoneableInteger( 'number_of_unselected_medias_to_present_tags_for', self._number_of_unselected_medias_to_present_tags_for.GetValue() )
+        self._new_options.set_noneable_integer('number_of_unselected_medias_to_present_tags_for', self._number_of_unselected_medias_to_present_tags_for.GetValue())
         
-        self._new_options.SetTagSummaryGenerator( 'thumbnail_top', self._thumbnail_top.GetValue() )
-        self._new_options.SetTagSummaryGenerator( 'thumbnail_bottom_right', self._thumbnail_bottom_right.GetValue() )
-        self._new_options.SetTagSummaryGenerator( 'media_viewer_top', self._media_viewer_top.GetValue() )
+        self._new_options.set_tag_summary_generator('thumbnail_top', self._thumbnail_top.GetValue())
+        self._new_options.set_tag_summary_generator('thumbnail_bottom_right', self._thumbnail_bottom_right.GetValue())
+        self._new_options.set_tag_summary_generator('media_viewer_top', self._media_viewer_top.GetValue())
         
-        self._new_options.SetBoolean( 'show_namespaces', self._show_namespaces.isChecked() )
-        self._new_options.SetBoolean( 'show_number_namespaces', self._show_number_namespaces.isChecked() )
-        self._new_options.SetBoolean( 'show_subtag_number_namespaces', self._show_subtag_number_namespaces.isChecked() )
-        self._new_options.SetString( 'namespace_connector', self._namespace_connector.text() )
-        self._new_options.SetBoolean( 'replace_tag_underscores_with_spaces', self._replace_tag_underscores_with_spaces.isChecked() )
-        self._new_options.SetBoolean( 'replace_tag_emojis_with_boxes', self._replace_tag_emojis_with_boxes.isChecked() )
-        self._new_options.SetString( 'sibling_connector', self._sibling_connector.text() )
-        self._new_options.SetBoolean( 'fade_sibling_connector', self._fade_sibling_connector.isChecked() )
+        self._new_options.set_boolean('show_namespaces', self._show_namespaces.isChecked())
+        self._new_options.set_boolean('show_number_namespaces', self._show_number_namespaces.isChecked())
+        self._new_options.set_boolean('show_subtag_number_namespaces', self._show_subtag_number_namespaces.isChecked())
+        self._new_options.set_string('namespace_connector', self._namespace_connector.text())
+        self._new_options.set_boolean('replace_tag_underscores_with_spaces', self._replace_tag_underscores_with_spaces.isChecked())
+        self._new_options.set_boolean('replace_tag_emojis_with_boxes', self._replace_tag_emojis_with_boxes.isChecked())
+        self._new_options.set_string('sibling_connector', self._sibling_connector.text())
+        self._new_options.set_boolean('fade_sibling_connector', self._fade_sibling_connector.isChecked())
         
-        self._new_options.SetNoneableString( 'sibling_connector_custom_namespace_colour', self._sibling_connector_custom_namespace_colour.GetValue() )
+        self._new_options.set_noneable_string('sibling_connector_custom_namespace_colour', self._sibling_connector_custom_namespace_colour.GetValue())
         
-        self._new_options.SetString( 'or_connector', self._or_connector.text() )
-        self._new_options.SetNoneableString( 'or_connector_custom_namespace_colour', self._or_connector_custom_namespace_colour.text() )
+        self._new_options.set_string('or_connector', self._or_connector.text())
+        self._new_options.set_noneable_string('or_connector_custom_namespace_colour', self._or_connector_custom_namespace_colour.text())
         
-        self._new_options.SetInteger( 'tag_list_tag_display_type_sidebar', self._tag_list_tag_display_type_sidebar.GetValue() )
-        self._new_options.SetInteger( 'tag_list_tag_display_type_media_viewer_hover', self._tag_list_tag_display_type_media_viewer_hover.GetValue() )
+        self._new_options.set_integer('tag_list_tag_display_type_sidebar', self._tag_list_tag_display_type_sidebar.GetValue())
+        self._new_options.set_integer('tag_list_tag_display_type_media_viewer_hover', self._tag_list_tag_display_type_media_viewer_hover.GetValue())
         
         HC.options[ 'namespace_colours' ] = self._namespace_colours.GetNamespaceColours()
         

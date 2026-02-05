@@ -138,7 +138,7 @@ def log_handler( loglevel, component, message ):
         
         try:
             
-            CG.client_controller.CallBlockingToQtTLW( EmergencyDumpOutGlobal, probably_crashy, f'{component}: {message}' )
+            CG.client_controller.call_blocking_to_qt_tlw(EmergencyDumpOutGlobal, probably_crashy, f'{component}: {message}')
             
         except HydrusExceptions.ShutdownException:
             
@@ -673,7 +673,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             loglevel = loglevel
         )
         
-        if CG.client_controller.new_options.GetBoolean( 'use_legacy_mpv_mediator' ):
+        if CG.client_controller.new_options.get_boolean('use_legacy_mpv_mediator'):
             
             self._mpv_mediator = MPVMediatorRude( self._player )
             
@@ -751,14 +751,14 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         if self._canvas_type in CC.CANVAS_MEDIA_VIEWER_TYPES:
             
-            if CG.client_controller.new_options.GetBoolean( 'media_viewer_uses_its_own_audio_volume' ):
+            if CG.client_controller.new_options.get_boolean('media_viewer_uses_its_own_audio_volume'):
                 
                 return ClientGUIMediaControls.volume_types_to_option_names[ ClientGUIMediaControls.AUDIO_MEDIA_VIEWER ]
                 
             
         elif self._canvas_type == CC.CANVAS_PREVIEW:
             
-            if CG.client_controller.new_options.GetBoolean( 'preview_uses_its_own_audio_volume' ):
+            if CG.client_controller.new_options.get_boolean('preview_uses_its_own_audio_volume'):
                 
                 return ClientGUIMediaControls.volume_types_to_option_names[ ClientGUIMediaControls.AUDIO_PREVIEW ]
                 
@@ -786,7 +786,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         if self._media is not None:
             
-            HydrusData.show_text( f'The file with hash "{self._media.GetHash().hex()}" seems to have failed to load in mpv. In order to preserve program stability, I have unloaded it immediately!' )
+            HydrusData.show_text( f'The file with hash "{self._media.get_hash().hex()}" seems to have failed to load in mpv. In order to preserve program stability, I have unloaded it immediately!')
             
         
     
@@ -819,7 +819,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
             event_type = event.event_id.value
             
-            CG.client_controller.CallAfterQtSafe( self, qt_code, event_type )
+            CG.client_controller.call_after_qt_safe(self, qt_code, event_type)
             
         
         self._player.register_event_callback( event_handler )
@@ -888,7 +888,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                     if self._media.HasDuration():
                         
                         # if we say no more than 20 restarts allowed, what about the 33ms two-frame animation!
-                        number_of_restarts_allowed = max( 20, ( 1000 / self._media.GetDurationMS() ) * 5 )
+                        number_of_restarts_allowed = max(20, (1000 / self._media.get_duration_ms()) * 5)
                         
                     else:
                         
@@ -957,7 +957,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             return
             
         
-        media_line = '\n\nIf you have multiple mpv windows playing media, you may see multiple versions of this message. Only one is correct. For this player, the hash is: {}'.format( original_media.GetHash().hex() )
+        media_line = '\n\nIf you have multiple mpv windows playing media, you may see multiple versions of this message. Only one is correct. For this player, the hash is: {}'.format(original_media.get_hash().hex())
         
         if probably_crashy:
             
@@ -965,7 +965,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
                 if not HG.mpv_allow_crashy_files_silently:
                     
-                    hash = original_media.GetHash()
+                    hash = original_media.get_hash()
                     
                     HydrusData.show_text( f'This file ({hash.hex()}) would have triggered the crash handling now.' )
                     
@@ -979,7 +979,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
             global damaged_file_hashes
             
-            hash = original_media.GetHash()
+            hash = original_media.get_hash()
             
             if hash in damaged_file_hashes:
                 
@@ -1003,7 +1003,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
                 job_status = ClientThreading.JobStatus()
                 
-                job_status.SetFiles( [ original_media.GetHash() ], 'MPV-crasher' )
+                job_status.set_files([original_media.get_hash()], 'MPV-crasher')
                 
                 CG.client_controller.pub( 'message', job_status )
                 
@@ -1042,7 +1042,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                     
                     current_timestamp_ms = current_timestamp_s * 1000
                     
-                    num_frames = self._media.GetNumFrames()
+                    num_frames = self._media.get_num_frames()
                     
                     if num_frames is None or num_frames == 1:
                         
@@ -1050,12 +1050,12 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                         
                     else:
                         
-                        current_frame_index = int( round( ( current_timestamp_ms / self._media.GetDurationMS() ) * num_frames ) )
+                        current_frame_index = int(round((current_timestamp_ms / self._media.get_duration_ms()) * num_frames))
                         
                         current_frame_index = min( current_frame_index, num_frames - 1 )
                         
                     
-                    current_timestamp_ms = min( current_timestamp_ms, self._media.GetDurationMS() )
+                    current_timestamp_ms = min(current_timestamp_ms, self._media.get_duration_ms())
                     
                 
                 paused = self.IsPaused()
@@ -1174,13 +1174,13 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ):
+    def process_application_command( self, command: CAC.ApplicationCommand ):
         
         command_processed = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_PAUSE_MEDIA:
                 
@@ -1192,7 +1192,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
             elif action == CAC.SIMPLE_MEDIA_SEEK_DELTA:
                 
-                ( direction, duration_ms ) = command.GetSimpleData()
+                ( direction, duration_ms ) = command.get_simple_data()
                 
                 self.SeekDelta( direction, duration_ms )
                 
@@ -1300,7 +1300,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         new_timestamp_ms = max( 0, ( current_timestamp_s * 1000 ) + ( direction * duration_ms ) )
         
-        if new_timestamp_ms > self._media.GetDurationMS():
+        if new_timestamp_ms > self._media.get_duration_ms():
             
             new_timestamp_ms = 0
             
@@ -1427,7 +1427,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                     
                     mime = self._media.GetMime()
                     
-                    if mime in HC.VIEWABLE_ANIMATIONS and not CG.client_controller.new_options.GetBoolean( 'always_loop_gifs' ):
+                    if mime in HC.VIEWABLE_ANIMATIONS and not CG.client_controller.new_options.get_boolean('always_loop_gifs'):
                         
                         if mime == HC.ANIMATION_APNG:
                             
@@ -1570,16 +1570,16 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
         
         # this fixes at least one instance of the 100% CPU 'too many events queued' bug, which was down to bad APNG EOF rewind navigation
-        loop_playlist = CG.client_controller.new_options.GetBoolean( 'mpv_loop_playlist_instead_of_file' )
+        loop_playlist = CG.client_controller.new_options.get_boolean('mpv_loop_playlist_instead_of_file')
         
         self._player[ 'loop' ] = not loop_playlist
         self._player[ 'loop-playlist' ] = loop_playlist
         
-        mpv_config_path = CG.client_controller.GetMPVConfPath()
+        mpv_config_path = CG.client_controller.get_mpv_conf_path()
         
         if not os.path.exists( mpv_config_path ):
             
-            default_mpv_config_path = CG.client_controller.GetDefaultMPVConfPath()
+            default_mpv_config_path = CG.client_controller.get_default_mpv_conf_path()
             
             if not os.path.exists( default_mpv_config_path ):
                 

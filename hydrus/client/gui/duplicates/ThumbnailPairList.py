@@ -80,7 +80,7 @@ class ThumbnailPairListModel( QC.QAbstractTableModel ):
         
         def publish_callable( thumbnail_hydrus_bmp: ClientRendering.HydrusBitmap ):
             
-            pixmap = thumbnail_hydrus_bmp.GetQtPixmap()
+            pixmap = thumbnail_hydrus_bmp.get_qt_pixmap()
             
             self._media_results_to_thumbnail_pixmaps[ media_result ] = pixmap
             

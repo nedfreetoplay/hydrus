@@ -20,12 +20,12 @@ class MediaResultCacheContainer( ClientCachesBase.CacheableObject ):
         self._media_result = media_result
         
     
-    def GetEstimatedMemoryFootprint( self ) -> int:
+    def get_estimated_memory_footprint(self) -> int:
         
         return 1
         
     
-    def IsFinishedLoading( self ):
+    def is_finished_loading(self):
         
         return True
         
@@ -64,7 +64,7 @@ class MediaResultCache( object ):
                 self._hash_ids_to_media_results[ hash_id ] = media_result
                 self._hashes_to_media_results[ hash ] = media_result
                 
-                self._fifo_timeout_cache.AddData( hash_id, MediaResultCacheContainer( media_result ) )
+                self._fifo_timeout_cache.add_data(hash_id, MediaResultCacheContainer(media_result))
                 
             
         
@@ -94,7 +94,7 @@ class MediaResultCache( object ):
                 del self._hashes_to_media_results[ hash ]
                 
             
-            self._fifo_timeout_cache.DeleteData( hash_id )
+            self._fifo_timeout_cache.delete_data(hash_id)
             
         
     
@@ -173,7 +173,7 @@ class MediaResultCache( object ):
                     
                     media_results.append( media_result )
                     
-                    self._fifo_timeout_cache.TouchKey( hash_id )
+                    self._fifo_timeout_cache.touch_key(hash_id)
                     
                 
             
@@ -234,7 +234,7 @@ class MediaResultCache( object ):
                 
                 for service_update in service_updates:
                     
-                    ( action, row ) = service_update.ToTuple()
+                    ( action, row ) = service_update.to_tuple()
                     
                     if action in ( HC.SERVICE_UPDATE_DELETE_PENDING, HC.SERVICE_UPDATE_RESET ):
                         

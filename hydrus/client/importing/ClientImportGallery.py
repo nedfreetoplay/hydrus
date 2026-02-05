@@ -222,7 +222,7 @@ class GalleryImport( HydrusSerialisable.SerialisableBase ):
             
             gallery_identifier = HydrusSerialisable.create_from_serialisable_tuple( serialisable_gallery_identifier )
             
-            source_name = ClientDownloading.ConvertGalleryIdentifierToGUGName( gallery_identifier )
+            source_name = ClientDownloading.convert_gallery_identifier_to_gug_name(gallery_identifier)
             
             new_serialisable_info = ( serialisable_gallery_import_key, self._creation_time, self._query, source_name, self._current_page_index, self._num_urls_found, self._num_new_urls_found, self._file_limit, self._gallery_paused, self._files_paused, serialisable_file_import_options, serialisable_tag_import_options, serialisable_gallery_seed_log, serialisable_file_seed_cache, self._no_work_until, self._no_work_until_reason )
             
@@ -395,7 +395,7 @@ class GalleryImport( HydrusSerialisable.SerialisableBase ):
             
             with self._lock:
                 
-                delay = CG.client_controller.new_options.GetInteger( 'downloader_network_error_delay' )
+                delay = CG.client_controller.new_options.get_integer('downloader_network_error_delay')
                 
                 self._DelayWork( delay, str( e ) )
                 
@@ -968,7 +968,7 @@ class GalleryImport( HydrusSerialisable.SerialisableBase ):
                     
                     self._WorkOnFiles()
                     
-                    CG.client_controller.WaitUntilViewFree()
+                    CG.client_controller.wait_until_view_free()
                     
                     self._SerialisableChangeMade()
                     
@@ -1039,7 +1039,7 @@ class GalleryImport( HydrusSerialisable.SerialisableBase ):
                     
                     time.sleep( 1 )
                     
-                    CG.client_controller.WaitUntilViewFree()
+                    CG.client_controller.wait_until_view_free()
                     
                     self._SerialisableChangeMade()
                     
@@ -1319,7 +1319,7 @@ class MultipleGalleryImport( HydrusSerialisable.SerialisableBase ):
             
             gallery_identifier = HydrusSerialisable.create_from_serialisable_tuple( serialisable_gallery_identifier )
             
-            ( gug_key, gug_name ) = ClientDownloading.ConvertGalleryIdentifierToGUGKeyAndName( gallery_identifier )
+            ( gug_key, gug_name ) = ClientDownloading.convert_gallery_identifier_to_gug_key_and_name(gallery_identifier)
             
             serialisable_gug_key_and_name = ( HydrusData.generate_key().hex(), gug_name )
             
@@ -1947,7 +1947,7 @@ class MultipleGalleryImport( HydrusSerialisable.SerialisableBase ):
                 
                 publish_to_page = gallery_import.GetGalleryImportKey() == self._highlighted_gallery_import_key
                 
-                gallery_import.Start( page_key, publish_to_page )
+                gallery_import.start(page_key, publish_to_page)
                 
             
             self._have_started = True

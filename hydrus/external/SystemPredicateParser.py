@@ -1121,7 +1121,7 @@ def parse_service_specifier( text: str ):
                 
                 try:
                     
-                    service_key = CG.client_controller.services_manager.GetServiceKeyFromName( HC.LOCAL_RATINGS_SERVICES, service_name )
+                    service_key = CG.client_controller.services_manager.get_service_key_from_name(HC.LOCAL_RATINGS_SERVICES, service_name)
                     
                 except HydrusExceptions.DataMissing:
                     
@@ -1419,7 +1419,7 @@ def parse_operator( parse_result: SystemPredParseResult, spec ):
                 
                 try:
                     
-                    service_key = CG.client_controller.services_manager.GetServiceKeyFromName( HC.ALL_TAG_SERVICES, name )
+                    service_key = CG.client_controller.services_manager.get_service_key_from_name(HC.ALL_TAG_SERVICES, name)
                     
                 except HydrusExceptions.DataMissing:
                     

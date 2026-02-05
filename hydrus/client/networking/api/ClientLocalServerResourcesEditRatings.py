@@ -38,9 +38,9 @@ class HydrusResourceClientAPIRestrictedEditRatingsSetRating( HydrusResourceClien
         
         rating = request.parsed_request_args[ 'rating' ]
         
-        rating_service = CG.client_controller.services_manager.GetService( rating_service_key )
+        rating_service = CG.client_controller.services_manager.get_service(rating_service_key)
         
-        rating_service_type = rating_service.GetServiceType()
+        rating_service_type = rating_service.get_service_type()
         
         none_ok = True
         
@@ -88,7 +88,7 @@ class HydrusResourceClientAPIRestrictedEditRatingsSetRating( HydrusResourceClien
             
             if isinstance( rating, int ):
                 
-                rating_for_content_update = rating_service.ConvertStarsToRating( rating )
+                rating_for_content_update = rating_service.convert_stars_to_rating(rating)
                 
             
         elif rating_service_type == HC.LOCAL_RATING_INCDEC:

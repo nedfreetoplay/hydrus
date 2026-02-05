@@ -51,7 +51,7 @@ class ClientSystemTrayIcon( QW.QSystemTrayIcon ):
         
         # if we click immediately, some users get frozen ui, I assume a mix-up with the icon being destroyed during the same click event or similar
         
-        CG.client_controller.CallAfterQtSafe( self, self._WasActivated, activation_reason )
+        CG.client_controller.call_after_qt_safe(self, self._WasActivated, activation_reason)
         
     
     def _RegenerateMenu( self ):
@@ -107,7 +107,7 @@ class ClientSystemTrayIcon( QW.QSystemTrayIcon ):
         
         self._minimise_restore_menu_item.setText( label )
         
-        show_it = self._ui_is_currently_shown and not CG.client_controller.new_options.GetBoolean( 'minimise_client_to_system_tray' )
+        show_it = self._ui_is_currently_shown and not CG.client_controller.new_options.get_boolean('minimise_client_to_system_tray')
         
         self._minimise_restore_menu_item.setVisible( show_it )
         
@@ -154,7 +154,7 @@ class ClientSystemTrayIcon( QW.QSystemTrayIcon ):
     
     def _UpdateTooltip( self ):
         
-        app_display_name = CG.client_controller.new_options.GetString( 'app_display_name' )
+        app_display_name = CG.client_controller.new_options.get_string('app_display_name')
         
         tt = app_display_name
         

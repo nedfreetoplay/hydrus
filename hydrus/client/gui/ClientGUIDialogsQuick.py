@@ -92,7 +92,7 @@ def run_auto_yes_no_gubbins( dlg: QW.QDialog, time_to_fire, original_title, acti
     
     while not HydrusTime.time_has_passed( time_to_fire ):
         
-        job = CG.client_controller.CallLaterQtSafe( dlg, 0.0, 'dialog auto yes/no title set', qt_set_title )
+        job = CG.client_controller.call_later_qt_safe(dlg, 0.0, 'dialog auto yes/no title set', qt_set_title)
         
         if job.is_dead(): # window closed
             
@@ -102,7 +102,7 @@ def run_auto_yes_no_gubbins( dlg: QW.QDialog, time_to_fire, original_title, acti
         time.sleep( 1 )
         
     
-    job = CG.client_controller.CallLaterQtSafe( dlg, 0.0, 'dialog auto yes/no fire', qt_fire_button )
+    job = CG.client_controller.call_later_qt_safe(dlg, 0.0, 'dialog auto yes/no fire', qt_fire_button)
     
 
 LAST_FOLDER_SELECTED = None
@@ -125,7 +125,7 @@ def PickDirectory( parent: QW.QWidget, message: str, starting_dir_path: str | No
     
     options = QW.QFileDialog.Option.ShowDirsOnly | QW.QFileDialog.Option.DontResolveSymlinks
     
-    if CG.client_controller.new_options.GetBoolean( 'use_qt_file_dialogs' ):
+    if CG.client_controller.new_options.get_boolean('use_qt_file_dialogs'):
         
         options |= QW.QFileDialog.Option.DontUseNativeDialog
         
@@ -226,7 +226,7 @@ def OpenDocumentation( win: QW.QWidget, documentation_path: str ):
     
     if os.path.isfile( local_path ):
         
-        ClientPaths.LaunchPathInWebBrowser( local_launch_path )
+        ClientPaths.launch_path_in_web_browser(local_launch_path)
         
     else:
         
@@ -257,7 +257,7 @@ def OpenDocumentation( win: QW.QWidget, documentation_path: str ):
             url = '/'.join( ( HC.REMOTE_HELP.rstrip( '/' ), HC.DOCUMENTATION_ABOUT_DOCS.lstrip( '/' ) ) )
             
         
-        ClientPaths.LaunchURLInWebBrowser( url )
+        ClientPaths.launch_url_in_web_browser(url)
         
     
 
@@ -371,9 +371,9 @@ def SelectServiceKey( service_types = None, service_keys = None, unallowed = Non
     
     if service_keys is None:
         
-        services = CG.client_controller.services_manager.GetServices( service_types )
+        services = CG.client_controller.services_manager.get_services(service_types)
         
-        service_keys = [ service.GetServiceKey() for service in services ]
+        service_keys = [service.get_service_key() for service in services]
         
     
     service_keys = set( service_keys )
@@ -395,13 +395,13 @@ def SelectServiceKey( service_types = None, service_keys = None, unallowed = Non
         
     else:
         
-        services = { CG.client_controller.services_manager.GetService( service_key ) for service_key in service_keys }
+        services = {CG.client_controller.services_manager.get_service(service_key) for service_key in service_keys}
         
-        choice_tuples = [ ( service.GetName(), service.GetServiceKey() ) for service in services ]
+        choice_tuples = [(service.get_name(), service.get_service_key()) for service in services]
         
         try:
             
-            tlw = CG.client_controller.GetMainTLW()
+            tlw = CG.client_controller.get_main_tlw()
             
             service_key = SelectFromList( tlw, message, choice_tuples )
             

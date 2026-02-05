@@ -90,12 +90,12 @@ class StringProcessingStep( HydrusSerialisable.SerialisableBase ):
         raise NotImplementedError()
         
     
-    def MakesChanges( self ) -> bool:
+    def makes_changes(self) -> bool:
         
         raise NotImplementedError()
         
     
-    def ToString( self, simple = False, with_type = False ) -> str:
+    def to_string(self, simple = False, with_type = False) -> str:
         
         raise NotImplementedError()
         
@@ -197,7 +197,7 @@ class StringConverter( StringProcessingStep ):
             
         
     
-    def Convert( self, s, max_steps_allowed = None ):
+    def convert(self, s, max_steps_allowed = None):
         
         for ( i, conversion ) in enumerate( self.conversions ):
             
@@ -395,7 +395,7 @@ class StringConverter( StringProcessingStep ):
                     
                 elif conversion_type == STRING_CONVERSION_DATEPARSER_DECODE:
                     
-                    timestamp = int( ClientTime.ParseDate( s ) )
+                    timestamp = int(ClientTime.parse_date(s))
                     
                     s = str( timestamp )
                     
@@ -450,29 +450,29 @@ class StringConverter( StringProcessingStep ):
                 
             except Exception as e:
                 
-                raise HydrusExceptions.StringConvertException( 'ERROR: Could not apply "{}" to string "{}": {}'.format( self.ConversionToString( conversion ), s, e ) )
+                raise HydrusExceptions.StringConvertException( 'ERROR: Could not apply "{}" to string "{}": {}'.format(self.conversion_to_string(conversion), s, e))
                 
             
         
         return s
         
     
-    def GetConversions( self ):
+    def get_conversions(self):
         
         return list( self.conversions )
         
     
-    def GetConversionStrings( self ):
+    def get_conversion_strings(self):
         
-        return [ self.ConversionToString( conversion ) for conversion in self.conversions ]
+        return [self.conversion_to_string(conversion) for conversion in self.conversions]
         
     
-    def MakesChanges( self ):
+    def makes_changes(self):
         
         return len( self.conversions ) > 0
         
     
-    def ToString( self, simple = False, with_type = False ) -> str:
+    def to_string(self, simple = False, with_type = False) -> str:
         
         num_rules = len( self.conversions )
         
@@ -495,7 +495,7 @@ class StringConverter( StringProcessingStep ):
                 
             else:
                 
-                label = ', '.join( self.GetConversionStrings() )
+                label = ', '.join(self.get_conversion_strings())
                 
             
         
@@ -508,7 +508,7 @@ class StringConverter( StringProcessingStep ):
         
     
     @staticmethod
-    def ConversionToString( conversion ):
+    def conversion_to_string(conversion):
         
         ( conversion_type, data ) = conversion
         
@@ -625,22 +625,22 @@ class StringJoiner( StringProcessingStep ):
             
         
     
-    def GetJoiner( self ):
+    def get_joiner(self):
         
         return self._joiner
         
     
-    def GetJoinTupleSize( self ):
+    def get_join_tuple_size(self):
         
         return self._join_tuple_size
         
     
-    def MakesChanges( self ) -> bool:
+    def makes_changes(self) -> bool:
         
         return True
         
     
-    def Join( self, texts: collections.abc.Collection[ str ] ) -> list[ str ]:
+    def join(self, texts: collections.abc.Collection[ str]) -> list[ str]:
         
         for text in texts:
             
@@ -687,7 +687,7 @@ class StringJoiner( StringProcessingStep ):
         return joined_texts
         
     
-    def ToString( self, simple = False, with_type = False ) -> str:
+    def to_string(self, simple = False, with_type = False) -> str:
         
         if simple:
             
@@ -758,12 +758,12 @@ class StringMatch( StringProcessingStep ):
         ( self._match_type, self._match_value, self._min_chars, self._max_chars, self._example_string ) = serialisable_info
         
     
-    def GetExampleString( self ):
+    def get_example_string(self):
         
         return self._example_string
         
     
-    def MakesChanges( self ) -> bool:
+    def makes_changes(self) -> bool:
         
         if self._min_chars is not None or self._max_chars is not None:
             
@@ -778,11 +778,11 @@ class StringMatch( StringProcessingStep ):
         return False
         
     
-    def Matches( self, text ):
+    def matches(self, text):
         
         try:
             
-            self.Test( text )
+            self.test(text)
             
             return True
             
@@ -792,17 +792,17 @@ class StringMatch( StringProcessingStep ):
             
         
     
-    def SetMaxChars( self, max_chars ):
+    def set_max_chars(self, max_chars):
         
         self._max_chars = max_chars
         
     
-    def SetMinChars( self, min_chars ):
+    def set_min_chars(self, min_chars):
         
         self._min_chars = min_chars
         
     
-    def Test( self, text ):
+    def test(self, text):
         
         if isinstance( text, bytes ):
             
@@ -902,12 +902,12 @@ class StringMatch( StringProcessingStep ):
             
         
     
-    def ToTuple( self ):
+    def to_tuple(self):
         
         return ( self._match_type, self._match_value, self._min_chars, self._max_chars, self._example_string )
         
     
-    def ToString( self, simple = False, with_type = False ) -> str:
+    def to_string(self, simple = False, with_type = False) -> str:
         
         if simple:
             
@@ -1033,17 +1033,17 @@ class StringSlicer( StringProcessingStep ):
         ( self._index_start, self._index_end ) = serialisable_info
         
     
-    def GetIndexStartEnd( self ) -> tuple[ int | None, int | None ]:
+    def get_index_start_end(self) -> tuple[int | None, int | None]:
         
         return ( self._index_start, self._index_end )
         
     
-    def MakesChanges( self ) -> bool:
+    def makes_changes(self) -> bool:
         
         return self._index_start is not None or self._index_end is not None
         
     
-    def SelectsNothingEver( self ) -> bool:
+    def selects_nothing_ever(self) -> bool:
         
         if self._index_end == 0:
             
@@ -1069,9 +1069,9 @@ class StringSlicer( StringProcessingStep ):
         return False
         
     
-    def SelectsOne( self ) -> bool:
+    def selects_one(self) -> bool:
         
-        if self.SelectsNothingEver():
+        if self.selects_nothing_ever():
             
             return False
             
@@ -1092,7 +1092,7 @@ class StringSlicer( StringProcessingStep ):
         return ( both_positive or both_negative ) and self._index_start == self._index_end - 1
         
     
-    def Slice( self, texts: collections.abc.Sequence[ str ] ) -> list[ str ]:
+    def slice(self, texts: collections.abc.Sequence[ str]) -> list[ str]:
         
         try:
             
@@ -1119,18 +1119,18 @@ class StringSlicer( StringProcessingStep ):
             
         
     
-    def ToString( self, simple = False, with_type = False ) -> str:
+    def to_string(self, simple = False, with_type = False) -> str:
         
         if simple:
             
             return 'selector/slicer'
             
         
-        if self.SelectsNothingEver():
+        if self.selects_nothing_ever():
             
             result = 'selecting nothing'
             
-        elif self.SelectsOne():
+        elif self.selects_one():
             
             result = 'selecting the {} string'.format( HydrusNumbers.index_to_pretty_ordinal_string( self._index_start ) )
             
@@ -1153,7 +1153,7 @@ class StringSlicer( StringProcessingStep ):
         
         if with_type:
             
-            if self.SelectsOne():
+            if self.selects_one():
                 
                 result = 'SELECT: {}'.format( result )
                 
@@ -1205,27 +1205,27 @@ class StringSorter( StringProcessingStep ):
         ( self._sort_type, self._asc, self._regex ) = serialisable_info
         
     
-    def GetAscending( self ) -> bool:
+    def get_ascending(self) -> bool:
         
         return self._asc
         
     
-    def GetRegex( self ) -> str | None:
+    def get_regex(self) -> str | None:
         
         return self._regex
         
     
-    def GetSortType( self ) -> int:
+    def get_sort_type(self) -> int:
         
         return self._sort_type
         
     
-    def MakesChanges( self ) -> bool:
+    def makes_changes(self) -> bool:
         
         return True
         
     
-    def Sort( self, texts: collections.abc.Sequence[ str ] ) -> list[ str ]:
+    def sort(self, texts: collections.abc.Sequence[ str]) -> list[ str]:
         
         try:
             
@@ -1290,7 +1290,7 @@ class StringSorter( StringProcessingStep ):
             
         
     
-    def ToString( self, simple = False, with_type = False ) -> str:
+    def to_string(self, simple = False, with_type = False) -> str:
         
         if simple:
             
@@ -1352,22 +1352,22 @@ class StringSplitter( StringProcessingStep ):
             
         
     
-    def GetMaxSplits( self ):
+    def get_max_splits(self):
         
         return self._max_splits
         
     
-    def GetSeparator( self ):
+    def get_separator(self):
         
         return self._separator
         
     
-    def MakesChanges( self ) -> bool:
+    def makes_changes(self) -> bool:
         
         return True
         
     
-    def Split( self, text: str ) -> list[ str ]:
+    def split(self, text: str) -> list[ str]:
         
         if isinstance( text, bytes ):
             
@@ -1402,7 +1402,7 @@ class StringSplitter( StringProcessingStep ):
         return [ result for result in results if result != '' ]
         
     
-    def ToString( self, simple = False, with_type = False ) -> str:
+    def to_string(self, simple = False, with_type = False) -> str:
         
         if simple:
             
@@ -1461,7 +1461,7 @@ class StringTagFilter( StringProcessingStep ):
         self._tag_filter = HydrusSerialisable.create_from_serialisable_tuple( serialisable_tag_filter )
         
     
-    def ConvertAndFilter( self, tag_texts ):
+    def convert_and_filter(self, tag_texts):
         
         tags = HydrusTags.clean_tags( tag_texts )
         
@@ -1472,28 +1472,28 @@ class StringTagFilter( StringProcessingStep ):
         return tags
         
     
-    def GetExampleString( self ) -> str:
+    def get_example_string(self) -> str:
         
         return self._example_string
         
     
-    def GetTagFilter( self ) -> HydrusTags.TagFilter:
+    def get_tag_filter(self) -> HydrusTags.TagFilter:
         
         return self._tag_filter
         
     
-    def MakesChanges( self ) -> bool:
+    def makes_changes(self) -> bool:
         
         # it always scans for valid tags
         
         return True
         
     
-    def Matches( self, text ):
+    def matches(self, text):
         
         try:
             
-            self.Test( text )
+            self.test(text)
             
             return True
             
@@ -1503,7 +1503,7 @@ class StringTagFilter( StringProcessingStep ):
             
         
     
-    def Test( self, text ):
+    def test(self, text):
         
         if isinstance( text, bytes ):
             
@@ -1536,7 +1536,7 @@ class StringTagFilter( StringProcessingStep ):
             
         
     
-    def ToString( self, simple = False, with_type = False ) -> str:
+    def to_string(self, simple = False, with_type = False) -> str:
         
         if simple:
             
@@ -1580,12 +1580,12 @@ class StringProcessor( StringProcessingStep ):
         self._processing_steps = list( HydrusSerialisable.create_from_serialisable_tuple( serialisable_processing_steps ) )
         
     
-    def GetProcessingSteps( self ):
+    def get_processing_steps(self):
         
         return list( self._processing_steps )
         
     
-    def GetProcessingStrings( self ):
+    def get_processing_strings(self):
         
         proc_strings = []
         
@@ -1593,23 +1593,23 @@ class StringProcessor( StringProcessingStep ):
             
             if isinstance( processing_step, StringConverter ):
                 
-                proc_strings.extend( processing_step.GetConversionStrings() )
+                proc_strings.extend(processing_step.get_conversion_strings())
                 
             else:
                 
-                proc_strings.append( processing_step.ToString() )
+                proc_strings.append(processing_step.to_string())
                 
             
         
         return proc_strings
         
     
-    def MakesChanges( self ) -> bool:
+    def makes_changes(self) -> bool:
         
-        return True in ( step.MakesChanges() for step in self._processing_steps )
+        return True in (step.makes_changes() for step in self._processing_steps)
         
     
-    def ProcessStrings( self, starting_strings: collections.abc.Iterable[ str ], max_steps_allowed = None, no_slicing = False ) -> list[ str ]:
+    def process_strings(self, starting_strings: collections.abc.Iterable[ str], max_steps_allowed = None, no_slicing = False) -> list[ str]:
         
         current_strings = list( starting_strings )
         
@@ -1624,7 +1624,7 @@ class StringProcessor( StringProcessingStep ):
                 
                 try:
                     
-                    next_strings = processing_step.Sort( current_strings )
+                    next_strings = processing_step.sort(current_strings)
                     
                 except HydrusExceptions.StringSortException:
                     
@@ -1641,7 +1641,7 @@ class StringProcessor( StringProcessingStep ):
                     
                     try:
                         
-                        next_strings = processing_step.Slice( current_strings )
+                        next_strings = processing_step.slice(current_strings)
                         
                     except:
                         
@@ -1653,7 +1653,7 @@ class StringProcessor( StringProcessingStep ):
                 
                 try:
                     
-                    next_strings = processing_step.ConvertAndFilter( current_strings )
+                    next_strings = processing_step.convert_and_filter(current_strings)
                     
                 except:
                     
@@ -1664,7 +1664,7 @@ class StringProcessor( StringProcessingStep ):
                 
                 try:
                     
-                    next_strings = processing_step.Join( current_strings )
+                    next_strings = processing_step.join(current_strings)
                     
                 except:
                     
@@ -1686,7 +1686,7 @@ class StringProcessor( StringProcessingStep ):
                         
                         try:
                             
-                            next_string = processing_step.Convert( current_string )
+                            next_string = processing_step.convert(current_string)
                             
                             next_strings.append( next_string )
                             
@@ -1699,7 +1699,7 @@ class StringProcessor( StringProcessingStep ):
                         
                         try:
                             
-                            if processing_step.Matches( current_string ):
+                            if processing_step.matches(current_string):
                                 
                                 next_strings.append( current_string )
                                 
@@ -1718,7 +1718,7 @@ class StringProcessor( StringProcessingStep ):
                         
                         try:
                             
-                            split_strings = processing_step.Split( current_string )
+                            split_strings = processing_step.split(current_string)
                             
                             next_strings.extend( split_strings )
                             
@@ -1736,12 +1736,12 @@ class StringProcessor( StringProcessingStep ):
         return current_strings
         
     
-    def SetProcessingSteps( self, processing_steps: list[ StringProcessingStep ] ):
+    def set_processing_steps(self, processing_steps: list[ StringProcessingStep]):
         
         self._processing_steps = list( processing_steps )
         
     
-    def ToString( self, simple = False, with_type = False  ) -> str:
+    def to_string(self, simple = False, with_type = False) -> str:
         
         if len( self._processing_steps ) == 0:
             

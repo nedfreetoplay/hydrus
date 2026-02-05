@@ -45,9 +45,9 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
         
         #
         
-        like_services = CG.client_controller.services_manager.GetServices( ( HC.LOCAL_RATING_LIKE, ) )
-        numerical_services = CG.client_controller.services_manager.GetServices( ( HC.LOCAL_RATING_NUMERICAL, ) )
-        incdec_services = CG.client_controller.services_manager.GetServices( ( HC.LOCAL_RATING_INCDEC, ) )
+        like_services = CG.client_controller.services_manager.get_services((HC.LOCAL_RATING_LIKE,))
+        numerical_services = CG.client_controller.services_manager.get_services((HC.LOCAL_RATING_NUMERICAL,))
+        incdec_services = CG.client_controller.services_manager.get_services((HC.LOCAL_RATING_INCDEC,))
         
         self._panels = []
         
@@ -134,7 +134,7 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -184,13 +184,13 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
             
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ):
+    def process_application_command( self, command: CAC.ApplicationCommand ):
         
         command_processed = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_MANAGE_FILE_RATINGS:
                 
@@ -226,9 +226,9 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
             
             for service in self._services:
                 
-                name = service.GetName()
+                name = service.get_name()
                 
-                service_key = service.GetServiceKey()
+                service_key = service.get_service_key()
                 
                 ( rating_state, rating ) = ClientRatings.GetIncDecStateFromMedia( self._media, service_key )
                 
@@ -351,9 +351,9 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
             
             for service in self._services:
                 
-                name = service.GetName()
+                name = service.get_name()
                 
-                service_key = service.GetServiceKey()
+                service_key = service.get_service_key()
                 
                 rating_state = ClientRatings.GetLikeStateFromMedia( self._media, service_key )
                 
@@ -499,9 +499,9 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
             
             for service in self._services:
                 
-                name = service.GetName()
+                name = service.get_name()
                 
-                service_key = service.GetServiceKey()
+                service_key = service.get_service_key()
                 
                 ( rating_state, rating ) = ClientRatings.GetNumericalStateFromMedia( self._media, service_key )
                 

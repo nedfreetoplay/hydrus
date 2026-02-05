@@ -26,12 +26,12 @@ class AudioPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         tt += 'Keep this on if you would like the preview viewer to be quieter than the main media viewer.'
         
         #self._media_viewer_uses_its_own_audio_volume.setChecked( self._new_options.GetBoolean( 'media_viewer_uses_its_own_audio_volume' ) )
-        self._preview_uses_its_own_audio_volume.setChecked( self._new_options.GetBoolean( 'preview_uses_its_own_audio_volume' ) )
+        self._preview_uses_its_own_audio_volume.setChecked(self._new_options.get_boolean('preview_uses_its_own_audio_volume'))
         
         #self._media_viewer_uses_its_own_audio_volume.setToolTip( ClientGUIFunctions.WrapToolTip( tt ) )
         self._preview_uses_its_own_audio_volume.setToolTip( ClientGUIFunctions.WrapToolTip( tt ) )
         
-        self._has_audio_label.setText( self._new_options.GetString( 'has_audio_label' ) )
+        self._has_audio_label.setText(self._new_options.get_string('has_audio_label'))
         
         #
         
@@ -54,8 +54,8 @@ class AudioPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     def UpdateOptions( self ):
         
         #self._new_options.SetBoolean( 'media_viewer_uses_its_own_audio_volume', self._media_viewer_uses_its_own_audio_volume.isChecked() )
-        self._new_options.SetBoolean( 'preview_uses_its_own_audio_volume', self._preview_uses_its_own_audio_volume.isChecked() )
+        self._new_options.set_boolean('preview_uses_its_own_audio_volume', self._preview_uses_its_own_audio_volume.isChecked())
         
-        self._new_options.SetString( 'has_audio_label', self._has_audio_label.text() )
+        self._new_options.set_string('has_audio_label', self._has_audio_label.text())
         
     

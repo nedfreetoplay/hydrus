@@ -151,7 +151,7 @@ class NetworkJobControl( QW.QFrame ):
                 
                 for ( uses_default, network_context_to_edit, network_context_to_test ) in menu_network_contexts:
                     
-                    network_context_text = network_context_to_edit.ToString()
+                    network_context_text = network_context_to_edit.to_string()
                     
                     if uses_default:
                         
@@ -231,7 +231,7 @@ class NetworkJobControl( QW.QFrame ):
             
         else:
             
-            if self._auto_override_bandwidth_rules and HydrusTime.time_has_passed( self._network_job.GetCreationTime() + 5 ):
+            if self._auto_override_bandwidth_rules and HydrusTime.time_has_passed(self._network_job.get_creation_time() + 5):
                 
                 self._network_job.OverrideBandwidth()
                 
@@ -251,7 +251,7 @@ class NetworkJobControl( QW.QFrame ):
             
         else:
             
-            can_cancel = not self._network_job.IsDone()
+            can_cancel = not self._network_job.is_done()
             
             ( status_text, current_speed, bytes_read, bytes_to_read ) = self._network_job.GetStatus()
             
@@ -317,7 +317,7 @@ class NetworkJobControl( QW.QFrame ):
         
         if self._network_job is not None:
             
-            self._network_job.Cancel( 'Cancelled by user.' )
+            self._network_job.cancel('Cancelled by user.')
             
         
     

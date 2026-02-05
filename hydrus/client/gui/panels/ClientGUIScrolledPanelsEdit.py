@@ -169,7 +169,7 @@ class EditDefaultImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         url_class_key = url_class.GetClassKey()
         
-        name = url_class.GetName()
+        name = url_class.get_name()
         url_type = url_class.GetURLType()
         
         pretty_name = name
@@ -441,7 +441,7 @@ class EditDefaultImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -511,11 +511,11 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
         
         self._default_reason = default_reason
         
-        local_file_service_domains = list( CG.client_controller.services_manager.GetServices( ( HC.LOCAL_FILE_DOMAIN, ) ) )
+        local_file_service_domains = list(CG.client_controller.services_manager.get_services((HC.LOCAL_FILE_DOMAIN,)))
         
         if suggested_file_service_key is None:
             
-            suggested_file_service_key = local_file_service_domains[0].GetServiceKey()
+            suggested_file_service_key = local_file_service_domains[0].get_service_key()
             
         
         self._media = ClientMedia.FlattenMedia( media )
@@ -538,9 +538,9 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
         
         selection_success = False
         
-        if CG.client_controller.new_options.GetBoolean( 'remember_last_advanced_file_deletion_special_action' ):
+        if CG.client_controller.new_options.get_boolean('remember_last_advanced_file_deletion_special_action'):
             
-            last_advanced_file_deletion_special_action = CG.client_controller.new_options.GetNoneableString( 'last_advanced_file_deletion_special_action' )
+            last_advanced_file_deletion_special_action = CG.client_controller.new_options.get_noneable_string('last_advanced_file_deletion_special_action')
             
             selection_success = self._TryToSelectAction( last_advanced_file_deletion_special_action )
             
@@ -559,7 +559,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
         
         forced_existing_reason_selection_index = None
         
-        advanced_file_deletion_reasons = CG.client_controller.new_options.GetStringList( 'advanced_file_deletion_reasons' )
+        advanced_file_deletion_reasons = CG.client_controller.new_options.get_string_list('advanced_file_deletion_reasons')
         
         general_selection_index = 0 # default, top row
         
@@ -582,9 +582,9 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
                 
             
         
-        if CG.client_controller.new_options.GetBoolean( 'remember_last_advanced_file_deletion_reason' ):
+        if CG.client_controller.new_options.get_boolean('remember_last_advanced_file_deletion_reason'):
             
-            last_advanced_file_deletion_reason = CG.client_controller.new_options.GetNoneableString( 'last_advanced_file_deletion_reason' )
+            last_advanced_file_deletion_reason = CG.client_controller.new_options.get_noneable_string('last_advanced_file_deletion_reason')
             
         else:
             
@@ -687,7 +687,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
             self._simple_description.hide()
             
         
-        if not CG.client_controller.new_options.GetBoolean( 'use_advanced_file_deletion_dialog' ):
+        if not CG.client_controller.new_options.get_boolean('use_advanced_file_deletion_dialog'):
             
             self._reason_panel.hide()
             self._reason_panel.setEnabled( False )
@@ -721,7 +721,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
         
         self.widget().setLayout( vbox )
         
-        CG.client_controller.CallAfterQtSafe( self, self._SetFocus )
+        CG.client_controller.call_after_qt_safe(self, self._SetFocus)
         
     
     def _GetExistingSharedFileDeletionReason( self ):
@@ -788,14 +788,14 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _InitialisePermittedActionChoices( self ):
         
-        we_are_advanced_delete_dialog = CG.client_controller.new_options.GetBoolean( 'use_advanced_file_deletion_dialog' )
+        we_are_advanced_delete_dialog = CG.client_controller.new_options.get_boolean('use_advanced_file_deletion_dialog')
         
         possible_file_service_keys = []
         
-        local_file_service_domains = list( CG.client_controller.services_manager.GetServices( ( HC.LOCAL_FILE_DOMAIN, ) ) )
-        local_file_service_domain_keys = { service.GetServiceKey() for service in local_file_service_domains }
+        local_file_service_domains = list(CG.client_controller.services_manager.get_services((HC.LOCAL_FILE_DOMAIN,)))
+        local_file_service_domain_keys = {service.get_service_key() for service in local_file_service_domains}
         
-        possible_file_service_keys.extend( ( ( lfs.GetServiceKey(), lfs.GetServiceKey() ) for lfs in local_file_service_domains ) )
+        possible_file_service_keys.extend(((lfs.get_service_key(), lfs.get_service_key()) for lfs in local_file_service_domains))
         
         possible_file_service_keys.append( ( CC.TRASH_SERVICE_KEY, CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY ) )
         
@@ -809,7 +809,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
             possible_file_service_keys.append( ( CC.LOCAL_UPDATE_SERVICE_KEY, CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY ) )
             
         
-        possible_file_service_keys.extend( ( ( rfs.GetServiceKey(), rfs.GetServiceKey() ) for rfs in CG.client_controller.services_manager.GetServices( ( HC.FILE_REPOSITORY, ) ) ) )
+        possible_file_service_keys.extend(((rfs.get_service_key(), rfs.get_service_key()) for rfs in CG.client_controller.services_manager.get_services((HC.FILE_REPOSITORY,))))
         
         def PhysicalDeleteLockOK( s_k: bytes, media_result: ClientMediaResult.MediaResult ):
             
@@ -850,9 +850,9 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
             
             ( selection_file_service_key, deletee_file_service_key ) = fsk
             
-            deletee_service = CG.client_controller.services_manager.GetService( deletee_file_service_key )
+            deletee_service = CG.client_controller.services_manager.get_service(deletee_file_service_key)
             
-            deletee_service_type = deletee_service.GetServiceType()
+            deletee_service_type = deletee_service.get_service_type()
             
             if deletee_service_type == HC.LOCAL_FILE_DOMAIN:
                 
@@ -876,7 +876,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
                     template = 'Remove {} from {}?'
                     
                 
-                text = template.format( file_desc, deletee_service.GetName() )
+                text = template.format(file_desc, deletee_service.get_name())
                 
                 content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, chunk_of_hashes ) for chunk_of_hashes in HydrusLists.split_list_into_chunks( hashes, 16 ) ]
                 
@@ -910,7 +910,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
                 
             elif deletee_service_type == HC.FILE_REPOSITORY:
                 
-                if deletee_service.HasPermission( HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_PETITION ):
+                if deletee_service.has_permission(HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_PETITION):
                     
                     self._this_dialog_includes_service_keys = True
                     
@@ -923,16 +923,16 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
                         file_desc = '{} files'.format( HydrusNumbers.to_human_int( num_to_delete ) )
                         
                     
-                    if deletee_service.HasPermission( HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_MODERATE ):
+                    if deletee_service.has_permission(HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_MODERATE):
                         
-                        text = 'Admin-delete {} from {}?'.format( file_desc, deletee_service.GetName() )
+                        text = 'Admin-delete {} from {}?'.format(file_desc, deletee_service.get_name())
                         
                         save_reason = False
                         reason = 'admin'
                         
                     else:
                         
-                        text = 'Petition {} from {}?'.format( file_desc, deletee_service.GetName() )
+                        text = 'Petition {} from {}?'.format(file_desc, deletee_service.get_name())
                         
                         save_reason = True
                         reason = None
@@ -993,7 +993,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
             self._question_is_already_resolved = True
             
         
-        if CG.client_controller.new_options.GetBoolean( 'use_advanced_file_deletion_dialog' ):
+        if CG.client_controller.new_options.get_boolean('use_advanced_file_deletion_dialog'):
             
             hashes = [ m.GetHash() for m in self._media if CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY in m.GetLocationsManager().GetCurrent() if PhysicalDeleteLockOK( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, m.GetMediaResult() ) ]
             
@@ -1132,7 +1132,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     for content_update in content_updates:
                         
-                        content_update.SetReason( reason )
+                        content_update.set_reason(reason)
                         
                     
                 
@@ -1146,7 +1146,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            previous_last_advanced_file_deletion_special_action = CG.client_controller.new_options.GetNoneableString( 'last_advanced_file_deletion_special_action' )
+            previous_last_advanced_file_deletion_special_action = CG.client_controller.new_options.get_noneable_string('last_advanced_file_deletion_special_action')
             
             # if there is nothing to do but physically delete, then we don't want to overwrite an existing 'use service' setting
             # HACKMODE ALERT. len() == 64 is a stupid test for 'looks like a service key mate'
@@ -1158,12 +1158,12 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
             last_advanced_file_deletion_special_action = file_service_key
             
         
-        if save_action and CG.client_controller.new_options.GetBoolean( 'remember_last_advanced_file_deletion_special_action' ):
+        if save_action and CG.client_controller.new_options.get_boolean('remember_last_advanced_file_deletion_special_action'):
             
-            CG.client_controller.new_options.SetNoneableString( 'last_advanced_file_deletion_special_action', last_advanced_file_deletion_special_action )
+            CG.client_controller.new_options.set_noneable_string('last_advanced_file_deletion_special_action', last_advanced_file_deletion_special_action)
             
         
-        if save_reason and CG.client_controller.new_options.GetBoolean( 'remember_last_advanced_file_deletion_reason' ):
+        if save_reason and CG.client_controller.new_options.get_boolean('remember_last_advanced_file_deletion_reason'):
             
             reasons_ok = self._reason_radio.isVisible() and self._reason_radio.isEnabled()
             
@@ -1180,7 +1180,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
                     last_advanced_file_deletion_reason = reason
                     
                 
-                CG.client_controller.new_options.SetNoneableString( 'last_advanced_file_deletion_reason', last_advanced_file_deletion_reason )
+                CG.client_controller.new_options.set_noneable_string('last_advanced_file_deletion_reason', last_advanced_file_deletion_reason)
                 
             
         
@@ -1450,13 +1450,13 @@ class EditFileNotesPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolle
         
         ClientGUIFunctions.SetFocusLater( control )
         
-        if CG.client_controller.new_options.GetBoolean( 'start_note_editing_at_end' ):
+        if CG.client_controller.new_options.get_boolean('start_note_editing_at_end'):
             
-            CG.client_controller.CallAfterQtSafe( control, control.moveCursor, QG.QTextCursor.MoveOperation.End )
+            CG.client_controller.call_after_qt_safe(control, control.moveCursor, QG.QTextCursor.MoveOperation.End)
             
         else:
             
-            CG.client_controller.CallAfterQtSafe( control, control.moveCursor, QG.QTextCursor.MoveOperation.Start )
+            CG.client_controller.call_after_qt_safe(control, control.moveCursor, QG.QTextCursor.MoveOperation.Start)
             
         
         self._UpdateButtons()
@@ -1483,7 +1483,7 @@ class EditFileNotesPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolle
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -1655,13 +1655,13 @@ class EditFileNotesPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolle
         return ( names_to_notes, deletee_names )
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ):
+    def process_application_command( self, command: CAC.ApplicationCommand ):
         
         command_processed = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_MANAGE_FILE_NOTES:
                 
@@ -1847,7 +1847,7 @@ class EditMediaViewOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         self._preview_start_paused = QW.QCheckBox( self )
         self._preview_start_with_embed = QW.QCheckBox( self )
         
-        advanced_mode = CG.client_controller.new_options.GetBoolean( 'advanced_mode' )
+        advanced_mode = CG.client_controller.new_options.get_boolean('advanced_mode')
         
         for action in possible_show_actions:
             
@@ -2236,7 +2236,7 @@ class EditURLsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPane
                 
                 locations_manager = m.GetLocationsManager()
                 
-                if normalised_url not in locations_manager.GetURLs():
+                if normalised_url not in locations_manager.get_urls():
                     
                     addee_media.add( m )
                     
@@ -2244,7 +2244,7 @@ class EditURLsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPane
             
             if len( addee_media ) > 0:
                 
-                addee_hashes = { m.GetHash() for m in addee_media }
+                addee_hashes = {m.get_hash() for m in addee_media}
                 
                 content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_URLS, HC.CONTENT_UPDATE_ADD, ( ( normalised_url, ), addee_hashes ) )
                 
@@ -2266,7 +2266,7 @@ class EditURLsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPane
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -2295,7 +2295,7 @@ class EditURLsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPane
             
             locations_manager = m.GetLocationsManager()
             
-            if url in locations_manager.GetURLs():
+            if url in locations_manager.get_urls():
                 
                 removee_media.add( m )
                 
@@ -2303,7 +2303,7 @@ class EditURLsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPane
         
         if len( removee_media ) > 0:
             
-            removee_hashes = { m.GetHash() for m in removee_media }
+            removee_hashes = {m.get_hash() for m in removee_media}
             
             content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_URLS, HC.CONTENT_UPDATE_DELETE, ( ( url, ), removee_hashes ) )
             
@@ -2335,7 +2335,7 @@ class EditURLsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPane
             
             locations_manager = m.GetLocationsManager()
             
-            for url in locations_manager.GetURLs():
+            for url in locations_manager.get_urls():
                 
                 self._current_urls_count[ url ] += 1
                 
@@ -2415,13 +2415,13 @@ class EditURLsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPane
             
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ):
+    def process_application_command( self, command: CAC.ApplicationCommand ):
         
         command_processed = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_MANAGE_FILE_URLS:
                 

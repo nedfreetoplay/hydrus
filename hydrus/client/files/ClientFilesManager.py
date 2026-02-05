@@ -283,19 +283,19 @@ class ClientFilesManager( object ):
     
     def _GenerateThumbnailBytes( self, file_path, media_result ):
         
-        hash = media_result.GetHash()
+        hash = media_result.get_hash()
         mime = media_result.GetMime()
-        ( width, height ) = media_result.GetResolution()
-        duration_ms = media_result.GetDurationMS()
-        num_frames = media_result.GetNumFrames()
+        ( width, height ) = media_result.get_resolution()
+        duration_ms = media_result.get_duration_ms()
+        num_frames = media_result.get_num_frames()
         
         bounding_dimensions = self._controller.options[ 'thumbnail_dimensions' ]
-        thumbnail_scale_type = self._controller.new_options.GetInteger( 'thumbnail_scale_type' )
-        thumbnail_dpr_percent = CG.client_controller.new_options.GetInteger( 'thumbnail_dpr_percent' )
+        thumbnail_scale_type = self._controller.new_options.get_integer('thumbnail_scale_type')
+        thumbnail_dpr_percent = CG.client_controller.new_options.get_integer('thumbnail_dpr_percent')
         
         target_resolution = HydrusImageHandling.get_thumbnail_resolution( ( width, height ), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
         
-        percentage_in = self._controller.new_options.GetInteger( 'video_thumbnail_percentage_in' )
+        percentage_in = self._controller.new_options.get_integer('video_thumbnail_percentage_in')
         
         try:
             
@@ -690,9 +690,9 @@ class ClientFilesManager( object ):
     
     def _HandleCriticalDriveError( self ):
         
-        self._controller.new_options.SetBoolean( 'pause_import_folders_sync', True )
-        self._controller.new_options.SetBoolean( 'pause_subs_sync', True )
-        self._controller.new_options.SetBoolean( 'pause_all_file_queues', True )
+        self._controller.new_options.set_boolean('pause_import_folders_sync', True)
+        self._controller.new_options.set_boolean('pause_subs_sync', True)
+        self._controller.new_options.set_boolean('pause_all_file_queues', True)
         
         HydrusData.show_text( 'A critical drive error has occurred. All importers--subscriptions, import folders, and paged file import queues--have been paused. Once the issue is clear, restart the client and resume your imports under the file and network menus!' )
         
@@ -869,7 +869,7 @@ class ClientFilesManager( object ):
     
     def _WaitOnWakeup( self ):
         
-        if CG.client_controller.new_options.GetBoolean( 'file_system_waits_on_wakeup' ):
+        if CG.client_controller.new_options.get_boolean('file_system_waits_on_wakeup'):
             
             while CG.client_controller.just_woke_from_sleep():
                 
@@ -973,8 +973,8 @@ class ClientFilesManager( object ):
             
             job_status = ClientThreading.JobStatus( cancellable = True )
             
-            job_status.SetStatusTitle( 'clearing orphans' )
-            job_status.SetStatusText( 'preparing' )
+            job_status.set_status_title('clearing orphans')
+            job_status.set_status_text('preparing')
             
             self._controller.pub( 'message', job_status )
             
@@ -990,13 +990,13 @@ class ClientFilesManager( object ):
                 
                 with self._prefixes_to_rwlocks[ prefix ].write:
                     
-                    job_status.SetStatusText( f'checking {prefix}' )
+                    job_status.set_status_text(f'checking {prefix}')
                     
                     for subfolder in subfolders:
                         
                         for path in subfolder.IterateAllFiles():
                             
-                            ( i_paused, should_quit ) = job_status.WaitIfNeeded()
+                            ( i_paused, should_quit ) = job_status.wait_if_needed()
                             
                             if should_quit:
                                 
@@ -1009,7 +1009,7 @@ class ClientFilesManager( object ):
                                     
                                     status = 'reviewed ' + HydrusNumbers.to_human_int( num_files_reviewed ) + ' files, found ' + HydrusNumbers.to_human_int( len( orphan_paths ) ) + ' orphans'
                                     
-                                    job_status.SetStatusText( status, level = 2 )
+                                    job_status.set_status_text(status, level = 2)
                                     
                                 
                             else:
@@ -1018,7 +1018,7 @@ class ClientFilesManager( object ):
                                     
                                     status = 'reviewed ' + HydrusNumbers.to_human_int( num_thumbnails_reviewed ) + ' thumbnails, found ' + HydrusNumbers.to_human_int( len( orphan_thumbnails ) ) + ' orphans'
                                     
-                                    job_status.SetStatusText( status, level = 2 )
+                                    job_status.set_status_text(status, level = 2)
                                     
                                 
                             
@@ -1068,7 +1068,7 @@ class ClientFilesManager( object ):
                                         
                                         HydrusData.ShowException( e, do_wait = False )
                                         
-                                        job_status.Cancel()
+                                        job_status.cancel()
                                         
                                         return
                                         
@@ -1097,8 +1097,8 @@ class ClientFilesManager( object ):
                     
                 
             
-            job_status.SetStatusText( 'finished checking' )
-            job_status.DeleteStatusText( level = 2 )
+            job_status.set_status_text('finished checking')
+            job_status.delete_status_text(level = 2)
             
             time.sleep( 2 )
             
@@ -1108,13 +1108,13 @@ class ClientFilesManager( object ):
                     
                     status = 'found ' + HydrusNumbers.to_human_int( len( orphan_paths ) ) + ' orphan files, now deleting'
                     
-                    job_status.SetStatusText( status )
+                    job_status.set_status_text(status)
                     
                     time.sleep( 5 )
                     
                     for ( i, path ) in enumerate( orphan_paths ):
                         
-                        ( i_paused, should_quit ) = job_status.WaitIfNeeded()
+                        ( i_paused, should_quit ) = job_status.wait_if_needed()
                         
                         if should_quit:
                             
@@ -1125,9 +1125,9 @@ class ClientFilesManager( object ):
                         
                         status = 'deleting orphan files: ' + HydrusNumbers.value_range_to_pretty_string( i + 1, len( orphan_paths ) )
                         
-                        job_status.SetStatusText( status )
+                        job_status.set_status_text(status)
                         
-                        ClientPaths.DeletePath( path )
+                        ClientPaths.delete_path(path)
                         
                     
                 
@@ -1135,13 +1135,13 @@ class ClientFilesManager( object ):
                     
                     status = 'found ' + HydrusNumbers.to_human_int( len( orphan_thumbnails ) ) + ' orphan thumbnails, now deleting'
                     
-                    job_status.SetStatusText( status )
+                    job_status.set_status_text(status)
                     
                     time.sleep( 5 )
                     
                     for ( i, path ) in enumerate( orphan_thumbnails ):
                         
-                        ( i_paused, should_quit ) = job_status.WaitIfNeeded()
+                        ( i_paused, should_quit ) = job_status.wait_if_needed()
                         
                         if should_quit:
                             
@@ -1152,9 +1152,9 @@ class ClientFilesManager( object ):
                         
                         status = 'deleting orphan thumbnails: ' + HydrusNumbers.value_range_to_pretty_string( i + 1, len( orphan_thumbnails ) )
                         
-                        job_status.SetStatusText( status )
+                        job_status.set_status_text(status)
                         
-                        ClientPaths.DeletePath( path, always_delete_fully = True )
+                        ClientPaths.delete_path(path, always_delete_fully = True)
                         
                     
                 
@@ -1168,11 +1168,11 @@ class ClientFilesManager( object ):
                 final_text = HydrusNumbers.to_human_int( len( orphan_paths ) ) + ' orphan files and ' + HydrusNumbers.to_human_int( len( orphan_thumbnails ) ) + ' orphan thumbnails cleared!'
                 
             
-            job_status.SetStatusText( final_text )
+            job_status.set_status_text(final_text)
             
-            HydrusData.print_text( job_status.ToString() )
+            HydrusData.print_text(job_status.to_string())
             
-            job_status.Finish()
+            job_status.finish()
             
         
     
@@ -1221,7 +1221,7 @@ class ClientFilesManager( object ):
     
     def DoDeferredPhysicalDeletes( self ):
         
-        wait_period = HydrusTime.secondise_ms_float( self._controller.new_options.GetInteger( 'ms_to_wait_between_physical_file_deletes' ) )
+        wait_period = HydrusTime.secondise_ms_float(self._controller.new_options.get_integer('ms_to_wait_between_physical_file_deletes'))
         
         num_files_deleted = 0
         num_thumbnails_deleted = 0
@@ -1254,7 +1254,7 @@ class ClientFilesManager( object ):
                                 ( path, actual_mime ) = self._LookForFilePath( file_hash )
                                 
                             
-                            ClientPaths.DeletePath( path )
+                            ClientPaths.delete_path(path)
                             
                             num_files_deleted += 1
                             
@@ -1273,7 +1273,7 @@ class ClientFilesManager( object ):
                         
                         if os.path.exists( path ):
                             
-                            ClientPaths.DeletePath( path, always_delete_fully = True )
+                            ClientPaths.delete_path(path, always_delete_fully = True)
                             
                             num_thumbnails_deleted += 1
                             
@@ -1379,7 +1379,7 @@ class ClientFilesManager( object ):
     
     def GetThumbnailPath( self, media_result ):
         
-        hash = media_result.GetHash()
+        hash = media_result.get_hash()
         mime = media_result.GetMime()
         
         if HG.file_report_mode:
@@ -1446,7 +1446,7 @@ class ClientFilesManager( object ):
                 
                 while rebalance_tuple is not None:
                     
-                    if job_status.IsCancelled():
+                    if job_status.is_cancelled():
                         
                         break
                         
@@ -1457,7 +1457,7 @@ class ClientFilesManager( object ):
                     
                     HydrusData.print_text( text )
                     
-                    job_status.SetStatusText( text )
+                    job_status.set_status_text(text)
                     
                     # these two lines can cause a deadlock because the db sometimes calls stuff in here.
                     self._controller.write_synchronous( 'relocate_client_files', source_subfolder, dest_subfolder )
@@ -1472,9 +1472,9 @@ class ClientFilesManager( object ):
             
         finally:
             
-            job_status.SetStatusText( 'done!' )
+            job_status.set_status_text('done!')
             
-            job_status.FinishAndDismiss()
+            job_status.finish_and_dismiss()
             
         
     
@@ -1493,7 +1493,7 @@ class ClientFilesManager( object ):
             raise HydrusExceptions.FileMissingException( 'I was called to regenerate a thumbnail from source, but the source file does not think it is in the local file store!' )
             
         
-        hash = media_result.GetHash()
+        hash = media_result.get_hash()
         mime = media_result.GetMime()
         
         if mime not in HC.MIMES_WITH_THUMBNAILS:
@@ -1531,7 +1531,7 @@ class ClientFilesManager( object ):
         
         try:
             
-            hash = media_result.GetHash()
+            hash = media_result.get_hash()
             mime = media_result.GetMime()
             
             if mime not in HC.MIMES_WITH_THUMBNAILS:
@@ -1539,7 +1539,7 @@ class ClientFilesManager( object ):
                 return
                 
             
-            ( media_width, media_height ) = media_result.GetResolution()
+            ( media_width, media_height ) = media_result.get_resolution()
             
             path = self._GenerateExpectedThumbnailPath( hash )
             
@@ -1555,8 +1555,8 @@ class ClientFilesManager( object ):
             ( current_width, current_height ) = HydrusImageHandling.get_resolution_numpy( numpy_image )
             
             bounding_dimensions = self._controller.options[ 'thumbnail_dimensions' ]
-            thumbnail_scale_type = self._controller.new_options.GetInteger( 'thumbnail_scale_type' )
-            thumbnail_dpr_percent = CG.client_controller.new_options.GetInteger( 'thumbnail_dpr_percent' )
+            thumbnail_scale_type = self._controller.new_options.get_integer('thumbnail_scale_type')
+            thumbnail_dpr_percent = CG.client_controller.new_options.get_integer('thumbnail_dpr_percent')
             
             ( expected_width, expected_height ) = HydrusImageHandling.get_thumbnail_resolution( (media_width, media_height), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
             
@@ -1586,7 +1586,7 @@ class ClientFilesManager( object ):
     
     def UpdateFileModifiedTimestampMS( self, media, modified_timestamp_ms: int ):
         
-        hash = media.GetHash()
+        hash = media.get_hash()
         mime = media.GetMime()
         
         with self._master_locations_rwlock.read:

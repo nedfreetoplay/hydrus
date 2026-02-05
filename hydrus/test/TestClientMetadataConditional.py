@@ -37,7 +37,7 @@ class TestClientMetadataConditional( unittest.TestCase ):
         media_result_png = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_PNG )
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext(
-            ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ),
+            ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY),
             ClientSearchTagContext.TagContext(),
             predicates = [
                 ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = { HC.IMAGE_JPEG } )
@@ -58,11 +58,11 @@ class TestClientMetadataConditional( unittest.TestCase ):
         media_result_png = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_PNG )
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext(
-            ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ),
+            ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY),
             ClientSearchTagContext.TagContext(),
             predicates = [
                 ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = { HC.IMAGE_JPEG } ),
-                ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_WIDTH, ClientNumberTest.NumberTest.STATICCreateFromCharacters( '<', media_result_jpeg.GetResolution()[0] - 10 ) )
+                ClientSearchPredicate.Predicate(ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_WIDTH, ClientNumberTest.NumberTest.STATICCreateFromCharacters( '<', media_result_jpeg.get_resolution()[0] - 10))
             ]
         )
         
@@ -80,11 +80,11 @@ class TestClientMetadataConditional( unittest.TestCase ):
         media_result_png = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_PNG )
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext(
-            ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ),
+            ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY),
             ClientSearchTagContext.TagContext(),
             predicates = [
                 ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = { HC.IMAGE_JPEG } ),
-                ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_WIDTH, ClientNumberTest.NumberTest.STATICCreateFromCharacters( '<', media_result_jpeg.GetResolution()[0] + 10 ) )
+                ClientSearchPredicate.Predicate(ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_WIDTH, ClientNumberTest.NumberTest.STATICCreateFromCharacters( '<', media_result_jpeg.get_resolution()[0] + 10))
             ]
         )
         
@@ -184,7 +184,7 @@ class TestPredicateTesting( unittest.TestCase ):
         self.assertTrue( pred.CanTestMediaResult() )
         
         media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
-        media_result_fail = media_result_pass.Duplicate()
+        media_result_fail = media_result_pass.duplicate()
         
         media_result_pass.GetFileInfoManager().height = 195
         media_result_fail.GetFileInfoManager().height = 205
@@ -216,7 +216,7 @@ class TestPredicateTesting( unittest.TestCase ):
         self.assertTrue( pred.CanTestMediaResult() )
         
         media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
-        media_result_fail = media_result_pass.Duplicate()
+        media_result_fail = media_result_pass.duplicate()
         
         media_result_pass.GetFileInfoManager().width = 195
         media_result_fail.GetFileInfoManager().width = 205
@@ -293,7 +293,7 @@ class TestPredicateTesting( unittest.TestCase ):
         self.assertTrue( pred.CanTestMediaResult() )
         
         media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
-        media_result_fail = media_result_pass.Duplicate()
+        media_result_fail = media_result_pass.duplicate()
         
         media_result_pass.GetFileInfoManager().has_exif = True
         media_result_fail.GetFileInfoManager().has_exif = False
@@ -308,7 +308,7 @@ class TestPredicateTesting( unittest.TestCase ):
         self.assertTrue( pred.CanTestMediaResult() )
         
         media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
-        media_result_fail = media_result_pass.Duplicate()
+        media_result_fail = media_result_pass.duplicate()
         
         media_result_pass.GetFileInfoManager().has_exif = False
         media_result_fail.GetFileInfoManager().has_exif = True
@@ -324,7 +324,7 @@ class TestPredicateTesting( unittest.TestCase ):
         self.assertTrue( pred.CanTestMediaResult() )
         
         media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
-        media_result_fail = media_result_pass.Duplicate()
+        media_result_fail = media_result_pass.duplicate()
         
         media_result_pass.GetFileInfoManager().has_audio = True
         media_result_fail.GetFileInfoManager().has_audio = False
@@ -339,7 +339,7 @@ class TestPredicateTesting( unittest.TestCase ):
         self.assertTrue( pred.CanTestMediaResult() )
         
         media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
-        media_result_fail = media_result_pass.Duplicate()
+        media_result_fail = media_result_pass.duplicate()
         
         media_result_pass.GetFileInfoManager().has_audio = False
         media_result_fail.GetFileInfoManager().has_audio = True
@@ -355,7 +355,7 @@ class TestPredicateTesting( unittest.TestCase ):
         self.assertTrue( pred.CanTestMediaResult() )
         
         media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
-        media_result_fail = media_result_pass.Duplicate()
+        media_result_fail = media_result_pass.duplicate()
         
         media_result_pass.GetFileInfoManager().original_mime = HC.IMAGE_JPEG
         media_result_pass.GetFileInfoManager().mime = HC.APPLICATION_ZIP
@@ -370,7 +370,7 @@ class TestPredicateTesting( unittest.TestCase ):
         self.assertTrue( pred.CanTestMediaResult() )
         
         media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
-        media_result_fail = media_result_pass.Duplicate()
+        media_result_fail = media_result_pass.duplicate()
         
         media_result_fail.GetFileInfoManager().original_mime = HC.IMAGE_JPEG
         media_result_fail.GetFileInfoManager().mime = HC.APPLICATION_ZIP
@@ -386,7 +386,7 @@ class TestPredicateTesting( unittest.TestCase ):
         self.assertTrue( pred.CanTestMediaResult() )
         
         media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
-        media_result_fail = media_result_pass.Duplicate()
+        media_result_fail = media_result_pass.duplicate()
         
         media_result_pass.GetFileInfoManager().has_transparency = True
         media_result_fail.GetFileInfoManager().has_transparency = False
@@ -401,7 +401,7 @@ class TestPredicateTesting( unittest.TestCase ):
         self.assertTrue( pred.CanTestMediaResult() )
         
         media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
-        media_result_fail = media_result_pass.Duplicate()
+        media_result_fail = media_result_pass.duplicate()
         
         media_result_pass.GetFileInfoManager().has_transparency = False
         media_result_fail.GetFileInfoManager().has_transparency = True
@@ -417,7 +417,7 @@ class TestPredicateTesting( unittest.TestCase ):
         self.assertTrue( pred.CanTestMediaResult() )
         
         media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
-        media_result_fail = media_result_pass.Duplicate()
+        media_result_fail = media_result_pass.duplicate()
         
         media_result_pass.GetFileInfoManager().has_human_readable_embedded_metadata = True
         media_result_fail.GetFileInfoManager().has_human_readable_embedded_metadata = False
@@ -432,7 +432,7 @@ class TestPredicateTesting( unittest.TestCase ):
         self.assertTrue( pred.CanTestMediaResult() )
         
         media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
-        media_result_fail = media_result_pass.Duplicate()
+        media_result_fail = media_result_pass.duplicate()
         
         media_result_pass.GetFileInfoManager().has_human_readable_embedded_metadata = False
         media_result_fail.GetFileInfoManager().has_human_readable_embedded_metadata = True
@@ -448,7 +448,7 @@ class TestPredicateTesting( unittest.TestCase ):
         self.assertTrue( pred.CanTestMediaResult() )
         
         media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
-        media_result_fail = media_result_pass.Duplicate()
+        media_result_fail = media_result_pass.duplicate()
         
         media_result_pass.GetFileInfoManager().has_icc_profile = True
         media_result_fail.GetFileInfoManager().has_icc_profile = False
@@ -463,7 +463,7 @@ class TestPredicateTesting( unittest.TestCase ):
         self.assertTrue( pred.CanTestMediaResult() )
         
         media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
-        media_result_fail = media_result_pass.Duplicate()
+        media_result_fail = media_result_pass.duplicate()
         
         media_result_pass.GetFileInfoManager().has_icc_profile = False
         media_result_fail.GetFileInfoManager().has_icc_profile = True
@@ -485,18 +485,18 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'abcdef', ( media_result_pass.GetHash(), ) )
+                ( 'abcdef', ( media_result_pass.get_hash(),))
             )
         )
         
-        media_result_fail = media_result_pass.Duplicate()
+        media_result_fail = media_result_pass.duplicate()
         
         media_result_fail.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.DELETE,
-                ( 'abcdef', ( media_result_pass.GetHash(), ) )
+                ( 'abcdef', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -522,7 +522,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'creator:a cool guy', ( media_result_pass.GetHash(), ) )
+                ( 'creator:a cool guy', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -531,7 +531,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'scarf', ( media_result_pass.GetHash(), ) )
+                ( 'scarf', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -542,7 +542,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'hat', ( media_result_pass.GetHash(), ) )
+                ( 'hat', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -563,7 +563,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'creator:a cool guy', ( media_result_pass.GetHash(), ) )
+                ( 'creator:a cool guy', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -572,7 +572,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'scarf', ( media_result_pass.GetHash(), ) )
+                ( 'scarf', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -581,7 +581,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'gloves', ( media_result_pass.GetHash(), ) )
+                ( 'gloves', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -592,7 +592,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'hat', ( media_result_pass.GetHash(), ) )
+                ( 'hat', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -601,7 +601,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'creator:test', ( media_result_pass.GetHash(), ) )
+                ( 'creator:test', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -610,7 +610,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'series:another test', ( media_result_pass.GetHash(), ) )
+                ( 'series:another test', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -631,7 +631,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'creator:a cool guy', ( media_result_pass.GetHash(), ) )
+                ( 'creator:a cool guy', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -640,7 +640,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'character:a different guy', ( media_result_pass.GetHash(), ) )
+                ( 'character:a different guy', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -649,7 +649,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'gloves', ( media_result_pass.GetHash(), ) )
+                ( 'gloves', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -660,7 +660,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'hat', ( media_result_pass.GetHash(), ) )
+                ( 'hat', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -669,7 +669,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'creator:test', ( media_result_pass.GetHash(), ) )
+                ( 'creator:test', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -678,7 +678,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'series:another test', ( media_result_pass.GetHash(), ) )
+                ( 'series:another test', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -999,7 +999,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         media_result_pass_1 = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_pass_2 = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
-        media_result_fail = media_result_pass_1.Duplicate()
+        media_result_fail = media_result_pass_1.duplicate()
         
         media_result_pass_1.GetFileInfoManager().width = 195
         media_result_pass_1.GetFileInfoManager().height = 205
@@ -1026,7 +1026,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'skirt', ( media_result_pass.GetHash(), ) )
+                ( 'skirt', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -1037,7 +1037,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'trousers', ( media_result_pass.GetHash(), ) )
+                ( 'trousers', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -1057,7 +1057,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'trousers', ( media_result_pass.GetHash(), ) )
+                ( 'trousers', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -1068,7 +1068,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'skirt', ( media_result_pass.GetHash(), ) )
+                ( 'skirt', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -1089,7 +1089,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'creator:a cool guy', ( media_result_pass.GetHash(), ) )
+                ( 'creator:a cool guy', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -1100,7 +1100,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'series:no', ( media_result_pass.GetHash(), ) )
+                ( 'series:no', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -1120,7 +1120,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'series:no', ( media_result_pass.GetHash(), ) )
+                ( 'series:no', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -1131,7 +1131,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'creator:a cool guy', ( media_result_pass.GetHash(), ) )
+                ( 'creator:a cool guy', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -1152,7 +1152,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'creator:a cool guy', ( media_result_pass.GetHash(), ) )
+                ( 'creator:a cool guy', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -1163,7 +1163,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'series:no', ( media_result_pass.GetHash(), ) )
+                ( 'series:no', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -1183,7 +1183,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'series:no', ( media_result_pass.GetHash(), ) )
+                ( 'series:no', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -1194,7 +1194,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'creator:a cool guy', ( media_result_pass.GetHash(), ) )
+                ( 'creator:a cool guy', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -1214,7 +1214,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'happy', ( media_result_pass.GetHash(), ) )
+                ( 'happy', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -1226,7 +1226,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'hat', ( media_result_pass.GetHash(), ) )
+                ( 'hat', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -1245,7 +1245,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'complicated:tag', ( media_result_pass.GetHash(), ) )
+                ( 'complicated:tag', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -1257,7 +1257,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'complicated:hat', ( media_result_pass.GetHash(), ) )
+                ( 'complicated:hat', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -1276,7 +1276,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'hat', ( media_result_pass.GetHash(), ) )
+                ( 'hat', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -1288,7 +1288,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'happy', ( media_result_pass.GetHash(), ) )
+                ( 'happy', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -1307,7 +1307,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'complicated:hat', ( media_result_pass.GetHash(), ) )
+                ( 'complicated:hat', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -1319,7 +1319,7 @@ class TestPredicateTesting( unittest.TestCase ):
             ClientContentUpdates.ContentUpdate(
                 HC.CONTENT_TYPE_MAPPINGS,
                 HC.ADD,
-                ( 'complicated:tag', ( media_result_pass.GetHash(), ) )
+                ( 'complicated:tag', ( media_result_pass.get_hash(),))
             )
         )
         
@@ -1420,7 +1420,7 @@ class TestPredicateValueExtraction( unittest.TestCase ):
         system_predicate = ClientSearchPredicate.Predicate( predicate_type = ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_NUM_URLS )
         
         self.assertTrue( system_predicate.CanExtractValueFromMediaResult() )
-        self.assertEqual( system_predicate.ExtractValueFromMediaResult( fake_media_result ), len( fake_media_result.GetLocationsManager().GetURLs() ) )
+        self.assertEqual(system_predicate.ExtractValueFromMediaResult( fake_media_result ), len(fake_media_result.GetLocationsManager().get_urls()))
         
         # import time
         

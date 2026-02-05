@@ -48,8 +48,8 @@ class EditPotentialDuplicatesSearchContextPanel( ClientGUICommon.StaticBox ):
         file_search_context_1 = potential_duplicates_search_context.GetFileSearchContext1()
         file_search_context_2 = potential_duplicates_search_context.GetFileSearchContext2()
         
-        file_search_context_1.FixMissingServices( CG.client_controller.services_manager.FilterValidServiceKeys )
-        file_search_context_2.FixMissingServices( CG.client_controller.services_manager.FilterValidServiceKeys )
+        file_search_context_1.FixMissingServices(CG.client_controller.services_manager.filter_valid_service_keys)
+        file_search_context_2.FixMissingServices(CG.client_controller.services_manager.filter_valid_service_keys)
         
         if page_key is None:
             
@@ -229,7 +229,7 @@ class EditPotentialDuplicatesSearchContextPanel( ClientGUICommon.StaticBox ):
             
             ( potential_duplicate_pairs_fragmentary_search, job_status ) = args
             
-            if job_status.IsCancelled():
+            if job_status.is_cancelled():
                 
                 return ( [], job_status )
                 
@@ -335,7 +335,7 @@ class EditPotentialDuplicatesSearchContextPanel( ClientGUICommon.StaticBox ):
         
         self._num_potential_duplicate_pairs = 0
         
-        self._count_job_status.Cancel()
+        self._count_job_status.cancel()
         
         self._count_job_status = ClientThreading.JobStatus( cancellable = True )
         
@@ -428,7 +428,7 @@ class EditPotentialDuplicatesSearchContextPanel( ClientGUICommon.StaticBox ):
     
     def _WeAreDoingACountEstimateAndHaveEnough( self ):
         
-        if not CG.client_controller.new_options.GetBoolean( 'potential_duplicate_pairs_search_context_panel_stops_to_estimate' ):
+        if not CG.client_controller.new_options.get_boolean('potential_duplicate_pairs_search_context_panel_stops_to_estimate'):
             
             return False
             

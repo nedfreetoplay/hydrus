@@ -95,9 +95,9 @@ class DialogPageChooser( ClientGUIDialogs.Dialog ):
         self.setMinimumWidth( width )
         self.setMinimumHeight( height )
         
-        repositories: list[ ClientServices.ServiceRepository ] = CG.client_controller.services_manager.GetServices( HC.REPOSITORIES )
+        repositories: list[ ClientServices.ServiceRepository ] = CG.client_controller.services_manager.get_services(HC.REPOSITORIES)
         
-        self._petition_service_keys = [ service.GetServiceKey() for service in repositories if True in ( service.HasPermission( content_type, HC.PERMISSION_ACTION_MODERATE ) for content_type in HC.SERVICE_TYPES_TO_CONTENT_TYPES[ service.GetServiceType() ] ) ]
+        self._petition_service_keys = [service.get_service_key() for service in repositories if True in (service.has_permission(content_type, HC.PERMISSION_ACTION_MODERATE) for content_type in HC.SERVICE_TYPES_TO_CONTENT_TYPES[ service.get_service_type()])]
         
         self._InitButtons( 'home' )
         
@@ -134,7 +134,7 @@ class DialogPageChooser( ClientGUIDialogs.Dialog ):
             
         elif entry_type in ( 'page_query', 'page_petitions' ):
             
-            name = CG.client_controller.services_manager.GetService( obj ).GetName()
+            name = CG.client_controller.services_manager.get_service(obj).get_name()
             
             button.setText( name )
             
@@ -178,14 +178,14 @@ class DialogPageChooser( ClientGUIDialogs.Dialog ):
                     
                     new_options = self._controller.new_options
                     
-                    tag_service_key = new_options.GetKey( 'default_tag_service_search_page' )
+                    tag_service_key = new_options.get_key('default_tag_service_search_page')
                     
-                    if not self._controller.services_manager.ServiceExists( tag_service_key ):
+                    if not self._controller.services_manager.service_exists(tag_service_key):
                         
                         tag_service_key = CC.COMBINED_TAG_SERVICE_KEY
                         
                     
-                    location_context = ClientLocation.LocationContext.STATICCreateSimple( file_service_key )
+                    location_context = ClientLocation.LocationContext.static_create_simple(file_service_key)
                     
                     tag_context = ClientSearchTagContext.TagContext( service_key = tag_service_key )
                     
@@ -251,14 +251,14 @@ class DialogPageChooser( ClientGUIDialogs.Dialog ):
             
         elif menu_keyword == 'file search':
             
-            for service_key in self._controller.services_manager.GetServiceKeys( ( HC.LOCAL_FILE_DOMAIN, ) ):
+            for service_key in self._controller.services_manager.get_service_keys((HC.LOCAL_FILE_DOMAIN,)):
                 
                 entries.append( ( 'page_query', service_key ) )
                 
             
-            if len( entries ) > 1 and self._controller.new_options.GetBoolean( 'show_all_my_files_on_page_chooser' ):
+            if len( entries ) > 1 and self._controller.new_options.get_boolean('show_all_my_files_on_page_chooser'):
                 
-                if self._controller.new_options.GetBoolean( 'show_all_my_files_on_page_chooser_at_top' ):
+                if self._controller.new_options.get_boolean('show_all_my_files_on_page_chooser_at_top'):
                     
                     entries.insert( 0, ( 'page_query', CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
                     
@@ -269,9 +269,9 @@ class DialogPageChooser( ClientGUIDialogs.Dialog ):
             
             entries.append( ( 'page_query', CC.TRASH_SERVICE_KEY ) )
             
-            if self._controller.new_options.GetBoolean( 'show_local_files_on_page_chooser' ):
+            if self._controller.new_options.get_boolean('show_local_files_on_page_chooser'):
                 
-                if self._controller.new_options.GetBoolean( 'show_local_files_on_page_chooser_at_top' ):
+                if self._controller.new_options.get_boolean('show_local_files_on_page_chooser_at_top'):
                     
                     entries.insert( 0, ( 'page_query', CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY ) )
                     
@@ -280,7 +280,7 @@ class DialogPageChooser( ClientGUIDialogs.Dialog ):
                     entries.append( ( 'page_query', CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY ) )
                 
             
-            for service_key in self._controller.services_manager.GetServiceKeys( ( HC.FILE_REPOSITORY, ) ):
+            for service_key in self._controller.services_manager.get_service_keys((HC.FILE_REPOSITORY,)):
                 
                 entries.append( ( 'page_query', service_key ) )
                 

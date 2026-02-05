@@ -27,7 +27,7 @@ class ImportingPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         default_fios = ClientGUICommon.StaticBox( self, 'default file import options' )
         
-        quiet_file_import_options = self._new_options.GetDefaultFileImportOptions( FileImportOptionsLegacy.IMPORT_TYPE_QUIET )
+        quiet_file_import_options = self._new_options.get_default_file_import_options(FileImportOptionsLegacy.IMPORT_TYPE_QUIET)
         
         show_downloader_options = True
         allow_default_selection = False
@@ -36,7 +36,7 @@ class ImportingPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         self._quiet_fios.SetFileImportOptions( quiet_file_import_options )
         
-        loud_file_import_options = self._new_options.GetDefaultFileImportOptions( FileImportOptionsLegacy.IMPORT_TYPE_LOUD )
+        loud_file_import_options = self._new_options.get_default_file_import_options(FileImportOptionsLegacy.IMPORT_TYPE_LOUD)
         
         self._loud_fios = ClientGUIImportOptions.ImportOptionsButton( self, show_downloader_options, allow_default_selection )
         
@@ -44,7 +44,7 @@ class ImportingPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         #
         
-        self._show_destination_page_when_dnd_url.setChecked( self._new_options.GetBoolean( 'show_destination_page_when_dnd_url' ) )
+        self._show_destination_page_when_dnd_url.setChecked(self._new_options.get_boolean('show_destination_page_when_dnd_url'))
         
         #
         
@@ -86,9 +86,9 @@ class ImportingPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def UpdateOptions( self ):
         
-        self._new_options.SetBoolean( 'show_destination_page_when_dnd_url', self._show_destination_page_when_dnd_url.isChecked() )
+        self._new_options.set_boolean('show_destination_page_when_dnd_url', self._show_destination_page_when_dnd_url.isChecked())
         
-        self._new_options.SetDefaultFileImportOptions( FileImportOptionsLegacy.IMPORT_TYPE_QUIET, self._quiet_fios.GetFileImportOptions() )
-        self._new_options.SetDefaultFileImportOptions( FileImportOptionsLegacy.IMPORT_TYPE_LOUD, self._loud_fios.GetFileImportOptions() )
+        self._new_options.set_default_file_import_options(FileImportOptionsLegacy.IMPORT_TYPE_QUIET, self._quiet_fios.GetFileImportOptions())
+        self._new_options.set_default_file_import_options(FileImportOptionsLegacy.IMPORT_TYPE_LOUD, self._loud_fios.GetFileImportOptions())
         
     

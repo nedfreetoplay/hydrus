@@ -468,24 +468,24 @@ class TestTagRendering( unittest.TestCase ):
         self.assertEqual( ClientTags.RenderTag( 'tag', True ), 'tag' )
         self.assertEqual( ClientTags.RenderTag( 'test_tag', True ), 'test_tag' )
         
-        TG.test_controller.new_options.SetBoolean( 'replace_tag_underscores_with_spaces', True )
+        TG.test_controller.new_options.set_boolean('replace_tag_underscores_with_spaces', True)
         
         self.assertEqual( ClientTags.RenderTag( 'test_tag', True ), 'test tag' )
         
-        TG.test_controller.new_options.SetBoolean( 'replace_tag_underscores_with_spaces', False )
+        TG.test_controller.new_options.set_boolean('replace_tag_underscores_with_spaces', False)
         
-        TG.test_controller.new_options.SetBoolean( 'replace_tag_emojis_with_boxes', True )
+        TG.test_controller.new_options.set_boolean('replace_tag_emojis_with_boxes', True)
         
         self.assertEqual( ClientTags.RenderTag( 'title:skeb⛓️💙', True ), 'title:skeb□□' )
         
-        TG.test_controller.new_options.SetBoolean( 'replace_tag_emojis_with_boxes', False )
+        TG.test_controller.new_options.set_boolean('replace_tag_emojis_with_boxes', False)
         
         self.assertEqual( ClientTags.RenderTag( 'character:lara', True ), 'character:lara' )
         
-        TG.test_controller.new_options.SetBoolean( 'show_namespaces', False )
+        TG.test_controller.new_options.set_boolean('show_namespaces', False)
         
         self.assertEqual( ClientTags.RenderTag( 'character:lara', True ), 'lara' )
         
-        TG.test_controller.new_options.SetBoolean( 'show_namespaces', True )
+        TG.test_controller.new_options.set_boolean('show_namespaces', True)
         
     

@@ -331,7 +331,7 @@ class DuplicatesAutoResolutionRule( HydrusSerialisable.SerialisableBaseNamed ):
         
         if self._custom_duplicate_content_merge_options is None:
             
-            duplicate_content_merge_options = CG.client_controller.new_options.GetDuplicateContentMergeOptions( self._action )
+            duplicate_content_merge_options = CG.client_controller.new_options.get_duplicate_content_merge_options(self._action)
             
         else:
             
@@ -370,7 +370,7 @@ class DuplicatesAutoResolutionRule( HydrusSerialisable.SerialisableBaseNamed ):
         
         if self._custom_duplicate_content_merge_options is None:
             
-            duplicate_content_merge_options = CG.client_controller.new_options.GetDuplicateContentMergeOptions( action )
+            duplicate_content_merge_options = CG.client_controller.new_options.get_duplicate_content_merge_options(action)
             
         else:
             
@@ -692,7 +692,7 @@ def GetDefaultRuleSuggestionsPixelPerfectFiletypePairs() -> list[ DuplicatesAuto
     
     #
     
-    location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+    location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
     
     predicates = [
         ClientSearchPredicate.Predicate( predicate_type = ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = ( HC.IMAGE_JPEG, ) ),
@@ -759,7 +759,7 @@ def GetDefaultRuleSuggestionsPixelPerfectFiletypePairs() -> list[ DuplicatesAuto
     
     # ############
     
-    location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+    location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
     
     predicates = [
         ClientSearchPredicate.Predicate( predicate_type = ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = ( HC.IMAGE_GIF, ) ),
@@ -826,7 +826,7 @@ def GetDefaultRuleSuggestionsPixelPerfectFiletypePairs() -> list[ DuplicatesAuto
     
     # ############
     
-    location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+    location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
     
     predicates = [
         ClientSearchPredicate.Predicate( predicate_type = ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = ( HC.IMAGE_JPEG, ) ),
@@ -906,7 +906,7 @@ def GetDefaultRuleSuggestionsPixelPerfectFiletypePairs() -> list[ DuplicatesAuto
     
     # ############
     
-    location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+    location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
     
     predicates = [
         ClientSearchPredicate.Predicate( predicate_type = ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = ( HC.IMAGE_GIF, ) ),
@@ -997,7 +997,7 @@ def GetDefaultRuleSuggestionsPixelPerfectPairs() -> list[ DuplicatesAutoResoluti
     
     #
     
-    location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+    location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
     
     predicates = [
         ClientSearchPredicate.Predicate( predicate_type = ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = ( HC.GENERAL_IMAGE, ) ),
@@ -1095,7 +1095,7 @@ def GetDefaultRuleSuggestionsVisuallySimilar() -> list[ DuplicatesAutoResolution
     
     #
     
-    location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+    location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
     
     predicates = [
         ClientSearchPredicate.Predicate( predicate_type = ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = ( HC.GENERAL_IMAGE, ) ),
@@ -1210,7 +1210,7 @@ def GetDefaultRuleSuggestionsNearPerfectFiletypePairs() -> list[ DuplicatesAutoR
     
     #
     
-    location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+    location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
     
     predicates = [
         ClientSearchPredicate.Predicate( predicate_type = ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = ( HC.IMAGE_JPEG, ) ),
@@ -1353,7 +1353,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
         
         if CG.client_controller.currently_idle():
             
-            if not CG.client_controller.new_options.GetBoolean( 'duplicates_auto_resolution_during_idle' ):
+            if not CG.client_controller.new_options.get_boolean('duplicates_auto_resolution_during_idle'):
                 
                 return False
                 
@@ -1365,7 +1365,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
             
         else:
             
-            if not CG.client_controller.new_options.GetBoolean( 'duplicates_auto_resolution_during_active' ):
+            if not CG.client_controller.new_options.get_boolean('duplicates_auto_resolution_during_active'):
                 
                 return False
                 
@@ -1374,13 +1374,13 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
         return True
         
     
-    def _DoMainLoop( self ):
+    def _do_main_loop(self):
         
         while True:
             
             with self._lock:
                 
-                self._CheckShutdown()
+                self._check_shutdown()
                 
                 able_to_work = self._AbleToWork()
                 
@@ -1391,7 +1391,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
             
             if able_to_work:
                 
-                CG.client_controller.WaitUntilViewFree()
+                CG.client_controller.wait_until_view_free()
                 
                 with self._edit_work_lock:
                     
@@ -1523,11 +1523,11 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
         
         if self._controller.currently_idle():
             
-            rest_ratio = CG.client_controller.new_options.GetInteger( 'duplicates_auto_resolution_rest_percentage_idle' ) / 100
+            rest_ratio = CG.client_controller.new_options.get_integer('duplicates_auto_resolution_rest_percentage_idle') / 100
             
         else:
             
-            rest_ratio = CG.client_controller.new_options.GetInteger( 'duplicates_auto_resolution_rest_percentage_active' ) / 100
+            rest_ratio = CG.client_controller.new_options.get_integer('duplicates_auto_resolution_rest_percentage_active') / 100
             
         
         reasonable_work_period = min( 5 * expected_work_period, actual_work_period )
@@ -1544,11 +1544,11 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
         
         if self._controller.currently_idle():
             
-            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'duplicates_auto_resolution_work_time_ms_idle' ) )
+            return HydrusTime.secondise_ms_float(CG.client_controller.new_options.get_integer('duplicates_auto_resolution_work_time_ms_idle'))
             
         else:
             
-            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'duplicates_auto_resolution_work_time_ms_active' ) )
+            return HydrusTime.secondise_ms_float(CG.client_controller.new_options.get_integer('duplicates_auto_resolution_work_time_ms_active'))
             
         
     
@@ -1560,7 +1560,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
         
         rules = CG.client_controller.read( 'duplicates_auto_resolution_rules_with_counts' )
         
-        rules = sorted( rules, key = lambda r: HydrusText.human_text_sort_key( r.GetName() ) )
+        rules = sorted(rules, key = lambda r: HydrusText.human_text_sort_key(r.get_name()))
         
         with self._lock:
             
@@ -1689,7 +1689,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
         return self._edit_work_lock
         
     
-    def GetName( self ) -> str:
+    def get_name(self) -> str:
         
         return 'duplicates auto-resolution'
         
@@ -1804,6 +1804,6 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
                 
             
         
-        self.Wake()
+        self.wake()
         
     

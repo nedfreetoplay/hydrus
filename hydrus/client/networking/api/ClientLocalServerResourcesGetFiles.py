@@ -37,11 +37,11 @@ class HydrusResourceClientAPIRestrictedGetFilesSearchFiles( HydrusResourceClient
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        location_context = ClientLocalServerCore.ParseLocationContext( request, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
+        location_context = ClientLocalServerCore.ParseLocationContext(request, ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY))
         
         tag_service_key = ClientLocalServerCore.ParseTagServiceKey( request )
         
-        if tag_service_key == CC.COMBINED_TAG_SERVICE_KEY and location_context.IsAllKnownFiles():
+        if tag_service_key == CC.COMBINED_TAG_SERVICE_KEY and location_context.is_all_known_files():
             
             raise HydrusExceptions.BadRequestException( 'Sorry, search for all known tags over all known files is not supported!' )
             
@@ -99,7 +99,7 @@ class HydrusResourceClientAPIRestrictedGetFilesSearchFiles( HydrusResourceClient
             
             job_status = ClientThreading.JobStatus( cancellable = True )
             
-            request.disconnect_callables.append( job_status.Cancel )
+            request.disconnect_callables.append(job_status.cancel)
             
             hash_ids = CG.client_controller.read( 'file_query_ids', file_search_context, job_status = job_status, sort_by = sort_by, apply_implicit_limit = False )
             
@@ -252,7 +252,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetRenderedFile( HydrusResourceCl
             
             renderer = CG.client_controller.images_cache.GetImageRenderer( media_result )
             
-            while not renderer.IsReady():
+            while not renderer.is_ready():
                 
                 if request.disconnected:
                     
@@ -262,7 +262,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetRenderedFile( HydrusResourceCl
                 time.sleep( 0.01 )
                 
             
-            numpy_image = renderer.GetNumPyImage()
+            numpy_image = renderer.get_numpy_image()
             
             if 'width' in request.parsed_request_args and 'height' in request.parsed_request_args:
                 
@@ -324,7 +324,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetRenderedFile( HydrusResourceCl
                 
                 quality = 80 # compress_level has no effect for APNG so we don't use quality in that case.
             
-            body = ClientUgoiraHandling.ConvertUgoiraToBytesForAPI( media_result, format, quality )
+            body = ClientUgoiraHandling.convert_ugoira_to_bytes_for_api(media_result, format, quality)
             
             if media_result.GetDurationMS() is not None:
                 

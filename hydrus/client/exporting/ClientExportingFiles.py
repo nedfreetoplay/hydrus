@@ -80,7 +80,7 @@ def GenerateExportFilename( destination_directory, media, terms, file_index, do_
                 
             elif term == 'hash':
                 
-                hash = media.GetHash()
+                hash = media.get_hash()
                 
                 filename += hash.hex()
                 
@@ -124,7 +124,7 @@ def GenerateExportFilename( destination_directory, media, terms, file_index, do_
         filename = re.sub( '/+', '/', filename )
         
     
-    if CG.client_controller.new_options.GetBoolean( 'always_apply_ntfs_export_filename_rules' ):
+    if CG.client_controller.new_options.get_boolean('always_apply_ntfs_export_filename_rules'):
         
         force_ntfs_rules = True
         
@@ -160,15 +160,15 @@ def GenerateExportFilename( destination_directory, media, terms, file_index, do_
         filename = filename[ : - len( ext ) ]
         
     
-    path_character_limit = CG.client_controller.new_options.GetNoneableInteger( 'export_path_character_limit' )
-    dirname_character_limit = CG.client_controller.new_options.GetNoneableInteger( 'export_dirname_character_limit' )
-    filename_character_limit = CG.client_controller.new_options.GetInteger( 'export_filename_character_limit' )
+    path_character_limit = CG.client_controller.new_options.get_noneable_integer('export_path_character_limit')
+    dirname_character_limit = CG.client_controller.new_options.get_noneable_integer('export_dirname_character_limit')
+    filename_character_limit = CG.client_controller.new_options.get_integer('export_filename_character_limit')
     
     ( subdirs, true_filename ) = os.path.split( filename )
     
     if true_filename == '':
         
-        hash = media.GetHash()
+        hash = media.get_hash()
         
         true_filename = hash.hex()
         
@@ -342,7 +342,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
         
         if file_search_context is None:
             
-            default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+            default_location_context = CG.client_controller.new_options.get_default_local_location_context()
             
             file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = default_location_context )
             
@@ -354,7 +354,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
         
         if phrase is None:
             
-            phrase = CG.client_controller.new_options.GetString( 'export_phrase' )
+            phrase = CG.client_controller.new_options.get_string('export_phrase')
             
         
         self._path = path
@@ -596,14 +596,14 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
         
         for ( num_done, num_to_do, block_of_hash_ids ) in HydrusLists.split_list_into_chunks_rich( query_hash_ids, CHUNK_SIZE ):
             
-            job_status.SetStatusText( 'searching: {}'.format( HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do ) ) )
+            job_status.set_status_text('searching: {}'.format(HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do)))
             
-            if job_status.IsCancelled():
+            if job_status.is_cancelled():
                 
                 return
                 
             
-            if CG.client_controller.new_options.GetBoolean( 'pause_export_folders_sync' ) or HydrusThreading.is_thread_shutting_down():
+            if CG.client_controller.new_options.get_boolean('pause_export_folders_sync') or HydrusThreading.is_thread_shutting_down():
                 
                 return
                 
@@ -639,19 +639,19 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
         
         for ( i, media_result ) in enumerate( media_results ):
             
-            job_status.SetStatusText( 'exporting: {}'.format( HydrusNumbers.value_range_to_pretty_string( i + 1, len( media_results ) ) ) )
+            job_status.set_status_text('exporting: {}'.format(HydrusNumbers.value_range_to_pretty_string(i + 1, len(media_results))))
             
-            if job_status.IsCancelled():
+            if job_status.is_cancelled():
                 
                 return
                 
             
-            if CG.client_controller.new_options.GetBoolean( 'pause_export_folders_sync' ) or HydrusThreading.is_thread_shutting_down():
+            if CG.client_controller.new_options.get_boolean('pause_export_folders_sync') or HydrusThreading.is_thread_shutting_down():
                 
                 return
                 
             
-            hash = media_result.GetHash()
+            hash = media_result.get_hash()
             mime = media_result.GetMime()
             
             try:
@@ -799,21 +799,21 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             
             for ( i, deletee_path ) in enumerate( deletee_paths ):
                 
-                if job_status.IsCancelled():
+                if job_status.is_cancelled():
                     
                     return
                     
                 
-                job_status.SetStatusText( 'delete-synchronising: {}'.format( HydrusNumbers.value_range_to_pretty_string( i + 1, len( deletee_paths ) ) ) )
+                job_status.set_status_text('delete-synchronising: {}'.format(HydrusNumbers.value_range_to_pretty_string(i + 1, len(deletee_paths))))
                 
-                ClientPaths.DeletePath( deletee_path )
+                ClientPaths.delete_path(deletee_path)
                 
             
             deletee_dirs = set()
             
             for ( root, dirnames, filenames ) in os.walk( self._path, topdown = False ):
                 
-                if job_status.IsCancelled():
+                if job_status.is_cancelled():
                     
                     return
                     
@@ -859,20 +859,20 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             
             for ( num_done, num_to_do, chunk_of_media_results ) in HydrusLists.split_list_into_chunks_rich( my_files_media_results, CHUNK_SIZE ):
                 
-                if job_status.IsCancelled():
+                if job_status.is_cancelled():
                     
                     return
                     
                 
-                job_status.SetStatusText( 'deleting: {}'.format( HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do ) ) )
+                job_status.set_status_text('deleting: {}'.format(HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do)))
                 
-                content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, { media_result.GetHash() for media_result in chunk_of_media_results }, reason = reason )
+                content_update = ClientContentUpdates.ContentUpdate(HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, {media_result.get_hash() for media_result in chunk_of_media_results}, reason = reason)
                 
                 CG.client_controller.write_synchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, content_update ) )
                 
             
         
-        job_status.SetStatusText( 'Done!' )
+        job_status.set_status_text('Done!')
         
     
     def DoWork( self ):
@@ -888,7 +888,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
         
         job_status = ClientThreading.JobStatus( pausable = False, cancellable = True )
         
-        job_status.SetStatusTitle( 'export folder - ' + self._name )
+        job_status.set_status_title('export folder - ' + self._name)
         
         try:
             
@@ -947,7 +947,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             
             CG.client_controller.write_synchronous( 'serialisable', self )
             
-            job_status.FinishAndDismiss()
+            job_status.finish_and_dismiss()
             
         
     

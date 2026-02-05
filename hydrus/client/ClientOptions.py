@@ -30,10 +30,10 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         
         self._lock = threading.Lock()
         
-        self._InitialiseDefaults()
+        self._initialise_defaults()
         
     
-    def _GetDefaultMediaViewOptions( self ):
+    def _get_default_media_view_options(self):
         
         media_view = HydrusSerialisable.SerialisableDictionary() # integer keys, so got to be cleverer dict
         
@@ -95,7 +95,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         return media_view
         
     
-    def _GetMediaViewOptions( self, mime ):
+    def _get_media_view_options(self, mime):
         
         if mime in self._dictionary[ 'media_view' ]:
             
@@ -114,7 +114,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
             if general_mime_type not in self._dictionary[ 'media_view' ]:
                 
-                self._dictionary[ 'media_view' ] = self._GetDefaultMediaViewOptions()
+                self._dictionary[ 'media_view' ] = self._get_default_media_view_options()
                 
             
             return self._dictionary[ 'media_view' ][ general_mime_type ]
@@ -128,7 +128,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         return serialisable_info
         
     
-    def _InitialiseDefaults( self ):
+    def _initialise_defaults(self):
         
         from hydrus.client.gui.canvas import ClientGUIMPV
         
@@ -690,7 +690,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         
         from hydrus.client import ClientLocation
         
-        self._dictionary[ 'default_local_location_context' ] = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )
+        self._dictionary[ 'default_local_location_context' ] = ClientLocation.LocationContext.static_create_simple(CC.LOCAL_FILE_SERVICE_KEY)
         
         #
         
@@ -825,7 +825,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         quiet_file_import_options.SetPreImportOptions( exclude_deleted, allow_decompression_bombs, min_size, max_size, max_gif_size, min_resolution, max_resolution )
         quiet_file_import_options.SetPostImportOptions( automatic_archive, associate_primary_urls, associate_source_urls )
         quiet_file_import_options.SetPresentationImportOptions( presentation_import_options )
-        quiet_file_import_options.SetDestinationLocationContext( ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY ) )
+        quiet_file_import_options.SetDestinationLocationContext(ClientLocation.LocationContext.static_create_simple(CC.LOCAL_FILE_SERVICE_KEY))
         
         self._dictionary[ 'default_file_import_options' ][ 'quiet' ] = quiet_file_import_options
         
@@ -834,7 +834,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         loud_file_import_options.SetPrefetchImportOptions( prefetch_import_options )
         loud_file_import_options.SetPreImportOptions( exclude_deleted, allow_decompression_bombs, min_size, max_size, max_gif_size, min_resolution, max_resolution )
         loud_file_import_options.SetPostImportOptions( automatic_archive, associate_primary_urls, associate_source_urls )
-        loud_file_import_options.SetDestinationLocationContext( ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY ) )
+        loud_file_import_options.SetDestinationLocationContext(ClientLocation.LocationContext.static_create_simple(CC.LOCAL_FILE_SERVICE_KEY))
         
         self._dictionary[ 'default_file_import_options' ][ 'loud' ] = loud_file_import_options
         
@@ -875,7 +875,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         
         #
         
-        self._dictionary[ 'media_view' ] = self._GetDefaultMediaViewOptions()
+        self._dictionary[ 'media_view' ] = self._get_default_media_view_options()
         
         self._dictionary[ 'media_zooms' ] = [ 0.01, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.5, 2.0, 3.0, 5.0, 10.0, 20.0 ]
         
@@ -885,8 +885,8 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         
         self._dictionary[ 'misc' ] = HydrusSerialisable.SerialisableDictionary()
         
-        self._dictionary[ 'misc' ][ 'default_thread_watcher_options' ] = ClientDefaults.GetDefaultCheckerOptions( 'thread' )
-        self._dictionary[ 'misc' ][ 'default_subscription_checker_options' ] = ClientDefaults.GetDefaultCheckerOptions( 'artist subscription' )
+        self._dictionary[ 'misc' ][ 'default_thread_watcher_options' ] = ClientDefaults.get_default_checker_options('thread')
+        self._dictionary[ 'misc' ][ 'default_subscription_checker_options' ] = ClientDefaults.get_default_checker_options('artist subscription')
         
         #
         
@@ -1144,7 +1144,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def ClearCustomDefaultSystemPredicates( self, predicate_type = None, comparable_predicate = None ):
+    def clear_custom_default_system_predicates(self, predicate_type = None, comparable_predicate = None):
         
         with self._lock:
             
@@ -1170,7 +1170,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def FlipBoolean( self, name ):
+    def flip_boolean(self, name):
         
         with self._lock:
             
@@ -1180,7 +1180,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetBoolean( self, name ):
+    def get_boolean(self, name):
         
         with self._lock:
             
@@ -1188,7 +1188,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetAllBooleans( self ):
+    def get_all_booleans(self):
         
         with self._lock:
             
@@ -1196,7 +1196,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetDefaultCollect( self ):
+    def get_default_collect(self):
         
         with self._lock:
             
@@ -1204,7 +1204,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetColour( self, colour_type, colourset = None ):
+    def get_colour(self, colour_type, colourset = None):
         
         with self._lock:
             
@@ -1219,7 +1219,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetAllColours( self ):
+    def get_all_colours(self):
         
         with self._lock:
             
@@ -1227,7 +1227,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetCustomDefaultSystemPredicates( self, predicate_type = None, comparable_predicate = None ):
+    def get_custom_default_system_predicates(self, predicate_type = None, comparable_predicate = None):
         
         with self._lock:
             
@@ -1247,7 +1247,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetDefaultExportFilesMetadataRouters( self ):
+    def get_default_export_files_metadata_routers(self):
         
         with self._lock:
             
@@ -1255,7 +1255,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetDefaultFileImportOptions( self, options_type ) -> FileImportOptionsLegacy.FileImportOptionsLegacy:
+    def get_default_file_import_options(self, options_type) -> FileImportOptionsLegacy.FileImportOptionsLegacy:
         
         with self._lock:
             
@@ -1273,7 +1273,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetDefaultLocalLocationContext( self ):
+    def get_default_local_location_context(self):
         
         with self._lock:
             
@@ -1281,13 +1281,13 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
             try:
                 
-                location_context.FixMissingServices( CG.client_controller.services_manager.FilterValidServiceKeys )
+                location_context.fix_missing_services(CG.client_controller.services_manager.filter_valid_service_keys)
                 
-                if location_context.IsEmpty():
+                if location_context.is_empty():
                     
                     from hydrus.client import ClientLocation
                     
-                    location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+                    location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
                     
                 
             except:
@@ -1299,15 +1299,15 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetDefaultMediaViewOptions( self ):
+    def get_default_media_view_options(self):
         
         with self._lock:
             
-            return self._GetDefaultMediaViewOptions()
+            return self._get_default_media_view_options()
             
         
     
-    def GetDefaultNamespaceSorts( self ):
+    def get_default_namespace_sorts(self):
         
         with self._lock:
             
@@ -1315,7 +1315,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetDefaultSort( self ):
+    def get_default_sort(self):
         
         with self._lock:
             
@@ -1323,7 +1323,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetDefaultSubscriptionCheckerOptions( self ):
+    def get_default_subscription_checker_options(self):
         
         with self._lock:
             
@@ -1331,7 +1331,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetDefaultTagSort( self, tag_presentation_location: int ):
+    def get_default_tag_sort(self, tag_presentation_location: int):
         
         with self._lock:
             
@@ -1339,7 +1339,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetDefaultWatcherCheckerOptions( self ):
+    def get_default_watcher_checker_options(self):
         
         with self._lock:
             
@@ -1347,7 +1347,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetDuplicateContentMergeOptions( self, duplicate_type ) -> ClientDuplicates.DuplicateContentMergeOptions:
+    def get_duplicate_content_merge_options(self, duplicate_type) -> ClientDuplicates.DuplicateContentMergeOptions:
         
         with self._lock:
             
@@ -1362,7 +1362,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetFallbackSort( self ):
+    def get_fallback_sort(self):
         
         with self._lock:
             
@@ -1370,7 +1370,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetFavouriteTagFilters( self ):
+    def get_favourite_tag_filters(self):
         
         with self._lock:
             
@@ -1378,7 +1378,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetFloat( self, name: str ):
+    def get_float(self, name: str):
         
         with self._lock:
             
@@ -1386,7 +1386,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetFrameLocation( self, frame_key ):
+    def get_frame_location(self, frame_key):
         
         with self._lock:
             
@@ -1405,7 +1405,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetFrameLocations( self ):
+    def get_frame_locations(self):
         
         with self._lock:
             
@@ -1413,7 +1413,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetInteger( self, name ):
+    def get_integer(self, name):
         
         with self._lock:
             
@@ -1421,7 +1421,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetIntegerList( self, name: str ) -> list[ int ]:
+    def get_integer_list(self, name: str) -> list[ int]:
         
         with self._lock:
             
@@ -1429,7 +1429,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetAllIntegers( self):
+    def get_all_integers(self):
         
         with self._lock:
             
@@ -1437,7 +1437,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
 
         
     
-    def GetKeyHex( self, name ):
+    def get_key_hex(self, name):
         
         with self._lock:
             
@@ -1445,12 +1445,12 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetKey( self, name ):
+    def get_key(self, name):
         
-        return bytes.fromhex( self.GetKeyHex( name ) )
+        return bytes.fromhex(self.get_key_hex(name))
         
     
-    def GetAllKeysHex( self ):
+    def get_all_keys_hex(self):
         
         with self._lock:
             
@@ -1458,7 +1458,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetKeyList( self, name ):
+    def get_key_list(self, name):
         
         with self._lock:
             
@@ -1466,7 +1466,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetMediaShowAction( self, mime ):
+    def get_media_show_action(self, mime):
         
         with self._lock:
             
@@ -1475,7 +1475,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                 return ( CC.MEDIA_VIEWER_ACTION_DO_NOT_SHOW, False, False )
                 
             
-            ( media_show_action, media_start_paused, media_start_with_embed, preview_show_action, preview_start_paused, preview_start_with_embed, zoom_info ) = self._GetMediaViewOptions( mime )
+            ( media_show_action, media_start_paused, media_start_with_embed, preview_show_action, preview_start_paused, preview_start_with_embed, zoom_info ) = self._get_media_view_options(mime)
             
             ( possible_show_actions, can_start_paused, can_start_with_embed ) = CC.media_viewer_capabilities[ mime ]
             
@@ -1488,7 +1488,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetMediaViewOptions( self ):
+    def get_media_view_options(self):
         
         with self._lock:
             
@@ -1496,17 +1496,17 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetMediaZoomOptions( self, mime ):
+    def get_media_zoom_options(self, mime):
         
         with self._lock:
             
-            ( media_show_action, media_start_paused, media_start_with_embed, preview_show_action, preview_start_paused, preview_start_with_embed, zoom_info ) = self._GetMediaViewOptions( mime )
+            ( media_show_action, media_start_paused, media_start_with_embed, preview_show_action, preview_start_paused, preview_start_with_embed, zoom_info ) = self._get_media_view_options(mime)
             
             return zoom_info
             
         
     
-    def GetMediaZooms( self ):
+    def get_media_zooms(self):
         
         with self._lock:
             
@@ -1514,11 +1514,11 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetMediaZoomQuality( self, mime ):
+    def get_media_zoom_quality(self, mime):
         
         with self._lock:
             
-            ( media_show_action, media_start_paused, media_start_with_embed, preview_show_action, preview_start_paused, preview_start_with_embed, zoom_info ) = self._GetMediaViewOptions( mime )
+            ( media_show_action, media_start_paused, media_start_with_embed, preview_show_action, preview_start_paused, preview_start_with_embed, zoom_info ) = self._get_media_view_options(mime)
             
             ( media_scale_up, media_scale_down, preview_scale_up, preview_scale_down, exact_zooms_only, scale_up_quality, scale_down_quality ) = zoom_info
             
@@ -1526,7 +1526,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetMimeLaunch( self, mime ):
+    def get_mime_launch(self, mime):
         
         with self._lock:
             
@@ -1539,7 +1539,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetNoneableInteger( self, name ):
+    def get_noneable_integer(self, name):
         
         with self._lock:
             
@@ -1547,7 +1547,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetAllNoneableIntegers( self ):
+    def get_all_noneable_integers(self):
         
         with self._lock:
             
@@ -1555,7 +1555,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetNoneableString( self, name ):
+    def get_noneable_string(self, name):
         
         with self._lock:
             
@@ -1563,7 +1563,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetAllNoneableStrings( self ):
+    def get_all_noneable_strings(self):
         
         with self._lock:
             
@@ -1571,7 +1571,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetPreviewShowAction( self, mime ):
+    def get_preview_show_action(self, mime):
         
         with self._lock:
             
@@ -1580,7 +1580,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                 return ( CC.MEDIA_VIEWER_ACTION_DO_NOT_SHOW, False, False )
                 
             
-            ( media_show_action, media_start_paused, media_start_with_embed, preview_show_action, preview_start_paused, preview_start_with_embed, zoom_info ) = self._GetMediaViewOptions( mime )
+            ( media_show_action, media_start_paused, media_start_with_embed, preview_show_action, preview_start_paused, preview_start_with_embed, zoom_info ) = self._get_media_view_options(mime)
             
             ( possible_show_actions, can_start_paused, can_start_with_embed ) = CC.media_viewer_capabilities[ mime ]
             
@@ -1593,14 +1593,14 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetRawSerialisable( self, name ):
+    def get_raw_serialisable(self, name):
         
         with self._lock:
             
             return self._dictionary[ name ]
         
     
-    def GetRecentPetitionReasons( self, content_type, action ):
+    def get_recent_petition_reasons(self, content_type, action):
         
         with self._lock:
             
@@ -1608,7 +1608,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetRecentPredicates( self, predicate_types ):
+    def get_recent_predicates(self, predicate_types):
         
         with self._lock:
             
@@ -1628,7 +1628,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetRelatedTagsTagSliceWeights( self ):
+    def get_related_tags_tag_slice_weights(self):
         
         with self._lock:
             
@@ -1639,7 +1639,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetSimpleDownloaderFormulae( self ):
+    def get_simple_downloader_formulae(self):
         
         with self._lock:
             
@@ -1647,7 +1647,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetSlideshowDurations( self ):
+    def get_slideshow_durations(self):
         
         with self._lock:
             
@@ -1655,7 +1655,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetString( self, name ):
+    def get_string(self, name):
         
         with self._lock:
             
@@ -1663,7 +1663,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetAllStrings( self ):
+    def get_all_strings(self):
         
         with self._lock:
             
@@ -1671,7 +1671,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetStringList( self, name: str ) -> list[ str ]:
+    def get_string_list(self, name: str) -> list[ str]:
         
         with self._lock:
             
@@ -1679,7 +1679,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetSuggestedTagsFavourites( self, service_key ):
+    def get_suggested_tags_favourites(self, service_key):
         
         with self._lock:
             
@@ -1698,7 +1698,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetAllSuggestedTagsFavourites( self ):
+    def get_all_suggested_tags_favourites(self):
         
         with self._lock:
             
@@ -1707,7 +1707,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetTagSummaryGenerator( self, name ):
+    def get_tag_summary_generator(self, name):
         
         with self._lock:
             
@@ -1715,7 +1715,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def InvertBoolean( self, name ):
+    def invert_boolean(self, name):
         
         with self._lock:
             
@@ -1723,7 +1723,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def PushRecentPetitionReason( self, content_type, action, reason ):
+    def push_recent_petition_reason(self, content_type, action, reason):
         
         with self._lock:
             
@@ -1747,7 +1747,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def PushRecentPredicates( self, predicates ):
+    def push_recent_predicates(self, predicates):
         
         with self._lock:
             
@@ -1779,7 +1779,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def RemoveRecentPredicate( self, predicate ):
+    def remove_recent_predicate(self, predicate):
         
         with self._lock:
             
@@ -1797,7 +1797,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetBoolean( self, name, value ):
+    def set_boolean(self, name, value):
         
         with self._lock:
             
@@ -1805,7 +1805,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetDefaultCollect( self, media_collect ):
+    def set_default_collect(self, media_collect):
         
         with self._lock:
             
@@ -1813,7 +1813,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetColour( self, colour_type, colourset, colour ):
+    def set_colour(self, colour_type, colourset, colour):
         
         with self._lock:
             
@@ -1832,7 +1832,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetCustomDefaultSystemPredicates( self, predicate_type = None, predicates = None, comparable_predicates = None ):
+    def set_custom_default_system_predicates(self, predicate_type = None, predicates = None, comparable_predicates = None):
         
         with self._lock:
             
@@ -1870,7 +1870,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetDefaultExportFilesMetadataRouters( self, metadata_routers ):
+    def set_default_export_files_metadata_routers(self, metadata_routers):
         
         with self._lock:
             
@@ -1878,7 +1878,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetDefaultFileImportOptions( self, options_type, file_import_options ):
+    def set_default_file_import_options(self, options_type, file_import_options):
         
         with self._lock:
             
@@ -1895,7 +1895,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetDefaultLocalLocationContext( self, location_context ):
+    def set_default_local_location_context(self, location_context):
         
         with self._lock:
             
@@ -1903,7 +1903,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetDefaultNamespaceSorts( self, namespace_sorts ):
+    def set_default_namespace_sorts(self, namespace_sorts):
         
         with self._lock:
             
@@ -1918,7 +1918,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetDefaultTagSort( self, tag_presentation_location, tag_sort ):
+    def set_default_tag_sort(self, tag_presentation_location, tag_sort):
         
         with self._lock:
             
@@ -1926,7 +1926,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetDefaultSort( self, media_sort ):
+    def set_default_sort(self, media_sort):
         
         with self._lock:
             
@@ -1934,7 +1934,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetDefaultSubscriptionCheckerOptions( self, checker_options ):
+    def set_default_subscription_checker_options(self, checker_options):
         
         with self._lock:
             
@@ -1942,7 +1942,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetDefaultWatcherCheckerOptions( self, checker_options ):
+    def set_default_watcher_checker_options(self, checker_options):
         
         with self._lock:
             
@@ -1950,7 +1950,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetDuplicateContentMergeOptions( self, duplicate_type, duplicate_content_merge_options ):
+    def set_duplicate_content_merge_options(self, duplicate_type, duplicate_content_merge_options):
         
         with self._lock:
             
@@ -1958,7 +1958,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetFallbackSort( self, media_sort ):
+    def set_fallback_sort(self, media_sort):
         
         with self._lock:
             
@@ -1966,7 +1966,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetFavouriteTagFilters( self, names_to_tag_filters ):
+    def set_favourite_tag_filters(self, names_to_tag_filters):
         
         with self._lock:
             
@@ -1974,7 +1974,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetFloat( self, name: str, value: float ):
+    def set_float(self, name: str, value: float):
         
         with self._lock:
             
@@ -1982,7 +1982,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetFrameLocation( self, frame_key, remember_size, remember_position, last_size, last_position, default_gravity, default_position, maximised, fullscreen ):
+    def set_frame_location(self, frame_key, remember_size, remember_position, last_size, last_position, default_gravity, default_position, maximised, fullscreen):
         
         with self._lock:
             
@@ -1990,7 +1990,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetInteger( self, name, value ):
+    def set_integer(self, name, value):
         
         with self._lock:
             
@@ -1998,7 +1998,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetIntegerList( self, name: str, value: list[ int ] ):
+    def set_integer_list(self, name: str, value: list[ int]):
         
         with self._lock:
             
@@ -2006,7 +2006,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetKey( self, name, value ):
+    def set_key(self, name, value):
         
         with self._lock:
             
@@ -2014,7 +2014,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetKeyList( self, name, value ):
+    def set_key_list(self, name, value):
         
         with self._lock:
             
@@ -2022,7 +2022,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetMediaViewOptions( self, mimes_to_media_view_options ):
+    def set_media_view_options(self, mimes_to_media_view_options):
         
         with self._lock:
             
@@ -2030,7 +2030,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetMediaZooms( self, zooms ):
+    def set_media_zooms(self, zooms):
         
         with self._lock:
             
@@ -2038,7 +2038,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetMimeLaunch( self, mime, launch_path ):
+    def set_mime_launch(self, mime, launch_path):
         
         with self._lock:
             
@@ -2046,7 +2046,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetNoneableInteger( self, name, value ):
+    def set_noneable_integer(self, name, value):
         
         with self._lock:
             
@@ -2054,7 +2054,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetNoneableString( self, name, value ):
+    def set_noneable_string(self, name, value):
         
         with self._lock:
             
@@ -2062,7 +2062,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetRawSerialisable( self, name, value ):
+    def set_raw_serialisable(self, name, value):
         
         with self._lock:
             
@@ -2070,7 +2070,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetRelatedTagsTagSliceWeights( self, related_tags_search_tag_slices_weight_percent, related_tags_result_tag_slices_weight_percent ):
+    def set_related_tags_tag_slice_weights(self, related_tags_search_tag_slices_weight_percent, related_tags_result_tag_slices_weight_percent):
         
         with self._lock:
             
@@ -2079,7 +2079,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetSimpleDownloaderFormulae( self, simple_downloader_formulae ):
+    def set_simple_downloader_formulae(self, simple_downloader_formulae):
         
         with self._lock:
             
@@ -2087,7 +2087,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetSlideshowDurations( self, slideshow_durations ):
+    def set_slideshow_durations(self, slideshow_durations):
         
         with self._lock:
             
@@ -2095,7 +2095,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetString( self, name, value ):
+    def set_string(self, name, value):
         
         if value is None:
             
@@ -2111,7 +2111,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetStringList( self, name, value ):
+    def set_string_list(self, name, value):
         
         with self._lock:
             
@@ -2119,7 +2119,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetSuggestedTagsFavourites( self, service_key, tags ):
+    def set_suggested_tags_favourites(self, service_key, tags):
         
         with self._lock:
             
@@ -2129,7 +2129,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def SetTagSummaryGenerator( self, name, tag_summary_generator ):
+    def set_tag_summary_generator(self, name, tag_summary_generator):
         
         with self._lock:
             

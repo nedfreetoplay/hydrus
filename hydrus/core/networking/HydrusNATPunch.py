@@ -338,7 +338,7 @@ class ServicesUPnPManager( object ):
     
     def _refresh_upnp( self, force_wipe = False ):
         
-        running_service_with_upnp = True in ( service.GetPort() is not None and service.GetUPnPPort() is not None for service in self._services )
+        running_service_with_upnp = True in (service.get_port() is not None and service.get_upnp_port() is not None for service in self._services)
         
         if not force_wipe:
             
@@ -391,8 +391,8 @@ class ServicesUPnPManager( object ):
         
         for service in self._services:
             
-            internal_port = service.GetPort()
-            upnp_port = service.GetUPnPPort()
+            internal_port = service.get_port()
+            upnp_port = service.get_upnp_port()
             
             if ( local_ip, internal_port ) in our_mappings:
                 
@@ -410,12 +410,12 @@ class ServicesUPnPManager( object ):
         
         for service in self._services:
             
-            internal_port = service.GetPort()
-            upnp_port = service.GetUPnPPort()
+            internal_port = service.get_port()
+            upnp_port = service.get_upnp_port()
             
             if upnp_port is not None:
                 
-                service_type = service.GetServiceType()
+                service_type = service.get_service_type()
                 
                 protocol = 'TCP'
                 

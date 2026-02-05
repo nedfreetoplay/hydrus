@@ -83,29 +83,29 @@ class MediaViewerHoversPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         #
         
-        self._draw_tags_hover_in_media_viewer_background.setChecked( self._new_options.GetBoolean( 'draw_tags_hover_in_media_viewer_background' ) )
-        self._draw_top_hover_in_media_viewer_background.setChecked( self._new_options.GetBoolean( 'draw_top_hover_in_media_viewer_background' ) )
-        self._draw_top_right_hover_in_media_viewer_background.setChecked( self._new_options.GetBoolean( 'draw_top_right_hover_in_media_viewer_background' ) )
-        self._draw_notes_hover_in_media_viewer_background.setChecked( self._new_options.GetBoolean( 'draw_notes_hover_in_media_viewer_background' ) )
-        self._draw_bottom_right_index_in_media_viewer_background.setChecked( self._new_options.GetBoolean( 'draw_bottom_right_index_in_media_viewer_background' ) )
+        self._draw_tags_hover_in_media_viewer_background.setChecked(self._new_options.get_boolean('draw_tags_hover_in_media_viewer_background'))
+        self._draw_top_hover_in_media_viewer_background.setChecked(self._new_options.get_boolean('draw_top_hover_in_media_viewer_background'))
+        self._draw_top_right_hover_in_media_viewer_background.setChecked(self._new_options.get_boolean('draw_top_right_hover_in_media_viewer_background'))
+        self._draw_notes_hover_in_media_viewer_background.setChecked(self._new_options.get_boolean('draw_notes_hover_in_media_viewer_background'))
+        self._draw_bottom_right_index_in_media_viewer_background.setChecked(self._new_options.get_boolean('draw_bottom_right_index_in_media_viewer_background'))
         
-        self._hover_windows_need_window_focus_to_pop_in.setChecked( self._new_options.GetBoolean( 'hover_windows_need_window_focus_to_pop_in' ) )
-        self._enable_tags_hover_in_media_viewer.setChecked( not self._new_options.GetBoolean( 'disable_tags_hover_in_media_viewer' ) )
-        self._enable_top_right_hover_in_media_viewer.setChecked( not self._new_options.GetBoolean( 'disable_top_right_hover_in_media_viewer' ) )
-        self._enable_notes_hover_in_media_viewer.setChecked( not self._new_options.GetBoolean( 'disable_notes_hover_in_media_viewer' ) )
-        self._hover_window_duplicates_always_on_top.setChecked( self._new_options.GetBoolean( 'hover_window_duplicates_always_on_top' ) )
+        self._hover_windows_need_window_focus_to_pop_in.setChecked(self._new_options.get_boolean('hover_windows_need_window_focus_to_pop_in'))
+        self._enable_tags_hover_in_media_viewer.setChecked(not self._new_options.get_boolean('disable_tags_hover_in_media_viewer'))
+        self._enable_top_right_hover_in_media_viewer.setChecked(not self._new_options.get_boolean('disable_top_right_hover_in_media_viewer'))
+        self._enable_notes_hover_in_media_viewer.setChecked(not self._new_options.get_boolean('disable_notes_hover_in_media_viewer'))
+        self._hover_window_duplicates_always_on_top.setChecked(self._new_options.get_boolean('hover_window_duplicates_always_on_top'))
         
-        self._file_info_line_consider_archived_interesting.setChecked( self._new_options.GetBoolean( 'file_info_line_consider_archived_interesting' ) )
-        self._file_info_line_consider_archived_time_interesting.setChecked( self._new_options.GetBoolean( 'file_info_line_consider_archived_time_interesting' ) )
-        self._file_info_line_consider_file_services_interesting.setChecked( self._new_options.GetBoolean( 'file_info_line_consider_file_services_interesting' ) )
-        self._file_info_line_consider_file_services_import_times_interesting.setChecked( self._new_options.GetBoolean( 'file_info_line_consider_file_services_import_times_interesting' ) )
-        self._file_info_line_consider_trash_time_interesting.setChecked( self._new_options.GetBoolean( 'file_info_line_consider_trash_time_interesting' ) )
-        self._file_info_line_consider_trash_reason_interesting.setChecked( self._new_options.GetBoolean( 'file_info_line_consider_trash_reason_interesting' ) )
-        self._hide_uninteresting_modified_time.setChecked( self._new_options.GetBoolean( 'hide_uninteresting_modified_time' ) )
-        self._use_nice_resolution_strings.setChecked( self._new_options.GetBoolean( 'use_nice_resolution_strings' ) )
+        self._file_info_line_consider_archived_interesting.setChecked(self._new_options.get_boolean('file_info_line_consider_archived_interesting'))
+        self._file_info_line_consider_archived_time_interesting.setChecked(self._new_options.get_boolean('file_info_line_consider_archived_time_interesting'))
+        self._file_info_line_consider_file_services_interesting.setChecked(self._new_options.get_boolean('file_info_line_consider_file_services_interesting'))
+        self._file_info_line_consider_file_services_import_times_interesting.setChecked(self._new_options.get_boolean('file_info_line_consider_file_services_import_times_interesting'))
+        self._file_info_line_consider_trash_time_interesting.setChecked(self._new_options.get_boolean('file_info_line_consider_trash_time_interesting'))
+        self._file_info_line_consider_trash_reason_interesting.setChecked(self._new_options.get_boolean('file_info_line_consider_trash_reason_interesting'))
+        self._hide_uninteresting_modified_time.setChecked(self._new_options.get_boolean('hide_uninteresting_modified_time'))
+        self._use_nice_resolution_strings.setChecked(self._new_options.get_boolean('use_nice_resolution_strings'))
         
-        self._preview_window_hover_top_right_shows_popup.setChecked( self._new_options.GetBoolean( 'preview_window_hover_top_right_shows_popup' ) )
-        self._draw_top_right_hover_in_preview_window_background.setChecked( self._new_options.GetBoolean( 'draw_top_right_hover_in_preview_window_background' ) )
+        self._preview_window_hover_top_right_shows_popup.setChecked(self._new_options.get_boolean('preview_window_hover_top_right_shows_popup'))
+        self._draw_top_right_hover_in_preview_window_background.setChecked(self._new_options.get_boolean('draw_top_right_hover_in_preview_window_background'))
         
         #
         
@@ -196,28 +196,28 @@ class MediaViewerHoversPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def UpdateOptions( self ):
         
-        self._new_options.SetBoolean( 'draw_tags_hover_in_media_viewer_background', self._draw_tags_hover_in_media_viewer_background.isChecked() )
-        self._new_options.SetBoolean( 'draw_top_hover_in_media_viewer_background', self._draw_top_hover_in_media_viewer_background.isChecked() )
-        self._new_options.SetBoolean( 'draw_top_right_hover_in_media_viewer_background', self._draw_top_right_hover_in_media_viewer_background.isChecked() )
-        self._new_options.SetBoolean( 'draw_notes_hover_in_media_viewer_background', self._draw_notes_hover_in_media_viewer_background.isChecked() )
-        self._new_options.SetBoolean( 'draw_bottom_right_index_in_media_viewer_background', self._draw_bottom_right_index_in_media_viewer_background.isChecked() )
+        self._new_options.set_boolean('draw_tags_hover_in_media_viewer_background', self._draw_tags_hover_in_media_viewer_background.isChecked())
+        self._new_options.set_boolean('draw_top_hover_in_media_viewer_background', self._draw_top_hover_in_media_viewer_background.isChecked())
+        self._new_options.set_boolean('draw_top_right_hover_in_media_viewer_background', self._draw_top_right_hover_in_media_viewer_background.isChecked())
+        self._new_options.set_boolean('draw_notes_hover_in_media_viewer_background', self._draw_notes_hover_in_media_viewer_background.isChecked())
+        self._new_options.set_boolean('draw_bottom_right_index_in_media_viewer_background', self._draw_bottom_right_index_in_media_viewer_background.isChecked())
         
-        self._new_options.SetBoolean( 'hover_windows_need_window_focus_to_pop_in', self._hover_windows_need_window_focus_to_pop_in.isChecked() )
-        self._new_options.SetBoolean( 'disable_tags_hover_in_media_viewer', not self._enable_tags_hover_in_media_viewer.isChecked() )
-        self._new_options.SetBoolean( 'disable_top_right_hover_in_media_viewer', not self._enable_top_right_hover_in_media_viewer.isChecked() )
-        self._new_options.SetBoolean( 'disable_notes_hover_in_media_viewer', not self._enable_notes_hover_in_media_viewer.isChecked() )
-        self._new_options.SetBoolean( 'hover_window_duplicates_always_on_top', self._hover_window_duplicates_always_on_top.isChecked() )
+        self._new_options.set_boolean('hover_windows_need_window_focus_to_pop_in', self._hover_windows_need_window_focus_to_pop_in.isChecked())
+        self._new_options.set_boolean('disable_tags_hover_in_media_viewer', not self._enable_tags_hover_in_media_viewer.isChecked())
+        self._new_options.set_boolean('disable_top_right_hover_in_media_viewer', not self._enable_top_right_hover_in_media_viewer.isChecked())
+        self._new_options.set_boolean('disable_notes_hover_in_media_viewer', not self._enable_notes_hover_in_media_viewer.isChecked())
+        self._new_options.set_boolean('hover_window_duplicates_always_on_top', self._hover_window_duplicates_always_on_top.isChecked())
         
-        self._new_options.SetBoolean( 'preview_window_hover_top_right_shows_popup', self._preview_window_hover_top_right_shows_popup.isChecked() )
-        self._new_options.SetBoolean( 'draw_top_right_hover_in_preview_window_background', self._draw_top_right_hover_in_preview_window_background.isChecked() )
+        self._new_options.set_boolean('preview_window_hover_top_right_shows_popup', self._preview_window_hover_top_right_shows_popup.isChecked())
+        self._new_options.set_boolean('draw_top_right_hover_in_preview_window_background', self._draw_top_right_hover_in_preview_window_background.isChecked())
         
-        self._new_options.SetBoolean( 'file_info_line_consider_archived_interesting', self._file_info_line_consider_archived_interesting.isChecked() )
-        self._new_options.SetBoolean( 'file_info_line_consider_archived_time_interesting', self._file_info_line_consider_archived_time_interesting.isChecked() )
-        self._new_options.SetBoolean( 'file_info_line_consider_file_services_interesting', self._file_info_line_consider_file_services_interesting.isChecked() )
-        self._new_options.SetBoolean( 'file_info_line_consider_file_services_import_times_interesting', self._file_info_line_consider_file_services_import_times_interesting.isChecked() )
-        self._new_options.SetBoolean( 'file_info_line_consider_trash_time_interesting', self._file_info_line_consider_trash_time_interesting.isChecked() )
-        self._new_options.SetBoolean( 'file_info_line_consider_trash_reason_interesting', self._file_info_line_consider_trash_reason_interesting.isChecked() )
-        self._new_options.SetBoolean( 'hide_uninteresting_modified_time', self._hide_uninteresting_modified_time.isChecked() )
-        self._new_options.SetBoolean( 'use_nice_resolution_strings', self._use_nice_resolution_strings.isChecked() )
+        self._new_options.set_boolean('file_info_line_consider_archived_interesting', self._file_info_line_consider_archived_interesting.isChecked())
+        self._new_options.set_boolean('file_info_line_consider_archived_time_interesting', self._file_info_line_consider_archived_time_interesting.isChecked())
+        self._new_options.set_boolean('file_info_line_consider_file_services_interesting', self._file_info_line_consider_file_services_interesting.isChecked())
+        self._new_options.set_boolean('file_info_line_consider_file_services_import_times_interesting', self._file_info_line_consider_file_services_import_times_interesting.isChecked())
+        self._new_options.set_boolean('file_info_line_consider_trash_time_interesting', self._file_info_line_consider_trash_time_interesting.isChecked())
+        self._new_options.set_boolean('file_info_line_consider_trash_reason_interesting', self._file_info_line_consider_trash_reason_interesting.isChecked())
+        self._new_options.set_boolean('hide_uninteresting_modified_time', self._hide_uninteresting_modified_time.isChecked())
+        self._new_options.set_boolean('use_nice_resolution_strings', self._use_nice_resolution_strings.isChecked())
         
     

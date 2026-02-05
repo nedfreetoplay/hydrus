@@ -39,11 +39,11 @@ class TagAutocompleteOptions( HydrusSerialisable.SerialisableBase ):
         
         if service_key == CC.DEFAULT_LOCAL_TAG_SERVICE_KEY:
             
-            self._write_autocomplete_location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+            self._write_autocomplete_location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
             
         else:
             
-            self._write_autocomplete_location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY )
+            self._write_autocomplete_location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_FILE_SERVICE_KEY)
             
         
         self._search_namespaces_into_full_tags = False
@@ -179,7 +179,7 @@ class TagAutocompleteOptions( HydrusSerialisable.SerialisableBase ):
             ] = old_serialisable_info
             
             file_service_key = bytes.fromhex( serialisable_write_autocomplete_file_domain )
-            location_context = ClientLocation.LocationContext.STATICCreateSimple( file_service_key )
+            location_context = ClientLocation.LocationContext.static_create_simple(file_service_key)
             
             serialisable_write_autocomplete_location_context = location_context.get_serialisable_tuple()
             
@@ -273,9 +273,9 @@ class TagAutocompleteOptions( HydrusSerialisable.SerialisableBase ):
             tag_service_key = self._write_autocomplete_tag_domain
             
         
-        if location_context.IsAllKnownFiles() and tag_service_key == CC.COMBINED_TAG_SERVICE_KEY: # ruh roh
+        if location_context.is_all_known_files() and tag_service_key == CC.COMBINED_TAG_SERVICE_KEY: # ruh roh
             
-            location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY )
+            location_context = ClientLocation.LocationContext.static_create_simple(CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY)
             
         
         tag_context = ClientSearchTagContext.TagContext( service_key = tag_service_key, display_service_key = display_tag_service_key )
@@ -383,7 +383,7 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     self._go_faster.discard( service_key )
                     
                 
-                rest_ratio = CG.client_controller.new_options.GetInteger( 'tag_display_processing_rest_percentage_work_hard' ) / 100
+                rest_ratio = CG.client_controller.new_options.get_integer('tag_display_processing_rest_percentage_work_hard') / 100
                 
             
         
@@ -391,11 +391,11 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             if self._controller.currently_idle():
                 
-                rest_ratio = CG.client_controller.new_options.GetInteger( 'tag_display_processing_rest_percentage_idle' ) / 100
+                rest_ratio = CG.client_controller.new_options.get_integer('tag_display_processing_rest_percentage_idle') / 100
                 
             else:
                 
-                rest_ratio = CG.client_controller.new_options.GetInteger( 'tag_display_processing_rest_percentage_normal' ) / 100
+                rest_ratio = CG.client_controller.new_options.get_integer('tag_display_processing_rest_percentage_normal') / 100
                 
             
         
@@ -436,17 +436,17 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             if service_key in self._go_faster:
                 
-                return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'tag_display_processing_work_time_ms_work_hard' ) )
+                return HydrusTime.secondise_ms_float(CG.client_controller.new_options.get_integer('tag_display_processing_work_time_ms_work_hard'))
                 
             
         
         if self._controller.currently_idle():
             
-            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'tag_display_processing_work_time_ms_idle' ) )
+            return HydrusTime.secondise_ms_float(CG.client_controller.new_options.get_integer('tag_display_processing_work_time_ms_idle'))
             
         else:
             
-            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'tag_display_processing_work_time_ms_normal' ) )
+            return HydrusTime.secondise_ms_float(CG.client_controller.new_options.get_integer('tag_display_processing_work_time_ms_normal'))
             
         
     
@@ -465,14 +465,14 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         if self._controller.currently_idle():
             
-            if self._controller.new_options.GetBoolean( 'tag_display_maintenance_during_idle' ):
+            if self._controller.new_options.get_boolean('tag_display_maintenance_during_idle'):
                 
                 return True
                 
             
         else:
             
-            if self._controller.new_options.GetBoolean( 'tag_display_maintenance_during_active' ):
+            if self._controller.new_options.get_boolean('tag_display_maintenance_during_active'):
                 
                 return True
                 
@@ -485,7 +485,7 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         can_do_work = False
         
-        service_keys = self._controller.services_manager.GetServiceKeys( HC.REAL_TAG_SERVICES )
+        service_keys = self._controller.services_manager.get_service_keys(HC.REAL_TAG_SERVICES)
         
         for service_key in service_keys:
             
@@ -532,24 +532,24 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         self._controller.pub( 'notify_new_tag_display_sync_status', service_key )
         
-        self.Wake()
+        self.wake()
         
     
-    def GetName( self ) -> str:
+    def get_name(self) -> str:
         
         return 'tag display sync'
         
     
-    def _DoMainLoop( self ):
+    def _do_main_loop(self):
         
         while True:
             
             with self._lock:
                 
-                self._CheckShutdown()
+                self._check_shutdown()
                 
             
-            self._controller.WaitUntilViewFree()
+            self._controller.wait_until_view_free()
             
             if self._WorkPermitted() and self._WorkToDo():
                 
@@ -592,7 +592,7 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             with self._lock:
                 
-                self._CheckShutdown()
+                self._check_shutdown()
                 
             
             wake_event.wait( wait_time )
@@ -619,7 +619,7 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         self._new_data_event.set()
         
-        self.Wake()
+        self.wake()
         
     
     def SyncFasterNow( self ) -> bool:
@@ -644,7 +644,7 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             self._controller.pub( 'notify_new_tag_display_sync_status', service_key )
             
         
-        self.Wake()
+        self.wake()
         
         return True
         
@@ -709,7 +709,7 @@ class TagDisplayManager( HydrusSerialisable.SerialisableBase ):
                 
             
         
-        self._tag_service_keys_to_tag_autocomplete_options = { tag_autocomplete_options.GetServiceKey() : tag_autocomplete_options for tag_autocomplete_options in HydrusSerialisable.create_from_serialisable_tuple( serialisable_tag_autocomplete_options ) }
+        self._tag_service_keys_to_tag_autocomplete_options = {tag_autocomplete_options.get_service_key() : tag_autocomplete_options for tag_autocomplete_options in HydrusSerialisable.create_from_serialisable_tuple(serialisable_tag_autocomplete_options)}
         
     
     def _update_serialisable_info( self, version, old_serialisable_info ):

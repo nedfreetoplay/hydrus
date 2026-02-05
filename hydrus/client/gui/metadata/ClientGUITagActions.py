@@ -26,9 +26,9 @@ class TagPairActionContext( object ):
         
         self._service_key = service_key
         
-        self._service = CG.client_controller.services_manager.GetService( self._service_key )
+        self._service = CG.client_controller.services_manager.get_service(self._service_key)
         
-        self._i_am_local_tag_service = self._service.GetServiceType() == HC.LOCAL_TAG
+        self._i_am_local_tag_service = self._service.get_service_type() == HC.LOCAL_TAG
         
         self._original_statuses_to_pairs = collections.defaultdict( set )
         self._current_statuses_to_pairs = collections.defaultdict( set )
@@ -289,7 +289,7 @@ class TagPairActionContext( object ):
                 
             else:
                 
-                if self._service.HasPermission( content_type, HC.PERMISSION_ACTION_MODERATE ):
+                if self._service.has_permission(content_type, HC.PERMISSION_ACTION_MODERATE):
                     
                     reason = 'Entered by a janitor.'
                     
@@ -306,7 +306,7 @@ class TagPairActionContext( object ):
                     
                     fixed_suggestions = self._GetFixedPendSuggestions()
                     
-                    suggestions = CG.client_controller.new_options.GetRecentPetitionReasons( content_type, HC.CONTENT_UPDATE_ADD )
+                    suggestions = CG.client_controller.new_options.get_recent_petition_reasons(content_type, HC.CONTENT_UPDATE_ADD)
                     
                     suggestions.extend( fixed_suggestions )
                     
@@ -318,7 +318,7 @@ class TagPairActionContext( object ):
                         
                         if reason not in fixed_suggestions:
                             
-                            CG.client_controller.new_options.PushRecentPetitionReason( content_type, HC.CONTENT_UPDATE_ADD, reason )
+                            CG.client_controller.new_options.push_recent_petition_reason(content_type, HC.CONTENT_UPDATE_ADD, reason)
                             
                         
                     except HydrusExceptions.CancelledException:
@@ -381,7 +381,7 @@ class TagPairActionContext( object ):
                 
             else:
                 
-                if self._service.HasPermission( content_type, HC.PERMISSION_ACTION_MODERATE ):
+                if self._service.has_permission(content_type, HC.PERMISSION_ACTION_MODERATE):
                     
                     reason = 'Entered by a janitor.'
                     
@@ -404,7 +404,7 @@ class TagPairActionContext( object ):
                     
                     fixed_suggestions = self._GetFixedPetitionSuggestions()
                     
-                    suggestions = CG.client_controller.new_options.GetRecentPetitionReasons( content_type, HC.CONTENT_UPDATE_DELETE )
+                    suggestions = CG.client_controller.new_options.get_recent_petition_reasons(content_type, HC.CONTENT_UPDATE_DELETE)
                     
                     suggestions.extend( fixed_suggestions )
                     
@@ -414,7 +414,7 @@ class TagPairActionContext( object ):
                         
                         if reason not in fixed_suggestions:
                             
-                            CG.client_controller.new_options.PushRecentPetitionReason( content_type, HC.CONTENT_UPDATE_DELETE, reason )
+                            CG.client_controller.new_options.push_recent_petition_reason(content_type, HC.CONTENT_UPDATE_DELETE, reason)
                             
                         
                     except HydrusExceptions.CancelledException:
@@ -529,7 +529,7 @@ class TagPairActionContext( object ):
             
             for ( win, c ) in self._notify_callables:
                 
-                CG.client_controller.CallAfterQtSafe( win, c )
+                CG.client_controller.call_after_qt_safe(win, c)
                 
             
             self._notify_new_tags_info.set()
@@ -552,7 +552,7 @@ class TagPairActionContext( object ):
                 self._notify_new_tags_info.clear()
                 
             
-            CG.client_controller.CallAfterQtSafe( widget, do_it_qt )
+            CG.client_controller.call_after_qt_safe(widget, do_it_qt)
             
         
         def do_it_qt():
@@ -887,7 +887,7 @@ class TagPairActionContext( object ):
                     
                     for ( win, c ) in self._notify_callables:
                         
-                        CG.client_controller.CallAfterQtSafe( win, c )
+                        CG.client_controller.call_after_qt_safe(win, c)
                         
                     
                     self._notify_new_tags_info.set()

@@ -285,11 +285,11 @@ class TagImportOptionsLegacy( HydrusSerialisable.SerialisableBase ):
     
     def _get_serialisable_info( self ):
         
-        if CG.client_controller.IsBooted():
+        if CG.client_controller.is_booted():
             
             services_manager = CG.client_controller.services_manager
             
-            test_func = services_manager.ServiceExists
+            test_func = services_manager.service_exists
             
         else:
             
@@ -500,7 +500,7 @@ class TagImportOptionsLegacy( HydrusSerialisable.SerialisableBase ):
         
         service_keys_to_tags = ClientTags.ServiceKeysToTags()
         
-        for service_key in CG.client_controller.services_manager.GetServiceKeys( HC.REAL_TAG_SERVICES ):
+        for service_key in CG.client_controller.services_manager.get_service_keys(HC.REAL_TAG_SERVICES):
             
             service_additional_tags = set()
             
@@ -564,7 +564,7 @@ class TagImportOptionsLegacy( HydrusSerialisable.SerialisableBase ):
                 
                 try:
                     
-                    name = CG.client_controller.services_manager.GetName( service_key )
+                    name = CG.client_controller.services_manager.get_name(service_key)
                     
                 except HydrusExceptions.DataMissing:
                     

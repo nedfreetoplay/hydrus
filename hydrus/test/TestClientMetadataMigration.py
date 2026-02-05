@@ -134,7 +134,7 @@ class TestSingleFileMetadataRouter( unittest.TestCase ):
         
         processing_steps = [ ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_REMOVE_TEXT_FROM_BEGINNING, 1 ) ] ) ]
         
-        string_processor.SetProcessingSteps( processing_steps )
+        string_processor.set_processing_steps(processing_steps)
         
         router = ClientMetadataMigration.SingleFileMetadataRouter( importers = [ importer_1, importer_2 ], string_processor = string_processor, exporter = ClientMetadataMigrationExporters.SingleFileMetadataExporterTXT() )
         
@@ -152,7 +152,7 @@ class TestSingleFileMetadataRouter( unittest.TestCase ):
         os.unlink( expected_input_path_2 )
         
         result = HydrusText.deserialise_newlined_texts( text )
-        expected_result = string_processor.ProcessStrings( set( rows_1 ).union( rows_2 ) )
+        expected_result = string_processor.process_strings(set(rows_1).union(rows_2))
         
         self.assertTrue( len( result ) > 0 )
         self.assertEqual( set( result ), set( expected_result ) )
@@ -268,7 +268,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         processing_steps = [ ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_REMOVE_TEXT_FROM_BEGINNING, 1 ) ] ) ]
         
-        string_processor.SetProcessingSteps( processing_steps )
+        string_processor.set_processing_steps(processing_steps)
         
         importer = ClientMetadataMigrationImporters.SingleFileMetadataImporterMediaTags( string_processor = string_processor, service_key = CC.DEFAULT_LOCAL_TAG_SERVICE_KEY, tag_display_type = ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL )
         
@@ -276,7 +276,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         self.assertTrue( len( result ) > 0 )
         self.assertNotEqual( set( result ), set( my_current_display_tags ) )
-        self.assertEqual( set( result ), set( string_processor.ProcessStrings( my_current_display_tags ) ) )
+        self.assertEqual(set( result ), set(string_processor.process_strings(my_current_display_tags)))
         
     
     def test_media_notes( self ):
@@ -310,7 +310,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         processing_steps = [ ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_REMOVE_TEXT_FROM_BEGINNING, 1 ) ] ) ]
         
-        string_processor.SetProcessingSteps( processing_steps )
+        string_processor.set_processing_steps(processing_steps)
         
         importer = ClientMetadataMigrationImporters.SingleFileMetadataImporterMediaNotes( string_processor = string_processor )
         
@@ -318,7 +318,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         self.assertTrue( len( result ) > 0 )
         self.assertNotEqual( set( result ), set( expected_rows ) )
-        self.assertEqual( set( result ), set( string_processor.ProcessStrings( expected_rows ) ) )
+        self.assertEqual(set( result ), set(string_processor.process_strings(expected_rows)))
         
     
     def test_media_urls( self ):
@@ -376,7 +376,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         processing_steps = [ ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_REMOVE_TEXT_FROM_BEGINNING, 1 ) ] ) ]
         
-        string_processor.SetProcessingSteps( processing_steps )
+        string_processor.set_processing_steps(processing_steps)
         
         importer = ClientMetadataMigrationImporters.SingleFileMetadataImporterMediaURLs( string_processor = string_processor )
         
@@ -384,7 +384,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         self.assertTrue( len( result ) > 0 )
         self.assertNotEqual( set( result ), set( urls ) )
-        self.assertEqual( set( result ), set( string_processor.ProcessStrings( urls ) ) )
+        self.assertEqual(set( result ), set(string_processor.process_strings(urls)))
         
     
     def test_media_timestamps( self ):
@@ -392,7 +392,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         archived_timestamp_ms = HydrusTime.get_now_ms() - 3600000
         file_modified_timestamp_ms = HydrusTime.get_now_ms() - 2400000
         site_dot_com_modified_timestamp_ms = HydrusTime.get_now_ms() - 2500000
-        timestamp_data_stub = ClientTime.TimestampData.STATICSimpleStub( HC.TIMESTAMP_TYPE_ARCHIVED )
+        timestamp_data_stub = ClientTime.TimestampData.static_simple_stub(HC.TIMESTAMP_TYPE_ARCHIVED)
         
         # simple
         
@@ -449,7 +449,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         processing_steps = [ ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_DATE_ENCODE, ( '%Y-%m-%d %H:%M:%S', 0 ) ) ] ) ]
         
-        string_processor.SetProcessingSteps( processing_steps )
+        string_processor.set_processing_steps(processing_steps)
         
         importer = ClientMetadataMigrationImporters.SingleFileMetadataImporterMediaTimestamps( string_processor = string_processor )
         importer.SetTimestampDataStub( timestamp_data_stub )
@@ -458,11 +458,11 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         self.assertTrue( len( result ) > 0 )
         self.assertNotEqual( set( result ), { str( HydrusTime.secondise_ms( archived_timestamp_ms ) ) } )
-        self.assertEqual( set( result ), set( string_processor.ProcessStrings( { str( HydrusTime.secondise_ms( archived_timestamp_ms ) ) } ) ) )
+        self.assertEqual(set( result ), set(string_processor.process_strings({str(HydrusTime.secondise_ms(archived_timestamp_ms))})))
         
         # test modified date/aggregate
         
-        timestamp_data_stub = ClientTime.TimestampData.STATICSimpleStub( HC.TIMESTAMP_TYPE_MODIFIED_FILE )
+        timestamp_data_stub = ClientTime.TimestampData.static_simple_stub(HC.TIMESTAMP_TYPE_MODIFIED_FILE)
         
         importer = ClientMetadataMigrationImporters.SingleFileMetadataImporterMediaTimestamps()
         importer.SetTimestampDataStub( timestamp_data_stub )
@@ -484,7 +484,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         #
         
-        timestamp_data_stub = ClientTime.TimestampData.STATICSimpleStub( HC.TIMESTAMP_TYPE_MODIFIED_AGGREGATE )
+        timestamp_data_stub = ClientTime.TimestampData.static_simple_stub(HC.TIMESTAMP_TYPE_MODIFIED_AGGREGATE)
         
         importer = ClientMetadataMigrationImporters.SingleFileMetadataImporterMediaTimestamps()
         importer.SetTimestampDataStub( timestamp_data_stub )
@@ -559,7 +559,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         processing_steps = [ ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_REMOVE_TEXT_FROM_BEGINNING, 1 ) ] ) ]
         
-        string_processor.SetProcessingSteps( processing_steps )
+        string_processor.set_processing_steps(processing_steps)
         
         expected_input_path = actual_file_path + '.tags.txt'
         
@@ -576,7 +576,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         self.assertTrue( len( result ) > 0 )
         self.assertNotEqual( set( result ), set( rows ) )
-        self.assertEqual( set( result ), set( string_processor.ProcessStrings( rows ) ) )
+        self.assertEqual(set( result ), set(string_processor.process_strings(rows)))
         
         # with filename remove ext and string conversion
         
@@ -660,7 +660,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         processing_steps = [ ClientStrings.StringConverter( conversions = [ ( ClientStrings.STRING_CONVERSION_REMOVE_TEXT_FROM_BEGINNING, 1 ) ] ) ]
         
-        string_processor.SetProcessingSteps( processing_steps )
+        string_processor.set_processing_steps(processing_steps)
         
         expected_input_path = actual_file_path + '.tags.json'
         
@@ -689,7 +689,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         self.assertTrue( len( result ) > 0 )
         self.assertNotEqual( set( result ), set( rows ) )
-        self.assertEqual( set( result ), set( string_processor.ProcessStrings( rows ) ) )
+        self.assertEqual(set( result ), set(string_processor.process_strings(rows)))
         
         # with filename remove ext and string conversion
         
@@ -871,7 +871,7 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
         
         # no timestamps makes no write
         
-        timestamp_data_stub = ClientTime.TimestampData.STATICSimpleStub( HC.TIMESTAMP_TYPE_ARCHIVED )
+        timestamp_data_stub = ClientTime.TimestampData.static_simple_stub(HC.TIMESTAMP_TYPE_ARCHIVED)
         
         exporter = ClientMetadataMigrationExporters.SingleFileMetadataExporterMediaTimestamps()
         
@@ -896,7 +896,7 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
         
         exporter.Export( hash, rows )
         
-        expected_timestamp_data_result = ClientTime.TimestampData.STATICArchivedTime( timestamp * 1000 ) # no precise milliseconds because we do not read millisecond precision from metadata migration yet!
+        expected_timestamp_data_result = ClientTime.TimestampData.static_archived_time(timestamp * 1000) # no precise milliseconds because we do not read millisecond precision from metadata migration yet!
         
         expected_content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_TIMESTAMP, HC.CONTENT_UPDATE_SET, ( ( hash, ), expected_timestamp_data_result ) ) ] )
         

@@ -83,33 +83,33 @@ class MediaViewerPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         #
         
-        self._focus_media_tab_on_viewer_close_if_possible.setChecked( self._new_options.GetBoolean( 'focus_media_tab_on_viewer_close_if_possible' ) )
-        self._focus_media_thumb_on_viewer_close.setChecked( self._new_options.GetBoolean( 'focus_media_thumb_on_viewer_close' ) )
-        self._activate_main_gui_on_focusing_viewer_close.setChecked( self._new_options.GetBoolean( 'activate_main_gui_on_focusing_viewer_close' ) )
-        self._activate_main_gui_on_viewer_close.setChecked( self._new_options.GetBoolean( 'activate_main_gui_on_viewer_close' ) )
+        self._focus_media_tab_on_viewer_close_if_possible.setChecked(self._new_options.get_boolean('focus_media_tab_on_viewer_close_if_possible'))
+        self._focus_media_thumb_on_viewer_close.setChecked(self._new_options.get_boolean('focus_media_thumb_on_viewer_close'))
+        self._activate_main_gui_on_focusing_viewer_close.setChecked(self._new_options.get_boolean('activate_main_gui_on_focusing_viewer_close'))
+        self._activate_main_gui_on_viewer_close.setChecked(self._new_options.get_boolean('activate_main_gui_on_viewer_close'))
         
-        self._animated_scanbar_height.setValue( self._new_options.GetInteger( 'animated_scanbar_height' ) )
-        self._animated_scanbar_nub_width.setValue( self._new_options.GetInteger( 'animated_scanbar_nub_width' ) )
+        self._animated_scanbar_height.setValue(self._new_options.get_integer('animated_scanbar_height'))
+        self._animated_scanbar_nub_width.setValue(self._new_options.get_integer('animated_scanbar_nub_width'))
         
         self._animated_scanbar_hide_height.SetValue( 5 )
-        self._animated_scanbar_hide_height.SetValue( self._new_options.GetNoneableInteger( 'animated_scanbar_hide_height' ) )
+        self._animated_scanbar_hide_height.SetValue(self._new_options.get_noneable_integer('animated_scanbar_hide_height'))
         
-        self._animated_scanbar_pop_in_requires_focus.setChecked( self._new_options.GetBoolean( 'animated_scanbar_pop_in_requires_focus' ) )
+        self._animated_scanbar_pop_in_requires_focus.setChecked(self._new_options.get_boolean('animated_scanbar_pop_in_requires_focus'))
         
-        self._media_viewer_cursor_autohide_time_ms.SetValue( self._new_options.GetNoneableInteger( 'media_viewer_cursor_autohide_time_ms' ) )
-        self._disallow_media_drags_on_duration_media.setChecked( self._new_options.GetBoolean( 'disallow_media_drags_on_duration_media' ) )
-        self._anchor_and_hide_canvas_drags.setChecked( self._new_options.GetBoolean( 'anchor_and_hide_canvas_drags' ) )
-        self._touchscreen_canvas_drags_unanchor.setChecked( self._new_options.GetBoolean( 'touchscreen_canvas_drags_unanchor' ) )
+        self._media_viewer_cursor_autohide_time_ms.SetValue(self._new_options.get_noneable_integer('media_viewer_cursor_autohide_time_ms'))
+        self._disallow_media_drags_on_duration_media.setChecked(self._new_options.get_boolean('disallow_media_drags_on_duration_media'))
+        self._anchor_and_hide_canvas_drags.setChecked(self._new_options.get_boolean('anchor_and_hide_canvas_drags'))
+        self._touchscreen_canvas_drags_unanchor.setChecked(self._new_options.get_boolean('touchscreen_canvas_drags_unanchor'))
         
-        slideshow_durations = self._new_options.GetSlideshowDurations()
+        slideshow_durations = self._new_options.get_slideshow_durations()
         
         self._slideshow_durations.setText( ','.join( ( str( slideshow_duration ) for slideshow_duration in slideshow_durations ) ) )
         
-        self._slideshow_always_play_duration_media_once_through.setChecked( self._new_options.GetBoolean( 'slideshow_always_play_duration_media_once_through' ) )
-        self._slideshow_short_duration_loop_seconds.SetValue( self._new_options.GetNoneableInteger( 'slideshow_short_duration_loop_seconds' ) )
-        self._slideshow_short_duration_loop_percentage.SetValue( self._new_options.GetNoneableInteger( 'slideshow_short_duration_loop_percentage' ) )
-        self._slideshow_short_duration_cutoff_percentage.SetValue( self._new_options.GetNoneableInteger( 'slideshow_short_duration_cutoff_percentage' ) )
-        self._slideshow_long_duration_overspill_percentage.SetValue( self._new_options.GetNoneableInteger( 'slideshow_long_duration_overspill_percentage' ) )
+        self._slideshow_always_play_duration_media_once_through.setChecked(self._new_options.get_boolean('slideshow_always_play_duration_media_once_through'))
+        self._slideshow_short_duration_loop_seconds.SetValue(self._new_options.get_noneable_integer('slideshow_short_duration_loop_seconds'))
+        self._slideshow_short_duration_loop_percentage.SetValue(self._new_options.get_noneable_integer('slideshow_short_duration_loop_percentage'))
+        self._slideshow_short_duration_cutoff_percentage.SetValue(self._new_options.get_noneable_integer('slideshow_short_duration_cutoff_percentage'))
+        self._slideshow_long_duration_overspill_percentage.SetValue(self._new_options.get_noneable_integer('slideshow_long_duration_overspill_percentage'))
         
         #
         
@@ -196,23 +196,23 @@ class MediaViewerPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def UpdateOptions( self ):
         
-        self._new_options.SetBoolean( 'focus_media_tab_on_viewer_close_if_possible', self._focus_media_tab_on_viewer_close_if_possible.isChecked() )
-        self._new_options.SetBoolean( 'focus_media_thumb_on_viewer_close', self._focus_media_thumb_on_viewer_close.isChecked() )
-        self._new_options.SetBoolean( 'activate_main_gui_on_focusing_viewer_close', self._activate_main_gui_on_focusing_viewer_close.isChecked() )
-        self._new_options.SetBoolean( 'activate_main_gui_on_viewer_close', self._activate_main_gui_on_viewer_close.isChecked() )
+        self._new_options.set_boolean('focus_media_tab_on_viewer_close_if_possible', self._focus_media_tab_on_viewer_close_if_possible.isChecked())
+        self._new_options.set_boolean('focus_media_thumb_on_viewer_close', self._focus_media_thumb_on_viewer_close.isChecked())
+        self._new_options.set_boolean('activate_main_gui_on_focusing_viewer_close', self._activate_main_gui_on_focusing_viewer_close.isChecked())
+        self._new_options.set_boolean('activate_main_gui_on_viewer_close', self._activate_main_gui_on_viewer_close.isChecked())
         
-        self._new_options.SetBoolean( 'disallow_media_drags_on_duration_media', self._disallow_media_drags_on_duration_media.isChecked() )
-        self._new_options.SetBoolean( 'anchor_and_hide_canvas_drags', self._anchor_and_hide_canvas_drags.isChecked() )
-        self._new_options.SetBoolean( 'touchscreen_canvas_drags_unanchor', self._touchscreen_canvas_drags_unanchor.isChecked() )
+        self._new_options.set_boolean('disallow_media_drags_on_duration_media', self._disallow_media_drags_on_duration_media.isChecked())
+        self._new_options.set_boolean('anchor_and_hide_canvas_drags', self._anchor_and_hide_canvas_drags.isChecked())
+        self._new_options.set_boolean('touchscreen_canvas_drags_unanchor', self._touchscreen_canvas_drags_unanchor.isChecked())
         
-        self._new_options.SetNoneableInteger( 'media_viewer_cursor_autohide_time_ms', self._media_viewer_cursor_autohide_time_ms.GetValue() )
+        self._new_options.set_noneable_integer('media_viewer_cursor_autohide_time_ms', self._media_viewer_cursor_autohide_time_ms.GetValue())
         
-        self._new_options.SetInteger( 'animated_scanbar_height', self._animated_scanbar_height.value() )
-        self._new_options.SetInteger( 'animated_scanbar_nub_width', self._animated_scanbar_nub_width.value() )
+        self._new_options.set_integer('animated_scanbar_height', self._animated_scanbar_height.value())
+        self._new_options.set_integer('animated_scanbar_nub_width', self._animated_scanbar_nub_width.value())
         
-        self._new_options.SetNoneableInteger( 'animated_scanbar_hide_height', self._animated_scanbar_hide_height.GetValue() )
+        self._new_options.set_noneable_integer('animated_scanbar_hide_height', self._animated_scanbar_hide_height.GetValue())
         
-        self._new_options.SetBoolean( 'animated_scanbar_pop_in_requires_focus', self._animated_scanbar_pop_in_requires_focus.isChecked() )
+        self._new_options.set_boolean('animated_scanbar_pop_in_requires_focus', self._animated_scanbar_pop_in_requires_focus.isChecked())
         
         try:
             
@@ -222,7 +222,7 @@ class MediaViewerPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
             if len( slideshow_durations ) > 0:
                 
-                self._new_options.SetSlideshowDurations( slideshow_durations )
+                self._new_options.set_slideshow_durations(slideshow_durations)
                 
             
         except ValueError:
@@ -230,10 +230,10 @@ class MediaViewerPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             HydrusData.show_text( 'Could not parse those slideshow durations, so they were not saved!' )
             
         
-        self._new_options.SetBoolean( 'slideshow_always_play_duration_media_once_through', self._slideshow_always_play_duration_media_once_through.isChecked() )
-        self._new_options.SetNoneableInteger( 'slideshow_short_duration_loop_percentage', self._slideshow_short_duration_loop_percentage.GetValue() )
-        self._new_options.SetNoneableInteger( 'slideshow_short_duration_loop_seconds', self._slideshow_short_duration_loop_seconds.GetValue() )
-        self._new_options.SetNoneableInteger( 'slideshow_short_duration_cutoff_percentage', self._slideshow_short_duration_cutoff_percentage.GetValue() )
-        self._new_options.SetNoneableInteger( 'slideshow_long_duration_overspill_percentage', self._slideshow_long_duration_overspill_percentage.GetValue() )
+        self._new_options.set_boolean('slideshow_always_play_duration_media_once_through', self._slideshow_always_play_duration_media_once_through.isChecked())
+        self._new_options.set_noneable_integer('slideshow_short_duration_loop_percentage', self._slideshow_short_duration_loop_percentage.GetValue())
+        self._new_options.set_noneable_integer('slideshow_short_duration_loop_seconds', self._slideshow_short_duration_loop_seconds.GetValue())
+        self._new_options.set_noneable_integer('slideshow_short_duration_cutoff_percentage', self._slideshow_short_duration_cutoff_percentage.GetValue())
+        self._new_options.set_noneable_integer('slideshow_long_duration_overspill_percentage', self._slideshow_long_duration_overspill_percentage.GetValue())
         
     

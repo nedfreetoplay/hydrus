@@ -78,24 +78,24 @@ class EditExportFoldersPanel( ClientGUIScrolledPanels.EditPanel ):
         
         new_options = CG.client_controller.new_options
         
-        phrase = new_options.GetString( 'export_phrase' )
+        phrase = new_options.get_string('export_phrase')
         
         name = 'export folder'
         path = ''
         export_type = HC.EXPORT_FOLDER_TYPE_REGULAR
         delete_from_client_after_export = False
         
-        default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+        default_location_context = CG.client_controller.new_options.get_default_local_location_context()
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = default_location_context )
         
-        metadata_routers = new_options.GetDefaultExportFilesMetadataRouters()
+        metadata_routers = new_options.get_default_export_files_metadata_routers()
         
         if len( metadata_routers ) > 0:
             
             message = 'You have some default metadata sidecar settings, most likely from a previous file export. They look like this:'
             message += '\n' * 2
-            message += '\n'.join( [ router.ToString( pretty = True ) for router in metadata_routers ] )
+            message += '\n'.join([router.to_string(pretty = True) for router in metadata_routers])
             message += '\n' * 2
             message += 'Do you want these in the new export folder?'
 
@@ -158,7 +158,7 @@ class EditExportFoldersPanel( ClientGUIScrolledPanels.EditPanel ):
             pretty_export_type += ' and deleting from the client!'
             
         
-        pretty_file_search_context = ', '.join( predicate.ToString( with_count = False ) for predicate in file_search_context.GetPredicates() )
+        pretty_file_search_context = ', '.join(predicate.to_string(with_count = False) for predicate in file_search_context.GetPredicates())
         
         if run_regularly:
             
@@ -216,7 +216,7 @@ class EditExportFoldersPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _GetExistingNames( self ):
         
-        existing_names = { export_folder.GetName() for export_folder in self._export_folders.GetData() }
+        existing_names = {export_folder.get_name() for export_folder in self._export_folders.GetData()}
         
         return existing_names
         
@@ -645,7 +645,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
             self._export_symlinks.setToolTip( ClientGUIFunctions.WrapToolTip( 'You probably need to run hydrus as Admin for this to work on Windows.' ) )
             
         
-        metadata_routers = new_options.GetDefaultExportFilesMetadataRouters()
+        metadata_routers = new_options.get_default_export_files_metadata_routers()
         allowed_importer_classes = [ ClientMetadataMigrationImporters.SingleFileMetadataImporterMediaTags, ClientMetadataMigrationImporters.SingleFileMetadataImporterMediaNotes, ClientMetadataMigrationImporters.SingleFileMetadataImporterMediaURLs, ClientMetadataMigrationImporters.SingleFileMetadataImporterMediaTimestamps ]
         allowed_exporter_classes = [ ClientMetadataMigrationExporters.SingleFileMetadataExporterTXT, ClientMetadataMigrationExporters.SingleFileMetadataExporterJSON ]
         
@@ -667,13 +667,13 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
             self._directory_picker.SetPath( export_path )
             
         
-        phrase = new_options.GetString( 'export_phrase' )
+        phrase = new_options.get_string('export_phrase')
         
         self._pattern.setText( phrase )
         
         self._paths.SetData( flat_media )
         
-        self._delete_files_after_export.setChecked( CG.client_controller.new_options.GetBoolean( 'delete_files_after_export' ) )
+        self._delete_files_after_export.setChecked(CG.client_controller.new_options.get_boolean('delete_files_after_export'))
         self._delete_files_after_export.clicked.connect( self.EventDeleteFilesChanged )
         
         #
@@ -719,7 +719,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         if do_export_and_then_quit:
             
-            CG.client_controller.CallAfterQtSafe( self, self._DoExport, True )
+            CG.client_controller.call_after_qt_safe(self, self._DoExport, True)
             
         
     
@@ -851,7 +851,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         pattern = self._pattern.text()
         
-        CG.client_controller.new_options.SetString( 'export_phrase', pattern )
+        CG.client_controller.new_options.set_string('export_phrase', pattern)
         
         try:
             
@@ -885,7 +885,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             if quit_afterwards:
                 
-                CG.client_controller.CallAfterQtSafe( self, self.parentWidget().close )
+                CG.client_controller.call_after_qt_safe(self, self.parentWidget().close)
                 
             
         
@@ -893,7 +893,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             job_status = ClientThreading.JobStatus( cancellable = True )
             
-            job_status.SetStatusTitle( 'file export' )
+            job_status.set_status_title('file export')
             
             CG.client_controller.pub( 'message', job_status )
             
@@ -907,7 +907,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 number = media_to_number_indices[ media ]
                 
-                if job_status.IsCancelled():
+                if job_status.is_cancelled():
                     
                     break
                     
@@ -916,12 +916,12 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                     
                     x_of_y = HydrusNumbers.value_range_to_pretty_string( index, num_to_do )
                     
-                    job_status.SetStatusText( 'Exporting: {}'.format( x_of_y ) )
-                    job_status.SetGauge( index, num_to_do )
+                    job_status.set_status_text('Exporting: {}'.format(x_of_y))
+                    job_status.set_gauge(index, num_to_do)
                     
-                    CG.client_controller.CallAfterQtSafe( self, qt_update_label, x_of_y )
+                    CG.client_controller.call_after_qt_safe(self, qt_update_label, x_of_y)
                     
-                    hash = media.GetHash()
+                    hash = media.get_hash()
                     mime = media.GetMime()
                     
                     dest_path = os.path.normpath( dest_path )
@@ -977,7 +977,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                     
                 except Exception as e:
                     
-                    win = CG.client_controller.GetMainTLW()
+                    win = CG.client_controller.get_main_tlw()
                     
                     HydrusData.print_exception( e, do_wait = False )
                     
@@ -989,9 +989,9 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 pauser.pause()
                 
             
-            if not job_status.IsCancelled() and delete_afterwards:
+            if not job_status.is_cancelled() and delete_afterwards:
                 
-                CG.client_controller.CallAfterQtSafe( self, qt_update_label, 'deleting' )
+                CG.client_controller.call_after_qt_safe(self, qt_update_label, 'deleting')
                 
                 actually_done_media_results = [ m.GetMediaResult() for m in actually_done_ok ]
                 
@@ -999,7 +999,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                     
                     reason = 'Deleted after manual export to "{}".'.format( directory )
                     
-                    hashes = [ media_result.GetHash() for media_result in chunk_of_deletee_media_results ]
+                    hashes = [media_result.get_hash() for media_result in chunk_of_deletee_media_results]
                     
                     content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, hashes, reason = reason )
                     
@@ -1007,18 +1007,18 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                     
                 
             
-            job_status.DeleteGauge()
-            job_status.SetStatusText( 'Done!' )
+            job_status.delete_gauge()
+            job_status.set_status_text('Done!')
             
-            job_status.FinishAndDismiss( 5 )
+            job_status.finish_and_dismiss(5)
             
-            CG.client_controller.CallAfterQtSafe( self, qt_update_label, 'done!' )
+            CG.client_controller.call_after_qt_safe(self, qt_update_label, 'done!')
             
             time.sleep( 1 )
             
-            CG.client_controller.CallAfterQtSafe( self, qt_update_label, 'export' )
+            CG.client_controller.call_after_qt_safe(self, qt_update_label, 'export')
             
-            CG.client_controller.CallAfterQtSafe( self, qt_done, quit_afterwards )
+            CG.client_controller.call_after_qt_safe(self, qt_done, quit_afterwards)
             
         
         CG.client_controller.call_to_thread( do_it, directory, metadata_routers, delete_afterwards, export_symlinks, quit_afterwards, self._media_to_number_indices )
@@ -1055,7 +1055,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         metadata_routers = self._metadata_routers_button.GetValue()
         
-        CG.client_controller.new_options.SetDefaultExportFilesMetadataRouters( metadata_routers )
+        CG.client_controller.new_options.set_default_export_files_metadata_routers(metadata_routers)
         
     
     def _RefreshPaths( self ):
@@ -1071,7 +1071,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
         self._last_phrase_used = pattern
         self._last_dir_used = dir_path
         
-        CG.client_controller.new_options.SetString( 'export_phrase', pattern )
+        CG.client_controller.new_options.set_string('export_phrase', pattern)
         
         self._existing_filenames = set()
         self._media_to_paths = {}
@@ -1100,7 +1100,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         value = self._delete_files_after_export.isChecked()
         
-        CG.client_controller.new_options.SetBoolean( 'delete_files_after_export', value )
+        CG.client_controller.new_options.set_boolean('delete_files_after_export', value)
         
         if value:
             

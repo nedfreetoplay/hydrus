@@ -172,7 +172,7 @@ def namespace_az_key( tag ):
 
 def namespace_user_key_factory():
     
-    namespace_list = CG.client_controller.new_options.GetStringList( 'user_namespace_group_by_sort' )
+    namespace_list = CG.client_controller.new_options.get_string_list('user_namespace_group_by_sort')
     namespace_list_fast = set( namespace_list )
     
     any_namespace_index = len( namespace_list )

@@ -98,7 +98,7 @@ def EditPredicates( widget: QW.QWidget, predicates: collections.abc.Collection[ 
                 
                 edited_predicates = panel.GetValue()
                 
-                CG.client_controller.new_options.PushRecentPredicates( edited_predicates )
+                CG.client_controller.new_options.push_recent_predicates(edited_predicates)
                 
                 result = list( non_editable_predicates )
                 result.extend( edited_predicates )
@@ -163,7 +163,7 @@ def FleshOutPredicates( widget: QW.QWidget, predicates: collections.abc.Collecti
                     
                     preds = panel.GetValue()
                     
-                    CG.client_controller.new_options.PushRecentPredicates( preds )
+                    CG.client_controller.new_options.push_recent_predicates(preds)
                     
                     good_predicates.extend( preds )
                     
@@ -419,9 +419,9 @@ class EditPredicatesPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 try:
                     
-                    service = CG.client_controller.services_manager.GetService( s_k )
+                    service = CG.client_controller.services_manager.get_service(s_k)
                     
-                    return ( order_of_panels.index( service.GetServiceType() ), service.GetName() )
+                    return (order_of_panels.index(service.get_service_type()), service.get_name())
                     
                 except HydrusExceptions.DataMissing:
                     
@@ -437,7 +437,7 @@ class EditPredicatesPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 try:
                     
-                    service = CG.client_controller.services_manager.GetService( service_key )
+                    service = CG.client_controller.services_manager.get_service(service_key)
                     
                 except HydrusExceptions.DataMissing:
                     
@@ -446,7 +446,7 @@ class EditPredicatesPanel( ClientGUIScrolledPanels.EditPanel ):
                     continue
                     
                 
-                type = service.GetServiceType()
+                type = service.get_service_type()
                 
                 if type == HC.LOCAL_RATING_LIKE:
                     
@@ -786,7 +786,7 @@ class FleshOutPredicatePanel( ClientGUIScrolledPanels.EditPanel ):
             
             services_manager = CG.client_controller.services_manager
             
-            rating_services = services_manager.GetServices( HC.RATINGS_SERVICES )
+            rating_services = services_manager.get_services(HC.RATINGS_SERVICES)
             
             if len( rating_services ) > 0:
                 
@@ -799,19 +799,19 @@ class FleshOutPredicatePanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     for rating_service in rating_services:
                         
-                        if rating_service.GetServiceType() == service_type_in_order:
+                        if rating_service.get_service_type() == service_type_in_order:
                             
                             if service_type_in_order == HC.LOCAL_RATING_LIKE:
                                 
-                                editable_pred_panels.append( self._PredOKPanel( self, ClientGUIPredicatesSingle.PredicateSystemRatingLike, rating_service.GetServiceKey(), predicate ) )
+                                editable_pred_panels.append(self._PredOKPanel(self, ClientGUIPredicatesSingle.PredicateSystemRatingLike, rating_service.get_service_key(), predicate))
                                 
                             elif service_type_in_order == HC.LOCAL_RATING_NUMERICAL:
                                 
-                                editable_pred_panels.append( self._PredOKPanel( self, ClientGUIPredicatesSingle.PredicateSystemRatingNumerical, rating_service.GetServiceKey(), predicate ) )
+                                editable_pred_panels.append(self._PredOKPanel(self, ClientGUIPredicatesSingle.PredicateSystemRatingNumerical, rating_service.get_service_key(), predicate))
                                 
                             elif service_type_in_order == HC.LOCAL_RATING_INCDEC:
                                 
-                                editable_pred_panels.append( self._PredOKPanel( self, ClientGUIPredicatesSingle.PredicateSystemRatingIncDec, rating_service.GetServiceKey(), predicate ) )
+                                editable_pred_panels.append(self._PredOKPanel(self, ClientGUIPredicatesSingle.PredicateSystemRatingIncDec, rating_service.get_service_key(), predicate))
                                 
                             
                         
@@ -902,7 +902,7 @@ class FleshOutPredicatePanel( ClientGUIScrolledPanels.EditPanel ):
             
             if len( recent_predicate_types ) > 0:
                 
-                recent_predicates = CG.client_controller.new_options.GetRecentPredicates( recent_predicate_types )
+                recent_predicates = CG.client_controller.new_options.get_recent_predicates(recent_predicate_types)
                 
                 recent_predicates = [ pred for pred in recent_predicates if pred not in all_static_preds ]
                 
@@ -1014,7 +1014,7 @@ class FleshOutPredicatePanel( ClientGUIScrolledPanels.EditPanel ):
         
         for predicate in predicates:
             
-            CG.client_controller.new_options.RemoveRecentPredicate( predicate )
+            CG.client_controller.new_options.remove_recent_predicate(predicate)
             
         
         button.hide()
@@ -1139,7 +1139,7 @@ class TagContextButton( ClientGUICommon.BetterButton ):
         
         service_types_in_order = [ HC.LOCAL_TAG, HC.TAG_REPOSITORY, HC.COMBINED_TAG ]
         
-        services = services_manager.GetServices( service_types_in_order )
+        services = services_manager.get_services(service_types_in_order)
         
         menu = ClientGUIMenus.GenerateMenu( self )
         
@@ -1147,18 +1147,18 @@ class TagContextButton( ClientGUICommon.BetterButton ):
         
         for service in services:
             
-            if last_seen_service_type is not None and last_seen_service_type != service.GetServiceType():
+            if last_seen_service_type is not None and last_seen_service_type != service.get_service_type():
                 
                 ClientGUIMenus.AppendSeparator( menu )
                 
             
             new_tag_context = self._tag_context.duplicate()
             
-            new_tag_context.service_key = service.GetServiceKey()
+            new_tag_context.service_key = service.get_service_key()
             
-            ClientGUIMenus.AppendMenuCheckItem( menu, service.GetName(), 'Change the current tag domain to {}.'.format( service.GetName() ), new_tag_context == self._tag_context, self.SetValue, new_tag_context )
+            ClientGUIMenus.AppendMenuCheckItem(menu, service.get_name(), 'Change the current tag domain to {}.'.format(service.get_name()), new_tag_context == self._tag_context, self.SetValue, new_tag_context)
             
-            last_seen_service_type = service.GetServiceType()
+            last_seen_service_type = service.get_service_type()
             
         
         CGC.core().PopupMenu( self, menu )
@@ -1209,13 +1209,13 @@ class TagContextButton( ClientGUICommon.BetterButton ):
         
         tag_context = tag_context.duplicate()
         
-        tag_context.FixMissingServices( CG.client_controller.services_manager.FilterValidServiceKeys )
+        tag_context.FixMissingServices(CG.client_controller.services_manager.filter_valid_service_keys)
         
         emit_signal = self._tag_context != tag_context
         
         self._tag_context = tag_context
         
-        label = self._tag_context.ToString( CG.client_controller.services_manager.GetName )
+        label = self._tag_context.ToString(CG.client_controller.services_manager.get_name)
         
         if self._use_short_label:
             

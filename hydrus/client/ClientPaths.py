@@ -33,7 +33,7 @@ if HC.PLATFORM_WINDOWS:
 
 CAN_OPEN_FILE_LOCATION = HC.PLATFORM_WINDOWS or HC.PLATFORM_MACOS or ( HC.PLATFORM_LINUX and SHOW_IN_FILE_MANAGER_OK )
 
-def DeletePath( path, always_delete_fully = False ):
+def delete_path(path, always_delete_fully = False):
     
     delete_to_recycle_bin = HC.options[ 'delete_to_recycle_bin' ]
     
@@ -47,14 +47,14 @@ def DeletePath( path, always_delete_fully = False ):
         
     
 
-def LaunchPathInWebBrowser( path ):
+def launch_path_in_web_browser(path):
     
-    LaunchURLInWebBrowser( 'file:///' + path )
+    launch_url_in_web_browser('file:///' + path)
     
 
-def LaunchURLInWebBrowser( url ):
+def launch_url_in_web_browser(url):
     
-    web_browser_path = CG.client_controller.new_options.GetNoneableString( 'web_browser_path' )
+    web_browser_path = CG.client_controller.new_options.get_noneable_string('web_browser_path')
     
     if web_browser_path is None:
         
@@ -66,7 +66,7 @@ def LaunchURLInWebBrowser( url ):
         
     
 
-def OpenFileLocation( path: str ):
+def open_file_location(path: str):
     
     if SHOW_IN_FILE_MANAGER_OK:
         
@@ -78,7 +78,7 @@ def OpenFileLocation( path: str ):
         
     
 
-def OpenFileLocations( paths: collections.abc.Sequence[str] ):
+def open_file_locations(paths: collections.abc.Sequence[str]):
     
     if SHOW_IN_FILE_MANAGER_OK:
         
@@ -92,18 +92,18 @@ def OpenFileLocations( paths: collections.abc.Sequence[str] ):
             
     
 
-def OpenNativeFileProperties( path: str ):
+def open_native_file_properties(path: str):
     
     if HC.PLATFORM_WINDOWS:
         
-        ClientWindowsIntegration.OpenFileProperties( path )
+        ClientWindowsIntegration.open_file_properties(path)
         
     
 
-def OpenFileWithDialog( path: str ):
+def open_file_with_dialog(path: str):
     
     if HC.PLATFORM_WINDOWS:
         
-        ClientWindowsIntegration.OpenFileWith( path )
+        ClientWindowsIntegration.open_file_with(path)
         
     

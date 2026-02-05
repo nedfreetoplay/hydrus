@@ -20,7 +20,7 @@ from hydrus.server import ServerGlobals as SG
 
 class HydrusResourceBusyCheck( HydrusServerResources.Resource ):
     
-    def render_GET( self, request: HydrusServerRequest.HydrusRequest ):
+    def render_get(self, request: HydrusServerRequest.HydrusRequest):
         
         request.setResponseCode( 200 )
         
@@ -275,7 +275,7 @@ class HydrusResourceRestricted( HydrusResourceHydrusNetwork ):
     
     def _check_account( self, request: HydrusServerRequest.HydrusRequest ):
         
-        request.hydrus_account.CheckFunctional()
+        request.hydrus_account.check_functional()
         
         return request
         
@@ -287,7 +287,7 @@ class HydrusResourceRestricted( HydrusResourceHydrusNetwork ):
     
     def _check_bandwidth( self, request: HydrusServerRequest.HydrusRequest ):
         
-        if not self._service.BandwidthOK():
+        if not self._service.bandwidth_ok():
             
             raise HydrusExceptions.BandwidthException( 'This service has run out of bandwidth. Please try again later.' )
             
@@ -306,7 +306,7 @@ class HydrusResourceRestricted( HydrusResourceHydrusNetwork ):
         
         if account is not None:
             
-            account.ReportDataUsed( num_bytes )
+            account.report_data_used(num_bytes)
             
         
     
@@ -318,7 +318,7 @@ class HydrusResourceRestricted( HydrusResourceHydrusNetwork ):
         
         if account is not None:
             
-            account.ReportRequestUsed()
+            account.report_request_used()
             
         
     
@@ -372,11 +372,11 @@ class HydrusResourceRestrictedOptions( HydrusResourceRestricted ):
         # so now this is just 'get the primitives' request, and it comes back as a straight up JSON dict
         # anything serialisable can be its own request and can have separate deserialisation error handling
         
-        if self._service.GetServiceType() in HC.REPOSITORIES:
+        if self._service.get_service_type() in HC.REPOSITORIES:
             
             service_options = {
-                'update_period' : self._service.GetUpdatePeriod(),
-                'nullification_period' : self._service.GetNullificationPeriod()
+                'update_period' : self._service.get_update_period(),
+                'nullification_period' : self._service.get_nullification_period()
             }
             
         else:
@@ -416,7 +416,7 @@ class HydrusResourceRestrictedOptionsModifyNullificationPeriod( HydrusResourceRe
             raise HydrusExceptions.BadRequestException( 'The anonymisation period was too high. It needs to be lower than {}.'.format( HydrusTime.timedelta_to_pretty_timedelta( HydrusNetwork.MAX_NULLIFICATION_PERIOD ) ) )
             
         
-        old_nullification_period = self._service.GetNullificationPeriod()
+        old_nullification_period = self._service.get_nullification_period()
         
         if old_nullification_period != nullification_period:
             
@@ -453,7 +453,7 @@ class HydrusResourceRestrictedOptionsModifyUpdatePeriod( HydrusResourceRestricte
             raise HydrusExceptions.BadRequestException( 'The update period was too high. It needs to be lower than {}.'.format( HydrusTime.timedelta_to_pretty_timedelta( HydrusNetwork.MAX_UPDATE_PERIOD ) ) )
             
         
-        old_update_period = self._service.GetUpdatePeriod()
+        old_update_period = self._service.get_update_period()
         
         if old_update_period != update_period:
             
@@ -899,7 +899,7 @@ class HydrusResourceRestrictedNumPetitions( HydrusResourceRestricted ):
         
         # further permissions checked in the db
         
-        request.hydrus_account.CheckAtLeastOnePermission( [ ( content_type, HC.PERMISSION_ACTION_MODERATE ) for content_type in HC.SERVICE_TYPES_TO_CONTENT_TYPES[ self._service.GetServiceType() ] ] )
+        request.hydrus_account.CheckAtLeastOnePermission([( content_type, HC.PERMISSION_ACTION_MODERATE ) for content_type in HC.SERVICE_TYPES_TO_CONTENT_TYPES[ self._service.get_service_type()]])
         
     
     def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
@@ -1046,7 +1046,7 @@ class HydrusResourceRestrictedRepositoryFile( HydrusResourceRestricted ):
             
         else:
             
-            return request.hydrus_account.HasPermission( HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_CREATE )
+            return request.hydrus_account.has_permission(HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_CREATE)
             
         
     
@@ -1081,7 +1081,7 @@ class HydrusResourceRestrictedRepositoryFile( HydrusResourceRestricted ):
             file_dict[ 'ip' ] = request.getClientIP()
             
         
-        timestamp = self._service.GetMetadata().GetNextUpdateBegin() + 1
+        timestamp = self._service.get_metadata().GetNextUpdateBegin() + 1
         
         SG.server_controller.write_synchronous( 'file', self._service, request.hydrus_account, file_dict, timestamp )
         
@@ -1168,7 +1168,7 @@ class HydrusResourceRestrictedServices( HydrusResourceRestricted ):
         
         services = request.parsed_request_args[ 'services' ]
         
-        unique_ports = { service.GetPort() for service in services }
+        unique_ports = {service.get_port() for service in services}
         
         if len( unique_ports ) < len( services ):
             
@@ -1222,7 +1222,7 @@ class HydrusResourceRestrictedTagFilter( HydrusResourceRestricted ):
     
     def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
-        tag_filter = self._service.GetTagFilter()
+        tag_filter = self._service.get_tag_filter()
         
         body = HydrusNetworkVariableHandling.dump_hydrus_args_to_network_bytes( { 'tag_filter' : tag_filter } )
         
@@ -1235,11 +1235,11 @@ class HydrusResourceRestrictedTagFilter( HydrusResourceRestricted ):
         
         tag_filter = request.parsed_request_args[ 'tag_filter' ]
         
-        old_tag_filter = self._service.GetTagFilter()
+        old_tag_filter = self._service.get_tag_filter()
         
         if old_tag_filter != tag_filter:
             
-            self._service.SetTagFilter( tag_filter )
+            self._service.set_tag_filter(tag_filter)
             
             summary_text = tag_filter.GetChangesSummaryText( old_tag_filter )
             
@@ -1268,7 +1268,7 @@ class HydrusResourceRestrictedUpdate( HydrusResourceRestricted ):
             
             # further permissions checked in the db
             
-            request.hydrus_account.CheckAtLeastOnePermission( [ ( content_type, HC.PERMISSION_ACTION_PETITION ) for content_type in HC.SERVICE_TYPES_TO_CONTENT_TYPES[ self._service.GetServiceType() ] ] )
+            request.hydrus_account.CheckAtLeastOnePermission([( content_type, HC.PERMISSION_ACTION_PETITION ) for content_type in HC.SERVICE_TYPES_TO_CONTENT_TYPES[ self._service.get_service_type()]])
             
         
     
@@ -1315,7 +1315,7 @@ class HydrusResourceRestrictedImmediateUpdate( HydrusResourceRestricted ):
     
     def _check_account_permissions( self, request: HydrusServerRequest.HydrusRequest ):
         
-        request.hydrus_account.CheckAtLeastOnePermission( [ ( content_type, HC.PERMISSION_ACTION_MODERATE ) for content_type in HC.SERVICE_TYPES_TO_CONTENT_TYPES[ self._service.GetServiceType() ] ] )
+        request.hydrus_account.CheckAtLeastOnePermission([( content_type, HC.PERMISSION_ACTION_MODERATE ) for content_type in HC.SERVICE_TYPES_TO_CONTENT_TYPES[ self._service.get_service_type()]])
         
     
     def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):

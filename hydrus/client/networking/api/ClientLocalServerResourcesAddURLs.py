@@ -299,7 +299,7 @@ class HydrusResourceClientAPIRestrictedAddURLsImportURL( HydrusResourceClientAPI
         
         try:
             
-            ( normalised_url, result_text ) = CG.client_controller.CallBlockingToQtTLW( do_it )
+            ( normalised_url, result_text ) = CG.client_controller.call_blocking_to_qt_tlw(do_it)
             
         except HydrusExceptions.URLClassException as e:
             

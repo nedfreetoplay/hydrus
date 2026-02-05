@@ -19,7 +19,7 @@ class AdvancedPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         self._advanced_mode = QW.QCheckBox( self )
         self._advanced_mode.setToolTip( ClientGUIFunctions.WrapToolTip( 'This controls a variety of different features across the program, too many to list neatly. The plan is to blow this single option out into many granular options on this page.\n\nThis plan is failing!' ) )
         
-        self._advanced_mode.setChecked( self._new_options.GetBoolean( 'advanced_mode' ) )
+        self._advanced_mode.setChecked(self._new_options.get_boolean('advanced_mode'))
         
         vbox = QP.VBoxLayout()
         
@@ -39,6 +39,6 @@ class AdvancedPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def UpdateOptions( self ):
         
-        self._new_options.SetBoolean( 'advanced_mode', self._advanced_mode.isChecked() )
+        self._new_options.set_boolean('advanced_mode', self._advanced_mode.isChecked())
         
     

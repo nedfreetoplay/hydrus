@@ -471,7 +471,7 @@ class JobScheduler( threading.Thread ):
         
         with self._waiting_lock:
             
-            self._waiting = [ job for job in self._waiting if not job.IsCancelled() ]
+            self._waiting = [job for job in self._waiting if not job.is_cancelled()]
             
         
     
@@ -553,7 +553,7 @@ class JobScheduler( threading.Thread ):
                 next_job = self._waiting.pop( 0 )
                 
             
-            if next_job.IsCancelled():
+            if next_job.is_cancelled():
                 
                 continue
                 

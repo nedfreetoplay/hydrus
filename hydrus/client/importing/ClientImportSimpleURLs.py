@@ -234,7 +234,7 @@ class SimpleDownloaderImport( HydrusSerialisable.SerialisableBase ):
             
         except HydrusExceptions.NetworkException as e:
             
-            delay = CG.client_controller.new_options.GetInteger( 'downloader_network_error_delay' )
+            delay = CG.client_controller.new_options.get_integer('downloader_network_error_delay')
             
             self._DelayWork( delay, str( e ) )
             
@@ -343,7 +343,7 @@ class SimpleDownloaderImport( HydrusSerialisable.SerialisableBase ):
                         ClientImporting.WakeRepeatingJob( self._files_repeating_job )
                         
                     
-                    parser_status = 'page checked OK with formula "' + simple_downloader_formula.GetName() + '" - ' + HydrusNumbers.to_human_int( num_new ) + ' new urls'
+                    parser_status = 'page checked OK with formula "' + simple_downloader_formula.get_name() + '" - ' + HydrusNumbers.to_human_int(num_new) + ' new urls'
                     
                     num_already_in_file_seed_cache = len( file_seeds ) - num_new
                     
@@ -371,7 +371,7 @@ class SimpleDownloaderImport( HydrusSerialisable.SerialisableBase ):
                     
                 except HydrusExceptions.NetworkException as e:
                     
-                    delay = CG.client_controller.new_options.GetInteger( 'downloader_network_error_delay' )
+                    delay = CG.client_controller.new_options.get_integer('downloader_network_error_delay')
                     
                     self._DelayWork( delay, str( e ) )
                     
@@ -780,7 +780,7 @@ class SimpleDownloaderImport( HydrusSerialisable.SerialisableBase ):
                 
                 self._WorkOnFiles()
                 
-                CG.client_controller.WaitUntilViewFree()
+                CG.client_controller.wait_until_view_free()
                 
                 self._SerialisableChangeMade()
                 
@@ -848,7 +848,7 @@ class SimpleDownloaderImport( HydrusSerialisable.SerialisableBase ):
                 
                 time.sleep( 1 )
                 
-                CG.client_controller.WaitUntilViewFree()
+                CG.client_controller.wait_until_view_free()
                 
                 self._SerialisableChangeMade()
                 
@@ -1095,7 +1095,7 @@ class URLsImport( HydrusSerialisable.SerialisableBase ):
             
         except HydrusExceptions.NetworkException as e:
             
-            delay = CG.client_controller.new_options.GetInteger( 'downloader_network_error_delay' )
+            delay = CG.client_controller.new_options.get_integer('downloader_network_error_delay')
             
             self._DelayWork( delay, str( e ) )
             
@@ -1141,7 +1141,7 @@ class URLsImport( HydrusSerialisable.SerialisableBase ):
             
         except HydrusExceptions.NetworkException as e:
             
-            delay = CG.client_controller.new_options.GetInteger( 'downloader_network_error_delay' )
+            delay = CG.client_controller.new_options.get_integer('downloader_network_error_delay')
             
             self._DelayWork( delay, str( e ) )
             
@@ -1498,7 +1498,7 @@ class URLsImport( HydrusSerialisable.SerialisableBase ):
                 
                 self._WorkOnFiles()
                 
-                CG.client_controller.WaitUntilViewFree()
+                CG.client_controller.wait_until_view_free()
                 
                 self._SerialisableChangeMade()
                 
@@ -1561,7 +1561,7 @@ class URLsImport( HydrusSerialisable.SerialisableBase ):
                 
                 time.sleep( 1 )
                 
-                CG.client_controller.WaitUntilViewFree()
+                CG.client_controller.wait_until_view_free()
                 
                 self._SerialisableChangeMade()
                 

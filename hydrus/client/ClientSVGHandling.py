@@ -8,7 +8,7 @@ from hydrus.core.files import HydrusSVGHandling
 from hydrus.client import ClientGlobals as CG
 from hydrus.client.gui import ClientGUIFunctions
 
-def QtLoadSVGRenderer( path: str ):
+def qt_load_svg_renderer(path: str):
     
     renderer = QtSvg.QSvgRenderer()
     
@@ -29,7 +29,7 @@ def QtLoadSVGRenderer( path: str ):
     return renderer
     
 
-def GenerateThumbnailNumPyFromSVGPath( path: str, target_resolution: tuple[int, int] ) -> bytes:
+def generate_thumbnail_num_py_from_svg_path(path: str, target_resolution: tuple[int, int]) -> bytes:
     
     # TODO: SVGs have no inherent resolution, so all this is pretty stupid. we should render to exactly the res we want and then clip the result, not beforehand
     
@@ -37,7 +37,7 @@ def GenerateThumbnailNumPyFromSVGPath( path: str, target_resolution: tuple[int, 
         
         try:
             
-            renderer = QtLoadSVGRenderer( path )
+            renderer = qt_load_svg_renderer(path)
             
             # Seems to help for some weird floating point dimension SVGs
             renderer.setAspectRatioMode( QC.Qt.AspectRatioMode.KeepAspectRatio )
@@ -66,18 +66,18 @@ def GenerateThumbnailNumPyFromSVGPath( path: str, target_resolution: tuple[int, 
             
         
     
-    return CG.client_controller.CallBlockingToQtTLW( qt_code )
+    return CG.client_controller.call_blocking_to_qt_tlw(qt_code)
     
 
-HydrusSVGHandling.generate_thumbnail_numpy_from_svg_path = GenerateThumbnailNumPyFromSVGPath
+HydrusSVGHandling.generate_thumbnail_numpy_from_svg_path = generate_thumbnail_num_py_from_svg_path
 
-def GetSVGResolution( path: str ):
+def _get_svg_resolution(path: str):
     
     def qt_code():
         
         try:
             
-            renderer = QtLoadSVGRenderer( path )
+            renderer = qt_load_svg_renderer(path)
             
             default_size = renderer.defaultSize()
             
@@ -91,7 +91,7 @@ def GetSVGResolution( path: str ):
             
         
     
-    return CG.client_controller.CallBlockingToQtTLW( qt_code )
+    return CG.client_controller.call_blocking_to_qt_tlw(qt_code)
     
 
-HydrusSVGHandling.get_svg_resolution = GetSVGResolution
+HydrusSVGHandling.get_svg_resolution = _get_svg_resolution

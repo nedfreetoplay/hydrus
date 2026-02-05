@@ -53,7 +53,7 @@ class TestDaemons( unittest.TestCase ):
             #
             
             file_search_context = ClientSearchFileSearchContext.FileSearchContext(
-                ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ),
+                ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY),
                 ClientSearchTagContext.TagContext(),
                 predicates = [
                     ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = { HC.IMAGE_JPEG } )
@@ -90,7 +90,7 @@ class TestDaemons( unittest.TestCase ):
                     
                     with mock.patch.object( TG.test_controller.client_files_manager, 'GetFilePath', return_value = fake_file_path ) as client_files_mock_object:
                         
-                        ClientDaemons.DAEMONCheckExportFolders()
+                        ClientDaemons.daemon_check_export_folders()
                         
                         time.sleep( 3 )
                         
@@ -198,13 +198,13 @@ class TestDaemons( unittest.TestCase ):
                 
                 ( file_import_job, ) = args
                 
-                if file_import_job.GetHash().hex() == 'a593942cb7ea9ffcd8ccf2f0fa23c338e23bfecd9a3e508dfc0bcf07501ead08': # 'blarg' in sha256 hex
+                if file_import_job.get_hash().hex() == 'a593942cb7ea9ffcd8ccf2f0fa23c338e23bfecd9a3e508dfc0bcf07501ead08': # 'blarg' in sha256 hex
                     
                     raise Exception( 'File failed to import for some reason!' )
                     
                 else:
                     
-                    h = file_import_job.GetHash()
+                    h = file_import_job.get_hash()
                     
                     if h is None:
                         
@@ -224,9 +224,9 @@ class TestDaemons( unittest.TestCase ):
                     
                     manager = ClientImportLocal.ImportFoldersManager( TG.test_controller )
                     
-                    manager.Start()
+                    manager.start()
                     
-                    manager.Wake()
+                    manager.wake()
                     
                     time.sleep( 3 )
                     
@@ -262,7 +262,7 @@ class TestDaemons( unittest.TestCase ):
                         
                     finally:
                         
-                        manager.Shutdown()
+                        manager.shutdown()
                         
                     
                 

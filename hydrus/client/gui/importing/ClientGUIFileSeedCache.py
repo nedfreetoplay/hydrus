@@ -110,7 +110,7 @@ def ImportFromClipboard( win: QW.QWidget, file_seed_cache: ClientImportFileSeeds
     
     try:
         
-        raw_text = CG.client_controller.GetClipboardText()
+        raw_text = CG.client_controller.get_clipboard_text()
         
     except HydrusExceptions.DataMissing as e:
         
@@ -141,7 +141,7 @@ def ImportFromPNG( win: QW.QWidget, file_seed_cache: ClientImportFileSeeds.FileS
             
             try:
                 
-                payload_string = ClientSerialisable.LoadStringFromPNG( path )
+                payload_string = ClientSerialisable.load_string_from_png(path)
                 
                 sources = GetSourcesFromSourcesString( payload_string )
                 
@@ -246,7 +246,7 @@ def ShowFileSeedCacheFilesInNewPage( file_seed_cache: ClientImportFileSeeds.File
     
     if len( hashes ) > 0:
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
         
         CG.client_controller.pub( 'new_page_query', location_context, initial_hashes = hashes )
         
@@ -415,7 +415,7 @@ class EditFileSeedCachePanel( ClientGUIScrolledPanels.EditPanel ):
         
         CG.client_controller.sub( self, 'NotifyFileSeedsUpdated', 'file_seed_cache_file_seeds_updated' )
         
-        CG.client_controller.CallAfterQtSafe( self, self._UpdateText )
+        CG.client_controller.call_after_qt_safe(self, self._UpdateText)
         
     
     def _ConvertFileSeedToDisplayTuple( self, file_seed: ClientImportFileSeeds.FileSeed ):
@@ -601,7 +601,7 @@ class EditFileSeedCachePanel( ClientGUIScrolledPanels.EditPanel ):
         
         if we_are_looking_at_urls:
             
-            location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+            location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
             
             file_seed_datas = [ file_seed.file_seed_data for file_seed in selected_file_seeds ]
             urls = [ file_seed_data for file_seed_data in file_seed_datas if isinstance( file_seed_data, str ) and file_seed_data.startswith( 'http' ) ]
@@ -807,14 +807,14 @@ class EditFileSeedCachePanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 for file_seed in file_seeds:
                     
-                    ClientPaths.LaunchURLInWebBrowser( file_seed.file_seed_data )
+                    ClientPaths.launch_url_in_web_browser(file_seed.file_seed_data)
                     
                 
             else:
                 
                 try:
                     
-                    ClientPaths.OpenFileLocations( [ file_seed.file_seed_data for file_seed in file_seeds ] )
+                    ClientPaths.open_file_locations([file_seed.file_seed_data for file_seed in file_seeds])
                     
                     
                 except Exception as e:
@@ -841,7 +841,7 @@ class EditFileSeedCachePanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 if result == QW.QDialog.DialogCode.Accepted:
                     
-                    deletee_hashes = { file_seed.GetHash() for file_seed in deleted_and_clearable_file_seeds }
+                    deletee_hashes = {file_seed.get_hash() for file_seed in deleted_and_clearable_file_seeds}
                     
                     ClientGUIMediaSimpleActions.UndeleteFiles( deletee_hashes )
                     
@@ -870,13 +870,13 @@ class EditFileSeedCachePanel( ClientGUIScrolledPanels.EditPanel ):
             
             if file_seed.HasHash():
                 
-                hashes.append( file_seed.GetHash() )
+                hashes.append(file_seed.get_hash())
                 
             
         
         if len( hashes ) > 0:
             
-            location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+            location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
             
             ClientGUIMediaSimpleActions.ShowFilesInNewPage( hashes, location_context )
             
@@ -933,7 +933,7 @@ class EditFileSeedCachePanel( ClientGUIScrolledPanels.EditPanel ):
         
         file_seed_cache_status = self._file_seed_cache.GetStatus()
         
-        self._text.setText( file_seed_cache_status.GetStatusText() )
+        self._text.setText(file_seed_cache_status.get_status_text())
         
     
     def GetValue( self ):
@@ -998,7 +998,7 @@ class FileSeedCacheButton( ClientGUICommon.ButtonWithMenuArrow ):
                 
             else: # throw up a dialog that edits the file_seed cache but can be cancelled
                 
-                dupe_file_seed_cache = file_seed_cache.Duplicate()
+                dupe_file_seed_cache = file_seed_cache.duplicate()
                 
                 with ClientGUITopLevelWindowsPanels.DialogEdit( self, title ) as dlg:
                     
@@ -1094,7 +1094,7 @@ class FileSeedCacheStatusControl( QW.QFrame ):
             
             ( num_done, num_to_do ) = file_seed_cache_status.GetValueRange()
             
-            self._import_summary_st.setText( file_seed_cache_status.GetStatusText() )
+            self._import_summary_st.setText(file_seed_cache_status.get_status_text())
             
             if num_to_do == 0:
                 

@@ -42,7 +42,7 @@ class ResizingEventFilter( QC.QObject ):
                     
                     if width_larger or height_larger:
                         
-                        CG.client_controller.CallAfterQtSafe( parent, parent.WidgetJustSized, width_larger, height_larger )
+                        CG.client_controller.call_after_qt_safe(parent, parent.WidgetJustSized, width_larger, height_larger)
                         
                     
                 
@@ -255,13 +255,13 @@ class EditSingleCtrlPanel( CAC.ApplicationCommandProcessorMixin, EditPanel ):
         return self._control.value()
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ):
+    def process_application_command( self, command: CAC.ApplicationCommand ):
         
         command_processed = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action in self._ok_on_these_commands:
                 

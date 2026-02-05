@@ -105,14 +105,14 @@ class ClientDBTagDisplay( ClientDBModule.ClientDBModule ):
             tag_ids_we_want_to_look_up.update( itertools.chain.from_iterable( ideal_tag_ids_to_sibling_chain_tag_ids.values() ) )
             tag_ids_we_want_to_look_up.update( itertools.chain.from_iterable( ideal_tag_ids_to_ancestor_tag_ids.values() ) )
             
-            if job_status is not None and job_status.IsCancelled():
+            if job_status is not None and job_status.is_cancelled():
                 
                 return []
                 
             
             tag_ids_to_tags = self.modules_tags_local_cache.GetTagIdsToTags( tag_ids = tag_ids_we_want_to_look_up )
             
-            if job_status is not None and job_status.IsCancelled():
+            if job_status is not None and job_status.is_cancelled():
                 
                 return []
                 
@@ -185,14 +185,14 @@ class ClientDBTagDisplay( ClientDBModule.ClientDBModule ):
             
             tag_ids_we_want_to_look_up = set( tag_ids ).union( itertools.chain.from_iterable( tag_ids_to_known_chain_tag_ids.values() ) )
             
-            if job_status is not None and job_status.IsCancelled():
+            if job_status is not None and job_status.is_cancelled():
                 
                 return []
                 
             
             tag_ids_to_tags = self.modules_tags_local_cache.GetTagIdsToTags( tag_ids = tag_ids_we_want_to_look_up )
             
-            if job_status is not None and job_status.IsCancelled():
+            if job_status is not None and job_status.is_cancelled():
                 
                 return []
                 
@@ -284,7 +284,7 @@ class ClientDBTagDisplay( ClientDBModule.ClientDBModule ):
             
             tag_services = self.modules_services.GetServices( HC.REAL_TAG_SERVICES )
             
-            search_service_keys = [ tag_service.GetServiceKey() for tag_service in tag_services ]
+            search_service_keys = [tag_service.get_service_key() for tag_service in tag_services]
             
         else:
             
@@ -419,14 +419,14 @@ class ClientDBTagDisplay( ClientDBModule.ClientDBModule ):
             
             if i % 100 == 0:
                 
-                if job_status is not None and job_status.IsCancelled():
+                if job_status is not None and job_status.is_cancelled():
                     
                     return []
                     
                 
             
         
-        if job_status is not None and job_status.IsCancelled():
+        if job_status is not None and job_status.is_cancelled():
             
             return []
             
@@ -440,7 +440,7 @@ class ClientDBTagDisplay( ClientDBModule.ClientDBModule ):
         
         tag_services = self.modules_services.GetServices( HC.REAL_TAG_SERVICES )
         
-        service_keys = [ tag_service.GetServiceKey() for tag_service in tag_services ]
+        service_keys = [tag_service.get_service_key() for tag_service in tag_services]
         
         tags_to_service_keys_to_siblings_and_parents = {}
         

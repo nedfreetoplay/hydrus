@@ -12,14 +12,14 @@ from hydrus.core import HydrusNumbers
 from hydrus.client import ClientGlobals as CG
 from hydrus.client import ClientThreading
 
-def AddPaddingToDimensions( dimensions, padding ):
+def add_padding_to_dimensions(dimensions, padding):
     
     ( x, y ) = dimensions
     
     return ( x + padding, y + padding )
     
 
-def CatchExceptionClient( etype, value, tb ):
+def catch_exception_client(etype, value, tb):
     
     try:
         
@@ -54,13 +54,13 @@ def CatchExceptionClient( etype, value, tb ):
         
         job_status = ClientThreading.JobStatus()
         
-        try: job_status.SetStatusTitle( str( etype.__name__ ) )
-        except: job_status.SetStatusTitle( str( etype ) )
+        try: job_status.set_status_title(str(etype.__name__))
+        except: job_status.set_status_title(str(etype))
         
-        job_status.SetStatusText( first_line )
-        job_status.SetTraceback( trace )
+        job_status.set_status_text(first_line)
+        job_status.set_traceback(trace)
         
-        text = job_status.ToString()
+        text = job_status.to_string()
         
         HydrusData.print_text( 'Uncaught exception:' )
         
@@ -85,7 +85,7 @@ def CatchExceptionClient( etype, value, tb ):
     time.sleep( 1 )
     
 
-def ConvertZoomToPercentage( zoom ):
+def convert_zoom_to_percentage(zoom):
     
     zoom_percent = zoom * 100
     
@@ -98,7 +98,7 @@ def ConvertZoomToPercentage( zoom ):
     
     return pretty_zoom
     
-def MergeCounts( min_a: int, max_a: int, min_b: int, max_b: int ):
+def merge_counts(min_a: int, max_a: int, min_b: int, max_b: int):
     
     # this no longer takes 'None' maxes, and it is now comfortable with 0-5 ranges
     
@@ -111,28 +111,28 @@ def MergeCounts( min_a: int, max_a: int, min_b: int, max_b: int ):
     
     return ( min_answer, max_answer )
     
-def OrdIsSensibleASCII( o ):
+def ord_is_sensible_ascii(o):
     
     return 32 <= o <= 127
     
-def OrdIsAlphaLower( o ):
+def ord_is_alpha_lower(o):
     
     return 97 <= o <= 122
     
-def OrdIsAlphaUpper( o ):
+def ord_is_alpha_upper(o):
     
     return 65 <= o <= 90
     
-def OrdIsAlpha( o ):
+def ord_is_alpha(o):
     
-    return OrdIsAlphaLower( o ) or OrdIsAlphaUpper( o )
+    return ord_is_alpha_lower(o) or ord_is_alpha_upper(o)
     
-def OrdIsNumber( o ):
+def ord_is_number(o):
     
     return 48 <= o <= 57
     
 
-def ResolutionToPrettyString( resolution ):
+def resolution_to_pretty_string(resolution):
     
     if resolution is None:
         
@@ -151,7 +151,7 @@ def ResolutionToPrettyString( resolution ):
             
         
     
-    if resolution in HC.NICE_RESOLUTIONS and CG.client_controller.new_options.GetBoolean( 'use_nice_resolution_strings' ):
+    if resolution in HC.NICE_RESOLUTIONS and CG.client_controller.new_options.get_boolean('use_nice_resolution_strings'):
         
         return HC.NICE_RESOLUTIONS[ resolution ]
         
@@ -161,7 +161,7 @@ def ResolutionToPrettyString( resolution ):
     return '{}x{}'.format( HydrusNumbers.to_human_int( width ), HydrusNumbers.to_human_int( height ) )
     
 
-def ShowExceptionClient( e, do_wait = True ):
+def show_exception_client(e, do_wait = True):
     
     ( etype, value, tb ) = sys.exc_info()
     
@@ -171,10 +171,10 @@ def ShowExceptionClient( e, do_wait = True ):
         value = str( e )
         
     
-    ShowExceptionTupleClient( etype, value, tb, do_wait = do_wait )
+    show_exception_tuple_client(etype, value, tb, do_wait = do_wait)
     
 
-def ShowExceptionTupleClient( etype, value, tb, do_wait = True ):
+def show_exception_tuple_client(etype, value, tb, do_wait = True):
     
     if etype is None:
         
@@ -205,14 +205,14 @@ def ShowExceptionTupleClient( etype, value, tb, do_wait = True ):
     
     job_status = ClientThreading.JobStatus()
     
-    try: job_status.SetStatusTitle( str( etype.__name__ ) )
-    except: job_status.SetStatusTitle( str( etype ) )
+    try: job_status.set_status_title(str(etype.__name__))
+    except: job_status.set_status_title(str(etype))
     
-    job_status.SetStatusText( first_line )
+    job_status.set_status_text(first_line)
     
     message = HydrusData.print_exception_tuple( etype, value, tb, do_wait = False )
     
-    job_status.SetTraceback( message )
+    job_status.set_traceback(message)
     
     CG.client_controller.pub( 'message', job_status )
     
@@ -221,27 +221,27 @@ def ShowExceptionTupleClient( etype, value, tb, do_wait = True ):
         time.sleep( 1 )
         
     
-def ShowTextClient( text ):
+def show_text_client(text):
     
     job_status = ClientThreading.JobStatus()
     
-    job_status.SetStatusText( str( text ) )
+    job_status.set_status_text(str(text))
     
-    text = job_status.ToString()
+    text = job_status.to_string()
     
     HydrusData.print_text( text )
     
     CG.client_controller.pub( 'message', job_status )
     
 
-def ToHumanBytes( size ):
+def to_human_bytes(size):
     
-    sig_figs = CG.client_controller.new_options.GetInteger( 'human_bytes_sig_figs' )
+    sig_figs = CG.client_controller.new_options.get_integer('human_bytes_sig_figs')
     
     return HydrusData.base_to_human_bytes( size, sig_figs = sig_figs )
     
 
-HydrusData.to_human_bytes = ToHumanBytes
+HydrusData.to_human_bytes = to_human_bytes
 
 class Booru( HydrusData.HydrusYAMLBase ):
     
@@ -259,13 +259,13 @@ class Booru( HydrusData.HydrusYAMLBase ):
         self._tag_classnames_to_namespaces = tag_classnames_to_namespaces
         
     
-    def GetData( self ): return ( self._search_url, self._search_separator, self._advance_by_page_num, self._thumb_classname, self._image_id, self._image_data, self._tag_classnames_to_namespaces )
+    def get_data(self): return (self._search_url, self._search_separator, self._advance_by_page_num, self._thumb_classname, self._image_id, self._image_data, self._tag_classnames_to_namespaces)
     
-    def GetGalleryParsingInfo( self ): return ( self._search_url, self._advance_by_page_num, self._search_separator, self._thumb_classname )
+    def get_gallery_parsing_info(self): return (self._search_url, self._advance_by_page_num, self._search_separator, self._thumb_classname)
     
-    def GetName( self ): return self._name
+    def get_name(self): return self._name
     
-    def GetNamespaces( self ): return list(self._tag_classnames_to_namespaces.values())
+    def get_namespaces(self): return list(self._tag_classnames_to_namespaces.values())
     
 sqlite3.register_adapter( Booru, yaml.safe_dump )
 
@@ -303,22 +303,22 @@ class Credentials( HydrusData.HydrusYAMLBase ):
     
     def __repr__( self ): return 'Credentials: ' + str( ( self._host, self._port, self._access_key.hex() ) )
     
-    def GetAccessKey( self ): return self._access_key
+    def get_access_key(self): return self._access_key
     
-    def GetAddress( self ): return ( self._host, self._port )
+    def get_address(self): return (self._host, self._port)
     
-    def GetConnectionString( self ):
+    def get_connection_string(self):
         
         connection_string = ''
         
-        if self.HasAccessKey(): connection_string += self._access_key.hex() + '@'
+        if self.has_access_key(): connection_string += self._access_key.hex() + '@'
         
         connection_string += self._host + ':' + str( self._port )
         
         return connection_string
         
     
-    def GetPortedAddress( self ):
+    def get_ported_address(self):
         
         if self._host.endswith( '/' ):
             
@@ -343,9 +343,9 @@ class Credentials( HydrusData.HydrusYAMLBase ):
         return address
         
     
-    def HasAccessKey( self ): return self._access_key is not None and self._access_key != ''
+    def has_access_key(self): return self._access_key is not None and self._access_key != ''
     
-    def SetAccessKey( self, access_key ): self._access_key = access_key
+    def set_access_key(self, access_key): self._access_key = access_key
     
 class Imageboard( HydrusData.HydrusYAMLBase ):
     
@@ -360,15 +360,15 @@ class Imageboard( HydrusData.HydrusYAMLBase ):
         self._restrictions = restrictions
         
     
-    def IsOKToPost( self, media_result ):
+    def is_ok_to_post(self, media_result):
         
         # deleted old code due to deprecation
         
         return True
         
     
-    def GetBoardInfo( self ): return ( self._post_url, self._flood_time, self._form_fields, self._restrictions )
+    def get_board_info(self): return (self._post_url, self._flood_time, self._form_fields, self._restrictions)
     
-    def GetName( self ): return self._name
+    def get_name(self): return self._name
     
 sqlite3.register_adapter( Imageboard, yaml.safe_dump )

@@ -56,12 +56,12 @@ class ClientDBFilesMaintenanceQueue( ClientDBModule.ClientDBModule ):
         
         self._execute_many( 'REPLACE INTO file_maintenance_jobs ( hash_id, job_type, time_can_start ) VALUES ( ?, ?, ? );', ( ( hash_id, job_type, time_can_start ) for hash_id in hash_ids ) )
         
-        if CG.client_controller.IsBooted():
+        if CG.client_controller.is_booted():
             
             try:
                 
                 # if this happens during boot db update, this doesn't exist lol
-                CG.client_controller.files_maintenance_manager.Wake()
+                CG.client_controller.files_maintenance_manager.wake()
                 
             except:
                 

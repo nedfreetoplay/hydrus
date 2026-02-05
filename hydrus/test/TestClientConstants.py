@@ -18,16 +18,16 @@ class TestManagers( unittest.TestCase ):
         
         def test_service( service, key, service_type, name ):
             
-            self.assertEqual( service.GetServiceKey(), key )
-            self.assertEqual( service.GetServiceType(), service_type )
-            self.assertEqual( service.GetName(), name )
+            self.assertEqual(service.get_service_key(), key)
+            self.assertEqual(service.get_service_type(), service_type)
+            self.assertEqual(service.get_name(), name)
             
         
         repo_key = HydrusData.generate_key()
         repo_type = HC.TAG_REPOSITORY
         repo_name = 'test tag repo'
         
-        repo = ClientServices.GenerateService( repo_key, repo_type, repo_name )
+        repo = ClientServices.generate_service(repo_key, repo_type, repo_name)
         
         services = []
         
@@ -39,17 +39,17 @@ class TestManagers( unittest.TestCase ):
         
         #
         
-        service = services_manager.GetService( repo_key )
+        service = services_manager.get_service(repo_key)
         
         test_service( service, repo_key, repo_type, repo_name )
         
         #
         
-        services = services_manager.GetServices( ( HC.TAG_REPOSITORY, ) )
+        services = services_manager.get_services((HC.TAG_REPOSITORY,))
         
         self.assertEqual( len( services ), 1 )
         
-        self.assertEqual( services[0].GetServiceKey(), repo_key )
+        self.assertEqual(services[0].get_service_key(), repo_key)
         
         #
         
@@ -57,9 +57,9 @@ class TestManagers( unittest.TestCase ):
         
         TG.test_controller.SetRead( 'services', services )
         
-        services_manager.RefreshServices()
+        services_manager.refresh_services()
         
-        self.assertRaises( Exception, services_manager.GetService, repo_key )
+        self.assertRaises(Exception, services_manager.get_service, repo_key)
         
     
     def test_undo( self ):
@@ -81,46 +81,46 @@ class TestManagers( unittest.TestCase ):
         
         TG.test_controller.ClearWrites( 'content_updates' )
         
-        undo_manager.AddCommand( 'content_updates', command_1 )
+        undo_manager.add_command('content_updates', command_1)
         
-        self.assertEqual( ( 'undo archive 1 files', None ), undo_manager.GetUndoRedoStrings() )
+        self.assertEqual(( 'undo archive 1 files', None ), undo_manager.get_undo_redo_strings())
         
-        undo_manager.AddCommand( 'content_updates', command_2 )
+        undo_manager.add_command('content_updates', command_2)
         
-        self.assertEqual( ( 'undo inbox 1 files', None ), undo_manager.GetUndoRedoStrings() )
+        self.assertEqual(( 'undo inbox 1 files', None ), undo_manager.get_undo_redo_strings())
         
-        undo_manager.Undo()
+        undo_manager.undo()
         
-        self.assertEqual( ( 'undo archive 1 files', 'redo inbox 1 files' ), undo_manager.GetUndoRedoStrings() )
+        self.assertEqual(( 'undo archive 1 files', 'redo inbox 1 files' ), undo_manager.get_undo_redo_strings())
         
         [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.GetWrite( 'content_updates' )
         
         HF.compare_content_update_packages( self, content_update_package, command_2_inverted )
         
-        undo_manager.Redo()
+        undo_manager.redo()
         
         [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.GetWrite( 'content_updates' )
         
         HF.compare_content_update_packages( self, content_update_package, command_2 )
         
-        self.assertEqual( ( 'undo inbox 1 files', None ), undo_manager.GetUndoRedoStrings() )
+        self.assertEqual(( 'undo inbox 1 files', None ), undo_manager.get_undo_redo_strings())
         
-        undo_manager.Undo()
+        undo_manager.undo()
         
         [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.GetWrite( 'content_updates' )
         
         HF.compare_content_update_packages( self, content_update_package, command_2_inverted )
         
-        undo_manager.Undo()
+        undo_manager.undo()
         
         [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.GetWrite( 'content_updates' )
         
         HF.compare_content_update_packages( self, content_update_package, command_1_inverted )
         
-        self.assertEqual( ( None, 'redo archive 1 files' ), undo_manager.GetUndoRedoStrings() )
+        self.assertEqual(( None, 'redo archive 1 files' ), undo_manager.get_undo_redo_strings())
         
-        undo_manager.AddCommand( 'content_updates', command_3 )
+        undo_manager.add_command('content_updates', command_3)
         
-        self.assertEqual( ( 'undo archive 2 files', None ), undo_manager.GetUndoRedoStrings() )
+        self.assertEqual(( 'undo archive 2 files', None ), undo_manager.get_undo_redo_strings())
         
     

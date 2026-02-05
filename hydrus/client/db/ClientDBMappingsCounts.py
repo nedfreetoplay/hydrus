@@ -342,7 +342,7 @@ class ClientDBMappingsCounts( ClientDBModule.ClientDBModule ):
                     
                     for search_tag_service_id in search_tag_service_ids:
                         
-                        if job_status is not None and job_status.IsCancelled():
+                        if job_status is not None and job_status.is_cancelled():
                             
                             return {}
                             
@@ -355,7 +355,7 @@ class ClientDBMappingsCounts( ClientDBModule.ClientDBModule ):
                 
                 for search_tag_service_id in search_tag_service_ids:
                     
-                    if job_status is not None and job_status.IsCancelled():
+                    if job_status is not None and job_status.is_cancelled():
                         
                         return {}
                         
@@ -417,8 +417,8 @@ class ClientDBMappingsCounts( ClientDBModule.ClientDBModule ):
                 
                 ( existing_current_min, existing_current_max, existing_pending_min, existing_pending_max ) = ids_to_count[ tag_id ]
                 
-                ( current_min, current_max ) = ClientData.MergeCounts( existing_current_min, existing_current_max, current_min, current_max )
-                ( pending_min, pending_max ) = ClientData.MergeCounts( existing_pending_min, existing_pending_max, pending_min, pending_max )
+                ( current_min, current_max ) = ClientData.merge_counts(existing_current_min, existing_current_max, current_min, current_max)
+                ( pending_min, pending_max ) = ClientData.merge_counts(existing_pending_min, existing_pending_max, pending_min, pending_max)
                 
             
             ids_to_count[ tag_id ] = ( current_min, current_max, pending_min, pending_max )

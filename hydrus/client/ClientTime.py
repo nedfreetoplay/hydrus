@@ -42,7 +42,7 @@ except Exception as e:
     DATEPARSER_IMPORT_ERROR = traceback.format_exc()
     
 
-def CalendarDelta( dt: datetime.datetime, month_delta = 0, day_delta = 0 ) -> datetime.datetime:
+def calendar_delta(dt: datetime.datetime, month_delta = 0, day_delta = 0) -> datetime.datetime:
     
     if DATEUTIL_OK:
         
@@ -58,7 +58,7 @@ def CalendarDelta( dt: datetime.datetime, month_delta = 0, day_delta = 0 ) -> da
         
     
 
-def ParseDate( date_string: str ) -> float:
+def parse_date(date_string: str) -> float:
     
     if not DATEUTIL_OK and not DATEPARSER_OK:
         
@@ -116,9 +116,9 @@ def ParseDate( date_string: str ) -> float:
     raise Exception( 'Sorry, could not parse that date!' )
     
 
-def MergeModifiedTimes( existing_timestamp: int | None, new_timestamp: int | None ) -> int | None:
+def merge_modified_times(existing_timestamp: int | None, new_timestamp: int | None) -> int | None:
     
-    if ShouldUpdateModifiedTime( existing_timestamp, new_timestamp ):
+    if should_update_modified_time(existing_timestamp, new_timestamp):
         
         return new_timestamp
         
@@ -128,7 +128,7 @@ def MergeModifiedTimes( existing_timestamp: int | None, new_timestamp: int | Non
         
     
 
-def ShouldUpdateModifiedTime( existing_timestamp: int, new_timestamp: int | None ) -> bool:
+def should_update_modified_time(existing_timestamp: int, new_timestamp: int | None) -> bool:
     
     if new_timestamp is None:
         
@@ -149,7 +149,7 @@ def ShouldUpdateModifiedTime( existing_timestamp: int, new_timestamp: int | None
     return True
     
 
-def TimestampIsSensible( timestamp: int | None ) -> bool:
+def timestamp_is_sensible(timestamp: int | None) -> bool:
     
     if timestamp is None:
         
@@ -215,7 +215,7 @@ class TimestampData( HydrusSerialisable.SerialisableBase ):
     
     def __repr__( self ):
         
-        return self.ToString()
+        return self.to_string()
         
     
     def _get_serialisable_info( self ):
@@ -262,7 +262,7 @@ class TimestampData( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def ToString( self ) -> str:
+    def to_string(self) -> str:
         
         if self.timestamp_type in SIMPLE_TIMESTAMP_TYPES:
             
@@ -274,7 +274,7 @@ class TimestampData( HydrusSerialisable.SerialisableBase ):
                 
                 try:
                     
-                    service_string = CG.client_controller.services_manager.GetName( self.location )
+                    service_string = CG.client_controller.services_manager.get_name(self.location)
                     
                 except:
                     
@@ -309,55 +309,55 @@ class TimestampData( HydrusSerialisable.SerialisableBase ):
         
     
     @staticmethod
-    def STATICArchivedTime( timestamp_ms: int ) -> "TimestampData":
+    def static_archived_time(timestamp_ms: int) -> "TimestampData":
         
         return TimestampData( timestamp_type = HC.TIMESTAMP_TYPE_ARCHIVED, timestamp_ms = timestamp_ms )
         
     
     @staticmethod
-    def STATICAggregateModifiedTime( timestamp_ms: int ) -> "TimestampData":
+    def static_aggregate_modified_time(timestamp_ms: int) -> "TimestampData":
         
         return TimestampData( timestamp_type = HC.TIMESTAMP_TYPE_MODIFIED_AGGREGATE, timestamp_ms = timestamp_ms )
         
     
     @staticmethod
-    def STATICDeletedTime( service_key: bytes, timestamp_ms: int ) -> "TimestampData":
+    def static_deleted_time(service_key: bytes, timestamp_ms: int) -> "TimestampData":
         
         return TimestampData( timestamp_type = HC.TIMESTAMP_TYPE_DELETED, location = service_key, timestamp_ms = timestamp_ms )
         
     
     @staticmethod
-    def STATICDomainModifiedTime( domain: str, timestamp_ms: int ) -> "TimestampData":
+    def static_domain_modified_time(domain: str, timestamp_ms: int) -> "TimestampData":
         
         return TimestampData( timestamp_type = HC.TIMESTAMP_TYPE_MODIFIED_DOMAIN, location = domain, timestamp_ms = timestamp_ms )
         
     
     @staticmethod
-    def STATICFileModifiedTime( timestamp_ms: int ) -> "TimestampData":
+    def static_file_modified_time(timestamp_ms: int) -> "TimestampData":
         
         return TimestampData( timestamp_type = HC.TIMESTAMP_TYPE_MODIFIED_FILE, timestamp_ms = timestamp_ms )
         
     
     @staticmethod
-    def STATICImportedTime( service_key: bytes, timestamp_ms: int ) -> "TimestampData":
+    def static_imported_time(service_key: bytes, timestamp_ms: int) -> "TimestampData":
         
         return TimestampData( timestamp_type = HC.TIMESTAMP_TYPE_IMPORTED, location = service_key, timestamp_ms = timestamp_ms )
         
     
     @staticmethod
-    def STATICLastViewedTime( canvas_type: int, timestamp_ms: int ) -> "TimestampData":
+    def static_last_viewed_time(canvas_type: int, timestamp_ms: int) -> "TimestampData":
         
         return TimestampData( timestamp_type = HC.TIMESTAMP_TYPE_LAST_VIEWED, location = canvas_type, timestamp_ms = timestamp_ms )
         
     
     @staticmethod
-    def STATICPreviouslyImportedTime( service_key: bytes, timestamp_ms: int ) -> "TimestampData":
+    def static_previously_imported_time(service_key: bytes, timestamp_ms: int) -> "TimestampData":
         
         return TimestampData( timestamp_type = HC.TIMESTAMP_TYPE_PREVIOUSLY_IMPORTED, location = service_key, timestamp_ms = timestamp_ms )
         
     
     @staticmethod
-    def STATICSimpleStub( timestamp_type: int ) -> "TimestampData":
+    def static_simple_stub(timestamp_type: int) -> "TimestampData":
         
         return TimestampData( timestamp_type = timestamp_type )
         

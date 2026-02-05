@@ -21,7 +21,7 @@ class FileSortCollectPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         self._file_sort_panel = ClientGUICommon.StaticBox( self, 'file sort' )
         
-        default_sort = self._new_options.GetDefaultSort()
+        default_sort = self._new_options.get_default_sort()
         
         self._default_media_sort = ClientGUIMediaResultsPanelSortCollect.MediaSortControl( self._file_sort_panel, media_sort = default_sort )
         
@@ -32,7 +32,7 @@ class FileSortCollectPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             self._default_media_sort.SetSort( media_sort )
             
         
-        fallback_sort = self._new_options.GetFallbackSort()
+        fallback_sort = self._new_options.get_fallback_sort()
         
         self._fallback_media_sort = ClientGUIMediaResultsPanelSortCollect.MediaSortControl( self._file_sort_panel, media_sort = fallback_sort )
         
@@ -55,9 +55,9 @@ class FileSortCollectPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         #
         
-        self._namespace_file_sort_by.AddDatas( [ media_sort.sort_type[1] for media_sort in CG.client_controller.new_options.GetDefaultNamespaceSorts() ] )
+        self._namespace_file_sort_by.AddDatas([media_sort.sort_type[1] for media_sort in CG.client_controller.new_options.get_default_namespace_sorts()])
         
-        self._save_page_sort_on_change.setChecked( self._new_options.GetBoolean( 'save_page_sort_on_change' ) )
+        self._save_page_sort_on_change.setChecked(self._new_options.get_boolean('save_page_sort_on_change'))
         
         #
         
@@ -112,13 +112,13 @@ class FileSortCollectPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def UpdateOptions( self ):
         
-        self._new_options.SetDefaultSort( self._default_media_sort.GetSort() )
-        self._new_options.SetFallbackSort( self._fallback_media_sort.GetSort() )
-        self._new_options.SetBoolean( 'save_page_sort_on_change', self._save_page_sort_on_change.isChecked() )
-        self._new_options.SetDefaultCollect( self._default_media_collect.GetValue() )
+        self._new_options.set_default_sort(self._default_media_sort.GetSort())
+        self._new_options.set_fallback_sort(self._fallback_media_sort.GetSort())
+        self._new_options.set_boolean('save_page_sort_on_change', self._save_page_sort_on_change.isChecked())
+        self._new_options.set_default_collect(self._default_media_collect.GetValue())
         
         namespace_sorts = [ ClientMedia.MediaSort( sort_type = ( 'namespaces', sort_data ) ) for sort_data in self._namespace_file_sort_by.GetData() ]
         
-        self._new_options.SetDefaultNamespaceSorts( namespace_sorts )
+        self._new_options.set_default_namespace_sorts(namespace_sorts)
         
     

@@ -62,7 +62,7 @@ class EditLoginCredentialsPanel( ClientGUIScrolledPanels.EditPanel ):
             control = QW.QLineEdit( self )
             control.setEchoMode( echo_mode )
             
-            name = credential_definition.GetName()
+            name = credential_definition.get_name()
             
             if name in credentials:
                 
@@ -80,7 +80,7 @@ class EditLoginCredentialsPanel( ClientGUIScrolledPanels.EditPanel ):
             QP.AddToLayout( hbox, control, CC.FLAGS_CENTER_PERPENDICULAR_EXPAND_DEPTH )
             QP.AddToLayout( hbox, control_st, CC.FLAGS_CENTER_PERPENDICULAR )
             
-            rows.append( ( credential_definition.GetName() + ': ', hbox ) )
+            rows.append((credential_definition.get_name() + ': ', hbox))
             
         
         gridbox = ClientGUICommon.WrapInGrid( self, rows )
@@ -113,14 +113,14 @@ class EditLoginCredentialsPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 else:
                     
-                    st_label = string_match.ToString()
+                    st_label = string_match.to_string()
                     
                 
             else:
                 
                 try:
                     
-                    credential_definition.Test( value )
+                    credential_definition.test(value)
                     
                     st_label = 'looks good \u2713'
                     
@@ -144,7 +144,7 @@ class EditLoginCredentialsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         for ( credential_definition, control, control_st ) in self._control_data:
             
-            name = credential_definition.GetName()
+            name = credential_definition.get_name()
             
             value = control.text()
             
@@ -156,7 +156,7 @@ class EditLoginCredentialsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 try:
                     
-                    credential_definition.Test( value )
+                    credential_definition.test(value)
                     
                 except Exception as e:
                     
@@ -188,7 +188,7 @@ class EditLoginCredentialsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         for ( credential_definition, control, control_st ) in self._control_data:
             
-            name = credential_definition.GetName()
+            name = credential_definition.get_name()
             
             value = control.text()
             
@@ -221,7 +221,7 @@ class EditLoginCredentialDefinitionPanel( ClientGUIScrolledPanels.EditPanel ):
         
         #
         
-        self._name.setText( credential_definition.GetName() )
+        self._name.setText(credential_definition.get_name())
         self._credential_type.SetValue( credential_definition.GetType() )
         
         #
@@ -332,7 +332,7 @@ class EditLoginsPanel( ClientGUIScrolledPanels.EditPanel ):
             return
             
         
-        choice_tuples = [ ( login_script.GetName(), login_script ) for login_script in self._login_scripts ]
+        choice_tuples = [(login_script.get_name(), login_script) for login_script in self._login_scripts]
         
         try:
             
@@ -629,7 +629,7 @@ class EditLoginsPanel( ClientGUIScrolledPanels.EditPanel ):
             
             login_script = self._GetLoginScript( login_script_key_and_name )
             
-            sort_login_script = login_script.GetName()
+            sort_login_script = login_script.get_name()
             
             network_context = ClientNetworkingContexts.NetworkContext( context_type = CC.NETWORK_CONTEXT_DOMAIN, context_data = login_domain )
             
@@ -730,7 +730,7 @@ class EditLoginsPanel( ClientGUIScrolledPanels.EditPanel ):
             
             login_script = self._GetLoginScript( login_script_key_and_name )
             
-            sort_login_script = login_script.GetName()
+            sort_login_script = login_script.get_name()
             
             network_context = ClientNetworkingContexts.NetworkContext( context_type = CC.NETWORK_CONTEXT_DOMAIN, context_data = login_domain )
             
@@ -972,19 +972,19 @@ class EditLoginsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         potential_login_scripts = list( self._login_scripts )
         
-        potential_login_scripts.sort( key = lambda ls: ls.GetName() )
+        potential_login_scripts.sort(key = lambda ls: ls.get_name())
         
         matching_potential_login_scripts = [ login_script for login_script in potential_login_scripts if login_domain in login_script.GetExampleDomains() ]
         unmatching_potential_login_scripts = [ login_script for login_script in potential_login_scripts if login_domain not in login_script.GetExampleDomains() ]
         
-        choice_tuples = [ ( login_script.GetName(), login_script ) for login_script in matching_potential_login_scripts ]
+        choice_tuples = [(login_script.get_name(), login_script) for login_script in matching_potential_login_scripts]
         
         if len( matching_potential_login_scripts ) > 0 and len( unmatching_potential_login_scripts ) > 0:
             
             choice_tuples.append( ( '------', None ) )
             
         
-        choice_tuples.extend( [ ( login_script.GetName(), login_script ) for login_script in unmatching_potential_login_scripts ] )
+        choice_tuples.extend([(login_script.get_name(), login_script) for login_script in unmatching_potential_login_scripts])
         
         try:
             
@@ -1105,7 +1105,7 @@ class EditLoginsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         for login_script in self._login_scripts:
             
-            if login_script.GetName() == login_script_name:
+            if login_script.get_name() == login_script_name:
                 
                 return login_script
                 
@@ -1224,12 +1224,12 @@ def GenerateTestNetworkJobPresentationContextFactory( window: QW.QWidget, networ
         
         def enter_call():
             
-            CG.client_controller.CallAfterQtSafe( window, qt_set_it, network_job )
+            CG.client_controller.call_after_qt_safe(window, qt_set_it, network_job)
             
         
         def exit_call():
             
-            CG.client_controller.CallAfterQtSafe( window, qt_set_it, None )
+            CG.client_controller.call_after_qt_safe(window, qt_set_it, None)
             
         
         return ClientImporting.NetworkJobPresentationContext( enter_call, exit_call )
@@ -1427,7 +1427,7 @@ class EditLoginScriptPanel( ClientGUIScrolledPanels.EditPanel ):
         
         #
         
-        self._name.setText( login_script.GetName() )
+        self._name.setText(login_script.get_name())
         
         self._credential_definitions.SetData( login_script.GetCredentialDefinitions() )
         self._login_steps.AddDatas( login_script.GetLoginSteps() )
@@ -1560,14 +1560,14 @@ class EditLoginScriptPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _ConvertCredentialDefinitionToDisplayTuple( self, credential_definition ):
         
-        name = credential_definition.GetName()
+        name = credential_definition.get_name()
         credential_type = credential_definition.GetType()
         
         type_string = ClientNetworkingLogin.credential_type_str_lookup[ credential_type ]
         
         string_match = credential_definition.GetStringMatch()
         
-        value = string_match.ToString()
+        value = string_match.to_string()
         
         pretty_name = name
         pretty_type_string = type_string
@@ -1580,14 +1580,14 @@ class EditLoginScriptPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _ConvertCredentialDefinitionToSortTuple( self, credential_definition ):
         
-        name = credential_definition.GetName()
+        name = credential_definition.get_name()
         credential_type = credential_definition.GetType()
         
         type_string = ClientNetworkingLogin.credential_type_str_lookup[ credential_type ]
         
         string_match = credential_definition.GetStringMatch()
         
-        value = string_match.ToString()
+        value = string_match.to_string()
         
         sort_tuple = ( name, type_string, value )
         
@@ -1620,7 +1620,7 @@ class EditLoginScriptPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _ConvertLoginStepToListBoxString( self, login_step ):
         
-        name = login_step.GetName()
+        name = login_step.get_name()
         
         return name
         
@@ -1688,7 +1688,7 @@ class EditLoginScriptPanel( ClientGUIScrolledPanels.EditPanel ):
             self._test_listctrl.AddData( test_result )
             
         
-        qt_add_result_callable = lambda s: CG.client_controller.CallAfterQtSafe( self, qt_add_result, s )
+        qt_add_result_callable = lambda s: CG.client_controller.call_after_qt_safe(self, qt_add_result, s)
         
         def clean_up( final_result ):
             
@@ -1734,7 +1734,7 @@ class EditLoginScriptPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 network_engine.Shutdown()
                 
-                CG.client_controller.CallAfterQtSafe( self, clean_up, login_result )
+                CG.client_controller.call_after_qt_safe(self, clean_up, login_result)
                 
             
         
@@ -1898,7 +1898,7 @@ class EditLoginScriptPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _GetExistingCredentialDefinitionNames( self ) -> set[ str ]:
         
-        return { credential_definition.GetName() for credential_definition in self._credential_definitions.GetData() }
+        return {credential_definition.get_name() for credential_definition in self._credential_definitions.GetData()}
         
     
     def _GetExistingDomains( self ):
@@ -1934,7 +1934,7 @@ class EditLoginScriptPanel( ClientGUIScrolledPanels.EditPanel ):
         login_steps = self._login_steps.GetData()
         example_domains_info = self._example_domains_info.GetData()
         
-        credential_names = { credential_definition.GetName() for credential_definition in credential_definitions }
+        credential_names = {credential_definition.get_name() for credential_definition in credential_definitions}
         
         login_script = ClientNetworkingLogin.LoginScriptDomain( name = name, login_script_key = login_script_key, required_cookies_info = required_cookies_info, credential_definitions = credential_definitions, login_steps = login_steps, example_domains_info = example_domains_info )
         
@@ -1983,7 +1983,7 @@ class EditLoginScriptsPanel( ClientGUIScrolledPanels.EditPanel ):
         login_scripts_panel.AddSeparator()
         login_scripts_panel.AddImportExportButtons( ( ClientNetworkingLogin.LoginScriptDomain, ), self._AddLoginScript )
         login_scripts_panel.AddSeparator()
-        login_scripts_panel.AddDefaultsButton( ClientDefaults.GetDefaultLoginScripts, self._AddLoginScript )
+        login_scripts_panel.AddDefaultsButton(ClientDefaults.get_default_login_scripts, self._AddLoginScript)
         
         #
         
@@ -2030,7 +2030,7 @@ class EditLoginScriptsPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _ConvertLoginScriptToDisplayTuple( self, login_script ):
         
-        name = login_script.GetName()
+        name = login_script.get_name()
         
         example_domains = sorted( login_script.GetExampleDomains() )
         
@@ -2044,7 +2044,7 @@ class EditLoginScriptsPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _ConvertLoginScriptToSortTuple( self, login_script ):
         
-        name = login_script.GetName()
+        name = login_script.get_name()
         
         example_domains = sorted( login_script.GetExampleDomains() )
         
@@ -2086,7 +2086,7 @@ class EditLoginScriptsPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _GetExistingNames( self ):
         
-        names = { login_script.GetName() for login_script in self._login_scripts.GetData() }
+        names = {login_script.get_name() for login_script in self._login_scripts.GetData()}
         
         return names
         
@@ -2105,9 +2105,9 @@ class EditLoginStepPanel( ClientGUIScrolledPanels.EditPanel ):
         
         #
         
-        name = login_step.GetName()
+        name = login_step.get_name()
         
-        ( scheme, method, subdomain, path, required_credentials, static_args, temp_args, required_cookies_info, content_parsers ) = login_step.ToTuple()
+        ( scheme, method, subdomain, path, required_credentials, static_args, temp_args, required_cookies_info, content_parsers ) = login_step.to_tuple()
         
         #
         

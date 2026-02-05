@@ -13,17 +13,17 @@ from hydrus.client.importing import ClientImportFiles
 from hydrus.client.importing.options import FileImportOptionsLegacy
 from hydrus.client.importing.options import PrefetchImportOptions
 
-def ConvertGalleryIdentifierToGUGKeyAndName( gallery_identifier ):
+def convert_gallery_identifier_to_gug_key_and_name(gallery_identifier):
     
-    gug_name = ConvertGalleryIdentifierToGUGName( gallery_identifier )
+    gug_name = convert_gallery_identifier_to_gug_name(gallery_identifier)
     
     from hydrus.client import ClientDefaults
     
-    gugs = ClientDefaults.GetDefaultGUGs()
+    gugs = ClientDefaults.get_default_gugs()
     
     for gug in gugs:
         
-        if gug.GetName() == gug_name:
+        if gug.get_name() == gug_name:
             
             return gug.GetGUGKeyAndName()
             
@@ -31,9 +31,9 @@ def ConvertGalleryIdentifierToGUGKeyAndName( gallery_identifier ):
     
     return ( HydrusData.generate_key(), gug_name )
     
-def ConvertGalleryIdentifierToGUGName( gallery_identifier ):
+def convert_gallery_identifier_to_gug_name(gallery_identifier):
     
-    site_type = gallery_identifier.GetSiteType()
+    site_type = gallery_identifier.get_site_type()
     
     if site_type == HC.SITE_TYPE_DEVIANT_ART:
         
@@ -82,7 +82,7 @@ def ConvertGalleryIdentifierToGUGName( gallery_identifier ):
         booru_name_converter[ 'sankaku idol' ] = 'sankaku idol tag search'
         booru_name_converter[ 'rule34hentai' ] = 'rule34hentai tag search'
         
-        booru_name = gallery_identifier.GetAdditionalInfo()
+        booru_name = gallery_identifier.get_additional_info()
         
         if booru_name in booru_name_converter:
             
@@ -154,17 +154,17 @@ class GalleryIdentifier( HydrusSerialisable.SerialisableBase ):
         ( self._site_type, self._additional_info ) = serialisable_info
         
     
-    def GetAdditionalInfo( self ):
+    def get_additional_info(self):
         
         return self._additional_info
         
     
-    def GetSiteType( self ):
+    def get_site_type(self):
         
         return self._site_type
         
     
-    def ToString( self ):
+    def to_string(self):
         
         text = HC.site_type_string_lookup[ self._site_type ]
         
@@ -189,22 +189,22 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
         self._pending_hashes = set()
         
     
-    def DownloadFiles( self, hashes ):
+    def download_files(self, hashes):
         
         with self._lock:
             
             self._pending_hashes.update( hashes )
             
         
-        self.Wake()
+        self.wake()
         
     
-    def GetName( self ) -> str:
+    def get_name(self) -> str:
         
         return 'quick downloader'
         
     
-    def _DoMainLoop( self ):
+    def _do_main_loop(self):
         
         hashes_still_to_download_in_this_run = set()
         total_hashes_in_this_run = 0
@@ -214,7 +214,7 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
             
             with self._lock:
                 
-                self._CheckShutdown()
+                self._check_shutdown()
                 
                 if len( self._pending_hashes ) > 0:
                     
@@ -222,9 +222,9 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
                         
                         job_status = ClientThreading.JobStatus( cancellable = True )
                         
-                        job_status.SetStatusTitle( 'downloading' )
+                        job_status.set_status_title('downloading')
                         
-                        job_status.SetStatusText( 'initialising downloader' )
+                        job_status.set_status_text('initialising downloader')
                         
                         job_status_pub_job = self._controller.call_later( 2.0, self._controller.pub, 'message', job_status )
                         
@@ -254,7 +254,7 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
                 continue
                 
             
-            if job_status.IsCancelled():
+            if job_status.is_cancelled():
                 
                 hashes_still_to_download_in_this_run = set()
                 
@@ -267,8 +267,8 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
             
             total_done = total_hashes_in_this_run - len( hashes_still_to_download_in_this_run )
             
-            job_status.SetStatusText( 'downloading files: {}'.format( HydrusNumbers.value_range_to_pretty_string( total_done, total_hashes_in_this_run ) ) )
-            job_status.SetGauge( total_done, total_hashes_in_this_run )
+            job_status.set_status_text('downloading files: {}'.format(HydrusNumbers.value_range_to_pretty_string(total_done, total_hashes_in_this_run)))
+            job_status.set_gauge(total_done, total_hashes_in_this_run)
             
             try:
                 
@@ -292,7 +292,7 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     try:
                         
-                        service = self._controller.services_manager.GetService( service_key )
+                        service = self._controller.services_manager.get_service(service_key)
                         
                     except:
                         
@@ -301,17 +301,17 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     try:
                         
-                        if service.GetServiceType() == HC.FILE_REPOSITORY:
+                        if service.get_service_type() == HC.FILE_REPOSITORY:
                             
                             file_repository = service
                             
-                            if file_repository.IsFunctional():
+                            if file_repository.is_functional():
                                 
                                 ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path()
                                 
                                 try:
                                     
-                                    file_repository.Request( HC.GET, 'file', { 'hash' : hash }, temp_path = temp_path )
+                                    file_repository.request(HC.GET, 'file', {'hash' : hash}, temp_path = temp_path)
                                     
                                     prefetch_import_options = PrefetchImportOptions.PrefetchImportOptions()
                                     
@@ -380,17 +380,17 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 if len( hashes_still_to_download_in_this_run ) == 0:
                     
-                    job_status.DeleteStatusText()
-                    job_status.DeleteGauge()
+                    job_status.delete_status_text()
+                    job_status.delete_gauge()
                     
                     if total_successful_hashes_in_this_run > 0:
                         
-                        job_status.SetStatusText( HydrusNumbers.to_human_int( total_successful_hashes_in_this_run ) + ' files downloaded' )
+                        job_status.set_status_text(HydrusNumbers.to_human_int(total_successful_hashes_in_this_run) + ' files downloaded')
                         
                     
                     job_status_pub_job.cancel()
                     
-                    job_status.FinishAndDismiss( 1 )
+                    job_status.finish_and_dismiss(1)
                     
                 
             

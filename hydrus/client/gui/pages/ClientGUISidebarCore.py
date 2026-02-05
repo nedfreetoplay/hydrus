@@ -219,7 +219,7 @@ class Sidebar( QW.QScrollArea ):
         
         if tag_display_type is None: # petitions sets this guy explicitly and for good reason, so now None
             
-            tag_display_type = CG.client_controller.new_options.GetInteger( 'tag_list_tag_display_type_sidebar' )
+            tag_display_type = CG.client_controller.new_options.get_integer('tag_list_tag_display_type_sidebar')
             
         
         self._current_selection_tags_box = ClientGUIListBoxes.StaticBoxSorterForListBoxTags( self, 'selection tags', CC.TAG_PRESENTATION_SEARCH_PAGE )
@@ -314,7 +314,7 @@ class Sidebar( QW.QScrollArea ):
     
     def PageShown( self ):
         
-        if CG.client_controller.new_options.GetBoolean( 'set_search_focus_on_page_change' ):
+        if CG.client_controller.new_options.get_boolean('set_search_focus_on_page_change'):
             
             self.SetSearchFocus()
             

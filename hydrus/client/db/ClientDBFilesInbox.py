@@ -137,7 +137,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
         
         if job_status is not None:
             
-            job_status.SetStatusText( 'missing import archive timestamps' )
+            job_status.set_status_text('missing import archive timestamps')
             
         
         import_lambda = lambda timestamp: timestamp > TIMESTAMP_MS_WHEN_WE_STARTED_TRACKING_ARCHIVED_TIMES
@@ -159,7 +159,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
             
             if job_status is not None:
                 
-                job_status.SetStatusText( f'missing import archive timestamps: {HydrusNumbers.to_human_int(num_fixed)} fixed' )
+                job_status.set_status_text(f'missing import archive timestamps: {HydrusNumbers.to_human_int(num_fixed)} fixed')
                 
             
         
@@ -170,7 +170,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
         
         if job_status is not None:
             
-            job_status.DeleteStatusText()
+            job_status.delete_status_text()
             
         
     
@@ -178,7 +178,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
         
         if job_status is not None:
             
-            job_status.SetStatusText( 'missing legacy archive timestamps' )
+            job_status.set_status_text('missing legacy archive timestamps')
             
         
         legacy_lambda = lambda timestamp: timestamp < TIMESTAMP_MS_WHEN_WE_STARTED_TRACKING_ARCHIVED_TIMES
@@ -216,7 +216,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
             
             if job_status is not None:
                 
-                job_status.SetStatusText( f'missing legacy archive timestamps: {HydrusNumbers.to_human_int(num_fixed)} fixed' )
+                job_status.set_status_text(f'missing legacy archive timestamps: {HydrusNumbers.to_human_int(num_fixed)} fixed')
                 
             
         
@@ -227,7 +227,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
         
         if job_status is not None:
             
-            job_status.DeleteStatusText()
+            job_status.delete_status_text()
             
         
     
@@ -253,10 +253,10 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
                 
                 if job_status is not None:
                     
-                    job_status.SetStatusText( message, level = 2 )
-                    job_status.SetGauge( num_done, num_to_do, level = 2 )
+                    job_status.set_status_text(message, level = 2)
+                    job_status.set_gauge(num_done, num_to_do, level = 2)
                     
-                    if job_status.IsCancelled():
+                    if job_status.is_cancelled():
                         
                         return
                         
@@ -300,10 +300,10 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
                 
                 if job_status is not None:
                     
-                    job_status.SetStatusText( message, level = 2 )
-                    job_status.SetGauge( num_done, num_to_do, level = 2 )
+                    job_status.set_status_text(message, level = 2)
+                    job_status.set_gauge(num_done, num_to_do, level = 2)
                     
-                    if job_status.IsCancelled():
+                    if job_status.is_cancelled():
                         
                         return
                         
@@ -337,8 +337,8 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
             
             if job_status is not None:
                 
-                job_status.DeleteStatusText( level = 2 )
-                job_status.DeleteGauge( level = 2 )
+                job_status.delete_status_text(level = 2)
+                job_status.delete_gauge(level = 2)
                 
             
         
@@ -347,7 +347,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
         
         if job_status is not None:
             
-            job_status.SetStatusText( 'scanning for missing import archive timestamps' )
+            job_status.set_status_text('scanning for missing import archive timestamps')
             
         
         try:
@@ -367,7 +367,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
             
             if job_status is not None:
                 
-                job_status.DeleteStatusText()
+                job_status.delete_status_text()
                 
             
         
@@ -376,7 +376,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
         
         if job_status is not None:
             
-            job_status.SetStatusText( 'scanning for missing legacy archive timestamps' )
+            job_status.set_status_text('scanning for missing legacy archive timestamps')
             
         
         try:
@@ -396,7 +396,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
             
             if job_status is not None:
                 
-                job_status.DeleteStatusText()
+                job_status.delete_status_text()
                 
             
         
@@ -405,7 +405,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
         
         if job_status is not None:
             
-            job_status.SetStatusText( 'scanning for missing import archive timestamps' )
+            job_status.set_status_text('scanning for missing import archive timestamps')
             
         
         try:
@@ -423,7 +423,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
             
             if job_status is not None:
                 
-                job_status.DeleteStatusText()
+                job_status.delete_status_text()
                 
             
         
@@ -432,7 +432,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
         
         if job_status is not None:
             
-            job_status.SetStatusText( 'scanning for missing legacy archive timestamps' )
+            job_status.set_status_text('scanning for missing legacy archive timestamps')
             
         
         try:
@@ -450,7 +450,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
             
             if job_status is not None:
                 
-                job_status.DeleteStatusText()
+                job_status.delete_status_text()
                 
             
         

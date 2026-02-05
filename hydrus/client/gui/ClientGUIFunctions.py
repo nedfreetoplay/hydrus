@@ -451,7 +451,7 @@ def NotebookScreenToHitTest( notebook, screen_position ):
 
 def SetFocusLater( win: QW.QWidget ):
     
-    CG.client_controller.CallAfterQtSafe( win, win.setFocus, QC.Qt.FocusReason.OtherFocusReason )
+    CG.client_controller.call_after_qt_safe(win, win.setFocus, QC.Qt.FocusReason.OtherFocusReason)
     
 
 def TLWIsActive( window ):
@@ -483,7 +483,7 @@ def TLWOrChildIsActive( win ):
 
 def UpdateAppDisplayName():
     
-    app_display_name = CG.client_controller.new_options.GetString( 'app_display_name' )
+    app_display_name = CG.client_controller.new_options.get_string('app_display_name')
     
     typing.cast( QW.QApplication, QW.QApplication.instance() ).setApplicationDisplayName( '{} {}'.format( app_display_name, HC.SOFTWARE_VERSION ) )
     

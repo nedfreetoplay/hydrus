@@ -75,7 +75,7 @@ class ListBoxTagsSuggestionsFavourites( ClientGUIListBoxes.ListBoxTagsStrings ):
         
         self._activate_callable = activate_callable
         
-        width = CG.client_controller.new_options.GetInteger( 'suggested_tags_width' )
+        width = CG.client_controller.new_options.get_integer('suggested_tags_width')
         
         if width is not None:
             
@@ -126,7 +126,7 @@ class ListBoxTagsSuggestionsRelated( ClientGUIListBoxes.ListBoxTagsPredicates ):
         
         self._activate_callable = activate_callable
         
-        width = CG.client_controller.new_options.GetInteger( 'suggested_tags_width' )
+        width = CG.client_controller.new_options.get_integer('suggested_tags_width')
         
         self.setMinimumWidth( width )
         
@@ -195,9 +195,9 @@ class FavouritesTagsPanel( QW.QWidget ):
     
     def _UpdateTagDisplay( self ):
         
-        favourites = list( CG.client_controller.new_options.GetSuggestedTagsFavourites( self._service_key ) )
+        favourites = list(CG.client_controller.new_options.get_suggested_tags_favourites(self._service_key))
         
-        ClientTagSorting.SortTags( CG.client_controller.new_options.GetDefaultTagSort( self._tag_presentation_location ), favourites )
+        ClientTagSorting.SortTags(CG.client_controller.new_options.get_default_tag_sort(self._tag_presentation_location), favourites)
         
         tags = FilterSuggestedTagsForMedia( favourites, self._media, self._service_key )
         
@@ -271,7 +271,7 @@ class RecentTagsPanel( QW.QWidget ):
             
             recent_tags = CG.client_controller.read( 'recent_tags', service_key )
             
-            CG.client_controller.CallAfterQtSafe( self, qt_code, recent_tags )
+            CG.client_controller.call_after_qt_safe(self, qt_code, recent_tags)
             
         
         CG.client_controller.call_to_thread( do_it, self._service_key )
@@ -367,7 +367,7 @@ class RelatedTagsPanel( QW.QWidget ):
         self._button_3.setMinimumWidth( 30 )
         self._button_3.setToolTip( ClientGUIFunctions.WrapToolTip( tt ) )
         
-        if CG.client_controller.services_manager.GetServiceType( self._service_key ) == HC.LOCAL_TAG:
+        if CG.client_controller.services_manager.get_service_type(self._service_key) == HC.LOCAL_TAG:
             
             self._just_do_local_files.setVisible( False )
             
@@ -427,11 +427,11 @@ class RelatedTagsPanel( QW.QWidget ):
             
             start_time = HydrusTime.get_now_precise()
             
-            concurrence_threshold = CG.client_controller.new_options.GetInteger( 'related_tags_concurrence_threshold_percent' ) / 100
+            concurrence_threshold = CG.client_controller.new_options.get_integer('related_tags_concurrence_threshold_percent') / 100
             search_tag_slices_weight_dict = { ':' : 1.0, '' : 1.0 }
             result_tag_slices_weight_dict = { ':' : 1.0, '' : 1.0 }
             
-            ( related_tags_search_tag_slices_weight_percent, related_tags_result_tag_slices_weight_percent ) = CG.client_controller.new_options.GetRelatedTagsTagSliceWeights()
+            ( related_tags_search_tag_slices_weight_percent, related_tags_result_tag_slices_weight_percent ) = CG.client_controller.new_options.get_related_tags_tag_slice_weights()
             
             for ( tag_slice, weight_percent ) in related_tags_search_tag_slices_weight_percent:
                 
@@ -469,7 +469,7 @@ class RelatedTagsPanel( QW.QWidget ):
             
             predicates = ClientSearchPredicate.SortPredicates( predicates )
             
-            CG.client_controller.CallAfterQtSafe( self, qt_code, predicates, num_done, num_to_do, num_skipped, total_time_took )
+            CG.client_controller.call_after_qt_safe(self, qt_code, predicates, num_done, num_to_do, num_skipped, total_time_took)
             
         
         self._related_tags.SetPredicates( [] )
@@ -519,21 +519,21 @@ class RelatedTagsPanel( QW.QWidget ):
     
     def RefreshQuick( self ):
         
-        max_time_to_take = HydrusTime.secondise_ms_float( self._new_options.GetInteger( 'related_tags_search_1_duration_ms' ) )
+        max_time_to_take = HydrusTime.secondise_ms_float(self._new_options.get_integer('related_tags_search_1_duration_ms'))
         
         self._FetchRelatedTagsNew( max_time_to_take )
         
     
     def RefreshMedium( self ):
         
-        max_time_to_take = HydrusTime.secondise_ms_float( self._new_options.GetInteger( 'related_tags_search_2_duration_ms' ) )
+        max_time_to_take = HydrusTime.secondise_ms_float(self._new_options.get_integer('related_tags_search_2_duration_ms'))
         
         self._FetchRelatedTagsNew( max_time_to_take )
         
     
     def RefreshThorough( self ):
         
-        max_time_to_take = HydrusTime.secondise_ms_float( self._new_options.GetInteger( 'related_tags_search_3_duration_ms' ) )
+        max_time_to_take = HydrusTime.secondise_ms_float(self._new_options.get_integer('related_tags_search_3_duration_ms'))
         
         self._FetchRelatedTagsNew( max_time_to_take )
         
@@ -623,16 +623,16 @@ class FileLookupScriptTagsPanel( QW.QWidget ):
             
             def qt_code():
                 
-                script_names_to_scripts = { script.GetName() : script for script in scripts }
+                script_names_to_scripts = {script.get_name() : script for script in scripts}
                 
                 for ( name, script ) in list(script_names_to_scripts.items()):
                     
-                    self._script_choice.addItem( script.GetName(), script )
+                    self._script_choice.addItem(script.get_name(), script)
                     
                 
                 new_options = CG.client_controller.new_options
                 
-                favourite_file_lookup_script = new_options.GetNoneableString( 'favourite_file_lookup_script' )
+                favourite_file_lookup_script = new_options.get_noneable_string('favourite_file_lookup_script')
                 
                 if favourite_file_lookup_script in script_names_to_scripts:
                     
@@ -649,7 +649,7 @@ class FileLookupScriptTagsPanel( QW.QWidget ):
             
             scripts = CG.client_controller.read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_PARSE_ROOT_FILE_LOOKUP )
             
-            CG.client_controller.CallAfterQtSafe( self, qt_code )
+            CG.client_controller.call_after_qt_safe(self, qt_code)
             
         
         CG.client_controller.call_to_thread( do_it )
@@ -754,7 +754,7 @@ class FileLookupScriptTagsPanel( QW.QWidget ):
         
         ClientTagSorting.SortTags( tag_sort, tags )
         
-        CG.client_controller.CallAfterQtSafe( self, qt_code, tags )
+        CG.client_controller.call_after_qt_safe(self, qt_code, tags)
         
     
 class SuggestedTagsPanel( QW.QWidget ):
@@ -771,7 +771,7 @@ class SuggestedTagsPanel( QW.QWidget ):
         
         self._new_options = CG.client_controller.new_options
         
-        layout_mode = self._new_options.GetNoneableString( 'suggested_tags_layout' )
+        layout_mode = self._new_options.get_noneable_string('suggested_tags_layout')
         
         self._notebook = None
         
@@ -790,7 +790,7 @@ class SuggestedTagsPanel( QW.QWidget ):
         
         self._favourite_tags = None
         
-        favourites = CG.client_controller.new_options.GetSuggestedTagsFavourites( self._service_key )
+        favourites = CG.client_controller.new_options.get_suggested_tags_favourites(self._service_key)
         
         if len( favourites ) > 0:
             
@@ -803,7 +803,7 @@ class SuggestedTagsPanel( QW.QWidget ):
         
         self._related_tags = None
         
-        if self._new_options.GetBoolean( 'show_related_tags' ):
+        if self._new_options.get_boolean('show_related_tags'):
             
             self._related_tags = RelatedTagsPanel( panel_parent, service_key, activate_callable )
             
@@ -814,7 +814,7 @@ class SuggestedTagsPanel( QW.QWidget ):
         
         self._file_lookup_script_tags = None
         
-        if self._new_options.GetBoolean( 'show_file_lookup_script_tags' ) and handling_one_media:
+        if self._new_options.get_boolean('show_file_lookup_script_tags') and handling_one_media:
             
             self._file_lookup_script_tags = FileLookupScriptTagsPanel( panel_parent, service_key, activate_callable )
             
@@ -825,7 +825,7 @@ class SuggestedTagsPanel( QW.QWidget ):
         
         self._recent_tags = None
         
-        if self._new_options.GetNoneableInteger( 'num_recent_tags' ) is not None:
+        if self._new_options.get_noneable_integer('num_recent_tags') is not None:
             
             self._recent_tags = RecentTagsPanel( panel_parent, service_key, activate_callable )
             
@@ -853,7 +853,7 @@ class SuggestedTagsPanel( QW.QWidget ):
                 'recent' : self._recent_tags
             }
             
-            default_suggested_tags_notebook_page = self._new_options.GetString( 'default_suggested_tags_notebook_page' )
+            default_suggested_tags_notebook_page = self._new_options.get_string('default_suggested_tags_notebook_page')
             
             choice = name_to_page_dict.get( default_suggested_tags_notebook_page, None )
             

@@ -96,33 +96,33 @@ class GUIPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         self._new_options = CG.client_controller.new_options
         
-        self._app_display_name.setText( self._new_options.GetString( 'app_display_name' ) )
+        self._app_display_name.setText(self._new_options.get_string('app_display_name'))
         
         self._confirm_client_exit.setChecked( HC.options[ 'confirm_client_exit' ] )
         
-        self._activate_window_on_tag_search_page_activation.setChecked( self._new_options.GetBoolean( 'activate_window_on_tag_search_page_activation' ) )
+        self._activate_window_on_tag_search_page_activation.setChecked(self._new_options.get_boolean('activate_window_on_tag_search_page_activation'))
         
-        self._always_show_iso_time.setChecked( self._new_options.GetBoolean( 'always_show_iso_time' ) )
+        self._always_show_iso_time.setChecked(self._new_options.get_boolean('always_show_iso_time'))
         
-        self._menu_choice_buttons_can_mouse_scroll.setChecked( self._new_options.GetBoolean( 'menu_choice_buttons_can_mouse_scroll' ) )
+        self._menu_choice_buttons_can_mouse_scroll.setChecked(self._new_options.get_boolean('menu_choice_buttons_can_mouse_scroll'))
         
-        self._use_native_menubar.setChecked( self._new_options.GetBoolean( 'use_native_menubar' ) )
+        self._use_native_menubar.setChecked(self._new_options.get_boolean('use_native_menubar'))
         
-        self._human_bytes_sig_figs.setValue( self._new_options.GetInteger( 'human_bytes_sig_figs' ) )
+        self._human_bytes_sig_figs.setValue(self._new_options.get_integer('human_bytes_sig_figs'))
         
-        self._do_macos_debug_dialog_menus.setChecked( self._new_options.GetBoolean( 'do_macos_debug_dialog_menus' ) )
+        self._do_macos_debug_dialog_menus.setChecked(self._new_options.get_boolean('do_macos_debug_dialog_menus'))
         
-        self._use_qt_file_dialogs.setChecked( self._new_options.GetBoolean( 'use_qt_file_dialogs' ) )
+        self._use_qt_file_dialogs.setChecked(self._new_options.get_boolean('use_qt_file_dialogs'))
         
-        self._remember_options_window_panel.setChecked( self._new_options.GetBoolean( 'remember_options_window_panel' ) )
+        self._remember_options_window_panel.setChecked(self._new_options.get_boolean('remember_options_window_panel'))
         
-        self._options_search_bar_top_of_window.SetValue( self._new_options.GetBoolean( 'options_search_bar_top_of_window' ) )
+        self._options_search_bar_top_of_window.SetValue(self._new_options.get_boolean('options_search_bar_top_of_window'))
         
-        self._disable_get_safe_position_test.setChecked( self._new_options.GetBoolean( 'disable_get_safe_position_test' ) )
+        self._disable_get_safe_position_test.setChecked(self._new_options.get_boolean('disable_get_safe_position_test'))
         
-        self._save_window_size_and_position_on_close.setChecked( self._new_options.GetBoolean( 'save_window_size_and_position_on_close' ) )
+        self._save_window_size_and_position_on_close.setChecked(self._new_options.get_boolean('save_window_size_and_position_on_close'))
         
-        for ( name, info ) in self._new_options.GetFrameLocations():
+        for ( name, info ) in self._new_options.get_frame_locations():
             
             listctrl_data = QP.ListsToTuples( [ name ] + list( info ) )
             
@@ -311,13 +311,13 @@ class GUIPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         HC.options[ 'confirm_client_exit' ] = self._confirm_client_exit.isChecked()
         
-        self._new_options.SetBoolean( 'always_show_iso_time', self._always_show_iso_time.isChecked() )
-        self._new_options.SetBoolean( 'menu_choice_buttons_can_mouse_scroll', self._menu_choice_buttons_can_mouse_scroll.isChecked() )
-        self._new_options.SetBoolean( 'use_native_menubar', self._use_native_menubar.isChecked() )
+        self._new_options.set_boolean('always_show_iso_time', self._always_show_iso_time.isChecked())
+        self._new_options.set_boolean('menu_choice_buttons_can_mouse_scroll', self._menu_choice_buttons_can_mouse_scroll.isChecked())
+        self._new_options.set_boolean('use_native_menubar', self._use_native_menubar.isChecked())
         
-        self._new_options.SetInteger( 'human_bytes_sig_figs', self._human_bytes_sig_figs.value() )
+        self._new_options.set_integer('human_bytes_sig_figs', self._human_bytes_sig_figs.value())
         
-        self._new_options.SetBoolean( 'activate_window_on_tag_search_page_activation', self._activate_window_on_tag_search_page_activation.isChecked() )
+        self._new_options.set_boolean('activate_window_on_tag_search_page_activation', self._activate_window_on_tag_search_page_activation.isChecked())
         
         app_display_name = self._app_display_name.text()
         
@@ -326,20 +326,20 @@ class GUIPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             app_display_name = 'hydrus client'
             
         
-        self._new_options.SetString( 'app_display_name', app_display_name )
+        self._new_options.set_string('app_display_name', app_display_name)
         
-        self._new_options.SetBoolean( 'do_macos_debug_dialog_menus', self._do_macos_debug_dialog_menus.isChecked() )
-        self._new_options.SetBoolean( 'use_qt_file_dialogs', self._use_qt_file_dialogs.isChecked() )
-        self._new_options.SetBoolean( 'remember_options_window_panel', self._remember_options_window_panel.isChecked() )
-        self._new_options.SetBoolean( 'options_search_bar_top_of_window', self._options_search_bar_top_of_window.GetValue() )
-        self._new_options.SetBoolean( 'disable_get_safe_position_test', self._disable_get_safe_position_test.isChecked() )
-        self._new_options.SetBoolean( 'save_window_size_and_position_on_close', self._save_window_size_and_position_on_close.isChecked() )
+        self._new_options.set_boolean('do_macos_debug_dialog_menus', self._do_macos_debug_dialog_menus.isChecked())
+        self._new_options.set_boolean('use_qt_file_dialogs', self._use_qt_file_dialogs.isChecked())
+        self._new_options.set_boolean('remember_options_window_panel', self._remember_options_window_panel.isChecked())
+        self._new_options.set_boolean('options_search_bar_top_of_window', self._options_search_bar_top_of_window.GetValue())
+        self._new_options.set_boolean('disable_get_safe_position_test', self._disable_get_safe_position_test.isChecked())
+        self._new_options.set_boolean('save_window_size_and_position_on_close', self._save_window_size_and_position_on_close.isChecked())
         
         for listctrl_list in self._frame_locations.GetData():
             
             ( name, remember_size, remember_position, last_size, last_position, default_gravity, default_position, maximised, fullscreen ) = listctrl_list
             
-            self._new_options.SetFrameLocation( name, remember_size, remember_position, last_size, last_position, default_gravity, default_position, maximised, fullscreen )
+            self._new_options.set_frame_location(name, remember_size, remember_position, last_size, last_position, default_gravity, default_position, maximised, fullscreen)
             
         
     

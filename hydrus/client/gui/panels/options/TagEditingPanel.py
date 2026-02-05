@@ -51,45 +51,45 @@ class TagEditingPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         #
         
-        services = CG.client_controller.services_manager.GetServices( HC.REAL_TAG_SERVICES )
+        services = CG.client_controller.services_manager.get_services(HC.REAL_TAG_SERVICES)
         
         for service in services:
             
-            self._default_tag_service_tab.addItem( service.GetName(), service.GetServiceKey() )
+            self._default_tag_service_tab.addItem(service.get_name(), service.get_service_key())
             
         
-        self._default_tag_service_tab.SetValue( self._new_options.GetKey( 'default_tag_service_tab' ) )
+        self._default_tag_service_tab.SetValue(self._new_options.get_key('default_tag_service_tab'))
         
-        self._num_recent_petition_reasons.setValue( self._new_options.GetInteger( 'num_recent_petition_reasons' ) )
+        self._num_recent_petition_reasons.setValue(self._new_options.get_integer('num_recent_petition_reasons'))
         
-        self._use_listbook_for_tag_service_panels.setChecked( self._new_options.GetBoolean( 'use_listbook_for_tag_service_panels' ) )
+        self._use_listbook_for_tag_service_panels.setChecked(self._new_options.get_boolean('use_listbook_for_tag_service_panels'))
         self._use_listbook_for_tag_service_panels.setToolTip( ClientGUIFunctions.WrapToolTip( 'If you have many tag services, you might prefer to use a vertical list to navigate your various tag dialogs.' ) )
         
-        self._save_default_tag_service_tab_on_change.setChecked( self._new_options.GetBoolean( 'save_default_tag_service_tab_on_change' ) )
+        self._save_default_tag_service_tab_on_change.setChecked(self._new_options.get_boolean('save_default_tag_service_tab_on_change'))
         
-        self._ac_select_first_with_count.setChecked( self._new_options.GetBoolean( 'ac_select_first_with_count' ) )
+        self._ac_select_first_with_count.setChecked(self._new_options.get_boolean('ac_select_first_with_count'))
         
-        self._ac_write_list_height_num_chars.setValue( self._new_options.GetInteger( 'ac_write_list_height_num_chars' ) )
+        self._ac_write_list_height_num_chars.setValue(self._new_options.get_integer('ac_write_list_height_num_chars'))
         
-        self._expand_parents_on_storage_taglists.setChecked( self._new_options.GetBoolean( 'expand_parents_on_storage_taglists' ) )
+        self._expand_parents_on_storage_taglists.setChecked(self._new_options.get_boolean('expand_parents_on_storage_taglists'))
         self._expand_parents_on_storage_taglists.setToolTip( ClientGUIFunctions.WrapToolTip( 'This affects taglists in places like the manage tags dialog, where you edit tags as they actually are, and implied parents hang below tags.' ) )
         
-        self._skip_yesno_on_write_autocomplete_multiline_paste.setChecked( self._new_options.GetBoolean( 'skip_yesno_on_write_autocomplete_multiline_paste' ) )
+        self._skip_yesno_on_write_autocomplete_multiline_paste.setChecked(self._new_options.get_boolean('skip_yesno_on_write_autocomplete_multiline_paste'))
         self._skip_yesno_on_write_autocomplete_multiline_paste.setToolTip( ClientGUIFunctions.WrapToolTip( 'If you paste multiline content into the text box of an edit autocomplete that has a paste button, it will ask you if you want to add what you pasted as separate tags. Check this to skip that yes/no test and just do it every time.' ) )
         
-        self._expand_parents_on_storage_autocomplete_taglists.setChecked( self._new_options.GetBoolean( 'expand_parents_on_storage_autocomplete_taglists' ) )
+        self._expand_parents_on_storage_autocomplete_taglists.setChecked(self._new_options.get_boolean('expand_parents_on_storage_autocomplete_taglists'))
         self._expand_parents_on_storage_autocomplete_taglists.setToolTip( ClientGUIFunctions.WrapToolTip( 'This affects the autocomplete results taglist.' ) )
         
-        self._show_parent_decorators_on_storage_taglists.setChecked( self._new_options.GetBoolean( 'show_parent_decorators_on_storage_taglists' ) )
+        self._show_parent_decorators_on_storage_taglists.setChecked(self._new_options.get_boolean('show_parent_decorators_on_storage_taglists'))
         self._show_parent_decorators_on_storage_taglists.setToolTip( ClientGUIFunctions.WrapToolTip( 'This affects taglists in places like the manage tags dialog, where you edit tags as they actually are, and implied parents either hang below tags or summarise in a suffix.' ) )
         
-        self._show_parent_decorators_on_storage_autocomplete_taglists.setChecked( self._new_options.GetBoolean( 'show_parent_decorators_on_storage_autocomplete_taglists' ) )
+        self._show_parent_decorators_on_storage_autocomplete_taglists.setChecked(self._new_options.get_boolean('show_parent_decorators_on_storage_autocomplete_taglists'))
         self._show_parent_decorators_on_storage_autocomplete_taglists.setToolTip( ClientGUIFunctions.WrapToolTip( 'This affects the autocomplete results taglist.' ) )
         
-        self._show_sibling_decorators_on_storage_taglists.setChecked( self._new_options.GetBoolean( 'show_sibling_decorators_on_storage_taglists' ) )
+        self._show_sibling_decorators_on_storage_taglists.setChecked(self._new_options.get_boolean('show_sibling_decorators_on_storage_taglists'))
         self._show_sibling_decorators_on_storage_taglists.setToolTip( ClientGUIFunctions.WrapToolTip( 'This affects taglists in places like the manage tags dialog, where you edit tags as they actually are, and siblings summarise in a suffix.' ) )
         
-        self._show_sibling_decorators_on_storage_autocomplete_taglists.setChecked( self._new_options.GetBoolean( 'show_sibling_decorators_on_storage_autocomplete_taglists' ) )
+        self._show_sibling_decorators_on_storage_autocomplete_taglists.setChecked(self._new_options.get_boolean('show_sibling_decorators_on_storage_autocomplete_taglists'))
         self._show_sibling_decorators_on_storage_autocomplete_taglists.setToolTip( ClientGUIFunctions.WrapToolTip( 'This affects the autocomplete results taglist.' ) )
         
         #
@@ -153,24 +153,24 @@ class TagEditingPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def UpdateOptions( self ):
         
-        self._new_options.SetBoolean( 'use_listbook_for_tag_service_panels', self._use_listbook_for_tag_service_panels.isChecked() )
+        self._new_options.set_boolean('use_listbook_for_tag_service_panels', self._use_listbook_for_tag_service_panels.isChecked())
         
-        self._new_options.SetInteger( 'num_recent_petition_reasons', self._num_recent_petition_reasons.value() )
+        self._new_options.set_integer('num_recent_petition_reasons', self._num_recent_petition_reasons.value())
         
-        self._new_options.SetBoolean( 'ac_select_first_with_count', self._ac_select_first_with_count.isChecked() )
+        self._new_options.set_boolean('ac_select_first_with_count', self._ac_select_first_with_count.isChecked())
         
-        self._new_options.SetInteger( 'ac_write_list_height_num_chars', self._ac_write_list_height_num_chars.value() )
+        self._new_options.set_integer('ac_write_list_height_num_chars', self._ac_write_list_height_num_chars.value())
         
-        self._new_options.SetBoolean( 'skip_yesno_on_write_autocomplete_multiline_paste', self._skip_yesno_on_write_autocomplete_multiline_paste.isChecked() )
+        self._new_options.set_boolean('skip_yesno_on_write_autocomplete_multiline_paste', self._skip_yesno_on_write_autocomplete_multiline_paste.isChecked())
         
-        self._new_options.SetBoolean( 'show_parent_decorators_on_storage_taglists', self._show_parent_decorators_on_storage_taglists.isChecked() )
-        self._new_options.SetBoolean( 'show_parent_decorators_on_storage_autocomplete_taglists', self._show_parent_decorators_on_storage_autocomplete_taglists.isChecked() )
-        self._new_options.SetBoolean( 'expand_parents_on_storage_taglists', self._expand_parents_on_storage_taglists.isChecked() )
-        self._new_options.SetBoolean( 'expand_parents_on_storage_autocomplete_taglists', self._expand_parents_on_storage_autocomplete_taglists.isChecked() )
-        self._new_options.SetBoolean( 'show_sibling_decorators_on_storage_taglists', self._show_sibling_decorators_on_storage_taglists.isChecked() )
-        self._new_options.SetBoolean( 'show_sibling_decorators_on_storage_autocomplete_taglists', self._show_sibling_decorators_on_storage_autocomplete_taglists.isChecked() )
+        self._new_options.set_boolean('show_parent_decorators_on_storage_taglists', self._show_parent_decorators_on_storage_taglists.isChecked())
+        self._new_options.set_boolean('show_parent_decorators_on_storage_autocomplete_taglists', self._show_parent_decorators_on_storage_autocomplete_taglists.isChecked())
+        self._new_options.set_boolean('expand_parents_on_storage_taglists', self._expand_parents_on_storage_taglists.isChecked())
+        self._new_options.set_boolean('expand_parents_on_storage_autocomplete_taglists', self._expand_parents_on_storage_autocomplete_taglists.isChecked())
+        self._new_options.set_boolean('show_sibling_decorators_on_storage_taglists', self._show_sibling_decorators_on_storage_taglists.isChecked())
+        self._new_options.set_boolean('show_sibling_decorators_on_storage_autocomplete_taglists', self._show_sibling_decorators_on_storage_autocomplete_taglists.isChecked())
         
-        self._new_options.SetBoolean( 'save_default_tag_service_tab_on_change', self._save_default_tag_service_tab_on_change.isChecked() )
-        self._new_options.SetKey( 'default_tag_service_tab', self._default_tag_service_tab.GetValue() )
+        self._new_options.set_boolean('save_default_tag_service_tab_on_change', self._save_default_tag_service_tab_on_change.isChecked())
+        self._new_options.set_key('default_tag_service_tab', self._default_tag_service_tab.GetValue())
         
     

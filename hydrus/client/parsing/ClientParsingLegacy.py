@@ -111,7 +111,7 @@ class ParseNodeContentLink( HydrusSerialisable.SerialisableBase ):
         
         for search_url in search_urls:
             
-            job_status.SetVariable( 'script_status', 'fetching ' + HydrusText.elide_text( search_url, 32 ) )
+            job_status.set_variable('script_status', 'fetching ' + HydrusText.elide_text(search_url, 32))
             
             network_job = ClientNetworkingJobs.NetworkJob( 'GET', search_url, referral_url = referral_url )
             
@@ -131,7 +131,7 @@ class ParseNodeContentLink( HydrusSerialisable.SerialisableBase ):
                 
                 if isinstance( e, HydrusExceptions.NotFoundException ):
                     
-                    job_status.SetVariable( 'script_status', '404 - nothing found' )
+                    job_status.set_variable('script_status', '404 - nothing found')
                     
                     time.sleep( 2 )
                     
@@ -139,7 +139,7 @@ class ParseNodeContentLink( HydrusSerialisable.SerialisableBase ):
                     
                 elif isinstance( e, HydrusExceptions.NetworkException ):
                     
-                    job_status.SetVariable( 'script_status', 'Network error! Details written to log.' )
+                    job_status.set_variable('script_status', 'Network error! Details written to log.')
                     
                     HydrusData.print_text( 'Problem fetching ' + HydrusText.elide_text( search_url, 256 ) + ':' )
                     HydrusData.print_exception( e )
@@ -160,7 +160,7 @@ class ParseNodeContentLink( HydrusSerialisable.SerialisableBase ):
             
             master_parsed_post.MergeParsedPost( parsed_post )
             
-            if job_status.IsCancelled():
+            if job_status.is_cancelled():
                 
                 raise HydrusExceptions.CancelledException( 'Job was cancelled.' )
                 
@@ -179,7 +179,7 @@ class ParseNodeContentLink( HydrusSerialisable.SerialisableBase ):
         
         for url in absolute_urls:
             
-            job_status.AddURL( url )
+            job_status.add_url(url)
             
         
         return absolute_urls
@@ -290,11 +290,11 @@ class ParseRootFileLookup( HydrusSerialisable.SerialisableBaseNamed ):
             
         elif self._file_identifier_type == FILE_IDENTIFIER_TYPE_SHA256:
             
-            return media.GetHash()
+            return media.get_hash()
             
         elif self._file_identifier_type in ( FILE_IDENTIFIER_TYPE_MD5, FILE_IDENTIFIER_TYPE_SHA1, FILE_IDENTIFIER_TYPE_SHA512 ):
             
-            sha256_hash = media.GetHash()
+            sha256_hash = media.get_hash()
             
             if self._file_identifier_type == FILE_IDENTIFIER_TYPE_MD5:
                 
@@ -324,7 +324,7 @@ class ParseRootFileLookup( HydrusSerialisable.SerialisableBaseNamed ):
             
         elif self._file_identifier_type == FILE_IDENTIFIER_TYPE_FILE:
             
-            hash = media.GetHash()
+            hash = media.get_hash()
             mime = media.GetMime()
             
             client_files_manager = CG.client_controller.client_files_manager
@@ -350,7 +350,7 @@ class ParseRootFileLookup( HydrusSerialisable.SerialisableBaseNamed ):
         
         if self._file_identifier_type != FILE_IDENTIFIER_TYPE_FILE:
             
-            request_args[ self._file_identifier_arg_name ] = self._file_identifier_string_converter.Convert( file_identifier )
+            request_args[ self._file_identifier_arg_name ] = self._file_identifier_string_converter.convert(file_identifier)
             
         
         f = None
@@ -366,9 +366,9 @@ class ParseRootFileLookup( HydrusSerialisable.SerialisableBaseNamed ):
             
             full_request_url = self._url + '?' + ClientNetworkingFunctions.ConvertQueryDictToText( request_args, single_value_parameters )
             
-            job_status.SetVariable( 'script_status', 'fetching ' + HydrusText.elide_text( full_request_url, 32 ) )
+            job_status.set_variable('script_status', 'fetching ' + HydrusText.elide_text(full_request_url, 32))
             
-            job_status.AddURL( full_request_url )
+            job_status.add_url(full_request_url)
             
             network_job = ClientNetworkingJobs.NetworkJob( 'GET', full_request_url )
             
@@ -379,18 +379,18 @@ class ParseRootFileLookup( HydrusSerialisable.SerialisableBaseNamed ):
             
             if self._file_identifier_type == FILE_IDENTIFIER_TYPE_FILE:
                 
-                job_status.SetVariable( 'script_status', 'uploading file' )
+                job_status.set_variable('script_status', 'uploading file')
                 
                 path  = file_identifier
                 
-                if self._file_identifier_string_converter.MakesChanges():
+                if self._file_identifier_string_converter.makes_changes():
                     
                     with open( path, 'rb' ) as f:
                         
                         file_bytes = f.read()
                         
                     
-                    f_altered = self._file_identifier_string_converter.Convert( file_bytes )
+                    f_altered = self._file_identifier_string_converter.convert(file_bytes)
                     
                     request_args[ self._file_identifier_arg_name ] = f_altered
                     
@@ -405,7 +405,7 @@ class ParseRootFileLookup( HydrusSerialisable.SerialisableBaseNamed ):
                 
             else:
                 
-                job_status.SetVariable( 'script_status', 'uploading identifier' )
+                job_status.set_variable('script_status', 'uploading identifier')
                 
                 files = None
                 
@@ -435,13 +435,13 @@ class ParseRootFileLookup( HydrusSerialisable.SerialisableBaseNamed ):
             
         except HydrusExceptions.NotFoundException:
             
-            job_status.SetVariable( 'script_status', '404 - nothing found' )
+            job_status.set_variable('script_status', '404 - nothing found')
             
             raise
             
         except HydrusExceptions.NetworkException as e:
             
-            job_status.SetVariable( 'script_status', 'Network error!' )
+            job_status.set_variable('script_status', 'Network error!')
             
             HydrusData.ShowException( e )
             
@@ -459,10 +459,10 @@ class ParseRootFileLookup( HydrusSerialisable.SerialisableBaseNamed ):
             
             actual_fetched_url = network_job.GetActualFetchedURL()
             
-            job_status.AddURL( actual_fetched_url )
+            job_status.add_url(actual_fetched_url)
             
         
-        if job_status.IsCancelled():
+        if job_status.is_cancelled():
             
             raise HydrusExceptions.CancelledException( 'Job was cancelled.' )
             
@@ -503,13 +503,13 @@ class ParseRootFileLookup( HydrusSerialisable.SerialisableBaseNamed ):
             
         except HydrusExceptions.CancelledException:
             
-            job_status.SetVariable( 'script_status', 'Cancelled!' )
+            job_status.set_variable('script_status', 'Cancelled!')
             
             return ClientParsingResults.ParsedPost( [] )
             
         finally:
             
-            job_status.Finish()
+            job_status.finish()
             
         
     
@@ -524,11 +524,11 @@ class ParseRootFileLookup( HydrusSerialisable.SerialisableBaseNamed ):
         
         if len( parsed_post ) == 0:
             
-            job_status.SetVariable( 'script_status', 'Did not find anything.' )
+            job_status.set_variable('script_status', 'Did not find anything.')
             
         else:
             
-            job_status.SetVariable( 'script_status', f'Found {HydrusNumbers.to_human_int( len( parsed_post ) )} rows.' )
+            job_status.set_variable('script_status', f'Found {HydrusNumbers.to_human_int(len(parsed_post))} rows.')
             
         
         return parsed_post

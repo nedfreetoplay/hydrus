@@ -30,7 +30,7 @@ class SingleFileMetadataRouter( HydrusSerialisable.SerialisableBase ):
             
             string_processor = ClientStrings.StringProcessor()
             
-            string_processor.SetProcessingSteps(
+            string_processor.set_processing_steps(
                 [
                     ClientStrings.StringSorter(
                         sort_type = ClientStrings.CONTENT_PARSER_SORT_TYPE_HUMAN_SORT,
@@ -117,7 +117,7 @@ class SingleFileMetadataRouter( HydrusSerialisable.SerialisableBase ):
             
             string_processor = HydrusSerialisable.create_from_serialisable_tuple( serialisable_string_processor )
             
-            string_processing_steps = string_processor.GetProcessingSteps()
+            string_processing_steps = string_processor.get_processing_steps()
             
             string_processing_steps.append(
                 ClientStrings.StringSorter(
@@ -126,7 +126,7 @@ class SingleFileMetadataRouter( HydrusSerialisable.SerialisableBase ):
                 )
             )
             
-            string_processor.SetProcessingSteps( string_processing_steps )
+            string_processor.set_processing_steps(string_processing_steps)
             
             serialisable_string_processor = string_processor.GetSerialisableTuple()
             
@@ -169,16 +169,16 @@ class SingleFileMetadataRouter( HydrusSerialisable.SerialisableBase ):
         
         if len( self._importers ) > 0:
             
-            source_text = ', '.join( ( importer.ToString() for importer in self._importers ) )
+            source_text = ', '.join((importer.to_string() for importer in self._importers))
             
         else:
             
             source_text = 'nothing'
             
         
-        if self._string_processor.MakesChanges():
+        if self._string_processor.makes_changes():
             
-            full_munge_text = ', applying {}'.format( self._string_processor.ToString() )
+            full_munge_text = ', applying {}'.format(self._string_processor.to_string())
             
         else:
             
@@ -221,7 +221,7 @@ class SingleFileMetadataRouter( HydrusSerialisable.SerialisableBase ):
         
         rows = HydrusLists.dedupe_list( rows )
         
-        rows = self._string_processor.ProcessStrings( starting_strings = rows )
+        rows = self._string_processor.process_strings(starting_strings = rows)
         
         if len( rows ) == 0:
             

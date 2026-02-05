@@ -217,7 +217,7 @@ def get_shortcut_mouse_string( shortcut_key: int, call_mouse_buttons_primary_sec
         
         try:
             
-            call_mouse_buttons_primary_secondary = CG.client_controller.new_options.GetBoolean( 'call_mouse_buttons_primary_secondary' )
+            call_mouse_buttons_primary_secondary = CG.client_controller.new_options.get_boolean('call_mouse_buttons_primary_secondary')
             
         except:
             
@@ -655,7 +655,7 @@ def ConvertKeyEventToShortcut( event, shortcuts_merge_non_number_numpad_override
                 
                 try:
                     
-                    shortcuts_merge_non_number_numpad = CG.client_controller.new_options.GetBoolean( 'shortcuts_merge_non_number_numpad' )
+                    shortcuts_merge_non_number_numpad = CG.client_controller.new_options.get_boolean('shortcuts_merge_non_number_numpad')
                     
                 except:
                     
@@ -970,7 +970,7 @@ class Shortcut( HydrusSerialisable.SerialisableBase ):
             modifiers = []
             
         
-        if shortcut_type == SHORTCUT_TYPE_KEYBOARD_CHARACTER and ClientData.OrdIsAlphaUpper( shortcut_key ):
+        if shortcut_type == SHORTCUT_TYPE_KEYBOARD_CHARACTER and ClientData.ord_is_alpha_upper(shortcut_key):
             
             shortcut_key += 32 # convert A to a
             
@@ -1117,7 +1117,7 @@ class Shortcut( HydrusSerialisable.SerialisableBase ):
             
             if shortcut_type == SHORTCUT_TYPE_KEYBOARD_CHARACTER:
                 
-                if ClientData.OrdIsAlphaUpper( shortcut_key ):
+                if ClientData.ord_is_alpha_upper(shortcut_key):
                     
                     shortcut_key += 32 # convert 'A' to 'a'
                     
@@ -1162,7 +1162,7 @@ class Shortcut( HydrusSerialisable.SerialisableBase ):
             
             try:
                 
-                shortcuts_merge_non_number_numpad = CG.client_controller.new_options.GetBoolean( 'shortcuts_merge_non_number_numpad' )
+                shortcuts_merge_non_number_numpad = CG.client_controller.new_options.get_boolean('shortcuts_merge_non_number_numpad')
                 
             except:
                 
@@ -1307,7 +1307,7 @@ class Shortcut( HydrusSerialisable.SerialisableBase ):
             
             try:
                 
-                if ClientData.OrdIsAlphaUpper( self.shortcut_key ):
+                if ClientData.ord_is_alpha_upper(self.shortcut_key):
                     
                     action_name += chr( self.shortcut_key + 32 ) # + 32 for converting ascii A -> a
                     
@@ -1351,7 +1351,7 @@ class Shortcut( HydrusSerialisable.SerialisableBase ):
             
             new_shortcut_key = self.shortcut_key + 1
             
-            if ClientData.OrdIsAlphaLower( new_shortcut_key ) or ClientData.OrdIsNumber( new_shortcut_key ):
+            if ClientData.ord_is_alpha_lower(new_shortcut_key) or ClientData.ord_is_number(new_shortcut_key):
                 
                 self.shortcut_key = new_shortcut_key
                 
@@ -1440,13 +1440,13 @@ class ShortcutSet( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 if serialisable_service_key is None:
                     
-                    command = CAC.ApplicationCommand.STATICCreateSimpleCommand( data )
+                    command = CAC.ApplicationCommand.static_create_simple_command( data )
                     
                 else:
                     
                     service_key = bytes.fromhex( serialisable_service_key )
                     
-                    if not services_manager.ServiceExists( service_key ):
+                    if not services_manager.service_exists(service_key):
                         
                         continue
                         
@@ -1455,9 +1455,9 @@ class ShortcutSet( HydrusSerialisable.SerialisableBaseNamed ):
                     
                     value = data
                     
-                    service = services_manager.GetService( service_key )
+                    service = services_manager.get_service(service_key)
                     
-                    service_type = service.GetServiceType()
+                    service_type = service.get_service_type()
                     
                     if service_type in HC.REAL_TAG_SERVICES:
                         
@@ -1617,7 +1617,7 @@ class ShortcutsHandler( QC.QObject ):
         
         if command is not None:
             
-            command_processed = self._command_processor.ProcessApplicationCommand( command )
+            command_processed = self._command_processor.process_application_command( command )
             
             if command_processed:
                 

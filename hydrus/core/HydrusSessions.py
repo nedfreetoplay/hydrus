@@ -132,7 +132,7 @@ class HydrusSessionManagerServer( object ):
             
             for ( service_key, account_keys_to_accounts ) in self._service_keys_to_account_keys_to_accounts.items():
                 
-                dirty_accounts = [ account_key for account_key in account_keys_to_accounts.values() if account_key.IsDirty() ]
+                dirty_accounts = [account_key for account_key in account_keys_to_accounts.values() if account_key.is_dirty()]
                 
                 if len( dirty_accounts ) > 0:
                     

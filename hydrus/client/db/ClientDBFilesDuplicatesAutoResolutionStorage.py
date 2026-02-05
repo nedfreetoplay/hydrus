@@ -770,9 +770,9 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
         
         job_status = ClientThreading.JobStatus()
         
-        job_status.SetStatusTitle( 'auto-resolution rule file location resync' )
+        job_status.set_status_title('auto-resolution rule file location resync')
         
-        job_status.SetStatusText( 'initialising' )
+        job_status.set_status_text('initialising')
         
         CG.client_controller.pub( 'message', job_status )
         
@@ -782,8 +782,8 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
         
         for ( num_done, ( rule_id, rule ) ) in enumerate( self._rule_ids_to_rules.items() ):
             
-            job_status.SetStatusText( f'{HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do )}: {rule.get_name()}' )
-            job_status.SetGauge( num_done, num_to_do )
+            job_status.set_status_text(f'{HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do)}: {rule.get_name()}')
+            job_status.set_gauge(num_done, num_to_do)
             
             ( num_deleted, num_added ) = self._ResyncToLocationContext( rule_id, rule.GetLocationContext() )
             
@@ -800,7 +800,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
             HydrusData.show_text( 'All auto-resolution rules were found to be synced ok!' )
             
         
-        job_status.FinishAndDismiss()
+        job_status.finish_and_dismiss()
         
     
     def NotifyNewPotentialDuplicatePairsAdded( self, pertinent_location_context: ClientLocation.LocationContext, pairs_added ):

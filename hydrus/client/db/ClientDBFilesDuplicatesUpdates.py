@@ -249,7 +249,7 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
         
         for location_context in all_pertinent_location_contexts:
             
-            if location_context.IsOneDomain():
+            if location_context.is_one_domain():
                 
                 valid_pairs = deletee_pairs
                 
@@ -548,7 +548,7 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
             # a pair is good when both nodes' king hash ids exist in _any_ of the UNION of stuff
             # we are going to give the SQLite query planner latitude to figure out what it wants; we'll see how it goes
             
-            if location_context.IsAllKnownFiles():
+            if location_context.is_all_known_files():
                 
                 rows = self._execute( 'SELECT smaller_media_id, larger_media_id, distance FROM potential_duplicate_pairs;' ).fetchall()
                 
@@ -591,7 +591,7 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
                         good_media_ids.update( self._sti( self._execute( query ) ) )
                         
                     
-                    all_potential_duplicate_id_pairs_and_distances = self.GetPotentialDuplicateIdPairsAndDistances( ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY ) )
+                    all_potential_duplicate_id_pairs_and_distances = self.GetPotentialDuplicateIdPairsAndDistances(ClientLocation.LocationContext.static_create_simple(CC.COMBINED_FILE_SERVICE_KEY))
                     
                     rows = [ ( smaller_media_id, larger_media_id, distance ) for ( smaller_media_id, larger_media_id, distance ) in all_potential_duplicate_id_pairs_and_distances.IterateRows() if smaller_media_id in good_media_ids and larger_media_id in good_media_ids ]
                     
@@ -820,11 +820,11 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
         
         try:
             
-            job_status.SetStatusTitle( 'resyncing potential pairs to hydrus local file storage' )
+            job_status.set_status_title('resyncing potential pairs to hydrus local file storage')
             
             CG.client_controller.pub( 'message', job_status )
             
-            job_status.SetStatusText( 'gathering data' )
+            job_status.set_status_text('gathering data')
             
             all_ids_we_are_tracking = self._execute( 'SELECT DISTINCT king_hash_id, media_id FROM potential_duplicate_pairs CROSS JOIN duplicate_files ON ( potential_duplicate_pairs.smaller_media_id = duplicate_files.media_id OR potential_duplicate_pairs.larger_media_id = duplicate_files.media_id );' ).fetchall()
             
@@ -842,19 +842,19 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
                 
                 for ( num_done, num_to_do, batch_of_bad_ids ) in HydrusLists.split_list_into_chunks_rich( all_bad_ids, 16 ):
                     
-                    if job_status.IsCancelled():
+                    if job_status.is_cancelled():
                         
                         break
                         
                     
                     message = f'Clearing orphans: {HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do )}'
                     
-                    job_status.SetStatusText( message )
-                    job_status.SetGauge( num_done, num_to_do )
+                    job_status.set_status_text(message)
+                    job_status.set_gauge(num_done, num_to_do)
                     
                     for ( king_hash_id, media_id ) in batch_of_bad_ids:
                         
-                        if job_status.IsCancelled():
+                        if job_status.is_cancelled():
                             
                             break
                             
@@ -874,23 +874,23 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
                 
                 HydrusData.print_text( f'During potential duplicate pair local storage resync, I cleared out pairs for {HydrusNumbers.to_human_int(num_files_cleared_out)} files.' )
                 
-                job_status.SetStatusText( f'Done! Pairs for {HydrusNumbers.to_human_int(num_files_cleared_out)} out-of-domain files cleared out.' )
+                job_status.set_status_text(f'Done! Pairs for {HydrusNumbers.to_human_int(num_files_cleared_out)} out-of-domain files cleared out.')
                 
             else:
                 
-                if job_status.IsCancelled():
+                if job_status.is_cancelled():
                     
-                    job_status.SetStatusText( 'Cancelled!' )
+                    job_status.set_status_text('Cancelled!')
                     
                 else:
                     
-                    job_status.SetStatusText( 'Done! No orphan pairs found!' )
+                    job_status.set_status_text('Done! No orphan pairs found!')
                     
                 
             
-            job_status.DeleteGauge()
+            job_status.delete_gauge()
             
-            job_status.Finish()
+            job_status.finish()
             
         
     

@@ -27,7 +27,7 @@ def ChangeVolume( volume_type, volume ):
     
     ( mute_option_name, volume_option_name ) = volume_types_to_option_names[ volume_type ]
     
-    CG.client_controller.new_options.SetInteger( volume_option_name, volume )
+    CG.client_controller.new_options.set_integer(volume_option_name, volume)
     
     CG.client_controller.pub( 'new_audio_volume' )
     
@@ -35,7 +35,7 @@ def FlipMute( volume_type ):
     
     ( mute_option_name, volume_option_name ) = volume_types_to_option_names[ volume_type ]
     
-    CG.client_controller.new_options.FlipBoolean( mute_option_name )
+    CG.client_controller.new_options.flip_boolean(mute_option_name)
     
     CG.client_controller.pub( 'new_audio_mute' )
     
@@ -43,7 +43,7 @@ def SetMute( volume_type, mute ):
     
     ( mute_option_name, volume_option_name ) = volume_types_to_option_names[ volume_type ]
     
-    CG.client_controller.new_options.SetBoolean( mute_option_name, mute )
+    CG.client_controller.new_options.set_boolean(mute_option_name, mute)
     
     CG.client_controller.pub( 'new_audio_mute' )
     
@@ -65,7 +65,7 @@ class AudioMuteButton( ClientGUICommon.IconButton ):
         
         ( mute_option_name, volume_option_name ) = volume_types_to_option_names[ self._volume_type ]
         
-        if CG.client_controller.new_options.GetBoolean( mute_option_name ):
+        if CG.client_controller.new_options.get_boolean(mute_option_name):
             
             icon = CC.global_icons().mute
             
@@ -156,7 +156,7 @@ class VolumeControl( QW.QWidget ):
         
         super().resizeEvent( event )
         
-        CG.client_controller.CallAfterQtSafe( self, self._popup_window.DoShowHide )
+        CG.client_controller.call_after_qt_safe(self, self._popup_window.DoShowHide)
         
     
     def setVisible( self, *args, **kwargs ):
@@ -195,7 +195,7 @@ class VolumeControl( QW.QWidget ):
             
             self._specific_mute.setToolTip( ClientGUIFunctions.WrapToolTip( 'Mute/unmute: {}'.format( CC.canvas_type_str_lookup[ self._canvas_type ] ) ) )
             
-            if CG.client_controller.new_options.GetBoolean( option_to_use ):
+            if CG.client_controller.new_options.get_boolean(option_to_use):
                 
                 slider_volume_type = volume_type
                 
@@ -310,7 +310,7 @@ class VolumeControl( QW.QWidget ):
                 volume_type = AUDIO_PREVIEW
                 
             
-            if CG.client_controller.new_options.GetBoolean( option_to_use ):
+            if CG.client_controller.new_options.get_boolean(option_to_use):
                 
                 slider_volume_type = volume_type
                 
@@ -350,7 +350,7 @@ class VolumeSlider( QW.QSlider ):
         
         ( mute_option_name, volume_option_name ) = volume_types_to_option_names[ self._volume_type ]
         
-        return CG.client_controller.new_options.GetInteger( volume_option_name )
+        return CG.client_controller.new_options.get_integer(volume_option_name)
         
     
     def _VolumeSliderMoved( self ):

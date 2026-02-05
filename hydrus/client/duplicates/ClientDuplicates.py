@@ -76,9 +76,9 @@ def get_updated_domain_modified_timestamp_datas( destination_media_result: Clien
             
             destination_timestamp_ms = destination_timestamp_manager.GetDomainModifiedTimestampMS( domain )
             
-            if destination_timestamp_ms is None or ClientTime.ShouldUpdateModifiedTime( destination_timestamp_ms, source_timestamp_ms ):
+            if destination_timestamp_ms is None or ClientTime.should_update_modified_time(destination_timestamp_ms, source_timestamp_ms):
                 
-                timestamp_data = ClientTime.TimestampData.STATICDomainModifiedTime( domain, source_timestamp_ms )
+                timestamp_data = ClientTime.TimestampData.static_domain_modified_time(domain, source_timestamp_ms)
                 
                 timestamp_datas.append( timestamp_data )
                 
@@ -121,12 +121,12 @@ class DuplicateContentMergeOptions( HydrusSerialisable.SerialisableBase ):
     
     def _get_serialisable_info( self ):
         
-        if CG.client_controller.IsBooted():
+        if CG.client_controller.is_booted():
             
             services_manager = CG.client_controller.services_manager
             
-            self._tag_service_actions = [ ( service_key, action, tag_filter ) for ( service_key, action, tag_filter ) in self._tag_service_actions if services_manager.ServiceExists( service_key ) and services_manager.GetServiceType( service_key ) in HC.REAL_TAG_SERVICES ]
-            self._rating_service_actions = [ ( service_key, action ) for ( service_key, action ) in self._rating_service_actions if services_manager.ServiceExists( service_key ) and services_manager.GetServiceType( service_key ) in HC.RATINGS_SERVICES ]
+            self._tag_service_actions = [( service_key, action, tag_filter ) for ( service_key, action, tag_filter ) in self._tag_service_actions if services_manager.service_exists(service_key) and services_manager.get_service_type(service_key) in HC.REAL_TAG_SERVICES]
+            self._rating_service_actions = [( service_key, action ) for ( service_key, action ) in self._rating_service_actions if services_manager.service_exists(service_key) and services_manager.get_service_type(service_key) in HC.RATINGS_SERVICES]
             
         
         serialisable_tag_service_actions = [ ( service_key.hex(), action, tag_filter.GetSerialisableTuple() ) for ( service_key, action, tag_filter ) in self._tag_service_actions ]
@@ -320,7 +320,7 @@ class DuplicateContentMergeOptions( HydrusSerialisable.SerialisableBase ):
             ( 'B', b_work )
         ]:
             
-            work_flat = sorted( [ ( CG.client_controller.services_manager.GetName( service_key ), sorted( summary_strings ) ) for ( service_key, summary_strings ) in work.items() ] )
+            work_flat = sorted([(CG.client_controller.services_manager.get_name(service_key), sorted(summary_strings)) for (service_key, summary_strings) in work.items()])
             
             gubbins = '|'.join( [ name + ': ' + ', '.join( summary_strings ) for ( name, summary_strings ) in work_flat ] )
             
@@ -451,14 +451,14 @@ class DuplicateContentMergeOptions( HydrusSerialisable.SerialisableBase ):
             
             try:
                 
-                service = services_manager.GetService( service_key )
+                service = services_manager.get_service(service_key)
                 
             except HydrusExceptions.DataMissing:
                 
                 continue
                 
             
-            service_type = service.GetServiceType()
+            service_type = service.get_service_type()
             
             if service_type == HC.TAG_REPOSITORY and action == HC.CONTENT_MERGE_ACTION_MOVE:
                 
@@ -481,8 +481,8 @@ class DuplicateContentMergeOptions( HydrusSerialisable.SerialisableBase ):
             first_tags = media_result_a.GetTagsManager().GetCurrentAndPending( service_key, ClientTags.TAG_DISPLAY_STORAGE )
             second_tags = media_result_b.GetTagsManager().GetCurrentAndPending( service_key, ClientTags.TAG_DISPLAY_STORAGE )
             
-            first_tags = tag_filter.Filter( first_tags )
-            second_tags = tag_filter.Filter( second_tags )
+            first_tags = tag_filter.filter(first_tags)
+            second_tags = tag_filter.filter(second_tags)
             
             if action == HC.CONTENT_MERGE_ACTION_TWO_WAY_MERGE:
                 
@@ -528,7 +528,7 @@ class DuplicateContentMergeOptions( HydrusSerialisable.SerialisableBase ):
             
             try:
                 
-                service = services_manager.GetService( service_key )
+                service = services_manager.get_service(service_key)
                 
             except HydrusExceptions.DataMissing:
                 
@@ -538,7 +538,7 @@ class DuplicateContentMergeOptions( HydrusSerialisable.SerialisableBase ):
             first_current_value = media_result_a.GetRatingsManager().GetRating( service_key )
             second_current_value = media_result_b.GetRatingsManager().GetRating( service_key )
             
-            service_type = service.GetServiceType()
+            service_type = service.get_service_type()
             
             if service_type in HC.STAR_RATINGS_SERVICES:
                 
@@ -699,20 +699,20 @@ class DuplicateContentMergeOptions( HydrusSerialisable.SerialisableBase ):
             
             if self._sync_file_modified_date_action == HC.CONTENT_MERGE_ACTION_TWO_WAY_MERGE:
                 
-                if ClientTime.ShouldUpdateModifiedTime( first_timestamp_ms, second_timestamp_ms ):
+                if ClientTime.should_update_modified_time(first_timestamp_ms, second_timestamp_ms):
                     
-                    content_update_package.AddContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_TIMESTAMP, HC.CONTENT_UPDATE_SET, ( ( hash_a, ), ClientTime.TimestampData.STATICFileModifiedTime( second_timestamp_ms ) ) ) )
+                    content_update_package.AddContentUpdate(CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate(HC.CONTENT_TYPE_TIMESTAMP, HC.CONTENT_UPDATE_SET, ( ( hash_a, ), ClientTime.TimestampData.static_file_modified_time(second_timestamp_ms))))
                     
-                elif ClientTime.ShouldUpdateModifiedTime( second_timestamp_ms, first_timestamp_ms ):
+                elif ClientTime.should_update_modified_time(second_timestamp_ms, first_timestamp_ms):
                     
-                    content_update_package.AddContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_TIMESTAMP, HC.CONTENT_UPDATE_SET, ( ( hash_b, ), ClientTime.TimestampData.STATICFileModifiedTime( first_timestamp_ms ) ) ) )
+                    content_update_package.AddContentUpdate(CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate(HC.CONTENT_TYPE_TIMESTAMP, HC.CONTENT_UPDATE_SET, ( ( hash_b, ), ClientTime.TimestampData.static_file_modified_time(first_timestamp_ms))))
                     
                 
             elif self._sync_file_modified_date_action == HC.CONTENT_MERGE_ACTION_COPY:
                 
-                if ClientTime.ShouldUpdateModifiedTime( first_timestamp_ms, second_timestamp_ms ):
+                if ClientTime.should_update_modified_time(first_timestamp_ms, second_timestamp_ms):
                     
-                    content_update_package.AddContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_TIMESTAMP, HC.CONTENT_UPDATE_SET, ( ( hash_a, ), ClientTime.TimestampData.STATICFileModifiedTime( second_timestamp_ms ) ) ) )
+                    content_update_package.AddContentUpdate(CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate(HC.CONTENT_TYPE_TIMESTAMP, HC.CONTENT_UPDATE_SET, ( ( hash_a, ), ClientTime.TimestampData.static_file_modified_time(second_timestamp_ms))))
                     
                 
             
@@ -721,8 +721,8 @@ class DuplicateContentMergeOptions( HydrusSerialisable.SerialisableBase ):
         
         if self._sync_urls_action != HC.CONTENT_MERGE_ACTION_NONE:
             
-            first_urls = set( media_result_a.GetLocationsManager().GetURLs() )
-            second_urls = set( media_result_b.GetLocationsManager().GetURLs() )
+            first_urls = set(media_result_a.GetLocationsManager().get_urls())
+            second_urls = set(media_result_b.GetLocationsManager().get_urls())
             
             # hey note here that they url action is x_needs, but the timestamp action works off of what they other guy _has_, totally, since we want to examine conflicts to get the earlier time
             
@@ -790,16 +790,16 @@ class DuplicateContentMergeOptions( HydrusSerialisable.SerialisableBase ):
             
             if CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY in media_result.GetLocationsManager().GetCurrent():
                 
-                delete_lock_applies = not media_result.GetLocationsManager().inbox and CG.client_controller.new_options.GetBoolean( 'delete_lock_for_archived_files' )
+                delete_lock_applies = not media_result.GetLocationsManager().inbox and CG.client_controller.new_options.get_boolean('delete_lock_for_archived_files')
                 
                 if delete_lock_applies:
                     
-                    undo_delete_lock_1 = not in_auto_resolution and CG.client_controller.new_options.GetBoolean( 'delete_lock_reinbox_deletees_after_duplicate_filter' )
-                    undo_delete_lock_2 = in_auto_resolution and CG.client_controller.new_options.GetBoolean( 'delete_lock_reinbox_deletees_in_auto_resolution' )
+                    undo_delete_lock_1 = not in_auto_resolution and CG.client_controller.new_options.get_boolean('delete_lock_reinbox_deletees_after_duplicate_filter')
+                    undo_delete_lock_2 = in_auto_resolution and CG.client_controller.new_options.get_boolean('delete_lock_reinbox_deletees_in_auto_resolution')
                     
                     if ( undo_delete_lock_1 or undo_delete_lock_2 ):
                         
-                        content_update_package.AddContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_INBOX, { media_result.GetHash() } ) )
+                        content_update_package.AddContentUpdate(CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate(HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_INBOX, {media_result.get_hash()}))
                         
                         content_update_packages.append( content_update_package )
                         
@@ -807,7 +807,7 @@ class DuplicateContentMergeOptions( HydrusSerialisable.SerialisableBase ):
                         
                     
                 
-                content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, { media_result.GetHash() }, reason = file_deletion_reason )
+                content_update = ClientContentUpdates.ContentUpdate(HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, {media_result.get_hash()}, reason = file_deletion_reason)
                 
                 content_update_package.AddContentUpdate( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, content_update )
                 

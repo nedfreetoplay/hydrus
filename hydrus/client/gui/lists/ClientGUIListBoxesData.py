@@ -520,7 +520,7 @@ class ListBoxItemPredicate( ListBoxItem ):
                 
             else:
                 
-                texts = [ sub_pred.ToString() for sub_pred in self._predicate.GetValue() ]
+                texts = [sub_pred.to_string() for sub_pred in self._predicate.GetValue()]
                 
             
         elif self._predicate.GetType() == ClientSearchPredicate.PREDICATE_TYPE_NAMESPACE:

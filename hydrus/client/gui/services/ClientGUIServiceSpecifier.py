@@ -31,24 +31,24 @@ class EditServiceSpecifierPanel( ClientGUIScrolledPanels.EditPanel ):
         
         self._service_keys_radiobox = ClientGUICommon.BetterCheckBoxList( self )
         
-        allowed_services = CG.client_controller.services_manager.GetServices( allowed_service_types )
+        allowed_services = CG.client_controller.services_manager.get_services(allowed_service_types)
         
         for service in allowed_services:
             
-            name = service.GetName()
+            name = service.get_name()
             
             if len( allowed_service_types ) > 1:
                 
-                name = HC.service_string_lookup_short[ service.GetServiceType() ] + ': ' + name
+                name = HC.service_string_lookup_short[ service.get_service_type()] + ': ' + name
                 
             
-            self._service_keys_radiobox.Append( name, service.GetServiceKey() )
+            self._service_keys_radiobox.Append(name, service.get_service_key())
             
         
         #
         
-        service_types = service_specifier.GetServiceTypes()
-        service_keys = service_specifier.GetServiceKeys()
+        service_types = service_specifier.get_service_types()
+        service_keys = service_specifier.get_service_keys()
         
         if len( service_keys ) > 0:
             
@@ -141,7 +141,7 @@ class ServiceSpecifierButton( ClientGUICommon.BetterButton ):
     
     def _RefreshLabel( self ):
         
-        text = self._service_specifier.ToString()
+        text = self._service_specifier.to_string()
         
         self.setText( text )
         

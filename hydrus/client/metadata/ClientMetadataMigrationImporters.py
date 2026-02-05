@@ -36,9 +36,9 @@ class SingleFileMetadataImporter( ClientMetadataMigrationCore.ImporterExporterNo
         
         rows = self.ImportSansStringProcessing( *args, **kwargs )
         
-        if self._string_processor.MakesChanges():
+        if self._string_processor.makes_changes():
             
-            rows = self._string_processor.ProcessStrings( rows )
+            rows = self._string_processor.process_strings(rows)
             
         
         return rows
@@ -124,9 +124,9 @@ class SingleFileMetadataImporterMediaNotes( SingleFileMetadataImporterMedia, Hyd
     
     def ToString( self ) -> str:
         
-        if self._string_processor.MakesChanges():
+        if self._string_processor.makes_changes():
             
-            full_munge_text = ', applying {}'.format( self._string_processor.ToString() )
+            full_munge_text = ', applying {}'.format(self._string_processor.to_string())
             
         else:
             
@@ -262,16 +262,16 @@ class SingleFileMetadataImporterMediaTags( SingleFileMetadataImporterMedia, Hydr
         
         try:
             
-            name = CG.client_controller.services_manager.GetName( self._service_key )
+            name = CG.client_controller.services_manager.get_name(self._service_key)
             
         except:
             
             name = 'unknown service'
             
         
-        if self._string_processor.MakesChanges():
+        if self._string_processor.makes_changes():
             
-            full_munge_text = ', applying {}'.format( self._string_processor.ToString() )
+            full_munge_text = ', applying {}'.format(self._string_processor.to_string())
             
         else:
             
@@ -301,7 +301,7 @@ class SingleFileMetadataImporterMediaTimestamps( SingleFileMetadataImporterMedia
         
         if timestamp_data_stub is None:
             
-            timestamp_data_stub = ClientTime.TimestampData.STATICSimpleStub( HC.TIMESTAMP_TYPE_ARCHIVED )
+            timestamp_data_stub = ClientTime.TimestampData.static_simple_stub(HC.TIMESTAMP_TYPE_ARCHIVED)
             
         
         self._timestamp_data_stub = timestamp_data_stub
@@ -358,9 +358,9 @@ class SingleFileMetadataImporterMediaTimestamps( SingleFileMetadataImporterMedia
     
     def ToString( self ) -> str:
         
-        if self._string_processor.MakesChanges():
+        if self._string_processor.makes_changes():
             
-            full_munge_text = ', applying {}'.format( self._string_processor.ToString() )
+            full_munge_text = ', applying {}'.format(self._string_processor.to_string())
             
         else:
             
@@ -431,16 +431,16 @@ class SingleFileMetadataImporterMediaURLs( SingleFileMetadataImporterMedia, Hydr
     
     def ImportSansStringProcessing( self, media_result: ClientMediaResult.MediaResult ) -> list[ str ]:
         
-        urls = sorted( media_result.GetLocationsManager().GetURLs() )
+        urls = sorted(media_result.GetLocationsManager().get_urls())
         
         return urls
         
     
     def ToString( self ) -> str:
         
-        if self._string_processor.MakesChanges():
+        if self._string_processor.makes_changes():
             
-            full_munge_text = ', applying {}'.format( self._string_processor.ToString() )
+            full_munge_text = ', applying {}'.format(self._string_processor.to_string())
             
         else:
             
@@ -633,9 +633,9 @@ class SingleFileMetadataImporterJSON( SingleFileMetadataImporterSidecar, HydrusS
     
     def ToString( self ) -> str:
         
-        if self._string_processor.MakesChanges():
+        if self._string_processor.makes_changes():
             
-            full_munge_text = ', applying {}'.format( self._string_processor.ToString() )
+            full_munge_text = ', applying {}'.format(self._string_processor.to_string())
             
         else:
             
@@ -798,9 +798,9 @@ class SingleFileMetadataImporterTXT( SingleFileMetadataImporterSidecar, HydrusSe
     
     def ToString( self ) -> str:
         
-        if self._string_processor.MakesChanges():
+        if self._string_processor.makes_changes():
             
-            full_munge_text = ', applying {}'.format( self._string_processor.ToString() )
+            full_munge_text = ', applying {}'.format(self._string_processor.to_string())
             
         else:
             

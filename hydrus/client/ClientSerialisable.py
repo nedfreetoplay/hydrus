@@ -31,9 +31,9 @@ from hydrus.client.gui import ClientGUIFunctions
 
 IMREAD_UNCHANGED = cv2.IMREAD_UNCHANGED
 
-def CreateTopImage( width, title, payload_description, text ):
+def create_top_image(width, title, payload_description, text):
     
-    text_extent_qt_image = CG.client_controller.bitmap_manager.GetQtImage( 20, 20, 24 )
+    text_extent_qt_image = CG.client_controller.bitmap_manager.get_qt_image(20, 20, 24)
     
     painter = QG.QPainter( text_extent_qt_image )
     
@@ -57,7 +57,7 @@ def CreateTopImage( width, title, payload_description, text ):
         
         painter.setFont( f )
         
-        wrapped_texts = WrapText( painter, t, width - 20 )
+        wrapped_texts = wrap_text(painter, t, width - 20)
         line_height = painter.fontMetrics().height()
         
         wrapped_texts_with_ys = []
@@ -86,7 +86,7 @@ def CreateTopImage( width, title, payload_description, text ):
     
     #
     
-    top_qt_image = CG.client_controller.bitmap_manager.GetQtImage( width, top_height, 24 )
+    top_qt_image = CG.client_controller.bitmap_manager.get_qt_image(width, top_height, 24)
     
     painter = QG.QPainter( top_qt_image )
     
@@ -128,7 +128,7 @@ def CreateTopImage( width, title, payload_description, text ):
     
     return top_image
     
-def DumpToPNG( width, payload_bytes, title, payload_description, text, path ):
+def dump_to_png(width, payload_bytes, title, payload_description, text, path):
     
     payload_bytes_length = len( payload_bytes )
     
@@ -141,7 +141,7 @@ def DumpToPNG( width, payload_bytes, title, payload_description, text, path ):
         payload_height += 1
         
     
-    top_image = CreateTopImage( width, title, payload_description, text )
+    top_image = create_top_image(width, title, payload_description, text)
     
     payload_length_header = struct.pack( '!I', payload_bytes_length )
     
@@ -173,7 +173,7 @@ def DumpToPNG( width, payload_bytes, title, payload_description, text, path ):
         HydrusTemp.clean_ip_temp_path( os_file_handle, temp_path )
         
     
-def GetPayloadBytesAndLength( payload_obj ):
+def get_payload_bytes_and_length(payload_obj):
     
     if isinstance( payload_obj, bytes ):
         
@@ -190,7 +190,7 @@ def GetPayloadBytesAndLength( payload_obj ):
         return ( HydrusCompression.compress_string_to_bytes( payload_string ), len( payload_string ) )
         
     
-def GetPayloadTypeString( payload_obj ):
+def get_payload_type_string(payload_obj):
     
     if isinstance( payload_obj, bytes ):
         
@@ -206,7 +206,7 @@ def GetPayloadTypeString( payload_obj ):
         
         for o in payload_obj:
             
-            type_string_counts[ GetPayloadTypeString( o ) ] += 1
+            type_string_counts[ get_payload_type_string(o)] += 1
             
         
         type_string = ', '.join( ( HydrusNumbers.to_human_int( count ) + ' ' + s for ( s, count ) in list(type_string_counts.items()) ) )
@@ -222,23 +222,23 @@ def GetPayloadTypeString( payload_obj ):
         return repr( type( payload_obj ) )
         
     
-def GetPayloadDescriptionAndBytes( payload_obj ):
+def get_payload_description_and_bytes(payload_obj):
     
-    ( payload_bytes, payload_length ) = GetPayloadBytesAndLength( payload_obj )
+    ( payload_bytes, payload_length ) = get_payload_bytes_and_length(payload_obj)
     
-    payload_description = GetPayloadTypeString( payload_obj ) + ' - ' + HydrusData.to_human_bytes( payload_length )
+    payload_description = get_payload_type_string(payload_obj) + ' - ' + HydrusData.to_human_bytes(payload_length)
     
     return ( payload_description, payload_bytes )
     
 
-def LoadFromQtImage( qt_image: QG.QImage ):
+def load_from_qt_image(qt_image: QG.QImage):
     
     numpy_image = ClientGUIFunctions.ConvertQtImageToNumPy( qt_image )
     
-    return LoadFromNumPyImage( numpy_image )
+    return load_from_numpy_image(numpy_image)
     
 
-def LoadFromPNG( path ):
+def load_from_png(path):
     
     # this is to deal with unicode paths, which cv2 can't handle
     ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path()
@@ -282,10 +282,10 @@ def LoadFromPNG( path ):
         HydrusTemp.clean_ip_temp_path( os_file_handle, temp_path )
         
     
-    return LoadFromNumPyImage( numpy_image )
+    return load_from_numpy_image(numpy_image)
     
 
-def LoadFromNumPyImage( numpy_image: numpy.ndarray ):
+def load_from_numpy_image(numpy_image: numpy.ndarray):
     
     try:
         
@@ -343,9 +343,9 @@ def LoadFromNumPyImage( numpy_image: numpy.ndarray ):
     
     return payload_bytes
     
-def LoadStringFromPNG( path: str ) -> str:
+def load_string_from_png(path: str) -> str:
     
-    payload_bytes = LoadFromPNG( path )
+    payload_bytes = load_from_png(path)
     
     try:
         
@@ -359,13 +359,13 @@ def LoadStringFromPNG( path: str ) -> str:
     
     return payload_string
     
-def TextExceedsWidth( painter, text, width ):
+def text_exceeds_width(painter, text, width):
     
     ( text_size, text ) = ClientGUIFunctions.GetTextSizeFromPainter( painter, text )
     
     return text_size.width() > width
     
-def WrapText( painter, text, width ):
+def wrap_text(painter, text, width):
     
     words = text.split( ' ' )
     
@@ -384,7 +384,7 @@ def WrapText( painter, text, width ):
         
         potential_next_line.append( word )
         
-        if TextExceedsWidth( painter, ' '.join( potential_next_line ), width ):
+        if text_exceeds_width(painter, ' '.join(potential_next_line), width):
             
             if len( potential_next_line ) == 1: # one very long word
                 

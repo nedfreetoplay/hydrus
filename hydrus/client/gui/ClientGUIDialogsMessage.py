@@ -36,7 +36,7 @@ def ShowDialog( dialog_call: collections.abc.Callable, win: QW.QWidget | None, t
         
         qt_obj = CG.client_controller.app if win is None else win
         
-        CG.client_controller.CallBlockingToQtFireAndForgetNoResponse( qt_obj, dialog_call, win, title, message )
+        CG.client_controller.call_blocking_to_qt_fire_and_forget_no_response(qt_obj, dialog_call, win, title, message)
         
     
 

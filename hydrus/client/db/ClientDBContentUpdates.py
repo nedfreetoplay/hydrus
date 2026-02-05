@@ -128,7 +128,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
             
             service = self.modules_services.GetService( service_id )
             
-            service_type = service.GetServiceType()
+            service_type = service.get_service_type()
             
             valid_rows = [ ( hash_id, timestamp_ms ) for ( hash_id, timestamp_ms ) in rows if hash_id in new_hash_ids ]
             
@@ -277,7 +277,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
         
         service = self.modules_services.GetService( service_id )
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         existing_hash_ids_to_timestamps_ms = self.modules_files_storage.GetCurrentHashIdsToTimestampsMS( service_id, hash_ids )
         
@@ -479,7 +479,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
             
             service = self.modules_services.GetService( service_id )
             
-            service_type = service.GetServiceType()
+            service_type = service.get_service_type()
             
             ultimate_mappings_ids = []
             ultimate_deleted_mappings_ids = []
@@ -495,7 +495,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
             
             for content_update in content_updates:
                 
-                ( data_type, action, row ) = content_update.ToTuple()
+                ( data_type, action, row ) = content_update.to_tuple()
                 
                 if service_type in HC.REAL_FILE_SERVICES:
                     
@@ -528,7 +528,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                                 
                                 ( file_info_manager, timestamp_ms ) = row
                                 
-                                ( hash_id, hash, size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) = file_info_manager.ToTuple()
+                                ( hash_id, hash, size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) = file_info_manager.to_tuple()
                                 
                                 self.modules_files_metadata_basic.AddFilesInfo( [ ( hash_id, size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) ] )
                                 
@@ -567,7 +567,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                                 
                                 if action == HC.CONTENT_UPDATE_DELETE and service_key in ( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, CC.TRASH_SERVICE_KEY ):
                                     
-                                    local_hash_ids = self.modules_files_storage.FilterHashIds( ClientLocation.LocationContext.STATICCreateSimple( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY ), hash_ids )
+                                    local_hash_ids = self.modules_files_storage.FilterHashIds(ClientLocation.LocationContext.static_create_simple(CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY), hash_ids)
                                     
                                     actually_deletable_hash_ids = self.modules_file_delete_lock.FilterForPhysicalFileDeleteLock( local_hash_ids )
                                     

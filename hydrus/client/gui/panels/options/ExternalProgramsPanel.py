@@ -25,7 +25,7 @@ class ExternalProgramsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         self._web_browser_path = QW.QLineEdit( browser_panel )
         
-        web_browser_path = self._new_options.GetNoneableString( 'web_browser_path' )
+        web_browser_path = self._new_options.get_noneable_string('web_browser_path')
         
         if web_browser_path is not None:
             
@@ -42,7 +42,7 @@ class ExternalProgramsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         for mime in HC.SEARCHABLE_MIMES:
             
-            launch_path = self._new_options.GetMimeLaunch( mime )
+            launch_path = self._new_options.get_mime_launch(mime)
             
             row = ( mime, launch_path )
             
@@ -200,11 +200,11 @@ class ExternalProgramsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             web_browser_path = None
             
         
-        self._new_options.SetNoneableString( 'web_browser_path', web_browser_path )
+        self._new_options.set_noneable_string('web_browser_path', web_browser_path)
         
         for ( mime, launch_path ) in self._mime_launch_listctrl.GetData():
             
-            self._new_options.SetMimeLaunch( mime, launch_path )
+            self._new_options.set_mime_launch(mime, launch_path)
             
         
     

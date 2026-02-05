@@ -260,14 +260,14 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
             
             try:
                 
-                job_status.SetStatusTitle( 'database maintenance - analyzing' )
+                job_status.set_status_title('database maintenance - analyzing')
                 
                 CG.client_controller.pub( 'modal_message', job_status )
                 
                 for name in HydrusLists.iterate_list_randomly_and_fast( names_to_analyze ):
                     
                     CG.client_controller.frame_splash_status.SetText( 'analyzing ' + name )
-                    job_status.SetStatusText( 'analyzing ' + name )
+                    job_status.set_status_text('analyzing ' + name)
                     
                     time.sleep( 0.02 )
                     
@@ -283,7 +283,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
                         
                     
                     p1 = CG.client_controller.should_stop_this_work( maintenance_mode, stop_time = stop_time )
-                    p2 = job_status.IsCancelled()
+                    p2 = job_status.is_cancelled()
                     
                     if p1 or p2:
                         
@@ -293,13 +293,13 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
                 
                 self._execute( 'ANALYZE sqlite_master;' ) # this reloads the current stats into the query planner
                 
-                job_status.SetStatusText( 'done!' )
+                job_status.set_status_text('done!')
                 
-                HydrusData.print_text( job_status.ToString() )
+                HydrusData.print_text(job_status.to_string())
                 
             finally:
                 
-                job_status.FinishAndDismiss( 10 )
+                job_status.finish_and_dismiss(10)
                 
             
         
@@ -345,12 +345,12 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
         
         try:
             
-            job_status.SetStatusTitle( prefix_string + 'preparing' )
+            job_status.set_status_title(prefix_string + 'preparing')
             
             CG.client_controller.pub( 'modal_message', job_status )
             
-            job_status.SetStatusTitle( prefix_string + 'running' )
-            job_status.SetStatusText( 'errors found so far: ' + HydrusNumbers.to_human_int( num_errors ) )
+            job_status.set_status_title(prefix_string + 'running')
+            job_status.set_status_text('errors found so far: ' + HydrusNumbers.to_human_int(num_errors))
             
             db_names = [ name for ( index, name, path ) in self._execute( 'PRAGMA database_list;' ) if name not in ( 'mem', 'temp', 'durable_temp' ) ]
             
@@ -358,12 +358,12 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
                 
                 for ( text, ) in self._execute( 'PRAGMA ' + db_name + '.integrity_check;' ):
                     
-                    ( i_paused, should_quit ) = job_status.WaitIfNeeded()
+                    ( i_paused, should_quit ) = job_status.wait_if_needed()
                     
                     if should_quit:
                         
-                        job_status.SetStatusTitle( prefix_string + 'cancelled' )
-                        job_status.SetStatusText( 'errors found: ' + HydrusNumbers.to_human_int( num_errors ) )
+                        job_status.set_status_title(prefix_string + 'cancelled')
+                        job_status.set_status_text('errors found: ' + HydrusNumbers.to_human_int(num_errors))
                         
                         return
                         
@@ -380,18 +380,18 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
                         num_errors += 1
                         
                     
-                    job_status.SetStatusText( 'errors found so far: ' + HydrusNumbers.to_human_int( num_errors ) )
+                    job_status.set_status_text('errors found so far: ' + HydrusNumbers.to_human_int(num_errors))
                     
                 
             
         finally:
             
-            job_status.SetStatusTitle( prefix_string + 'completed' )
-            job_status.SetStatusText( 'errors found: ' + HydrusNumbers.to_human_int( num_errors ) )
+            job_status.set_status_title(prefix_string + 'completed')
+            job_status.set_status_text('errors found: ' + HydrusNumbers.to_human_int(num_errors))
             
-            HydrusData.print_text( job_status.ToString() )
+            HydrusData.print_text(job_status.to_string())
             
-            job_status.Finish()
+            job_status.finish()
             
         
     

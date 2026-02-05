@@ -59,10 +59,10 @@ def DoFileExportDragDrop( drag_object: QG.QDrag, page_key, media, alt_down ):
     
     for m in media:
         
-        hash = m.GetHash()
+        hash = m.get_hash()
         mime = m.GetMime()
         
-        total_size += m.GetSize()
+        total_size += m.get_size()
         
         original_path = client_files_manager.GetFilePath( hash, mime, check_file_exists = False )
         
@@ -72,7 +72,7 @@ def DoFileExportDragDrop( drag_object: QG.QDrag, page_key, media, alt_down ):
     
     #
     
-    discord_dnd_fix_possible = new_options.GetBoolean( 'discord_dnd_fix' ) and len( original_paths ) <= 50 and total_size < 200 * 1048576
+    discord_dnd_fix_possible = new_options.get_boolean('discord_dnd_fix') and len(original_paths) <= 50 and total_size < 200 * 1048576
     
     if discord_dnd_fix_possible:
         
@@ -105,7 +105,7 @@ def DoFileExportDragDrop( drag_object: QG.QDrag, page_key, media, alt_down ):
         
         DND_TEMP_DIRS.append( ( HydrusTime.get_now(), this_dnd_temp_dir ) )
         
-        make_it_a_move_flag = new_options.GetBoolean( 'secret_discord_dnd_fix' )
+        make_it_a_move_flag = new_options.get_boolean('secret_discord_dnd_fix')
         
         if make_it_a_move_flag:
             
@@ -122,7 +122,7 @@ def DoFileExportDragDrop( drag_object: QG.QDrag, page_key, media, alt_down ):
         
         try:
             
-            filename_pattern = new_options.GetString( 'discord_dnd_filename_pattern' )
+            filename_pattern = new_options.get_string('discord_dnd_filename_pattern')
             filename_terms = ClientExportingFiles.ParseExportPhrase( filename_pattern )
             
             if len( filename_terms ) == 0:
@@ -185,7 +185,7 @@ def DoFileExportDragDrop( drag_object: QG.QDrag, page_key, media, alt_down ):
     
     #
     
-    hashes = [ m.GetHash() for m in media ]
+    hashes = [m.get_hash() for m in media]
     
     data_object.setHydrusFiles( page_key, hashes )
     
@@ -285,7 +285,7 @@ class FileDropTarget( QC.QObject ):
                 
                 if page_key is not None:
                     
-                    CG.client_controller.CallAfterQtSafe( self, self._media_callable, page_key, hashes )  # callafter so we can terminate dnd event now
+                    CG.client_controller.call_after_qt_safe(self, self._media_callable, page_key, hashes)  # callafter so we can terminate dnd event now
                     
                 
             
@@ -357,7 +357,7 @@ class FileDropTarget( QC.QObject ):
                 
                 if len( paths ) > 0:
                     
-                    CG.client_controller.CallAfterQtSafe( self, self._filenames_callable, paths ) # callafter to terminate dnd event now
+                    CG.client_controller.call_after_qt_safe(self, self._filenames_callable, paths) # callafter to terminate dnd event now
                     
                 
             
@@ -378,7 +378,7 @@ class FileDropTarget( QC.QObject ):
                             continue
                             
                         
-                        CG.client_controller.CallAfterQtSafe( self, self._url_callable, url ) # callafter to terminate dnd event now
+                        CG.client_controller.call_after_qt_safe(self, self._url_callable, url) # callafter to terminate dnd event now
                         
                     
                 

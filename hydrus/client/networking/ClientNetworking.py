@@ -72,7 +72,7 @@ class NetworkEngine( object ):
         self._jobs_awaiting_slot = []
         self._jobs_running = []
         
-        self._pause_all_new_network_traffic = self.controller.new_options.GetBoolean( 'pause_all_new_network_traffic' )
+        self._pause_all_new_network_traffic = self.controller.new_options.get_boolean('pause_all_new_network_traffic')
         
         self._is_running = False
         self._is_shutdown = False
@@ -172,7 +172,7 @@ class NetworkEngine( object ):
                         
                         validation_process = job.GenerateValidationPopupProcess()
                         
-                        self.controller.call_to_thread( validation_process.Start )
+                        self.controller.call_to_thread(validation_process.start)
                         
                         self._current_validation_process = validation_process
                         
@@ -208,7 +208,7 @@ class NetworkEngine( object ):
             
             if self._current_validation_process is not None:
                 
-                if self._current_validation_process.IsDone():
+                if self._current_validation_process.is_done():
                     
                     self._current_validation_process = None
                     
@@ -263,7 +263,7 @@ class NetworkEngine( object ):
                     return
                     
                 
-                self.controller.call_to_thread( login_process.Start )
+                self.controller.call_to_thread(login_process.start)
                 
                 self._AssignCurrentLoginProcess( login_process )
                 
@@ -301,11 +301,11 @@ class NetworkEngine( object ):
                         
                         if job.IsHydrusJob():
                             
-                            message = f'This hydrus service "{job_login_network_context.ToString()}" could not do work because: {e}'
+                            message = f'This hydrus service "{job_login_network_context.to_string()}" could not do work because: {e}'
                             
                         else:
                             
-                            message = f'This job\'s network context "{job_login_network_context.ToString()}" seems to have an invalid login. The error was: {e}'
+                            message = f'This job\'s network context "{job_login_network_context.to_string()}" seems to have an invalid login. The error was: {e}'
                             
                         
                         job.Cancel( message )
@@ -331,7 +331,7 @@ class NetworkEngine( object ):
                         return True
                         
                     
-                    self.controller.call_to_thread( login_process.Start )
+                    self.controller.call_to_thread(login_process.start)
                     
                     self._AssignCurrentLoginProcess( login_process )
                     
@@ -356,7 +356,7 @@ class NetworkEngine( object ):
             
             if self._current_login_process is not None:
                 
-                if self._current_login_process.IsDone():
+                if self._current_login_process.is_done():
                     
                     self._AssignCurrentLoginProcess( None )
                     
@@ -495,7 +495,7 @@ class NetworkEngine( object ):
         
         self._pause_all_new_network_traffic = not self._pause_all_new_network_traffic
         
-        self.controller.new_options.SetBoolean( 'pause_all_new_network_traffic', self._pause_all_new_network_traffic )
+        self.controller.new_options.set_boolean('pause_all_new_network_traffic', self._pause_all_new_network_traffic)
         
         if not self._pause_all_new_network_traffic:
             
@@ -507,8 +507,8 @@ class NetworkEngine( object ):
         
         with self._lock:
             
-            self.MAX_JOBS = self.controller.new_options.GetInteger( 'max_network_jobs' )
-            self.MAX_JOBS_PER_DOMAIN = self.controller.new_options.GetInteger( 'max_network_jobs_per_domain' )
+            self.MAX_JOBS = self.controller.new_options.get_integer('max_network_jobs')
+            self.MAX_JOBS_PER_DOMAIN = self.controller.new_options.get_integer('max_network_jobs_per_domain')
             
         
     

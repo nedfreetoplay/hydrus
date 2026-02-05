@@ -34,14 +34,14 @@ class EditTagDisplayApplication( ClientGUIScrolledPanels.EditPanel ):
         
         #
         
-        services = list( CG.client_controller.services_manager.GetServices( HC.REAL_TAG_SERVICES ) )
+        services = list(CG.client_controller.services_manager.get_services(HC.REAL_TAG_SERVICES))
         
-        default_tag_service_key = CG.client_controller.new_options.GetKey( 'default_tag_service_tab' )
+        default_tag_service_key = CG.client_controller.new_options.get_key('default_tag_service_tab')
         
         for service in services:
             
-            master_service_key = service.GetServiceKey()
-            name = service.GetName()
+            master_service_key = service.get_service_key()
+            name = service.get_name()
             
             sibling_applicable_service_keys = master_service_keys_to_sibling_applicable_service_keys[ master_service_key ]
             parent_applicable_service_keys = master_service_keys_to_parent_applicable_service_keys[ master_service_key ]
@@ -53,7 +53,7 @@ class EditTagDisplayApplication( ClientGUIScrolledPanels.EditPanel ):
             if master_service_key == default_tag_service_key:
                 
                 # Py 3.11/PyQt6 6.5.0/two tabs/total tab characters > ~12/select second tab during init = first tab disappears bug
-                CG.client_controller.CallAfterQtSafe( self._tag_services, self._tag_services.setCurrentWidget, page )
+                CG.client_controller.call_after_qt_safe(self._tag_services, self._tag_services.setCurrentWidget, page)
                 
             
         
@@ -79,7 +79,7 @@ class EditTagDisplayApplication( ClientGUIScrolledPanels.EditPanel ):
         
         self._sync_status.setWordWrap( True )
         
-        if CG.client_controller.new_options.GetBoolean( 'tag_display_maintenance_during_active' ):
+        if CG.client_controller.new_options.get_boolean('tag_display_maintenance_during_active'):
             
             self._sync_status.setText( 'Siblings and parents are set to sync all the time. Changes will start applying as soon as you ok this dialog.' )
             
@@ -87,7 +87,7 @@ class EditTagDisplayApplication( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            if CG.client_controller.new_options.GetBoolean( 'tag_display_maintenance_during_idle' ):
+            if CG.client_controller.new_options.get_boolean('tag_display_maintenance_during_idle'):
                 
                 self._sync_status.setText( 'Siblings and parents are only set to sync during idle time. Changes here will only start to apply when you are not using the client.' )
                 
@@ -113,11 +113,11 @@ class EditTagDisplayApplication( ClientGUIScrolledPanels.EditPanel ):
     
     def _ServicePageChanged( self ):
         
-        if CG.client_controller.new_options.GetBoolean( 'save_default_tag_service_tab_on_change' ):
+        if CG.client_controller.new_options.get_boolean('save_default_tag_service_tab_on_change'):
             
             current_page = typing.cast( EditTagDisplayApplication._Panel, self._tag_services.currentWidget() )
             
-            CG.client_controller.new_options.SetKey( 'default_tag_service_tab', current_page.GetServiceKey() )
+            CG.client_controller.new_options.set_key('default_tag_service_tab', current_page.GetServiceKey())
             
         
     
@@ -151,7 +151,7 @@ class EditTagDisplayApplication( ClientGUIScrolledPanels.EditPanel ):
             
             #
             
-            self._sibling_service_keys_listbox = ClientGUIListBoxes.QueueListBox( self._sibling_box, 4, CG.client_controller.services_manager.GetName, add_callable = self._AddSibling )
+            self._sibling_service_keys_listbox = ClientGUIListBoxes.QueueListBox(self._sibling_box, 4, CG.client_controller.services_manager.get_name, add_callable = self._AddSibling)
             
             #
             
@@ -163,7 +163,7 @@ class EditTagDisplayApplication( ClientGUIScrolledPanels.EditPanel ):
             
             #
             
-            self._parent_service_keys_listbox = ClientGUIListBoxes.QueueListBox( self._sibling_box, 4, CG.client_controller.services_manager.GetName, add_callable = self._AddParent )
+            self._parent_service_keys_listbox = ClientGUIListBoxes.QueueListBox(self._sibling_box, 4, CG.client_controller.services_manager.get_name, add_callable = self._AddParent)
             
             #
             
@@ -194,9 +194,9 @@ class EditTagDisplayApplication( ClientGUIScrolledPanels.EditPanel ):
         
         def _AddService( self, current_service_keys ):
             
-            allowed_services = CG.client_controller.services_manager.GetServices( HC.REAL_TAG_SERVICES )
+            allowed_services = CG.client_controller.services_manager.get_services(HC.REAL_TAG_SERVICES)
             
-            allowed_services = [ service for service in allowed_services if service.GetServiceKey() not in current_service_keys ]
+            allowed_services = [service for service in allowed_services if service.get_service_key() not in current_service_keys]
             
             if len( allowed_services ) == 0:
                 
@@ -205,7 +205,7 @@ class EditTagDisplayApplication( ClientGUIScrolledPanels.EditPanel ):
                 raise HydrusExceptions.VetoException()
                 
             
-            choice_tuples = [ ( service.GetName(), service.GetServiceKey(), service.GetName() ) for service in allowed_services ]
+            choice_tuples = [(service.get_name(), service.get_service_key(), service.get_name()) for service in allowed_services]
             
             try:
                 
