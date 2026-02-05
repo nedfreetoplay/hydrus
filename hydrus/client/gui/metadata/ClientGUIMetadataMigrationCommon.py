@@ -67,7 +67,7 @@ class EditSidecarDetailsPanel( ClientGUICommon.StaticBox ):
             
             self._filename_string_converter.SetExampleString( result )
             
-        except Exception as e:
+        except:
             
             pass
             

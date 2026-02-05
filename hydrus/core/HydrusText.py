@@ -6,7 +6,7 @@ try:
     
     CHARDET_OK = True
     
-except Exception as e:
+except:
     
     CHARDET_OK = False
     
@@ -65,7 +65,7 @@ def cleanse_import_text( text: str ):
             
             return text.encode( 'utf-16', 'surrogatepass' ).decode( 'utf-16' )
             
-        except Exception as e:
+        except:
             
             import HydrusData
             
@@ -421,7 +421,7 @@ def looks_like_json( file_data: str | bytes ) -> bool:
         
         return True
         
-    except Exception as e:
+    except:
         
         return False
         
@@ -469,7 +469,7 @@ def non_Failing_unicode_decode( data, encoding, trust_the_encoding = False ):
             
             return ( text, encoding )
             
-        except Exception as e:
+        except:
             
             # ok, the encoding type wasn't recognised locally or something, so revert to trying our best
             encoding = None
@@ -541,7 +541,7 @@ def non_Failing_unicode_decode( data, encoding, trust_the_encoding = False ):
                     text = default_text
                     encoding = default_encoding
                     
-                except Exception as e:
+                except:
                     
                     text = f'Could not decode the page--problem with given encoding "{encoding}" and no chardet library available.'
                     encoding = 'utf-8'

@@ -726,7 +726,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                     
                     self._value = tuple(sorted(self._value, key = lambda p: HydrusText.human_text_sort_key(p.to_string())))
                     
-                except Exception as e:
+                except:
                     
                     pass
                     
@@ -1244,7 +1244,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                             
                             service_type = CG.client_controller.services_manager.get_service_type(service_key)
                             
-                        except Exception as e:
+                        except:
                             
                             return None
                             
@@ -2608,7 +2608,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                         
                         base = 'missing rating service system predicate'
                         
-                    except Exception as e:
+                    except:
                         
                         base = 'unknown rating service system predicate'
                         
@@ -2987,10 +2987,7 @@ def SetPredicatesInclusivity( predicates: list[ Predicate ], inclusive: bool ):
         
         for predicate in predicates:
             
-            if predicate.GetType() in NON_INCLUSIVE_CAPABLE_PREDICATE_TYPES:
-                
-                predicate.SetInclusive( True )
-                
+            predicate.SetInclusive( True )
             
         
     else:

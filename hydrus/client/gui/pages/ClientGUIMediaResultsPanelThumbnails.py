@@ -433,7 +433,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
     def _GetMediaCoordinates( self, media ):
         
         try: index = self._sorted_media.index( media )
-        except Exception as e: return ( -1, -1 )
+        except: return ( -1, -1 )
         
         row = index // self._num_columns
         column = index % self._num_columns
@@ -1227,7 +1227,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                 
                 self._ScrollToMedia( self._focused_media )
                 
-            except Exception as e:
+            except:
                 
                 pass
                 
@@ -1917,7 +1917,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                     
                     expected_thumbnail = self._sorted_media[ thumbnail_index ]
                     
-                except Exception as e:
+                except:
                     
                     expected_thumbnail = None
                     

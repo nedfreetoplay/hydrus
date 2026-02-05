@@ -1294,7 +1294,7 @@ class EditNestedFormulaPanel( EditSpecificFormulaPanel ):
                     
                 
             
-        except Exception as e:
+        except:
             
             main_texts = [ '' ]
             

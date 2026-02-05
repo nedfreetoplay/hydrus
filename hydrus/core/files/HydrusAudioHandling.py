@@ -18,7 +18,7 @@ def parse_ffmpeg_audio( lines ):
             
             audio_fps = int(line[match.start()+1:match.end()])
             
-        except Exception as e:
+        except:
             
             audio_fps = 'unknown'
             
@@ -29,7 +29,7 @@ def parse_ffmpeg_audio( lines ):
             
             audio_format = match.group()
             
-        except Exception as e:
+        except:
             
             audio_format = 'unknown'
             

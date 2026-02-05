@@ -30,7 +30,7 @@ def get_paint_net_resolution( path: str ):
         
         return get_paint_net_resolution_from_xml_header( xml_header )
         
-    except Exception as e:
+    except:
         
         raise HydrusExceptions.NoThumbnailFileException( f'Could not read resolution bytes from this Paint.NET!' )
         
@@ -45,7 +45,7 @@ def get_paint_net_resolution_from_xml_header( xml_header: str ):
         width = int( root.attrib[ 'width' ] )
         height = int( root.attrib[ 'height' ] )
         
-    except Exception as e:
+    except:
         
         raise HydrusExceptions.DamagedOrUnusualFileException( 'Cannot parse the XML from this Paint.NET file!' )
         
@@ -65,7 +65,7 @@ def get_paint_net_xml_header( path:str ):
             
             xml_header = f.read( header_length ).decode( 'utf-8' )
             
-        except Exception as e:
+        except:
             
             raise HydrusExceptions.DamagedOrUnusualFileException( 'Cannot read the XML from this Paint.NET file!' )
             
@@ -85,7 +85,7 @@ def thumbnail_pil_image_from_paint_net( path: str ):
         thumb_tag = root.find( './custom/thumb' )
         png_b64 = thumb_tag.attrib[ 'png' ]
         
-    except Exception as e:
+    except:
         
         raise HydrusExceptions.NoThumbnailFileException( f'Could not read thumb bytes from this Paint.NET xml!' )
         
@@ -94,7 +94,7 @@ def thumbnail_pil_image_from_paint_net( path: str ):
         
         png_bytes = base64.b64decode( png_b64 )
         
-    except Exception as e:
+    except:
         
         raise HydrusExceptions.NoThumbnailFileException( f'Could not decode thumb bytes from this Paint.NET xml!' )
         

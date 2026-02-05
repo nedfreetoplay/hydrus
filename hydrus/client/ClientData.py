@@ -54,19 +54,8 @@ def catch_exception_client(etype, value, tb):
         
         job_status = ClientThreading.JobStatus()
         
-<<<<<<< HEAD
         try: job_status.set_status_title(str(etype.__name__))
         except: job_status.set_status_title(str(etype))
-=======
-        try:
-            
-            job_status.SetStatusTitle( str( etype.__name__ ) )
-            
-        except Exception as e:
-            
-            job_status.SetStatusTitle( str( etype ) )
-            
->>>>>>> 955f2e8e9df1d901351bb3dcf4c0a50e99048667
         
         job_status.set_status_text(first_line)
         job_status.set_traceback(trace)
@@ -79,7 +68,7 @@ def catch_exception_client(etype, value, tb):
         
         CG.client_controller.pub( 'message', job_status )
         
-    except Exception as e:
+    except:
         
         text = 'Encountered an error I could not parse:'
         
@@ -87,14 +76,8 @@ def catch_exception_client(etype, value, tb):
         
         text += str( ( etype, value, tb ) )
         
-        try:
-            
-            text += traceback.format_exc()
-            
-        except Exception as e:
-            
-            pass
-            
+        try: text += traceback.format_exc()
+        except: pass
         
         HydrusData.show_text( text )
         
@@ -162,7 +145,7 @@ def resolution_to_pretty_string(resolution):
             
             resolution = tuple( resolution )
             
-        except Exception as e:
+        except:
             
             return 'broken resolution'
             
@@ -222,19 +205,8 @@ def show_exception_tuple_client(etype, value, tb, do_wait = True):
     
     job_status = ClientThreading.JobStatus()
     
-<<<<<<< HEAD
     try: job_status.set_status_title(str(etype.__name__))
     except: job_status.set_status_title(str(etype))
-=======
-    try:
-        
-        job_status.SetStatusTitle( str( etype.__name__ ) )
-        
-    except Exception as e:
-        
-        job_status.SetStatusTitle( str( etype ) )
-        
->>>>>>> 955f2e8e9df1d901351bb3dcf4c0a50e99048667
     
     job_status.set_status_text(first_line)
     

@@ -28,7 +28,7 @@ def get_frame_durations_ms_ugoira(media: ClientMediaResult.MediaResult):
             return durations_ms
             
         
-    except Exception as e:
+    except:
         
         pass
         
@@ -42,7 +42,7 @@ def get_frame_durations_ms_ugoira(media: ClientMediaResult.MediaResult):
             return durations_ms
             
         
-    except Exception as e:
+    except:
         
         pass
         
@@ -85,7 +85,7 @@ def get_frame_durations_ms_from_note(media: ClientMediaResult.MediaResult):
                 return frame_durations_ms 
                 
             
-        except Exception as e:
+        except:
             
             pass
             
@@ -102,7 +102,7 @@ def get_frame_durations_ms_from_note(media: ClientMediaResult.MediaResult):
                 return ugoiraJsonArray
                 
             
-        except Exception as e:
+        except:
             
             pass
             

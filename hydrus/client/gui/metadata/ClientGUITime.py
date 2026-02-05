@@ -864,7 +864,7 @@ class DateTimesCtrl( QW.QWidget ):
                         
                     
                 
-            except Exception as e:
+            except:
                 
                 pass
                 
@@ -878,7 +878,7 @@ class DateTimesCtrl( QW.QWidget ):
                 
                 timestamp_set = True
                 
-            except Exception as e:
+            except:
                 
                 pass
                 

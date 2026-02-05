@@ -421,7 +421,7 @@ class ThumbnailCache( object ):
                     
                     return hydrus_bitmap
                     
-                except Exception as e:
+                except:
                     
                     pass
                     
@@ -849,7 +849,7 @@ class ThumbnailCache( object ):
                         
                         hydrus_bitmap = self._GetThumbnailHydrusBitmap( media_result )
                         
-                    except Exception as e:
+                    except:
                         
                         return default_thumb_hydrus_bitmap
                         

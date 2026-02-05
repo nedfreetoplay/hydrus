@@ -658,7 +658,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 filename = GenerateExportFilename( self._path, media_result, terms, i + 1 )
                 
-            except Exception as e:
+            except:
                 
                 fallback_filename_terms = ParseExportPhrase( '{hash}' )
                 

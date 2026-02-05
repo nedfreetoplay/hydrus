@@ -937,7 +937,7 @@ class PotentialDuplicatesSearchContext( HydrusSerialisable.SerialisableBase ):
                 
                 location_context = CG.client_controller.new_options.get_default_local_location_context()
                 
-            except Exception as e:
+            except:
                 
                 location_context = ClientLocation.LocationContext.static_create_simple(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY)
                 

@@ -432,7 +432,7 @@ class JobStatus( object ):
             
             return '\n'.join( stuff_to_print )
             
-        except Exception as e:
+        except:
             
             return repr( stuff_to_print )
             

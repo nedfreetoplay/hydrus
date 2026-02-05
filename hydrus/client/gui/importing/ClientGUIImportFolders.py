@@ -668,7 +668,7 @@ class EditImportFolderPanel( ClientGUIScrolledPanels.EditPanel ):
                 self._sidecar_test_context_factory.SetExampleFilePaths( example_paths )
                 
             
-        except Exception as e:
+        except:
             
             return
             

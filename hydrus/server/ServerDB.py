@@ -755,7 +755,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 ( account_type_id, account_key, expires ) = self._execute( 'SELECT account_type_id, account_key, expires FROM registration_keys WHERE access_key = ?;', ( sqlite3.Binary( access_key ), ) ).fetchone()
                 
-            except Exception as e:
+            except:
                 
                 raise HydrusExceptions.InsufficientCredentialsException( 'The service could not find that account in its database.' )
                 
@@ -788,13 +788,8 @@ class DB( HydrusDB.HydrusDB ):
     
     def _get_account_key_from_account_id( self, account_id ):
         
-<<<<<<< HEAD
         try: ( account_key, ) = self._execute( 'SELECT account_key FROM accounts WHERE account_id = ?;', ( account_id, ) ).fetchone()
         except: raise HydrusExceptions.InsufficientCredentialsException( 'The service could not find that account_id in its database.' )
-=======
-        try: ( account_key, ) = self._Execute( 'SELECT account_key FROM accounts WHERE account_id = ?;', ( account_id, ) ).fetchone()
-        except Exception as e: raise HydrusExceptions.InsufficientCredentialsException( 'The service could not find that account_id in its database.' )
->>>>>>> 955f2e8e9df1d901351bb3dcf4c0a50e99048667
         
         return account_key
         
@@ -4275,7 +4270,7 @@ class DB( HydrusDB.HydrusDB ):
                     
                     master_tag_id = self._get_master_tag_id( tag )
                     
-                except Exception as e:
+                except:
                     
                     continue
                     
@@ -4296,7 +4291,7 @@ class DB( HydrusDB.HydrusDB ):
                     
                     master_tag_id = self._get_master_tag_id( tag )
                     
-                except Exception as e:
+                except:
                     
                     continue
                     
@@ -4328,7 +4323,7 @@ class DB( HydrusDB.HydrusDB ):
                     
                     master_tag_id = self._get_master_tag_id( tag )
                     
-                except Exception as e:
+                except:
                     
                     continue
                     
@@ -4354,7 +4349,7 @@ class DB( HydrusDB.HydrusDB ):
                     child_master_tag_id = self._get_master_tag_id( child_tag )
                     parent_master_tag_id = self._get_master_tag_id( parent_tag )
                     
-                except Exception as e:
+                except:
                     
                     continue
                     
@@ -4380,7 +4375,7 @@ class DB( HydrusDB.HydrusDB ):
                     child_master_tag_id = self._get_master_tag_id( child_tag )
                     parent_master_tag_id = self._get_master_tag_id( parent_tag )
                     
-                except Exception as e:
+                except:
                     
                     continue
                     
@@ -4410,7 +4405,7 @@ class DB( HydrusDB.HydrusDB ):
                     child_master_tag_id = self._get_master_tag_id( child_tag )
                     parent_master_tag_id = self._get_master_tag_id( parent_tag )
                     
-                except Exception as e:
+                except:
                     
                     continue
                     
@@ -4425,7 +4420,7 @@ class DB( HydrusDB.HydrusDB ):
                     child_master_tag_id = self._get_master_tag_id( child_tag )
                     parent_master_tag_id = self._get_master_tag_id( parent_tag )
                     
-                except Exception as e:
+                except:
                     
                     continue
                     
@@ -4450,7 +4445,7 @@ class DB( HydrusDB.HydrusDB ):
                     bad_master_tag_id = self._get_master_tag_id( bad_tag )
                     good_master_tag_id = self._get_master_tag_id( good_tag )
                     
-                except Exception as e:
+                except:
                     
                     continue
                     
@@ -4477,7 +4472,7 @@ class DB( HydrusDB.HydrusDB ):
                     bad_master_tag_id = self._get_master_tag_id( bad_tag )
                     good_master_tag_id = self._get_master_tag_id( good_tag )
                     
-                except Exception as e:
+                except:
                     
                     continue
                     
@@ -4506,7 +4501,7 @@ class DB( HydrusDB.HydrusDB ):
                     bad_master_tag_id = self._get_master_tag_id( bad_tag )
                     good_master_tag_id = self._get_master_tag_id( good_tag )
                     
-                except Exception as e:
+                except:
                     
                     continue
                     
@@ -4521,7 +4516,7 @@ class DB( HydrusDB.HydrusDB ):
                     bad_master_tag_id = self._get_master_tag_id( bad_tag )
                     good_master_tag_id = self._get_master_tag_id( good_tag )
                     
-                except Exception as e:
+                except:
                     
                     continue
                     

@@ -277,7 +277,7 @@ class ServiceSpecifier( HydrusSerialisable.SerialisableBase ):
                     
                 
             
-        except Exception as e:
+        except:
             
             service_keys = set()
             
@@ -327,7 +327,7 @@ class ServiceSpecifier( HydrusSerialisable.SerialisableBase ):
                     
                     name = CG.client_controller.services_manager.get_service_name(service_key)
                     
-                except Exception as e:
+                except:
                     
                     name = 'unknown service'
                     
@@ -487,7 +487,7 @@ class Service( object ):
                 
                 return True
                 
-            except Exception as e:
+            except:
                 
                 return False
                 
@@ -1165,7 +1165,7 @@ class ServiceRestricted( ServiceRemote ):
             
             return True
             
-        except Exception as e:
+        except:
             
             return False
             
@@ -1346,7 +1346,7 @@ class ServiceRestricted( ServiceRemote ):
                 
                 return True
                 
-            except Exception as e:
+            except:
                 
                 return False
                 
@@ -1644,7 +1644,7 @@ class ServiceRestricted( ServiceRemote ):
                                         
                                         HydrusData.show_text( message )
                                         
-                                    except Exception as e:
+                                    except:
                                         
                                         pass
                                         
@@ -1721,7 +1721,7 @@ class ServiceRepository( ServiceRestricted ):
             
             return not self._update_downloading_paused
             
-        except Exception as e:
+        except:
             
             return False
             
@@ -2180,7 +2180,7 @@ class ServiceRepository( ServiceRestricted ):
                         
                         definition_update = HydrusSerialisable.create_from_network_bytes( update_network_bytes )
                         
-                    except Exception as e:
+                    except:
                         
                         CG.client_controller.write_synchronous( 'schedule_repository_update_file_maintenance', self._service_key, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_REMOVE_RECORD )
                         
@@ -2309,7 +2309,7 @@ class ServiceRepository( ServiceRestricted ):
                         
                         content_update = HydrusSerialisable.create_from_network_bytes( update_network_bytes )
                         
-                    except Exception as e:
+                    except:
                         
                         CG.client_controller.write_synchronous( 'schedule_repository_update_file_maintenance', self._service_key, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_REMOVE_RECORD )
                         

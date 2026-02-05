@@ -163,7 +163,7 @@ class MediaResult( object ):
                             return ( note_duration_ms, 'note-based' )
                             
                         
-                    except Exception as e:
+                    except:
                         
                         return ( 0, 'unknown note-based duration' )
                         

@@ -695,7 +695,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
                     
                     value = bytes.fromhex( value )
                     
-                except Exception as e:
+                except:
                     
                     value = None
                     
@@ -1041,7 +1041,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
                         
                         file_command_target_string = file_command_target_enum_to_str_lookup[ hacky_ipfs_dict[ 'file_command_target' ] ]
                         
-                    except Exception as e:
+                    except:
                         
                         file_command_target_string = 'unknown'
                         
@@ -1052,7 +1052,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
                         
                         name = CG.client_controller.services_manager.get_name(ipfs_service_key)
                         
-                    except Exception as e:
+                    except:
                         
                         name = 'unknown service'
                         
@@ -1131,7 +1131,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
                         
                         value_string = '(from {})'.format( from_name )
                         
-                    except Exception as e:
+                    except:
                         
                         value_string = ''
                         
@@ -1171,7 +1171,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
                 return ' '.join( components )
                 
             
-        except Exception as e:
+        except:
             
             return 'Unknown Application Command: ' + repr( ( self._command_type, self._data ) )
             

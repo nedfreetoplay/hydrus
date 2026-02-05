@@ -39,7 +39,7 @@ def qt_load_pdf(path: str):
         
         document.load( path )
         
-    except Exception as e:
+    except:
         
         raise HydrusExceptions.DamagedOrUnusualFileException( 'Could not load PDF file.' )
         
@@ -124,7 +124,7 @@ def get_human_readable_embedded_metadata(path) -> str:
             
             document = qt_load_pdf(path)
             
-        except Exception as e:
+        except:
             
             raise HydrusExceptions.LimitedSupportFileException()
             
@@ -176,7 +176,7 @@ def _get_pdf_info(path: str):
             
             document = qt_load_pdf(path)
             
-        except Exception as e:
+        except:
             
             raise HydrusExceptions.LimitedSupportFileException()
             
@@ -185,7 +185,7 @@ def _get_pdf_info(path: str):
             
             ( width, height ) = get_pdf_resolution_from_document(document)
             
-        except Exception as e:
+        except:
             
             ( width, height ) = ( None, None )
             
@@ -230,7 +230,7 @@ def get_pdf_modified_timestamp_ms(path):
             
             document = qt_load_pdf(path)
             
-        except Exception as e:
+        except:
             
             raise HydrusExceptions.LimitedSupportFileException()
             

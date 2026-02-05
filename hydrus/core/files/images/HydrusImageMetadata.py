@@ -61,7 +61,7 @@ def get_embedded_file_text( pil_image: PILImage.Image ) -> str | None:
             
             return render_dict( pil_image.info, '' )
             
-        except Exception as e:
+        except:
             
             pass
             
@@ -83,7 +83,7 @@ def get_exif_dict( pil_image: PILImage.Image ) -> dict | None:
                 return exif_dict
                 
             
-        except Exception as e:
+        except:
             
             pass
             
@@ -141,7 +141,7 @@ def get_jpeg_quantization_quality_estimate( pil_image: PILImage.Image ):
             
             quality = quality ** ( 1 / subsampling_quality_lookup[ subsampling_value ] )
             
-        except Exception as e:
+        except:
             
             pass
             

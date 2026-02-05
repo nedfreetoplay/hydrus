@@ -248,7 +248,7 @@ class SingleFileMetadataExporterMediaTags( SingleFileMetadataExporterMedia, Hydr
             
             name = CG.client_controller.services_manager.get_name(self._service_key)
             
-        except Exception as e:
+        except:
             
             name = 'unknown service'
             
@@ -392,7 +392,7 @@ class SingleFileMetadataExporterMediaURLs( SingleFileMetadataExporterMedia, Hydr
                 
                 continue
                 
-            except Exception as e:
+            except:
                 
                 continue
                 

@@ -54,7 +54,7 @@ if HC.PLATFORM_MACOS:
         
         from hydrus.client import ClientMacIntegration
         
-    except Exception as e:
+    except:
         
         MAC_QUARTZ_OK = False
         
@@ -933,21 +933,15 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             
             #
             
-            def do_it():
-                
-                canvas_frame = ClientGUICanvasFrame.CanvasFrame( self.window() )
-                
-                canvas_window = ClientGUICanvas.CanvasMediaListBrowser( canvas_frame, self._page_key, self._location_context, media_results, first_hash )
-                
-                canvas_window.canvasWithHoversExiting.connect( CG.client_controller.gui.NotifyMediaViewerExiting )
-                
-                canvas_frame.SetCanvas( canvas_window )
-                
-                self._ConnectCanvasWindowSignals( canvas_window )
-                
+            canvas_frame = ClientGUICanvasFrame.CanvasFrame( self.window() )
             
-            # It is important for stability/deadlock purposes that we create a new canvas not in the same event as when we unwind preview viewer and such
-            CG.client_controller.CallAfterQtSafe( self, do_it )
+            canvas_window = ClientGUICanvas.CanvasMediaListBrowser( canvas_frame, self._page_key, self._location_context, media_results, first_hash )
+            
+            canvas_window.canvasWithHoversExiting.connect( CG.client_controller.gui.NotifyMediaViewerExiting )
+            
+            canvas_frame.SetCanvas( canvas_window )
+            
+            self._ConnectCanvasWindowSignals( canvas_window )
             
         
     

@@ -453,7 +453,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                 
                 self._is_db_updated = True
                 
-            except Exception as e:
+            except:
                 
                 e = Exception( 'Updating the ' + self._db_name + ' db to version ' + str( version + 1 ) + ' caused this error:' + '\n' + traceback.format_exc() )
                 
@@ -1123,7 +1123,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
             
             self._init_caches()
             
-        except Exception as e:
+        except:
             
             self._display_catastrophic_error( traceback.format_exc() )
             
@@ -1169,7 +1169,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                     
                     error_count = 0
                     
-                except Exception as e:
+                except:
                     
                     error_count += 1
                     

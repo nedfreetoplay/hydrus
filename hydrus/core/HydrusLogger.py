@@ -190,7 +190,7 @@ class HydrusLogger( object ):
                     
                     self._previous_sys_stdout.write( message )
                     
-                except Exception as e:
+                except:
                     
                     self._problem_with_previous_stdout = True
                     

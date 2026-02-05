@@ -475,7 +475,7 @@ def get_file_info( path, mime = None, ok_to_look_for_hydrus_updates = False ):
             
             ( width, height ) = HydrusImageHandling.get_image_resolution( temp_path, cover_mime )
             
-        except Exception as e:
+        except:
             
             ( width, height ) = ( None, None )
             
@@ -516,7 +516,7 @@ def get_file_info( path, mime = None, ok_to_look_for_hydrus_updates = False ):
             
             ( width, height ) = HydrusProcreateHandling.get_procreate_resolution( path )
             
-        except Exception as e:
+        except:
             
             pass
             
@@ -779,7 +779,7 @@ def get_mime( path, ok_to_look_for_hydrus_updates = False ):
                 return HC.APPLICATION_HYDRUS_UPDATE_DEFINITIONS
                 
             
-        except Exception as e:
+        except:
             
             pass
             

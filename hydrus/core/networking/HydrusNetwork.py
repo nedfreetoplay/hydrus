@@ -519,7 +519,7 @@ class Account( object ):
                 
                 return True
                 
-            except Exception as e:
+            except:
                 
                 return False
                 
