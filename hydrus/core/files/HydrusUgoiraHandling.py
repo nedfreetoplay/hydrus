@@ -13,6 +13,7 @@ from PIL import Image as PILImage
 # handle getting a list of frame paths from a ugoira without json metadata:
 def GetFramePathsFromUgoiraZip( path ):
     
+    """Executes `GetFramePathsFromUgoiraZip`."""
     with zipfile.ZipFile( path ) as zip_handle:
         
         paths = [ zip_info.filename for zip_info in zip_handle.infolist() if (not zip_info.is_dir()) and HydrusArchiveHandling.filename_has_image_ext(zip_info.filename) ]
@@ -31,6 +32,7 @@ def GetFramePathsFromUgoiraZip( path ):
 def GetUgoiraProperties( path_to_zip ):
     
     # try to get properties from json file first:
+    """Executes `GetUgoiraProperties`."""
     try:
         
         return GetUgoiraPropertiesFromJSON( path_to_zip )
@@ -66,6 +68,7 @@ def GetUgoiraProperties( path_to_zip ):
 def ZipLooksLikeUgoira( path_to_zip ):
     
     # Check zip for valid ugoira json first:
+    """Executes `ZipLooksLikeUgoira`."""
     try:
         
         frames = GetUgoiraFrameDataJSON( path_to_zip )
@@ -176,6 +179,7 @@ def ZipLooksLikeUgoira( path_to_zip ):
 
 def GetUgoiraJSON( path: str ):
     
+    """Executes `GetUgoiraJSON`."""
     jsonFile = HydrusArchiveHandling.GetZipAsPath( path, 'animation.json' )
 
     if not jsonFile.exists():
@@ -198,6 +202,7 @@ UgoiraFrame = typing.TypedDict('UgoiraFrame', {'file': str, 'delay': int})
 @functools.lru_cache( maxsize = 8 )
 def GetUgoiraFrameDataJSON( path: str ) -> list[ UgoiraFrame ] | None:
     
+    """Executes `GetUgoiraFrameDataJSON`."""
     try:
         
         ugoiraJson = GetUgoiraJSON( path )
@@ -220,6 +225,7 @@ def GetUgoiraFrameDataJSON( path: str ) -> list[ UgoiraFrame ] | None:
 
 def GetUgoiraPropertiesFromJSON( path ):
     
+    """Executes `GetUgoiraPropertiesFromJSON`."""
     frameData = GetUgoiraFrameDataJSON( path )
     
     if frameData is None:
@@ -241,6 +247,7 @@ def GetUgoiraPropertiesFromJSON( path ):
 
 def GetFramePathsUgoira( path ): 
     
+    """Executes `GetFramePathsUgoira`."""
     try:
         
         frameData = GetUgoiraFrameDataJSON( path )
@@ -260,6 +267,7 @@ def GetFramePathsUgoira( path ):
 
 def GetUgoiraFramePIL( path: str, frameIndex: int ) -> PILImage.Image:
     
+    """Executes `GetUgoiraFramePIL`."""
     framePaths = GetFramePathsUgoira( path )
     
     frameName = framePaths[frameIndex]
@@ -271,6 +279,7 @@ def GetUgoiraFramePIL( path: str, frameIndex: int ) -> PILImage.Image:
 
 def GenerateThumbnailNumPyFromUgoiraPath( path: str, target_resolution: tuple[int, int], frame_index: int ):
     
+    """Executes `GenerateThumbnailNumPyFromUgoiraPath`."""
     pil_image = GetUgoiraFramePIL( path, frame_index )
     
     thumbnail_pil_image = pil_image.resize( target_resolution, PILImage.Resampling.LANCZOS )

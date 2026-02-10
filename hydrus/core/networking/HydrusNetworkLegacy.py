@@ -3,6 +3,7 @@ from hydrus.core.networking import HydrusNetwork
 
 def ConvertToNewAccountType( account_type_key, title, dictionary_string ) -> HydrusNetwork.AccountType:
     
+    """Executes `ConvertToNewAccountType`."""
     dictionary = HydrusSerialisable.CreateFromString( dictionary_string )
     
     permissions = dict( dictionary[ 'permissions' ] )

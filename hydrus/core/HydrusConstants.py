@@ -1592,11 +1592,13 @@ SERVER_ADMIN_KEY = b'server admin'
 
 def construct_python_tuple( self, node ):
     
+    """Executes `construct_python_tuple`."""
     return tuple( self.construct_sequence( node ) )
     
 
 def represent_python_tuple( self, data ):
     
+    """Executes `represent_python_tuple`."""
     return self.represent_sequence( 'tag:yaml.org,2002:python/tuple', data )
     
 
@@ -1607,6 +1609,7 @@ yaml.SafeDumper.add_representer( tuple, represent_python_tuple )
 # it gives the register_converter function a bytestring :/
 def integer_boolean_to_bool( integer_boolean ):
     
+    """Executes `integer_boolean_to_bool`."""
     return bool( int( integer_boolean ) )
     
 

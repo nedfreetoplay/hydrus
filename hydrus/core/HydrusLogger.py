@@ -14,6 +14,7 @@ class HydrusLogger( object ):
     
     def __init__( self, db_dir, prefix ):
         
+        """Initializes the instance."""
         self._db_dir = db_dir
         self._prefix = prefix
         
@@ -31,6 +32,7 @@ class HydrusLogger( object ):
     
     def __enter__( self ):
         
+        """Enters the runtime context and returns a context-managed object."""
         self._previous_sys_stdout = sys.stdout
         self._previous_sys_stderr = sys.stderr
         
@@ -46,6 +48,7 @@ class HydrusLogger( object ):
     
     def __exit__( self, exc_type, exc_val, exc_tb ):
         
+        """Exits the runtime context and handles teardown for the context-managed object."""
         self._CloseLog()
         
         sys.stdout = self._previous_sys_stdout
@@ -61,6 +64,7 @@ class HydrusLogger( object ):
     
     def _CloseLog( self ) -> None:
         
+        """Executes `_CloseLog`."""
         if self._currently_crash_reporting:
             
             faulthandler.disable()
@@ -71,6 +75,7 @@ class HydrusLogger( object ):
     
     def _GetLogPath( self ) -> str:
         
+        """Executes `_GetLogPath`."""
         current_time_struct = time.localtime()
         
         ( current_year, current_month ) = ( current_time_struct.tm_year, current_time_struct.tm_mon )
@@ -84,6 +89,7 @@ class HydrusLogger( object ):
     
     def _OpenLog( self ) -> None:
         
+        """Executes `_OpenLog`."""
         self._log_path = self._GetLogPath()
         
         is_new_file = not os.path.exists( self._log_path )
@@ -103,6 +109,7 @@ class HydrusLogger( object ):
     
     def _SwitchToANewLogFileIfDue( self ) -> None:
         
+        """Executes `_SwitchToANewLogFileIfDue`."""
         correct_log_path = self._GetLogPath()
         
         if correct_log_path != self._log_path:
@@ -115,6 +122,7 @@ class HydrusLogger( object ):
     
     def FlipCrashReporting( self ):
         
+        """Executes `FlipCrashReporting`."""
         if self._currently_crash_reporting:
             
             faulthandler.disable()
@@ -129,6 +137,7 @@ class HydrusLogger( object ):
     
     def flush( self ) -> None:
         
+        """Executes `flush`."""
         if self._log_closed:
             
             return
@@ -156,16 +165,19 @@ class HydrusLogger( object ):
     
     def isatty( self ) -> bool:
         
+        """Executes `isatty`."""
         return False
         
     
     def CurrentlyCrashReporting( self ):
         
+        """Executes `CurrentlyCrashReporting`."""
         return self._currently_crash_reporting
         
     
     def write( self, value ) -> None:
         
+        """Executes `write`."""
         if self._log_closed:
             
             return

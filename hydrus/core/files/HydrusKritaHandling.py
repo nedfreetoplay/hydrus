@@ -12,6 +12,7 @@ KRITA_FILE_MERGED = "mergedimage.png"
 
 def MergedPILImageFromKra( path ):
     
+    """Executes `MergedPILImageFromKra`."""
     try:
         
         zip_path_file_obj = HydrusArchiveHandling.GetZipAsPath( path, KRITA_FILE_MERGED ).open( 'rb' )
@@ -26,6 +27,7 @@ def MergedPILImageFromKra( path ):
 
 def ThumbnailPILImageFromKra( path ):
     
+    """Executes `ThumbnailPILImageFromKra`."""
     try:
         
         zip_path_file_obj = HydrusArchiveHandling.GetZipAsPath( path, KRITA_FILE_THUMB ).open( 'rb' )
@@ -40,6 +42,7 @@ def ThumbnailPILImageFromKra( path ):
 
 def GenerateThumbnailNumPyFromKraPath( path: str, target_resolution: tuple[ int, int ] ) -> numpy.ndarray:
     
+    """Executes `GenerateThumbnailNumPyFromKraPath`."""
     try:
         
         pil_image = MergedPILImageFromKra( path )
@@ -60,6 +63,7 @@ def GenerateThumbnailNumPyFromKraPath( path: str, target_resolution: tuple[ int,
 # TODO: animation and frame stuff which is also in the maindoc.xml
 def GetKraProperties( path ):
     
+    """Executes `GetKraProperties`."""
     DOCUMENT_INFO_FILE = "maindoc.xml"
     
     try:

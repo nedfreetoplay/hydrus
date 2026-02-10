@@ -65,6 +65,7 @@ UPNPC_IS_MISSING = UPNPC_PATH is None
 
 def RaiseMissingUPnPcError( operation ):
     
+    """Executes `RaiseMissingUPnPcError`."""
     message = 'Unfortunately, the operation "{}" requires miniupnpc, which does not seem to be available for your system. You can install it yourself easily, please check install_dir/bin/upnpc_readme.txt for more information!'.format( operation )
     
     global UPNPC_MISSING_ERROR_PRINTED
@@ -80,6 +81,7 @@ def RaiseMissingUPnPcError( operation ):
     
 def GetExternalIP():
     
+    """Executes `GetExternalIP`."""
     if UPNPC_IS_MISSING:
         
         RaiseMissingUPnPcError( 'fetch external IP' )
@@ -134,10 +136,12 @@ def GetExternalIP():
     
 def GetLocalIP():
     
+    """Executes `GetLocalIP`."""
     return socket.gethostbyname( socket.gethostname() )
     
 def AddUPnPMapping( internal_client, internal_port, external_port, protocol, description, duration = 3600 ):
     
+    """Executes `AddUPnPMapping`."""
     if UPNPC_IS_MISSING:
         
         RaiseMissingUPnPcError( 'add UPnP port forward' )
@@ -160,6 +164,7 @@ def AddUPnPMapping( internal_client, internal_port, external_port, protocol, des
     
 def AddUPnPMappingCheckResponse( internal_client, internal_port, external_port, protocol, stdout, stderr ):
     
+    """Executes `AddUPnPMappingCheckResponse`."""
     if stdout is not None and 'failed with code' in stdout:
         
         already_exists_str = '{} TCP is redirected to internal {}:{}'.format( external_port, internal_client, internal_port )
@@ -196,6 +201,7 @@ def AddUPnPMappingCheckResponse( internal_client, internal_port, external_port, 
     
 def GetUPnPMappings():
     
+    """Executes `GetUPnPMappings`."""
     if UPNPC_IS_MISSING:
         
         RaiseMissingUPnPcError( 'get current UPnP port forward mappings' )
@@ -225,6 +231,7 @@ def GetUPnPMappings():
     
 def GetUPnPMappingsParseResponse( stdout ):
     
+    """Executes `GetUPnPMappingsParseResponse`."""
     try:
         
         lines = HydrusText.DeserialiseNewlinedTexts( stdout )
@@ -304,6 +311,7 @@ def GetUPnPMappingsParseResponse( stdout ):
     
 def RemoveUPnPMapping( external_port, protocol ):
     
+    """Executes `RemoveUPnPMapping`."""
     if UPNPC_IS_MISSING:
         
         RaiseMissingUPnPcError( 'remove UPnP port forward' )
@@ -331,6 +339,7 @@ class ServicesUPnPManager( object ):
     
     def __init__( self, services ):
         
+        """Initializes the instance."""
         self._lock = threading.Lock()
         
         self._services = services
@@ -338,6 +347,7 @@ class ServicesUPnPManager( object ):
     
     def _RefreshUPnP( self, force_wipe = False ):
         
+        """Executes `_RefreshUPnP`."""
         running_service_with_upnp = True in ( service.GetPort() is not None and service.GetUPnPPort() is not None for service in self._services )
         
         if not force_wipe:
@@ -439,6 +449,7 @@ class ServicesUPnPManager( object ):
     
     def SetServices( self, services ):
         
+        """Executes `SetServices`."""
         with self._lock:
             
             self._services = services
@@ -449,6 +460,7 @@ class ServicesUPnPManager( object ):
     
     def RefreshUPnP( self ):
         
+        """Executes `RefreshUPnP`."""
         with self._lock:
             
             self._RefreshUPnP()

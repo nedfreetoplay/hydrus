@@ -3,6 +3,7 @@ import re
 def ParseFFMPEGAudio( lines ):
     
     # the ^\sStream is to exclude the 'title' line, when it exists, includes the string 'Audio: ', ha ha
+    """Executes `ParseFFMPEGAudio`."""
     lines_audio = [ line for line in lines if re.search( r'^\s*Stream', line ) is not None and 'Audio: ' in line ]
     
     audio_found = lines_audio != []

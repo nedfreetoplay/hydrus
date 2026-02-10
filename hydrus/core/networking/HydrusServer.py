@@ -22,6 +22,7 @@ class HydrusService( Site ):
     
     def __init__( self, service ):
         
+        """Initializes the instance."""
         self._service = service
         
         self.hydrus_favicon = FileResource( HydrusStaticDir.GetStaticPath( 'hydrus.ico' ), defaultType = 'image/x-icon' )
@@ -55,6 +56,7 @@ class HydrusService( Site ):
     
     def _InitRoot( self ):
         
+        """Executes `_InitRoot`."""
         root = Resource()
         
         root.putChild( b'', HydrusServerResources.HydrusResourceWelcome( self._service, REMOTE_DOMAIN ) )
@@ -66,11 +68,13 @@ class HydrusService( Site ):
     
     def _ProtocolFactory( self ):
         
+        """Executes `_ProtocolFactory`."""
         return _GenericHTTPChannelProtocol( FatHTTPChannel() )
         
     
     def getResourceFor( self, request: Request ):
         
+        """Executes `getResourceFor`."""
         request.setHeader( 'Server', self._server_version_string )
         request.setHeader( 'Hydrus-Server', self._server_version_string )
         

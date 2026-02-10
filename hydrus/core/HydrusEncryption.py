@@ -32,6 +32,7 @@ except Exception as e:
 
 def GenerateOpenSSLCertAndKeyFile( cert_path, key_path ):
     
+    """Executes `GenerateOpenSSLCertAndKeyFile`."""
     if not CRYPTO_OK:
         
         raise Exception( 'Sorry, to make your own cert, you need "cryptography" library! You should be able to get it with pip.' )

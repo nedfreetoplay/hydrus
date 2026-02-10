@@ -16,10 +16,12 @@ except Exception as e: # ImportError wasn't enough here as Linux went up the sho
 
 def CompressBytesToBytes( obj_bytes: bytes ) -> bytes:
     
+    """Executes `CompressBytesToBytes`."""
     return zlib.compress( obj_bytes, 9 )
     
 def CompressFastBytesToBytes( obj_bytes: bytes ) -> bytes:
     
+    """Executes `CompressFastBytesToBytes`."""
     if LZ4_OK:
         
         return lz4.block.compress( obj_bytes )
@@ -31,12 +33,14 @@ def CompressFastBytesToBytes( obj_bytes: bytes ) -> bytes:
     
 def CompressStringToBytes( obj_string: str ) -> bytes:
     
+    """Executes `CompressStringToBytes`."""
     obj_bytes = bytes( obj_string, 'utf-8' )
     
     return CompressBytesToBytes( obj_bytes )
     
 def DecompressBytesToBytes( compressed_bytes: bytes ) -> bytes:
     
+    """Executes `DecompressBytesToBytes`."""
     try:
         
         obj_bytes = zlib.decompress( compressed_bytes )
@@ -57,6 +61,7 @@ def DecompressBytesToBytes( compressed_bytes: bytes ) -> bytes:
     
 def DecompressBytesToString( compressed_bytes: bytes ) -> str:
     
+    """Executes `DecompressBytesToString`."""
     obj_bytes = DecompressBytesToBytes( compressed_bytes )
     
     obj_string = str( obj_bytes, 'utf-8' )
@@ -65,6 +70,7 @@ def DecompressBytesToString( compressed_bytes: bytes ) -> str:
     
 def DecompressFastBytesToBytes( compressed_bytes: bytes ) -> bytes:
     
+    """Executes `DecompressFastBytesToBytes`."""
     if LZ4_OK:
         
         return lz4.block.decompress( compressed_bytes )

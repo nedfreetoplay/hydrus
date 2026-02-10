@@ -10,6 +10,7 @@ from hydrus.core import HydrusText
 
 def CollapseMultipleSortedNumericTagsToMinMax( tags ):
     
+    """Executes `CollapseMultipleSortedNumericTagsToMinMax`."""
     if len( tags ) <= 2:
         
         return tags
@@ -39,6 +40,7 @@ def CollapseMultipleSortedNumericTagsToMinMax( tags ):
 
 def FilterNamespaces( tags, namespaces ):
     
+    """Executes `FilterNamespaces`."""
     processed_tags = collections.defaultdict( set )
     
     for tag in tags:
@@ -67,6 +69,7 @@ def FilterNamespaces( tags, namespaces ):
 
 def SortNumericTags( tags ):
     
+    """Executes `SortNumericTags`."""
     tags = list( tags )
     
     tags.sort( key = HydrusText.HumanTextSortKey )
@@ -76,6 +79,7 @@ def SortNumericTags( tags ):
 
 def CheckTagNotEmpty( tag ):
     
+    """Executes `CheckTagNotEmpty`."""
     ( namespace, subtag ) = SplitTag( tag )
     
     if subtag == '':
@@ -86,6 +90,7 @@ def CheckTagNotEmpty( tag ):
 
 def CleanTag( tag ):
     
+    """Executes `CleanTag`."""
     try:
         
         if tag is None:
@@ -134,6 +139,7 @@ def CleanTag( tag ):
 
 def CleanTags( tags ):
     
+    """Executes `CleanTags`."""
     clean_tags = set()
     
     for tag in tags:
@@ -162,6 +168,7 @@ def CleanTags( tags ):
 
 def CombineTag( namespace, subtag ) -> str:
     
+    """Executes `CombineTag`."""
     if namespace == '':
         
         if ':' in subtag:
@@ -181,6 +188,7 @@ def CombineTag( namespace, subtag ) -> str:
 
 def ConvertTagSliceToPrettyString( tag_slice ):
     
+    """Executes `ConvertTagSliceToPrettyString`."""
     if tag_slice == '':
         
         return 'unnamespaced tags'
@@ -203,6 +211,7 @@ def ConvertTagSliceToPrettyString( tag_slice ):
 
 def ConvertUglyNamespaceToPrettyString( namespace ):
     
+    """Executes `ConvertUglyNamespaceToPrettyString`."""
     if namespace is None or namespace == '':
         
         return 'no namespace'
@@ -215,6 +224,7 @@ def ConvertUglyNamespaceToPrettyString( namespace ):
 
 def ConvertUglyNamespacesToPrettyStrings( namespaces ):
     
+    """Executes `ConvertUglyNamespacesToPrettyStrings`."""
     namespaces = sorted( namespaces )
     
     result = [ ConvertUglyNamespaceToPrettyString( namespace ) for namespace in namespaces ]
@@ -230,16 +240,19 @@ CORE_TAG_SLICES = { ALL_UNNAMESPACED_TAG_SLICE, ALL_NAMESPACED_TAG_SLICE }
 def IsNamespaceTagSlice( tag_slice: str ):
     
     # careful about the [-1] here! it works, but only because of the '' check in core_tag_slices
+    """Executes `IsNamespaceTagSlice`."""
     return tag_slice not in CORE_TAG_SLICES and tag_slice[-1] == ':' and tag_slice.count( ':' ) == 1
     
 
 def IsUnnamespaced( tag ):
     
+    """Executes `IsUnnamespaced`."""
     return SplitTag( tag )[0] == ''
     
 
 def SplitTag( tag ):
     
+    """Executes `SplitTag`."""
     if ':' in tag:
         
         return tuple( tag.split( ':', 1 ) )
@@ -252,6 +265,7 @@ def SplitTag( tag ):
 
 def StripTagTextOfGumpf( t ):
     
+    """Executes `StripTagTextOfGumpf`."""
     t = HydrusText.re_undesired_control_characters.sub( '', t )
     
     t = HydrusText.re_one_or_more_whitespace.sub( ' ', t )
@@ -283,6 +297,7 @@ def StripTagTextOfGumpf( t ):
 
 def TagOK( t ):
     
+    """Executes `TagOK`."""
     try:
         
         CheckTagNotEmpty( CleanTag( t ) )
@@ -304,6 +319,7 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
     
     def __init__( self ):
         
+        """Initializes the instance."""
         super().__init__()
         
         # TODO: update this guy to more carefully navigate how it does advanced filters
@@ -334,6 +350,7 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
     
     def __eq__( self, other ):
         
+        """Executes `__eq__`."""
         if isinstance( other, TagFilter ):
             
             return self._tag_slices_to_rules == other._tag_slices_to_rules
@@ -346,6 +363,7 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
         
         # this guy gets called a lot, so we are making it an iterator
         
+        """Executes `_IterateTagSlices`."""
         yield tag
         
         ( namespace, subtag ) = SplitTag( tag )
@@ -368,11 +386,13 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
     
     def _GetSerialisableInfo( self ):
         
+        """Executes `_GetSerialisableInfo`."""
         return list( self._tag_slices_to_rules.items() )
         
     
     def _InitialiseFromSerialisableInfo( self, serialisable_info ):
         
+        """Executes `_InitialiseFromSerialisableInfo`."""
         self._tag_slices_to_rules = dict( serialisable_info )
         
         self._UpdateRuleCache()
@@ -383,6 +403,7 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
         # this is called a whole bunch and overhead piles up, so try to splay the logic out to hardcoded tests
         # we handle exceptions by testing tags before namespaces and namespaces before all namespaces
         
+        """Executes `_TagOK`."""
         if self._tags_interesting:
             
             if tag in self._tags_whitelist:
@@ -459,6 +480,7 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
     
     def _UpdateRuleCache( self ):
         
+        """Executes `_UpdateRuleCache`."""
         self._all_unnamespaced_whitelisted = False
         self._all_namespaced_whitelisted = False
         self._namespaces_whitelist = set()
@@ -531,6 +553,7 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
     
     def AllowsEverything( self ):
         
+        """Executes `AllowsEverything`."""
         with self._lock:
             
             for ( tag_slice, rule ) in self._tag_slices_to_rules.items():
@@ -547,6 +570,7 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
     
     def CleanRules( self ):
         
+        """Executes `CleanRules`."""
         new_tag_slices_to_rules = {}
         
         for ( tag_slice, rule ) in self._tag_slices_to_rules.items():
@@ -600,6 +624,7 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
     
     def Filter( self, tags, apply_unnamespaced_rules_to_namespaced_tags = False ):
         
+        """Executes `Filter`."""
         with self._lock:
             
             return { tag for tag in tags if self._TagOK( tag, apply_unnamespaced_rules_to_namespaced_tags = apply_unnamespaced_rules_to_namespaced_tags ) }
@@ -608,6 +633,7 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
     
     def GetChanges( self, old_tag_filter: "TagFilter" ):
         
+        """Executes `GetChanges`."""
         old_slices_to_rules = old_tag_filter.GetTagSlicesToRules()
         
         new_rules = [ ( slice, rule ) for ( slice, rule ) in self._tag_slices_to_rules.items() if slice not in old_slices_to_rules ]
@@ -619,6 +645,7 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
     
     def GetChangesSummaryText( self, old_tag_filter: "TagFilter" ):
         
+        """Executes `GetChangesSummaryText`."""
         ( new_rules, changed_rules, deleted_rules ) = self.GetChanges( old_tag_filter )
         
         summary_components = []
@@ -670,6 +697,7 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
     
     def GetInvertedFilter( self ) -> "TagFilter":
         
+        """Executes `GetInvertedFilter`."""
         inverted_tag_filter = TagFilter()
         
         if '' not in self._tag_slices_to_rules:
@@ -690,6 +718,7 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
     
     def GetTagSlicesToRules( self ):
         
+        """Executes `GetTagSlicesToRules`."""
         with self._lock:
             
             return dict( self._tag_slices_to_rules )
@@ -698,11 +727,13 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
     
     def SetRule( self, tag_slice, rule ):
         
+        """Executes `SetRule`."""
         self.SetRules( ( tag_slice, ), rule )
         
     
     def SetRules( self, tag_slices, rule ):
         
+        """Executes `SetRules`."""
         with self._lock:
             
             for tag_slice in tag_slices:
@@ -720,6 +751,7 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
     
     def TagOK( self, tag, apply_unnamespaced_rules_to_namespaced_tags = False ):
         
+        """Executes `TagOK`."""
         with self._lock:
             
             return self._TagOK( tag, apply_unnamespaced_rules_to_namespaced_tags = apply_unnamespaced_rules_to_namespaced_tags )
@@ -728,6 +760,7 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
     
     def ToBlacklistString( self ):
         
+        """Executes `ToBlacklistString`."""
         with self._lock:
             
             blacklist = []
@@ -791,6 +824,7 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
         
         # TODO: Could make use of a modified version of the new `HydrusText.ConvertManyStringsToNiceInsertableHumanSummarySingleLine()` here, rather than WOAH_TOO_MANY_RULES_THRESHOLD
         
+        """Executes `ToPermittedString`."""
         with self._lock:
             
             blacklist = []

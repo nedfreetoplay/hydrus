@@ -26,6 +26,7 @@ def AddBaseDirToEnvPath():
     
     # doing it separate and early here is a thing to get mpv (and others) working with a frozen build, helping load the dll/so from the base dir using ctypes
     
+    """Executes `AddBaseDirToEnvPath`."""
     if 'PATH' in os.environ:
         
         global ORIGINAL_PATH
@@ -38,6 +39,7 @@ def AddBaseDirToEnvPath():
 
 def DoPreImportEnvWork():
     
+    """Executes `DoPreImportEnvWork`."""
     try:
         
         # we need to do this before the first import cv2, so we'll stick it here

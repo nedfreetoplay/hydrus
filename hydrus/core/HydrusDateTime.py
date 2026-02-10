@@ -3,6 +3,7 @@ import sys
 
 def nowutc():
     
+    """Executes `nowutc`."""
     if sys.version_info < ( 3, 11 ):
         
         # noinspection PyDeprecation
@@ -16,6 +17,7 @@ def nowutc():
 
 def fromtimestamputc( timestamp ):
     
+    """Executes `fromtimestamputc`."""
     if sys.version_info < ( 3, 11 ):
         
         # noinspection PyDeprecation

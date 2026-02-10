@@ -16,6 +16,7 @@ from hydrus.core import HydrusTime
 
 def CheckHasSpaceForDBTransaction( db_dir, num_bytes, no_temp_needed = False ):
     
+    """Executes `CheckHasSpaceForDBTransaction`."""
     if no_temp_needed:
         
         temp_space_needed = 0
@@ -97,6 +98,7 @@ def CheckHasSpaceForDBTransaction( db_dir, num_bytes, no_temp_needed = False ):
 
 def ReadFromCancellableCursor( cursor, largest_group_size, cancelled_hook = None ):
     
+    """Executes `ReadFromCancellableCursor`."""
     if cancelled_hook is None:
         
         return cursor.fetchall()
@@ -139,6 +141,7 @@ class TemporaryIntegerTableNameCache( object ):
     
     def __init__( self ):
         
+        """Initializes the instance."""
         TemporaryIntegerTableNameCache.my_instance = self
         
         self._column_name_tuples_to_table_names = collections.defaultdict( collections.deque )
@@ -148,6 +151,7 @@ class TemporaryIntegerTableNameCache( object ):
     @staticmethod
     def instance() -> 'TemporaryIntegerTableNameCache':
         
+        """Executes `instance`."""
         if TemporaryIntegerTableNameCache.my_instance is None:
             
             raise Exception( 'TemporaryIntegerTableNameCache is not yet initialised!' )
@@ -160,12 +164,14 @@ class TemporaryIntegerTableNameCache( object ):
     
     def Clear( self ):
         
+        """Executes `Clear`."""
         self._column_name_tuples_to_table_names = collections.defaultdict( collections.deque )
         self._column_name_tuples_counter = collections.Counter()
         
     
     def GetName( self, column_names: tuple[ str ] ):
         
+        """Executes `GetName`."""
         if isinstance( column_names, str ):
             
             column_names = ( column_names, )
@@ -195,6 +201,7 @@ class TemporaryIntegerTableNameCache( object ):
     
     def ReleaseName( self, column_names: tuple[ str ], table_name: str ):
         
+        """Executes `ReleaseName`."""
         if isinstance( column_names, str ):
             
             column_names = ( column_names, )
@@ -208,6 +215,7 @@ class TemporaryIntegerTable( object ):
     
     def __init__( self, cursor: sqlite3.Cursor, integers_iterable, column_names ):
         
+        """Initializes the instance."""
         if not isinstance( integers_iterable, set ):
             
             integers_iterable = set( integers_iterable )
@@ -227,6 +235,7 @@ class TemporaryIntegerTable( object ):
     
     def __enter__( self ):
         
+        """Enters the runtime context and returns a context-managed object."""
         if len( self._column_names ) == 1:
             
             ( column_name, ) = self._column_names
@@ -278,6 +287,7 @@ class TemporaryIntegerTable( object ):
     
     def __exit__( self, exc_type, exc_val, exc_tb ):
         
+        """Exits the runtime context and handles teardown for the context-managed object."""
         self._cursor.execute( 'DELETE FROM {};'.format( self._table_name ) )
         
         TemporaryIntegerTableNameCache.instance().ReleaseName( self._column_names, self._table_name )
@@ -290,6 +300,7 @@ class JobDatabase( object ):
     
     def __init__( self, job_type, synchronous, action, *args, **kwargs ):
         
+        """Initializes the instance."""
         self._type = job_type
         self._synchronous = synchronous
         self._action = action
@@ -301,21 +312,25 @@ class JobDatabase( object ):
     
     def __str__( self ):
         
+        """Returns the string representation of the instance."""
         return 'DB Job: {}'.format( self.ToString() )
         
     
     def _DoDelayedResultRelief( self ):
         
+        """Executes `_DoDelayedResultRelief`."""
         pass
         
     
     def GetCallableTuple( self ):
         
+        """Executes `GetCallableTuple`."""
         return ( self._action, self._args, self._kwargs )
         
     
     def GetResult( self ):
         
+        """Executes `GetResult`."""
         time.sleep( 0.00001 ) # this one neat trick can save hassle on superquick jobs as event.wait can be laggy
         
         while True:
@@ -349,16 +364,19 @@ class JobDatabase( object ):
     
     def GetType( self ):
         
+        """Executes `GetType`."""
         return self._type
         
     
     def IsSynchronous( self ):
         
+        """Executes `IsSynchronous`."""
         return self._synchronous
         
     
     def PutResult( self, result ):
         
+        """Executes `PutResult`."""
         self._result = result
         
         self._result_ready.set()
@@ -366,6 +384,7 @@ class JobDatabase( object ):
     
     def ToString( self ):
         
+        """Executes `ToString`."""
         return '{} {}'.format( self._type, self._action )
         
     
@@ -374,6 +393,7 @@ class DBBase( object ):
     
     def __init__( self ):
         
+        """Initializes the instance."""
         self._c = None
         
     
@@ -381,12 +401,14 @@ class DBBase( object ):
         
         # this is useful to do after populating a temp table so the query planner can decide which index to use in a big join that uses it
         
+        """Executes `_AnalyzeTempTable`."""
         self._Execute( 'ANALYZE {};'.format( temp_table_name ) )
         self._Execute( 'ANALYZE mem.sqlite_master;' ) # this reloads the current stats into the query planner, may no longer be needed
         
     
     def _CloseCursor( self ):
         
+        """Executes `_CloseCursor`."""
         if self._c is not None:
             
             self._c.close()
@@ -399,6 +421,7 @@ class DBBase( object ):
     
     def _CreateIndex( self, table_name, columns, unique = False ):
         
+        """Executes `_CreateIndex`."""
         if unique:
             
             create_phrase = 'CREATE UNIQUE INDEX IF NOT EXISTS'
@@ -437,6 +460,7 @@ class DBBase( object ):
     
     def _Execute( self, query, *query_args ) -> sqlite3.Cursor:
         
+        """Executes `_Execute`."""
         if HydrusProfiling.query_planner_mode and query not in HydrusProfiling.queries_planned:
             
             plan_lines = self._c.execute( 'EXPLAIN QUERY PLAN {}'.format( query ), *query_args ).fetchall()
@@ -449,6 +473,7 @@ class DBBase( object ):
     
     def _ExecuteCancellable( self, query, query_args, cancelled_hook: collections.abc.Callable[ [], bool ] ):
         
+        """Executes `_ExecuteCancellable`."""
         if cancelled_hook is not None and cancelled_hook():
             
             return []
@@ -461,6 +486,7 @@ class DBBase( object ):
     
     def _ExecuteMany( self, query, args_iterator ):
         
+        """Executes `_ExecuteMany`."""
         if HydrusProfiling.query_planner_mode and query not in HydrusProfiling.queries_planned:
             
             args_iterator = list( args_iterator )
@@ -478,11 +504,13 @@ class DBBase( object ):
     
     def _GenerateIdealIndexName( self, table_name, columns ):
         
+        """Executes `_GenerateIdealIndexName`."""
         return '{}_{}_index'.format( table_name, '_'.join( columns ) )
         
     
     def _GetAttachedDatabaseNames( self, include_temp = False ):
         
+        """Executes `_GetAttachedDatabaseNames`."""
         if include_temp:
             
             f = lambda schema_name, path: True
@@ -499,11 +527,13 @@ class DBBase( object ):
     
     def _GetLastRowId( self ) -> int:
         
+        """Executes `_GetLastRowId`."""
         return self._c.lastrowid
         
     
     def _GetRowCount( self ):
         
+        """Executes `_GetRowCount`."""
         row_count = self._c.rowcount
         
         if row_count == -1:
@@ -518,6 +548,7 @@ class DBBase( object ):
     
     def _GetSumResult( self, result: tuple[ int | None ] | None ) -> int:
         
+        """Executes `_GetSumResult`."""
         if result is None or result[0] is None:
             
             sum_value = 0
@@ -532,6 +563,7 @@ class DBBase( object ):
     
     def _ActualIndexExists( self, index_name ):
         
+        """Executes `_ActualIndexExists`."""
         if '.' in index_name:
             
             ( schema, index_name ) = index_name.split( '.', 1 )
@@ -561,6 +593,7 @@ class DBBase( object ):
         # ok due to deferred delete gubbins, we have overlapping index names. therefore this has to be more flexible than a static name
         # we'll search based on tbl_name in sqlite_master
         
+        """Executes `_IdealIndexExists`."""
         ideal_index_name = self._GenerateIdealIndexName( table_name, columns )
         
         if '.' in ideal_index_name:
@@ -606,11 +639,13 @@ class DBBase( object ):
     
     def _MakeTemporaryIntegerTable( self, integers_iterable, column_names ):
         
+        """Executes `_MakeTemporaryIntegerTable`."""
         return TemporaryIntegerTable( self._c, integers_iterable, column_names )
         
     
     def _SetCursor( self, c: sqlite3.Cursor ):
         
+        """Executes `_SetCursor`."""
         self._c = c
         
     
@@ -618,6 +653,7 @@ class DBBase( object ):
         
         # strip singleton tuples to an iterator
         
+        """Executes `_STI`."""
         return ( item for ( item, ) in iterable_cursor )
         
     
@@ -625,6 +661,7 @@ class DBBase( object ):
         
         # strip singleton tuples to a list
         
+        """Executes `_STL`."""
         return [ item for ( item, ) in iterable_cursor ]
         
     
@@ -632,11 +669,13 @@ class DBBase( object ):
         
         # strip singleton tuples to a set
         
+        """Executes `_STS`."""
         return { item for ( item, ) in iterable_cursor }
         
     
     def _TableExists( self, table_name ):
         
+        """Executes `_TableExists`."""
         if '.' in table_name:
             
             ( schema, table_name ) = table_name.split( '.', 1 )
@@ -672,6 +711,7 @@ class DBCursorTransactionWrapper( DBBase ):
     
     def __init__( self, c: sqlite3.Cursor, transaction_commit_period: int ):
         
+        """Initializes the instance."""
         super().__init__()
         
         self._SetCursor( c )
@@ -694,6 +734,7 @@ class DBCursorTransactionWrapper( DBBase ):
     
     def _ZeroJournal( self ):
         
+        """Executes `_ZeroJournal`."""
         if HG.db_journal_mode not in ( 'PERSIST', 'WAL' ):
             
             return
@@ -719,6 +760,7 @@ class DBCursorTransactionWrapper( DBBase ):
     
     def BeginImmediate( self ):
         
+        """Executes `BeginImmediate`."""
         if not self._in_transaction:
             
             self._Execute( 'BEGIN IMMEDIATE;' )
@@ -732,11 +774,13 @@ class DBCursorTransactionWrapper( DBBase ):
     
     def CleanPubSubs( self ):
         
+        """Executes `CleanPubSubs`."""
         self._pubsubs = []
         
     
     def Commit( self ):
         
+        """Executes `Commit`."""
         if self._in_transaction:
             
             self.DoPubSubs()
@@ -791,6 +835,7 @@ class DBCursorTransactionWrapper( DBBase ):
     
     def CommitAndBegin( self ):
         
+        """Executes `CommitAndBegin`."""
         if self._in_transaction:
             
             self.Commit()
@@ -801,11 +846,13 @@ class DBCursorTransactionWrapper( DBBase ):
     
     def DoACommitAsSoonAsPossible( self ):
         
+        """Executes `DoACommitAsSoonAsPossible`."""
         self._committing_as_soon_as_possible = True
         
     
     def DoPubSubs( self ):
         
+        """Executes `DoPubSubs`."""
         for ( topic, args, kwargs ) in self._pubsubs:
             
             HG.controller.pub( topic, *args, **kwargs )
@@ -814,21 +861,25 @@ class DBCursorTransactionWrapper( DBBase ):
     
     def IsCommittingAsSoonAsPossible( self ) -> bool:
         
+        """Executes `IsCommittingAsSoonAsPossible`."""
         return self._committing_as_soon_as_possible
         
     
     def InTransaction( self ):
         
+        """Executes `InTransaction`."""
         return self._in_transaction
         
     
     def NotifyWriteOccuring( self ):
         
+        """Executes `NotifyWriteOccuring`."""
         self._transaction_contains_writes = True
         
     
     def pub_after_job( self, topic, *args, **kwargs ):
         
+        """Executes `pub_after_job`."""
         if len( args ) == 0 and len( kwargs ) == 0:
             
             if ( topic, args, kwargs ) in self._pubsubs:
@@ -842,6 +893,7 @@ class DBCursorTransactionWrapper( DBBase ):
     
     def Rollback( self ):
         
+        """Executes `Rollback`."""
         if self._in_transaction:
             
             self._Execute( 'ROLLBACK TO hydrus_savepoint;' )
@@ -860,6 +912,7 @@ class DBCursorTransactionWrapper( DBBase ):
     
     def Save( self ):
         
+        """Executes `Save`."""
         if self._in_transaction:
             
             try:
@@ -881,6 +934,7 @@ class DBCursorTransactionWrapper( DBBase ):
     
     def TimeToCommit( self ):
         
+        """Executes `TimeToCommit`."""
         p1 = self._committing_as_soon_as_possible
         p2 = self._transaction_contains_writes and HydrusTime.TimeHasPassed( self._transaction_start_time + self._transaction_commit_period )
         

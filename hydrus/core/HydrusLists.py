@@ -9,6 +9,7 @@ from hydrus.core import HydrusTime
 
 def DedupeList( xs: collections.abc.Iterable ):
     
+    """Executes `DedupeList`."""
     if isinstance( xs, set ):
         
         return list( xs )
@@ -37,6 +38,7 @@ class FastIndexUniqueList( collections.abc.MutableSequence ):
     
     def __init__( self, initial_items = None ):
         
+        """Initializes the instance."""
         if initial_items is None:
             
             initial_items = []
@@ -53,6 +55,7 @@ class FastIndexUniqueList( collections.abc.MutableSequence ):
     
     def __contains__( self, item ):
         
+        """Executes `__contains__`."""
         if self._indices_dirty:
             
             self._RecalcIndices()
@@ -65,6 +68,7 @@ class FastIndexUniqueList( collections.abc.MutableSequence ):
         
         # only clean state is when we take what is the last item _at this point in time_
         # previously this test was after the delete and it messed everything up hey
+        """Executes `__delitem__`."""
         removing_last_item_in_list = index in ( -1, len( self._list ) - 1 )
         
         if removing_last_item_in_list:
@@ -87,6 +91,7 @@ class FastIndexUniqueList( collections.abc.MutableSequence ):
     
     def __eq__( self, other ):
         
+        """Executes `__eq__`."""
         if isinstance( other, list ):
             
             return self._list == other
@@ -97,31 +102,37 @@ class FastIndexUniqueList( collections.abc.MutableSequence ):
     
     def __getitem__( self, value ):
         
+        """Executes `__getitem__`."""
         return self._list.__getitem__( value )
         
     
     def __iadd__( self, other ):
         
+        """Executes `__iadd__`."""
         self.extend( other )
         
     
     def __iter__( self ):
         
+        """Returns an iterator over the instance."""
         return iter( self._list )
         
     
     def __len__( self ):
         
+        """Returns the number of items in the instance."""
         return len( self._list )
         
     
     def __repr__( self ):
         
+        """Returns the developer-oriented string representation of the instance."""
         return f'FastIndexUniqueList: {repr( self._list )}'
         
     
     def __setitem__( self, index, value ):
         
+        """Executes `__setitem__`."""
         old_item = self._list[ index ]
         
         if old_item in self._items_to_indices:
@@ -135,6 +146,7 @@ class FastIndexUniqueList( collections.abc.MutableSequence ):
     
     def _DirtyIndices( self ):
         
+        """Executes `_DirtyIndices`."""
         self._indices_dirty = True
         
         self._items_to_indices = {}
@@ -142,6 +154,7 @@ class FastIndexUniqueList( collections.abc.MutableSequence ):
     
     def _RecalcIndices( self ):
         
+        """Executes `_RecalcIndices`."""
         self._items_to_indices = { item : index for ( index, item ) in enumerate( self._list ) }
         
         self._indices_dirty = False
@@ -149,11 +162,13 @@ class FastIndexUniqueList( collections.abc.MutableSequence ):
     
     def append( self, item ):
         
+        """Executes `append`."""
         self.extend( ( item, ) )
         
     
     def clear( self ):
         
+        """Executes `clear`."""
         self._list.clear()
         
         self._DirtyIndices()
@@ -161,6 +176,7 @@ class FastIndexUniqueList( collections.abc.MutableSequence ):
     
     def extend( self, items ):
         
+        """Executes `extend`."""
         if self._indices_dirty is None:
             
             self._RecalcIndices()
@@ -198,11 +214,13 @@ class FastIndexUniqueList( collections.abc.MutableSequence ):
     
     def insert( self, index, item ):
         
+        """Executes `insert`."""
         self.insert_items( ( item, ), insertion_index = index )
         
     
     def insert_items( self, items, insertion_index = None ):
         
+        """Executes `insert_items`."""
         if insertion_index is None:
             
             self.extend( items )
@@ -224,6 +242,7 @@ class FastIndexUniqueList( collections.abc.MutableSequence ):
     
     def move_items( self, new_items: list, insertion_index: int ):
         
+        """Executes `move_items`."""
         items_to_move = []
         items_before_insertion_index = 0
         
@@ -270,6 +289,7 @@ class FastIndexUniqueList( collections.abc.MutableSequence ):
     
     def pop( self, index = -1 ):
         
+        """Executes `pop`."""
         item = self._list.pop( index )
         
         del self[ index ]
@@ -279,8 +299,10 @@ class FastIndexUniqueList( collections.abc.MutableSequence ):
     
     def random_sort( self ):
         
+        """Executes `random_sort`."""
         def sort_key( x ):
             
+            """Executes `sort_key`."""
             return random.random()
             
         
@@ -293,11 +315,13 @@ class FastIndexUniqueList( collections.abc.MutableSequence ):
     
     def remove( self, item ):
         
+        """Executes `remove`."""
         self.remove_items( ( item, ) )
         
     
     def remove_items( self, items ):
         
+        """Executes `remove_items`."""
         deletee_indices = [ self.index( item ) for item in items ]
         
         deletee_indices.sort( reverse = True )
@@ -310,6 +334,7 @@ class FastIndexUniqueList( collections.abc.MutableSequence ):
     
     def reverse( self ):
         
+        """Executes `reverse`."""
         self._list.reverse()
         
         self._DirtyIndices()
@@ -317,6 +342,7 @@ class FastIndexUniqueList( collections.abc.MutableSequence ):
     
     def sort( self, key = None, reverse = False ):
         
+        """Executes `sort`."""
         if key is None:
             
             key = self._sort_key
@@ -338,8 +364,10 @@ def ConvertTupleOfDatasToCasefolded( l: collections.abc.Sequence ) -> tuple:
     
     # TODO: We could convert/augment this guy to do HumanTextSort too so we have 3 < 22
     
+    """Executes `ConvertTupleOfDatasToCasefolded`."""
     def casefold_obj( o ):
         
+        """Executes `casefold_obj`."""
         if isinstance( o, str ):
             
             return o.casefold()
@@ -359,6 +387,7 @@ def ConvertTupleOfDatasToCasefolded( l: collections.abc.Sequence ) -> tuple:
 
 def IntelligentMassIntersect( sets_to_reduce: collections.abc.Collection[ set ] ):
     
+    """Executes `IntelligentMassIntersect`."""
     answer = None
     
     for set_to_reduce in sets_to_reduce:
@@ -399,6 +428,7 @@ def IterateListRandomlyAndFast( xs: list ):
     
     # do this instead of a pre-for-loop shuffle on big lists
     
+    """Executes `IterateListRandomlyAndFast`."""
     for i in numpy.random.permutation( len( xs ) ):
         
         yield xs[ i ]
@@ -408,16 +438,19 @@ def IterateListRandomlyAndFast( xs: list ):
 def IsAListLikeCollection( obj ):
     
     # protip: don't do isinstance( possible_list, collections.abc.Collection ) for a 'list' detection--strings pass it (and sometimes with infinite recursion) lol!
+    """Executes `IsAListLikeCollection`."""
     return isinstance( obj, ( tuple, list, set, frozenset ) )
     
 
 def MassExtend( iterables ):
     
+    """Executes `MassExtend`."""
     return [ item for item in itertools.chain.from_iterable( iterables ) ]
     
 
 def MassUnion( iterables ):
     
+    """Executes `MassUnion`."""
     return { item for item in itertools.chain.from_iterable( iterables ) }
     
 
@@ -425,6 +458,7 @@ def MedianPop( population ):
     
     # assume it has at least one and comes sorted
     
+    """Executes `MedianPop`."""
     median_index = len( population ) // 2
     
     row = population.pop( median_index )
@@ -434,6 +468,7 @@ def MedianPop( population ):
 
 def PartitionIterator( pred: collections.abc.Callable[ [ object ], bool ], stream: collections.abc.Iterable[ object ] ):
     
+    """Executes `PartitionIterator`."""
     ( t1, t2 ) = itertools.tee( stream )
     
     return ( itertools.filterfalse( pred, t1 ), filter( pred, t2 ) )
@@ -441,6 +476,7 @@ def PartitionIterator( pred: collections.abc.Callable[ [ object ], bool ], strea
 
 def PartitionIteratorIntoLists( pred: collections.abc.Callable[ [ object ], bool ], stream: collections.abc.Iterable[ object ] ):
     
+    """Executes `PartitionIteratorIntoLists`."""
     ( a, b ) = PartitionIterator( pred, stream )
     
     return ( list( a ), list( b ) )
@@ -448,6 +484,7 @@ def PartitionIteratorIntoLists( pred: collections.abc.Callable[ [ object ], bool
 
 def PullNFromIterator( iterator, n ):
     
+    """Executes `PullNFromIterator`."""
     chunk = []
     
     for item in iterator:
@@ -465,6 +502,7 @@ def PullNFromIterator( iterator, n ):
 
 def RandomiseListByChunks( xs, n ):
     
+    """Executes `RandomiseListByChunks`."""
     blocks = list( SplitListIntoChunks( xs, n ) )
     
     random.shuffle( blocks )
@@ -474,6 +512,7 @@ def RandomiseListByChunks( xs, n ):
 
 def RandomPop( population ):
     
+    """Executes `RandomPop`."""
     random_index = random.randint( 0, len( population ) - 1 )
     
     row = population.pop( random_index )
@@ -485,6 +524,7 @@ def SampleSetByGettingFirst( s: set, n ):
     
     # sampling from a big set can be slow, so if we don't care about super random, let's just rip off the front and let __hash__ be our random
     
+    """Executes `SampleSetByGettingFirst`."""
     n = min( len( s ), n )
     
     sample = set()
@@ -509,6 +549,7 @@ def SampleSetByGettingFirst( s: set, n ):
 
 def SetsIntersect( a, b ):
     
+    """Executes `SetsIntersect`."""
     if not isinstance( a, set ):
         
         a = set( a )
@@ -521,6 +562,7 @@ def SmoothOutMappingIterator( xs, n ):
     
     # de-spikifies mappings, so if there is ( tag, 20k files ), it breaks that up into manageable chunks
     
+    """Executes `SmoothOutMappingIterator`."""
     chunk_weight = 0
     chunk = []
     
@@ -535,11 +577,13 @@ def SmoothOutMappingIterator( xs, n ):
 
 def SplayListForDB( xs ):
     
+    """Executes `SplayListForDB`."""
     return '(' + ','.join( ( str( x ) for x in xs ) ) + ')'
     
 
 def SplitIteratorIntoAutothrottledChunks( iterator, starting_n, precise_time_to_stop ):
     
+    """Executes `SplitIteratorIntoAutothrottledChunks`."""
     n = starting_n
     
     chunk = PullNFromIterator( iterator, n )
@@ -575,6 +619,7 @@ def SplitIteratorIntoAutothrottledChunks( iterator, starting_n, precise_time_to_
 
 def SplitIteratorIntoChunks( iterator, n ):
     
+    """Executes `SplitIteratorIntoChunks`."""
     chunk = []
     
     for item in iterator:
@@ -597,6 +642,7 @@ def SplitIteratorIntoChunks( iterator, n ):
 
 def SplitListIntoChunks( xs, n ):
     
+    """Executes `SplitListIntoChunks`."""
     if isinstance( xs, set ):
         
         xs = list( xs )
@@ -610,6 +656,7 @@ def SplitListIntoChunks( xs, n ):
 
 def SplitListIntoChunksRich( xs, n ):
     
+    """Executes `SplitListIntoChunksRich`."""
     if isinstance( xs, set ):
         
         xs = list( xs )
@@ -625,6 +672,7 @@ def SplitListIntoChunksRich( xs, n ):
 
 def SplitMappingIteratorIntoAutothrottledChunks( iterator, starting_n, precise_time_to_stop ):
     
+    """Executes `SplitMappingIteratorIntoAutothrottledChunks`."""
     n = starting_n
     
     chunk_weight = 0

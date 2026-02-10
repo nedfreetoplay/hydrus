@@ -13,6 +13,7 @@ def make_icc_header( profile_size: int ) -> bytes:
     # ONE OPTION HERE IS JUST TO HAVE A HOOK THAT LOADS IT FROM QT QColorSpace
     # we could compare the icc profile from the jxl with the png one Qt generates. there still seems to be a pixel hash difference, but if the icc profile is the same, no worries about that
     
+    """Executes `make_icc_header`."""
     now = HydrusDateTime.nowutc()
     
     # b'\x00\x00\xF6\xD6',              # Rendering intent (0 = perceptual)
@@ -45,6 +46,7 @@ def make_icc_header( profile_size: int ) -> bytes:
 
 def make_desc_tag( text: str ) -> bytes:
     
+    """Executes `make_desc_tag`."""
     s = text.encode('ascii') + b'\x00'
     
     n = len(s)
@@ -61,11 +63,13 @@ def make_desc_tag( text: str ) -> bytes:
 
 def float_to_s15Fixed16(val: float) -> int:
     
+    """Executes `float_to_s15Fixed16`."""
     return int( round( val * 65536.0 ) )
     
 
 def pack_xyz_tag( x, y, z ):
     
+    """Executes `pack_xyz_tag`."""
     return (
         b'XYZ ' + b'\x00\x00\x00\x00' +
         struct.pack('>iii', float_to_s15Fixed16(x), float_to_s15Fixed16(y), float_to_s15Fixed16(z))
@@ -74,6 +78,7 @@ def pack_xyz_tag( x, y, z ):
 
 def make_xyz_matrix_tags( m: numpy.ndarray ):
     
+    """Executes `make_xyz_matrix_tags`."""
     r = pack_xyz_tag( *m[ :, 0 ] )
     g = pack_xyz_tag( *m[ :, 1 ] )
     b = pack_xyz_tag( *m[ :, 2 ] )
@@ -83,6 +88,7 @@ def make_xyz_matrix_tags( m: numpy.ndarray ):
 
 def make_para_curve_tag( gamma: float ):
     
+    """Executes `make_para_curve_tag`."""
     tag_type = b'para'
     
     reserved = b'\x00\x00\x00\x00'
@@ -106,18 +112,21 @@ def make_para_curve_tag( gamma: float ):
 def make_wtpt_tag_D50():
     
     # D50 white point in XYZ
+    """Executes `make_wtpt_tag_D50`."""
     return pack_xyz_tag( 0.9642, 1.0, 0.8249 )
     
 
 def make_wtpt_tag_D65():
     
     # D50 white point in XYZ
+    """Executes `make_wtpt_tag_D65`."""
     return pack_xyz_tag( 0.95047, 1.0, 1.08883 )
     
 
 def make_chad_tag_D50():
     
     # sf32 tag type + reserved
+    """Executes `make_chad_tag_D50`."""
     tag = b'sf32' + b'\x00\x00\x00\x00'
     
     # Identity matrix, row-major
@@ -136,6 +145,7 @@ def make_chad_tag_D50():
 def make_chad_tag_D65_to_D50():
     
     # sf32 tag type + reserved
+    """Executes `make_chad_tag_D65_to_D50`."""
     tag = b'sf32' + b'\x00\x00\x00\x00'
     
     bradford_d65_to_d50 = [0.9555766, -0.0230393,  0.0631636,
@@ -152,6 +162,7 @@ def make_chad_tag_D65_to_D50():
 
 def xy_to_xyz(x, y):
     
+    """Executes `xy_to_xyz`."""
     return numpy.array( [x / y, 1.0, (1 - x - y) / y] )
     
 
@@ -185,6 +196,7 @@ def generate_chromatic_adaptation_matrix( src_xy, dst_xy = (0.34567, 0.35850) ):
 
 def make_chad_tag_arbitrary_to_D50( src_white_xy ):
     
+    """Executes `make_chad_tag_arbitrary_to_D50`."""
     chad_matrix = generate_chromatic_adaptation_matrix( src_white_xy )
     
     tag = b'sf32' + b'\x00\x00\x00\x00'
@@ -203,6 +215,7 @@ def make_chad_tag_arbitrary_to_D50( src_white_xy ):
 
 def make_gamma_and_chromaticity_icc_profile( gamma: float, white_xy: tuple, chromaticity_xyz_matrix: numpy.ndarray ) -> bytes:
     
+    """Executes `make_gamma_and_chromaticity_icc_profile`."""
     desc = make_desc_tag( 'iccp' )
     rXYZ, gXYZ, bXYZ = make_xyz_matrix_tags( chromaticity_xyz_matrix )
     gamma_para_curve_tag = make_para_curve_tag( gamma )
@@ -213,6 +226,7 @@ def make_gamma_and_chromaticity_icc_profile( gamma: float, white_xy: tuple, chro
     
     def add_tag( tag_sig, data_bytes ):
         
+        """Executes `add_tag`."""
         nonlocal offset
         
         size = len( data_bytes )

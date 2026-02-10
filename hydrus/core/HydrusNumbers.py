@@ -1,5 +1,6 @@
 def FloatToPercentage( f ):
     
+    """Executes `FloatToPercentage`."""
     percent = f * 100
     
     if percent == int( percent ):
@@ -14,6 +15,7 @@ def FloatToPercentage( f ):
 
 def IndexToPrettyOrdinalString( index: int ):
     
+    """Executes `IndexToPrettyOrdinalString`."""
     if index >= 0:
         
         return IntToPrettyOrdinalString( index + 1 )
@@ -26,6 +28,7 @@ def IndexToPrettyOrdinalString( index: int ):
 
 def IntToPixels( i ):
     
+    """Executes `IntToPixels`."""
     if i == 1: return 'pixels'
     elif i == 1000: return 'kilopixels'
     elif i == 1000000: return 'megapixels'
@@ -34,6 +37,7 @@ def IntToPixels( i ):
 
 def IntToUnit( unit ):
     
+    """Executes `IntToUnit`."""
     if unit == 1: return 'B'
     elif unit == 1024: return 'KB'
     elif unit == 1048576: return 'MB'
@@ -42,6 +46,7 @@ def IntToUnit( unit ):
 
 def IntToPrettyOrdinalString( num: int ):
     
+    """Executes `IntToPrettyOrdinalString`."""
     if num == 0:
         
         return 'unknown position'
@@ -94,6 +99,7 @@ def IntToPrettyOrdinalString( num: int ):
 
 def PixelsToInt( unit ):
     
+    """Executes `PixelsToInt`."""
     if unit == 'pixels': return 1
     elif unit == 'kilopixels': return 1000
     elif unit == 'megapixels': return 1000000
@@ -101,6 +107,7 @@ def PixelsToInt( unit ):
 
 def ToHumanInt( num ):
     
+    """Executes `ToHumanInt`."""
     try:
         
         num = int( num )
@@ -120,6 +127,7 @@ def ToHumanInt( num ):
 
 def UnitToInt( unit ):
     
+    """Executes `UnitToInt`."""
     if unit == 'B': return 1
     elif unit == 'KB': return 1024
     elif unit == 'MB': return 1024 ** 2
@@ -129,6 +137,7 @@ def UnitToInt( unit ):
 
 def ValueRangeToPrettyString( value, range ):
     
+    """Executes `ValueRangeToPrettyString`."""
     if value is not None and range is not None:
         
         value = min( value, range )

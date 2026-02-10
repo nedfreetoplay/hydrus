@@ -23,6 +23,7 @@ class HydrusController( object ):
     
     def __init__( self, db_dir: str, logger: HydrusLogger.HydrusLogger ):
         
+        """Initializes the instance."""
         super().__init__()
         
         HG.controller = self
@@ -78,6 +79,7 @@ class HydrusController( object ):
     
     def _GetCallToThread( self ):
         
+        """Executes `_GetCallToThread`."""
         with self._call_to_thread_lock:
             
             for call_to_thread in self._call_to_threads:
@@ -120,6 +122,7 @@ class HydrusController( object ):
     
     def _GetCallToThreadLongRunning( self ):
         
+        """Executes `_GetCallToThreadLongRunning`."""
         with self._call_to_thread_lock:
             
             for call_to_thread in self._long_running_call_to_threads:
@@ -142,11 +145,13 @@ class HydrusController( object ):
     
     def _GetPubsubValidCallable( self ):
         
+        """Executes `_GetPubsubValidCallable`."""
         return lambda o: True
         
     
     def _GetAppropriateJobScheduler( self, time_delta ):
         
+        """Executes `_GetAppropriateJobScheduler`."""
         if time_delta <= 1.0:
             
             return self._fast_job_scheduler
@@ -159,21 +164,25 @@ class HydrusController( object ):
     
     def _GetUPnPServices( self ):
         
+        """Executes `_GetUPnPServices`."""
         return []
         
     
     def _GetWakeDelayPeriodMS( self ):
         
+        """Executes `_GetWakeDelayPeriodMS`."""
         return 15 * 1000
         
     
     def _InitDB( self ):
         
+        """Executes `_InitDB`."""
         raise NotImplementedError()
         
     
     def _InitHydrusTempDir( self ):
         
+        """Executes `_InitHydrusTempDir`."""
         self._hydrus_temp_dir = HydrusTemp.InitialiseHydrusTempDir()
         
     
@@ -182,10 +191,12 @@ class HydrusController( object ):
         # we don't really want to hang on to threads that are done as event.wait() has a bit of idle cpu
         # so, any that are in the pools that aren't doing anything can be killed and sent to garbage
         
+        """Executes `_MaintainCallToThreads`."""
         with self._call_to_thread_lock:
             
             def filter_call_to_threads( t ):
                 
+                """Executes `filter_call_to_threads`."""
                 if t.CurrentlyWorking():
                     
                     return True
@@ -206,11 +217,13 @@ class HydrusController( object ):
     
     def _PublishShutdownSubtext( self, text ):
         
+        """Executes `_PublishShutdownSubtext`."""
         pass
         
     
     def _Read( self, action, *args, **kwargs ):
         
+        """Executes `_Read`."""
         result = self.db.Read( action, *args, **kwargs )
         
         return result
@@ -218,16 +231,19 @@ class HydrusController( object ):
     
     def _ReportShutdownDaemonsStatus( self ):
         
+        """Executes `_ReportShutdownDaemonsStatus`."""
         pass
         
     
     def _ShowJustWokeToUser( self ) -> None:
         
+        """Executes `_ShowJustWokeToUser`."""
         HydrusData.Print( 'Just woke from sleep.' )
         
     
     def _ShutdownDaemons( self ):
         
+        """Executes `_ShutdownDaemons`."""
         for job in self._daemon_jobs.values():
             
             job.Cancel()
@@ -255,6 +271,7 @@ class HydrusController( object ):
     
     def _Write( self, action, synchronous, *args, **kwargs ):
         
+        """Executes `_Write`."""
         result = self.db.Write( action, synchronous, *args, **kwargs )
         
         return result
@@ -262,6 +279,7 @@ class HydrusController( object ):
     
     def pub( self, topic, *args, **kwargs ) -> None:
         
+        """Executes `pub`."""
         if HG.model_shutdown:
             
             self._pubsub.pubimmediate( topic, *args, **kwargs )
@@ -274,16 +292,19 @@ class HydrusController( object ):
     
     def pubimmediate( self, topic, *args, **kwargs ) -> None:
         
+        """Executes `pubimmediate`."""
         self._pubsub.pubimmediate( topic, *args, **kwargs )
         
     
     def sub( self, object, method_name, topic ) -> None:
         
+        """Executes `sub`."""
         self._pubsub.sub( object, method_name, topic )
         
     
     def AcquireThreadSlot( self, thread_type ) -> bool:
         
+        """Executes `AcquireThreadSlot`."""
         with self._thread_slot_lock:
             
             if thread_type not in self._thread_slots:
@@ -308,6 +329,7 @@ class HydrusController( object ):
     
     def BlockingSafeShowCriticalMessage( self, title: str, message: str ):
         
+        """Executes `BlockingSafeShowCriticalMessage`."""
         HydrusData.DebugPrint( title )
         HydrusData.DebugPrint( message )
         
@@ -316,6 +338,7 @@ class HydrusController( object ):
     
     def BlockingSafeShowMessage( self, message: str ):
         
+        """Executes `BlockingSafeShowMessage`."""
         HydrusData.DebugPrint( message )
         
         input( 'Press Enter to continue.' )
@@ -323,6 +346,7 @@ class HydrusController( object ):
     
     def ThreadSlotsAreAvailable( self, thread_type ) -> bool:
         
+        """Executes `ThreadSlotsAreAvailable`."""
         with self._thread_slot_lock:
             
             if thread_type not in self._thread_slots:
@@ -338,6 +362,7 @@ class HydrusController( object ):
     
     def CallLater( self, initial_delay, func, *args, **kwargs ) -> HydrusThreading.SingleJob:
         
+        """Executes `CallLater`."""
         job_scheduler = self._GetAppropriateJobScheduler( initial_delay )
         
         call = HydrusData.Call( func, *args, **kwargs )
@@ -351,6 +376,7 @@ class HydrusController( object ):
     
     def CallRepeating( self, initial_delay, period, func, *args, **kwargs ) -> HydrusThreading.RepeatingJob:
         
+        """Executes `CallRepeating`."""
         job_scheduler = self._GetAppropriateJobScheduler( period )
         
         call = HydrusData.Call( func, *args, **kwargs )
@@ -364,6 +390,7 @@ class HydrusController( object ):
     
     def CallToThread( self, callable, *args, **kwargs ) -> None:
         
+        """Executes `CallToThread`."""
         if HG.callto_report_mode:
             
             what_to_report = [ callable ]
@@ -388,6 +415,7 @@ class HydrusController( object ):
     
     def CallToThreadLongRunning( self, callable, *args, **kwargs ) -> None:
         
+        """Executes `CallToThreadLongRunning`."""
         if HG.callto_report_mode:
             
             what_to_report = [ callable ]
@@ -412,6 +440,7 @@ class HydrusController( object ):
     
     def CleanRunningFile( self ) -> None:
         
+        """Executes `CleanRunningFile`."""
         if self._i_own_running_file:
             
             HydrusData.CleanRunningFile( self.db_dir, self._name )
@@ -420,21 +449,25 @@ class HydrusController( object ):
     
     def ClearCaches( self ) -> None:
         
+        """Executes `ClearCaches`."""
         pass
         
     
     def CurrentlyIdle( self ) -> bool:
         
+        """Executes `CurrentlyIdle`."""
         return True
         
     
     def CurrentlyPubSubbing( self ) -> bool:
         
+        """Executes `CurrentlyPubSubbing`."""
         return self._pubsub.WorkToDo() or self._pubsub.DoingWork()
         
     
     def DBCurrentlyDoingJob( self ) -> bool:
         
+        """Executes `DBCurrentlyDoingJob`."""
         if self.db is None:
             
             return False
@@ -447,6 +480,7 @@ class HydrusController( object ):
     
     def DebugShowScheduledJobs( self ):
         
+        """Executes `DebugShowScheduledJobs`."""
         summary = self._fast_job_scheduler.GetPrettyJobSummary()
         
         HydrusData.ShowText( 'fast scheduler:' )
@@ -460,11 +494,13 @@ class HydrusController( object ):
     
     def DoingFastExit( self ) -> bool:
         
+        """Executes `DoingFastExit`."""
         return self._doing_fast_exit
         
     
     def ForceDatabaseCommit( self ):
         
+        """Executes `ForceDatabaseCommit`."""
         if self.db is None:
             
             raise Exception( 'Sorry, database does not seem to be alive at the moment!' )
@@ -475,21 +511,25 @@ class HydrusController( object ):
     
     def GetBootTimestampMS( self ):
         
+        """Executes `GetBootTimestampMS`."""
         return self.GetTimestampMS( 'boot' )
         
     
     def GetDBDir( self ):
         
+        """Executes `GetDBDir`."""
         return self.db_dir
         
     
     def GetDBStatus( self ):
         
+        """Executes `GetDBStatus`."""
         return self.db.GetStatus()
         
     
     def GetHydrusTempDir( self ):
         
+        """Executes `GetHydrusTempDir`."""
         if not os.path.exists( self._hydrus_temp_dir ):
             
             self._InitHydrusTempDir()
@@ -500,6 +540,7 @@ class HydrusController( object ):
     
     def GetJobSchedulerSnapshot( self, scheduler_name ):
         
+        """Executes `GetJobSchedulerSnapshot`."""
         if scheduler_name == 'fast':
             
             scheduler = self._fast_job_scheduler
@@ -514,16 +555,19 @@ class HydrusController( object ):
     
     def GetManager( self, name ):
         
+        """Executes `GetManager`."""
         return self._managers[ name ]
         
     
     def GetName( self ):
         
+        """Executes `GetName`."""
         return self._name
         
     
     def GetThreadPoolBusyStatus( self ):
         
+        """Executes `GetThreadPoolBusyStatus`."""
         if HydrusTime.TimeHasPassed( self._thread_pool_busy_status_text_new_check_time ):
             
             with self._call_to_thread_lock:
@@ -556,6 +600,7 @@ class HydrusController( object ):
     
     def GetThreadsSnapshot( self ):
         
+        """Executes `GetThreadsSnapshot`."""
         threads = []
         
         threads.extend( self._call_to_threads )
@@ -569,6 +614,7 @@ class HydrusController( object ):
     
     def GetTimestampMS( self, name: str ) -> int:
         
+        """Executes `GetTimestampMS`."""
         with self._timestamps_lock:
             
             return self._timestamps_ms[ name ]
@@ -577,16 +623,19 @@ class HydrusController( object ):
     
     def GoodTimeToStartBackgroundWork( self ) -> bool:
         
+        """Executes `GoodTimeToStartBackgroundWork`."""
         return self.CurrentlyIdle() and not ( self.JustWokeFromSleep() or self.SystemBusy() )
         
     
     def GoodTimeToStartForegroundWork( self ) -> bool:
         
+        """Executes `GoodTimeToStartForegroundWork`."""
         return not self.JustWokeFromSleep()
         
     
     def JustWokeFromSleep( self ):
         
+        """Executes `JustWokeFromSleep`."""
         self.SleepCheck()
         
         return self._just_woke_from_sleep
@@ -594,6 +643,7 @@ class HydrusController( object ):
     
     def InitModel( self ) -> None:
         
+        """Executes `InitModel`."""
         try:
             
             self._InitHydrusTempDir()
@@ -621,6 +671,7 @@ class HydrusController( object ):
     
     def InitView( self ):
         
+        """Executes `InitView`."""
         job = self.CallRepeating( 60.0, 300.0, self.MaintainDB, maintenance_mode = HC.MAINTENANCE_IDLE )
         
         job.WakeOnPubSub( 'wake_idle_workers' )
@@ -651,6 +702,7 @@ class HydrusController( object ):
     
     def IsFirstStart( self ):
         
+        """Executes `IsFirstStart`."""
         if self.db is None:
             
             return False
@@ -663,16 +715,19 @@ class HydrusController( object ):
     
     def LastShutdownWasBad( self ):
         
+        """Executes `LastShutdownWasBad`."""
         return self._last_shutdown_was_bad
         
     
     def MaintainDB( self, maintenance_mode = HC.MAINTENANCE_IDLE, stop_time = None ):
         
+        """Executes `MaintainDB`."""
         pass
         
     
     def MaintainMemoryFast( self ):
         
+        """Executes `MaintainMemoryFast`."""
         sys.stdout.flush()
         sys.stderr.flush()
         
@@ -686,6 +741,7 @@ class HydrusController( object ):
     
     def MaintainMemorySlow( self ):
         
+        """Executes `MaintainMemorySlow`."""
         HydrusTemp.CleanUpOldTempPaths()
         
         self._MaintainCallToThreads()
@@ -693,11 +749,13 @@ class HydrusController( object ):
     
     def Read( self, action, *args, **kwargs ):
         
+        """Executes `Read`."""
         return self._Read( action, *args, **kwargs )
         
     
     def RecordRunningStart( self ):
         
+        """Executes `RecordRunningStart`."""
         self._last_shutdown_was_bad = HydrusData.LastShutdownWasBad( self.db_dir, self._name )
         
         self._i_own_running_file = True
@@ -707,6 +765,7 @@ class HydrusController( object ):
     
     def ReleaseThreadSlot( self, thread_type ):
         
+        """Executes `ReleaseThreadSlot`."""
         with self._thread_slot_lock:
             
             if thread_type not in self._thread_slots:
@@ -722,21 +781,25 @@ class HydrusController( object ):
     
     def ReportDataUsed( self, num_bytes ):
         
+        """Executes `ReportDataUsed`."""
         pass
         
     
     def ReportRequestUsed( self ):
         
+        """Executes `ReportRequestUsed`."""
         pass
         
     
     def ResetIdleTimer( self ) -> None:
         
+        """Executes `ResetIdleTimer`."""
         self.TouchTime( 'last_user_action' )
         
     
     def SetTimestampMS( self, name: str, timestamp_ms: int ) -> None:
         
+        """Executes `SetTimestampMS`."""
         with self._timestamps_lock:
             
             self._timestamps_ms[ name ] = timestamp_ms
@@ -745,6 +808,7 @@ class HydrusController( object ):
     
     def ShouldStopThisWork( self, maintenance_mode, stop_time = None ) -> bool:
         
+        """Executes `ShouldStopThisWork`."""
         if maintenance_mode == HC.MAINTENANCE_IDLE:
             
             if not self.CurrentlyIdle():
@@ -773,6 +837,7 @@ class HydrusController( object ):
     
     def ShutdownModel( self ) -> None:
         
+        """Executes `ShutdownModel`."""
         if self.db is not None:
             
             self.db.Shutdown()
@@ -829,6 +894,7 @@ class HydrusController( object ):
     
     def ShutdownView( self ) -> None:
         
+        """Executes `ShutdownView`."""
         HG.view_shutdown = True
         
         self._ShutdownDaemons()
@@ -836,11 +902,13 @@ class HydrusController( object ):
     
     def ShutdownFromServer( self ):
         
+        """Executes `ShutdownFromServer`."""
         raise Exception( 'This hydrus application cannot be shut down from the server!' )
         
     
     def SleepCheck( self ) -> None:
         
+        """Executes `SleepCheck`."""
         with self._sleep_lock:
             
             if HydrusTime.TimeHasPassedMS( self.GetTimestampMS( 'last_sleep_check' ) + 60000 ): # it has been way too long since this method last fired, so we've prob been asleep
@@ -866,6 +934,7 @@ class HydrusController( object ):
     
     def SimulateWakeFromSleepEvent( self ) -> None:
         
+        """Executes `SimulateWakeFromSleepEvent`."""
         with self._sleep_lock:
             
             self.SetTimestampMS( 'last_sleep_check', HydrusTime.GetNowMS() - ( 3600 * 1000 ) )
@@ -876,11 +945,13 @@ class HydrusController( object ):
     
     def SystemBusy( self ):
         
+        """Executes `SystemBusy`."""
         return self._system_busy
         
     
     def TouchTime( self, name: str ) -> None:
         
+        """Executes `TouchTime`."""
         with self._timestamps_lock:
             
             self._timestamps_ms[ name ] = HydrusTime.GetNowMS()
@@ -889,11 +960,13 @@ class HydrusController( object ):
     
     def WaitUntilDBEmpty( self ) -> None:
         
+        """Executes `WaitUntilDBEmpty`."""
         self.db.WaitUntilFree()
         
     
     def WaitUntilModelFree( self ) -> None:
         
+        """Executes `WaitUntilModelFree`."""
         self.WaitUntilPubSubsEmpty()
         
         self.WaitUntilDBEmpty()
@@ -901,11 +974,13 @@ class HydrusController( object ):
     
     def WaitUntilPubSubsEmpty( self ):
         
+        """Executes `WaitUntilPubSubsEmpty`."""
         self._pubsub.WaitUntilFree()
         
     
     def WakeDaemon( self, name ):
         
+        """Executes `WakeDaemon`."""
         if name in self._daemon_jobs:
             
             self._daemon_jobs[ name ].Wake()
@@ -914,11 +989,13 @@ class HydrusController( object ):
     
     def Write( self, action, *args, **kwargs ):
         
+        """Executes `Write`."""
         return self._Write( action, False, *args, **kwargs )
         
     
     def WriteSynchronous( self, action, *args, **kwargs ):
         
+        """Executes `WriteSynchronous`."""
         return self._Write( action, True, *args, **kwargs )
         
     

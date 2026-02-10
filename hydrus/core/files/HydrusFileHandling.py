@@ -33,6 +33,7 @@ mimes_to_default_thumbnail_paths = collections.defaultdict( lambda: HydrusStatic
 
 def InitialiseMimesToDefaultThumbnailPaths():
     
+    """Executes `InitialiseMimesToDefaultThumbnailPaths`."""
     for mime in HC.AUDIO:
         
         mimes_to_default_thumbnail_paths[ mime ] = HydrusStaticDir.GetStaticPath( 'audio.png' )
@@ -83,6 +84,7 @@ def InitialiseMimesToDefaultThumbnailPaths():
 
 def GenerateDefaultThumbnail( mime: int, target_resolution: tuple[ int, int ] ):
     
+    """Executes `GenerateDefaultThumbnail`."""
     thumb_path = mimes_to_default_thumbnail_paths[ mime ]
     
     return HydrusImageHandling.GenerateDefaultThumbnailNumPyFromPath( thumb_path, target_resolution )
@@ -90,6 +92,7 @@ def GenerateDefaultThumbnail( mime: int, target_resolution: tuple[ int, int ] ):
 
 def GenerateThumbnailBytes( path, target_resolution, mime, duration_ms, num_frames, percentage_in = 35 ):
     
+    """Executes `GenerateThumbnailBytes`."""
     thumbnail_numpy = GenerateThumbnailNumPy( path, target_resolution, mime, duration_ms, num_frames, percentage_in = percentage_in )
 
     return HydrusImageHandling.GenerateThumbnailBytesFromNumPy( thumbnail_numpy )
@@ -97,6 +100,7 @@ def GenerateThumbnailBytes( path, target_resolution, mime, duration_ms, num_fram
 
 def PrintMoreThumbErrorInfo( e: Exception, message, extra_description: str | None = None ):
     
+    """Executes `PrintMoreThumbErrorInfo`."""
     if not isinstance( e, HydrusExceptions.NoThumbnailFileException ):
         
         HydrusData.Print( message )
@@ -112,6 +116,7 @@ def PrintMoreThumbErrorInfo( e: Exception, message, extra_description: str | Non
 
 def GenerateThumbnailNumPy( path, target_resolution, mime, duration_ms, num_frames, percentage_in = 35, extra_description = None ):
     
+    """Executes `GenerateThumbnailNumPy`."""
     if mime == HC.APPLICATION_CBZ or mime == HC.APPLICATION_EPUB:
         
         ( os_file_handle, temp_path ) = HydrusTemp.GetTempPath()
@@ -377,6 +382,7 @@ def GenerateThumbnailNumPy( path, target_resolution, mime, duration_ms, num_fram
     
 def GetExtraHashesFromPath( path ):
     
+    """Executes `GetExtraHashesFromPath`."""
     h_md5 = hashlib.md5()
     h_sha1 = hashlib.sha1()
     h_sha512 = hashlib.sha512()
@@ -400,6 +406,7 @@ def GetExtraHashesFromPath( path ):
 
 def GetFileInfo( path, mime = None, ok_to_look_for_hydrus_updates = False ):
     
+    """Executes `GetFileInfo`."""
     size = os.path.getsize( path )
     
     if size == 0:
@@ -652,11 +659,13 @@ def GetFileInfo( path, mime = None, ok_to_look_for_hydrus_updates = False ):
 
 def GetFileModifiedTimestampMS( path ) -> int:
     
+    """Executes `GetFileModifiedTimestampMS`."""
     return HydrusTime.MillisecondiseS( os.path.getmtime( path ) )
     
 
 def GetHashFromPath( path ):
     
+    """Executes `GetHashFromPath`."""
     h = hashlib.sha256()
     
     with open( path, 'rb' ) as f:
@@ -722,6 +731,7 @@ headers_and_mime = [
 def passes_offsets_and_headers_pair( offsets, headers, first_bytes_of_file ) -> bool:
     # TODO: rewrite this garbage
     
+    """Executes `passes_offsets_and_headers_pair`."""
     for offset in offsets:
         
         for header in headers:
@@ -739,6 +749,7 @@ def passes_offsets_and_headers_pair( offsets, headers, first_bytes_of_file ) -> 
 def passes_offsets_and_headers( offsets_and_headers, first_bytes_of_file ) -> bool:
     
     # ok we need to match every pair here
+    """Executes `passes_offsets_and_headers`."""
     for ( offsets, headers ) in offsets_and_headers:
         
         if not passes_offsets_and_headers_pair( offsets, headers, first_bytes_of_file ):
@@ -752,6 +763,7 @@ def passes_offsets_and_headers( offsets_and_headers, first_bytes_of_file ) -> bo
 
 def GetMime( path, ok_to_look_for_hydrus_updates = False ):
     
+    """Executes `GetMime`."""
     size = os.path.getsize( path )
     
     if size == 0:
@@ -958,6 +970,7 @@ headers_and_mime_thumbnails = [ ( offsets_and_headers, mime ) for ( offsets_and_
 
 def GetThumbnailMime( path ):
     
+    """Executes `GetThumbnailMime`."""
     with open( path, 'rb' ) as f:
         
         bit_to_check = f.read( 256 )

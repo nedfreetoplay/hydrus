@@ -5,6 +5,7 @@ from hydrus.core import HydrusExceptions
 
 def RawOpenPILImage( path: str | typing.BinaryIO, human_file_description = None ) -> PILImage.Image:
     
+    """Executes `RawOpenPILImage`."""
     try:
         
         pil_image = PILImage.open( path )

@@ -9,6 +9,7 @@ DEFAULT_PREFIX_LENGTH = 2
 
 def CheckFullPrefixCoverage( prefix_type: str, prefixes_found: collections.abc.Collection[ str ], prefix_length = DEFAULT_PREFIX_LENGTH ):
     
+    """Executes `CheckFullPrefixCoverage`."""
     missing_prefixes = GetMissingPrefixes( prefix_type, prefixes_found, prefix_length = prefix_length )
     
     if len( missing_prefixes ) > 0:
@@ -21,6 +22,7 @@ def CheckFullPrefixCoverage( prefix_type: str, prefixes_found: collections.abc.C
 
 def GetMissingPrefixes( prefix_type: str, prefixes_found: collections.abc.Collection[ str ], prefix_length = DEFAULT_PREFIX_LENGTH ):
     
+    """Executes `GetMissingPrefixes`."""
     expected_prefixes = set( IteratePrefixes( prefix_type, prefix_length = prefix_length ) )
     
     missing_prefixes = sorted( expected_prefixes.difference( prefixes_found ) )
@@ -30,11 +32,13 @@ def GetMissingPrefixes( prefix_type: str, prefixes_found: collections.abc.Collec
 
 def GetPrefix( hash: bytes, prefix_type: str, prefix_length = DEFAULT_PREFIX_LENGTH ) -> str:
     
+    """Executes `GetPrefix`."""
     return prefix_type + hash.hex()[ : prefix_length ]
     
 
 def IteratePrefixes( prefix_type: str, prefix_length = DEFAULT_PREFIX_LENGTH ):
     
+    """Executes `IteratePrefixes`."""
     hex_chars = '0123456789abcdef'
     
     args = [ hex_chars for _ in range( prefix_length ) ]

@@ -14,6 +14,7 @@ class HydrusSessionManagerServer( object ):
     
     def __init__( self ):
         
+        """Initializes the instance."""
         self._lock = threading.Lock()
         
         self.RefreshAllAccounts()
@@ -24,6 +25,7 @@ class HydrusSessionManagerServer( object ):
     
     def _GetAccountFromAccountKey( self, service_key, account_key ):
         
+        """Executes `_GetAccountFromAccountKey`."""
         account_keys_to_accounts = self._service_keys_to_account_keys_to_accounts[ service_key ]
         
         if account_key not in account_keys_to_accounts:
@@ -45,6 +47,7 @@ class HydrusSessionManagerServer( object ):
     
     def _GetAccountKeyFromAccessKey( self, service_key, access_key ):
         
+        """Executes `_GetAccountKeyFromAccessKey`."""
         hashed_access_key = hashlib.sha256( access_key ).digest()
         
         if hashed_access_key not in self._service_keys_to_hashed_access_keys_to_account_keys[ service_key ]:
@@ -66,6 +69,7 @@ class HydrusSessionManagerServer( object ):
     
     def AddSession( self, service_key, access_key ):
         
+        """Executes `AddSession`."""
         with self._lock:
             
             account_key = self._GetAccountKeyFromAccessKey( service_key, access_key )
@@ -88,6 +92,7 @@ class HydrusSessionManagerServer( object ):
     
     def GetAccount( self, service_key, session_key ):
         
+        """Executes `GetAccount`."""
         with self._lock:
             
             session_keys_to_sessions = self._service_keys_to_session_keys_to_sessions[ service_key ]
@@ -114,6 +119,7 @@ class HydrusSessionManagerServer( object ):
     
     def GetAccountFromAccessKey( self, service_key, access_key ):
         
+        """Executes `GetAccountFromAccessKey`."""
         with self._lock:
             
             account_key = self._GetAccountKeyFromAccessKey( service_key, access_key )
@@ -126,6 +132,7 @@ class HydrusSessionManagerServer( object ):
     
     def GetDirtyAccounts( self ):
         
+        """Executes `GetDirtyAccounts`."""
         with self._lock:
             
             service_keys_to_dirty_accounts = {}
@@ -146,6 +153,7 @@ class HydrusSessionManagerServer( object ):
     
     def RefreshAccounts( self, service_key, account_keys = None ):
         
+        """Executes `RefreshAccounts`."""
         with self._lock:
             
             account_keys_to_accounts = self._service_keys_to_account_keys_to_accounts[ service_key ]
@@ -166,6 +174,7 @@ class HydrusSessionManagerServer( object ):
     
     def RefreshAllAccounts( self, service_key = None ):
         
+        """Executes `RefreshAllAccounts`."""
         with self._lock:
             
             if service_key is None:
@@ -210,6 +219,7 @@ class HydrusSessionManagerServer( object ):
     
     def UpdateAccounts( self, service_key, accounts ):
         
+        """Executes `UpdateAccounts`."""
         with self._lock:
             
             account_keys_to_accounts = self._service_keys_to_account_keys_to_accounts[ service_key ]

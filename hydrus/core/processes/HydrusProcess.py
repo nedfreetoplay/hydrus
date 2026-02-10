@@ -10,6 +10,7 @@ from hydrus.core import HydrusText
 
 def GetSiblingProcessPorts( db_path, instance ):
     
+    """Executes `GetSiblingProcessPorts`."""
     path = os.path.join( db_path, instance + '_running' )
     
     if os.path.exists( path ):
@@ -65,6 +66,7 @@ def GetSiblingProcessPorts( db_path, instance ):
 
 def IsAlreadyRunning( db_path, instance ):
     
+    """Executes `IsAlreadyRunning`."""
     if not HydrusPSUtil.PSUTIL_OK:
         
         HydrusData.Print( 'psutil is not available, so cannot do the "already running?" check!' )
@@ -98,6 +100,7 @@ def IsAlreadyRunning( db_path, instance ):
                     
                     # since some timestamps here can be just slightly off due to float gubbins, let's allow a broader test so other processes can force a lock by making their own 'I want the lock' running file
                     
+                    """Executes `time_matches`."""
                     return recorded_time - 0.5 < process_time < recorded_time + 0.5
                     
                 
@@ -149,6 +152,7 @@ def IsAlreadyRunning( db_path, instance ):
 
 def RecordRunningStart( db_path, instance ):
     
+    """Executes `RecordRunningStart`."""
     if not HydrusPSUtil.PSUTIL_OK:
         
         return
@@ -179,6 +183,7 @@ def RecordRunningStart( db_path, instance ):
 
 def RestartProcess():
     
+    """Executes `RestartProcess`."""
     time.sleep( 1 ) # time for ports to unmap
     
     # note argv is unreliable in weird script-launching situations, but there we go

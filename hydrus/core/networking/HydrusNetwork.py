@@ -26,6 +26,7 @@ def GenerateDefaultServiceDictionary( service_type ):
     # don't store bytes key/value data here until ~version 537
     # the server kicks out a patched version 1 of serialisabledict, so it can't handle byte gubbins, lad
     
+    """Executes `GenerateDefaultServiceDictionary`."""
     dictionary = HydrusSerialisable.SerialisableDictionary()
     
     dictionary[ 'upnp_port' ] = None
@@ -83,6 +84,7 @@ def GenerateDefaultServiceDictionary( service_type ):
     
 def GenerateService( service_key, service_type, name, port, dictionary = None ):
     
+    """Executes `GenerateService`."""
     if dictionary is None:
         
         dictionary = GenerateDefaultServiceDictionary( service_type )
@@ -105,6 +107,7 @@ def GenerateService( service_key, service_type, name, port, dictionary = None ):
     
 def GenerateServiceFromSerialisableTuple( serialisable_info ):
     
+    """Executes `GenerateServiceFromSerialisableTuple`."""
     ( service_key_encoded, service_type, name, port, dictionary_string ) = serialisable_info
     
     try:
@@ -122,6 +125,7 @@ def GenerateServiceFromSerialisableTuple( serialisable_info ):
     
 def GetPossiblePermissions( service_type ):
     
+    """Executes `GetPossiblePermissions`."""
     permissions = []
     
     permissions.append( ( HC.CONTENT_TYPE_ACCOUNTS, [ None, HC.PERMISSION_ACTION_CREATE, HC.PERMISSION_ACTION_MODERATE ] ) )
@@ -149,6 +153,7 @@ class Account( object ):
     
     def __init__( self, account_key: bytes, account_type: "AccountType", created: int, expires: int | None ):
         
+        """Initializes the instance."""
         super().__init__()
         
         self._lock = threading.Lock()
@@ -169,16 +174,19 @@ class Account( object ):
     
     def __repr__( self ):
         
+        """Returns the developer-oriented string representation of the instance."""
         return 'Account: ' + self._account_type.GetTitle()
         
     
     def __str__( self ):
         
+        """Returns the string representation of the instance."""
         return self.__repr__()
         
     
     def _CheckBanned( self ):
         
+        """Executes `_CheckBanned`."""
         if self._IsBanned():
             
             raise HydrusExceptions.InsufficientCredentialsException( 'This account is banned: ' + self._GetBannedString() )
@@ -187,6 +195,7 @@ class Account( object ):
     
     def _CheckExpired( self ):
         
+        """Executes `_CheckExpired`."""
         if self._IsExpired():
             
             raise HydrusExceptions.InsufficientCredentialsException( 'This account is expired: ' + self._GetExpiresString() )
@@ -195,6 +204,7 @@ class Account( object ):
     
     def _CheckFunctional( self ):
         
+        """Executes `_CheckFunctional`."""
         if self._created == 0:
             
             raise HydrusExceptions.ConflictException( 'account is unsynced' )
@@ -218,6 +228,7 @@ class Account( object ):
     
     def _GetBannedString( self ):
         
+        """Executes `_GetBannedString`."""
         if self._banned_info is None:
             
             return 'not banned'
@@ -232,16 +243,19 @@ class Account( object ):
     
     def _GetExpiresString( self ):
         
+        """Executes `_GetExpiresString`."""
         return HydrusTime.TimestampToPrettyExpires( self._expires )
         
     
     def _IsAdmin( self ):
         
+        """Executes `_IsAdmin`."""
         return self._account_type.HasPermission( HC.CONTENT_TYPE_SERVICES, HC.PERMISSION_ACTION_MODERATE )
         
     
     def _IsBanned( self ):
         
+        """Executes `_IsBanned`."""
         if self._banned_info is None:
             
             return False
@@ -272,6 +286,7 @@ class Account( object ):
     
     def _IsExpired( self ):
         
+        """Executes `_IsExpired`."""
         if self._expires is None:
             
             return False
@@ -284,11 +299,13 @@ class Account( object ):
     
     def _SetDirty( self ):
         
+        """Executes `_SetDirty`."""
         self._dirty = True
         
     
     def Ban( self, reason, created, expires ):
         
+        """Executes `Ban`."""
         with self._lock:
             
             self._banned_info = ( reason, created, expires )
@@ -299,6 +316,7 @@ class Account( object ):
     
     def CheckAtLeastOnePermission( self, content_types_and_actions ):
         
+        """Executes `CheckAtLeastOnePermission`."""
         with self._lock:
             
             if True not in ( self._account_type.HasPermission( content_type, action ) for ( content_type, action ) in content_types_and_actions ):
@@ -310,6 +328,7 @@ class Account( object ):
     
     def CheckFunctional( self ):
         
+        """Executes `CheckFunctional`."""
         with self._lock:
         
             self._CheckFunctional()
@@ -318,6 +337,7 @@ class Account( object ):
     
     def CheckPermission( self, content_type, action ):
         
+        """Executes `CheckPermission`."""
         with self._lock:
             
             if self._IsAdmin():
@@ -338,6 +358,7 @@ class Account( object ):
     
     def GetAccountKey( self ):
         
+        """Executes `GetAccountKey`."""
         with self._lock:
             
             return self._account_key
@@ -346,6 +367,7 @@ class Account( object ):
     
     def GetAccountType( self ):
         
+        """Executes `GetAccountType`."""
         with self._lock:
             
             return self._account_type
@@ -354,6 +376,7 @@ class Account( object ):
     
     def GetBandwidthCurrentMonthSummary( self ):
         
+        """Executes `GetBandwidthCurrentMonthSummary`."""
         with self._lock:
             
             return self._bandwidth_tracker.GetCurrentMonthSummary()
@@ -362,6 +385,7 @@ class Account( object ):
     
     def GetBandwidthStringsAndGaugeTuples( self ):
         
+        """Executes `GetBandwidthStringsAndGaugeTuples`."""
         with self._lock:
             
             return self._account_type.GetBandwidthStringsAndGaugeTuples( self._bandwidth_tracker )
@@ -370,6 +394,7 @@ class Account( object ):
     
     def GetBandwidthTracker( self ):
         
+        """Executes `GetBandwidthTracker`."""
         with self._lock:
             
             return self._bandwidth_tracker
@@ -378,6 +403,7 @@ class Account( object ):
     
     def GetBannedInfo( self ):
         
+        """Executes `GetBannedInfo`."""
         with self._lock:
             
             return self._banned_info
@@ -386,6 +412,7 @@ class Account( object ):
     
     def GetCreated( self ):
         
+        """Executes `GetCreated`."""
         with self._lock:
             
             return self._created
@@ -394,6 +421,7 @@ class Account( object ):
     
     def GetExpires( self ):
         
+        """Executes `GetExpires`."""
         with self._lock:
             
             return self._expires
@@ -402,6 +430,7 @@ class Account( object ):
     
     def GetExpiresString( self ):
         
+        """Executes `GetExpiresString`."""
         with self._lock:
             
             if self._IsBanned():
@@ -417,6 +446,7 @@ class Account( object ):
     
     def GetMessageAndTimestamp( self ):
         
+        """Executes `GetMessageAndTimestamp`."""
         with self._lock:
             
             return ( self._message, self._message_created )
@@ -425,6 +455,7 @@ class Account( object ):
     
     def GetSingleLineTitle( self ):
         
+        """Executes `GetSingleLineTitle`."""
         with self._lock:
             
             text = self._account_key.hex()
@@ -452,6 +483,7 @@ class Account( object ):
     
     def GetStatusInfo( self ) -> tuple[ bool, str ]:
         
+        """Executes `GetStatusInfo`."""
         with self._lock:
             
             try:
@@ -469,6 +501,7 @@ class Account( object ):
     
     def HasPermission( self, content_type, action ):
         
+        """Executes `HasPermission`."""
         with self._lock:
             
             if self._IsAdmin():
@@ -487,6 +520,7 @@ class Account( object ):
     
     def IsBanned( self ):
         
+        """Executes `IsBanned`."""
         with self._lock:
             
             return self._IsBanned()
@@ -495,6 +529,7 @@ class Account( object ):
     
     def IsDirty( self ):
         
+        """Executes `IsDirty`."""
         with self._lock:
             
             return self._dirty
@@ -503,6 +538,7 @@ class Account( object ):
     
     def IsExpired( self ):
         
+        """Executes `IsExpired`."""
         with self._lock:
             
             return self._IsExpired()
@@ -511,6 +547,7 @@ class Account( object ):
     
     def IsFunctional( self ):
         
+        """Executes `IsFunctional`."""
         with self._lock:
             
             try:
@@ -528,6 +565,7 @@ class Account( object ):
     
     def IsNullAccount( self ):
         
+        """Executes `IsNullAccount`."""
         with self._lock:
             
             return self._account_type.IsNullAccount()
@@ -536,6 +574,7 @@ class Account( object ):
     
     def IsUnknown( self ):
         
+        """Executes `IsUnknown`."""
         with self._lock:
             
             return self._created == 0
@@ -544,6 +583,7 @@ class Account( object ):
     
     def ReportDataUsed( self, num_bytes ):
         
+        """Executes `ReportDataUsed`."""
         with self._lock:
             
             self._bandwidth_tracker.ReportDataUsed( num_bytes )
@@ -554,6 +594,7 @@ class Account( object ):
     
     def ReportRequestUsed( self ):
         
+        """Executes `ReportRequestUsed`."""
         with self._lock:
             
             self._bandwidth_tracker.ReportRequestUsed()
@@ -564,6 +605,7 @@ class Account( object ):
     
     def SetBandwidthTracker( self, bandwidth_tracker: HydrusNetworking.BandwidthTracker ):
         
+        """Executes `SetBandwidthTracker`."""
         with self._lock:
             
             self._bandwidth_tracker = bandwidth_tracker
@@ -574,6 +616,7 @@ class Account( object ):
     
     def SetClean( self ):
         
+        """Executes `SetClean`."""
         with self._lock:
             
             self._dirty = False
@@ -582,6 +625,7 @@ class Account( object ):
     
     def SetExpires( self, expires: int | None ):
         
+        """Executes `SetExpires`."""
         with self._lock:
             
             self._expires = expires
@@ -592,6 +636,7 @@ class Account( object ):
     
     def SetMessage( self, message, created ):
         
+        """Executes `SetMessage`."""
         with self._lock:
             
             self._message = message
@@ -603,6 +648,7 @@ class Account( object ):
     
     def ToString( self ):
         
+        """Executes `ToString`."""
         if self.IsNullAccount():
             
             return 'This is the NULL ACCOUNT. It takes possession of old content to anonymise it. It cannot be modified.'
@@ -616,6 +662,7 @@ class Account( object ):
     
     def Unban( self ):
         
+        """Executes `Unban`."""
         with self._lock:
             
             self._banned_info = None
@@ -627,6 +674,7 @@ class Account( object ):
     @staticmethod
     def GenerateAccountFromSerialisableTuple( serialisable_info ):
         
+        """Executes `GenerateAccountFromSerialisableTuple`."""
         ( account_key_encoded, serialisable_account_type, created, expires, dictionary_string ) = serialisable_info
         
         account_key = bytes.fromhex( account_key_encoded )
@@ -656,6 +704,7 @@ class Account( object ):
     @staticmethod
     def GenerateAccountFromTuple( serialisable_info ):
         
+        """Executes `GenerateAccountFromTuple`."""
         ( account_key, account_type, created, expires, dictionary ) = serialisable_info
         
         if 'message' not in dictionary:
@@ -691,6 +740,7 @@ class Account( object ):
     @staticmethod
     def GenerateSerialisableTupleFromAccount( account ):
         
+        """Executes `GenerateSerialisableTupleFromAccount`."""
         ( account_key, account_type, created, expires, dictionary ) = Account.GenerateTupleFromAccount( account )
         
         account_key_encoded = account_key.hex()
@@ -705,6 +755,7 @@ class Account( object ):
     @staticmethod
     def GenerateTupleFromAccount( account: "Account" ):
         
+        """Executes `GenerateTupleFromAccount`."""
         account_key = account.GetAccountKey()
         account_type = account.GetAccountType()
         created = account.GetCreated()
@@ -732,6 +783,7 @@ class Account( object ):
     @staticmethod
     def GenerateUnknownAccount( account_key = b'' ):
         
+        """Executes `GenerateUnknownAccount`."""
         account_type = AccountType.GenerateUnknownAccountType()
         created = 0
         expires = None
@@ -752,6 +804,7 @@ class AccountIdentifier( HydrusSerialisable.SerialisableBase ):
     
     def __init__( self, account_key = None, content = None ):
         
+        """Initializes the instance."""
         super().__init__()
         
         if account_key is not None:
@@ -768,6 +821,7 @@ class AccountIdentifier( HydrusSerialisable.SerialisableBase ):
     
     def __eq__( self, other ):
         
+        """Executes `__eq__`."""
         if isinstance( other, AccountIdentifier ):
             
             return self.__hash__() == other.__hash__()
@@ -776,12 +830,18 @@ class AccountIdentifier( HydrusSerialisable.SerialisableBase ):
         return NotImplemented
         
     
-    def __hash__( self ): return ( self._type, self._data ).__hash__()
+    def __hash__( self ):
+        """Executes `__hash__`."""
+        return ( self._type, self._data ).__hash__()
     
-    def __repr__( self ): return 'Account Identifier: ' + str( ( self._type, self._data ) )
+        """Returns the developer-oriented string representation of the instance."""
+    def __repr__( self ):
+        """Executes `__repr__`."""
+        return 'Account Identifier: ' + str( ( self._type, self._data ) )
     
     def _GetSerialisableInfo( self ):
         
+        """Executes `_GetSerialisableInfo`."""
         if self._type == self.TYPE_ACCOUNT_KEY:
             
             serialisable_data = self._data.hex()
@@ -796,6 +856,7 @@ class AccountIdentifier( HydrusSerialisable.SerialisableBase ):
     
     def _InitialiseFromSerialisableInfo( self, serialisable_info ):
         
+        """Executes `_InitialiseFromSerialisableInfo`."""
         ( self._type, serialisable_data ) = serialisable_info
         
         if self._type == self.TYPE_ACCOUNT_KEY:
@@ -810,6 +871,7 @@ class AccountIdentifier( HydrusSerialisable.SerialisableBase ):
     
     def GetAccountKey( self ) -> bytes:
         
+        """Executes `GetAccountKey`."""
         if not self.HasAccountKey():
             
             raise Exception( 'This Account Identifier does not have an account id!' )
@@ -820,6 +882,7 @@ class AccountIdentifier( HydrusSerialisable.SerialisableBase ):
     
     def GetContent( self ) -> "Content":
         
+        """Executes `GetContent`."""
         if not self.HasContent():
             
             raise Exception( 'This Account Identifier does not have content!' )
@@ -830,16 +893,19 @@ class AccountIdentifier( HydrusSerialisable.SerialisableBase ):
     
     def GetData( self ):
         
+        """Executes `GetData`."""
         return self._data
         
     
     def HasAccountKey( self ):
         
+        """Executes `HasAccountKey`."""
         return self._type == self.TYPE_ACCOUNT_KEY
         
     
     def HasContent( self ):
         
+        """Executes `HasContent`."""
         return self._type == self.TYPE_CONTENT
         
     
@@ -861,6 +927,7 @@ class AccountType( HydrusSerialisable.SerialisableBase ):
         auto_creation_history = None
         ):
         
+        """Initializes the instance."""
         super().__init__()
         
         if account_type_key is None:
@@ -903,16 +970,19 @@ class AccountType( HydrusSerialisable.SerialisableBase ):
     
     def __repr__( self ):
         
+        """Returns the developer-oriented string representation of the instance."""
         return 'AccountType: ' + self._title
         
     
     def __str__( self ):
         
+        """Returns the string representation of the instance."""
         return self.__repr__()
         
     
     def _GetSerialisableInfo( self ):
         
+        """Executes `_GetSerialisableInfo`."""
         serialisable_account_type_key = self._account_type_key.hex()
         serialisable_permissions = list( self._permissions.items() )
         serialisable_bandwidth_rules = self._bandwidth_rules.GetSerialisableTuple()
@@ -923,6 +993,7 @@ class AccountType( HydrusSerialisable.SerialisableBase ):
     
     def _InitialiseFromSerialisableInfo( self, serialisable_info ):
         
+        """Executes `_InitialiseFromSerialisableInfo`."""
         ( serialisable_account_type_key, self._title, serialisable_permissions, serialisable_bandwidth_rules, self._auto_creation_velocity, serialisable_auto_creation_history ) = serialisable_info
         
         self._account_type_key = bytes.fromhex( serialisable_account_type_key )
@@ -933,6 +1004,7 @@ class AccountType( HydrusSerialisable.SerialisableBase ):
     
     def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
         
+        """Executes `_UpdateSerialisableInfo`."""
         if version == 1:
             
             ( serialisable_account_type_key, title, serialisable_permissions, serialisable_bandwidth_rules, auto_creation_velocity, serialisable_auto_creation_history ) = old_serialisable_info
@@ -955,11 +1027,13 @@ class AccountType( HydrusSerialisable.SerialisableBase ):
     
     def BandwidthOK( self, bandwidth_tracker ):
         
+        """Executes `BandwidthOK`."""
         return self._bandwidth_rules.CanStartRequest( bandwidth_tracker )
         
     
     def CanAutoCreateAccountNow( self ):
         
+        """Executes `CanAutoCreateAccountNow`."""
         if not self.SupportsAutoCreateAccount():
             
             return False
@@ -974,36 +1048,43 @@ class AccountType( HydrusSerialisable.SerialisableBase ):
     
     def GetAutoCreateAccountHistory( self ) -> HydrusNetworking.BandwidthTracker:
         
+        """Executes `GetAutoCreateAccountHistory`."""
         return self._auto_creation_history
         
     
     def GetAutoCreateAccountVelocity( self ):
         
+        """Executes `GetAutoCreateAccountVelocity`."""
         return self._auto_creation_velocity
         
     
     def GetBandwidthRules( self ):
         
+        """Executes `GetBandwidthRules`."""
         return self._bandwidth_rules
         
     
     def GetBandwidthStringsAndGaugeTuples( self, bandwidth_tracker ):
         
+        """Executes `GetBandwidthStringsAndGaugeTuples`."""
         return self._bandwidth_rules.GetBandwidthStringsAndGaugeTuples( bandwidth_tracker )
         
     
     def GetAccountTypeKey( self ):
         
+        """Executes `GetAccountTypeKey`."""
         return self._account_type_key
         
     
     def GetPermissions( self ):
         
+        """Executes `GetPermissions`."""
         return { k : v for ( k, v ) in self._permissions.items() if k != 'null' }
         
     
     def GetPermissionStrings( self ):
         
+        """Executes `GetPermissionStrings`."""
         if self.IsNullAccount():
             
             return [ 'is null account, cannot do anything' ]
@@ -1021,11 +1102,13 @@ class AccountType( HydrusSerialisable.SerialisableBase ):
     
     def GetTitle( self ):
         
+        """Executes `GetTitle`."""
         return self._title
         
     
     def HasPermission( self, content_type, permission ):
         
+        """Executes `HasPermission`."""
         if self.IsNullAccount():
             
             return False
@@ -1059,11 +1142,13 @@ class AccountType( HydrusSerialisable.SerialisableBase ):
         # I had to tuck this in permissions dict because this was not during a network version update and I couldn't update the serialised object. bleargh
         # ideally though, we move this sometime to a self._is_null_account boolean
         
+        """Executes `IsNullAccount`."""
         return 'null' in self._permissions
         
     
     def ReportAutoCreateAccount( self ):
         
+        """Executes `ReportAutoCreateAccount`."""
         self._auto_creation_history.ReportRequestUsed()
         
     
@@ -1072,11 +1157,13 @@ class AccountType( HydrusSerialisable.SerialisableBase ):
         # I had to tuck this in permissions dict because this was not during a network version update and I couldn't update the serialised object. bleargh
         # ideally though, we move this sometime to a self._is_null_account boolean
         
+        """Executes `SetToNullAccount`."""
         self._permissions[ 'null' ] = True
         
     
     def SupportsAutoCreateAccount( self ):
         
+        """Executes `SupportsAutoCreateAccount`."""
         if self.IsNullAccount():
             
             return False
@@ -1090,6 +1177,7 @@ class AccountType( HydrusSerialisable.SerialisableBase ):
     @staticmethod
     def GenerateAdminAccountType( service_type ):
         
+        """Executes `GenerateAdminAccountType`."""
         bandwidth_rules = HydrusNetworking.BandwidthRules()
         
         permissions = {}
@@ -1122,6 +1210,7 @@ class AccountType( HydrusSerialisable.SerialisableBase ):
     @staticmethod
     def GenerateNewAccountType( title, permissions, bandwidth_rules ):
         
+        """Executes `GenerateNewAccountType`."""
         account_type_key = HydrusData.GenerateKey()
         
         return AccountType( account_type_key = account_type_key, title = title, permissions = permissions, bandwidth_rules = bandwidth_rules )
@@ -1130,6 +1219,7 @@ class AccountType( HydrusSerialisable.SerialisableBase ):
     @staticmethod
     def GenerateNullAccountType():
         
+        """Executes `GenerateNullAccountType`."""
         account_type_key = HydrusData.GenerateKey()
         
         title = 'null account'
@@ -1146,6 +1236,7 @@ class AccountType( HydrusSerialisable.SerialisableBase ):
     @staticmethod
     def GenerateUnknownAccountType():
         
+        """Executes `GenerateUnknownAccountType`."""
         title = 'unknown account'
         
         permissions = {}
@@ -1168,6 +1259,7 @@ class ClientToServerUpdate( HydrusSerialisable.SerialisableBase ):
     
     def __init__( self ):
         
+        """Initializes the instance."""
         super().__init__()
         
         self._actions_to_contents_and_reasons = collections.defaultdict( list )
@@ -1175,6 +1267,7 @@ class ClientToServerUpdate( HydrusSerialisable.SerialisableBase ):
     
     def _GetSerialisableInfo( self ):
         
+        """Executes `_GetSerialisableInfo`."""
         serialisable_info = []
         
         for ( action, contents_and_reasons ) in list(self._actions_to_contents_and_reasons.items()):
@@ -1189,6 +1282,7 @@ class ClientToServerUpdate( HydrusSerialisable.SerialisableBase ):
     
     def _InitialiseFromSerialisableInfo( self, serialisable_info ):
         
+        """Executes `_InitialiseFromSerialisableInfo`."""
         for ( action, serialisable_contents_and_reasons ) in serialisable_info:
             
             contents_and_reasons = [ ( HydrusSerialisable.CreateFromSerialisableTuple( serialisable_content ), reason ) for ( serialisable_content, reason ) in serialisable_contents_and_reasons ]
@@ -1199,6 +1293,7 @@ class ClientToServerUpdate( HydrusSerialisable.SerialisableBase ):
     
     def AddContent( self, action, content, reason = None ):
         
+        """Executes `AddContent`."""
         if reason is None:
             
             reason = ''
@@ -1209,6 +1304,7 @@ class ClientToServerUpdate( HydrusSerialisable.SerialisableBase ):
     
     def ApplyTagFilterToPendingMappings( self, tag_filter: HydrusTags.TagFilter ):
         
+        """Executes `ApplyTagFilterToPendingMappings`."""
         if HC.CONTENT_UPDATE_PEND in self._actions_to_contents_and_reasons:
             
             contents_and_reasons = self._actions_to_contents_and_reasons[ HC.CONTENT_UPDATE_PEND ]
@@ -1236,6 +1332,7 @@ class ClientToServerUpdate( HydrusSerialisable.SerialisableBase ):
     
     def GetContentDataIterator( self, content_type, action ):
         
+        """Executes `GetContentDataIterator`."""
         contents_and_reasons = self._actions_to_contents_and_reasons[ action ]
         
         for ( content, reason ) in contents_and_reasons:
@@ -1249,6 +1346,7 @@ class ClientToServerUpdate( HydrusSerialisable.SerialisableBase ):
     
     def GetHashes( self ):
         
+        """Executes `GetHashes`."""
         hashes = set()
         
         for contents_and_reasons in self._actions_to_contents_and_reasons.values():
@@ -1264,11 +1362,13 @@ class ClientToServerUpdate( HydrusSerialisable.SerialisableBase ):
     
     def HasContent( self ):
         
+        """Executes `HasContent`."""
         return len( self._actions_to_contents_and_reasons ) > 0
         
     
     def IterateAllActionsAndContentsAndReasons( self ):
         
+        """Executes `IterateAllActionsAndContentsAndReasons`."""
         for ( action, contents_and_reasons ) in self._actions_to_contents_and_reasons.items():
             
             for ( content, reason ) in contents_and_reasons:
@@ -1289,6 +1389,7 @@ class Content( HydrusSerialisable.SerialisableBase ):
     
     def __init__( self, content_type = None, content_data = None ):
         
+        """Initializes the instance."""
         super().__init__()
         
         self._content_type = content_type
@@ -1297,6 +1398,7 @@ class Content( HydrusSerialisable.SerialisableBase ):
     
     def __eq__( self, other ):
         
+        """Executes `__eq__`."""
         if isinstance( other, Content ):
             
             return self.__hash__() == other.__hash__()
@@ -1305,14 +1407,21 @@ class Content( HydrusSerialisable.SerialisableBase ):
         return NotImplemented
         
     
-    def __hash__( self ): return ( self._content_type, self._content_data ).__hash__()
+    def __hash__( self ):
+        """Executes `__hash__`."""
+        return ( self._content_type, self._content_data ).__hash__()
     
-    def __repr__( self ): return 'Content: ' + self.ToString()
+        """Returns the developer-oriented string representation of the instance."""
+    def __repr__( self ):
+        """Executes `__repr__`."""
+        return 'Content: ' + self.ToString()
     
     def _GetSerialisableInfo( self ):
         
+        """Executes `_GetSerialisableInfo`."""
         def EncodeHashes( hs ):
             
+            """Executes `EncodeHashes`."""
             return [ h.hex() for h in hs ]
             
         
@@ -1346,8 +1455,10 @@ class Content( HydrusSerialisable.SerialisableBase ):
     
     def _InitialiseFromSerialisableInfo( self, serialisable_info ):
         
+        """Executes `_InitialiseFromSerialisableInfo`."""
         def DecodeHashes( hs ):
             
+            """Executes `DecodeHashes`."""
             return [ bytes.fromhex( h ) for h in hs ]
             
         
@@ -1381,16 +1492,19 @@ class Content( HydrusSerialisable.SerialisableBase ):
     
     def GetContentData( self ):
         
+        """Executes `GetContentData`."""
         return self._content_data
         
     
     def GetContentType( self ):
         
+        """Executes `GetContentType`."""
         return self._content_type
         
     
     def GetHashes( self ):
         
+        """Executes `GetHashes`."""
         if self._content_type == HC.CONTENT_TYPE_FILES:
             
             hashes = self._content_data
@@ -1415,6 +1529,7 @@ class Content( HydrusSerialisable.SerialisableBase ):
     
     def GetActualWeight( self ):
         
+        """Executes `GetActualWeight`."""
         if self._content_type in ( HC.CONTENT_TYPE_FILES, HC.CONTENT_TYPE_MAPPINGS ):
             
             return len( self.GetHashes() )
@@ -1427,6 +1542,7 @@ class Content( HydrusSerialisable.SerialisableBase ):
     
     def GetVirtualWeight( self ):
         
+        """Executes `GetVirtualWeight`."""
         if self._content_type in ( HC.CONTENT_TYPE_FILES, HC.CONTENT_TYPE_MAPPINGS ):
             
             return len( self.GetHashes() )
@@ -1447,11 +1563,13 @@ class Content( HydrusSerialisable.SerialisableBase ):
     
     def HasHashes( self ):
         
+        """Executes `HasHashes`."""
         return self._content_type in ( HC.CONTENT_TYPE_FILES, HC.CONTENT_TYPE_MAPPING, HC.CONTENT_TYPE_MAPPINGS )
         
     
     def IterateUploadableChunks( self ):
         
+        """Executes `IterateUploadableChunks`."""
         if self._content_type == HC.CONTENT_TYPE_FILES:
             
             hashes = self._content_data
@@ -1482,6 +1600,7 @@ class Content( HydrusSerialisable.SerialisableBase ):
     
     def ToString( self ):
         
+        """Executes `ToString`."""
         if self._content_type == HC.CONTENT_TYPE_FILES:
             
             hashes = self._content_data
@@ -1526,6 +1645,7 @@ class ContentUpdate( HydrusSerialisable.SerialisableBase ):
     
     def __init__( self ):
         
+        """Initializes the instance."""
         super().__init__()
         
         self._content_data = {}
@@ -1533,6 +1653,7 @@ class ContentUpdate( HydrusSerialisable.SerialisableBase ):
     
     def _GetContent( self, content_type, action ):
         
+        """Executes `_GetContent`."""
         if content_type in self._content_data:
             
             if action in self._content_data[ content_type ]:
@@ -1546,6 +1667,7 @@ class ContentUpdate( HydrusSerialisable.SerialisableBase ):
     
     def _GetSerialisableInfo( self ):
         
+        """Executes `_GetSerialisableInfo`."""
         serialisable_info = []
         
         for ( content_type, actions_to_datas ) in list(self._content_data.items()):
@@ -1560,6 +1682,7 @@ class ContentUpdate( HydrusSerialisable.SerialisableBase ):
     
     def _InitialiseFromSerialisableInfo( self, serialisable_info ):
         
+        """Executes `_InitialiseFromSerialisableInfo`."""
         for ( content_type, serialisable_actions_to_datas ) in serialisable_info:
             
             actions_to_datas = dict( serialisable_actions_to_datas )
@@ -1570,6 +1693,7 @@ class ContentUpdate( HydrusSerialisable.SerialisableBase ):
     
     def AddRow( self, row ):
         
+        """Executes `AddRow`."""
         ( content_type, action, data ) = row
         
         if content_type not in self._content_data:
@@ -1587,46 +1711,55 @@ class ContentUpdate( HydrusSerialisable.SerialisableBase ):
     
     def GetDeletedFiles( self ):
         
+        """Executes `GetDeletedFiles`."""
         return self._GetContent( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE )
         
     
     def GetDeletedMappings( self ):
         
+        """Executes `GetDeletedMappings`."""
         return self._GetContent( HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_DELETE )
         
     
     def GetDeletedTagParents( self ):
         
+        """Executes `GetDeletedTagParents`."""
         return self._GetContent( HC.CONTENT_TYPE_TAG_PARENTS, HC.CONTENT_UPDATE_DELETE )
         
     
     def GetDeletedTagSiblings( self ):
         
+        """Executes `GetDeletedTagSiblings`."""
         return self._GetContent( HC.CONTENT_TYPE_TAG_SIBLINGS, HC.CONTENT_UPDATE_DELETE )
         
     
     def GetNewFiles( self ):
         
+        """Executes `GetNewFiles`."""
         return self._GetContent( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_ADD )
         
     
     def GetNewMappings( self ):
         
+        """Executes `GetNewMappings`."""
         return self._GetContent( HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_ADD )
         
     
     def GetNewTagParents( self ):
         
+        """Executes `GetNewTagParents`."""
         return self._GetContent( HC.CONTENT_TYPE_TAG_PARENTS, HC.CONTENT_UPDATE_ADD )
         
     
     def GetNewTagSiblings( self ):
         
+        """Executes `GetNewTagSiblings`."""
         return self._GetContent( HC.CONTENT_TYPE_TAG_SIBLINGS, HC.CONTENT_UPDATE_ADD )
         
     
     def GetNumRows( self, content_types_to_count = None ):
         
+        """Executes `GetNumRows`."""
         num = 0
         
         for content_type in self._content_data:
@@ -1666,6 +1799,7 @@ class Credentials( HydrusSerialisable.SerialisableBase ):
     
     def __init__( self, host = None, port = None, access_key = None ):
         
+        """Initializes the instance."""
         super().__init__()
         
         self._host = host
@@ -1675,6 +1809,7 @@ class Credentials( HydrusSerialisable.SerialisableBase ):
     
     def __eq__( self, other ):
         
+        """Executes `__eq__`."""
         if isinstance( other, Credentials ):
             
             return self.__hash__() == other.__hash__()
@@ -1685,11 +1820,13 @@ class Credentials( HydrusSerialisable.SerialisableBase ):
     
     def __hash__( self ):
         
+        """Executes `__hash__`."""
         return ( self._host, self._port, self._access_key ).__hash__()
         
     
     def __repr__( self ):
         
+        """Returns the developer-oriented string representation of the instance."""
         if self._access_key is None:
             
             access_key_str = 'no access key'
@@ -1704,6 +1841,7 @@ class Credentials( HydrusSerialisable.SerialisableBase ):
     
     def _GetSerialisableInfo( self ):
         
+        """Executes `_GetSerialisableInfo`."""
         if self._access_key is None:
             
             serialisable_access_key = self._access_key
@@ -1718,6 +1856,7 @@ class Credentials( HydrusSerialisable.SerialisableBase ):
     
     def _InitialiseFromSerialisableInfo( self, serialisable_info ):
         
+        """Executes `_InitialiseFromSerialisableInfo`."""
         ( self._host, self._port, serialisable_access_key ) = serialisable_info
         
         if serialisable_access_key is None:
@@ -1732,16 +1871,19 @@ class Credentials( HydrusSerialisable.SerialisableBase ):
     
     def GetAccessKey( self ):
         
+        """Executes `GetAccessKey`."""
         return self._access_key
         
     
     def GetAddress( self ):
         
+        """Executes `GetAddress`."""
         return ( self._host, self._port )
         
     
     def GetConnectionString( self ):
         
+        """Executes `GetConnectionString`."""
         connection_string = ''
         
         if self.HasAccessKey():
@@ -1756,6 +1898,7 @@ class Credentials( HydrusSerialisable.SerialisableBase ):
     
     def GetPortedAddress( self ):
         
+        """Executes `GetPortedAddress`."""
         if self._host.endswith( '/' ):
             
             host = self._host[:-1]
@@ -1781,11 +1924,13 @@ class Credentials( HydrusSerialisable.SerialisableBase ):
     
     def HasAccessKey( self ):
         
+        """Executes `HasAccessKey`."""
         return self._access_key is not None
         
     
     def SetAccessKey( self, access_key ):
         
+        """Executes `SetAccessKey`."""
         if access_key == '':
             
             access_key = None
@@ -1796,6 +1941,7 @@ class Credentials( HydrusSerialisable.SerialisableBase ):
     
     def SetAddress( self, host, port ):
         
+        """Executes `SetAddress`."""
         self._host = host
         self._port = port
         
@@ -1803,6 +1949,7 @@ class Credentials( HydrusSerialisable.SerialisableBase ):
     @staticmethod
     def GenerateCredentialsFromConnectionString( connection_string ):
         
+        """Executes `GenerateCredentialsFromConnectionString`."""
         ( host, port, access_key ) = Credentials.ParseConnectionString( connection_string )
         
         return Credentials( host, port, access_key )
@@ -1811,6 +1958,7 @@ class Credentials( HydrusSerialisable.SerialisableBase ):
     @staticmethod
     def ParseConnectionString( connection_string ):
         
+        """Executes `ParseConnectionString`."""
         if connection_string is None:
             
             return ( 'hostname', 80, None )
@@ -1876,6 +2024,7 @@ class DefinitionsUpdate( HydrusSerialisable.SerialisableBase ):
     
     def __init__( self ):
         
+        """Initializes the instance."""
         super().__init__()
         
         self._hash_ids_to_hashes = {}
@@ -1884,6 +2033,7 @@ class DefinitionsUpdate( HydrusSerialisable.SerialisableBase ):
     
     def _GetSerialisableInfo( self ):
         
+        """Executes `_GetSerialisableInfo`."""
         serialisable_info = []
         
         if len( self._hash_ids_to_hashes ) > 0:
@@ -1901,6 +2051,7 @@ class DefinitionsUpdate( HydrusSerialisable.SerialisableBase ):
     
     def _InitialiseFromSerialisableInfo( self, serialisable_info ):
         
+        """Executes `_InitialiseFromSerialisableInfo`."""
         for ( definition_type, definitions ) in serialisable_info:
             
             if definition_type == HC.DEFINITIONS_TYPE_HASHES:
@@ -1916,6 +2067,7 @@ class DefinitionsUpdate( HydrusSerialisable.SerialisableBase ):
     
     def AddRow( self, row ):
         
+        """Executes `AddRow`."""
         ( definitions_type, key, value ) = row
         
         if definitions_type == HC.DEFINITIONS_TYPE_HASHES:
@@ -1930,16 +2082,19 @@ class DefinitionsUpdate( HydrusSerialisable.SerialisableBase ):
     
     def GetHashIdsToHashes( self ):
         
+        """Executes `GetHashIdsToHashes`."""
         return self._hash_ids_to_hashes
         
     
     def GetNumRows( self ):
         
+        """Executes `GetNumRows`."""
         return len( self._hash_ids_to_hashes ) + len( self._tag_ids_to_tags )
         
     
     def GetTagIdsToTags( self ):
         
+        """Executes `GetTagIdsToTags`."""
         return self._tag_ids_to_tags
         
     
@@ -1953,6 +2108,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def __init__( self, metadata = None, next_update_due = None ):
         
+        """Initializes the instance."""
         if metadata is None:
             
             metadata = {}
@@ -1980,6 +2136,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def _CalculateBiggestEnd( self ):
         
+        """Executes `_CalculateBiggestEnd`."""
         if len( self._metadata ) == 0:
             
             return None
@@ -1996,6 +2153,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def _GetNextUpdateDueTime( self, from_client = False ):
         
+        """Executes `_GetNextUpdateDueTime`."""
         delay = 10
         
         if from_client:
@@ -2008,6 +2166,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def _GetSerialisableInfo( self ):
         
+        """Executes `_GetSerialisableInfo`."""
         serialisable_metadata = [ ( update_index, [ update_hash.hex() for update_hash in update_hashes ], begin, end ) for ( update_index, ( update_hashes, begin, end ) ) in list(self._metadata.items()) ]
         
         return ( serialisable_metadata, self._next_update_due )
@@ -2015,6 +2174,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def _GetUpdateHashes( self, update_index ):
         
+        """Executes `_GetUpdateHashes`."""
         ( update_hashes, begin, end ) = self._GetUpdate( update_index )
         
         return update_hashes
@@ -2022,6 +2182,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def _GetUpdate( self, update_index ):
         
+        """Executes `_GetUpdate`."""
         if update_index not in self._metadata:
             
             raise HydrusExceptions.DataMissing( 'That update does not exist!' )
@@ -2032,6 +2193,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def _InitialiseFromSerialisableInfo( self, serialisable_info ):
         
+        """Executes `_InitialiseFromSerialisableInfo`."""
         ( serialisable_metadata, self._next_update_due ) = serialisable_info
         
         self._metadata = {}
@@ -2050,6 +2212,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def _RecalcHashes( self ):
         
+        """Executes `_RecalcHashes`."""
         self._update_hashes = set()
         self._update_hashes_ordered = []
         
@@ -2062,6 +2225,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def AppendUpdate( self, update_hashes, begin, end, next_update_due ):
         
+        """Executes `AppendUpdate`."""
         with self._lock:
             
             update_index = len( self._metadata )
@@ -2079,6 +2243,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def CalculateNewNextUpdateDue( self, update_period ):
         
+        """Executes `CalculateNewNextUpdateDue`."""
         with self._lock:
             
             if self._biggest_end is None:
@@ -2094,6 +2259,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def GetEarliestTimestampForTheseHashes( self, hashes ):
         
+        """Executes `GetEarliestTimestampForTheseHashes`."""
         hashes = set( hashes )
         
         with self._lock:
@@ -2112,6 +2278,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def GetNextUpdateIndex( self ):
         
+        """Executes `GetNextUpdateIndex`."""
         with self._lock:
             
             return len( self._metadata )
@@ -2120,6 +2287,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def GetNextUpdateBegin( self ):
         
+        """Executes `GetNextUpdateBegin`."""
         with self._lock:
             
             if self._biggest_end is None:
@@ -2135,6 +2303,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def GetNextUpdateDueString( self, from_client = False ):
         
+        """Executes `GetNextUpdateDueString`."""
         with self._lock:
             
             if self._next_update_due == 0:
@@ -2165,6 +2334,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def GetNumUpdateHashes( self ):
         
+        """Executes `GetNumUpdateHashes`."""
         with self._lock:
             
             return len( self._update_hashes )
@@ -2173,6 +2343,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def GetSlice( self, from_update_index ):
         
+        """Executes `GetSlice`."""
         with self._lock:
             
             metadata = { update_index : row for ( update_index, row ) in self._metadata.items() if update_index >= from_update_index }
@@ -2183,6 +2354,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def GetUpdateHashes( self, update_index = None ):
         
+        """Executes `GetUpdateHashes`."""
         with self._lock:
             
             if update_index is None:
@@ -2198,6 +2370,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def GetUpdateIndexBeginAndEnd( self, update_index ):
         
+        """Executes `GetUpdateIndexBeginAndEnd`."""
         with self._lock:
             
             if update_index in self._metadata:
@@ -2213,6 +2386,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def GetUpdateIndicesAndTimes( self ):
         
+        """Executes `GetUpdateIndicesAndTimes`."""
         with self._lock:
             
             result = []
@@ -2228,6 +2402,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def GetUpdateIndicesAndHashes( self ):
         
+        """Executes `GetUpdateIndicesAndHashes`."""
         with self._lock:
             
             result = []
@@ -2243,6 +2418,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def HasDoneInitialSync( self ):
         
+        """Executes `HasDoneInitialSync`."""
         with self._lock:
             
             return self._next_update_due != 0
@@ -2251,6 +2427,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def HasUpdateHash( self, update_hash ):
         
+        """Executes `HasUpdateHash`."""
         with self._lock:
             
             return update_hash in self._update_hashes
@@ -2259,6 +2436,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def SortContentHashesAndContentTypes( self, content_hashes_and_content_types ):
         
+        """Executes `SortContentHashesAndContentTypes`."""
         with self._lock:
             
             content_hashes_to_content_types = dict( content_hashes_and_content_types )
@@ -2271,6 +2449,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def UpdateASAP( self ):
         
+        """Executes `UpdateASAP`."""
         with self._lock:
             
             # not 0, that's reserved
@@ -2280,6 +2459,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def UpdateDue( self, from_client = False ):
         
+        """Executes `UpdateDue`."""
         with self._lock:
             
             next_update_due_time = self._GetNextUpdateDueTime( from_client )
@@ -2290,6 +2470,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def UpdateFromSlice( self, metadata_slice: "Metadata" ):
         
+        """Executes `UpdateFromSlice`."""
         with self._lock:
             
             self._metadata.update( metadata_slice._metadata )
@@ -2310,6 +2491,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
     
     def UpdateIsEmpty( self, update_index ):
         
+        """Executes `UpdateIsEmpty`."""
         with self._lock:
             
             return len( self._GetUpdateHashes( update_index ) ) == 0
@@ -2327,6 +2509,7 @@ class Petition( HydrusSerialisable.SerialisableBase ):
     
     def __init__( self, petitioner_account = None, petition_header = None, actions_and_contents = None ):
         
+        """Initializes the instance."""
         if actions_and_contents is None:
             
             actions_and_contents = []
@@ -2343,6 +2526,7 @@ class Petition( HydrusSerialisable.SerialisableBase ):
     
     def __eq__( self, other ):
         
+        """Executes `__eq__`."""
         if isinstance( other, Petition ):
             
             return self.__hash__() == other.__hash__()
@@ -2353,11 +2537,13 @@ class Petition( HydrusSerialisable.SerialisableBase ):
     
     def __hash__( self ):
         
+        """Executes `__hash__`."""
         return self._petition_header.__hash__()
         
     
     def _GetSerialisableInfo( self ):
         
+        """Executes `_GetSerialisableInfo`."""
         serialisable_petitioner_account = Account.GenerateSerialisableTupleFromAccount( self._petitioner_account )
         serialisable_petition_header = self._petition_header.GetSerialisableTuple()
         serialisable_actions_and_contents = [ ( action, contents.GetSerialisableTuple() ) for ( action, contents ) in self._actions_and_contents ]
@@ -2367,6 +2553,7 @@ class Petition( HydrusSerialisable.SerialisableBase ):
     
     def _InitialiseFromSerialisableInfo( self, serialisable_info ):
         
+        """Executes `_InitialiseFromSerialisableInfo`."""
         ( serialisable_petitioner_account, serialisable_petition_header, serialisable_actions_and_contents ) = serialisable_info
         
         self._petitioner_account = Account.GenerateAccountFromSerialisableTuple( serialisable_petitioner_account )
@@ -2376,6 +2563,7 @@ class Petition( HydrusSerialisable.SerialisableBase ):
     
     def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
         
+        """Executes `_UpdateSerialisableInfo`."""
         if version == 1:
             
             ( action, serialisable_petitioner_account, reason, serialisable_contents ) = old_serialisable_info
@@ -2402,11 +2590,13 @@ class Petition( HydrusSerialisable.SerialisableBase ):
     
     def Approve( self, action, content ):
         
+        """Executes `Approve`."""
         self._completed_actions_to_contents[ action ].append( content )
         
     
     def ApproveAll( self ):
         
+        """Executes `ApproveAll`."""
         for ( action, contents ) in self._actions_and_contents:
             
             for content in contents:
@@ -2418,6 +2608,7 @@ class Petition( HydrusSerialisable.SerialisableBase ):
     
     def Deny( self, action, content ):
         
+        """Executes `Deny`."""
         if action == HC.CONTENT_UPDATE_PEND:
             
             denial_action = HC.CONTENT_UPDATE_DENY_PEND
@@ -2436,6 +2627,7 @@ class Petition( HydrusSerialisable.SerialisableBase ):
     
     def DenyAll( self ):
         
+        """Executes `DenyAll`."""
         for ( action, contents ) in self._actions_and_contents:
             
             for content in contents:
@@ -2447,8 +2639,10 @@ class Petition( HydrusSerialisable.SerialisableBase ):
     
     def GetCompletedUploadableClientToServerUpdates( self ):
         
+        """Executes `GetCompletedUploadableClientToServerUpdates`."""
         def break_contents_into_chunks( some_contents ):
             
+            """Executes `break_contents_into_chunks`."""
             chunks_of_some_contents = []
             chunk_of_some_contents = []
             
@@ -2513,6 +2707,7 @@ class Petition( HydrusSerialisable.SerialisableBase ):
     
     def GetContents( self, action ):
         
+        """Executes `GetContents`."""
         actions_to_contents = dict( self._actions_and_contents )
         
         if action in actions_to_contents:
@@ -2527,26 +2722,31 @@ class Petition( HydrusSerialisable.SerialisableBase ):
     
     def GetActionsAndContents( self ):
         
+        """Executes `GetActionsAndContents`."""
         return self._actions_and_contents
         
     
     def GetPetitionerAccount( self ):
         
+        """Executes `GetPetitionerAccount`."""
         return self._petitioner_account
         
     
     def GetPetitionHeader( self ) -> "PetitionHeader":
         
+        """Executes `GetPetitionHeader`."""
         return self._petition_header
         
     
     def GetReason( self ):
         
+        """Executes `GetReason`."""
         return self._petition_header.reason
         
     
     def GetActualContentWeight( self ) -> int:
         
+        """Executes `GetActualContentWeight`."""
         total_weight = 0
         
         for ( action, contents ) in self._actions_and_contents:
@@ -2562,6 +2762,7 @@ class Petition( HydrusSerialisable.SerialisableBase ):
     
     def GetContentSummary( self ) -> str:
         
+        """Executes `GetContentSummary`."""
         num_sub_petitions = sum( ( len( contents ) for ( action, contents ) in self._actions_and_contents ) )
         
         if self._petition_header.content_type == HC.CONTENT_TYPE_MAPPINGS and num_sub_petitions > 1:
@@ -2585,6 +2786,7 @@ class PetitionHeader( HydrusSerialisable.SerialisableBase ):
     
     def __init__( self, content_type = None, status = None, account_key = None, reason = None ):
         
+        """Initializes the instance."""
         if content_type is None:
             
             content_type = HC.CONTENT_TYPE_MAPPINGS
@@ -2615,6 +2817,7 @@ class PetitionHeader( HydrusSerialisable.SerialisableBase ):
     
     def __eq__( self, other ):
         
+        """Executes `__eq__`."""
         if isinstance( other, PetitionHeader ):
             
             return self.__hash__() == other.__hash__()
@@ -2625,11 +2828,13 @@ class PetitionHeader( HydrusSerialisable.SerialisableBase ):
     
     def __hash__( self ):
         
+        """Executes `__hash__`."""
         return ( self.content_type, self.status, self.account_key, self.reason ).__hash__()
         
     
     def _GetSerialisableInfo( self ):
         
+        """Executes `_GetSerialisableInfo`."""
         serialisable_account_key = self.account_key.hex()
         
         return ( self.content_type, self.status, serialisable_account_key, self.reason )
@@ -2637,6 +2842,7 @@ class PetitionHeader( HydrusSerialisable.SerialisableBase ):
     
     def _InitialiseFromSerialisableInfo( self, serialisable_info ):
         
+        """Executes `_InitialiseFromSerialisableInfo`."""
         ( self.content_type, self.status, serialisable_account_key, self.reason ) = serialisable_info
         
         self.account_key = bytes.fromhex( serialisable_account_key )
@@ -2649,6 +2855,7 @@ class ServerService( object ):
     
     def __init__( self, service_key, service_type, name, port, dictionary ):
         
+        """Initializes the instance."""
         self._service_key = service_key
         self._service_type = service_type
         self._name = name
@@ -2663,6 +2870,7 @@ class ServerService( object ):
     
     def _GetSerialisableDictionary( self ):
         
+        """Executes `_GetSerialisableDictionary`."""
         dictionary = HydrusSerialisable.SerialisableDictionary()
         
         dictionary[ 'upnp_port' ] = self._upnp_port
@@ -2673,17 +2881,20 @@ class ServerService( object ):
     
     def _LoadFromDictionary( self, dictionary ):
         
+        """Executes `_LoadFromDictionary`."""
         self._upnp_port = dictionary[ 'upnp_port' ]
         self._bandwidth_tracker = dictionary[ 'bandwidth_tracker' ]
         
     
     def _SetDirty( self ):
         
+        """Executes `_SetDirty`."""
         self._dirty = True
         
     
     def AllowsNonLocalConnections( self ):
         
+        """Executes `AllowsNonLocalConnections`."""
         with self._lock:
             
             return True
@@ -2692,6 +2903,7 @@ class ServerService( object ):
     
     def BandwidthOK( self ):
         
+        """Executes `BandwidthOK`."""
         with self._lock:
             
             return True
@@ -2700,6 +2912,7 @@ class ServerService( object ):
     
     def Duplicate( self ):
         
+        """Executes `Duplicate`."""
         with self._lock:
             
             dictionary = self._GetSerialisableDictionary()
@@ -2714,6 +2927,7 @@ class ServerService( object ):
     
     def GetName( self ):
         
+        """Executes `GetName`."""
         with self._lock:
             
             return self._name
@@ -2722,6 +2936,7 @@ class ServerService( object ):
     
     def GetPort( self ):
         
+        """Executes `GetPort`."""
         with self._lock:
             
             return self._port
@@ -2730,6 +2945,7 @@ class ServerService( object ):
     
     def GetUPnPPort( self ):
         
+        """Executes `GetUPnPPort`."""
         with self._lock:
             
             return self._upnp_port
@@ -2738,6 +2954,7 @@ class ServerService( object ):
     
     def GetServiceKey( self ):
         
+        """Executes `GetServiceKey`."""
         with self._lock:
             
             return self._service_key
@@ -2746,6 +2963,7 @@ class ServerService( object ):
     
     def GetServiceType( self ):
         
+        """Executes `GetServiceType`."""
         with self._lock:
             
             return self._service_type
@@ -2754,6 +2972,7 @@ class ServerService( object ):
     
     def IsDirty( self ):
         
+        """Executes `IsDirty`."""
         with self._lock:
             
             return self._dirty
@@ -2762,11 +2981,13 @@ class ServerService( object ):
     
     def LogsRequests( self ):
         
+        """Executes `LogsRequests`."""
         return True
         
     
     def ReportDataUsed( self, num_bytes ):
         
+        """Executes `ReportDataUsed`."""
         with self._lock:
             
             self._bandwidth_tracker.ReportDataUsed( num_bytes )
@@ -2777,6 +2998,7 @@ class ServerService( object ):
     
     def ReportRequestUsed( self ):
         
+        """Executes `ReportRequestUsed`."""
         with self._lock:
             
             self._bandwidth_tracker.ReportRequestUsed()
@@ -2787,6 +3009,7 @@ class ServerService( object ):
     
     def SetClean( self ):
         
+        """Executes `SetClean`."""
         with self._lock:
             
             self._dirty = False
@@ -2795,6 +3018,7 @@ class ServerService( object ):
     
     def SetName( self, name ):
         
+        """Executes `SetName`."""
         with self._lock:
             
             self._name = name
@@ -2805,6 +3029,7 @@ class ServerService( object ):
     
     def SetPort( self, port ):
         
+        """Executes `SetPort`."""
         with self._lock:
             
             self._port = port
@@ -2815,11 +3040,13 @@ class ServerService( object ):
     
     def SupportsCORS( self ):
         
+        """Executes `SupportsCORS`."""
         return False
         
     
     def ToSerialisableTuple( self ):
         
+        """Executes `ToSerialisableTuple`."""
         with self._lock:
             
             dictionary = self._GetSerialisableDictionary()
@@ -2832,6 +3059,7 @@ class ServerService( object ):
     
     def ToTuple( self ):
         
+        """Executes `ToTuple`."""
         with self._lock:
             
             dictionary = self._GetSerialisableDictionary()
@@ -2844,6 +3072,7 @@ class ServerService( object ):
     
     def UseNormieEris( self ):
         
+        """Executes `UseNormieEris`."""
         with self._lock:
             
             return False
@@ -2854,6 +3083,7 @@ class ServerServiceRestricted( ServerService ):
     
     def _GetSerialisableDictionary( self ):
         
+        """Executes `_GetSerialisableDictionary`."""
         dictionary = ServerService._GetSerialisableDictionary( self )
         
         dictionary[ 'bandwidth_rules' ] = self._bandwidth_rules
@@ -2867,6 +3097,7 @@ class ServerServiceRestricted( ServerService ):
     
     def _LoadFromDictionary( self, dictionary ):
         
+        """Executes `_LoadFromDictionary`."""
         ServerService._LoadFromDictionary( self, dictionary )
         
         if 'service_options' not in dictionary:
@@ -2888,6 +3119,7 @@ class ServerServiceRestricted( ServerService ):
     
     def BandwidthOK( self ):
         
+        """Executes `BandwidthOK`."""
         with self._lock:
             
             return self._bandwidth_rules.CanStartRequest( self._bandwidth_tracker )
@@ -2898,6 +3130,7 @@ class ServerServiceRepository( ServerServiceRestricted ):
     
     def _GetSerialisableDictionary( self ):
         
+        """Executes `_GetSerialisableDictionary`."""
         dictionary = ServerServiceRestricted._GetSerialisableDictionary( self )
         
         dictionary[ 'metadata' ] = self._metadata
@@ -2908,6 +3141,7 @@ class ServerServiceRepository( ServerServiceRestricted ):
     
     def _LoadFromDictionary( self, dictionary ):
         
+        """Executes `_LoadFromDictionary`."""
         ServerServiceRestricted._LoadFromDictionary( self, dictionary )
         
         if 'update_period' not in self._service_options:
@@ -2943,6 +3177,7 @@ class ServerServiceRepository( ServerServiceRestricted ):
     
     def GetMetadata( self ):
         
+        """Executes `GetMetadata`."""
         with self._lock:
             
             return self._metadata
@@ -2951,6 +3186,7 @@ class ServerServiceRepository( ServerServiceRestricted ):
     
     def GetMetadataSlice( self, from_update_index ):
         
+        """Executes `GetMetadataSlice`."""
         with self._lock:
             
             return self._metadata.GetSlice( from_update_index )
@@ -2959,6 +3195,7 @@ class ServerServiceRepository( ServerServiceRestricted ):
     
     def GetNullificationPeriod( self ) -> int:
         
+        """Executes `GetNullificationPeriod`."""
         with self._lock:
             
             return self._service_options[ 'nullification_period' ]
@@ -2967,6 +3204,7 @@ class ServerServiceRepository( ServerServiceRestricted ):
     
     def GetUpdatePeriod( self ) -> int:
         
+        """Executes `GetUpdatePeriod`."""
         with self._lock:
             
             return self._service_options[ 'update_period' ]
@@ -2975,6 +3213,7 @@ class ServerServiceRepository( ServerServiceRestricted ):
     
     def HasUpdateHash( self, update_hash ):
         
+        """Executes `HasUpdateHash`."""
         with self._lock:
             
             return self._metadata.HasUpdateHash( update_hash )
@@ -2986,6 +3225,7 @@ class ServerServiceRepository( ServerServiceRestricted ):
         # when there is a huge amount to catch up on, we don't want to bosh the server for ages
         # instead we'll hammer the server for an hour and then break (for ~three hours, should be)
         
+        """Executes `NullifyHistory`."""
         MAX_WAIT_TIME_WHEN_HEAVY_UPDATES = 120
         
         time_started_nullifying = HydrusTime.GetNow()
@@ -3081,6 +3321,7 @@ class ServerServiceRepository( ServerServiceRestricted ):
     
     def SetNullificationPeriod( self, nullification_period: int ):
         
+        """Executes `SetNullificationPeriod`."""
         with self._lock:
             
             self._service_options[ 'nullification_period' ] = nullification_period
@@ -3093,6 +3334,7 @@ class ServerServiceRepository( ServerServiceRestricted ):
     
     def SetUpdatePeriod( self, update_period: int ):
         
+        """Executes `SetUpdatePeriod`."""
         with self._lock:
             
             self._service_options[ 'update_period' ] = update_period
@@ -3107,6 +3349,7 @@ class ServerServiceRepository( ServerServiceRestricted ):
     
     def Sync( self ):
         
+        """Executes `Sync`."""
         with self._lock:
             
             update_due = self._metadata.UpdateDue()
@@ -3174,6 +3417,7 @@ class ServerServiceRepositoryTag( ServerServiceRepository ):
     
     def _LoadFromDictionary( self, dictionary ):
         
+        """Executes `_LoadFromDictionary`."""
         ServerServiceRepository._LoadFromDictionary( self, dictionary )
         
         if 'tag_filter' not in self._service_options:
@@ -3184,6 +3428,7 @@ class ServerServiceRepositoryTag( ServerServiceRepository ):
     
     def GetTagFilter( self ) -> HydrusTags.TagFilter:
         
+        """Executes `GetTagFilter`."""
         with self._lock:
             
             return self._service_options[ 'tag_filter' ]
@@ -3192,6 +3437,7 @@ class ServerServiceRepositoryTag( ServerServiceRepository ):
     
     def SetTagFilter( self, tag_filter: HydrusTags.TagFilter ):
         
+        """Executes `SetTagFilter`."""
         with self._lock:
             
             self._service_options[ 'tag_filter' ] = tag_filter
@@ -3205,6 +3451,7 @@ class ServerServiceRepositoryFile( ServerServiceRepository ):
     
     def _GetSerialisableDictionary( self ):
         
+        """Executes `_GetSerialisableDictionary`."""
         dictionary = ServerServiceRepository._GetSerialisableDictionary( self )
         
         dictionary[ 'log_uploader_ips' ] = self._log_uploader_ips
@@ -3215,6 +3462,7 @@ class ServerServiceRepositoryFile( ServerServiceRepository ):
     
     def _LoadFromDictionary( self, dictionary ):
         
+        """Executes `_LoadFromDictionary`."""
         ServerServiceRepository._LoadFromDictionary( self, dictionary )
         
         self._log_uploader_ips = dictionary[ 'log_uploader_ips' ]
@@ -3223,6 +3471,7 @@ class ServerServiceRepositoryFile( ServerServiceRepository ):
     
     def LogUploaderIPs( self ):
         
+        """Executes `LogUploaderIPs`."""
         with self._lock:
             
             return self._log_uploader_ips
@@ -3231,6 +3480,7 @@ class ServerServiceRepositoryFile( ServerServiceRepository ):
     
     def GetMaxStorage( self ):
         
+        """Executes `GetMaxStorage`."""
         with self._lock:
             
             return self._max_storage
@@ -3241,6 +3491,7 @@ class ServerServiceAdmin( ServerServiceRestricted ):
     
     def _GetSerialisableDictionary( self ):
         
+        """Executes `_GetSerialisableDictionary`."""
         dictionary = ServerServiceRestricted._GetSerialisableDictionary( self )
         
         dictionary[ 'server_bandwidth_tracker' ] = self._server_bandwidth_tracker
@@ -3251,6 +3502,7 @@ class ServerServiceAdmin( ServerServiceRestricted ):
     
     def _LoadFromDictionary( self, dictionary ):
         
+        """Executes `_LoadFromDictionary`."""
         ServerServiceRestricted._LoadFromDictionary( self, dictionary )
         
         self._server_bandwidth_tracker = dictionary[ 'server_bandwidth_tracker' ]
@@ -3259,6 +3511,7 @@ class ServerServiceAdmin( ServerServiceRestricted ):
     
     def ServerBandwidthOK( self ):
         
+        """Executes `ServerBandwidthOK`."""
         with self._lock:
             
             return self._server_bandwidth_rules.CanStartRequest( self._server_bandwidth_tracker )
@@ -3267,6 +3520,7 @@ class ServerServiceAdmin( ServerServiceRestricted ):
     
     def ServerReportDataUsed( self, num_bytes ):
         
+        """Executes `ServerReportDataUsed`."""
         with self._lock:
             
             self._server_bandwidth_tracker.ReportDataUsed( num_bytes )
@@ -3277,6 +3531,7 @@ class ServerServiceAdmin( ServerServiceRestricted ):
     
     def ServerReportRequestUsed( self ):
         
+        """Executes `ServerReportRequestUsed`."""
         with self._lock:
             
             self._server_bandwidth_tracker.ReportRequestUsed()
@@ -3289,6 +3544,7 @@ class UpdateBuilder( object ):
     
     def __init__( self, update_class, max_rows ):
         
+        """Initializes the instance."""
         self._update_class = update_class
         self._max_rows = max_rows
         
@@ -3300,6 +3556,7 @@ class UpdateBuilder( object ):
     
     def AddRow( self, row, row_weight = 1 ):
         
+        """Executes `AddRow`."""
         self._current_update.AddRow( row )
         self._current_num_rows += row_weight
         
@@ -3314,6 +3571,7 @@ class UpdateBuilder( object ):
     
     def Finish( self ):
         
+        """Executes `Finish`."""
         if self._current_update.GetNumRows() > 0:
             
             self._updates.append( self._current_update )
@@ -3324,6 +3582,7 @@ class UpdateBuilder( object ):
     
     def GetUpdates( self ):
         
+        """Executes `GetUpdates`."""
         return self._updates
         
     

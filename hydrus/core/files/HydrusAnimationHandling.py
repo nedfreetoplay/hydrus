@@ -11,6 +11,7 @@ from hydrus.core.files.images import HydrusImageOpening
 
 def GetAnimationProperties( path, mime ):
     
+    """Executes `GetAnimationProperties`."""
     pil_image = HydrusImageHandling.GeneratePILImage( path )
     
     ( width, height ) = pil_image.size
@@ -55,6 +56,7 @@ def GetAPNGChunks( file_header_bytes: bytes ) ->list:
     
     # note lol that if you debug this you'll still get the mega slowdown as your IDE copies the giganto bytes around over and over for variable inspection
     
+    """Executes `GetAPNGChunks`."""
     chunks = []
     
     buffer = io.BytesIO( file_header_bytes )
@@ -113,6 +115,7 @@ def GetAPNGACTLChunkData( file_header_bytes: bytes ) -> bytes | None:
     # the acTL chunk can be in different places, but it has to be near the top
     # although it is almost always in fixed position (I think byte 29), we have seen both pHYs and sRGB chunks appear before it
     # so to be proper we need to parse chunks and find the right one
+    """Executes `GetAPNGACTLChunkData`."""
     apng_actl_chunk_header = b'acTL'
     
     chunks = GetAPNGChunks( file_header_bytes )
@@ -131,6 +134,7 @@ def GetAPNGACTLChunkData( file_header_bytes: bytes ) -> bytes | None:
 
 def GetAPNGDurationMS( apng_bytes: bytes ) -> float:
     
+    """Executes `GetAPNGDurationMS`."""
     frame_control_chunk_name = b'fcTL'
     
     chunks = GetAPNGChunks( apng_bytes )
@@ -174,6 +178,7 @@ def GetAPNGDurationMS( apng_bytes: bytes ) -> float:
 
 def GetAPNGNumFrames( apng_actl_bytes: bytes ) -> int:
     
+    """Executes `GetAPNGNumFrames`."""
     ( num_frames, ) = struct.unpack( '>I', apng_actl_bytes[ : 4 ] )
     
     return num_frames
@@ -181,6 +186,7 @@ def GetAPNGNumFrames( apng_actl_bytes: bytes ) -> int:
 
 def GetAPNGDurationMSAndNumFrames( path ):
     
+    """Executes `GetAPNGDurationMSAndNumFrames`."""
     with open( path, 'rb' ) as f:
         
         file_header_bytes = f.read( 256 )
@@ -207,6 +213,7 @@ def GetAPNGDurationMSAndNumFrames( path ):
 
 def GetFrameDurationsMSPILAnimation( path, human_file_description = None ):
     
+    """Executes `GetFrameDurationsMSPILAnimation`."""
     pil_image = HydrusImageOpening.RawOpenPILImage( path, human_file_description = human_file_description )
     
     times_to_play = GetTimesToPlayPILAnimationFromPIL( pil_image )
@@ -290,6 +297,7 @@ def GetFrameDurationsMSPILAnimation( path, human_file_description = None ):
 
 def GetTimesToPlayAPNG( path: str ) -> int:
     
+    """Executes `GetTimesToPlayAPNG`."""
     with open( path, 'rb' ) as f:
         
         file_header_bytes = f.read( 256 )
@@ -309,6 +317,7 @@ def GetTimesToPlayAPNG( path: str ) -> int:
 
 def GetTimesToPlayPILAnimation( path, human_file_description = None ) -> int:
     
+    """Executes `GetTimesToPlayPILAnimation`."""
     try:
         
         pil_image = HydrusImageOpening.RawOpenPILImage( path, human_file_description = human_file_description )
@@ -323,6 +332,7 @@ def GetTimesToPlayPILAnimation( path, human_file_description = None ) -> int:
 
 def GetTimesToPlayPILAnimationFromPIL( pil_image: PILImage.Image ) -> int:
     
+    """Executes `GetTimesToPlayPILAnimationFromPIL`."""
     if 'loop' in pil_image.info:
         
         times_to_play = pil_image.info[ 'loop' ]
@@ -337,6 +347,7 @@ def GetTimesToPlayPILAnimationFromPIL( pil_image: PILImage.Image ) -> int:
 
 def GetWebPChunks( file_bytes ):
     
+    """Executes `GetWebPChunks`."""
     chunks = []
     
     offset = 12  # RIFF/size/WEBP
@@ -376,6 +387,7 @@ def GetWebPChunks( file_bytes ):
 
 def GetWebPFrameDurationsMS( path ):
     
+    """Executes `GetWebPFrameDurationsMS`."""
     with open( path, 'rb' ) as f:
         
         file_bytes = f.read()
@@ -439,6 +451,7 @@ def GetWebPFrameDurationsMS( path ):
 
 def PILAnimationHasDuration( path ):
     
+    """Executes `PILAnimationHasDuration`."""
     pil_image = HydrusImageOpening.RawOpenPILImage( path )
     
     try:
@@ -460,6 +473,7 @@ def PILAnimationHasDuration( path ):
 
 def IsPNGAnimated( file_header_bytes ):
     
+    """Executes `IsPNGAnimated`."""
     apng_actl_bytes = GetAPNGACTLChunkData( file_header_bytes )
     
     if apng_actl_bytes is not None:

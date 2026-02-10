@@ -37,6 +37,7 @@ CURRENT_PROFILE_LOCK = threading.Lock()
 
 def FlipProfileMode( name ):
     
+    """Executes `FlipProfileMode`."""
     if profile_mode:
         
         start_new_mode = profile_mode_name != name
@@ -56,6 +57,7 @@ def FlipProfileMode( name ):
 
 def FlipQueryPlannerMode():
     
+    """Executes `FlipQueryPlannerMode`."""
     global query_planner_mode
     global query_planner_start_time
     global query_planner_query_count
@@ -84,11 +86,13 @@ def FlipQueryPlannerMode():
 
 def IsProfileMode( name ):
     
+    """Executes `IsProfileMode`."""
     return profile_mode and profile_mode_name == name
     
 
 def PrintProfile( summary, profile_text = None ):
     
+    """Executes `PrintProfile`."""
     name = HG.controller.GetName()
     db_dir = HG.controller.GetDBDir()
     
@@ -114,6 +118,7 @@ def PrintProfile( summary, profile_text = None ):
 
 def PrintQueryPlan( query, plan_lines ):
     
+    """Executes `PrintQueryPlan`."""
     global queries_planned
     global query_planner_query_count
     
@@ -164,6 +169,7 @@ def PrintQueryPlan( query, plan_lines ):
 
 def Profile( summary, func, min_duration_ms = 20, show_summary = False ):
     
+    """Executes `Profile`."""
     global CURRENT_PROFILE_LOCK
     global profile_counter_lock
     global profile_slow_count
@@ -274,6 +280,7 @@ def Profile( summary, func, min_duration_ms = 20, show_summary = False ):
 
 def StartProfileMode( name ):
     
+    """Executes `StartProfileMode`."""
     global profile_mode
     global profile_mode_name
     
@@ -305,6 +312,7 @@ def StartProfileMode( name ):
 
 def StopProfileMode():
     
+    """Executes `StopProfileMode`."""
     global profile_mode
     global profile_mode_name
     

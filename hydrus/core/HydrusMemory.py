@@ -27,6 +27,7 @@ CURRENT_TRACKER = None
 
 def CheckPymplerOK():
     
+    """Executes `CheckPymplerOK`."""
     if not PYMPLER_OK:
         
         raise Exception( 'Pympler is not available!' )
@@ -35,6 +36,7 @@ def CheckPymplerOK():
 
 def PrintCurrentMemoryUse( classes_to_track = None ):
     
+    """Executes `PrintCurrentMemoryUse`."""
     CheckPymplerOK()
     
     HydrusData.Print( '---printing memory use to log---' )
@@ -73,6 +75,7 @@ def PrintCurrentMemoryUse( classes_to_track = None ):
 
 def PrintSnapshotDiff():
     
+    """Executes `PrintSnapshotDiff`."""
     CheckPymplerOK()
     
     global CURRENT_TRACKER
@@ -94,6 +97,7 @@ def PrintSnapshotDiff():
 
 def TakeMemoryUseSnapshot():
     
+    """Executes `TakeMemoryUseSnapshot`."""
     global CURRENT_TRACKER
     
     CURRENT_TRACKER = tracker.SummaryTracker()

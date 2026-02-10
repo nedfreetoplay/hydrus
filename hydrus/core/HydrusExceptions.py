@@ -4,6 +4,7 @@ class HydrusException( Exception ):
     
     def __str__( self ):
         
+        """Returns the string representation of the instance."""
         if isinstance( self.args, collections.abc.Iterable ):
             
             s = []
@@ -39,6 +40,7 @@ class DBException( HydrusException ):
     
     def __init__( self, e, first_line, db_traceback ):
         
+        """Initializes the instance."""
         self.db_e = e
         
         super().__init__( first_line, db_traceback )

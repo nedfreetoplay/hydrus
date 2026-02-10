@@ -10,6 +10,7 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
     
     def __init__( self, name, cursor: sqlite3.Cursor ):
         
+        """Initializes the instance."""
         super().__init__()
         
         self.name = name
@@ -19,6 +20,7 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
     
     def _FlattenIndexGenerationDict( self, index_generation_dict: dict ):
         
+        """Executes `_FlattenIndexGenerationDict`."""
         tuples = []
         
         for ( table_name, index_rows ) in index_generation_dict.items():
@@ -31,6 +33,7 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
     
     def _CreateTable( self, create_query_without_name: str, table_name: str ):
         
+        """Executes `_CreateTable`."""
         if 'fts4(' in create_query_without_name.lower():
             
             # when we want to repair a missing fts4 table, the damaged old virtual table sometimes still has some sub-tables hanging around, which breaks the new create
@@ -70,36 +73,43 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
     
     def _DoLastShutdownWasBadWork( self ):
         
+        """Executes `_DoLastShutdownWasBadWork`."""
         pass
         
     
     def _GetCriticalTableNames( self ) -> collections.abc.Collection[ str ]:
         
+        """Executes `_GetCriticalTableNames`."""
         return set()
         
     
     def _GetInitialIndexGenerationDict( self ) -> dict:
         
+        """Executes `_GetInitialIndexGenerationDict`."""
         return {}
         
     
     def _GetInitialTableGenerationDict( self ) -> dict:
         
+        """Executes `_GetInitialTableGenerationDict`."""
         return {}
         
     
     def _GetServiceIndexGenerationDict( self, service_id ) -> dict:
         
+        """Executes `_GetServiceIndexGenerationDict`."""
         return {}
         
     
     def _GetServiceTableGenerationDict( self, service_id ) -> dict:
         
+        """Executes `_GetServiceTableGenerationDict`."""
         return {}
         
     
     def _GetServicesIndexGenerationDict( self ) -> dict:
         
+        """Executes `_GetServicesIndexGenerationDict`."""
         index_generation_dict = {}
         
         for service_id in self._GetServiceIdsWeGenerateDynamicTablesFor():
@@ -112,6 +122,7 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
     
     def _GetServicesTableGenerationDict( self ) -> dict:
         
+        """Executes `_GetServicesTableGenerationDict`."""
         table_generation_dict = {}
         
         for service_id in self._GetServiceIdsWeGenerateDynamicTablesFor():
@@ -124,31 +135,37 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
     
     def _GetServiceTablePrefixes( self ) -> collections.abc.Collection[ str ]:
         
+        """Executes `_GetServiceTablePrefixes`."""
         return set()
         
     
     def _GetServiceIdsWeGenerateDynamicTablesFor( self ):
         
+        """Executes `_GetServiceIdsWeGenerateDynamicTablesFor`."""
         return []
         
     
     def _PresentMissingIndicesWarningToUser( self, index_names ):
         
+        """Executes `_PresentMissingIndicesWarningToUser`."""
         raise NotImplementedError()
         
     
     def _PresentMissingTablesWarningToUser( self, table_names ):
         
+        """Executes `_PresentMissingTablesWarningToUser`."""
         raise NotImplementedError()
         
     
     def _RepairRepopulateTables( self, table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper ):
         
+        """Executes `_RepairRepopulateTables`."""
         pass
         
     
     def CreateInitialIndices( self ):
         
+        """Executes `CreateInitialIndices`."""
         index_generation_dict = self._GetInitialIndexGenerationDict()
         
         for ( table_name, columns, unique, version_added ) in self._FlattenIndexGenerationDict( index_generation_dict ):
@@ -159,6 +176,7 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
     
     def CreateInitialTables( self ):
         
+        """Executes `CreateInitialTables`."""
         table_generation_dict = self._GetInitialTableGenerationDict()
         
         for ( table_name, ( create_query_without_name, version_added ) ) in table_generation_dict.items():
@@ -169,11 +187,13 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
     
     def DoLastShutdownWasBadWork( self ):
         
+        """Executes `DoLastShutdownWasBadWork`."""
         self._DoLastShutdownWasBadWork()
         
     
     def GetExpectedServiceTableNames( self ) -> collections.abc.Collection[ str ]:
         
+        """Executes `GetExpectedServiceTableNames`."""
         table_generation_dict = self._GetServicesTableGenerationDict()
         
         return list( table_generation_dict.keys() )
@@ -181,6 +201,7 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
     
     def GetExpectedInitialTableNames( self ) -> collections.abc.Collection[ str ]:
         
+        """Executes `GetExpectedInitialTableNames`."""
         table_generation_dict = self._GetInitialTableGenerationDict()
         
         return list( table_generation_dict.keys() )
@@ -188,6 +209,7 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
     
     def GetSurplusServiceTableNames( self, all_table_names ) -> set[ str ]:
         
+        """Executes `GetSurplusServiceTableNames`."""
         prefixes = self._GetServiceTablePrefixes()
         
         if len( prefixes ) == 0:
@@ -215,6 +237,7 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
         
         # could also do another one of these for orphan tables that have service id in the name.
         
+        """Executes `GetTablesAndColumnsThatUseDefinitions`."""
         raise NotImplementedError()
         
     
@@ -222,6 +245,7 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
         
         # core, initial tables first
         
+        """Executes `Repair`."""
         table_generation_dict = self._GetInitialTableGenerationDict()
         
         missing_table_rows = [ ( table_name, create_query_without_name ) for ( table_name, ( create_query_without_name, version_added ) ) in table_generation_dict.items() if version_added <= current_db_version and not self._TableExists( table_name ) ]
