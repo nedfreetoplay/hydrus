@@ -13,6 +13,7 @@ IN_USE_TEMP_PATHS = set()
 
 def CleanUpTempPath( os_file_handle, temp_path ):
     
+    """Executes `CleanUpTempPath`."""
     try:
         
         os.close( os_file_handle )
@@ -54,6 +55,7 @@ def CleanUpTempPath( os_file_handle, temp_path ):
 
 def CleanUpOldTempPaths():
     
+    """Executes `CleanUpOldTempPaths`."""
     with TEMP_PATH_LOCK:
         
         data = list( IN_USE_TEMP_PATHS )
@@ -84,6 +86,7 @@ def CleanUpOldTempPaths():
 
 def GetCurrentSQLiteTempDir():
     
+    """Executes `GetCurrentSQLiteTempDir`."""
     if 'SQLITE_TMPDIR' in os.environ:
         
         return os.environ[ 'SQLITE_TMPDIR' ]
@@ -94,16 +97,19 @@ def GetCurrentSQLiteTempDir():
 
 def GetCurrentTempDir():
     
+    """Executes `GetCurrentTempDir`."""
     return tempfile.gettempdir()
     
 
 def InitialiseHydrusTempDir():
     
+    """Executes `InitialiseHydrusTempDir`."""
     return tempfile.mkdtemp( prefix = 'hydrus' )
     
 
 def SetEnvTempDir( path ):
     
+    """Executes `SetEnvTempDir`."""
     try:
         
         HydrusPaths.MakeSureDirectoryExists( path )
@@ -131,6 +137,7 @@ def SetEnvTempDir( path ):
 
 def GetSubTempDir( prefix = '' ):
     
+    """Executes `GetSubTempDir`."""
     hydrus_temp_dir = HG.controller.GetHydrusTempDir()
     
     return tempfile.mkdtemp( prefix = prefix, dir = hydrus_temp_dir )
@@ -138,6 +145,7 @@ def GetSubTempDir( prefix = '' ):
 
 def GetTempPath( suffix = '', dir = None ):
     
+    """Executes `GetTempPath`."""
     if dir is None:
         
         dir = HG.controller.GetHydrusTempDir()

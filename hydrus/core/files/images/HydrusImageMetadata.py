@@ -4,8 +4,10 @@ from hydrus.core import HydrusExceptions
 
 def GetEmbeddedFileText( pil_image: PILImage.Image ) -> str | None:
     
+    """Executes `GetEmbeddedFileText`."""
     def render_dict( d, prefix ):
         
+        """Executes `render_dict`."""
         texts = []
         
         keys = sorted( d.keys() )
@@ -72,6 +74,7 @@ def GetEmbeddedFileText( pil_image: PILImage.Image ) -> str | None:
 
 def GetEXIFDict( pil_image: PILImage.Image ) -> dict | None:
     
+    """Executes `GetEXIFDict`."""
     if pil_image.format in ( 'JPEG', 'JXL', 'TIFF', 'PNG', 'WEBP', 'HEIF', 'AVIF', 'MPO' ):
         
         try:
@@ -94,6 +97,7 @@ def GetEXIFDict( pil_image: PILImage.Image ) -> dict | None:
 
 def GetICCProfileBytes( pil_image: PILImage.Image ) -> bytes:
     
+    """Executes `GetICCProfileBytes`."""
     if HasICCProfile( pil_image ):
         
         return pil_image.info[ 'icc_profile' ]
@@ -106,6 +110,7 @@ def GetICCProfileBytes( pil_image: PILImage.Image ) -> bytes:
 # this is very rough and misses some finesse
 def GetJPEGQuantizationQualityEstimate( pil_image: PILImage.Image ):
     
+    """Executes `GetJPEGQuantizationQualityEstimate`."""
     if hasattr( pil_image, 'quantization' ):
         
         table_arrays = list( pil_image.quantization.values() )
@@ -213,6 +218,7 @@ subsampling_str_lookup = {
 
 def GetJpegSubsamplingRaw( pil_image: PILImage.Image ) -> int:
     
+    """Executes `GetJpegSubsamplingRaw`."""
     if pil_image.mode == 'L':
         
         return SUBSAMPLING_GREYSCALE
@@ -232,6 +238,7 @@ def GetJpegSubsamplingRaw( pil_image: PILImage.Image ) -> int:
 
 def HasEXIF( pil_image: PILImage.Image ) -> bool:
     
+    """Executes `HasEXIF`."""
     result = GetEXIFDict( pil_image )
     
     return result is not None
@@ -239,6 +246,7 @@ def HasEXIF( pil_image: PILImage.Image ) -> bool:
 
 def HasHumanReadableEmbeddedMetadata( pil_image: PILImage.Image ) -> bool:
     
+    """Executes `HasHumanReadableEmbeddedMetadata`."""
     result = GetEmbeddedFileText( pil_image )
     
     return result is not None
@@ -246,6 +254,7 @@ def HasHumanReadableEmbeddedMetadata( pil_image: PILImage.Image ) -> bool:
 
 def HasICCProfile( pil_image: PILImage.Image ) -> bool:
     
+    """Executes `HasICCProfile`."""
     if 'icc_profile' in pil_image.info:
         
         icc_profile = pil_image.info[ 'icc_profile' ]

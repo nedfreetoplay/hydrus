@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 
 def GenerateThumbnailNumPyFromPaintNET( path: str, target_resolution: tuple[ int, int ] ) -> numpy.ndarray:
     
+    """Executes `GenerateThumbnailNumPyFromPaintNET`."""
     pil_image = ThumbnailPILImageFromPaintNET( path )
     
     # noinspection PyUnresolvedReferences
@@ -24,6 +25,7 @@ def GenerateThumbnailNumPyFromPaintNET( path: str, target_resolution: tuple[ int
 
 def GetPaintNETResolution( path: str ):
     
+    """Executes `GetPaintNETResolution`."""
     try:
         
         xml_header = GetPaintNETXMLHeader( path )
@@ -38,6 +40,7 @@ def GetPaintNETResolution( path: str ):
 
 def GetPaintNETResolutionFromXMLHeader( xml_header: str ):
     
+    """Executes `GetPaintNETResolutionFromXMLHeader`."""
     try:
         
         root = ET.fromstring( xml_header )
@@ -55,6 +58,7 @@ def GetPaintNETResolutionFromXMLHeader( xml_header: str ):
 
 def GetPaintNETXMLHeader( path:str ):
     
+    """Executes `GetPaintNETXMLHeader`."""
     with open( path, 'rb' ) as f:
         
         try:
@@ -76,6 +80,7 @@ def GetPaintNETXMLHeader( path:str ):
 
 def ThumbnailPILImageFromPaintNET( path: str ):
     
+    """Executes `ThumbnailPILImageFromPaintNET`."""
     try:
         
         xml_header = GetPaintNETXMLHeader( path )

@@ -65,6 +65,7 @@ hash_str_to_type_lookup[ 'sha512' ] = HASH_TYPE_SHA512
 
 def ReadLargeIdQueryInSeparateChunks( cursor, select_statement, chunk_size ):
     
+    """Executes `ReadLargeIdQueryInSeparateChunks`."""
     table_name = 'tempbigread' + os.urandom( 32 ).hex()
     
     cursor.execute( 'CREATE TEMPORARY TABLE ' + table_name + ' ( job_id INTEGER PRIMARY KEY AUTOINCREMENT, temp_id INTEGER );' )
@@ -95,6 +96,7 @@ class HydrusTagArchive( object ):
     
     def __init__( self, path ):
         
+        """Initializes the instance."""
         self._path = path
         
         if not os.path.exists( self._path ): create_db = True
@@ -110,11 +112,13 @@ class HydrusTagArchive( object ):
     
     def _AddMappings( self, hash_id, tag_ids ):
         
+        """Executes `_AddMappings`."""
         self._c.executemany( 'INSERT OR IGNORE INTO mappings ( hash_id, tag_id ) VALUES ( ?, ? );', ( ( hash_id, tag_id ) for tag_id in tag_ids ) )
         
     
     def _InitDB( self ):
         
+        """Executes `_InitDB`."""
         self._c.execute( 'CREATE TABLE hash_type ( hash_type INTEGER );' )
         
         self._c.execute( 'CREATE TABLE hashes ( hash_id INTEGER PRIMARY KEY, hash BLOB_BYTES );' )
@@ -131,6 +135,7 @@ class HydrusTagArchive( object ):
     
     def _InitDBConnection( self ):
         
+        """Executes `_InitDBConnection`."""
         self._db = sqlite3.connect( self._path, isolation_level = None, detect_types = sqlite3.PARSE_DECLTYPES )
         
         self._c = self._db.cursor()
@@ -138,6 +143,7 @@ class HydrusTagArchive( object ):
     
     def _GetHashes( self, tag_id ):
         
+        """Executes `_GetHashes`."""
         result = { hash for ( hash, ) in self._c.execute( 'SELECT hash FROM mappings NATURAL JOIN hashes WHERE tag_id = ?;', ( tag_id, ) ) }
         
         return result
@@ -145,6 +151,7 @@ class HydrusTagArchive( object ):
     
     def _GetHashId( self, hash, read_only = False ):
         
+        """Executes `_GetHashId`."""
         result = self._c.execute( 'SELECT hash_id FROM hashes WHERE hash = ?;', ( sqlite3.Binary( hash ), ) ).fetchone()
         
         if result is None:
@@ -168,6 +175,7 @@ class HydrusTagArchive( object ):
     
     def _GetTags( self, hash_id ):
         
+        """Executes `_GetTags`."""
         result = { tag for ( tag, ) in self._c.execute( 'SELECT tag FROM mappings NATURAL JOIN tags WHERE hash_id = ?;', ( hash_id, ) ) }
         
         return result
@@ -175,6 +183,7 @@ class HydrusTagArchive( object ):
     
     def _GetTagId( self, tag, read_only = False ):
         
+        """Executes `_GetTagId`."""
         result = self._c.execute( 'SELECT tag_id FROM tags WHERE tag = ?;', ( tag, ) ).fetchone()
         
         if result is None:
@@ -210,16 +219,19 @@ class HydrusTagArchive( object ):
     
     def BeginBigJob( self ):
         
+        """Executes `BeginBigJob`."""
         self._c.execute( 'BEGIN IMMEDIATE;' )
         
     
     def CommitBigJob( self ):
         
+        """Executes `CommitBigJob`."""
         self._c.execute( 'COMMIT;' )
         
     
     def AddMapping( self, hash, tag ):
         
+        """Executes `AddMapping`."""
         hash_id = self._GetHashId( hash )
         tag_id = self._GetTagId( tag )
         
@@ -228,6 +240,7 @@ class HydrusTagArchive( object ):
     
     def AddMappings( self, hash, tags ):
         
+        """Executes `AddMappings`."""
         hash_id = self._GetHashId( hash )
         
         tag_ids = [ self._GetTagId( tag ) for tag in tags ]
@@ -237,6 +250,7 @@ class HydrusTagArchive( object ):
     
     def Close( self ):
         
+        """Executes `Close`."""
         self._c.close()
         self._db.close()
         
@@ -246,16 +260,20 @@ class HydrusTagArchive( object ):
     
     def DeleteMapping( self, hash, tag ):
         
+        """Executes `DeleteMapping`."""
         hash_id = self._GetHashId( hash )
         tag_id = self._GetTagId( tag )
         
         self._c.execute( 'DELETE FROM mappings WHERE hash_id = ? AND tag_id = ?;', ( hash_id, tag_id ) )
         
     
-    def DeleteMappings( self, hash ): self.DeleteTags( hash )
+    def DeleteMappings( self, hash ):
+        """Executes `DeleteMappings`."""
+        self.DeleteTags( hash )
     
     def DeleteTags( self, hash ):
         
+        """Executes `DeleteTags`."""
         try:
             
             hash_id = self._GetHashId( hash, read_only = True )
@@ -270,6 +288,7 @@ class HydrusTagArchive( object ):
     
     def DeleteNamespaces( self ):
         
+        """Executes `DeleteNamespaces`."""
         self._namespaces = set()
         self._namespaces.add( '' )
         
@@ -278,6 +297,7 @@ class HydrusTagArchive( object ):
     
     def GetHashes( self, tag ):
         
+        """Executes `GetHashes`."""
         try:
             
             tag_id = self._GetTagId( tag, read_only = True )
@@ -292,6 +312,7 @@ class HydrusTagArchive( object ):
     
     def GetHashType( self ):
         
+        """Executes `GetHashType`."""
         result = self._c.execute( 'SELECT hash_type FROM hash_type;' ).fetchone()
         
         if result is None:
@@ -333,10 +354,13 @@ class HydrusTagArchive( object ):
             
         
     
-    def GetMappings( self, hash ): return self.GetTags( hash )
+    def GetMappings( self, hash ):
+        """Executes `GetMappings`."""
+        return self.GetTags( hash )
     
     def GetName( self ):
         
+        """Executes `GetName`."""
         filename = os.path.basename( self._path )
         
         if '.' in filename:
@@ -347,10 +371,13 @@ class HydrusTagArchive( object ):
         return filename
         
     
-    def GetNamespaces( self ): return self._namespaces
+    def GetNamespaces( self ):
+        """Executes `GetNamespaces`."""
+        return self._namespaces
     
     def GetTags( self, hash ):
         
+        """Executes `GetTags`."""
         try:
             
             hash_id = self._GetHashId( hash, read_only = True )
@@ -365,6 +392,7 @@ class HydrusTagArchive( object ):
     
     def HasHash( self, hash ):
         
+        """Executes `HasHash`."""
         try:
             
             hash_id = self._GetHashId( hash, read_only = True )
@@ -379,6 +407,7 @@ class HydrusTagArchive( object ):
     
     def HasHashTypeSet( self ):
         
+        """Executes `HasHashTypeSet`."""
         result = self._c.execute( 'SELECT hash_type FROM hash_type;' ).fetchone()
         
         return result is not None
@@ -386,6 +415,7 @@ class HydrusTagArchive( object ):
     
     def IterateHashes( self ):
         
+        """Executes `IterateHashes`."""
         for ( hash, ) in self._c.execute( 'SELECT hash FROM hashes;' ):
             
             yield hash
@@ -394,6 +424,7 @@ class HydrusTagArchive( object ):
     
     def IterateMappings( self ):
         
+        """Executes `IterateMappings`."""
         for group_of_hash_ids in ReadLargeIdQueryInSeparateChunks( self._c, 'SELECT hash_id FROM hashes;', 256 ):
             
             for hash_id in group_of_hash_ids:
@@ -412,6 +443,7 @@ class HydrusTagArchive( object ):
     
     def IterateMappingsTagFirst( self ):
         
+        """Executes `IterateMappingsTagFirst`."""
         for group_of_tag_ids in ReadLargeIdQueryInSeparateChunks( self._c, 'SELECT tag_id FROM tags;', 256 ):
             
             for tag_id in group_of_tag_ids:
@@ -430,12 +462,14 @@ class HydrusTagArchive( object ):
     
     def Optimise( self ):
         
+        """Executes `Optimise`."""
         self._c.execute( 'VACUUM;' )
         self._c.execute( 'ANALYZE;' )
         
     
     def RebuildNamespaces( self, namespaces_to_exclude = None ):
         
+        """Executes `RebuildNamespaces`."""
         if namespaces_to_exclude is None:
             
             namespaces_to_exclude = set()
@@ -464,6 +498,7 @@ class HydrusTagArchive( object ):
     
     def SetHashType( self, hash_type ):
         
+        """Executes `SetHashType`."""
         self._c.execute( 'DELETE FROM hash_type;' )
         
         self._c.execute( 'INSERT INTO hash_type ( hash_type ) VALUES ( ? );', ( hash_type, ) )
@@ -471,6 +506,7 @@ class HydrusTagArchive( object ):
     
     def SetMappings( self, hash, tags ):
         
+        """Executes `SetMappings`."""
         hash_id = self._GetHashId( hash )
         
         self._c.execute( 'DELETE FROM mappings WHERE hash_id = ?;', ( hash_id, ) )
@@ -503,6 +539,7 @@ class HydrusTagPairArchive( object ):
     
     def __init__( self, path ):
         
+        """Initializes the instance."""
         self._path = path
         
         is_new_db = not os.path.exists( self._path )
@@ -528,6 +565,7 @@ class HydrusTagPairArchive( object ):
     
     def _InitDB( self ):
         
+        """Executes `_InitDB`."""
         self._c.execute( 'CREATE TABLE pair_type ( pair_type INTEGER );', )
         
         self._c.execute( 'CREATE TABLE pairs ( tag_id_1 INTEGER, tag_id_2 INTEGER, PRIMARY KEY ( tag_id_1, tag_id_2 ) );' )
@@ -538,6 +576,7 @@ class HydrusTagPairArchive( object ):
     
     def _InitDBConnection( self ):
         
+        """Executes `_InitDBConnection`."""
         self._db = sqlite3.connect( self._path, isolation_level = None, detect_types = sqlite3.PARSE_DECLTYPES )
         
         self._c = self._db.cursor()
@@ -545,6 +584,7 @@ class HydrusTagPairArchive( object ):
     
     def _GetTagId( self, tag ):
         
+        """Executes `_GetTagId`."""
         result = self._c.execute( 'SELECT tag_id FROM tags WHERE tag = ?;', ( tag, ) ).fetchone()
         
         if result is None:
@@ -563,11 +603,13 @@ class HydrusTagPairArchive( object ):
     
     def BeginBigJob( self ):
         
+        """Executes `BeginBigJob`."""
         self._c.execute( 'BEGIN IMMEDIATE;' )
         
     
     def Close( self ):
         
+        """Executes `Close`."""
         self._c.close()
         self._db.close()
         
@@ -577,16 +619,19 @@ class HydrusTagPairArchive( object ):
     
     def CommitBigJob( self ):
         
+        """Executes `CommitBigJob`."""
         self._c.execute( 'COMMIT;' )
         
     
     def AddPair( self, tag_1, tag_2 ):
         
+        """Executes `AddPair`."""
         self.AddPairs( [ ( tag_1, tag_2 ) ] )
         
     
     def AddPairs( self, pairs ):
         
+        """Executes `AddPairs`."""
         if self._pair_type is None:
             
             raise Exception( 'Please set the pair type first before you start populating the database!' )
@@ -599,11 +644,13 @@ class HydrusTagPairArchive( object ):
     
     def DeletePair( self, tag_1, tag_2 ):
         
+        """Executes `DeletePair`."""
         self.DeletePairs( [ ( tag_1, tag_2 ) ] )
         
     
     def DeletePairs( self, pairs ):
         
+        """Executes `DeletePairs`."""
         pair_id_deletees = [ ( self._GetTagId( tag_1 ), self._GetTagId( tag_2 ) ) for ( tag_1, tag_2 ) in pairs ]
         
         self._c.executemany( 'DELETE FROM pairs WHERE tag_id_1 = ? AND tag_id_2 = ?;', pair_id_deletees )
@@ -611,11 +658,13 @@ class HydrusTagPairArchive( object ):
     
     def GetPairType( self ):
         
+        """Executes `GetPairType`."""
         return self._pair_type
         
     
     def GetName( self ):
         
+        """Executes `GetName`."""
         filename = os.path.basename( self._path )
         
         if '.' in filename:
@@ -628,6 +677,7 @@ class HydrusTagPairArchive( object ):
     
     def HasPair( self, tag_1, tag_2 ):
         
+        """Executes `HasPair`."""
         tag_id_1 = self._GetTagId( tag_1 )
         tag_id_2 = self._GetTagId( tag_2 )
         
@@ -638,11 +688,13 @@ class HydrusTagPairArchive( object ):
     
     def HasPairTypeSet( self ):
         
+        """Executes `HasPairTypeSet`."""
         return self._pair_type is not None
         
     
     def IteratePairs( self ):
         
+        """Executes `IteratePairs`."""
         query = 'SELECT t1.tag, t2.tag FROM pairs, tags AS t1, tags as t2 ON ( pairs.tag_id_1 = t1.tag_id AND pairs.tag_id_2 = t2.tag_id );'
         
         for pair in self._c.execute( query ):
@@ -653,12 +705,14 @@ class HydrusTagPairArchive( object ):
     
     def Optimise( self ):
         
+        """Executes `Optimise`."""
         self._c.execute( 'VACUUM;' )
         self._c.execute( 'ANALYZE;' )
         
     
     def SetPairType( self, pair_type ):
         
+        """Executes `SetPairType`."""
         self._c.execute( 'DELETE FROM pair_type;' )
         
         self._c.execute( 'INSERT INTO pair_type ( pair_type ) VALUES ( ? );', ( pair_type, ) )

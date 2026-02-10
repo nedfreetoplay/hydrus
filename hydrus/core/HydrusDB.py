@@ -18,6 +18,7 @@ from hydrus.core import HydrusTime
 
 def CheckCanVacuum( db_path, stop_time = None ):
     
+    """Executes `CheckCanVacuum`."""
     db = sqlite3.connect( db_path, isolation_level = None, detect_types = sqlite3.PARSE_DECLTYPES )
     
     c = db.cursor()
@@ -27,6 +28,7 @@ def CheckCanVacuum( db_path, stop_time = None ):
 
 def CheckCanVacuumCursor( db_path, c, stop_time = None ):
     
+    """Executes `CheckCanVacuumCursor`."""
     ( page_size, ) = c.execute( 'PRAGMA page_size;' ).fetchone()
     ( page_count, ) = c.execute( 'PRAGMA page_count;' ).fetchone()
     ( freelist_count, ) = c.execute( 'PRAGMA freelist_count;' ).fetchone()
@@ -36,6 +38,7 @@ def CheckCanVacuumCursor( db_path, c, stop_time = None ):
 
 def CheckCanVacuumData( db_path, page_size, page_count, freelist_count, stop_time = None ):
     
+    """Executes `CheckCanVacuumData`."""
     db_size = ( page_count - freelist_count ) * page_size
     
     if stop_time is not None:
@@ -57,6 +60,7 @@ def CheckCanVacuumData( db_path, page_size, page_count, freelist_count, stop_tim
 
 def CheckCanVacuumInto( db_path, stop_time = None ):
     
+    """Executes `CheckCanVacuumInto`."""
     db = sqlite3.connect( db_path, isolation_level = None, detect_types = sqlite3.PARSE_DECLTYPES )
     
     c = db.cursor()
@@ -66,6 +70,7 @@ def CheckCanVacuumInto( db_path, stop_time = None ):
 
 def CheckCanVacuumIntoCursor( db_path, c, stop_time = None ):
     
+    """Executes `CheckCanVacuumIntoCursor`."""
     ( page_size, ) = c.execute( 'PRAGMA page_size;' ).fetchone()
     ( page_count, ) = c.execute( 'PRAGMA page_count;' ).fetchone()
     ( freelist_count, ) = c.execute( 'PRAGMA freelist_count;' ).fetchone()
@@ -75,6 +80,7 @@ def CheckCanVacuumIntoCursor( db_path, c, stop_time = None ):
 
 def CheckCanVacuumIntoData( db_path, page_size, page_count, freelist_count, stop_time = None ):
     
+    """Executes `CheckCanVacuumIntoData`."""
     db_size = ( page_count - freelist_count ) * page_size
     
     if stop_time is not None:
@@ -96,6 +102,7 @@ def CheckCanVacuumIntoData( db_path, page_size, page_count, freelist_count, stop
 
 def GetApproxVacuumDuration( db_size ):
     
+    """Executes `GetApproxVacuumDuration`."""
     vacuum_estimate = int( db_size * 1.2 )
     
     approx_vacuum_speed_mb_per_s = 1048576 * 1
@@ -111,6 +118,7 @@ def GetApproxVacuumIntoDuration( db_size ):
     # I've seen 30MB/s on a 4GB file not in memory
     # I'll presume a real 20GB file is going to trend just a bit lower, but we can adjust this if we get some IRL data
     
+    """Executes `GetApproxVacuumIntoDuration`."""
     vacuum_estimate = int( db_size * 1.2 )
     
     approx_vacuum_speed_mb_per_s = 1048576 * 10
@@ -122,6 +130,7 @@ def GetApproxVacuumIntoDuration( db_size ):
 
 def ReadLargeIdQueryInSeparateChunks( cursor, select_statement, chunk_size ):
     
+    """Executes `ReadLargeIdQueryInSeparateChunks`."""
     table_name = 'tempbigread' + os.urandom( 32 ).hex()
     
     cursor.execute( 'CREATE TEMPORARY TABLE ' + table_name + ' ( job_id INTEGER PRIMARY KEY AUTOINCREMENT, temp_id INTEGER );' )
@@ -153,6 +162,7 @@ def ReadLargeIdQueryInSeparateChunks( cursor, select_statement, chunk_size ):
 
 def VacuumDB( db_path ):
     
+    """Executes `VacuumDB`."""
     db = sqlite3.connect( db_path, isolation_level = None, detect_types = sqlite3.PARSE_DECLTYPES )
     
     c = db.cursor()
@@ -185,11 +195,13 @@ def VacuumDB( db_path ):
 
 def GetVacuumPaths( db_path: str ):
     
+    """Executes `GetVacuumPaths`."""
     return ( db_path + '.prevacuum', db_path + '.vacuum' )
     
 
 def VacuumDBInto( db_path: str ):
     
+    """Executes `VacuumDBInto`."""
     if os.path.exists( db_path + '-wal' ):
         
         raise Exception( f'Hey, I wanted to vacuum "{db_path}", but it seems like the "WAL" journal file still existed after hydrus disconnected, which suggests another program is connected to the database. It may also mean your version of SQLite does not clean up after itself, in which case I still cannot be sure we are clear. Vacuuming under these conditions can cause malformation, so the job will now be abandoned. Please disconnect your external program cleanly and then try again.' )
@@ -304,6 +316,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
     
     def __init__( self, controller: "HG.HydrusController.HydrusController", db_dir, db_name ):
         
+        """Initializes the instance."""
         super().__init__()
         
         self._controller = controller
@@ -491,6 +504,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
     
     def _AttachExternalDatabases( self ):
         
+        """Executes `_AttachExternalDatabases`."""
         for ( name, filename ) in self._db_filenames.items():
             
             if name == 'main':
@@ -515,11 +529,13 @@ class HydrusDB( HydrusDBBase.DBBase ):
     
     def _CleanAfterJobWork( self ):
         
+        """Executes `_CleanAfterJobWork`."""
         self._cursor_transaction_wrapper.CleanPubSubs()
         
     
     def _CloseDBConnection( self ):
         
+        """Executes `_CloseDBConnection`."""
         HydrusDBBase.TemporaryIntegerTableNameCache.instance().Clear()
         
         if self._db is not None:
@@ -547,11 +563,13 @@ class HydrusDB( HydrusDBBase.DBBase ):
     
     def _CreateDB( self ):
         
+        """Executes `_CreateDB`."""
         raise NotImplementedError()
         
     
     def _DisplayCatastrophicError( self, text ):
         
+        """Executes `_DisplayCatastrophicError`."""
         message = 'The db encountered a serious error! This is going to be written to the log as well, but here it is for a screenshot:'
         message += '\n' * 2
         message += text
@@ -561,26 +579,31 @@ class HydrusDB( HydrusDBBase.DBBase ):
     
     def _DoAfterJobWork( self ):
         
+        """Executes `_DoAfterJobWork`."""
         self._cursor_transaction_wrapper.DoPubSubs()
         
     
     def _GenerateDBJob( self, job_type, synchronous, action, *args, **kwargs ):
         
+        """Executes `_GenerateDBJob`."""
         return HydrusDBBase.JobDatabase( job_type, synchronous, action, *args, **kwargs )
         
     
     def _GetPossibleAdditionalDBFilenames( self ):
         
+        """Executes `_GetPossibleAdditionalDBFilenames`."""
         return [ self._ssl_cert_filename, self._ssl_key_filename ]
         
     
     def _InitCaches( self ):
         
+        """Executes `_InitCaches`."""
         pass
         
     
     def _InitCommandsToMethods( self ):
         
+        """Executes `_InitCommandsToMethods`."""
         self._read_commands_to_methods = {}
         self._write_commands_to_methods = {
             'null'  : lambda: None
@@ -589,6 +612,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
     
     def _InitDB( self ):
         
+        """Executes `_InitDB`."""
         main_db_path = os.path.join( self._db_dir, self._db_filenames[ 'main' ] )
         
         main_database_is_missing = not os.path.exists( main_db_path )
@@ -729,6 +753,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
     
     def _InitDBConnection( self ):
         
+        """Executes `_InitDBConnection`."""
         self._CloseDBConnection()
         
         db_path = os.path.join( self._db_dir, self._db_filenames[ 'main' ] )
@@ -832,21 +857,25 @@ class HydrusDB( HydrusDBBase.DBBase ):
     
     def _InitExternalDatabases( self ):
         
+        """Executes `_InitExternalDatabases`."""
         pass
         
     
     def _LoadModules( self ):
         
+        """Executes `_LoadModules`."""
         pass
         
     
     def _ManageDBError( self, job, e ):
         
+        """Executes `_ManageDBError`."""
         raise NotImplementedError()
         
     
     def _ProcessJob( self, job: HydrusDBBase.JobDatabase ):
         
+        """Executes `_ProcessJob`."""
         job_type = job.GetType()
         
         ( action, args, kwargs ) = job.GetCallableTuple()
@@ -943,6 +972,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
     
     def _Read( self, action, *args, **kwargs ):
         
+        """Executes `_Read`."""
         if action not in self._read_commands_to_methods:
             
             raise Exception( 'db received an unknown read command: ' + action )
@@ -953,6 +983,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
     
     def _RepairDB( self, version ):
         
+        """Executes `_RepairDB`."""
         for module in self._modules:
             
             module.Repair( version, self._cursor_transaction_wrapper )
@@ -969,31 +1000,37 @@ class HydrusDB( HydrusDBBase.DBBase ):
     
     def _ReportOverupdatedDB( self, version ):
         
+        """Executes `_ReportOverupdatedDB`."""
         pass
         
     
     def _ReportUnderupdatedDB( self, version ):
         
+        """Executes `_ReportUnderupdatedDB`."""
         pass
         
     
     def _ShrinkMemory( self ):
         
+        """Executes `_ShrinkMemory`."""
         self._Execute( 'PRAGMA shrink_memory;' )
         
     
     def _UnloadModules( self ):
         
+        """Executes `_UnloadModules`."""
         self._modules = []
         
     
     def _UpdateDB( self, version ):
         
+        """Executes `_UpdateDB`."""
         raise NotImplementedError()
         
     
     def _Write( self, action, *args, **kwargs ):
         
+        """Executes `_Write`."""
         if action not in self._write_commands_to_methods:
             
             raise Exception( 'db received an unknown write command: ' + action )
@@ -1004,16 +1041,19 @@ class HydrusDB( HydrusDBBase.DBBase ):
     
     def publish_status_update( self ):
         
+        """Executes `publish_status_update`."""
         pass
         
     
     def CurrentlyDoingJob( self ):
         
+        """Executes `CurrentlyDoingJob`."""
         return self._currently_doing_job
         
     
     def ForceACommit( self ):
         
+        """Executes `ForceACommit`."""
         if self._cursor_transaction_wrapper is None:
             
             # database is closed (for a vacuum or something), so nothing to commit
@@ -1031,6 +1071,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
     
     def GetApproxTotalFileSize( self ):
         
+        """Executes `GetApproxTotalFileSize`."""
         total = 0
         
         for filename in self._db_filenames.values():
@@ -1048,6 +1089,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
     
     def GetSafeTransactionDiskSpaceAndCurrentFreeSpace( self ):
         
+        """Executes `GetSafeTransactionDiskSpaceAndCurrentFreeSpace`."""
         total_db_size = self.GetApproxTotalFileSize()
         
         space_wanted = min( int( total_db_size * 0.5 ), 5 * 1024 * 1048576 )
@@ -1063,6 +1105,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
         
         # create ssl keys
         
+        """Executes `GetSSLPaths`."""
         cert_here = os.path.exists( self._ssl_cert_path )
         key_here = os.path.exists( self._ssl_key_path )
         
@@ -1087,36 +1130,43 @@ class HydrusDB( HydrusDBBase.DBBase ):
     
     def GetStatus( self ):
         
+        """Executes `GetStatus`."""
         return ( self._current_status, self._current_job_name )
         
     
     def IsConnected( self ):
         
+        """Executes `IsConnected`."""
         return self._is_connected
         
     
     def IsDBUpdated( self ):
         
+        """Executes `IsDBUpdated`."""
         return self._is_db_updated
         
     
     def IsFirstStart( self ):
         
+        """Executes `IsFirstStart`."""
         return self._is_first_start
         
     
     def LoopIsFinished( self ):
         
+        """Executes `LoopIsFinished`."""
         return self._loop_finished
         
     
     def JobsQueueEmpty( self ):
         
+        """Executes `JobsQueueEmpty`."""
         return self._jobs.empty()
         
     
     def MainLoop( self ):
         
+        """Executes `MainLoop`."""
         try:
             
             self._InitDBConnection() # have to reinitialise because the thread id has changed
@@ -1240,11 +1290,13 @@ class HydrusDB( HydrusDBBase.DBBase ):
     
     def PauseAndDisconnect( self, pause_and_disconnect ):
         
+        """Executes `PauseAndDisconnect`."""
         self._pause_and_disconnect = pause_and_disconnect
         
     
     def Read( self, action, *args, **kwargs ):
         
+        """Executes `Read`."""
         if action in self.READ_WRITE_ACTIONS:
             
             job_type = 'read_write'
@@ -1270,16 +1322,19 @@ class HydrusDB( HydrusDBBase.DBBase ):
     
     def ReadyToServeRequests( self ):
         
+        """Executes `ReadyToServeRequests`."""
         return self._ready_to_serve_requests
         
     
     def Shutdown( self ):
         
+        """Executes `Shutdown`."""
         self._local_shutdown = True
         
     
     def WaitUntilFree( self ):
         
+        """Executes `WaitUntilFree`."""
         while True:
             
             if HG.model_shutdown:
@@ -1301,6 +1356,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
     
     def Write( self, action, synchronous, *args, **kwargs ):
         
+        """Executes `Write`."""
         job_type = 'write'
         
         job = self._GenerateDBJob( job_type, synchronous, action, *args, **kwargs )

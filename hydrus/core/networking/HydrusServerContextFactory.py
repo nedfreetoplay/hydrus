@@ -80,6 +80,7 @@ def load_certs_ordered( pem_bytes: bytes ) -> list[ crypto.X509 ]:
 
 def GenerateSSLContextFactory( ssl_cert_path, ssl_key_path ):
     
+    """Executes `GenerateSSLContextFactory`."""
     if HG.twisted_is_broke:
         
         raise Exception( 'Twisted is not available!' )

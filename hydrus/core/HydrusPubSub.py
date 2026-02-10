@@ -10,6 +10,7 @@ class HydrusPubSub( object ):
     
     def __init__( self, valid_callable ):
         
+        """Initializes the instance."""
         self._valid_callable = valid_callable
         
         self._doing_work = False
@@ -29,6 +30,7 @@ class HydrusPubSub( object ):
         
         # this now does the obj as well so we have a strong direct ref to it throughout procesing
         
+        """Executes `_GetCallableTuples`."""
         callable_tuples = []
         
         if topic in self._topics_to_objects:
@@ -68,6 +70,7 @@ class HydrusPubSub( object ):
     
     def DoingWork( self ):
         
+        """Executes `DoingWork`."""
         return self._doing_work
         
     
@@ -80,6 +83,7 @@ class HydrusPubSub( object ):
         # because the (short) processing thread finished and entirely pubsubbed before Qt had a chance to boot the
         # message.
         
+        """Executes `Process`."""
         self._doing_work = True
         
         try:
@@ -159,6 +163,7 @@ class HydrusPubSub( object ):
     
     def pub( self, topic, *args, **kwargs ):
         
+        """Executes `pub`."""
         with self._lock:
             
             self._pubsubs.append( ( topic, args, kwargs ) )
@@ -169,6 +174,7 @@ class HydrusPubSub( object ):
     
     def pubimmediate( self, topic, *args, **kwargs ):
         
+        """Executes `pubimmediate`."""
         with self._lock:
             
             callable_tuples = self._GetCallableTuples( topic )
@@ -182,6 +188,7 @@ class HydrusPubSub( object ):
     
     def sub( self, object, method_name, topic ):
         
+        """Executes `sub`."""
         with self._lock:
             
             if topic not in self._topics_to_objects: self._topics_to_objects[ topic ] = weakref.WeakSet()
@@ -194,6 +201,7 @@ class HydrusPubSub( object ):
     
     def WaitOnPub( self ):
         
+        """Executes `WaitOnPub`."""
         self._received_job_event.wait( 0.5 )
         
         self._received_job_event.clear()
@@ -201,11 +209,13 @@ class HydrusPubSub( object ):
     
     def Wake( self ):
         
+        """Executes `Wake`."""
         self._received_job_event.set()
         
     
     def WaitUntilFree( self ):
         
+        """Executes `WaitUntilFree`."""
         while True:
             
             if HG.model_shutdown:
@@ -226,6 +236,7 @@ class HydrusPubSub( object ):
     
     def WorkToDo( self ):
         
+        """Executes `WorkToDo`."""
         with self._lock:
             
             return len( self._pubsubs ) > 0

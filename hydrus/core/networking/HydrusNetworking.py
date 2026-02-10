@@ -23,6 +23,7 @@ from hydrus.core import HydrusTime
 
 def ConvertBandwidthRuleToString( rule ):
     
+    """Executes `ConvertBandwidthRuleToString`."""
     ( bandwidth_type, time_delta, max_allowed ) = rule
     
     if max_allowed == 0:
@@ -52,6 +53,7 @@ def ConvertBandwidthRuleToString( rule ):
     
 def LocalPortInUse( port ):
     
+    """Executes `LocalPortInUse`."""
     if HC.PLATFORM_WINDOWS:
         
         if not HydrusPSUtil.PSUTIL_OK:
@@ -92,6 +94,7 @@ class BandwidthRules( HydrusSerialisable.SerialisableBase ):
     
     def __init__( self ):
         
+        """Initializes the instance."""
         super().__init__()
         
         self._lock = threading.Lock()
@@ -101,6 +104,7 @@ class BandwidthRules( HydrusSerialisable.SerialisableBase ):
     
     def _GetSerialisableInfo( self ):
         
+        """Executes `_GetSerialisableInfo`."""
         return list( self._rules )
         
     
@@ -108,11 +112,13 @@ class BandwidthRules( HydrusSerialisable.SerialisableBase ):
         
         # tuples converted to lists via json
         
+        """Executes `_InitialiseFromSerialisableInfo`."""
         self._rules = set( ( tuple( rule_list ) for rule_list in serialisable_info ) )
         
     
     def AddRule( self, bandwidth_type, time_delta, max_allowed ):
         
+        """Executes `AddRule`."""
         with self._lock:
             
             rule = ( bandwidth_type, time_delta, max_allowed )
@@ -123,6 +129,7 @@ class BandwidthRules( HydrusSerialisable.SerialisableBase ):
     
     def CanContinueDownload( self, bandwidth_tracker, threshold = 15 ):
         
+        """Executes `CanContinueDownload`."""
         with self._lock:
             
             for ( bandwidth_type, time_delta, max_allowed ) in self._rules:
@@ -152,6 +159,7 @@ class BandwidthRules( HydrusSerialisable.SerialisableBase ):
     
     def CanDoWork( self, bandwidth_tracker, expected_requests, expected_bytes, threshold = 30 ):
         
+        """Executes `CanDoWork`."""
         with self._lock:
             
             for ( bandwidth_type, time_delta, max_allowed ) in self._rules:
@@ -184,6 +192,7 @@ class BandwidthRules( HydrusSerialisable.SerialisableBase ):
     
     def CanStartRequest( self, bandwidth_tracker, threshold = 5 ):
         
+        """Executes `CanStartRequest`."""
         with self._lock:
             
             for ( bandwidth_type, time_delta, max_allowed ) in self._rules:
@@ -208,6 +217,7 @@ class BandwidthRules( HydrusSerialisable.SerialisableBase ):
     
     def GetWaitingEstimate( self, bandwidth_tracker ):
         
+        """Executes `GetWaitingEstimate`."""
         with self._lock:
             
             estimates = []
@@ -233,6 +243,7 @@ class BandwidthRules( HydrusSerialisable.SerialisableBase ):
     
     def GetBandwidthStringsAndGaugeTuples( self, bandwidth_tracker, threshold = 600 ):
         
+        """Executes `GetBandwidthStringsAndGaugeTuples`."""
         with self._lock:
             
             rows = []
@@ -241,6 +252,7 @@ class BandwidthRules( HydrusSerialisable.SerialisableBase ):
             
             def key( rule_tuple ):
                 
+                """Executes `key`."""
                 ( bandwidth_type, time_delta, max_allowed ) = rule_tuple
                 
                 if time_delta is None:
@@ -294,6 +306,7 @@ class BandwidthRules( HydrusSerialisable.SerialisableBase ):
     
     def GetRules( self ):
         
+        """Executes `GetRules`."""
         with self._lock:
             
             return list( self._rules )
@@ -321,6 +334,7 @@ class BandwidthTracker( HydrusSerialisable.SerialisableBase ):
     
     def __init__( self ):
         
+        """Initializes the instance."""
         super().__init__()
         
         self._lock = threading.Lock()
@@ -342,6 +356,7 @@ class BandwidthTracker( HydrusSerialisable.SerialisableBase ):
     
     def _GetSerialisableInfo( self ):
         
+        """Executes `_GetSerialisableInfo`."""
         dicts_flat = []
         
         for d in ( self._months_bytes, self._days_bytes, self._hours_bytes, self._minutes_bytes, self._seconds_bytes, self._months_requests, self._days_requests, self._hours_requests, self._minutes_requests, self._seconds_requests ):
@@ -354,6 +369,7 @@ class BandwidthTracker( HydrusSerialisable.SerialisableBase ):
     
     def _InitialiseFromSerialisableInfo( self, serialisable_info ):
         
+        """Executes `_InitialiseFromSerialisableInfo`."""
         counters = [ collections.Counter( dict( flat_dict ) ) for flat_dict in serialisable_info ]
         
         # unusual error someone reported by email--it came back an empty list, fugg
@@ -378,11 +394,13 @@ class BandwidthTracker( HydrusSerialisable.SerialisableBase ):
     def _GetCurrentDateTime( self ):
         
         # keep getnow in here for the moment to aid in testing, which patches it to do time shifting
+        """Executes `_GetCurrentDateTime`."""
         return HydrusDateTime.fromtimestamputc( HydrusTime.GetNow() )
         
     
     def _GetWindowAndCounter( self, bandwidth_type, time_delta ):
         
+        """Executes `_GetWindowAndCounter`."""
         if bandwidth_type == HC.BANDWIDTH_TYPE_DATA:
             
             if time_delta < self.MAX_SECONDS_TIME_DELTA:
@@ -435,6 +453,7 @@ class BandwidthTracker( HydrusSerialisable.SerialisableBase ):
     
     def _GetMonthTime( self, dt ):
         
+        """Executes `_GetMonthTime`."""
         ( year, month ) = ( dt.year, dt.month )
         
         month_dt = datetime.datetime( year, month, 1 )
@@ -446,6 +465,7 @@ class BandwidthTracker( HydrusSerialisable.SerialisableBase ):
     
     def _GetRawUsage( self, bandwidth_type, time_delta ) -> int:
         
+        """Executes `_GetRawUsage`."""
         if time_delta is None:
             
             dt = self._GetCurrentDateTime()
@@ -506,6 +526,7 @@ class BandwidthTracker( HydrusSerialisable.SerialisableBase ):
         
         # collapse each time portion to the latest timestamp it covers
         
+        """Executes `_GetTimes`."""
         ( year, month, day, hour, minute ) = ( dt.year, dt.month, dt.day, dt.hour, dt.minute )
         
         month_dt = datetime.datetime( year, month, 1 )
@@ -525,6 +546,7 @@ class BandwidthTracker( HydrusSerialisable.SerialisableBase ):
     
     def _GetAllUsage( self, bandwidth_type: int ) -> int:
         
+        """Executes `_GetAllUsage`."""
         if bandwidth_type == HC.BANDWIDTH_TYPE_DATA:
             
             return sum( self._months_bytes.values() )
@@ -537,6 +559,7 @@ class BandwidthTracker( HydrusSerialisable.SerialisableBase ):
     
     def _GetUsage( self, bandwidth_type, time_delta, for_user ) -> int:
         
+        """Executes `_GetUsage`."""
         if for_user and time_delta is not None and bandwidth_type == HC.BANDWIDTH_TYPE_DATA and time_delta <= self.MIN_TIME_DELTA_FOR_USER:
             
             usage = self._GetWeightedApproximateUsage( time_delta )
@@ -553,6 +576,7 @@ class BandwidthTracker( HydrusSerialisable.SerialisableBase ):
     
     def _GetWeightedApproximateUsage( self, time_delta ) -> int:
         
+        """Executes `_GetWeightedApproximateUsage`."""
         SEARCH_DELTA = self.MIN_TIME_DELTA_FOR_USER
         
         counter = self._seconds_bytes
@@ -584,6 +608,7 @@ class BandwidthTracker( HydrusSerialisable.SerialisableBase ):
     
     def _MaintainCache( self ):
         
+        """Executes `_MaintainCache`."""
         if HydrusTime.TimeHasPassed( self._next_cache_maintenance_timestamp ):
             
             now = HydrusTime.GetNow()
@@ -595,6 +620,7 @@ class BandwidthTracker( HydrusSerialisable.SerialisableBase ):
             
             def clear_counter( counter, oldest_timestamp ):
                 
+                """Executes `clear_counter`."""
                 bad_keys = [ timestamp for timestamp in counter.keys() if timestamp < oldest_timestamp ]
                 
                 for bad_key in bad_keys:
@@ -618,6 +644,7 @@ class BandwidthTracker( HydrusSerialisable.SerialisableBase ):
     
     def GetCurrentMonthSummary( self ):
         
+        """Executes `GetCurrentMonthSummary`."""
         with self._lock:
             
             num_bytes = self._GetUsage( HC.BANDWIDTH_TYPE_DATA, None, True )
@@ -629,6 +656,7 @@ class BandwidthTracker( HydrusSerialisable.SerialisableBase ):
     
     def GetMonthlyDataUsage( self ):
         
+        """Executes `GetMonthlyDataUsage`."""
         with self._lock:
             
             result = []
@@ -651,6 +679,7 @@ class BandwidthTracker( HydrusSerialisable.SerialisableBase ):
     
     def GetAllUsage( self, bandwidth_type ):
         
+        """Executes `GetAllUsage`."""
         with self._lock:
             
             return self._GetAllUsage( bandwidth_type )
@@ -659,6 +688,7 @@ class BandwidthTracker( HydrusSerialisable.SerialisableBase ):
     
     def GetUsage( self, bandwidth_type, time_delta, for_user = False ):
         
+        """Executes `GetUsage`."""
         with self._lock:
             
             if time_delta == 0:
@@ -672,6 +702,7 @@ class BandwidthTracker( HydrusSerialisable.SerialisableBase ):
     
     def GetWaitingEstimate( self, bandwidth_type, time_delta, max_allowed ):
         
+        """Executes `GetWaitingEstimate`."""
         with self._lock:
             
             if time_delta is None: # this is monthly
@@ -736,6 +767,7 @@ class BandwidthTracker( HydrusSerialisable.SerialisableBase ):
     
     def ReportDataUsed( self, num_bytes ):
         
+        """Executes `ReportDataUsed`."""
         with self._lock:
             
             dt = self._GetCurrentDateTime()
@@ -758,6 +790,7 @@ class BandwidthTracker( HydrusSerialisable.SerialisableBase ):
     
     def ReportRequestUsed( self, num_requests = 1 ):
         
+        """Executes `ReportRequestUsed`."""
         with self._lock:
             
             dt = self._GetCurrentDateTime()

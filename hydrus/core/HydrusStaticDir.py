@@ -9,6 +9,7 @@ USE_USER_STATIC_DIR = True
 
 def GetStaticIconPath( name: str, force_install_dir = False ):
     
+    """Executes `GetStaticIconPath`."""
     ( svg_path, was_userdir ) = GetStaticPathWithResult( name + '.svg', force_install_dir = force_install_dir )
     
     if not was_userdir:
@@ -38,6 +39,7 @@ def GetStaticIconPath( name: str, force_install_dir = False ):
 
 def GetStaticPath( sub_path: str, force_install_dir = False ):
     
+    """Executes `GetStaticPath`."""
     ( path, was_userdir ) = GetStaticPathWithResult( sub_path, force_install_dir = force_install_dir )
     
     return path
@@ -45,6 +47,7 @@ def GetStaticPath( sub_path: str, force_install_dir = False ):
 
 def GetStaticPathWithResult( sub_path: str, force_install_dir = False ):
     
+    """Executes `GetStaticPathWithResult`."""
     if not force_install_dir and USE_USER_STATIC_DIR and HG.controller is not None:
         
         user_path = os.path.join( HG.controller.GetDBDir(), 'static', sub_path )
@@ -60,6 +63,7 @@ def GetStaticPathWithResult( sub_path: str, force_install_dir = False ):
 
 def GetSVGPath( name, userdir = HC.USERPATH_SVG_ICON ):
     
+    """Executes `GetSVGPath`."""
     svg_path = os.path.join( INSTALL_STATIC_DIR, userdir, name + '.svg' ) 
     
     if os.path.exists( svg_path ):
@@ -77,6 +81,7 @@ def GetSVGPath( name, userdir = HC.USERPATH_SVG_ICON ):
 
 def ListStaticDirFilePaths( sub_dir_path: str ):
     
+    """Executes `ListStaticDirFilePaths`."""
     user_path = GetStaticPath( sub_dir_path )
     install_path = GetStaticPath( sub_dir_path, force_install_dir = True )
     

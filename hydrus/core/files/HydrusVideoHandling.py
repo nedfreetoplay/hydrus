@@ -18,6 +18,7 @@ def FileIsAnimated( path ):
     # ffmpeg offers a slightly different codec, so maybe we could inspect that, but no duration data or anything, so what would a different ffmpeg version say?
     # maybe this is ok as a backstop
     
+    """Executes `FileIsAnimated`."""
     try:
         
         ( resolution, duration_in_ms, num_frames, has_audio ) = GetFFMPEGVideoProperties( path )
@@ -35,6 +36,7 @@ def GetFFMPEGInfoLines( path, count_frames_manually = False, only_first_second =
     
     # open the file in a pipe, provoke an error, read output
     
+    """Executes `GetFFMPEGInfoLines`."""
     cmd = [ HydrusFFMPEG.FFMPEG_PATH, "-xerror", "-i", path ]
     
     if only_first_second:
@@ -88,6 +90,7 @@ def GetFFMPEGInfoLines( path, count_frames_manually = False, only_first_second =
 
 def GetFFMPEGVideoProperties( path, force_count_frames_manually = False ):
     
+    """Executes `GetFFMPEGVideoProperties`."""
     lines_for_first_second = GetFFMPEGInfoLines( path, count_frames_manually = True, only_first_second = True )
     
     ( has_video, video_format ) = ParseFFMPEGVideoFormat( lines_for_first_second )
@@ -178,6 +181,7 @@ def GetFFMPEGVideoProperties( path, force_count_frames_manually = False ):
 
 def GetMime( path ):
     
+    """Executes `GetMime`."""
     lines = GetFFMPEGInfoLines( path )
     
     try:
@@ -342,6 +346,7 @@ def GetMime( path ):
 
 def HasVideoStream( path ) -> bool:
     
+    """Executes `HasVideoStream`."""
     lines = GetFFMPEGInfoLines( path )
     
     return ParseFFMPEGHasVideo( lines )
@@ -351,6 +356,7 @@ def ParseFFMPEGDuration( lines ):
     
     # get duration (in seconds)
     #   Duration: 00:00:02.46, start: 0.033000, bitrate: 1069 kb/s
+    """Executes `ParseFFMPEGDuration`."""
     try:
         
         # had a vid with 'Duration:' in title, ha ha, so now a regex
@@ -420,6 +426,7 @@ def ParseFFMPEGDuration( lines ):
     
 def ParseFFMPEGFPS( lines, png_ok = False ):
     
+    """Executes `ParseFFMPEGFPS`."""
     try:
         
         line = ParseFFMPEGVideoLine( lines, png_ok = png_ok )
@@ -446,6 +453,7 @@ def ParseFFMPEGFPS( lines, png_ok = False ):
 
 def ParseFFMPEGFPSFromFirstSecond( lines_for_first_second ):
     
+    """Executes `ParseFFMPEGFPSFromFirstSecond`."""
     try:
         
         line = ParseFFMPEGVideoLine( lines_for_first_second )
@@ -500,8 +508,10 @@ def ParseFFMPEGFPSFromFirstSecond( lines_for_first_second ):
 
 def ParseFFMPEGFPSPossibleResults( video_line ) -> tuple[ set[ float ], bool ]:
     
+    """Executes `ParseFFMPEGFPSPossibleResults`."""
     def that_fps_string_is_likely_stupid( fps: str ) -> bool:
         
+        """Executes `that_fps_string_is_likely_stupid`."""
         if fps.endswith( 'k' ):
             
             return True
@@ -567,6 +577,7 @@ def ParseFFMPEGFPSPossibleResults( video_line ) -> tuple[ set[ float ], bool ]:
     
 def ParseFFMPEGHasVideo( lines ) -> bool:
     
+    """Executes `ParseFFMPEGHasVideo`."""
     try:
         
         ParseFFMPEGVideoLine( lines )
@@ -583,6 +594,7 @@ def ParseFFMPEGMetadataContainer( lines ) -> str:
     #  Metadata:
     #    major_brand     : isom
     
+    """Executes `ParseFFMPEGMetadataContainer`."""
     match_metadata_line_re = r'\s*Metadata:\s*'
     
     metadata_line_index = None
@@ -618,6 +630,7 @@ def ParseFFMPEGMetadataContainer( lines ) -> str:
     
 def ParseFFMPEGMimeText( lines ):
     
+    """Executes `ParseFFMPEGMimeText`."""
     try:
         
         ( input_line, ) = [ line for line in lines if line.startswith( 'Input #0' ) ]
@@ -637,6 +650,7 @@ def ParseFFMPEGMimeText( lines ):
     
 def ParseFFMPEGNumFramesManually( lines ) -> int:
     
+    """Executes `ParseFFMPEGNumFramesManually`."""
     frame_lines = [ line for line in lines if line.startswith( 'frame=' ) ]
     
     if len( frame_lines ) == 0:
@@ -671,6 +685,7 @@ def ParseFFMPEGNumFramesManually( lines ) -> int:
 
 def ParseFFMPEGVideoFormat( lines ):
     
+    """Executes `ParseFFMPEGVideoFormat`."""
     try:
         
         line = ParseFFMPEGVideoLine( lines )
@@ -701,6 +716,7 @@ def ParseFFMPEGVideoFormat( lines ):
 
 def ParseFFMPEGVideoLine( lines, png_ok = False ) -> str:
     
+    """Executes `ParseFFMPEGVideoLine`."""
     if png_ok:
         
         bad_video_formats = [ 'jpg' ]
@@ -726,6 +742,7 @@ def ParseFFMPEGVideoLine( lines, png_ok = False ) -> str:
 
 def ParseFFMPEGVideoResolution( lines, png_ok = False ) -> tuple[ int, int ]:
     
+    """Executes `ParseFFMPEGVideoResolution`."""
     try:
         
         line = ParseFFMPEGVideoLine( lines, png_ok = png_ok )
@@ -787,6 +804,7 @@ def ParseFFMPEGVideoResolution( lines, png_ok = False ) -> tuple[ int, int ]:
 
 def VideoHasAudio( path, info_lines ) -> bool:
     
+    """Executes `VideoHasAudio`."""
     ( audio_found, audio_format ) = HydrusAudioHandling.ParseFFMPEGAudio( info_lines )
     
     if not audio_found:
@@ -839,6 +857,7 @@ class VideoRendererFFMPEG( object ):
     
     def __init__( self, path, mime, duration_ms, num_frames, target_resolution, clip_rect = None, start_pos = None ):
         
+        """Initializes the instance."""
         if duration_ms <= 0 or duration_ms is None:
             
             duration_ms = 100 # 100ms
@@ -896,11 +915,13 @@ class VideoRendererFFMPEG( object ):
     
     def __del__( self ):
         
+        """Executes `__del__`."""
         self.close()
         
     
     def close( self ) -> None:
         
+        """Executes `close`."""
         if self.process_reader is not None:
             
             self.process_reader.CloseProcess()
@@ -911,6 +932,7 @@ class VideoRendererFFMPEG( object ):
     
     def initialize( self, start_index = 0 ):
         
+        """Executes `initialize`."""
         self.close()
         
         if self._mime in HC.ANIMATIONS: # ffmpeg is pretty bad at scanning these, and they tend to be short, so we'll skip frames instead
@@ -991,6 +1013,7 @@ class VideoRendererFFMPEG( object ):
     
     def skip_frames( self, n ) -> None:
         
+        """Executes `skip_frames`."""
         n = int( n )
         
         ( w, h ) = self._target_resolution
@@ -1015,6 +1038,7 @@ class VideoRendererFFMPEG( object ):
     
     def read_frame( self ):
         
+        """Executes `read_frame`."""
         if self.pos == self._num_frames:
             
             self.initialize()
@@ -1079,6 +1103,7 @@ class VideoRendererFFMPEG( object ):
     
     def set_position( self, pos ) -> None:
         
+        """Executes `set_position`."""
         rewind = pos < self.pos
         jump_a_long_way_ahead = pos > self.pos + 60
         
@@ -1094,5 +1119,6 @@ class VideoRendererFFMPEG( object ):
     
     def Stop( self ) -> None:
         
+        """Executes `Stop`."""
         self.close()
         

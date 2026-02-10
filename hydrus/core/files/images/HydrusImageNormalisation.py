@@ -18,11 +18,13 @@ DO_ICC_PROFILE_NORMALISATION = True
 
 def xy_to_xyz( x, y ):
     
+    """Executes `xy_to_xyz`."""
     return numpy.array( [ x / y, 1.0, ( 1 - x - y ) / y ] )
     
 
 def chromaticities_to_rgb_to_xyz( white, red, green, blue ):
     
+    """Executes `chromaticities_to_rgb_to_xyz`."""
     W = xy_to_xyz( white[0], white[1] )
     R = xy_to_xyz( red[0], red[1] )
     G = xy_to_xyz( green[0], green[1] )
@@ -41,6 +43,7 @@ def chromaticities_to_rgb_to_xyz( white, red, green, blue ):
 def adapt_white_point( XYZ_src_white, XYZ_dst_white ):
     
     # Bradford adaptation matrix
+    """Executes `adapt_white_point`."""
     M = numpy.array( [
         [ 0.8951,  0.2664, -0.1614],
         [-0.7502,  1.7135,  0.0367],
@@ -60,6 +63,7 @@ def adapt_white_point( XYZ_src_white, XYZ_dst_white ):
 
 def srgb_encode(c):
     
+    """Executes `srgb_encode`."""
     a = 0.055
     
     return numpy.where(
@@ -71,6 +75,7 @@ def srgb_encode(c):
 
 def ConvertGammaChromaticityPNGToSRGB( pil_image ):
     
+    """Executes `ConvertGammaChromaticityPNGToSRGB`."""
     if not PILImageIsPNGWithGammaAndChromaticity( pil_image ):
         
         return pil_image
@@ -191,6 +196,7 @@ def ConvertGammaChromaticityPNGToSRGB( pil_image ):
 
 def GenerateICCProfileBytesFromGammaAndChromaticityPNG( pil_image: PILImage.Image ):
     
+    """Executes `GenerateICCProfileBytesFromGammaAndChromaticityPNG`."""
     linear_gamma = pil_image.info[ 'gamma' ] # 0.45455
     
     if linear_gamma == 0:
@@ -220,6 +226,7 @@ def GenerateICCProfileBytesFromGammaAndChromaticityPNG( pil_image: PILImage.Imag
 
 def SetDoICCProfileNormalisation( value: bool ):
     
+    """Executes `SetDoICCProfileNormalisation`."""
     global DO_ICC_PROFILE_NORMALISATION
     
     if value != DO_ICC_PROFILE_NORMALISATION:
@@ -233,6 +240,7 @@ def SetDoICCProfileNormalisation( value: bool ):
 
 def NormaliseNumPyImageToUInt8( numpy_image: numpy.ndarray ):
     
+    """Executes `NormaliseNumPyImageToUInt8`."""
     if numpy_image.dtype == numpy.uint16:
         
         numpy_image = numpy.array( numpy_image // 256, dtype = numpy.uint8 )
@@ -278,6 +286,7 @@ def DequantizeFreshlyLoadedNumPyImage( numpy_image: numpy.ndarray ) -> numpy.nda
     
     # OpenCV loads images in BGR, and we want to normalise to RGB in general
     
+    """Executes `DequantizeFreshlyLoadedNumPyImage`."""
     numpy_image = NormaliseNumPyImageToUInt8( numpy_image )
     
     shape = numpy_image.shape
@@ -320,6 +329,7 @@ def DequantizeFreshlyLoadedNumPyImage( numpy_image: numpy.ndarray ) -> numpy.nda
 
 def PILImageIsPNGWithGammaAndChromaticity( pil_image: PILImage.Image ):
     
+    """Executes `PILImageIsPNGWithGammaAndChromaticity`."""
     if pil_image.format == 'PNG' and pil_image.mode in ( 'RGB', 'RGBA' ) and 'gamma' in pil_image.info and 'chromaticity' in pil_image.info:
         
         linear_gamma = pil_image.info[ 'gamma' ]
@@ -342,6 +352,7 @@ def PILImageIsPNGWithGammaAndChromaticity( pil_image: PILImage.Image ):
 
 def PILImageIsPNGWithSRGB( pil_image: PILImage.Image ):
     
+    """Executes `PILImageIsPNGWithSRGB`."""
     if pil_image.format == 'PNG' and 'srgb' in pil_image.info:
         
         return True
@@ -352,6 +363,7 @@ def PILImageIsPNGWithSRGB( pil_image: PILImage.Image ):
 
 def DequantizePILImage( pil_image: PILImage.Image ) -> PILImage.Image:
     
+    """Executes `DequantizePILImage`."""
     if HydrusImageMetadata.HasICCProfile( pil_image ) and DO_ICC_PROFILE_NORMALISATION:
         
         try:
@@ -421,6 +433,7 @@ def DequantizePILImage( pil_image: PILImage.Image ) -> PILImage.Image:
 
 def NormaliseICCProfilePILImageToSRGB( icc_profile_bytes: bytes, pil_image: PILImage.Image ) -> PILImage.Image:
     
+    """Executes `NormaliseICCProfilePILImageToSRGB`."""
     try:
         
         f = io.BytesIO( icc_profile_bytes )
@@ -469,6 +482,7 @@ def NormaliseICCProfilePILImageToSRGB( icc_profile_bytes: bytes, pil_image: PILI
 
 def NormalisePILImageToRGB( pil_image: PILImage.Image ) -> PILImage.Image:
     
+    """Executes `NormalisePILImageToRGB`."""
     if HydrusImageColours.PILImageHasTransparency( pil_image ):
         
         desired_mode = 'RGBA'
@@ -495,6 +509,7 @@ def NormalisePILImageToRGB( pil_image: PILImage.Image ) -> PILImage.Image:
 
 def RotateEXIFPILImage( pil_image: PILImage.Image )-> PILImage.Image:
     
+    """Executes `RotateEXIFPILImage`."""
     if pil_image.format == 'PNG':
         
         # although pngs can store EXIF, it is in a weird custom frame and isn't fully supported
@@ -569,6 +584,7 @@ def RotateEXIFPILImage( pil_image: PILImage.Image )-> PILImage.Image:
 
 def StripOutAnyUselessAlphaChannel( numpy_image: numpy.ndarray ) -> numpy.ndarray:
     
+    """Executes `StripOutAnyUselessAlphaChannel`."""
     if HydrusImageColours.NumPyImageHasUselessAlphaChannel( numpy_image ):
         
         channel_number = HydrusImageColours.GetNumPyAlphaChannelNumber( numpy_image )
@@ -587,6 +603,7 @@ def StripOutAnyUselessAlphaChannel( numpy_image: numpy.ndarray ) -> numpy.ndarra
 
 def StripOutAnyAlphaChannel( numpy_image: numpy.ndarray ) -> numpy.ndarray:
     
+    """Executes `StripOutAnyAlphaChannel`."""
     if HydrusImageColours.NumPyImageHasAlphaChannel( numpy_image ):
         
         channel_number = HydrusImageColours.GetNumPyAlphaChannelNumber( numpy_image )

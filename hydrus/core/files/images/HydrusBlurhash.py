@@ -9,6 +9,7 @@ from hydrus.core.files.images import HydrusImageHandling
 def rgb_to_hsl( r, g, b ):
     
     # Normalize RGB to [0,1]
+    """Executes `rgb_to_hsl`."""
     r, g, b = [v / 255.0 for v in (r, g, b)]
 
     # Get min, max, and delta
@@ -47,11 +48,13 @@ def rgb_to_hsl( r, g, b ):
 def rgb_to_xyz( r, g, b ):
     
     # Normalize to [0,1]
+    """Executes `rgb_to_xyz`."""
     r, g, b = [v / 255.0 for v in (r, g, b)]
     
     # Apply gamma correction (sRGB to linear RGB)
     def gamma_correct(v):
         
+        """Executes `gamma_correct`."""
         return v / 12.92 if v <= 0.04045 else ((v + 0.055) / 1.055) ** 2.4
         
     
@@ -68,11 +71,13 @@ def rgb_to_xyz( r, g, b ):
 def xyz_to_lab( x, y, z ):
     
     # Normalize for D65 white point
+    """Executes `xyz_to_lab`."""
     x, y, z = x / 0.95047, y / 1.00000, z / 1.08883
 
     # Convert using the Lab transformation
     def f(t):
         
+        """Executes `f`."""
         return t ** (1/3) if t > 0.008856 else (7.787 * t) + (16 / 116)
         
     
@@ -87,6 +92,7 @@ def xyz_to_lab( x, y, z ):
 
 def ConvertBlurhashToSortableChromaticMagnitude( blurhash: str, reverse: bool ):
     
+    """Executes `ConvertBlurhashToSortableChromaticMagnitude`."""
     ( r, g, b ) = GetAverageColourFromBlurhash( blurhash )
     
     ( l, a, b ) = xyz_to_lab( *rgb_to_xyz( r, g, b ) )
@@ -99,6 +105,7 @@ def ConvertBlurhashToSortableChromaticMagnitude( blurhash: str, reverse: bool ):
 
 def ConvertBlurhashToSortableBlueYellow( blurhash: str, reverse: bool ):
     
+    """Executes `ConvertBlurhashToSortableBlueYellow`."""
     ( r, g, b ) = GetAverageColourFromBlurhash( blurhash )
     
     ( l, a, b ) = xyz_to_lab( *rgb_to_xyz( r, g, b ) )
@@ -108,6 +115,7 @@ def ConvertBlurhashToSortableBlueYellow( blurhash: str, reverse: bool ):
 
 def ConvertBlurhashToSortableGreenRed( blurhash: str, reverse: bool ):
     
+    """Executes `ConvertBlurhashToSortableGreenRed`."""
     ( r, g, b ) = GetAverageColourFromBlurhash( blurhash )
     
     ( l, a, b ) = xyz_to_lab( *rgb_to_xyz( r, g, b ) )
@@ -117,6 +125,7 @@ def ConvertBlurhashToSortableGreenRed( blurhash: str, reverse: bool ):
 
 def ConvertBlurhashToSortableHue( blurhash: str, reverse: bool ):
     
+    """Executes `ConvertBlurhashToSortableHue`."""
     ( r, g, b ) = GetAverageColourFromBlurhash( blurhash )
     
     ( h, s, l ) = rgb_to_hsl( r, g, b )
@@ -136,6 +145,7 @@ def ConvertBlurhashToSortableHue( blurhash: str, reverse: bool ):
 
 def ConvertBlurhashToSortableLightness( blurhash: str, reverse: bool ):
     
+    """Executes `ConvertBlurhashToSortableLightness`."""
     ( r, g, b ) = GetAverageColourFromBlurhash( blurhash )
     
     ( l, a, b ) = xyz_to_lab( *rgb_to_xyz( r, g, b ) )
@@ -150,6 +160,7 @@ def GetAverageColourFromBlurhash( blurhash: str ):
     
     # ok blurhash is basically a DCT, and the the second to sixth bytes are the DC component, which is average colour
     
+    """Executes `GetAverageColourFromBlurhash`."""
     average_colour_encoded = blurhash[2:6]
     
     average_colour_int = external_blurhash.base83_decode( average_colour_encoded )
@@ -163,6 +174,7 @@ def GetAverageColourFromBlurhash( blurhash: str ):
 
 def GetBlurhashFromNumPy( numpy_image: numpy.ndarray ) -> str:
     
+    """Executes `GetBlurhashFromNumPy`."""
     media_height = numpy_image.shape[0]
     media_width = numpy_image.shape[1]
     
@@ -202,6 +214,7 @@ def GetBlurhashFromNumPy( numpy_image: numpy.ndarray ) -> str:
 def GetNumpyFromBlurhash( blurhash, width, height ) -> numpy.ndarray:
     
     # this thing is super slow, they recommend even in the documentation to render small and scale up
+    """Executes `GetNumpyFromBlurhash`."""
     if width > 32 or height > 32:
         
         numpy_image = numpy.array( external_blurhash.blurhash_decode( blurhash, 32, 32 ), dtype = 'uint8' )

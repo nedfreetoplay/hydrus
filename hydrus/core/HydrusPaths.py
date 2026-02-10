@@ -21,16 +21,19 @@ from hydrus.core.processes import HydrusThreading
 
 def stat_is_file( path_stat: os.stat_result ):
     
+    """Executes `stat_is_file`."""
     return stat.S_ISREG( path_stat.st_mode )
     
 
 def stat_is_symlink( path_stat: os.stat_result ):
     
+    """Executes `stat_is_symlink`."""
     return stat.S_ISLNK( path_stat.st_mode )
     
 
 def stat_is_dir( path_stat: os.stat_result ):
     
+    """Executes `stat_is_dir`."""
     return stat.S_ISDIR( path_stat.st_mode )
     
 
@@ -44,6 +47,7 @@ def stat_is_samefile( source_stat: os.stat_result, dest_stat: os.stat_result ):
 
 def AppendPathUntilNoConflicts( path ):
     
+    """Executes `AppendPathUntilNoConflicts`."""
     ( path_absent_ext, ext ) = os.path.splitext( path )
     
     good_path_absent_ext = path_absent_ext
@@ -62,6 +66,7 @@ def AppendPathUntilNoConflicts( path ):
 
 def ConvertAbsPathToPortablePath( abs_path, base_dir_override = None ):
     
+    """Executes `ConvertAbsPathToPortablePath`."""
     try:
         
         if base_dir_override is None:
@@ -95,11 +100,13 @@ def ConvertAbsPathToPortablePath( abs_path, base_dir_override = None ):
 
 def ConvertAbsPathToRealPath( abs_path ):
     
+    """Executes `ConvertAbsPathToRealPath`."""
     return os.path.realpath( abs_path, strict = False )
     
 
 def ConvertPortablePathToAbsPath( portable_path, base_dir_override = None ):
     
+    """Executes `ConvertPortablePathToAbsPath`."""
     portable_path = os.path.normpath( portable_path ) # collapses .. stuff and converts / to \\ for windows only
     
     if os.path.isabs( portable_path ):
@@ -131,11 +138,13 @@ def ConvertPortablePathToAbsPath( portable_path, base_dir_override = None ):
 
 def CopyFileLikeToFileLike( f_source, f_dest ):
     
+    """Executes `CopyFileLikeToFileLike`."""
     for block in ReadFileLikeAsBlocks( f_source ): f_dest.write( block )
     
 
 def DeletePath( path ) -> bool:
     
+    """Executes `DeletePath`."""
     if HG.file_report_mode:
         
         HydrusData.ShowText( 'Deleting {}'.format( path ) )
@@ -225,6 +234,7 @@ def DestStatHasSameSizeAndDateAsSource( source_stat: os.stat_result, dest_stat: 
     
     # this is a critical section of code so we moved it to just consider previously fetched stats. all the 'does dest exist?' stuff is implied by what you need to call this guy, hooray
     
+    """Executes `DestStatHasSameSizeAndDateAsSource`."""
     same_size = source_stat.st_size == dest_stat.st_size
     same_modified_time = int( source_stat.st_mtime ) == int( dest_stat.st_mtime )
     
@@ -233,6 +243,7 @@ def DestStatHasSameSizeAndDateAsSource( source_stat: os.stat_result, dest_stat: 
 
 def DirectoryIsWriteable( path ):
     
+    """Executes `DirectoryIsWriteable`."""
     if not PotentialPathDeviceIsConnected( path ):
         
         raise Exception( f'Cannot figure out if "{path}" is writeable-to because its device does not seem to be mounted!' )
@@ -284,6 +295,7 @@ def DirectoryIsWriteable( path ):
 
 def ElideSubdirsSafely( destination_directory: str, subdirs_elidable: str, path_character_limit: int | None, dirname_character_limit: int | None, force_ntfs_rules: bool ):
     
+    """Executes `ElideSubdirsSafely`."""
     if subdirs_elidable == '':
         
         return subdirs_elidable
@@ -404,6 +416,7 @@ def ElideSubdirsSafely( destination_directory: str, subdirs_elidable: str, path_
         
         def the_test( n ):
             
+            """Executes `the_test`."""
             if HC.PLATFORM_WINDOWS or force_ntfs_rules:
                 
                 # characters
@@ -445,6 +458,7 @@ def ElideFilenameSafely( destination_directory: str, subdirs_elidable: str, base
     # Windows cannot handle a _total_ pathname more than 260 (unless you activate some new \\?\ thing that doesn't work great yet)
     # to be safe and deal with surprise extensions like (11) or .txt sidecars, we default to 220
     
+    """Executes `ElideFilenameSafely`."""
     if base_filename == '':
         
         base_filename = 'empty'
@@ -549,6 +563,7 @@ def ElideFilenameSafely( destination_directory: str, subdirs_elidable: str, base
     
     def the_test( n ):
         
+        """Executes `the_test`."""
         if HC.PLATFORM_WINDOWS or force_ntfs_rules:
             
             return len( n ) > filename_character_limit
@@ -580,6 +595,7 @@ def ElideFilenameSafely( destination_directory: str, subdirs_elidable: str, base
 
 def FigureOutDBDir( arg_db_dir: str ):
     
+    """Executes `FigureOutDBDir`."""
     switching_to_userpath_is_ok = False
     
     if arg_db_dir is None:
@@ -641,11 +657,13 @@ def FigureOutDBDir( arg_db_dir: str ):
 def FileisWriteable( path: str ):
     
     # this is a sophisticated multi-plat method and cannot be replaced with a simple stat_result test
+    """Executes `FileisWriteable`."""
     return os.access( path, os.W_OK )
     
 
 def FilterFreePaths( paths ):
     
+    """Executes `FilterFreePaths`."""
     free_paths = []
     
     for path in paths:
@@ -663,6 +681,7 @@ def FilterFreePaths( paths ):
 
 def FilterOlderModifiedFiles( paths: collections.abc.Collection[ str ], grace_period: int ) -> list[ str ]:
     
+    """Executes `FilterOlderModifiedFiles`."""
     only_older_than = HydrusTime.GetNow() - grace_period
     
     good_paths = []
@@ -687,6 +706,7 @@ def FilterOlderModifiedFiles( paths: collections.abc.Collection[ str ], grace_pe
 
 def GetDefaultLaunchPath():
     
+    """Executes `GetDefaultLaunchPath`."""
     if HC.PLATFORM_WINDOWS:
         
         return 'windows is called directly'
@@ -718,6 +738,7 @@ class FakeDiskPart( typing.Protocol ):
 @functools.lru_cache( maxsize = 128 )
 def GetPartitionInfo( path ) -> FakeDiskPart | None:
     
+    """Executes `GetPartitionInfo`."""
     if not HydrusPSUtil.PSUTIL_OK:
         
         return None
@@ -733,6 +754,7 @@ def GetPartitionInfo( path ) -> FakeDiskPart | None:
             
             def sort_descending_mountpoint( partition_info ): # i.e. put '/home' before '/'
                 
+                """Executes `sort_descending_mountpoint`."""
                 return - len( partition_info.mountpoint )
                 
             
@@ -757,6 +779,7 @@ def GetPartitionInfo( path ) -> FakeDiskPart | None:
 
 def GetDevice( path ) -> str | None:
     
+    """Executes `GetDevice`."""
     partition_info = GetPartitionInfo( path )
     
     if partition_info is None:
@@ -772,6 +795,7 @@ def GetDevice( path ) -> str | None:
 
 def GetFileSystemType( path: str ) -> str | None:
     
+    """Executes `GetFileSystemType`."""
     partition_info = GetPartitionInfo( path )
     
     if partition_info is None:
@@ -787,6 +811,7 @@ def GetFileSystemType( path: str ) -> str | None:
 
 def GetFreeSpace( path ) -> int | None:
     
+    """Executes `GetFreeSpace`."""
     if not HydrusPSUtil.PSUTIL_OK:
         
         return None
@@ -806,6 +831,7 @@ def GetFreeSpace( path ) -> int | None:
 
 def GetTotalSpace( path ) -> int | None:
     
+    """Executes `GetTotalSpace`."""
     if not HydrusPSUtil.PSUTIL_OK:
         
         return None
@@ -818,8 +844,10 @@ def GetTotalSpace( path ) -> int | None:
 
 def LaunchDirectory( path ):
     
+    """Executes `LaunchDirectory`."""
     def do_it():
         
+        """Executes `do_it`."""
         if HC.PLATFORM_WINDOWS:
             
             os.startfile( path )
@@ -858,8 +886,10 @@ def LaunchDirectory( path ):
 
 def LaunchFile( path, launch_path = None ):
     
+    """Executes `LaunchFile`."""
     def do_it( launch_path ):
         
+        """Executes `do_it`."""
         if HC.PLATFORM_WINDOWS and launch_path is None:
             
             os.startfile( path )
@@ -913,6 +943,7 @@ def LaunchFile( path, launch_path = None ):
 
 def MakeSureDirectoryExists( path ):
     
+    """Executes `MakeSureDirectoryExists`."""
     if os.path.exists( path ):
         
         if os.path.isdir( path ):
@@ -939,6 +970,7 @@ def MakeSureDirectoryExists( path ):
 
 def FileModifiedTimeIsOk( mtime: int | float ):
     
+    """Executes `FileModifiedTimeIsOk`."""
     if HC.PLATFORM_WINDOWS:
         
         # this is 1980-01-01 UTC, before which Windows can have trouble copying lmaoooooo
@@ -962,6 +994,7 @@ def FileModifiedTimeIsOk( mtime: int | float ):
 
 def retry_blocking_io_call( func, *args, **kwargs ):
     
+    """Executes `retry_blocking_io_call`."""
     NUM_ATTEMPTS = 5
     delay = 1.0
     
@@ -991,6 +1024,7 @@ DO_NOT_DO_CHMOD_MODE = False
 
 def CopyTimes( source, dest ):
     
+    """Executes `CopyTimes`."""
     try:
         
         st = os.stat( source )
@@ -1007,6 +1041,7 @@ def CopyTimes( source, dest ):
 
 def safe_copy2( source_path, dest_path ):
     
+    """Executes `safe_copy2`."""
     mtime = os.path.getmtime( source_path )
     
     try_to_copy_modified_time = FileModifiedTimeIsOk( mtime )
@@ -1046,6 +1081,7 @@ def safe_copy2( source_path, dest_path ):
 
 def safe_copystat( source_path, dest_path ):
     
+    """Executes `safe_copystat`."""
     if DO_NOT_DO_CHMOD_MODE:
         
         retry_blocking_io_call( CopyTimes, source_path, dest_path )
@@ -1434,8 +1470,10 @@ def MirrorTree( source: str, dest: str, text_update_hook = None, is_cancelled_ho
 
 def OpenFileLocation( path ):
     
+    """Executes `OpenFileLocation`."""
     def do_it():
         
+        """Executes `do_it`."""
         if HC.PLATFORM_WINDOWS:
             
             cmd = [ 'explorer', '/select,', path ]
@@ -1471,6 +1509,7 @@ def OpenFileLocation( path ):
 
 def PathIsFree( path ):
     
+    """Executes `PathIsFree`."""
     if not os.path.exists( path ):
         
         return False
@@ -1515,6 +1554,7 @@ def PotentialPathDeviceIsConnected( path: str ):
     
     # this is a little hacky, but it works at catching "H:\ is not plugged in"
     # does not work for Linux, oh well
+    """Executes `PotentialPathDeviceIsConnected`."""
     try:
         
         os.path.ismount( path )
@@ -1529,6 +1569,7 @@ def PotentialPathDeviceIsConnected( path: str ):
 
 def ReadFileLikeAsBlocks( f ) -> collections.abc.Iterator[ bytes ]:
     
+    """Executes `ReadFileLikeAsBlocks`."""
     next_block = f.read( HC.READ_BLOCK_SIZE )
     
     while len( next_block ) > 0:
@@ -1541,6 +1582,7 @@ def ReadFileLikeAsBlocks( f ) -> collections.abc.Iterator[ bytes ]:
 
 def RecyclePath( path ):
     
+    """Executes `RecyclePath`."""
     if HG.file_report_mode:
         
         HydrusData.ShowText( 'Recycling {}'.format( path ) )
@@ -1616,6 +1658,7 @@ NTFS_disallowed_names_case_insensitive.update( ( f'lpt{x}' for x in range( 1, 10
 
 def SanitizeFilename( filename: str, force_ntfs_rules: bool ) -> str:
     
+    """Executes `SanitizeFilename`."""
     if HC.PLATFORM_WINDOWS or force_ntfs_rules:
         
         # \, /, :, *, ?, ", <, >, |
@@ -1667,6 +1710,7 @@ except Exception as e:
 
 def TryToGiveFileNicePermissionBits( path ):
     
+    """Executes `TryToGiveFileNicePermissionBits`."""
     if DO_NOT_DO_CHMOD_MODE:
         
         return
@@ -1708,6 +1752,7 @@ def TryToGiveFileNicePermissionBits( path ):
 
 def TryToMakeFileWriteable( path: str, path_stat: os.stat_result ):
     
+    """Executes `TryToMakeFileWriteable`."""
     if DO_NOT_DO_CHMOD_MODE:
         
         return

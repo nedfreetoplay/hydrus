@@ -6,6 +6,7 @@ from hydrus.core import HydrusGlobals as HG
 
 def GetNumPyAlphaChannel( numpy_image: numpy.ndarray ) -> numpy.ndarray:
     
+    """Executes `GetNumPyAlphaChannel`."""
     if not NumPyImageHasAlphaChannel( numpy_image ):
         
         raise Exception( 'Does not have an alpha channel!' )
@@ -20,6 +21,7 @@ def GetNumPyAlphaChannel( numpy_image: numpy.ndarray ) -> numpy.ndarray:
 
 def GetNumPyAlphaChannelNumber( numpy_image: numpy.ndarray ):
     
+    """Executes `GetNumPyAlphaChannelNumber`."""
     shape = numpy_image.shape
     
     if len( shape ) <= 2:
@@ -36,6 +38,7 @@ def NumPyImageHasAllCellsTheSame( numpy_image: numpy.ndarray, value: int ):
     # I looked around for ways to do this iteratively at the c++ level but didn't have huge luck.
     # unless some magic is going on, the '==' actually creates the bool array
     # its ok for now!
+    """Executes `NumPyImageHasAllCellsTheSame`."""
     return numpy.all( numpy_image == value )
     
     # old way, which makes a third array:
@@ -46,6 +49,7 @@ def NumPyImageHasAlphaChannel( numpy_image: numpy.ndarray ) -> bool:
     
     # note this does not test how useful the channel is, just if it exists
     
+    """Executes `NumPyImageHasAlphaChannel`."""
     shape = numpy_image.shape
     
     if len( shape ) <= 2:
@@ -59,6 +63,7 @@ def NumPyImageHasAlphaChannel( numpy_image: numpy.ndarray ) -> bool:
 
 def NumPyImageHasNonFullyBlackOrWhiteAlphaChannel( numpy_image: numpy.ndarray ) -> bool:
     
+    """Executes `NumPyImageHasNonFullyBlackOrWhiteAlphaChannel`."""
     if not NumPyImageHasAlphaChannel( numpy_image ):
         
         return False
@@ -81,6 +86,7 @@ def NumPyImageHasNonFullyBlackOrWhiteAlphaChannel( numpy_image: numpy.ndarray ) 
 
 def NumPyImageHasHumanPerceptibleAlphaChannel( numpy_image: numpy.ndarray ) -> bool:
     
+    """Executes `NumPyImageHasHumanPerceptibleAlphaChannel`."""
     if not NumPyImageHasAlphaChannel( numpy_image ):
         
         return False
@@ -134,6 +140,7 @@ CURRENT_HAS_TRANSPARENCY_STRICTNESS_LEVEL = HAS_TRANSPARENCY_STRICTNESS_HUMAN
 
 def NumPyImageHasUsefulAlphaChannel( numpy_image: numpy.ndarray ) -> bool:
     
+    """Executes `NumPyImageHasUsefulAlphaChannel`."""
     global CURRENT_HAS_TRANSPARENCY_STRICTNESS_LEVEL
     
     if CURRENT_HAS_TRANSPARENCY_STRICTNESS_LEVEL == HAS_TRANSPARENCY_STRICTNESS_HUMAN:
@@ -157,6 +164,7 @@ def NumPyImageHasUsefulAlphaChannel( numpy_image: numpy.ndarray ) -> bool:
 # note that this is not the same as 'not useful()'. we need to test for the alpha explictly, otherwise an RGB image passing through here returns false
 def NumPyImageHasUselessAlphaChannel( numpy_image: numpy.ndarray ) -> bool:
     
+    """Executes `NumPyImageHasUselessAlphaChannel`."""
     if not NumPyImageHasAlphaChannel( numpy_image ):
         
         return False
@@ -167,11 +175,13 @@ def NumPyImageHasUselessAlphaChannel( numpy_image: numpy.ndarray ) -> bool:
 
 def PILImageHasTransparency( pil_image: PILImage.Image ) -> bool:
     
+    """Executes `PILImageHasTransparency`."""
     return pil_image.mode in ( 'LA', 'RGBA' ) or ( pil_image.mode == 'P' and 'transparency' in pil_image.info )
     
 
 def SetHasTransparencyStrictnessLevel( value: bool ):
     
+    """Executes `SetHasTransparencyStrictnessLevel`."""
     global CURRENT_HAS_TRANSPARENCY_STRICTNESS_LEVEL
     
     if value != CURRENT_HAS_TRANSPARENCY_STRICTNESS_LEVEL:

@@ -11,6 +11,7 @@ from hydrus.core import HydrusText
 
 def ExtractSingleFileFromZip( path_to_zip, filename_to_extract, extract_into_file_path ):
     
+    """Executes `ExtractSingleFileFromZip`."""
     with zipfile.ZipFile( path_to_zip ) as zip_handle:
         
         with zip_handle.open( filename_to_extract ) as reader:
@@ -25,6 +26,7 @@ def ExtractSingleFileFromZip( path_to_zip, filename_to_extract, extract_into_fil
 
 def ExtractCoverPage( path_to_zip, extract_path, mime ):
     
+    """Executes `ExtractCoverPage`."""
     with zipfile.ZipFile( path_to_zip ) as zip_handle:
         
         if mime == HC.APPLICATION_EPUB:
@@ -49,6 +51,7 @@ def ExtractCoverPage( path_to_zip, extract_path, mime ):
 def GetCoverPagePath( zip_handle: zipfile.ZipFile ):
     
     # this probably depth-first fails with a crazy multiple-nested-subdirectory structure, but we'll cross that bridge when we come to it
+    """Executes `GetCoverPagePath`."""
     all_file_paths = [ zip_info.filename for zip_info in zip_handle.infolist() if not zip_info.is_dir() ]
     
     HydrusText.HumanTextSort( all_file_paths )
@@ -76,6 +79,7 @@ def GetCoverPagePath( zip_handle: zipfile.ZipFile ):
 
 def GetCoverPagePathFromEpub( zip_handle: zipfile.ZipFile ):
     
+    """Executes `GetCoverPagePathFromEpub`."""
     container_path = 'META-INF/container.xml'
     
     # EPUBS are indirection-hell, and it all starts with some container.xml
@@ -176,16 +180,19 @@ def GetCoverPagePathFromEpub( zip_handle: zipfile.ZipFile ):
 
 def GetSingleFileFromZipBytes( path_to_zip, path_in_zip ):
     
+    """Executes `GetSingleFileFromZipBytes`."""
     return GetZipAsPath( path_to_zip, path_in_zip = path_in_zip ).read_bytes()
     
 
 def GetZipAsPath( path_to_zip, path_in_zip="" ):
     
+    """Executes `GetZipAsPath`."""
     return zipfile.Path( path_to_zip, at=path_in_zip )
     
 
 def IsEncryptedZip( path_to_zip ):
     
+    """Executes `IsEncryptedZip`."""
     ENCRYPTED_FLAG = 0x1
     
     try:
@@ -215,6 +222,7 @@ def IsEncryptedZip( path_to_zip ):
 
 def filename_has_image_ext( filename: str ):
     
+    """Executes `filename_has_image_ext`."""
     if '.' in filename:
         
         ext_with_dot = '.' + filename.split( '.' )[-1]
@@ -230,6 +238,7 @@ def filename_has_image_ext( filename: str ):
 
 def filename_has_video_ext( filename: str ):
     
+    """Executes `filename_has_video_ext`."""
     if '.' in filename:
         
         ext_with_dot = '.' + filename.split( '.' )[-1]
@@ -254,6 +263,7 @@ def ZipLooksLikeCBZ( path_to_zip ):
     # they _cannot_ be accompanied by .exe, .zip, .unitypackage, .psd, or other gubbins
     # nothing else
     
+    """Executes `ZipLooksLikeCBZ`."""
     directories_to_image_filenames = collections.defaultdict( set )
     
     directories_with_stuff_in = set()
@@ -404,6 +414,7 @@ def ZipLooksLikeCBZ( path_to_zip ):
 
 def MimeFromOpenDocument( path ):
     
+    """Executes `MimeFromOpenDocument`."""
     try:
         
         mimetype_data = GetZipAsPath( path, 'mimetype' ).read_text()

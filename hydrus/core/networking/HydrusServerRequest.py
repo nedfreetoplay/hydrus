@@ -9,6 +9,7 @@ class HydrusRequest( Request ):
     
     def __init__( self, *args, **kwargs ):
         
+        """Initializes the instance."""
         super().__init__( *args, **kwargs )
         
         self.start_time = HydrusTime.GetNowPrecise()
@@ -25,11 +26,13 @@ class HydrusRequest( Request ):
     
     def IsGET( self ):
         
+        """Executes `IsGET`."""
         return self.method == b'GET'
         
     
     def IsPOST( self ):
         
+        """Executes `IsPOST`."""
         return self.method == b'POST'
         
     
@@ -37,6 +40,7 @@ class HydrusRequestLogging( HydrusRequest ):
     
     def finish( self ):
         
+        """Executes `finish`."""
         HydrusRequest.finish( self )
         
         host = self.getHost()

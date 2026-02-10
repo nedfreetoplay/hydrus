@@ -11,16 +11,19 @@ from hydrus.core.processes import HydrusSubprocess
 
 def read_uint16(f):
     
+    """Executes `read_uint16`."""
     return int.from_bytes( f.read( 2 ), byteorder = 'big' )
     
 
 def read_uint32(f):
     
+    """Executes `read_uint32`."""
     return int.from_bytes( f.read( 4 ), byteorder = 'big' )
     
 
 def GetPSDImageResources( path ):
     
+    """Executes `GetPSDImageResources`."""
     with open(path, 'rb') as f:
         
         # Skip PSD Header: 26 bytes
@@ -74,6 +77,7 @@ def GetPSDImageResources( path ):
 
 def GetPSDImageResourceIds( image_resources ):
     
+    """Executes `GetPSDImageResourceIds`."""
     return { resource_id for ( resource_id, size, data_offset ) in image_resources }
     
 
@@ -81,6 +85,7 @@ def GetFFMPEGPSDLines( path ):
     
     # open the file in a pipe, provoke an error, read output
     
+    """Executes `GetFFMPEGPSDLines`."""
     cmd = [ HydrusFFMPEG.FFMPEG_PATH, "-xerror", "-i", path ]
     
     HydrusData.CheckProgramIsNotShuttingDown()
@@ -115,6 +120,7 @@ def ParseFFMPEGPSDLine( lines ) -> str:
     # get the output line that speaks about PSD. something like this:
     # Stream #0:0: Video: psd, rgb24, 1920x1080
     # the ^\sStream is to exclude the 'title' line, when it exists, includes the string 'Video: ', ha ha
+    """Executes `ParseFFMPEGPSDLine`."""
     lines_video = [ line for line in lines if re.search( r'^\s*Stream', line ) is not None and 'Video: ' in line and 'psd' in line ]
     
     if len( lines_video ) == 0:
@@ -129,6 +135,7 @@ def ParseFFMPEGPSDLine( lines ) -> str:
 
 def ParseFFMPEGPSDResolution( lines ) -> tuple[ int, int ]:
     
+    """Executes `ParseFFMPEGPSDResolution`."""
     try:
         
         line = ParseFFMPEGPSDLine( lines )
@@ -153,6 +160,7 @@ def ParseFFMPEGPSDResolution( lines ) -> tuple[ int, int ]:
 
 def PSDHasICCProfile( path: str ):
     
+    """Executes `PSDHasICCProfile`."""
     image_resources = GetPSDImageResources( path )
     
     resource_ids = GetPSDImageResourceIds( image_resources )
@@ -163,6 +171,7 @@ def PSDHasICCProfile( path: str ):
 def GeneratePILImageFromPSD( path ):
     
     # could faff around with getting raw bytes and reshaping, but let's KISS for now
+    """Executes `GeneratePILImageFromPSD`."""
     png_bytes = HydrusFFMPEG.RenderImageToPNGBytes( path )
     
     if len( png_bytes ) == 0:
@@ -175,6 +184,7 @@ def GeneratePILImageFromPSD( path ):
 
 def GenerateThumbnailNumPyFromPSDPath( path: str, target_resolution: tuple[int, int] ) -> numpy.ndarray:
     
+    """Executes `GenerateThumbnailNumPyFromPSDPath`."""
     try:
         
         pil_image = GeneratePILImageFromPSD( path )
@@ -194,6 +204,7 @@ def GenerateThumbnailNumPyFromPSDPath( path: str, target_resolution: tuple[int, 
 
 def GetPSDResolution( path: str ):
     
+    """Executes `GetPSDResolution`."""
     with open( path, 'rb' ) as f:
         
         f.seek( 14 )

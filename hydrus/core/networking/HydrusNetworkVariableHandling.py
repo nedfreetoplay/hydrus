@@ -30,6 +30,7 @@ HASH_BYTE_PARAMS = { 'hash', 'subject_hash', 'update_hash' }
 
 def DumpHydrusArgsToNetworkBytes( args ):
     
+    """Executes `DumpHydrusArgsToNetworkBytes`."""
     if not isinstance( args, HydrusSerialisable.SerialisableBase ):
         
         args = HydrusSerialisable.SerialisableDictionary( args )
@@ -82,6 +83,7 @@ def DumpHydrusArgsToNetworkBytes( args ):
     
 def DumpToGETQuery( args: dict[ str, object ] ):
     
+    """Executes `DumpToGETQuery`."""
     args = dict( args )
     
     if 'subject_identifier' in args:
@@ -156,6 +158,7 @@ def DumpToGETQuery( args: dict[ str, object ] ):
 
 def ParseFileArguments( path, decompression_bombs_ok = False ):
 
+    """Executes `ParseFileArguments`."""
     hash = HydrusFileHandling.GetHashFromPath( path )
     
     try:
@@ -216,6 +219,7 @@ def ParseFileArguments( path, decompression_bombs_ok = False ):
 
 def ParseHydrusNetworkGETArgs( requests_args ):
     
+    """Executes `ParseHydrusNetworkGETArgs`."""
     args = ParseTwistedRequestGETArgs( requests_args, INT_PARAMS, BYTE_PARAMS, STRING_PARAMS, JSON_PARAMS, JSON_BYTE_LIST_PARAMS )
     
     if 'subject_hash' in args: # or parent/sib stuff in args
@@ -242,6 +246,7 @@ def ParseHydrusNetworkGETArgs( requests_args ):
     
 def ParseNetworkBytesToParsedHydrusArgs( network_bytes ):
     
+    """Executes `ParseNetworkBytesToParsedHydrusArgs`."""
     if len( network_bytes ) == 0:
         
         return HydrusSerialisable.SerialisableDictionary()
@@ -309,6 +314,7 @@ def ParseNetworkBytesToParsedHydrusArgs( network_bytes ):
     
 def ParseTwistedRequestGETArgs( requests_args: dict, int_params, byte_params, string_params, json_params, json_byte_list_params ):
     
+    """Executes `ParseTwistedRequestGETArgs`."""
     args = ParsedRequestArguments()
     
     cbor_requested = b'cbor' in requests_args
@@ -434,6 +440,7 @@ variable_type_to_text_lookup[ dict ] = 'object/dict'
 def GetValueFromDict( dictionary: dict, key, expected_type, expected_list_type = None, expected_dict_types = None, default_value = None, none_on_missing = False ):
     
     # not None because in JSON sometimes people put 'null' to mean 'did not enter this optional parameter'
+    """Executes `GetValueFromDict`."""
     if key in dictionary and dictionary[ key ] is not None:
         
         value = dictionary[ key ]
@@ -457,6 +464,7 @@ def GetValueFromDict( dictionary: dict, key, expected_type, expected_list_type =
 
 def TestVariableType( name: str, value: typing.Any, expected_type, expected_list_type = None, expected_dict_types = None, allowed_values = None ):
     
+    """Executes `TestVariableType`."""
     if not isinstance( value, expected_type ):
         
         if expected_type is float and isinstance( value, int ):
@@ -510,16 +518,19 @@ class ParsedRequestArguments( dict ):
     
     def __missing__( self, key ):
         
+        """Executes `__missing__`."""
         raise HydrusExceptions.BadRequestException( 'It looks like the parameter "{}" was missing!'.format( key ) )
         
     
     def GetValue( self, key, expected_type: EXPECTED_TYPE, expected_list_type = None, expected_dict_types = None, default_value = None ) -> EXPECTED_TYPE:
         
+        """Executes `GetValue`."""
         return GetValueFromDict( self, key, expected_type, expected_list_type = expected_list_type, expected_dict_types = expected_dict_types, default_value = default_value )
         
     
     def GetValueOrNone( self, key, expected_type: EXPECTED_TYPE, expected_list_type = None, expected_dict_types = None ) -> EXPECTED_TYPE | None:
         
+        """Executes `GetValueOrNone`."""
         return GetValueFromDict( self, key, expected_type, expected_list_type = expected_list_type, expected_dict_types = expected_dict_types, none_on_missing = True )
         
     

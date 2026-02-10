@@ -59,6 +59,7 @@ def CleanseImportText( text: str ):
     
     # the website has placed utf-16 characters here due to a failure to encode some emoji properly
     # we try to fix it
+    """Executes `CleanseImportText`."""
     if re_has_surrogate_garbage.search( text ) is not None:
         
         try:
@@ -78,6 +79,7 @@ def CleanseImportText( text: str ):
 
 def CleanseImportTexts( texts: collections.abc.Collection[ str ] ):
     
+    """Executes `CleanseImportTexts`."""
     return [ CleanseImportText( text ) for text in texts ]
     
 
@@ -85,6 +87,7 @@ def CleanNoteText( t: str ):
     
     # trim leading and trailing whitespace
     
+    """Executes `CleanNoteText`."""
     t = t.strip()
     
     # wash all newlines
@@ -265,6 +268,7 @@ def ConvertManyStringsToNiceInsertableHumanSummarySingleLine( texts: collections
 
 def HexFilter( text ):
     
+    """Executes `HexFilter`."""
     text = text.lower()
     
     text = re.sub( '[^0123456789abcdef]', '', text )
@@ -273,6 +277,7 @@ def HexFilter( text ):
     
 def DeserialiseNewlinedTexts( text ):
     
+    """Executes `DeserialiseNewlinedTexts`."""
     texts = text.splitlines()
     
     texts = [ StripIOInputLine( line ) for line in texts ]
@@ -283,6 +288,7 @@ def DeserialiseNewlinedTexts( text ):
     
 def ElideText( text, max_length, elide_center = False ):
     
+    """Executes `ElideText`."""
     if len( text ) > max_length:
         
         if elide_center:
@@ -302,6 +308,7 @@ def ElideText( text, max_length, elide_center = False ):
 
 def GetFirstLine( text: str | None ) -> str:
     
+    """Executes `GetFirstLine`."""
     if text is None:
         
         return 'unknown'
@@ -319,6 +326,7 @@ def GetFirstLine( text: str | None ) -> str:
 
 def GetFirstLineSummary( text: str | None ) -> str:
     
+    """Executes `GetFirstLineSummary`."""
     if text is None:
         
         return 'unknown'
@@ -361,12 +369,14 @@ HumanTextSortKey = GenerateHumanTextSortKey()
 
 def HumanTextSort( texts ):
     
+    """Executes `HumanTextSort`."""
     texts.sort( key = HumanTextSortKey ) 
     
 
 def LooksLikeHTML( file_data: str | bytes ):
     # this will false-positive if it is json that contains html, ha ha
     
+    """Executes `LooksLikeHTML`."""
     if isinstance( file_data, bytes ):
         
         search_elements = ( b'<html', b'<HTML', b'<!DOCTYPE html', b'<!DOCTYPE HTML' )
@@ -388,6 +398,7 @@ def LooksLikeHTML( file_data: str | bytes ):
 
 def LooksLikeSVG( file_data ):
     
+    """Executes `LooksLikeSVG`."""
     if isinstance( file_data, bytes ):
         
         search_elements = ( b'<svg', b'<SVG', b'<!DOCTYPE svg', b'<!DOCTYPE SVG' )
@@ -410,6 +421,7 @@ def LooksLikeSVG( file_data ):
 
 def LooksLikeJSON( file_data: str | bytes ) -> bool:
     
+    """Executes `LooksLikeJSON`."""
     try:
         
         if isinstance( file_data, bytes ):
@@ -431,6 +443,7 @@ NULL_CHARACTER = '\x00'
 
 def ChardetDecode( data ):
     
+    """Executes `ChardetDecode`."""
     chardet_result = chardet.detect( data )
     
     chardet_confidence = chardet_result[ 'confidence' ]
@@ -445,6 +458,7 @@ def ChardetDecode( data ):
 
 def DefaultDecode( data ):
     
+    """Executes `DefaultDecode`."""
     default_encoding = 'windows-1252'
     
     default_text = str( data, default_encoding, errors = 'replace' )
@@ -461,6 +475,7 @@ DEFAULT_WEB_ENCODINGS = ( 'ISO-8859-1', 'Windows-1252' )
 
 def NonFailingUnicodeDecode( data, encoding, trust_the_encoding = False ):
     
+    """Executes `NonFailingUnicodeDecode`."""
     if trust_the_encoding:
         
         try:
@@ -574,6 +589,7 @@ def NonFailingUnicodeDecode( data, encoding, trust_the_encoding = False ):
 
 def RemoveNewlines( text: str ) -> str:
     
+    """Executes `RemoveNewlines`."""
     good_lines = [ l.strip() for l in text.splitlines() ]
     
     good_lines = [ l for l in good_lines if l != '' ]
@@ -586,6 +602,7 @@ def RemoveNewlines( text: str ) -> str:
 
 def StripIOInputLine( t ):
     
+    """Executes `StripIOInputLine`."""
     t = re_leading_byte_order_mark.sub( '', t )
     
     t = t.strip()

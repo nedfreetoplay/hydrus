@@ -4,6 +4,7 @@ from hydrus.external import hexagonitswfheader
 # hexagonit.swfheader is a perfect library. it is how you are supposed to do it.
 def GetFlashProperties( path ):
     
+    """Executes `GetFlashProperties`."""
     with open( path, 'rb' ) as f:
         
         metadata = hexagonitswfheader.parse( f )

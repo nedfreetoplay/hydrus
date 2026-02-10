@@ -11,6 +11,7 @@ PROCREATE_PROJECT_KEY = 1
 
 def ExtractZippedThumbnailToPath( path_to_zip, temp_path_file ):
     
+    """Executes `ExtractZippedThumbnailToPath`."""
     try:
         
         HydrusArchiveHandling.ExtractSingleFileFromZip( path_to_zip, PROCREATE_THUMBNAIL_FILE_PATH, temp_path_file )
@@ -23,6 +24,7 @@ def ExtractZippedThumbnailToPath( path_to_zip, temp_path_file ):
 
 def GetProcreatePlist( path ):
     
+    """Executes `GetProcreatePlist`."""
     plist_file = HydrusArchiveHandling.GetZipAsPath( path, PROCREATE_DOCUMENT_ARCHIVE )
 
     if not plist_file.exists():
@@ -38,6 +40,7 @@ def GetProcreatePlist( path ):
 
 def ZipLooksLikeProcreate( path ) -> bool:
     
+    """Executes `ZipLooksLikeProcreate`."""
     try:
         
         document = GetProcreatePlist( path )
@@ -60,6 +63,7 @@ def GetProcreateResolution( path ):
     
     # TODO: animation stuff from plist
     
+    """Executes `GetProcreateResolution`."""
     try:
         
         document = GetProcreatePlist( path )

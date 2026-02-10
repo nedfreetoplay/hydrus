@@ -191,7 +191,9 @@ class MessagingServiceProtocol( HydrusAMP ):
     
     def im_session_key( self, access_key, name ):
         
-        def catch_session_key( session_key ): return { 'session_key' : session_key }
+        def catch_session_key( session_key ):
+            """Executes `catch_session_key`."""
+            return { 'session_key' : session_key }
         
         def do_it( gumpf ):
             

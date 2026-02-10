@@ -4,6 +4,7 @@ from hydrus.core import HydrusData
 
 def DumpEnv( env = None ):
     
+    """Executes `DumpEnv`."""
     if env is None:
         
         env = os.environ.copy()

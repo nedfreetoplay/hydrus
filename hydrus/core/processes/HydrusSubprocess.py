@@ -14,6 +14,7 @@ from hydrus.core import HydrusTime
 
 def GetSubprocessEnv():
     
+    """Executes `GetSubprocessEnv`."""
     if HG.subprocess_report_mode:
         
         HydrusEnvironment.DumpEnv()
@@ -120,6 +121,7 @@ def GetSubprocessEnv():
 
 def GetSubprocessHideTerminalStartupInfo():
     
+    """Executes `GetSubprocessHideTerminalStartupInfo`."""
     if HC.PLATFORM_WINDOWS:
         
         # This suppresses the terminal window that tends to pop up when calling ffmpeg or whatever
@@ -138,6 +140,7 @@ def GetSubprocessHideTerminalStartupInfo():
 
 def GetSubprocessKWArgs( hide_terminal = True, text = False ):
     
+    """Executes `GetSubprocessKWArgs`."""
     sbp_kwargs = {}
     
     sbp_kwargs[ 'env' ] = GetSubprocessEnv()
@@ -169,6 +172,7 @@ long_lived_external_processes = set()
 
 def ReapDeadLongLivedExternalProcesses():
     
+    """Executes `ReapDeadLongLivedExternalProcesses`."""
     with long_lived_external_processes_lock:
         
         for process in list( long_lived_external_processes ):
@@ -186,6 +190,7 @@ def ReapDeadLongLivedExternalProcesses():
 
 def RegisterLongLivedExternalProcess( process: subprocess.Popen ):
     
+    """Executes `RegisterLongLivedExternalProcess`."""
     with long_lived_external_processes_lock:
         
         long_lived_external_processes.add( process )
@@ -194,6 +199,7 @@ def RegisterLongLivedExternalProcess( process: subprocess.Popen ):
 
 def ReportTimeoutError( cmd, timeout, stdout, stderr ):
     
+    """Executes `ReportTimeoutError`."""
     if stdout is None:
         
         stdout_text = 'no content'
@@ -225,6 +231,7 @@ def ReportTimeoutError( cmd, timeout, stdout, stderr ):
 
 def RunSubprocessRawCall( cmd, start_new_session, bufsize, stdin_pipe, stdout_pipe, stderr_pipe, hide_terminal, text ):
     
+    """Executes `RunSubprocessRawCall`."""
     sbp_kwargs = GetSubprocessKWArgs( hide_terminal = hide_terminal, text = text )
     
     try:
@@ -250,6 +257,7 @@ def RunSubprocessRawCall( cmd, start_new_session, bufsize, stdin_pipe, stdout_pi
 
 def RunSubprocess( cmd, timeout: int = 15, bufsize: int = 65536, this_is_a_potentially_long_lived_external_guy = False, hide_terminal = True, text = True ):
     
+    """Executes `RunSubprocess`."""
     if this_is_a_potentially_long_lived_external_guy:
         
         # sets non-child in POSIX--it does the os.setsid( None ) nicely
@@ -302,8 +310,10 @@ def RunSubprocess( cmd, timeout: int = 15, bufsize: int = 65536, this_is_a_poten
 
 def SubprocessCommunicate( cmd, process: subprocess.Popen, timeout: int ):
     
+    """Executes `SubprocessCommunicate`."""
     def do_shutdown_test():
         
+        """Executes `do_shutdown_test`."""
         if HG.model_shutdown:
             
             try:
@@ -321,6 +331,7 @@ def SubprocessCommunicate( cmd, process: subprocess.Popen, timeout: int ):
     
     def do_timeout_test():
         
+        """Executes `do_timeout_test`."""
         if HydrusTime.TimeHasPassedFloat( time_started + timeout ):
             
             ( stdout, stderr ) = TerminateAndReapProcess( process )
@@ -351,6 +362,7 @@ def TerminateAndReapProcess( process: subprocess.Popen ):
     
     # you have to do the communicate after the kill calls or otherwise you get zombies
     
+    """Executes `TerminateAndReapProcess`."""
     process.terminate()
     
     try:
@@ -371,6 +383,7 @@ class SubprocessContext( object ):
     
     def __init__( self, cmd, timeout: int = 15, bufsize: int = 65536, hide_terminal = True, text = True ):
         
+        """Initializes the instance."""
         self.finished = False
         
         self._cmd = cmd
@@ -396,6 +409,7 @@ class SubprocessContext( object ):
     
     def _THREADReader( self ):
         
+        """Executes `_THREADReader`."""
         try:
             
             while True:
@@ -455,16 +469,19 @@ class SubprocessContext( object ):
     
     def __enter__( self ):
         
+        """Enters the runtime context and returns a context-managed object."""
         return self
         
     
     def __exit__( self, exc_type, exc_val, exc_tb ):
         
+        """Exits the runtime context and handles teardown for the context-managed object."""
         self.CloseProcess()
         
     
     def CloseProcess( self ):
         
+        """Executes `CloseProcess`."""
         self.process.poll()
         
         if self.process.returncode is None:
@@ -478,6 +495,7 @@ class SubprocessContextReader( SubprocessContext ):
     
     def ReadChunk( self ):
         
+        """Executes `ReadChunk`."""
         try:
             
             self._new_chunk_desired.set()
@@ -506,6 +524,7 @@ class SubprocessContextStreamer( SubprocessContext ):
     
     def IterateChunks( self ):
         
+        """Executes `IterateChunks`."""
         while True:
             
             try:

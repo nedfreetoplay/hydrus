@@ -14,12 +14,17 @@ from hydrus.core import HydrusExceptions
 from hydrus.core import HydrusGlobals as HG
 from hydrus.core import HydrusNumbers
 
-def default_dict_list(): return collections.defaultdict( list )
+def default_dict_list():
+    """Executes `default_dict_list`."""
+    return collections.defaultdict( list )
 
-def default_dict_set(): return collections.defaultdict( set )
+def default_dict_set():
+    """Executes `default_dict_set`."""
+    return collections.defaultdict( set )
 
 def BuildKeyToListDict( pairs ):
     
+    """Executes `BuildKeyToListDict`."""
     d = collections.defaultdict( list )
     
     for ( key, value ) in pairs: d[ key ].append( value )
@@ -29,6 +34,7 @@ def BuildKeyToListDict( pairs ):
 
 def BuildKeyToSetDict( pairs ):
     
+    """Executes `BuildKeyToSetDict`."""
     d = collections.defaultdict( set )
     
     for ( key, value ) in pairs: d[ key ].add( value )
@@ -38,6 +44,7 @@ def BuildKeyToSetDict( pairs ):
 
 def BytesToNoneOrHex( b: bytes | None ):
     
+    """Executes `BytesToNoneOrHex`."""
     if b is None:
         
         return None
@@ -50,6 +57,7 @@ def BytesToNoneOrHex( b: bytes | None ):
 
 def HexToNoneOrBytes( h: str | None ):
     
+    """Executes `HexToNoneOrBytes`."""
     if h is None:
         
         return None
@@ -64,6 +72,7 @@ def CalculateScoreFromRating( count, rating ):
     
     # https://www.evanmiller.org/how-not-to-sort-by-average-rating.html
     
+    """Executes `CalculateScoreFromRating`."""
     positive = count * rating
     negative = count * ( 1.0 - rating )
     
@@ -77,6 +86,7 @@ def CalculateScoreFromRating( count, rating ):
 
 def CheckProgramIsNotShuttingDown():
     
+    """Executes `CheckProgramIsNotShuttingDown`."""
     if HG.model_shutdown:
         
         raise HydrusExceptions.ShutdownException( 'Application is shutting down!' )
@@ -87,6 +97,7 @@ def CleanRunningFile( db_path, instance ):
     
     # just to be careful
     
+    """Executes `CleanRunningFile`."""
     path = os.path.join( db_path, instance + '_running' )
     
     try:
@@ -108,11 +119,13 @@ status_to_prefix = {
 
 def ConvertValueRangeToBytes( value, range ):
     
+    """Executes `ConvertValueRangeToBytes`."""
     return ToHumanBytes( value ) + '/' + ToHumanBytes( range )
     
 
 def DebugPrint( debug_info ):
     
+    """Executes `DebugPrint`."""
     Print( debug_info )
     
     sys.stdout.flush()
@@ -121,6 +134,7 @@ def DebugPrint( debug_info ):
 
 def GenerateKey():
     
+    """Executes `GenerateKey`."""
     return os.urandom( HC.HYDRUS_KEY_LENGTH )
     
 
@@ -161,6 +175,7 @@ def Get64BitHammingDistance( perceptual_hash1, perceptual_hash2 ):
     
     # collapsed because that also boosts by another 1% or so
     
+    """Executes `Get64BitHammingDistance`."""
     return bin( struct.unpack( '!Q', perceptual_hash1 )[0] ^ struct.unpack( '!Q', perceptual_hash2 )[0] ).count( '1' )
     
     # ---------------------
@@ -180,6 +195,7 @@ def GetNicelyDivisibleNumberForZoom( zoom, no_bigger_than ):
     # the trick of going ( 123456 // 16 ) * 16 to give you a nice multiple of 16 does not work with floats like 1.4 lmao.
     # what we can do instead is phrase 1.4 as 7/5 and use 7 as our int. any number cleanly divisible by 7 is cleanly divisible by 1.4
     
+    """Executes `GetNicelyDivisibleNumberForZoom`."""
     base_frac = fractions.Fraction( zoom )
     
     denominator_limit = 10000
@@ -208,6 +224,7 @@ def GetNicelyDivisibleNumberForZoom( zoom, no_bigger_than ):
 
 def GetEmptyDataDict():
     
+    """Executes `GetEmptyDataDict`."""
     data = collections.defaultdict( default_dict_list )
     
     return data
@@ -215,6 +232,7 @@ def GetEmptyDataDict():
 
 def GetNonDupeName( original_name: str, disallowed_names: set[ str ], do_casefold: bool = False ):
     
+    """Executes `GetNonDupeName`."""
     if do_casefold:
         
         disallowed_names = { name.casefold() for name in disallowed_names }
@@ -222,6 +240,7 @@ def GetNonDupeName( original_name: str, disallowed_names: set[ str ], do_casefol
     
     def name_exists( name: str ):
         
+        """Executes `name_exists`."""
         if do_casefold:
             
             return name.casefold() in disallowed_names
@@ -248,6 +267,7 @@ def GetNonDupeName( original_name: str, disallowed_names: set[ str ], do_casefol
 
 def GetTypeName( obj_type ):
     
+    """Executes `GetTypeName`."""
     if hasattr( obj_type, '__name__' ):
         
         return obj_type.__name__
@@ -260,6 +280,7 @@ def GetTypeName( obj_type ):
 
 def LastShutdownWasBad( db_path, instance ):
     
+    """Executes `LastShutdownWasBad`."""
     path = os.path.join( db_path, instance + '_running' )
     
     if os.path.exists( path ):
@@ -273,6 +294,7 @@ def LastShutdownWasBad( db_path, instance ):
 
 def MergeKeyToListDicts( key_to_list_dicts ):
     
+    """Executes `MergeKeyToListDicts`."""
     result = collections.defaultdict( list )
     
     for key_to_list_dict in key_to_list_dicts:
@@ -285,6 +307,7 @@ def MergeKeyToListDicts( key_to_list_dicts ):
 
 def Print( text ):
     
+    """Executes `Print`."""
     try:
         
         print( str( text ) )
@@ -299,6 +322,7 @@ ShowText = Print
 
 def PrintException( e, do_wait = True ):
     
+    """Executes `PrintException`."""
     ( etype, value, tb ) = sys.exc_info()
     
     PrintExceptionTuple( etype, value, tb, do_wait = do_wait )
@@ -306,6 +330,7 @@ def PrintException( e, do_wait = True ):
 
 def PrintExceptionTuple( etype, value, tb, do_wait = True ):
     
+    """Executes `PrintExceptionTuple`."""
     if etype is None:
         
         etype = HydrusExceptions.UnknownException
@@ -408,6 +433,7 @@ def BaseToHumanBytes( size, sig_figs = 3 ):
     # ░░▒▓░       █ ██          ░ ░▒ ▒    █▓▒▒▒░░▒▒░ ▓▒           ░       ▒▓▒░ ░ 
     #
     
+    """Executes `BaseToHumanBytes`."""
     if size is None:
         
         return 'unknown size'
@@ -486,6 +512,7 @@ class Call( object ):
     
     def __init__( self, func, *args, **kwargs ):
         
+        """Initializes the instance."""
         self._label = None
         
         self._func = func
@@ -495,11 +522,13 @@ class Call( object ):
     
     def __call__( self ):
         
+        """Invokes the instance as a callable."""
         return self._func( *self._args, **self._kwargs )
         
     
     def __repr__( self ):
         
+        """Returns the developer-oriented string representation of the instance."""
         label = self._GetLabel()
         
         return 'Call: {}'.format( label )
@@ -507,6 +536,7 @@ class Call( object ):
     
     def _GetLabel( self ) -> str:
         
+        """Executes `_GetLabel`."""
         if self._label is None:
             
             # this can actually cause an error with Qt objects that are dead or from the wrong thread, wew!
@@ -522,11 +552,13 @@ class Call( object ):
     
     def GetLabel( self ) -> str:
         
+        """Executes `GetLabel`."""
         return self._GetLabel()
         
     
     def SetLabel( self, label: str ):
         
+        """Executes `SetLabel`."""
         self._label = label
         
     

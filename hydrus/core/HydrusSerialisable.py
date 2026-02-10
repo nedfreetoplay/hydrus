@@ -165,6 +165,7 @@ SERIALISABLE_TYPES_TO_OBJECT_TYPES = {}
 
 def CreateFromNetworkBytes( network_bytes: bytes, raise_error_on_future_version = False ) -> typing.Any:
     
+    """Executes `CreateFromNetworkBytes`."""
     obj_string = HydrusCompression.DecompressBytesToString( network_bytes )
     
     return CreateFromString( obj_string, raise_error_on_future_version = raise_error_on_future_version )
@@ -172,6 +173,7 @@ def CreateFromNetworkBytes( network_bytes: bytes, raise_error_on_future_version 
 
 def CreateFromNoneableSerialisableTuple( obj_tuple_or_none, raise_error_on_future_version = False ) -> typing.Any:
     
+    """Executes `CreateFromNoneableSerialisableTuple`."""
     if obj_tuple_or_none is None:
         
         return None
@@ -184,6 +186,7 @@ def CreateFromNoneableSerialisableTuple( obj_tuple_or_none, raise_error_on_futur
 
 def CreateFromString( obj_string: str, raise_error_on_future_version = False ) -> typing.Any:
     
+    """Executes `CreateFromString`."""
     obj_tuple = json.loads( obj_string )
     
     return CreateFromSerialisableTuple( obj_tuple, raise_error_on_future_version = raise_error_on_future_version )
@@ -191,6 +194,7 @@ def CreateFromString( obj_string: str, raise_error_on_future_version = False ) -
 
 def CreateFromSerialisableTuple( obj_tuple: tuple, raise_error_on_future_version = False ) -> typing.Any:
     
+    """Executes `CreateFromSerialisableTuple`."""
     if len( obj_tuple ) == 3:
         
         ( serialisable_type, version, serialisable_info ) = obj_tuple
@@ -211,6 +215,7 @@ def CreateFromSerialisableTuple( obj_tuple: tuple, raise_error_on_future_version
 
 def GetNoneableSerialisableTuple( obj_or_none ):
     
+    """Executes `GetNoneableSerialisableTuple`."""
     if obj_or_none is None:
         
         return None
@@ -223,6 +228,7 @@ def GetNoneableSerialisableTuple( obj_or_none ):
 
 def SetNonDupeName( obj, disallowed_names, do_casefold = False ):
     
+    """Executes `SetNonDupeName`."""
     non_dupe_name = HydrusData.GetNonDupeName( obj.GetName(), disallowed_names, do_casefold = do_casefold )
     
     obj.SetName( non_dupe_name )
@@ -230,6 +236,7 @@ def SetNonDupeName( obj, disallowed_names, do_casefold = False ):
 
 def ObjectVersionIsFromTheFuture( obj_tuple ):
     
+    """Executes `ObjectVersionIsFromTheFuture`."""
     if len( obj_tuple ) == 3:
         
         ( serialisable_type, version, serialisable_info ) = obj_tuple
@@ -254,21 +261,25 @@ class SerialisableBase( object ):
     
     def _GetSerialisableInfo( self ):
         
+        """Executes `_GetSerialisableInfo`."""
         raise NotImplementedError()
         
     
     def _InitialiseFromSerialisableInfo( self, serialisable_info ):
         
+        """Executes `_InitialiseFromSerialisableInfo`."""
         raise NotImplementedError()
         
     
     def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
         
+        """Executes `_UpdateSerialisableInfo`."""
         return old_serialisable_info
         
     
     def DumpToNetworkBytes( self ):
         
+        """Executes `DumpToNetworkBytes`."""
         obj_string = self.DumpToString()
         
         return HydrusCompression.CompressStringToBytes( obj_string )
@@ -276,6 +287,7 @@ class SerialisableBase( object ):
     
     def DumpToString( self ):
         
+        """Executes `DumpToString`."""
         obj_tuple = self.GetSerialisableTuple()
         
         return json.dumps( obj_tuple )
@@ -284,17 +296,20 @@ class SerialisableBase( object ):
     # this magically tells type checkers that this delivers whatever 'self' type is, subclasses whatever
     def Duplicate( self: SerialisableBaseSubclass ) -> SerialisableBaseSubclass:
         
+        """Executes `Duplicate`."""
         return CreateFromString( self.DumpToString() )
         
     
     def GetSerialisedHash( self ):
         
         # as a note, this should not be relied on in future--the serialised string could change due to object updates, or in rare cases, because the contained objects are still hot
+        """Executes `GetSerialisedHash`."""
         return hashlib.sha256( bytes( self.DumpToString(), 'utf-8' ) ).digest()
         
     
     def GetSerialisableTuple( self ):
         
+        """Executes `GetSerialisableTuple`."""
         if hasattr( self, '_lock' ):
             
             with getattr( self, '_lock' ):
@@ -312,6 +327,7 @@ class SerialisableBase( object ):
     
     def InitialiseFromSerialisableInfo( self, original_version, serialisable_info, raise_error_on_future_version = False ):
         
+        """Executes `InitialiseFromSerialisableInfo`."""
         object_is_newer = original_version > self.SERIALISABLE_VERSION
         
         if object_is_newer:
@@ -366,6 +382,7 @@ class SerialisableBase( object ):
 
 def ConvertObjectToMetaSerialisableTuple( obj ):
     
+    """Executes `ConvertObjectToMetaSerialisableTuple`."""
     if isinstance( obj, SerialisableBase ):
         
         metatype = META_SERIALISABLE_TYPE_HYDRUS_SERIALISABLE
@@ -387,6 +404,7 @@ def ConvertObjectToMetaSerialisableTuple( obj ):
 
 def ConvertMetaSerialisableTupleToObject( meta_tuple ):
     
+    """Executes `ConvertMetaSerialisableTupleToObject`."""
     ( metatype, serialisable ) = meta_tuple
     
     if metatype == META_SERIALISABLE_TYPE_HYDRUS_SERIALISABLE:
@@ -412,6 +430,7 @@ class SerialisableBaseNamed( SerialisableBase ):
     
     def __init__( self, name ):
         
+        """Initializes the instance."""
         super().__init__()
         
         self._name = name
@@ -419,25 +438,33 @@ class SerialisableBaseNamed( SerialisableBase ):
     
     def _GetSerialisableInfo( self ):
         
+        """Executes `_GetSerialisableInfo`."""
         raise NotImplementedError()
         
     
     def _InitialiseFromSerialisableInfo( self, serialisable_info ):
         
+        """Executes `_InitialiseFromSerialisableInfo`."""
         raise NotImplementedError()
         
     
     def GetSerialisableTuple( self ):
         
+        """Executes `GetSerialisableTuple`."""
         return ( self.SERIALISABLE_TYPE, self._name, self.SERIALISABLE_VERSION, self._GetSerialisableInfo() )
         
     
-    def GetName( self ): return self._name
+    def GetName( self ):
+        """Executes `GetName`."""
+        return self._name
     
-    def SetName( self, name ): self._name = name
+    def SetName( self, name ):
+        """Executes `SetName`."""
+        self._name = name
     
     def SetNonDupeName( self, disallowed_names, do_casefold = False ):
         
+        """Executes `SetNonDupeName`."""
         self._name = HydrusData.GetNonDupeName( self._name, disallowed_names, do_casefold = do_casefold )
         
     
@@ -449,11 +476,13 @@ class SerialisableDictionary( SerialisableBase, dict ):
     
     def __init__( self, *args, **kwargs ):
         
+        """Initializes the instance."""
         super().__init__( *args, **kwargs )
         
     
     def _GetSerialisableInfo( self ):
         
+        """Executes `_GetSerialisableInfo`."""
         meta_keys_and_meta_values = []
         
         for ( key, value ) in self.items():
@@ -479,6 +508,7 @@ class SerialisableDictionary( SerialisableBase, dict ):
     
     def _InitialiseFromSerialisableInfo( self, serialisable_info ):
         
+        """Executes `_InitialiseFromSerialisableInfo`."""
         have_shown_load_error = False
         
         meta_keys_and_meta_values = serialisable_info
@@ -515,6 +545,7 @@ class SerialisableDictionary( SerialisableBase, dict ):
     
     def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
         
+        """Executes `_UpdateSerialisableInfo`."""
         if version == 1:
             
             ( simple_key_simple_value_pairs, simple_key_serialisable_value_pairs, serialisable_key_simple_value_pairs, serialisable_key_serialisable_value_pairs ) = old_serialisable_info
@@ -549,6 +580,7 @@ class SerialisableDictionary( SerialisableBase, dict ):
     
     def GetSerialisableTuple( self ):
         
+        """Executes `GetSerialisableTuple`."""
         if hasattr( self, '_lock' ):
             
             with getattr( self, '_lock' ):
@@ -576,11 +608,13 @@ class SerialisableBytesDictionary( SerialisableBase, dict ):
     
     def __init__( self, *args, **kwargs ):
         
+        """Initializes the instance."""
         super().__init__( *args, **kwargs )
         
     
     def _GetSerialisableInfo( self ):
         
+        """Executes `_GetSerialisableInfo`."""
         pairs = []
         
         for ( key, value ) in self.items():
@@ -615,6 +649,7 @@ class SerialisableBytesDictionary( SerialisableBase, dict ):
     
     def _InitialiseFromSerialisableInfo( self, serialisable_info ):
         
+        """Executes `_InitialiseFromSerialisableInfo`."""
         for ( encoded_key, encoded_value ) in serialisable_info:
             
             if isinstance( encoded_key, int ):
@@ -653,11 +688,13 @@ class SerialisableList( SerialisableBase, list ):
     
     def __init__( self, *args, **kwargs ):
         
+        """Initializes the instance."""
         super().__init__( *args, **kwargs )
         
     
     def _GetSerialisableInfo( self ):
         
+        """Executes `_GetSerialisableInfo`."""
         meta_tuples = []
         
         for obj in self:
@@ -683,6 +720,7 @@ class SerialisableList( SerialisableBase, list ):
     
     def _InitialiseFromSerialisableInfo( self, serialisable_info ):
         
+        """Executes `_InitialiseFromSerialisableInfo`."""
         have_shown_load_error = False
         
         meta_tuples = serialisable_info
@@ -712,6 +750,7 @@ class SerialisableList( SerialisableBase, list ):
     
     def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
         
+        """Executes `_UpdateSerialisableInfo`."""
         if version == 1:
             
             serialised_objects = old_serialisable_info

@@ -25,6 +25,7 @@ if not os.path.exists( FFMPEG_PATH ):
 
 def CheckFFMPEGError( lines ):
     
+    """Executes `CheckFFMPEGError`."""
     if len( lines ) == 0:
         
         raise HydrusExceptions.DamagedOrUnusualFileException( 'Could not parse that file--no FFMPEG output given.' )
@@ -43,6 +44,7 @@ def CheckFFMPEGError( lines ):
 
 def GetFFMPEGVersion():
     
+    """Executes `GetFFMPEGVersion`."""
     cmd = [ FFMPEG_PATH, '-version' ]
     
     HydrusData.CheckProgramIsNotShuttingDown()
@@ -108,6 +110,7 @@ def GetFFMPEGVersion():
 
 def HandleFFMPEGFileNotFoundAndGenerateException( e, path ):
     
+    """Executes `HandleFFMPEGFileNotFoundAndGenerateException`."""
     global FFMPEG_MISSING_ERROR_PUBBED
     
     if not FFMPEG_MISSING_ERROR_PUBBED:
@@ -137,6 +140,7 @@ def HandleFFMPEGFileNotFoundAndGenerateException( e, path ):
 
 def HandleFFMPEGNoContentAndGenerateException( path, stdout, stderr ):
     
+    """Executes `HandleFFMPEGNoContentAndGenerateException`."""
     global FFMPEG_NO_CONTENT_ERROR_PUBBED
     
     if not FFMPEG_NO_CONTENT_ERROR_PUBBED:
@@ -164,6 +168,7 @@ def RenderImageToImagePath( path, temp_image_path ):
     
     # -y to overwrite the temp path
     
+    """Executes `RenderImageToImagePath`."""
     if temp_image_path.endswith( '.jpg' ):
         
         # '-q:v 1' does high quality
@@ -194,6 +199,7 @@ def RenderImageToRawRGBABytes( path ):
     
     # no dimensions here, so called is responsible for reshaping numpy array or whatever
     
+    """Executes `RenderImageToRawRGBABytes`."""
     cmd = [ FFMPEG_PATH, "-xerror", '-i', path, '-f', 'rawvideo', '-pix_fmt', 'rgba', '-' ]
     
     HydrusData.CheckProgramIsNotShuttingDown()
@@ -216,6 +222,7 @@ def RenderImageToRawRGBABytes( path ):
 
 def RenderImageToPNGBytes( path ):
     
+    """Executes `RenderImageToPNGBytes`."""
     cmd = [ FFMPEG_PATH, "-xerror", '-i', path, '-f', 'image2pipe', '-vcodec', 'png', '-' ]
     
     HydrusData.CheckProgramIsNotShuttingDown()

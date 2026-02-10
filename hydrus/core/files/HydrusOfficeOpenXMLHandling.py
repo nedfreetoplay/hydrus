@@ -17,6 +17,7 @@ PPTX_XPATH_DEFAULT = ".//{*}Default[@Extension='xml'][@ContentType='application/
 
 def MimeFromMicrosoftOpenXMLDocument(path: str):
     
+    """Executes `MimeFromMicrosoftOpenXMLDocument`."""
     try:
         
         file = GetZipAsPath( path, '[Content_Types].xml' ).open( 'rb' )
@@ -60,6 +61,7 @@ def MimeFromMicrosoftOpenXMLDocument(path: str):
 
 def GenerateThumbnailNumPyFromOfficePath( path: str, target_resolution: tuple[ int, int ] ) -> bytes:
     
+    """Executes `GenerateThumbnailNumPyFromOfficePath`."""
     try:
         
         zip_path_file_obj = GetZipAsPath( path, 'docProps/thumbnail.jpeg' ).open( 'rb' )
@@ -88,6 +90,7 @@ PPTX_PIXEL_PER_EMU = PPTX_ASSUMED_DPI / 914400
 
 def PowerPointResolution( path: str ):
     
+    """Executes `PowerPointResolution`."""
     file = GetZipAsPath( path, 'ppt/presentation.xml' ).open( 'rb' )
     
     root = ET.parse( file )
@@ -107,6 +110,7 @@ def PowerPointResolution( path: str ):
 
 def OfficeDocumentWordCount( path: str ):
     
+    """Executes `OfficeDocumentWordCount`."""
     file = GetZipAsPath( path, 'docProps/app.xml' ).open( 'rb' )
     
     root = ET.parse( file )
@@ -120,6 +124,7 @@ def OfficeDocumentWordCount( path: str ):
 
 def GetPPTXInfo( path: str ):
     
+    """Executes `GetPPTXInfo`."""
     try:
         
         ( width, height ) = PowerPointResolution( path )
@@ -141,6 +146,7 @@ def GetPPTXInfo( path: str ):
 
 def GetDOCXInfo( path:str ):
     
+    """Executes `GetDOCXInfo`."""
     try:
         
         num_words = OfficeDocumentWordCount( path )

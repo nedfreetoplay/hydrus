@@ -46,6 +46,7 @@ class HydrusRatingArchive( object ):
     
     def __init__( self, path : str ) -> None:
         
+        """Initializes the instance."""
         self._path = path
         
         if not os.path.exists( self._path ): create_db = True
@@ -58,6 +59,7 @@ class HydrusRatingArchive( object ):
     
     def _InitDB( self ) -> None:
         
+        """Executes `_InitDB`."""
         self._c.execute( 'CREATE TABLE hash_type ( hash_type INTEGER );', )
         
         self._c.execute( 'CREATE TABLE number_of_stars ( number_of_stars INTEGER );', )
@@ -67,6 +69,7 @@ class HydrusRatingArchive( object ):
     
     def _InitDBConnection( self ) -> None:
         
+        """Executes `_InitDBConnection`."""
         self._db = sqlite3.connect( self._path, isolation_level = None, detect_types = sqlite3.PARSE_DECLTYPES )
         
         self._c = self._db.cursor()
@@ -74,22 +77,26 @@ class HydrusRatingArchive( object ):
     
     def BeginBigJob( self ) -> None:
         
+        """Executes `BeginBigJob`."""
         self._c.execute( 'BEGIN IMMEDIATE;' )
         
     
     def CommitBigJob( self ) -> None:
         
+        """Executes `CommitBigJob`."""
         self._c.execute( 'COMMIT;' )
         self._c.execute( 'VACUUM;' )
         
     
     def DeleteRating( self, hash ) -> None:
         
+        """Executes `DeleteRating`."""
         self._c.execute( 'DELETE FROM ratings WHERE hash = ?;', ( sqlite3.Binary( hash ), ) )
         
     
     def GetHashType( self ):
         
+        """Executes `GetHashType`."""
         result = self._c.execute( 'SELECT hash_type FROM hash_type;' ).fetchone()
         
         if result is None:
@@ -124,6 +131,7 @@ class HydrusRatingArchive( object ):
     
     def GetName( self ):
         
+        """Executes `GetName`."""
         filename = os.path.basename( self._path )
         
         if '.' in filename:
@@ -136,6 +144,7 @@ class HydrusRatingArchive( object ):
     
     def GetNumberOfStars( self ) -> int:
         
+        """Executes `GetNumberOfStars`."""
         result = self._c.execute( 'SELECT number_of_stars FROM number_of_stars;' ).fetchone()
         
         if result is None:
@@ -152,6 +161,7 @@ class HydrusRatingArchive( object ):
     
     def GetRating( self, hash ):
         
+        """Executes `GetRating`."""
         result = self._c.execute( 'SELECT rating FROM ratings WHERE hash = ?;', ( sqlite3.Binary( hash ), ) ).fetchone()
         
         if result is None:
@@ -168,6 +178,7 @@ class HydrusRatingArchive( object ):
     
     def HasHash( self, hash ) -> bool:
         
+        """Executes `HasHash`."""
         result = self._c.execute( 'SELECT 1 FROM ratings WHERE hash = ?;', ( sqlite3.Binary( hash ), ) ).fetchone()
         
         if result is None:
@@ -182,6 +193,7 @@ class HydrusRatingArchive( object ):
     
     def IterateRatings( self ):
         
+        """Executes `IterateRatings`."""
         for row in self._c.execute( 'SELECT hash, rating FROM ratings;' ):
             
             yield row
@@ -190,6 +202,7 @@ class HydrusRatingArchive( object ):
     
     def SetHashType( self, hash_type ) -> None:
         
+        """Executes `SetHashType`."""
         self._c.execute( 'DELETE FROM hash_type;' )
         
         self._c.execute( 'INSERT INTO hash_type ( hash_type ) VALUES ( ? );', ( hash_type, ) )
@@ -197,6 +210,7 @@ class HydrusRatingArchive( object ):
     
     def SetNumberOfStars( self, number_of_stars : int ) -> None:
         
+        """Executes `SetNumberOfStars`."""
         self._c.execute( 'DELETE FROM number_of_stars;' )
         
         self._c.execute( 'INSERT INTO number_of_stars ( number_of_stars ) VALUES ( ? );', ( number_of_stars, ) )
@@ -204,6 +218,7 @@ class HydrusRatingArchive( object ):
     
     def SetRating( self, hash, rating ):
         
+        """Executes `SetRating`."""
         self._c.execute( 'REPLACE INTO ratings ( hash, rating ) VALUES ( ?, ? );', ( sqlite3.Binary( hash ), rating ) )
         
     

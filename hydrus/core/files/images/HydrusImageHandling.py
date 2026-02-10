@@ -153,6 +153,7 @@ from hydrus.core.files.images import HydrusImageOpening
 
 def SetEnableLoadTruncatedImages( value: bool ):
     
+    """Executes `SetEnableLoadTruncatedImages`."""
     if hasattr( PILImageFile, 'LOAD_TRUNCATED_IMAGES' ):
         
         if PILImageFile.LOAD_TRUNCATED_IMAGES != value:
@@ -200,6 +201,7 @@ PIL_ONLY_MIMETYPES = { HC.ANIMATION_GIF, HC.IMAGE_ICON, HC.IMAGE_WEBP, HC.IMAGE_
 
 def MakeClipRectFit( image_resolution, clip_rect ):
     
+    """Executes `MakeClipRectFit`."""
     ( im_width, im_height ) = image_resolution
     ( x, y, clip_width, clip_height ) = clip_rect
     
@@ -223,6 +225,7 @@ def MakeClipRectFit( image_resolution, clip_rect ):
     
 def ClipNumPyImage( numpy_image: numpy.ndarray, clip_rect ):
     
+    """Executes `ClipNumPyImage`."""
     if len( numpy_image.shape ) == 3:
         
         ( im_height, im_width, depth ) = numpy_image.shape
@@ -239,6 +242,7 @@ def ClipNumPyImage( numpy_image: numpy.ndarray, clip_rect ):
 
 def ClipPILImage( pil_image: PILImage.Image, clip_rect ):
     
+    """Executes `ClipPILImage`."""
     ( x, y, clip_width, clip_height ) = MakeClipRectFit( pil_image.size, clip_rect )
     
     return pil_image.crop( box = ( x, y, x + clip_width, y + clip_height ) )
@@ -248,6 +252,7 @@ FORCE_PIL_ALWAYS = True
 
 def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = None ) -> numpy.ndarray:
     
+    """Executes `GenerateNumPyImage`."""
     force_pil = force_pil or FORCE_PIL_ALWAYS
     
     if HG.media_load_report_mode:
@@ -360,6 +365,7 @@ def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = 
     
 def GenerateNumPyImageFromPILImage( pil_image: PILImage.Image, strip_useless_alpha = True ) -> numpy.ndarray:
     
+    """Executes `GenerateNumPyImageFromPILImage`."""
     try:
         
         # this seems to magically work, I guess asarray either has a match for Image or Image provides some common shape/datatype properties that it can hook into
@@ -385,6 +391,7 @@ def GenerateNumPyImageFromPILImage( pil_image: PILImage.Image, strip_useless_alp
 
 def GeneratePILImage( path: str | typing.BinaryIO, dequantize = True, human_file_description = None ) -> PILImage.Image:
     
+    """Executes `GeneratePILImage`."""
     pil_image = HydrusImageOpening.RawOpenPILImage( path, human_file_description = human_file_description )
     
     try:
@@ -422,6 +429,7 @@ def GeneratePILImage( path: str | typing.BinaryIO, dequantize = True, human_file
 
 def GeneratePILImageFromNumPyImage( numpy_image: numpy.ndarray ) -> PILImage.Image:
     
+    """Executes `GeneratePILImageFromNumPyImage`."""
     if len( numpy_image.shape ) == 2:
         
         ( h, w ) = numpy_image.shape
@@ -457,6 +465,7 @@ def GeneratePILImageFromNumPyImage( numpy_image: numpy.ndarray ) -> PILImage.Ima
 
 def GenerateFileBytesNumPy( numpy_image, ext: str = '.png', params: list[ int ] | None = None ) -> bytes:
     
+    """Executes `GenerateFileBytesNumPy`."""
     if params is None:
         
         params = []
@@ -497,6 +506,7 @@ def GenerateFileBytesNumPy( numpy_image, ext: str = '.png', params: list[ int ] 
 
 def GenerateFileBytesForRenderAPI( numpy_image, format: int, quality: int ):
     
+    """Executes `GenerateFileBytesForRenderAPI`."""
     ext = HC.mime_ext_lookup[format]
     
     params = []
@@ -519,6 +529,7 @@ def GenerateFileBytesForRenderAPI( numpy_image, format: int, quality: int ):
 
 def GenerateThumbnailNumPyFromStaticImagePath( path, target_resolution, mime ):
     
+    """Executes `GenerateThumbnailNumPyFromStaticImagePath`."""
     numpy_image = GenerateNumPyImage( path, mime )
     
     thumbnail_numpy_image = ResizeNumPyImage( numpy_image, target_resolution )
@@ -528,6 +539,7 @@ def GenerateThumbnailNumPyFromStaticImagePath( path, target_resolution, mime ):
 
 def GenerateThumbnailBytesFromNumPy( numpy_image ) -> bytes:
     
+    """Executes `GenerateThumbnailBytesFromNumPy`."""
     if len( numpy_image.shape ) == 2:
         
         depth = 3
@@ -555,6 +567,7 @@ def GenerateThumbnailBytesFromNumPy( numpy_image ) -> bytes:
 
 def GenerateThumbnailBytesFromPIL( pil_image: PILImage.Image ) -> bytes:
     
+    """Executes `GenerateThumbnailBytesFromPIL`."""
     f = io.BytesIO()
     
     if HydrusImageColours.PILImageHasTransparency( pil_image ):
@@ -578,6 +591,7 @@ def GenerateThumbnailBytesFromPIL( pil_image: PILImage.Image ) -> bytes:
 
 def GetImagePixelHash( path, mime ) -> bytes:
     
+    """Executes `GetImagePixelHash`."""
     numpy_image = GenerateNumPyImage( path, mime )
     
     return GetImagePixelHashNumPy( numpy_image )
@@ -590,12 +604,14 @@ def GetImagePixelHashNumPy( numpy_image ):
     # _at some point_ we could change this and force a regen for all files, I guess
     # don't do a 'newline at end of every line', since there may be other strange collisions. do 'encode big int width/height at start of pixel hash'
     # is there anything else we want to encode?
+    """Executes `GetImagePixelHashNumPy`."""
     return hashlib.sha256( numpy_image.data.tobytes() ).digest()
     
 
 def GetImageResolution( path, mime ):
     
     # PIL first here, rather than numpy, as it loads image headers real quick
+    """Executes `GetImageResolution`."""
     try:
         
         pil_image = GeneratePILImage( path, dequantize = False )
@@ -625,6 +641,7 @@ def GetImageResolution( path, mime ):
 
 def GetResolutionNumPy( numpy_image ):
     
+    """Executes `GetResolutionNumPy`."""
     ( image_height, image_width, depth ) = numpy_image.shape
     
     return ( image_width, image_height )
@@ -642,6 +659,7 @@ thumbnail_scale_str_lookup = {
 
 def GetThumbnailResolution( image_resolution: tuple[ int, int ], bounding_dimensions: tuple[ int, int ], thumbnail_scale_type: int, thumbnail_dpr_percent: int ) -> tuple[ int, int ]:
     
+    """Executes `GetThumbnailResolution`."""
     ( im_width, im_height ) = image_resolution
     ( bounding_width, bounding_height ) = bounding_dimensions
     
@@ -745,6 +763,7 @@ def IsDecompressionBomb( path, human_file_description = None ) -> bool:
     # 256MB bmp by default, ( 1024 ** 3 ) // 4 // 3
     # we'll set it at 512MB, and now catching error should be about 1GB
     
+    """Executes `IsDecompressionBomb`."""
     PILImage.MAX_IMAGE_PIXELS = ( 512 * ( 1024 ** 2 ) ) // 3
     
     warnings.simplefilter( 'error', PILImage.DecompressionBombError )
@@ -774,6 +793,7 @@ def IsDecompressionBomb( path, human_file_description = None ) -> bool:
 
 def ResizeNumPyImage( numpy_image: numpy.ndarray, target_resolution, forced_interpolation = None ) -> numpy.ndarray:
     
+    """Executes `ResizeNumPyImage`."""
     ( target_width, target_height ) = target_resolution
     ( image_width, image_height ) = GetResolutionNumPy( numpy_image )
     
@@ -800,6 +820,7 @@ def ResizeNumPyImage( numpy_image: numpy.ndarray, target_resolution, forced_inte
 
 def GenerateDefaultThumbnailNumPyFromPath( path: str, target_resolution: tuple[ int, int ] ):
     
+    """Executes `GenerateDefaultThumbnailNumPyFromPath`."""
     thumb_image = GeneratePILImage( path )
     
     pil_image = PILImageOps.pad( thumb_image, target_resolution, PILImage.Resampling.LANCZOS )

@@ -88,6 +88,7 @@ OLE_HEADER = b'\xD0\xCF\x11\xE0\xA1\xB1\x1A\xE1'
     
 def isOleFile(path: str):
     
+    """Executes `isOleFile`."""
     if OLEFILE_OK:
         
         return olefile.isOleFile(path)
@@ -105,6 +106,7 @@ def isOleFile(path: str):
 
 def MimeFromOLEFile(path: str):
     
+    """Executes `MimeFromOLEFile`."""
     if not isOleFile( path ):
         
         return HC.APPLICATION_UNKNOWN
@@ -156,6 +158,7 @@ def MimeFromOLEFile(path: str):
 def OfficeOLEDocumentWordCount( path: str ):
     
     # Not all legacy office files are OLE
+    """Executes `OfficeOLEDocumentWordCount`."""
     if not isOleFile( path ):
         
         raise HydrusExceptions.LimitedSupportFileException('File is not OLE!')
