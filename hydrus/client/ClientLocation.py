@@ -152,7 +152,7 @@ class LocationContext( HydrusSerialisable.SerialisableBase ):
         return ( self.current_service_keys, self.deleted_service_keys ).__hash__()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         serialisable_current_service_keys = [ service_key.hex() for service_key in self.current_service_keys ]
         serialisable_deleted_service_keys = [ service_key.hex() for service_key in self.deleted_service_keys ]
@@ -160,7 +160,7 @@ class LocationContext( HydrusSerialisable.SerialisableBase ):
         return ( serialisable_current_service_keys, serialisable_deleted_service_keys )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( serialisable_current_service_keys, serialisable_deleted_service_keys ) = serialisable_info
         
@@ -222,7 +222,7 @@ class LocationContext( HydrusSerialisable.SerialisableBase ):
     
     def GetDeletedInverse( self ):
         
-        inverse = self.Duplicate()
+        inverse = self.duplicate()
         
         a = inverse.current_service_keys
         inverse.current_service_keys = inverse.deleted_service_keys

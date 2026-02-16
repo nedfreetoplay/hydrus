@@ -36,20 +36,20 @@ class NetworkBandwidthManagerTrackerContainer( HydrusSerialisable.SerialisableBa
         self.bandwidth_tracker = bandwidth_tracker
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
-        serialisable_network_context = self.network_context.GetSerialisableTuple()
-        serialisable_bandwidth_tracker = self.bandwidth_tracker.GetSerialisableTuple()
+        serialisable_network_context = self.network_context.get_serialisable_tuple()
+        serialisable_bandwidth_tracker = self.bandwidth_tracker.get_serialisable_tuple()
         
         return ( serialisable_network_context, serialisable_bandwidth_tracker )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( serialisable_network_context, serialisable_bandwidth_tracker ) = serialisable_info
         
-        self.network_context = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_network_context )
-        self.bandwidth_tracker = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_bandwidth_tracker )
+        self.network_context = HydrusSerialisable.create_from_serialisable_tuple(serialisable_network_context)
+        self.bandwidth_tracker = HydrusSerialisable.create_from_serialisable_tuple(serialisable_bandwidth_tracker)
         
     
 
@@ -117,10 +117,10 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
         return self._network_contexts_to_bandwidth_rules[ network_context ]
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         all_tracker_container_names = sorted( self._tracker_container_names )
-        all_serialisable_rules = [ ( network_context.GetSerialisableTuple(), rules.GetSerialisableTuple() ) for ( network_context, rules ) in list(self._network_contexts_to_bandwidth_rules.items()) ]
+        all_serialisable_rules = [(network_context.get_serialisable_tuple(), rules.get_serialisable_tuple()) for (network_context, rules) in list(self._network_contexts_to_bandwidth_rules.items())]
         
         return ( all_tracker_container_names, all_serialisable_rules )
         
@@ -159,7 +159,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
         return tracker_container.bandwidth_tracker
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( all_tracker_container_names, all_serialisable_rules ) = serialisable_info
         
@@ -167,8 +167,8 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
         
         for ( serialisable_network_context, serialisable_rules ) in all_serialisable_rules:
             
-            network_context = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_network_context )
-            rules = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_rules )
+            network_context = HydrusSerialisable.create_from_serialisable_tuple(serialisable_network_context)
+            rules = HydrusSerialisable.create_from_serialisable_tuple(serialisable_rules)
             
             if network_context.context_type == CC.NETWORK_CONTEXT_DOWNLOADER: # no longer use this
                 
@@ -214,7 +214,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
             
             if network_context in self._network_contexts_to_bandwidth_rules:
                 
-                if self._network_contexts_to_bandwidth_rules[ network_context ].GetSerialisableTuple() == bandwidth_rules.GetSerialisableTuple():
+                if self._network_contexts_to_bandwidth_rules[ network_context ].get_serialisable_tuple() == bandwidth_rules.get_serialisable_tuple():
                     
                     return True
                     
@@ -587,7 +587,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
             
             for tracker_container in tracker_containers:
                 
-                tracker_container_name = tracker_container.GetName()
+                tracker_container_name = tracker_container.get_name()
                 network_context = tracker_container.network_context
                 
                 self._tracker_container_names_to_tracker_containers[ tracker_container_name ] = tracker_container

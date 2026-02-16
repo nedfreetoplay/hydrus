@@ -1305,7 +1305,7 @@ class ResponseContext( object ):
             
         elif isinstance( body, HydrusSerialisable.SerialisableBase ):
             
-            body_bytes = body.DumpToNetworkBytes()
+            body_bytes = body.dump_to_network_bytes()
             
         elif isinstance( body, str ):
             

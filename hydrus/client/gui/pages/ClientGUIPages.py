@@ -668,7 +668,7 @@ class Page( QW.QWidget ):
         
         # this is the only place this is generated. this will be its key/name/id from now on
         # we won't regen the hash for identifier since it could change due to object updates etc...
-        page_data_hash = page_data.GetSerialisedHash()
+        page_data_hash = page_data.get_serialised_hash()
         
         page_container = ClientGUISession.GUISessionContainerPageSingle( name, page_data_hash )
         
@@ -2742,7 +2742,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
                 
                 tag_import_options = urls_import.GetTagImportOptions()
                 
-                if tag_import_options.GetSerialisableTuple() == destination_tag_import_options.GetSerialisableTuple():
+                if tag_import_options.get_serialisable_tuple() == destination_tag_import_options.get_serialisable_tuple():
                     
                     good_url_import_pages.append( url_import_page )
                     
@@ -3022,7 +3022,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
     
     def InsertSessionNotebook( self, forced_insertion_index: int, session: ClientGUISession.GUISessionContainer, notebook_page_container: ClientGUISession.GUISessionContainerPageNotebook, select_first_page: bool, session_is_clean = True ):
         
-        name = notebook_page_container.GetName()
+        name = notebook_page_container.get_name()
         
         page = self.NewPagesNotebook( name, forced_insertion_index = forced_insertion_index, give_it_a_blank_page = False, select_page = select_first_page )
         
@@ -3076,7 +3076,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.show_text('The page with name "{}" and hash "{}" failed to load because its data was missing!'.format(page_container.GetName(), page_data_hash.hex()))
+            HydrusData.show_text('The page with name "{}" and hash "{}" failed to load because its data was missing!'.format(page_container.get_name(), page_data_hash.hex()))
             
             return None
             

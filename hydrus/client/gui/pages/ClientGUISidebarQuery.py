@@ -353,7 +353,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
     
     def _UpdateSystemLockFiles( self, hashes ):
         
-        file_search_context = self._tag_autocomplete.GetFileSearchContext().Duplicate()
+        file_search_context = self._tag_autocomplete.GetFileSearchContext().duplicate()
         
         predicate = ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_HASH, ( tuple( hashes ), 'sha256' ) )
         
@@ -546,7 +546,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
             self.last_seen_predicates = file_search_context.GetPredicates()
             
         
-        self._page_manager.SetVariable( 'file_search_context', file_search_context.Duplicate() )
+        self._page_manager.SetVariable( 'file_search_context', file_search_context.duplicate())
         
         self.locationChanged.emit( file_search_context.GetLocationContext() )
         self.tagContextChanged.emit( file_search_context.GetTagContext() )
@@ -666,7 +666,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
         
         file_search_context.SetComplete()
         
-        page_manager.SetVariable( 'file_search_context', file_search_context.Duplicate() )
+        page_manager.SetVariable( 'file_search_context', file_search_context.duplicate())
         
         page_manager.SetDirty()
         

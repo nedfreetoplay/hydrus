@@ -255,7 +255,7 @@ class TestClientDB( unittest.TestCase ):
         
         [ result ] = self._read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER )
         
-        self.assertEqual(result.get_name(), export_folder.GetName())
+        self.assertEqual(result.get_name(), export_folder.get_name())
         
     
     def test_file_query_ids( self ):
@@ -1074,7 +1074,7 @@ class TestClientDB( unittest.TestCase ):
         
         page_data = ClientGUISession.GUISessionPageData( page_manager, [] )
         
-        page_data_hash = page_data.GetSerialisedHash()
+        page_data_hash = page_data.get_serialised_hash()
         
         page_container = ClientGUISession.GUISessionContainerPageSingle( page_name, page_data_hash = page_data_hash )
         
@@ -1090,7 +1090,7 @@ class TestClientDB( unittest.TestCase ):
         
         page_data = ClientGUISession.GUISessionPageData( page_manager, [] )
         
-        page_data_hash = page_data.GetSerialisedHash()
+        page_data_hash = page_data.get_serialised_hash()
         
         page_container = ClientGUISession.GUISessionContainerPageSingle( page_name, page_data_hash = page_data_hash )
         
@@ -1110,7 +1110,7 @@ class TestClientDB( unittest.TestCase ):
         
         page_data = ClientGUISession.GUISessionPageData( page_manager, [] )
         
-        page_data_hash = page_data.GetSerialisedHash()
+        page_data_hash = page_data.get_serialised_hash()
         
         page_container = ClientGUISession.GUISessionContainerPageSingle( page_name, page_data_hash = page_data_hash )
         
@@ -1126,7 +1126,7 @@ class TestClientDB( unittest.TestCase ):
         
         page_data = ClientGUISession.GUISessionPageData( page_manager, [] )
         
-        page_data_hash = page_data.GetSerialisedHash()
+        page_data_hash = page_data.get_serialised_hash()
         
         page_container = ClientGUISession.GUISessionContainerPageSingle( page_name, page_data_hash = page_data_hash )
         
@@ -1142,7 +1142,7 @@ class TestClientDB( unittest.TestCase ):
         
         page_data = ClientGUISession.GUISessionPageData( page_manager, [] )
         
-        page_data_hash = page_data.GetSerialisedHash()
+        page_data_hash = page_data.get_serialised_hash()
         
         page_container = ClientGUISession.GUISessionContainerPageSingle( page_name, page_data_hash = page_data_hash )
         
@@ -1162,7 +1162,7 @@ class TestClientDB( unittest.TestCase ):
         
         page_data = ClientGUISession.GUISessionPageData( page_manager, [] )
         
-        page_data_hash = page_data.GetSerialisedHash()
+        page_data_hash = page_data.get_serialised_hash()
         
         page_container = ClientGUISession.GUISessionContainerPageSingle( page_name, page_data_hash = page_data_hash )
         
@@ -1184,7 +1184,7 @@ class TestClientDB( unittest.TestCase ):
         
         page_data = ClientGUISession.GUISessionPageData(page_manager, [HydrusData.generate_key() for i in range(200)])
         
-        page_data_hash = page_data.GetSerialisedHash()
+        page_data_hash = page_data.get_serialised_hash()
         
         page_container = ClientGUISession.GUISessionContainerPageSingle( page_name, page_data_hash = page_data_hash )
         
@@ -1204,7 +1204,7 @@ class TestClientDB( unittest.TestCase ):
         
         page_data = ClientGUISession.GUISessionPageData( page_manager, [] )
         
-        page_data_hash = page_data.GetSerialisedHash()
+        page_data_hash = page_data.get_serialised_hash()
         
         page_container = ClientGUISession.GUISessionContainerPageSingle( page_name, page_data_hash = page_data_hash )
         
@@ -1224,7 +1224,7 @@ class TestClientDB( unittest.TestCase ):
         
         page_data = ClientGUISession.GUISessionPageData( page_manager, [] )
         
-        page_data_hash = page_data.GetSerialisedHash()
+        page_data_hash = page_data.get_serialised_hash()
         
         page_container = ClientGUISession.GUISessionContainerPageSingle( page_name, page_data_hash = page_data_hash )
         
@@ -1244,7 +1244,7 @@ class TestClientDB( unittest.TestCase ):
         
         page_data = ClientGUISession.GUISessionPageData( page_manager, [] )
         
-        page_data_hash = page_data.GetSerialisedHash()
+        page_data_hash = page_data.get_serialised_hash()
         
         page_container = ClientGUISession.GUISessionContainerPageSingle( page_name, page_data_hash = page_data_hash )
         
@@ -2076,7 +2076,7 @@ class TestClientDB( unittest.TestCase ):
             
             name = 'shortcuts ' + str( i )
             
-            shortcuts.SetName( name )
+            shortcuts.set_name(name)
             
             self._write( 'serialisable', shortcuts )
             

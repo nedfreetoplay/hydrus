@@ -3406,7 +3406,7 @@ def CommitArchiveDelete( deletee_location_context: ClientLocation.LocationContex
     kept = list( kept )
     deleted = list( deleted )
     
-    deletee_location_context = deletee_location_context.Duplicate()
+    deletee_location_context = deletee_location_context.duplicate()
     
     deletee_location_context.FixMissingServices( ClientLocation.ValidLocalDomainsFilter )
     
@@ -3709,7 +3709,7 @@ class CanvasMediaListFilterArchiveDelete( CanvasMediaList ):
                     
                     location_contexts_to_present_options_for = []
                     
-                    possible_location_context_at_top = self._location_context.Duplicate()
+                    possible_location_context_at_top = self._location_context.duplicate()
                     
                     possible_location_context_at_top.LimitToServiceTypes( CG.client_controller.services_manager.GetServiceType, ( HC.COMBINED_LOCAL_FILE_DOMAINS, HC.LOCAL_FILE_DOMAIN ) )
                     

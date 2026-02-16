@@ -57,25 +57,25 @@ class SingleFileMetadataRouter( HydrusSerialisable.SerialisableBase ):
         return self.ToString()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
-        serialisable_importers = self._importers.GetSerialisableTuple()
-        serialisable_string_processor = self._string_processor.GetSerialisableTuple()
-        serialisable_exporter = self._exporter.GetSerialisableTuple()
+        serialisable_importers = self._importers.get_serialisable_tuple()
+        serialisable_string_processor = self._string_processor.get_serialisable_tuple()
+        serialisable_exporter = self._exporter.get_serialisable_tuple()
         
         return ( serialisable_importers, serialisable_string_processor, serialisable_exporter )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( serialisable_importers, serialisable_string_processor, serialisable_exporter ) = serialisable_info
         
-        self._importers = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_importers )
-        self._string_processor = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_string_processor )
-        self._exporter = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_exporter )
+        self._importers = HydrusSerialisable.create_from_serialisable_tuple(serialisable_importers)
+        self._string_processor = HydrusSerialisable.create_from_serialisable_tuple(serialisable_string_processor)
+        self._exporter = HydrusSerialisable.create_from_serialisable_tuple(serialisable_exporter)
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             
@@ -83,7 +83,7 @@ class SingleFileMetadataRouter( HydrusSerialisable.SerialisableBase ):
             
             ( serialisable_importers, serialisable_string_processor, serialisable_exporter ) = old_serialisable_info
             
-            actually_an_importer = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_exporter )
+            actually_an_importer = HydrusSerialisable.create_from_serialisable_tuple(serialisable_exporter)
             
             if isinstance( actually_an_importer, ClientMetadataMigrationImporters.SingleFileMetadataImporterTXT ):
                 
@@ -102,7 +102,7 @@ class SingleFileMetadataRouter( HydrusSerialisable.SerialisableBase ):
                 exporter = ClientMetadataMigrationExporters.SingleFileMetadataExporterTXT()
                 
             
-            fixed_serialisable_exporter = exporter.GetSerialisableTuple()
+            fixed_serialisable_exporter = exporter.get_serialisable_tuple()
             
             new_serialisable_info = ( serialisable_importers, serialisable_string_processor, fixed_serialisable_exporter )
             
@@ -115,7 +115,7 @@ class SingleFileMetadataRouter( HydrusSerialisable.SerialisableBase ):
             
             ( serialisable_importers, serialisable_string_processor, serialisable_exporter ) = old_serialisable_info
             
-            string_processor = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_string_processor )
+            string_processor = HydrusSerialisable.create_from_serialisable_tuple(serialisable_string_processor)
             
             string_processing_steps = string_processor.GetProcessingSteps()
             
@@ -128,7 +128,7 @@ class SingleFileMetadataRouter( HydrusSerialisable.SerialisableBase ):
             
             string_processor.SetProcessingSteps( string_processing_steps )
             
-            serialisable_string_processor = string_processor.GetSerialisableTuple()
+            serialisable_string_processor = string_processor.get_serialisable_tuple()
             
             new_serialisable_info = ( serialisable_importers, serialisable_string_processor, serialisable_exporter )
             

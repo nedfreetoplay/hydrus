@@ -99,12 +99,12 @@ class BandwidthRules( HydrusSerialisable.SerialisableBase ):
         self._rules = set()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         return list( self._rules )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         # tuples converted to lists via json
         
@@ -340,7 +340,7 @@ class BandwidthTracker( HydrusSerialisable.SerialisableBase ):
         self._seconds_requests = collections.Counter()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         dicts_flat = []
         
@@ -352,7 +352,7 @@ class BandwidthTracker( HydrusSerialisable.SerialisableBase ):
         return dicts_flat
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         counters = [ collections.Counter( dict( flat_dict ) ) for flat_dict in serialisable_info ]
         

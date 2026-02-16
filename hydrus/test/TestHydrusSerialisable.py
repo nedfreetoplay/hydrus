@@ -28,7 +28,7 @@ class TestSerialisables( unittest.TestCase ):
     
     def _dump_and_load_and_test( self, obj, test_func ):
         
-        serialisable_tuple = obj.GetSerialisableTuple()
+        serialisable_tuple = obj.get_serialisable_tuple()
         
         self.assertIsInstance( serialisable_tuple, tuple )
         
@@ -44,7 +44,7 @@ class TestSerialisables( unittest.TestCase ):
         self.assertEqual( serialisable_type, obj.SERIALISABLE_TYPE )
         self.assertEqual( version, obj.SERIALISABLE_VERSION )
         
-        dupe_obj = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tuple )
+        dupe_obj = HydrusSerialisable.create_from_serialisable_tuple(serialisable_tuple)
         
         self.assertIsNot( obj, dupe_obj )
         
@@ -52,11 +52,11 @@ class TestSerialisables( unittest.TestCase ):
         
         #
         
-        json_string = obj.DumpToString()
+        json_string = obj.dump_to_string()
         
         self.assertIsInstance( json_string, str )
         
-        dupe_obj = HydrusSerialisable.CreateFromString( json_string )
+        dupe_obj = HydrusSerialisable.create_from_string(json_string)
         
         self.assertIsNot( obj, dupe_obj )
         
@@ -64,11 +64,11 @@ class TestSerialisables( unittest.TestCase ):
         
         #
         
-        network_bytes = obj.DumpToNetworkBytes()
+        network_bytes = obj.dump_to_network_bytes()
         
         self.assertIsInstance( network_bytes, bytes )
         
-        dupe_obj = HydrusSerialisable.CreateFromNetworkBytes( network_bytes )
+        dupe_obj = HydrusSerialisable.create_from_network_bytes(network_bytes)
         
         self.assertIsNot( obj, dupe_obj )
         
@@ -165,7 +165,7 @@ class TestSerialisables( unittest.TestCase ):
             self.assertEqual( obj.GetSyncArchiveAction(), dupe_obj.GetSyncArchiveAction() )
             self.assertEqual( obj.GetSyncURLsAction(), dupe_obj.GetSyncURLsAction() )
             self.assertEqual( obj.GetSyncNotesAction(), dupe_obj.GetSyncNotesAction() )
-            self.assertEqual( obj.GetSyncNoteImportOptions().GetSerialisableTuple(), dupe_obj.GetSyncNoteImportOptions().GetSerialisableTuple() )
+            self.assertEqual(obj.GetSyncNoteImportOptions().get_serialisable_tuple(), dupe_obj.GetSyncNoteImportOptions().get_serialisable_tuple())
             
         
         duplicate_content_merge_options_delete_and_move = ClientDuplicates.DuplicateContentMergeOptions()
@@ -531,8 +531,8 @@ class TestSerialisables( unittest.TestCase ):
             self.assertEqual( obj._periodic_file_limit, dupe_obj._periodic_file_limit )
             self.assertEqual( obj._paused, dupe_obj._paused )
             
-            self.assertEqual( obj._file_import_options.GetSerialisableTuple(), dupe_obj._file_import_options.GetSerialisableTuple() )
-            self.assertEqual( obj._tag_import_options.GetSerialisableTuple(), dupe_obj._tag_import_options.GetSerialisableTuple() )
+            self.assertEqual(obj._file_import_options.get_serialisable_tuple(), dupe_obj._file_import_options.get_serialisable_tuple())
+            self.assertEqual(obj._tag_import_options.get_serialisable_tuple(), dupe_obj._tag_import_options.get_serialisable_tuple())
             
             self.assertEqual( obj._no_work_until, dupe_obj._no_work_until )
             

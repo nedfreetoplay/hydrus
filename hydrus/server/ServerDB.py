@@ -113,7 +113,7 @@ class DB( HydrusDB.HydrusDB ):
         
         # this does not update the cache. a parent caller has the responsibility
         
-        dump = account_type.DumpToString()
+        dump = account_type.dump_to_string()
         
         self._execute('INSERT INTO account_types ( service_id, dump ) VALUES ( ?, ? );', (service_id, dump))
         
@@ -184,7 +184,7 @@ class DB( HydrusDB.HydrusDB ):
         
         ( service_key, service_type, name, port, dictionary ) = service.ToTuple()
         
-        dictionary_string = dictionary.DumpToString()
+        dictionary_string = dictionary.dump_to_string()
         
         self._execute('INSERT INTO services ( service_key, service_type, name, port, dictionary_string ) VALUES ( ?, ?, ?, ?, ? );', (sqlite3.Binary(service_key), service_type, name, port, dictionary_string))
         
@@ -627,7 +627,7 @@ class DB( HydrusDB.HydrusDB ):
         
         account_type = self._GetAccountType( service_id, account_type_id )
         
-        dictionary = HydrusSerialisable.CreateFromString( dictionary_string )
+        dictionary = HydrusSerialisable.create_from_string(dictionary_string)
         
         return HydrusNetwork.Account.GenerateAccountFromTuple( ( account_key, account_type, created, expires, dictionary ) )
         
@@ -774,7 +774,7 @@ class DB( HydrusDB.HydrusDB ):
             
             ( account_key, account_type, created, expires, dictionary ) = HydrusNetwork.Account.GenerateTupleFromAccount( account )
             
-            dictionary_string = dictionary.DumpToString()
+            dictionary_string = dictionary.dump_to_string()
             
             self._execute('INSERT INTO accounts ( service_id, account_key, hashed_access_key, account_type_id, created, expires, dictionary_string ) VALUES ( ?, ?, ?, ?, ?, ?, ? );', (service_id, sqlite3.Binary(account_key), sqlite3.Binary(hashed_access_key), account_type_id, created, expires, dictionary_string))
             
@@ -911,7 +911,7 @@ class DB( HydrusDB.HydrusDB ):
         
         account_type.ReportAutoCreateAccount()
         
-        self._execute('UPDATE account_types SET dump = ? WHERE service_id = ? AND account_type_id = ?;', (account_type.DumpToString(), service_id, account_type_id))
+        self._execute('UPDATE account_types SET dump = ? WHERE service_id = ? AND account_type_id = ?;', (account_type.dump_to_string(), service_id, account_type_id))
         
         return list( self._GenerateRegistrationKeys( service_id, num, account_type_id, expires ) )[0]
         
@@ -1162,7 +1162,7 @@ class DB( HydrusDB.HydrusDB ):
         
         for ( service_key, service_type, name, port, dictionary_string ) in service_info:
             
-            dictionary = HydrusSerialisable.CreateFromString( dictionary_string )
+            dictionary = HydrusSerialisable.create_from_string(dictionary_string)
             
             service = HydrusNetwork.GenerateService( service_key, service_type, name, port, dictionary )
             
@@ -1674,7 +1674,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 account_type_id = modification_account_type_keys_to_account_type_ids[ account_type_key ]
                 
-                dump = account_type.DumpToString()
+                dump = account_type.dump_to_string()
                 
                 ( existing_dump, ) = self._execute('SELECT dump FROM account_types WHERE service_id = ? AND account_type_id = ?;', (service_id, account_type_id)).fetchone()
                 
@@ -1748,7 +1748,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 service_id = self._GetServiceId( service_key )
                 
-                dictionary_string = dictionary.DumpToString()
+                dictionary_string = dictionary.dump_to_string()
                 
                 self._execute('UPDATE services SET name = ?, port = ?, dictionary_string = ? WHERE service_id = ?;', (name, port, dictionary_string, service_id))
                 
@@ -1774,7 +1774,7 @@ class DB( HydrusDB.HydrusDB ):
         
         for ( account_type_id, service_id, dump ) in data:
             
-            account_type = HydrusSerialisable.CreateFromString( dump )
+            account_type = HydrusSerialisable.create_from_string(dump)
             
             self._service_ids_to_account_type_ids[ service_id ].add( account_type_id )
             self._account_type_ids_to_account_types[ account_type_id ] = account_type
@@ -2103,7 +2103,7 @@ class DB( HydrusDB.HydrusDB ):
                     total_content_rows += num_rows
                     
                 
-                update_bytes = update.DumpToNetworkBytes()
+                update_bytes = update.dump_to_network_bytes()
                 
                 update_hash = hashlib.sha256( update_bytes ).digest()
                 
@@ -4895,7 +4895,7 @@ class DB( HydrusDB.HydrusDB ):
             
             ( account_key, account_type, created, expires, dictionary ) = HydrusNetwork.Account.GenerateTupleFromAccount( account )
             
-            dictionary_string = dictionary.DumpToString()
+            dictionary_string = dictionary.dump_to_string()
             
             self._execute('UPDATE accounts SET dictionary_string = ? WHERE account_key = ?;', (dictionary_string, sqlite3.Binary(account_key)))
             
@@ -4924,7 +4924,7 @@ class DB( HydrusDB.HydrusDB ):
             
             ( service_key, service_type, name, port, dictionary ) = service.ToTuple()
             
-            dictionary_string = dictionary.DumpToString()
+            dictionary_string = dictionary.dump_to_string()
             
             self._execute('UPDATE services SET dictionary_string = ? WHERE service_key = ?;', (dictionary_string, sqlite3.Binary(service_key)))
             
@@ -4950,7 +4950,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 account_type = HydrusNetworkLegacy.ConvertToNewAccountType( account_type_key, title, dictionary_string )
                 
-                dump = account_type.DumpToString()
+                dump = account_type.dump_to_string()
                 
                 self._execute('INSERT INTO account_types ( account_type_id, service_id, dump ) VALUES ( ?, ?, ? );', (account_type_id, service_id, dump))
                 

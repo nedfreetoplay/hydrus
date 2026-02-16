@@ -608,22 +608,22 @@ class FileSearchContext( HydrusSerialisable.SerialisableBase ):
         self._InitialiseTemporaryVariables()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
-        serialisable_predicates = [ predicate.GetSerialisableTuple() for predicate in self._predicates ]
-        serialisable_location_context = self._location_context.GetSerialisableTuple()
+        serialisable_predicates = [predicate.get_serialisable_tuple() for predicate in self._predicates]
+        serialisable_location_context = self._location_context.get_serialisable_tuple()
         
-        return ( serialisable_location_context, self._tag_context.GetSerialisableTuple(), self._search_type, serialisable_predicates, self._search_complete )
+        return (serialisable_location_context, self._tag_context.get_serialisable_tuple(), self._search_type, serialisable_predicates, self._search_complete)
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( serialisable_location_context, serialisable_tag_context, self._search_type, serialisable_predicates, self._search_complete ) = serialisable_info
         
-        self._location_context = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_location_context )
-        self._tag_context = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tag_context )
+        self._location_context = HydrusSerialisable.create_from_serialisable_tuple(serialisable_location_context)
+        self._tag_context = HydrusSerialisable.create_from_serialisable_tuple(serialisable_tag_context)
         
-        self._predicates = [ HydrusSerialisable.CreateFromSerialisableTuple( pred_tuple ) for pred_tuple in serialisable_predicates ]
+        self._predicates = [HydrusSerialisable.create_from_serialisable_tuple(pred_tuple) for pred_tuple in serialisable_predicates]
         
         self._InitialiseTemporaryVariables()
         
@@ -677,7 +677,7 @@ class FileSearchContext( HydrusSerialisable.SerialisableBase ):
         self._or_predicates = [ predicate for predicate in self._predicates if predicate.GetType() == ClientSearchPredicate.PREDICATE_TYPE_OR_CONTAINER ]
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             
@@ -712,7 +712,7 @@ class FileSearchContext( HydrusSerialisable.SerialisableBase ):
             
             tag_context = ClientSearchTagContext.TagContext( service_key = tag_service_key, include_current_tags = include_current_tags, include_pending_tags = include_pending_tags )
             
-            serialisable_tag_context = tag_context.GetSerialisableTuple()
+            serialisable_tag_context = tag_context.get_serialisable_tuple()
             
             new_serialisable_info = ( file_service_key_hex, serialisable_tag_context, search_type, serialisable_predicates, search_complete )
             
@@ -727,7 +727,7 @@ class FileSearchContext( HydrusSerialisable.SerialisableBase ):
             
             location_context = ClientLocation.LocationContext.STATICCreateSimple( file_service_key )
             
-            serialisable_location_context = location_context.GetSerialisableTuple()
+            serialisable_location_context = location_context.get_serialisable_tuple()
             
             new_serialisable_info = ( serialisable_location_context, serialisable_tag_context, search_type, serialisable_predicates, search_complete )
             

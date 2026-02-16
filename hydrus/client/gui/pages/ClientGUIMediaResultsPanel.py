@@ -1599,14 +1599,14 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
                 if hash_a not in hashes_to_duplicated_media_results:
                     
-                    hashes_to_duplicated_media_results[ hash_a ] = media_result_a.Duplicate()
+                    hashes_to_duplicated_media_results[ hash_a ] = media_result_a.duplicate()
                     
                 
                 first_duplicated_media_result = hashes_to_duplicated_media_results[ hash_a ]
                 
                 if hash_b not in hashes_to_duplicated_media_results:
                     
-                    hashes_to_duplicated_media_results[ hash_b ] = media_result_b.Duplicate()
+                    hashes_to_duplicated_media_results[ hash_b ] = media_result_b.duplicate()
                     
                 
                 second_duplicated_media_result = hashes_to_duplicated_media_results[ hash_b ]

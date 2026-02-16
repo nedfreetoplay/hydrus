@@ -66,7 +66,7 @@ class EditServersideService( ClientGUIScrolledPanels.EditPanel ):
         
         ( name, port, dictionary_part ) = self._service_panel.GetValue()
         
-        dictionary = self._dictionary.Duplicate()
+        dictionary = self._dictionary.duplicate()
         
         dictionary.update( dictionary_part )
         

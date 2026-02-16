@@ -245,8 +245,8 @@ SystemPredicateParser.InitialiseFiletypes( { 'gif' : [ HC.IMAGE_GIF, HC.ANIMATIO
 
 pred_generators = {
     SystemPredicateParser.Predicate.EVERYTHING : lambda o, v, u: ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_EVERYTHING ),
-    SystemPredicateParser.Predicate.INBOX : lambda o, v, u: ClientSearchPredicate.SYSTEM_PREDICATE_INBOX.Duplicate(),
-    SystemPredicateParser.Predicate.ARCHIVE : lambda o, v, u: ClientSearchPredicate.SYSTEM_PREDICATE_ARCHIVE.Duplicate(),
+    SystemPredicateParser.Predicate.INBOX : lambda o, v, u: ClientSearchPredicate.SYSTEM_PREDICATE_INBOX.duplicate(),
+    SystemPredicateParser.Predicate.ARCHIVE : lambda o, v, u: ClientSearchPredicate.SYSTEM_PREDICATE_ARCHIVE.duplicate(),
     SystemPredicateParser.Predicate.BEST_QUALITY_OF_GROUP : lambda o, v, u: ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_FILE_RELATIONSHIPS_KING, True ),
     SystemPredicateParser.Predicate.NOT_BEST_QUALITY_OF_GROUP : lambda o, v, u: ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_FILE_RELATIONSHIPS_KING, False ),
     SystemPredicateParser.Predicate.HAS_AUDIO : lambda o, v, u: ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_HAS_AUDIO, True ),

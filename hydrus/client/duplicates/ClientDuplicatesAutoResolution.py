@@ -158,11 +158,11 @@ class DuplicatesAutoResolutionRule( HydrusSerialisable.SerialisableBaseNamed ):
         return f'Duplicates Auto-Resolution Rule: {self._name} ({self._id})'
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
-        serialisable_potential_duplicates_search_context = self._potential_duplicates_search_context.GetSerialisableTuple()
-        serialisable_pair_selector = self._pair_selector.GetSerialisableTuple()
-        serialisable_custom_duplicate_content_merge_options = None if self._custom_duplicate_content_merge_options is None else self._custom_duplicate_content_merge_options.GetSerialisableTuple()
+        serialisable_potential_duplicates_search_context = self._potential_duplicates_search_context.get_serialisable_tuple()
+        serialisable_pair_selector = self._pair_selector.get_serialisable_tuple()
+        serialisable_custom_duplicate_content_merge_options = None if self._custom_duplicate_content_merge_options is None else self._custom_duplicate_content_merge_options.get_serialisable_tuple()
         
         return (
             self._id,
@@ -178,7 +178,7 @@ class DuplicatesAutoResolutionRule( HydrusSerialisable.SerialisableBaseNamed ):
         )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         (
             self._id,
@@ -193,12 +193,12 @@ class DuplicatesAutoResolutionRule( HydrusSerialisable.SerialisableBaseNamed ):
             serialisable_custom_duplicate_content_merge_options
         ) = serialisable_info
         
-        self._potential_duplicates_search_context = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_potential_duplicates_search_context )
-        self._pair_selector = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_pair_selector )
-        self._custom_duplicate_content_merge_options = None if serialisable_custom_duplicate_content_merge_options is None else HydrusSerialisable.CreateFromSerialisableTuple( serialisable_custom_duplicate_content_merge_options )
+        self._potential_duplicates_search_context = HydrusSerialisable.create_from_serialisable_tuple(serialisable_potential_duplicates_search_context)
+        self._pair_selector = HydrusSerialisable.create_from_serialisable_tuple(serialisable_pair_selector)
+        self._custom_duplicate_content_merge_options = None if serialisable_custom_duplicate_content_merge_options is None else HydrusSerialisable.create_from_serialisable_tuple(serialisable_custom_duplicate_content_merge_options)
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             
@@ -1178,9 +1178,9 @@ def GetDefaultRuleSuggestionsVisuallySimilar() -> list[ DuplicatesAutoResolution
     
     #
     
-    duplicates_auto_resolution_rule = duplicates_auto_resolution_rule.Duplicate()
+    duplicates_auto_resolution_rule = duplicates_auto_resolution_rule.duplicate()
     
-    duplicates_auto_resolution_rule.SetName( 'visually similar pairs - only earlier imports' )
+    duplicates_auto_resolution_rule.set_name('visually similar pairs - only earlier imports')
     
     comparators = list( duplicates_auto_resolution_rule.GetPairSelector().GetComparators() )
     
@@ -1624,7 +1624,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
                         
                         if previous_pair is not None and media_result_pair == previous_pair:
                             
-                            raise Exception( f'Rule {rule.GetName()} read the same resolution pair twice in a row! Please let hydev know.' )
+                            raise Exception( f'Rule {rule.get_name()} read the same resolution pair twice in a row! Please let hydev know.')
                             
                         
                         if media_result_pair is None:

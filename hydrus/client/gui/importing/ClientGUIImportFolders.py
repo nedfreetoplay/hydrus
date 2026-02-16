@@ -88,7 +88,7 @@ class EditImportFoldersPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 import_folder = panel.GetValue()
                 
-                import_folder.SetNonDupeName( self._GetExistingNames(), do_casefold = True )
+                import_folder.set_non_dupe_name(self._GetExistingNames(), do_casefold = True)
                 
                 self._import_folders.AddData( import_folder, select_sort_and_scroll = True )
                 
@@ -149,7 +149,7 @@ class EditImportFoldersPanel( ClientGUIScrolledPanels.EditPanel ):
             return
             
         
-        original_name = import_folder.GetName()
+        original_name = import_folder.get_name()
         
         with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit import folder' ) as dlg:
             
@@ -161,13 +161,13 @@ class EditImportFoldersPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 edited_import_folder = panel.GetValue()
                 
-                if edited_import_folder.GetName() != original_name:
+                if edited_import_folder.get_name() != original_name:
                     
                     existing_names = self._GetExistingNames()
                     
                     existing_names.discard( original_name )
                     
-                    edited_import_folder.SetNonDupeName( existing_names, do_casefold = True )
+                    edited_import_folder.set_non_dupe_name(existing_names, do_casefold = True)
                     
                 
                 self._import_folders.ReplaceData( import_folder, edited_import_folder, sort_and_scroll = True )
@@ -690,7 +690,7 @@ class EditImportFolderPanel( ClientGUIScrolledPanels.EditPanel ):
         
         self._CheckValid()
         
-        edited_import_folder = self._import_folder.Duplicate()
+        edited_import_folder = self._import_folder.duplicate()
         
         name = self._name.text()
         path = self._path.GetPath()

@@ -24,7 +24,7 @@ class TestDomainSettings( unittest.TestCase ):
         
         domain_settings.SetSetting( ClientNetworkingDomainSettings.DOMAIN_SETTING_NETWORK_INFRASTRUCTURE_PROBLEMS_HALT_VELOCITY, [ 2, None ] )
         
-        self.assertEqual( domain_settings.Duplicate().GetSettingOrRaise( ClientNetworkingDomainSettings.DOMAIN_SETTING_NETWORK_INFRASTRUCTURE_PROBLEMS_HALT_VELOCITY ), [ 2, None ] )
+        self.assertEqual(domain_settings.duplicate().GetSettingOrRaise(ClientNetworkingDomainSettings.DOMAIN_SETTING_NETWORK_INFRASTRUCTURE_PROBLEMS_HALT_VELOCITY), [2, None])
         
     
 

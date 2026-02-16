@@ -55,12 +55,12 @@ class TagAutocompleteOptions( HydrusSerialisable.SerialisableBase ):
         self._exact_match_character_threshold = 2
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         serialisable_service_key = self._service_key.hex()
         
         serialisable_write_autocomplete_tag_domain = self._write_autocomplete_tag_domain.hex()
-        serialisable_write_autocomplete_location_context = self._write_autocomplete_location_context.GetSerialisableTuple()
+        serialisable_write_autocomplete_location_context = self._write_autocomplete_location_context.get_serialisable_tuple()
         
         serialisable_info = [
             serialisable_service_key,
@@ -79,7 +79,7 @@ class TagAutocompleteOptions( HydrusSerialisable.SerialisableBase ):
         return serialisable_info
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         [
             serialisable_service_key,
@@ -97,10 +97,10 @@ class TagAutocompleteOptions( HydrusSerialisable.SerialisableBase ):
         
         self._service_key = bytes.fromhex( serialisable_service_key )
         self._write_autocomplete_tag_domain = bytes.fromhex( serialisable_write_autocomplete_tag_domain )
-        self._write_autocomplete_location_context = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_write_autocomplete_location_context )
+        self._write_autocomplete_location_context = HydrusSerialisable.create_from_serialisable_tuple(serialisable_write_autocomplete_location_context)
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             
@@ -181,7 +181,7 @@ class TagAutocompleteOptions( HydrusSerialisable.SerialisableBase ):
             file_service_key = bytes.fromhex( serialisable_write_autocomplete_file_domain )
             location_context = ClientLocation.LocationContext.STATICCreateSimple( file_service_key )
             
-            serialisable_write_autocomplete_location_context = location_context.GetSerialisableTuple()
+            serialisable_write_autocomplete_location_context = location_context.get_serialisable_tuple()
             
             new_serialisable_info = [
                 serialisable_service_key,
@@ -267,7 +267,7 @@ class TagAutocompleteOptions( HydrusSerialisable.SerialisableBase ):
             
             if self._override_write_autocomplete_location_context:
                 
-                location_context = self._write_autocomplete_location_context.Duplicate()
+                location_context = self._write_autocomplete_location_context.duplicate()
                 
             
             tag_service_key = self._write_autocomplete_tag_domain
@@ -670,18 +670,18 @@ class TagDisplayManager( HydrusSerialisable.SerialisableBase ):
         self._dirty = False
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         serialisable_tag_display_types_to_service_keys_to_tag_filters = []
         
         for ( tag_display_type, service_keys_to_tag_filters ) in self._tag_display_types_to_service_keys_to_tag_filters.items():
             
-            serialisable_service_keys_to_tag_filters = [ ( service_key.hex(), tag_filter.GetSerialisableTuple() ) for ( service_key, tag_filter ) in service_keys_to_tag_filters.items() ]
+            serialisable_service_keys_to_tag_filters = [( service_key.hex(), tag_filter.get_serialisable_tuple()) for (service_key, tag_filter) in service_keys_to_tag_filters.items()]
             
             serialisable_tag_display_types_to_service_keys_to_tag_filters.append( ( tag_display_type, serialisable_service_keys_to_tag_filters ) )
             
         
-        serialisable_tag_autocomplete_options = HydrusSerialisable.SerialisableList( self._tag_service_keys_to_tag_autocomplete_options.values() ).GetSerialisableTuple()
+        serialisable_tag_autocomplete_options = HydrusSerialisable.SerialisableList( self._tag_service_keys_to_tag_autocomplete_options.values() ).get_serialisable_tuple()
         
         serialisable_info = [
             serialisable_tag_display_types_to_service_keys_to_tag_filters,
@@ -691,7 +691,7 @@ class TagDisplayManager( HydrusSerialisable.SerialisableBase ):
         return serialisable_info
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         [
             serialisable_tag_display_types_to_service_keys_to_tag_filters,
@@ -703,16 +703,16 @@ class TagDisplayManager( HydrusSerialisable.SerialisableBase ):
             for ( serialisable_service_key, serialisable_tag_filter ) in serialisable_service_keys_to_tag_filters:
                 
                 service_key = bytes.fromhex( serialisable_service_key )
-                tag_filter = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tag_filter )
+                tag_filter = HydrusSerialisable.create_from_serialisable_tuple(serialisable_tag_filter)
                 
                 self._tag_display_types_to_service_keys_to_tag_filters[ tag_display_type ][ service_key ] = tag_filter
                 
             
         
-        self._tag_service_keys_to_tag_autocomplete_options = { tag_autocomplete_options.GetServiceKey() : tag_autocomplete_options for tag_autocomplete_options in HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tag_autocomplete_options ) }
+        self._tag_service_keys_to_tag_autocomplete_options = {tag_autocomplete_options.GetServiceKey() : tag_autocomplete_options for tag_autocomplete_options in HydrusSerialisable.create_from_serialisable_tuple(serialisable_tag_autocomplete_options)}
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             
@@ -722,7 +722,7 @@ class TagDisplayManager( HydrusSerialisable.SerialisableBase ):
             
             new_serialisable_info = [
                 serialisable_tag_display_types_to_service_keys_to_tag_filters,
-                tag_autocomplete_options_list.GetSerialisableTuple()
+                tag_autocomplete_options_list.get_serialisable_tuple()
             ]
             
             return ( 2, new_serialisable_info )
@@ -738,8 +738,8 @@ class TagDisplayManager( HydrusSerialisable.SerialisableBase ):
             service_keys_to_ordered_sibling_service_keys = collections.defaultdict( list )
             service_keys_to_ordered_parent_service_keys = collections.defaultdict( list )
             
-            serialisable_service_keys_to_ordered_sibling_service_keys = HydrusSerialisable.SerialisableBytesDictionary( service_keys_to_ordered_sibling_service_keys ).GetSerialisableTuple()
-            serialisable_service_keys_to_ordered_parent_service_keys = HydrusSerialisable.SerialisableBytesDictionary( service_keys_to_ordered_parent_service_keys ).GetSerialisableTuple()
+            serialisable_service_keys_to_ordered_sibling_service_keys = HydrusSerialisable.SerialisableBytesDictionary( service_keys_to_ordered_sibling_service_keys ).get_serialisable_tuple()
+            serialisable_service_keys_to_ordered_parent_service_keys = HydrusSerialisable.SerialisableBytesDictionary( service_keys_to_ordered_parent_service_keys ).get_serialisable_tuple()
             
             new_serialisable_info = [
                 serialisable_tag_display_types_to_service_keys_to_tag_filters,
@@ -859,7 +859,7 @@ class TagDisplayManager( HydrusSerialisable.SerialisableBase ):
         
         with self._lock:
             
-            return self._tag_display_types_to_service_keys_to_tag_filters[ tag_display_type ][ service_key ].Duplicate()
+            return self._tag_display_types_to_service_keys_to_tag_filters[ tag_display_type ][ service_key ].duplicate()
             
         
     

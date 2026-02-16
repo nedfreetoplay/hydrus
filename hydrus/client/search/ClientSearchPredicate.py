@@ -531,7 +531,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         if self._value is None:
             
@@ -555,8 +555,8 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
                 ( logical_operator, service_specifier_primary, service_specifier_secondary, rated ) = self._value
                 
-                serialisable_service_specifier_primary = service_specifier_primary.GetSerialisableTuple()
-                serialisable_service_specifier_secondary = service_specifier_secondary.GetSerialisableTuple()
+                serialisable_service_specifier_primary = service_specifier_primary.get_serialisable_tuple()
+                serialisable_service_specifier_secondary = service_specifier_secondary.get_serialisable_tuple()
                 
                 serialisable_value = ( logical_operator, serialisable_service_specifier_primary, serialisable_service_specifier_secondary, rated )
                 
@@ -582,7 +582,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
                 if rule_type in ( 'url_match', 'url_class' ):
                     
-                    serialisable_rule = rule.GetSerialisableTuple()
+                    serialisable_rule = rule.get_serialisable_tuple()
                     
                 else:
                     
@@ -610,13 +610,13 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
                 or_predicates = self._value
                 
-                serialisable_value = HydrusSerialisable.SerialisableList( or_predicates ).GetSerialisableTuple()
+                serialisable_value = HydrusSerialisable.SerialisableList( or_predicates ).get_serialisable_tuple()
                 
             elif self._predicate_type in ( PREDICATE_TYPE_SYSTEM_WIDTH, PREDICATE_TYPE_SYSTEM_HEIGHT, PREDICATE_TYPE_SYSTEM_NUM_NOTES, PREDICATE_TYPE_SYSTEM_NUM_WORDS, PREDICATE_TYPE_SYSTEM_NUM_URLS, PREDICATE_TYPE_SYSTEM_NUM_FRAMES, PREDICATE_TYPE_SYSTEM_DURATION, PREDICATE_TYPE_SYSTEM_FRAMERATE ):
                 
                 number_test_or_none = typing.cast( ClientNumberTest.NumberTest | None, self._value )
                 
-                serialisable_value = HydrusSerialisable.GetNoneableSerialisableTuple( number_test_or_none )
+                serialisable_value = HydrusSerialisable.get_noneable_serialisable_tuple(number_test_or_none)
                 
             else:
                 
@@ -627,7 +627,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
         return ( self._predicate_type, serialisable_value, self._inclusive )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( self._predicate_type, serialisable_value, self._inclusive ) = serialisable_info
         
@@ -653,8 +653,8 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
                 ( logical_operator, serialisable_service_specifier_primary, serialisable_service_specifier_secondary, rated ) = serialisable_value
                 
-                service_specifier_primary = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_service_specifier_primary )
-                service_specifier_secondary = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_service_specifier_secondary )
+                service_specifier_primary = HydrusSerialisable.create_from_serialisable_tuple(serialisable_service_specifier_primary)
+                service_specifier_secondary = HydrusSerialisable.create_from_serialisable_tuple(serialisable_service_specifier_secondary)
                 
                 self._value = ( logical_operator, service_specifier_primary, service_specifier_secondary, rated )
                 
@@ -680,7 +680,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
                 if rule_type in ( 'url_match', 'url_class' ):
                     
-                    rule = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_rule )
+                    rule = HydrusSerialisable.create_from_serialisable_tuple(serialisable_rule)
                     
                 else:
                     
@@ -720,7 +720,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
                 serialisable_or_predicates = serialisable_value
                 
-                self._value = tuple( HydrusSerialisable.CreateFromSerialisableTuple( serialisable_or_predicates ) )
+                self._value = tuple(HydrusSerialisable.create_from_serialisable_tuple(serialisable_or_predicates))
                 
                 try:
                     
@@ -735,7 +735,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
                 serialisable_number_test = serialisable_value
                 
-                self._value = HydrusSerialisable.CreateFromNoneableSerialisableTuple( serialisable_number_test )
+                self._value = HydrusSerialisable.create_from_noneable_serialisable_tuple(serialisable_number_test)
                 
             else:
                 
@@ -773,7 +773,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             
@@ -919,7 +919,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                         
                     
                 
-                serialisable_value = number_test.GetSerialisableTuple()
+                serialisable_value = number_test.get_serialisable_tuple()
                 
             
             new_serialisable_info = ( predicate_type, serialisable_value, inclusive )

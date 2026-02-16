@@ -16,7 +16,7 @@ class GUISessionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
         self._page_tuples = []
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         def handle_e( page_tuple, e ):
             
@@ -55,7 +55,7 @@ class GUISessionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 ( page_manager, hashes ) = page_data
                 
-                serialisable_page_manager = page_manager.GetSerialisableTuple()
+                serialisable_page_manager = page_manager.get_serialisable_tuple()
                 
                 serialisable_hashes = [ hash.hex() for hash in hashes ]
                 
@@ -86,7 +86,7 @@ class GUISessionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
         return serialisable_info
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         def handle_e( serialisable_page_tuple, e ):
             
@@ -125,7 +125,7 @@ class GUISessionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 ( serialisable_page_manager, serialisable_hashes ) = serialisable_page_data
                 
-                page_manager = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_page_manager )
+                page_manager = HydrusSerialisable.create_from_serialisable_tuple(serialisable_page_manager)
                 
                 hashes = [ bytes.fromhex( hash ) for hash in serialisable_hashes ]
                 
@@ -152,7 +152,7 @@ class GUISessionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
             
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             
@@ -160,11 +160,11 @@ class GUISessionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
             
             for ( page_name, serialisable_page_manager, serialisable_hashes ) in old_serialisable_info:
                 
-                page_manager = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_page_manager )
+                page_manager = HydrusSerialisable.create_from_serialisable_tuple(serialisable_page_manager)
                 
                 page_manager.SetPageName( page_name )
                 
-                serialisable_page_manager = page_manager.GetSerialisableTuple()
+                serialisable_page_manager = page_manager.get_serialisable_tuple()
                 
                 new_serialisable_info.append( ( serialisable_page_manager, serialisable_hashes ) )
                 
@@ -254,7 +254,7 @@ def ConvertPageTuplesToNotebookContainer( name, page_tuples ):
             
             page_data = ClientGUISession.GUISessionPageData( page_manager = page_manager, hashes = hashes )
             
-            page_data_hash = page_data.GetSerialisedHash()
+            page_data_hash = page_data.get_serialised_hash()
             
             page_container = ClientGUISession.GUISessionContainerPageSingle( page_manager.GetPageName(), page_data_hash = page_data_hash )
             
@@ -274,7 +274,7 @@ def ConvertLegacyToNew( legacy_session: GUISessionLegacy ):
     
     ( top_notebook_container, hashes_to_page_data ) = ConvertPageTuplesToNotebookContainer( 'top notebook', page_tuples )
     
-    session = ClientGUISession.GUISessionContainer( legacy_session.GetName(), top_notebook_container = top_notebook_container, hashes_to_page_data = hashes_to_page_data )
+    session = ClientGUISession.GUISessionContainer(legacy_session.get_name(), top_notebook_container = top_notebook_container, hashes_to_page_data = hashes_to_page_data)
     
     return session
     

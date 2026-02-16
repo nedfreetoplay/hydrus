@@ -185,7 +185,7 @@ def GetPayloadBytesAndLength( payload_obj ):
         
     else:
         
-        payload_string = payload_obj.DumpToString()
+        payload_string = payload_obj.dump_to_string()
         
         return (HydrusCompression.compress_string_to_bytes(payload_string), len(payload_string))
         

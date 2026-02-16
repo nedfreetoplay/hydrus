@@ -253,7 +253,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def __init__( self, parent: QW.QWidget, subscription: ClientImportSubscriptions.Subscription, names_to_edited_query_log_containers: typing.Mapping[ str, ClientImportSubscriptionQuery.SubscriptionQueryLogContainer ], original_existing_query_log_container_names: set[ str ] ):
         
-        subscription = subscription.Duplicate()
+        subscription = subscription.duplicate()
         
         super().__init__( parent )
         
@@ -566,7 +566,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 self._query_headers.AddData( query_header, select_sort_and_scroll = True )
                 
-                self._names_to_edited_query_log_containers[ query_log_container.GetName() ] = query_log_container
+                self._names_to_edited_query_log_containers[ query_log_container.get_name()] = query_log_container
                 
             
         
@@ -696,7 +696,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            estimate = query_header.GetBandwidthWaitingEstimate( CG.client_controller.network_engine.bandwidth_manager, self._original_subscription.GetName() )
+            estimate = query_header.GetBandwidthWaitingEstimate(CG.client_controller.network_engine.bandwidth_manager, self._original_subscription.get_name())
             
             if estimate == 0:
                 
@@ -732,7 +732,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            estimate = query_header.GetBandwidthWaitingEstimate( CG.client_controller.network_engine.bandwidth_manager, self._original_subscription.GetName() )
+            estimate = query_header.GetBandwidthWaitingEstimate(CG.client_controller.network_engine.bandwidth_manager, self._original_subscription.get_name())
             
             if estimate == 0:
                 
@@ -1439,8 +1439,8 @@ class EditSubscriptionQueryPanel( ClientGUIScrolledPanels.EditPanel ):
         self._original_query_header = query_header
         self._original_query_log_container = query_log_container
         
-        query_header = query_header.Duplicate()
-        query_log_container = query_log_container.Duplicate()
+        query_header = query_header.duplicate()
+        query_log_container = query_log_container.duplicate()
         
         name_panel = ClientGUICommon.StaticBox( self, 'query and name' )
         
@@ -1597,7 +1597,7 @@ class EditSubscriptionQueryPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _GetValue( self ) -> tuple[ ClientImportSubscriptionQuery.SubscriptionQueryHeader, ClientImportSubscriptionQuery.SubscriptionQueryLogContainer ]:
         
-        query_header = self._original_query_header.Duplicate()
+        query_header = self._original_query_header.duplicate()
         
         query_header.SetQueryText( self._query_text.text() )
         
@@ -1611,7 +1611,7 @@ class EditSubscriptionQueryPanel( ClientGUIScrolledPanels.EditPanel ):
         
         query_header.SetFileSeedCacheCompactionNumber( self._file_seed_cache_compaction_number.value() )
         
-        query_log_container = self._original_query_log_container.Duplicate()
+        query_log_container = self._original_query_log_container.duplicate()
         
         query_log_container.SetFileSeedCache( self._file_seed_cache )
         query_log_container.SetGallerySeedLog( self._gallery_seed_log )
@@ -1635,7 +1635,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def __init__( self, parent: QW.QWidget, subscriptions: collections.abc.Collection[ ClientImportSubscriptions.Subscription ] ):
         
-        subscriptions = [ subscription.Duplicate() for subscription in subscriptions ]
+        subscriptions = [subscription.duplicate() for subscription in subscriptions]
         
         super().__init__( parent )
         
@@ -1782,7 +1782,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 if old_query_log_container_name in old_names_to_query_log_containers:
                     
-                    old_names_to_query_log_containers[ old_query_log_container_name ].SetName( new_query_log_container_name )
+                    old_names_to_query_log_containers[ old_query_log_container_name ].set_name(new_query_log_container_name)
                     
                 else:
                     
@@ -1811,7 +1811,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             subscription = unknown_subscription
             
         
-        subscription.SetNonDupeName( self._GetExistingNames(), do_casefold = True )
+        subscription.set_non_dupe_name(self._GetExistingNames(), do_casefold = True)
         
         self._subscriptions.AddData( subscription, select_sort_and_scroll = True )
         
@@ -2254,7 +2254,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             subscription_container.query_log_containers = HydrusSerialisable.SerialisableList( query_log_containers )
             
             # duplicate important here to make sure we aren't linked with existing objects on a dupe call
-            to_export.append( subscription_container.Duplicate() )
+            to_export.append(subscription_container.duplicate())
             
         
         if len( to_export ) == 0:
@@ -2884,9 +2884,9 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 ( edited_subscription, self._names_to_edited_query_log_containers ) = panel.GetValue()
                 
-                if edited_subscription.GetName() != subscription.GetName():
+                if edited_subscription.get_name() != subscription.GetName():
                     
-                    edited_subscription.SetNonDupeName( self._GetExistingNames(), do_casefold = True )
+                    edited_subscription.set_non_dupe_name(self._GetExistingNames(), do_casefold = True)
                     
                 
                 self._subscriptions.ReplaceData( subscription, edited_subscription, sort_and_scroll = True )
@@ -3004,7 +3004,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                     return
                     
                 
-                merged_sub = original_primary_sub.Duplicate()
+                merged_sub = original_primary_sub.duplicate()
                 
                 primary_sub_name = merged_sub.get_name()
                 
@@ -3035,7 +3035,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                     pass
                     
                 
-                merged_sub.SetName( name )
+                merged_sub.set_name(name)
                 
                 primary_and_merged_replacement_tuples.append( ( original_primary_sub, merged_sub ) )
                 
@@ -3050,7 +3050,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 if merged_sub.get_name() != primary.get_name():
                     
-                    merged_sub.SetNonDupeName( existing_names, do_casefold = True )
+                    merged_sub.set_non_dupe_name(existing_names, do_casefold = True)
                     
                 
                 existing_names.add(merged_sub.get_name())
@@ -3240,7 +3240,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 final_subscriptions.extend( unmerged )
                 
-                primary_sub.SetName( name )
+                primary_sub.set_name(name)
                 
                 final_subscriptions.append( primary_sub )
                 
@@ -3267,7 +3267,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
             final_subscriptions.extend( unmerged )
             
-            primary_sub.SetName( '{} (A)'.format( name ) )
+            primary_sub.set_name('{} (A)'.format(name))
             subscription.SetName( '{} (B)'.format( name ) )
             
             final_subscriptions.append( primary_sub )
@@ -3278,7 +3278,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         for final_subscription in final_subscriptions:
             
-            final_subscription.SetNonDupeName( existing_names, do_casefold = True )
+            final_subscription.set_non_dupe_name(existing_names, do_casefold = True)
             
             existing_names.add(final_subscription.get_name())
             

@@ -23,12 +23,12 @@ class ColumnListStatus( HydrusSerialisable.SerialisableBase ):
         self._columns_to_shown = {}
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         return ( self._column_list_type, self._columns, self._sort_column_type, self._sort_asc )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( self._column_list_type, self._columns, self._sort_column_type, self._sort_asc ) = serialisable_info
         

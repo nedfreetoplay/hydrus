@@ -394,7 +394,7 @@ class MediaCollectControl( QW.QWidget ):
                 submenu_template_items.append( ClientGUIMenuButton.MenuTemplateItemSeparator() )
                 
             
-            new_tag_context = self._tag_context.Duplicate()
+            new_tag_context = self._tag_context.duplicate()
             
             new_tag_context.service_key = service.GetServiceKey()
             
@@ -495,7 +495,7 @@ class MediaCollectControl( QW.QWidget ):
     
     def NotifyNewOptions( self ):
         
-        media_collect = self._media_collect.Duplicate()
+        media_collect = self._media_collect.duplicate()
         
         made_changes = self._collect_comboctrl.ReinitialiseChoices()
         
@@ -865,7 +865,7 @@ class MediaSortControl( QW.QWidget ):
                     submenu_template_items.append( ClientGUIMenuButton.MenuTemplateItemSeparator() )
                     
                 
-                new_tag_context = self._tag_context.Duplicate()
+                new_tag_context = self._tag_context.duplicate()
                 
                 new_tag_context.service_key = service.GetServiceKey()
                 

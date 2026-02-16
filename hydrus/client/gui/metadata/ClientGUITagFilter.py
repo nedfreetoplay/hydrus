@@ -466,7 +466,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
         
         menu = ClientGUIMenus.GenerateMenu( self )
         
-        ClientGUIMenus.AppendMenuItem( menu, 'this tag filter', 'export this tag filter', CG.client_controller.pub, 'clipboard', 'text', self.GetValue().DumpToString() )
+        ClientGUIMenus.AppendMenuItem(menu, 'this tag filter', 'export this tag filter', CG.client_controller.pub, 'clipboard', 'text', self.GetValue().dump_to_string())
         
         if len( names_to_tag_filters ) > 0:
             
@@ -474,7 +474,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
             
             for ( name, tag_filter ) in names_to_tag_filters.items():
                 
-                ClientGUIMenus.AppendMenuItem( menu, name, 'export {}'.format( name ), CG.client_controller.pub, 'clipboard', 'text', tag_filter.DumpToString() )
+                ClientGUIMenus.AppendMenuItem(menu, name, 'export {}'.format( name ), CG.client_controller.pub, 'clipboard', 'text', tag_filter.dump_to_string())
                 
             
         
@@ -513,7 +513,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            obj = HydrusSerialisable.CreateFromString( raw_text )
+            obj = HydrusSerialisable.create_from_string(raw_text)
             
         except Exception as e:
             

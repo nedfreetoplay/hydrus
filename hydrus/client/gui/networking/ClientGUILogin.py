@@ -1487,7 +1487,7 @@ class EditLoginScriptPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 new_credential_definition = panel.GetValue()
                 
-                HydrusSerialisable.SetNonDupeName( new_credential_definition, self._GetExistingCredentialDefinitionNames() )
+                HydrusSerialisable.set_non_dupe_name(new_credential_definition, self._GetExistingCredentialDefinitionNames())
                 
                 self._credential_definitions.AddData( new_credential_definition, select_sort_and_scroll = True )
                 
@@ -1674,7 +1674,7 @@ class EditLoginScriptPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 existing_names.discard( credential_definition.GetName() )
                 
-                HydrusSerialisable.SetNonDupeName( edited_credential_definition, existing_names )
+                HydrusSerialisable.set_non_dupe_name(edited_credential_definition, existing_names)
                 
                 self._credential_definitions.ReplaceData( credential_definition, edited_credential_definition, sort_and_scroll = True )
                 
@@ -1712,7 +1712,7 @@ class EditLoginScriptPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 bandwidth_manager = ClientNetworkingBandwidth.NetworkBandwidthManager()
                 session_manager = ClientNetworkingSessions.NetworkSessionManager()
-                domain_manager = CG.client_controller.network_engine.domain_manager.Duplicate() # keep custom headers from current domain stuff
+                domain_manager = CG.client_controller.network_engine.domain_manager.duplicate() # keep custom headers from current domain stuff
                 login_manager = ClientNetworkingLogin.NetworkLoginManager()
                 
                 network_engine = ClientNetworking.NetworkEngine( CG.client_controller, bandwidth_manager, session_manager, domain_manager, login_manager )
@@ -2021,7 +2021,7 @@ class EditLoginScriptsPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _AddLoginScript( self, login_script ):
         
-        HydrusSerialisable.SetNonDupeName( login_script, self._GetExistingNames() )
+        HydrusSerialisable.set_non_dupe_name(login_script, self._GetExistingNames())
         
         login_script.RegenerateLoginScriptKey()
         
@@ -2077,7 +2077,7 @@ class EditLoginScriptsPanel( ClientGUIScrolledPanels.EditPanel ):
                 existing_names = self._GetExistingNames()
                 existing_names.discard( login_script.GetName() )
                 
-                HydrusSerialisable.SetNonDupeName( edited_login_script, existing_names )
+                HydrusSerialisable.set_non_dupe_name(edited_login_script, existing_names)
                 
                 self._login_scripts.ReplaceData( login_script, edited_login_script, sort_and_scroll = True )
                 

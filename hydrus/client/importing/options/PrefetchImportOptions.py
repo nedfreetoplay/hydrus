@@ -36,12 +36,12 @@ class PrefetchImportOptions( HydrusSerialisable.SerialisableBase ):
         return ( self._preimport_hash_check_type, self._preimport_url_check_type, self._preimport_url_check_looks_for_neighbour_spam ).__hash__()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         return ( self._preimport_hash_check_type, self._preimport_url_check_type, self._preimport_url_check_looks_for_neighbour_spam )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( self._preimport_hash_check_type, self._preimport_url_check_type, self._preimport_url_check_looks_for_neighbour_spam ) = serialisable_info
         

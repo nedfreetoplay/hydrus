@@ -504,7 +504,7 @@ class AddEditDeleteListBox( QW.QWidget ):
         
         if dupe_data is not None:
             
-            dupe_data = dupe_data.Duplicate()
+            dupe_data = dupe_data.duplicate()
             
             self._ImportObject( dupe_data )
             
@@ -516,7 +516,7 @@ class AddEditDeleteListBox( QW.QWidget ):
         
         if export_object is not None:
             
-            json = export_object.DumpToString()
+            json = export_object.dump_to_string()
             
             CG.client_controller.pub( 'clipboard', 'text', json )
             
@@ -612,7 +612,7 @@ class AddEditDeleteListBox( QW.QWidget ):
         
         try:
             
-            obj = HydrusSerialisable.CreateFromString( raw_text )
+            obj = HydrusSerialisable.create_from_string(raw_text)
             
             self._ImportObject( obj )
             
@@ -647,7 +647,7 @@ class AddEditDeleteListBox( QW.QWidget ):
                     
                     try:
                         
-                        obj = HydrusSerialisable.CreateFromNetworkBytes( payload )
+                        obj = HydrusSerialisable.create_from_network_bytes(payload)
                         
                         self._ImportObject( obj )
                         
@@ -910,7 +910,7 @@ class AddEditDeleteListBoxUniqueNamedObjects( AddEditDeleteListBox ):
         
         disallowed_names = {o.get_name() for o in self.GetData()}
         
-        HydrusSerialisable.SetNonDupeName( obj, disallowed_names )
+        HydrusSerialisable.set_non_dupe_name(obj, disallowed_names)
         
     
 
@@ -1079,7 +1079,7 @@ class QueueListBox( QW.QWidget ):
         
         if dupe_data is not None:
             
-            dupe_data = dupe_data.Duplicate()
+            dupe_data = dupe_data.duplicate()
             
             self._ImportObject( dupe_data )
             
@@ -1122,7 +1122,7 @@ class QueueListBox( QW.QWidget ):
         
         if export_object is not None:
             
-            json = export_object.DumpToString()
+            json = export_object.dump_to_string()
             
             CG.client_controller.pub( 'clipboard', 'text', json )
             
@@ -1218,7 +1218,7 @@ class QueueListBox( QW.QWidget ):
         
         try:
             
-            obj = HydrusSerialisable.CreateFromString( raw_text )
+            obj = HydrusSerialisable.create_from_string(raw_text)
             
             self._ImportObject( obj )
             
@@ -1253,7 +1253,7 @@ class QueueListBox( QW.QWidget ):
                     
                     try:
                         
-                        obj = HydrusSerialisable.CreateFromNetworkBytes( payload )
+                        obj = HydrusSerialisable.create_from_network_bytes(payload)
                         
                         self._ImportObject( obj )
                         

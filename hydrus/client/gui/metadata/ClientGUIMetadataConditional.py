@@ -200,7 +200,7 @@ class AutoCompleteDropdownMetadataConditional( ClientGUIACDropdown.AutocompleteD
     def __init__( self, parent: QW.QWidget, file_search_context: ClientSearchFileSearchContext.FileSearchContext ):
         
         # make a dupe here so we know that any direct changes we make to this guy will not affect other copies around
-        file_search_context = file_search_context.Duplicate()
+        file_search_context = file_search_context.duplicate()
         
         location_context = file_search_context.GetLocationContext()
         tag_context = file_search_context.GetTagContext()
@@ -414,7 +414,7 @@ class AutoCompleteDropdownMetadataConditional( ClientGUIACDropdown.AutocompleteD
             
         else:
             
-            under_construction_or_predicate = self._under_construction_or_predicate.Duplicate()
+            under_construction_or_predicate = self._under_construction_or_predicate.duplicate()
             
         
         CG.client_controller.call_to_thread(ResultsFetch, self, job_status, self.SetPrefetchResults, self.SetFetchedResults, parsed_autocomplete_text, fsc, self._results_cache, under_construction_or_predicate)

@@ -1795,7 +1795,7 @@ class Controller( HydrusController.HydrusController ):
         
         if self._last_last_session_hash is None:
             
-            self._last_last_session_hash = gui_session.GetSerialisedHash()
+            self._last_last_session_hash = gui_session.get_serialised_hash()
             
         
     
@@ -2066,7 +2066,7 @@ class Controller( HydrusController.HydrusController ):
         
         if name == CC.LAST_SESSION_SESSION_NAME:
             
-            session_hash = session.GetSerialisedHash()
+            session_hash = session.get_serialised_hash()
             
             # keep this in. we still don't want to overwrite backups if no changes have occurred
             if session_hash == self._last_last_session_hash:

@@ -1165,7 +1165,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
             
             try:
                 
-                obj_list = HydrusSerialisable.CreateFromNetworkBytes( payload, raise_error_on_future_version = True )
+                obj_list = HydrusSerialisable.create_from_network_bytes(payload, raise_error_on_future_version = True)
                 
             except HydrusExceptions.SerialisationException as e:
                 

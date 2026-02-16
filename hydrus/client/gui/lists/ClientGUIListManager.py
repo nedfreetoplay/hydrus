@@ -20,16 +20,16 @@ class ColumnListManager( HydrusSerialisable.SerialisableBase ):
         self._dirty = False
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
-        return self._column_list_types_to_statuses.GetSerialisableTuple()
+        return self._column_list_types_to_statuses.get_serialisable_tuple()
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         serialisable_column_list_types_to_statuses = serialisable_info
         
-        self._column_list_types_to_statuses = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_column_list_types_to_statuses )
+        self._column_list_types_to_statuses = HydrusSerialisable.create_from_serialisable_tuple(serialisable_column_list_types_to_statuses)
         
     
     def IsDirty( self ):

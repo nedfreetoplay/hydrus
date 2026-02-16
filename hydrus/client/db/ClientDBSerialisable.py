@@ -281,7 +281,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 HydrusData.print_text('Was asked to fetch named JSON object "{}", but it was malformed!'.format(hash.hex()))
                 
             
-            obj = HydrusSerialisable.CreateFromSerialisableTuple( ( dump_type, version, serialisable_info ) )
+            obj = HydrusSerialisable.create_from_serialisable_tuple((dump_type, version, serialisable_info))
             
             hashes_to_objs[ hash ] = obj
             
@@ -337,7 +337,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 DealWithBrokenJSONDump( self._db_dir, dump, ( dump_type, version ), 'dump_type {} version {}'.format( dump_type, version ) )
                 
             
-            obj = HydrusSerialisable.CreateFromSerialisableTuple( ( dump_type, version, serialisable_info ) )
+            obj = HydrusSerialisable.create_from_serialisable_tuple((dump_type, version, serialisable_info))
             
             if dump_type == HydrusSerialisable.SERIALISABLE_TYPE_NETWORK_SESSION_MANAGER:
                 
@@ -375,7 +375,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                     
                     serialisable_info = json.loads( dump )
                     
-                    objs.append( HydrusSerialisable.CreateFromSerialisableTuple( ( dump_type, dump_name, version, serialisable_info ) ) )
+                    objs.append(HydrusSerialisable.create_from_serialisable_tuple((dump_type, dump_name, version, serialisable_info)))
                     
                 except Exception as e:
                     
@@ -425,7 +425,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 DealWithBrokenJSONDump( self._db_dir, dump, ( dump_type, dump_name, version, object_timestamp_ms ), 'dump_type {} dump_name {} version {} timestamp_ms {}'.format( dump_type, dump_name[:10], version, object_timestamp_ms ) )
                 
             
-            return HydrusSerialisable.CreateFromSerialisableTuple( ( dump_type, dump_name, version, serialisable_info ) )
+            return HydrusSerialisable.create_from_serialisable_tuple((dump_type, dump_name, version, serialisable_info))
             
         
     
@@ -549,7 +549,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 continue
                 
             
-            ( dump_type, version, serialisable_info ) = obj.GetSerialisableTuple()
+            ( dump_type, version, serialisable_info ) = obj.get_serialisable_tuple()
             
             try:
                 
@@ -597,7 +597,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
         
         if isinstance( obj, HydrusSerialisable.SerialisableBaseNamed ):
             
-            ( dump_type, dump_name, version, serialisable_info ) = obj.GetSerialisableTuple()
+            ( dump_type, dump_name, version, serialisable_info ) = obj.get_serialisable_tuple()
             
             store_backups = False
             backup_depth = 1
@@ -696,7 +696,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
             
         else:
             
-            ( dump_type, version, serialisable_info ) = obj.GetSerialisableTuple()
+            ( dump_type, version, serialisable_info ) = obj.get_serialisable_tuple()
             
             if dump_type == HydrusSerialisable.SERIALISABLE_TYPE_NETWORK_SESSION_MANAGER:
                 

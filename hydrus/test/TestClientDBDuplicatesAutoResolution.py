@@ -174,7 +174,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         def compare_rule_lists( r_l_1, r_l_2 ):
             
-            self.assertEqual( { rule.DumpToString() for rule in r_l_1 }, { rule.DumpToString() for rule in r_l_1 } )
+            self.assertEqual({rule.dump_to_string() for rule in r_l_1}, {rule.dump_to_string() for rule in r_l_1})
             
         
         self._clear_db()
@@ -183,7 +183,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         rule_1.SetOperationMode( ClientDuplicatesAutoResolution.DUPLICATES_AUTO_RESOLUTION_RULE_OPERATION_MODE_FULLY_AUTOMATIC )
         
-        rules_we_are_setting = [ rule_1.Duplicate() ]
+        rules_we_are_setting = [rule_1.duplicate()]
         
         self._write( 'duplicates_auto_resolution_set_rules', rules_we_are_setting )
         
@@ -203,7 +203,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         rule_2.SetOperationMode( ClientDuplicatesAutoResolution.DUPLICATES_AUTO_RESOLUTION_RULE_OPERATION_MODE_FULLY_AUTOMATIC )
         
-        rules_we_are_setting = [ rule_1.Duplicate(), rule_2.Duplicate() ]
+        rules_we_are_setting = [rule_1.duplicate(), rule_2.duplicate()]
         
         self._write( 'duplicates_auto_resolution_set_rules', rules_we_are_setting )
         
@@ -220,9 +220,9 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         self._compare_counts_cache( rule_2_read.GetCountsCacheDuplicate(), {} )
         
-        rule_2.SetName( 'test 2a' )
+        rule_2.set_name('test 2a')
         
-        rules_we_are_setting = [ rule_2.Duplicate() ]
+        rules_we_are_setting = [rule_2.duplicate()]
         
         self._write( 'duplicates_auto_resolution_set_rules', rules_we_are_setting )
         
@@ -234,7 +234,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         rule_3.SetOperationMode( ClientDuplicatesAutoResolution.DUPLICATES_AUTO_RESOLUTION_RULE_OPERATION_MODE_FULLY_AUTOMATIC )
         
-        rules_we_are_setting = [ rule_2.Duplicate(), rule_3.Duplicate() ]
+        rules_we_are_setting = [rule_2.duplicate(), rule_3.duplicate()]
         
         self._write( 'duplicates_auto_resolution_set_rules', rules_we_are_setting )
         
@@ -303,7 +303,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         rule_1.SetPairSelector( selector )
         
-        rules_we_are_setting = [ rule_1.Duplicate() ]
+        rules_we_are_setting = [rule_1.duplicate()]
         
         self._write( 'duplicates_auto_resolution_set_rules', rules_we_are_setting )
         
@@ -337,7 +337,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         self._compare_counts_cache( rule_1_read.GetCountsCacheDuplicate(), { ClientDuplicatesAutoResolution.DUPLICATE_STATUS_MATCHES_SEARCH_PASSED_TEST_READY_TO_ACTION : 1, ClientDuplicatesAutoResolution.DUPLICATE_STATUS_MATCHES_SEARCH_FAILED_TEST : 1 } )
         
-        rule_1 = rule_1_read.Duplicate()
+        rule_1 = rule_1_read.duplicate()
         
         potential_duplicates_search_context.SetPixelDupesPreference( ClientDuplicates.SIMILAR_FILES_PIXEL_DUPES_REQUIRED )
         
@@ -405,7 +405,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         rule_1.SetPairSelector( selector )
         
-        rules_we_are_setting = [ rule_1.Duplicate() ]
+        rules_we_are_setting = [rule_1.duplicate()]
         
         self._write( 'duplicates_auto_resolution_set_rules', rules_we_are_setting )
         
@@ -439,7 +439,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         self._compare_counts_cache( rule_1_read.GetCountsCacheDuplicate(), { ClientDuplicatesAutoResolution.DUPLICATE_STATUS_MATCHES_SEARCH_PASSED_TEST_READY_TO_ACTION : 1, ClientDuplicatesAutoResolution.DUPLICATE_STATUS_MATCHES_SEARCH_FAILED_TEST : 1 } )
         
-        rule_1 = rule_1_read.Duplicate()
+        rule_1 = rule_1_read.duplicate()
         
         selector = ClientDuplicatesAutoResolutionComparators.PairSelector()
         
@@ -525,7 +525,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         rule_1.SetPairSelector( selector )
         
-        rules_we_are_setting = [ rule_1.Duplicate() ]
+        rules_we_are_setting = [rule_1.duplicate()]
         
         self._write( 'duplicates_auto_resolution_set_rules', rules_we_are_setting )
         
@@ -559,7 +559,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         self._compare_counts_cache( rule_1_read.GetCountsCacheDuplicate(), { ClientDuplicatesAutoResolution.DUPLICATE_STATUS_MATCHES_SEARCH_PASSED_TEST_READY_TO_ACTION : 1, ClientDuplicatesAutoResolution.DUPLICATE_STATUS_MATCHES_SEARCH_FAILED_TEST : 1 } )
         
-        rule_1 = rule_1_read.Duplicate()
+        rule_1 = rule_1_read.duplicate()
         
         rule_1.SetOperationMode( ClientDuplicatesAutoResolution.DUPLICATES_AUTO_RESOLUTION_RULE_OPERATION_MODE_FULLY_AUTOMATIC )
         
@@ -591,7 +591,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         rule_1.SetOperationMode( ClientDuplicatesAutoResolution.DUPLICATES_AUTO_RESOLUTION_RULE_OPERATION_MODE_FULLY_AUTOMATIC )
         
-        rules_we_are_setting = [ rule_1.Duplicate() ]
+        rules_we_are_setting = [rule_1.duplicate()]
         
         self._write( 'duplicates_auto_resolution_set_rules', rules_we_are_setting )
         
@@ -698,7 +698,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         rule_1.SetPotentialDuplicatesSearchContext( potential_duplicates_search_context )
         
-        rules_we_are_setting = [ rule_1.Duplicate() ]
+        rules_we_are_setting = [rule_1.duplicate()]
         
         self._write( 'duplicates_auto_resolution_set_rules', rules_we_are_setting )
         
@@ -785,7 +785,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         rule_1.SetAction( HC.DUPLICATE_BETTER )
         
-        rules_we_are_setting = [ rule_1.Duplicate() ]
+        rules_we_are_setting = [rule_1.duplicate()]
         
         self._write( 'duplicates_auto_resolution_set_rules', rules_we_are_setting )
         
@@ -898,7 +898,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         rule_1.SetPairSelector( selector )
         
-        rules_we_are_setting = [ rule_1.Duplicate() ]
+        rules_we_are_setting = [rule_1.duplicate()]
         
         self._write( 'duplicates_auto_resolution_set_rules', rules_we_are_setting )
         

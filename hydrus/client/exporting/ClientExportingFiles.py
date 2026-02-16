@@ -374,10 +374,10 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
         self._always_overwrite_sidecars = False
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
-        serialisable_file_search_context = self._file_search_context.GetSerialisableTuple()
-        serialisable_metadata_routers = self._metadata_routers.GetSerialisableTuple()
+        serialisable_file_search_context = self._file_search_context.get_serialisable_tuple()
+        serialisable_metadata_routers = self._metadata_routers.get_serialisable_tuple()
         
         return (
             self._path,
@@ -398,7 +398,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
         )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         (
             self._path,
@@ -423,11 +423,11 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             self._delete_from_client_after_export = False
             
         
-        self._file_search_context = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_file_search_context )
-        self._metadata_routers = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_metadata_routers )
+        self._file_search_context = HydrusSerialisable.create_from_serialisable_tuple(serialisable_file_search_context)
+        self._metadata_routers = HydrusSerialisable.create_from_serialisable_tuple(serialisable_metadata_routers)
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             
@@ -481,7 +481,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             
             metadata_routers = HydrusSerialisable.SerialisableList()
             
-            serialisable_metadata_routers = metadata_routers.GetSerialisableTuple()
+            serialisable_metadata_routers = metadata_routers.get_serialisable_tuple()
             
             new_serialisable_info = ( path, export_type, delete_from_client_after_export, serialisable_file_search_context, serialisable_metadata_routers, run_regularly, period, phrase, last_checked, paused, run_now, last_error )
             

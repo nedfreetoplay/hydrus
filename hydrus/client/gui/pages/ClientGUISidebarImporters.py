@@ -1172,11 +1172,11 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
                     
                     if file_import_options_string is None:
                         
-                        file_import_options_string = file_import_options.DumpToString()
+                        file_import_options_string = file_import_options.dump_to_string()
                         
                     
                     # not the same object, let's see if they have the same value
-                    if gallery_import_file_import_options.DumpToString() == file_import_options_string:
+                    if gallery_import_file_import_options.dump_to_string() == file_import_options_string:
                         
                         # we have the same value here, just not the same object. let's make the check faster next time
                         gallery_import.SetFileImportOptions( file_import_options )
@@ -1195,11 +1195,11 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
                     
                     if note_import_options_string is None:
                         
-                        note_import_options_string = note_import_options.DumpToString()
+                        note_import_options_string = note_import_options.dump_to_string()
                         
                     
                     # not the same object, let's see if they have the same value
-                    if gallery_import_note_import_options.DumpToString() == note_import_options_string:
+                    if gallery_import_note_import_options.dump_to_string() == note_import_options_string:
                         
                         # we have the same value here, just not the same object. let's make the check faster next time
                         gallery_import.SetNoteImportOptions( note_import_options )
@@ -1218,11 +1218,11 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
                     
                     if tag_import_options_string is None:
                         
-                        tag_import_options_string = tag_import_options.DumpToString()
+                        tag_import_options_string = tag_import_options.dump_to_string()
                         
                     
                     # not the same object, let's see if they have the same value
-                    if gallery_import_tag_import_options.DumpToString() == tag_import_options_string:
+                    if gallery_import_tag_import_options.dump_to_string() == tag_import_options_string:
                         
                         # we have the same value here, just not the same object. let's make the check faster next time
                         gallery_import.SetTagImportOptions( tag_import_options )
@@ -2328,11 +2328,11 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                     
                     if checker_options_string is None:
                         
-                        checker_options_string = checker_options.DumpToString()
+                        checker_options_string = checker_options.dump_to_string()
                         
                     
                     # not the same object, let's see if they have the same value
-                    if watcher_checker_options.DumpToString() == checker_options_string:
+                    if watcher_checker_options.dump_to_string() == checker_options_string:
                         
                         # we have the same value here, just not the same object. let's make the check faster next time
                         watcher.SetCheckerOptions( checker_options )
@@ -2351,11 +2351,11 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                     
                     if file_import_options_string is None:
                         
-                        file_import_options_string = file_import_options.DumpToString()
+                        file_import_options_string = file_import_options.dump_to_string()
                         
                     
                     # not the same object, let's see if they have the same value
-                    if watcher_file_import_options.DumpToString() == file_import_options_string:
+                    if watcher_file_import_options.dump_to_string() == file_import_options_string:
                         
                         # we have the same value here, just not the same object. let's make the check faster next time
                         watcher.SetFileImportOptions( file_import_options )
@@ -2374,11 +2374,11 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                     
                     if note_import_options_string is None:
                         
-                        note_import_options_string = note_import_options.DumpToString()
+                        note_import_options_string = note_import_options.dump_to_string()
                         
                     
                     # not the same object, let's see if they have the same value
-                    if watcher_note_import_options.DumpToString() == note_import_options_string:
+                    if watcher_note_import_options.dump_to_string() == note_import_options_string:
                         
                         # we have the same value here, just not the same object. let's make the check faster next time
                         watcher.SetNoteImportOptions( note_import_options )
@@ -2397,11 +2397,11 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                     
                     if tag_import_options_string is None:
                         
-                        tag_import_options_string = tag_import_options.DumpToString()
+                        tag_import_options_string = tag_import_options.dump_to_string()
                         
                     
                     # not the same object, let's see if they have the same value
-                    if watcher_tag_import_options.DumpToString() == tag_import_options_string:
+                    if watcher_tag_import_options.dump_to_string() == tag_import_options_string:
                         
                         # we have the same value here, just not the same object. let's make the check faster next time
                         watcher.SetTagImportOptions( tag_import_options )

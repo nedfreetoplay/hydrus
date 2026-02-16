@@ -394,7 +394,7 @@ class EditFileTimestampsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUISc
             list_of_timestamp_data = HydrusSerialisable.SerialisableList( [ timestamp_data for timestamp_data in list_of_timestamp_data if timestamp_data.timestamp_type in allowed_timestamp_types ] )
             
         
-        text = json.dumps( list_of_timestamp_data.GetSerialisableTuple() )
+        text = json.dumps(list_of_timestamp_data.get_serialisable_tuple())
         
         CG.client_controller.pub( 'clipboard', 'text', text )
         
@@ -742,7 +742,7 @@ class EditFileTimestampsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUISc
             
             serialisable_tuple = json.loads( raw_text )
             
-            list_of_timestamp_data = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tuple )
+            list_of_timestamp_data = HydrusSerialisable.create_from_serialisable_tuple(serialisable_tuple)
             
             for item in list_of_timestamp_data:
                 

@@ -63,12 +63,12 @@ class ImportOptionsManager( HydrusSerialisable.SerialisableBase ):
         self._lock = threading.Lock()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
-        serialisable_import_options_caller_types_to_default_import_options_containers = self._import_options_caller_types_to_default_import_options_containers.GetSerialisableTuple()
-        serialisable_url_class_keys_to_default_import_options_containers = self._url_class_keys_to_default_import_options_containers.GetSerialisableTuple()
-        serialisable_favourite_import_options_containers = self._favourite_import_options_containers.GetSerialisableTuple()
-        serialisable_favourite_import_options = self._favourite_import_options.GetSerialisableTuple()
+        serialisable_import_options_caller_types_to_default_import_options_containers = self._import_options_caller_types_to_default_import_options_containers.get_serialisable_tuple()
+        serialisable_url_class_keys_to_default_import_options_containers = self._url_class_keys_to_default_import_options_containers.get_serialisable_tuple()
+        serialisable_favourite_import_options_containers = self._favourite_import_options_containers.get_serialisable_tuple()
+        serialisable_favourite_import_options = self._favourite_import_options.get_serialisable_tuple()
         
         return (
             serialisable_import_options_caller_types_to_default_import_options_containers,
@@ -78,7 +78,7 @@ class ImportOptionsManager( HydrusSerialisable.SerialisableBase ):
         )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         (
             serialisable_import_options_caller_types_to_default_import_options_containers,
@@ -87,10 +87,10 @@ class ImportOptionsManager( HydrusSerialisable.SerialisableBase ):
             serialisable_favourite_import_options,
         ) = serialisable_info
         
-        self._import_options_caller_types_to_default_import_options_containers = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_import_options_caller_types_to_default_import_options_containers )
-        self._url_class_keys_to_default_import_options_containers = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_url_class_keys_to_default_import_options_containers )
-        self._favourite_import_options_containers = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_favourite_import_options_containers )
-        self._favourite_import_options = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_favourite_import_options )
+        self._import_options_caller_types_to_default_import_options_containers = HydrusSerialisable.create_from_serialisable_tuple(serialisable_import_options_caller_types_to_default_import_options_containers)
+        self._url_class_keys_to_default_import_options_containers = HydrusSerialisable.create_from_serialisable_tuple(serialisable_url_class_keys_to_default_import_options_containers)
+        self._favourite_import_options_containers = HydrusSerialisable.create_from_serialisable_tuple(serialisable_favourite_import_options_containers)
+        self._favourite_import_options = HydrusSerialisable.create_from_serialisable_tuple(serialisable_favourite_import_options)
         
     
     def GetDerivedImportOptionsFromContainer( self, import_options_container: "ImportOptionsContainer", import_options_type: int, import_options_caller_type: int, url_class_key = None ):
@@ -242,18 +242,18 @@ class ImportOptionsContainer( HydrusSerialisable.SerialisableBase ):
         return self._import_options.get( import_options_type, None )
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
-        serialisable_import_options = self._import_options.GetSerialisableTuple()
+        serialisable_import_options = self._import_options.get_serialisable_tuple()
         
         return serialisable_import_options
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         serialisable_import_options = serialisable_info
         
-        self._import_options = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_import_options )
+        self._import_options = HydrusSerialisable.create_from_serialisable_tuple(serialisable_import_options)
         
     
     def GetImportOptions( self, import_options_type: int ):

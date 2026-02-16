@@ -1917,7 +1917,7 @@ class AutoCompleteDropdownTags( AutoCompleteDropdown ):
     
     def _SetLocationContext( self, location_context: ClientLocation.LocationContext ):
         
-        location_context = location_context.Duplicate()
+        location_context = location_context.duplicate()
         
         location_context.FixMissingServices( CG.client_controller.services_manager.FilterValidServiceKeys )
         
@@ -2128,7 +2128,7 @@ class AutoCompleteDropdownTagsFileSearchContext( AutoCompleteDropdownTags ):
         file_search_context: ClientSearchFileSearchContext.FileSearchContext
     ):
         
-        self._file_search_context = file_search_context.Duplicate()
+        self._file_search_context = file_search_context.duplicate()
         
         super().__init__( parent, location_context, tag_context )
         
@@ -2162,12 +2162,12 @@ class AutoCompleteDropdownTagsFileSearchContext( AutoCompleteDropdownTags ):
     
     def GetFileSearchContext( self ) -> ClientSearchFileSearchContext.FileSearchContext:
         
-        return self._file_search_context.Duplicate()
+        return self._file_search_context.duplicate()
         
     
     def SetFileSearchContext( self, file_search_context: ClientSearchFileSearchContext.FileSearchContext ):
         
-        self._file_search_context = file_search_context.Duplicate()
+        self._file_search_context = file_search_context.duplicate()
         
     
 
@@ -2280,7 +2280,7 @@ class AutocompleteDropdownTagsFileSearchContextORCapable( AutoCompleteDropdownTa
         
         try:
             
-            empty_file_search_context = self._file_search_context.Duplicate()
+            empty_file_search_context = self._file_search_context.duplicate()
             
             empty_file_search_context.SetPredicates( [] )
             
@@ -2430,7 +2430,7 @@ class AutoCompleteDropdownTagsRead( AutocompleteDropdownTagsFileSearchContextORC
     ):
         
         # make a dupe here so we know that any direct changes we make to this guy will not affect other copies around
-        file_search_context = file_search_context.Duplicate()
+        file_search_context = file_search_context.duplicate()
         
         location_context = file_search_context.GetLocationContext()
         tag_context = file_search_context.GetTagContext()
@@ -2923,7 +2923,7 @@ class AutoCompleteDropdownTagsRead( AutocompleteDropdownTagsFileSearchContextORC
     
     def _SignalNewSearchState( self ):
         
-        file_search_context = self._file_search_context.Duplicate()
+        file_search_context = self._file_search_context.duplicate()
         
         self.searchChanged.emit( file_search_context )
         
@@ -2940,7 +2940,7 @@ class AutoCompleteDropdownTagsRead( AutocompleteDropdownTagsFileSearchContextORC
             
         else:
             
-            under_construction_or_predicate = self._under_construction_or_predicate.Duplicate()
+            under_construction_or_predicate = self._under_construction_or_predicate.duplicate()
             
         
         CG.client_controller.call_to_thread(ReadFetch, self, job_status, self.SetPrefetchResults, self.SetFetchedResults, parsed_autocomplete_text, self._media_callable, fsc, self._search_pause_play.IsOn(), self._include_unusual_predicate_types, self._results_cache, under_construction_or_predicate, self._force_system_everything)
@@ -3176,7 +3176,7 @@ class ListBoxTagsActiveSearchPredicates( ClientGUIListBoxes.ListBoxTagsPredicate
         
         try:
             
-            empty_file_search_context = self._file_search_context.Duplicate()
+            empty_file_search_context = self._file_search_context.duplicate()
             
             empty_file_search_context.SetPredicates( [] )
             
@@ -3225,7 +3225,7 @@ class ListBoxTagsActiveSearchPredicates( ClientGUIListBoxes.ListBoxTagsPredicate
             
             try:
                 
-                empty_file_search_context = self._file_search_context.Duplicate()
+                empty_file_search_context = self._file_search_context.duplicate()
                 
                 empty_file_search_context.SetPredicates( or_based_predicates )
                 

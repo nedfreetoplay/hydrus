@@ -1005,17 +1005,17 @@ class Shortcut( HydrusSerialisable.SerialisableBase ):
         return 'Shortcut: ' + self.ToString()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         return ( self.shortcut_type, self.shortcut_key, self.shortcut_press_type, self.modifiers )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( self.shortcut_type, self.shortcut_key, self.shortcut_press_type, self.modifiers ) = serialisable_info
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             
@@ -1144,7 +1144,7 @@ class Shortcut( HydrusSerialisable.SerialisableBase ):
         
         if self.IsDoubleClick():
             
-            new_shortcut = self.Duplicate()
+            new_shortcut = self.duplicate()
             
             new_shortcut.shortcut_press_type = SHORTCUT_PRESS_TYPE_PRESS
             
@@ -1179,7 +1179,7 @@ class Shortcut( HydrusSerialisable.SerialisableBase ):
             
             if not it_is_a_number:
                 
-                numpad_alternate = self.Duplicate()
+                numpad_alternate = self.duplicate()
                 
                 if SHORTCUT_MODIFIER_KEYPAD not in numpad_alternate.modifiers:
                     
@@ -1402,23 +1402,23 @@ class ShortcutSet( HydrusSerialisable.SerialisableBaseNamed ):
         return len( self._shortcuts_to_commands )
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
-        return [ ( shortcut.GetSerialisableTuple(), command.GetSerialisableTuple() ) for ( shortcut, command ) in list(self._shortcuts_to_commands.items()) ]
+        return [(shortcut.get_serialisable_tuple(), command.get_serialisable_tuple()) for (shortcut, command) in list(self._shortcuts_to_commands.items())]
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         for ( serialisable_shortcut, serialisable_command ) in serialisable_info:
             
-            shortcut = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_shortcut )
-            command = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_command )
+            shortcut = HydrusSerialisable.create_from_serialisable_tuple(serialisable_shortcut)
+            command = HydrusSerialisable.create_from_serialisable_tuple(serialisable_command)
             
             self._shortcuts_to_commands[ shortcut ] = command
             
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             
@@ -1478,7 +1478,7 @@ class ShortcutSet( HydrusSerialisable.SerialisableBaseNamed ):
                 shortcuts_to_commands[ shortcut ] = command
                 
             
-            new_serialisable_info = ( ( shortcut.GetSerialisableTuple(), command.GetSerialisableTuple() ) for ( shortcut, command ) in list(shortcuts_to_commands.items()) )
+            new_serialisable_info = ((shortcut.get_serialisable_tuple(), command.get_serialisable_tuple()) for (shortcut, command) in list(shortcuts_to_commands.items()))
             
             return ( 2, new_serialisable_info )
             
@@ -1992,7 +1992,7 @@ class ShortcutsManager( QC.QObject ):
     
     def SetShortcutSets( self, shortcut_sets: collections.abc.Iterable[ ShortcutSet ] ):
         
-        self._names_to_shortcut_sets = { shortcut_set.GetName() : shortcut_set for shortcut_set in shortcut_sets }
+        self._names_to_shortcut_sets = {shortcut_set.get_name() : shortcut_set for shortcut_set in shortcut_sets}
         
         self.shortcutsChanged.emit()
         

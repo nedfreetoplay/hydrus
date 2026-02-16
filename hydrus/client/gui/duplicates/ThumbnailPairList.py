@@ -288,7 +288,7 @@ class ThumbnailPairListModelPendingAutoResolutionAction( ThumbnailPairListModel 
     
     def SetRule( self, rule: ClientDuplicatesAutoResolution.DuplicatesAutoResolutionRule ):
         
-        if rule.DumpToString() != self._rule.DumpToString():
+        if rule.dump_to_string() != self._rule.dump_to_string():
             
             self._rule = rule
             

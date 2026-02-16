@@ -966,7 +966,7 @@ class PotentialDuplicatesSearchContext( HydrusSerialisable.SerialisableBase ):
         file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, predicates = initial_predicates )
         
         self._file_search_context_1 = file_search_context
-        self._file_search_context_2 = file_search_context.Duplicate()
+        self._file_search_context_2 = file_search_context.duplicate()
         self._dupe_search_type = ClientDuplicates.DUPE_SEARCH_ONE_FILE_MATCHES_ONE_SEARCH
         self._pixel_dupes_preference = ClientDuplicates.SIMILAR_FILES_PIXEL_DUPES_ALLOWED
         self._max_hamming_distance = 4
@@ -976,26 +976,26 @@ class PotentialDuplicatesSearchContext( HydrusSerialisable.SerialisableBase ):
         
         if isinstance( other, PotentialDuplicatesSearchContext ):
             
-            return self.GetSerialisableTuple() == other.GetSerialisableTuple()
+            return self.get_serialisable_tuple() == other.get_serialisable_tuple()
             
         
         return NotImplemented
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
-        serialisable_file_search_context_1 = self._file_search_context_1.GetSerialisableTuple()
-        serialisable_file_search_context_2 = self._file_search_context_2.GetSerialisableTuple()
+        serialisable_file_search_context_1 = self._file_search_context_1.get_serialisable_tuple()
+        serialisable_file_search_context_2 = self._file_search_context_2.get_serialisable_tuple()
         
         return ( serialisable_file_search_context_1, serialisable_file_search_context_2, self._dupe_search_type, self._pixel_dupes_preference, self._max_hamming_distance )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( serialisable_file_search_context_1, serialisable_file_search_context_2, self._dupe_search_type, self._pixel_dupes_preference, self._max_hamming_distance ) = serialisable_info
         
-        self._file_search_context_1: ClientSearchFileSearchContext.FileSearchContext = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_file_search_context_1 )
-        self._file_search_context_2: ClientSearchFileSearchContext.FileSearchContext = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_file_search_context_2 )
+        self._file_search_context_1: ClientSearchFileSearchContext.FileSearchContext = HydrusSerialisable.create_from_serialisable_tuple(serialisable_file_search_context_1)
+        self._file_search_context_2: ClientSearchFileSearchContext.FileSearchContext = HydrusSerialisable.create_from_serialisable_tuple(serialisable_file_search_context_2)
         
     
     def GetDupeSearchType( self ) -> int:

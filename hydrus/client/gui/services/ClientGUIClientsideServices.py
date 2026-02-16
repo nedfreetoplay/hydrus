@@ -120,7 +120,7 @@ class ManageClientServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
                 
                 new_service = panel.GetValue()
                 
-                HydrusSerialisable.SetNonDupeName( new_service, self._GetExistingNames(), do_casefold = True )
+                HydrusSerialisable.set_non_dupe_name(new_service, self._GetExistingNames(), do_casefold = True)
                 
                 self._listctrl.AddData( new_service, select_sort_and_scroll = True )
                 
@@ -291,7 +291,7 @@ class ManageClientServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
                 
                 existing_names.discard(service.get_name())
                 
-                HydrusSerialisable.SetNonDupeName( edited_service, existing_names, do_casefold = True )
+                HydrusSerialisable.set_non_dupe_name(edited_service, existing_names, do_casefold = True)
                 
                 self._listctrl.ReplaceData( service, edited_service, sort_and_scroll = True )
                 
@@ -350,7 +350,7 @@ class EditClientServicePanel( ClientGUIScrolledPanels.EditPanel ):
         
         super().__init__( parent )
         
-        duplicate_service = service.Duplicate()
+        duplicate_service = service.duplicate()
         
         ( self._service_key, self._service_type, name, self._dictionary ) = duplicate_service.ToTuple()
         
@@ -438,7 +438,7 @@ class EditClientServicePanel( ClientGUIScrolledPanels.EditPanel ):
         
         name = self._service_panel.GetValue()
         
-        dictionary = self._dictionary.Duplicate()
+        dictionary = self._dictionary.duplicate()
         
         for panel in self._panels:
             
@@ -2198,7 +2198,7 @@ class ReviewServiceClientAPISubPanel( ClientGUICommon.StaticBox ):
         
         selected_api_permissions_objects = self._permissions_list.GetData( only_selected = True )
         
-        dupes = [ api_permissions.Duplicate() for api_permissions in selected_api_permissions_objects ]
+        dupes = [api_permissions.duplicate() for api_permissions in selected_api_permissions_objects]
         
         # permissions objects do not need unique names, but let's dedupe the dupe objects' names here to make it easy to see which is which in this step
         
@@ -2210,7 +2210,7 @@ class ReviewServiceClientAPISubPanel( ClientGUICommon.StaticBox ):
             
             dupe.GenerateNewAccessKey()
             
-            dupe.SetNonDupeName( existing_names, do_casefold = True )
+            dupe.set_non_dupe_name(existing_names, do_casefold = True)
             
             existing_names.add(dupe.get_name())
             

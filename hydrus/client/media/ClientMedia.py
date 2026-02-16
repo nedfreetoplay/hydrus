@@ -497,25 +497,25 @@ class MediaCollect( HydrusSerialisable.SerialisableBase ):
         self.tag_context = tag_context
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         serialisable_rating_service_keys = [ key.hex() for key in self.rating_service_keys ]
         
-        serialisable_tag_context = self.tag_context.GetSerialisableTuple()
+        serialisable_tag_context = self.tag_context.get_serialisable_tuple()
         
         return ( self.namespaces, serialisable_rating_service_keys, self.collect_unmatched, serialisable_tag_context )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( self.namespaces, serialisable_rating_service_keys, self.collect_unmatched, serialisable_tag_context ) = serialisable_info
         
         self.rating_service_keys = [ bytes.fromhex( serialisable_key ) for serialisable_key in serialisable_rating_service_keys ]
         
-        self.tag_context = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tag_context )
+        self.tag_context = HydrusSerialisable.create_from_serialisable_tuple(serialisable_tag_context)
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             
@@ -523,7 +523,7 @@ class MediaCollect( HydrusSerialisable.SerialisableBase ):
             
             tag_context = ClientSearchTagContext.TagContext( service_key = CC.COMBINED_TAG_SERVICE_KEY )
             
-            serialisable_tag_context = tag_context.GetSerialisableTuple()
+            serialisable_tag_context = tag_context.get_serialisable_tuple()
             
             new_serialisable_info = ( namespaces, serialisable_rating_service_keys, collect_unmatched, serialisable_tag_context )
             
@@ -2297,7 +2297,7 @@ class MediaSort( HydrusSerialisable.SerialisableBase ):
         return ( self.sort_type, self.sort_order, self.tag_context ).__hash__()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         ( sort_metatype, sort_data ) = self.sort_type
         
@@ -2316,12 +2316,12 @@ class MediaSort( HydrusSerialisable.SerialisableBase ):
             serialisable_sort_data = service_key.hex()
             
         
-        serialisable_tag_context = self.tag_context.GetSerialisableTuple()
+        serialisable_tag_context = self.tag_context.get_serialisable_tuple()
         
         return ( sort_metatype, serialisable_sort_data, self.sort_order, serialisable_tag_context )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( sort_metatype, serialisable_sort_data, self.sort_order, serialisable_tag_context ) = serialisable_info
         
@@ -2342,10 +2342,10 @@ class MediaSort( HydrusSerialisable.SerialisableBase ):
         
         self.sort_type = ( sort_metatype, sort_data )
         
-        self.tag_context = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tag_context )
+        self.tag_context = HydrusSerialisable.create_from_serialisable_tuple(serialisable_tag_context)
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             
@@ -2368,7 +2368,7 @@ class MediaSort( HydrusSerialisable.SerialisableBase ):
             
             tag_context = ClientSearchTagContext.TagContext( service_key = CC.COMBINED_TAG_SERVICE_KEY )
             
-            serialisable_tag_context = tag_context.GetSerialisableTuple()
+            serialisable_tag_context = tag_context.get_serialisable_tuple()
             
             new_serialisable_info = ( sort_metatype, serialisable_sort_data, sort_order, serialisable_tag_context )
             

@@ -203,7 +203,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             
             if new_media_singleton is not None:
                 
-                self._current_media = ( new_media_singleton.Duplicate(), )
+                self._current_media = ( new_media_singleton.duplicate(),)
                 
                 for page in self._tag_services.GetPages():
                     

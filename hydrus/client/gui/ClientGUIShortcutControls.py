@@ -101,7 +101,7 @@ class EditShortcutSetPanel( ClientGUIScrolledPanels.EditPanel ):
         
         #
         
-        name = shortcuts.GetName()
+        name = shortcuts.get_name()
         
         self._name.setText( name )
         
@@ -204,8 +204,8 @@ class EditShortcutSetPanel( ClientGUIScrolledPanels.EditPanel ):
         
         for ( shortcut, command ) in shortcut_set.GetShortcutsAndCommands():
             
-            addee_shortcut = shortcut.Duplicate()
-            command = command.Duplicate()
+            addee_shortcut = shortcut.duplicate()
+            command = command.duplicate()
             
             while addee_shortcut in all_existing_shortcuts:
                 
@@ -602,7 +602,7 @@ class MouseShortcutButton( QW.QPushButton ):
         
         if self._shortcut.IsAppropriateForPressRelease():
             
-            self._shortcut = self._shortcut.Duplicate()
+            self._shortcut = self._shortcut.duplicate()
             
             if self._press_instead_of_release:
                 
@@ -621,7 +621,7 @@ class MouseShortcutButton( QW.QPushButton ):
     
     def SetValue( self, shortcut: ClientGUIShortcuts.Shortcut ):
         
-        self._shortcut = shortcut.Duplicate()
+        self._shortcut = shortcut.duplicate()
         
         self._SetShortcutString()
         

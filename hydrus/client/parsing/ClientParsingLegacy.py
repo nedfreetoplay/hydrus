@@ -75,20 +75,20 @@ class ParseNodeContentLink( HydrusSerialisable.SerialisableBase ):
         self._children = children
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
-        serialisable_formula = self._formula.GetSerialisableTuple()
-        serialisable_children = [ child.GetSerialisableTuple() for child in self._children ]
+        serialisable_formula = self._formula.get_serialisable_tuple()
+        serialisable_children = [child.get_serialisable_tuple() for child in self._children]
         
         return ( self._name, serialisable_formula, serialisable_children )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( self._name, serialisable_formula, serialisable_children ) = serialisable_info
         
-        self._formula = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_formula )
-        self._children = [ HydrusSerialisable.CreateFromSerialisableTuple( serialisable_child ) for serialisable_child in serialisable_children ]
+        self._formula = HydrusSerialisable.create_from_serialisable_tuple(serialisable_formula)
+        self._children = [HydrusSerialisable.create_from_serialisable_tuple(serialisable_child) for serialisable_child in serialisable_children]
         
     
     def GetParsableContentDescriptions( self ):
@@ -235,23 +235,23 @@ class ParseRootFileLookup( HydrusSerialisable.SerialisableBaseNamed ):
         self._children = children
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
-        serialisable_children = [ child.GetSerialisableTuple() for child in self._children ]
-        serialisable_file_identifier_string_converter = self._file_identifier_string_converter.GetSerialisableTuple()
+        serialisable_children = [child.get_serialisable_tuple() for child in self._children]
+        serialisable_file_identifier_string_converter = self._file_identifier_string_converter.get_serialisable_tuple()
         
         return ( self._url, self._query_type, self._file_identifier_type, serialisable_file_identifier_string_converter, self._file_identifier_arg_name, self._static_args, serialisable_children )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( self._url, self._query_type, self._file_identifier_type, serialisable_file_identifier_string_converter, self._file_identifier_arg_name, self._static_args, serialisable_children ) = serialisable_info
         
-        self._children = [ HydrusSerialisable.CreateFromSerialisableTuple( serialisable_child ) for serialisable_child in serialisable_children ]
-        self._file_identifier_string_converter = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_file_identifier_string_converter )
+        self._children = [HydrusSerialisable.create_from_serialisable_tuple(serialisable_child) for serialisable_child in serialisable_children]
+        self._file_identifier_string_converter = HydrusSerialisable.create_from_serialisable_tuple(serialisable_file_identifier_string_converter)
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             
@@ -274,7 +274,7 @@ class ParseRootFileLookup( HydrusSerialisable.SerialisableBaseNamed ):
             
             file_identifier_string_converter = ClientStrings.StringConverter( conversions, 'some hash bytes' )
             
-            serialisable_file_identifier_string_converter = file_identifier_string_converter.GetSerialisableTuple()
+            serialisable_file_identifier_string_converter = file_identifier_string_converter.get_serialisable_tuple()
             
             new_serialisable_info = ( url, query_type, file_identifier_type, serialisable_file_identifier_string_converter, file_identifier_arg_name, static_args, serialisable_children )
             

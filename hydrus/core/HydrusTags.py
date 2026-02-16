@@ -366,12 +366,12 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         return list( self._tag_slices_to_rules.items() )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         self._tag_slices_to_rules = dict( serialisable_info )
         

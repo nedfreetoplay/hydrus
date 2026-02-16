@@ -300,13 +300,13 @@ class TestServer( unittest.TestCase ):
         
         response = service.Request( HC.GET, 'petition', { 'content_type' : HC.CONTENT_TYPE_FILES, 'status' : HC.CONTENT_UPDATE_PETITION } )
         
-        self.assertEqual( response[ 'petition' ].GetSerialisableTuple(), petition.GetSerialisableTuple() )
+        self.assertEqual(response[ 'petition' ].get_serialisable_tuple(), petition.get_serialisable_tuple())
         
         TG.test_controller.SetRead( 'petition', petition )
         
         response = service.Request( HC.GET, 'petition', { 'content_type' : HC.CONTENT_TYPE_FILES, 'status' : HC.CONTENT_UPDATE_PETITION, 'account_key' : petitioner_account.GetAccountKey(), reason : reason } )
         
-        self.assertEqual( response[ 'petition' ].GetSerialisableTuple(), petition.GetSerialisableTuple() )
+        self.assertEqual(response[ 'petition' ].get_serialisable_tuple(), petition.get_serialisable_tuple())
         
         # definitions
         
@@ -318,7 +318,7 @@ class TestServer( unittest.TestCase ):
             definitions_update.AddRow(( HC.DEFINITIONS_TYPE_HASHES, i + 500, HydrusData.generate_key()))
             
         
-        definitions_update_network_bytes = definitions_update.DumpToNetworkBytes()
+        definitions_update_network_bytes = definitions_update.dump_to_network_bytes()
         
         definitions_update_hash = hashlib.sha256( definitions_update_network_bytes ).digest()
         
@@ -355,7 +355,7 @@ class TestServer( unittest.TestCase ):
             content_update.AddRow( ( HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_ADD, row ) )
             
         
-        content_update_network_bytes = content_update.DumpToNetworkBytes()
+        content_update_network_bytes = content_update.dump_to_network_bytes()
         
         content_update_hash = hashlib.sha256( content_update_network_bytes ).digest()
         
@@ -389,7 +389,7 @@ class TestServer( unittest.TestCase ):
         
         response = service.Request( HC.GET, 'metadata_slice', { 'since' : 0 } )
         
-        self.assertEqual( response[ 'metadata_slice' ].GetSerialisableTuple(), metadata.GetSerialisableTuple() )
+        self.assertEqual(response[ 'metadata_slice' ].get_serialisable_tuple(), metadata.get_serialisable_tuple())
         
         # post content
         

@@ -167,16 +167,16 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
         return query_headers
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         ( gug_key, gug_name ) = self._gug_key_and_name
         
         serialisable_gug_key_and_name = ( gug_key.hex(), gug_name )
-        serialisable_query_headers = [ query_header.GetSerialisableTuple() for query_header in self._query_headers ]
-        serialisable_checker_options = self._checker_options.GetSerialisableTuple()
-        serialisable_file_import_options = self._file_import_options.GetSerialisableTuple()
-        serialisable_tag_import_options = self._tag_import_options.GetSerialisableTuple()
-        serialisable_note_import_options = self._note_import_options.GetSerialisableTuple()
+        serialisable_query_headers = [query_header.get_serialisable_tuple() for query_header in self._query_headers]
+        serialisable_checker_options = self._checker_options.get_serialisable_tuple()
+        serialisable_file_import_options = self._file_import_options.get_serialisable_tuple()
+        serialisable_tag_import_options = self._tag_import_options.get_serialisable_tuple()
+        serialisable_note_import_options = self._note_import_options.get_serialisable_tuple()
         
         return (
             serialisable_gug_key_and_name,
@@ -199,7 +199,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
         )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         (
             serialisable_gug_key_and_name,
@@ -224,11 +224,11 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
         ( serialisable_gug_key, gug_name ) = serialisable_gug_key_and_name
         
         self._gug_key_and_name = ( bytes.fromhex( serialisable_gug_key ), gug_name )
-        self._query_headers = [ HydrusSerialisable.CreateFromSerialisableTuple( serialisable_query ) for serialisable_query in serialisable_query_headers ]
-        self._checker_options = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_checker_options )
-        self._file_import_options = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_file_import_options )
-        self._tag_import_options = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tag_import_options )
-        self._note_import_options = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_note_import_options )
+        self._query_headers = [HydrusSerialisable.create_from_serialisable_tuple(serialisable_query) for serialisable_query in serialisable_query_headers]
+        self._checker_options = HydrusSerialisable.create_from_serialisable_tuple(serialisable_checker_options)
+        self._file_import_options = HydrusSerialisable.create_from_serialisable_tuple(serialisable_file_import_options)
+        self._tag_import_options = HydrusSerialisable.create_from_serialisable_tuple(serialisable_tag_import_options)
+        self._note_import_options = HydrusSerialisable.create_from_serialisable_tuple(serialisable_note_import_options)
         
     
     def _NoDelays( self ):
@@ -244,7 +244,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
         message += '\n\n'
         message += 'If you get many of these messages, one for every subscription query for the site, and the gap downloaders find no new files, then the site has changed URL format in a subtle way and the subscription checker was unable to recognise it (in which case, if the subscription appears to be working, you can ignore any more of these messages).'
         
-        call = HydrusData.Call( CG.client_controller.pub, 'make_new_subscription_gap_downloader', self._gug_key_and_name, query_text, self._file_import_options.Duplicate(), self._tag_import_options.Duplicate(), self._note_import_options, file_limit * 5 )
+        call = HydrusData.Call(CG.client_controller.pub, 'make_new_subscription_gap_downloader', self._gug_key_and_name, query_text, self._file_import_options.duplicate(), self._tag_import_options.duplicate(), self._note_import_options, file_limit * 5)
         
         call.set_label('start a new downloader for this to fill in the gap!')
         
@@ -828,7 +828,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
             
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             
@@ -898,7 +898,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
             note_import_options = NoteImportOptions.NoteImportOptions()
             note_import_options.SetIsDefault( True )
             
-            serialisable_note_import_options = note_import_options.GetSerialisableTuple()
+            serialisable_note_import_options = note_import_options.get_serialisable_tuple()
             
             new_serialisable_info = (
                 serialisable_gug_key_and_name,
@@ -1553,7 +1553,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
         
         self._query_headers = []
         
-        base_sub = self.Duplicate()
+        base_sub = self.duplicate()
         
         self._query_headers = my_query_headers
         
@@ -1566,11 +1566,11 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                 continue
                 
             
-            subscription = base_sub.Duplicate()
+            subscription = base_sub.duplicate()
             
             subscription.SetQueryHeaders( [ query_header ] )
             
-            subscription.SetName( base_name + ': ' + query_header.GetHumanName() )
+            subscription.set_name(base_name + ': ' + query_header.GetHumanName())
             
             subscriptions.append( subscription )
             
@@ -1582,7 +1582,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
     
     def SetCheckerOptions( self, checker_options: ClientImportOptions.CheckerOptions, names_to_query_log_containers = None ):
         
-        changes_made = self._checker_options.GetSerialisableTuple() != checker_options.GetSerialisableTuple()
+        changes_made = self._checker_options.get_serialisable_tuple() != checker_options.get_serialisable_tuple()
         
         self._checker_options = checker_options
         
@@ -1611,7 +1611,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
     
     def SetFileImportOptions( self, file_import_options ):
         
-        self._file_import_options = file_import_options.Duplicate()
+        self._file_import_options = file_import_options.duplicate()
         
     
     def SetPaused( self, value ):
@@ -1635,12 +1635,12 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
     
     def SetNoteImportOptions( self, note_import_options ):
         
-        self._note_import_options = note_import_options.Duplicate()
+        self._note_import_options = note_import_options.duplicate()
         
     
     def SetTagImportOptions( self, tag_import_options ):
         
-        self._tag_import_options = tag_import_options.Duplicate()
+        self._tag_import_options = tag_import_options.duplicate()
         
     
     def SetThisIsARandomSampleSubscription( self, value: bool ):
@@ -1804,20 +1804,20 @@ class SubscriptionContainer( HydrusSerialisable.SerialisableBase ):
         self.query_log_containers = HydrusSerialisable.SerialisableList()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
-        serialisable_subscription = self.subscription.GetSerialisableTuple()
-        serialisable_query_log_containers = self.query_log_containers.GetSerialisableTuple()
+        serialisable_subscription = self.subscription.get_serialisable_tuple()
+        serialisable_query_log_containers = self.query_log_containers.get_serialisable_tuple()
         
         return ( serialisable_subscription, serialisable_query_log_containers )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( serialisable_subscription, serialisable_query_log_containers ) = serialisable_info
         
-        self.subscription = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_subscription )
-        self.query_log_containers = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_query_log_containers )
+        self.subscription = HydrusSerialisable.create_from_serialisable_tuple(serialisable_subscription)
+        self.query_log_containers = HydrusSerialisable.create_from_serialisable_tuple(serialisable_query_log_containers)
         
     
 HydrusSerialisable.SERIALISABLE_TYPES_TO_OBJECT_TYPES[ HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_CONTAINER ] = SubscriptionContainer
@@ -1835,7 +1835,7 @@ class SubscriptionJob( object ):
         
         if HG.subscription_report_mode:
             
-            HydrusData.show_text('Subscription "{}" about to start.'.format(self._subscription.GetName()))
+            HydrusData.show_text('Subscription "{}" about to start.'.format(self._subscription.get_name()))
             
         
         self._subscription.Sync()
@@ -1867,7 +1867,7 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
         
         super().__init__( controller, 10 )
         
-        self._names_to_subscriptions = { subscription.GetName() : subscription for subscription in subscriptions }
+        self._names_to_subscriptions = {subscription.get_name() : subscription for subscription in subscriptions}
         self._names_to_running_subscription_info = {}
         self._names_that_cannot_run = set()
         self._names_to_next_work_time = {}
@@ -1975,7 +1975,7 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _UpdateSubscriptionInfo( self, subscription: Subscription, just_finished_work = False ):
         
-        name = subscription.GetName()
+        name = subscription.get_name()
         
         if name in self._names_that_cannot_run:
             
@@ -2051,7 +2051,7 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
                         
                         CG.client_controller.call_to_thread(job.Work)
                         
-                        self._names_to_running_subscription_info[ subscription.GetName() ] = ( job, subscription )
+                        self._names_to_running_subscription_info[ subscription.get_name()] = (job, subscription)
                         
                     
                     self._ClearFinishedSubscriptions()

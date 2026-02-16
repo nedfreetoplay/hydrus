@@ -651,7 +651,7 @@ class PreviewPanel( ClientGUICommon.StaticBox ):
                 
                 self._InitialisePotentialDuplicatePairs()
                 
-            elif new_search.DumpToString() != old_search.DumpToString():
+            elif new_search.dump_to_string() != old_search.dump_to_string():
                 
                 self._RefetchPairs()
                 
@@ -660,7 +660,7 @@ class PreviewPanel( ClientGUICommon.StaticBox ):
                 old_selector = old_value.GetPairSelector()
                 new_selector = new_value.GetPairSelector()
                 
-                if new_selector.DumpToString() != old_selector.DumpToString():
+                if new_selector.dump_to_string() != old_selector.dump_to_string():
                     
                     self._RetestPairs()
                     

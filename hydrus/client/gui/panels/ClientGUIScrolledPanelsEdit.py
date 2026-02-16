@@ -254,7 +254,7 @@ class EditDefaultImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 note_import_options = self._url_class_keys_to_note_import_options[ url_class_key ]
                 
-                json_string = note_import_options.DumpToString()
+                json_string = note_import_options.dump_to_string()
                 
                 CG.client_controller.pub( 'clipboard', 'text', json_string )
                 
@@ -275,7 +275,7 @@ class EditDefaultImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 tag_import_options = self._url_class_keys_to_tag_import_options[ url_class_key ]
                 
-                json_string = tag_import_options.DumpToString()
+                json_string = tag_import_options.dump_to_string()
                 
                 CG.client_controller.pub( 'clipboard', 'text', json_string )
                 
@@ -362,7 +362,7 @@ class EditDefaultImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 note_import_options = self._file_post_default_import_options_button.GetNoteImportOptions()
                 
             
-            note_import_options = note_import_options.Duplicate()
+            note_import_options = note_import_options.duplicate()
             
             note_import_options.SetIsDefault( True )
             
@@ -391,7 +391,7 @@ class EditDefaultImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 tag_import_options = self._file_post_default_import_options_button.GetTagImportOptions()
                 
             
-            tag_import_options = tag_import_options.Duplicate()
+            tag_import_options = tag_import_options.duplicate()
             
             tag_import_options.SetIsDefault( True )
             
@@ -452,7 +452,7 @@ class EditDefaultImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            unknown_import_options = HydrusSerialisable.CreateFromString( raw_text )
+            unknown_import_options = HydrusSerialisable.create_from_string(raw_text)
             
             if isinstance( unknown_import_options, TagImportOptionsLegacy.TagImportOptionsLegacy ):
                 
@@ -471,7 +471,7 @@ class EditDefaultImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 url_class_key = url_class.GetClassKey()
                 
-                insert_dict[ url_class_key ] = unknown_import_options.Duplicate()
+                insert_dict[ url_class_key ] = unknown_import_options.duplicate()
                 
             
             self._list_ctrl.UpdateDatas()

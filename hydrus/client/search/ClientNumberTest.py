@@ -120,17 +120,17 @@ class NumberTest( HydrusSerialisable.SerialisableBase ):
         return self.ToString()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         return ( self.operator, self.value, self.extra_value )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( self.operator, self.value, self.extra_value ) = serialisable_info
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             

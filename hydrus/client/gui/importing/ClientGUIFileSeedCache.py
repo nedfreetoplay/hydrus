@@ -82,7 +82,7 @@ def ExportFileSeedsToClipboard( file_seeds: collections.abc.Collection[ ClientIm
     
     file_seeds = HydrusSerialisable.SerialisableList( file_seeds )
     
-    payload = file_seeds.DumpToString()
+    payload = file_seeds.dump_to_string()
     
     CG.client_controller.pub( 'clipboard', 'text', payload )
     
@@ -998,7 +998,7 @@ class FileSeedCacheButton( ClientGUICommon.ButtonWithMenuArrow ):
                 
             else: # throw up a dialog that edits the file_seed cache but can be cancelled
                 
-                dupe_file_seed_cache = file_seed_cache.Duplicate()
+                dupe_file_seed_cache = file_seed_cache.duplicate()
                 
                 with ClientGUITopLevelWindowsPanels.DialogEdit( self, title ) as dlg:
                     

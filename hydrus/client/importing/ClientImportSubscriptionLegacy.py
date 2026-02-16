@@ -71,25 +71,25 @@ class SubscriptionQueryLegacy( HydrusSerialisable.SerialisableBase ):
         return example_network_contexts
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
-        serialisable_gallery_seed_log = self._gallery_seed_log.GetSerialisableTuple()
-        serialisable_file_seed_cache = self._file_seed_cache.GetSerialisableTuple()
-        serialisable_tag_import_options = self._tag_import_options.GetSerialisableTuple()
+        serialisable_gallery_seed_log = self._gallery_seed_log.get_serialisable_tuple()
+        serialisable_file_seed_cache = self._file_seed_cache.get_serialisable_tuple()
+        serialisable_tag_import_options = self._tag_import_options.get_serialisable_tuple()
         
         return ( self._query, self._display_name, self._check_now, self._last_check_time, self._next_check_time, self._paused, self._status, serialisable_gallery_seed_log, serialisable_file_seed_cache, serialisable_tag_import_options )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( self._query, self._display_name, self._check_now, self._last_check_time, self._next_check_time, self._paused, self._status, serialisable_gallery_seed_log, serialisable_file_seed_cache, serialisable_tag_import_options ) = serialisable_info
         
-        self._gallery_seed_log = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_gallery_seed_log )
-        self._file_seed_cache = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_file_seed_cache )
-        self._tag_import_options = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tag_import_options )
+        self._gallery_seed_log = HydrusSerialisable.create_from_serialisable_tuple(serialisable_gallery_seed_log)
+        self._file_seed_cache = HydrusSerialisable.create_from_serialisable_tuple(serialisable_file_seed_cache)
+        self._tag_import_options = HydrusSerialisable.create_from_serialisable_tuple(serialisable_tag_import_options)
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             
@@ -97,7 +97,7 @@ class SubscriptionQueryLegacy( HydrusSerialisable.SerialisableBase ):
             
             gallery_seed_log = ClientImportGallerySeeds.GallerySeedLog()
             
-            serialisable_gallery_seed_log = gallery_seed_log.GetSerialisableTuple()
+            serialisable_gallery_seed_log = gallery_seed_log.get_serialisable_tuple()
             
             new_serialisable_info = ( query, check_now, last_check_time, next_check_time, paused, status, serialisable_gallery_seed_log, serialisable_file_seed_cache )
             
@@ -111,7 +111,7 @@ class SubscriptionQueryLegacy( HydrusSerialisable.SerialisableBase ):
             display_name = None
             tag_import_options = TagImportOptionsLegacy.TagImportOptionsLegacy()
             
-            serialisable_tag_import_options = tag_import_options.GetSerialisableTuple()
+            serialisable_tag_import_options = tag_import_options.get_serialisable_tuple()
             
             new_serialisable_info = ( query, display_name, check_now, last_check_time, next_check_time, paused, status, serialisable_gallery_seed_log, serialisable_file_seed_cache, serialisable_tag_import_options )
             
@@ -587,30 +587,30 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
         return queries
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         ( gug_key, gug_name ) = self._gug_key_and_name
         
         serialisable_gug_key_and_name = ( gug_key.hex(), gug_name )
-        serialisable_queries = [ query.GetSerialisableTuple() for query in self._queries ]
-        serialisable_checker_options = self._checker_options.GetSerialisableTuple()
-        serialisable_file_import_options = self._file_import_options.GetSerialisableTuple()
-        serialisable_tag_import_options = self._tag_import_options.GetSerialisableTuple()
+        serialisable_queries = [query.get_serialisable_tuple() for query in self._queries]
+        serialisable_checker_options = self._checker_options.get_serialisable_tuple()
+        serialisable_file_import_options = self._file_import_options.get_serialisable_tuple()
+        serialisable_tag_import_options = self._tag_import_options.get_serialisable_tuple()
         
         return ( serialisable_gug_key_and_name, serialisable_queries, serialisable_checker_options, self._initial_file_limit, self._periodic_file_limit, self._paused, serialisable_file_import_options, serialisable_tag_import_options, self._no_work_until, self._no_work_until_reason, self._show_a_popup_while_working, self._publish_files_to_popup_button, self._publish_files_to_page, self._publish_label_override, self._merge_query_publish_events )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( serialisable_gug_key_and_name, serialisable_queries, serialisable_checker_options, self._initial_file_limit, self._periodic_file_limit, self._paused, serialisable_file_import_options, serialisable_tag_import_options, self._no_work_until, self._no_work_until_reason, self._show_a_popup_while_working, self._publish_files_to_popup_button, self._publish_files_to_page, self._publish_label_override, self._merge_query_publish_events ) = serialisable_info
         
         ( serialisable_gug_key, gug_name ) = serialisable_gug_key_and_name
         
         self._gug_key_and_name = ( bytes.fromhex( serialisable_gug_key ), gug_name )
-        self._queries = [ HydrusSerialisable.CreateFromSerialisableTuple( serialisable_query ) for serialisable_query in serialisable_queries ]
-        self._checker_options = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_checker_options )
-        self._file_import_options = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_file_import_options )
-        self._tag_import_options = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tag_import_options )
+        self._queries = [HydrusSerialisable.create_from_serialisable_tuple(serialisable_query) for serialisable_query in serialisable_queries]
+        self._checker_options = HydrusSerialisable.create_from_serialisable_tuple(serialisable_checker_options)
+        self._file_import_options = HydrusSerialisable.create_from_serialisable_tuple(serialisable_file_import_options)
+        self._tag_import_options = HydrusSerialisable.create_from_serialisable_tuple(serialisable_tag_import_options)
         
     
     def _GenerateNetworkJobFactory( self, query ):
@@ -754,7 +754,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
         return result
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             
@@ -785,7 +785,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
             
             checker_options = ClientImportOptions.CheckerOptions( 5, period // 5, period * 10, ( 1, period * 10 ) )
             
-            file_seed_cache = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_file_seed_cache )
+            file_seed_cache = HydrusSerialisable.create_from_serialisable_tuple(serialisable_file_seed_cache)
             
             query = SubscriptionQueryLegacy( query )
             
@@ -796,8 +796,8 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
             
             queries = [ query ]
             
-            serialisable_queries = [ query.GetSerialisableTuple() for query in queries ]
-            serialisable_checker_options = checker_options.GetSerialisableTuple()
+            serialisable_queries = [query.get_serialisable_tuple() for query in queries]
+            serialisable_checker_options = checker_options.get_serialisable_tuple()
             
             new_serialisable_info = ( serialisable_gallery_identifier, serialisable_gallery_stream_identifiers, serialisable_queries, serialisable_checker_options, get_tags_if_url_recognised_and_file_redundant, initial_file_limit, periodic_file_limit, paused, serialisable_file_import_options, serialisable_tag_import_options, no_work_until, no_work_until_reason )
             
@@ -849,7 +849,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
             
             ( serialisable_gallery_identifier, serialisable_gallery_stream_identifiers, serialisable_queries, serialisable_checker_options, initial_file_limit, periodic_file_limit, paused, serialisable_file_import_options, serialisable_tag_import_options, no_work_until, no_work_until_reason, publish_files_to_popup_button, publish_files_to_page, merge_query_publish_events ) = old_serialisable_info
             
-            gallery_identifier = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_gallery_identifier )
+            gallery_identifier = HydrusSerialisable.create_from_serialisable_tuple(serialisable_gallery_identifier)
             
             ( gug_key, gug_name ) = ClientDownloading.ConvertGalleryIdentifierToGUGKeyAndName( gallery_identifier )
             
@@ -1068,7 +1068,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
             
             if subscription._gug_key_and_name[1] == self._gug_key_and_name[1]:
                 
-                my_new_queries = [ query.Duplicate() for query in subscription._queries ]
+                my_new_queries = [query.duplicate() for query in subscription._queries]
                 
                 self._queries.extend( my_new_queries )
                 
@@ -1125,7 +1125,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
         
         self._queries = []
         
-        base_sub = self.Duplicate()
+        base_sub = self.duplicate()
         
         self._queries = my_queries
         
@@ -1138,11 +1138,11 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
                 continue
                 
             
-            subscription = base_sub.Duplicate()
+            subscription = base_sub.duplicate()
             
             subscription._queries = [ query ]
             
-            subscription.SetName( base_name + ': ' + query.GetHumanName() )
+            subscription.set_name(base_name + ': ' + query.GetHumanName())
             
             subscriptions.append( subscription )
             
@@ -1178,7 +1178,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
     
     def SetTagImportOptions( self, tag_import_options ):
         
-        self._tag_import_options = tag_import_options.Duplicate()
+        self._tag_import_options = tag_import_options.duplicate()
         
     
     def SetTuple( self, gug_key_and_name, checker_options: ClientImportOptions.CheckerOptions, initial_file_limit, periodic_file_limit, paused, file_import_options: FileImportOptionsLegacy.FileImportOptionsLegacy, tag_import_options: TagImportOptionsLegacy.TagImportOptionsLegacy, no_work_until ):

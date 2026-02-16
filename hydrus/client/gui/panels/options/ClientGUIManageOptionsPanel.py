@@ -60,7 +60,7 @@ class ManageOptionsPanel( ClientGUIScrolledPanels.ManagePanel ):
         self._original_options = dict( HC.options )
         
         self._new_options = CG.client_controller.new_options
-        self._original_new_options = self._new_options.Duplicate()
+        self._original_new_options = self._new_options.duplicate()
         
         all_shortcuts = ClientGUIShortcuts.shortcuts_manager().GetShortcutSets()
         
@@ -216,7 +216,7 @@ class ManageOptionsPanel( ClientGUIScrolledPanels.ManagePanel ):
             
             # TODO: move all this, including 'original options' gubbins, to the manageoptions call. this dialog shouldn't care about these signals
             # we do this to convert tuples to lists and so on
-            test_new_options = self._new_options.Duplicate()
+            test_new_options = self._new_options.duplicate()
             
             if test_new_options.GetMediaViewOptions() != self._original_new_options.GetMediaViewOptions():
                 

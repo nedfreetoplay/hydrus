@@ -88,18 +88,18 @@ class APIManager( HydrusSerialisable.SerialisableBase ):
         CG.client_controller.sub( self, 'MaintainMemory', 'memory_maintenance_pulse' )
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
-        serialisable_api_permissions_objects = [ api_permissions.GetSerialisableTuple() for api_permissions in self._access_keys_to_permissions.values() ]
+        serialisable_api_permissions_objects = [api_permissions.get_serialisable_tuple() for api_permissions in self._access_keys_to_permissions.values()]
         
         return serialisable_api_permissions_objects
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         serialisable_api_permissions_objects = serialisable_info
         
-        api_permissions_objects: list[ APIPermissions ] = [ HydrusSerialisable.CreateFromSerialisableTuple( serialisable_api_permissions ) for serialisable_api_permissions in serialisable_api_permissions_objects ]
+        api_permissions_objects: list[ APIPermissions ] = [HydrusSerialisable.create_from_serialisable_tuple(serialisable_api_permissions) for serialisable_api_permissions in serialisable_api_permissions_objects]
         
         self._access_keys_to_permissions = { api_permissions.GetAccessKey() : api_permissions for api_permissions in api_permissions_objects }
         
@@ -271,12 +271,12 @@ class APIPermissions( HydrusSerialisable.SerialisableBaseNamed ):
         self._lock = threading.Lock()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         serialisable_access_key = self._access_key.hex()
         
         serialisable_basic_permissions = list( self._basic_permissions )
-        serialisable_search_tag_filter = self._search_tag_filter.GetSerialisableTuple()
+        serialisable_search_tag_filter = self._search_tag_filter.get_serialisable_tuple()
         
         return ( serialisable_access_key, self._permits_everything, serialisable_basic_permissions, serialisable_search_tag_filter )
         
@@ -286,17 +286,17 @@ class APIPermissions( HydrusSerialisable.SerialisableBaseNamed ):
         return self._permits_everything or permission in self._basic_permissions
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( serialisable_access_key, self._permits_everything, serialisable_basic_permissions, serialisable_search_tag_filter ) = serialisable_info
         
         self._access_key = bytes.fromhex( serialisable_access_key )
         
         self._basic_permissions = set( serialisable_basic_permissions )
-        self._search_tag_filter = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_search_tag_filter )
+        self._search_tag_filter = HydrusSerialisable.create_from_serialisable_tuple(serialisable_search_tag_filter)
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             

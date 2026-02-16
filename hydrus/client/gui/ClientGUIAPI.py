@@ -109,7 +109,7 @@ class EditAPIPermissionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         self._access_key.setText( access_key.hex() )
         
-        name = api_permissions.GetName()
+        name = api_permissions.get_name()
         
         self._name.setText( name )
         

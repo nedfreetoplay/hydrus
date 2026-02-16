@@ -107,7 +107,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
             
             for ( service_id, service_key, service_type, name, dictionary_string ) in all_data:
                 
-                dictionary = HydrusSerialisable.CreateFromString( dictionary_string )
+                dictionary = HydrusSerialisable.create_from_string(dictionary_string)
                 
                 service = ClientServices.GenerateService( service_key, service_type, name, dictionary )
                 
@@ -139,7 +139,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
     
     def AddService( self, service_key, service_type, name, dictionary: HydrusSerialisable.SerialisableBase ) -> int:
         
-        dictionary_string = dictionary.DumpToString()
+        dictionary_string = dictionary.dump_to_string()
         
         self._execute('INSERT INTO services ( service_key, service_type, name, dictionary_string ) VALUES ( ?, ?, ?, ? );', (sqlite3.Binary(service_key), service_type, name, dictionary_string))
         
@@ -370,7 +370,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
         
         service_id = self.GetServiceId( service_key )
         
-        dictionary_string = dictionary.DumpToString()
+        dictionary_string = dictionary.dump_to_string()
         
         self._execute('UPDATE services SET name = ?, dictionary_string = ? WHERE service_id = ?;', (name, dictionary_string, service_id))
         

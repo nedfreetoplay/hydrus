@@ -20,20 +20,20 @@ class NetworkSessionManagerLegacy( HydrusSerialisable.SerialisableBase ):
         self._network_contexts_to_sessions = {}
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
-        serialisable_network_contexts_to_sessions = [ ( network_context.GetSerialisableTuple(), pickle.dumps( session ).hex() ) for ( network_context, session ) in list(self._network_contexts_to_sessions.items()) ]
+        serialisable_network_contexts_to_sessions = [(network_context.get_serialisable_tuple(), pickle.dumps(session).hex()) for (network_context, session) in list(self._network_contexts_to_sessions.items())]
         
         return serialisable_network_contexts_to_sessions
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         serialisable_network_contexts_to_sessions = serialisable_info
         
         for ( serialisable_network_context, pickled_session_hex ) in serialisable_network_contexts_to_sessions:
             
-            network_context = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_network_context )
+            network_context = HydrusSerialisable.create_from_serialisable_tuple(serialisable_network_context)
             
             try:
                 

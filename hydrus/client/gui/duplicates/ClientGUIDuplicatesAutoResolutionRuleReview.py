@@ -167,7 +167,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         vbox = QP.VBoxLayout()
         
-        st = ClientGUICommon.BetterStaticText( self, label = rule.GetName() )
+        st = ClientGUICommon.BetterStaticText(self, label = rule.get_name())
         st.setWordWrap( True )
         st.setAlignment( QC.Qt.AlignmentFlag.AlignCenter )
         

@@ -135,7 +135,7 @@ class EditExportFoldersPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 export_folder = panel.GetValue()
                 
-                export_folder.SetNonDupeName( self._GetExistingNames(), do_casefold = True )
+                export_folder.set_non_dupe_name(self._GetExistingNames(), do_casefold = True)
                 
                 self._export_folders.AddData( export_folder, select_sort_and_scroll = True )
                 
@@ -200,13 +200,13 @@ class EditExportFoldersPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 edited_export_folder = panel.GetValue()
                 
-                if edited_export_folder.GetName() != export_folder.GetName():
+                if edited_export_folder.get_name() != export_folder.get_name():
                     
                     existing_names = self._GetExistingNames()
                     
-                    existing_names.discard( export_folder.GetName() )
+                    existing_names.discard(export_folder.get_name())
                     
-                    edited_export_folder.SetNonDupeName( existing_names, do_casefold = True )
+                    edited_export_folder.set_non_dupe_name(existing_names, do_casefold = True)
                     
                 
                 self._export_folders.ReplaceData( export_folder, edited_export_folder, sort_and_scroll = True )

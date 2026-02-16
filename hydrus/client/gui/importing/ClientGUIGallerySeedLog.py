@@ -162,7 +162,7 @@ def ExportGallerySeedsToClipboard( gallery_seeds: collections.abc.Collection[ Cl
     
     gallery_seeds = HydrusSerialisable.SerialisableList( gallery_seeds )
     
-    payload = gallery_seeds.DumpToString()
+    payload = gallery_seeds.dump_to_string()
     
     CG.client_controller.pub( 'clipboard', 'text', payload )
     
@@ -703,7 +703,7 @@ class GallerySeedLogButton( ClientGUICommon.ButtonWithMenuArrow ):
                 
             else: # throw up a dialog that edits the gallery_seed log but can be cancelled
                 
-                dupe_gallery_seed_log = gallery_seed_log.Duplicate()
+                dupe_gallery_seed_log = gallery_seed_log.duplicate()
                 
                 with ClientGUITopLevelWindowsPanels.DialogEdit( self, title ) as dlg:
                     

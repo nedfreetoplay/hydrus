@@ -37,20 +37,20 @@ class SubscriptionQueryLogContainer( HydrusSerialisable.SerialisableBaseNamed ):
         self._file_seed_cache = ClientImportFileSeeds.FileSeedCache()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
-        serialisable_gallery_seed_log = self._gallery_seed_log.GetSerialisableTuple()
-        serialisable_file_seed_cache = self._file_seed_cache.GetSerialisableTuple()
+        serialisable_gallery_seed_log = self._gallery_seed_log.get_serialisable_tuple()
+        serialisable_file_seed_cache = self._file_seed_cache.get_serialisable_tuple()
         
         return ( serialisable_gallery_seed_log, serialisable_file_seed_cache )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( serialisable_gallery_seed_log, serialisable_file_seed_cache ) = serialisable_info
         
-        self._gallery_seed_log = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_gallery_seed_log )
-        self._file_seed_cache = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_file_seed_cache )
+        self._gallery_seed_log = HydrusSerialisable.create_from_serialisable_tuple(serialisable_gallery_seed_log)
+        self._file_seed_cache = HydrusSerialisable.create_from_serialisable_tuple(serialisable_file_seed_cache)
         
     
     def GetFileSeedCache( self ):
@@ -210,13 +210,13 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
-        serialisable_file_seed_cache_status = self._file_seed_cache_status.GetSerialisableTuple()
-        serialisable_tag_import_options = self._tag_import_options.GetSerialisableTuple()
+        serialisable_file_seed_cache_status = self._file_seed_cache_status.get_serialisable_tuple()
+        serialisable_tag_import_options = self._tag_import_options.get_serialisable_tuple()
         
-        serialisable_example_file_seed = HydrusSerialisable.GetNoneableSerialisableTuple( self._example_file_seed )
-        serialisable_example_gallery_seed = HydrusSerialisable.GetNoneableSerialisableTuple( self._example_gallery_seed )
+        serialisable_example_file_seed = HydrusSerialisable.get_noneable_serialisable_tuple(self._example_file_seed)
+        serialisable_example_gallery_seed = HydrusSerialisable.get_noneable_serialisable_tuple(self._example_gallery_seed)
         
         return (
             self._query_log_container_name,
@@ -239,7 +239,7 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
         )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         (
             self._query_log_container_name,
@@ -261,12 +261,12 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
             serialisable_example_gallery_seed
             ) = serialisable_info
         
-        self._file_seed_cache_status = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_file_seed_cache_status )
-        self._tag_import_options = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tag_import_options )
+        self._file_seed_cache_status = HydrusSerialisable.create_from_serialisable_tuple(serialisable_file_seed_cache_status)
+        self._tag_import_options = HydrusSerialisable.create_from_serialisable_tuple(serialisable_tag_import_options)
         
         try:
             
-            self._example_file_seed = HydrusSerialisable.CreateFromNoneableSerialisableTuple( serialisable_example_file_seed )
+            self._example_file_seed = HydrusSerialisable.create_from_noneable_serialisable_tuple(serialisable_example_file_seed)
             
         except Exception as e:
             
@@ -275,7 +275,7 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
         
         try:
             
-            self._example_gallery_seed = HydrusSerialisable.CreateFromNoneableSerialisableTuple( serialisable_example_gallery_seed )
+            self._example_gallery_seed = HydrusSerialisable.create_from_noneable_serialisable_tuple(serialisable_example_gallery_seed)
             
         except Exception as e:
             
@@ -283,7 +283,7 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             

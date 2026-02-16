@@ -80,12 +80,12 @@ encoding_type_legacy_to_enum_lookup = {
 
 class StringProcessingStep( HydrusSerialisable.SerialisableBase ):
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         raise NotImplementedError()
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         raise NotImplementedError()
         
@@ -126,12 +126,12 @@ class StringConverter( StringProcessingStep ):
         self.example_string = example_string
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         return ( self.conversions, self.example_string )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( serialisable_conversions, self.example_string ) = serialisable_info
         
@@ -155,7 +155,7 @@ class StringConverter( StringProcessingStep ):
             
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             
@@ -601,17 +601,17 @@ class StringJoiner( StringProcessingStep ):
         self._join_tuple_size = join_tuple_size
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         return ( self._joiner, self._join_tuple_size )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( self._joiner, self._join_tuple_size ) = serialisable_info
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             
@@ -748,12 +748,12 @@ class StringMatch( StringProcessingStep ):
         self._example_string = example_string
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         return ( self._match_type, self._match_value, self._min_chars, self._max_chars, self._example_string )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( self._match_type, self._match_value, self._min_chars, self._max_chars, self._example_string ) = serialisable_info
         
@@ -1023,12 +1023,12 @@ class StringSlicer( StringProcessingStep ):
         self._index_end = index_end
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         return ( self._index_start, self._index_end )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( self._index_start, self._index_end ) = serialisable_info
         
@@ -1195,12 +1195,12 @@ class StringSorter( StringProcessingStep ):
         self._regex = regex
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         return ( self._sort_type, self._asc, self._regex )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( self._sort_type, self._asc, self._regex ) = serialisable_info
         
@@ -1328,17 +1328,17 @@ class StringSplitter( StringProcessingStep ):
         self._max_splits = max_splits
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         return ( self._separator, self._max_splits )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( self._separator, self._max_splits ) = serialisable_info
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             
@@ -1447,18 +1447,18 @@ class StringTagFilter( StringProcessingStep ):
         self._example_string = example_string
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
-        serialisable_tag_filter = self._tag_filter.GetSerialisableTuple()
+        serialisable_tag_filter = self._tag_filter.get_serialisable_tuple()
         
         return ( serialisable_tag_filter, self._example_string )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( serialisable_tag_filter, self._example_string ) = serialisable_info
         
-        self._tag_filter = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tag_filter )
+        self._tag_filter = HydrusSerialisable.create_from_serialisable_tuple(serialisable_tag_filter)
         
     
     def ConvertAndFilter( self, tag_texts ):
@@ -1568,16 +1568,16 @@ class StringProcessor( StringProcessingStep ):
         self._processing_steps = []
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
-        return HydrusSerialisable.SerialisableList( self._processing_steps ).GetSerialisableTuple()
+        return HydrusSerialisable.SerialisableList( self._processing_steps ).get_serialisable_tuple()
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         serialisable_processing_steps = serialisable_info
         
-        self._processing_steps = list( HydrusSerialisable.CreateFromSerialisableTuple( serialisable_processing_steps ) )
+        self._processing_steps = list(HydrusSerialisable.create_from_serialisable_tuple(serialisable_processing_steps))
         
     
     def GetProcessingSteps( self ):

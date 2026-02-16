@@ -44,14 +44,14 @@ class FilenameTaggingOptions( HydrusSerialisable.SerialisableBase ):
         self._regexes = []
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         serialisable_directories_dict = list(self._directories_dict.items())
         
         return ( list( self._tags_for_all ), self._load_from_neighbouring_txt_files, self._add_filename, serialisable_directories_dict, self._quick_namespaces, self._regexes )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( tags_for_all_list, self._load_from_neighbouring_txt_files, self._add_filename, serialisable_directories_dict, self._quick_namespaces, self._regexes ) = serialisable_info
         
@@ -62,7 +62,7 @@ class FilenameTaggingOptions( HydrusSerialisable.SerialisableBase ):
         self._tags_for_all = set( tags_for_all_list )
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             
@@ -283,7 +283,7 @@ class TagImportOptionsLegacy( HydrusSerialisable.SerialisableBase ):
         self._is_default = is_default
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         if CG.client_controller.IsBooted():
             
@@ -299,23 +299,23 @@ class TagImportOptionsLegacy( HydrusSerialisable.SerialisableBase ):
                 
             
         
-        serialisable_tag_blacklist = self._tag_blacklist.GetSerialisableTuple()
+        serialisable_tag_blacklist = self._tag_blacklist.get_serialisable_tuple()
         
-        serialisable_service_keys_to_service_tag_import_options = [ ( service_key.hex(), service_tag_import_options.GetSerialisableTuple() ) for ( service_key, service_tag_import_options ) in list(self._service_keys_to_service_tag_import_options.items()) if test_func( service_key ) ]
+        serialisable_service_keys_to_service_tag_import_options = [( service_key.hex(), service_tag_import_options.get_serialisable_tuple()) for (service_key, service_tag_import_options) in list(self._service_keys_to_service_tag_import_options.items()) if test_func(service_key)]
         
         return ( self._fetch_tags_even_if_url_recognised_and_file_already_in_db, self._fetch_tags_even_if_hash_recognised_and_file_already_in_db, serialisable_tag_blacklist, self._tag_whitelist, serialisable_service_keys_to_service_tag_import_options, self._is_default )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( self._fetch_tags_even_if_url_recognised_and_file_already_in_db, self._fetch_tags_even_if_hash_recognised_and_file_already_in_db, serialisable_tag_blacklist, self._tag_whitelist, serialisable_service_keys_to_service_tag_import_options, self._is_default ) = serialisable_info
         
-        self._tag_blacklist = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tag_blacklist )
+        self._tag_blacklist = HydrusSerialisable.create_from_serialisable_tuple(serialisable_tag_blacklist)
         
-        self._service_keys_to_service_tag_import_options = { bytes.fromhex( encoded_service_key ) : HydrusSerialisable.CreateFromSerialisableTuple( serialisable_service_tag_import_options ) for ( encoded_service_key, serialisable_service_tag_import_options ) in serialisable_service_keys_to_service_tag_import_options }
+        self._service_keys_to_service_tag_import_options = {bytes.fromhex( encoded_service_key ) : HydrusSerialisable.create_from_serialisable_tuple(serialisable_service_tag_import_options) for (encoded_service_key, serialisable_service_tag_import_options) in serialisable_service_keys_to_service_tag_import_options}
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             
@@ -345,7 +345,7 @@ class TagImportOptionsLegacy( HydrusSerialisable.SerialisableBase ):
             
             tag_blacklist = HydrusTags.TagFilter()
             
-            serialisable_tag_blacklist = tag_blacklist.GetSerialisableTuple()
+            serialisable_tag_blacklist = tag_blacklist.get_serialisable_tuple()
             
             new_serialisable_info = ( fetch_tags_even_if_url_recognised_and_file_already_in_db, serialisable_tag_blacklist, safe_service_keys_to_namespaces, safe_service_keys_to_additional_tags )
             
@@ -409,7 +409,7 @@ class TagImportOptionsLegacy( HydrusSerialisable.SerialisableBase ):
                 service_keys_to_service_tag_import_options[ service_key ] = service_tag_import_options
                 
             
-            serialisable_service_keys_to_service_tag_import_options = [ ( service_key.hex(), service_tag_import_options.GetSerialisableTuple() ) for ( service_key, service_tag_import_options ) in list(service_keys_to_service_tag_import_options.items()) ]
+            serialisable_service_keys_to_service_tag_import_options = [( service_key.hex(), service_tag_import_options.get_serialisable_tuple()) for (service_key, service_tag_import_options) in list(service_keys_to_service_tag_import_options.items())]
             
             new_serialisable_info = ( fetch_tags_even_if_url_recognised_and_file_already_in_db, fetch_tags_even_if_hash_recognised_and_file_already_in_db, serialisable_tag_blacklist, serialisable_service_keys_to_service_tag_import_options )
             
@@ -732,23 +732,23 @@ class ServiceTagImportOptions( HydrusSerialisable.SerialisableBase ):
         self._additional_tags_overwrite_deleted = additional_tags_overwrite_deleted
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
-        serialisable_get_tags_filter = self._get_tags_filter.GetSerialisableTuple()
-        serialisable_only_add_existing_tags_filter = self._only_add_existing_tags_filter.GetSerialisableTuple()
+        serialisable_get_tags_filter = self._get_tags_filter.get_serialisable_tuple()
+        serialisable_only_add_existing_tags_filter = self._only_add_existing_tags_filter.get_serialisable_tuple()
         
         return ( self._get_tags, serialisable_get_tags_filter, list( self._additional_tags ), self._to_new_files, self._to_already_in_inbox, self._to_already_in_archive, self._only_add_existing_tags, serialisable_only_add_existing_tags_filter, self._get_tags_overwrite_deleted, self._additional_tags_overwrite_deleted )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( self._get_tags, serialisable_get_tags_filter, self._additional_tags, self._to_new_files, self._to_already_in_inbox, self._to_already_in_archive, self._only_add_existing_tags, serialisable_only_add_existing_tags_filter, self._get_tags_overwrite_deleted, self._additional_tags_overwrite_deleted ) = serialisable_info
         
-        self._get_tags_filter = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_get_tags_filter )
-        self._only_add_existing_tags_filter = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_only_add_existing_tags_filter )
+        self._get_tags_filter = HydrusSerialisable.create_from_serialisable_tuple(serialisable_get_tags_filter)
+        self._only_add_existing_tags_filter = HydrusSerialisable.create_from_serialisable_tuple(serialisable_only_add_existing_tags_filter)
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             
@@ -757,8 +757,8 @@ class ServiceTagImportOptions( HydrusSerialisable.SerialisableBase ):
             get_tags_filter = HydrusTags.TagFilter()
             only_add_existing_tags_filter = HydrusTags.TagFilter()
             
-            serialisable_get_tags_filter = get_tags_filter.GetSerialisableTuple()
-            serialisable_only_add_existing_tags_filter = only_add_existing_tags_filter.GetSerialisableTuple()
+            serialisable_get_tags_filter = get_tags_filter.get_serialisable_tuple()
+            serialisable_only_add_existing_tags_filter = only_add_existing_tags_filter.get_serialisable_tuple()
             
             new_serialisable_info = ( get_tags, serialisable_get_tags_filter, namespaces, additional_tags, to_new_files, to_already_in_inbox, to_already_in_archive, only_add_existing_tags, serialisable_only_add_existing_tags_filter )
             
@@ -792,7 +792,7 @@ class ServiceTagImportOptions( HydrusSerialisable.SerialisableBase ):
                     get_tags_filter.SetRule( namespace + ':', HC.FILTER_WHITELIST )
                     
                 
-                serialisable_get_tags_filter = get_tags_filter.GetSerialisableTuple()
+                serialisable_get_tags_filter = get_tags_filter.get_serialisable_tuple()
                 
             
             new_serialisable_info = ( get_tags, serialisable_get_tags_filter, additional_tags, to_new_files, to_already_in_inbox, to_already_in_archive, only_add_existing_tags, serialisable_only_add_existing_tags_filter )

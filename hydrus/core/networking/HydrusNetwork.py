@@ -116,7 +116,7 @@ def GenerateServiceFromSerialisableTuple( serialisable_info ):
         raise HydrusExceptions.BadRequestException( 'Could not decode that service key!' )
         
     
-    dictionary = HydrusSerialisable.CreateFromString( dictionary_string )
+    dictionary = HydrusSerialisable.create_from_string(dictionary_string)
     
     return GenerateService( service_key, service_type, name, port, dictionary )
     
@@ -645,10 +645,10 @@ class Account( object ):
             
         else:
             
-            account_type = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_account_type )
+            account_type = HydrusSerialisable.create_from_serialisable_tuple(serialisable_account_type)
             
         
-        dictionary = HydrusSerialisable.CreateFromString( dictionary_string )
+        dictionary = HydrusSerialisable.create_from_string(dictionary_string)
         
         return Account.GenerateAccountFromTuple( ( account_key, account_type, created, expires, dictionary ) )
         
@@ -695,9 +695,9 @@ class Account( object ):
         
         account_key_encoded = account_key.hex()
         
-        serialisable_account_type = account_type.GetSerialisableTuple()
+        serialisable_account_type = account_type.get_serialisable_tuple()
         
-        dictionary_string = dictionary.DumpToString()
+        dictionary_string = dictionary.dump_to_string()
         
         return ( account_key_encoded, serialisable_account_type, created, expires, dictionary_string )
         
@@ -724,7 +724,7 @@ class Account( object ):
         dictionary[ 'message' ] = message
         dictionary[ 'message_created' ] = message_created
         
-        dictionary = dictionary.Duplicate()
+        dictionary = dictionary.duplicate()
         
         return ( account_key, account_type, created, expires, dictionary )
         
@@ -780,7 +780,7 @@ class AccountIdentifier( HydrusSerialisable.SerialisableBase ):
     
     def __repr__( self ): return 'Account Identifier: ' + str( ( self._type, self._data ) )
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         if self._type == self.TYPE_ACCOUNT_KEY:
             
@@ -788,13 +788,13 @@ class AccountIdentifier( HydrusSerialisable.SerialisableBase ):
             
         elif self._type == self.TYPE_CONTENT:
             
-            serialisable_data = self._data.GetSerialisableTuple()
+            serialisable_data = self._data.get_serialisable_tuple()
             
         
         return ( self._type, serialisable_data )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( self._type, serialisable_data ) = serialisable_info
         
@@ -804,7 +804,7 @@ class AccountIdentifier( HydrusSerialisable.SerialisableBase ):
             
         elif self._type == self.TYPE_CONTENT:
             
-            self._data = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_data )
+            self._data = HydrusSerialisable.create_from_serialisable_tuple(serialisable_data)
             
         
     
@@ -911,27 +911,27 @@ class AccountType( HydrusSerialisable.SerialisableBase ):
         return self.__repr__()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         serialisable_account_type_key = self._account_type_key.hex()
         serialisable_permissions = list( self._permissions.items() )
-        serialisable_bandwidth_rules = self._bandwidth_rules.GetSerialisableTuple()
-        serialisable_auto_creation_history = self._auto_creation_history.GetSerialisableTuple()
+        serialisable_bandwidth_rules = self._bandwidth_rules.get_serialisable_tuple()
+        serialisable_auto_creation_history = self._auto_creation_history.get_serialisable_tuple()
         
         return ( serialisable_account_type_key, self._title, serialisable_permissions, serialisable_bandwidth_rules, self._auto_creation_velocity, serialisable_auto_creation_history )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( serialisable_account_type_key, self._title, serialisable_permissions, serialisable_bandwidth_rules, self._auto_creation_velocity, serialisable_auto_creation_history ) = serialisable_info
         
         self._account_type_key = bytes.fromhex( serialisable_account_type_key )
         self._permissions = dict( serialisable_permissions )
-        self._bandwidth_rules = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_bandwidth_rules )
-        self._auto_creation_history = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_auto_creation_history )
+        self._bandwidth_rules = HydrusSerialisable.create_from_serialisable_tuple(serialisable_bandwidth_rules)
+        self._auto_creation_history = HydrusSerialisable.create_from_serialisable_tuple(serialisable_auto_creation_history)
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             
@@ -1173,13 +1173,13 @@ class ClientToServerUpdate( HydrusSerialisable.SerialisableBase ):
         self._actions_to_contents_and_reasons = collections.defaultdict( list )
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         serialisable_info = []
         
         for ( action, contents_and_reasons ) in list(self._actions_to_contents_and_reasons.items()):
             
-            serialisable_contents_and_reasons = [ ( content.GetSerialisableTuple(), reason ) for ( content, reason ) in contents_and_reasons ]
+            serialisable_contents_and_reasons = [(content.get_serialisable_tuple(), reason) for (content, reason) in contents_and_reasons]
             
             serialisable_info.append( ( action, serialisable_contents_and_reasons ) )
             
@@ -1187,11 +1187,11 @@ class ClientToServerUpdate( HydrusSerialisable.SerialisableBase ):
         return serialisable_info
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         for ( action, serialisable_contents_and_reasons ) in serialisable_info:
             
-            contents_and_reasons = [ ( HydrusSerialisable.CreateFromSerialisableTuple( serialisable_content ), reason ) for ( serialisable_content, reason ) in serialisable_contents_and_reasons ]
+            contents_and_reasons = [(HydrusSerialisable.create_from_serialisable_tuple(serialisable_content), reason) for (serialisable_content, reason) in serialisable_contents_and_reasons]
             
             self._actions_to_contents_and_reasons[ action ] = contents_and_reasons
             
@@ -1309,7 +1309,7 @@ class Content( HydrusSerialisable.SerialisableBase ):
     
     def __repr__( self ): return 'Content: ' + self.ToString()
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         def EncodeHashes( hs ):
             
@@ -1344,7 +1344,7 @@ class Content( HydrusSerialisable.SerialisableBase ):
         return ( self._content_type, serialisable_content )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         def DecodeHashes( hs ):
             
@@ -1544,7 +1544,7 @@ class ContentUpdate( HydrusSerialisable.SerialisableBase ):
         return []
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         serialisable_info = []
         
@@ -1558,7 +1558,7 @@ class ContentUpdate( HydrusSerialisable.SerialisableBase ):
         return serialisable_info
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         for ( content_type, serialisable_actions_to_datas ) in serialisable_info:
             
@@ -1702,7 +1702,7 @@ class Credentials( HydrusSerialisable.SerialisableBase ):
         return 'Credentials: ' + str( ( self._host, self._port, access_key_str ) )
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         if self._access_key is None:
             
@@ -1716,7 +1716,7 @@ class Credentials( HydrusSerialisable.SerialisableBase ):
         return ( self._host, self._port, serialisable_access_key )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( self._host, self._port, serialisable_access_key ) = serialisable_info
         
@@ -1882,7 +1882,7 @@ class DefinitionsUpdate( HydrusSerialisable.SerialisableBase ):
         self._tag_ids_to_tags = {}
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         serialisable_info = []
         
@@ -1899,7 +1899,7 @@ class DefinitionsUpdate( HydrusSerialisable.SerialisableBase ):
         return serialisable_info
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         for ( definition_type, definitions ) in serialisable_info:
             
@@ -2006,7 +2006,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
         return self._next_update_due + delay
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         serialisable_metadata = [ ( update_index, [ update_hash.hex() for update_hash in update_hashes ], begin, end ) for ( update_index, ( update_hashes, begin, end ) ) in list(self._metadata.items()) ]
         
@@ -2030,7 +2030,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
         return self._metadata[ update_index ]
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( serialisable_metadata, self._next_update_due ) = serialisable_info
         
@@ -2356,35 +2356,35 @@ class Petition( HydrusSerialisable.SerialisableBase ):
         return self._petition_header.__hash__()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         serialisable_petitioner_account = Account.GenerateSerialisableTupleFromAccount( self._petitioner_account )
-        serialisable_petition_header = self._petition_header.GetSerialisableTuple()
-        serialisable_actions_and_contents = [ ( action, contents.GetSerialisableTuple() ) for ( action, contents ) in self._actions_and_contents ]
+        serialisable_petition_header = self._petition_header.get_serialisable_tuple()
+        serialisable_actions_and_contents = [( action, contents.get_serialisable_tuple()) for (action, contents) in self._actions_and_contents]
         
         return ( serialisable_petitioner_account, serialisable_petition_header, serialisable_actions_and_contents )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( serialisable_petitioner_account, serialisable_petition_header, serialisable_actions_and_contents ) = serialisable_info
         
         self._petitioner_account = Account.GenerateAccountFromSerialisableTuple( serialisable_petitioner_account )
-        self._petition_header = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_petition_header )
-        self._actions_and_contents = [ ( action, HydrusSerialisable.CreateFromSerialisableTuple( serialisable_contents ) ) for ( action, serialisable_contents ) in serialisable_actions_and_contents ]
+        self._petition_header = HydrusSerialisable.create_from_serialisable_tuple(serialisable_petition_header)
+        self._actions_and_contents = [( action, HydrusSerialisable.create_from_serialisable_tuple(serialisable_contents)) for (action, serialisable_contents) in serialisable_actions_and_contents]
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             
             ( action, serialisable_petitioner_account, reason, serialisable_contents ) = old_serialisable_info
             
-            contents = [ HydrusSerialisable.CreateFromSerialisableTuple( serialisable_content ) for serialisable_content in serialisable_contents ]
+            contents = [HydrusSerialisable.create_from_serialisable_tuple(serialisable_content) for serialisable_content in serialisable_contents]
             
             actions_and_contents = [ ( action, HydrusSerialisable.SerialisableList( contents ) ) ]
             
-            serialisable_actions_and_contents = [ ( action, contents.GetSerialisableTuple() ) for ( action, contents ) in actions_and_contents ]
+            serialisable_actions_and_contents = [( action, contents.get_serialisable_tuple()) for (action, contents) in actions_and_contents]
             
             new_serialisable_info = ( serialisable_petitioner_account, reason, serialisable_actions_and_contents )
             
@@ -2628,14 +2628,14 @@ class PetitionHeader( HydrusSerialisable.SerialisableBase ):
         return ( self.content_type, self.status, self.account_key, self.reason ).__hash__()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         serialisable_account_key = self.account_key.hex()
         
         return ( self.content_type, self.status, serialisable_account_key, self.reason )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( self.content_type, self.status, serialisable_account_key, self.reason ) = serialisable_info
         
@@ -2704,7 +2704,7 @@ class ServerService( object ):
             
             dictionary = self._GetSerialisableDictionary()
             
-            dictionary = dictionary.Duplicate()
+            dictionary = dictionary.duplicate()
             
             duplicate = GenerateService( self._service_key, self._service_type, self._name, self._port, dictionary )
             
@@ -2824,7 +2824,7 @@ class ServerService( object ):
             
             dictionary = self._GetSerialisableDictionary()
             
-            dictionary_string = dictionary.DumpToString()
+            dictionary_string = dictionary.dump_to_string()
             
             return ( self._service_key.hex(), self._service_type, self._name, self._port, dictionary_string )
             
@@ -2836,7 +2836,7 @@ class ServerService( object ):
             
             dictionary = self._GetSerialisableDictionary()
             
-            dictionary = dictionary.Duplicate()
+            dictionary = dictionary.duplicate()
             
             return ( self._service_key, self._service_type, self._name, self._port, dictionary )
             

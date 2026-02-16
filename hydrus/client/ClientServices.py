@@ -233,7 +233,7 @@ class ServiceSpecifier( HydrusSerialisable.SerialisableBase ):
         return ( tuple( sorted( self._service_types ) ), tuple( sorted( self._service_keys ) ) ).__hash__()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         serialisable_service_types = sorted( self._service_types )
         serialisable_service_keys = sorted( ( key.hex() for key in self._service_keys ) )
@@ -241,7 +241,7 @@ class ServiceSpecifier( HydrusSerialisable.SerialisableBase ):
         return ( serialisable_service_types, serialisable_service_keys )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( serialisable_service_types, serialisable_service_keys ) = serialisable_info
         
@@ -1102,7 +1102,7 @@ class ServiceRemote( Service ):
         
         with self._lock:
             
-            if credentials.DumpToString() != self._credentials.DumpToString():
+            if credentials.dump_to_string() != self._credentials.dump_to_string():
                 
                 self._CredentialsAreChanging()
                 
@@ -2015,7 +2015,7 @@ class ServiceRepository( ServiceRestricted ):
                     
                     try:
                         
-                        update = HydrusSerialisable.CreateFromNetworkBytes( update_network_string )
+                        update = HydrusSerialisable.create_from_network_bytes(update_network_string)
                         
                     except Exception as e:
                         
@@ -2178,7 +2178,7 @@ class ServiceRepository( ServiceRestricted ):
                     
                     try:
                         
-                        definition_update = HydrusSerialisable.CreateFromNetworkBytes( update_network_bytes )
+                        definition_update = HydrusSerialisable.create_from_network_bytes(update_network_bytes)
                         
                     except Exception as e:
                         
@@ -2307,7 +2307,7 @@ class ServiceRepository( ServiceRestricted ):
                     
                     try:
                         
-                        content_update = HydrusSerialisable.CreateFromNetworkBytes( update_network_bytes )
+                        content_update = HydrusSerialisable.create_from_network_bytes(update_network_bytes)
                         
                     except Exception as e:
                         

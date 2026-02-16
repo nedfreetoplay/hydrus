@@ -66,7 +66,7 @@ class TagSummaryGenerator( HydrusSerialisable.SerialisableBase ):
         self._UpdateNamespaceLookup()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         bc = self._background_colour
         
@@ -79,7 +79,7 @@ class TagSummaryGenerator( HydrusSerialisable.SerialisableBase ):
         return ( background_colour_rgba, text_colour_rgba, self._namespace_info, self._separator, self._example_tags, self._show )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( background_rgba, text_rgba, self._namespace_info, self._separator, self._example_tags, self._show ) = serialisable_info
         
@@ -101,7 +101,7 @@ class TagSummaryGenerator( HydrusSerialisable.SerialisableBase ):
         self._interesting_namespaces = { namespace for ( namespace, prefix, separator ) in self._namespace_info }
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             

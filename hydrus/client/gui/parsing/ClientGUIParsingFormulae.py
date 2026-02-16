@@ -350,7 +350,7 @@ class EditFormulaPanel( ClientGUIScrolledPanels.EditPanel ):
         
         if export_object is not None:
             
-            json = export_object.DumpToString()
+            json = export_object.dump_to_string()
             
             CG.client_controller.pub( 'clipboard', 'text', json )
             
@@ -390,7 +390,7 @@ class EditFormulaPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            obj = HydrusSerialisable.CreateFromString( raw_text )
+            obj = HydrusSerialisable.create_from_string(raw_text)
             
             self._ImportObject( obj )
             
@@ -423,7 +423,7 @@ class EditFormulaPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 try:
                     
-                    obj = HydrusSerialisable.CreateFromNetworkBytes( payload )
+                    obj = HydrusSerialisable.create_from_network_bytes(payload)
                     
                     self._ImportObject( obj )
                     

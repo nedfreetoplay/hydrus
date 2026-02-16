@@ -19,7 +19,7 @@ def ManageServiceOptionsTagFilter(
     
     service: ClientServices.ServiceRepository = CG.client_controller.services_manager.GetService( service_key )
     
-    tag_filter = service.GetTagFilter().Duplicate()
+    tag_filter = service.GetTagFilter().duplicate()
     
     if new_tags_to_block is not None:
         

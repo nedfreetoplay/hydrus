@@ -843,7 +843,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             credentials = service.GetCredentials()
             
-            if credentials.GetSerialisableTuple() == ptr_credentials.GetSerialisableTuple():
+            if credentials.get_serialisable_tuple() == ptr_credentials.get_serialisable_tuple():
                 
                 have_it_already = True
                 
@@ -919,7 +919,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             self._controller.SaveGUISession( session )
             
-            session.SetName( CC.EXIT_SESSION_SESSION_NAME )
+            session.set_name(CC.EXIT_SESSION_SESSION_NAME)
             
             self._controller.SaveGUISession( session )
             
@@ -2201,7 +2201,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                         
                         try:
                             
-                            update = HydrusSerialisable.CreateFromNetworkBytes( update_network_bytes )
+                            update = HydrusSerialisable.create_from_network_bytes(update_network_bytes)
                             
                         except Exception as e:
                             
@@ -4451,7 +4451,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                     
                     for import_folder in import_folders:
                         
-                        good_names.add( import_folder.GetName() )
+                        good_names.add(import_folder.get_name())
                         
                         self._controller.write('serialisable', import_folder)
                         
@@ -5007,7 +5007,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                         
                         with open( backup_path, 'w', encoding = 'utf-8' ) as f:
                             
-                            f.write( surplus_query_log_container.DumpToString() )
+                            f.write(surplus_query_log_container.dump_to_string())
                             
                         
                         CG.client_controller.write_synchronous('delete_serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, surplus_query_log_container_name)
@@ -8587,7 +8587,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         tag_import_options = CG.client_controller.network_engine.domain_manager.GetDefaultTagImportOptionsForURL( None, urls[0] )
         
-        tag_import_options = tag_import_options.Duplicate()
+        tag_import_options = tag_import_options.duplicate()
         
         tag_import_options.SetShouldFetchTagsEvenIfHashKnownAndFileAlreadyInDB( True )
         tag_import_options.SetShouldFetchTagsEvenIfURLKnownAndFileAlreadyInDB( True )
@@ -8860,7 +8860,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             self._controller.ReportFirstSessionInitialised()
             
         
-        if gui_session.GetName() == CC.LAST_SESSION_SESSION_NAME:
+        if gui_session.get_name() == CC.LAST_SESSION_SESSION_NAME:
             
             self._controller.ReportLastSessionLoaded( gui_session )
             
@@ -9015,7 +9015,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                 
                 self._controller.SaveGUISession( session )
                 
-                session.SetName( CC.EXIT_SESSION_SESSION_NAME )
+                session.set_name(CC.EXIT_SESSION_SESSION_NAME)
                 
                 self._controller.SaveGUISession( session )
                 

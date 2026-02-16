@@ -18,12 +18,12 @@ class DummyFormula( ClientParsing.ParseFormula ):
         self._result = result
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         return None
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         pass
         

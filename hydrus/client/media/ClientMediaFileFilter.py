@@ -79,7 +79,7 @@ class FileFilter( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         if self.filter_type == FILE_FILTER_FILE_SERVICE:
             
@@ -101,7 +101,7 @@ class FileFilter( HydrusSerialisable.SerialisableBase ):
         return ( self.filter_type, serialisable_filter_data )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( self.filter_type, serialisable_filter_data ) = serialisable_info
         

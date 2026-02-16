@@ -76,7 +76,7 @@ def DumpHydrusArgsToNetworkBytes( args ):
         args[ 'services' ] = [ service.ToSerialisableTuple() for service in args[ 'services' ] ]
         
     
-    network_bytes = args.DumpToNetworkBytes()
+    network_bytes = args.dump_to_network_bytes()
     
     return network_bytes
     
@@ -247,7 +247,7 @@ def ParseNetworkBytesToParsedHydrusArgs( network_bytes ):
         return HydrusSerialisable.SerialisableDictionary()
         
     
-    args = HydrusSerialisable.CreateFromNetworkBytes( network_bytes )
+    args = HydrusSerialisable.create_from_network_bytes(network_bytes)
     
     if not isinstance( args, dict ):
         

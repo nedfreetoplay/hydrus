@@ -74,12 +74,12 @@ class CheckerOptions( HydrusSerialisable.SerialisableBase ):
         return ( current_files_found, current_time_delta )
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
         return ( self._intended_files_per_check, self._never_faster_than, self._never_slower_than, self._death_file_velocity )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( self._intended_files_per_check, self._never_faster_than, self._never_slower_than, self._death_file_velocity ) = serialisable_info
         

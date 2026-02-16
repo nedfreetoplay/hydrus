@@ -16,18 +16,18 @@ class MetadataConditional( HydrusSerialisable.SerialisableBase ):
         self._file_search_context = ClientSearchFileSearchContext.FileSearchContext( predicates = [] )
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info(self):
         
-        serialisable_file_search_context = self._file_search_context.GetSerialisableTuple()
+        serialisable_file_search_context = self._file_search_context.get_serialisable_tuple()
         
         return serialisable_file_search_context
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         serialisable_file_search_context = serialisable_info
         
-        self._file_search_context = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_file_search_context )
+        self._file_search_context = HydrusSerialisable.create_from_serialisable_tuple(serialisable_file_search_context)
         
     
     def GetFileSearchContext( self ) -> ClientSearchFileSearchContext.FileSearchContext:
@@ -42,7 +42,7 @@ class MetadataConditional( HydrusSerialisable.SerialisableBase ):
     
     def SetFileSearchContext( self, file_search_context: ClientSearchFileSearchContext.FileSearchContext ):
         
-        file_search_context = file_search_context.Duplicate()
+        file_search_context = file_search_context.duplicate()
         
         predicates = file_search_context.GetPredicates()
         
