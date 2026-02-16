@@ -121,7 +121,7 @@ def PopulateMetadataAPIDict( metadata_list: list[ dict ], hashes: list[ bytes ],
                 
                 if width is not None and height is not None and width > 0 and height > 0:
                     
-                    ( expected_thumbnail_width, expected_thumbnail_height ) = HydrusImageHandling.GetThumbnailResolution( ( width, height ), thumbnail_bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
+                    ( expected_thumbnail_width, expected_thumbnail_height ) = HydrusImageHandling.get_thumbnail_resolution((width, height), thumbnail_bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent)
                     
                     metadata_dict[ 'thumbnail_width' ] = expected_thumbnail_width
                     metadata_dict[ 'thumbnail_height' ] = expected_thumbnail_height

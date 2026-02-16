@@ -11,7 +11,7 @@ from hydrus.core.files.images import HydrusImageOpening
 
 def get_animation_properties(path, mime):
     
-    pil_image = HydrusImageHandling.GeneratePILImage( path )
+    pil_image = HydrusImageHandling.generate_pil_image(path)
     
     ( width, height ) = pil_image.size
     

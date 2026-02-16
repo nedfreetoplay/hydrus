@@ -334,7 +334,7 @@ class HydrusResourceClientAPIRestrictedAddFilesGenerateHashes( HydrusResourceCli
         
         if mime in HC.FILES_THAT_HAVE_PERCEPTUAL_HASH or mime in HC.FILES_THAT_CAN_HAVE_PIXEL_HASH:
             
-            numpy_image = HydrusImageHandling.GenerateNumPyImage( temp_path, mime )
+            numpy_image = HydrusImageHandling.generate_numpy_image(temp_path, mime)
             
             if mime in HC.FILES_THAT_HAVE_PERCEPTUAL_HASH:
                 
@@ -345,7 +345,7 @@ class HydrusResourceClientAPIRestrictedAddFilesGenerateHashes( HydrusResourceCli
             
             if mime in HC.FILES_THAT_CAN_HAVE_PIXEL_HASH:
                 
-                pixel_hash = HydrusImageHandling.GetImagePixelHashNumPy( numpy_image )
+                pixel_hash = HydrusImageHandling.get_image_pixel_hash_numpy(numpy_image)
                 
                 body_dict[ 'pixel_hash' ] = pixel_hash.hex()
                 

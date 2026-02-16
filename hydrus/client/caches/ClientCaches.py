@@ -413,7 +413,7 @@ class ThumbnailCache( object ):
                     thumbnail_scale_type = self._controller.new_options.GetInteger( 'thumbnail_scale_type' )
                     thumbnail_dpr_percent = CG.client_controller.new_options.GetInteger( 'thumbnail_dpr_percent' )
                     
-                    ( expected_width, expected_height ) = HydrusImageHandling.GetThumbnailResolution( ( media_width, media_height ), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
+                    ( expected_width, expected_height ) = HydrusImageHandling.get_thumbnail_resolution((media_width, media_height), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent)
                     
                     numpy_image = HydrusBlurhash.get_numpy_from_blurhash(blurhash, expected_width, expected_height)
                     
@@ -464,7 +464,7 @@ class ThumbnailCache( object ):
             
             thumbnail_mime = HydrusFileHandling.get_thumbnail_mime(thumbnail_path)
             
-            numpy_image = HydrusImageHandling.GenerateNumPyImage( thumbnail_path, thumbnail_mime )
+            numpy_image = HydrusImageHandling.generate_numpy_image(thumbnail_path, thumbnail_mime)
             
         except Exception as e:
             
@@ -484,7 +484,7 @@ class ThumbnailCache( object ):
             
             try:
                 
-                numpy_image = HydrusImageHandling.GenerateNumPyImage( thumbnail_path, thumbnail_mime )
+                numpy_image = HydrusImageHandling.generate_numpy_image(thumbnail_path, thumbnail_mime)
                 
             except Exception as e:
                 
@@ -496,7 +496,7 @@ class ThumbnailCache( object ):
                 
             
         
-        ( current_width, current_height ) = HydrusImageHandling.GetResolutionNumPy( numpy_image )
+        ( current_width, current_height ) = HydrusImageHandling.get_resolution_numpy(numpy_image)
         
         ( media_width, media_height ) = media_result.GetResolution()
         
@@ -504,7 +504,7 @@ class ThumbnailCache( object ):
         thumbnail_scale_type = self._controller.new_options.GetInteger( 'thumbnail_scale_type' )
         thumbnail_dpr_percent = CG.client_controller.new_options.GetInteger( 'thumbnail_dpr_percent' )
         
-        ( expected_width, expected_height ) = HydrusImageHandling.GetThumbnailResolution( ( media_width, media_height ), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
+        ( expected_width, expected_height ) = HydrusImageHandling.get_thumbnail_resolution((media_width, media_height), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent)
         
         exactly_as_expected = current_width == expected_width and current_height == expected_height
         
@@ -514,7 +514,7 @@ class ThumbnailCache( object ):
         
         if not correct_size:
             
-            numpy_image = HydrusImageHandling.ResizeNumPyImage( numpy_image, ( expected_width, expected_height ) )
+            numpy_image = HydrusImageHandling.resize_numpy_image(numpy_image, (expected_width, expected_height))
             
             if locations_manager.IsLocal():
                 
@@ -739,7 +739,7 @@ class ThumbnailCache( object ):
                 
                 numpy_image_resolution = ClientSVGHandling.GetSVGResolution( svg_thumbnail_path )
                 
-                target_resolution = HydrusImageHandling.GetThumbnailResolution( numpy_image_resolution, bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
+                target_resolution = HydrusImageHandling.get_thumbnail_resolution(numpy_image_resolution, bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent)
                 
                 numpy_image = ClientSVGHandling.GenerateThumbnailNumPyFromSVGPath( svg_thumbnail_path, target_resolution )
                 
@@ -759,13 +759,13 @@ class ThumbnailCache( object ):
                     continue
                     
                 
-                numpy_image = HydrusImageHandling.GenerateNumPyImage( thumbnail_path, HC.IMAGE_PNG )
+                numpy_image = HydrusImageHandling.generate_numpy_image(thumbnail_path, HC.IMAGE_PNG)
                 
-                numpy_image_resolution = HydrusImageHandling.GetResolutionNumPy( numpy_image )
+                numpy_image_resolution = HydrusImageHandling.get_resolution_numpy(numpy_image)
                 
-                target_resolution = HydrusImageHandling.GetThumbnailResolution( numpy_image_resolution, bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
+                target_resolution = HydrusImageHandling.get_thumbnail_resolution(numpy_image_resolution, bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent)
                 
-                numpy_image = HydrusImageHandling.ResizeNumPyImage( numpy_image, target_resolution )
+                numpy_image = HydrusImageHandling.resize_numpy_image(numpy_image, target_resolution)
                 
                 hydrus_bitmap = ClientRendering.GenerateHydrusBitmapFromNumPyImage( numpy_image )
                 

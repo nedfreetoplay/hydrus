@@ -201,7 +201,7 @@ def HasTransparency( path, mime, duration_ms = None, num_frames = None, resoluti
         
         if mime in HC.IMAGES:
             
-            numpy_image = HydrusImageHandling.GenerateNumPyImage( path, mime )
+            numpy_image = HydrusImageHandling.generate_numpy_image(path, mime)
             
             return HydrusImageColours.numpy_image_has_useful_alpha_channel(numpy_image)
             

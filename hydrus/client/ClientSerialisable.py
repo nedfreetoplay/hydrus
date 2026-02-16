@@ -263,11 +263,11 @@ def LoadFromPNG( path ):
                 
                 # dequantize = False because we don't want to convert our greyscale bytes to RGB
                 
-                pil_image = HydrusImageHandling.GeneratePILImage( temp_path, dequantize = False )
+                pil_image = HydrusImageHandling.generate_pil_image(temp_path, dequantize = False)
                 
                 # leave strip_useless_alpha = True in here just to catch the very odd LA situation
                 
-                numpy_image = HydrusImageHandling.GenerateNumPyImageFromPILImage( pil_image )
+                numpy_image = HydrusImageHandling.generate_numpy_image_from_pil_image(pil_image)
                 
             except Exception as e:
                 

@@ -287,7 +287,7 @@ class FileImportJob( object ):
                 HydrusData.show_text('File import job testing for decompression bomb')
                 
             
-            if HydrusImageHandling.IsDecompressionBomb( self._temp_path ):
+            if HydrusImageHandling.is_decompression_bomb(self._temp_path):
                 
                 if HG.file_import_report_mode:
                     
@@ -328,7 +328,7 @@ class FileImportJob( object ):
             thumbnail_scale_type = new_options.GetInteger( 'thumbnail_scale_type' )
             thumbnail_dpr_percent = new_options.GetInteger( 'thumbnail_dpr_percent' )
             
-            target_resolution = HydrusImageHandling.GetThumbnailResolution( ( width, height ), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
+            target_resolution = HydrusImageHandling.get_thumbnail_resolution((width, height), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent)
             
             percentage_in = new_options.GetInteger( 'video_thumbnail_percentage_in' )
             
@@ -337,7 +337,7 @@ class FileImportJob( object ):
             thumbnail_numpy = HydrusFileHandling.generate_thumbnail_num_py(self._temp_path, target_resolution, mime, duration_ms, num_frames, percentage_in = percentage_in, extra_description = extra_description)
             
             # this guy handles almost all his own exceptions now, so no need for clever catching. if it fails, we are prob talking an I/O failure, which is not a 'thumbnail failed' error
-            self._thumbnail_bytes = HydrusImageHandling.GenerateThumbnailBytesFromNumPy( thumbnail_numpy )
+            self._thumbnail_bytes = HydrusImageHandling.generate_thumbnail_bytes_from_numpy(thumbnail_numpy)
             
             try:
                 
@@ -444,7 +444,7 @@ class FileImportJob( object ):
             
             try:
                 
-                self._pixel_hash = HydrusImageHandling.GetImagePixelHash( self._temp_path, mime )
+                self._pixel_hash = HydrusImageHandling.get_image_pixel_hash(self._temp_path, mime)
                 
             except Exception as e:
                 

@@ -267,7 +267,7 @@ def CalculateMediaContainerSize( media, device_pixel_ratio: float, zoom, show_ac
         #thumbnail_dpr_percent = CG.client_controller.new_options.GetInteger( 'thumbnail_dpr_percent' )
         thumbnail_dpr_percent = 100
         
-        ( thumb_width, thumb_height ) = HydrusImageHandling.GetThumbnailResolution( media.GetResolution(), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
+        ( thumb_width, thumb_height ) = HydrusImageHandling.get_thumbnail_resolution(media.GetResolution(), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent)
         
         height = height + min( OPEN_EXTERNALLY_MAX_THUMBNAIL_SIZE[1], thumb_height )
         

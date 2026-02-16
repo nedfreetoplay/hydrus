@@ -266,7 +266,7 @@ def get_ugoira_frame_pil(path: str, frameIndex: int) -> PILImage.Image:
     
     frameFromZip = HydrusArchiveHandling.get_zip_as_path(path, frameName).open('rb')
     
-    return HydrusImageHandling.GeneratePILImage( frameFromZip )
+    return HydrusImageHandling.generate_pil_image(frameFromZip)
     
 
 def generate_thumbnail_numpy_from_ugoira_path(path: str, target_resolution: tuple[int, int], frame_index: int):
@@ -275,7 +275,7 @@ def generate_thumbnail_numpy_from_ugoira_path(path: str, target_resolution: tupl
     
     thumbnail_pil_image = pil_image.resize( target_resolution, PILImage.Resampling.LANCZOS )
     
-    numpy_image = HydrusImageHandling.GenerateNumPyImageFromPILImage( thumbnail_pil_image )
+    numpy_image = HydrusImageHandling.generate_numpy_image_from_pil_image(thumbnail_pil_image)
     
     return numpy_image
     

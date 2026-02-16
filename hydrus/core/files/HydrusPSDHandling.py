@@ -170,7 +170,7 @@ def generate_pil_image_from_psd(path):
         raise HydrusExceptions.NoRenderFileException( 'This PSD has no embedded Preview file that FFMPEG can read!' )
         
     
-    return HydrusImageHandling.GeneratePILImage( BytesIO( png_bytes ), human_file_description = f'Preview image inside PSD "{path}"' )
+    return HydrusImageHandling.generate_pil_image(BytesIO(png_bytes), human_file_description =f'Preview image inside PSD "{path}"')
     
 
 def generate_thumbnail_numpy_from_psd_path(path: str, target_resolution: tuple[int, int]) -> numpy.ndarray:
@@ -185,9 +185,9 @@ def generate_thumbnail_numpy_from_psd_path(path: str, target_resolution: tuple[i
         
     
     # convert to numpy rather than doing pil_image.resize because psd previews sometimes have 100% alpha and the resize applies that
-    numpy_image = HydrusImageHandling.GenerateNumPyImageFromPILImage( pil_image )
+    numpy_image = HydrusImageHandling.generate_numpy_image_from_pil_image(pil_image)
     
-    thumbnail_numpy_image = HydrusImageHandling.ResizeNumPyImage( numpy_image, target_resolution )
+    thumbnail_numpy_image = HydrusImageHandling.resize_numpy_image(numpy_image, target_resolution)
     
     return thumbnail_numpy_image
     

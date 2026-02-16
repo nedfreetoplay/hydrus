@@ -293,7 +293,7 @@ class ClientFilesManager( object ):
         thumbnail_scale_type = self._controller.new_options.GetInteger( 'thumbnail_scale_type' )
         thumbnail_dpr_percent = CG.client_controller.new_options.GetInteger( 'thumbnail_dpr_percent' )
         
-        target_resolution = HydrusImageHandling.GetThumbnailResolution( ( width, height ), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
+        target_resolution = HydrusImageHandling.get_thumbnail_resolution((width, height), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent)
         
         percentage_in = self._controller.new_options.GetInteger( 'video_thumbnail_percentage_in' )
         
@@ -1550,15 +1550,15 @@ class ClientFilesManager( object ):
             
             thumbnail_mime = HydrusFileHandling.get_thumbnail_mime(path)
             
-            numpy_image = HydrusImageHandling.GenerateNumPyImage( path, thumbnail_mime )
+            numpy_image = HydrusImageHandling.generate_numpy_image(path, thumbnail_mime)
             
-            ( current_width, current_height ) = HydrusImageHandling.GetResolutionNumPy( numpy_image )
+            ( current_width, current_height ) = HydrusImageHandling.get_resolution_numpy(numpy_image)
             
             bounding_dimensions = self._controller.options[ 'thumbnail_dimensions' ]
             thumbnail_scale_type = self._controller.new_options.GetInteger( 'thumbnail_scale_type' )
             thumbnail_dpr_percent = CG.client_controller.new_options.GetInteger( 'thumbnail_dpr_percent' )
             
-            ( expected_width, expected_height ) = HydrusImageHandling.GetThumbnailResolution( (media_width, media_height), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
+            ( expected_width, expected_height ) = HydrusImageHandling.get_thumbnail_resolution((media_width, media_height), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent)
             
             if current_width != expected_width or current_height != expected_height:
                 

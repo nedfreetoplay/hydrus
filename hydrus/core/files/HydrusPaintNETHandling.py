@@ -17,7 +17,7 @@ def generate_thumbnail_num_py_from_paint_net(path: str, target_resolution: tuple
     # noinspection PyUnresolvedReferences
     thumbnail_pil_image = pil_image.resize( target_resolution, PILImage.Resampling.LANCZOS )
     
-    numpy_image = HydrusImageHandling.GenerateNumPyImageFromPILImage( thumbnail_pil_image )
+    numpy_image = HydrusImageHandling.generate_numpy_image_from_pil_image(thumbnail_pil_image)
     
     return numpy_image
     
@@ -99,5 +99,5 @@ def thumbnail_pil_image_from_paint_net(path: str):
         raise HydrusExceptions.NoThumbnailFileException( f'Could not decode thumb bytes from this Paint.NET xml!' )
         
     
-    return HydrusImageHandling.GeneratePILImage( BytesIO( png_bytes ), human_file_description = f'Preview image inside Paint.NET "{path}"' )
+    return HydrusImageHandling.generate_pil_image(BytesIO(png_bytes), human_file_description =f'Preview image inside Paint.NET "{path}"')
     

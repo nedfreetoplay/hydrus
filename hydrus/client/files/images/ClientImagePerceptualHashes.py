@@ -28,7 +28,7 @@ def GenerateUsefulShapePerceptualHashes( path, mime ):
     
     try:
         
-        numpy_image = HydrusImageHandling.GenerateNumPyImage( path, mime )
+        numpy_image = HydrusImageHandling.generate_numpy_image(path, mime)
         
         return GenerateUsefulShapePerceptualHashesNumPy( numpy_image )
         

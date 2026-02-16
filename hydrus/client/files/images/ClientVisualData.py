@@ -805,7 +805,7 @@ def GenerateImageVisualDataTiledNumPy( numpy_image: numpy.ndarray ) -> VisualDat
     
     # RGB edge-map
     
-    scale_resolution = HydrusImageHandling.GetThumbnailResolution( resolution, EDGE_MAP_PERCEPTUAL_RESOLUTION, HydrusImageHandling.THUMBNAIL_SCALE_TO_FIT, 100 )
+    scale_resolution = HydrusImageHandling.get_thumbnail_resolution(resolution, EDGE_MAP_PERCEPTUAL_RESOLUTION, HydrusImageHandling.THUMBNAIL_SCALE_TO_FIT, 100)
     
     # We do not want to scale to 2048x2048 or whatever; we want to keep the ratio for the edge stuff because: the Gaussian stuff is circles and we don't want to warp the image dimensions!
     edge_map_numpy_image_rgb = do_cv2_resize( numpy_image_rgb, scale_resolution )

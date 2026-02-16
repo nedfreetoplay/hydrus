@@ -16,7 +16,7 @@ def merged_pil_image_from_kra(path):
         
         zip_path_file_obj = HydrusArchiveHandling.get_zip_as_path(path, KRITA_FILE_MERGED).open('rb')
         
-        return HydrusImageHandling.GeneratePILImage( zip_path_file_obj )
+        return HydrusImageHandling.generate_pil_image(zip_path_file_obj)
         
     except FileNotFoundError:
         
@@ -30,7 +30,7 @@ def thumbnail_pil_image_from_kra(path):
         
         zip_path_file_obj = HydrusArchiveHandling.get_zip_as_path(path, KRITA_FILE_THUMB).open('rb')
         
-        return HydrusImageHandling.GeneratePILImage( zip_path_file_obj )
+        return HydrusImageHandling.generate_pil_image(zip_path_file_obj)
         
     except FileNotFoundError:
         
@@ -52,7 +52,7 @@ def generate_thumbnail_num_py_from_kra_path(path: str, target_resolution: tuple[
     # noinspection PyUnresolvedReferences
     thumbnail_pil_image = pil_image.resize( target_resolution, PILImage.Resampling.LANCZOS )
     
-    numpy_image = HydrusImageHandling.GenerateNumPyImageFromPILImage( thumbnail_pil_image )
+    numpy_image = HydrusImageHandling.generate_numpy_image_from_pil_image(thumbnail_pil_image)
     
     return numpy_image
     

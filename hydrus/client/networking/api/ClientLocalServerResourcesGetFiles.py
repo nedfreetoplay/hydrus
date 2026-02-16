@@ -279,7 +279,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetRenderedFile( HydrusResourceCl
                     raise HydrusExceptions.BadRequestException( 'Height must be greater than 0!' )
                     
                 
-                numpy_image = HydrusImageHandling.ResizeNumPyImage( numpy_image, ( width, height ) )
+                numpy_image = HydrusImageHandling.resize_numpy_image(numpy_image, (width, height))
                 
             
             if 'render_quality' in request.parsed_request_args:
@@ -299,7 +299,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetRenderedFile( HydrusResourceCl
                 
             max_age = 86400 * 365
             
-            body = HydrusImageHandling.GenerateFileBytesForRenderAPI( numpy_image, format, quality )
+            body = HydrusImageHandling.generate_file_bytes_for_render_api(numpy_image, format, quality)
             
         elif media_result.GetMime() == HC.ANIMATION_UGOIRA:
             

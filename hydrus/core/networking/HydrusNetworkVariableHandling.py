@@ -164,7 +164,7 @@ def ParseFileArguments( path, decompression_bombs_ok = False ):
         
         if mime in HC.DECOMPRESSION_BOMB_IMAGES and not decompression_bombs_ok:
             
-            if HydrusImageHandling.IsDecompressionBomb( path ):
+            if HydrusImageHandling.is_decompression_bomb(path):
                 
                 raise HydrusExceptions.InsufficientCredentialsException( 'File seemed to be a Decompression Bomb, which you cannot upload!' )
                 
@@ -197,7 +197,7 @@ def ParseFileArguments( path, decompression_bombs_ok = False ):
             
             bounding_dimensions = HC.SERVER_THUMBNAIL_DIMENSIONS
             
-            target_resolution = HydrusImageHandling.GetThumbnailResolution( ( width, height ), bounding_dimensions, HydrusImageHandling.THUMBNAIL_SCALE_DOWN_ONLY, 100 )
+            target_resolution = HydrusImageHandling.get_thumbnail_resolution((width, height), bounding_dimensions, HydrusImageHandling.THUMBNAIL_SCALE_DOWN_ONLY, 100)
             
             thumbnail_bytes = HydrusFileHandling.generate_thumbnail_bytes(path, target_resolution, mime, duration_ms, num_frames)
             

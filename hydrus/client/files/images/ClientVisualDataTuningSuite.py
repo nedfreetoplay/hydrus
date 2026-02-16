@@ -39,7 +39,7 @@ def save_file_jpeg( pil_image, out_dir, base_filename, suffix, original = False 
     pil_image.save( dest_path, 'JPEG', quality = quality, subsampling = pil_subsampling_lookup[ subsampling ] )
     
     # got to load so we can get subsampling and quality differences!!
-    numpy_image = HydrusImageHandling.GenerateNumPyImage( dest_path, HC.IMAGE_JPEG, force_pil = True )
+    numpy_image = HydrusImageHandling.generate_numpy_image(dest_path, HC.IMAGE_JPEG, force_pil = True)
     
     visual_data = ClientVisualData.GenerateImageVisualDataNumPy( numpy_image )
     
@@ -57,7 +57,7 @@ def save_file_png( pil_image, out_dir, base_filename, suffix ):
     pil_image.save( dest_path, 'PNG' )
     
     # got to load so we can get subsampling and quality differences!!
-    numpy_image = HydrusImageHandling.GenerateNumPyImage( dest_path, HC.IMAGE_PNG, force_pil = True )
+    numpy_image = HydrusImageHandling.generate_numpy_image(dest_path, HC.IMAGE_PNG, force_pil = True)
     
     visual_data = ClientVisualData.GenerateImageVisualDataNumPy( numpy_image )
     
@@ -91,7 +91,7 @@ def RunTuningSuiteAlpha( test_dir: str ):
         
         source_path = os.path.join( test_dir, source_filename )
         
-        pil_image = HydrusImageHandling.GeneratePILImage( source_path )
+        pil_image = HydrusImageHandling.generate_pil_image(source_path)
         
         ( width, height ) = pil_image.size
         
@@ -352,7 +352,7 @@ def RunTuningSuite( test_dir: str ):
         
         source_path = os.path.join( test_dir, source_filename )
         
-        pil_image = HydrusImageHandling.GeneratePILImage( source_path )
+        pil_image = HydrusImageHandling.generate_pil_image(source_path)
         
         ( width, height ) = pil_image.size
         

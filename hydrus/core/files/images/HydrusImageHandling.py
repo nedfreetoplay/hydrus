@@ -151,7 +151,7 @@ from hydrus.core.files.images import HydrusImageMetadata
 from hydrus.core.files.images import HydrusImageNormalisation
 from hydrus.core.files.images import HydrusImageOpening
 
-def SetEnableLoadTruncatedImages( value: bool ):
+def set_enable_load_truncated_images(value: bool):
     
     if hasattr( PILImageFile, 'LOAD_TRUNCATED_IMAGES' ):
         
@@ -198,7 +198,7 @@ CV_PNG_THUMBNAIL_ENCODE_PARAMS = [ cv2.IMWRITE_PNG_COMPRESSION, 9 ]
 
 PIL_ONLY_MIMETYPES = { HC.ANIMATION_GIF, HC.IMAGE_ICON, HC.IMAGE_WEBP, HC.IMAGE_QOI, HC.IMAGE_BMP, HC.ANIMATION_WEBP, HC.IMAGE_JXL, HC.IMAGE_AVIF }.union( HC.PIL_HEIF_MIMES )
 
-def MakeClipRectFit( image_resolution, clip_rect ):
+def make_clip_rect_fit(image_resolution, clip_rect):
     
     ( im_width, im_height ) = image_resolution
     ( x, y, clip_width, clip_height ) = clip_rect
@@ -221,7 +221,7 @@ def MakeClipRectFit( image_resolution, clip_rect ):
     
     return ( x, y, clip_width, clip_height )
     
-def ClipNumPyImage( numpy_image: numpy.ndarray, clip_rect ):
+def clip_numpy_image(numpy_image: numpy.ndarray, clip_rect):
     
     if len( numpy_image.shape ) == 3:
         
@@ -232,21 +232,21 @@ def ClipNumPyImage( numpy_image: numpy.ndarray, clip_rect ):
         ( im_height, im_width ) = numpy_image.shape
         
     
-    ( x, y, clip_width, clip_height ) = MakeClipRectFit( ( im_width, im_height ), clip_rect )
+    ( x, y, clip_width, clip_height ) = make_clip_rect_fit((im_width, im_height), clip_rect)
     
     return numpy_image[ y : y + clip_height, x : x + clip_width ]
     
 
-def ClipPILImage( pil_image: PILImage.Image, clip_rect ):
+def clip_pil_image(pil_image: PILImage.Image, clip_rect):
     
-    ( x, y, clip_width, clip_height ) = MakeClipRectFit( pil_image.size, clip_rect )
+    ( x, y, clip_width, clip_height ) = make_clip_rect_fit(pil_image.size, clip_rect)
     
     return pil_image.crop( box = ( x, y, x + clip_width, y + clip_height ) )
     
 
 FORCE_PIL_ALWAYS = True
 
-def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = None ) -> numpy.ndarray:
+def generate_numpy_image(path, mime, force_pil = False, human_file_description = None) -> numpy.ndarray:
     
     force_pil = force_pil or FORCE_PIL_ALWAYS
     
@@ -264,7 +264,7 @@ def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = 
         
         pil_image = HydrusPSDHandling.generate_pil_image_from_psd(path)
         
-        return GenerateNumPyImageFromPILImage( pil_image )
+        return generate_numpy_image_from_pil_image(pil_image)
         
     
     if mime == HC.APPLICATION_KRITA:
@@ -276,7 +276,7 @@ def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = 
         
         pil_image = HydrusKritaHandling.merged_pil_image_from_kra(path)
         
-        return GenerateNumPyImageFromPILImage( pil_image )
+        return generate_numpy_image_from_pil_image(pil_image)
         
     
     if mime in PIL_ONLY_MIMETYPES:
@@ -311,9 +311,9 @@ def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = 
             HydrusData.show_text('Loading with PIL')
             
         
-        pil_image = GeneratePILImage( path )
+        pil_image = generate_pil_image(path)
         
-        numpy_image = GenerateNumPyImageFromPILImage( pil_image )
+        numpy_image = generate_numpy_image_from_pil_image(pil_image)
         
     else:
         
@@ -344,9 +344,9 @@ def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = 
                 HydrusData.show_text('OpenCV Failed, loading with PIL')
                 
             
-            pil_image = GeneratePILImage( path )
+            pil_image = generate_pil_image(path)
             
-            numpy_image = GenerateNumPyImageFromPILImage( pil_image )
+            numpy_image = generate_numpy_image_from_pil_image(pil_image)
             
         else:
             
@@ -358,7 +358,7 @@ def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = 
     
     return numpy_image
     
-def GenerateNumPyImageFromPILImage( pil_image: PILImage.Image, strip_useless_alpha = True ) -> numpy.ndarray:
+def generate_numpy_image_from_pil_image(pil_image: PILImage.Image, strip_useless_alpha = True) -> numpy.ndarray:
     
     try:
         
@@ -383,7 +383,7 @@ def GenerateNumPyImageFromPILImage( pil_image: PILImage.Image, strip_useless_alp
     return numpy_image
     
 
-def GeneratePILImage( path: str | typing.BinaryIO, dequantize = True, human_file_description = None ) -> PILImage.Image:
+def generate_pil_image(path: str | typing.BinaryIO, dequantize = True, human_file_description = None) -> PILImage.Image:
     
     pil_image = HydrusImageOpening.RawOpenPILImage( path, human_file_description = human_file_description )
     
@@ -401,11 +401,11 @@ def GeneratePILImage( path: str | typing.BinaryIO, dequantize = True, human_file
                 # calling "pil_image.convert( 'L' )" and similar on an I doesn't seem to normalise the intensity, it just blows out the image crazy???
                 # so we'll hack it ourselves. these are so rare it is fine if we are a bit weird and lose the extra metadata
                 
-                numpy_image = GenerateNumPyImageFromPILImage( pil_image )
+                numpy_image = generate_numpy_image_from_pil_image(pil_image)
                 
                 numpy_image = HydrusImageNormalisation.NormaliseNumPyImageToUInt8( numpy_image )
                 
-                pil_image = GeneratePILImageFromNumPyImage( numpy_image )
+                pil_image = generate_pil_image_from_numpy_image(numpy_image)
                 
             
             # note this destroys animated gifs atm, it collapses down to one frame
@@ -420,7 +420,7 @@ def GeneratePILImage( path: str | typing.BinaryIO, dequantize = True, human_file
         
     
 
-def GeneratePILImageFromNumPyImage( numpy_image: numpy.ndarray ) -> PILImage.Image:
+def generate_pil_image_from_numpy_image(numpy_image: numpy.ndarray) -> PILImage.Image:
     
     if len( numpy_image.shape ) == 2:
         
@@ -455,7 +455,7 @@ def GeneratePILImageFromNumPyImage( numpy_image: numpy.ndarray ) -> PILImage.Ima
     return pil_image
     
 
-def GenerateFileBytesNumPy( numpy_image, ext: str = '.png', params: list[ int ] | None = None ) -> bytes:
+def generate_file_bytes_numpy(numpy_image, ext: str = '.png', params: list[ int] | None = None) -> bytes:
     
     if params is None:
         
@@ -495,7 +495,7 @@ def GenerateFileBytesNumPy( numpy_image, ext: str = '.png', params: list[ int ] 
         
     
 
-def GenerateFileBytesForRenderAPI( numpy_image, format: int, quality: int ):
+def generate_file_bytes_for_render_api(numpy_image, format: int, quality: int):
     
     ext = HC.mime_ext_lookup[format]
     
@@ -514,19 +514,19 @@ def GenerateFileBytesForRenderAPI( numpy_image, format: int, quality: int ):
         params = [ cv2.IMWRITE_WEBP_QUALITY, quality ]
         
     
-    return GenerateFileBytesNumPy( numpy_image, ext, params )
+    return generate_file_bytes_numpy(numpy_image, ext, params)
     
 
-def GenerateThumbnailNumPyFromStaticImagePath( path, target_resolution, mime ):
+def generate_thumbnail_numpy_from_static_image_path(path, target_resolution, mime):
     
-    numpy_image = GenerateNumPyImage( path, mime )
+    numpy_image = generate_numpy_image(path, mime)
     
-    thumbnail_numpy_image = ResizeNumPyImage( numpy_image, target_resolution )
+    thumbnail_numpy_image = resize_numpy_image(numpy_image, target_resolution)
     
     return thumbnail_numpy_image
     
 
-def GenerateThumbnailBytesFromNumPy( numpy_image ) -> bytes:
+def generate_thumbnail_bytes_from_numpy(numpy_image) -> bytes:
     
     if len( numpy_image.shape ) == 2:
         
@@ -550,10 +550,10 @@ def GenerateThumbnailBytesFromNumPy( numpy_image ) -> bytes:
         params = CV_JPEG_THUMBNAIL_ENCODE_PARAMS
         
     
-    return GenerateFileBytesNumPy(numpy_image, ext, params)
+    return generate_file_bytes_numpy(numpy_image, ext, params)
     
 
-def GenerateThumbnailBytesFromPIL( pil_image: PILImage.Image ) -> bytes:
+def generate_thumbnail_bytes_from_pil(pil_image: PILImage.Image) -> bytes:
     
     f = io.BytesIO()
     
@@ -576,14 +576,14 @@ def GenerateThumbnailBytesFromPIL( pil_image: PILImage.Image ) -> bytes:
     
 
 
-def GetImagePixelHash( path, mime ) -> bytes:
+def get_image_pixel_hash(path, mime) -> bytes:
     
-    numpy_image = GenerateNumPyImage( path, mime )
+    numpy_image = generate_numpy_image(path, mime)
     
-    return GetImagePixelHashNumPy( numpy_image )
+    return get_image_pixel_hash_numpy(numpy_image)
     
 
-def GetImagePixelHashNumPy( numpy_image ):
+def get_image_pixel_hash_numpy(numpy_image):
     
     # Yo, this does not take dimensions into account! flat colour images of differing dimensions but same num_pixels have the same hash!
     # same for some carefully designed checkerboard patterns etc..
@@ -593,19 +593,19 @@ def GetImagePixelHashNumPy( numpy_image ):
     return hashlib.sha256( numpy_image.data.tobytes() ).digest()
     
 
-def GetImageResolution( path, mime ):
+def get_image_resolution(path, mime):
     
     # PIL first here, rather than numpy, as it loads image headers real quick
     try:
         
-        pil_image = GeneratePILImage( path, dequantize = False )
+        pil_image = generate_pil_image(path, dequantize = False)
         
         ( width, height ) = pil_image.size
         
     except HydrusExceptions.DamagedOrUnusualFileException:
         
         # desperate situation
-        numpy_image = GenerateNumPyImage( path, mime )
+        numpy_image = generate_numpy_image(path, mime)
         
         if len( numpy_image.shape ) == 3:
             
@@ -623,7 +623,7 @@ def GetImageResolution( path, mime ):
     return ( width, height )
     
 
-def GetResolutionNumPy( numpy_image ):
+def get_resolution_numpy(numpy_image):
     
     ( image_height, image_width, depth ) = numpy_image.shape
     
@@ -640,7 +640,7 @@ thumbnail_scale_str_lookup = {
     THUMBNAIL_SCALE_TO_FILL : 'scale to fill'
 }
 
-def GetThumbnailResolution( image_resolution: tuple[ int, int ], bounding_dimensions: tuple[ int, int ], thumbnail_scale_type: int, thumbnail_dpr_percent: int ) -> tuple[ int, int ]:
+def get_thumbnail_resolution(image_resolution: tuple[ int, int], bounding_dimensions: tuple[ int, int], thumbnail_scale_type: int, thumbnail_dpr_percent: int) -> tuple[ int, int]:
     
     ( im_width, im_height ) = image_resolution
     ( bounding_width, bounding_height ) = bounding_dimensions
@@ -739,7 +739,7 @@ def GetThumbnailResolution( image_resolution: tuple[ int, int ], bounding_dimens
     return ( thumbnail_width, thumbnail_height )
     
 
-def IsDecompressionBomb( path, human_file_description = None ) -> bool:
+def is_decompression_bomb(path, human_file_description = None) -> bool:
     
     # there are two errors here, the 'Warning' and the 'Error', which atm is just a test vs a test x 2 for number of pixels
     # 256MB bmp by default, ( 1024 ** 3 ) // 4 // 3
@@ -772,10 +772,10 @@ def IsDecompressionBomb( path, human_file_description = None ) -> bool:
     return False
     
 
-def ResizeNumPyImage( numpy_image: numpy.ndarray, target_resolution, forced_interpolation = None ) -> numpy.ndarray:
+def resize_numpy_image(numpy_image: numpy.ndarray, target_resolution, forced_interpolation = None) -> numpy.ndarray:
     
     ( target_width, target_height ) = target_resolution
-    ( image_width, image_height ) = GetResolutionNumPy( numpy_image )
+    ( image_width, image_height ) = get_resolution_numpy(numpy_image)
     
     if target_width == image_width and target_height == target_width:
         
@@ -798,11 +798,11 @@ def ResizeNumPyImage( numpy_image: numpy.ndarray, target_resolution, forced_inte
     return cv2.resize( numpy_image, ( target_width, target_height ), interpolation = interpolation )
     
 
-def GenerateDefaultThumbnailNumPyFromPath( path: str, target_resolution: tuple[ int, int ] ):
+def generate_default_thumbnail_numpy_from_path(path: str, target_resolution: tuple[ int, int]):
     
-    thumb_image = GeneratePILImage( path )
+    thumb_image = generate_pil_image(path)
     
     pil_image = PILImageOps.pad( thumb_image, target_resolution, PILImage.Resampling.LANCZOS )
     
-    return GenerateNumPyImageFromPILImage( pil_image, strip_useless_alpha = False )
+    return generate_numpy_image_from_pil_image(pil_image, strip_useless_alpha = False)
     

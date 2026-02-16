@@ -2904,7 +2904,7 @@ class PanelPredicateSystemSimilarToData( PanelPredicateSystemSingle ):
                 
                 numpy_image = ClientGUIFunctions.ConvertQtImageToNumPy( qt_image )
                 
-                pixel_hash = HydrusImageHandling.GetImagePixelHashNumPy( numpy_image )
+                pixel_hash = HydrusImageHandling.get_image_pixel_hash_numpy(numpy_image)
                 
                 perceptual_hashes = ClientImagePerceptualHashes.GenerateUsefulShapePerceptualHashesNumPy( numpy_image )
                 
@@ -2956,7 +2956,7 @@ class PanelPredicateSystemSimilarToData( PanelPredicateSystemSingle ):
                     
                     if mime in HC.FILES_THAT_HAVE_PERCEPTUAL_HASH:
                         
-                        pixel_hash = HydrusImageHandling.GetImagePixelHash( path, mime )
+                        pixel_hash = HydrusImageHandling.get_image_pixel_hash(path, mime)
                         
                         perceptual_hashes = ClientImagePerceptualHashes.GenerateUsefulShapePerceptualHashes( path, mime )
                         

@@ -52,7 +52,7 @@ class AnimationRendererPIL( object ):
         
         # dequantize = False since we'll be doing that later for each frame in turn
         # if we do it now, it collapses down to a one frame object
-        self._pil_image = HydrusImageHandling.GeneratePILImage( self._path, dequantize = False )
+        self._pil_image = HydrusImageHandling.generate_pil_image(self._path, dequantize = False)
         
         self._pil_global_palette = self._pil_image.palette
         
@@ -137,7 +137,7 @@ class AnimationRendererPIL( object ):
                 # don't have to worry about pasting alpha-having transparent frames over the previous frame--PIL seems to handle this these days!
                 self._pil_canvas = current_frame
                 
-                numpy_image = HydrusImageHandling.GenerateNumPyImageFromPILImage( self._pil_canvas, strip_useless_alpha = False )
+                numpy_image = HydrusImageHandling.generate_numpy_image_from_pil_image(self._pil_canvas, strip_useless_alpha = False)
                 
             except Exception as e:
                 
@@ -162,7 +162,7 @@ class AnimationRendererPIL( object ):
         
         try:
             
-            resized_numpy_image = HydrusImageHandling.ResizeNumPyImage( numpy_image, self._target_resolution )
+            resized_numpy_image = HydrusImageHandling.resize_numpy_image(numpy_image, self._target_resolution)
             
         except Exception as e:
             
@@ -171,7 +171,7 @@ class AnimationRendererPIL( object ):
             
             numpy_image = self._GetRecoveryFrame()
             
-            resized_numpy_image = HydrusImageHandling.ResizeNumPyImage( numpy_image, self._target_resolution )
+            resized_numpy_image = HydrusImageHandling.resize_numpy_image(numpy_image, self._target_resolution)
             
         
         self._last_valid_numpy_frame = numpy_image
