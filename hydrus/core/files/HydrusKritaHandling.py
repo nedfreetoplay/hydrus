@@ -10,7 +10,7 @@ import xml.etree.ElementTree as ET
 KRITA_FILE_THUMB = "preview.png"
 KRITA_FILE_MERGED = "mergedimage.png"
 
-def MergedPILImageFromKra( path ):
+def merged_pil_image_from_kra(path):
     
     try:
         
@@ -24,7 +24,7 @@ def MergedPILImageFromKra( path ):
         
     
 
-def ThumbnailPILImageFromKra( path ):
+def thumbnail_pil_image_from_kra(path):
     
     try:
         
@@ -38,15 +38,15 @@ def ThumbnailPILImageFromKra( path ):
         
     
 
-def GenerateThumbnailNumPyFromKraPath( path: str, target_resolution: tuple[ int, int ] ) -> numpy.ndarray:
+def generate_thumbnail_num_py_from_kra_path(path: str, target_resolution: tuple[ int, int]) -> numpy.ndarray:
     
     try:
         
-        pil_image = MergedPILImageFromKra( path )
+        pil_image = merged_pil_image_from_kra(path)
         
     except Exception as e:
         
-        pil_image = ThumbnailPILImageFromKra( path )
+        pil_image = thumbnail_pil_image_from_kra(path)
         
     
     # noinspection PyUnresolvedReferences
@@ -58,7 +58,7 @@ def GenerateThumbnailNumPyFromKraPath( path: str, target_resolution: tuple[ int,
     
 
 # TODO: animation and frame stuff which is also in the maindoc.xml
-def GetKraProperties( path ):
+def get_kra_properties(path):
     
     DOCUMENT_INFO_FILE = "maindoc.xml"
     

@@ -171,7 +171,7 @@ def generate_thumbnail_num_py(path, target_resolution, mime, duration_ms, num_fr
         
         try:
             
-            thumbnail_numpy = HydrusKritaHandling.GenerateThumbnailNumPyFromKraPath( path, target_resolution )
+            thumbnail_numpy = HydrusKritaHandling.generate_thumbnail_num_py_from_kra_path(path, target_resolution)
             
         except Exception as e:
             
@@ -492,7 +492,7 @@ def get_file_info(path, mime = None, ok_to_look_for_hydrus_updates = False):
         
         try:
             
-            ( width, height ) = HydrusKritaHandling.GetKraProperties( path )
+            ( width, height ) = HydrusKritaHandling.get_kra_properties(path)
             
         except HydrusExceptions.NoResolutionFileException:
             

@@ -274,7 +274,7 @@ def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = 
             HydrusData.show_text('Loading KRA')
             
         
-        pil_image = HydrusKritaHandling.MergedPILImageFromKra( path )
+        pil_image = HydrusKritaHandling.merged_pil_image_from_kra(path)
         
         return GenerateNumPyImageFromPILImage( pil_image )
         
