@@ -1120,14 +1120,14 @@ class EditPairComparatorRelativeFileinfoPanel( ClientGUIScrolledPanels.EditPanel
             
             self._time_number_test.SetValue( pair_comparator.GetNumberTest() )
             
-            self._time_delta.SetValue( HydrusTime.SecondiseMS( pair_comparator.GetDelta() ) )
+            self._time_delta.SetValue(HydrusTime.secondise_ms(pair_comparator.GetDelta()))
             
         elif we_duration_pred:
             
             self._duration_number_test.SetValue( pair_comparator.GetNumberTest() )
             
             self._duration_multiplier.setValue( pair_comparator.GetMultiplier() )
-            self._duration_delta.SetValue( HydrusTime.SecondiseMS( pair_comparator.GetDelta() ) )
+            self._duration_delta.SetValue(HydrusTime.secondise_ms(pair_comparator.GetDelta()))
             
         elif we_fuzzy_pred:
             
@@ -1212,14 +1212,14 @@ class EditPairComparatorRelativeFileinfoPanel( ClientGUIScrolledPanels.EditPanel
             number_test = self._time_number_test.GetValue()
             
             multiplier = 1.00
-            delta = HydrusTime.MillisecondiseS( self._time_delta.GetValue() )
+            delta = HydrusTime.millisecondise_s(self._time_delta.GetValue())
             
         elif we_duration_pred:
             
             number_test = self._duration_number_test.GetValue()
             
             multiplier = self._duration_multiplier.value()
-            delta = HydrusTime.MillisecondiseS( self._duration_delta.GetValue() )
+            delta = HydrusTime.millisecondise_s(self._duration_delta.GetValue())
             
         elif we_fuzzy_pred:
             

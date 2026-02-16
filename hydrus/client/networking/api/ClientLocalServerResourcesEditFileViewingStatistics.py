@@ -40,7 +40,7 @@ class HydrusResourceClientAPIRestrictedEditFileViewingStatisticsIncrementFileVie
             
             timestamp = request.parsed_request_args.GetValueOrNone( 'timestamp', float )
             
-            view_timestamp_ms = HydrusTime.MillisecondiseS( timestamp )
+            view_timestamp_ms = HydrusTime.millisecondise_s(timestamp)
             
         elif 'timestamp_ms' in request.parsed_request_args:
             
@@ -48,7 +48,7 @@ class HydrusResourceClientAPIRestrictedEditFileViewingStatisticsIncrementFileVie
             
         else:
             
-            view_timestamp_ms = HydrusTime.GetNowMS()
+            view_timestamp_ms = HydrusTime.get_now_ms()
             
         
         views_delta = request.parsed_request_args.GetValue( 'views', int, default_value = 1 )
@@ -106,7 +106,7 @@ class HydrusResourceClientAPIRestrictedEditFileViewingStatisticsSetFileViewingSt
             
             timestamp = request.parsed_request_args.GetValueOrNone( 'timestamp', float )
             
-            view_timestamp_ms = HydrusTime.MillisecondiseS( timestamp )
+            view_timestamp_ms = HydrusTime.millisecondise_s(timestamp)
             
         elif 'timestamp_ms' in request.parsed_request_args:
             

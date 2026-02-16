@@ -11,7 +11,7 @@ class HydrusRequest( Request ):
         
         super().__init__( *args, **kwargs )
         
-        self.start_time = HydrusTime.GetNowPrecise()
+        self.start_time = HydrusTime.get_now_precise()
         self.parsed_request_args = HydrusNetworkVariableHandling.ParsedRequestArguments()
         self.hydrus_response_context = None
         self.hydrus_account = None
@@ -54,7 +54,7 @@ class HydrusRequestLogging( HydrusRequest ):
             status_text = '200'
             
         
-        message = str( host.port ) + ' ' + str( self.method, 'utf-8' ) + ' ' + str( self.path, 'utf-8' ) + ' ' + status_text + ' in ' + HydrusTime.TimeDeltaToPrettyTimeDelta( HydrusTime.GetNowPrecise() - self.start_time )
+        message = str( host.port ) + ' ' + str( self.method, 'utf-8' ) + ' ' + str( self.path, 'utf-8' ) + ' ' + status_text + ' in ' + HydrusTime.time_delta_to_pretty_time_delta(HydrusTime.get_now_precise() - self.start_time)
         
         HydrusData.print_text(message)
         

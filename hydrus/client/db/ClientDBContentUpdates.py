@@ -287,7 +287,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
         
         # do delete outside, file repos and perhaps some other bananas situation can delete without ever having added
         
-        now_ms = HydrusTime.GetNowMS()
+        now_ms = HydrusTime.get_now_ms()
         
         if service_type not in HC.FILE_SERVICES_WITH_NO_DELETE_RECORD:
             
@@ -540,7 +540,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                                 
                                 self.modules_service_paths.SetServiceFilename( service_id, hash_id, multihash )
                                 
-                                timestamp_ms = HydrusTime.GetNowMS()
+                                timestamp_ms = HydrusTime.get_now_ms()
                                 
                             else:
                                 

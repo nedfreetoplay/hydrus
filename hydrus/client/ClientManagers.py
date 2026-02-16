@@ -269,7 +269,7 @@ class FileViewingStatsManager( object ):
         
         self._pending_updates = {}
         
-        self._last_update = HydrusTime.GetNow()
+        self._last_update = HydrusTime.get_now()
         
         self._my_flush_job = self._controller.call_repeating(5, 60, self.REPEATINGFlush)
         

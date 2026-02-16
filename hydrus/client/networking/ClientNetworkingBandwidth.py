@@ -635,9 +635,9 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
             
             next_timestamp = timestamps_dict[ second_level_domain ] + delay
             
-            if HydrusTime.TimeHasPassed( next_timestamp ):
+            if HydrusTime.time_has_passed(next_timestamp):
                 
-                timestamps_dict[ second_level_domain ] = HydrusTime.GetNow()
+                timestamps_dict[ second_level_domain ] = HydrusTime.get_now()
                 
                 return ( True, 0 )
                 

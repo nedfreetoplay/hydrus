@@ -128,7 +128,7 @@ class AnimationRendererPIL( object ):
             
         else:
             
-            time_started = HydrusTime.GetNowFloat()
+            time_started = HydrusTime.get_now_float()
             
             try:
                 
@@ -146,7 +146,7 @@ class AnimationRendererPIL( object ):
                 
                 self._frames_we_could_not_render.add( self._current_render_index )
                 
-                time_to_error = HydrusTime.GetNowFloat() - time_started
+                time_to_error = HydrusTime.get_now_float() - time_started
                 
                 if time_to_error > 2.0:
                     

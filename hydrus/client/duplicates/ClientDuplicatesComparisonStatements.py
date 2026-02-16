@@ -394,8 +394,8 @@ def GetDuplicateComparisonStatementsFast( shown_media_result: ClientMediaResult.
     
     # older
     
-    s_import_timestamp = HydrusTime.SecondiseMS( shown_media_result.GetLocationsManager().GetTimesManager().GetImportedTimestampMS( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY ) )
-    c_import_timestamp = HydrusTime.SecondiseMS( comparison_media_result.GetLocationsManager().GetTimesManager().GetImportedTimestampMS( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY ) )
+    s_import_timestamp = HydrusTime.secondise_ms(shown_media_result.GetLocationsManager().GetTimesManager().GetImportedTimestampMS(CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY))
+    c_import_timestamp = HydrusTime.secondise_ms(comparison_media_result.GetLocationsManager().GetTimesManager().GetImportedTimestampMS(CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY))
     
     one_month = 86400 * 30
     
@@ -423,7 +423,7 @@ def GetDuplicateComparisonStatementsFast( shown_media_result: ClientMediaResult.
             score = 0
             
         
-        statement = '{}, {} {}'.format( HydrusTime.TimestampToPrettyTimeDelta( s_import_timestamp, history_suffix = ' old' ), operator, HydrusTime.TimestampToPrettyTimeDelta( c_import_timestamp, history_suffix = ' old' ) )
+        statement = '{}, {} {}'.format(HydrusTime.timestamp_to_pretty_time_delta(s_import_timestamp, history_suffix =' old'), operator, HydrusTime.timestamp_to_pretty_time_delta(c_import_timestamp, history_suffix =' old'))
         
         statements_and_scores[ 'time_imported' ] = ( statement, score )
         
@@ -547,17 +547,17 @@ def GetDuplicateComparisonStatementsFast( shown_media_result: ClientMediaResult.
                     percentage_difference = ( s_duration_s / c_duration_s ) - 1.0
                     
                 
-                statement = f'{HydrusTime.TimeDeltaToPrettyTimeDelta( s_duration_s )} {operator} {HydrusTime.TimeDeltaToPrettyTimeDelta( c_duration_s )} ({sign}{HydrusNumbers.float_to_percentage(percentage_difference)})'
+                statement = f'{HydrusTime.time_delta_to_pretty_time_delta(s_duration_s)} {operator} {HydrusTime.time_delta_to_pretty_time_delta(c_duration_s)} ({sign}{HydrusNumbers.float_to_percentage(percentage_difference)})'
                 
             
         elif s_has_duration:
             
-            statement = f'this has duration ({HydrusTime.TimeDeltaToPrettyTimeDelta( s_duration_s )}), the other does not'
+            statement = f'this has duration ({HydrusTime.time_delta_to_pretty_time_delta(s_duration_s)}), the other does not'
             score = 0
             
         else:
             
-            statement = f'the other has duration ({HydrusTime.TimeDeltaToPrettyTimeDelta( c_duration_s )}), this does not'
+            statement = f'the other has duration ({HydrusTime.time_delta_to_pretty_time_delta(c_duration_s)}), this does not'
             score = 0
             
         

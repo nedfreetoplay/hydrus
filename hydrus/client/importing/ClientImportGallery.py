@@ -49,7 +49,7 @@ class GalleryImport( HydrusSerialisable.SerialisableBase ):
         
         super().__init__()
         
-        self._creation_time = HydrusTime.GetNow()
+        self._creation_time = HydrusTime.get_now()
         self._gallery_import_key = HydrusData.generate_key()
         
         self._query = query
@@ -128,7 +128,7 @@ class GalleryImport( HydrusSerialisable.SerialisableBase ):
         
         reason = HydrusText.get_first_line(reason)
         
-        self._no_work_until = HydrusTime.GetNow() + time_delta
+        self._no_work_until = HydrusTime.get_now() + time_delta
         self._no_work_until_reason = reason
         
     
@@ -211,7 +211,7 @@ class GalleryImport( HydrusSerialisable.SerialisableBase ):
     
     def _SerialisableChangeMade( self ):
         
-        self._last_serialisable_change_timestamp = HydrusTime.GetNow()
+        self._last_serialisable_change_timestamp = HydrusTime.get_now()
         
     
     def _update_serialisable_info(self, version, old_serialisable_info):
@@ -1112,7 +1112,7 @@ class MultipleGalleryImport( HydrusSerialisable.SerialisableBase ):
         self._status_dirty = True
         self._status_cache = ClientImportFileSeeds.FileSeedCacheStatus()
         
-        self._last_time_imports_changed = HydrusTime.GetNowPrecise()
+        self._last_time_imports_changed = HydrusTime.get_now_precise()
         
         self._have_started = False
         
@@ -1133,7 +1133,7 @@ class MultipleGalleryImport( HydrusSerialisable.SerialisableBase ):
         
         self._gallery_imports.append( gallery_import )
         
-        self._last_time_imports_changed = HydrusTime.GetNowPrecise()
+        self._last_time_imports_changed = HydrusTime.get_now_precise()
         
         gallery_import_key = gallery_import.GetGalleryImportKey()
         
@@ -1217,14 +1217,14 @@ class MultipleGalleryImport( HydrusSerialisable.SerialisableBase ):
         
         self._gallery_imports.remove( gallery_import )
         
-        self._last_time_imports_changed = HydrusTime.GetNowPrecise()
+        self._last_time_imports_changed = HydrusTime.get_now_precise()
         
         del self._gallery_import_keys_to_gallery_imports[ gallery_import_key ]
         
     
     def _SerialisableChangeMade( self ):
         
-        self._last_serialisable_change_timestamp = HydrusTime.GetNow()
+        self._last_serialisable_change_timestamp = HydrusTime.get_now()
         
     
     def _SetHighlightedGalleryImport( self, highlighted_gallery_import: GalleryImport ):
@@ -1981,9 +1981,9 @@ class MultipleGalleryImport( HydrusSerialisable.SerialisableBase ):
                 
             
         
-        if HydrusTime.TimeHasPassed( self._next_pub_value_check_time ):
+        if HydrusTime.time_has_passed(self._next_pub_value_check_time):
             
-            self._next_pub_value_check_time = HydrusTime.GetNow() + 5
+            self._next_pub_value_check_time = HydrusTime.get_now() + 5
             
             current_value_range = self.GetValueRange()
             

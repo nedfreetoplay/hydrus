@@ -1158,7 +1158,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
                     
                     network_infrastructure_errors = self._domains_to_network_infrastructure_errors[ domain ]
                     
-                    network_infrastructure_errors = [ timestamp for timestamp in network_infrastructure_errors if not HydrusTime.TimeHasPassed( timestamp + error_time_delta ) ]
+                    network_infrastructure_errors = [timestamp for timestamp in network_infrastructure_errors if not HydrusTime.time_has_passed(timestamp + error_time_delta)]
                     
                     self._domains_to_network_infrastructure_errors[ domain ] = network_infrastructure_errors
                     
@@ -1866,7 +1866,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             for domain in domains:
                 
-                self._domains_to_network_infrastructure_errors[ domain ].append( HydrusTime.GetNow() )
+                self._domains_to_network_infrastructure_errors[ domain ].append(HydrusTime.get_now())
                 
             
         

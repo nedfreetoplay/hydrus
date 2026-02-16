@@ -186,7 +186,7 @@ class NetworkJob( object ):
         
         self._additional_headers = {}
         
-        self._creation_time = HydrusTime.GetNow()
+        self._creation_time = HydrusTime.get_now()
         
         self._bandwidth_tracker = HydrusNetworking.BandwidthTracker()
         
@@ -312,7 +312,7 @@ class NetworkJob( object ):
                     
                     dt = datetime.datetime.strptime( last_modified_string, '%a, %d %b %Y %H:%M:%S' )
                     
-                    last_modified_time = HydrusTime.DateTimeToTimestamp( dt )
+                    last_modified_time = HydrusTime.date_time_to_timestamp(dt)
                     
                     if ClientTime.TimestampIsSensible( last_modified_time ):
                         
@@ -397,7 +397,7 @@ class NetworkJob( object ):
             return False
             
         
-        if self._bandwidth_manual_override_delayed_timestamp is not None and HydrusTime.TimeHasPassed( self._bandwidth_manual_override_delayed_timestamp ):
+        if self._bandwidth_manual_override_delayed_timestamp is not None and HydrusTime.time_has_passed(self._bandwidth_manual_override_delayed_timestamp):
             
             return False
             
@@ -417,7 +417,7 @@ class NetworkJob( object ):
     
     def _OngoingBandwidthOK( self ):
         
-        now = HydrusTime.GetNow()
+        now = HydrusTime.get_now()
         
         if now == self._last_time_ongoing_bandwidth_failed: # it won't have changed, so no point spending any cpu checking
             
@@ -898,20 +898,20 @@ class NetworkJob( object ):
     
     def _Sleep( self, seconds_float ):
         
-        self._wake_time_float = HydrusTime.GetNowFloat() + seconds_float
+        self._wake_time_float = HydrusTime.get_now_float() + seconds_float
         
     
     def _WaitOnConnectionError( self, status_text: str ):
         
         connection_error_wait_time = CG.client_controller.new_options.GetInteger( 'connection_error_wait_time' )
         
-        self._connection_error_wake_time = HydrusTime.GetNow() + ( ( self._current_connection_attempt_number - 1 ) * connection_error_wait_time )
+        self._connection_error_wake_time = HydrusTime.get_now() + ((self._current_connection_attempt_number - 1) * connection_error_wait_time)
         
-        while not HydrusTime.TimeHasPassed( self._connection_error_wake_time ) and not self._IsCancelled():
+        while not HydrusTime.time_has_passed(self._connection_error_wake_time) and not self._IsCancelled():
             
             with self._lock:
                 
-                self._status_text = '{} - retrying {}'.format( status_text, HydrusTime.TimestampToPrettyTimeDelta( self._connection_error_wake_time ) )
+                self._status_text = '{} - retrying {}'.format(status_text, HydrusTime.timestamp_to_pretty_time_delta(self._connection_error_wake_time))
                 
             
             time.sleep( 1 )
@@ -958,13 +958,13 @@ class NetworkJob( object ):
             num_seconds_to_wait = problem_coefficient * serverside_bandwidth_wait_time
             
         
-        self._serverside_bandwidth_wake_time = HydrusTime.GetNow() + num_seconds_to_wait
+        self._serverside_bandwidth_wake_time = HydrusTime.get_now() + num_seconds_to_wait
         
-        while not HydrusTime.TimeHasPassed( self._serverside_bandwidth_wake_time ) and not self._IsCancelled():
+        while not HydrusTime.time_has_passed(self._serverside_bandwidth_wake_time) and not self._IsCancelled():
             
             with self._lock:
                 
-                self._status_text = '{} - retrying {}'.format( status_text, HydrusTime.TimestampToPrettyTimeDelta( self._serverside_bandwidth_wake_time ) )
+                self._status_text = '{} - retrying {}'.format(status_text, HydrusTime.timestamp_to_pretty_time_delta(self._serverside_bandwidth_wake_time))
                 
             
             time.sleep( 1 )
@@ -1073,7 +1073,7 @@ class NetworkJob( object ):
         
         with self._lock:
             
-            return not HydrusTime.TimeHasPassed( self._connection_error_wake_time )
+            return not HydrusTime.time_has_passed(self._connection_error_wake_time)
             
         
     
@@ -1081,7 +1081,7 @@ class NetworkJob( object ):
         
         with self._lock:
             
-            return not HydrusTime.TimeHasPassed( self._serverside_bandwidth_wake_time )
+            return not HydrusTime.time_has_passed(self._serverside_bandwidth_wake_time)
             
         
     
@@ -1277,7 +1277,7 @@ class NetworkJob( object ):
         
         with self._lock:
             
-            return not HydrusTime.TimeHasPassedFloat( self._wake_time_float )
+            return not HydrusTime.time_has_passed_float(self._wake_time_float)
             
         
     
@@ -1348,7 +1348,7 @@ class NetworkJob( object ):
                 
             else:
                 
-                self._bandwidth_manual_override_delayed_timestamp = HydrusTime.GetNow() + delay
+                self._bandwidth_manual_override_delayed_timestamp = HydrusTime.get_now() + delay
                 
                 self._wake_time_float = min( self._wake_time_float, self._bandwidth_manual_override_delayed_timestamp + 1.0 )
                 
@@ -1608,7 +1608,7 @@ class NetworkJob( object ):
                                     
                                     timestamp = int( ClientTime.ParseDate( retry_after ) )
                                     
-                                    num_seconds_to_wait = min( max( 60, timestamp - HydrusTime.GetNow() ), 86400 )
+                                    num_seconds_to_wait = min(max(60, timestamp - HydrusTime.get_now()), 86400)
                                     
                                 except Exception as e:
                                     
@@ -1797,13 +1797,13 @@ class NetworkJob( object ):
                     
                 else:
                     
-                    if HydrusTime.TimeHasPassed( self._last_gallery_token_estimate ) and not HydrusTime.TimeHasPassed( self._last_gallery_token_estimate + 3 ):
+                    if HydrusTime.time_has_passed(self._last_gallery_token_estimate) and not HydrusTime.time_has_passed(self._last_gallery_token_estimate + 3):
                         
                         self._status_text = 'a different {} got the chance to work'.format( self._gallery_token_name )
                         
                     else:
                         
-                        self._status_text = 'waiting to start: {}'.format( HydrusTime.TimestampToPrettyTimeDelta( next_timestamp, just_now_threshold = 2, just_now_string = 'checking', no_prefix = True ) )
+                        self._status_text = 'waiting to start: {}'.format(HydrusTime.timestamp_to_pretty_time_delta(next_timestamp, just_now_threshold = 2, just_now_string ='checking', no_prefix = True))
                         
                         self._last_gallery_token_estimate = next_timestamp
                         
@@ -1840,7 +1840,7 @@ class NetworkJob( object ):
                     
                     if will_override:
                         
-                        override_waiting_duration = self._bandwidth_manual_override_delayed_timestamp - HydrusTime.GetNow()
+                        override_waiting_duration = self._bandwidth_manual_override_delayed_timestamp - HydrusTime.get_now()
                         
                         override_coming_first = override_waiting_duration < bandwidth_waiting_duration
                         
@@ -1851,21 +1851,21 @@ class NetworkJob( object ):
                         
                         waiting_duration = override_waiting_duration
                         
-                        waiting_str = 'overriding bandwidth ' + HydrusTime.TimestampToPrettyTimeDelta( self._bandwidth_manual_override_delayed_timestamp, just_now_string = 'imminently', just_now_threshold = just_now_threshold )
+                        waiting_str = 'overriding bandwidth ' + HydrusTime.timestamp_to_pretty_time_delta(self._bandwidth_manual_override_delayed_timestamp, just_now_string ='imminently', just_now_threshold = just_now_threshold)
                         
                     else:
                         
                         waiting_duration = bandwidth_waiting_duration
                         
-                        bandwidth_time_estimate = HydrusTime.GetNow() + waiting_duration
+                        bandwidth_time_estimate = HydrusTime.get_now() + waiting_duration
                         
-                        if HydrusTime.TimeHasPassed( self._last_bandwidth_time_estimate ) and not HydrusTime.TimeHasPassed( self._last_bandwidth_time_estimate + 3 ):
+                        if HydrusTime.time_has_passed(self._last_bandwidth_time_estimate) and not HydrusTime.time_has_passed(self._last_bandwidth_time_estimate + 3):
                             
                             waiting_str = 'a different network job got the bandwidth'
                             
                         else:
                             
-                            waiting_str = 'bandwidth free ' + HydrusTime.TimestampToPrettyTimeDelta( bandwidth_time_estimate, just_now_string = 'imminently', just_now_threshold = just_now_threshold )
+                            waiting_str = 'bandwidth free ' + HydrusTime.timestamp_to_pretty_time_delta(bandwidth_time_estimate, just_now_string ='imminently', just_now_threshold = just_now_threshold)
                             
                             self._last_bandwidth_time_estimate = bandwidth_time_estimate
                             

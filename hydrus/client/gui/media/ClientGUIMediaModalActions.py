@@ -128,14 +128,14 @@ def ApplyContentApplicationCommandToMedia( win: QW.QWidget, command: CAC.Applica
             
             job_status.SetStatusTitle( f'setting {command.ToString()}' )
             
-            start_time = HydrusTime.GetNowFloat()
+            start_time = HydrusTime.get_now_float()
             have_pubbed_message = False
             
             num_to_do = len( content_updates )
             
             for ( i, content_update ) in enumerate( content_updates ):
                 
-                if not have_pubbed_message and HydrusTime.TimeHasPassedFloat( start_time + 3 ):
+                if not have_pubbed_message and HydrusTime.time_has_passed_float(start_time + 3):
                     
                     CG.client_controller.pub( 'message', job_status )
                     
@@ -463,7 +463,7 @@ def EditFileTimestamps( win: QW.QWidget, ordered_medias: list[ ClientMedia.Media
                         
                         job_status.SetStatusTitle( 'setting file modified dates' )
                         
-                        time_started = HydrusTime.GetNow()
+                        time_started = HydrusTime.get_now()
                         showed_popup = False
                         
                         num_to_do = len( medias_to_alter_modified_dates )
@@ -473,7 +473,7 @@ def EditFileTimestamps( win: QW.QWidget, ordered_medias: list[ ClientMedia.Media
                             job_status.SetStatusText(HydrusNumbers.value_range_to_pretty_string(i, num_to_do))
                             job_status.SetGauge( i, num_to_do )
                             
-                            if not showed_popup and HydrusTime.TimeHasPassed( time_started + 3 ):
+                            if not showed_popup and HydrusTime.time_has_passed(time_started + 3):
                                 
                                 CG.client_controller.pub( 'message', job_status )
                                 
@@ -1179,7 +1179,7 @@ def SetFilesForcedFiletypes( win: QW.QWidget, medias: collections.abc.Collection
                     
                     if len( hashes_we_needed_to_dupe ) > 0:
                         
-                        CG.client_controller.write_synchronous('file_maintenance_add_jobs_hashes', hashes_we_needed_to_dupe, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_DELETE_NEIGHBOUR_DUPES, HydrusTime.GetNow() + 3600)
+                        CG.client_controller.write_synchronous('file_maintenance_add_jobs_hashes', hashes_we_needed_to_dupe, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_DELETE_NEIGHBOUR_DUPES, HydrusTime.get_now() + 3600)
                         
                     
                     pauser.Pause()

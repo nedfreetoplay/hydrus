@@ -92,7 +92,7 @@ class ClientDBRecentTags( ClientDBModule.ClientDBModule ):
             
         else:
             
-            now_ms = HydrusTime.GetNowMS()
+            now_ms = HydrusTime.get_now_ms()
             
             tag_ids = [ self.modules_tags.GetTagId( tag ) for tag in tags ]
             

@@ -169,7 +169,7 @@ def GetFFMPEGVideoProperties( path, force_count_frames_manually = False ):
         num_frames = int( duration_s * fps )
         
     
-    duration_in_ms = HydrusTime.MillisecondiseS( duration_s )
+    duration_in_ms = HydrusTime.millisecondise_s(duration_s)
     
     has_audio = VideoHasAudio( path, lines_for_first_second )
     
@@ -846,7 +846,7 @@ class VideoRendererFFMPEG( object ):
         
         self._path = path
         self._mime = mime
-        self._duration_s = HydrusTime.SecondiseMSFloat( duration_ms )
+        self._duration_s = HydrusTime.secondise_ms_float(duration_ms)
         self._num_frames = num_frames
         self._target_resolution = target_resolution
         self._clip_rect = clip_rect

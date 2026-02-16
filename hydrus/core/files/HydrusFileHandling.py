@@ -652,7 +652,7 @@ def GetFileInfo( path, mime = None, ok_to_look_for_hydrus_updates = False ):
 
 def GetFileModifiedTimestampMS( path ) -> int:
     
-    return HydrusTime.MillisecondiseS( os.path.getmtime( path ) )
+    return HydrusTime.millisecondise_s(os.path.getmtime(path))
     
 
 def GetHashFromPath( path ):

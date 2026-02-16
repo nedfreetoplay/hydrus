@@ -114,7 +114,7 @@ class ClientDBFilesDuplicatesFileSearch( ClientDBModule.ClientDBModule ):
         
         if do_report_mode:
             
-            time_started = HydrusTime.GetNowPrecise()
+            time_started = HydrusTime.get_now_precise()
             
         
         potential_duplicates_search_context = potential_duplicate_pairs_fragmentary_search.GetPotentialDuplicatesSearchContext()
@@ -360,21 +360,21 @@ class ClientDBFilesDuplicatesFileSearch( ClientDBModule.ClientDBModule ):
             
             try:
                 
-                time_took = HydrusTime.GetNowPrecise() - time_started
+                time_took = HydrusTime.get_now_precise() - time_started
                 
                 if do_file_based_search:
                     
                     # we care about 'time per hit' here
                     num_guys = len( matching_pairs_and_distances )
                     
-                    HydrusData.print_text(f'Fragmentary potential duplicates search did a file based search, with per-hit speed of: { HydrusTime.TimeDeltaToPrettyTimeDelta(time_took / num_guys) }')
+                    HydrusData.print_text(f'Fragmentary potential duplicates search did a file based search, with per-hit speed of: { HydrusTime.time_delta_to_pretty_time_delta(time_took / num_guys) }')
                     
                 else:
                     
                     # we care about 'time per potential row' here
                     num_guys = len( relevant_pairs_and_distances )
                     
-                    HydrusData.print_text(f'Fragmentary potential duplicates search did a potentials based search, with per-row speed of: { HydrusTime.TimeDeltaToPrettyTimeDelta(time_took / num_guys) }')
+                    HydrusData.print_text(f'Fragmentary potential duplicates search did a potentials based search, with per-row speed of: { HydrusTime.time_delta_to_pretty_time_delta(time_took / num_guys) }')
                     
                 
             except Exception as e:

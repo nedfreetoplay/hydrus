@@ -203,12 +203,12 @@ class TestCheckerOptions( unittest.TestCase ):
         self.assertTrue( static_checker_options.IsDead( bare_file_seed_cache, last_check_time ) )
         
         # normal situation
-        last_check_time = HydrusTime.GetNow() - 5
+        last_check_time = HydrusTime.get_now() - 5
         
         self.assertEqual( static_checker_options.GetNextCheckTime( new_thread_file_seed_cache, last_check_time ), last_check_time + 3600 )
         
         # after a long pause
-        last_check_time = HydrusTime.GetNow() - 100000
+        last_check_time = HydrusTime.get_now() - 100000
         
         self.assertEqual( static_checker_options.GetNextCheckTime( new_thread_file_seed_cache, last_check_time ), last_check_time + 3600 * ( 100000 // 3600 ) )
         

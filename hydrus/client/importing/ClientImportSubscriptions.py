@@ -123,7 +123,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
         
         reason = HydrusText.get_first_line(reason)
         
-        self._no_work_until = HydrusTime.GetNow() + time_delta
+        self._no_work_until = HydrusTime.get_now() + time_delta
         self._no_work_until_reason = reason
         
     
@@ -233,7 +233,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
     
     def _NoDelays( self ):
         
-        return HydrusTime.TimeHasPassed( self._no_work_until )
+        return HydrusTime.time_has_passed(self._no_work_until)
         
     
     def _ShowHitPeriodicFileLimitMessage( self, query_name: int, query_text: int, file_limit: int ):
@@ -769,7 +769,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 ( death_files_found, death_time_delta ) = death_file_velocity
                 
-                HydrusData.show_text('The query "{}" for subscription "{}" found fewer than {} files in the last {}, so it appears to be dead!'.format(query_name, self._name, HydrusNumbers.to_human_int(death_files_found), HydrusTime.TimeDeltaToPrettyTimeDelta(death_time_delta, no_bigger_than_days = True)))
+                HydrusData.show_text('The query "{}" for subscription "{}" found fewer than {} files in the last {}, so it appears to be dead!'.format(query_name, self._name, HydrusNumbers.to_human_int(death_files_found), HydrusTime.time_delta_to_pretty_time_delta(death_time_delta, no_bigger_than_days = True)))
                 
             
         else:
@@ -1281,7 +1281,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
     
     def CanScrubDelay( self ):
         
-        return not HydrusTime.TimeHasPassed( self._no_work_until )
+        return not HydrusTime.time_has_passed(self._no_work_until)
         
     
     def CheckNow( self ):
@@ -1385,7 +1385,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
         
         best_next_work_time = min( next_work_times )
         
-        if not HydrusTime.TimeHasPassed( self._no_work_until ):
+        if not HydrusTime.time_has_passed(self._no_work_until):
             
             best_next_work_time = max( ( best_next_work_time, self._no_work_until ) )
             
@@ -1943,7 +1943,7 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
         # just a couple of seconds for calculation and human breathing room
         SUB_WORK_DELAY_BUFFER = 3
         
-        names_not_due = { name for ( name, next_work_time ) in self._names_to_next_work_time.items() if not HydrusTime.TimeHasPassed( next_work_time + SUB_WORK_DELAY_BUFFER ) }
+        names_not_due = {name for ( name, next_work_time ) in self._names_to_next_work_time.items() if not HydrusTime.time_has_passed(next_work_time + SUB_WORK_DELAY_BUFFER)}
         
         possible_names.difference_update( names_not_due )
         
@@ -2012,7 +2012,7 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
                     # this sets min resolution of a single sub repeat cycle
                     BUFFER_TIME = 120
                     
-                    next_work_time = max( next_work_time, HydrusTime.GetNow() + BUFFER_TIME )
+                    next_work_time = max(next_work_time, HydrusTime.get_now() + BUFFER_TIME)
                     
                 
                 self._names_to_next_work_time[ name ] = next_work_time
@@ -2148,7 +2148,7 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
             message += '\n' * 2
             message += '{} not runnable: {}'.format(HydrusNumbers.to_human_int(len(self._names_that_cannot_run)), ', '.join(cannot_run))
             message += '\n' * 2
-            message += '{} next times: {}'.format(HydrusNumbers.to_human_int(len(self._names_to_next_work_time)), ', '.join(('{}: {}'.format(name, HydrusTime.TimestampToPrettyTimeDelta(next_work_time)) for (name, next_work_time) in next_times)))
+            message += '{} next times: {}'.format(HydrusNumbers.to_human_int(len(self._names_to_next_work_time)), ', '.join(('{}: {}'.format(name, HydrusTime.timestamp_to_pretty_time_delta(next_work_time)) for (name, next_work_time) in next_times)))
             
             HydrusData.show_text(message)
             

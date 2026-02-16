@@ -179,11 +179,11 @@ class ManagerWithMainLoop( object ):
         
         with self._lock:
             
-            time_to_start = HydrusTime.GetNowFloat() + self._pre_loop_wait_time
+            time_to_start = HydrusTime.get_now_float() + self._pre_loop_wait_time
             
         
         # stupid wait here because we are in init and a failure to launch may not trigger nice wake signals as things are unwound
-        while not HydrusTime.TimeHasPassedFloat( time_to_start ):
+        while not HydrusTime.time_has_passed_float(time_to_start):
             
             with self._lock:
                 

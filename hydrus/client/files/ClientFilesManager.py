@@ -360,7 +360,7 @@ class ClientFilesManager( object ):
                 check_period = 60
                 
             
-            if HydrusTime.TimeHasPassed( time_fetched + check_period ):
+            if HydrusTime.time_has_passed(time_fetched + check_period):
                 
                 free_space = HydrusPaths.get_free_space(base_location.path)
                 
@@ -369,7 +369,7 @@ class ClientFilesManager( object ):
                     free_space = 0
                     
                 
-                self._locations_to_free_space[ base_location ] = ( free_space, HydrusTime.GetNow() )
+                self._locations_to_free_space[ base_location ] = ( free_space, HydrusTime.get_now())
                 
             
         else:
@@ -381,7 +381,7 @@ class ClientFilesManager( object ):
                 free_space = 0
                 
             
-            self._locations_to_free_space[ base_location ] = ( free_space, HydrusTime.GetNow() )
+            self._locations_to_free_space[ base_location ] = ( free_space, HydrusTime.get_now())
             
         
         return free_space
@@ -1211,7 +1211,7 @@ class ClientFilesManager( object ):
                         
                         if not delete_ok and random.randint( 1, 52 ) != 52:
                             
-                            self._controller.write_synchronous('file_maintenance_add_jobs_hashes', {hash}, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_DELETE_NEIGHBOUR_DUPES, HydrusTime.GetNow() + (7 * 86400))
+                            self._controller.write_synchronous('file_maintenance_add_jobs_hashes', {hash}, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_DELETE_NEIGHBOUR_DUPES, HydrusTime.get_now() + (7 * 86400))
                             
                         
                     
@@ -1221,7 +1221,7 @@ class ClientFilesManager( object ):
     
     def DoDeferredPhysicalDeletes( self ):
         
-        wait_period = HydrusTime.SecondiseMSFloat( self._controller.new_options.GetInteger( 'ms_to_wait_between_physical_file_deletes' ) )
+        wait_period = HydrusTime.secondise_ms_float(self._controller.new_options.GetInteger('ms_to_wait_between_physical_file_deletes'))
         
         num_files_deleted = 0
         num_thumbnails_deleted = 0
@@ -1601,17 +1601,17 @@ class ClientFilesManager( object ):
                     existing_modified_time = os.path.getmtime( path )
                     
                     # floats are ok here!
-                    modified_timestamp = HydrusTime.SecondiseMSFloat( modified_timestamp_ms )
+                    modified_timestamp = HydrusTime.secondise_ms_float(modified_timestamp_ms)
                     
                     try:
                         
                         os.utime( path, ( existing_access_time, modified_timestamp ) )
                         
-                        HydrusData.print_text('Successfully changed modified time of "{}" from {} to {}.'.format(path, HydrusTime.TimestampToPrettyTime(int(existing_modified_time)), HydrusTime.TimestampToPrettyTime(int(modified_timestamp))))
+                        HydrusData.print_text('Successfully changed modified time of "{}" from {} to {}.'.format(path, HydrusTime.timestamp_to_pretty_time(int(existing_modified_time)), HydrusTime.timestamp_to_pretty_time(int(modified_timestamp))))
                         
                     except PermissionError:
                         
-                        HydrusData.print_text('Tried to set modified time of {} to file "{}", but did not have permission!'.format(HydrusTime.TimestampToPrettyTime(int(modified_timestamp)), path))
+                        HydrusData.print_text('Tried to set modified time of {} to file "{}", but did not have permission!'.format(HydrusTime.timestamp_to_pretty_time(int(modified_timestamp)), path))
                         
                     
                 

@@ -1945,11 +1945,11 @@ class ReviewServicePanel( QW.QWidget ):
                 
                 job_status.SetGauge( c_u_p_total_weight_processed, c_u_p_num_rows )
                 
-                precise_timestamp = HydrusTime.GetNowPrecise()
+                precise_timestamp = HydrusTime.get_now_precise()
                 
                 CG.client_controller.write_synchronous('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates(service.GetServiceKey(), content_updates))
                 
-                it_took = HydrusTime.GetNowPrecise() - precise_timestamp
+                it_took = HydrusTime.get_now_precise() - precise_timestamp
                 
                 rows_s = int( weight / it_took )
                 
@@ -3233,7 +3233,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
             
             update_period = self._service.GetUpdatePeriod()
             
-            repo_options_text_components.append( 'update period: {}'.format( HydrusTime.TimeDeltaToPrettyTimeDelta( update_period ) ) )
+            repo_options_text_components.append( 'update period: {}'.format(HydrusTime.time_delta_to_pretty_time_delta(update_period)))
             
         except HydrusExceptions.DataMissing:
             
@@ -3244,7 +3244,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
             
             nullification_period = self._service.GetNullificationPeriod()
             
-            repo_options_text_components.append( 'anonymisation period: {}'.format( HydrusTime.TimeDeltaToPrettyTimeDelta( nullification_period ) ) )
+            repo_options_text_components.append( 'anonymisation period: {}'.format(HydrusTime.time_delta_to_pretty_time_delta(nullification_period)))
             
         except HydrusExceptions.DataMissing:
             

@@ -375,9 +375,9 @@ class ClientDBTagDisplay( ClientDBModule.ClientDBModule ):
         
         if HG.autocomplete_delay_mode:
             
-            time_to_stop = HydrusTime.GetNowFloat() + 3.0
+            time_to_stop = HydrusTime.get_now_float() + 3.0
             
-            while not HydrusTime.TimeHasPassedFloat( time_to_stop ):
+            while not HydrusTime.time_has_passed_float(time_to_stop):
                 
                 time.sleep( 0.1 )
                 

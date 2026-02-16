@@ -72,7 +72,7 @@ def THREADCommitDuplicatePairDecisions(
     duplicate_pair_decisions: list[ ClientPotentialDuplicatesPairFactory.DuplicatePairDecision ]
 ):
     
-    start_time = HydrusTime.GetNowFloat()
+    start_time = HydrusTime.get_now_float()
     
     job_status = ClientThreading.JobStatus()
     have_published_job_status = False
@@ -83,7 +83,7 @@ def THREADCommitDuplicatePairDecisions(
     
     for ( i, duplicate_pair_decision ) in enumerate( duplicate_pair_decisions ):
         
-        if not have_published_job_status and HydrusTime.TimeHasPassedFloat( start_time + 1 ):
+        if not have_published_job_status and HydrusTime.time_has_passed_float(start_time + 1):
             
             CG.client_controller.pub( 'message', job_status )
             

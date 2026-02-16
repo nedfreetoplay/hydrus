@@ -563,7 +563,7 @@ class EditLoginsPanel( ClientGUIScrolledPanels.EditPanel ):
             
             ( login_domain, login_script_key_and_name, credentials_tuple, login_access_type, login_access_text, active, validity, validity_error_text, no_work_until, no_work_until_reason ) = domain_and_login_info
             
-            if not HydrusTime.TimeHasPassed( no_work_until ) or no_work_until_reason != '':
+            if not HydrusTime.time_has_passed(no_work_until) or no_work_until_reason != '':
                 
                 return True
                 
@@ -667,20 +667,20 @@ class EditLoginsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         if login_expiry is None:
             
-            sort_login_expiry = HydrusTime.GetNow() + 45 * 60
+            sort_login_expiry = HydrusTime.get_now() + 45 * 60
             
         else:
             
             sort_login_expiry = login_expiry
             
         
-        if HydrusTime.TimeHasPassed( no_work_until ):
+        if HydrusTime.time_has_passed(no_work_until):
             
             pretty_no_work_until = ''
             
         else:
             
-            pretty_no_work_until = '{} - {}'.format( HydrusTime.TimestampToPrettyExpires( no_work_until ), no_work_until_reason )
+            pretty_no_work_until = '{} - {}'.format(HydrusTime.timestamp_to_pretty_expires(no_work_until), no_work_until_reason)
             
         
         pretty_login_domain = login_domain
@@ -705,7 +705,7 @@ class EditLoginsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
             else:
                 
-                pretty_login_expiry = HydrusTime.TimestampToPrettyExpires( login_expiry )
+                pretty_login_expiry = HydrusTime.timestamp_to_pretty_expires(login_expiry)
                 
             
             pretty_logged_in = 'yes - {}'.format( pretty_login_expiry )
@@ -768,7 +768,7 @@ class EditLoginsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         if login_expiry is None:
             
-            sort_login_expiry = HydrusTime.GetNow() + 45 * 60
+            sort_login_expiry = HydrusTime.get_now() + 45 * 60
             
         else:
             

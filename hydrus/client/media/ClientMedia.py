@@ -1802,7 +1802,7 @@ class MediaCollection( MediaList, Media ):
             
             try:
                 
-                return num_frames / HydrusTime.SecondiseMSFloat( duration_ms )
+                return num_frames / HydrusTime.secondise_ms_float(duration_ms)
                 
             except Exception as e:
                 

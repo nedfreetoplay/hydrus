@@ -1048,7 +1048,7 @@ class AutoCompleteDropdown( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             return False
             
         
-        return HydrusTime.TimeHasPassed( self._time_results_last_set + 300 )
+        return HydrusTime.time_has_passed(self._time_results_last_set + 300)
         
     
     def _HandleEscape( self ):
@@ -1111,7 +1111,7 @@ class AutoCompleteDropdown( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
     
     def _SetResultsToList( self, results, parsed_autocomplete_text ):
         
-        self._time_results_last_set = HydrusTime.GetNow()
+        self._time_results_last_set = HydrusTime.get_now()
         
     
     def _ShouldBroadcastCurrentInputOnEnterKey( self ):

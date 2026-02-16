@@ -448,8 +448,8 @@ class EditFileSeedCachePanel( ClientGUIScrolledPanels.EditPanel ):
             
         
         pretty_status = CC.status_string_lookup[ status ] if status != CC.STATUS_UNKNOWN else ''
-        pretty_added = HydrusTime.TimestampToPrettyTimeDelta( added )
-        pretty_modified = HydrusTime.TimestampToPrettyTimeDelta( modified )
+        pretty_added = HydrusTime.timestamp_to_pretty_time_delta(added)
+        pretty_modified = HydrusTime.timestamp_to_pretty_time_delta(modified)
         
         if source_time is None:
             
@@ -457,7 +457,7 @@ class EditFileSeedCachePanel( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            pretty_source_time = HydrusTime.TimestampToPrettyTimeDelta( source_time )
+            pretty_source_time = HydrusTime.timestamp_to_pretty_time_delta(source_time)
             
         
         pretty_note = HydrusText.get_first_line(note)

@@ -211,7 +211,7 @@ class TabBar( QW.QTabBar ):
             
             self._last_clicked_global_pos = event.globalPosition().toPoint()
             
-            self._last_clicked_timestamp_ms = HydrusTime.GetNowMS()
+            self._last_clicked_timestamp_ms = HydrusTime.get_now_ms()
             
         
         QW.QTabBar.mousePressEvent( self, event )
@@ -514,7 +514,7 @@ class TabWidgetWithDnD( QW.QTabWidget ):
         # I used to do manhattanlength stuff, but tbh this works better
         # delta_pos = e.globalPosition().toPoint() - clicked_global_pos
         
-        if not HydrusTime.TimeHasPassedMS( clicked_timestamp_ms + 100 ):
+        if not HydrusTime.time_has_passed_ms(clicked_timestamp_ms + 100):
             
             # don't start a drag until decent movement
             

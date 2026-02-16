@@ -44,8 +44,8 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
     
     def timestamp_ms_is_interesting( timestamp_ms_1, timestamp_ms_2 ):
         
-        distance_1 = abs( timestamp_ms_1 - HydrusTime.GetNowMS() )
-        distance_2 = abs( timestamp_ms_2 - HydrusTime.GetNowMS() )
+        distance_1 = abs(timestamp_ms_1 - HydrusTime.get_now_ms())
+        distance_2 = abs(timestamp_ms_2 - HydrusTime.get_now_ms())
         
         # 50000 / 51000 = 0.98 = not interesting
         # 10000 / 51000 = 0.20 = interesting
@@ -71,13 +71,13 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
     
     if duration_ms is not None:
         
-        info_string += f', {HydrusTime.MillisecondsDurationToPrettyTime( duration_ms )}'
+        info_string += f', {HydrusTime.milliseconds_duration_to_pretty_time(duration_ms)}'
         
     elif media_result.HasSimulatedDuration():
         
         ( simulated_duration_ms, source_string ) = media_result.GetSimulatedDurationMSAndSource()
         
-        info_string += f', {HydrusTime.MillisecondsDurationToPrettyTime( simulated_duration_ms )} ({source_string})'
+        info_string += f', {HydrusTime.milliseconds_duration_to_pretty_time(simulated_duration_ms)} ({source_string})'
         
     
     if num_frames is not None:
@@ -139,11 +139,11 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
         
         timestamp_ms = times_manager.GetImportedTimestampMS( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY )
         
-        line = f'imported: {HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( timestamp_ms ) )}'
+        line = f'imported: {HydrusTime.timestamp_to_pretty_time_delta(HydrusTime.secondise_ms(timestamp_ms))}'
         
         line_is_interesting = True
         
-        tooltip = f'imported: {HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( timestamp_ms ), reverse_iso_delta_setting = True )}'
+        tooltip = f'imported: {HydrusTime.timestamp_to_pretty_time_delta(HydrusTime.secondise_ms(timestamp_ms), reverse_iso_delta_setting = True)}'
         
         pretty_info_lines.append( ClientMediaResultPrettyInfoObjects.PrettyMediaResultInfoLine( line, line_is_interesting, tooltip = tooltip ) )
         
@@ -188,14 +188,14 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
             
             if state_local_service_timestamp:
                 
-                line = f'added to {local_file_service.get_name()}: {HydrusTime.TimestampToPrettyTimeDelta(HydrusTime.SecondiseMS(timestamp_ms))}'
+                line = f'added to {local_file_service.get_name()}: {HydrusTime.timestamp_to_pretty_time_delta(HydrusTime.secondise_ms(timestamp_ms))}'
                 
             else:
                 
                 line = local_file_service.get_name()
                 
             
-            tooltip = f'added to {local_file_service.get_name()}: {HydrusTime.TimestampToPrettyTimeDelta(HydrusTime.SecondiseMS(timestamp_ms), reverse_iso_delta_setting = True)}'
+            tooltip = f'added to {local_file_service.get_name()}: {HydrusTime.timestamp_to_pretty_time_delta(HydrusTime.secondise_ms(timestamp_ms), reverse_iso_delta_setting = True)}'
             
             pretty_info_lines.append( ClientMediaResultPrettyInfoObjects.PrettyMediaResultInfoLine( line, line_is_interesting, tooltip = tooltip ) )
             
@@ -213,11 +213,11 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
         
         timestamp_ms = times_manager.GetDeletedTimestampMS( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY )
         
-        line = f'deleted from this client {HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( timestamp_ms ) )} ({local_file_deletion_reason})'
+        line = f'deleted from this client {HydrusTime.timestamp_to_pretty_time_delta(HydrusTime.secondise_ms(timestamp_ms))} ({local_file_deletion_reason})'
         
         line_is_interesting = True
         
-        tooltip = f'deleted from this client {HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( timestamp_ms ), reverse_iso_delta_setting = True )} ({local_file_deletion_reason})'
+        tooltip = f'deleted from this client {HydrusTime.timestamp_to_pretty_time_delta(HydrusTime.secondise_ms(timestamp_ms), reverse_iso_delta_setting = True)} ({local_file_deletion_reason})'
         
         pretty_info_lines.append( ClientMediaResultPrettyInfoObjects.PrettyMediaResultInfoLine( line, line_is_interesting, tooltip = tooltip ) )
         
@@ -229,9 +229,9 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
             
             timestamp_ms = times_manager.GetDeletedTimestampMS( local_file_service.GetServiceKey() )
             
-            line = f'removed from {local_file_service.get_name()} {HydrusTime.TimestampToPrettyTimeDelta(HydrusTime.SecondiseMS(timestamp_ms))}'
+            line = f'removed from {local_file_service.get_name()} {HydrusTime.timestamp_to_pretty_time_delta(HydrusTime.secondise_ms(timestamp_ms))}'
             
-            tooltip = f'removed from {local_file_service.get_name()} {HydrusTime.TimestampToPrettyTimeDelta(HydrusTime.SecondiseMS(timestamp_ms), reverse_iso_delta_setting = True)}'
+            tooltip = f'removed from {local_file_service.get_name()} {HydrusTime.timestamp_to_pretty_time_delta(HydrusTime.secondise_ms(timestamp_ms), reverse_iso_delta_setting = True)}'
             
             line_is_interesting = False
             
@@ -245,8 +245,8 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
         
         if state_trash_timestamp:
             
-            line = f'sent to trash {HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( timestamp_ms ) )}'
-            tooltip = f'sent to trash {HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( timestamp_ms ), reverse_iso_delta_setting = True )}'
+            line = f'sent to trash {HydrusTime.timestamp_to_pretty_time_delta(HydrusTime.secondise_ms(timestamp_ms))}'
+            tooltip = f'sent to trash {HydrusTime.timestamp_to_pretty_time_delta(HydrusTime.secondise_ms(timestamp_ms), reverse_iso_delta_setting = True)}'
             
         else:
             
@@ -297,14 +297,14 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
         
         if state_remote_service_timestamp:
             
-            line = f'{status_label} to {service.get_name()} {HydrusTime.TimestampToPrettyTimeDelta(HydrusTime.SecondiseMS(timestamp_ms))}'
+            line = f'{status_label} to {service.get_name()} {HydrusTime.timestamp_to_pretty_time_delta(HydrusTime.secondise_ms(timestamp_ms))}'
             
         else:
             
             line = f'{status_label} to {service.get_name()}'
             
         
-        tooltip = f'{status_label} to {service.get_name()} {HydrusTime.TimestampToPrettyTimeDelta(HydrusTime.SecondiseMS(timestamp_ms), reverse_iso_delta_setting = True)}'
+        tooltip = f'{status_label} to {service.get_name()} {HydrusTime.timestamp_to_pretty_time_delta(HydrusTime.secondise_ms(timestamp_ms), reverse_iso_delta_setting = True)}'
         
         pretty_info_lines.append( ClientMediaResultPrettyInfoObjects.PrettyMediaResultInfoLine( line, line_is_interesting, tooltip = tooltip ) )
         
@@ -327,9 +327,9 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
             line_is_interesting = True
             
         
-        line = f'modified: {HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( file_modified_timestamp_ms ) )}'
+        line = f'modified: {HydrusTime.timestamp_to_pretty_time_delta(HydrusTime.secondise_ms(file_modified_timestamp_ms))}'
         
-        tooltip = f'modified: {HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( file_modified_timestamp_ms ), reverse_iso_delta_setting = True )}'
+        tooltip = f'modified: {HydrusTime.timestamp_to_pretty_time_delta(HydrusTime.secondise_ms(file_modified_timestamp_ms), reverse_iso_delta_setting = True)}'
         
         pretty_info_lines.append( ClientMediaResultPrettyInfoObjects.PrettyMediaResultInfoLine( line, line_is_interesting, tooltip = tooltip ) )
         
@@ -341,18 +341,18 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
         
         if timestamp_ms is not None:
             
-            line = f'local: {HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( timestamp_ms ) )}'
+            line = f'local: {HydrusTime.timestamp_to_pretty_time_delta(HydrusTime.secondise_ms(timestamp_ms))}'
             
-            tooltip = f'local: {HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( timestamp_ms ), reverse_iso_delta_setting = True )}'
+            tooltip = f'local: {HydrusTime.timestamp_to_pretty_time_delta(HydrusTime.secondise_ms(timestamp_ms), reverse_iso_delta_setting = True)}'
             
             modified_timestamp_lines.append( ClientMediaResultPrettyInfoObjects.PrettyMediaResultInfoLine( line, False, tooltip = tooltip ) )
             
         
         for ( domain, timestamp_ms ) in sorted( times_manager.GetDomainModifiedTimestampsMS().items() ):
             
-            line = f'{domain}: {HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( timestamp_ms ) )}'
+            line = f'{domain}: {HydrusTime.timestamp_to_pretty_time_delta(HydrusTime.secondise_ms(timestamp_ms))}'
             
-            tooltip = f'{domain}: {HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( timestamp_ms ), reverse_iso_delta_setting = True )}'
+            tooltip = f'{domain}: {HydrusTime.timestamp_to_pretty_time_delta(HydrusTime.secondise_ms(timestamp_ms), reverse_iso_delta_setting = True)}'
             
             modified_timestamp_lines.append( ClientMediaResultPrettyInfoObjects.PrettyMediaResultInfoLine( line, False, tooltip = tooltip ) )
             
@@ -388,14 +388,14 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
             
             if state_archived_timestamp:
                 
-                line = f'archived: {HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( archived_timestamp_ms ) )}'
+                line = f'archived: {HydrusTime.timestamp_to_pretty_time_delta(HydrusTime.secondise_ms(archived_timestamp_ms))}'
                 
             else:
                 
                 line = 'archived'
                 
             
-            tooltip = f'archived: {HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( archived_timestamp_ms ), reverse_iso_delta_setting = True )}'
+            tooltip = f'archived: {HydrusTime.timestamp_to_pretty_time_delta(HydrusTime.secondise_ms(archived_timestamp_ms), reverse_iso_delta_setting = True)}'
             
         
         line_is_interesting = CG.client_controller.new_options.GetBoolean( 'file_info_line_consider_archived_interesting' )

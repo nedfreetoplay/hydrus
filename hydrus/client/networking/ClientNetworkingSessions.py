@@ -43,7 +43,7 @@ class NetworkSessionManagerSessionContainer( HydrusSerialisable.SerialisableBase
         
         self.network_context = network_context
         self.session = session
-        self.last_touched_time = HydrusTime.GetNow()
+        self.last_touched_time = HydrusTime.get_now()
         
         self.pool_is_cleared = True
         self.printed_connection_pool_error = False
@@ -117,7 +117,7 @@ class NetworkSessionManagerSessionContainer( HydrusSerialisable.SerialisableBase
     
     def MaintainConnectionPool( self ):
         
-        if not self.pool_is_cleared and HydrusTime.TimeHasPassed( self.last_touched_time + self.POOL_CONNECTION_TIMEOUT ):
+        if not self.pool_is_cleared and HydrusTime.time_has_passed(self.last_touched_time + self.POOL_CONNECTION_TIMEOUT):
             
             try:
                 
@@ -150,12 +150,12 @@ class NetworkSessionManagerSessionContainer( HydrusSerialisable.SerialisableBase
     
     def PrepareForNewWork( self ):
         
-        self.last_touched_time = HydrusTime.GetNow()
+        self.last_touched_time = HydrusTime.get_now()
         self.pool_is_cleared = False
         
         my_session_cookies = self.session.cookies
         
-        if HydrusTime.TimeHasPassed( self.last_touched_time + self.SESSION_TIMEOUT ):
+        if HydrusTime.time_has_passed(self.last_touched_time + self.SESSION_TIMEOUT):
             
             my_session_cookies.clear_session_cookies()
             

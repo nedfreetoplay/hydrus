@@ -83,7 +83,7 @@ def ParseDate( date_string: str ) -> float:
                 dt = dateparser.parse( date_string, languages = ['en'] )
                 
             
-            return HydrusTime.SecondiseMSFloat( HydrusTime.DateTimeToTimestampMS( dt ) )
+            return HydrusTime.secondise_ms_float(HydrusTime.date_time_to_timestamp_ms(dt))
             
         except Exception as e:
             
@@ -105,7 +105,7 @@ def ParseDate( date_string: str ) -> float:
                 dt = dateutil.parser.parse( date_string, ignoretz = True )
                 
             
-            return HydrusTime.SecondiseMSFloat( HydrusTime.DateTimeToTimestampMS( dt ) )
+            return HydrusTime.secondise_ms_float(HydrusTime.date_time_to_timestamp_ms(dt))
             
         except Exception as e:
             
@@ -195,7 +195,7 @@ class TimestampData( HydrusSerialisable.SerialisableBase ):
         self.timestamp_type = timestamp_type
         self.location = location
         self.timestamp_ms = None if timestamp_ms is None else int( timestamp_ms )
-        self.timestamp = HydrusTime.SecondiseMS( self.timestamp_ms ) # TODO: pretty sure I can delete this variable now, but I am currently attempting to fold space using the spice melange and don't want to make a foolish mistake
+        self.timestamp = HydrusTime.secondise_ms(self.timestamp_ms) # TODO: pretty sure I can delete this variable now, but I am currently attempting to fold space using the spice melange and don't want to make a foolish mistake
         
     
     def __eq__( self, other ):
@@ -236,7 +236,7 @@ class TimestampData( HydrusSerialisable.SerialisableBase ):
         
         ( self.timestamp_type, serialisable_location, self.timestamp_ms ) = serialisable_info
         
-        self.timestamp = HydrusTime.SecondiseMS( self.timestamp_ms )
+        self.timestamp = HydrusTime.secondise_ms(self.timestamp_ms)
         
         if self.timestamp_type in FILE_SERVICE_TIMESTAMP_TYPES:
             
@@ -254,7 +254,7 @@ class TimestampData( HydrusSerialisable.SerialisableBase ):
             
             ( timestamp_type, serialisable_location, timestamp ) = old_serialisable_info
             
-            timestamp_ms = HydrusTime.MillisecondiseS( timestamp )
+            timestamp_ms = HydrusTime.millisecondise_s(timestamp)
             
             new_serialisable_info = ( timestamp_type, serialisable_location, timestamp_ms )
             
@@ -304,7 +304,7 @@ class TimestampData( HydrusSerialisable.SerialisableBase ):
             
         else:
             
-            return '{}: {}'.format( type_base, HydrusTime.TimestampMSToPrettyTime( self.timestamp_ms ) )
+            return '{}: {}'.format(type_base, HydrusTime.timestamp_ms_to_pretty_time(self.timestamp_ms))
             
         
     

@@ -120,7 +120,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
         
         if dest_status == ClientDuplicatesAutoResolution.DUPLICATE_STATUS_USER_DENIED:
             
-            now_ms = HydrusTime.GetNowMS()
+            now_ms = HydrusTime.get_now_ms()
             
             self._execute(f'INSERT OR IGNORE INTO {statuses_to_table_names[ dest_status]} ( smaller_media_id, larger_media_id, timestamp_ms ) SELECT smaller_media_id, larger_media_id, ? FROM {statuses_to_table_names[ source_status]};', (now_ms,))
             
@@ -1016,7 +1016,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
         
         if status_to_set == ClientDuplicatesAutoResolution.DUPLICATE_STATUS_USER_DENIED:
             
-            now_ms = HydrusTime.GetNowMS()
+            now_ms = HydrusTime.get_now_ms()
             
             self._execute_many(
                 f'INSERT OR IGNORE INTO {table_name} ( smaller_media_id, larger_media_id, timestamp_ms ) VALUES ( ?, ?, ? );',

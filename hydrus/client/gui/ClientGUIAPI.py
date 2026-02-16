@@ -19,7 +19,7 @@ class CaptureAPIAccessPermissionsRequestPanel( ClientGUIScrolledPanels.ReviewPan
         
         super().__init__( parent )
         
-        self._time_started = HydrusTime.GetNow()
+        self._time_started = HydrusTime.get_now()
         
         self._api_permissions = None
         

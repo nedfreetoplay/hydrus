@@ -130,12 +130,12 @@ class MaintenanceTracker( object ):
     
     def HashedSerialisableMaintenanceDue( self ):
         
-        return HydrusTime.TimeHasPassed( self._last_hashed_serialisable_maintenance + 86400 ) or self._total_new_hashed_serialisable_bytes > 512 * 1048576
+        return HydrusTime.time_has_passed(self._last_hashed_serialisable_maintenance + 86400) or self._total_new_hashed_serialisable_bytes > 512 * 1048576
         
     
     def NotifyHashedSerialisableMaintenanceDone( self ):
         
-        self._last_hashed_serialisable_maintenance = HydrusTime.GetNow()
+        self._last_hashed_serialisable_maintenance = HydrusTime.get_now()
         self._total_new_hashed_serialisable_bytes = 0
         
     
@@ -637,7 +637,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
             
             if force_timestamp_ms is None:
                 
-                object_timestamp_ms = HydrusTime.GetNowMS()
+                object_timestamp_ms = HydrusTime.get_now_ms()
                 
                 if store_backups:
                     

@@ -1303,7 +1303,7 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
         
         deleted_files_table_name = GenerateFilesTableName( service_id, HC.CONTENT_STATUS_DELETED )
         
-        now_ms = HydrusTime.GetNowMS()
+        now_ms = HydrusTime.get_now_ms()
         
         self._execute_many(
             'INSERT OR IGNORE INTO {} ( hash_id, timestamp_ms, original_timestamp_ms ) VALUES ( ?, ?, ? );'.format( deleted_files_table_name ),

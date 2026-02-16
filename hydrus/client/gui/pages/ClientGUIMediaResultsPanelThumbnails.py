@@ -89,12 +89,12 @@ class ThumbnailWaitingToBeDrawnAnimated( ThumbnailWaitingToBeDrawn ):
         
         self.alpha_bmp = QP.AdjustOpacity( self.bitmap, opacity_factor )
         
-        self.animation_started_precise = HydrusTime.GetNowPrecise()
+        self.animation_started_precise = HydrusTime.get_now_precise()
         
     
     def _GetNumFramesOutstanding( self ):
         
-        now_precise = HydrusTime.GetNowPrecise()
+        now_precise = HydrusTime.get_now_precise()
         
         num_frames_to_now = int( ( now_precise - self.animation_started_precise ) // FRAME_DURATION_60FPS )
         
@@ -368,7 +368,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
             return
             
         
-        now_precise = HydrusTime.GetNowPrecise()
+        now_precise = HydrusTime.get_now_precise()
         
         for thumbnail in thumbnails:
             
@@ -972,7 +972,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                 # prefire deal here is mpv lags on initial click, which can cause a drag (and hence an immediate pause) event by accident when mouserelease isn't processed quick
                 # so now we'll say we can't start a drag unless we get a smooth ramp to our pixel delta threshold
                 clean_drag_started = self._drag_prefire_event_count >= 10
-                prob_not_an_accidental_click = HydrusTime.TimeHasPassedMS( self._drag_click_timestamp_ms + 100 )
+                prob_not_an_accidental_click = HydrusTime.time_has_passed_ms(self._drag_click_timestamp_ms + 100)
                 
                 if clean_drag_started and prob_not_an_accidental_click:
                     
@@ -1891,7 +1891,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
     
     def TIMERAnimationUpdate( self ):
         
-        loop_should_break_time = HydrusTime.GetNowPrecise() + ( FRAME_DURATION_60FPS / 2 )
+        loop_should_break_time = HydrusTime.get_now_precise() + (FRAME_DURATION_60FPS / 2)
         
         ( thumbnail_span_width, thumbnail_span_height ) = self._GetThumbnailSpanDimensions()
         
@@ -1968,7 +1968,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                 del self._hashes_to_thumbnails_waiting_to_be_drawn[ hash ]
                 
             
-            if HydrusTime.TimeHasPassedPrecise( loop_should_break_time ):
+            if HydrusTime.time_has_passed_precise(loop_should_break_time):
                 
                 break
                 
@@ -2008,7 +2008,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         def mousePressEvent( self, event ):
             
             self._parent._drag_init_coordinates = QG.QCursor.pos()
-            self._parent._drag_click_timestamp_ms = HydrusTime.GetNowMS()
+            self._parent._drag_click_timestamp_ms = HydrusTime.get_now_ms()
             
             thumb = self._parent._GetThumbnailUnderMouse( event )
             

@@ -47,7 +47,7 @@ def clean_up_temp_path(os_file_handle, temp_path):
         
         with TEMP_PATH_LOCK:
             
-            IN_USE_TEMP_PATHS.add( ( HydrusTime.GetNow(), temp_path ) )
+            IN_USE_TEMP_PATHS.add((HydrusTime.get_now(), temp_path))
             
         
     
@@ -62,7 +62,7 @@ def clean_up_old_temp_paths():
             
             ( time_failed, temp_path ) = row
             
-            if HydrusTime.TimeHasPassed( time_failed + 60 ):
+            if HydrusTime.time_has_passed(time_failed + 60):
                 
                 try:
                     
@@ -72,7 +72,7 @@ def clean_up_old_temp_paths():
                     
                 except OSError:
                     
-                    if HydrusTime.TimeHasPassed( time_failed + 1200 ):
+                    if HydrusTime.time_has_passed(time_failed + 1200):
                         
                         IN_USE_TEMP_PATHS.discard( row )
                         

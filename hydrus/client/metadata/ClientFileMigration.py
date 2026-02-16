@@ -56,7 +56,7 @@ def DoMoveOrDuplicateLocalFiles( dest_service_key: bytes, action: int, media_res
         CG.client_controller.pub( 'message', job_status )
         
     
-    now_ms = HydrusTime.GetNowMS()
+    now_ms = HydrusTime.get_now_ms()
     
     for ( num_done, num_to_do, block_of_media_results ) in HydrusLists.split_list_into_chunks_rich(media_results, BLOCK_SIZE):
         

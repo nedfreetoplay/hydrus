@@ -400,7 +400,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             HydrusPaths.make_sure_directory_exists(error_dir)
             
-            pretty_timestamp = time.strftime( '%Y-%m-%d %H-%M-%S', time.localtime(HydrusTime.SecondiseMS(self._controller.get_boot_timestamp_ms())))
+            pretty_timestamp = time.strftime( '%Y-%m-%d %H-%M-%S', time.localtime(HydrusTime.secondise_ms(self._controller.get_boot_timestamp_ms())))
             
             missing_hashes_filename = '{} missing hashes.txt'.format( pretty_timestamp )
             
@@ -865,7 +865,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 if needed_to_dupe_the_file:
                     
-                    self._controller.write_synchronous('file_maintenance_add_jobs_hashes', {hash}, REGENERATE_FILE_DATA_JOB_DELETE_NEIGHBOUR_DUPES, HydrusTime.GetNow() + 3600)
+                    self._controller.write_synchronous('file_maintenance_add_jobs_hashes', {hash}, REGENERATE_FILE_DATA_JOB_DELETE_NEIGHBOUR_DUPES, HydrusTime.get_now() + 3600)
                     
                 
             
@@ -1102,7 +1102,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             big_pauser = HydrusThreading.BigJobPauser( wait_time = 0.8 )
             
-            last_time_jobs_were_cleared = HydrusTime.GetNow()
+            last_time_jobs_were_cleared = HydrusTime.get_now()
             
             for ( media_result, job_types ) in media_results_to_job_types.items():
                 
@@ -1297,11 +1297,11 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                         
                     
                 
-                if HydrusTime.TimeHasPassed( last_time_jobs_were_cleared + 10 ) or len( cleared_jobs ) > 256:
+                if HydrusTime.time_has_passed(last_time_jobs_were_cleared + 10) or len(cleared_jobs) > 256:
                     
                     self._controller.write_synchronous('file_maintenance_clear_jobs', cleared_jobs)
                     
-                    last_time_jobs_were_cleared = HydrusTime.GetNow()
+                    last_time_jobs_were_cleared = HydrusTime.get_now()
                     
                     cleared_jobs = []
                     

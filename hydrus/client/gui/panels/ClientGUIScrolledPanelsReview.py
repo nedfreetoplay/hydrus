@@ -816,7 +816,7 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                     
                 
             
-            stop_time = HydrusTime.GetNow() + result
+            stop_time = HydrusTime.get_now() + result
             
         
         job_status = ClientThreading.JobStatus( cancellable = True, stop_time = stop_time )
@@ -2967,7 +2967,7 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 eit_timestamp = boned_stats[ 'earliest_import_time' ]
                 
-                eit_label = 'Earliest file import: {} ({})'.format( HydrusTime.TimestampToPrettyTime( eit_timestamp ), HydrusTime.TimestampToPrettyTimeDelta( eit_timestamp ) )
+                eit_label = 'Earliest file import: {} ({})'.format(HydrusTime.timestamp_to_pretty_time(eit_timestamp), HydrusTime.timestamp_to_pretty_time_delta(eit_timestamp))
                 
                 eit_st = ClientGUICommon.BetterStaticText( self._files_content_panel, label = eit_label )
                 
@@ -3057,9 +3057,9 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
         
         ( media_views, media_viewtime, preview_views, preview_viewtime ) = total_viewtime
         
-        media_label = 'Total media views: ' + HydrusNumbers.to_human_int(media_views) + ', totalling ' + HydrusTime.TimeDeltaToPrettyTimeDelta(media_viewtime)
+        media_label = 'Total media views: ' + HydrusNumbers.to_human_int(media_views) + ', totalling ' + HydrusTime.time_delta_to_pretty_time_delta(media_viewtime)
         
-        preview_label = 'Total preview views: ' + HydrusNumbers.to_human_int(preview_views) + ', totalling ' + HydrusTime.TimeDeltaToPrettyTimeDelta(preview_viewtime)
+        preview_label = 'Total preview views: ' + HydrusNumbers.to_human_int(preview_views) + ', totalling ' + HydrusTime.time_delta_to_pretty_time_delta(preview_viewtime)
         
         self._media_views_st.setText( media_label )
         self._preview_views_st.setText( preview_label )
@@ -3529,7 +3529,7 @@ Vacuuming is an expensive operation. It creates one (temporary) copy of the data
             
         else:
             
-            pretty_last_vacuumed_ms = HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( sort_last_vacuumed_ms ) )
+            pretty_last_vacuumed_ms = HydrusTime.timestamp_to_pretty_time_delta(HydrusTime.secondise_ms(sort_last_vacuumed_ms))
             
         
         ( result, info ) = self._CanVacuumName( name )
@@ -3579,7 +3579,7 @@ Vacuuming is an expensive operation. It creates one (temporary) copy of the data
         
         vacuum_time_estimate = HydrusDB.get_approx_vacuum_into_duration(db_size)
         
-        pretty_vacuum_time_estimate = '{} to {}'.format( HydrusTime.TimeDeltaToPrettyTimeDelta( vacuum_time_estimate / 20 ), HydrusTime.TimeDeltaToPrettyTimeDelta( vacuum_time_estimate ) )
+        pretty_vacuum_time_estimate = '{} to {}'.format(HydrusTime.time_delta_to_pretty_time_delta(vacuum_time_estimate / 20), HydrusTime.time_delta_to_pretty_time_delta(vacuum_time_estimate))
         
         return ( vacuum_time_estimate, pretty_vacuum_time_estimate )
         

@@ -134,7 +134,7 @@ class EditCookiePanel( ClientGUIScrolledPanels.EditPanel ):
         
         with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit time delta' ) as dlg:
             
-            now_at_dialog_boot = HydrusTime.GetNow()
+            now_at_dialog_boot = HydrusTime.get_now()
             
             panel = ClientGUIScrolledPanels.EditSingleCtrlPanel( dlg )
             
@@ -175,7 +175,7 @@ class EditCookiePanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _UpdateExpiresText( self ):
         
-        self._expires_st.setText( HydrusTime.TimestampToPrettyExpires(self._expires) )
+        self._expires_st.setText(HydrusTime.timestamp_to_pretty_expires(self._expires))
         self._expires_st_utc.setText( str(self._expires) )
         
     
@@ -770,7 +770,7 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         if waiting_estimate > 0:
             
-            pretty_blocked = HydrusTime.TimeDeltaToPrettyTimeDelta( waiting_estimate )
+            pretty_blocked = HydrusTime.time_delta_to_pretty_time_delta(waiting_estimate)
             
         else:
             
@@ -1357,7 +1357,7 @@ class ReviewNetworkJobs( ClientGUIScrolledPanels.ReviewPanel ):
             
             if waiting_estimate > 0:
                 
-                label = f'{label} ({HydrusTime.TimeDeltaToPrettyTimeDelta( waiting_estimate )})'
+                label = f'{label} ({HydrusTime.time_delta_to_pretty_time_delta(waiting_estimate)})'
                 
             else:
                 
@@ -1508,7 +1508,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             try:
                 
                 expiry = max( expires_numbers )
-                pretty_expiry = HydrusTime.TimestampToPrettyExpires( expiry )
+                pretty_expiry = HydrusTime.timestamp_to_pretty_expires(expiry)
                 
             except Exception as e:
                 
@@ -1835,7 +1835,7 @@ class ReviewNetworkSessionPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
             
             path = '/'
-            expires = HydrusTime.GetNow() + 30 * 86400
+            expires = HydrusTime.get_now() + 30 * 86400
             
             panel = EditCookiePanel( dlg, name, value, domain, path, expires )
             
@@ -1876,7 +1876,7 @@ class ReviewNetworkSessionPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
         else:
             
-            pretty_expiry = HydrusTime.TimestampToPrettyExpires( expiry )
+            pretty_expiry = HydrusTime.timestamp_to_pretty_expires(expiry)
             
         
         display_tuple = ( pretty_name, pretty_value, pretty_domain, pretty_path, pretty_expiry )

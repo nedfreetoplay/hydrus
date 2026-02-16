@@ -1103,7 +1103,7 @@ class RasterContainerVideo( RasterContainer ):
                     
                 else:
                     
-                    half_a_frame = ( HydrusTime.SecondiseMSFloat( self._average_frame_duration_ms ) ) * 0.5
+                    half_a_frame = (HydrusTime.secondise_ms_float(self._average_frame_duration_ms)) * 0.5
                     
                     sleep_duration = min( 0.1, half_a_frame ) # for 10s-long 3-frame gifs, wew
                     

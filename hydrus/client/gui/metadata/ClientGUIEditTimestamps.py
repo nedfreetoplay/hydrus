@@ -912,7 +912,7 @@ class EditFileTimestampsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUISc
                 
                 self._file_modified_time_warning_st.setVisible( True )
                 
-                if HydrusPaths.file_modified_time_is_ok(HydrusTime.SecondiseMSFloat(timestamp_data.timestamp_ms)):
+                if HydrusPaths.file_modified_time_is_ok(HydrusTime.secondise_ms_float(timestamp_data.timestamp_ms)):
                     
                     self._file_modified_time_warning_st.setText( 'This will also change the modified time of the file on disk!' )
                     
@@ -934,7 +934,7 @@ class EditFileTimestampsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUISc
             
             if timestamp_data.timestamp_type == HC.TIMESTAMP_TYPE_MODIFIED_FILE and timestamp_data.timestamp_ms is not None:
                 
-                if HydrusPaths.file_modified_time_is_ok(HydrusTime.SecondiseMSFloat(timestamp_data.timestamp_ms)):
+                if HydrusPaths.file_modified_time_is_ok(HydrusTime.secondise_ms_float(timestamp_data.timestamp_ms)):
                     
                     return ( hashes, timestamp_data.timestamp_ms, step_ms )
                     

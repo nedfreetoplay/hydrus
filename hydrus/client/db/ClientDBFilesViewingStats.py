@@ -255,7 +255,7 @@ class ClientDBFilesViewingStats( ClientDBModule.ClientDBModule ):
     
     def SetViews( self, hash_id: int, canvas_type: int, view_timestamp_ms: int | None, views: int, viewtime_ms: int ):
         
-        self._execute('INSERT OR IGNORE INTO file_viewing_stats ( hash_id, canvas_type, last_viewed_timestamp_ms, views, viewtime_ms ) VALUES ( ?, ?, ?, ?, ? );', (hash_id, canvas_type, HydrusTime.GetNowMS(), 0, 0))
+        self._execute('INSERT OR IGNORE INTO file_viewing_stats ( hash_id, canvas_type, last_viewed_timestamp_ms, views, viewtime_ms ) VALUES ( ?, ?, ?, ?, ? );', (hash_id, canvas_type, HydrusTime.get_now_ms(), 0, 0))
         
         if view_timestamp_ms is None:
             

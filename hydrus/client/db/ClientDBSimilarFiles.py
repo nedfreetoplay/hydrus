@@ -739,7 +739,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
         
         if work_period is not None:
             
-            stop_time = HydrusTime.GetNowFloat() + work_period
+            stop_time = HydrusTime.get_now_float() + work_period
             
         else:
             
@@ -780,7 +780,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
                 raise
                 
             
-            if stop_time is not None and HydrusTime.TimeHasPassedFloat( stop_time ):
+            if stop_time is not None and HydrusTime.time_has_passed_float(stop_time):
                 
                 return work_to_do
                 

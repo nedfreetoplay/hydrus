@@ -77,7 +77,7 @@ class TestServer( unittest.TestCase ):
         
         account_key = HydrusData.generate_key()
         account_type = HydrusNetwork.AccountType.GenerateAdminAccountType( HC.SERVER_ADMIN )
-        created = HydrusTime.GetNow() - 100000
+        created = HydrusTime.get_now() - 100000
         expires = None
         
         cls._account = HydrusNetwork.Account( account_key, account_type, created, expires )
@@ -221,7 +221,7 @@ class TestServer( unittest.TestCase ):
         
         # ip
         
-        ( ip, timestamp ) = ( '94.45.87.123', HydrusTime.GetNow() - 100000 )
+        ( ip, timestamp ) = ( '94.45.87.123', HydrusTime.get_now() - 100000)
         
         TG.test_controller.SetRead( 'ip', ( ip, timestamp ) )
         
@@ -383,7 +383,7 @@ class TestServer( unittest.TestCase ):
         
         metadata = HydrusNetwork.Metadata()
         
-        metadata.AppendUpdate( [ definitions_update_hash, content_update_hash ], HydrusTime.GetNow() - 101000, HydrusTime.GetNow() - 1000, HydrusTime.GetNow() + 100000 )
+        metadata.AppendUpdate([ definitions_update_hash, content_update_hash ], HydrusTime.get_now() - 101000, HydrusTime.get_now() - 1000, HydrusTime.get_now() + 100000)
         
         service._metadata = metadata
         
@@ -490,7 +490,7 @@ class TestServer( unittest.TestCase ):
         
         TG.test_controller.SetRead( 'registration_keys', [ registration_key ] )
         
-        response = service.Request( HC.GET, 'registration_keys', { 'num' : 1, 'account_type_key' : os.urandom( 32 ), 'expires' : HydrusTime.GetNow() + 1200 } )
+        response = service.Request(HC.GET, 'registration_keys', { 'num' : 1, 'account_type_key' : os.urandom( 32 ), 'expires' : HydrusTime.get_now() + 1200})
         
         self.assertEqual( response[ 'registration_keys' ], [ registration_key ] )
         

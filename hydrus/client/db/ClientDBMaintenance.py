@@ -271,15 +271,15 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
                     
                     time.sleep( 0.02 )
                     
-                    started = HydrusTime.GetNowPrecise()
+                    started = HydrusTime.get_now_precise()
                     
                     self.AnalyzeTable( name )
                     
-                    time_took = HydrusTime.GetNowPrecise() - started
+                    time_took = HydrusTime.get_now_precise() - started
                     
                     if time_took > 1:
                         
-                        HydrusData.print_text('Analyzed ' + name + ' in ' + HydrusTime.TimeDeltaToPrettyTimeDelta(time_took))
+                        HydrusData.print_text('Analyzed ' + name + ' in ' + HydrusTime.time_delta_to_pretty_time_delta(time_took))
                         
                     
                     p1 = CG.client_controller.should_stop_this_work(maintenance_mode, stop_time = stop_time)
@@ -332,7 +332,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
         
         self._execute('DELETE FROM analyze_timestamps WHERE name = ?;', (name,))
         
-        self._execute('INSERT OR IGNORE INTO analyze_timestamps ( name, num_rows, timestamp_ms ) VALUES ( ?, ?, ? );', (name, num_rows, HydrusTime.GetNowMS()))
+        self._execute('INSERT OR IGNORE INTO analyze_timestamps ( name, num_rows, timestamp_ms ) VALUES ( ?, ?, ? );', (name, num_rows, HydrusTime.get_now_ms()))
         
     
     def CheckDBIntegrity( self ):
@@ -505,9 +505,9 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
         
         num_we_want_to_delete = 10
         
-        while not HydrusTime.TimeHasPassedFloat( time_to_stop ):
+        while not HydrusTime.time_has_passed_float(time_to_stop):
             
-            time_started = HydrusTime.GetNowPrecise()
+            time_started = HydrusTime.get_now_precise()
             
             ( select_query, delete_query ) = self._GetSimpleDeferredDeleteQueries( deletee_table_name, pk_column_names, num_we_want_to_delete )
             
@@ -536,11 +536,11 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
                     self._execute('UPDATE deferred_delete_tables SET num_rows = ? WHERE name = ?;', (num_rows_still_to_delete, deletee_table_name))
                     
                 
-                time_this_cycle_took = HydrusTime.GetNowPrecise() - time_started
+                time_this_cycle_took = HydrusTime.get_now_precise() - time_started
                 
                 n_per_second = num_we_want_to_delete / time_this_cycle_took
                 
-                remaining_time = time_to_stop - HydrusTime.GetNowFloat()
+                remaining_time = time_to_stop - HydrusTime.get_now_float()
                 
                 if remaining_time > 0:
                     
@@ -617,7 +617,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
             boundaries.append( ( 10000000, False, 12 * 30 * 86400 ) )
             # anything bigger than 10M rows will now not be analyzed
             
-            existing_names_to_info = {name : ( num_rows, HydrusTime.SecondiseMS( timestamp_ms ) ) for ( name, num_rows, timestamp_ms ) in self._execute('SELECT name, num_rows, timestamp_ms FROM analyze_timestamps;')}
+            existing_names_to_info = {name : ( num_rows, HydrusTime.secondise_ms(timestamp_ms)) for (name, num_rows, timestamp_ms) in self._execute('SELECT name, num_rows, timestamp_ms FROM analyze_timestamps;')}
             
             names_to_analyze = []
             
@@ -634,7 +634,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
                             continue
                             
                         
-                        if not HydrusTime.TimeHasPassed( timestamp + period ):
+                        if not HydrusTime.time_has_passed(timestamp + period):
                             
                             continue
                             
@@ -715,14 +715,14 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
         
         self._execute('DELETE FROM last_shutdown_work_time;')
         
-        self._execute('INSERT INTO last_shutdown_work_time ( last_shutdown_work_time ) VALUES ( ? );', (HydrusTime.GetNow(),))
+        self._execute('INSERT INTO last_shutdown_work_time ( last_shutdown_work_time ) VALUES ( ? );', (HydrusTime.get_now(),))
         
     
     def RegisterSuccessfulVacuum( self, name: str ):
         
         self._execute('DELETE FROM vacuum_timestamps WHERE name = ?;', (name,))
         
-        self._execute('INSERT OR IGNORE INTO vacuum_timestamps ( name, timestamp_ms ) VALUES ( ?, ? );', (name, HydrusTime.GetNowMS()))
+        self._execute('INSERT OR IGNORE INTO vacuum_timestamps ( name, timestamp_ms ) VALUES ( ?, ? );', (name, HydrusTime.get_now_ms()))
         
     
     def TouchAnalyzeNewTables( self ):

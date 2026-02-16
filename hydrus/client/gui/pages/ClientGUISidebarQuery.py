@@ -307,7 +307,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
             
             WAIT_PERIOD = 3.0
             
-            search_is_lagging = HydrusTime.TimeHasPassedFloat( self._query_job_status.GetCreationTime() + WAIT_PERIOD )
+            search_is_lagging = HydrusTime.time_has_passed_float(self._query_job_status.GetCreationTime() + WAIT_PERIOD)
             
             self._tag_autocomplete.ShowCancelSearchButton( search_is_lagging )
             

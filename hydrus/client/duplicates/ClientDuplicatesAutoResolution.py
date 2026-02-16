@@ -1395,7 +1395,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 with self._edit_work_lock:
                     
-                    start_time = HydrusTime.GetNowFloat()
+                    start_time = HydrusTime.get_now_float()
                     
                     try:
                         
@@ -1421,7 +1421,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
                         HydrusData.show_text(message)
                         
                     
-                    actual_work_period = HydrusTime.GetNowFloat() - start_time
+                    actual_work_period = HydrusTime.get_now_float() - start_time
                     
                 
                 with self._lock:
@@ -1544,17 +1544,17 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
         
         if self._controller.currently_idle():
             
-            return HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'duplicates_auto_resolution_work_time_ms_idle' ) )
+            return HydrusTime.secondise_ms_float(CG.client_controller.new_options.GetInteger('duplicates_auto_resolution_work_time_ms_idle'))
             
         else:
             
-            return HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'duplicates_auto_resolution_work_time_ms_active' ) )
+            return HydrusTime.secondise_ms_float(CG.client_controller.new_options.GetInteger('duplicates_auto_resolution_work_time_ms_active'))
             
         
     
     def _WorkRules( self, allowed_work_period: float ):
         
-        time_to_stop = HydrusTime.GetNowFloat() + allowed_work_period
+        time_to_stop = HydrusTime.get_now_float() + allowed_work_period
         
         still_work_to_do = False
         
@@ -1587,7 +1587,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
                         
                         ( still_work_to_do_here, matching_pairs_produced_here ) = CG.client_controller.write_synchronous('duplicates_auto_resolution_do_search_work', rule)
                         
-                        if HydrusTime.TimeHasPassedFloat( time_to_stop ):
+                        if HydrusTime.time_has_passed_float(time_to_stop):
                             
                             return True
                             
@@ -1601,7 +1601,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
                         
                     
                 
-                if HydrusTime.TimeHasPassedFloat( time_to_stop ):
+                if HydrusTime.time_has_passed_float(time_to_stop):
                     
                     return True
                     
@@ -1655,7 +1655,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
                                 
                             
                         
-                        if HydrusTime.TimeHasPassedFloat( time_to_stop ):
+                        if HydrusTime.time_has_passed_float(time_to_stop):
                             
                             return True
                             
@@ -1670,7 +1670,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
                     
                 
             
-            if HydrusTime.TimeHasPassedFloat( time_to_stop ):
+            if HydrusTime.time_has_passed_float(time_to_stop):
                 
                 return True
                 

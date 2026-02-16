@@ -2192,7 +2192,7 @@ class TestClientAPI( unittest.TestCase ):
         
         #
         
-        timestamp_ms = HydrusTime.GetNowMS() - 50000
+        timestamp_ms = HydrusTime.get_now_ms() - 50000
         
         request_args = {
             'canvas_type' : CC.CANVAS_CLIENT_API,
@@ -2363,7 +2363,7 @@ class TestClientAPI( unittest.TestCase ):
         
         #
         
-        timestamp_ms = HydrusTime.GetNowMS() - 50000
+        timestamp_ms = HydrusTime.get_now_ms() - 50000
         
         request_args = {
             'canvas_type' : CC.CANVAS_CLIENT_API,
@@ -2805,7 +2805,7 @@ class TestClientAPI( unittest.TestCase ):
         
         media_result = HF.GetFakeMediaResult( hash )
         
-        media_result.GetTimesManager().SetArchivedTimestampMS( HydrusTime.GetNowMS() )
+        media_result.GetTimesManager().SetArchivedTimestampMS(HydrusTime.get_now_ms())
         
         result_timestamp_data = ClientTime.TimestampData( HC.TIMESTAMP_TYPE_ARCHIVED, timestamp_ms = 123456000 )
         
@@ -2820,7 +2820,7 @@ class TestClientAPI( unittest.TestCase ):
         
         media_result = HF.GetFakeMediaResult( hash )
         
-        media_result.GetTimesManager().SetArchivedTimestampMS( HydrusTime.GetNowMS() )
+        media_result.GetTimesManager().SetArchivedTimestampMS(HydrusTime.get_now_ms())
         
         result_timestamp_data = ClientTime.TimestampData( HC.TIMESTAMP_TYPE_ARCHIVED, timestamp_ms = 123456789 )
         
@@ -2835,7 +2835,7 @@ class TestClientAPI( unittest.TestCase ):
         
         media_result = HF.GetFakeMediaResult( hash )
         
-        media_result.GetTimesManager().SetArchivedTimestampMS( HydrusTime.GetNowMS() )
+        media_result.GetTimesManager().SetArchivedTimestampMS(HydrusTime.get_now_ms())
         
         result_timestamp_data = ClientTime.TimestampData( HC.TIMESTAMP_TYPE_ARCHIVED, timestamp_ms = 123456789 )
         
@@ -2850,7 +2850,7 @@ class TestClientAPI( unittest.TestCase ):
         
         media_result = HF.GetFakeMediaResult( hash )
         
-        media_result.GetTimesManager().SetFileModifiedTimestampMS( HydrusTime.GetNowMS() )
+        media_result.GetTimesManager().SetFileModifiedTimestampMS(HydrusTime.get_now_ms())
         
         result_timestamp_data = ClientTime.TimestampData( HC.TIMESTAMP_TYPE_MODIFIED_FILE, timestamp_ms = 123456789 )
         
@@ -2866,7 +2866,7 @@ class TestClientAPI( unittest.TestCase ):
         
         media_result = HF.GetFakeMediaResult( hash )
         
-        media_result.GetTimesManager().SetFileModifiedTimestampMS( HydrusTime.GetNowMS() )
+        media_result.GetTimesManager().SetFileModifiedTimestampMS(HydrusTime.get_now_ms())
         
         result_timestamp_data = ClientTime.TimestampData( HC.TIMESTAMP_TYPE_MODIFIED_FILE, timestamp_ms = 123456789 )
         
@@ -2882,7 +2882,7 @@ class TestClientAPI( unittest.TestCase ):
         
         media_result = HF.GetFakeMediaResult( hash )
         
-        media_result.GetTimesManager().SetDomainModifiedTimestampMS( 'site.com', HydrusTime.GetNowMS() )
+        media_result.GetTimesManager().SetDomainModifiedTimestampMS( 'site.com', HydrusTime.get_now_ms())
         
         result_timestamp_data = ClientTime.TimestampData( HC.TIMESTAMP_TYPE_MODIFIED_DOMAIN, location = 'site.com', timestamp_ms = 123456789 )
         
@@ -2898,7 +2898,7 @@ class TestClientAPI( unittest.TestCase ):
         
         media_result = HF.GetFakeMediaResult( hash )
         
-        media_result.GetTimesManager().SetLastViewedTimestampMS( CC.CANVAS_MEDIA_VIEWER, HydrusTime.GetNowMS() )
+        media_result.GetTimesManager().SetLastViewedTimestampMS(CC.CANVAS_MEDIA_VIEWER, HydrusTime.get_now_ms())
         
         result_timestamp_data = ClientTime.TimestampData( HC.TIMESTAMP_TYPE_LAST_VIEWED, location = CC.CANVAS_MEDIA_VIEWER, timestamp_ms = 123456789 )
         
@@ -2914,7 +2914,7 @@ class TestClientAPI( unittest.TestCase ):
         
         media_result = HF.GetFakeMediaResult( hash )
         
-        media_result.GetTimesManager().SetLastViewedTimestampMS( CC.CANVAS_PREVIEW, HydrusTime.GetNowMS() )
+        media_result.GetTimesManager().SetLastViewedTimestampMS(CC.CANVAS_PREVIEW, HydrusTime.get_now_ms())
         
         result_timestamp_data = ClientTime.TimestampData( HC.TIMESTAMP_TYPE_LAST_VIEWED, location = CC.CANVAS_PREVIEW, timestamp_ms = 123456789 )
         
@@ -2929,7 +2929,7 @@ class TestClientAPI( unittest.TestCase ):
         
         media_result = HF.GetFakeMediaResult( hash )
         
-        media_result.GetTimesManager().SetLastViewedTimestampMS( CC.CANVAS_MEDIA_VIEWER, HydrusTime.GetNowMS() )
+        media_result.GetTimesManager().SetLastViewedTimestampMS(CC.CANVAS_MEDIA_VIEWER, HydrusTime.get_now_ms())
         
         result_timestamp_data = ClientTime.TimestampData( HC.TIMESTAMP_TYPE_LAST_VIEWED, location = CC.CANVAS_MEDIA_VIEWER, timestamp_ms = 123456789 )
         
@@ -2945,7 +2945,7 @@ class TestClientAPI( unittest.TestCase ):
         
         media_result = HF.GetFakeMediaResult( hash )
         
-        media_result.GetTimesManager().SetImportedTimestampMS( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, HydrusTime.GetNowMS() )
+        media_result.GetTimesManager().SetImportedTimestampMS(CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, HydrusTime.get_now_ms())
         
         result_timestamp_data = ClientTime.TimestampData( HC.TIMESTAMP_TYPE_IMPORTED, location = CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, timestamp_ms = 123456789 )
         
@@ -2961,7 +2961,7 @@ class TestClientAPI( unittest.TestCase ):
         
         media_result = HF.GetFakeMediaResult( hash )
         
-        media_result.GetTimesManager().SetDeletedTimestampMS( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, HydrusTime.GetNowMS() )
+        media_result.GetTimesManager().SetDeletedTimestampMS(CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, HydrusTime.get_now_ms())
         
         result_timestamp_data = ClientTime.TimestampData( HC.TIMESTAMP_TYPE_DELETED, location = CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, timestamp_ms = 123456789 )
         
@@ -2977,7 +2977,7 @@ class TestClientAPI( unittest.TestCase ):
         
         media_result = HF.GetFakeMediaResult( hash )
         
-        media_result.GetTimesManager().SetPreviouslyImportedTimestampMS( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, HydrusTime.GetNowMS() )
+        media_result.GetTimesManager().SetPreviouslyImportedTimestampMS(CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, HydrusTime.get_now_ms())
         
         result_timestamp_data = ClientTime.TimestampData( HC.TIMESTAMP_TYPE_PREVIOUSLY_IMPORTED, location = CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, timestamp_ms = 123456789 )
         
@@ -4589,9 +4589,9 @@ class TestClientAPI( unittest.TestCase ):
         
         cookies = []
         
-        cookies.append( [ 'one', '1', '.somesite.com', '/', HydrusTime.GetNow() + 86400 ] )
-        cookies.append( [ 'two', '2', 'somesite.com', '/', HydrusTime.GetNow() + 86400 ] )
-        cookies.append( [ 'three', '3', 'wew.somesite.com', '/', HydrusTime.GetNow() + 86400 ] )
+        cookies.append([ 'one', '1', '.somesite.com', '/', HydrusTime.get_now() + 86400])
+        cookies.append([ 'two', '2', 'somesite.com', '/', HydrusTime.get_now() + 86400])
+        cookies.append([ 'three', '3', 'wew.somesite.com', '/', HydrusTime.get_now() + 86400])
         cookies.append( [ 'four', '4', '.somesite.com', '/', None ] )
         
         request_dict = { 'cookies' : cookies }
@@ -4667,8 +4667,8 @@ class TestClientAPI( unittest.TestCase ):
         
         expected_cookies = []
         
-        expected_cookies.append( [ 'two', '2', 'somesite.com', '/', HydrusTime.GetNow() + 86400 ] )
-        expected_cookies.append( [ 'three', '3', 'wew.somesite.com', '/', HydrusTime.GetNow() + 86400 ] )
+        expected_cookies.append([ 'two', '2', 'somesite.com', '/', HydrusTime.get_now() + 86400])
+        expected_cookies.append([ 'three', '3', 'wew.somesite.com', '/', HydrusTime.get_now() + 86400])
         expected_cookies.append( [ 'four', '4', '.somesite.com', '/', None ] )
         
         frozen_result_cookies = { tuple( row[:-1] ) for row in result_cookies }
@@ -7347,8 +7347,8 @@ class TestClientAPI( unittest.TestCase ):
             notes_manager = ClientMediaManagers.NotesManager( { 'note' : 'hello', 'note2' : 'hello2' } )
             
             view_rows = [
-                ( CC.CANVAS_MEDIA_VIEWER, HydrusTime.GetNowMS() - 50000, 5, 310567 ),
-                ( CC.CANVAS_PREVIEW, HydrusTime.GetNowMS() - 60000, 17, 662567 )
+                (CC.CANVAS_MEDIA_VIEWER, HydrusTime.get_now_ms() - 50000, 5, 310567),
+                (CC.CANVAS_PREVIEW, HydrusTime.get_now_ms() - 60000, 17, 662567)
             ]
             
             file_viewing_stats_manager = ClientMediaManagers.FileViewingStatsManager( times_manager, view_rows )
@@ -7417,7 +7417,7 @@ class TestClientAPI( unittest.TestCase ):
                 'file_services' : {
                     'current' : {
                         random_file_service_hex_current.hex() : {
-                            'time_imported' : HydrusTime.SecondiseMS( current_import_timestamp_ms ),
+                            'time_imported' : HydrusTime.secondise_ms(current_import_timestamp_ms),
                             'name' : TG.test_controller.services_manager.get_name(random_file_service_hex_current),
                             'type' : TG.test_controller.services_manager.GetServiceType( random_file_service_hex_current ),
                             'type_pretty' : HC.service_string_lookup[ TG.test_controller.services_manager.GetServiceType( random_file_service_hex_current ) ]
@@ -7425,8 +7425,8 @@ class TestClientAPI( unittest.TestCase ):
                     },
                     'deleted' : {
                         random_file_service_hex_deleted.hex() : {
-                            'time_deleted' : HydrusTime.SecondiseMS( deleted_deleted_timestamp_ms ),
-                            'time_imported' : HydrusTime.SecondiseMS( previously_imported_timestamp_ms ),
+                            'time_deleted' : HydrusTime.secondise_ms(deleted_deleted_timestamp_ms),
+                            'time_imported' : HydrusTime.secondise_ms(previously_imported_timestamp_ms),
                             'name' : TG.test_controller.services_manager.get_name(random_file_service_hex_deleted),
                             'type' : TG.test_controller.services_manager.GetServiceType( random_file_service_hex_deleted ),
                             'type_pretty' : HC.service_string_lookup[ TG.test_controller.services_manager.GetServiceType( random_file_service_hex_deleted ) ]
@@ -7434,9 +7434,9 @@ class TestClientAPI( unittest.TestCase ):
                     }
                 },
                 'ipfs_multihashes' : {},
-                'time_modified' : HydrusTime.SecondiseMS( file_modified_timestamp_ms ),
+                'time_modified' : HydrusTime.secondise_ms(file_modified_timestamp_ms),
                 'time_modified_details' : {
-                    'local' : HydrusTime.SecondiseMS( file_modified_timestamp_ms )
+                    'local' : HydrusTime.secondise_ms(file_modified_timestamp_ms)
                 },
                 'is_inbox' : False,
                 'is_local' : False,
@@ -7457,7 +7457,7 @@ class TestClientAPI( unittest.TestCase ):
                 for ( i_s_k, multihash ) in locations_manager.GetServiceFilenames().items():
                     
                     metadata_row[ 'file_services' ][ 'current' ][ i_s_k.hex() ] = {
-                        'time_imported' : HydrusTime.SecondiseMS( ipfs_import_timestamp_ms ),
+                        'time_imported' : HydrusTime.secondise_ms(ipfs_import_timestamp_ms),
                         'name' : TG.test_controller.services_manager.get_name(i_s_k),
                         'type' : TG.test_controller.services_manager.GetServiceType( i_s_k ),
                         'type_pretty' : HC.service_string_lookup[ TG.test_controller.services_manager.GetServiceType( i_s_k ) ]
@@ -7523,8 +7523,8 @@ class TestClientAPI( unittest.TestCase ):
             ]:
                 
                 views = fvsm.GetViews( canvas_type )
-                viewtime = HydrusTime.SecondiseMSFloat( fvsm.GetViewtimeMS( canvas_type ) )
-                last_viewed_timestamp = HydrusTime.SecondiseMSFloat( times_manager.GetLastViewedTimestampMS( canvas_type ) )
+                viewtime = HydrusTime.secondise_ms_float(fvsm.GetViewtimeMS(canvas_type))
+                last_viewed_timestamp = HydrusTime.secondise_ms_float(times_manager.GetLastViewedTimestampMS(canvas_type))
                 
                 json_object = {
                     'canvas_type' : canvas_type,
@@ -7815,7 +7815,7 @@ class TestClientAPI( unittest.TestCase ):
         
         for file_row in d[ 'metadata' ]:
             
-            self.assertEqual( file_row[ 'time_modified' ], HydrusTime.SecondiseMSFloat( file_modified_timestamp_ms ) )
+            self.assertEqual(file_row[ 'time_modified' ], HydrusTime.secondise_ms_float(file_modified_timestamp_ms))
             
         
         # now from hashes

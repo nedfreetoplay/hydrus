@@ -79,7 +79,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
             
             self.inbox_hash_ids.difference_update( archiveable_hash_ids )
             
-            now_ms = HydrusTime.GetNowMS()
+            now_ms = HydrusTime.get_now_ms()
             
             self.modules_files_metadata_timestamps.SetSimpleTimestampsMS( HC.TIMESTAMP_TYPE_ARCHIVED, [ ( hash_id, now_ms ) for hash_id in archiveable_hash_ids ] )
             

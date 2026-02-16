@@ -307,14 +307,14 @@ class SingleFileMetadataExporterMediaTimestamps( SingleFileMetadataExporterMedia
             return
             
         
-        if timestamp > HydrusTime.GetNow():
+        if timestamp > HydrusTime.get_now():
             
             return
             
         
         timestamp_data = self._timestamp_data_stub.duplicate()
         
-        new_timestamp_data = ClientTime.TimestampData( timestamp_type = timestamp_data.timestamp_type, location = timestamp_data.location, timestamp_ms = HydrusTime.MillisecondiseS( timestamp ) )
+        new_timestamp_data = ClientTime.TimestampData(timestamp_type = timestamp_data.timestamp_type, location = timestamp_data.location, timestamp_ms = HydrusTime.millisecondise_s(timestamp))
         
         content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_TIMESTAMP, HC.CONTENT_UPDATE_SET, ( ( hash, ), new_timestamp_data ) ) ]
         

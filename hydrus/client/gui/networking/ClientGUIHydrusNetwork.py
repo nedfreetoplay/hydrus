@@ -173,7 +173,7 @@ class EditAccountTypePanel( ClientGUIScrolledPanels.EditPanel ):
         
         num_created = self._auto_create_history.GetUsage( HC.BANDWIDTH_TYPE_DATA, time_delta )
         
-        text += '{} auto-created in the past {}.'.format(HydrusNumbers.to_human_int(num_created), HydrusTime.TimeDeltaToPrettyTimeDelta(time_delta))
+        text += '{} auto-created in the past {}.'.format(HydrusNumbers.to_human_int(num_created), HydrusTime.time_delta_to_pretty_time_delta(time_delta))
         
         self._auto_create_history_st.setText( text )
         
@@ -1059,7 +1059,7 @@ class ModifyAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             return
             
         
-        message = 'Add {} to expiry for {} accounts?'.format(HydrusTime.TimeDeltaToPrettyTimeDelta( expires_delta ), HydrusNumbers.to_human_int(len(subject_accounts)))
+        message = 'Add {} to expiry for {} accounts?'.format(HydrusTime.time_delta_to_pretty_time_delta(expires_delta), HydrusNumbers.to_human_int(len(subject_accounts)))
         
         result = ClientGUIDialogsQuick.GetYesNo( self, message )
         
@@ -1192,7 +1192,7 @@ class ModifyAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         if expires is not None:
             
-            expires += HydrusTime.GetNow()
+            expires += HydrusTime.get_now()
             
         
         service = self._service
@@ -1509,7 +1509,7 @@ class ModifyAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         if expires is not None:
             
-            expires += HydrusTime.GetNow()
+            expires += HydrusTime.get_now()
             
         
         subject_account_keys_and_new_expires = [ ( subject_account_key, expires ) for subject_account_key in self._account_panel.GetCheckedAccountKeys() ]
@@ -1521,7 +1521,7 @@ class ModifyAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             return
             
         
-        message = 'Set expiry to {} for {} accounts?'.format(HydrusTime.TimestampToPrettyExpires( expires ), HydrusNumbers.to_human_int(len(subject_account_keys_and_new_expires)))
+        message = 'Set expiry to {} for {} accounts?'.format(HydrusTime.timestamp_to_pretty_expires(expires), HydrusNumbers.to_human_int(len(subject_account_keys_and_new_expires)))
         
         result = ClientGUIDialogsQuick.GetYesNo( self, message )
         

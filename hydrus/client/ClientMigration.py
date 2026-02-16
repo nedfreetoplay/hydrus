@@ -29,7 +29,7 @@ def GetBasicSpeedStatement( num_done, time_started_precise ):
         
     else:
         
-        time_taken = HydrusTime.GetNowPrecise() - time_started_precise
+        time_taken = HydrusTime.get_now_precise() - time_started_precise
         
         rows_s = int( num_done / time_taken )
         
@@ -85,7 +85,7 @@ class MigrationDestinationHTA( MigrationDestination ):
         
         self._hta.commit_big_job()
         
-        if HydrusTime.TimeHasPassed( self._time_started + 120 ):
+        if HydrusTime.time_has_passed(self._time_started + 120):
             
             self._hta.optimise()
             
@@ -97,7 +97,7 @@ class MigrationDestinationHTA( MigrationDestination ):
     
     def DoSomeWork( self, source ):
         
-        time_started_precise = HydrusTime.GetNowPrecise()
+        time_started_precise = HydrusTime.get_now_precise()
         
         num_done = 0
         
@@ -115,7 +115,7 @@ class MigrationDestinationHTA( MigrationDestination ):
     
     def Prepare( self ):
         
-        self._time_started = HydrusTime.GetNow()
+        self._time_started = HydrusTime.get_now()
         
         self._hta = HydrusTagArchive.HydrusTagArchive( self._path )
         
@@ -146,7 +146,7 @@ class MigrationDestinationHTPA( MigrationDestination ):
         
         self._htpa.commit_big_job()
         
-        if HydrusTime.TimeHasPassed( self._time_started + 120 ):
+        if HydrusTime.time_has_passed(self._time_started + 120):
             
             self._htpa.optimise()
             
@@ -158,7 +158,7 @@ class MigrationDestinationHTPA( MigrationDestination ):
     
     def DoSomeWork( self, source ):
         
-        time_started_precise = HydrusTime.GetNowPrecise()
+        time_started_precise = HydrusTime.get_now_precise()
         
         data = source.GetSomeData()
         
@@ -171,7 +171,7 @@ class MigrationDestinationHTPA( MigrationDestination ):
     
     def Prepare( self ):
         
-        self._time_started = HydrusTime.GetNow()
+        self._time_started = HydrusTime.get_now()
         
         self._htpa = HydrusTagArchive.HydrusTagPairArchive( self._path )
         
@@ -209,7 +209,7 @@ class MigrationDestinationListMappings( MigrationDestinationList ):
     
     def DoSomeWork( self, source ):
         
-        time_started_precise = HydrusTime.GetNowPrecise()
+        time_started_precise = HydrusTime.get_now_precise()
         
         num_done = 0
         
@@ -229,7 +229,7 @@ class MigrationDestinationListPairs( MigrationDestinationList ):
     
     def DoSomeWork( self, source ):
         
-        time_started_precise = HydrusTime.GetNowPrecise()
+        time_started_precise = HydrusTime.get_now_precise()
         
         data = source.GetSomeData()
         
@@ -272,7 +272,7 @@ class MigrationDestinationTagServiceMappings( MigrationDestinationTagService ):
     
     def DoSomeWork( self, source ):
         
-        time_started_precise = HydrusTime.GetNowPrecise()
+        time_started_precise = HydrusTime.get_now_precise()
         
         data = source.GetSomeData()
         
@@ -327,7 +327,7 @@ class MigrationDestinationTagServicePairs( MigrationDestinationTagService ):
     
     def DoSomeWork( self, source ):
         
-        time_started_precise = HydrusTime.GetNowPrecise()
+        time_started_precise = HydrusTime.get_now_precise()
         
         data = source.GetSomeData()
         

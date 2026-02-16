@@ -341,7 +341,7 @@ class SingleFileMetadataImporterMediaTimestamps( SingleFileMetadataImporterMedia
         
         rows = []
         
-        timestamp = HydrusTime.SecondiseMS( media_result.GetTimesManager().GetTimestampMSFromStub( self._timestamp_data_stub ) )
+        timestamp = HydrusTime.secondise_ms(media_result.GetTimesManager().GetTimestampMSFromStub(self._timestamp_data_stub))
         
         if timestamp is not None:
             

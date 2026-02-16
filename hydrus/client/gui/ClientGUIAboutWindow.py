@@ -167,7 +167,7 @@ def ShowAboutWindow( win: QW.QWidget ):
     
     boot_time_ms = CG.client_controller.get_boot_timestamp_ms()
     
-    library_version_lines.append( f'boot time: {HydrusTime.TimestampToPrettyTimeDelta( boot_time_ms // 1000 )} ({HydrusTime.TimestampMSToPrettyTime( boot_time_ms )})' )
+    library_version_lines.append( f'boot time: {HydrusTime.timestamp_to_pretty_time_delta(boot_time_ms // 1000)} ({HydrusTime.timestamp_ms_to_pretty_time(boot_time_ms)})')
     
     library_version_lines.append( '' )
     
@@ -198,7 +198,7 @@ def ShowAboutWindow( win: QW.QWidget ):
     library_version_lines.append( 'db cache size per file: {}MB'.format( HG.db_cache_size ) )
     library_version_lines.append( 'db journal mode: {}'.format( HG.db_journal_mode ) )
     library_version_lines.append( 'db synchronous mode: {}'.format( HG.db_synchronous ) )
-    library_version_lines.append( 'db transaction commit period: {}'.format( HydrusTime.TimeDeltaToPrettyTimeDelta( HG.db_transaction_commit_period ) ) )
+    library_version_lines.append( 'db transaction commit period: {}'.format(HydrusTime.time_delta_to_pretty_time_delta(HG.db_transaction_commit_period)))
     library_version_lines.append( 'db using memory for temp?: {}'.format( HG.no_db_temp_files ) )
     
     description_versions = 'This is the media management application of the hydrus software suite.' + '\n' * 2 + '\n'.join( library_version_lines )

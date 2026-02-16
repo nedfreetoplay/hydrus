@@ -47,11 +47,11 @@ def PopulateMetadataAPIDict( metadata_list: list[ dict ], hashes: list[ bytes ],
     
     if include_milliseconds:
         
-        time_converter = HydrusTime.SecondiseMSFloat
+        time_converter = HydrusTime.secondise_ms_float
         
     else:
         
-        time_converter = HydrusTime.SecondiseMS
+        time_converter = HydrusTime.secondise_ms
         
     
     services_manager = CG.client_controller.services_manager
@@ -279,8 +279,8 @@ def PopulateMetadataAPIDict( metadata_list: list[ dict ], hashes: list[ bytes ],
             ]:
                 
                 views = fvsm.GetViews( canvas_type )
-                viewtime = HydrusTime.SecondiseMSFloat( fvsm.GetViewtimeMS( canvas_type ) )
-                last_viewed_timestamp = HydrusTime.SecondiseMSFloat( times_manager.GetLastViewedTimestampMS( canvas_type ) )
+                viewtime = HydrusTime.secondise_ms_float(fvsm.GetViewtimeMS(canvas_type))
+                last_viewed_timestamp = HydrusTime.secondise_ms_float(times_manager.GetLastViewedTimestampMS(canvas_type))
                 
                 json_object = {
                     'canvas_type' : canvas_type,

@@ -684,10 +684,10 @@ class DBCursorTransactionWrapper( DBBase ):
         
         self._committing_as_soon_as_possible = False
         
-        self._last_mem_refresh_time = HydrusTime.GetNow()
-        self._last_wal_passive_checkpoint_time = HydrusTime.GetNow()
-        self._last_wal_truncate_checkpoint_time = HydrusTime.GetNow()
-        self._last_journal_zero_time = HydrusTime.GetNow()
+        self._last_mem_refresh_time = HydrusTime.get_now()
+        self._last_wal_passive_checkpoint_time = HydrusTime.get_now()
+        self._last_wal_truncate_checkpoint_time = HydrusTime.get_now()
+        self._last_journal_zero_time = HydrusTime.get_now()
         
         self._pubsubs = []
         
@@ -724,7 +724,7 @@ class DBCursorTransactionWrapper( DBBase ):
             self._execute('BEGIN IMMEDIATE;')
             self._execute('SAVEPOINT hydrus_savepoint;')
             
-            self._transaction_start_time = HydrusTime.GetNow()
+            self._transaction_start_time = HydrusTime.get_now()
             self._in_transaction = True
             self._transaction_contains_writes = False
             
@@ -748,37 +748,37 @@ class DBCursorTransactionWrapper( DBBase ):
             self._in_transaction = False
             self._transaction_contains_writes = False
             
-            if HG.db_journal_mode == 'WAL' and HydrusTime.TimeHasPassed( self._last_wal_passive_checkpoint_time + WAL_PASSIVE_CHECKPOINT_PERIOD ):
+            if HG.db_journal_mode == 'WAL' and HydrusTime.time_has_passed(self._last_wal_passive_checkpoint_time + WAL_PASSIVE_CHECKPOINT_PERIOD):
                 
-                if HydrusTime.TimeHasPassed( self._last_wal_truncate_checkpoint_time + WAL_TRUNCATE_CHECKPOINT_PERIOD ):
+                if HydrusTime.time_has_passed(self._last_wal_truncate_checkpoint_time + WAL_TRUNCATE_CHECKPOINT_PERIOD):
                     
                     self._execute('PRAGMA wal_checkpoint(TRUNCATE);')
                     
-                    self._last_wal_truncate_checkpoint_time = HydrusTime.GetNow()
+                    self._last_wal_truncate_checkpoint_time = HydrusTime.get_now()
                     
                 else:
                     
                     self._execute('PRAGMA wal_checkpoint(PASSIVE);')
                     
                 
-                self._last_wal_passive_checkpoint_time = HydrusTime.GetNow()
+                self._last_wal_passive_checkpoint_time = HydrusTime.get_now()
                 
             
-            if HydrusTime.TimeHasPassed( self._last_mem_refresh_time + MEM_REFRESH_PERIOD ):
+            if HydrusTime.time_has_passed(self._last_mem_refresh_time + MEM_REFRESH_PERIOD):
                 
                 self._execute('DETACH mem;')
                 self._execute('ATTACH ":memory:" AS mem;')
                 
                 TemporaryIntegerTableNameCache.instance().clear()
                 
-                self._last_mem_refresh_time = HydrusTime.GetNow()
+                self._last_mem_refresh_time = HydrusTime.get_now()
                 
             
-            if HG.db_journal_mode == 'PERSIST' and HydrusTime.TimeHasPassed( self._last_journal_zero_time + JOURNAL_ZERO_PERIOD ):
+            if HG.db_journal_mode == 'PERSIST' and HydrusTime.time_has_passed(self._last_journal_zero_time + JOURNAL_ZERO_PERIOD):
                 
                 self._zero_journal()
                 
-                self._last_journal_zero_time = HydrusTime.GetNow()
+                self._last_journal_zero_time = HydrusTime.get_now()
                 
             
         else:
@@ -882,7 +882,7 @@ class DBCursorTransactionWrapper( DBBase ):
     def time_to_commit(self):
         
         p1 = self._committing_as_soon_as_possible
-        p2 = self._transaction_contains_writes and HydrusTime.TimeHasPassed( self._transaction_start_time + self._transaction_commit_period )
+        p2 = self._transaction_contains_writes and HydrusTime.time_has_passed(self._transaction_start_time + self._transaction_commit_period)
         
         return self._in_transaction and ( p1 or p2 )
         

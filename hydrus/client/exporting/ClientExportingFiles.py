@@ -877,7 +877,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
     
     def DoWork( self ):
         
-        regular_run_due = self._run_regularly and HydrusTime.TimeHasPassed( self._last_checked + self._period )
+        regular_run_due = self._run_regularly and HydrusTime.time_has_passed(self._last_checked + self._period)
         
         good_to_go = regular_run_due or self._run_now
         
@@ -941,7 +941,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             
         finally:
             
-            self._last_checked = HydrusTime.GetNow()
+            self._last_checked = HydrusTime.get_now()
             self._overwrite_sidecars_on_next_run = False
             self._run_now = False
             

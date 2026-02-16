@@ -1989,13 +1989,13 @@ class WatcherReviewPanel( ClientGUICommon.StaticBox ):
                 
                 if watcher_status == '' and next_check_time is not None:
                     
-                    if HydrusTime.TimeHasPassed( next_check_time ):
+                    if HydrusTime.time_has_passed(next_check_time):
                         
                         watcher_status = 'checking imminently'
                         
                     else:
                         
-                        watcher_status = 'next check ' + HydrusTime.TimestampToPrettyTimeDelta( next_check_time, just_now_threshold = 0 )
+                        watcher_status = 'next check ' + HydrusTime.timestamp_to_pretty_time_delta(next_check_time, just_now_threshold = 0)
                         
                     
                 

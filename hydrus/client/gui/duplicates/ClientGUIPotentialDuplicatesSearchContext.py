@@ -234,11 +234,11 @@ class EditPotentialDuplicatesSearchContextPanel( ClientGUICommon.StaticBox ):
                 return ( [], job_status )
                 
             
-            start_time = HydrusTime.GetNowPrecise()
+            start_time = HydrusTime.get_now_precise()
             
             count = CG.client_controller.read('potential_duplicates_count_fragmentary', potential_duplicate_pairs_fragmentary_search)
             
-            actual_work_period = HydrusTime.GetNowPrecise() - start_time
+            actual_work_period = HydrusTime.get_now_precise() - start_time
             
             potential_duplicate_pairs_fragmentary_search.NotifyWorkTimeForAutothrottle( actual_work_period, 0.5 )
             

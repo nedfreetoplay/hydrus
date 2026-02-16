@@ -1736,9 +1736,9 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
                 ( years, months, days, hours ) = age_value
                 
-                dt = HydrusTime.CalendarDeltaToDateTime( years, months, days, hours )
+                dt = HydrusTime.calendar_delta_to_date_time(years, months, days, hours)
                 
-                time_pivot_ms = HydrusTime.DateTimeToTimestampMS( dt )
+                time_pivot_ms = HydrusTime.date_time_to_timestamp_ms(dt)
                 
                 # this is backwards (less than means min timestamp) because we are talking about age, not timestamp
                 
@@ -1756,13 +1756,13 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                     
                 elif operator == HC.UNICODE_APPROX_EQUAL:
                     
-                    rough_timedelta_gap = HydrusTime.CalendarDeltaToRoughDateTimeTimeDelta( years, months, days, hours ) * 0.15
+                    rough_timedelta_gap = HydrusTime.calendar_delta_to_rough_date_time_time_delta(years, months, days, hours) * 0.15
                     
                     earliest_dt = dt - rough_timedelta_gap
                     latest_dt = dt + rough_timedelta_gap
                     
-                    earliest_time_pivot_ms = HydrusTime.DateTimeToTimestampMS( earliest_dt )
-                    latest_time_pivot_ms = HydrusTime.DateTimeToTimestampMS( latest_dt )
+                    earliest_time_pivot_ms = HydrusTime.date_time_to_timestamp_ms(earliest_dt)
+                    latest_time_pivot_ms = HydrusTime.date_time_to_timestamp_ms(latest_dt)
                     
                     min_timestamp_ms = earliest_time_pivot_ms
                     max_timestamp_ms = latest_time_pivot_ms
@@ -1774,12 +1774,12 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
                 dt = datetime.datetime( year, month, day, hour, minute )
                 
-                time_pivot_ms = HydrusTime.DateTimeToTimestampMS( dt )
+                time_pivot_ms = HydrusTime.date_time_to_timestamp_ms(dt)
                 
-                dt_day_of_start = HydrusTime.GetDateTime( year, month, day, 0, 0 )
+                dt_day_of_start = HydrusTime.get_date_time(year, month, day, 0, 0)
                 
-                day_of_start_timestamp_ms = HydrusTime.DateTimeToTimestampMS( dt_day_of_start )
-                day_of_end_timestamp_ms = HydrusTime.DateTimeToTimestampMS( ClientTime.CalendarDelta( dt_day_of_start, day_delta = 1 ) )
+                day_of_start_timestamp_ms = HydrusTime.date_time_to_timestamp_ms(dt_day_of_start)
+                day_of_end_timestamp_ms = HydrusTime.date_time_to_timestamp_ms(ClientTime.CalendarDelta(dt_day_of_start, day_delta = 1))
                 
                 # the before/since semantic logic is:
                 # '<' 2022-05-05 means 'before that date'
@@ -1800,8 +1800,8 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                     
                 elif operator == HC.UNICODE_APPROX_EQUAL:
                     
-                    previous_month_timestamp_ms = HydrusTime.DateTimeToTimestampMS( ClientTime.CalendarDelta( dt, month_delta = -1 ) )
-                    next_month_timestamp_ms = HydrusTime.DateTimeToTimestampMS( ClientTime.CalendarDelta( dt, month_delta = 1 ) )
+                    previous_month_timestamp_ms = HydrusTime.date_time_to_timestamp_ms(ClientTime.CalendarDelta(dt, month_delta = -1))
+                    next_month_timestamp_ms = HydrusTime.date_time_to_timestamp_ms(ClientTime.CalendarDelta(dt, month_delta = 1))
                     
                     min_timestamp_ms = previous_month_timestamp_ms
                     max_timestamp_ms = next_month_timestamp_ms
@@ -2036,7 +2036,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                     
                 elif self._predicate_type == PREDICATE_TYPE_SYSTEM_DURATION:
                     
-                    absolute_number_renderer = lambda n: HydrusTime.MillisecondsDurationToPrettyTime( n, force_numbers = True )
+                    absolute_number_renderer = lambda n: HydrusTime.milliseconds_duration_to_pretty_time(n, force_numbers = True)
                     
                     base = 'duration'
                     has_phrase = 'has duration'
@@ -2279,7 +2279,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                         
                         include_24h_time = operator != '=' and ( hour > 0 or minute > 0 )
                         
-                        base += ': ' + pretty_operator + HydrusTime.DateTimeToPrettyTime( dt, include_24h_time = include_24h_time )
+                        base += ': ' + pretty_operator + HydrusTime.date_time_to_pretty_time(dt, include_24h_time = include_24h_time)
                         
                     
                 
@@ -2830,7 +2830,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                         
                     elif view_type == 'viewtime':
                         
-                        value_string = HydrusTime.TimeDeltaToPrettyTimeDelta( viewing_value )
+                        value_string = HydrusTime.time_delta_to_pretty_time_delta(viewing_value)
                         
                     else:
                         

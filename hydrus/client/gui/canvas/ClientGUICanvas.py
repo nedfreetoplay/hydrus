@@ -340,7 +340,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         self._background_colour_generator = CanvasBackgroundColourGenerator( self )
         
-        self._current_media_start_time_ms = HydrusTime.GetNowMS()
+        self._current_media_start_time_ms = HydrusTime.get_now_ms()
         
         self._new_options = CG.client_controller.new_options
         
@@ -635,7 +635,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
     
     def _SaveCurrentMediaViewTime( self ):
         
-        now_ms = HydrusTime.GetNowMS()
+        now_ms = HydrusTime.get_now_ms()
         
         view_timestamp_ms = self._current_media_start_time_ms
         
@@ -2289,7 +2289,7 @@ class CanvasWithHovers( Canvas ):
         #
         
         self._cursor_autohide_timer = QC.QTimer( self )
-        self._last_cursor_autohide_touch_time = HydrusTime.GetNowFloat()
+        self._last_cursor_autohide_touch_time = HydrusTime.get_now_float()
         
         # need this as we need un-button-pressed move events for cursor hide
         self.setMouseTracking( True )
@@ -2903,13 +2903,13 @@ class CanvasWithHovers( Canvas ):
                 
                 should_be_hidden = False
                 
-                self._last_cursor_autohide_touch_time = HydrusTime.GetNowFloat()
+                self._last_cursor_autohide_touch_time = HydrusTime.get_now_float()
                 
             else:
                 
-                hide_time = HydrusTime.SecondiseMSFloat( hide_time_ms )
+                hide_time = HydrusTime.secondise_ms_float(hide_time_ms)
                 
-                should_be_hidden = HydrusTime.TimeHasPassedFloat( self._last_cursor_autohide_touch_time + hide_time )
+                should_be_hidden = HydrusTime.time_has_passed_float(self._last_cursor_autohide_touch_time + hide_time)
                 
             
             next_check_period_ms = max( 100, min( int( hide_time_ms / 5 ), 250 ) )
@@ -2931,7 +2931,7 @@ class CanvasWithHovers( Canvas ):
     
     def _RestartCursorHideWait( self ):
         
-        self._last_cursor_autohide_touch_time = HydrusTime.GetNowFloat()
+        self._last_cursor_autohide_touch_time = HydrusTime.get_now_float()
         
         self._cursor_autohide_timer.start( 100 )
         
@@ -3395,7 +3395,7 @@ def CommitArchiveDelete( deletee_location_context: ClientLocation.LocationContex
     # we had some odd 'remove again' calls to try to double-action the remove in this case, but it was awkward especially as we moved to Qt signals for that stuff
     # thus I'm now wangling a job status to show archive/delete status when it takes more than two seconds. the slow-computer/fast-F5ing user will see that thing popup and know what happened
     
-    start_time = HydrusTime.GetNowFloat()
+    start_time = HydrusTime.get_now_float()
     
     job_status = ClientThreading.JobStatus()
     
@@ -3424,7 +3424,7 @@ def CommitArchiveDelete( deletee_location_context: ClientLocation.LocationContex
     
     for ( num_done, num_to_do, block_of_deleted ) in HydrusLists.split_list_into_chunks_rich(deleted, BLOCK_SIZE):
         
-        if not have_shown_popup and HydrusTime.TimeHasPassedFloat( start_time + 1 ):
+        if not have_shown_popup and HydrusTime.time_has_passed_float(start_time + 1):
             
             CG.client_controller.pub( 'message', job_status )
             
@@ -3463,7 +3463,7 @@ def CommitArchiveDelete( deletee_location_context: ClientLocation.LocationContex
     
     for ( num_done, num_to_do, block_of_kept_hashes ) in HydrusLists.split_list_into_chunks_rich(kept_hashes, BLOCK_SIZE):
         
-        if not have_shown_popup and HydrusTime.TimeHasPassedFloat( start_time + 1 ):
+        if not have_shown_popup and HydrusTime.time_has_passed_float(start_time + 1):
             
             CG.client_controller.pub( 'message', job_status )
             
@@ -4201,7 +4201,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
                 time_to_switch = self._last_slideshow_switch_time + self._special_slideshow_period_for_current_media
                 
             
-            if not HydrusTime.TimeHasPassedFloat( time_to_switch ):
+            if not HydrusTime.time_has_passed_float(time_to_switch):
                 
                 return
                 
@@ -4236,7 +4236,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
         
         if self._slideshow_is_running:
             
-            self._last_slideshow_switch_time = HydrusTime.GetNowFloat()
+            self._last_slideshow_switch_time = HydrusTime.get_now_float()
             
             self._special_slideshow_period_for_current_media = None
             

@@ -85,7 +85,7 @@ def GetExternalIP():
         RaiseMissingUPnPcError( 'fetch external IP' )
         
     
-    if HydrusTime.TimeHasPassed( EXTERNAL_IP[ 'time' ] + ( 3600 * 24 ) ):
+    if HydrusTime.time_has_passed(EXTERNAL_IP['time'] + (3600 * 24)):
         
         cmd = [ UPNPC_PATH, '-l' ]
         
@@ -126,7 +126,7 @@ def GetExternalIP():
                 
             
             EXTERNAL_IP[ 'ip' ] = external_ip_address
-            EXTERNAL_IP[ 'time' ] = HydrusTime.GetNow()
+            EXTERNAL_IP[ 'time' ] = HydrusTime.get_now()
             
         
     

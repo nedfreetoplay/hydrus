@@ -422,7 +422,7 @@ class ParsableContentDescriptionTimestamp( ParsableContentDescription ):
                 
                 timestamp = int( parsed_text )
                 
-                timestamp_string = HydrusTime.TimestampToPrettyTime( timestamp )
+                timestamp_string = HydrusTime.timestamp_to_pretty_time(timestamp)
                 
             except Exception as e:
                 
@@ -735,7 +735,7 @@ class ParsedPost( object ):
                     
                     if timestamp_type == HC.TIMESTAMP_TYPE_MODIFIED_DOMAIN:
                         
-                        timestamp = min( HydrusTime.GetNow() - 5, timestamp )
+                        timestamp = min(HydrusTime.get_now() - 5, timestamp)
                         
                     
                     timestamp_results.append( timestamp )

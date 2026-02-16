@@ -108,7 +108,7 @@ class BandwidthRulesCtrl( ClientGUICommon.StaticBox ):
         
         ( bandwidth_type, time_delta, max_allowed ) = rule
         
-        pretty_time_delta = HydrusTime.TimeDeltaToPrettyTimeDelta( time_delta )
+        pretty_time_delta = HydrusTime.time_delta_to_pretty_time_delta(time_delta)
         
         pretty_max_allowed = ''
         

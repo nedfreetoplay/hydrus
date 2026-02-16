@@ -528,10 +528,10 @@ class PopupMessage( PopupWindow ):
                 
                 self._network_job_ctrl.ClearNetworkJob()
                 
-                self._time_network_job_disappeared = HydrusTime.GetNow()
+                self._time_network_job_disappeared = HydrusTime.get_now()
                 
             
-            if not self._network_job_ctrl.isHidden() and HydrusTime.TimeHasPassed( self._time_network_job_disappeared + 10 ):
+            if not self._network_job_ctrl.isHidden() and HydrusTime.time_has_passed(self._time_network_job_disappeared + 10):
                 
                 self._network_job_ctrl.hide()
                 

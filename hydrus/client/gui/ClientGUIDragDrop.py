@@ -84,7 +84,7 @@ def DoFileExportDragDrop( drag_object: QG.QDrag, page_key, media, alt_down ):
         
         for ( creation_time, path ) in DND_TEMP_DIRS:
             
-            if HydrusTime.TimeHasPassed( creation_time + TEMP_DIR_TIMEOUT ):
+            if HydrusTime.time_has_passed(creation_time + TEMP_DIR_TIMEOUT):
                 
                 HydrusPaths.delete_path(path)
                 
@@ -103,7 +103,7 @@ def DoFileExportDragDrop( drag_object: QG.QDrag, page_key, media, alt_down ):
             raise Exception( f'Could not create a temporary directory ("{this_dnd_temp_dir}") to handle the drag and drop!' )
             
         
-        DND_TEMP_DIRS.append( ( HydrusTime.GetNow(), this_dnd_temp_dir ) )
+        DND_TEMP_DIRS.append((HydrusTime.get_now(), this_dnd_temp_dir))
         
         make_it_a_move_flag = new_options.GetBoolean( 'secret_discord_dnd_fix' )
         

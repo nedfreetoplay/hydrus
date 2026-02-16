@@ -109,13 +109,13 @@ class PotentialDuplicatesMaintenanceManager( ClientDaemons.ManagerWithMainLoop )
                 
                 expected_work_period = self._GetWorkPeriod()
                 
-                start_time = HydrusTime.GetNowPrecise()
+                start_time = HydrusTime.get_now_precise()
                 
                 search_distance = CG.client_controller.new_options.GetInteger( 'similar_files_duplicate_pairs_search_distance' )
                 
                 ( still_search_work_to_do, num_done ) = CG.client_controller.write_synchronous('maintain_similar_files_search_for_potential_duplicates', search_distance, work_period = expected_work_period)
                 
-                total_time_took = HydrusTime.GetNowPrecise() - start_time
+                total_time_took = HydrusTime.get_now_precise() - start_time
                 
                 wait_time = self._GetRestTime( expected_work_period, total_time_took )
                 
@@ -199,11 +199,11 @@ class PotentialDuplicatesMaintenanceManager( ClientDaemons.ManagerWithMainLoop )
         
         if self._controller.currently_idle():
             
-            return HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'potential_duplicates_search_work_time_ms_idle' ) )
+            return HydrusTime.secondise_ms_float(CG.client_controller.new_options.GetInteger('potential_duplicates_search_work_time_ms_idle'))
             
         else:
             
-            return HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'potential_duplicates_search_work_time_ms_active' ) )
+            return HydrusTime.secondise_ms_float(CG.client_controller.new_options.GetInteger('potential_duplicates_search_work_time_ms_active'))
             
         
     

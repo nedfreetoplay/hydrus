@@ -23,8 +23,8 @@ class TestSessions( unittest.TestCase ):
         permissions = [ HC.GET_DATA, HC.POST_DATA, HC.POST_PETITIONS, HC.RESOLVE_PETITIONS, HC.MANAGE_USERS, HC.GENERAL_ADMIN, HC.EDIT_SERVICES ]
         
         account_type = HydrusNetwork.AccountType.GenerateAdminAccountType( HC.SERVER_ADMIN )
-        created = HydrusTime.GetNow() - 100000
-        expires = HydrusTime.GetNow() + 300
+        created = HydrusTime.get_now() - 100000
+        expires = HydrusTime.get_now() + 300
         
         account_key_1 = HydrusData.generate_key()
         account_key_2 = HydrusData.generate_key()
@@ -40,7 +40,7 @@ class TestSessions( unittest.TestCase ):
         
         # test timeout
         
-        expires = HydrusTime.GetNow() - 10
+        expires = HydrusTime.get_now() - 10
         
         TG.test_controller.SetRead( 'sessions', [ ( session_key_1, service_key, account, hashed_access_key_1, expires ) ] )
         
@@ -60,7 +60,7 @@ class TestSessions( unittest.TestCase ):
         
         # test fetching a session already in db, after bootup
         
-        expires = HydrusTime.GetNow() + 300
+        expires = HydrusTime.get_now() + 300
         
         TG.test_controller.SetRead( 'sessions', [ ( session_key_1, service_key, account, hashed_access_key_1, expires ) ] )
         
@@ -96,7 +96,7 @@ class TestSessions( unittest.TestCase ):
         
         TG.test_controller.ClearWrites( 'session' )
         
-        expires = HydrusTime.GetNow() + 300
+        expires = HydrusTime.get_now() + 300
         
         TG.test_controller.SetRead( 'account_key_from_access_key', account_key_2 )
         TG.test_controller.SetRead( 'account', account_2 )
@@ -144,7 +144,7 @@ class TestSessions( unittest.TestCase ):
         
         # test individual account refresh
         
-        expires = HydrusTime.GetNow() + 300
+        expires = HydrusTime.get_now() + 300
         
         new_obj_account_1 = HydrusNetwork.Account( account_key_1, account_type, created, expires )
         
@@ -166,7 +166,7 @@ class TestSessions( unittest.TestCase ):
         
         # test all account refresh
         
-        expires = HydrusTime.GetNow() + 300
+        expires = HydrusTime.get_now() + 300
         
         new_obj_account_2 = HydrusNetwork.Account( account_key_2, account_type, created, expires )
         

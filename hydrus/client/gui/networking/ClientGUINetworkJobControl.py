@@ -163,7 +163,7 @@ class NetworkJobControl( QW.QFrame ):
                         
                         if waiting_estimate > 0:
                             
-                            network_context_text = '{} ({})'.format( network_context_text, HydrusTime.TimeDeltaToPrettyTimeDelta( waiting_estimate ) )
+                            network_context_text = '{} ({})'.format(network_context_text, HydrusTime.time_delta_to_pretty_time_delta(waiting_estimate))
                             
                         
                     
@@ -231,7 +231,7 @@ class NetworkJobControl( QW.QFrame ):
             
         else:
             
-            if self._auto_override_bandwidth_rules and HydrusTime.TimeHasPassed( self._network_job.GetCreationTime() + 5 ):
+            if self._auto_override_bandwidth_rules and HydrusTime.time_has_passed(self._network_job.GetCreationTime() + 5):
                 
                 self._network_job.OverrideBandwidth()
                 

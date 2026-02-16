@@ -746,8 +746,8 @@ class TestPredicateTesting( unittest.TestCase ):
             media_result_fail = HelperFunctions.GetFakeMediaResult(HydrusData.generate_key(), mime = HC.IMAGE_JPEG)
             media_result_null = HelperFunctions.GetFakeMediaResult(HydrusData.generate_key(), mime = HC.IMAGE_JPEG)
             
-            media_result_pass.GetTimesManager().SetImportedTimestampMS( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, HydrusTime.GetNowMS() + pass_delta )
-            media_result_fail.GetTimesManager().SetImportedTimestampMS( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, HydrusTime.GetNowMS() + fail_delta )
+            media_result_pass.GetTimesManager().SetImportedTimestampMS(CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, HydrusTime.get_now_ms() + pass_delta)
+            media_result_fail.GetTimesManager().SetImportedTimestampMS(CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, HydrusTime.get_now_ms() + fail_delta)
             media_result_null.GetTimesManager().ClearTime( ClientTime.TimestampData( HC.TIMESTAMP_TYPE_IMPORTED, location = CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY ) )
             
             self.assertTrue( pred.TestMediaResult( media_result_pass ) )
@@ -764,8 +764,8 @@ class TestPredicateTesting( unittest.TestCase ):
             media_result_fail = HelperFunctions.GetFakeMediaResult(HydrusData.generate_key(), mime = HC.IMAGE_JPEG)
             media_result_null = HelperFunctions.GetFakeMediaResult(HydrusData.generate_key(), mime = HC.IMAGE_JPEG)
             
-            media_result_pass.GetTimesManager().SetFileModifiedTimestampMS( HydrusTime.GetNowMS() + pass_delta )
-            media_result_fail.GetTimesManager().SetFileModifiedTimestampMS( HydrusTime.GetNowMS() + fail_delta )
+            media_result_pass.GetTimesManager().SetFileModifiedTimestampMS(HydrusTime.get_now_ms() + pass_delta)
+            media_result_fail.GetTimesManager().SetFileModifiedTimestampMS(HydrusTime.get_now_ms() + fail_delta)
             media_result_null.GetTimesManager().ClearTime( ClientTime.TimestampData( HC.TIMESTAMP_TYPE_MODIFIED_FILE ) )
             
             self.assertTrue( pred.TestMediaResult( media_result_pass ) )
@@ -782,8 +782,8 @@ class TestPredicateTesting( unittest.TestCase ):
             media_result_fail = HelperFunctions.GetFakeMediaResult(HydrusData.generate_key(), mime = HC.IMAGE_JPEG)
             media_result_null = HelperFunctions.GetFakeMediaResult(HydrusData.generate_key(), mime = HC.IMAGE_JPEG)
             
-            media_result_pass.GetTimesManager().SetLastViewedTimestampMS( CC.CANVAS_MEDIA_VIEWER, HydrusTime.GetNowMS() + pass_delta )
-            media_result_fail.GetTimesManager().SetLastViewedTimestampMS( CC.CANVAS_MEDIA_VIEWER, HydrusTime.GetNowMS() + fail_delta )
+            media_result_pass.GetTimesManager().SetLastViewedTimestampMS(CC.CANVAS_MEDIA_VIEWER, HydrusTime.get_now_ms() + pass_delta)
+            media_result_fail.GetTimesManager().SetLastViewedTimestampMS(CC.CANVAS_MEDIA_VIEWER, HydrusTime.get_now_ms() + fail_delta)
             media_result_null.GetTimesManager().ClearTime( ClientTime.TimestampData( HC.TIMESTAMP_TYPE_LAST_VIEWED, location = CC.CANVAS_MEDIA_VIEWER ) )
             
             self.assertTrue( pred.TestMediaResult( media_result_pass ) )
@@ -800,8 +800,8 @@ class TestPredicateTesting( unittest.TestCase ):
             media_result_fail = HelperFunctions.GetFakeMediaResult(HydrusData.generate_key(), mime = HC.IMAGE_JPEG)
             media_result_null = HelperFunctions.GetFakeMediaResult(HydrusData.generate_key(), mime = HC.IMAGE_JPEG)
             
-            media_result_pass.GetTimesManager().SetArchivedTimestampMS( HydrusTime.GetNowMS() + pass_delta )
-            media_result_fail.GetTimesManager().SetArchivedTimestampMS( HydrusTime.GetNowMS() + fail_delta )
+            media_result_pass.GetTimesManager().SetArchivedTimestampMS(HydrusTime.get_now_ms() + pass_delta)
+            media_result_fail.GetTimesManager().SetArchivedTimestampMS(HydrusTime.get_now_ms() + fail_delta)
             media_result_null.GetTimesManager().ClearTime( ClientTime.TimestampData( HC.TIMESTAMP_TYPE_ARCHIVED ) )
             
             self.assertTrue( pred.TestMediaResult( media_result_pass ) )

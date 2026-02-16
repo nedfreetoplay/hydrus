@@ -374,7 +374,7 @@ class ReviewLocalFileImports( ClientGUIScrolledPanels.ReviewPanel ):
             
             ( unparsed_paths_queue, parsed_paths_queue, search_subdirectories, comparable_sidecar_prefixes ) = args
             
-            start_time = HydrusTime.GetNowFloat()
+            start_time = HydrusTime.get_now_float()
             
             while not unparsed_paths_queue.empty():
                 
@@ -499,7 +499,7 @@ class ReviewLocalFileImports( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 parsed_paths_queue.put( local_file_parse )
                 
-                if HydrusTime.TimeHasPassedFloat( start_time + 0.1 ):
+                if HydrusTime.time_has_passed_float(start_time + 0.1):
                     
                     break
                     

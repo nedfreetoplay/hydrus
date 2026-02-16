@@ -37,7 +37,7 @@ class HydrusResourceClientAPIRestrictedEditTimesSetTime( HydrusResourceClientAPI
             
             timestamp = request.parsed_request_args.GetValueOrNone( 'timestamp', float )
             
-            timestamp_ms = HydrusTime.MillisecondiseS( timestamp )
+            timestamp_ms = HydrusTime.millisecondise_s(timestamp)
             
         elif 'timestamp_ms' in request.parsed_request_args:
             

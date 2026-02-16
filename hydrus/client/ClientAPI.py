@@ -141,7 +141,7 @@ class APIManager( HydrusSerialisable.SerialisableBase ):
         
         with self._lock:
             
-            self._session_keys_to_access_keys_and_expirys[ session_key ] = ( access_key, HydrusTime.GetNow() + SESSION_EXPIRY )
+            self._session_keys_to_access_keys_and_expirys[ session_key ] = (access_key, HydrusTime.get_now() + SESSION_EXPIRY)
             
         
         return session_key
@@ -158,14 +158,14 @@ class APIManager( HydrusSerialisable.SerialisableBase ):
             
             ( access_key, session_expiry ) = self._session_keys_to_access_keys_and_expirys[ session_key ]
             
-            if HydrusTime.TimeHasPassed( session_expiry ):
+            if HydrusTime.time_has_passed(session_expiry):
                 
                 del self._session_keys_to_access_keys_and_expirys[ session_expiry ]
                 
                 raise HydrusExceptions.SessionException( 'That session key has expired!' )
                 
             
-            self._session_keys_to_access_keys_and_expirys[ session_key ] = ( access_key, HydrusTime.GetNow() + SESSION_EXPIRY )
+            self._session_keys_to_access_keys_and_expirys[ session_key ] = (access_key, HydrusTime.get_now() + SESSION_EXPIRY)
             
         
         return access_key
@@ -411,7 +411,7 @@ class APIPermissions( HydrusSerialisable.SerialisableBaseNamed ):
                 raise HydrusExceptions.InsufficientCredentialsException( error_text )
                 
             
-            self._search_results_timeout = HydrusTime.GetNow() + SEARCH_RESULTS_CACHE_TIMEOUT
+            self._search_results_timeout = HydrusTime.get_now() + SEARCH_RESULTS_CACHE_TIMEOUT
             
         
     
@@ -507,7 +507,7 @@ class APIPermissions( HydrusSerialisable.SerialisableBaseNamed ):
         
         with self._lock:
             
-            if self._last_search_results is not None and HydrusTime.TimeHasPassed( self._search_results_timeout ):
+            if self._last_search_results is not None and HydrusTime.time_has_passed(self._search_results_timeout):
                 
                 self._last_search_results = None
                 
@@ -533,7 +533,7 @@ class APIPermissions( HydrusSerialisable.SerialisableBaseNamed ):
             
             self._last_search_results = set( hash_ids )
             
-            self._search_results_timeout = HydrusTime.GetNow() + SEARCH_RESULTS_CACHE_TIMEOUT
+            self._search_results_timeout = HydrusTime.get_now() + SEARCH_RESULTS_CACHE_TIMEOUT
             
         
     

@@ -663,7 +663,7 @@ def filter_free_paths(paths):
 
 def filter_older_modified_files(paths: collections.abc.Collection[ str], grace_period: int) -> list[ str]:
     
-    only_older_than = HydrusTime.GetNow() - grace_period
+    only_older_than = HydrusTime.get_now() - grace_period
     
     good_paths = []
     

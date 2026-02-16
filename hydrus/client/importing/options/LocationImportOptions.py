@@ -106,7 +106,7 @@ class LocationImportOptions( HydrusSerialisable.SerialisableBase ):
             if len( file_service_keys_to_add_to ) > 0:
                 
                 file_info_manager = media_result.GetFileInfoManager()
-                now_ms = HydrusTime.GetNowMS()
+                now_ms = HydrusTime.get_now_ms()
                 
                 for service_key in file_service_keys_to_add_to:
                     

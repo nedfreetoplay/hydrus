@@ -29,7 +29,7 @@ class ParsingCache( object ):
     
     def __init__( self ):
         
-        self._next_clean_cache_time = HydrusTime.GetNow()
+        self._next_clean_cache_time = HydrusTime.get_now()
         
         self._html_to_soups = {}
         self._json_to_jsons = {}
@@ -39,7 +39,7 @@ class ParsingCache( object ):
     
     def _CleanCache( self ):
         
-        if HydrusTime.TimeHasPassed( self._next_clean_cache_time ):
+        if HydrusTime.time_has_passed(self._next_clean_cache_time):
             
             for cache in ( self._html_to_soups, self._json_to_jsons ):
                 
@@ -47,7 +47,7 @@ class ParsingCache( object ):
                 
                 for ( data, ( last_accessed, parsed_object ) ) in cache.items():
                     
-                    if HydrusTime.TimeHasPassed( last_accessed + 10 ):
+                    if HydrusTime.time_has_passed(last_accessed + 10):
                         
                         dead_datas.add( data )
                         
@@ -59,7 +59,7 @@ class ParsingCache( object ):
                     
                 
             
-            self._next_clean_cache_time = HydrusTime.GetNow() + 5
+            self._next_clean_cache_time = HydrusTime.get_now() + 5
             
         
     
@@ -75,7 +75,7 @@ class ParsingCache( object ):
         
         with self._lock:
             
-            now = HydrusTime.GetNow()
+            now = HydrusTime.get_now()
             
             if json_text not in self._json_to_jsons:
                 
@@ -104,7 +104,7 @@ class ParsingCache( object ):
         
         with self._lock:
             
-            now = HydrusTime.GetNow()
+            now = HydrusTime.get_now()
             
             if html not in self._html_to_soups:
                 
@@ -950,7 +950,7 @@ class ThumbnailCache( object ):
                 self._waterfall_event.clear()
                 
             
-            start_time = HydrusTime.GetNowPrecise()
+            start_time = HydrusTime.get_now_precise()
             stop_time = start_time + 0.005 # a bit of a typical frame
             
             page_keys_to_rendered_medias = collections.defaultdict( list )
@@ -958,7 +958,7 @@ class ThumbnailCache( object ):
             num_done = 0
             max_at_once = 16
             
-            while not HydrusTime.TimeHasPassedPrecise( stop_time ) and num_done <= max_at_once:
+            while not HydrusTime.time_has_passed_precise(stop_time) and num_done <= max_at_once:
                 
                 with self._lock:
                     

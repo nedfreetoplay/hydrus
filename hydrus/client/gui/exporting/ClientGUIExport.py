@@ -162,7 +162,7 @@ class EditExportFoldersPanel( ClientGUIScrolledPanels.EditPanel ):
         
         if run_regularly:
             
-            pretty_period = HydrusTime.TimeDeltaToPrettyTimeDelta( period )
+            pretty_period = HydrusTime.time_delta_to_pretty_time_delta(period)
             
         else:
             

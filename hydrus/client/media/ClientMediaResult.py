@@ -65,7 +65,7 @@ class MediaResult( object ):
     
     def GetDurationS( self ):
         
-        return HydrusTime.SecondiseMSFloat( self._file_info_manager.duration_ms )
+        return HydrusTime.secondise_ms_float(self._file_info_manager.duration_ms)
         
     
     def GetDurationMS( self ):

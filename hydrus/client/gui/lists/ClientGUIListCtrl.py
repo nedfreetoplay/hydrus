@@ -516,7 +516,7 @@ class BetterListCtrlTreeView( QW.QTreeView ):
         
         self._have_shown_a_column_data_error = False
         
-        self._creation_time = HydrusTime.GetNow()
+        self._creation_time = HydrusTime.get_now()
         
         self._column_list_type = model.GetColumnListType()
         
@@ -1251,7 +1251,7 @@ class BetterListCtrlTreeView( QW.QTreeView ):
         
         last_column_type = self._column_list_status.GetColumnTypes()[-1]
         
-        if HydrusTime.TimeHasPassed( self._creation_time + 2 ):
+        if HydrusTime.time_has_passed(self._creation_time + 2):
             
             width += self.columnWidth( self.model().columnCount() - 1 )
             

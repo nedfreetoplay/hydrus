@@ -265,7 +265,7 @@ class DB( HydrusDB.HydrusDB ):
         
         all_names.discard( 'sqlite_stat1' )
         
-        names_to_analyze = [ name for name in all_names if name not in existing_names_to_timestamps or HydrusTime.TimeHasPassed( existing_names_to_timestamps[ name ] + stale_time_delta ) ]
+        names_to_analyze = [name for name in all_names if name not in existing_names_to_timestamps or HydrusTime.time_has_passed(existing_names_to_timestamps[ name] + stale_time_delta)]
         
         if len( names_to_analyze ) > 0:
             
@@ -280,19 +280,19 @@ class DB( HydrusDB.HydrusDB ):
                 
                 for name in HydrusLists.iterate_list_randomly_and_fast(names_to_analyze):
                     
-                    started = HydrusTime.GetNowPrecise()
+                    started = HydrusTime.get_now_precise()
                     
                     self._execute('ANALYZE ' + name + ';')
                     
                     self._execute('DELETE FROM analyze_timestamps WHERE name = ?;', (name,))
                     
-                    self._execute('INSERT OR IGNORE INTO analyze_timestamps ( name, timestamp ) VALUES ( ?, ? );', (name, HydrusTime.GetNow()))
+                    self._execute('INSERT OR IGNORE INTO analyze_timestamps ( name, timestamp ) VALUES ( ?, ? );', (name, HydrusTime.get_now()))
                     
-                    time_took = HydrusTime.GetNowPrecise() - started
+                    time_took = HydrusTime.get_now_precise() - started
                     
                     if time_took > 1:
                         
-                        HydrusData.print_text('Analyzed ' + name + ' in ' + HydrusTime.TimeDeltaToPrettyTimeDelta(time_took))
+                        HydrusData.print_text('Analyzed ' + name + ' in ' + HydrusTime.time_delta_to_pretty_time_delta(time_took))
                         
                     
                     if SG.server_controller.should_stop_this_work(maintenance_mode, stop_time = stop_time):
@@ -661,7 +661,7 @@ class DB( HydrusDB.HydrusDB ):
                 raise HydrusExceptions.NotFoundException( 'The service could not find that service hash in its database.' )
                 
             
-            service_hash_id = self._RepositoryGetServiceHashId( service_id, master_hash_id, HydrusTime.GetNow() )
+            service_hash_id = self._RepositoryGetServiceHashId(service_id, master_hash_id, HydrusTime.get_now())
             
             ( current_files_table_name, deleted_files_table_name, pending_files_table_name, petitioned_files_table_name, ip_addresses_table_name ) = GenerateRepositoryFilesTableNames( service_id )
             
@@ -693,7 +693,7 @@ class DB( HydrusDB.HydrusDB ):
                 raise HydrusExceptions.NotFoundException( 'The service could not find that service hash in its database.' )
                 
             
-            service_hash_id = self._RepositoryGetServiceHashId( service_id, master_hash_id, HydrusTime.GetNow() )
+            service_hash_id = self._RepositoryGetServiceHashId(service_id, master_hash_id, HydrusTime.get_now())
             
             if not self._MasterTagExists( tag ):
                 
@@ -707,7 +707,7 @@ class DB( HydrusDB.HydrusDB ):
                 raise HydrusExceptions.NotFoundException( 'The service could not find that service tag in its database.' )
                 
             
-            service_tag_id = self._RepositoryGetServiceTagId( service_id, master_tag_id, HydrusTime.GetNow() )
+            service_tag_id = self._RepositoryGetServiceTagId(service_id, master_tag_id, HydrusTime.get_now())
             
             ( current_mappings_table_name, deleted_mappings_table_name, pending_mappings_table_name, petitioned_mappings_table_name ) = GenerateRepositoryMappingsTableNames( service_id )
             
@@ -768,7 +768,7 @@ class DB( HydrusDB.HydrusDB ):
             
             account_type = self._GetAccountType( service_id, account_type_id )
             
-            created = HydrusTime.GetNow()
+            created = HydrusTime.get_now()
             
             account = HydrusNetwork.Account( account_key, account_type, created, expires )
             
@@ -1179,7 +1179,7 @@ class DB( HydrusDB.HydrusDB ):
     
     def _GetSessions( self, service_key = None ):
         
-        now = HydrusTime.GetNow()
+        now = HydrusTime.get_now()
         
         self._execute('DELETE FROM sessions WHERE ? > expires;', (now,))
         
@@ -1455,7 +1455,7 @@ class DB( HydrusDB.HydrusDB ):
         
         subject_account = self._GetAccount( service_id, subject_account_id )
         
-        now = HydrusTime.GetNow()
+        now = HydrusTime.get_now()
         
         subject_account.Ban( reason, now, expires )
         
@@ -1475,7 +1475,7 @@ class DB( HydrusDB.HydrusDB ):
                 admin_account.GetAccountKey().hex(),
                 subject_account_key.hex(),
                 reason,
-                HydrusTime.TimestampToPrettyExpires( expires )
+                HydrusTime.timestamp_to_pretty_expires(expires)
             )
         )
         
@@ -1539,8 +1539,8 @@ class DB( HydrusDB.HydrusDB ):
             'Account {} changed the expiration of {} from "{}" to "{}".'.format(
                 admin_account.GetAccountKey().hex(),
                 subject_account_key.hex(),
-                HydrusTime.TimestampToPrettyExpires( current_expires ),
-                HydrusTime.TimestampToPrettyExpires( new_expires )
+                HydrusTime.timestamp_to_pretty_expires(current_expires),
+                HydrusTime.timestamp_to_pretty_expires(new_expires)
             )
         )
         
@@ -1558,7 +1558,7 @@ class DB( HydrusDB.HydrusDB ):
         
         subject_account = self._GetAccount( service_id, subject_account_id )
         
-        now = HydrusTime.GetNow()
+        now = HydrusTime.get_now()
         
         subject_account.SetMessage( message, now )
         
@@ -2079,7 +2079,7 @@ class DB( HydrusDB.HydrusDB ):
         
         ( name, ) = self._execute('SELECT name FROM services WHERE service_id = ?;', (service_id,)).fetchone()
         
-        HydrusData.print_text('Creating update for ' + repr(name) + ' from ' + HydrusTime.TimestampToPrettyTime(begin, in_utc = True) + ' to ' + HydrusTime.TimestampToPrettyTime(end, in_utc = True))
+        HydrusData.print_text('Creating update for ' + repr(name) + ' from ' + HydrusTime.timestamp_to_pretty_time(begin, in_utc = True) + ' to ' + HydrusTime.timestamp_to_pretty_time(end, in_utc = True))
         
         updates = self._RepositoryGenerateUpdates( service_id, begin, end )
         
@@ -2138,12 +2138,12 @@ class DB( HydrusDB.HydrusDB ):
         
         we_deleted_everything = False
         
-        time_started = HydrusTime.GetNowFloat()
+        time_started = HydrusTime.get_now_float()
         time_to_stop = time_started + 20
         
         num_rows_do_delete_at_a_time = 500
         
-        now = HydrusTime.GetNow()
+        now = HydrusTime.get_now()
         
         ( current_files_table_name, deleted_files_table_name, pending_files_table_name, petitioned_files_table_name, ip_addresses_table_name ) = GenerateRepositoryFilesTableNames( service_id )
         
@@ -2155,7 +2155,7 @@ class DB( HydrusDB.HydrusDB ):
             
             self._RepositoryDeleteFiles( service_id, admin_account_id, service_hash_ids, now )
             
-            if HydrusTime.TimeHasPassedFloat( time_to_stop ):
+            if HydrusTime.time_has_passed_float(time_to_stop):
                 
                 return we_deleted_everything
                 
@@ -2176,7 +2176,7 @@ class DB( HydrusDB.HydrusDB ):
                 self._RepositoryDeleteMappings( service_id, admin_account_id, service_tag_id, service_hash_ids, now )
                 
             
-            if HydrusTime.TimeHasPassedFloat( time_to_stop ):
+            if HydrusTime.time_has_passed_float(time_to_stop):
                 
                 return we_deleted_everything
                 
@@ -2197,7 +2197,7 @@ class DB( HydrusDB.HydrusDB ):
                 self._RepositoryDeleteTagParent( service_id, admin_account_id, child_service_tag_id, parent_service_tag_id, now )
                 
             
-            if HydrusTime.TimeHasPassedFloat( time_to_stop ):
+            if HydrusTime.time_has_passed_float(time_to_stop):
                 
                 return we_deleted_everything
                 
@@ -2218,7 +2218,7 @@ class DB( HydrusDB.HydrusDB ):
                 self._RepositoryDeleteTagSibling( service_id, admin_account_id, bad_service_tag_id, good_service_tag_id, now )
                 
             
-            if HydrusTime.TimeHasPassedFloat( time_to_stop ):
+            if HydrusTime.time_has_passed_float(time_to_stop):
                 
                 return we_deleted_everything
                 
@@ -3006,7 +3006,7 @@ class DB( HydrusDB.HydrusDB ):
         MAX_UNIQUE_TAG_IDS_PER_PETITION = 10000
         TIME_ALLOWED = 10
         
-        time_started = HydrusTime.GetNowFloat()
+        time_started = HydrusTime.get_now_float()
         
         ( current_mappings_table_name, deleted_mappings_table_name, pending_mappings_table_name, petitioned_mappings_table_name ) = GenerateRepositoryMappingsTableNames( service_id )
         
@@ -3040,7 +3040,7 @@ class DB( HydrusDB.HydrusDB ):
             
             contents.append( content )
             
-            if HydrusTime.TimeHasPassedFloat( time_started + TIME_ALLOWED ):
+            if HydrusTime.time_has_passed_float(time_started + TIME_ALLOWED):
                 
                 break
                 
@@ -3967,8 +3967,8 @@ class DB( HydrusDB.HydrusDB ):
         
         if child_exists and parent_exists:
             
-            child_service_tag_id = self._RepositoryGetServiceTagId( service_id, child_master_tag_id, HydrusTime.GetNow() )
-            parent_service_tag_id = self._RepositoryGetServiceTagId( service_id, parent_master_tag_id, HydrusTime.GetNow() )
+            child_service_tag_id = self._RepositoryGetServiceTagId(service_id, child_master_tag_id, HydrusTime.get_now())
+            parent_service_tag_id = self._RepositoryGetServiceTagId(service_id, parent_master_tag_id, HydrusTime.get_now())
             
             result = self._execute('SELECT 1 FROM ' + current_tag_parents_table_name + ' WHERE child_service_tag_id = ? AND parent_service_tag_id = ?;', (child_service_tag_id, parent_service_tag_id)).fetchone()
             
@@ -4004,8 +4004,8 @@ class DB( HydrusDB.HydrusDB ):
         
         if bad_exists and good_exists:
             
-            bad_service_tag_id = self._RepositoryGetServiceTagId( service_id, bad_master_tag_id, HydrusTime.GetNow() )
-            good_service_tag_id = self._RepositoryGetServiceTagId( service_id, good_master_tag_id, HydrusTime.GetNow() )
+            bad_service_tag_id = self._RepositoryGetServiceTagId(service_id, bad_master_tag_id, HydrusTime.get_now())
+            good_service_tag_id = self._RepositoryGetServiceTagId(service_id, good_master_tag_id, HydrusTime.get_now())
             
             result = self._execute('SELECT 1 FROM ' + current_tag_siblings_table_name + ' WHERE bad_service_tag_id = ? AND good_service_tag_id = ?;', (bad_service_tag_id, good_service_tag_id)).fetchone()
             
@@ -4758,7 +4758,7 @@ class DB( HydrusDB.HydrusDB ):
         
         if self._RepositoryServiceTagIdExists( service_id, child_master_tag_id ):
             
-            child_service_tag_id = self._RepositoryGetServiceTagId( service_id, child_master_tag_id, HydrusTime.GetNow() )
+            child_service_tag_id = self._RepositoryGetServiceTagId(service_id, child_master_tag_id, HydrusTime.get_now())
             
             score = self._RepositoryGetCurrentMappingsCount( service_id, child_service_tag_id )
             
@@ -4801,7 +4801,7 @@ class DB( HydrusDB.HydrusDB ):
         
         if self._RepositoryServiceTagIdExists( service_id, bad_master_tag_id ):
             
-            bad_service_tag_id = self._RepositoryGetServiceTagId( service_id, bad_master_tag_id, HydrusTime.GetNow() )
+            bad_service_tag_id = self._RepositoryGetServiceTagId(service_id, bad_master_tag_id, HydrusTime.get_now())
             
             score = self._RepositoryGetCurrentMappingsCount( service_id, bad_service_tag_id )
             
@@ -5075,13 +5075,13 @@ class DB( HydrusDB.HydrusDB ):
                             
                             db_path = os.path.join( self._db_dir, self._db_filenames[ name ] )
                             
-                            started = HydrusTime.GetNowPrecise()
+                            started = HydrusTime.get_now_precise()
                             
                             HydrusDB.vacuum_db_into(db_path)
                             
-                            time_took = HydrusTime.GetNowPrecise() - started
+                            time_took = HydrusTime.get_now_precise() - started
                             
-                            HydrusData.print_text('Vacuumed ' + db_path + ' in ' + HydrusTime.TimeDeltaToPrettyTimeDelta(time_took))
+                            HydrusData.print_text('Vacuumed ' + db_path + ' in ' + HydrusTime.time_delta_to_pretty_time_delta(time_took))
                             
                             names_done.append( name )
                             

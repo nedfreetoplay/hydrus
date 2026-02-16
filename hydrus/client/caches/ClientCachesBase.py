@@ -103,7 +103,7 @@ class DataCache( object ):
             del self._keys_fifo[ key ]
             
         
-        self._keys_fifo[ key ] = HydrusTime.GetNow()
+        self._keys_fifo[ key ] = HydrusTime.get_now()
         
     
     def Clear( self ):
@@ -225,7 +225,7 @@ class DataCache( object ):
                     
                     ( key, last_access_time ) = next( iter( self._keys_fifo.items() ) )
                     
-                    if HydrusTime.TimeHasPassed( last_access_time + self._timeout ):
+                    if HydrusTime.time_has_passed(last_access_time + self._timeout):
                         
                         self._DeleteItem()
                         

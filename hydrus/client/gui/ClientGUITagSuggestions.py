@@ -414,7 +414,7 @@ class RelatedTagsPanel( QW.QWidget ):
                     num_done_s = '{} {} searched fully in '.format(HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do), tags_s)
                     
                 
-                label = '{}{}.'.format( num_done_s, HydrusTime.TimeDeltaToPrettyTimeDelta( total_time_took ) )
+                label = '{}{}.'.format(num_done_s, HydrusTime.time_delta_to_pretty_time_delta(total_time_took))
                 
                 self._status_label.setText( label )
                 
@@ -425,7 +425,7 @@ class RelatedTagsPanel( QW.QWidget ):
                 self._have_done_search_with_this_media = True
                 
             
-            start_time = HydrusTime.GetNowPrecise()
+            start_time = HydrusTime.get_now_precise()
             
             concurrence_threshold = CG.client_controller.new_options.GetInteger( 'related_tags_concurrence_threshold_percent' ) / 100
             search_tag_slices_weight_dict = { ':' : 1.0, '' : 1.0 }
@@ -465,7 +465,7 @@ class RelatedTagsPanel( QW.QWidget ):
                 other_tags_to_exclude = other_tags_to_exclude
             )
             
-            total_time_took = HydrusTime.GetNowPrecise() - start_time
+            total_time_took = HydrusTime.get_now_precise() - start_time
             
             predicates = ClientSearchPredicate.SortPredicates( predicates )
             
@@ -519,21 +519,21 @@ class RelatedTagsPanel( QW.QWidget ):
     
     def RefreshQuick( self ):
         
-        max_time_to_take = HydrusTime.SecondiseMSFloat( self._new_options.GetInteger( 'related_tags_search_1_duration_ms' ) )
+        max_time_to_take = HydrusTime.secondise_ms_float(self._new_options.GetInteger('related_tags_search_1_duration_ms'))
         
         self._FetchRelatedTagsNew( max_time_to_take )
         
     
     def RefreshMedium( self ):
         
-        max_time_to_take = HydrusTime.SecondiseMSFloat( self._new_options.GetInteger( 'related_tags_search_2_duration_ms' ) )
+        max_time_to_take = HydrusTime.secondise_ms_float(self._new_options.GetInteger('related_tags_search_2_duration_ms'))
         
         self._FetchRelatedTagsNew( max_time_to_take )
         
     
     def RefreshThorough( self ):
         
-        max_time_to_take = HydrusTime.SecondiseMSFloat( self._new_options.GetInteger( 'related_tags_search_3_duration_ms' ) )
+        max_time_to_take = HydrusTime.secondise_ms_float(self._new_options.GetInteger('related_tags_search_3_duration_ms'))
         
         self._FetchRelatedTagsNew( max_time_to_take )
         
@@ -702,7 +702,7 @@ class FileLookupScriptTagsPanel( QW.QWidget ):
             file_identifier = script.ConvertMediaToFileIdentifier( m )
             
         
-        stop_time = HydrusTime.GetNow() + 30
+        stop_time = HydrusTime.get_now() + 30
         
         job_status = ClientThreading.JobStatus( cancellable = True, stop_time = stop_time )
         

@@ -346,7 +346,7 @@ class Controller( HydrusController.HydrusController ):
     
     def maintain_db(self, maintenance_mode = HC.MAINTENANCE_FORCED, stop_time = None):
         
-        stop_time = HydrusTime.GetNow() + 10
+        stop_time = HydrusTime.get_now() + 10
         
         self.write_synchronous('analyze', maintenance_mode = maintenance_mode, stop_time = stop_time)
         

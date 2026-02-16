@@ -486,7 +486,7 @@ The formula should attempt to parse full or relative urls. If the url is relativ
             
             try:
                 
-                stop_time = HydrusTime.GetNow() + 30
+                stop_time = HydrusTime.get_now() + 30
                 
                 job_status = ClientThreading.JobStatus( cancellable = True, stop_time = stop_time )
                 
@@ -748,7 +748,7 @@ And pass that html to a number of 'parsing children' that will each look through
         
         try:
             
-            stop_time = HydrusTime.GetNow() + 30
+            stop_time = HydrusTime.get_now() + 30
             
             job_status = ClientThreading.JobStatus( cancellable = True, stop_time = stop_time )
             
@@ -820,7 +820,7 @@ And pass that html to a number of 'parsing children' that will each look through
         
         script = self.GetValue()
         
-        stop_time = HydrusTime.GetNow() + 30
+        stop_time = HydrusTime.get_now() + 30
         
         job_status = ClientThreading.JobStatus( cancellable = True, stop_time = stop_time )
         

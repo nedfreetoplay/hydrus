@@ -282,11 +282,11 @@ class PotentialDuplicatePairFactoryDBGroupMode( PotentialDuplicatePairFactoryDB 
             
             # ok let's find a group if poss
             
-            start_time = HydrusTime.GetNowPrecise()
+            start_time = HydrusTime.get_now_precise()
             
             probing_potential_duplicate_media_result_pairs_and_distances = CG.client_controller.read('potential_duplicate_id_pairs_and_distances_fragmentary', self._potential_duplicate_pairs_fragmentary_search)
             
-            actual_work_period = HydrusTime.GetNowPrecise() - start_time
+            actual_work_period = HydrusTime.get_now_precise() - start_time
             
             self._potential_duplicate_pairs_fragmentary_search.NotifyWorkTimeForAutothrottle( actual_work_period, 0.5 )
             
@@ -374,11 +374,11 @@ class PotentialDuplicatePairFactoryDBMixed( PotentialDuplicatePairFactoryDB ):
     
     def DoSearchWork( self, *args ) -> bool:
         
-        start_time = HydrusTime.GetNowPrecise()
+        start_time = HydrusTime.get_now_precise()
         
         potential_duplicate_media_result_pairs_and_distances = CG.client_controller.read('potential_duplicate_media_result_pairs_and_distances_fragmentary', self._potential_duplicate_pairs_fragmentary_search, no_more_than = self._no_more_than)
         
-        actual_work_period = HydrusTime.GetNowPrecise() - start_time
+        actual_work_period = HydrusTime.get_now_precise() - start_time
         
         self._potential_duplicate_pairs_fragmentary_search.NotifyWorkTimeForAutothrottle( actual_work_period, 0.5 )
         

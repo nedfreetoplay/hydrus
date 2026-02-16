@@ -389,9 +389,9 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
     
     def test_media_timestamps( self ):
         
-        archived_timestamp_ms = HydrusTime.GetNowMS() - 3600000
-        file_modified_timestamp_ms = HydrusTime.GetNowMS() - 2400000
-        site_dot_com_modified_timestamp_ms = HydrusTime.GetNowMS() - 2500000
+        archived_timestamp_ms = HydrusTime.get_now_ms() - 3600000
+        file_modified_timestamp_ms = HydrusTime.get_now_ms() - 2400000
+        site_dot_com_modified_timestamp_ms = HydrusTime.get_now_ms() - 2500000
         timestamp_data_stub = ClientTime.TimestampData.STATICSimpleStub( HC.TIMESTAMP_TYPE_ARCHIVED )
         
         # simple
@@ -441,7 +441,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         result = importer.Import( media_result )
         
-        self.assertEqual( set( result ), { str( HydrusTime.SecondiseMS( archived_timestamp_ms ) ) } )
+        self.assertEqual(set( result ), {str(HydrusTime.secondise_ms(archived_timestamp_ms))})
         
         # with string processor
         
@@ -457,8 +457,8 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         result = importer.Import( media_result )
         
         self.assertTrue( len( result ) > 0 )
-        self.assertNotEqual( set( result ), { str( HydrusTime.SecondiseMS( archived_timestamp_ms ) ) } )
-        self.assertEqual( set( result ), set( string_processor.ProcessStrings( { str( HydrusTime.SecondiseMS( archived_timestamp_ms ) ) } ) ) )
+        self.assertNotEqual(set( result ), {str(HydrusTime.secondise_ms(archived_timestamp_ms))})
+        self.assertEqual(set( result ), set(string_processor.ProcessStrings({str(HydrusTime.secondise_ms(archived_timestamp_ms))})))
         
         # test modified date/aggregate
         
@@ -469,7 +469,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         result = importer.Import( media_result )
         
-        self.assertEqual( set( result ), { str( HydrusTime.SecondiseMS( file_modified_timestamp_ms ) ) } )
+        self.assertEqual(set( result ), {str(HydrusTime.secondise_ms(file_modified_timestamp_ms))})
         
         #
         
@@ -480,7 +480,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         result = importer.Import( media_result )
         
-        self.assertEqual( set( result ), { str( HydrusTime.SecondiseMS( site_dot_com_modified_timestamp_ms ) ) } )
+        self.assertEqual(set( result ), {str(HydrusTime.secondise_ms(site_dot_com_modified_timestamp_ms))})
         
         #
         
@@ -491,7 +491,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         result = importer.Import( media_result )
         
-        self.assertEqual( set( result ), { str( HydrusTime.SecondiseMS( min( site_dot_com_modified_timestamp_ms, file_modified_timestamp_ms ) ) ) } )
+        self.assertEqual(set( result ), {str(HydrusTime.secondise_ms(min(site_dot_com_modified_timestamp_ms, file_modified_timestamp_ms)))})
         
     
     def test_media_txt( self ):
@@ -865,7 +865,7 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
     def test_media_timestamps( self ):
         
         hash = os.urandom( 32 )
-        timestamp = HydrusTime.GetNow() - 3600
+        timestamp = HydrusTime.get_now() - 3600
         
         rows = [ str( timestamp ) ]
         

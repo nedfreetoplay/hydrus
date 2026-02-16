@@ -1815,7 +1815,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
                         
                         job_status.SetStatusTitle( 'committing petition' )
                         
-                        time_started = HydrusTime.GetNowFloat()
+                        time_started = HydrusTime.get_now_float()
                         
                         try:
                             
@@ -1825,7 +1825,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
                             
                             for ( num_done, update ) in enumerate( updates ):
                                 
-                                if HydrusTime.TimeHasPassed( time_started + 3 ):
+                                if HydrusTime.time_has_passed(time_started + 3):
                                     
                                     CG.client_controller.pub( 'message', job_status )
                                     

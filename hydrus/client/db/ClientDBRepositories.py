@@ -649,7 +649,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         
         service_id = self.modules_services.GetServiceId( service_key )
         
-        precise_time_to_stop = HydrusTime.GetNowPrecise() + work_period
+        precise_time_to_stop = HydrusTime.get_now_precise() + work_period
         
         ( hash_id_map_table_name, tag_id_map_table_name ) = GenerateRepositoryDefinitionTableNames( service_id )
         
@@ -674,7 +674,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
                 
                 num_rows_processed += len( inserts )
                 
-                if HydrusTime.TimeHasPassedPrecise( precise_time_to_stop ) or job_status.IsCancelled():
+                if HydrusTime.time_has_passed_precise(precise_time_to_stop) or job_status.IsCancelled():
                     
                     return num_rows_processed
                     
@@ -711,7 +711,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
                 
                 num_rows_processed += len( inserts )
                 
-                if HydrusTime.TimeHasPassedPrecise( precise_time_to_stop ) or job_status.IsCancelled():
+                if HydrusTime.time_has_passed_precise(precise_time_to_stop) or job_status.IsCancelled():
                     
                     return num_rows_processed
                     

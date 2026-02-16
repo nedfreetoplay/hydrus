@@ -436,17 +436,17 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             if service_key in self._go_faster:
                 
-                return HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'tag_display_processing_work_time_ms_work_hard' ) )
+                return HydrusTime.secondise_ms_float(CG.client_controller.new_options.GetInteger('tag_display_processing_work_time_ms_work_hard'))
                 
             
         
         if self._controller.currently_idle():
             
-            return HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'tag_display_processing_work_time_ms_idle' ) )
+            return HydrusTime.secondise_ms_float(CG.client_controller.new_options.GetInteger('tag_display_processing_work_time_ms_idle'))
             
         else:
             
-            return HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'tag_display_processing_work_time_ms_normal' ) )
+            return HydrusTime.secondise_ms_float(CG.client_controller.new_options.GetInteger('tag_display_processing_work_time_ms_normal'))
             
         
     
@@ -458,7 +458,7 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
         
         # we are getting new display data pretty fast. if it is streaming in, let's take a break
-        if not HydrusTime.TimeHasPassed( self._last_last_new_data_event_time + 10 ):
+        if not HydrusTime.time_has_passed(self._last_last_new_data_event_time + 10):
             
             return False
             
@@ -568,11 +568,11 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 expected_work_period = self._GetWorkPeriod( service_key )
                 
-                start_time = HydrusTime.GetNowPrecise()
+                start_time = HydrusTime.get_now_precise()
                 
                 still_needs_work = self._controller.write_synchronous('sync_tag_display_maintenance', service_key, expected_work_period)
                 
-                finish_time = HydrusTime.GetNowPrecise()
+                finish_time = HydrusTime.get_now_precise()
                 
                 actual_work_period = finish_time - start_time
                 
@@ -605,7 +605,7 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 time.sleep( 1 )
                 
                 self._last_last_new_data_event_time = self._last_new_data_event_time
-                self._last_new_data_event_time = HydrusTime.GetNow()
+                self._last_new_data_event_time = HydrusTime.get_now()
                 
                 self._service_keys_to_needs_work = {}
                 

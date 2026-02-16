@@ -75,7 +75,7 @@ def run_auto_yes_no_gubbins( dlg: QW.QDialog, time_to_fire, original_title, acti
     
     def qt_set_title():
         
-        time_string = HydrusTime.TimestampToPrettyTimeDelta( time_to_fire, just_now_threshold = 0, just_now_string = 'imminently' )
+        time_string = HydrusTime.timestamp_to_pretty_time_delta(time_to_fire, just_now_threshold = 0, just_now_string ='imminently')
         
         title = f'{original_title} (will {action_description} {time_string})'
         
@@ -90,7 +90,7 @@ def run_auto_yes_no_gubbins( dlg: QW.QDialog, time_to_fire, original_title, acti
             
         
     
-    while not HydrusTime.TimeHasPassed( time_to_fire ):
+    while not HydrusTime.time_has_passed(time_to_fire):
         
         job = CG.client_controller.CallLaterQtSafe( dlg, 0.0, 'dialog auto yes/no title set', qt_set_title )
         
@@ -158,11 +158,11 @@ def GetYesNo( win: QW.QWidget, message: str, title = 'Are you sure?', yes_label 
             
             if auto_yes_time is not None:
                 
-                CG.client_controller.call_to_thread(run_auto_yes_no_gubbins, dlg, HydrusTime.GetNow() + auto_yes_time, dlg.windowTitle(), 'auto-yes', QW.QDialog.DialogCode.Accepted)
+                CG.client_controller.call_to_thread(run_auto_yes_no_gubbins, dlg, HydrusTime.get_now() + auto_yes_time, dlg.windowTitle(), 'auto-yes', QW.QDialog.DialogCode.Accepted)
                 
             elif auto_no_time is not None:
                 
-                CG.client_controller.call_to_thread(run_auto_yes_no_gubbins, dlg, HydrusTime.GetNow() + auto_no_time, dlg.windowTitle(), 'auto-no', QW.QDialog.DialogCode.Rejected)
+                CG.client_controller.call_to_thread(run_auto_yes_no_gubbins, dlg, HydrusTime.get_now() + auto_no_time, dlg.windowTitle(), 'auto-no', QW.QDialog.DialogCode.Rejected)
                 
             
         
@@ -180,7 +180,7 @@ def GetYesNoNo( win: QW.QWidget, message: str, title = 'Are you sure?', yes_labe
         
         if auto_yes_time is not None:
             
-            CG.client_controller.call_to_thread(run_auto_yes_no_gubbins, dlg, HydrusTime.GetNow() + auto_yes_time, dlg.windowTitle(), 'auto-yes', QW.QDialog.DialogCode.Accepted)
+            CG.client_controller.call_to_thread(run_auto_yes_no_gubbins, dlg, HydrusTime.get_now() + auto_yes_time, dlg.windowTitle(), 'auto-yes', QW.QDialog.DialogCode.Accepted)
             
         
         result = dlg.exec()

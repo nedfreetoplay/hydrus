@@ -546,17 +546,17 @@ def split_iterator_into_autothrottled_chunks(iterator, starting_n, precise_time_
     
     while len( chunk ) > 0:
         
-        time_work_started = HydrusTime.GetNowPrecise()
+        time_work_started = HydrusTime.get_now_precise()
         
         yield chunk
         
-        actual_work_period = HydrusTime.GetNowPrecise() - time_work_started
+        actual_work_period = HydrusTime.get_now_precise() - time_work_started
         
         items_per_second = n / actual_work_period
         
-        time_remaining = precise_time_to_stop - HydrusTime.GetNowPrecise()
+        time_remaining = precise_time_to_stop - HydrusTime.get_now_precise()
         
-        if HydrusTime.TimeHasPassedPrecise( precise_time_to_stop ):
+        if HydrusTime.time_has_passed_precise(precise_time_to_stop):
             
             n = 1
             
@@ -638,20 +638,20 @@ def split_mapping_iterator_into_autothrottled_chunks(iterator, starting_n, preci
         
         if chunk_weight >= n:
             
-            time_work_started = HydrusTime.GetNowPrecise()
+            time_work_started = HydrusTime.get_now_precise()
             
             yield chunk
             
-            actual_work_period = HydrusTime.GetNowPrecise() - time_work_started
+            actual_work_period = HydrusTime.get_now_precise() - time_work_started
             
             chunk_weight = 0
             chunk = []
             
             items_per_second = n / actual_work_period
             
-            time_remaining = precise_time_to_stop - HydrusTime.GetNowPrecise()
+            time_remaining = precise_time_to_stop - HydrusTime.get_now_precise()
             
-            if HydrusTime.TimeHasPassedPrecise( precise_time_to_stop ):
+            if HydrusTime.time_has_passed_precise(precise_time_to_stop):
                 
                 n = 1
                 

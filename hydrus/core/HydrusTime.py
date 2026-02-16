@@ -5,7 +5,7 @@ import time
 from hydrus.core import HydrusConstants as HC
 from hydrus.core import HydrusNumbers
 
-def DateTimeToPrettyTime( dt: datetime.datetime, include_24h_time = True, include_milliseconds = False ):
+def date_time_to_pretty_time(dt: datetime.datetime, include_24h_time = True, include_milliseconds = False):
     
     if include_24h_time:
         
@@ -33,7 +33,7 @@ def DateTimeToPrettyTime( dt: datetime.datetime, include_24h_time = True, includ
     return result
     
 
-def DateTimeToTimestamp( dt: datetime.datetime ) -> int:
+def date_time_to_timestamp(dt: datetime.datetime) -> int:
     
     try:
         
@@ -69,124 +69,124 @@ def DateTimeToTimestamp( dt: datetime.datetime ) -> int:
             
         except Exception as e:
             
-            timestamp = GetNow()
+            timestamp = get_now()
             
         
     
     return timestamp
     
 
-def DateTimeToTimestampMS( dt: datetime.datetime ) -> float:
+def date_time_to_timestamp_ms(dt: datetime.datetime) -> float:
     
-    return MillisecondiseS( DateTimeToTimestamp( dt ) ) + ( dt.microsecond // 1000 )
+    return millisecondise_s(date_time_to_timestamp(dt)) + (dt.microsecond // 1000)
     
 
-def GetDateTime( year: int, month: int, day: int, hour: int, minute: int ) -> datetime.datetime:
+def get_date_time(year: int, month: int, day: int, hour: int, minute: int) -> datetime.datetime:
     
     return datetime.datetime( year, month, day, hour, minute )
     
 
-def GetNow():
+def get_now():
     
     return int( time.time() )
     
 
-def GetNowFloat():
+def get_now_float():
     
     return time.time()
     
 
-def GetNowMS():
+def get_now_ms():
     
     return int( time.time() * 1000 )
     
 
-def GetNowPrecise():
+def get_now_precise():
     
     return time.perf_counter()
     
 
-def GetTimeDeltaSinceTime( timestamp ):
+def get_time_delta_since_time(timestamp):
     
-    time_since = timestamp - GetNow()
+    time_since = timestamp - get_now()
     
     result = min( time_since, 0 )
     
     return - result
     
 
-def GetTimeDeltaUntilTime( timestamp ):
+def get_time_delta_until_time(timestamp):
     
-    time_remaining = timestamp - GetNow()
+    time_remaining = timestamp - get_now()
     
     return max( time_remaining, 0 )
     
 
-def GetTimeDeltaUntilTimeFloat( timestamp ):
+def get_time_delta_until_time_float(timestamp):
     
-    time_remaining = timestamp - GetNowFloat()
-    
-    return max( time_remaining, 0.0 )
-    
-
-def GetTimeDeltaUntilTimePrecise( t ):
-    
-    time_remaining = t - GetNowPrecise()
+    time_remaining = timestamp - get_now_float()
     
     return max( time_remaining, 0.0 )
     
 
-def MillisecondiseS( time_delta_s: int | float | None ) -> int | None:
+def get_time_delta_until_time_precise(t):
+    
+    time_remaining = t - get_now_precise()
+    
+    return max( time_remaining, 0.0 )
+    
+
+def millisecondise_s(time_delta_s: int | float | None) -> int | None:
     
     return None if time_delta_s is None else int( time_delta_s * 1000 )
     
 
-def SecondiseMS( time_delta_ms: int | float | None ) -> int | None:
+def secondise_ms(time_delta_ms: int | float | None) -> int | None:
     
     return None if time_delta_ms is None else int( time_delta_ms // 1000 )
     
 
-def SecondiseMSFloat( time_delta_ms: int | float | None ) -> float | None:
+def secondise_ms_float(time_delta_ms: int | float | None) -> float | None:
     
     return None if time_delta_ms is None else time_delta_ms / 1000.0
     
 
-def TimeHasPassed( timestamp ):
+def time_has_passed(timestamp):
     
     if timestamp is None:
         
         return False
         
     
-    return GetNow() > timestamp
+    return get_now() > timestamp
     
 
-def TimeHasPassedFloat( timestamp ):
+def time_has_passed_float(timestamp):
     
-    return GetNowFloat() > timestamp
+    return get_now_float() > timestamp
     
 
-def TimeHasPassedMS( timestamp_ms ):
+def time_has_passed_ms(timestamp_ms):
     
     if timestamp_ms is None:
         
         return False
         
     
-    return GetNowMS() > timestamp_ms
+    return get_now_ms() > timestamp_ms
     
 
-def TimeHasPassedPrecise( precise_timestamp ):
+def time_has_passed_precise(precise_timestamp):
     
-    return GetNowPrecise() > precise_timestamp
-    
-
-def TimeUntil( timestamp ):
-    
-    return timestamp - GetNow()
+    return get_now_precise() > precise_timestamp
     
 
-def CalendarDeltaToDateTime( years : int, months : int, days : int, hours : int ) -> datetime.datetime:
+def time_until(timestamp):
+    
+    return timestamp - get_now()
+    
+
+def calendar_delta_to_date_time(years : int, months : int, days : int, hours : int) -> datetime.datetime:
     
     now = datetime.datetime.now()
     
@@ -232,12 +232,12 @@ def CalendarDeltaToDateTime( years : int, months : int, days : int, hours : int 
     return result
     
 
-def CalendarDeltaToRoughDateTimeTimeDelta( years : int, months : int, days : int, hours : int ) -> datetime.timedelta:
+def calendar_delta_to_rough_date_time_time_delta(years : int, months : int, days : int, hours : int) -> datetime.timedelta:
     
     return datetime.timedelta( days = days + ( months * ( 365.25 / 12 ) ) + ( years * 365.25 ), hours = hours )
     
 
-def TimeDeltaToPrettyTimeDelta( seconds: float, show_seconds = True, no_bigger_than_days = False ):
+def time_delta_to_pretty_time_delta(seconds: float, show_seconds = True, no_bigger_than_days = False):
     
     if seconds is None:
         
@@ -372,7 +372,7 @@ def TimeDeltaToPrettyTimeDelta( seconds: float, show_seconds = True, no_bigger_t
     return result
     
 
-def TimestampMSToDateTime( timestamp_ms, timezone = None ) -> datetime.datetime:
+def timestamp_ms_to_date_time(timestamp_ms, timezone = None) -> datetime.datetime:
     
     if timezone is None:
         
@@ -398,7 +398,7 @@ def TimestampMSToDateTime( timestamp_ms, timezone = None ) -> datetime.datetime:
     return dt
     
 
-def TimestampToDateTime( timestamp, timezone = None ) -> datetime.datetime:
+def timestamp_to_date_time(timestamp, timezone = None) -> datetime.datetime:
     
     if timezone is None:
         
@@ -424,7 +424,7 @@ def TimestampToDateTime( timestamp, timezone = None ) -> datetime.datetime:
     return dt
     
 
-def TimestampToPrettyExpires( timestamp ):
+def timestamp_to_pretty_expires(timestamp):
     
     if timestamp is None:
         
@@ -438,9 +438,9 @@ def TimestampToPrettyExpires( timestamp ):
     
     try:
         
-        time_delta_string = TimestampToPrettyTimeDelta( timestamp )
+        time_delta_string = timestamp_to_pretty_time_delta(timestamp)
         
-        if TimeHasPassed( timestamp ):
+        if time_has_passed(timestamp):
             
             return 'expired ' + time_delta_string
             
@@ -454,7 +454,7 @@ def TimestampToPrettyExpires( timestamp ):
         
     
 
-def MillisecondsDurationToPrettyTime( duration_ms: int | None, force_numbers = False ) -> str:
+def milliseconds_duration_to_pretty_time(duration_ms: int | None, force_numbers = False) -> str:
     
     # should this function just be merged into timedeltatoprettytimedelta or something?
     
@@ -514,7 +514,7 @@ def MillisecondsDurationToPrettyTime( duration_ms: int | None, force_numbers = F
     
     if seconds > 0:
         
-        detailed_seconds = seconds + SecondiseMSFloat( duration_ms )
+        detailed_seconds = seconds + secondise_ms_float(duration_ms)
         
         if int( detailed_seconds ) == detailed_seconds:
             
@@ -542,7 +542,7 @@ def MillisecondsDurationToPrettyTime( duration_ms: int | None, force_numbers = F
     return milliseconds_result
     
 
-def TimestampMSToPrettyTime( timestamp_ms: int | None, in_utc = False, include_24h_time = True, include_milliseconds = True ) -> str:
+def timestamp_ms_to_pretty_time(timestamp_ms: int | None, in_utc = False, include_24h_time = True, include_milliseconds = True) -> str:
     
     if timestamp_ms is None:
         
@@ -564,17 +564,17 @@ def TimestampMSToPrettyTime( timestamp_ms: int | None, in_utc = False, include_2
     
     try:
         
-        dt = TimestampMSToDateTime( timestamp_ms, timezone = timezone )
+        dt = timestamp_ms_to_date_time(timestamp_ms, timezone = timezone)
         
     except Exception as e:
         
         return 'unparseable ms time {}'.format( timestamp_ms )
         
     
-    return DateTimeToPrettyTime( dt, include_24h_time = include_24h_time, include_milliseconds = include_milliseconds )
+    return date_time_to_pretty_time(dt, include_24h_time = include_24h_time, include_milliseconds = include_milliseconds)
     
 
-def TimestampToPrettyTime( timestamp: float | None, in_utc = False, include_24h_time = True ) -> str:
+def timestamp_to_pretty_time(timestamp: float | None, in_utc = False, include_24h_time = True) -> str:
     
     if timestamp is None:
         
@@ -596,23 +596,23 @@ def TimestampToPrettyTime( timestamp: float | None, in_utc = False, include_24h_
     
     try:
         
-        dt = TimestampToDateTime( timestamp, timezone = timezone )
+        dt = timestamp_to_date_time(timestamp, timezone = timezone)
         
     except Exception as e:
         
         return 'unparseable time {}'.format( timestamp )
         
     
-    return DateTimeToPrettyTime( dt, include_24h_time = include_24h_time )
+    return date_time_to_pretty_time(dt, include_24h_time = include_24h_time)
     
 
 ALWAYS_SHOW_ISO_TIME_ON_DELTA_CALL = False
 
-def TimestampToPrettyTimeDelta( timestamp, just_now_string = 'now', just_now_threshold = 3, history_suffix = ' ago', show_seconds = True, no_prefix = False, reverse_iso_delta_setting = False, force_no_iso = False ) -> str:
+def timestamp_to_pretty_time_delta(timestamp, just_now_string ='now', just_now_threshold = 3, history_suffix =' ago', show_seconds = True, no_prefix = False, reverse_iso_delta_setting = False, force_no_iso = False) -> str:
     
     if not force_no_iso and ( ALWAYS_SHOW_ISO_TIME_ON_DELTA_CALL ^ reverse_iso_delta_setting ):
         
-        return TimestampToPrettyTime( timestamp )
+        return timestamp_to_pretty_time(timestamp)
         
     
     if timestamp is None:
@@ -627,16 +627,16 @@ def TimestampToPrettyTimeDelta( timestamp, just_now_string = 'now', just_now_thr
     
     try:
         
-        time_delta = abs( timestamp - GetNow() )
+        time_delta = abs(timestamp - get_now())
         
         if time_delta <= just_now_threshold:
             
             return just_now_string
             
         
-        time_delta_string = TimeDeltaToPrettyTimeDelta( time_delta, show_seconds = show_seconds )
+        time_delta_string = time_delta_to_pretty_time_delta(time_delta, show_seconds = show_seconds)
         
-        if TimeHasPassed( timestamp ):
+        if time_has_passed(timestamp):
             
             return '{}{}'.format( time_delta_string, history_suffix )
             
@@ -658,7 +658,7 @@ def TimestampToPrettyTimeDelta( timestamp, just_now_string = 'now', just_now_thr
         
     
 
-def ValueRangeToScanbarTimestampsMS( value_ms, range_ms ):
+def value_range_to_scanbar_timestamps_ms(value_ms, range_ms):
     
     value_ms = int( round( value_ms ) )
     

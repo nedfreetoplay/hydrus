@@ -103,7 +103,7 @@ class TestBandwidthManager( unittest.TestCase ):
         
         #
         
-        fast_forward = HydrusTime.GetNow() + 3600
+        fast_forward = HydrusTime.get_now() + 3600
         
         with mock.patch.object( HydrusTime, 'GetNow', return_value = fast_forward ):
             
@@ -1297,7 +1297,7 @@ class TestNetworkingJob( unittest.TestCase ):
         
         self.assertTrue( job.IsAsleep() )
         
-        five_secs_from_now = HydrusTime.GetNowFloat() + 5
+        five_secs_from_now = HydrusTime.get_now_float() + 5
         
         with mock.patch.object( HydrusTime, 'GetNowFloat', return_value = five_secs_from_now ):
             

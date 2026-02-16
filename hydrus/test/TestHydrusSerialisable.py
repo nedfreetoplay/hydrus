@@ -564,7 +564,7 @@ class TestSerialisables( unittest.TestCase ):
         
         tag_import_options = TagImportOptionsLegacy.TagImportOptionsLegacy(service_keys_to_service_tag_import_options = {HydrusData.generate_key() : service_tag_import_options})
         
-        no_work_until = HydrusTime.GetNow() - 86400 * 20
+        no_work_until = HydrusTime.get_now() - 86400 * 20
         
         sub.SetTuple( gug_key_and_name, checker_options, initial_file_limit, periodic_file_limit, paused, file_import_options, tag_import_options, no_work_until )
         

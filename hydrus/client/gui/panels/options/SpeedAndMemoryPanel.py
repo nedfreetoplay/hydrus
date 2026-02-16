@@ -153,10 +153,10 @@ class SpeedAndMemoryPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         self._ideal_tile_dimension.setValue( self._new_options.GetInteger( 'ideal_tile_dimension' ) )
         
-        self._gallery_page_status_update_time_minimum.SetValue( HydrusTime.SecondiseMSFloat( self._new_options.GetInteger( 'gallery_page_status_update_time_minimum_ms' ) ) )
+        self._gallery_page_status_update_time_minimum.SetValue(HydrusTime.secondise_ms_float(self._new_options.GetInteger('gallery_page_status_update_time_minimum_ms')))
         self._gallery_page_status_update_time_ratio_denominator.setValue( self._new_options.GetInteger( 'gallery_page_status_update_time_ratio_denominator' ) )
         
-        self._watcher_page_status_update_time_minimum.SetValue( HydrusTime.SecondiseMSFloat( self._new_options.GetInteger( 'watcher_page_status_update_time_minimum_ms' ) ) )
+        self._watcher_page_status_update_time_minimum.SetValue(HydrusTime.secondise_ms_float(self._new_options.GetInteger('watcher_page_status_update_time_minimum_ms')))
         self._watcher_page_status_update_time_ratio_denominator.setValue( self._new_options.GetInteger( 'watcher_page_status_update_time_ratio_denominator' ) )
         
         self._video_buffer_size.SetValue( self._new_options.GetInteger( 'video_buffer_size' ) )

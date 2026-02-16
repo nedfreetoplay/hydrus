@@ -75,7 +75,7 @@ class MultipleWatcherImport( HydrusSerialisable.SerialisableBase ):
         
         self._have_started = False
         
-        self._last_time_watchers_changed = HydrusTime.GetNowPrecise()
+        self._last_time_watchers_changed = HydrusTime.get_now_precise()
         
         self._last_serialisable_change_timestamp = 0
         
@@ -92,12 +92,12 @@ class MultipleWatcherImport( HydrusSerialisable.SerialisableBase ):
         
         self._watchers.append( watcher )
         
-        self._last_time_watchers_changed = HydrusTime.GetNowPrecise()
+        self._last_time_watchers_changed = HydrusTime.get_now_precise()
         
         watcher_key = watcher.GetWatcherKey()
         
         self._watcher_keys_to_watchers[ watcher_key ] = watcher
-        self._watcher_keys_to_added_timestamps[ watcher_key ] = HydrusTime.GetNow()
+        self._watcher_keys_to_added_timestamps[ watcher_key ] = HydrusTime.get_now()
         
     
     def _CleanAddedTimestamps( self ):
@@ -106,7 +106,7 @@ class MultipleWatcherImport( HydrusSerialisable.SerialisableBase ):
         
         for key in keys:
             
-            if HydrusTime.TimeHasPassed( self._watcher_keys_to_added_timestamps[ key ] + self.ADDED_TIMESTAMP_DURATION ):
+            if HydrusTime.time_has_passed(self._watcher_keys_to_added_timestamps[ key] + self.ADDED_TIMESTAMP_DURATION):
                 
                 del self._watcher_keys_to_added_timestamps[ key ]
                 
@@ -116,7 +116,7 @@ class MultipleWatcherImport( HydrusSerialisable.SerialisableBase ):
         
         for key in keys:
             
-            if HydrusTime.TimeHasPassed( self._watcher_keys_to_already_in_timestamps[ key ] + self.ADDED_TIMESTAMP_DURATION ):
+            if HydrusTime.time_has_passed(self._watcher_keys_to_already_in_timestamps[ key] + self.ADDED_TIMESTAMP_DURATION):
                 
                 del self._watcher_keys_to_already_in_timestamps[ key ]
                 
@@ -172,14 +172,14 @@ class MultipleWatcherImport( HydrusSerialisable.SerialisableBase ):
         
         self._watchers.remove( watcher )
         
-        self._last_time_watchers_changed = HydrusTime.GetNowPrecise()
+        self._last_time_watchers_changed = HydrusTime.get_now_precise()
         
         del self._watcher_keys_to_watchers[ watcher_key ]
         
     
     def _SerialisableChangeMade( self ):
         
-        self._last_serialisable_change_timestamp = HydrusTime.GetNow()
+        self._last_serialisable_change_timestamp = HydrusTime.get_now()
         
     
     def _SetDirty( self ):
@@ -259,7 +259,7 @@ class MultipleWatcherImport( HydrusSerialisable.SerialisableBase ):
                     
                     watcher_key = watcher.GetWatcherKey()
                     
-                    self._watcher_keys_to_already_in_timestamps[ watcher_key ] = HydrusTime.GetNow()
+                    self._watcher_keys_to_already_in_timestamps[ watcher_key ] = HydrusTime.get_now()
                     
                     return None
                     
@@ -481,7 +481,7 @@ class MultipleWatcherImport( HydrusSerialisable.SerialisableBase ):
                 
                 added_timestamp = self._watcher_keys_to_added_timestamps[ watcher_key ]
                 
-                if HydrusTime.TimeHasPassed( added_timestamp + self.ADDED_TIMESTAMP_DURATION ):
+                if HydrusTime.time_has_passed(added_timestamp + self.ADDED_TIMESTAMP_DURATION):
                     
                     self._CleanAddedTimestamps()
                     
@@ -495,7 +495,7 @@ class MultipleWatcherImport( HydrusSerialisable.SerialisableBase ):
                 
                 already_in_timestamp = self._watcher_keys_to_already_in_timestamps[ watcher_key ]
                 
-                if HydrusTime.TimeHasPassed( already_in_timestamp + self.ADDED_TIMESTAMP_DURATION ):
+                if HydrusTime.time_has_passed(already_in_timestamp + self.ADDED_TIMESTAMP_DURATION):
                     
                     self._CleanAddedTimestamps()
                     
@@ -672,9 +672,9 @@ class MultipleWatcherImport( HydrusSerialisable.SerialisableBase ):
                 
             
         
-        if HydrusTime.TimeHasPassed( self._next_pub_value_check_time ):
+        if HydrusTime.time_has_passed(self._next_pub_value_check_time):
             
-            self._next_pub_value_check_time = HydrusTime.GetNow() + 5
+            self._next_pub_value_check_time = HydrusTime.get_now() + 5
             
             current_value_range = self.GetValueRange()
             
@@ -744,7 +744,7 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
         self._no_work_until = 0
         self._no_work_until_reason = ''
         
-        self._creation_time = HydrusTime.GetNow()
+        self._creation_time = HydrusTime.get_now()
         
         self._file_velocity_status = ''
         self._files_status = ''
@@ -880,7 +880,7 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
                 self._check_now = False
                 
             
-            self._last_check_time = HydrusTime.GetNow()
+            self._last_check_time = HydrusTime.get_now()
             
             self._UpdateFileVelocityStatus()
             
@@ -903,7 +903,7 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
     
     def _DelayWork( self, time_delta, reason ):
         
-        self._no_work_until = HydrusTime.GetNow() + time_delta
+        self._no_work_until = HydrusTime.get_now() + time_delta
         self._no_work_until_reason = HydrusText.get_first_line(reason)
         
     
@@ -1010,7 +1010,7 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
     
     def _SerialisableChangeMade( self ):
         
-        self._last_serialisable_change_timestamp = HydrusTime.GetNow()
+        self._last_serialisable_change_timestamp = HydrusTime.get_now()
         
     
     def _UpdateFileVelocityStatus( self ):
@@ -1026,7 +1026,7 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
             
         else:
             
-            if not HydrusTime.TimeHasPassed( self._no_work_until ):
+            if not HydrusTime.time_has_passed(self._no_work_until):
                 
                 self._next_check_time = self._no_work_until + 1
                 
@@ -1096,7 +1096,7 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
             
             ( url, serialisable_file_seed_cache, urls_to_filenames, urls_to_md5_base64, serialisable_checker_options, serialisable_file_import_options, serialisable_tag_import_options, last_check_time, files_paused, checking_paused, checking_status, subject, no_work_until, no_work_until_reason ) = old_serialisable_info
             
-            creation_time = HydrusTime.GetNow()
+            creation_time = HydrusTime.get_now()
             
             new_serialisable_info = ( url, serialisable_file_seed_cache, urls_to_filenames, urls_to_md5_base64, serialisable_checker_options, serialisable_file_import_options, serialisable_tag_import_options, last_check_time, files_paused, checking_paused, checking_status, subject, no_work_until, no_work_until_reason, creation_time )
             
@@ -1439,20 +1439,20 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
             
             files_work_to_do = self._file_seed_cache.WorkToDo()
             
-            checker_go = HydrusTime.TimeHasPassed( self._next_check_time ) and not self._checking_paused
+            checker_go = HydrusTime.time_has_passed(self._next_check_time) and not self._checking_paused
             files_go = files_work_to_do and not self._files_paused
             
             work_is_going_on = self._checker_working_lock.locked() or self._files_working_lock.locked()
             
-            if not HydrusTime.TimeHasPassed( self._no_work_until ):
+            if not HydrusTime.time_has_passed(self._no_work_until):
                 
                 if self._next_check_time is None:
                     
-                    text = '{} - working again {}'.format( self._no_work_until_reason, HydrusTime.TimestampToPrettyTimeDelta( self._no_work_until ) )
+                    text = '{} - working again {}'.format(self._no_work_until_reason, HydrusTime.timestamp_to_pretty_time_delta(self._no_work_until))
                     
                 else:
                     
-                    text = '{} - next check {}'.format( self._no_work_until_reason, HydrusTime.TimestampToPrettyTimeDelta( max( self._no_work_until, self._next_check_time ) ) )
+                    text = '{} - next check {}'.format(self._no_work_until_reason, HydrusTime.timestamp_to_pretty_time_delta(max(self._no_work_until, self._next_check_time)))
                     
                 
                 return ( ClientImporting.DOWNLOADER_SIMPLE_STATUS_DEFERRED, text )
@@ -1491,13 +1491,13 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
                     
                 else:
                     
-                    if self._next_check_time is None or HydrusTime.TimeHasPassed( self._next_check_time ):
+                    if self._next_check_time is None or HydrusTime.time_has_passed(self._next_check_time):
                         
                         return ( ClientImporting.DOWNLOADER_SIMPLE_STATUS_PENDING, 'pending' )
                         
                     else:
                         
-                        return ( ClientImporting.DOWNLOADER_SIMPLE_STATUS_DEFERRED, HydrusTime.TimestampToPrettyTimeDelta( self._next_check_time, no_prefix = True ) )
+                        return ( ClientImporting.DOWNLOADER_SIMPLE_STATUS_DEFERRED, HydrusTime.timestamp_to_pretty_time_delta(self._next_check_time, no_prefix = True))
                         
                     
                 
@@ -1508,15 +1508,15 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
         
         with self._lock:
             
-            if not HydrusTime.TimeHasPassed( self._no_work_until ):
+            if not HydrusTime.time_has_passed(self._no_work_until):
                 
                 if self._next_check_time is None:
                     
-                    no_work_text = '{} - working again {}'.format( self._no_work_until_reason, HydrusTime.TimestampToPrettyTimeDelta( self._no_work_until ) )
+                    no_work_text = '{} - working again {}'.format(self._no_work_until_reason, HydrusTime.timestamp_to_pretty_time_delta(self._no_work_until))
                     
                 else:
                     
-                    no_work_text = '{} - next check {}'.format( self._no_work_until_reason, HydrusTime.TimestampToPrettyTimeDelta( max( self._no_work_until, self._next_check_time ) ) )
+                    no_work_text = '{} - next check {}'.format(self._no_work_until_reason, HydrusTime.timestamp_to_pretty_time_delta(max(self._no_work_until, self._next_check_time)))
                     
                 
                 files_status = no_work_text
@@ -1526,7 +1526,7 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
                 
                 files_work_to_do = self._file_seed_cache.WorkToDo()
                 
-                checker_go = HydrusTime.TimeHasPassed( self._next_check_time ) and not self._checking_paused
+                checker_go = HydrusTime.time_has_passed(self._next_check_time) and not self._checking_paused
                 files_go = files_work_to_do and not self._files_paused
                 
                 if checker_go and not self._checker_working_lock.locked() and self._checker_repeating_job is not None and self._checker_repeating_job.WaitingOnWorkSlot():
@@ -1963,7 +1963,7 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
                 raise HydrusExceptions.VetoException( 'URL DEAD' )
                 
             
-            check_due = HydrusTime.TimeHasPassed( self._next_check_time )
+            check_due = HydrusTime.time_has_passed(self._next_check_time)
             
             if not check_due:
                 

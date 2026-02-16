@@ -117,7 +117,7 @@ class FileInfoManager( object ):
             
             try:
                 
-                return self.num_frames / HydrusTime.SecondiseMSFloat( self.duration_ms )
+                return self.num_frames / HydrusTime.secondise_ms_float(self.duration_ms)
                 
             except Exception as e:
                 
@@ -642,10 +642,10 @@ class FileViewingStatsManager( object ):
             
         else:
             
-            last_viewed_string = 'last {}'.format( HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( max( last_viewed_times_ms ) ) ) )
+            last_viewed_string = 'last {}'.format(HydrusTime.timestamp_to_pretty_time_delta(HydrusTime.secondise_ms(max(last_viewed_times_ms))))
             
         
-        return 'viewed {} times{}, totalling {}, {}'.format(HydrusNumbers.to_human_int(views_total), canvas_type_string, HydrusTime.TimeDeltaToPrettyTimeDelta(HydrusTime.SecondiseMSFloat(viewtime_ms_total)), last_viewed_string)
+        return 'viewed {} times{}, totalling {}, {}'.format(HydrusNumbers.to_human_int(views_total), canvas_type_string, HydrusTime.time_delta_to_pretty_time_delta(HydrusTime.secondise_ms_float(viewtime_ms_total)), last_viewed_string)
         
     
     def GetTimesManager( self ) -> TimesManager:
@@ -793,7 +793,7 @@ class LocationsManager( object ):
         
         if forced_import_time_ms is None:
             
-            import_timestamp_ms = HydrusTime.GetNowMS()
+            import_timestamp_ms = HydrusTime.get_now_ms()
             
         else:
             
@@ -894,7 +894,7 @@ class LocationsManager( object ):
         
         if make_a_delete_record:
             
-            self._times_manager.SetDeletedTimestampMS( service_key, HydrusTime.GetNowMS() )
+            self._times_manager.SetDeletedTimestampMS(service_key, HydrusTime.get_now_ms())
             self._times_manager.SetPreviouslyImportedTimestampMS( service_key, previously_imported_timestamp_ms )
             
             self._deleted.add( service_key )
@@ -1183,7 +1183,7 @@ class LocationsManager( object ):
                     
                     self.inbox = False
                     
-                    self._times_manager.SetArchivedTimestampMS( HydrusTime.GetNowMS() )
+                    self._times_manager.SetArchivedTimestampMS(HydrusTime.get_now_ms())
                     
                 
             elif action == HC.CONTENT_UPDATE_INBOX:

@@ -170,7 +170,7 @@ class DomainStatus( HydrusSerialisable.SerialisableBase ):
         
         with self._lock:
             
-            dead_time = HydrusTime.GetNowMS() - HydrusTime.MillisecondiseS( time_delta_s )
+            dead_time = HydrusTime.get_now_ms() - HydrusTime.millisecondise_s(time_delta_s)
             
             for key in list( self._domain_events_ms.keys() ):
                 
@@ -204,7 +204,7 @@ class DomainStatus( HydrusSerialisable.SerialisableBase ):
             
             if event_type in self._domain_events_ms:
                 
-                dead_time = HydrusTime.GetNowMS() - HydrusTime.MillisecondiseS( time_delta_s )
+                dead_time = HydrusTime.get_now_ms() - HydrusTime.millisecondise_s(time_delta_s)
                 
                 return len( [ 1 for event_ms in self._domain_events_ms[ event_type ] if event_ms > dead_time ] )
                 
@@ -224,7 +224,7 @@ class DomainStatus( HydrusSerialisable.SerialisableBase ):
                 self._domain_events_ms[ event_type ] = []
                 
             
-            self._domain_events_ms[ event_type ].append( HydrusTime.GetNowMS() )
+            self._domain_events_ms[ event_type ].append(HydrusTime.get_now_ms())
             
         
     

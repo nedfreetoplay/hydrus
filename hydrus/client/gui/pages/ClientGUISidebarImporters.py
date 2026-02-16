@@ -538,7 +538,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
         
         added = gallery_import.GetCreationTime()
         
-        pretty_added = HydrusTime.TimestampToPrettyTimeDelta( added, show_seconds = False )
+        pretty_added = HydrusTime.timestamp_to_pretty_time_delta(added, show_seconds = False)
         
         return ( pretty_query_text, pretty_source, pretty_files_paused, pretty_gallery_paused, pretty_status, pretty_progress, pretty_added )
         
@@ -723,7 +723,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
                 
                 all_media_results = []
                 
-                start_time = HydrusTime.GetNowFloat()
+                start_time = HydrusTime.get_now_float()
                 
                 hashes = new_highlight.GetPresentedHashes()
                 
@@ -745,7 +745,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
                     job_status.SetStatusText( 'Loading files: {}'.format(HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do)))
                     job_status.SetGauge( num_done, num_to_do )
                     
-                    if not have_published_job_status and HydrusTime.TimeHasPassedFloat( start_time + 2 ):
+                    if not have_published_job_status and HydrusTime.time_has_passed_float(start_time + 2):
                         
                         CG.client_controller.pub( 'message', job_status )
                         
@@ -1245,11 +1245,11 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
         # TODO: Surely this can be optimised, especially with our new multi-column list tech
         # perhaps break any sort to a ten second timer or something
         
-        if HydrusTime.TimeHasPassedFloat( self._next_update_time ):
+        if HydrusTime.time_has_passed_float(self._next_update_time):
             
             num_items = len( self._gallery_importers_listctrl.GetData() )
             
-            min_time = HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'gallery_page_status_update_time_minimum_ms' ) )
+            min_time = HydrusTime.secondise_ms_float(CG.client_controller.new_options.GetInteger('gallery_page_status_update_time_minimum_ms'))
             denominator = CG.client_controller.new_options.GetInteger( 'gallery_page_status_update_time_ratio_denominator' )
             
             try:
@@ -1261,7 +1261,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
                 update_period = 1.0
                 
             
-            self._next_update_time = HydrusTime.GetNowFloat() + update_period
+            self._next_update_time = HydrusTime.get_now_float() + update_period
             
             #
             
@@ -1692,7 +1692,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
         
         added = watcher.GetCreationTime()
         
-        pretty_added = HydrusTime.TimestampToPrettyTimeDelta( added, show_seconds = False )
+        pretty_added = HydrusTime.timestamp_to_pretty_time_delta(added, show_seconds = False)
         
         ( status_enum, pretty_watcher_status ) = self._multiple_watcher_import.GetWatcherSimpleStatus( watcher )
         
@@ -1909,7 +1909,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
             
             def work_callable():
                 
-                start_time = HydrusTime.GetNowFloat()
+                start_time = HydrusTime.get_now_float()
                 
                 all_media_results = []
                 
@@ -1933,7 +1933,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                     job_status.SetStatusText( 'Loading files: {}'.format(HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do)))
                     job_status.SetGauge( num_done, num_to_do )
                     
-                    if not have_published_job_status and HydrusTime.TimeHasPassedFloat( start_time + 2 ):
+                    if not have_published_job_status and HydrusTime.time_has_passed_float(start_time + 2):
                         
                         CG.client_controller.pub( 'message', job_status )
                         
@@ -2424,11 +2424,11 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
         # TODO: Surely this can be optimised, especially with our new multi-column list tech
         # perhaps break any sort to a ten second timer or something
         
-        if HydrusTime.TimeHasPassedFloat( self._next_update_time ):
+        if HydrusTime.time_has_passed_float(self._next_update_time):
             
             num_items = len( self._watchers_listctrl.GetData() )
             
-            min_time = HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'watcher_page_status_update_time_minimum_ms' ) )
+            min_time = HydrusTime.secondise_ms_float(CG.client_controller.new_options.GetInteger('watcher_page_status_update_time_minimum_ms'))
             denominator = CG.client_controller.new_options.GetInteger( 'watcher_page_status_update_time_ratio_denominator' )
             
             try:
@@ -2440,7 +2440,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                 update_period = 1.0
                 
             
-            self._next_update_time = HydrusTime.GetNowFloat() + update_period
+            self._next_update_time = HydrusTime.get_now_float() + update_period
             
             #
             

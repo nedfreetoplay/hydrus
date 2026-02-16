@@ -1327,7 +1327,7 @@ class TestClientDB( unittest.TestCase ):
             
             mr_inbox = mr_locations_manager.inbox
             
-            now = HydrusTime.GetNow()
+            now = HydrusTime.get_now()
             
             self.assertEqual( mr_hash, hash )
             self.assertEqual( mr_inbox, True )
@@ -1594,7 +1594,7 @@ class TestClientDB( unittest.TestCase ):
         
         mr_inbox = mr_locations_manager.inbox
         
-        now = HydrusTime.GetNow()
+        now = HydrusTime.get_now()
         
         self.assertEqual( mr_hash, hash )
         self.assertEqual( mr_inbox, True )
@@ -1616,7 +1616,7 @@ class TestClientDB( unittest.TestCase ):
         
         mr_inbox = mr_locations_manager.inbox
         
-        now = HydrusTime.GetNow()
+        now = HydrusTime.get_now()
         
         self.assertEqual( mr_hash, hash )
         self.assertEqual( mr_inbox, True )
@@ -1662,7 +1662,7 @@ class TestClientDB( unittest.TestCase ):
         
         media_result = self._read( 'media_result', bytes.fromhex( swf_hash_hex ) )
         
-        earliest_import_timestamp = HydrusTime.SecondiseMS( media_result.GetLocationsManager().GetTimesManager().GetImportedTimestampMS( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
+        earliest_import_timestamp = HydrusTime.secondise_ms(media_result.GetLocationsManager().GetTimesManager().GetImportedTimestampMS(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY))
         
         result = self._read( 'boned_stats' )
         

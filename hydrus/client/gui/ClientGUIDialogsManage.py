@@ -751,7 +751,7 @@ class DialogManageUPnP( ClientGUIDialogs.Dialog ):
             
         else:
             
-            pretty_duration = HydrusTime.TimeDeltaToPrettyTimeDelta( duration )
+            pretty_duration = HydrusTime.time_delta_to_pretty_time_delta(duration)
             
         
         return ( description, internal_ip, str( internal_port ), str( external_port ), protocol, pretty_duration )

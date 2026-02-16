@@ -329,8 +329,8 @@ class EditGallerySeedLogPanel( ClientGUIScrolledPanels.EditPanel ):
         
         pretty_url = ClientNetworkingFunctions.ConvertURLToHumanString( url )
         pretty_status = CC.status_string_lookup[ status ] if status != CC.STATUS_UNKNOWN else ''
-        pretty_added = HydrusTime.TimestampToPrettyTimeDelta( added )
-        pretty_modified = HydrusTime.TimestampToPrettyTimeDelta( modified )
+        pretty_added = HydrusTime.timestamp_to_pretty_time_delta(added)
+        pretty_modified = HydrusTime.timestamp_to_pretty_time_delta(modified)
         
         pretty_note = HydrusText.get_first_line(note)
         

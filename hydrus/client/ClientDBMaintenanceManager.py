@@ -77,15 +77,15 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         if self._is_working_hard:
             
-            return HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'deferred_table_delete_work_time_ms_work_hard' ) )
+            return HydrusTime.secondise_ms_float(CG.client_controller.new_options.GetInteger('deferred_table_delete_work_time_ms_work_hard'))
             
         elif CG.client_controller.currently_idle():
             
-            return HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'deferred_table_delete_work_time_ms_idle' ) )
+            return HydrusTime.secondise_ms_float(CG.client_controller.new_options.GetInteger('deferred_table_delete_work_time_ms_idle'))
             
         else:
             
-            return HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'deferred_table_delete_work_time_ms_normal' ) )
+            return HydrusTime.secondise_ms_float(CG.client_controller.new_options.GetInteger('deferred_table_delete_work_time_ms_normal'))
             
         
     
@@ -135,9 +135,9 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             if able_to_work:
                 
-                time_to_stop = HydrusTime.GetNowFloat() + expected_work_period
+                time_to_stop = HydrusTime.get_now_float() + expected_work_period
                 
-                start_time = HydrusTime.GetNowFloat()
+                start_time = HydrusTime.get_now_float()
                 
                 try:
                     
@@ -160,7 +160,7 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     self._controller.pub( 'notify_deferred_delete_database_maintenance_work_complete' )
                     
                 
-                actual_work_period = HydrusTime.GetNowFloat() - start_time
+                actual_work_period = HydrusTime.get_now_float() - start_time
                 
                 with self._lock:
                     

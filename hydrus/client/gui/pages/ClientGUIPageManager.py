@@ -234,7 +234,7 @@ class PageManager( HydrusSerialisable.SerialisableBase ):
     
     def _SerialisableChangeMade( self ):
         
-        self._last_serialisable_change_timestamp = HydrusTime.GetNow()
+        self._last_serialisable_change_timestamp = HydrusTime.get_now()
         
     
     def _update_serialisable_info(self, version, old_serialisable_info):
