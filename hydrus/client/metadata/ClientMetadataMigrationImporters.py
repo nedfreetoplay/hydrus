@@ -126,7 +126,7 @@ class SingleFileMetadataImporterMediaNotes( SingleFileMetadataImporterMedia, Hyd
         
         if self._string_processor.MakesChanges():
             
-            full_munge_text = ', applying {}'.format( self._string_processor.ToString() )
+            full_munge_text = ', applying {}'.format(self._string_processor.to_string())
             
         else:
             
@@ -271,7 +271,7 @@ class SingleFileMetadataImporterMediaTags( SingleFileMetadataImporterMedia, Hydr
         
         if self._string_processor.MakesChanges():
             
-            full_munge_text = ', applying {}'.format( self._string_processor.ToString() )
+            full_munge_text = ', applying {}'.format(self._string_processor.to_string())
             
         else:
             
@@ -360,7 +360,7 @@ class SingleFileMetadataImporterMediaTimestamps( SingleFileMetadataImporterMedia
         
         if self._string_processor.MakesChanges():
             
-            full_munge_text = ', applying {}'.format( self._string_processor.ToString() )
+            full_munge_text = ', applying {}'.format(self._string_processor.to_string())
             
         else:
             
@@ -440,7 +440,7 @@ class SingleFileMetadataImporterMediaURLs( SingleFileMetadataImporterMedia, Hydr
         
         if self._string_processor.MakesChanges():
             
-            full_munge_text = ', applying {}'.format( self._string_processor.ToString() )
+            full_munge_text = ', applying {}'.format(self._string_processor.to_string())
             
         else:
             
@@ -635,7 +635,7 @@ class SingleFileMetadataImporterJSON( SingleFileMetadataImporterSidecar, HydrusS
         
         if self._string_processor.MakesChanges():
             
-            full_munge_text = ', applying {}'.format( self._string_processor.ToString() )
+            full_munge_text = ', applying {}'.format(self._string_processor.to_string())
             
         else:
             
@@ -800,7 +800,7 @@ class SingleFileMetadataImporterTXT( SingleFileMetadataImporterSidecar, HydrusSe
         
         if self._string_processor.MakesChanges():
             
-            full_munge_text = ', applying {}'.format( self._string_processor.ToString() )
+            full_munge_text = ', applying {}'.format(self._string_processor.to_string())
             
         else:
             

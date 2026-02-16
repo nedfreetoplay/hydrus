@@ -263,7 +263,7 @@ class ShortcutAwareToolTipMixin( object ):
                 
                 shortcuts = names_to_shortcuts[ name ]
                 
-                shortcut_strings = sorted( ( shortcut.ToString() for shortcut in shortcuts ) )
+                shortcut_strings = sorted((shortcut.to_string() for shortcut in shortcuts))
                 
                 if name in ClientGUIShortcuts.shortcut_names_to_pretty_names:
                     

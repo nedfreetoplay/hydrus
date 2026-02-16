@@ -311,7 +311,7 @@ class EditFileTimestampsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUISc
         
         ( hashes, datetime_value_range, user_has_edited ) = self._domain_modified_list_ctrl_data_dict[ domain ]
         
-        pretty_timestamp = datetime_value_range.ToString()
+        pretty_timestamp = datetime_value_range.to_string()
         
         display_tuple = ( domain, pretty_timestamp )
         
@@ -345,7 +345,7 @@ class EditFileTimestampsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUISc
             
         
         pretty_timestamp_type = HC.timestamp_type_str_lookup[ timestamp_type ]
-        pretty_timestamp = datetime_value_range.ToString()
+        pretty_timestamp = datetime_value_range.to_string()
         
         display_tuple = ( pretty_name, pretty_timestamp_type, pretty_timestamp )
         

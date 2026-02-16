@@ -119,7 +119,7 @@ def FilterAndConvertLabelPredicates( predicates: collections.abc.Collection[ Cli
         
         predicate = predicate.GetCountlessCopy()
         
-        predicate_type = predicate.GetType()
+        predicate_type = predicate.get_type()
         
         if predicate_type in ( ClientSearchPredicate.PREDICATE_TYPE_LABEL, ClientSearchPredicate.PREDICATE_TYPE_PARENT ):
             

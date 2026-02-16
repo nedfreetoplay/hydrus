@@ -175,22 +175,22 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
     
     def DeleteJSONDump( self, dump_type ):
         
-        self._Execute( 'DELETE FROM json_dumps WHERE dump_type = ?;', ( dump_type, ) )
+        self._execute('DELETE FROM json_dumps WHERE dump_type = ?;', (dump_type,))
         
     
     def DeleteJSONDumpNamed( self, dump_type, dump_name = None, timestamp_ms = None ):
         
         if dump_name is None:
             
-            self._Execute( 'DELETE FROM json_dumps_named WHERE dump_type = ?;', ( dump_type, ) )
+            self._execute('DELETE FROM json_dumps_named WHERE dump_type = ?;', (dump_type,))
             
         elif timestamp_ms is None:
             
-            self._Execute( 'DELETE FROM json_dumps_named WHERE dump_type = ? AND dump_name = ?;', ( dump_type, dump_name ) )
+            self._execute('DELETE FROM json_dumps_named WHERE dump_type = ? AND dump_name = ?;', (dump_type, dump_name))
             
         else:
             
-            self._Execute( 'DELETE FROM json_dumps_named WHERE dump_type = ? AND dump_name = ? AND timestamp_ms = ?;', ( dump_type, dump_name, timestamp_ms ) )
+            self._execute('DELETE FROM json_dumps_named WHERE dump_type = ? AND dump_name = ? AND timestamp_ms = ?;', (dump_type, dump_name, timestamp_ms))
             
         
     
@@ -199,7 +199,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
         all_expected_hashes = set()
         
         # not the GetJSONDumpNamesToBackupTimestampsMS call, which excludes the latest save!
-        names_and_timestamps_ms = self._Execute( 'SELECT dump_name, timestamp_ms FROM json_dumps_named WHERE dump_type = ?;', ( HydrusSerialisable.SERIALISABLE_TYPE_GUI_SESSION_CONTAINER, ) ).fetchall()
+        names_and_timestamps_ms = self._execute('SELECT dump_name, timestamp_ms FROM json_dumps_named WHERE dump_type = ?;', (HydrusSerialisable.SERIALISABLE_TYPE_GUI_SESSION_CONTAINER,)).fetchall()
         
         for ( name, timestamp_ms ) in names_and_timestamps_ms:
             
@@ -220,7 +220,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
         
         for hash in hashes:
             
-            result = self._Execute( 'SELECT version, dump_type, dump FROM json_dumps_hashed WHERE hash = ?;', ( sqlite3.Binary( hash ), ) ).fetchone()
+            result = self._execute('SELECT version, dump_type, dump FROM json_dumps_hashed WHERE hash = ?;', (sqlite3.Binary(hash),)).fetchone()
             
             if result is None:
                 
@@ -257,9 +257,9 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 
             except Exception as e:
                 
-                self._Execute( 'DELETE FROM json_dumps_hashed WHERE hash = ?;', ( sqlite3.Binary( hash ), ) )
+                self._execute('DELETE FROM json_dumps_hashed WHERE hash = ?;', (sqlite3.Binary(hash),))
                 
-                self._cursor_transaction_wrapper.CommitAndBegin()
+                self._cursor_transaction_wrapper.commit_and_begin()
                 
                 ExportBrokenHashedJSONDump( self._db_dir, dump, 'hash {} dump_type {}'.format( hash.hex(), dump_type ) )
                 
@@ -309,7 +309,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
     
     def GetJSONDump( self, dump_type ) -> typing.Any:
         
-        result = self._Execute( 'SELECT version, dump FROM json_dumps WHERE dump_type = ?;', ( dump_type, ) ).fetchone()
+        result = self._execute('SELECT version, dump FROM json_dumps WHERE dump_type = ?;', (dump_type,)).fetchone()
         
         if result is None:
             
@@ -330,9 +330,9 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 
             except Exception as e:
                 
-                self._Execute( 'DELETE FROM json_dumps WHERE dump_type = ?;', ( dump_type, ) )
+                self._execute('DELETE FROM json_dumps WHERE dump_type = ?;', (dump_type,))
                 
-                self._cursor_transaction_wrapper.CommitAndBegin()
+                self._cursor_transaction_wrapper.commit_and_begin()
                 
                 DealWithBrokenJSONDump( self._db_dir, dump, ( dump_type, version ), 'dump_type {} version {}'.format( dump_type, version ) )
                 
@@ -360,7 +360,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
         
         if dump_name is None:
             
-            results = self._Execute( 'SELECT dump_name, version, dump, timestamp_ms FROM json_dumps_named WHERE dump_type = ?;', ( dump_type, ) ).fetchall()
+            results = self._execute('SELECT dump_name, version, dump, timestamp_ms FROM json_dumps_named WHERE dump_type = ?;', (dump_type,)).fetchall()
             
             objs = []
             
@@ -379,9 +379,9 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                     
                 except Exception as e:
                     
-                    self._Execute( 'DELETE FROM json_dumps_named WHERE dump_type = ? AND dump_name = ? AND timestamp_ms = ?;', ( dump_type, dump_name, object_timestamp_ms ) )
+                    self._execute('DELETE FROM json_dumps_named WHERE dump_type = ? AND dump_name = ? AND timestamp_ms = ?;', (dump_type, dump_name, object_timestamp_ms))
                     
-                    self._cursor_transaction_wrapper.CommitAndBegin()
+                    self._cursor_transaction_wrapper.commit_and_begin()
                     
                     DealWithBrokenJSONDump( self._db_dir, dump, ( dump_type, dump_name, version, object_timestamp_ms ), 'dump_type {} dump_name {} version {} timestamp_ms {}'.format( dump_type, dump_name[:10], version, object_timestamp_ms ) )
                     
@@ -393,11 +393,11 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
             
             if timestamp_ms is None:
                 
-                result = self._Execute( 'SELECT version, dump, timestamp_ms FROM json_dumps_named WHERE dump_type = ? AND dump_name = ? ORDER BY timestamp_ms DESC;', ( dump_type, dump_name ) ).fetchone()
+                result = self._execute('SELECT version, dump, timestamp_ms FROM json_dumps_named WHERE dump_type = ? AND dump_name = ? ORDER BY timestamp_ms DESC;', (dump_type, dump_name)).fetchone()
                 
             else:
                 
-                result = self._Execute( 'SELECT version, dump, timestamp_ms FROM json_dumps_named WHERE dump_type = ? AND dump_name = ? AND timestamp_ms = ?;', ( dump_type, dump_name, timestamp_ms ) ).fetchone()
+                result = self._execute('SELECT version, dump, timestamp_ms FROM json_dumps_named WHERE dump_type = ? AND dump_name = ? AND timestamp_ms = ?;', (dump_type, dump_name, timestamp_ms)).fetchone()
                 
             
             if result is None:
@@ -418,9 +418,9 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 
             except Exception as e:
                 
-                self._Execute( 'DELETE FROM json_dumps_named WHERE dump_type = ? AND dump_name = ? AND timestamp_ms = ?;', ( dump_type, dump_name, object_timestamp_ms ) )
+                self._execute('DELETE FROM json_dumps_named WHERE dump_type = ? AND dump_name = ? AND timestamp_ms = ?;', (dump_type, dump_name, object_timestamp_ms))
                 
-                self._cursor_transaction_wrapper.CommitAndBegin()
+                self._cursor_transaction_wrapper.commit_and_begin()
                 
                 DealWithBrokenJSONDump( self._db_dir, dump, ( dump_type, dump_name, version, object_timestamp_ms ), 'dump_type {} dump_name {} version {} timestamp_ms {}'.format( dump_type, dump_name[:10], version, object_timestamp_ms ) )
                 
@@ -431,14 +431,14 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
     
     def GetJSONDumpNames( self, dump_type ):
         
-        names = [ name for ( name, ) in self._Execute( 'SELECT DISTINCT dump_name FROM json_dumps_named WHERE dump_type = ?;', ( dump_type, ) ) ]
+        names = [name for ( name, ) in self._execute('SELECT DISTINCT dump_name FROM json_dumps_named WHERE dump_type = ?;', (dump_type,))]
         
         return names
         
     
     def GetJSONDumpNamesToBackupTimestampsMS( self, dump_type ):
         
-        names_to_backup_timestamps_ms = HydrusData.build_key_to_list_dict(self._Execute('SELECT dump_name, timestamp_ms FROM json_dumps_named WHERE dump_type = ? ORDER BY timestamp_ms ASC;', (dump_type,)))
+        names_to_backup_timestamps_ms = HydrusData.build_key_to_list_dict(self._execute('SELECT dump_name, timestamp_ms FROM json_dumps_named WHERE dump_type = ? ORDER BY timestamp_ms ASC;', (dump_type,)))
         
         for ( name, timestamp_ms_list ) in list( names_to_backup_timestamps_ms.items() ):
             
@@ -455,7 +455,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
     
     def GetJSONSimple( self, name ):
         
-        result = self._Execute( 'SELECT dump FROM json_dict WHERE name = ?;', ( name, ) ).fetchone()
+        result = self._execute('SELECT dump FROM json_dict WHERE name = ?;', (name,)).fetchone()
         
         if result is None:
             
@@ -481,7 +481,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
     
     def HaveHashedJSONDump( self, hash ):
         
-        result = self._Execute( 'SELECT 1 FROM json_dumps_hashed WHERE hash = ?;', ( sqlite3.Binary( hash ), ) ).fetchone()
+        result = self._execute('SELECT 1 FROM json_dumps_hashed WHERE hash = ?;', (sqlite3.Binary(hash),)).fetchone()
         
         return result is not None
         
@@ -513,13 +513,13 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
         
         all_expected_hashes = self.GetAllExpectedHashedJSONHashes()
         
-        all_stored_hashes = self._STS( self._Execute( 'SELECT hash FROM json_dumps_hashed;' ) )
+        all_stored_hashes = self._sts(self._execute('SELECT hash FROM json_dumps_hashed;'))
         
         all_deletee_hashes = all_stored_hashes.difference( all_expected_hashes )
         
         if len( all_deletee_hashes ) > 0:
             
-            self._ExecuteMany( 'DELETE FROM json_dumps_hashed WHERE hash = ?;', ( ( sqlite3.Binary( hash ), ) for hash in all_deletee_hashes ) )
+            self._execute_many('DELETE FROM json_dumps_hashed WHERE hash = ?;', ((sqlite3.Binary(hash),) for hash in all_deletee_hashes))
             
         
         maintenance_tracker.NotifyHashedSerialisableMaintenanceDone()
@@ -572,7 +572,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
             
             try:
                 
-                self._Execute( 'INSERT INTO json_dumps_hashed ( hash, dump_type, version, dump ) VALUES ( ?, ?, ?, ? );', ( sqlite3.Binary( hash ), dump_type, version, dump_buffer ) )
+                self._execute('INSERT INTO json_dumps_hashed ( hash, dump_type, version, dump ) VALUES ( ?, ?, ?, ? );', (sqlite3.Binary(hash), dump_type, version, dump_buffer))
                 
             except Exception as e:
                 
@@ -641,7 +641,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 
                 if store_backups:
                     
-                    existing_timestamps_ms = sorted( self._STI( self._Execute( 'SELECT timestamp_ms FROM json_dumps_named WHERE dump_type = ? AND dump_name = ?;', ( dump_type, dump_name ) ) ) )
+                    existing_timestamps_ms = sorted(self._sti(self._execute('SELECT timestamp_ms FROM json_dumps_named WHERE dump_type = ? AND dump_name = ?;', (dump_type, dump_name))))
                     
                     if len( existing_timestamps_ms ) > 0:
                         
@@ -659,11 +659,11 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                     
                     deletee_timestamps_ms.append( object_timestamp_ms ) # if save gets spammed twice in one second, we'll overwrite
                     
-                    self._ExecuteMany( 'DELETE FROM json_dumps_named WHERE dump_type = ? AND dump_name = ? AND timestamp_ms = ?;', [ ( dump_type, dump_name, timestamp_ms ) for timestamp_ms in deletee_timestamps_ms ] )
+                    self._execute_many('DELETE FROM json_dumps_named WHERE dump_type = ? AND dump_name = ? AND timestamp_ms = ?;', [(dump_type, dump_name, timestamp_ms) for timestamp_ms in deletee_timestamps_ms])
                     
                 else:
                     
-                    self._Execute( 'DELETE FROM json_dumps_named WHERE dump_type = ? AND dump_name = ?;', ( dump_type, dump_name ) )
+                    self._execute('DELETE FROM json_dumps_named WHERE dump_type = ? AND dump_name = ?;', (dump_type, dump_name))
                     
                 
             else:
@@ -675,7 +675,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
             
             try:
                 
-                self._Execute( 'INSERT INTO json_dumps_named ( dump_type, dump_name, version, timestamp_ms, dump ) VALUES ( ?, ?, ?, ?, ? );', ( dump_type, dump_name, version, object_timestamp_ms, dump_buffer ) )
+                self._execute('INSERT INTO json_dumps_named ( dump_type, dump_name, version, timestamp_ms, dump ) VALUES ( ?, ?, ?, ?, ? );', (dump_type, dump_name, version, object_timestamp_ms, dump_buffer))
                 
             except Exception as e:
                 
@@ -764,13 +764,13 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 raise Exception( 'Trying to json dump the object ' + str( obj ) + ' caused an error. Its serialisable info has been dumped to the log.' )
                 
             
-            self._Execute( 'DELETE FROM json_dumps WHERE dump_type = ?;', ( dump_type, ) )
+            self._execute('DELETE FROM json_dumps WHERE dump_type = ?;', (dump_type,))
             
             dump_buffer = GenerateBigSQLiteDumpBuffer( dump )
             
             try:
                 
-                self._Execute( 'INSERT INTO json_dumps ( dump_type, version, dump ) VALUES ( ?, ?, ? );', ( dump_type, version, dump_buffer ) )
+                self._execute('INSERT INTO json_dumps ( dump_type, version, dump ) VALUES ( ?, ?, ? );', (dump_type, version, dump_buffer))
                 
             except Exception as e:
                 
@@ -819,7 +819,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
         
         if value is None:
             
-            self._Execute( 'DELETE FROM json_dict WHERE name = ?;', ( name, ) )
+            self._execute('DELETE FROM json_dict WHERE name = ?;', (name,))
             
         else:
             
@@ -829,7 +829,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
             
             try:
                 
-                self._Execute( 'REPLACE INTO json_dict ( name, dump ) VALUES ( ?, ? );', ( name, dump_buffer ) )
+                self._execute('REPLACE INTO json_dict ( name, dump ) VALUES ( ?, ? );', (name, dump_buffer))
                 
             except Exception as e:
                 

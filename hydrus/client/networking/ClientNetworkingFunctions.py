@@ -433,7 +433,7 @@ def GetCookie( cookies, search_domain, cookie_name_string_match ):
             
         
     
-    raise HydrusExceptions.DataMissing( 'Cookie "' + cookie_name_string_match.ToString() + '" not found for domain ' + search_domain + '!' )
+    raise HydrusExceptions.DataMissing( 'Cookie "' + cookie_name_string_match.to_string() + '" not found for domain ' + search_domain + '!')
     
 
 def GetSearchURLs( url ):

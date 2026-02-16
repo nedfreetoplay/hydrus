@@ -58,9 +58,9 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
         
         # TODO: see about making this guy a 'property' or whatever and initialising on first request?
         # this, otherwise, is asking it on every reconnection, which is not ideal
-        if self._Execute( 'SELECT 1 FROM sqlite_master WHERE name = ?;', ( 'file_inbox', ) ).fetchone() is not None:
+        if self._execute('SELECT 1 FROM sqlite_master WHERE name = ?;', ('file_inbox',)).fetchone() is not None:
             
-            self.inbox_hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM file_inbox;' ) )
+            self.inbox_hash_ids = self._sts(self._execute('SELECT hash_id FROM file_inbox;'))
             
         
     
@@ -75,7 +75,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
         
         if len( archiveable_hash_ids ) > 0:
             
-            self._ExecuteMany( 'DELETE FROM file_inbox WHERE hash_id = ?;', ( ( hash_id, ) for hash_id in archiveable_hash_ids ) )
+            self._execute_many('DELETE FROM file_inbox WHERE hash_id = ?;', ((hash_id,) for hash_id in archiveable_hash_ids))
             
             self.inbox_hash_ids.difference_update( archiveable_hash_ids )
             
@@ -87,7 +87,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
             
             update_rows = list( service_ids_to_counts.items() )
             
-            self._ExecuteMany( 'UPDATE service_info SET info = info - ? WHERE service_id = ? AND info_type = ?;', [ ( count, service_id, HC.SERVICE_INFO_NUM_INBOX ) for ( service_id, count ) in update_rows ] )
+            self._execute_many('UPDATE service_info SET info = info - ? WHERE service_id = ? AND info_type = ?;', [(count, service_id, HC.SERVICE_INFO_NUM_INBOX) for (service_id, count) in update_rows])
             
         
     
@@ -118,7 +118,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
         
         if len( inboxable_hash_ids ) > 0:
             
-            self._ExecuteMany( 'INSERT OR IGNORE INTO file_inbox VALUES ( ? );', ( ( hash_id, ) for hash_id in inboxable_hash_ids ) )
+            self._execute_many('INSERT OR IGNORE INTO file_inbox VALUES ( ? );', ((hash_id,) for hash_id in inboxable_hash_ids))
             
             self.inbox_hash_ids.update( inboxable_hash_ids )
             
@@ -128,7 +128,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
             
             if len( service_ids_to_counts ) > 0:
                 
-                self._ExecuteMany( 'UPDATE service_info SET info = info + ? WHERE service_id = ? AND info_type = ?;', [ ( count, service_id, HC.SERVICE_INFO_NUM_INBOX ) for ( service_id, count ) in service_ids_to_counts.items() ] )
+                self._execute_many('UPDATE service_info SET info = info + ? WHERE service_id = ? AND info_type = ?;', [(count, service_id, HC.SERVICE_INFO_NUM_INBOX) for (service_id, count) in service_ids_to_counts.items()])
                 
             
         

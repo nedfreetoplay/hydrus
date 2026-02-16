@@ -600,7 +600,7 @@ class UndoManager( object ):
                     
                     ( content_update_package, ) = args
                     
-                    undo_string = 'undo ' + content_update_package.ToString()
+                    undo_string = 'undo ' + content_update_package.to_string()
                     
                 
             
@@ -614,7 +614,7 @@ class UndoManager( object ):
                     
                     ( content_update_package, ) = args
                     
-                    redo_string = 'redo ' + content_update_package.ToString()
+                    redo_string = 'redo ' + content_update_package.to_string()
                     
                 
             

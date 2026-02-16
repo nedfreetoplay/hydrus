@@ -3227,7 +3227,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                         
                         for ( i, predicate ) in enumerate( self._predicate_history_added_to_search ):
                             
-                            args.append( ( i, predicate.ToString(), predicate ) )
+                            args.append((i, predicate.to_string(), predicate))
                             
                         args.reverse()
                         
@@ -3246,7 +3246,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                         
                         for ( i, predicate ) in enumerate( self._predicate_history_removed_from_search ):
                             
-                            args.append( ( i, predicate.ToString(), predicate ) )
+                            args.append((i, predicate.to_string(), predicate))
                             
                         args.reverse()
                         

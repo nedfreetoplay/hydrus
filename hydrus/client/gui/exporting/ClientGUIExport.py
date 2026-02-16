@@ -95,7 +95,7 @@ class EditExportFoldersPanel( ClientGUIScrolledPanels.EditPanel ):
             
             message = 'You have some default metadata sidecar settings, most likely from a previous file export. They look like this:'
             message += '\n' * 2
-            message += '\n'.join( [ router.ToString( pretty = True ) for router in metadata_routers ] )
+            message += '\n'.join([router.to_string(pretty = True) for router in metadata_routers])
             message += '\n' * 2
             message += 'Do you want these in the new export folder?'
 
@@ -158,7 +158,7 @@ class EditExportFoldersPanel( ClientGUIScrolledPanels.EditPanel ):
             pretty_export_type += ' and deleting from the client!'
             
         
-        pretty_file_search_context = ', '.join( predicate.ToString( with_count = False ) for predicate in file_search_context.GetPredicates() )
+        pretty_file_search_context = ', '.join(predicate.to_string(with_count = False) for predicate in file_search_context.GetPredicates())
         
         if run_regularly:
             

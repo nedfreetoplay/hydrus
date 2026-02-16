@@ -45,7 +45,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
     
     def _AddLeaf( self, perceptual_hash_id, perceptual_hash ):
         
-        result = self._Execute( 'SELECT phash_id FROM shape_vptree WHERE parent_id IS NULL;' ).fetchone()
+        result = self._execute('SELECT phash_id FROM shape_vptree WHERE parent_id IS NULL;').fetchone()
         
         parent_id = None
         
@@ -64,7 +64,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
                 
                 ancestor_id = next_ancestor_id
                 
-                result = self._Execute( 'SELECT phash, radius, inner_id, inner_population, outer_id, outer_population FROM shape_perceptual_hashes NATURAL JOIN shape_vptree WHERE phash_id = ?;', ( ancestor_id, ) ).fetchone()
+                result = self._execute('SELECT phash, radius, inner_id, inner_population, outer_id, outer_population FROM shape_perceptual_hashes NATURAL JOIN shape_vptree WHERE phash_id = ?;', (ancestor_id,)).fetchone()
                 
                 if result is None:
                     
@@ -101,7 +101,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
                     
                     if ancestor_inner_id is None:
                         
-                        self._Execute( 'UPDATE shape_vptree SET inner_id = ?, radius = ? WHERE phash_id = ?;', ( perceptual_hash_id, distance_to_ancestor, ancestor_id ) )
+                        self._execute('UPDATE shape_vptree SET inner_id = ?, radius = ? WHERE phash_id = ?;', (perceptual_hash_id, distance_to_ancestor, ancestor_id))
                         
                         self._ClearPerceptualHashesFromVPTreeNodeCache( ( ancestor_id, ) )
                         
@@ -116,7 +116,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
                     
                     if ancestor_outer_id is None:
                         
-                        self._Execute( 'UPDATE shape_vptree SET outer_id = ? WHERE phash_id = ?;', ( perceptual_hash_id, ancestor_id ) )
+                        self._execute('UPDATE shape_vptree SET outer_id = ? WHERE phash_id = ?;', (perceptual_hash_id, ancestor_id))
                         
                         self._ClearPerceptualHashesFromVPTreeNodeCache( ( ancestor_id, ) )
                         
@@ -133,7 +133,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
                     
                     if smaller / larger < 0.33:
                         
-                        self._Execute( 'INSERT OR IGNORE INTO shape_maintenance_branch_regen ( phash_id ) VALUES ( ? );', ( ancestor_id, ) )
+                        self._execute('INSERT OR IGNORE INTO shape_maintenance_branch_regen ( phash_id ) VALUES ( ? );', (ancestor_id,))
                         
                         self._cursor_transaction_wrapper.pub_after_job( 'notify_new_shape_search_branch_maintenance_work' )
                         
@@ -144,8 +144,8 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
                     
                 
             
-            self._ExecuteMany( 'UPDATE shape_vptree SET inner_population = inner_population + 1 WHERE phash_id = ?;', ( ( ancestor_id, ) for ancestor_id in ancestors_we_are_inside ) )
-            self._ExecuteMany( 'UPDATE shape_vptree SET outer_population = outer_population + 1 WHERE phash_id = ?;', ( ( ancestor_id, ) for ancestor_id in ancestors_we_are_outside ) )
+            self._execute_many('UPDATE shape_vptree SET inner_population = inner_population + 1 WHERE phash_id = ?;', ((ancestor_id,) for ancestor_id in ancestors_we_are_inside))
+            self._execute_many('UPDATE shape_vptree SET outer_population = outer_population + 1 WHERE phash_id = ?;', ((ancestor_id,) for ancestor_id in ancestors_we_are_outside))
             
             self._ClearPerceptualHashesFromVPTreeNodeCache( ancestors_we_are_inside )
             self._ClearPerceptualHashesFromVPTreeNodeCache( ancestors_we_are_outside )
@@ -157,7 +157,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
         outer_id = None
         outer_population = 0
         
-        self._Execute( 'INSERT OR REPLACE INTO shape_vptree ( phash_id, parent_id, radius, inner_id, inner_population, outer_id, outer_population ) VALUES ( ?, ?, ?, ?, ?, ?, ? );', ( perceptual_hash_id, parent_id, radius, inner_id, inner_population, outer_id, outer_population ) )
+        self._execute('INSERT OR REPLACE INTO shape_vptree ( phash_id, parent_id, radius, inner_id, inner_population, outer_id, outer_population ) VALUES ( ?, ?, ?, ?, ?, ?, ? );', (perceptual_hash_id, parent_id, radius, inner_id, inner_population, outer_id, outer_population))
         
         self._ClearPerceptualHashesFromVPTreeNodeCache( ( perceptual_hash_id, ) )
         
@@ -165,14 +165,14 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
     def _DeltaShapeSearchCacheNumbers( self, searched_distance, delta ):
         
         # hydev's first UPSERT, 2025-09-14
-        self._Execute( 'INSERT INTO shape_search_cache_numbers ( searched_distance, count ) VALUES ( ?, ? ) ON CONFLICT( searched_distance ) DO UPDATE SET count = count + ?;', ( searched_distance, delta, delta ) )
+        self._execute('INSERT INTO shape_search_cache_numbers ( searched_distance, count ) VALUES ( ?, ? ) ON CONFLICT( searched_distance ) DO UPDATE SET count = count + ?;', (searched_distance, delta, delta))
         
         self._cursor_transaction_wrapper.pub_after_job( 'notify_new_shape_search_cache_numbers' )
         
     
     def _DeltaShapeSearchCacheNumbersRemoveFile( self, hash_id: int ):
         
-        result = self._Execute( 'SELECT searched_distance FROM shape_search_cache WHERE hash_id = ?;', ( hash_id, ) ).fetchone()
+        result = self._execute('SELECT searched_distance FROM shape_search_cache WHERE hash_id = ?;', (hash_id,)).fetchone()
         
         if result is not None:
             
@@ -270,14 +270,14 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
         
         job_status.SetStatusText( 'branch constructed, now committing', 2 )
         
-        self._ExecuteMany( 'INSERT OR REPLACE INTO shape_vptree ( phash_id, parent_id, radius, inner_id, inner_population, outer_id, outer_population ) VALUES ( ?, ?, ?, ?, ?, ?, ? );', insert_rows )
+        self._execute_many('INSERT OR REPLACE INTO shape_vptree ( phash_id, parent_id, radius, inner_id, inner_population, outer_id, outer_population ) VALUES ( ?, ?, ?, ?, ?, ?, ? );', insert_rows)
         
         self._ClearPerceptualHashesFromVPTreeNodeCache( all_altered_phash_ids )
         
     
     def _GetHashIdsWithPixelHashId( self, pixel_hash_id: int ) -> set[ int ]:
         
-        pixel_dupe_hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM pixel_hash_map WHERE pixel_hash_id = ?;', ( pixel_hash_id, ) ) )
+        pixel_dupe_hash_ids = self._sts(self._execute('SELECT hash_id FROM pixel_hash_map WHERE pixel_hash_id = ?;', (pixel_hash_id,)))
         
         return pixel_dupe_hash_ids
         
@@ -316,9 +316,9 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
     
     def _GetPerceptualHashes( self, perceptual_hash_ids: collections.abc.Collection[ int ] ) -> set[ bytes ]:
         
-        with self._MakeTemporaryIntegerTable( perceptual_hash_ids, 'phash_id' ) as temp_table_name:
+        with self._make_temporary_integer_table(perceptual_hash_ids, 'phash_id') as temp_table_name:
             
-            perceptual_hashes = self._STS( self._Execute( f'SELECT phash FROM shape_perceptual_hashes NATURAL JOIN {temp_table_name};' ) )
+            perceptual_hashes = self._sts(self._execute(f'SELECT phash FROM shape_perceptual_hashes NATURAL JOIN {temp_table_name};'))
             
         
         return perceptual_hashes
@@ -326,7 +326,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
     
     def _GetPerceptualHashId( self, perceptual_hash, do_not_create = False ):
         
-        result = self._Execute( 'SELECT phash_id FROM shape_perceptual_hashes WHERE phash = ?;', ( sqlite3.Binary( perceptual_hash ), ) ).fetchone()
+        result = self._execute('SELECT phash_id FROM shape_perceptual_hashes WHERE phash = ?;', (sqlite3.Binary(perceptual_hash),)).fetchone()
         
         if result is None:
             
@@ -335,9 +335,9 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
                 return None
                 
             
-            self._Execute( 'INSERT INTO shape_perceptual_hashes ( phash ) VALUES ( ? );', ( sqlite3.Binary( perceptual_hash ), ) )
+            self._execute('INSERT INTO shape_perceptual_hashes ( phash ) VALUES ( ? );', (sqlite3.Binary(perceptual_hash),))
             
-            perceptual_hash_id = self._GetLastRowId()
+            perceptual_hash_id = self._get_last_row_id()
             
             self._AddLeaf( perceptual_hash_id, perceptual_hash )
             
@@ -351,14 +351,14 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
     
     def _GetPerceptualHashIdsFromHashId( self, hash_id: int ) -> set[ int ]:
         
-        perceptual_hash_ids = self._STS( self._Execute( 'SELECT phash_id FROM shape_perceptual_hash_map WHERE hash_id = ?;', ( hash_id, ) ) )
+        perceptual_hash_ids = self._sts(self._execute('SELECT phash_id FROM shape_perceptual_hash_map WHERE hash_id = ?;', (hash_id,)))
         
         return perceptual_hash_ids
         
     
     def _GetPixelHashId( self, hash_id: int ) -> int | None:
         
-        result = self._Execute( 'SELECT pixel_hash_id FROM pixel_hash_map WHERE hash_id = ?;', ( hash_id, ) ).fetchone()
+        result = self._execute('SELECT pixel_hash_id FROM pixel_hash_map WHERE hash_id = ?;', (hash_id,)).fetchone()
         
         if result is None:
             
@@ -466,7 +466,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
         
         # grab everything in the branch
         
-        ( parent_id, ) = self._Execute( 'SELECT parent_id FROM shape_vptree WHERE phash_id = ?;', ( perceptual_hash_id, ) ).fetchone()
+        ( parent_id, ) = self._execute('SELECT parent_id FROM shape_vptree WHERE phash_id = ?;', (perceptual_hash_id,)).fetchone()
         
         # if parent_id here is None, we've got the root node and we are doing the whole tree
         
@@ -478,7 +478,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
         # use UNION (large memory, set), not UNION ALL (small memory, inifinite loop on damaged cyclic graph causing 200GB journal file and disk full error, jesus)
         query = f'WITH RECURSIVE {cte_table_name} AS ( {initial_select} UNION {recursive_select} ) {query_on_cte_table_name};'
         
-        unbalanced_nodes = self._Execute( query, ( perceptual_hash_id, ) ).fetchall()
+        unbalanced_nodes = self._execute(query, (perceptual_hash_id,)).fetchall()
         
         # removal of old branch and maintenance schedule
         
@@ -486,24 +486,24 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
         
         unbalanced_perceptual_hash_ids = { p_id for ( p_id, p_h ) in unbalanced_nodes }
         
-        self._ExecuteMany( 'DELETE FROM shape_vptree WHERE phash_id = ?;', ( ( p_id, ) for p_id in unbalanced_perceptual_hash_ids ) )
+        self._execute_many('DELETE FROM shape_vptree WHERE phash_id = ?;', ((p_id,) for p_id in unbalanced_perceptual_hash_ids))
         
         self._ClearPerceptualHashesFromVPTreeNodeCache( unbalanced_perceptual_hash_ids )
         
-        self._ExecuteMany( 'DELETE FROM shape_maintenance_branch_regen WHERE phash_id = ?;', ( ( p_id, ) for p_id in unbalanced_perceptual_hash_ids ) )
+        self._execute_many('DELETE FROM shape_maintenance_branch_regen WHERE phash_id = ?;', ((p_id,) for p_id in unbalanced_perceptual_hash_ids))
         
         # let's take this chance to clear out any nodes that don't actually map to any files
         
-        with self._MakeTemporaryIntegerTable( unbalanced_perceptual_hash_ids, 'phash_id' ) as temp_perceptual_hash_ids_table_name:
+        with self._make_temporary_integer_table(unbalanced_perceptual_hash_ids, 'phash_id') as temp_perceptual_hash_ids_table_name:
             
-            useful_perceptual_hash_ids = self._STS( self._Execute( 'SELECT phash_id FROM {} CROSS JOIN shape_perceptual_hash_map USING ( phash_id );'.format( temp_perceptual_hash_ids_table_name ) ) )
+            useful_perceptual_hash_ids = self._sts(self._execute('SELECT phash_id FROM {} CROSS JOIN shape_perceptual_hash_map USING ( phash_id );'.format(temp_perceptual_hash_ids_table_name)))
             
         
         orphan_perceptual_hash_ids = unbalanced_perceptual_hash_ids.difference( useful_perceptual_hash_ids )
         
         if len( orphan_perceptual_hash_ids ) > 0:
             
-            self._ExecuteMany( 'DELETE FROM shape_perceptual_hashes WHERE phash_id = ?;', ( ( p_id, ) for p_id in orphan_perceptual_hash_ids ) )
+            self._execute_many('DELETE FROM shape_perceptual_hashes WHERE phash_id = ?;', ((p_id,) for p_id in orphan_perceptual_hash_ids))
             
         
         useful_nodes = [ row for row in unbalanced_nodes if row[0] in useful_perceptual_hash_ids ]
@@ -531,14 +531,14 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
             
             # let's first update the pre-existing parent with its new child and perhaps let it know it has lost some orphans
             
-            result = self._Execute( 'SELECT inner_id FROM shape_vptree WHERE phash_id = ?;', ( parent_id, ) ).fetchone()
+            result = self._execute('SELECT inner_id FROM shape_vptree WHERE phash_id = ?;', (parent_id,)).fetchone()
             
             if result is None:
                 
                 # expected parent is not in the tree!
                 # somehow some stuff got borked
                 
-                self._Execute( 'DELETE FROM shape_maintenance_branch_regen;' )
+                self._execute('DELETE FROM shape_maintenance_branch_regen;')
                 
                 HydrusData.show_text('Your similar files search tree seemed to be damaged. Please regenerate it under the _database_ menu!')
                 
@@ -556,7 +556,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
                 query = 'UPDATE shape_vptree SET outer_id = ?, outer_population = ? WHERE phash_id = ?;'
                 
             
-            self._Execute( query, ( new_perceptual_hash_id, num_useful_population, parent_id ) )
+            self._execute(query, (new_perceptual_hash_id, num_useful_population, parent_id))
             
             self._ClearPerceptualHashesFromVPTreeNodeCache( ( parent_id, ) )
             
@@ -606,14 +606,14 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
                 
                 ( uncached_perceptual_hash_id, ) = uncached_perceptual_hash_ids
                 
-                rows = self._Execute( 'SELECT phash_id, phash, radius, inner_id, outer_id FROM shape_perceptual_hashes CROSS JOIN shape_vptree USING ( phash_id ) WHERE phash_id = ?;', ( uncached_perceptual_hash_id, ) ).fetchall()
+                rows = self._execute('SELECT phash_id, phash, radius, inner_id, outer_id FROM shape_perceptual_hashes CROSS JOIN shape_vptree USING ( phash_id ) WHERE phash_id = ?;', (uncached_perceptual_hash_id,)).fetchall()
                 
             else:
                 
-                with self._MakeTemporaryIntegerTable( uncached_perceptual_hash_ids, 'phash_id' ) as temp_table_name:
+                with self._make_temporary_integer_table(uncached_perceptual_hash_ids, 'phash_id') as temp_table_name:
                     
                     # temp perceptual_hash_ids to actual perceptual_hashes and tree info
-                    rows = self._Execute( 'SELECT phash_id, phash, radius, inner_id, outer_id FROM {} CROSS JOIN shape_perceptual_hashes USING ( phash_id ) CROSS JOIN shape_vptree USING ( phash_id );'.format( temp_table_name ) ).fetchall()
+                    rows = self._execute('SELECT phash_id, phash, radius, inner_id, outer_id FROM {} CROSS JOIN shape_perceptual_hashes USING ( phash_id ) CROSS JOIN shape_vptree USING ( phash_id );'.format(temp_table_name)).fetchall()
                     
                 
             
@@ -645,19 +645,19 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
             perceptual_hash_ids.add( perceptual_hash_id )
             
         
-        self._ExecuteMany( 'INSERT OR IGNORE INTO shape_perceptual_hash_map ( phash_id, hash_id ) VALUES ( ?, ? );', ( ( perceptual_hash_id, hash_id ) for perceptual_hash_id in perceptual_hash_ids ) )
+        self._execute_many('INSERT OR IGNORE INTO shape_perceptual_hash_map ( phash_id, hash_id ) VALUES ( ?, ? );', ((perceptual_hash_id, hash_id) for perceptual_hash_id in perceptual_hash_ids))
         
-        if self._GetRowCount() > 0:
+        if self._get_row_count() > 0:
             
             self._DeltaShapeSearchCacheNumbersRemoveFile( hash_id )
             
             # yes, replace--these files' phashes have just changed, so we want to search again with this new data
-            self._Execute( 'REPLACE INTO shape_search_cache ( hash_id, searched_distance ) VALUES ( ?, ? );', ( hash_id, -1 ) )
+            self._execute('REPLACE INTO shape_search_cache ( hash_id, searched_distance ) VALUES ( ?, ? );', (hash_id, -1))
             
         else:
             
             # emergency backstop to ensure we do add this to the system in the case of a weird re-association gap
-            self._Execute( 'INSERT OR IGNORE INTO shape_search_cache ( hash_id, searched_distance ) VALUES ( ?, ? );', ( hash_id, -1 ) )
+            self._execute('INSERT OR IGNORE INTO shape_search_cache ( hash_id, searched_distance ) VALUES ( ?, ? );', (hash_id, -1))
             
         
         self._DeltaShapeSearchCacheNumbers( -1, 1 )
@@ -667,39 +667,39 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
     
     def ClearPixelHash( self, hash_id: int ):
         
-        self._Execute( 'DELETE FROM pixel_hash_map WHERE hash_id = ?;', ( hash_id, ) )
+        self._execute('DELETE FROM pixel_hash_map WHERE hash_id = ?;', (hash_id,))
         
     
     def DisassociatePerceptualHashes( self, hash_id, perceptual_hash_ids ):
         
-        self._ExecuteMany( 'DELETE FROM shape_perceptual_hash_map WHERE phash_id = ? AND hash_id = ?;', ( ( perceptual_hash_id, hash_id ) for perceptual_hash_id in perceptual_hash_ids ) )
+        self._execute_many('DELETE FROM shape_perceptual_hash_map WHERE phash_id = ? AND hash_id = ?;', ((perceptual_hash_id, hash_id) for perceptual_hash_id in perceptual_hash_ids))
         
-        useful_perceptual_hash_ids = { perceptual_hash for ( perceptual_hash, ) in self._Execute( 'SELECT phash_id FROM shape_perceptual_hash_map WHERE phash_id IN ' + HydrusLists.SplayListForDB( perceptual_hash_ids ) + ';' ) }
+        useful_perceptual_hash_ids = {perceptual_hash for ( perceptual_hash, ) in self._execute('SELECT phash_id FROM shape_perceptual_hash_map WHERE phash_id IN ' + HydrusLists.SplayListForDB(perceptual_hash_ids) + ';')}
         
         useless_perceptual_hash_ids = perceptual_hash_ids.difference( useful_perceptual_hash_ids )
         
-        self._ExecuteMany( 'INSERT OR IGNORE INTO shape_maintenance_branch_regen ( phash_id ) VALUES ( ? );', ( ( perceptual_hash_id, ) for perceptual_hash_id in useless_perceptual_hash_ids ) )
+        self._execute_many('INSERT OR IGNORE INTO shape_maintenance_branch_regen ( phash_id ) VALUES ( ? );', ((perceptual_hash_id,) for perceptual_hash_id in useless_perceptual_hash_ids))
         
         self._cursor_transaction_wrapper.pub_after_job( 'notify_new_shape_search_branch_maintenance_work' )
         
     
     def FileIsInSystem( self, hash_id ):
         
-        result = self._Execute( 'SELECT 1 FROM shape_search_cache WHERE hash_id = ?;', ( hash_id, ) ).fetchone()
+        result = self._execute('SELECT 1 FROM shape_search_cache WHERE hash_id = ?;', (hash_id,)).fetchone()
         
         return result is not None
         
     
     def GetMaintenanceStatus( self ):
         
-        searched_distances_to_count = collections.Counter( dict( self._Execute( 'SELECT searched_distance, count FROM shape_search_cache_numbers;' ) ) )
+        searched_distances_to_count = collections.Counter(dict(self._execute('SELECT searched_distance, count FROM shape_search_cache_numbers;')))
         
         return searched_distances_to_count
         
     
     def GetHashIdsToPixelHashes( self, hash_ids_table_name: str ):
         
-        return dict( self._Execute( f'SELECT {hash_ids_table_name}.hash_id, hash FROM {hash_ids_table_name} CROSS JOIN pixel_hash_map ON ( {hash_ids_table_name}.hash_id = pixel_hash_map.hash_id ) CROSS JOIN hashes ON ( pixel_hash_map.pixel_hash_id = hashes.hash_id );' ) )
+        return dict(self._execute(f'SELECT {hash_ids_table_name}.hash_id, hash FROM {hash_ids_table_name} CROSS JOIN pixel_hash_map ON ( {hash_ids_table_name}.hash_id = pixel_hash_map.hash_id ) CROSS JOIN hashes ON ( pixel_hash_map.pixel_hash_id = hashes.hash_id );'))
         
     
     def GetSomeHashIdsToSimilarSearch( self, search_distance, num_to_get ):
@@ -710,14 +710,14 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
         
         magic_index_name = f'shape_search_cache_partial_index_less_than_{search_distance}'
         
-        if not self._ActualIndexExists( magic_index_name ):
+        if not self._actual_index_exists(magic_index_name):
             
-            self._Execute( f'CREATE INDEX {magic_index_name} ON shape_search_cache ( searched_distance, hash_id ) WHERE searched_distance < {search_distance};' )
+            self._execute(f'CREATE INDEX {magic_index_name} ON shape_search_cache ( searched_distance, hash_id ) WHERE searched_distance < {search_distance};')
             
-            self._Execute( 'ANALYZE shape_search_cache;' )
+            self._execute('ANALYZE shape_search_cache;')
             
         
-        return self._STL( self._Execute( 'SELECT hash_id FROM shape_search_cache WHERE searched_distance < ?;', ( search_distance, ) ).fetchmany( num_to_get ) )
+        return self._stl(self._execute('SELECT hash_id FROM shape_search_cache WHERE searched_distance < ?;', (search_distance,)).fetchmany(num_to_get))
         
     
     def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
@@ -748,17 +748,17 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
         
         fake_job_status = ClientThreading.JobStatus()
         
-        work_to_do = self._Execute( 'SELECT phash_id FROM shape_maintenance_branch_regen;' ).fetchone() is not None
+        work_to_do = self._execute('SELECT phash_id FROM shape_maintenance_branch_regen;').fetchone() is not None
         
         while work_to_do:
             
             # temp perceptual hashes to tree
-            result = self._Execute( 'SELECT phash_id FROM shape_maintenance_branch_regen CROSS JOIN shape_vptree USING ( phash_id ) ORDER BY inner_population + outer_population DESC;' ).fetchone()
+            result = self._execute('SELECT phash_id FROM shape_maintenance_branch_regen CROSS JOIN shape_vptree USING ( phash_id ) ORDER BY inner_population + outer_population DESC;').fetchone()
             
             if result is None:
                 
                 # looks like there are only orphan branches in the regen cache, so clear it now and exit
-                self._Execute( 'DELETE FROM shape_maintenance_branch_regen;' )
+                self._execute('DELETE FROM shape_maintenance_branch_regen;')
                 
                 work_to_do = False
                 
@@ -785,7 +785,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
                 return work_to_do
                 
             
-            work_to_do = self._Execute( 'SELECT phash_id FROM shape_maintenance_branch_regen;' ).fetchone() is not None
+            work_to_do = self._execute('SELECT phash_id FROM shape_maintenance_branch_regen;').fetchone() is not None
             
         
         return work_to_do
@@ -793,9 +793,9 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
     
     def RegenerateSearchCacheNumbers( self ):
         
-        self._Execute( 'DELETE FROM shape_search_cache_numbers;' )
+        self._execute('DELETE FROM shape_search_cache_numbers;')
         
-        self._Execute( 'INSERT INTO shape_search_cache_numbers ( searched_distance, count ) SELECT searched_distance, COUNT( * ) FROM shape_search_cache GROUP BY searched_distance;' )
+        self._execute('INSERT INTO shape_search_cache_numbers ( searched_distance, count ) SELECT searched_distance, COUNT( * ) FROM shape_search_cache GROUP BY searched_distance;')
         
         self._cursor_transaction_wrapper.pub_after_job( 'notify_new_shape_search_cache_numbers' )
         self._cursor_transaction_wrapper.pub_after_job( 'notify_file_potential_search_reset' )
@@ -813,13 +813,13 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
             
             job_status.SetStatusText( 'gathering all leaves' )
             
-            self._Execute( 'DELETE FROM shape_vptree;' )
+            self._execute('DELETE FROM shape_vptree;')
             
             self._perceptual_hash_id_to_vp_tree_node_cache = {}
             self._non_vp_treed_perceptual_hash_ids = set()
             self._root_node_perceptual_hash_id = None
             
-            all_nodes = self._Execute( 'SELECT phash_id, phash FROM shape_perceptual_hashes;' ).fetchall()
+            all_nodes = self._execute('SELECT phash_id, phash FROM shape_perceptual_hashes;').fetchall()
             
             good_nodes = []
             bad_nodes = []
@@ -847,14 +847,14 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
                 
                 bad_phash_ids = { phash_id for ( phash_id, phash ) in bad_nodes }
                 
-                self._ExecuteMany( 'DELETE FROM shape_perceptual_hashes WHERE phash_id = ?;', ( ( phash_id, ) for phash_id in bad_phash_ids ) )
+                self._execute_many('DELETE FROM shape_perceptual_hashes WHERE phash_id = ?;', ((phash_id,) for phash_id in bad_phash_ids))
                 
-                with self._MakeTemporaryIntegerTable( bad_phash_ids, 'phash_id' ) as temp_table_name:
+                with self._make_temporary_integer_table(bad_phash_ids, 'phash_id') as temp_table_name:
                     
-                    affected_hash_ids = self._STS( self._Execute( f'SELECT hash_id FROM {temp_table_name} CROSS JOIN shape_perceptual_hash_map USING ( phash_id );' ) )
+                    affected_hash_ids = self._sts(self._execute(f'SELECT hash_id FROM {temp_table_name} CROSS JOIN shape_perceptual_hash_map USING ( phash_id );'))
                     
                 
-                self._ExecuteMany( 'DELETE FROM shape_perceptual_hash_map WHERE phash_id = ?;', ( ( phash_id, ) for phash_id in bad_phash_ids ) )
+                self._execute_many('DELETE FROM shape_perceptual_hash_map WHERE phash_id = ?;', ((phash_id,) for phash_id in bad_phash_ids))
                 
                 message = 'Discovered some bad nodes in your similar files search tree! The nodes have been deleted.'
                 message += '\n'
@@ -896,7 +896,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
             
             self._GenerateBranch( job_status, None, root_id, root_perceptual_hash, all_nodes )
             
-            self._Execute( 'DELETE FROM shape_maintenance_branch_regen;' )
+            self._execute('DELETE FROM shape_maintenance_branch_regen;')
             
         finally:
             
@@ -909,14 +909,14 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
     
     def ResetSearch( self, hash_ids ):
         
-        self._ExecuteMany( 'UPDATE shape_search_cache SET searched_distance = ? WHERE hash_id = ?;', ( ( -1, hash_id ) for hash_id in hash_ids ) )
+        self._execute_many('UPDATE shape_search_cache SET searched_distance = ? WHERE hash_id = ?;', ((-1, hash_id) for hash_id in hash_ids))
         
         self.RegenerateSearchCacheNumbers()
         
     
     def ResetSearchForAll( self ):
         
-        self._Execute( 'UPDATE shape_search_cache SET searched_distance = ?;', ( -1, ) )
+        self._execute('UPDATE shape_search_cache SET searched_distance = ?;', (-1,))
         
         self.RegenerateSearchCacheNumbers()
         
@@ -934,7 +934,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
         
         if max_hamming_distance == 0:
             
-            exact_match_hash_ids = self._STL( self._Execute( 'SELECT hash_id FROM shape_perceptual_hash_map WHERE phash_id IN ( SELECT phash_id FROM shape_perceptual_hash_map WHERE hash_id = ? );', ( hash_id, ) ) )
+            exact_match_hash_ids = self._stl(self._execute('SELECT hash_id FROM shape_perceptual_hash_map WHERE phash_id IN ( SELECT phash_id FROM shape_perceptual_hash_map WHERE hash_id = ? );', (hash_id,)))
             
             similar_hash_ids_and_distances.extend( [ ( exact_match_hash_id, 0 ) for exact_match_hash_id in exact_match_hash_ids ] )
             
@@ -993,9 +993,9 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
             
             if len( perceptual_hash_ids ) > 0:
                 
-                with self._MakeTemporaryIntegerTable( perceptual_hash_ids, 'phash_id' ) as temp_table_name:
+                with self._make_temporary_integer_table(perceptual_hash_ids, 'phash_id') as temp_table_name:
                     
-                    similar_hash_ids = self._STL( self._Execute( f'SELECT hash_id FROM shape_perceptual_hash_map NATURAL JOIN {temp_table_name};' ) )
+                    similar_hash_ids = self._stl(self._execute(f'SELECT hash_id FROM shape_perceptual_hash_map NATURAL JOIN {temp_table_name};'))
                     
                 
                 similar_hash_ids_and_distances.extend( [ ( similar_hash_id, 0 ) for similar_hash_id in similar_hash_ids ] )
@@ -1007,7 +1007,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
             
             if self._root_node_perceptual_hash_id is None:
                 
-                top_node_result = self._Execute( 'SELECT phash_id FROM shape_vptree WHERE parent_id IS NULL;' ).fetchone()
+                top_node_result = self._execute('SELECT phash_id FROM shape_vptree WHERE parent_id IS NULL;').fetchone()
                 
                 if top_node_result is None:
                     
@@ -1119,10 +1119,10 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
             
             similar_perceptual_hash_ids = list( similar_perceptual_hash_ids_to_distances.keys() )
             
-            with self._MakeTemporaryIntegerTable( similar_perceptual_hash_ids, 'phash_id' ) as temp_table_name:
+            with self._make_temporary_integer_table(similar_perceptual_hash_ids, 'phash_id') as temp_table_name:
                 
                 # temp perceptual_hashes to hash map
-                similar_perceptual_hash_ids_to_hash_ids = HydrusData.build_key_to_list_dict(self._Execute('SELECT phash_id, hash_id FROM {} CROSS JOIN shape_perceptual_hash_map USING ( phash_id );'.format(temp_table_name)))
+                similar_perceptual_hash_ids_to_hash_ids = HydrusData.build_key_to_list_dict(self._execute('SELECT phash_id, hash_id FROM {} CROSS JOIN shape_perceptual_hash_map USING ( phash_id );'.format(temp_table_name)))
                 
             
             similar_hash_ids_to_distances = {}
@@ -1161,15 +1161,15 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
         
         self.ClearPixelHash( hash_id )
         
-        self._Execute( 'INSERT INTO pixel_hash_map ( hash_id, pixel_hash_id ) VALUES ( ?, ? );', ( hash_id, pixel_hash_id ) )
+        self._execute('INSERT INTO pixel_hash_map ( hash_id, pixel_hash_id ) VALUES ( ?, ? );', (hash_id, pixel_hash_id))
         
-        ( count, ) = self._Execute( 'SELECT COUNT( * ) FROM pixel_hash_map WHERE pixel_hash_id = ?;', ( pixel_hash_id, ) ).fetchone()
+        ( count, ) = self._execute('SELECT COUNT( * ) FROM pixel_hash_map WHERE pixel_hash_id = ?;', (pixel_hash_id,)).fetchone()
         
         if count > 1:
             
             self._DeltaShapeSearchCacheNumbersRemoveFile( hash_id )
             
-            self._Execute( 'REPLACE INTO shape_search_cache ( hash_id, searched_distance ) VALUES ( ?, ? );', ( hash_id, -1 ) )
+            self._execute('REPLACE INTO shape_search_cache ( hash_id, searched_distance ) VALUES ( ?, ? );', (hash_id, -1))
             
             self._DeltaShapeSearchCacheNumbers( -1, 1 )
             
@@ -1177,7 +1177,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
     
     def SetPerceptualHashes( self, hash_id, perceptual_hashes ):
         
-        current_perceptual_hash_ids = self._STS( self._Execute( 'SELECT phash_id FROM shape_perceptual_hash_map WHERE hash_id = ?;', ( hash_id, ) ) )
+        current_perceptual_hash_ids = self._sts(self._execute('SELECT phash_id FROM shape_perceptual_hash_map WHERE hash_id = ?;', (hash_id,)))
         
         if len( current_perceptual_hash_ids ) > 0:
             
@@ -1194,7 +1194,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
         
         self._DeltaShapeSearchCacheNumbersRemoveFile( hash_id )
         
-        self._Execute( 'UPDATE shape_search_cache SET searched_distance = ? WHERE hash_id = ?;', ( search_distance, hash_id ) )
+        self._execute('UPDATE shape_search_cache SET searched_distance = ? WHERE hash_id = ?;', (search_distance, hash_id))
         
         self._DeltaShapeSearchCacheNumbers( search_distance, 1 )
         
@@ -1203,6 +1203,6 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
         
         self._DeltaShapeSearchCacheNumbersRemoveFile( hash_id )
         
-        self._Execute( 'DELETE FROM shape_search_cache WHERE hash_id = ?;', ( hash_id, ) )
+        self._execute('DELETE FROM shape_search_cache WHERE hash_id = ?;', (hash_id,))
         
     

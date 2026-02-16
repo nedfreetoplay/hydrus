@@ -167,9 +167,9 @@ class ClientDBMappingsCounts( ClientDBModule.ClientDBModule ):
         
         for ( tag_id, current_delta, pending_delta ) in ac_cache_changes:
             
-            self._Execute( 'INSERT OR IGNORE INTO {} ( tag_id, current_count, pending_count ) VALUES ( ?, ?, ? );'.format( counts_cache_table_name ), ( tag_id, current_delta, pending_delta ) )
+            self._execute('INSERT OR IGNORE INTO {} ( tag_id, current_count, pending_count ) VALUES ( ?, ?, ? );'.format(counts_cache_table_name), (tag_id, current_delta, pending_delta))
             
-            if self._GetRowCount() > 0:
+            if self._get_row_count() > 0:
                 
                 new_tag_ids.add( tag_id )
                 
@@ -182,7 +182,7 @@ class ClientDBMappingsCounts( ClientDBModule.ClientDBModule ):
         
         if len( new_tag_ids ) < len( ac_cache_changes ):
             
-            self._ExecuteMany( 'UPDATE {} SET current_count = current_count + ?, pending_count = pending_count + ? WHERE tag_id = ?;'.format( counts_cache_table_name ), ( ( num_current, num_pending, tag_id ) for ( tag_id, num_current, num_pending ) in ac_cache_changes if tag_id not in new_tag_ids ) )
+            self._execute_many('UPDATE {} SET current_count = current_count + ?, pending_count = pending_count + ? WHERE tag_id = ?;'.format(counts_cache_table_name), ((num_current, num_pending, tag_id) for (tag_id, num_current, num_pending) in ac_cache_changes if tag_id not in new_tag_ids))
             
         
         return ( new_tag_ids, new_local_tag_ids )
@@ -196,38 +196,38 @@ class ClientDBMappingsCounts( ClientDBModule.ClientDBModule ):
             
             if keep_current:
                 
-                self._Execute( 'UPDATE {} SET pending_count = 0 WHERE pending_count > 0;'.format( table_name ) )
+                self._execute('UPDATE {} SET pending_count = 0 WHERE pending_count > 0;'.format(table_name))
                 
-                self._Execute( 'DELETE FROM {} WHERE current_count = 0 AND pending_count = 0;'.format( table_name ) )
+                self._execute('DELETE FROM {} WHERE current_count = 0 AND pending_count = 0;'.format(table_name))
                 
             elif keep_pending:
                 
-                self._Execute( 'UPDATE {} SET current_count = 0 WHERE current_count > 0;'.format( table_name ) )
+                self._execute('UPDATE {} SET current_count = 0 WHERE current_count > 0;'.format(table_name))
                 
-                self._Execute( 'DELETE FROM {} WHERE current_count = 0 AND pending_count = 0;'.format( table_name ) )
+                self._execute('DELETE FROM {} WHERE current_count = 0 AND pending_count = 0;'.format(table_name))
                 
             else:
                 
-                self._Execute( 'DELETE FROM {};'.format( table_name ) )
+                self._execute('DELETE FROM {};'.format(table_name))
                 
             
         else:
             
             if keep_current:
                 
-                self._ExecuteMany( 'UPDATE {} SET pending_count = 0 WHERE pending_count > 0 AND tag_id = ?;'.format( table_name ), ( ( tag_id, ) for tag_id in tag_ids ) )
+                self._execute_many('UPDATE {} SET pending_count = 0 WHERE pending_count > 0 AND tag_id = ?;'.format(table_name), ((tag_id,) for tag_id in tag_ids))
                 
-                self._ExecuteMany( 'DELETE FROM {} WHERE current_count = 0 AND pending_count = 0 AND tag_id = ?;'.format( table_name ), ( ( tag_id, ) for tag_id in tag_ids ) )
+                self._execute_many('DELETE FROM {} WHERE current_count = 0 AND pending_count = 0 AND tag_id = ?;'.format(table_name), ((tag_id,) for tag_id in tag_ids))
                 
             elif keep_pending:
                 
-                self._ExecuteMany( 'UPDATE {} SET current_count = 0 WHERE current_count > 0 AND tag_id = ?;'.format( table_name ), ( ( tag_id, ) for tag_id in tag_ids ) )
+                self._execute_many('UPDATE {} SET current_count = 0 WHERE current_count > 0 AND tag_id = ?;'.format(table_name), ((tag_id,) for tag_id in tag_ids))
                 
-                self._ExecuteMany( 'DELETE FROM {} WHERE current_count = 0 AND pending_count = 0 AND tag_id = ?;'.format( table_name ), ( ( tag_id, ) for tag_id in tag_ids ) )
+                self._execute_many('DELETE FROM {} WHERE current_count = 0 AND pending_count = 0 AND tag_id = ?;'.format(table_name), ((tag_id,) for tag_id in tag_ids))
                 
             else:
                 
-                self._ExecuteMany( 'DELETE FROM {} WHERE tag_id = ?;'.format( table_name ), ( ( tag_id, ) for tag_id in tag_ids ) )
+                self._execute_many('DELETE FROM {} WHERE tag_id = ?;'.format(table_name), ((tag_id,) for tag_id in tag_ids))
                 
             
         
@@ -248,7 +248,7 @@ class ClientDBMappingsCounts( ClientDBModule.ClientDBModule ):
             display_table_name = self.GetCountsCacheTableName( tag_display_type, file_service_id, tag_service_id )
             storage_table_name = self.GetCountsCacheTableName( ClientTags.TAG_DISPLAY_STORAGE, file_service_id, tag_service_id )
             
-            self._Execute( 'INSERT OR IGNORE INTO {} ( tag_id, current_count, pending_count ) SELECT tag_id, current_count, pending_count FROM {};'.format( display_table_name, storage_table_name ) )
+            self._execute('INSERT OR IGNORE INTO {} ( tag_id, current_count, pending_count ) SELECT tag_id, current_count, pending_count FROM {};'.format(display_table_name, storage_table_name))
             
         
     
@@ -263,7 +263,7 @@ class ClientDBMappingsCounts( ClientDBModule.ClientDBModule ):
         
         counts_cache_table_name = self.GetCountsCacheTableName( tag_display_type, file_service_id, tag_service_id )
         
-        return self._STS( self._Execute( 'SELECT tag_id FROM {} CROSS JOIN {} USING ( tag_id );'.format( tag_ids_table_name, counts_cache_table_name ) ) )
+        return self._sts(self._execute('SELECT tag_id FROM {} CROSS JOIN {} USING ( tag_id );'.format(tag_ids_table_name, counts_cache_table_name)))
         
     
     def GetAutocompleteCountEstimate( self, tag_display_type: int, tag_service_id: int, file_service_id: int, tag_ids: collections.abc.Collection[ int ], include_current_tags: bool, include_pending_tags: bool ):
@@ -338,7 +338,7 @@ class ClientDBMappingsCounts( ClientDBModule.ClientDBModule ):
             
             if tag_ids_table_name is None:
                 
-                with self._MakeTemporaryIntegerTable( tag_ids, 'tag_id' ) as temp_tag_id_table_name:
+                with self._make_temporary_integer_table(tag_ids, 'tag_id') as temp_tag_id_table_name:
                     
                     for search_tag_service_id in search_tag_service_ids:
                         
@@ -504,7 +504,7 @@ class ClientDBMappingsCounts( ClientDBModule.ClientDBModule ):
         
         counts_cache_table_name = self.GetCountsCacheTableName( tag_display_type, file_service_id, tag_service_id )
         
-        return self._Execute( 'SELECT tag_id, current_count, pending_count FROM {} WHERE tag_id = ?;'.format( counts_cache_table_name ), ( tag_id, ) ).fetchall()
+        return self._execute('SELECT tag_id, current_count, pending_count FROM {} WHERE tag_id = ?;'.format(counts_cache_table_name), (tag_id,)).fetchall()
         
     
     def GetCountsForTags( self, tag_display_type, file_service_id, tag_service_id, temp_tag_id_table_name ):
@@ -512,7 +512,7 @@ class ClientDBMappingsCounts( ClientDBModule.ClientDBModule ):
         counts_cache_table_name = self.GetCountsCacheTableName( tag_display_type, file_service_id, tag_service_id )
         
         # temp tags to counts
-        return self._Execute( 'SELECT tag_id, current_count, pending_count FROM {} CROSS JOIN {} USING ( tag_id );'.format( temp_tag_id_table_name, counts_cache_table_name ) ).fetchall()
+        return self._execute('SELECT tag_id, current_count, pending_count FROM {} CROSS JOIN {} USING ( tag_id );'.format(temp_tag_id_table_name, counts_cache_table_name)).fetchall()
         
     
     def GetCurrentPendingPositiveCountsAndWeights( self, tag_display_type, file_service_id, tag_service_id, tag_ids, tag_ids_table_name = None ):
@@ -578,9 +578,9 @@ class ClientDBMappingsCounts( ClientDBModule.ClientDBModule ):
         
         counts_cache_table_name = self.GetCountsCacheTableName( tag_display_type, file_service_id, tag_service_id )
         
-        result = self._Execute( 'SELECT SUM( current_count ) FROM {};'.format( counts_cache_table_name ) ).fetchone()
+        result = self._execute('SELECT SUM( current_count ) FROM {};'.format(counts_cache_table_name)).fetchone()
         
-        count = self._GetSumResult( result )
+        count = self._get_sum_result(result)
         
         return count
         
@@ -596,9 +596,9 @@ class ClientDBMappingsCounts( ClientDBModule.ClientDBModule ):
         
         for ( tag_id, current_delta, pending_delta ) in ac_cache_changes:
             
-            self._Execute( 'DELETE FROM {} WHERE tag_id = ? AND current_count = ? AND pending_count = ?;'.format( counts_cache_table_name ), ( tag_id, current_delta, pending_delta ) )
+            self._execute('DELETE FROM {} WHERE tag_id = ? AND current_count = ? AND pending_count = ?;'.format(counts_cache_table_name), (tag_id, current_delta, pending_delta))
             
-            if self._GetRowCount() > 0:
+            if self._get_row_count() > 0:
                 
                 deleted_tag_ids.add( tag_id )
                 
@@ -611,7 +611,7 @@ class ClientDBMappingsCounts( ClientDBModule.ClientDBModule ):
         
         if len( deleted_tag_ids ) < len( ac_cache_changes ):
             
-            self._ExecuteMany( 'UPDATE {} SET current_count = current_count - ?, pending_count = pending_count - ? WHERE tag_id = ?;'.format( counts_cache_table_name ), ( ( current_delta, pending_delta, tag_id ) for ( tag_id, current_delta, pending_delta ) in ac_cache_changes if tag_id not in deleted_tag_ids ) )
+            self._execute_many('UPDATE {} SET current_count = current_count - ?, pending_count = pending_count - ? WHERE tag_id = ?;'.format(counts_cache_table_name), ((current_delta, pending_delta, tag_id) for (tag_id, current_delta, pending_delta) in ac_cache_changes if tag_id not in deleted_tag_ids))
             
         
         return ( deleted_tag_ids, deleted_local_tag_ids )

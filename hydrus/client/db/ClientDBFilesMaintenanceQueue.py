@@ -49,12 +49,12 @@ class ClientDBFilesMaintenanceQueue( ClientDBModule.ClientDBModule ):
         
         for deletee_job_type in deletee_job_types:
             
-            self._ExecuteMany( 'DELETE FROM file_maintenance_jobs WHERE hash_id = ? AND job_type = ?;', ( ( hash_id, deletee_job_type ) for hash_id in hash_ids ) )
+            self._execute_many('DELETE FROM file_maintenance_jobs WHERE hash_id = ? AND job_type = ?;', ((hash_id, deletee_job_type) for hash_id in hash_ids))
             
         
         #
         
-        self._ExecuteMany( 'REPLACE INTO file_maintenance_jobs ( hash_id, job_type, time_can_start ) VALUES ( ?, ?, ? );', ( ( hash_id, job_type, time_can_start ) for hash_id in hash_ids ) )
+        self._execute_many('REPLACE INTO file_maintenance_jobs ( hash_id, job_type, time_can_start ) VALUES ( ?, ?, ? );', ((hash_id, job_type, time_can_start) for hash_id in hash_ids))
         
         if CG.client_controller.IsBooted():
             
@@ -79,12 +79,12 @@ class ClientDBFilesMaintenanceQueue( ClientDBModule.ClientDBModule ):
     
     def CancelFiles( self, hash_ids ):
         
-        self._ExecuteMany( 'DELETE FROM file_maintenance_jobs WHERE hash_id = ?;', ( ( hash_id, ) for hash_id in hash_ids ) )
+        self._execute_many('DELETE FROM file_maintenance_jobs WHERE hash_id = ?;', ((hash_id,) for hash_id in hash_ids))
         
     
     def CancelJobs( self, job_type ):
         
-        self._Execute( 'DELETE FROM file_maintenance_jobs WHERE job_type = ?;', ( job_type, ) )
+        self._execute('DELETE FROM file_maintenance_jobs WHERE job_type = ?;', (job_type,))
         
     
     def GetJobs( self, job_types = None ):
@@ -100,16 +100,16 @@ class ClientDBFilesMaintenanceQueue( ClientDBModule.ClientDBModule ):
         
         for job_type in possible_job_types:
             
-            hash_ids = self._STL( self._Execute( 'SELECT hash_id FROM file_maintenance_jobs WHERE job_type = ? AND time_can_start < ? LIMIT ?;', ( job_type, HydrusTime.GetNow(), 256 ) ) )
+            hash_ids = self._stl(self._execute('SELECT hash_id FROM file_maintenance_jobs WHERE job_type = ? AND time_can_start < ? LIMIT ?;', (job_type, HydrusTime.GetNow(), 256)))
             
             if len( hash_ids ) > 0:
                 
-                with self._MakeTemporaryIntegerTable( hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
+                with self._make_temporary_integer_table(hash_ids, 'hash_id') as temp_hash_ids_table_name:
                     
                     splayed_job_types = HydrusLists.SplayListForDB( possible_job_types )
                     
                     # temp to file jobs
-                    hash_ids_to_job_types = HydrusData.build_key_to_set_dict(self._Execute(f'SELECT hash_id, job_type FROM {temp_hash_ids_table_name} CROSS JOIN file_maintenance_jobs USING ( hash_id ) WHERE time_can_start < ? AND job_type IN {splayed_job_types};', (HydrusTime.GetNow(),)))
+                    hash_ids_to_job_types = HydrusData.build_key_to_set_dict(self._execute(f'SELECT hash_id, job_type FROM {temp_hash_ids_table_name} CROSS JOIN file_maintenance_jobs USING ( hash_id ) WHERE time_can_start < ? AND job_type IN {splayed_job_types};', (HydrusTime.GetNow(),)))
                     
                 
                 hash_ids_to_hashes = self.modules_hashes_local_cache.GetHashIdsToHashes( hash_ids = hash_ids )
@@ -138,11 +138,11 @@ class ClientDBFilesMaintenanceQueue( ClientDBModule.ClientDBModule ):
     
     def GetJobCounts( self ):
         
-        result = self._Execute( 'SELECT job_type, COUNT( * ) FROM file_maintenance_jobs WHERE time_can_start < ? GROUP BY job_type;', ( HydrusTime.GetNow(), ) ).fetchall()
+        result = self._execute('SELECT job_type, COUNT( * ) FROM file_maintenance_jobs WHERE time_can_start < ? GROUP BY job_type;', (HydrusTime.GetNow(),)).fetchall()
         
         job_types_to_count = collections.Counter( dict( result ) )
         
-        not_due_result = self._Execute( 'SELECT job_type, COUNT( * ) FROM file_maintenance_jobs WHERE time_can_start >= ? GROUP BY job_type;', ( HydrusTime.GetNow(), ) ).fetchall()
+        not_due_result = self._execute('SELECT job_type, COUNT( * ) FROM file_maintenance_jobs WHERE time_can_start >= ? GROUP BY job_type;', (HydrusTime.GetNow(),)).fetchall()
         
         job_type_to_not_due_count = collections.Counter( dict( not_due_result ) )
         

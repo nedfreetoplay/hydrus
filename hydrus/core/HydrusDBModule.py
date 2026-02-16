@@ -14,7 +14,7 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
         
         self.name = name
         
-        self._SetCursor( cursor )
+        self._set_cursor(cursor)
         
     
     def _FlattenIndexGenerationDict( self, index_generation_dict: dict ):
@@ -49,7 +49,7 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
                 
             
             # little test here to make sure we stay idempotent if the primary table actually already exists--don't want to delete things that are actually good!
-            if self._Execute( 'SELECT 1 FROM {} WHERE name = ?;'.format( sqlite_master_table ), ( raw_table_name, ) ).fetchone() is None:
+            if self._execute('SELECT 1 FROM {} WHERE name = ?;'.format(sqlite_master_table), (raw_table_name,)).fetchone() is None:
                 
                 possible_suffixes = [ '_content', '_docsize', '_segdir', '_segments', '_stat' ]
                 
@@ -57,15 +57,15 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
                 
                 for possible_subtable_name in possible_subtable_names:
                     
-                    if self._Execute( 'SELECT 1 FROM {} WHERE name = ?;'.format( sqlite_master_table ), ( possible_subtable_name, ) ).fetchone() is not None:
+                    if self._execute('SELECT 1 FROM {} WHERE name = ?;'.format(sqlite_master_table), (possible_subtable_name,)).fetchone() is not None:
                         
-                        self._Execute( 'DROP TABLE {};'.format( possible_subtable_name ) )
+                        self._execute('DROP TABLE {};'.format(possible_subtable_name))
                         
                     
                 
             
         
-        self._Execute( create_query_without_name.format( table_name ) )
+        self._execute(create_query_without_name.format(table_name))
         
     
     def _DoLastShutdownWasBadWork( self ):
@@ -153,7 +153,7 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
         
         for ( table_name, columns, unique, version_added ) in self._FlattenIndexGenerationDict( index_generation_dict ):
             
-            self._CreateIndex( table_name, columns, unique = unique )
+            self._create_index(table_name, columns, unique = unique)
             
         
     
@@ -224,7 +224,7 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
         
         table_generation_dict = self._GetInitialTableGenerationDict()
         
-        missing_table_rows = [ ( table_name, create_query_without_name ) for ( table_name, ( create_query_without_name, version_added ) ) in table_generation_dict.items() if version_added <= current_db_version and not self._TableExists( table_name ) ]
+        missing_table_rows = [( table_name, create_query_without_name ) for ( table_name, ( create_query_without_name, version_added ) ) in table_generation_dict.items() if version_added <= current_db_version and not self._table_exists(table_name)]
         
         if len( missing_table_rows ) > 0:
             
@@ -247,19 +247,19 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
                 
                 self._CreateTable( create_query_without_name, table_name )
                 
-                cursor_transaction_wrapper.CommitAndBegin()
+                cursor_transaction_wrapper.commit_and_begin()
                 
             
             self._RepairRepopulateTables( missing_table_names, cursor_transaction_wrapper )
             
-            cursor_transaction_wrapper.CommitAndBegin()
+            cursor_transaction_wrapper.commit_and_begin()
             
         
         # now indices for those tables
         
         index_generation_dict = self._GetInitialIndexGenerationDict()
         
-        missing_index_rows = [ ( self._GenerateIdealIndexName( table_name, columns ), table_name, columns, unique ) for ( table_name, columns, unique, version_added ) in self._FlattenIndexGenerationDict( index_generation_dict ) if version_added <= current_db_version and not self._IdealIndexExists( table_name, columns ) ]
+        missing_index_rows = [(self._generate_ideal_index_name(table_name, columns), table_name, columns, unique) for (table_name, columns, unique, version_added) in self._FlattenIndexGenerationDict(index_generation_dict) if version_added <= current_db_version and not self._ideal_index_exists(table_name, columns)]
         
         if len( missing_index_rows ):
             
@@ -267,9 +267,9 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
             
             for ( index_name, table_name, columns, unique ) in missing_index_rows:
                 
-                self._CreateIndex( table_name, columns, unique = unique )
+                self._create_index(table_name, columns, unique = unique)
                 
-                cursor_transaction_wrapper.CommitAndBegin()
+                cursor_transaction_wrapper.commit_and_begin()
                 
             
         
@@ -277,7 +277,7 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
         
         table_generation_dict = self._GetServicesTableGenerationDict()
         
-        missing_table_rows = [ ( table_name, create_query_without_name ) for ( table_name, ( create_query_without_name, version_added ) ) in table_generation_dict.items() if version_added <= current_db_version and not self._TableExists( table_name ) ]
+        missing_table_rows = [( table_name, create_query_without_name ) for ( table_name, ( create_query_without_name, version_added ) ) in table_generation_dict.items() if version_added <= current_db_version and not self._table_exists(table_name)]
         
         if len( missing_table_rows ) > 0:
             
@@ -289,19 +289,19 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
                 
                 self._CreateTable( create_query_without_name, table_name )
                 
-                cursor_transaction_wrapper.CommitAndBegin()
+                cursor_transaction_wrapper.commit_and_begin()
                 
             
             self._RepairRepopulateTables( missing_table_names, cursor_transaction_wrapper )
             
-            cursor_transaction_wrapper.CommitAndBegin()
+            cursor_transaction_wrapper.commit_and_begin()
             
         
         # now indices for those tables
         
         index_generation_dict = self._GetServicesIndexGenerationDict()
         
-        missing_index_rows = [ ( self._GenerateIdealIndexName( table_name, columns ), table_name, columns, unique ) for ( table_name, columns, unique, version_added ) in self._FlattenIndexGenerationDict( index_generation_dict ) if version_added <= current_db_version and not self._IdealIndexExists( table_name, columns ) ]
+        missing_index_rows = [(self._generate_ideal_index_name(table_name, columns), table_name, columns, unique) for (table_name, columns, unique, version_added) in self._FlattenIndexGenerationDict(index_generation_dict) if version_added <= current_db_version and not self._ideal_index_exists(table_name, columns)]
         
         if len( missing_index_rows ):
             
@@ -309,9 +309,9 @@ class HydrusDBModule( HydrusDBBase.DBBase ):
             
             for ( index_name, table_name, columns, unique ) in missing_index_rows:
                 
-                self._CreateIndex( table_name, columns, unique = unique )
+                self._create_index(table_name, columns, unique = unique)
                 
-                cursor_transaction_wrapper.CommitAndBegin()
+                cursor_transaction_wrapper.commit_and_begin()
                 
             
         

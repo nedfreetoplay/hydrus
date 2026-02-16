@@ -41,7 +41,7 @@ class ClientDBNotesMap( ClientDBModule.ClientDBModule ):
         
         name_id = self.modules_texts.GetLabelId( name )
         
-        self._Execute( 'DELETE FROM file_notes WHERE hash_id = ? AND name_id = ?;', ( hash_id, name_id ) )
+        self._execute('DELETE FROM file_notes WHERE hash_id = ? AND name_id = ?;', (hash_id, name_id))
         
     
     def GetHashIdsFromNoteName( self, name: str, hash_ids_table_name: str, job_status: ClientThreading.JobStatus | None = None ):
@@ -56,7 +56,7 @@ class ClientDBNotesMap( ClientDBModule.ClientDBModule ):
             
         
         # as note name is rare, we force this to run opposite to typical: notes to temp hashes
-        return self._STS( self._ExecuteCancellable( 'SELECT hash_id FROM file_notes CROSS JOIN {} USING ( hash_id ) WHERE name_id = ?;'.format( hash_ids_table_name ), ( label_id, ), cancelled_hook ) )
+        return self._sts(self._execute_cancellable('SELECT hash_id FROM file_notes CROSS JOIN {} USING ( hash_id ) WHERE name_id = ?;'.format(hash_ids_table_name), (label_id,), cancelled_hook))
         
     
     def GetHashIdsFromNumNotes( self, number_tests: list[ ClientNumberTest.NumberTest ], hash_ids: collections.abc.Collection[ int ], hash_ids_table_name: str, job_status: ClientThreading.JobStatus | None = None ):
@@ -100,7 +100,7 @@ class ClientDBNotesMap( ClientDBModule.ClientDBModule ):
             # temp hashes to notes
             query = 'SELECT hash_id, COUNT( * ) FROM {} CROSS JOIN file_notes USING ( hash_id ) GROUP BY hash_id;'.format( hash_ids_table_name )
             
-            good_url_count_hash_ids = { hash_id for ( hash_id, count ) in self._ExecuteCancellable( query, (), cancelled_hook ) if megalambda( count ) }
+            good_url_count_hash_ids = {hash_id for ( hash_id, count ) in self._execute_cancellable(query, (), cancelled_hook) if megalambda(count)}
             
             if wants_zero:
                 
@@ -126,7 +126,7 @@ class ClientDBNotesMap( ClientDBModule.ClientDBModule ):
         
         query = 'SELECT hash_id FROM {} WHERE NOT EXISTS ( SELECT 1 FROM file_notes WHERE file_notes.hash_id = {}.hash_id );'.format( hash_ids_table_name, hash_ids_table_name )
         
-        hash_ids = self._STS( self._ExecuteCancellable( query, (), cancelled_hook ) )
+        hash_ids = self._sts(self._execute_cancellable(query, (), cancelled_hook))
         
         return hash_ids
         
@@ -142,7 +142,7 @@ class ClientDBNotesMap( ClientDBModule.ClientDBModule ):
         
         query = 'SELECT hash_id FROM {} WHERE EXISTS ( SELECT 1 FROM file_notes WHERE file_notes.hash_id = {}.hash_id );'.format( hash_ids_table_name, hash_ids_table_name )
         
-        hash_ids = self._STS( self._ExecuteCancellable( query, (), cancelled_hook ) )
+        hash_ids = self._sts(self._execute_cancellable(query, (), cancelled_hook))
         
         return hash_ids
         
@@ -151,7 +151,7 @@ class ClientDBNotesMap( ClientDBModule.ClientDBModule ):
         
         query = 'SELECT file_notes.hash_id, label, note FROM {} CROSS JOIN file_notes USING ( hash_id ), labels, notes ON ( file_notes.name_id = labels.label_id AND file_notes.note_id = notes.note_id );'.format( hash_ids_table_name )
         
-        hash_ids_to_names_and_notes = HydrusData.build_key_to_list_dict(((hash_id, (name, note)) for (hash_id, name, note) in self._Execute(query)))
+        hash_ids_to_names_and_notes = HydrusData.build_key_to_list_dict(((hash_id, (name, note)) for (hash_id, name, note) in self._execute(query)))
         
         return hash_ids_to_names_and_notes
         
@@ -174,13 +174,13 @@ class ClientDBNotesMap( ClientDBModule.ClientDBModule ):
         
         name_id = self.modules_texts.GetLabelId( name )
         
-        self._Execute( 'DELETE FROM file_notes WHERE hash_id = ? AND name_id = ?;', ( hash_id, name_id ) )
+        self._execute('DELETE FROM file_notes WHERE hash_id = ? AND name_id = ?;', (hash_id, name_id))
         
         if len( note ) > 0:
             
             note_id = self.modules_texts.GetNoteId( note )
             
-            self._Execute( 'INSERT OR IGNORE INTO file_notes ( hash_id, name_id, note_id ) VALUES ( ?, ?, ? );', ( hash_id, name_id, note_id ) )
+            self._execute('INSERT OR IGNORE INTO file_notes ( hash_id, name_id, note_id ) VALUES ( ?, ?, ? );', (hash_id, name_id, note_id))
             
         
     

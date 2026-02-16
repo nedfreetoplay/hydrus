@@ -1597,7 +1597,7 @@ class StringProcessor( StringProcessingStep ):
                 
             else:
                 
-                proc_strings.append( processing_step.ToString() )
+                proc_strings.append(processing_step.to_string())
                 
             
         

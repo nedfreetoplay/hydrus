@@ -747,12 +747,12 @@ class ListBoxTagsPredicatesAC( ClientGUIListBoxes.ListBoxTagsPredicates ):
                             
                             # now only apply this to simple tags, not wildcards and system tags
                             
-                            if skip_ors and predicate.GetType() == ClientSearchPredicate.PREDICATE_TYPE_OR_CONTAINER:
+                            if skip_ors and predicate.get_type() == ClientSearchPredicate.PREDICATE_TYPE_OR_CONTAINER:
                                 
                                 continue
                                 
                             
-                            if skip_countless and predicate.GetType() in ( ClientSearchPredicate.PREDICATE_TYPE_PARENT, ClientSearchPredicate.PREDICATE_TYPE_TAG ) and predicate.GetCount().HasZeroCount():
+                            if skip_countless and predicate.get_type() in (ClientSearchPredicate.PREDICATE_TYPE_PARENT, ClientSearchPredicate.PREDICATE_TYPE_TAG) and predicate.GetCount().HasZeroCount():
                                 
                                 continue
                                 
@@ -3144,7 +3144,7 @@ class ListBoxTagsActiveSearchPredicates( ClientGUIListBoxes.ListBoxTagsPredicate
             
             if len( editable_and_invertible_predicates ) == 1:
                 
-                desc = list( editable_and_invertible_predicates )[0].ToString()
+                desc = list( editable_and_invertible_predicates )[0].to_string()
                 
             else:
                 
@@ -3840,7 +3840,7 @@ class EditAdvancedORPredicates( ClientGUIScrolledPanels.EditPanel ):
                         
                     
                 
-                output = '\n'.join( ( pred.ToString() for pred in self._current_predicates ) )
+                output = '\n'.join((pred.to_string() for pred in self._current_predicates))
                 object_name = 'HydrusValid'
                 
             except ValueError as e:

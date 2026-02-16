@@ -151,7 +151,7 @@ class NetworkJobControl( QW.QFrame ):
                 
                 for ( uses_default, network_context_to_edit, network_context_to_test ) in menu_network_contexts:
                     
-                    network_context_text = network_context_to_edit.ToString()
+                    network_context_text = network_context_to_edit.to_string()
                     
                     if uses_default:
                         

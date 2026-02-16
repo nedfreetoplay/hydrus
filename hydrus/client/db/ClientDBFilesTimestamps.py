@@ -75,7 +75,7 @@ class ClientDBFilesTimestamps( ClientDBModule.ClientDBModule ):
         
         ( table_name, column_name ) = GetSimpleTimestampTableNames( timestamp_type )
         
-        self._ExecuteMany( f'DELETE FROM {table_name} WHERE hash_id = ?;', ( ( hash_id, ) for hash_id in hash_ids ) )
+        self._execute_many(f'DELETE FROM {table_name} WHERE hash_id = ?;', ((hash_id,) for hash_id in hash_ids))
         
     
     def ClearArchivedTimes( self, hash_ids: collections.abc.Collection[ int ] ):
@@ -94,7 +94,7 @@ class ClientDBFilesTimestamps( ClientDBModule.ClientDBModule ):
             
             domain_id = self.modules_urls.GetURLDomainId( timestamp_data.location )
             
-            self._ExecuteMany( 'DELETE FROM file_domain_modified_timestamps WHERE hash_id = ? AND domain_id = ?;', ( ( hash_id, domain_id ) for hash_id in hash_ids ) )
+            self._execute_many('DELETE FROM file_domain_modified_timestamps WHERE hash_id = ? AND domain_id = ?;', ((hash_id, domain_id) for hash_id in hash_ids))
             
         elif timestamp_data.timestamp_type in ClientTime.SIMPLE_TIMESTAMP_TYPES:
             
@@ -136,7 +136,7 @@ class ClientDBFilesTimestamps( ClientDBModule.ClientDBModule ):
                 
                 query = 'SELECT hash_id FROM ( {} UNION {} ) GROUP BY hash_id HAVING {};'.format( q1, q2, pred_string )
                 
-                modified_timestamp_hash_ids = self._STS( self._ExecuteCancellable( query, (), cancelled_hook ) )
+                modified_timestamp_hash_ids = self._sts(self._execute_cancellable(query, (), cancelled_hook))
                 
                 return modified_timestamp_hash_ids
                 
@@ -167,7 +167,7 @@ class ClientDBFilesTimestamps( ClientDBModule.ClientDBModule ):
                 
                 query = f'SELECT hash_id FROM {table_name} WHERE {pred_string};'
                 
-                hash_ids = self._STS( self._ExecuteCancellable( query, (), cancelled_hook ) )
+                hash_ids = self._sts(self._execute_cancellable(query, (), cancelled_hook))
                 
                 return hash_ids
                 
@@ -180,11 +180,11 @@ class ClientDBFilesTimestamps( ClientDBModule.ClientDBModule ):
         
         # TODO: generalise this to any timestamp_data stub, but it is a slight pain!
         
-        with self._MakeTemporaryIntegerTable( hash_ids, 'hash_id' ) as temp_table_name:
+        with self._make_temporary_integer_table(hash_ids, 'hash_id') as temp_table_name:
             
             ( table_name, column_name ) = GetSimpleTimestampTableNames( HC.TIMESTAMP_TYPE_ARCHIVED )
             
-            result = dict( self._Execute( f'SELECT hash_id, {column_name} FROM {temp_table_name} CROSS JOIN {table_name} USING ( hash_id );' ) )
+            result = dict(self._execute(f'SELECT hash_id, {column_name} FROM {temp_table_name} CROSS JOIN {table_name} USING ( hash_id );'))
             
         
         for hash_id in hash_ids:
@@ -206,7 +206,7 @@ class ClientDBFilesTimestamps( ClientDBModule.ClientDBModule ):
         
         hash_ids_to_file_modified_timestamps_ms = self.GetSimpleTimestampsMS( HC.TIMESTAMP_TYPE_MODIFIED_FILE, hash_ids_table_name )
         
-        hash_ids_to_domain_modified_timestamps_ms = HydrusData.build_key_to_list_dict(((hash_id, (domain, timestamp_ms)) for (hash_id, domain, timestamp_ms) in self._Execute('SELECT hash_id, domain, file_modified_timestamp_ms FROM {} CROSS JOIN file_domain_modified_timestamps USING ( hash_id ) CROSS JOIN url_domains USING ( domain_id );'.format(hash_ids_table_name))))
+        hash_ids_to_domain_modified_timestamps_ms = HydrusData.build_key_to_list_dict(((hash_id, (domain, timestamp_ms)) for (hash_id, domain, timestamp_ms) in self._execute('SELECT hash_id, domain, file_modified_timestamp_ms FROM {} CROSS JOIN file_domain_modified_timestamps USING ( hash_id ) CROSS JOIN url_domains USING ( domain_id );'.format(hash_ids_table_name))))
         
         hash_ids_to_timestamp_managers = {}
         
@@ -244,7 +244,7 @@ class ClientDBFilesTimestamps( ClientDBModule.ClientDBModule ):
         
         query = f'SELECT hash_id, {column_name} FROM {hash_ids_table_name} CROSS JOIN {table_name} USING ( hash_id );'
         
-        return dict( self._Execute( query ) )
+        return dict(self._execute(query))
         
     
     def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
@@ -274,7 +274,7 @@ class ClientDBFilesTimestamps( ClientDBModule.ClientDBModule ):
             
             domain_id = self.modules_urls.GetURLDomainId( timestamp_data.location )
             
-            result = self._Execute( 'SELECT file_modified_timestamp_ms FROM file_domain_modified_timestamps WHERE hash_id = ? AND domain_id = ?;', ( hash_id, domain_id ) ).fetchone()
+            result = self._execute('SELECT file_modified_timestamp_ms FROM file_domain_modified_timestamps WHERE hash_id = ? AND domain_id = ?;', (hash_id, domain_id)).fetchone()
             
         elif timestamp_data.timestamp_type == HC.TIMESTAMP_TYPE_LAST_VIEWED:
             
@@ -288,7 +288,7 @@ class ClientDBFilesTimestamps( ClientDBModule.ClientDBModule ):
             
             ( table_name, column_name ) = GetSimpleTimestampTableNames( timestamp_data.timestamp_type )
             
-            result = self._Execute( f'SELECT {column_name} FROM {table_name} WHERE hash_id = ?;', ( hash_id, ) ).fetchone()
+            result = self._execute(f'SELECT {column_name} FROM {table_name} WHERE hash_id = ?;', (hash_id,)).fetchone()
             
         
         if result is None:
@@ -305,7 +305,7 @@ class ClientDBFilesTimestamps( ClientDBModule.ClientDBModule ):
         
         ( table_name, column_name ) = GetSimpleTimestampTableNames( timestamp_type )
         
-        self._ExecuteMany( f'REPLACE INTO {table_name} ( hash_id, {column_name} ) VALUES ( ?, ? );', rows )
+        self._execute_many(f'REPLACE INTO {table_name} ( hash_id, {column_name} ) VALUES ( ?, ? );', rows)
         
     
     def SetTime( self, hash_ids: collections.abc.Collection[ int ], timestamp_data: ClientTime.TimestampData ):
@@ -326,7 +326,7 @@ class ClientDBFilesTimestamps( ClientDBModule.ClientDBModule ):
             
             domain_id = self.modules_urls.GetURLDomainId( timestamp_data.location )
             
-            self._ExecuteMany( 'REPLACE INTO file_domain_modified_timestamps ( hash_id, domain_id, file_modified_timestamp_ms ) VALUES ( ?, ?, ? );', ( ( hash_id, domain_id, timestamp_data.timestamp_ms ) for hash_id in hash_ids ) )
+            self._execute_many('REPLACE INTO file_domain_modified_timestamps ( hash_id, domain_id, file_modified_timestamp_ms ) VALUES ( ?, ?, ? );', ((hash_id, domain_id, timestamp_data.timestamp_ms) for hash_id in hash_ids))
             
         elif timestamp_data.timestamp_type == HC.TIMESTAMP_TYPE_LAST_VIEWED:
             

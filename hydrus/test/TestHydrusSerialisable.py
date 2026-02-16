@@ -152,7 +152,7 @@ class TestSerialisables( unittest.TestCase ):
             
             self._dump_and_load_and_test( ac, test )
             
-            self.assertEqual( ac.ToString(), s )
+            self.assertEqual(ac.to_string(), s)
             
         
     
@@ -465,7 +465,7 @@ class TestSerialisables( unittest.TestCase ):
                 s = s.replace( 'ctrl', 'command' )
                 
             
-            self.assertEqual( shortcut.ToString(), s )
+            self.assertEqual(shortcut.to_string(), s)
             
         
     

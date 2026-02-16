@@ -262,7 +262,7 @@ class EditFavouriteSearchesPanel( ClientGUIScrolledPanels.EditPanel ):
             
         
         pretty_name = name
-        pretty_file_search_context = ', '.join( predicate.ToString() for predicate in file_search_context.GetPredicates() )
+        pretty_file_search_context = ', '.join(predicate.to_string() for predicate in file_search_context.GetPredicates())
         
         if media_sort is None:
             
@@ -270,7 +270,7 @@ class EditFavouriteSearchesPanel( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            pretty_media_sort = media_sort.ToString()
+            pretty_media_sort = media_sort.to_string()
             
         
         if media_collect is None:
@@ -279,7 +279,7 @@ class EditFavouriteSearchesPanel( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            pretty_media_collect = media_collect.ToString()
+            pretty_media_collect = media_collect.to_string()
             
         
         return ( pretty_foldername, pretty_name, pretty_file_search_context, pretty_media_sort, pretty_media_collect )

@@ -257,7 +257,7 @@ class ClientDBFilesMaintenance( ClientDBModule.ClientDBModule ):
             
             job_types_to_delete.extend( ClientFilesMaintenance.regen_file_enum_to_overruled_jobs[ job_type ] )
             
-            self._ExecuteMany( 'DELETE FROM file_maintenance_jobs WHERE hash_id = ? AND job_type = ?;', ( ( hash_id, job_type_to_delete ) for job_type_to_delete in job_types_to_delete ) )
+            self._execute_many('DELETE FROM file_maintenance_jobs WHERE hash_id = ? AND job_type = ?;', ((hash_id, job_type_to_delete) for job_type_to_delete in job_types_to_delete))
             
         
         if len( new_file_info_managers_info ) > 0:

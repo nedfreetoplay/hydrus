@@ -301,11 +301,11 @@ class NetworkEngine( object ):
                         
                         if job.IsHydrusJob():
                             
-                            message = f'This hydrus service "{job_login_network_context.ToString()}" could not do work because: {e}'
+                            message = f'This hydrus service "{job_login_network_context.to_string()}" could not do work because: {e}'
                             
                         else:
                             
-                            message = f'This job\'s network context "{job_login_network_context.ToString()}" seems to have an invalid login. The error was: {e}'
+                            message = f'This job\'s network context "{job_login_network_context.to_string()}" seems to have an invalid login. The error was: {e}'
                             
                         
                         job.Cancel( message )

@@ -113,7 +113,7 @@ class EditLoginCredentialsPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 else:
                     
-                    st_label = string_match.ToString()
+                    st_label = string_match.to_string()
                     
                 
             else:
@@ -222,7 +222,7 @@ class EditLoginCredentialDefinitionPanel( ClientGUIScrolledPanels.EditPanel ):
         #
         
         self._name.setText(credential_definition.get_name())
-        self._credential_type.SetValue( credential_definition.GetType() )
+        self._credential_type.SetValue(credential_definition.get_type())
         
         #
         
@@ -1561,13 +1561,13 @@ class EditLoginScriptPanel( ClientGUIScrolledPanels.EditPanel ):
     def _ConvertCredentialDefinitionToDisplayTuple( self, credential_definition ):
         
         name = credential_definition.get_name()
-        credential_type = credential_definition.GetType()
+        credential_type = credential_definition.get_type()
         
         type_string = ClientNetworkingLogin.credential_type_str_lookup[ credential_type ]
         
         string_match = credential_definition.GetStringMatch()
         
-        value = string_match.ToString()
+        value = string_match.to_string()
         
         pretty_name = name
         pretty_type_string = type_string
@@ -1581,13 +1581,13 @@ class EditLoginScriptPanel( ClientGUIScrolledPanels.EditPanel ):
     def _ConvertCredentialDefinitionToSortTuple( self, credential_definition ):
         
         name = credential_definition.get_name()
-        credential_type = credential_definition.GetType()
+        credential_type = credential_definition.get_type()
         
         type_string = ClientNetworkingLogin.credential_type_str_lookup[ credential_type ]
         
         string_match = credential_definition.GetStringMatch()
         
-        value = string_match.ToString()
+        value = string_match.to_string()
         
         sort_tuple = ( name, type_string, value )
         

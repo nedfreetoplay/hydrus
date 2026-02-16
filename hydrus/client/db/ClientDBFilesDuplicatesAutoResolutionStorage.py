@@ -122,21 +122,21 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
             
             now_ms = HydrusTime.GetNowMS()
             
-            self._Execute( f'INSERT OR IGNORE INTO {statuses_to_table_names[ dest_status ]} ( smaller_media_id, larger_media_id, timestamp_ms ) SELECT smaller_media_id, larger_media_id, ? FROM {statuses_to_table_names[ source_status ]};', ( now_ms, ) )
+            self._execute(f'INSERT OR IGNORE INTO {statuses_to_table_names[ dest_status]} ( smaller_media_id, larger_media_id, timestamp_ms ) SELECT smaller_media_id, larger_media_id, ? FROM {statuses_to_table_names[ source_status]};', (now_ms,))
             
         else:
             
-            self._Execute( f'INSERT OR IGNORE INTO {statuses_to_table_names[ dest_status ]} ( smaller_media_id, larger_media_id ) SELECT smaller_media_id, larger_media_id FROM {statuses_to_table_names[ source_status ]};' )
+            self._execute(f'INSERT OR IGNORE INTO {statuses_to_table_names[ dest_status]} ( smaller_media_id, larger_media_id ) SELECT smaller_media_id, larger_media_id FROM {statuses_to_table_names[ source_status]};')
             
         
-        num_added = self._GetRowCount()
+        num_added = self._get_row_count()
         
         if num_added > 0:
             
             self._UpdateRuleCount( rule_id, dest_status, num_added )
             
         
-        self._Execute( f'DELETE FROM {statuses_to_table_names[ source_status ]};' )
+        self._execute(f'DELETE FROM {statuses_to_table_names[ source_status]};')
         
         self._SetRuleCount( rule_id, source_status, 0 )
         
@@ -149,7 +149,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
         
         rules_to_counters = collections.defaultdict( collections.Counter )
         
-        rows = self._Execute( 'SELECT rule_id, status, status_count FROM duplicates_files_auto_resolution_rule_count_cache;' ).fetchall()
+        rows = self._execute('SELECT rule_id, status, status_count FROM duplicates_files_auto_resolution_rule_count_cache;').fetchall()
         
         for ( rule_id, status, status_count ) in rows:
             
@@ -201,7 +201,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
                         table_name = statuses_to_table_names[ status ]
                         
                     
-                    ( status_count, ) = self._Execute( f'SELECT COUNT( * ) FROM {table_name};' ).fetchone()
+                    ( status_count, ) = self._execute(f'SELECT COUNT( * ) FROM {table_name};').fetchone()
                     
                     rules_to_counters[ rule ][ status ] = status_count
                     
@@ -211,7 +211,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
                     
                 
             
-            self._ExecuteMany( 'INSERT OR IGNORE INTO duplicates_files_auto_resolution_rule_count_cache ( rule_id, status, status_count ) VALUES ( ?, ?, ? );', insert_rows )
+            self._execute_many('INSERT OR IGNORE INTO duplicates_files_auto_resolution_rule_count_cache ( rule_id, status, status_count ) VALUES ( ?, ?, ? );', insert_rows)
             
         
         for ( rule, counts ) in rules_to_counters.items():
@@ -233,12 +233,12 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
         
         for ( status, table_name ) in statuses_to_table_names.items():
             
-            self._ExecuteMany(
+            self._execute_many(
                 f'DELETE FROM {table_name} WHERE smaller_media_id = ? AND larger_media_id = ?;',
                 pairs
             )
             
-            num_deleted = self._GetRowCount()
+            num_deleted = self._get_row_count()
             
             if num_deleted > 0:
                 
@@ -285,7 +285,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
             
             # TODO: do a ReadLargeIdQueryInSeparateChunks for two-column data, or n-coloumn data and do it here
             
-            all_pairs_for_this_table = self._Execute( f'SELECT smaller_media_id, larger_media_id FROM {table_name};' ).fetchall()
+            all_pairs_for_this_table = self._execute(f'SELECT smaller_media_id, larger_media_id FROM {table_name};').fetchall()
             
             for group_of_pairs in HydrusLists.SplitListIntoChunks( all_pairs_for_this_table, 10000 ):
                 
@@ -297,12 +297,12 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
                     
                     deletee_pairs = set( group_of_pairs ).difference( valid_pairs )
                     
-                    self._ExecuteMany(
+                    self._execute_many(
                         f'DELETE FROM {table_name} WHERE smaller_media_id = ? AND larger_media_id = ?;',
                         deletee_pairs
                     )
                     
-                    num_deleted = self._GetRowCount()
+                    num_deleted = self._get_row_count()
                     
                     if num_deleted > 0:
                         
@@ -320,7 +320,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
         
         # TODO: do a ReadLargeIdQueryInSeparateChunks for two-column data, or n-coloumn data and do it here
         
-        all_pairs = self._Execute( f'SELECT smaller_media_id, larger_media_id FROM {master_potential_duplicate_pairs_table_name};' ).fetchall()
+        all_pairs = self._execute(f'SELECT smaller_media_id, larger_media_id FROM {master_potential_duplicate_pairs_table_name};').fetchall()
         
         not_searched_table_name = statuses_to_table_names[ ClientDuplicatesAutoResolution.DUPLICATE_STATUS_NOT_SEARCHED ]
         
@@ -335,9 +335,9 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
                 continue
                 
             
-            self._ExecuteMany( f'INSERT OR IGNORE INTO {not_searched_table_name} ( smaller_media_id, larger_media_id ) VALUES ( ?, ? );', pairs_to_add )
+            self._execute_many(f'INSERT OR IGNORE INTO {not_searched_table_name} ( smaller_media_id, larger_media_id ) VALUES ( ?, ? );', pairs_to_add)
             
-            num_added = self._GetRowCount()
+            num_added = self._get_row_count()
             
             if num_added > 0:
                 
@@ -354,7 +354,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
     
     def _SetRuleCount( self, rule_id: int, status: int, count: int ):
         
-        self._Execute( 'REPLACE INTO duplicates_files_auto_resolution_rule_count_cache ( rule_id, status, status_count ) VALUES ( ?, ?, ? );', ( rule_id, status, count ) )
+        self._execute('REPLACE INTO duplicates_files_auto_resolution_rule_count_cache ( rule_id, status, status_count ) VALUES ( ?, ?, ? );', (rule_id, status, count))
         
         rule = self._rule_ids_to_rules[ rule_id ]
         
@@ -363,7 +363,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
     
     def _UpdateRuleCount( self, rule_id: int, status: int, delta: int ):
         
-        self._Execute( 'UPDATE duplicates_files_auto_resolution_rule_count_cache SET status_count = status_count + ? WHERE rule_id = ? AND status = ?;', ( delta, rule_id, status ) )
+        self._execute('UPDATE duplicates_files_auto_resolution_rule_count_cache SET status_count = status_count + ? WHERE rule_id = ? AND status = ?;', (delta, rule_id, status))
         
         rule = self._rule_ids_to_rules[ rule_id ]
         
@@ -385,11 +385,11 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
             
             for ( status, table_name ) in statuses_to_table_names.items():
                 
-                self._Execute( f'DELETE FROM {table_name};' )
+                self._execute(f'DELETE FROM {table_name};')
                 
             
         
-        self._Execute( 'DELETE FROM duplicates_files_auto_resolution_rule_count_cache;' )
+        self._execute('DELETE FROM duplicates_files_auto_resolution_rule_count_cache;')
         
         self._Reinit()
         
@@ -430,11 +430,11 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
         
         if fetch_limit is None:
             
-            hash_id_pairs_with_data = self._Execute( f'SELECT hash_id_a, hash_id_b, duplicate_type, timestamp_ms FROM {actioned_table_name} ORDER BY timestamp_ms DESC;' ).fetchall()
+            hash_id_pairs_with_data = self._execute(f'SELECT hash_id_a, hash_id_b, duplicate_type, timestamp_ms FROM {actioned_table_name} ORDER BY timestamp_ms DESC;').fetchall()
             
         else:
             
-            hash_id_pairs_with_data = self._Execute( f'SELECT hash_id_a, hash_id_b, duplicate_type, timestamp_ms FROM {actioned_table_name} ORDER BY timestamp_ms DESC LIMIT ?;', ( fetch_limit, ) ).fetchall()
+            hash_id_pairs_with_data = self._execute(f'SELECT hash_id_a, hash_id_b, duplicate_type, timestamp_ms FROM {actioned_table_name} ORDER BY timestamp_ms DESC LIMIT ?;', (fetch_limit,)).fetchall()
             
         
         return hash_id_pairs_with_data
@@ -458,11 +458,11 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
         
         if fetch_limit is None:
             
-            media_id_pairs_with_data = self._Execute( f'SELECT smaller_media_id, larger_media_id, timestamp_ms FROM {denied_table_name} ORDER BY timestamp_ms DESC;' ).fetchall()
+            media_id_pairs_with_data = self._execute(f'SELECT smaller_media_id, larger_media_id, timestamp_ms FROM {denied_table_name} ORDER BY timestamp_ms DESC;').fetchall()
             
         else:
             
-            media_id_pairs_with_data = self._Execute( f'SELECT smaller_media_id, larger_media_id, timestamp_ms FROM {denied_table_name} ORDER BY timestamp_ms DESC LIMIT ?;', ( fetch_limit, ) ).fetchall()
+            media_id_pairs_with_data = self._execute(f'SELECT smaller_media_id, larger_media_id, timestamp_ms FROM {denied_table_name} ORDER BY timestamp_ms DESC LIMIT ?;', (fetch_limit,)).fetchall()
             
         
         return media_id_pairs_with_data
@@ -484,7 +484,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
         
         table_name = GenerateAutoResolutionQueueTableName( rule_id, ClientDuplicatesAutoResolution.DUPLICATE_STATUS_MATCHES_SEARCH_BUT_NOT_TESTED )
         
-        return self._Execute( f'SELECT smaller_media_id, larger_media_id FROM {table_name};' ).fetchone()
+        return self._execute(f'SELECT smaller_media_id, larger_media_id FROM {table_name};').fetchone()
         
     
     def GetPendingActionPairs( self, rule: ClientDuplicatesAutoResolution.DuplicatesAutoResolutionRule, fetch_limit = None ):
@@ -500,11 +500,11 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
         
         if fetch_limit is None:
             
-            hash_id_pairs = self._Execute( f'SELECT hash_id_a, hash_id_b FROM {pending_actions_table_name};' ).fetchall()
+            hash_id_pairs = self._execute(f'SELECT hash_id_a, hash_id_b FROM {pending_actions_table_name};').fetchall()
             
         else:
             
-            hash_id_pairs = self._Execute( f'SELECT hash_id_a, hash_id_b FROM {pending_actions_table_name} LIMIT ?;', ( fetch_limit, ) ).fetchall()
+            hash_id_pairs = self._execute(f'SELECT hash_id_a, hash_id_b FROM {pending_actions_table_name} LIMIT ?;', (fetch_limit,)).fetchall()
             
         
         return hash_id_pairs
@@ -538,11 +538,11 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
         
         if limit is None:
             
-            result = self._Execute( f'SELECT smaller_media_id, larger_media_id, distance FROM {table_name} CROSS JOIN potential_duplicate_pairs USING ( smaller_media_id, larger_media_id );' ).fetchall()
+            result = self._execute(f'SELECT smaller_media_id, larger_media_id, distance FROM {table_name} CROSS JOIN potential_duplicate_pairs USING ( smaller_media_id, larger_media_id );').fetchall()
             
         else:
             
-            result = self._Execute( f'SELECT smaller_media_id, larger_media_id, distance FROM {table_name} CROSS JOIN potential_duplicate_pairs USING ( smaller_media_id, larger_media_id ) LIMIT ?;', ( limit, ) ).fetchall()
+            result = self._execute(f'SELECT smaller_media_id, larger_media_id, distance FROM {table_name} CROSS JOIN potential_duplicate_pairs USING ( smaller_media_id, larger_media_id ) LIMIT ?;', (limit,)).fetchall()
             
         
         return ClientPotentialDuplicatesSearchContext.PotentialDuplicateIdPairsAndDistances( result )
@@ -554,7 +554,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
         
         if content_type == HC.CONTENT_TYPE_HASH:
             
-            rule_ids = self._STS( self._Execute( 'SELECT rule_id FROM duplicate_files_auto_resolution_rules;' ) )
+            rule_ids = self._sts(self._execute('SELECT rule_id FROM duplicate_files_auto_resolution_rules;'))
             
             for rule_id in rule_ids:
                 
@@ -585,9 +585,9 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
         
         table_name = GenerateResolutionActionedPairsTableName( rule_id )
         
-        self._Execute( f'INSERT OR IGNORE INTO {table_name} ( hash_id_a, hash_id_b, duplicate_type, timestamp_ms ) VALUES ( ?, ?, ?, ? );', ( hash_id_a, hash_id_b, duplicate_type, timestamp_ms ) )
+        self._execute(f'INSERT OR IGNORE INTO {table_name} ( hash_id_a, hash_id_b, duplicate_type, timestamp_ms ) VALUES ( ?, ?, ?, ? );', (hash_id_a, hash_id_b, duplicate_type, timestamp_ms))
         
-        num_added = self._GetRowCount()
+        num_added = self._get_row_count()
         
         if num_added > 0:
             
@@ -608,19 +608,19 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
         
         if pairs_to_sync_to is None:
             
-            pairs_to_sync_to = set( self._Execute( f'SELECT smaller_media_id, larger_media_id FROM {master_potential_duplicate_pairs_table_name};' ) )
+            pairs_to_sync_to = set(self._execute(f'SELECT smaller_media_id, larger_media_id FROM {master_potential_duplicate_pairs_table_name};'))
             pairs_stored_in_duplicates_proper = set( pairs_to_sync_to )
             
         
         all_were_good = True
         
-        with self._MakeTemporaryIntegerTable( pairs_to_sync_to, ( 'smaller_media_id', 'larger_media_id' ) ) as temp_media_ids_table_name:
+        with self._make_temporary_integer_table(pairs_to_sync_to, ('smaller_media_id', 'larger_media_id')) as temp_media_ids_table_name:
             
             if pairs_stored_in_duplicates_proper is None:
                 
                 table_join = f'{temp_media_ids_table_name} CROSS JOIN {master_potential_duplicate_pairs_table_name} USING ( smaller_media_id, larger_media_id )'
                 
-                pairs_stored_in_duplicates_proper = set( self._Execute( f'SELECT smaller_media_id, larger_media_id FROM {table_join};' ) )
+                pairs_stored_in_duplicates_proper = set(self._execute(f'SELECT smaller_media_id, larger_media_id FROM {table_join};'))
                 
             
             for ( rule_id, resolution_rule ) in self._rule_ids_to_rules.items():
@@ -631,7 +631,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
                 
                 for ( status, table_name ) in statuses_to_table_names.items():
                     
-                    pairs_i_have = set( self._Execute( f'SELECT smaller_media_id, larger_media_id FROM {temp_media_ids_table_name} CROSS JOIN {table_name} USING ( smaller_media_id, larger_media_id );' ) )
+                    pairs_i_have = set(self._execute(f'SELECT smaller_media_id, larger_media_id FROM {temp_media_ids_table_name} CROSS JOIN {table_name} USING ( smaller_media_id, larger_media_id );'))
                     
                     statuses_to_pairs_i_have[ status ] = pairs_i_have
                     
@@ -642,12 +642,12 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
                 
                 if len( pairs_we_should_add ) > 0:
                     
-                    self._ExecuteMany(
+                    self._execute_many(
                         f'INSERT OR IGNORE INTO {statuses_to_table_names[ ClientDuplicatesAutoResolution.DUPLICATE_STATUS_NOT_SEARCHED ]} ( smaller_media_id, larger_media_id ) VALUES ( ?, ? );',
                         pairs_we_should_add
                     )
                     
-                    num_added = self._GetRowCount()
+                    num_added = self._get_row_count()
                     
                     if num_added > 0:
                         
@@ -665,12 +665,12 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
                     
                     if len( pairs_we_should_remove ) > 0:
                         
-                        self._ExecuteMany(
+                        self._execute_many(
                             f'DELETE FROM {statuses_to_table_names[ status ]} WHERE smaller_media_id = ? AND larger_media_id = ?;',
                             pairs_we_should_remove
                         )
                         
-                        num_deleted = self._GetRowCount()
+                        num_deleted = self._get_row_count()
                         
                         if num_deleted > 0:
                             
@@ -685,7 +685,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
                 
             
         
-        self._Execute( 'DELETE FROM duplicates_files_auto_resolution_rule_count_cache;' )
+        self._execute('DELETE FROM duplicates_files_auto_resolution_rule_count_cache;')
         
         self._Reinit()
         
@@ -708,14 +708,14 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
         
         all_serialised_rule_ids = set( self._rule_ids_to_rules.keys() )
         
-        defined_rule_ids = self._STS( self._Execute( 'SELECT rule_id FROM duplicate_files_auto_resolution_rules;' ) )
+        defined_rule_ids = self._sts(self._execute('SELECT rule_id FROM duplicate_files_auto_resolution_rules;'))
         
         orphaned_on_our_side = defined_rule_ids.difference( all_serialised_rule_ids )
         orphaned_on_object_side = all_serialised_rule_ids.difference( defined_rule_ids )
         
         if len( orphaned_on_our_side ) > 0:
             
-            self._ExecuteMany( 'DELETE FROM duplicate_files_auto_resolution_rules WHERE rule_id = ?;', ( ( rule_id, ) for rule_id in orphaned_on_our_side ) )
+            self._execute_many('DELETE FROM duplicate_files_auto_resolution_rules WHERE rule_id = ?;', ((rule_id,) for rule_id in orphaned_on_our_side))
             
             HydrusData.show_text(f'Deleted {HydrusNumbers.ToHumanInt(len(orphaned_on_our_side))} orphaned auto-resolution rule definitions!')
             HydrusData.print_text(f'Deleted ids: {sorted(orphaned_on_our_side)}')
@@ -738,7 +738,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
             all_were_good = False
             
         
-        self._Execute( 'DELETE FROM duplicates_files_auto_resolution_rule_count_cache;' )
+        self._execute('DELETE FROM duplicates_files_auto_resolution_rule_count_cache;')
         
         self._Reinit()
         
@@ -752,7 +752,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
     
     def MaintenanceRegenNumbers( self ):
         
-        self._Execute( 'DELETE FROM duplicates_files_auto_resolution_rule_count_cache;' )
+        self._execute('DELETE FROM duplicates_files_auto_resolution_rule_count_cache;')
         
         self._Reinit()
         
@@ -818,9 +818,9 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
         
         any_added = False
         
-        with self._MakeTemporaryIntegerTable( pairs_added, ( 'smaller_media_id', 'larger_media_id' ) ) as temp_media_ids_table_name:
+        with self._make_temporary_integer_table(pairs_added, ('smaller_media_id', 'larger_media_id')) as temp_media_ids_table_name:
             
-            self._AnalyzeTempTable( temp_media_ids_table_name )
+            self._analyze_temp_table(temp_media_ids_table_name)
             
             for ( rule_id, resolution_rule ) in self._rule_ids_to_rules.items():
                 
@@ -840,7 +840,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
                         continue
                         
                     
-                    pairs_in_this_table = self._Execute( f'SELECT smaller_media_id, larger_media_id FROM {temp_media_ids_table_name} CROSS JOIN {table_name} USING ( smaller_media_id, larger_media_id );' )
+                    pairs_in_this_table = self._execute(f'SELECT smaller_media_id, larger_media_id FROM {temp_media_ids_table_name} CROSS JOIN {table_name} USING ( smaller_media_id, larger_media_id );')
                     
                     pairs_that_already_exist_for_this_rule.update( pairs_in_this_table )
                     
@@ -849,12 +849,12 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
                 
                 if len( pairs_to_add_for_this_rule ) > 0:
                     
-                    self._ExecuteMany(
+                    self._execute_many(
                         f'INSERT OR IGNORE INTO {statuses_to_table_names[ ClientDuplicatesAutoResolution.DUPLICATE_STATUS_NOT_SEARCHED ]} ( smaller_media_id, larger_media_id ) VALUES ( ?, ? );',
                         pairs_to_add_for_this_rule
                     )
                     
-                    num_added = self._GetRowCount()
+                    num_added = self._get_row_count()
                     
                     if num_added > 0:
                         
@@ -896,12 +896,12 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
             
             for ( status, table_name ) in statuses_to_table_names.items():
                 
-                self._ExecuteMany(
+                self._execute_many(
                     f'DELETE FROM {table_name} WHERE smaller_media_id = ? AND larger_media_id = ?;',
                     pairs_removed
                 )
                 
-                num_deleted = self._GetRowCount()
+                num_deleted = self._get_row_count()
                 
                 if num_deleted > 0:
                     
@@ -935,9 +935,9 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
             
             for ( status, table_name ) in statuses_to_table_names.items():
                 
-                self._Execute( f'DELETE FROM {table_name} WHERE smaller_media_id = ? OR larger_media_id = ?;', ( media_id, media_id ) )
+                self._execute(f'DELETE FROM {table_name} WHERE smaller_media_id = ? OR larger_media_id = ?;', (media_id, media_id))
                 
-                num_deleted = self._GetRowCount()
+                num_deleted = self._get_row_count()
                 
                 if num_deleted > 0:
                     
@@ -989,9 +989,9 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
         
         table_name = GenerateResolutionPendingActionsPairsTableName( rule_id )
         
-        self._Execute( f'INSERT OR IGNORE INTO {table_name} ( smaller_media_id, larger_media_id, hash_id_a, hash_id_b ) VALUES ( ?, ?, ?, ? );', ( smaller_media_id, larger_media_id, hash_id_a, hash_id_b ) )
+        self._execute(f'INSERT OR IGNORE INTO {table_name} ( smaller_media_id, larger_media_id, hash_id_a, hash_id_b ) VALUES ( ?, ?, ?, ? );', (smaller_media_id, larger_media_id, hash_id_a, hash_id_b))
         
-        num_added = self._GetRowCount()
+        num_added = self._get_row_count()
         
         if num_added > 0:
             
@@ -1018,20 +1018,20 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
             
             now_ms = HydrusTime.GetNowMS()
             
-            self._ExecuteMany(
+            self._execute_many(
                 f'INSERT OR IGNORE INTO {table_name} ( smaller_media_id, larger_media_id, timestamp_ms ) VALUES ( ?, ?, ? );',
                 [ ( smaller_media_id, larger_media_id, now_ms ) for ( smaller_media_id, larger_media_id ) in pairs ]
             )
             
         else:
             
-            self._ExecuteMany(
+            self._execute_many(
                 f'INSERT OR IGNORE INTO {table_name} ( smaller_media_id, larger_media_id ) VALUES ( ?, ? );',
                 pairs
             )
             
         
-        num_added = self._GetRowCount()
+        num_added = self._get_row_count()
         
         if num_added > 0:
             
@@ -1072,8 +1072,8 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
             
             existing_rule = self._rule_ids_to_rules[ rule_id ]
             
-            self._Execute( 'DELETE FROM duplicate_files_auto_resolution_rules WHERE rule_id = ?;', ( rule_id, ) )
-            self._Execute( 'DELETE FROM duplicates_files_auto_resolution_rule_count_cache WHERE rule_id = ?;', ( rule_id, ) )
+            self._execute('DELETE FROM duplicate_files_auto_resolution_rules WHERE rule_id = ?;', (rule_id,))
+            self._execute('DELETE FROM duplicates_files_auto_resolution_rule_count_cache WHERE rule_id = ?;', (rule_id,))
             
             statuses_to_table_names = GenerateAutoResolutionQueueTableNames( rule_id )
             
@@ -1097,9 +1097,9 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
         
         for rule in rules_to_add:
             
-            self._Execute( 'INSERT INTO duplicate_files_auto_resolution_rules DEFAULT VALUES;' )
+            self._execute('INSERT INTO duplicate_files_auto_resolution_rules DEFAULT VALUES;')
             
-            rule_id = self._GetLastRowId()
+            rule_id = self._get_last_row_id()
             
             rule.SetId( rule_id )
             
@@ -1111,38 +1111,38 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
             
             for ( status, table_name ) in statuses_to_table_names.items():
                 
-                self._Execute( f'DROP TABLE IF EXISTS {table_name};' ) # due to the nature of the rule_id here, just a little safety thing to handle busted dbs
+                self._execute(f'DROP TABLE IF EXISTS {table_name};') # due to the nature of the rule_id here, just a little safety thing to handle busted dbs
                 
                 if status == ClientDuplicatesAutoResolution.DUPLICATE_STATUS_MATCHES_SEARCH_PASSED_TEST_READY_TO_ACTION:
                     
-                    self._Execute( f'CREATE TABLE IF NOT EXISTS {table_name} ( smaller_media_id INTEGER, larger_media_id INTEGER, hash_id_a INTEGER, hash_id_b INTEGER, PRIMARY KEY ( smaller_media_id, larger_media_id ) );' )
+                    self._execute(f'CREATE TABLE IF NOT EXISTS {table_name} ( smaller_media_id INTEGER, larger_media_id INTEGER, hash_id_a INTEGER, hash_id_b INTEGER, PRIMARY KEY ( smaller_media_id, larger_media_id ) );')
                     
-                    self._CreateIndex( table_name, [ 'hash_id_a' ] )
-                    self._CreateIndex( table_name, [ 'hash_id_b' ] )
+                    self._create_index(table_name, ['hash_id_a'])
+                    self._create_index(table_name, ['hash_id_b'])
                     
                 elif status == ClientDuplicatesAutoResolution.DUPLICATE_STATUS_USER_DENIED:
                     
-                    self._Execute( f'CREATE TABLE IF NOT EXISTS {table_name} ( smaller_media_id INTEGER, larger_media_id INTEGER, timestamp_ms INTEGER, PRIMARY KEY ( smaller_media_id, larger_media_id ) );' )
+                    self._execute(f'CREATE TABLE IF NOT EXISTS {table_name} ( smaller_media_id INTEGER, larger_media_id INTEGER, timestamp_ms INTEGER, PRIMARY KEY ( smaller_media_id, larger_media_id ) );')
                     
-                    self._CreateIndex( table_name, [ 'timestamp_ms' ] )
+                    self._create_index(table_name, ['timestamp_ms'])
                     
                 else:
                     
-                    self._Execute( f'CREATE TABLE IF NOT EXISTS {table_name} ( smaller_media_id INTEGER, larger_media_id INTEGER, PRIMARY KEY ( smaller_media_id, larger_media_id ) );' )
+                    self._execute(f'CREATE TABLE IF NOT EXISTS {table_name} ( smaller_media_id INTEGER, larger_media_id INTEGER, PRIMARY KEY ( smaller_media_id, larger_media_id ) );')
                     
                 
-                self._CreateIndex( table_name, [ 'larger_media_id', 'smaller_media_id' ], unique = True )
+                self._create_index(table_name, ['larger_media_id', 'smaller_media_id'], unique = True)
                 
             
             actioned_pairs_table_name = GenerateResolutionActionedPairsTableName( rule_id )
             
-            self._Execute( f'DROP TABLE IF EXISTS {actioned_pairs_table_name};' ) # due to the nature of the rule_id here, just a little safety thing to handle busted dbs
+            self._execute(f'DROP TABLE IF EXISTS {actioned_pairs_table_name};') # due to the nature of the rule_id here, just a little safety thing to handle busted dbs
             
-            self._Execute( f'CREATE TABLE IF NOT EXISTS {actioned_pairs_table_name} ( hash_id_a INTEGER, hash_id_b INTEGER, duplicate_type INTEGER, timestamp_ms INTEGER );' )
+            self._execute(f'CREATE TABLE IF NOT EXISTS {actioned_pairs_table_name} ( hash_id_a INTEGER, hash_id_b INTEGER, duplicate_type INTEGER, timestamp_ms INTEGER );')
             
-            self._CreateIndex( actioned_pairs_table_name, [ 'hash_id_a' ] )
-            self._CreateIndex( actioned_pairs_table_name, [ 'hash_id_b' ] )
-            self._CreateIndex( actioned_pairs_table_name, [ 'timestamp_ms' ] )
+            self._create_index(actioned_pairs_table_name, ['hash_id_a'])
+            self._create_index(actioned_pairs_table_name, ['hash_id_b'])
+            self._create_index(actioned_pairs_table_name, ['timestamp_ms'])
             
             self._ResyncToLocationContext( rule_id, rule.GetLocationContext(), master_potential_duplicate_pairs_table_name = master_potential_duplicate_pairs_table_name )
             

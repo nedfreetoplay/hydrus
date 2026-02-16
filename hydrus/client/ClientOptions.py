@@ -1156,7 +1156,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
             if predicate_type is not None:
                 
-                new_custom_default_predicates = HydrusSerialisable.SerialisableList( [ pred for pred in custom_default_predicates if pred.GetType() != predicate_type ] )
+                new_custom_default_predicates = HydrusSerialisable.SerialisableList([pred for pred in custom_default_predicates if pred.get_type() != predicate_type])
                 
                 self._dictionary[ 'custom_default_predicates' ] = new_custom_default_predicates
                 
@@ -1239,7 +1239,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
             if predicate_type is not None:
                 
-                return [ pred for pred in custom_default_predicates if pred.GetType() == predicate_type ]
+                return [pred for pred in custom_default_predicates if pred.get_type() == predicate_type]
                 
             
             if comparable_predicate is not None:
@@ -1759,7 +1759,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
             for predicate in predicates:
                 
-                predicate_type = predicate.GetType()
+                predicate_type = predicate.get_type()
                 
                 if predicate_type not in predicate_types_to_recent_predicates:
                     
@@ -1844,7 +1844,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
             if predicate_type is not None and predicates is not None:
                 
-                new_custom_default_predicates = HydrusSerialisable.SerialisableList( [ pred for pred in custom_default_predicates if pred.GetType() != predicate_type ] )
+                new_custom_default_predicates = HydrusSerialisable.SerialisableList([pred for pred in custom_default_predicates if pred.get_type() != predicate_type])
                 
                 new_custom_default_predicates.extend( predicates )
                 

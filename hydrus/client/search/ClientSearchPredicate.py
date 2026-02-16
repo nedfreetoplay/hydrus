@@ -453,7 +453,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
             
             value = list( value )
             
-            value.sort( key = lambda p: HydrusText.HumanTextSortKey( p.ToString() ) )
+            value.sort(key = lambda p: HydrusText.HumanTextSortKey(p.to_string()))
             
         
         if isinstance( value, ( list, set ) ):
@@ -724,7 +724,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
                 try:
                     
-                    self._value = tuple( sorted( self._value, key = lambda p: HydrusText.HumanTextSortKey( p.ToString() ) ) )
+                    self._value = tuple(sorted(self._value, key = lambda p: HydrusText.HumanTextSortKey(p.to_string())))
                     
                 except Exception as e:
                     
@@ -1452,7 +1452,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
             
         
         my_type = self._predicate_type
-        other_type = predicate.GetType()
+        other_type = predicate.get_type()
         
         if my_type == other_type:
             
@@ -2536,11 +2536,11 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                         base = ''
                         
                     
-                    base += service_specifier_primary.ToString()
+                    base += service_specifier_primary.to_string()
                     
                     if logical_operator == HC.LOGICAL_OPERATOR_ONLY and not service_specifier_secondary.IsAllRatings():
                         
-                        base += f' (amongst {service_specifier_secondary.ToString()})'
+                        base += f' (amongst {service_specifier_secondary.to_string()})'
                         
                     
                     if rated:
@@ -2925,7 +2925,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 base += 'OR: '
                 
             
-            base += ' OR '.join( ( or_predicate.ToString( render_for_user = render_for_user ) for or_predicate in or_predicates ) ) # pylint: disable=E1101
+            base += ' OR '.join((or_predicate.to_string(render_for_user = render_for_user) for or_predicate in or_predicates)) # pylint: disable=E1101
             
         elif self._predicate_type == PREDICATE_TYPE_LABEL:
             
@@ -3007,7 +3007,7 @@ def SetPredicatesInclusivity( predicates: list[ Predicate ], inclusive: bool ):
 
 def SortPredicates( predicates: list[ Predicate ] ):
     
-    key = lambda p: ( - p.GetCount().GetMinCount(), p.ToString() )
+    key = lambda p: ( - p.GetCount().GetMinCount(), p.to_string())
     
     predicates.sort( key = key )
     

@@ -1199,7 +1199,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 if validation_check:
                     
-                    raise HydrusExceptions.ValidationException( 'Missing cookie "' + cookie_name_string_match.ToString() + '"!' )
+                    raise HydrusExceptions.ValidationException( 'Missing cookie "' + cookie_name_string_match.to_string() + '"!')
                     
                 
                 return False
@@ -1215,7 +1215,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 if validation_check:
                     
-                    raise HydrusExceptions.ValidationException( 'Cookie "' + cookie_name_string_match.ToString() + '" failed: ' + str( e ) + '!' )
+                    raise HydrusExceptions.ValidationException( 'Cookie "' + cookie_name_string_match.to_string() + '" failed: ' + str(e) + '!')
                     
                 
                 return False
@@ -1783,7 +1783,7 @@ class LoginStep( HydrusSerialisable.SerialisableBaseNamed ):
                     
                 except HydrusExceptions.DataMissing as e:
                     
-                    raise HydrusExceptions.ValidationException( 'Missing cookie "' + cookie_name_string_match.ToString() + '" on step "' + self._name + '"!' )
+                    raise HydrusExceptions.ValidationException( 'Missing cookie "' + cookie_name_string_match.to_string() + '" on step "' + self._name + '"!')
                     
                 
                 cookie_text = cookie.value
@@ -1794,7 +1794,7 @@ class LoginStep( HydrusSerialisable.SerialisableBaseNamed ):
                     
                 except HydrusExceptions.StringMatchException as e:
                     
-                    raise HydrusExceptions.ValidationException( 'Cookie "' + cookie_name_string_match.ToString() + '" failed on step "' + self._name + '": ' + str( e ) + '!' )
+                    raise HydrusExceptions.ValidationException( 'Cookie "' + cookie_name_string_match.to_string() + '" failed on step "' + self._name + '": ' + str(e) + '!')
                     
                 
             

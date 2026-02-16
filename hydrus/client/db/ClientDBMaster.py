@@ -69,14 +69,14 @@ class ClientDBMasterHashes( ClientDBModule.ClientDBModule ):
                 
                 ( uncached_hash_id, ) = uncached_hash_ids
                 
-                rows = self._Execute( 'SELECT hash_id, hash FROM hashes WHERE hash_id = ?;', ( uncached_hash_id, )  ).fetchall()
+                rows = self._execute('SELECT hash_id, hash FROM hashes WHERE hash_id = ?;', (uncached_hash_id,)).fetchall()
                 
             else:
                 
-                with self._MakeTemporaryIntegerTable( uncached_hash_ids, 'hash_id' ) as temp_table_name:
+                with self._make_temporary_integer_table(uncached_hash_ids, 'hash_id') as temp_table_name:
                     
                     # temp hash_ids to actual hashes
-                    rows = self._Execute( 'SELECT hash_id, hash FROM {} CROSS JOIN hashes USING ( hash_id );'.format( temp_table_name ) ).fetchall()
+                    rows = self._execute('SELECT hash_id, hash FROM {} CROSS JOIN hashes USING ( hash_id );'.format(temp_table_name)).fetchall()
                     
                 
             
@@ -111,7 +111,7 @@ class ClientDBMasterHashes( ClientDBModule.ClientDBModule ):
                         # for now though, screw it
                         
                         # I shouldn't be able to see this here, but this is emergency code, screw it.
-                        result = self._Execute( 'SELECT hash FROM local_hashes_cache WHERE hash_id = ?;', ( hash_id, ) ).fetchone()
+                        result = self._execute('SELECT hash FROM local_hashes_cache WHERE hash_id = ?;', (hash_id,)).fetchone()
                         
                         if result is None:
                             
@@ -140,7 +140,7 @@ class ClientDBMasterHashes( ClientDBModule.ClientDBModule ):
                             HydrusData.debug_print('Database master hash definition error: hash_id {} was missing! Recovered from local hashes cache with hash {}.'.format(hash_id, hash.hex()))
                             
                         
-                        self._Execute( 'INSERT OR IGNORE INTO hashes ( hash_id, hash ) VALUES ( ?, ? );', ( hash_id, sqlite3.Binary( hash ) ) )
+                        self._execute('INSERT OR IGNORE INTO hashes ( hash_id, hash ) VALUES ( ?, ? );', (hash_id, sqlite3.Binary(hash)))
                         
                         HydrusData.print_exception(Exception('Missing file identifier stack trace.'))
                         
@@ -155,7 +155,7 @@ class ClientDBMasterHashes( ClientDBModule.ClientDBModule ):
     
     def GetExtraHash( self, hash_type, hash_id ) -> bytes:
         
-        result = self._Execute( 'SELECT {} FROM local_hashes WHERE hash_id = ?;'.format( hash_type ), ( hash_id, ) ).fetchone()
+        result = self._execute('SELECT {} FROM local_hashes WHERE hash_id = ?;'.format(hash_type), (hash_id,)).fetchone()
         
         if result is None:
             
@@ -186,7 +186,7 @@ class ClientDBMasterHashes( ClientDBModule.ClientDBModule ):
                     continue
                     
                 
-                result = self._Execute( 'SELECT hash_id FROM local_hashes WHERE {} = ?;'.format( given_hash_type ), ( sqlite3.Binary( given_hash ), ) ).fetchone()
+                result = self._execute('SELECT hash_id FROM local_hashes WHERE {} = ?;'.format(given_hash_type), (sqlite3.Binary(given_hash),)).fetchone()
                 
                 if result is not None:
                     
@@ -203,9 +203,9 @@ class ClientDBMasterHashes( ClientDBModule.ClientDBModule ):
             
         else:
             
-            with self._MakeTemporaryIntegerTable( set( hash_ids_to_source_hashes.keys() ), 'hash_id' ) as temp_table_name:
+            with self._make_temporary_integer_table(set(hash_ids_to_source_hashes.keys()), 'hash_id') as temp_table_name:
                 
-                hash_ids_to_desired_hashes = { hash_id : desired_hash for ( hash_id, desired_hash ) in self._Execute( 'SELECT hash_id, {} FROM {} CROSS JOIN local_hashes USING ( hash_id );'.format( desired_hash_type, temp_table_name ) ) }
+                hash_ids_to_desired_hashes = {hash_id : desired_hash for ( hash_id, desired_hash ) in self._execute('SELECT hash_id, {} FROM {} CROSS JOIN local_hashes USING ( hash_id );'.format(desired_hash_type, temp_table_name))}
                 
             
         
@@ -230,13 +230,13 @@ class ClientDBMasterHashes( ClientDBModule.ClientDBModule ):
     
     def GetHashId( self, hash ) -> int:
         
-        result = self._Execute( 'SELECT hash_id FROM hashes WHERE hash = ?;', ( sqlite3.Binary( hash ), ) ).fetchone()
+        result = self._execute('SELECT hash_id FROM hashes WHERE hash = ?;', (sqlite3.Binary(hash),)).fetchone()
         
         if result is None:
             
-            self._Execute( 'INSERT INTO hashes ( hash ) VALUES ( ? );', ( sqlite3.Binary( hash ), ) )
+            self._execute('INSERT INTO hashes ( hash ) VALUES ( ? );', (sqlite3.Binary(hash),))
             
-            hash_id = self._GetLastRowId()
+            hash_id = self._get_last_row_id()
             
         else:
             
@@ -250,15 +250,15 @@ class ClientDBMasterHashes( ClientDBModule.ClientDBModule ):
         
         if hash_type == 'md5':
             
-            result = self._Execute( 'SELECT hash_id FROM local_hashes WHERE md5 = ?;', ( sqlite3.Binary( hash ), ) ).fetchone()
+            result = self._execute('SELECT hash_id FROM local_hashes WHERE md5 = ?;', (sqlite3.Binary(hash),)).fetchone()
             
         elif hash_type == 'sha1':
             
-            result = self._Execute( 'SELECT hash_id FROM local_hashes WHERE sha1 = ?;', ( sqlite3.Binary( hash ), ) ).fetchone()
+            result = self._execute('SELECT hash_id FROM local_hashes WHERE sha1 = ?;', (sqlite3.Binary(hash),)).fetchone()
             
         elif hash_type == 'sha512':
             
-            result = self._Execute( 'SELECT hash_id FROM local_hashes WHERE sha512 = ?;', ( sqlite3.Binary( hash ), ) ).fetchone()
+            result = self._execute('SELECT hash_id FROM local_hashes WHERE sha512 = ?;', (sqlite3.Binary(hash),)).fetchone()
             
         else:
             
@@ -287,7 +287,7 @@ class ClientDBMasterHashes( ClientDBModule.ClientDBModule ):
                 continue
                 
             
-            result = self._Execute( 'SELECT hash_id FROM hashes WHERE hash = ?;', ( sqlite3.Binary( hash ), ) ).fetchone()
+            result = self._execute('SELECT hash_id FROM hashes WHERE hash = ?;', (sqlite3.Binary(hash),)).fetchone()
             
             if result is None:
                 
@@ -303,11 +303,11 @@ class ClientDBMasterHashes( ClientDBModule.ClientDBModule ):
         
         if len( hashes_not_in_db ) > 0:
             
-            self._ExecuteMany( 'INSERT INTO hashes ( hash ) VALUES ( ? );', ( ( sqlite3.Binary( hash ), ) for hash in hashes_not_in_db ) )
+            self._execute_many('INSERT INTO hashes ( hash ) VALUES ( ? );', ((sqlite3.Binary(hash),) for hash in hashes_not_in_db))
             
             for hash in hashes_not_in_db:
                 
-                ( hash_id, ) = self._Execute( 'SELECT hash_id FROM hashes WHERE hash = ?;', ( sqlite3.Binary( hash ), ) ).fetchone()
+                ( hash_id, ) = self._execute('SELECT hash_id FROM hashes WHERE hash = ?;', (sqlite3.Binary(hash),)).fetchone()
                 
                 hash_ids.add( hash_id )
                 
@@ -351,28 +351,28 @@ class ClientDBMasterHashes( ClientDBModule.ClientDBModule ):
     
     def HasExtraHashes( self, hash_id ):
         
-        result = self._Execute( 'SELECT 1 FROM local_hashes WHERE hash_id = ?;', ( hash_id, ) ).fetchone()
+        result = self._execute('SELECT 1 FROM local_hashes WHERE hash_id = ?;', (hash_id,)).fetchone()
         
         return result is not None
         
     
     def HasHash( self, hash ):
         
-        result = self._Execute( 'SELECT 1 FROM hashes WHERE hash = ?;', ( sqlite3.Binary( hash ), ) ).fetchone()
+        result = self._execute('SELECT 1 FROM hashes WHERE hash = ?;', (sqlite3.Binary(hash),)).fetchone()
         
         return result is not None
         
     
     def HasHashId( self, hash_id: int ):
         
-        result = self._Execute( 'SELECT 1 FROM hashes WHERE hash_id = ?;', ( hash_id, ) ).fetchone()
+        result = self._execute('SELECT 1 FROM hashes WHERE hash_id = ?;', (hash_id,)).fetchone()
         
         return result is not None
         
     
     def SetExtraHashes( self, hash_id, md5, sha1, sha512 ):
         
-        self._Execute( 'INSERT OR IGNORE INTO local_hashes ( hash_id, md5, sha1, sha512 ) VALUES ( ?, ?, ?, ? );', ( hash_id, sqlite3.Binary( md5 ), sqlite3.Binary( sha1 ), sqlite3.Binary( sha512 ) ) )
+        self._execute('INSERT OR IGNORE INTO local_hashes ( hash_id, md5, sha1, sha512 ) VALUES ( ?, ?, ?, ? );', (hash_id, sqlite3.Binary(md5), sqlite3.Binary(sha1), sqlite3.Binary(sha512)))
         
     
 class ClientDBMasterTexts( ClientDBModule.ClientDBModule ):
@@ -396,19 +396,19 @@ class ClientDBMasterTexts( ClientDBModule.ClientDBModule ):
         
         if 'external_caches.notes_fts4' in repopulate_table_names:
             
-            self._Execute( 'REPLACE INTO notes_fts4 ( docid, note ) SELECT note_id, note FROM notes;' )
+            self._execute('REPLACE INTO notes_fts4 ( docid, note ) SELECT note_id, note FROM notes;')
             
         
     
     def GetLabelId( self, label ):
         
-        result = self._Execute( 'SELECT label_id FROM labels WHERE label = ?;', ( label, ) ).fetchone()
+        result = self._execute('SELECT label_id FROM labels WHERE label = ?;', (label,)).fetchone()
         
         if result is None:
             
-            self._Execute( 'INSERT INTO labels ( label ) VALUES ( ? );', ( label, ) )
+            self._execute('INSERT INTO labels ( label ) VALUES ( ? );', (label,))
             
-            label_id = self._GetLastRowId()
+            label_id = self._get_last_row_id()
             
         else:
             
@@ -420,15 +420,15 @@ class ClientDBMasterTexts( ClientDBModule.ClientDBModule ):
     
     def GetNoteId( self, note: str ) -> int:
         
-        result = self._Execute( 'SELECT note_id FROM notes WHERE note = ?;', ( note, ) ).fetchone()
+        result = self._execute('SELECT note_id FROM notes WHERE note = ?;', (note,)).fetchone()
         
         if result is None:
             
-            self._Execute( 'INSERT INTO notes ( note ) VALUES ( ? );', ( note, ) )
+            self._execute('INSERT INTO notes ( note ) VALUES ( ? );', (note,))
             
-            note_id = self._GetLastRowId()
+            note_id = self._get_last_row_id()
             
-            self._Execute( 'REPLACE INTO notes_fts4 ( docid, note ) VALUES ( ?, ? );', ( note_id, note ) )
+            self._execute('REPLACE INTO notes_fts4 ( docid, note ) VALUES ( ?, ? );', (note_id, note))
             
         else:
             
@@ -447,7 +447,7 @@ class ClientDBMasterTexts( ClientDBModule.ClientDBModule ):
     
     def GetText( self, text_id ):
         
-        result = self._Execute( 'SELECT text FROM texts WHERE text_id = ?;', ( text_id, ) ).fetchone()
+        result = self._execute('SELECT text FROM texts WHERE text_id = ?;', (text_id,)).fetchone()
         
         if result is None:
             
@@ -461,13 +461,13 @@ class ClientDBMasterTexts( ClientDBModule.ClientDBModule ):
     
     def GetTextId( self, text ):
         
-        result = self._Execute( 'SELECT text_id FROM texts WHERE text = ?;', ( text, ) ).fetchone()
+        result = self._execute('SELECT text_id FROM texts WHERE text = ?;', (text,)).fetchone()
         
         if result is None:
             
-            self._Execute( 'INSERT INTO texts ( text ) VALUES ( ? );', ( text, ) )
+            self._execute('INSERT INTO texts ( text ) VALUES ( ? );', (text,))
             
-            text_id = self._GetLastRowId()
+            text_id = self._get_last_row_id()
             
         else:
             
@@ -538,14 +538,14 @@ class ClientDBMasterTags( ClientDBModule.ClientDBModule ):
                 
                 ( uncached_tag_id, ) = uncached_tag_ids
                 
-                rows = self._Execute( 'SELECT tag_id, namespace, subtag FROM tags NATURAL JOIN namespaces NATURAL JOIN subtags WHERE tag_id = ?;', ( uncached_tag_id, ) ).fetchall()
+                rows = self._execute('SELECT tag_id, namespace, subtag FROM tags NATURAL JOIN namespaces NATURAL JOIN subtags WHERE tag_id = ?;', (uncached_tag_id,)).fetchall()
                 
             else:
                 
-                with self._MakeTemporaryIntegerTable( uncached_tag_ids, 'tag_id' ) as temp_table_name:
+                with self._make_temporary_integer_table(uncached_tag_ids, 'tag_id') as temp_table_name:
                     
                     # temp tag_ids to tags to subtags and namespaces
-                    rows = self._Execute( 'SELECT tag_id, namespace, subtag FROM {} CROSS JOIN tags USING ( tag_id ) CROSS JOIN subtags USING ( subtag_id ) CROSS JOIN namespaces USING ( namespace_id );'.format( temp_table_name ) ).fetchall()
+                    rows = self._execute('SELECT tag_id, namespace, subtag FROM {} CROSS JOIN tags USING ( tag_id ) CROSS JOIN subtags USING ( subtag_id ) CROSS JOIN namespaces USING ( namespace_id );'.format(temp_table_name)).fetchall()
                     
                 
             
@@ -564,7 +564,7 @@ class ClientDBMasterTags( ClientDBModule.ClientDBModule ):
                         namespace_id = self.GetNamespaceId( namespace )
                         subtag_id = self.GetSubtagId( subtag )
                         
-                        self._Execute( 'REPLACE INTO tags ( tag_id, namespace_id, subtag_id ) VALUES ( ?, ?, ? );', ( tag_id, namespace_id, subtag_id ) )
+                        self._execute('REPLACE INTO tags ( tag_id, namespace_id, subtag_id ) VALUES ( ?, ?, ? );', (tag_id, namespace_id, subtag_id))
                         
                         uncached_tag_ids_to_tags[ tag_id ] = tag
                         
@@ -581,19 +581,19 @@ class ClientDBMasterTags( ClientDBModule.ClientDBModule ):
             
             if self.null_namespace_id is None:
                 
-                ( self.null_namespace_id, ) = self._Execute( 'SELECT namespace_id FROM namespaces WHERE namespace = ?;', ( '', ) ).fetchone()
+                ( self.null_namespace_id, ) = self._execute('SELECT namespace_id FROM namespaces WHERE namespace = ?;', ('',)).fetchone()
                 
             
             return self.null_namespace_id
             
         
-        result = self._Execute( 'SELECT namespace_id FROM namespaces WHERE namespace = ?;', ( namespace, ) ).fetchone()
+        result = self._execute('SELECT namespace_id FROM namespaces WHERE namespace = ?;', (namespace,)).fetchone()
         
         if result is None:
             
-            self._Execute( 'INSERT INTO namespaces ( namespace ) VALUES ( ? );', ( namespace, ) )
+            self._execute('INSERT INTO namespaces ( namespace ) VALUES ( ? );', (namespace,))
             
-            namespace_id = self._GetLastRowId()
+            namespace_id = self._get_last_row_id()
             
         else:
             
@@ -605,13 +605,13 @@ class ClientDBMasterTags( ClientDBModule.ClientDBModule ):
     
     def GetSubtagId( self, subtag ) -> int:
         
-        result = self._Execute( 'SELECT subtag_id FROM subtags WHERE subtag = ?;', ( subtag, ) ).fetchone()
+        result = self._execute('SELECT subtag_id FROM subtags WHERE subtag = ?;', (subtag,)).fetchone()
         
         if result is None:
             
-            self._Execute( 'INSERT INTO subtags ( subtag ) VALUES ( ? );', ( subtag, ) )
+            self._execute('INSERT INTO subtags ( subtag ) VALUES ( ? );', (subtag,))
             
-            subtag_id = self._GetLastRowId()
+            subtag_id = self._get_last_row_id()
             
         else:
             
@@ -657,13 +657,13 @@ class ClientDBMasterTags( ClientDBModule.ClientDBModule ):
         namespace_id = self.GetNamespaceId( namespace )
         subtag_id = self.GetSubtagId( subtag )
         
-        result = self._Execute( 'SELECT tag_id FROM tags WHERE namespace_id = ? AND subtag_id = ?;', ( namespace_id, subtag_id ) ).fetchone()
+        result = self._execute('SELECT tag_id FROM tags WHERE namespace_id = ? AND subtag_id = ?;', (namespace_id, subtag_id)).fetchone()
         
         if result is None:
             
-            self._Execute( 'INSERT INTO tags ( namespace_id, subtag_id ) VALUES ( ?, ? );', ( namespace_id, subtag_id ) )
+            self._execute('INSERT INTO tags ( namespace_id, subtag_id ) VALUES ( ?, ? );', (namespace_id, subtag_id))
             
-            tag_id = self._GetLastRowId()
+            tag_id = self._get_last_row_id()
             
         else:
             
@@ -700,7 +700,7 @@ class ClientDBMasterTags( ClientDBModule.ClientDBModule ):
             return True
             
         
-        result = self._Execute( 'SELECT 1 FROM namespaces WHERE namespace = ?;', ( namespace, ) ).fetchone()
+        result = self._execute('SELECT 1 FROM namespaces WHERE namespace = ?;', (namespace,)).fetchone()
         
         if result is None:
             
@@ -723,7 +723,7 @@ class ClientDBMasterTags( ClientDBModule.ClientDBModule ):
             return False
             
         
-        result = self._Execute( 'SELECT 1 FROM subtags WHERE subtag = ?;', ( subtag, ) ).fetchone()
+        result = self._execute('SELECT 1 FROM subtags WHERE subtag = ?;', (subtag,)).fetchone()
         
         if result is None:
             
@@ -770,7 +770,7 @@ class ClientDBMasterTags( ClientDBModule.ClientDBModule ):
             
             subtag_id = self.GetSubtagId( subtag )
             
-            result = self._Execute( 'SELECT 1 FROM tags WHERE namespace_id = ? AND subtag_id = ?;', ( namespace_id, subtag_id ) ).fetchone()
+            result = self._execute('SELECT 1 FROM tags WHERE namespace_id = ? AND subtag_id = ?;', (namespace_id, subtag_id)).fetchone()
             
             if result is None:
                 
@@ -789,7 +789,7 @@ class ClientDBMasterTags( ClientDBModule.ClientDBModule ):
     
     def UpdateTagId( self, tag_id, namespace_id, subtag_id ):
         
-        self._Execute( 'UPDATE tags SET namespace_id = ?, subtag_id = ? WHERE tag_id = ?;', ( namespace_id, subtag_id, tag_id ) )
+        self._execute('UPDATE tags SET namespace_id = ?, subtag_id = ? WHERE tag_id = ?;', (namespace_id, subtag_id, tag_id))
     
         if tag_id in self._tag_ids_to_tags_cache:
     
@@ -832,13 +832,13 @@ class ClientDBMasterURLs( ClientDBModule.ClientDBModule ):
     
     def GetURLDomainId( self, domain ):
         
-        result = self._Execute( 'SELECT domain_id FROM url_domains WHERE domain = ?;', ( domain, ) ).fetchone()
+        result = self._execute('SELECT domain_id FROM url_domains WHERE domain = ?;', (domain,)).fetchone()
         
         if result is None:
             
-            self._Execute( 'INSERT INTO url_domains ( domain ) VALUES ( ? );', ( domain, ) )
+            self._execute('INSERT INTO url_domains ( domain ) VALUES ( ? );', (domain,))
             
-            domain_id = self._GetLastRowId()
+            domain_id = self._get_last_row_id()
             
         else:
             
@@ -855,11 +855,11 @@ class ClientDBMasterURLs( ClientDBModule.ClientDBModule ):
             # OK I used to have gubbins here that did 'WHERE domain LIKE www%.domain' to be clever, but as I moved to domain mask, I realised this was not faster than just ripping everything and scanning myself
             # IF we move to domains stored with the top country code as a searchable id, then we can un-False this section and write multiple slimmer fetches with 'where country_domain_id IN blah'
             
-            all_domain_info = self._Execute( 'SELECT domain_id, domain FROM url_domains;' ).fetchall()
+            all_domain_info = self._execute('SELECT domain_id, domain FROM url_domains;').fetchall()
             
         else:
             
-            all_domain_info = self._Execute( 'SELECT domain_id, domain FROM url_domains;' ).fetchall()
+            all_domain_info = self._execute('SELECT domain_id, domain FROM url_domains;').fetchall()
             
         
         domain_ids = { domain_id for ( domain_id, domain ) in all_domain_info if url_domain_mask.Matches( domain ) }
@@ -869,7 +869,7 @@ class ClientDBMasterURLs( ClientDBModule.ClientDBModule ):
     
     def GetURLId( self, url ):
         
-        result = self._Execute( 'SELECT url_id FROM urls WHERE url = ?;', ( url, ) ).fetchone()
+        result = self._execute('SELECT url_id FROM urls WHERE url = ?;', (url,)).fetchone()
         
         if result is None:
             
@@ -884,9 +884,9 @@ class ClientDBMasterURLs( ClientDBModule.ClientDBModule ):
             
             domain_id = self.GetURLDomainId( domain )
             
-            self._Execute( 'INSERT INTO urls ( domain_id, url ) VALUES ( ?, ? );', ( domain_id, url ) )
+            self._execute('INSERT INTO urls ( domain_id, url ) VALUES ( ?, ? );', (domain_id, url))
             
-            url_id = self._GetLastRowId()
+            url_id = self._get_last_row_id()
             
         else:
             

@@ -49,7 +49,7 @@ class StaticSystemPredicateButton( QW.QWidget ):
         
         if forced_label is None:
             
-            label = ', '.join( ( predicate.ToString() for predicate in self._predicates ) )
+            label = ', '.join((predicate.to_string() for predicate in self._predicates))
             
         else:
             

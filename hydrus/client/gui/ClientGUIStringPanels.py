@@ -235,7 +235,7 @@ class SingleStringConversionTestPanel( QW.QWidget ):
                     
                 
             
-            tab_label = '{} ({})'.format( processing_steps[i].ToString( simple = True ), HydrusNumbers.ToHumanInt( len( results ) ) )
+            tab_label = '{} ({})'.format(processing_steps[i].to_string(simple = True), HydrusNumbers.ToHumanInt(len(results)))
             
             self._example_results.addTab( results_list, tab_label )
             

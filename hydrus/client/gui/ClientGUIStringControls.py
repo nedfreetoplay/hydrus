@@ -336,8 +336,8 @@ class StringMatchToStringMatchDictControl( QW.QWidget ):
         
         ( key_string_match, value_string_match ) = data
         
-        pretty_key = key_string_match.ToString()
-        pretty_value = value_string_match.ToString()
+        pretty_key = key_string_match.to_string()
+        pretty_value = value_string_match.to_string()
         
         return ( pretty_key, pretty_value )
         
@@ -688,7 +688,7 @@ class StringToStringMatchDictControl( QW.QWidget ):
         
         ( key, string_match ) = data
         
-        pretty_string_match = string_match.ToString()
+        pretty_string_match = string_match.to_string()
         
         return ( key, pretty_string_match )
         

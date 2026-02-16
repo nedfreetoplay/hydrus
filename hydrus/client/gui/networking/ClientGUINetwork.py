@@ -429,7 +429,7 @@ class EditNetworkContextCustomHeadersPanel( ClientGUIScrolledPanels.EditPanel ):
         
         ( network_context, ( key, value ), approved, reason ) = data
         
-        pretty_network_context = network_context.ToString()
+        pretty_network_context = network_context.to_string()
         
         pretty_key_value = key + ': ' + value
         
@@ -446,7 +446,7 @@ class EditNetworkContextCustomHeadersPanel( ClientGUIScrolledPanels.EditPanel ):
         
         ( network_context, ( key, value ), approved, reason ) = data
         
-        pretty_network_context = network_context.ToString()
+        pretty_network_context = network_context.to_string()
         
         pretty_approved = ClientNetworkingDomain.valid_desc_lookup[ approved ]
         
@@ -594,7 +594,7 @@ class NetworkContextButton( ClientGUICommon.BetterButton ):
     
     def __init__( self, parent, network_context, limited_types = None, allow_default = True ):
         
-        super().__init__( parent, network_context.ToString(), self._Edit )
+        super().__init__(parent, network_context.to_string(), self._Edit)
         
         self._network_context = network_context
         self._limited_types = limited_types
@@ -620,7 +620,7 @@ class NetworkContextButton( ClientGUICommon.BetterButton ):
     
     def _Update( self ):
         
-        self.setText( self._network_context.ToString() )
+        self.setText(self._network_context.to_string())
         
     
     def GetValue( self ):
@@ -738,7 +738,7 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         pretty_search_usage = HydrusData.to_human_bytes(search_usage_data) + ' in ' + HydrusNumbers.ToHumanInt(search_usage_requests) + ' requests'
         
-        pretty_network_context = network_context.ToString()
+        pretty_network_context = network_context.to_string()
         pretty_context_type = CC.network_context_type_string_lookup[ network_context.context_type ]
         
         if current_usage == 0:
@@ -847,7 +847,7 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         choice_tuples = [ ( 'global', ( ClientNetworkingContexts.GLOBAL_NETWORK_CONTEXT, self._controller.network_engine.bandwidth_manager.GetRules( ClientNetworkingContexts.GLOBAL_NETWORK_CONTEXT ) ) ) ]
         
-        choice_tuples.extend( [ ( network_context.ToString() + ' (' + str( len( bandwidth_rules.GetRules() ) ) + ' rules)', ( network_context, bandwidth_rules ) ) for ( network_context, bandwidth_rules ) in network_contexts_and_bandwidth_rules ] )
+        choice_tuples.extend([(network_context.to_string() + ' (' + str(len(bandwidth_rules.GetRules())) + ' rules)', (network_context, bandwidth_rules)) for (network_context, bandwidth_rules) in network_contexts_and_bandwidth_rules])
         
         try:
             
@@ -858,7 +858,7 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
             return
             
         
-        with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit bandwidth rules for ' + network_context.ToString() ) as dlg_2:
+        with ClientGUITopLevelWindowsPanels.DialogEdit(self, 'edit bandwidth rules for ' + network_context.to_string()) as dlg_2:
             
             summary = network_context.GetSummary()
             
@@ -946,7 +946,7 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             parent = self.window().parentWidget()
             
-            frame = ClientGUITopLevelWindowsPanels.FrameThatTakesScrollablePanel( parent, 'review bandwidth for ' + network_context.ToString() )
+            frame = ClientGUITopLevelWindowsPanels.FrameThatTakesScrollablePanel(parent, 'review bandwidth for ' + network_context.to_string())
             
             panel = ReviewNetworkContextBandwidthPanel( frame, self._controller, network_context )
             
@@ -973,7 +973,7 @@ class ReviewNetworkContextBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         description = CC.network_context_type_description_lookup[ self._network_context.context_type ]
         
-        self._name = ClientGUICommon.BetterStaticText( info_panel, label = self._network_context.ToString() )
+        self._name = ClientGUICommon.BetterStaticText(info_panel, label = self._network_context.to_string())
         self._description = ClientGUICommon.BetterStaticText( info_panel, label = description )
         
         #
@@ -1087,7 +1087,7 @@ class ReviewNetworkContextBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
     
     def _EditRules( self ):
         
-        with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit bandwidth rules for ' + self._network_context.ToString() ) as dlg:
+        with ClientGUITopLevelWindowsPanels.DialogEdit(self, 'edit bandwidth rules for ' + self._network_context.to_string()) as dlg:
             
             summary = self._network_context.GetSummary()
             
@@ -1485,7 +1485,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         session = self._session_manager.GetSession( network_context )
         
-        pretty_network_context = network_context.ToString()
+        pretty_network_context = network_context.to_string()
         
         number_of_cookies = len( session.cookies )
         pretty_number_of_cookies = HydrusNumbers.ToHumanInt( number_of_cookies )
@@ -1525,7 +1525,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         session = self._session_manager.GetSession( network_context )
         
-        pretty_network_context = network_context.ToString()
+        pretty_network_context = network_context.to_string()
         
         number_of_cookies = len( session.cookies )
         
@@ -1730,7 +1730,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             parent = self.window().parentWidget()
             
-            frame = ClientGUITopLevelWindowsPanels.FrameThatTakesScrollablePanel( parent, 'review session for ' + network_context.ToString() )
+            frame = ClientGUITopLevelWindowsPanels.FrameThatTakesScrollablePanel(parent, 'review session for ' + network_context.to_string())
             
             panel = ReviewNetworkSessionPanel( frame, self._session_manager, network_context )
             

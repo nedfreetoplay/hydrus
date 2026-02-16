@@ -50,7 +50,7 @@ class ClientDBMappingsCountsUpdate( ClientDBModule.ClientDBModule ):
         
         tag_ids = set( tag_ids_to_tags.keys() )
         
-        with self._MakeTemporaryIntegerTable( tag_ids, 'tag_id' ) as temp_tag_id_table_name:
+        with self._make_temporary_integer_table(tag_ids, 'tag_id') as temp_tag_id_table_name:
             
             counts = self.modules_mappings_counts.GetCountsForTags( ClientTags.TAG_DISPLAY_STORAGE, self.modules_services.combined_file_service_id, service_id, temp_tag_id_table_name )
             

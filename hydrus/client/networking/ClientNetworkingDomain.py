@@ -2500,7 +2500,7 @@ class DomainValidationPopupProcess( object ):
                 
                 # generate question
                 
-                question = 'For the network context ' + network_context.ToString() + ', can the client set this header?'
+                question = 'For the network context ' + network_context.to_string() + ', can the client set this header?'
                 question += '\n' * 2
                 question += key + ': ' + value
                 question += '\n' * 2

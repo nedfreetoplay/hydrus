@@ -312,13 +312,13 @@ class EditShortcutSetPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 message = 'The shortcut:'
                 message += '\n' * 2
-                message += shortcut.ToString()
+                message += shortcut.to_string()
                 message += '\n' * 2
                 message += 'is mapped twice:'
                 message += '\n' * 2
-                message += command.ToString()
+                message += command.to_string()
                 message += '\n' * 2
-                message += dupe_command.ToString()
+                message += dupe_command.to_string()
                 message += '\n' * 2
                 message += 'The system only supports one command per shortcut in a set for now, please remove one.'
                 

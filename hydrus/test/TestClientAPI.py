@@ -7127,8 +7127,8 @@ class TestClientAPI( unittest.TestCase ):
         
         expected_predicates.append( ClientSearchPredicate.Predicate( predicate_type = ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_ARCHIVE ) )
         
-        self.assertEqual( { pred for pred in predicates if pred.GetType() != ClientSearchPredicate.PREDICATE_TYPE_OR_CONTAINER }, { pred for pred in expected_predicates if pred.GetType() != ClientSearchPredicate.PREDICATE_TYPE_OR_CONTAINER } )
-        self.assertEqual( { frozenset( pred.GetValue() ) for pred in predicates if pred.GetType() == ClientSearchPredicate.PREDICATE_TYPE_OR_CONTAINER }, { frozenset( pred.GetValue() ) for pred in expected_predicates if pred.GetType() == ClientSearchPredicate.PREDICATE_TYPE_OR_CONTAINER } )
+        self.assertEqual({ pred for pred in predicates if pred.GetType() != ClientSearchPredicate.PREDICATE_TYPE_OR_CONTAINER }, {pred for pred in expected_predicates if pred.get_type() != ClientSearchPredicate.PREDICATE_TYPE_OR_CONTAINER})
+        self.assertEqual({ frozenset( pred.GetValue() ) for pred in predicates if pred.GetType() == ClientSearchPredicate.PREDICATE_TYPE_OR_CONTAINER }, {frozenset( pred.GetValue() ) for pred in expected_predicates if pred.get_type() == ClientSearchPredicate.PREDICATE_TYPE_OR_CONTAINER})
         
         #
         

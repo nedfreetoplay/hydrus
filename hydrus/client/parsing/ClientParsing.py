@@ -175,11 +175,11 @@ def RenderJSONParseRule( rule ):
         
     elif parse_rule_type == JSON_PARSE_RULE_TYPE_DICT_KEY:
         
-        s = f'get the entries that have keys matching "{parse_rule.ToString()}"'
+        s = f'get the entries that have keys matching "{parse_rule.to_string()}"'
         
     elif parse_rule_type == JSON_PARSE_RULE_TYPE_TEST_STRING_ITEMS:
         
-        s = f'get the values that match "{parse_rule.ToString()}"'
+        s = f'get the values that match "{parse_rule.to_string()}"'
         
     elif parse_rule_type == JSON_PARSE_RULE_TYPE_DEMINIFY_JSON:
         
@@ -990,7 +990,7 @@ class ParseFormulaHTML( ParseFormula ):
             header += '\n' + self._name
             
         
-        pretty_strings.extend( [ t_r.ToString() for t_r in self._tag_rules ] )
+        pretty_strings.extend([t_r.to_string() for t_r in self._tag_rules])
         
         if self._content_to_fetch == HTML_CONTENT_ATTRIBUTE:
             

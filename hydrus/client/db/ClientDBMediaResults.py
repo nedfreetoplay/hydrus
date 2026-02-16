@@ -105,9 +105,9 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
         
         cached_hash_ids = list( cached_hash_ids_to_media_results.keys() )
         
-        with self._MakeTemporaryIntegerTable( cached_hash_ids, 'hash_id' ) as temp_table_name:
+        with self._make_temporary_integer_table(cached_hash_ids, 'hash_id') as temp_table_name:
             
-            self._AnalyzeTempTable( temp_table_name )
+            self._analyze_temp_table(temp_table_name)
             
             file_info_managers = self.GenerateFileInfoManagers( cached_hash_ids, temp_table_name )
             
@@ -148,7 +148,7 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
         hash_ids_to_hashes = self.modules_hashes_local_cache.GetHashIdsToHashes( hash_ids = hash_ids )
         
         # temp hashes to metadata
-        hash_ids_to_file_info_managers = { hash_id : ClientMediaManagers.FileInfoManager( hash_id, hash_ids_to_hashes[ hash_id ], size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) for ( hash_id, size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) in self._Execute( 'SELECT * FROM {} CROSS JOIN files_info USING ( hash_id );'.format( hash_ids_table_name ) ) }
+        hash_ids_to_file_info_managers = {hash_id : ClientMediaManagers.FileInfoManager( hash_id, hash_ids_to_hashes[ hash_id ], size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) for ( hash_id, size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) in self._execute('SELECT * FROM {} CROSS JOIN files_info USING ( hash_id );'.format(hash_ids_table_name))}
         
         hash_ids_to_pixel_hashes = self.modules_similar_files.GetHashIdsToPixelHashes( hash_ids_table_name )
         hash_ids_to_blurhashes = self.modules_files_metadata_basic.GetHashIdsToBlurhashes( hash_ids_table_name )
@@ -204,7 +204,7 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
         
         if len( missing_hash_ids ) > 0:
             
-            with self._MakeTemporaryIntegerTable( missing_hash_ids, 'hash_id' ) as temp_table_name:
+            with self._make_temporary_integer_table(missing_hash_ids, 'hash_id') as temp_table_name:
                 
                 missing_file_info_managers = self.GenerateFileInfoManagers( missing_hash_ids, temp_table_name )
                 
@@ -250,9 +250,9 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
     
     def GetForceRefreshTagsManagers( self, hash_ids, hash_ids_to_current_file_service_ids = None ):
         
-        with self._MakeTemporaryIntegerTable( hash_ids, 'hash_id' ) as temp_table_name:
+        with self._make_temporary_integer_table(hash_ids, 'hash_id') as temp_table_name:
             
-            self._AnalyzeTempTable( temp_table_name )
+            self._analyze_temp_table(temp_table_name)
             
             return self.GetForceRefreshTagsManagersWithTableHashIds( hash_ids, temp_table_name, hash_ids_to_current_file_service_ids = hash_ids_to_current_file_service_ids )
             
@@ -282,7 +282,7 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
                 
             else:
                 
-                with self._MakeTemporaryIntegerTable( batch_of_hash_ids, 'hash_id' ) as temp_batch_hash_ids_table_name:
+                with self._make_temporary_integer_table(batch_of_hash_ids, 'hash_id') as temp_batch_hash_ids_table_name:
                     
                     ( batch_of_storage_tag_data, batch_of_display_tag_data ) = self.GetForceRefreshTagsManagersWithTableHashIdsTagData( common_file_service_id, tag_service_ids, temp_batch_hash_ids_table_name )
                     
@@ -348,7 +348,7 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
             for ( status, mappings_table_name ) in statuses_to_table_names.items():
                 
                 # temp hashes to mappings
-                storage_tag_data.extend( ( hash_id, ( tag_service_id, status, tag_id ) ) for ( hash_id, tag_id ) in self._Execute( 'SELECT hash_id, tag_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_ids_table_name, mappings_table_name ) ) )
+                storage_tag_data.extend( ( hash_id, ( tag_service_id, status, tag_id ) ) for ( hash_id, tag_id ) in self._execute('SELECT hash_id, tag_id FROM {} CROSS JOIN {} USING ( hash_id );'.format(hash_ids_table_name, mappings_table_name)))
                 
             
             if common_file_service_id != self.modules_services.combined_file_service_id:
@@ -356,8 +356,8 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
                 ( cache_current_display_mappings_table_name, cache_pending_display_mappings_table_name ) = ClientDBMappingsStorage.GenerateSpecificDisplayMappingsCacheTableNames( common_file_service_id, tag_service_id )
                 
                 # temp hashes to mappings
-                display_tag_data.extend( ( hash_id, ( tag_service_id, HC.CONTENT_STATUS_CURRENT, tag_id ) ) for ( hash_id, tag_id ) in self._Execute( 'SELECT hash_id, tag_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_ids_table_name, cache_current_display_mappings_table_name ) ) )
-                display_tag_data.extend( ( hash_id, ( tag_service_id, HC.CONTENT_STATUS_PENDING, tag_id ) ) for ( hash_id, tag_id ) in self._Execute( 'SELECT hash_id, tag_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_ids_table_name, cache_pending_display_mappings_table_name ) ) )
+                display_tag_data.extend( ( hash_id, ( tag_service_id, HC.CONTENT_STATUS_CURRENT, tag_id ) ) for ( hash_id, tag_id ) in self._execute('SELECT hash_id, tag_id FROM {} CROSS JOIN {} USING ( hash_id );'.format(hash_ids_table_name, cache_current_display_mappings_table_name)))
+                display_tag_data.extend( ( hash_id, ( tag_service_id, HC.CONTENT_STATUS_PENDING, tag_id ) ) for ( hash_id, tag_id ) in self._execute('SELECT hash_id, tag_id FROM {} CROSS JOIN {} USING ( hash_id );'.format(hash_ids_table_name, cache_pending_display_mappings_table_name)))
                 
             
         
@@ -396,7 +396,7 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
             
             # get first detailed results
             
-            with self._MakeTemporaryIntegerTable( missing_hash_ids, 'hash_id' ) as temp_table_name:
+            with self._make_temporary_integer_table(missing_hash_ids, 'hash_id') as temp_table_name:
                 
                 # everything here is temp hashes to metadata
                 

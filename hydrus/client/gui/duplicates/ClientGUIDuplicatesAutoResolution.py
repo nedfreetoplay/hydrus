@@ -1196,16 +1196,16 @@ class EditPairComparatorRelativeFileinfoPanel( ClientGUIScrolledPanels.EditPanel
         
         system_predicate = self._system_predicate.GetValue()
         
-        we_time_pred = system_predicate.GetType() in (
+        we_time_pred = system_predicate.get_type() in (
             ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_IMPORT_TIME,
             ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MODIFIED_TIME,
             ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_LAST_VIEWED_TIME,
             ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_ARCHIVED_TIME
         )
         
-        we_duration_pred = system_predicate.GetType() == ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_DURATION
+        we_duration_pred = system_predicate.get_type() == ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_DURATION
         
-        we_fuzzy_pred = system_predicate.GetType() == ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_FRAMERATE
+        we_fuzzy_pred = system_predicate.get_type() == ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_FRAMERATE
         
         if we_time_pred:
             

@@ -1148,7 +1148,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
         
         for ( i, ( content, check ) ) in enumerate( contents_and_checks ):
             
-            content_string = string_template.format( content.ToString() )
+            content_string = string_template.format(content.to_string())
             
             contents.Append( content_string, content, starts_checked = check )
             

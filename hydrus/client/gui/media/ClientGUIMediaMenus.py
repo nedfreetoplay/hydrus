@@ -92,7 +92,7 @@ def AddDuplicatesMenu( win: QW.QWidget, command_processor: CAC.ApplicationComman
             
             if len( view_duplicate_relations_jobs ) > 1:
                 
-                label = '-for {}-'.format( job_location_context.ToString( CG.client_controller.services_manager.GetName ) )
+                label = '-for {}-'.format(job_location_context.to_string(CG.client_controller.services_manager.GetName))
                 
                 ClientGUIMenus.AppendMenuLabel( duplicates_menu, label )
                 

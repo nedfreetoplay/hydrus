@@ -1069,7 +1069,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
                     
                     file_filter = self.GetSimpleData()
                     
-                    s = f'{s} ({file_filter.ToString()})'
+                    s = f'{s} ({file_filter.to_string()})'
                     
                 elif action == SIMPLE_REARRANGE_THUMBNAILS:
                     

@@ -53,7 +53,7 @@ class ClientDBMappingsCacheCombinedFilesDisplay( ClientDBModule.ClientDBModule )
         ac_current_counts = collections.Counter()
         ac_pending_counts = collections.Counter()
         
-        with self._MakeTemporaryIntegerTable( hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
+        with self._make_temporary_integer_table(hash_ids, 'hash_id') as temp_hash_ids_table_name:
             
             display_tag_ids = self.modules_tag_display.GetImplies( ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, tag_service_id, storage_tag_id )
             
@@ -126,7 +126,7 @@ class ClientDBMappingsCacheCombinedFilesDisplay( ClientDBModule.ClientDBModule )
         
         ac_counts = collections.Counter()
         
-        with self._MakeTemporaryIntegerTable( hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
+        with self._make_temporary_integer_table(hash_ids, 'hash_id') as temp_hash_ids_table_name:
             
             display_tag_ids = self.modules_tag_display.GetImplies( ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, tag_service_id, storage_tag_id )
             
@@ -191,9 +191,9 @@ class ClientDBMappingsCacheCombinedFilesDisplay( ClientDBModule.ClientDBModule )
         
         count = 0
         
-        with self._MakeTemporaryIntegerTable( with_these_tag_ids, 'tag_id' ) as temp_with_these_tag_ids_table_name:
+        with self._make_temporary_integer_table(with_these_tag_ids, 'tag_id') as temp_with_these_tag_ids_table_name:
             
-            with self._MakeTemporaryIntegerTable( without_these_tag_ids, 'tag_id' ) as temp_without_these_tag_ids_table_name:
+            with self._make_temporary_integer_table(without_these_tag_ids, 'tag_id') as temp_without_these_tag_ids_table_name:
                 
                 for ( file_service_id, batch_of_hash_ids ) in file_service_ids_to_hash_ids.items():
                     
@@ -203,7 +203,7 @@ class ClientDBMappingsCacheCombinedFilesDisplay( ClientDBModule.ClientDBModule )
                         
                     else:
                         
-                        with self._MakeTemporaryIntegerTable( batch_of_hash_ids, 'hash_id' ) as temp_batch_hash_ids_table_name:
+                        with self._make_temporary_integer_table(batch_of_hash_ids, 'hash_id') as temp_batch_hash_ids_table_name:
                             
                             subcount = self.GetWithAndWithoutTagsForFilesFileCountFileService( status, file_service_id, tag_service_id, with_these_tag_ids, temp_with_these_tag_ids_table_name, without_these_tag_ids, temp_without_these_tag_ids_table_name, batch_of_hash_ids, temp_batch_hash_ids_table_name )
                             
@@ -260,9 +260,9 @@ class ClientDBMappingsCacheCombinedFilesDisplay( ClientDBModule.ClientDBModule )
         
         # in order to reduce overhead, we go full meme and do a bunch of different situations
         
-        with self._MakeTemporaryIntegerTable( [], 'tag_id' ) as temp_with_tag_ids_table_name:
+        with self._make_temporary_integer_table([], 'tag_id') as temp_with_tag_ids_table_name:
             
-            with self._MakeTemporaryIntegerTable( [], 'tag_id' ) as temp_without_tag_ids_table_name:
+            with self._make_temporary_integer_table([], 'tag_id') as temp_without_tag_ids_table_name:
                 
                 if ClientDBMappingsStorage.DoingAFileJoinTagSearchIsFaster( hash_ids_weight, with_tag_ids_weight ):
                     
@@ -292,7 +292,7 @@ class ClientDBMappingsCacheCombinedFilesDisplay( ClientDBModule.ClientDBModule )
                     
                     # distinct as with many tags hashes can appear twice (e.g. two siblings on the same file)
                     
-                    self._ExecuteMany( 'INSERT INTO {} ( tag_id ) VALUES ( ? );'.format( temp_with_tag_ids_table_name ), ( ( with_tag_id, ) for with_tag_id in with_tag_ids ) )
+                    self._execute_many('INSERT INTO {} ( tag_id ) VALUES ( ? );'.format(temp_with_tag_ids_table_name), ((with_tag_id,) for with_tag_id in with_tag_ids))
                     
                     if ClientDBMappingsStorage.DoingAFileJoinTagSearchIsFaster( hash_ids_weight, with_tag_ids_weight ):
                         
@@ -333,7 +333,7 @@ class ClientDBMappingsCacheCombinedFilesDisplay( ClientDBModule.ClientDBModule )
                         
                     else:
                         
-                        self._ExecuteMany( 'INSERT INTO {} ( tag_id ) VALUES ( ? );'.format( temp_without_tag_ids_table_name ), ( ( without_tag_id, ) for without_tag_id in without_tag_ids ) )
+                        self._execute_many('INSERT INTO {} ( tag_id ) VALUES ( ? );'.format(temp_without_tag_ids_table_name), ((without_tag_id,) for without_tag_id in without_tag_ids))
                         
                         if ClientDBMappingsStorage.DoingAFileJoinTagSearchIsFaster( select_with_weight, without_tag_ids_weight ):
                             
@@ -352,7 +352,7 @@ class ClientDBMappingsCacheCombinedFilesDisplay( ClientDBModule.ClientDBModule )
                 
                 query = 'SELECT COUNT ( * ) FROM {};'.format( table_phrase )
                 
-                ( count, ) = self._Execute( query ).fetchone()
+                ( count, ) = self._execute(query).fetchone()
                 
                 return count
                 
@@ -401,9 +401,9 @@ class ClientDBMappingsCacheCombinedFilesDisplay( ClientDBModule.ClientDBModule )
             # ultimately here, we are doing "delete all display mappings with hash_ids that have a storage mapping for a removee tag and no storage mappings for a keep tag
             # in order to reduce overhead, we go full meme and do a bunch of different situations
             
-            with self._MakeTemporaryIntegerTable( [], 'tag_id' ) as temp_with_tag_ids_table_name:
+            with self._make_temporary_integer_table([], 'tag_id') as temp_with_tag_ids_table_name:
                 
-                with self._MakeTemporaryIntegerTable( [], 'tag_id' ) as temp_without_tag_ids_table_name:
+                with self._make_temporary_integer_table([], 'tag_id') as temp_without_tag_ids_table_name:
                     
                     if len( with_tag_ids ) == 1:
                         
@@ -413,7 +413,7 @@ class ClientDBMappingsCacheCombinedFilesDisplay( ClientDBModule.ClientDBModule )
                         
                     else:
                         
-                        self._ExecuteMany( 'INSERT INTO {} ( tag_id ) VALUES ( ? );'.format( temp_with_tag_ids_table_name ), ( ( with_tag_id, ) for with_tag_id in with_tag_ids ) )
+                        self._execute_many('INSERT INTO {} ( tag_id ) VALUES ( ? );'.format(temp_with_tag_ids_table_name), ((with_tag_id,) for with_tag_id in with_tag_ids))
                         
                         # temp tags to mappings
                         select_with_hash_ids_on_storage = 'SELECT DISTINCT hash_id FROM {} CROSS JOIN {} USING ( tag_id )'.format( temp_with_tag_ids_table_name, mappings_table_name )
@@ -445,7 +445,7 @@ class ClientDBMappingsCacheCombinedFilesDisplay( ClientDBModule.ClientDBModule )
                             
                         else:
                             
-                            self._ExecuteMany( 'INSERT INTO {} ( tag_id ) VALUES ( ? );'.format( temp_without_tag_ids_table_name ), ( ( without_tag_id, ) for without_tag_id in without_tag_ids ) )
+                            self._execute_many('INSERT INTO {} ( tag_id ) VALUES ( ? );'.format(temp_without_tag_ids_table_name), ((without_tag_id,) for without_tag_id in without_tag_ids))
                             
                             if ClientDBMappingsStorage.DoingAFileJoinTagSearchIsFaster( with_tag_ids_weight, without_tag_ids_weight ):
                                 
@@ -464,7 +464,7 @@ class ClientDBMappingsCacheCombinedFilesDisplay( ClientDBModule.ClientDBModule )
                     
                     query = 'SELECT COUNT ( * ) FROM {};'.format( table_phrase )
                     
-                    ( count, ) = self._Execute( query ).fetchone()
+                    ( count, ) = self._execute(query).fetchone()
                     
                     statuses_to_count[ status ] = count
                     
@@ -481,7 +481,7 @@ class ClientDBMappingsCacheCombinedFilesDisplay( ClientDBModule.ClientDBModule )
         
         ac_counts = collections.Counter()
         
-        with self._MakeTemporaryIntegerTable( hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
+        with self._make_temporary_integer_table(hash_ids, 'hash_id') as temp_hash_ids_table_name:
             
             display_tag_ids = self.modules_tag_display.GetImplies( ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, tag_service_id, storage_tag_id )
             
@@ -523,7 +523,7 @@ class ClientDBMappingsCacheCombinedFilesDisplay( ClientDBModule.ClientDBModule )
             status_hook( message )
             
         
-        all_pending_storage_tag_ids = self._STS( self._Execute( 'SELECT DISTINCT tag_id FROM {};'.format( pending_mappings_table_name ) ) )
+        all_pending_storage_tag_ids = self._sts(self._execute('SELECT DISTINCT tag_id FROM {};'.format(pending_mappings_table_name)))
         
         storage_tag_ids_to_display_tag_ids = self.modules_tag_display.GetTagsToImplies( ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, tag_service_id, all_pending_storage_tag_ids )
         
@@ -555,14 +555,14 @@ class ClientDBMappingsCacheCombinedFilesDisplay( ClientDBModule.ClientDBModule )
                 
                 ( storage_tag_id, ) = storage_tag_ids
                 
-                ( pending_delta, ) = self._Execute( 'SELECT COUNT( DISTINCT hash_id ) FROM {} WHERE tag_id = ?;'.format( pending_mappings_table_name ), ( storage_tag_id, ) ).fetchone()
+                ( pending_delta, ) = self._execute('SELECT COUNT( DISTINCT hash_id ) FROM {} WHERE tag_id = ?;'.format(pending_mappings_table_name), (storage_tag_id,)).fetchone()
                 
             else:
                 
-                with self._MakeTemporaryIntegerTable( storage_tag_ids, 'tag_id' ) as temp_tag_ids_table_name:
+                with self._make_temporary_integer_table(storage_tag_ids, 'tag_id') as temp_tag_ids_table_name:
                     
                     # temp tags to mappings merged
-                    ( pending_delta, ) = self._Execute( 'SELECT COUNT( DISTINCT hash_id ) FROM {} CROSS JOIN {} USING ( tag_id );'.format( temp_tag_ids_table_name, pending_mappings_table_name ) ).fetchone()
+                    ( pending_delta, ) = self._execute('SELECT COUNT( DISTINCT hash_id ) FROM {} CROSS JOIN {} USING ( tag_id );'.format(temp_tag_ids_table_name, pending_mappings_table_name)).fetchone()
                     
                 
             
@@ -584,11 +584,11 @@ class ClientDBMappingsCacheCombinedFilesDisplay( ClientDBModule.ClientDBModule )
         
         for tag_id in tag_ids:
             
-            hash_ids = self._STL( self._Execute( f'SELECT hash_id FROM {current_mappings_table_name} WHERE tag_id = ?;', ( tag_id, ) ) )
+            hash_ids = self._stl(self._execute(f'SELECT hash_id FROM {current_mappings_table_name} WHERE tag_id = ?;', (tag_id,)))
             
             self.AddMappingsForChained( tag_service_id, tag_id, hash_ids )
             
-            hash_ids = self._STL( self._Execute( f'SELECT hash_id FROM {pending_mappings_table_name} WHERE tag_id = ?;', ( tag_id, ) ) )
+            hash_ids = self._stl(self._execute(f'SELECT hash_id FROM {pending_mappings_table_name} WHERE tag_id = ?;', (tag_id,)))
             
             self.PendMappingsForChained( tag_service_id, tag_id, hash_ids )
             
@@ -598,7 +598,7 @@ class ClientDBMappingsCacheCombinedFilesDisplay( ClientDBModule.ClientDBModule )
         
         ac_counts = collections.Counter()
         
-        with self._MakeTemporaryIntegerTable( hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
+        with self._make_temporary_integer_table(hash_ids, 'hash_id') as temp_hash_ids_table_name:
             
             display_tag_ids = self.modules_tag_display.GetImplies( ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, tag_service_id, storage_tag_id )
             

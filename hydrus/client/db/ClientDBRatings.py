@@ -44,14 +44,14 @@ class ClientDBRatings( ClientDBModule.ClientDBModule ):
     
     def Drop( self, service_id: int ):
         
-        self._Execute( 'DELETE FROM local_ratings WHERE service_id = ?;', ( service_id, ) )
-        self._Execute( 'DELETE FROM local_incdec_ratings WHERE service_id = ?;', ( service_id, ) )
+        self._execute('DELETE FROM local_ratings WHERE service_id = ?;', (service_id,))
+        self._execute('DELETE FROM local_incdec_ratings WHERE service_id = ?;', (service_id,))
         
     
     def GetHashIdsToRatings( self, hash_ids_table_name ):
         
-        hash_ids_to_local_star_ratings = HydrusData.build_key_to_list_dict(((hash_id, (service_id, rating)) for (service_id, hash_id, rating) in self._Execute('SELECT service_id, hash_id, rating FROM {} CROSS JOIN local_ratings USING ( hash_id );'.format(hash_ids_table_name))))
-        hash_ids_to_local_incdec_ratings = HydrusData.build_key_to_list_dict(((hash_id, (service_id, rating)) for (service_id, hash_id, rating) in self._Execute('SELECT service_id, hash_id, rating FROM {} CROSS JOIN local_incdec_ratings USING ( hash_id );'.format(hash_ids_table_name))))
+        hash_ids_to_local_star_ratings = HydrusData.build_key_to_list_dict(((hash_id, (service_id, rating)) for (service_id, hash_id, rating) in self._execute('SELECT service_id, hash_id, rating FROM {} CROSS JOIN local_ratings USING ( hash_id );'.format(hash_ids_table_name))))
+        hash_ids_to_local_incdec_ratings = HydrusData.build_key_to_list_dict(((hash_id, (service_id, rating)) for (service_id, hash_id, rating) in self._execute('SELECT service_id, hash_id, rating FROM {} CROSS JOIN local_incdec_ratings USING ( hash_id );'.format(hash_ids_table_name))))
         
         hash_ids_to_local_ratings = collections.defaultdict( list )
         
@@ -70,14 +70,14 @@ class ClientDBRatings( ClientDBModule.ClientDBModule ):
     
     def GetIncDecServiceCount( self, service_id: int ):
         
-        ( info, ) = self._Execute( 'SELECT COUNT( * ) FROM local_incdec_ratings WHERE service_id = ?;', ( service_id, ) ).fetchone()
+        ( info, ) = self._execute('SELECT COUNT( * ) FROM local_incdec_ratings WHERE service_id = ?;', (service_id,)).fetchone()
         
         return info
         
     
     def GetStarredServiceCount( self, service_id: int ):
         
-        ( info, ) = self._Execute( 'SELECT COUNT( * ) FROM local_ratings WHERE service_id = ?;', ( service_id, ) ).fetchone()
+        ( info, ) = self._execute('SELECT COUNT( * ) FROM local_ratings WHERE service_id = ?;', (service_id,)).fetchone()
         
         return info
         
@@ -97,35 +97,35 @@ class ClientDBRatings( ClientDBModule.ClientDBModule ):
             
             ratings_added = 0
             
-            self._ExecuteMany( 'DELETE FROM local_ratings WHERE service_id = ? AND hash_id = ?;', ( ( service_id, hash_id ) for hash_id in hash_ids ) )
+            self._execute_many('DELETE FROM local_ratings WHERE service_id = ? AND hash_id = ?;', ((service_id, hash_id) for hash_id in hash_ids))
             
-            ratings_added -= self._GetRowCount()
+            ratings_added -= self._get_row_count()
             
             if rating is not None:
                 
-                self._ExecuteMany( 'INSERT INTO local_ratings ( service_id, hash_id, rating ) VALUES ( ?, ?, ? );', [ ( service_id, hash_id, rating ) for hash_id in hash_ids ] )
+                self._execute_many('INSERT INTO local_ratings ( service_id, hash_id, rating ) VALUES ( ?, ?, ? );', [(service_id, hash_id, rating) for hash_id in hash_ids])
                 
-                ratings_added += self._GetRowCount()
+                ratings_added += self._get_row_count()
                 
             
-            self._Execute( 'UPDATE service_info SET info = info + ? WHERE service_id = ? AND info_type = ?;', ( ratings_added, service_id, HC.SERVICE_INFO_NUM_FILE_HASHES ) )
+            self._execute('UPDATE service_info SET info = info + ? WHERE service_id = ? AND info_type = ?;', (ratings_added, service_id, HC.SERVICE_INFO_NUM_FILE_HASHES))
             
         elif service_type == HC.LOCAL_RATING_INCDEC:
             
             ratings_added = 0
             
-            self._ExecuteMany( 'DELETE FROM local_incdec_ratings WHERE service_id = ? AND hash_id = ?;', ( ( service_id, hash_id ) for hash_id in hash_ids ) )
+            self._execute_many('DELETE FROM local_incdec_ratings WHERE service_id = ? AND hash_id = ?;', ((service_id, hash_id) for hash_id in hash_ids))
             
-            ratings_added -= self._GetRowCount()
+            ratings_added -= self._get_row_count()
             
             if rating != 0:
                 
-                self._ExecuteMany( 'INSERT INTO local_incdec_ratings ( service_id, hash_id, rating ) VALUES ( ?, ?, ? );', [ ( service_id, hash_id, rating ) for hash_id in hash_ids ] )
+                self._execute_many('INSERT INTO local_incdec_ratings ( service_id, hash_id, rating ) VALUES ( ?, ?, ? );', [(service_id, hash_id, rating) for hash_id in hash_ids])
                 
-                ratings_added += self._GetRowCount()
+                ratings_added += self._get_row_count()
                 
             
-            self._Execute( 'UPDATE service_info SET info = info + ? WHERE service_id = ? AND info_type = ?;', ( ratings_added, service_id, HC.SERVICE_INFO_NUM_FILE_HASHES ) )
+            self._execute('UPDATE service_info SET info = info + ? WHERE service_id = ? AND info_type = ?;', (ratings_added, service_id, HC.SERVICE_INFO_NUM_FILE_HASHES))
             
         
     

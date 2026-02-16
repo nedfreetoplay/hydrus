@@ -1878,7 +1878,7 @@ class ListBox( QW.QScrollArea ):
         predicates = self._GetPredicatesFromTerms( self._selected_terms )
         inverse_predicates = [ predicate.GetInverseCopy() for predicate in predicates if predicate.IsInvertible() ]
         
-        if len( predicates ) > 1 and ClientSearchPredicate.PREDICATE_TYPE_OR_CONTAINER not in ( p.GetType() for p in predicates ):
+        if len( predicates ) > 1 and ClientSearchPredicate.PREDICATE_TYPE_OR_CONTAINER not in (p.get_type() for p in predicates):
             
             or_predicate = ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_OR_CONTAINER, value = list( predicates ) )
             
@@ -1890,7 +1890,7 @@ class ListBox( QW.QScrollArea ):
         namespace_predicate = None
         inverse_namespace_predicate = None
         
-        if False not in [ predicate.GetType() == ClientSearchPredicate.PREDICATE_TYPE_TAG for predicate in predicates ]:
+        if False not in [predicate.get_type() == ClientSearchPredicate.PREDICATE_TYPE_TAG for predicate in predicates]:
             
             namespaces = { HydrusTags.SplitTag( predicate.GetValue() )[0] for predicate in predicates }
             
@@ -3849,7 +3849,7 @@ class ListBoxTags( ListBox ):
                             
                             ( p, ) = predicates
                             
-                            predicates_selection_string = p.ToString( with_count = False )
+                            predicates_selection_string = p.to_string(with_count = False)
                             
                         else:
                             
@@ -3888,7 +3888,7 @@ class ListBoxTags( ListBox ):
                                 
                                 ( p, ) = inverse_predicates
                                 
-                                inverse_selection_string = p.ToString( with_count = False )
+                                inverse_selection_string = p.to_string(with_count = False)
                                 
                                 text = 'require {} for the current search'.format( inverse_selection_string )
                                 desc = 'Stop disallowing the selected predicates from the current search.'

@@ -571,7 +571,7 @@ class ReviewAccountsPanel( QW.QWidget ):
                 
                 account = self._account_keys_to_accounts[ account_key ]
                 
-                account_info_components.append( account.ToString() )
+                account_info_components.append(account.to_string())
                 account_info_components.append( account.GetExpiresString() )
                 account_info_components.append( account.GetStatusInfo()[1] )
                 

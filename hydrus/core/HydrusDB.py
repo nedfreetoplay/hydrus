@@ -52,7 +52,7 @@ def check_can_vacuum_data(db_path, page_size, page_count, freelist_count, stop_t
     
     db_dir = os.path.dirname( db_path )
     
-    HydrusDBBase.CheckHasSpaceForDBTransaction( db_dir, db_size )
+    HydrusDBBase.check_has_space_for_db_transaction(db_dir, db_size)
     
 
 def check_can_vacuum_into(db_path, stop_time = None):
@@ -91,7 +91,7 @@ def check_can_vacuum_into_data(db_path, page_size, page_count, freelist_count, s
     
     db_dir = os.path.dirname( db_path )
     
-    HydrusDBBase.CheckHasSpaceForDBTransaction( db_dir, db_size, no_temp_needed = True )
+    HydrusDBBase.check_has_space_for_db_transaction(db_dir, db_size, no_temp_needed = True)
     
 
 def get_approx_vacuum_duration(db_size):
@@ -401,7 +401,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
         
         self._init_db()
         
-        ( version, ) = self._Execute( 'SELECT version FROM version;' ).fetchone()
+        ( version, ) = self._execute('SELECT version FROM version;').fetchone()
         
         if version > HC.SOFTWARE_VERSION:
             
@@ -438,7 +438,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
             
             try:
                 
-                self._cursor_transaction_wrapper.BeginImmediate()
+                self._cursor_transaction_wrapper.begin_immediate()
                 
             except Exception as e:
                 
@@ -449,7 +449,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                 
                 self._update_db(version)
                 
-                self._cursor_transaction_wrapper.Commit()
+                self._cursor_transaction_wrapper.commit()
                 
                 self._is_db_updated = True
                 
@@ -459,7 +459,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                 
                 try:
                     
-                    self._cursor_transaction_wrapper.Rollback()
+                    self._cursor_transaction_wrapper.rollback()
                     
                 except Exception as rollback_e:
                     
@@ -471,7 +471,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                 raise e
                 
             
-            ( version, ) = self._Execute( 'SELECT version FROM version;' ).fetchone()
+            ( version, ) = self._execute('SELECT version FROM version;').fetchone()
             
         
         self._close_db_connection()
@@ -505,31 +505,31 @@ class HydrusDB( HydrusDBBase.DBBase ):
                 raise HydrusExceptions.DBAccessException( '"{}" seems to be read-only!'.format( db_path ) )
                 
             
-            self._Execute( 'ATTACH ? AS ' + name + ';', ( db_path, ) )
+            self._execute('ATTACH ? AS ' + name + ';', (db_path,))
             
         
         db_path = os.path.join( self._db_dir, self._durable_temp_db_filename )
         
-        self._Execute( 'ATTACH ? AS durable_temp;', ( db_path, ) )
+        self._execute('ATTACH ? AS durable_temp;', (db_path,))
         
     
     def _clean_after_job_work(self):
         
-        self._cursor_transaction_wrapper.CleanPubSubs()
+        self._cursor_transaction_wrapper.clean_pub_subs()
         
     
     def _close_db_connection(self):
         
-        HydrusDBBase.TemporaryIntegerTableNameCache.instance().Clear()
+        HydrusDBBase.TemporaryIntegerTableNameCache.instance().clear()
         
         if self._db is not None:
             
-            if self._cursor_transaction_wrapper.InTransaction():
+            if self._cursor_transaction_wrapper.in_transaction():
                 
-                self._cursor_transaction_wrapper.Commit()
+                self._cursor_transaction_wrapper.commit()
                 
             
-            self._CloseCursor()
+            self._close_cursor()
             
             self._db.close()
             
@@ -561,7 +561,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
     
     def _do_after_job_work(self):
         
-        self._cursor_transaction_wrapper.DoPubSubs()
+        self._cursor_transaction_wrapper.do_pub_subs()
         
     
     def _generate_db_job(self, job_type, synchronous, action, *args, **kwargs):
@@ -704,14 +704,14 @@ class HydrusDB( HydrusDBBase.DBBase ):
                 
                 self._create_db()
                 
-                self._cursor_transaction_wrapper.CommitAndBegin()
+                self._cursor_transaction_wrapper.commit_and_begin()
                 
             else:
                 
                 # I'm not sure, since it is nice to have it hardcoded, but we could migrate this stuff to the normal missing table recovery tech. "version" would indeed be marked as a critical missing table
                 # but then again, we want to catch the situation of a failed _CreateDB
                 
-                result = self._Execute( 'SELECT 1 FROM sqlite_master WHERE type = ? AND name = ?;', ( 'table', 'version' ) ).fetchone()
+                result = self._execute('SELECT 1 FROM sqlite_master WHERE type = ? AND name = ?;', ('table', 'version')).fetchone()
                 
                 if result is None:
                     
@@ -744,7 +744,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
             
             c = self._db.cursor()
             
-            self._SetCursor( c )
+            self._set_cursor(c)
             
             self._is_connected = True
             
@@ -752,7 +752,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
             
             if HG.no_db_temp_files:
                 
-                self._Execute( 'PRAGMA temp_store = 2;' ) # use memory for temp store exclusively
+                self._execute('PRAGMA temp_store = 2;') # use memory for temp store exclusively
                 
             
             self._attach_external_databases()
@@ -761,7 +761,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
             
             self._init_commands_to_methods()
             
-            self._Execute( 'ATTACH ":memory:" AS mem;' )
+            self._execute('ATTACH ":memory:" AS mem;')
             
         except HydrusExceptions.DBAccessException:
             
@@ -772,19 +772,19 @@ class HydrusDB( HydrusDBBase.DBBase ):
             raise HydrusExceptions.DBAccessException( 'Could not connect to database! If the answer is not obvious to you, please let hydrus dev know. Error follows:' + '\n' * 2 + str( e ) )
             
         
-        HydrusDBBase.TemporaryIntegerTableNameCache.instance().Clear()
+        HydrusDBBase.TemporaryIntegerTableNameCache.instance().clear()
         
         # durable_temp is not excluded here
-        db_names = [ name for ( index, name, path ) in self._Execute( 'PRAGMA database_list;' ) if name not in ( 'mem', 'temp' ) ]
+        db_names = [name for ( index, name, path ) in self._execute('PRAGMA database_list;') if name not in ('mem', 'temp')]
         
         for db_name in db_names:
             
             # MB -> KB
             cache_size = HG.db_cache_size * 1024
             
-            self._Execute( 'PRAGMA {}.cache_size = -{};'.format( db_name, cache_size ) )
+            self._execute('PRAGMA {}.cache_size = -{};'.format(db_name, cache_size))
             
-            self._Execute( 'PRAGMA {}.journal_mode = {};'.format( db_name, HG.db_journal_mode ) )
+            self._execute('PRAGMA {}.journal_mode = {};'.format(db_name, HG.db_journal_mode))
             
             if HG.db_journal_mode in ( 'PERSIST', 'WAL' ):
                 
@@ -793,14 +793,14 @@ class HydrusDB( HydrusDBBase.DBBase ):
                 # In any case, this pragma is not a 'don't allow it to grow larger than', it's a 'after commit, truncate back to this', so no need to make it so large
                 # default is -1, which means no limit
                 
-                self._Execute( 'PRAGMA {}.journal_size_limit = {};'.format( db_name, HydrusDBBase.JOURNAL_SIZE_LIMIT ) )
+                self._execute('PRAGMA {}.journal_size_limit = {};'.format(db_name, HydrusDBBase.JOURNAL_SIZE_LIMIT))
                 
             
-            self._Execute( 'PRAGMA {}.synchronous = {};'.format( db_name, HG.db_synchronous ) )
+            self._execute('PRAGMA {}.synchronous = {};'.format(db_name, HG.db_synchronous))
             
             try:
                 
-                self._Execute( 'SELECT * FROM {}.sqlite_master;'.format( db_name ) ).fetchone()
+                self._execute('SELECT * FROM {}.sqlite_master;'.format(db_name)).fetchone()
                 
             except sqlite3.OperationalError as e:
                 
@@ -817,7 +817,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
         
         try:
             
-            self._cursor_transaction_wrapper.BeginImmediate()
+            self._cursor_transaction_wrapper.begin_immediate()
             
         except Exception as e:
             
@@ -847,9 +847,9 @@ class HydrusDB( HydrusDBBase.DBBase ):
     
     def _process_job(self, job: HydrusDBBase.JobDatabase):
         
-        job_type = job.GetType()
+        job_type = job.get_type()
         
-        ( action, args, kwargs ) = job.GetCallableTuple()
+        ( action, args, kwargs ) = job.get_callable_tuple()
         
         try:
             
@@ -857,7 +857,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                 
                 self._current_status = 'db writing'
                 
-                self._cursor_transaction_wrapper.NotifyWriteOccuring()
+                self._cursor_transaction_wrapper.notify_write_occuring()
                 
             else:
                 
@@ -890,24 +890,24 @@ class HydrusDB( HydrusDBBase.DBBase ):
                 
                 if time_job_took > 15:
                     
-                    HydrusData.print_text(f'The database job "{job.ToString()}" took {HydrusTime.TimeDeltaToPrettyTimeDelta(time_job_took)}.')
+                    HydrusData.print_text(f'The database job "{job.to_string()}" took {HydrusTime.TimeDeltaToPrettyTimeDelta(time_job_took)}.')
                     
                 
             
-            if job.IsSynchronous():
+            if job.is_synchronous():
                 
-                job.PutResult( result )
+                job.put_result(result)
                 
             
-            self._cursor_transaction_wrapper.Save()
+            self._cursor_transaction_wrapper.save()
             
-            if self._cursor_transaction_wrapper.TimeToCommit():
+            if self._cursor_transaction_wrapper.time_to_commit():
                 
                 self._current_status = 'db committing'
                 
                 self.publish_status_update()
                 
-                self._cursor_transaction_wrapper.CommitAndBegin()
+                self._cursor_transaction_wrapper.commit_and_begin()
                 
             
             self._do_after_job_work()
@@ -918,7 +918,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
             
             try:
                 
-                self._cursor_transaction_wrapper.Rollback()
+                self._cursor_transaction_wrapper.rollback()
                 
             except Exception as rollback_e:
                 
@@ -979,7 +979,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
     
     def _shrink_memory(self):
         
-        self._Execute( 'PRAGMA shrink_memory;' )
+        self._execute('PRAGMA shrink_memory;')
         
     
     def _unload_modules(self):
@@ -1021,9 +1021,9 @@ class HydrusDB( HydrusDBBase.DBBase ):
             return
             
         
-        if self._cursor_transaction_wrapper.InTransaction():
+        if self._cursor_transaction_wrapper.in_transaction():
             
-            self._cursor_transaction_wrapper.DoACommitAsSoonAsPossible()
+            self._cursor_transaction_wrapper.do_a_commit_as_soon_as_possible()
             
             self.write('null', True)
             
@@ -1143,7 +1143,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                 job = self._jobs.get( timeout = 1 )
                 
                 self._currently_doing_job = True
-                self._current_job_name = job.ToString()
+                self._current_job_name = job.to_string()
                 
                 self.publish_status_update()
                 
@@ -1151,14 +1151,14 @@ class HydrusDB( HydrusDBBase.DBBase ):
                     
                     if HG.db_report_mode:
                         
-                        summary = 'Running db job: ' + job.ToString()
+                        summary = 'Running db job: ' + job.to_string()
                         
                         HydrusData.show_text(summary)
                         
                     
                     if HydrusProfiling.IsProfileMode( 'db' ):
                         
-                        summary = 'Profiling db job: ' + job.ToString()
+                        summary = 'Profiling db job: ' + job.to_string()
                         
                         HydrusProfiling.Profile(summary, HydrusData.Call(self._process_job, job), min_duration_ms = HG.db_profile_min_job_time_ms)
                         
@@ -1190,13 +1190,13 @@ class HydrusDB( HydrusDBBase.DBBase ):
                 
             except queue.Empty:
                 
-                if self._cursor_transaction_wrapper.TimeToCommit():
+                if self._cursor_transaction_wrapper.time_to_commit():
                     
                     self._current_status = 'db committing'
                     
                     self.publish_status_update()
                     
-                    self._cursor_transaction_wrapper.CommitAndBegin()
+                    self._cursor_transaction_wrapper.commit_and_begin()
                     
                 
             finally:
@@ -1265,7 +1265,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
         
         self._jobs.put( job )
         
-        return job.GetResult()
+        return job.get_result()
         
     
     def ready_to_serve_requests(self):
@@ -1312,6 +1312,6 @@ class HydrusDB( HydrusDBBase.DBBase ):
         
         self._jobs.put( job )
         
-        if synchronous: return job.GetResult()
+        if synchronous: return job.get_result()
         
     

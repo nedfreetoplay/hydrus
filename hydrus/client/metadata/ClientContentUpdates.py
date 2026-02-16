@@ -250,7 +250,7 @@ class ContentUpdate( object ):
             
             ( hashes, timestamp_data ) = self._row
             
-            value_string = timestamp_data.ToString()
+            value_string = timestamp_data.to_string()
             
         elif self._data_type == HC.CONTENT_TYPE_MAPPINGS:
             

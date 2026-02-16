@@ -169,7 +169,7 @@ class SingleFileMetadataRouter( HydrusSerialisable.SerialisableBase ):
         
         if len( self._importers ) > 0:
             
-            source_text = ', '.join( ( importer.ToString() for importer in self._importers ) )
+            source_text = ', '.join((importer.to_string() for importer in self._importers))
             
         else:
             

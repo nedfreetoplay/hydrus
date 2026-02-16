@@ -58,12 +58,12 @@ class ClientDBFilesMetadataBasic( ClientDBModule.ClientDBModule ):
             
         
         # hash_id, size, mime, width, height, duration, num_frames, has_audio, num_words
-        self._ExecuteMany( insert_phrase + ' files_info ( hash_id, size, mime, width, height, duration, num_frames, has_audio, num_words ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? );', rows )
+        self._execute_many(insert_phrase + ' files_info ( hash_id, size, mime, width, height, duration, num_frames, has_audio, num_words ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? );', rows)
         
     
     def GetBlurhash( self, hash_id: int ) -> str:
         
-        result = self._Execute( 'SELECT blurhash FROM blurhashes WHERE hash_id = ?;', ( hash_id, ) ).fetchone()
+        result = self._execute('SELECT blurhash FROM blurhashes WHERE hash_id = ?;', (hash_id,)).fetchone()
         
         if result is None:
             
@@ -77,73 +77,73 @@ class ClientDBFilesMetadataBasic( ClientDBModule.ClientDBModule ):
     
     def GetHasEXIF( self, hash_id: int ):
         
-        result = self._Execute( 'SELECT hash_id FROM has_exif WHERE hash_id = ?;', ( hash_id, ) ).fetchone()
+        result = self._execute('SELECT hash_id FROM has_exif WHERE hash_id = ?;', (hash_id,)).fetchone()
         
         return result is not None
         
     
     def GetHasEXIFHashIds( self, hash_ids_table_name: str ) -> set[ int ]:
         
-        has_exif_hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM {} CROSS JOIN has_exif USING ( hash_id );'.format( hash_ids_table_name ) ) )
+        has_exif_hash_ids = self._sts(self._execute('SELECT hash_id FROM {} CROSS JOIN has_exif USING ( hash_id );'.format(hash_ids_table_name)))
         
         return has_exif_hash_ids
         
     
     def GetHasHumanReadableEmbeddedMetadata( self, hash_id: int ):
         
-        result = self._Execute( 'SELECT hash_id FROM has_human_readable_embedded_metadata WHERE hash_id = ?;', ( hash_id, ) ).fetchone()
+        result = self._execute('SELECT hash_id FROM has_human_readable_embedded_metadata WHERE hash_id = ?;', (hash_id,)).fetchone()
         
         return result is not None
         
     
     def GetHasHumanReadableEmbeddedMetadataHashIds( self, hash_ids_table_name: str ) -> set[ int ]:
         
-        has_human_readable_embedded_metadata_hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM {} CROSS JOIN has_human_readable_embedded_metadata USING ( hash_id );'.format( hash_ids_table_name ) ) )
+        has_human_readable_embedded_metadata_hash_ids = self._sts(self._execute('SELECT hash_id FROM {} CROSS JOIN has_human_readable_embedded_metadata USING ( hash_id );'.format(hash_ids_table_name)))
         
         return has_human_readable_embedded_metadata_hash_ids
         
     
     def GetHashIdsToBlurhashes( self, hash_ids_table_name: str ):
         
-        return dict( self._Execute( 'SELECT hash_id, blurhash FROM {} CROSS JOIN blurhashes USING ( hash_id );'.format( hash_ids_table_name ) ) )
+        return dict(self._execute('SELECT hash_id, blurhash FROM {} CROSS JOIN blurhashes USING ( hash_id );'.format(hash_ids_table_name)))
         
     
     def GetHashIdsToForcedFiletypes( self, hash_ids_table_name: str ):
         
-        return dict( self._Execute( 'SELECT hash_id, forced_mime FROM {} CROSS JOIN files_info_forced_filetypes USING ( hash_id );'.format( hash_ids_table_name ) ) )
+        return dict(self._execute('SELECT hash_id, forced_mime FROM {} CROSS JOIN files_info_forced_filetypes USING ( hash_id );'.format(hash_ids_table_name)))
         
     
     def GetHasICCProfile( self, hash_id: int ):
         
-        result = self._Execute( 'SELECT hash_id FROM has_icc_profile WHERE hash_id = ?;', ( hash_id, ) ).fetchone()
+        result = self._execute('SELECT hash_id FROM has_icc_profile WHERE hash_id = ?;', (hash_id,)).fetchone()
         
         return result is not None
         
     
     def GetHasICCProfileHashIds( self, hash_ids_table_name: str ) -> set[ int ]:
         
-        has_icc_profile_hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM {} CROSS JOIN has_icc_profile USING ( hash_id );'.format( hash_ids_table_name ) ) )
+        has_icc_profile_hash_ids = self._sts(self._execute('SELECT hash_id FROM {} CROSS JOIN has_icc_profile USING ( hash_id );'.format(hash_ids_table_name)))
         
         return has_icc_profile_hash_ids
         
     
     def GetHasTransparency( self, hash_id: int ):
         
-        result = self._Execute( 'SELECT hash_id FROM has_transparency WHERE hash_id = ?;', ( hash_id, ) ).fetchone()
+        result = self._execute('SELECT hash_id FROM has_transparency WHERE hash_id = ?;', (hash_id,)).fetchone()
         
         return result is not None
         
     
     def GetHasTransparencyHashIds( self, hash_ids_table_name: str ) -> set[ int ]:
         
-        has_transparency_hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM {} CROSS JOIN has_transparency USING ( hash_id );'.format( hash_ids_table_name ) ) )
+        has_transparency_hash_ids = self._sts(self._execute('SELECT hash_id FROM {} CROSS JOIN has_transparency USING ( hash_id );'.format(hash_ids_table_name)))
         
         return has_transparency_hash_ids
         
     
     def GetMime( self, hash_id: int ) -> int:
         
-        result = self._Execute( 'SELECT mime FROM files_info WHERE hash_id = ?;', ( hash_id, ) ).fetchone()
+        result = self._execute('SELECT mime FROM files_info WHERE hash_id = ?;', (hash_id,)).fetchone()
         
         if result is None:
             
@@ -161,13 +161,13 @@ class ClientDBFilesMetadataBasic( ClientDBModule.ClientDBModule ):
             
             ( hash_id, ) = hash_ids
             
-            result = self._STL( self._Execute( 'SELECT mime FROM files_info WHERE hash_id = ?;', ( hash_id, ) ) )
+            result = self._stl(self._execute('SELECT mime FROM files_info WHERE hash_id = ?;', (hash_id,)))
             
         else:
             
-            with self._MakeTemporaryIntegerTable( hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
+            with self._make_temporary_integer_table(hash_ids, 'hash_id') as temp_hash_ids_table_name:
                 
-                result = self._STL( self._Execute( 'SELECT mime FROM {} CROSS JOIN files_info USING ( hash_id );'.format( temp_hash_ids_table_name ) ) )
+                result = self._stl(self._execute('SELECT mime FROM {} CROSS JOIN files_info USING ( hash_id );'.format(temp_hash_ids_table_name)))
                 
             
         
@@ -176,7 +176,7 @@ class ClientDBFilesMetadataBasic( ClientDBModule.ClientDBModule ):
     
     def GetResolution( self, hash_id: int ):
         
-        result = self._Execute( 'SELECT width, height FROM files_info WHERE hash_id = ?;', ( hash_id, ) ).fetchone()
+        result = self._execute('SELECT width, height FROM files_info WHERE hash_id = ?;', (hash_id,)).fetchone()
         
         if result is None:
             
@@ -210,28 +210,28 @@ class ClientDBFilesMetadataBasic( ClientDBModule.ClientDBModule ):
             
             ( hash_id, ) = hash_ids
             
-            result = self._Execute( 'SELECT size FROM files_info WHERE hash_id = ?;', ( hash_id, ) ).fetchone()
+            result = self._execute('SELECT size FROM files_info WHERE hash_id = ?;', (hash_id,)).fetchone()
             
         else:
             
-            with self._MakeTemporaryIntegerTable( hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
+            with self._make_temporary_integer_table(hash_ids, 'hash_id') as temp_hash_ids_table_name:
                 
-                result = self._Execute( 'SELECT SUM( size ) FROM {} CROSS JOIN files_info USING ( hash_id );'.format( temp_hash_ids_table_name ) ).fetchone()
+                result = self._execute('SELECT SUM( size ) FROM {} CROSS JOIN files_info USING ( hash_id );'.format(temp_hash_ids_table_name)).fetchone()
                 
             
         
-        total_size = self._GetSumResult( result )
+        total_size = self._get_sum_result(result)
         
         return total_size
         
     
     def SetForcedFiletype( self, hash_id: int, forced_mime: int | None ):
         
-        self._Execute( 'DELETE FROM files_info_forced_filetypes WHERE hash_id = ?;', ( hash_id, ) )
+        self._execute('DELETE FROM files_info_forced_filetypes WHERE hash_id = ?;', (hash_id,))
         
         if forced_mime is not None:
             
-            result = self._Execute( 'SELECT mime FROM files_info WHERE hash_id = ?;', ( hash_id, ) ).fetchone()
+            result = self._execute('SELECT mime FROM files_info WHERE hash_id = ?;', (hash_id,)).fetchone()
             
             if result is not None:
                 
@@ -243,7 +243,7 @@ class ClientDBFilesMetadataBasic( ClientDBModule.ClientDBModule ):
                     
                 
             
-            self._Execute( 'INSERT INTO files_info_forced_filetypes ( hash_id, forced_mime ) VALUES ( ?, ? );', ( hash_id, forced_mime ) )
+            self._execute('INSERT INTO files_info_forced_filetypes ( hash_id, forced_mime ) VALUES ( ?, ? );', (hash_id, forced_mime))
             
         
     
@@ -251,11 +251,11 @@ class ClientDBFilesMetadataBasic( ClientDBModule.ClientDBModule ):
         
         if has_exif:
             
-            self._Execute( 'INSERT OR IGNORE INTO has_exif ( hash_id ) VALUES ( ? );', ( hash_id, ) )
+            self._execute('INSERT OR IGNORE INTO has_exif ( hash_id ) VALUES ( ? );', (hash_id,))
             
         else:
             
-            self._Execute( 'DELETE FROM has_exif WHERE hash_id = ?;', ( hash_id, ) )
+            self._execute('DELETE FROM has_exif WHERE hash_id = ?;', (hash_id,))
             
         
     
@@ -263,11 +263,11 @@ class ClientDBFilesMetadataBasic( ClientDBModule.ClientDBModule ):
         
         if has_human_readable_embedded_metadata:
             
-            self._Execute( 'INSERT OR IGNORE INTO has_human_readable_embedded_metadata ( hash_id ) VALUES ( ? );', ( hash_id, ) )
+            self._execute('INSERT OR IGNORE INTO has_human_readable_embedded_metadata ( hash_id ) VALUES ( ? );', (hash_id,))
             
         else:
             
-            self._Execute( 'DELETE FROM has_human_readable_embedded_metadata WHERE hash_id = ?;', ( hash_id, ) )
+            self._execute('DELETE FROM has_human_readable_embedded_metadata WHERE hash_id = ?;', (hash_id,))
             
         
     
@@ -275,11 +275,11 @@ class ClientDBFilesMetadataBasic( ClientDBModule.ClientDBModule ):
         
         if has_icc_profile:
             
-            self._Execute( 'INSERT OR IGNORE INTO has_icc_profile ( hash_id ) VALUES ( ? );', ( hash_id, ) )
+            self._execute('INSERT OR IGNORE INTO has_icc_profile ( hash_id ) VALUES ( ? );', (hash_id,))
             
         else:
             
-            self._Execute( 'DELETE FROM has_icc_profile WHERE hash_id = ?;', ( hash_id, ) )
+            self._execute('DELETE FROM has_icc_profile WHERE hash_id = ?;', (hash_id,))
             
         
     
@@ -287,16 +287,16 @@ class ClientDBFilesMetadataBasic( ClientDBModule.ClientDBModule ):
         
         if has_transparency:
             
-            self._Execute( 'INSERT OR IGNORE INTO has_transparency ( hash_id ) VALUES ( ? );', ( hash_id, ) )
+            self._execute('INSERT OR IGNORE INTO has_transparency ( hash_id ) VALUES ( ? );', (hash_id,))
             
         else:
             
-            self._Execute( 'DELETE FROM has_transparency WHERE hash_id = ?;', ( hash_id, ) )
+            self._execute('DELETE FROM has_transparency WHERE hash_id = ?;', (hash_id,))
             
         
     
     def SetBlurhash( self, hash_id: int, blurhash: str ):
         
-        self._Execute('INSERT OR REPLACE INTO blurhashes ( hash_id, blurhash ) VALUES ( ?, ?);', ( hash_id, blurhash ) )
+        self._execute('INSERT OR REPLACE INTO blurhashes ( hash_id, blurhash ) VALUES ( ?, ?);', (hash_id, blurhash))
         
     

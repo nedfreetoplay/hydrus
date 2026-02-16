@@ -876,7 +876,7 @@ class EditURLClassPanel( ClientGUIScrolledPanels.EditPanel ):
         value_string_match = parameter.GetValueStringMatch()
         
         pretty_name = urllib.parse.unquote( name )
-        pretty_value_string_match = value_string_match.ToString()
+        pretty_value_string_match = value_string_match.to_string()
         
         if parameter.HasDefaultValue():
             
@@ -897,7 +897,7 @@ class EditURLClassPanel( ClientGUIScrolledPanels.EditPanel ):
         
         ( string_match, default ) = row
         
-        s = string_match.ToString()
+        s = string_match.to_string()
         
         if default is not None:
             

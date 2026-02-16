@@ -101,9 +101,9 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
     
     def _InitCaches( self ):
         
-        if self._Execute( 'SELECT 1 FROM sqlite_master WHERE name = ?;', ( 'services', ) ).fetchone() is not None:
+        if self._execute('SELECT 1 FROM sqlite_master WHERE name = ?;', ('services',)).fetchone() is not None:
             
-            all_data = self._Execute( 'SELECT service_id, service_key, service_type, name, dictionary_string FROM services;' ).fetchall()
+            all_data = self._execute('SELECT service_id, service_key, service_type, name, dictionary_string FROM services;').fetchall()
             
             for ( service_id, service_key, service_type, name, dictionary_string ) in all_data:
                 
@@ -141,9 +141,9 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
         
         dictionary_string = dictionary.DumpToString()
         
-        self._Execute( 'INSERT INTO services ( service_key, service_type, name, dictionary_string ) VALUES ( ?, ?, ?, ? );', ( sqlite3.Binary( service_key ), service_type, name, dictionary_string ) )
+        self._execute('INSERT INTO services ( service_key, service_type, name, dictionary_string ) VALUES ( ?, ?, ?, ? );', (sqlite3.Binary(service_key), service_type, name, dictionary_string))
         
-        service_id = self._GetLastRowId()
+        service_id = self._get_last_row_id()
         
         service = ClientServices.GenerateService( service_key, service_type, name, dictionary )
         
@@ -196,7 +196,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
                 
             
         
-        self._Execute( 'DELETE FROM services WHERE service_id = ?;', ( service_id, ) )
+        self._execute('DELETE FROM services WHERE service_id = ?;', (service_id,))
         
     
     def FileServiceIsCoveredByHydrusLocalFileStorage( self, service_id ) -> bool:
@@ -372,7 +372,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
         
         dictionary_string = dictionary.DumpToString()
         
-        self._Execute( 'UPDATE services SET name = ?, dictionary_string = ? WHERE service_id = ?;', ( name, dictionary_string, service_id ) )
+        self._execute('UPDATE services SET name = ?, dictionary_string = ? WHERE service_id = ?;', (name, dictionary_string, service_id))
         
         self._service_ids_to_services[ service_id ] = service
         
