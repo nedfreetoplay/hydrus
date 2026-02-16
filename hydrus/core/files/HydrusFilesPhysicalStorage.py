@@ -7,9 +7,9 @@ from hydrus.core import HydrusExceptions
 # careful not to overwrite Server file storage, which will presumably still be on 2
 DEFAULT_PREFIX_LENGTH = 2
 
-def CheckFullPrefixCoverage( prefix_type: str, prefixes_found: collections.abc.Collection[ str ], prefix_length = DEFAULT_PREFIX_LENGTH ):
+def check_full_prefix_coverage(prefix_type: str, prefixes_found: collections.abc.Collection[ str], prefix_length = DEFAULT_PREFIX_LENGTH):
     
-    missing_prefixes = GetMissingPrefixes( prefix_type, prefixes_found, prefix_length = prefix_length )
+    missing_prefixes = get_missing_prefixes(prefix_type, prefixes_found, prefix_length = prefix_length)
     
     if len( missing_prefixes ) > 0:
         
@@ -19,21 +19,21 @@ def CheckFullPrefixCoverage( prefix_type: str, prefixes_found: collections.abc.C
         
     
 
-def GetMissingPrefixes( prefix_type: str, prefixes_found: collections.abc.Collection[ str ], prefix_length = DEFAULT_PREFIX_LENGTH ):
+def get_missing_prefixes(prefix_type: str, prefixes_found: collections.abc.Collection[ str], prefix_length = DEFAULT_PREFIX_LENGTH):
     
-    expected_prefixes = set( IteratePrefixes( prefix_type, prefix_length = prefix_length ) )
+    expected_prefixes = set(iterate_prefixes(prefix_type, prefix_length = prefix_length))
     
     missing_prefixes = sorted( expected_prefixes.difference( prefixes_found ) )
     
     return missing_prefixes
     
 
-def GetPrefix( hash: bytes, prefix_type: str, prefix_length = DEFAULT_PREFIX_LENGTH ) -> str:
+def get_prefix(hash: bytes, prefix_type: str, prefix_length = DEFAULT_PREFIX_LENGTH) -> str:
     
     return prefix_type + hash.hex()[ : prefix_length ]
     
 
-def IteratePrefixes( prefix_type: str, prefix_length = DEFAULT_PREFIX_LENGTH ):
+def iterate_prefixes(prefix_type: str, prefix_length = DEFAULT_PREFIX_LENGTH):
     
     hex_chars = '0123456789abcdef'
     

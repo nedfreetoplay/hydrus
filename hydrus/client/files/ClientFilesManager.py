@@ -398,7 +398,7 @@ class ClientFilesManager( object ):
     
     def _GetPossibleSubfoldersForFile( self, hash: bytes, prefix_type: str ) -> list[ ClientFilesPhysical.FilesStorageSubfolder ]:
         
-        prefix = HydrusFilesPhysicalStorage.GetPrefix( hash, prefix_type )
+        prefix = HydrusFilesPhysicalStorage.get_prefix(hash, prefix_type)
         
         if prefix in self._prefixes_to_client_files_subfolders:
             
@@ -413,7 +413,7 @@ class ClientFilesManager( object ):
         You can only call this guy if you have the total lock already!
         """
         
-        prefix = HydrusFilesPhysicalStorage.GetPrefix( hash, prefix_type )
+        prefix = HydrusFilesPhysicalStorage.get_prefix(hash, prefix_type)
         
         return self._prefixes_to_rwlocks[ prefix ]
         

@@ -14,8 +14,8 @@ def GranulariseStorageFolder( base_location_path: str, prefix_type, starting_pre
     
     base_location = FilesStorageBaseLocation( base_location_path, 1 )
     
-    starting_viable_prefixes = set( HydrusFilesPhysicalStorage.IteratePrefixes( prefix_type, prefix_length = starting_prefix_length ) )
-    ending_viable_prefixes = set( HydrusFilesPhysicalStorage.IteratePrefixes( prefix_type, prefix_length = target_prefix_length ) )
+    starting_viable_prefixes = set(HydrusFilesPhysicalStorage.iterate_prefixes(prefix_type, prefix_length = starting_prefix_length))
+    ending_viable_prefixes = set(HydrusFilesPhysicalStorage.iterate_prefixes(prefix_type, prefix_length = target_prefix_length))
     
     for starting_viable_prefix in starting_viable_prefixes:
         
