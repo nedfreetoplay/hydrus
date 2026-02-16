@@ -663,7 +663,7 @@ class EditImportFolderPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 filenames = list( os.listdir( path ) )[:ClientGUIMetadataMigrationTest.HOW_MANY_EXAMPLE_OBJECTS_TO_USE]
                 
-                example_paths = [ f for f in [ os.path.join( path, filename ) for filename in filenames ] if os.path.isfile( f ) and HydrusFileHandling.GetMime( f ) in HC.ALLOWED_MIMES ]
+                example_paths = [f for f in [ os.path.join( path, filename ) for filename in filenames ] if os.path.isfile( f ) and HydrusFileHandling.get_mime(f) in HC.ALLOWED_MIMES]
                 
                 self._sidecar_test_context_factory.SetExampleFilePaths( example_paths )
                 

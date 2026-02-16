@@ -337,7 +337,7 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
         
         modified_timestamp_lines = []
         
-        timestamp_ms = times_manager.GetFileModifiedTimestampMS()
+        timestamp_ms = times_manager.get_file_modified_timestamp_ms()
         
         if timestamp_ms is not None:
             

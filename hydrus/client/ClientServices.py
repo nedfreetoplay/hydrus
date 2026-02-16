@@ -3162,7 +3162,7 @@ class ServiceIPFS( ServiceRemote ):
                 
                 media_result = CG.client_controller.read('media_result', hash)
                 
-                mime = media_result.GetMime()
+                mime = media_result.get_mime()
                 
                 multihash = media_result.GetLocationsManager().GetServiceFilename( self._service_key )
                 

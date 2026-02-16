@@ -171,7 +171,7 @@ def PopulateMetadataAPIDict( metadata_list: list[ dict ], hashes: list[ bytes ],
             
             domains_to_file_modified_timestamps_ms = times_manager.GetDomainModifiedTimestampsMS()
             
-            local_modified_timestamp_ms = times_manager.GetFileModifiedTimestampMS()
+            local_modified_timestamp_ms = times_manager.get_file_modified_timestamp_ms()
             
             if local_modified_timestamp_ms is not None:
                 

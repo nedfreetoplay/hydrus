@@ -636,7 +636,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             
         else:
             
-            sorted_mimes = { media.GetMime() for media in self._sorted_media }
+            sorted_mimes = {media.get_mime() for media in self._sorted_media}
             
             if HC.APPLICATION_HYDRUS_CLIENT_COLLECTION in sorted_mimes:
                 
@@ -658,7 +658,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             
         else:
             
-            selected_mimes = { media.GetMime() for media in self._selected_media }
+            selected_mimes = {media.get_mime() for media in self._selected_media}
             
             if HC.APPLICATION_HYDRUS_CLIENT_COLLECTION in selected_mimes:
                 

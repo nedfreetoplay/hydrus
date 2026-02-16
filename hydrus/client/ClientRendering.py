@@ -93,7 +93,7 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
         self._is_ready = False
         
         self._hash = media.GetHash()
-        self._mime = media.GetMime()
+        self._mime = media.get_mime()
         
         self._num_frames = media.GetNumFrames()
         self._resolution = media.GetResolution()

@@ -1058,7 +1058,7 @@ class CanvasHoverFrameTop( CanvasHoverFrame ):
             
             has_exif = self._current_media.GetMediaResult().GetFileInfoManager().has_exif
             has_human_readable_embedded_metadata = self._current_media.GetMediaResult().GetFileInfoManager().has_human_readable_embedded_metadata
-            has_extra_rows = self._current_media.GetMime() == HC.IMAGE_JPEG
+            has_extra_rows = self._current_media.get_mime() == HC.IMAGE_JPEG
             
             tt = 'show detailed file metadata'
             

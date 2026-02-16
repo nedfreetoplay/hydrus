@@ -560,7 +560,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetThumbnail( HydrusResourceClien
             path = HydrusFileHandling.mimes_to_default_thumbnail_paths[ mime ]
             
         
-        response_mime = HydrusFileHandling.GetThumbnailMime( path )
+        response_mime = HydrusFileHandling.get_thumbnail_mime(path)
         
         response_context = HydrusServerResources.ResponseContext( 200, mime = response_mime, path = path )
         
@@ -691,7 +691,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetThumbnailPath( HydrusResourceC
         
         if include_thumbnail_filetype:
             
-            thumb_mime = HydrusFileHandling.GetThumbnailMime( path )
+            thumb_mime = HydrusFileHandling.get_thumbnail_mime(path)
             
             body_dict = {
                 'path' : path,

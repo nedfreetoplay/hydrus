@@ -324,11 +324,11 @@ class HydrusResourceClientAPIRestrictedAddFilesGenerateHashes( HydrusResourceCli
         
         ( os_file_handle, temp_path ) = request.temp_file_info
         
-        mime = HydrusFileHandling.GetMime( temp_path )
+        mime = HydrusFileHandling.get_mime(temp_path)
         
         body_dict = {}
         
-        sha256_hash = HydrusFileHandling.GetHashFromPath( temp_path )
+        sha256_hash = HydrusFileHandling.get_hash_from_path(temp_path)
         
         body_dict[ 'hash' ] = sha256_hash.hex()
         

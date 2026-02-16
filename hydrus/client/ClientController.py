@@ -2618,7 +2618,7 @@ class Controller( HydrusController.HydrusController ):
             
             media = data
             
-            if media.GetMime() not in HC.MIMES_WITH_THUMBNAILS:
+            if media.get_mime() not in HC.MIMES_WITH_THUMBNAILS:
                 
                 return
                 

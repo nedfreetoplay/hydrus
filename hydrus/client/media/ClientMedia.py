@@ -2744,7 +2744,7 @@ class MediaSort( HydrusSerialisable.SerialisableBase ):
                 
                 def sort_key( x ):
                     
-                    return x.GetMime()
+                    return x.get_mime()
                     
                 
             elif sort_data in ( CC.SORT_FILES_BY_MEDIA_VIEWS, CC.SORT_FILES_BY_MEDIA_VIEWTIME ):

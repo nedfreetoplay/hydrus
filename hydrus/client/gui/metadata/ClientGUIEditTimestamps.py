@@ -95,7 +95,7 @@ class EditFileTimestampsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUISc
         
         for media in self._ordered_medias:
             
-            datetime_value_range.AddValueTimestampMS( media.GetTimesManager().GetFileModifiedTimestampMS() )
+            datetime_value_range.AddValueTimestampMS(media.GetTimesManager().get_file_modified_timestamp_ms())
             
         
         if datetime_value_range.IsAllNull():
@@ -610,7 +610,7 @@ class EditFileTimestampsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUISc
                 
                 file_modified_timestamp_ms = datetime_value_range.GetFixedValue().toMSecsSinceEpoch()
                 
-                hashes = [ media.GetHash() for media in self._ordered_medias if media.GetTimesManager().GetFileModifiedTimestampMS() is not None ]
+                hashes = [media.GetHash() for media in self._ordered_medias if media.GetTimesManager().get_file_modified_timestamp_ms() is not None]
                 
                 result_tuples.append( ( hashes, ClientTime.TimestampData.STATICFileModifiedTime( file_modified_timestamp_ms ), datetime_value_range.GetStepMS() ) )
                 

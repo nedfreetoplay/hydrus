@@ -728,7 +728,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
         directory = self._directory_picker.GetPath()
         
         number = self._media_to_number_indices[ media ]
-        mime = media.GetMime()
+        mime = media.get_mime()
         
         try:
             
@@ -757,7 +757,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
         directory = self._directory_picker.GetPath()
         
         number = self._media_to_number_indices[ media ]
-        mime = media.GetMime()
+        mime = media.get_mime()
         
         try:
             
@@ -922,7 +922,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                     CG.client_controller.CallAfterQtSafe( self, qt_update_label, x_of_y )
                     
                     hash = media.GetHash()
-                    mime = media.GetMime()
+                    mime = media.get_mime()
                     
                     dest_path = os.path.normpath( dest_path )
                     

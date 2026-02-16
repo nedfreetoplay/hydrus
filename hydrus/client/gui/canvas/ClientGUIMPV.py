@@ -1425,7 +1425,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                     
                     self._stop_for_slideshow = False
                     
-                    mime = self._media.GetMime()
+                    mime = self._media.get_mime()
                     
                     if mime in HC.VIEWABLE_ANIMATIONS and not CG.client_controller.new_options.GetBoolean( 'always_loop_gifs' ):
                         

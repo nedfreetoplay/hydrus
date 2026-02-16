@@ -2952,7 +2952,7 @@ class PanelPredicateSystemSimilarToData( PanelPredicateSystemSingle ):
                 
                 if os.path.exists( path ) and os.path.isfile( path ):
                     
-                    mime = HydrusFileHandling.GetMime( path )
+                    mime = HydrusFileHandling.get_mime(path)
                     
                     if mime in HC.FILES_THAT_HAVE_PERCEPTUAL_HASH:
                         

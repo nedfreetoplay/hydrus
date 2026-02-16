@@ -325,7 +325,7 @@ class ParseRootFileLookup( HydrusSerialisable.SerialisableBaseNamed ):
         elif self._file_identifier_type == FILE_IDENTIFIER_TYPE_FILE:
             
             hash = media.GetHash()
-            mime = media.GetMime()
+            mime = media.get_mime()
             
             client_files_manager = CG.client_controller.client_files_manager
             

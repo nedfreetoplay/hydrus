@@ -339,7 +339,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _CanRegenThumbForMediaResult( self, media_result ):
         
-        mime = media_result.GetMime()
+        mime = media_result.get_mime()
         
         if mime not in HC.MIMES_WITH_THUMBNAILS:
             
@@ -362,7 +362,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     def _CheckFileIntegrity( self, media_result, job_type ):
         
         hash = media_result.GetHash()
-        mime = media_result.GetMime()
+        mime = media_result.get_mime()
         
         file_is_missing = False
         file_is_invalid = False
@@ -382,7 +382,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         if not file_is_missing and job_type in ( REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_REMOVE_RECORD, REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_TRY_URL, REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_TRY_URL_ELSE_REMOVE_RECORD, REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_SILENT_DELETE ):
             
-            actual_hash = HydrusFileHandling.GetHashFromPath( path )
+            actual_hash = HydrusFileHandling.get_hash_from_path(path)
             
             if hash != actual_hash:
                 
@@ -666,7 +666,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _CheckSimilarFilesMembership( self, media_result ):
         
-        mime = media_result.GetMime()
+        mime = media_result.get_mime()
         
         return mime in HC.FILES_THAT_HAVE_PERCEPTUAL_HASH
         
@@ -684,7 +684,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     def _DeleteNeighbourDupes( self, media_result ):
         
         hash = media_result.GetHash()
-        mime = media_result.GetMime()
+        mime = media_result.get_mime()
         
         self._controller.client_files_manager.DeleteNeighbourDupes( hash, mime )
         
@@ -692,7 +692,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     def _FixFilePermissions( self, media_result ):
         
         hash = media_result.GetHash()
-        mime = media_result.GetMime()
+        mime = media_result.get_mime()
         
         try:
             
@@ -709,7 +709,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     def _HasEXIF( self, media_result ):
         
         hash = media_result.GetHash()
-        mime = media_result.GetMime()
+        mime = media_result.get_mime()
         
         if mime not in HC.FILES_THAT_CAN_HAVE_EXIF:
             
@@ -744,7 +744,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     def _HasHumanReadableEmbeddedMetadata( self, media_result ):
         
         hash = media_result.GetHash()
-        mime = media_result.GetMime()
+        mime = media_result.get_mime()
         
         if mime not in HC.FILES_THAT_CAN_HAVE_HUMAN_READABLE_EMBEDDED_METADATA:
             
@@ -770,7 +770,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     def _HasICCProfile( self, media_result ):
         
         hash = media_result.GetHash()
-        mime = media_result.GetMime()
+        mime = media_result.get_mime()
         
         if mime not in HC.FILES_THAT_CAN_HAVE_ICC_PROFILE:
             
@@ -818,7 +818,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     def _HasTransparency( self, media_result ):
         
         hash = media_result.GetHash()
-        mime = media_result.GetMime()
+        mime = media_result.get_mime()
         
         if mime not in HC.MIMES_THAT_WE_CAN_CHECK_FOR_TRANSPARENCY:
             
@@ -844,13 +844,13 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     def _RegenFileMetadata( self, media_result ):
         
         hash = media_result.GetHash()
-        original_mime = media_result.GetMime()
+        original_mime = media_result.get_mime()
         
         try:
             
             path = self._controller.client_files_manager.GetFilePath( hash, original_mime )
             
-            ( size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) = HydrusFileHandling.GetFileInfo( path, ok_to_look_for_hydrus_updates = True )
+            ( size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) = HydrusFileHandling.get_file_info(path, ok_to_look_for_hydrus_updates = True)
             
             additional_data = ( size, mime, width, height, duration_ms, num_frames, has_audio, num_words )
             
@@ -886,7 +886,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     def _RegenFileModifiedTimestampMS( self, media_result ):
         
         hash = media_result.GetHash()
-        mime = media_result.GetMime()
+        mime = media_result.get_mime()
         
         if mime in HC.HYDRUS_UPDATE_FILES:
             
@@ -897,7 +897,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             path = self._controller.client_files_manager.GetFilePath( hash, mime )
             
-            file_modified_timestamp_ms = HydrusFileHandling.GetFileModifiedTimestampMS( path )
+            file_modified_timestamp_ms = HydrusFileHandling.get_file_modified_timestamp_ms(path)
             
             additional_data = file_modified_timestamp_ms
             
@@ -912,7 +912,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     def _RegenFileOtherHashes( self, media_result ):
         
         hash = media_result.GetHash()
-        mime = media_result.GetMime()
+        mime = media_result.get_mime()
         
         if mime in HC.HYDRUS_UPDATE_FILES:
             
@@ -923,7 +923,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             path = self._controller.client_files_manager.GetFilePath( hash, mime )
             
-            ( md5, sha1, sha512 ) = HydrusFileHandling.GetExtraHashesFromPath( path )
+            ( md5, sha1, sha512 ) = HydrusFileHandling.get_extra_hashes_from_path(path)
             
             additional_data = ( md5, sha1, sha512 )
             
@@ -978,7 +978,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     def _RegenPixelHash( self, media_result ):
         
         hash = media_result.GetHash()
-        mime = media_result.GetMime()
+        mime = media_result.get_mime()
         
         if mime not in HC.FILES_THAT_CAN_HAVE_PIXEL_HASH:
             
@@ -1017,7 +1017,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _RegenBlurhash( self, media_result ):
         
-        if media_result.GetMime() not in HC.MIMES_WITH_THUMBNAILS:
+        if media_result.get_mime() not in HC.MIMES_WITH_THUMBNAILS:
             
             return None
             
@@ -1033,7 +1033,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         try:
             
-            thumbnail_mime = HydrusFileHandling.GetThumbnailMime( thumbnail_path )
+            thumbnail_mime = HydrusFileHandling.get_thumbnail_mime(thumbnail_path)
             
             numpy_image = HydrusImageHandling.GenerateNumPyImage( thumbnail_path, thumbnail_mime )
             
@@ -1049,7 +1049,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     def _RegenSimilarFilesMetadata( self, media_result ):
         
         hash = media_result.GetHash()
-        mime = media_result.GetMime()
+        mime = media_result.get_mime()
         
         if mime not in HC.FILES_THAT_HAVE_PERCEPTUAL_HASH:
             

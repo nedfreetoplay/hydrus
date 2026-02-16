@@ -60,7 +60,7 @@ def DoFileExportDragDrop( drag_object: QG.QDrag, page_key, media, alt_down ):
     for m in media:
         
         hash = m.GetHash()
-        mime = m.GetMime()
+        mime = m.get_mime()
         
         total_size += m.GetSize()
         
@@ -143,7 +143,7 @@ def DoFileExportDragDrop( drag_object: QG.QDrag, page_key, media, alt_down ):
                 
                 filename = ClientExportingFiles.GenerateExportFilename( this_dnd_temp_dir, m, filename_terms, i + 1, do_not_use_filenames = seen_export_filenames )
                 
-                if filename == HC.mime_ext_lookup[ m.GetMime() ]:
+                if filename == HC.mime_ext_lookup[ m.get_mime()]:
                     
                     raise Exception()
                     

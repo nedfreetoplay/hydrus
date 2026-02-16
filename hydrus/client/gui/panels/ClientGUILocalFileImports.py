@@ -471,7 +471,7 @@ class ReviewLocalFileImports( ClientGUIScrolledPanels.ReviewPanel ):
                             
                             try:
                                 
-                                mime = HydrusFileHandling.GetMime( path )
+                                mime = HydrusFileHandling.get_mime(path)
                                 
                             except Exception as e:
                                 

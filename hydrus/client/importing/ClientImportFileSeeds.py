@@ -1557,7 +1557,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                             
                             network_job.WriteContentBytesToPath( temp_path )
                             
-                            mime = HydrusFileHandling.GetMime( temp_path )
+                            mime = HydrusFileHandling.get_mime(temp_path)
                             
                             if mime in HC.ALLOWED_MIMES:
                                 

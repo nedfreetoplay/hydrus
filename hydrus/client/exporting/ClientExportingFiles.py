@@ -151,7 +151,7 @@ def GenerateExportFilename( destination_directory, media, terms, file_index, do_
     
     #
     
-    mime = media.GetMime()
+    mime = media.get_mime()
     
     ext = HC.mime_ext_lookup[ mime ]
     
@@ -652,7 +652,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                 
             
             hash = media_result.GetHash()
-            mime = media_result.GetMime()
+            mime = media_result.get_mime()
             
             try:
                 

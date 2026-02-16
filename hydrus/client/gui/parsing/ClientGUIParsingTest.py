@@ -265,7 +265,7 @@ class TestPanel( QW.QWidget ):
                             f.write( example_bytes )
                             
                         
-                        mime = HydrusFileHandling.GetMime( temp_path )
+                        mime = HydrusFileHandling.get_mime(temp_path)
                         
                     except Exception as e:
                         

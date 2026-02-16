@@ -226,7 +226,7 @@ class FileImportJob( object ):
             status_hook( 'calculating hash' )
             
         
-        hash = HydrusFileHandling.GetHashFromPath( self._temp_path )
+        hash = HydrusFileHandling.get_hash_from_path(self._temp_path)
         
         if HG.file_import_report_mode:
             
@@ -262,7 +262,7 @@ class FileImportJob( object ):
                 status_hook( 'generating filetype' )
                 
             
-            mime = HydrusFileHandling.GetMime( self._temp_path )
+            mime = HydrusFileHandling.get_mime(self._temp_path)
             
             self._pre_import_file_status.mime = mime
             
@@ -303,7 +303,7 @@ class FileImportJob( object ):
             status_hook( 'generating file metadata' )
             
         
-        self._file_info = HydrusFileHandling.GetFileInfo( self._temp_path, mime = mime )
+        self._file_info = HydrusFileHandling.get_file_info(self._temp_path, mime = mime)
         
         ( size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) = self._file_info
         
@@ -334,7 +334,7 @@ class FileImportJob( object ):
             
             extra_description = f'File with hash "{self.GetHash().hex()}".'
             
-            thumbnail_numpy = HydrusFileHandling.GenerateThumbnailNumPy( self._temp_path, target_resolution, mime, duration_ms, num_frames, percentage_in = percentage_in, extra_description = extra_description )
+            thumbnail_numpy = HydrusFileHandling.generate_thumbnail_num_py(self._temp_path, target_resolution, mime, duration_ms, num_frames, percentage_in = percentage_in, extra_description = extra_description)
             
             # this guy handles almost all his own exceptions now, so no need for clever catching. if it fails, we are prob talking an I/O failure, which is not a 'thumbnail failed' error
             self._thumbnail_bytes = HydrusImageHandling.GenerateThumbnailBytesFromNumPy( thumbnail_numpy )
@@ -379,7 +379,7 @@ class FileImportJob( object ):
             status_hook( 'generating additional hashes' )
             
         
-        self._extra_hashes = HydrusFileHandling.GetExtraHashesFromPath( self._temp_path )
+        self._extra_hashes = HydrusFileHandling.get_extra_hashes_from_path(self._temp_path)
         
         #
         
@@ -452,7 +452,7 @@ class FileImportJob( object ):
                 
             
         
-        self._file_modified_timestamp_ms = HydrusFileHandling.GetFileModifiedTimestampMS( self._temp_path )
+        self._file_modified_timestamp_ms = HydrusFileHandling.get_file_modified_timestamp_ms(self._temp_path)
         
     
     def GetExtraHashes( self ):

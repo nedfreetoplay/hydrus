@@ -284,7 +284,7 @@ class ClientFilesManager( object ):
     def _GenerateThumbnailBytes( self, file_path, media_result ):
         
         hash = media_result.GetHash()
-        mime = media_result.GetMime()
+        mime = media_result.get_mime()
         ( width, height ) = media_result.GetResolution()
         duration_ms = media_result.GetDurationMS()
         num_frames = media_result.GetNumFrames()
@@ -299,7 +299,7 @@ class ClientFilesManager( object ):
         
         try:
             
-            thumbnail_bytes = HydrusFileHandling.GenerateThumbnailBytes( file_path, target_resolution, mime, duration_ms, num_frames, percentage_in = percentage_in )
+            thumbnail_bytes = HydrusFileHandling.generate_thumbnail_bytes(file_path, target_resolution, mime, duration_ms, num_frames, percentage_in = percentage_in)
             
         except Exception as e:
             
@@ -1243,7 +1243,7 @@ class ClientFilesManager( object ):
                         
                         media_result = self._controller.read('media_result', file_hash)
                         
-                        expected_mime = media_result.GetMime()
+                        expected_mime = media_result.get_mime()
                         
                         try:
                             
@@ -1380,7 +1380,7 @@ class ClientFilesManager( object ):
     def GetThumbnailPath( self, media_result ):
         
         hash = media_result.GetHash()
-        mime = media_result.GetMime()
+        mime = media_result.get_mime()
         
         if HG.file_report_mode:
             
@@ -1494,7 +1494,7 @@ class ClientFilesManager( object ):
             
         
         hash = media_result.GetHash()
-        mime = media_result.GetMime()
+        mime = media_result.get_mime()
         
         if mime not in HC.MIMES_WITH_THUMBNAILS:
             
@@ -1532,7 +1532,7 @@ class ClientFilesManager( object ):
         try:
             
             hash = media_result.GetHash()
-            mime = media_result.GetMime()
+            mime = media_result.get_mime()
             
             if mime not in HC.MIMES_WITH_THUMBNAILS:
                 
@@ -1548,7 +1548,7 @@ class ClientFilesManager( object ):
                 raise Exception()
                 
             
-            thumbnail_mime = HydrusFileHandling.GetThumbnailMime( path )
+            thumbnail_mime = HydrusFileHandling.get_thumbnail_mime(path)
             
             numpy_image = HydrusImageHandling.GenerateNumPyImage( path, thumbnail_mime )
             
@@ -1587,7 +1587,7 @@ class ClientFilesManager( object ):
     def UpdateFileModifiedTimestampMS( self, media, modified_timestamp_ms: int ):
         
         hash = media.GetHash()
-        mime = media.GetMime()
+        mime = media.get_mime()
         
         with self._master_locations_rwlock.read:
             

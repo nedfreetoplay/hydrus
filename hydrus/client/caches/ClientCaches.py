@@ -462,7 +462,7 @@ class ThumbnailCache( object ):
         
         try:
             
-            thumbnail_mime = HydrusFileHandling.GetThumbnailMime( thumbnail_path )
+            thumbnail_mime = HydrusFileHandling.get_thumbnail_mime(thumbnail_path)
             
             numpy_image = HydrusImageHandling.GenerateNumPyImage( thumbnail_path, thumbnail_mime )
             
@@ -644,7 +644,7 @@ class ThumbnailCache( object ):
                 
             else:
                 
-                magic_score = self._magic_mime_thumbnail_ease_score_lookup[ display_media.GetMime() ]
+                magic_score = self._magic_mime_thumbnail_ease_score_lookup[ display_media.get_mime()]
                 hash = display_media.GetHash()
                 
             
@@ -670,7 +670,7 @@ class ThumbnailCache( object ):
             media_result = item
             
             hash = media_result.GetHash()
-            mime = media_result.GetMime()
+            mime = media_result.get_mime()
             
             magic_score = self._magic_mime_thumbnail_ease_score_lookup[ mime ]
             
@@ -879,7 +879,7 @@ class ThumbnailCache( object ):
         
         media_result = display_media.GetMediaResult()
         
-        mime = media_result.GetMime()
+        mime = media_result.get_mime()
         
         if mime in HC.MIMES_WITH_THUMBNAILS:
             

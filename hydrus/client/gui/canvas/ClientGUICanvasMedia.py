@@ -156,7 +156,7 @@ def CalculateCanvasZooms( canvas_size: QC.QSize, canvas_type: int, device_pixel_
     
     #
     
-    mime = media.GetMime()
+    mime = media.get_mime()
     
     ( media_scale_up, media_scale_down, preview_scale_up, preview_scale_down, exact_zooms_only, scale_up_quality, scale_down_quality ) = new_options.GetMediaZoomOptions( mime )
     
@@ -195,7 +195,7 @@ def CalculateCanvasZooms( canvas_size: QC.QSize, canvas_type: int, device_pixel_
             
         
     
-    if media.GetMime() in HC.AUDIO:
+    if media.get_mime() in HC.AUDIO:
         
         scale_up_action = CC.MEDIA_VIEWER_SCALE_100
         scale_down_action = CC.MEDIA_VIEWER_SCALE_TO_CANVAS
@@ -286,7 +286,7 @@ def CalculateMediaContainerSize( media, device_pixel_ratio: float, zoom, show_ac
 
 def CalculateMediaSize( media, zoom ):
     
-    if media.GetMime() in HC.AUDIO or not media.HasUsefulResolution():
+    if media.get_mime() in HC.AUDIO or not media.HasUsefulResolution():
         
         ( original_width, original_height ) = ( 360, 240 )
         
@@ -322,14 +322,14 @@ def ShouldHaveAnimationBar( media, show_action ):
         return False
         
     
-    if not media.HasDuration() and media.GetMime() is not HC.ANIMATION_UGOIRA:
+    if not media.HasDuration() and media.get_mime() is not HC.ANIMATION_UGOIRA:
         
         return False
         
     
-    is_animation = media.GetMime() in HC.VIEWABLE_ANIMATIONS
-    is_audio = media.GetMime() in HC.AUDIO
-    is_video = media.GetMime() in HC.VIDEO
+    is_animation = media.get_mime() in HC.VIEWABLE_ANIMATIONS
+    is_audio = media.get_mime() in HC.AUDIO
+    is_video = media.get_mime() in HC.VIDEO
     
     if show_action in ( CC.MEDIA_VIEWER_ACTION_SHOW_WITH_MPV, CC.MEDIA_VIEWER_ACTION_SHOW_WITH_QMEDIAPLAYER_VIDEO_WIDGET, CC.MEDIA_VIEWER_ACTION_SHOW_WITH_QMEDIAPLAYER_GRAPHICS_VIEW ):
         
@@ -914,7 +914,7 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                             
                             do_times_to_play_animation_pause = False
                             
-                            if self._media.GetMime() in HC.VIEWABLE_ANIMATIONS and not CG.client_controller.new_options.GetBoolean( 'always_loop_gifs' ):
+                            if self._media.get_mime() in HC.VIEWABLE_ANIMATIONS and not CG.client_controller.new_options.GetBoolean('always_loop_gifs'):
                                 
                                 times_to_play_animation = self._video_container.GetTimesToPlayAnimation()
                                 
@@ -2686,7 +2686,7 @@ class MediaContainer( QW.QWidget ):
             return
             
         
-        ( media_scale_up, media_scale_down, preview_scale_up, preview_scale_down, exact_zooms_only, scale_up_quality, scale_down_quality ) = CG.client_controller.new_options.GetMediaZoomOptions( self._media.GetMime() )
+        ( media_scale_up, media_scale_down, preview_scale_up, preview_scale_down, exact_zooms_only, scale_up_quality, scale_down_quality ) = CG.client_controller.new_options.GetMediaZoomOptions(self._media.get_mime())
         
         possible_zooms = CG.client_controller.new_options.GetMediaZooms()
         
@@ -2894,7 +2894,7 @@ class MediaContainer( QW.QWidget ):
         
         max_zoom = max( possible_zooms )
         
-        ( media_scale_up, media_scale_down, preview_scale_up, preview_scale_down, exact_zooms_only, scale_up_quality, scale_down_quality ) = CG.client_controller.new_options.GetMediaZoomOptions( self._media.GetMime() )
+        ( media_scale_up, media_scale_down, preview_scale_up, preview_scale_down, exact_zooms_only, scale_up_quality, scale_down_quality ) = CG.client_controller.new_options.GetMediaZoomOptions(self._media.get_mime())
         
         if exact_zooms_only:
             
@@ -2923,7 +2923,7 @@ class MediaContainer( QW.QWidget ):
             return
             
         
-        ( media_scale_up, media_scale_down, preview_scale_up, preview_scale_down, exact_zooms_only, scale_up_quality, scale_down_quality ) = CG.client_controller.new_options.GetMediaZoomOptions( self._media.GetMime() )
+        ( media_scale_up, media_scale_down, preview_scale_up, preview_scale_down, exact_zooms_only, scale_up_quality, scale_down_quality ) = CG.client_controller.new_options.GetMediaZoomOptions(self._media.get_mime())
         
         if exact_zooms_only:
             
@@ -3064,7 +3064,7 @@ class MediaContainer( QW.QWidget ):
             
             max_zoom = max( possible_zooms )
             
-            ( media_scale_up, media_scale_down, preview_scale_up, preview_scale_down, exact_zooms_only, scale_up_quality, scale_down_quality ) = CG.client_controller.new_options.GetMediaZoomOptions( self._media.GetMime() )
+            ( media_scale_up, media_scale_down, preview_scale_up, preview_scale_down, exact_zooms_only, scale_up_quality, scale_down_quality ) = CG.client_controller.new_options.GetMediaZoomOptions(self._media.get_mime())
             
             if exact_zooms_only:
                 
@@ -3250,14 +3250,14 @@ class EmbedButton( QW.QWidget ):
             
         else:
             
-            needs_thumb = self._media.GetLocationsManager().IsLocal() and self._media.GetMime() in HC.MIMES_WITH_THUMBNAILS
+            needs_thumb = self._media.GetLocationsManager().IsLocal() and self._media.get_mime() in HC.MIMES_WITH_THUMBNAILS
             
         
         if needs_thumb:
             
             thumbnail_path = CG.client_controller.client_files_manager.GetThumbnailPath( self._media.GetDisplayMedia().GetMediaResult() )
             
-            thumbnail_mime = HydrusFileHandling.GetThumbnailMime( thumbnail_path )
+            thumbnail_mime = HydrusFileHandling.get_thumbnail_mime(thumbnail_path)
             
             self._thumbnail_qt_pixmap = ClientRendering.GenerateHydrusBitmap( thumbnail_path, thumbnail_mime ).GetQtPixmap()
             
@@ -3303,7 +3303,7 @@ class OpenExternallyPanel( QW.QWidget ):
             QP.AddToLayout( vbox, thumbnail_window, CC.FLAGS_CENTER )
             
         
-        m_text = HC.mime_string_lookup[ media.GetMime() ]
+        m_text = HC.mime_string_lookup[ media.get_mime()]
         
         button = QW.QPushButton( 'open {} externally'.format( m_text ), self )
         
@@ -3333,7 +3333,7 @@ class OpenExternallyPanel( QW.QWidget ):
     def LaunchFile( self ):
         
         hash = self._media.GetHash()
-        mime = self._media.GetMime()
+        mime = self._media.get_mime()
         
         client_files_manager = CG.client_controller.client_files_manager
         

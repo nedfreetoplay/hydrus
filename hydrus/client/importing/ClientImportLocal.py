@@ -73,7 +73,7 @@ class HDDImport( HydrusSerialisable.SerialisableBase ):
                 
                 try:
                     
-                    file_modified_time_ms = HydrusFileHandling.GetFileModifiedTimestampMS( path )
+                    file_modified_time_ms = HydrusFileHandling.get_file_modified_timestamp_ms(path)
                     
                     file_seed.source_time = HydrusTime.secondise_ms(file_modified_time_ms)
                     

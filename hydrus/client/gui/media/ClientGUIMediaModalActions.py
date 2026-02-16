@@ -1161,7 +1161,7 @@ def SetFilesForcedFiletypes( win: QW.QWidget, medias: collections.abc.Collection
                         
                         hash = media.GetHash()
                         
-                        current_mime = media.GetMime()
+                        current_mime = media.get_mime()
                         mime_to_move_to = forced_mime
                         
                         if mime_to_move_to is None:
