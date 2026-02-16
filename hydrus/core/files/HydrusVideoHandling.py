@@ -190,7 +190,7 @@ def GetMime( path ):
         
     
     ( has_video, video_format ) = ParseFFMPEGVideoFormat( lines )
-    ( has_audio, audio_format ) = HydrusAudioHandling.ParseFFMPEGAudio( lines )
+    ( has_audio, audio_format ) = HydrusAudioHandling.parse_ffmpeg_audio(lines)
     
     if not ( has_video or has_audio ):
         
@@ -787,7 +787,7 @@ def ParseFFMPEGVideoResolution( lines, png_ok = False ) -> tuple[ int, int ]:
 
 def VideoHasAudio( path, info_lines ) -> bool:
     
-    ( audio_found, audio_format ) = HydrusAudioHandling.ParseFFMPEGAudio( info_lines )
+    ( audio_found, audio_format ) = HydrusAudioHandling.parse_ffmpeg_audio(info_lines)
     
     if not audio_found:
         
