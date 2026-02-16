@@ -337,7 +337,7 @@ class AutoCompleteDropdownMetadataConditional( ClientGUIACDropdown.AutocompleteD
         
         try:
             
-            texts = HydrusText.DeserialiseNewlinedTexts( raw_text )
+            texts = HydrusText.deserialise_newlined_texts(raw_text)
             
             predicates = []
             

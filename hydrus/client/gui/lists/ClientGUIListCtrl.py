@@ -137,7 +137,7 @@ class HydrusListItemModel( QC.QAbstractItemModel ):
                 
                 display_tuple = self._data_to_display_tuple_func( data )
                 
-                display_tuple = tuple( ( HydrusText.GetFirstLineSummary( t ) for t in display_tuple ) )
+                display_tuple = tuple((HydrusText.get_first_line_summary(t) for t in display_tuple))
                 
                 self._data_to_display_tuples[ data ] = display_tuple
                 

@@ -765,7 +765,7 @@ class AddEditDeleteListBox( QW.QWidget ):
         
         try:
             
-            urls = HydrusText.DeserialiseNewlinedTexts( raw_text )
+            urls = HydrusText.deserialise_newlined_texts(raw_text)
             
         except Exception as e:
             
@@ -3200,7 +3200,7 @@ class ListBoxTags( ListBox ):
             
             if command == 'hide':
                 
-                message = f'Hide{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( tags )}from here?'
+                message = f'Hide{HydrusText.convert_many_strings_to_nice_insertable_human_summary(tags)}from here?'
                 
                 from hydrus.client.gui import ClientGUIDialogsQuick
                 
@@ -3218,7 +3218,7 @@ class ListBoxTags( ListBox ):
                 namespaces = {namespace for ( namespace, subtag ) in (HydrusTags.split_tag(tag) for tag in tags)}
                 nice_namespaces = [ ClientTags.RenderNamespaceForUser( namespace ) for namespace in namespaces ]
                 
-                message = f'Hide{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( nice_namespaces )}tags from here?'
+                message = f'Hide{HydrusText.convert_many_strings_to_nice_insertable_human_summary(nice_namespaces)}tags from here?'
                 
                 from hydrus.client.gui import ClientGUIDialogsQuick
                 
@@ -4041,7 +4041,7 @@ class ListBoxTags( ListBox ):
             
             if len( tags ) > 5:
                 
-                message = f'Add{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( tags )}to the favourites list?'
+                message = f'Add{HydrusText.convert_many_strings_to_nice_insertable_human_summary(tags)}to the favourites list?'
                 
                 from hydrus.client.gui import ClientGUIDialogsQuick
                 
@@ -4064,7 +4064,7 @@ class ListBoxTags( ListBox ):
         
         def remove_favourite_tags( tags ):
             
-            message = f'Remove{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( tags )}from the favourites list?'
+            message = f'Remove{HydrusText.convert_many_strings_to_nice_insertable_human_summary(tags)}from the favourites list?'
             
             from hydrus.client.gui import ClientGUIDialogsQuick
             
@@ -4198,14 +4198,14 @@ class ListBoxTags( ListBox ):
                             
                             if len( tags_currently_ok ) > 0:
                                 
-                                label = f'block {HydrusText.ConvertManyStringsToNiceInsertableHumanSummarySingleLine(tags_currently_ok,noun)}{HC.UNICODE_ELLIPSIS}'
+                                label = f'block {HydrusText.convert_many_strings_to_nice_insertable_human_summary_single_line(tags_currently_ok, noun)}{HC.UNICODE_ELLIPSIS}'
                                 
                                 ClientGUIMenus.AppendMenuItem( service_submenu, label, 'Change the tag filter for this service.', ClientGUIModalServersideServiceActions.ManageServiceOptionsTagFilter, self, service_key, new_tags_to_block = tags_currently_ok )
                                 
                             
                             if len( tags_currently_not_ok ) > 0:
                                 
-                                label = f're-allow {HydrusText.ConvertManyStringsToNiceInsertableHumanSummarySingleLine(tags_currently_not_ok,noun)}{HC.UNICODE_ELLIPSIS}'
+                                label = f're-allow {HydrusText.convert_many_strings_to_nice_insertable_human_summary_single_line(tags_currently_not_ok, noun)}{HC.UNICODE_ELLIPSIS}'
                                 
                                 ClientGUIMenus.AppendMenuItem( service_submenu, label, 'Change the tag filter for this service.', ClientGUIModalServersideServiceActions.ManageServiceOptionsTagFilter, self, service_key, new_tags_to_allow = tags_currently_not_ok )
                                 
@@ -4218,7 +4218,7 @@ class ListBoxTags( ListBox ):
                     
                     ClientGUIMenus.AppendSeparator( service_submenu )
                     
-                    ClientGUIMenus.AppendMenuItem( service_submenu, f'delete all {HydrusText.ConvertManyStringsToNiceInsertableHumanSummarySingleLine(selected_actual_tags,noun)}{HC.UNICODE_ELLIPSIS}', 'Delete every instance of this tag from the repository.', ClientGUIModalClientsideServiceActions.OpenPurgeTagsWindow, self, service_key, selected_actual_tags )
+                    ClientGUIMenus.AppendMenuItem(service_submenu, f'delete all {HydrusText.convert_many_strings_to_nice_insertable_human_summary_single_line(selected_actual_tags, noun)}{HC.UNICODE_ELLIPSIS}', 'Delete every instance of this tag from the repository.', ClientGUIModalClientsideServiceActions.OpenPurgeTagsWindow, self, service_key, selected_actual_tags)
                     
                     ClientGUIMenus.AppendMenu( menu, service_submenu, 'admin: ' + tag_repo.GetName() )
                     

@@ -338,9 +338,9 @@ class FileDropTarget( QC.QObject ):
                 
                 text = mime_data.text()
                 
-                text = HydrusText.CleanseImportText( text )
+                text = HydrusText.cleanse_import_text(text)
                 
-                text_lines = HydrusText.DeserialiseNewlinedTexts( text )
+                text_lines = HydrusText.deserialise_newlined_texts(text)
                 
                 for text_line in text_lines:
                     

@@ -448,18 +448,18 @@ class URLDomainMask( HydrusSerialisable.SerialisableBase ):
         
         if len( self._raw_domains ) > 0:
             
-            self_domain_description = HydrusText.ConvertManyStringsToNiceInsertableHumanSummarySingleLine( self._raw_domains, 'domains' )
+            self_domain_description = HydrusText.convert_many_strings_to_nice_insertable_human_summary_single_line(self._raw_domains, 'domains')
             
             if len( self._domain_regexes ) > 0:
                 
-                self_domain_description += HydrusText.ConvertManyStringsToNiceInsertableHumanSummarySingleLine( self._domain_regexes, 'domain regexes' )
+                self_domain_description += HydrusText.convert_many_strings_to_nice_insertable_human_summary_single_line(self._domain_regexes, 'domain regexes')
                 
             
         else:
             
             if len( self._domain_regexes ) > 0:
                 
-                self_domain_description = HydrusText.ConvertManyStringsToNiceInsertableHumanSummarySingleLine( self._domain_regexes, 'domain regexes' )
+                self_domain_description = HydrusText.convert_many_strings_to_nice_insertable_human_summary_single_line(self._domain_regexes, 'domain regexes')
                 
             else:
                 

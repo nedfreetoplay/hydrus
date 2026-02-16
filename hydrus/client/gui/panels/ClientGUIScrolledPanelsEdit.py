@@ -1646,7 +1646,7 @@ class EditFileNotesPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolle
     
     def GetValue( self ) -> tuple[ dict[ str, str ], set[ str ] ]:
         
-        names_to_notes = { self._notebook.tabText( i ) : HydrusText.CleanNoteText( typing.cast( QW.QPlainTextEdit, self._notebook.widget( i ) ).toPlainText() ) for i in range( self._notebook.count() ) }
+        names_to_notes = {self._notebook.tabText( i ) : HydrusText.clean_note_text(typing.cast(QW.QPlainTextEdit, self._notebook.widget(i)).toPlainText()) for i in range(self._notebook.count())}
         
         names_to_notes = { name : text for ( name, text ) in names_to_notes.items() if text != '' }
         
@@ -2277,7 +2277,7 @@ class EditURLsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPane
         
         try:
             
-            urls = HydrusText.DeserialiseNewlinedTexts( raw_text )
+            urls = HydrusText.deserialise_newlined_texts(raw_text)
             
             self._EnterURLs( urls, only_add = True )
             

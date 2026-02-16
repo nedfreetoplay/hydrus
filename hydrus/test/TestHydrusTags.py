@@ -71,6 +71,6 @@ class TestHydrusTags( unittest.TestCase ):
     def test_surrogate_garbage( self ):
         
         # note this is a dangerous string bro and the debugger will freak out if you inspect it
-        self.assertEqual( HydrusText.CleanseImportText( 'test \ud83d\ude1c' ), 'test \U0001f61c' )
+        self.assertEqual(HydrusText.cleanse_import_text('test \ud83d\ude1c'), 'test \U0001f61c')
         
     

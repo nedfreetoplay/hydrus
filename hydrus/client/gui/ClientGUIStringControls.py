@@ -63,7 +63,7 @@ class StringConverterButton( ClientGUICommon.BetterButton ):
         
         self.setToolTip( ClientGUIFunctions.WrapToolTip( label ) )
         
-        elided_label = HydrusText.ElideText( label, 64 )
+        elided_label = HydrusText.elide_text(label, 64)
         
         self.setText( elided_label )
         
@@ -184,7 +184,7 @@ class StringProcessorButton( ClientGUICommon.BetterButton ):
             
         else:
             
-            statements = [ HydrusText.ElideText( statement, 64 ) for statement in statements ]
+            statements = [HydrusText.elide_text(statement, 64) for statement in statements]
             
             label = '\n'.join( statements )
             

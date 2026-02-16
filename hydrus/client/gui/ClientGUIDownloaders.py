@@ -229,7 +229,7 @@ class EditDownloaderDisplayPanel( ClientGUIScrolledPanels.EditPanel ):
         
         names = [self._gug_keys_to_gugs[ gug_key_and_display[0] ].get_name() for gug_key_and_display in gug_keys_and_displays]
         
-        message = f'Show{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( names )}in the main selector list?'
+        message = f'Show{HydrusText.convert_many_strings_to_nice_insertable_human_summary(names)}in the main selector list?'
         
         ( result, closed_by_user ) = ClientGUIDialogsQuick.GetYesNo( self, message, title = 'Show in the first list?', check_for_cancelled = True )
         
@@ -263,7 +263,7 @@ class EditDownloaderDisplayPanel( ClientGUIScrolledPanels.EditPanel ):
         
         names = [self._url_class_keys_to_url_classes[ url_class_key_and_display[0] ].get_name() for url_class_key_and_display in url_class_keys_and_displays]
         
-        message = f'Show{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( names )}in the media viewer?'
+        message = f'Show{HydrusText.convert_many_strings_to_nice_insertable_human_summary(names)}in the media viewer?'
         
         ( result, closed_by_user ) = ClientGUIDialogsQuick.GetYesNo( self, message, title = 'Show in the media viewer?', check_for_cancelled = True )
         

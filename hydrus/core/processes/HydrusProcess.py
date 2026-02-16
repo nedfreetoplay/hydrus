@@ -20,7 +20,7 @@ def GetSiblingProcessPorts( db_path, instance ):
             
             try:
                 
-                ( pid, create_time ) = HydrusText.DeserialiseNewlinedTexts( file_text )
+                ( pid, create_time ) = HydrusText.deserialise_newlined_texts(file_text)
                 
                 pid = int( pid )
                 
@@ -84,7 +84,7 @@ def IsAlreadyRunning( db_path, instance ):
                 
                 try:
                     
-                    ( pid, create_time ) = HydrusText.DeserialiseNewlinedTexts( file_text )
+                    ( pid, create_time ) = HydrusText.deserialise_newlined_texts(file_text)
                     
                     pid = int( pid )
                     create_time = float( create_time )

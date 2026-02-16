@@ -1219,7 +1219,7 @@ class PanelPredicateSystemHash( PanelPredicateSystemSingle ):
         
         hashes_text = self._hashes.toPlainText()
         
-        hashes_lines = HydrusText.DeserialiseNewlinedTexts( hashes_text )
+        hashes_lines = HydrusText.deserialise_newlined_texts(hashes_text)
         
         seen_prefixes = set()
         stripped_hashes = []

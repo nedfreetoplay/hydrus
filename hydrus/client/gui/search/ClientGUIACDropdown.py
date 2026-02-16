@@ -2797,7 +2797,7 @@ class AutoCompleteDropdownTagsRead( AutocompleteDropdownTagsFileSearchContextORC
         
         try:
             
-            texts = HydrusText.DeserialiseNewlinedTexts( raw_text )
+            texts = HydrusText.deserialise_newlined_texts(raw_text)
             
             predicates = []
             
@@ -3543,7 +3543,7 @@ class AutoCompleteDropdownTagsWrite( AutoCompleteDropdownTags ):
         
         try:
             
-            tags = [ text for text in HydrusText.DeserialiseNewlinedTexts( raw_text ) ]
+            tags = [text for text in HydrusText.deserialise_newlined_texts(raw_text)]
             
             tags = HydrusTags.clean_tags(tags)
             
@@ -3612,7 +3612,7 @@ class AutoCompleteDropdownTagsWrite( AutoCompleteDropdownTags ):
         
         try:
             
-            tags = [ text for text in HydrusText.DeserialiseNewlinedTexts( raw_text ) ]
+            tags = [text for text in HydrusText.deserialise_newlined_texts(raw_text)]
             
             tags = HydrusTags.clean_tags(tags)
             
@@ -3627,7 +3627,7 @@ class AutoCompleteDropdownTagsWrite( AutoCompleteDropdownTags ):
                 else:
                     
                     message = 'You have pasted multiple lines of content. Want to enter them all as separate tags? You entered:'
-                    message += HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( tags, do_sort = False, no_trailing_whitespace = True )
+                    message += HydrusText.convert_many_strings_to_nice_insertable_human_summary(tags, do_sort = False, no_trailing_whitespace = True)
                     
                     result = ClientGUIDialogsQuick.GetYesNo( self, message, title = 'Want to paste everything?' )
                     

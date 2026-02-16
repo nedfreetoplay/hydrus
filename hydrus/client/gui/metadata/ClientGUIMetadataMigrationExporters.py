@@ -480,7 +480,7 @@ class SingleFileMetadataExporterButton( QW.QPushButton ):
         
         text = self._exporter.ToString()
         
-        elided_text = HydrusText.ElideText( text, 64 )
+        elided_text = HydrusText.elide_text(text, 64)
         
         self.setText( elided_text )
         self.setToolTip( ClientGUIFunctions.WrapToolTip( text ) )

@@ -662,7 +662,7 @@ class ParsedPost( object ):
             
             if isinstance( parsed_content_description, ParsableContentDescriptionNote ):
                 
-                note_text = HydrusText.CleanNoteText( parsed_content.parsed_text )
+                note_text = HydrusText.clean_note_text(parsed_content.parsed_text)
                 
                 if note_text == '':
                     

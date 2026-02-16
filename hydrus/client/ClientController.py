@@ -1092,7 +1092,7 @@ class Controller( HydrusController.HydrusController ):
             raise HydrusExceptions.DataMissing( 'No text on the clipboard!' )
             
         
-        clipboard_text = HydrusText.CleanseImportText( clipboard_text )
+        clipboard_text = HydrusText.cleanse_import_text(clipboard_text)
         
         return clipboard_text
         

@@ -571,7 +571,7 @@ class TagImportOptionsLegacy( HydrusSerialisable.SerialisableBase ):
                     continue
                     
                 
-                service_statement = f'{name}:{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( sub_statements, no_trailing_whitespace = True )}'
+                service_statement = f'{name}:{HydrusText.convert_many_strings_to_nice_insertable_human_summary(sub_statements, no_trailing_whitespace = True)}'
                 
                 statements.append( service_statement )
                 

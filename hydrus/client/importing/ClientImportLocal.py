@@ -197,7 +197,7 @@ class HDDImport( HydrusSerialisable.SerialisableBase ):
             
             with self._lock:
                 
-                self._files_status = HydrusText.GetFirstLine( text )
+                self._files_status = HydrusText.get_first_line(text)
                 
             
         

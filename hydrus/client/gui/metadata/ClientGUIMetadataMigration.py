@@ -227,7 +227,7 @@ class EditSingleFileMetadataRouterPanel( ClientGUIScrolledPanels.EditPanel ):
                 self._test_notebook.addTab( list_ctrl, 'init' )
                 
             
-            page_name = HydrusText.ElideText(HydrusNumbers.index_to_pretty_ordinal_string(i), 14)
+            page_name = HydrusText.elide_text(HydrusNumbers.index_to_pretty_ordinal_string(i), 14)
             
             self._test_notebook.setTabText( i, page_name )
             
@@ -403,7 +403,7 @@ class SingleFileMetadataRoutersButton( QW.QPushButton ):
             text = '{} sidecar actions'.format(HydrusNumbers.to_human_int(len(self._routers)))
             
         
-        elided_text = HydrusText.ElideText( text, 64 )
+        elided_text = HydrusText.elide_text(text, 64)
         
         self.setText( elided_text )
         self.setToolTip( ClientGUIFunctions.WrapToolTip( text ) )

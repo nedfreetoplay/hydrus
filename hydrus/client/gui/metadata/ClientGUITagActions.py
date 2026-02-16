@@ -220,7 +220,7 @@ class TagPairActionContext( object ):
             
             message = 'Hey, somehow the "Enter some Pairs" routine was called before the related underlying pairs\' groups were loaded. This should not happen! Please tell hydev about this.'
             message += '\n'
-            message += f'I have queued up the needed fetch. Please write down what you were doing to get into this state and see if trying it again works. The missing tags were: {HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( missing_tags, no_trailing_whitespace = True )}'
+            message += f'I have queued up the needed fetch. Please write down what you were doing to get into this state and see if trying it again works. The missing tags were: {HydrusText.convert_many_strings_to_nice_insertable_human_summary(missing_tags, no_trailing_whitespace = True)}'
             
             ClientGUIDialogsMessage.ShowWarning( widget, message )
             

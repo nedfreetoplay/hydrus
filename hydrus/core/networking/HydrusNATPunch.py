@@ -108,7 +108,7 @@ def GetExternalIP():
             
             try:
                 
-                lines = HydrusText.DeserialiseNewlinedTexts( stdout )
+                lines = HydrusText.deserialise_newlined_texts(stdout)
                 
                 i = lines.index( 'i protocol exPort->inAddr:inPort description remoteHost leaseTime' )
                 
@@ -227,7 +227,7 @@ def GetUPnPMappingsParseResponse( stdout ):
     
     try:
         
-        lines = HydrusText.DeserialiseNewlinedTexts( stdout )
+        lines = HydrusText.deserialise_newlined_texts(stdout)
         
         i = lines.index( 'i protocol exPort->inAddr:inPort description remoteHost leaseTime' )
         

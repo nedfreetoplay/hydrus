@@ -45,7 +45,7 @@ def GetAvailableStyleSheets():
             
         
     
-    HydrusText.HumanTextSort( stylesheet_filenames )
+    HydrusText.human_text_sort(stylesheet_filenames)
     
     return stylesheet_filenames
     

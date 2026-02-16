@@ -92,7 +92,7 @@ class HydrusResourceClientAPIRestrictedAddFilesAddFile( HydrusResourceClientAPIR
                 
             else:
                 
-                note = HydrusText.GetFirstLine( repr( e ) )
+                note = HydrusText.get_first_line(repr(e))
                 
             
             file_import_status = ClientImportFiles.FileImportStatus( CC.STATUS_ERROR, file_import_job.GetHash(), note = note )

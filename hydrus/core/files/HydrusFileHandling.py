@@ -907,19 +907,19 @@ def GetMime( path, ok_to_look_for_hydrus_updates = False ):
             
             potential_json_document_bytes = f.read()
             
-            if HydrusText.LooksLikeJSON( potential_json_document_bytes ):
+            if HydrusText.looks_like_json(potential_json_document_bytes):
                 
                 return HC.APPLICATION_JSON
                 
             
         
     
-    if HydrusText.LooksLikeHTML( first_bytes_of_file ):
+    if HydrusText.looks_like_html(first_bytes_of_file):
         
         return HC.TEXT_HTML
         
     
-    if HydrusText.LooksLikeSVG( first_bytes_of_file ): 
+    if HydrusText.looks_like_svg(first_bytes_of_file): 
         
         return HC.IMAGE_SVG
         

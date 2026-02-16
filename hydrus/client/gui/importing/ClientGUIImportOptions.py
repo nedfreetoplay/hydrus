@@ -2366,7 +2366,7 @@ class ImportOptionsButton( ClientGUICommon.ButtonWithMenuArrow ):
                 
             else:
                 
-                label = HydrusText.ElideText( f'{label} ({summaries[0]})', 48 )
+                label = HydrusText.elide_text(f'{label} ({summaries[0]})', 48)
                 
             
         

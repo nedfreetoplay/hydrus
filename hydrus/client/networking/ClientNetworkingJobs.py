@@ -30,7 +30,7 @@ from hydrus.client.importing.options import FileFilteringImportOptions
 
 def ConvertStatusCodeAndDataIntoExceptionInfo( status_code, data, is_hydrus_service = False ):
     
-    ( error_text, encoding ) = HydrusText.NonFailingUnicodeDecode( data, 'utf-8' )
+    ( error_text, encoding ) = HydrusText.non_failing_unicode_decode(data, 'utf-8')
     
     print_long_error_text = True
     
@@ -1152,7 +1152,7 @@ class NetworkJob( object ):
         
         data = self.GetContentBytes()
         
-        ( text, self._encoding ) = HydrusText.NonFailingUnicodeDecode( data, self._encoding, trust_the_encoding = self._the_network_job_gave_an_encoding )
+        ( text, self._encoding ) = HydrusText.non_failing_unicode_decode(data, self._encoding, trust_the_encoding = self._the_network_job_gave_an_encoding)
         
         return text
         

@@ -121,7 +121,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
     
     def _DelayWork( self, time_delta, reason ):
         
-        reason = HydrusText.GetFirstLine( reason )
+        reason = HydrusText.get_first_line(reason)
         
         self._no_work_until = HydrusTime.GetNow() + time_delta
         self._no_work_until_reason = reason
@@ -459,7 +459,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 def status_hook( text ):
                     
-                    job_status.SetStatusText( status_prefix + ': ' + HydrusText.GetFirstLine( text ) )
+                    job_status.SetStatusText(status_prefix + ': ' + HydrusText.get_first_line(text))
                     
                 
                 def title_hook( text ):
@@ -1132,7 +1132,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                     
                     def status_hook( text ):
                         
-                        job_status.SetStatusText( x_out_of_y + HydrusText.GetFirstLine( text ), 2 )
+                        job_status.SetStatusText(x_out_of_y + HydrusText.get_first_line(text), 2)
                         
                     
                     file_seed.WorkOnURL( file_seed_cache, status_hook, query_header.GenerateNetworkJobFactory( self._name ), ClientImporting.GenerateMultiplePopupNetworkJobPresentationContextFactory( job_status ), self._file_import_options, FileImportOptionsLegacy.IMPORT_TYPE_QUIET, self._tag_import_options, self._note_import_options )
@@ -1960,7 +1960,7 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
             
         else:
             
-            HydrusText.HumanTextSort( possible_names )
+            HydrusText.human_text_sort(possible_names)
             
             subscription_name = possible_names.pop( 0 )
             

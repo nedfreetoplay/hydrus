@@ -401,7 +401,7 @@ class FileFilter( HydrusSerialisable.SerialisableBase ):
                 s = '{} on {}'.format( s, CG.client_controller.services_manager.GetName( tag_service_key ) )
                 
             
-            s = HydrusText.ElideText( s, 64 )
+            s = HydrusText.elide_text(s, 64)
             
         elif self.filter_type == FILE_FILTER_MIME:
             

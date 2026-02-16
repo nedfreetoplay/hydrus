@@ -130,12 +130,12 @@ def ParseHashesFromRawHexText( hash_type, hex_hashes_raw ):
         'perceptual' : 16
     }
     
-    hex_hashes = HydrusText.DeserialiseNewlinedTexts( hex_hashes_raw )
+    hex_hashes = HydrusText.deserialise_newlined_texts(hex_hashes_raw)
     
     # convert md5:abcd to abcd
     hex_hashes = [ hex_hash.split( ':' )[-1] for hex_hash in hex_hashes ]
     
-    hex_hashes = [ HydrusText.HexFilter( hex_hash ) for hex_hash in hex_hashes ]
+    hex_hashes = [HydrusText.hex_filter(hex_hash) for hex_hash in hex_hashes]
     
     expected_hex_length = hash_type_to_hex_length[ hash_type ]
     
@@ -211,12 +211,12 @@ class ParsingTestData( object ):
     
     def LooksLikeHTML( self ):
         
-        return True in ( HydrusText.LooksLikeHTML( text ) for text in self.texts )
+        return True in (HydrusText.looks_like_html(text) for text in self.texts)
         
     
     def LooksLikeJSON( self ):
         
-        return True in ( HydrusText.LooksLikeJSON( text ) for text in self.texts )
+        return True in (HydrusText.looks_like_json(text) for text in self.texts)
         
     
 
@@ -272,7 +272,7 @@ class ParseFormula( HydrusSerialisable.SerialisableBase ):
         
         raw_texts = self._ParseRawTexts( parsing_context, parsing_text, collapse_newlines )
         
-        raw_texts = HydrusText.CleanseImportTexts( raw_texts )
+        raw_texts = HydrusText.cleanse_import_texts(raw_texts)
         
         # TODO: it would be useful to have a formula checkbox that said 'yes strip what I parse'
         # probably related to newline handling improvements too. that RemoveNewlines strips too btw
@@ -280,7 +280,7 @@ class ParseFormula( HydrusSerialisable.SerialisableBase ):
         if collapse_newlines:
             
             # maybe should use HydrusText.DeserialiseNewlinedTexts, but that might change/break some existing parsers with the strip() trim
-            raw_texts = [ HydrusText.RemoveNewlines( raw_text ) for raw_text in raw_texts ]
+            raw_texts = [HydrusText.remove_newlines(raw_text) for raw_text in raw_texts]
             
         else:
             
@@ -1367,7 +1367,7 @@ class ParseFormulaJSON( ParseFormula ):
                             
                             list_to_index = list( node.keys() )
                             
-                            HydrusText.HumanTextSort( list_to_index )
+                            HydrusText.human_text_sort(list_to_index)
                             
                         else:
                             
@@ -1580,7 +1580,7 @@ class ParseFormulaJSON( ParseFormula ):
             
         except Exception as e:
             
-            if HydrusText.LooksLikeHTML( parsing_text ):
+            if HydrusText.looks_like_html(parsing_text):
                 
                 message = 'Unable to parse: Appeared to receive HTML instead of JSON.'
                 
@@ -1911,7 +1911,7 @@ class ParseFormulaStatic( ParseFormula ):
             t += f'{self._num_to_do}x '
             
         
-        return f'Static: {t}{HydrusText.ElideText( self._static_text, 64 )}.'
+        return f'Static: {t}{HydrusText.elide_text(self._static_text, 64)}.'
         
     
     def ToPrettyMultilineString( self ):
@@ -2301,7 +2301,7 @@ class ContentParser( HydrusSerialisable.SerialisableBase ):
         
         if self._content_type == HC.CONTENT_TYPE_NOTES:
             
-            parsed_texts = [ HydrusText.CleanNoteText( parsed_text ) for parsed_text in parsed_texts ]
+            parsed_texts = [HydrusText.clean_note_text(parsed_text) for parsed_text in parsed_texts]
             
         
         if self._content_type == HC.CONTENT_TYPE_URLS:

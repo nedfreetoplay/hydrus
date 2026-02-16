@@ -1129,7 +1129,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            pasted_query_texts = HydrusText.DeserialiseNewlinedTexts( raw_text )
+            pasted_query_texts = HydrusText.deserialise_newlined_texts(raw_text)
             
         except Exception as e:
             
@@ -1179,13 +1179,13 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
         
         if len( already_existing_human_names ) > 0:
             
-            paste_message_components.append( f'The queries{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary(already_existing_human_names)}were already in the subscription.' )
+            paste_message_components.append( f'The queries{HydrusText.convert_many_strings_to_nice_insertable_human_summary(already_existing_human_names)}were already in the subscription.')
             
             if len( DEAD_query_headers ) > 0:
                 
                 DEAD_human_names = sorted( [ query_header.GetFullHumanName() for query_header in DEAD_query_headers ], key = HydrusText.HumanTextSortKey )
                 
-                DEAD_revive_message = f'Some of the queries you pasted already exist in the subscription but are DEAD. Do you want to revive them? They are:{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary(DEAD_human_names)}'
+                DEAD_revive_message = f'Some of the queries you pasted already exist in the subscription but are DEAD. Do you want to revive them? They are:{HydrusText.convert_many_strings_to_nice_insertable_human_summary(DEAD_human_names)}'
                 
                 result = ClientGUIDialogsQuick.GetYesNo( self, DEAD_revive_message )
                 
@@ -1193,7 +1193,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     revive_dead = True
                     
-                    paste_message_components.append( f'The DEAD queries{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary(DEAD_human_names)}were revived.' )
+                    paste_message_components.append( f'The DEAD queries{HydrusText.convert_many_strings_to_nice_insertable_human_summary(DEAD_human_names)}were revived.')
                     
                 else:
                     
@@ -1204,7 +1204,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
         
         if len( new_query_texts ) > 0:
             
-            paste_message_components.append( f'The queries{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary(new_query_texts)}were added.' )
+            paste_message_components.append( f'The queries{HydrusText.convert_many_strings_to_nice_insertable_human_summary(new_query_texts)}were added.')
             
         
         if len( paste_message_components ) > 0:

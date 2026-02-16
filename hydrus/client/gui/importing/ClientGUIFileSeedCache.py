@@ -71,7 +71,7 @@ def GetExportableSourcesString( file_seed_cache: ClientImportFileSeeds.FileSeedC
     
 def GetSourcesFromSourcesString( sources_string ):
     
-    sources = HydrusText.DeserialiseNewlinedTexts( sources_string )
+    sources = HydrusText.deserialise_newlined_texts(sources_string)
     
     sources = [ ClientNetworkingFunctions.EnsureURLIsEncoded( source ) for source in sources ]
     
@@ -460,7 +460,7 @@ class EditFileSeedCachePanel( ClientGUIScrolledPanels.EditPanel ):
             pretty_source_time = HydrusTime.TimestampToPrettyTimeDelta( source_time )
             
         
-        pretty_note = HydrusText.GetFirstLine( note )
+        pretty_note = HydrusText.get_first_line(note)
         
         return ( pretty_file_seed_index, pretty_file_seed_data, pretty_status, pretty_added, pretty_modified, pretty_source_time, pretty_note )
         

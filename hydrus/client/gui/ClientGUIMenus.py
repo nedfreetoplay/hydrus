@@ -328,7 +328,7 @@ def SetMenuTexts( menu_item: QW.QAction, label: str, description: str ):
     
     label = SanitiseLabel( label )
     
-    elided_label = HydrusText.ElideText( label, 128, elide_center = True )
+    elided_label = HydrusText.elide_text(label, 128, elide_center = True)
     
     menu_item.setText( elided_label )
     

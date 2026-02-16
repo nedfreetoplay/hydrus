@@ -100,7 +100,7 @@ class TagSortPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             raise HydrusExceptions.VetoException()
             
         
-        namespaces = HydrusText.DeserialiseNewlinedTexts( text )
+        namespaces = HydrusText.deserialise_newlined_texts(text)
         
         return namespaces
         

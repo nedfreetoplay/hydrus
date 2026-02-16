@@ -370,7 +370,7 @@ class EditTagSummaryGeneratorPanel( ClientGUIScrolledPanels.EditPanel ):
         text_colour = self._text_colour.GetValue()
         namespace_info = self._namespaces_listbox.GetData()
         separator = self._separator.text()
-        example_tags = HydrusTags.clean_tags(HydrusText.DeserialiseNewlinedTexts(self._example_tags.toPlainText()))
+        example_tags = HydrusTags.clean_tags(HydrusText.deserialise_newlined_texts(self._example_tags.toPlainText()))
         
         return TagSummaryGenerator( background_colour, text_colour, namespace_info, separator, example_tags, show )
         

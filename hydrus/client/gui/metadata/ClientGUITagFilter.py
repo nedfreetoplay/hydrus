@@ -1161,7 +1161,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            test_tags = HydrusText.DeserialiseNewlinedTexts( test_input )
+            test_tags = HydrusText.deserialise_newlined_texts(test_input)
             
             test_tags = HydrusTags.clean_tags(test_tags)
             
@@ -1418,7 +1418,7 @@ class TagFilterButton( ClientGUICommon.BetterButton ):
             tt = self._label_prefix + tt
             
         
-        button_text = HydrusText.ElideText( tt, 45 )
+        button_text = HydrusText.elide_text(tt, 45)
         
         self.setText( button_text )
         

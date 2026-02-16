@@ -377,7 +377,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             tag_filter = self._migration_source_tag_filter.GetValue()
             
-            extra_filter_info_strings.append( 'for tags "{}"'.format(HydrusText.ElideText(tag_filter.to_permitted_string(), 96)))
+            extra_filter_info_strings.append( 'for tags "{}"'.format(HydrusText.elide_text(tag_filter.to_permitted_string(), 96)))
             
             if source_service_key == self.HTA_SERVICE_KEY:
                 

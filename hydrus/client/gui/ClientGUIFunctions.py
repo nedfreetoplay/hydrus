@@ -306,7 +306,7 @@ def GetTextSizeFromPainter( painter: QG.QPainter, text: str ):
             HydrusData.show_text('Hey, I think hydrus stumbled across an invalid tag! Please run _database->check and repair->fix invalid tags_ immediately, or you may get errors!')
             
             bad_text = repr( text )
-            bad_text = HydrusText.ElideText( bad_text, 24 )
+            bad_text = HydrusText.elide_text(bad_text, 24)
             
             HydrusData.show_text('The bad text was: {}'.format(bad_text))
             

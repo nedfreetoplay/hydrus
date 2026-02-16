@@ -236,7 +236,7 @@ class TestPanel( QW.QWidget ):
             parse_phrase = ''
             good_type_found = True
             
-            if HydrusText.LooksLikeJSON( example_data ):
+            if HydrusText.looks_like_json(example_data):
                 
                 # prioritise this, so if the JSON contains some HTML, it'll overwrite here. decent compromise
                 
@@ -244,7 +244,7 @@ class TestPanel( QW.QWidget ):
                 
                 parse_phrase = 'looks like JSON'
                 
-            elif HydrusText.LooksLikeHTML( example_data ):
+            elif HydrusText.looks_like_html(example_data):
                 
                 # can't just throw this at bs4 to see if it 'works', as it'll just wrap any unparsable string in some bare <html><body><p> tags
                 
@@ -539,13 +539,13 @@ class TestPanelPageParser( TestPanel ):
                     parse_phrase = 'uncertain data type'
                     
                     # can't just throw this at bs4 to see if it 'works', as it'll just wrap any unparsable string in some bare <html><body><p> tags
-                    if HydrusText.LooksLikeHTML( post_conversion_example_data ):
+                    if HydrusText.looks_like_html(post_conversion_example_data):
                         
                         parse_phrase = 'looks like HTML'
                         
                     
                     # put this second, so if the JSON contains some HTML, it'll overwrite here. decent compromise
-                    if HydrusText.LooksLikeJSON( example_data ):
+                    if HydrusText.looks_like_json(example_data):
                         
                         parse_phrase = 'looks like JSON'
                         

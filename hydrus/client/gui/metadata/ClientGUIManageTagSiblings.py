@@ -427,7 +427,7 @@ class ManageTagSiblings( ClientGUIScrolledPanels.ManagePanel ):
         
         def _DeserialiseImportString( self, import_string ):
             
-            tags = HydrusText.DeserialiseNewlinedTexts( import_string )
+            tags = HydrusText.deserialise_newlined_texts(import_string)
             
             if len( tags ) % 2 == 1:
                 
@@ -616,7 +616,7 @@ class ManageTagSiblings( ClientGUIScrolledPanels.ManagePanel ):
                 
                 if len( self._current_pertinent_tags ) > 0:
                     
-                    message += f' Current workspace:{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( self._current_pertinent_tags, no_trailing_whitespace = True )}'
+                    message += f' Current workspace:{HydrusText.convert_many_strings_to_nice_insertable_human_summary(self._current_pertinent_tags, no_trailing_whitespace = True)}'
                     
                 
                 self._wipe_workspace.setToolTip( ClientGUIFunctions.WrapToolTip( message ) )

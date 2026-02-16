@@ -150,7 +150,7 @@ def THREADDownloadURL( job_status, url, url_string ):
     
     def status_hook( text ):
         
-        job_status.SetStatusText( HydrusText.GetFirstLine( text ) )
+        job_status.SetStatusText(HydrusText.get_first_line(text))
         
     
     network_job_presentation_context_factory = GenerateSinglePopupNetworkJobPresentationContextFactory( job_status )
@@ -220,7 +220,7 @@ def THREADDownloadURLs( job_status: ClientThreading.JobStatus, urls, title ):
     
     def status_hook( text ):
         
-        job_status.SetStatusText( HydrusText.GetFirstLine( text ), 2 )
+        job_status.SetStatusText(HydrusText.get_first_line(text), 2)
         
     
     network_job_presentation_context_factory = GenerateMultiplePopupNetworkJobPresentationContextFactory( job_status )

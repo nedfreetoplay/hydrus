@@ -593,7 +593,7 @@ class Page( QW.QWidget ):
             name_for_menu = '{} - {}'.format(name_for_menu, HydrusNumbers.value_range_to_pretty_string(num_value, num_range))
             
         
-        return HydrusText.ElideText( name_for_menu, 32, elide_center = True ) if elide else name_for_menu
+        return HydrusText.elide_text(name_for_menu, 32, elide_center = True) if elide else name_for_menu
         
     
     def GetNumFileSummary( self ):
@@ -1000,7 +1000,7 @@ def ConvertReasonsAndPagesToStatement( reasons_and_pages: list ) -> str:
                 
             else:
                 
-                message_block = f'pages{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( names )}say: {reason}'
+                message_block = f'pages{HydrusText.convert_many_strings_to_nice_insertable_human_summary(names)}say: {reason}'
                 
             
             message_blocks.append( message_block )
@@ -1619,7 +1619,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
             full_page_name = full_page_name[:256]
             
         
-        page_name = HydrusText.ElideText( full_page_name, max_page_name_chars )
+        page_name = HydrusText.elide_text(full_page_name, max_page_name_chars)
         
         do_tooltip = len( page_name ) != len( full_page_name ) or CG.client_controller.new_options.GetBoolean( 'elide_page_tab_names' )
         
@@ -2585,7 +2585,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
             name_for_menu = '{} - {}'.format(name_for_menu, HydrusNumbers.value_range_to_pretty_string(num_value, num_range))
             
         
-        return HydrusText.ElideText( name_for_menu, 32, elide_center = True ) if elide else name_for_menu
+        return HydrusText.elide_text(name_for_menu, 32, elide_center = True) if elide else name_for_menu
         
     
     def GetNumFileSummary( self ):

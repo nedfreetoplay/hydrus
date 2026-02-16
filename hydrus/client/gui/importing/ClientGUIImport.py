@@ -640,7 +640,7 @@ class FilenameTaggingOptionsPanel( QW.QWidget ):
             
             try:
                 
-                tags = HydrusText.DeserialiseNewlinedTexts( raw_text )
+                tags = HydrusText.deserialise_newlined_texts(raw_text)
                 
                 tags = HydrusTags.clean_tags(tags)
                 
@@ -1178,7 +1178,7 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 elif isinstance( exporter, ClientMetadataMigrationExporters.SingleFileMetadataExporterMediaNotes ):
                     
-                    processed_strings = [ f'note: {HydrusText.GetFirstLineSummary( s )}' for s in processed_strings ]
+                    processed_strings = [ f'note: {HydrusText.get_first_line_summary(s)}' for s in processed_strings]
                     
                 
                 strings.extend( sorted( processed_strings ) )

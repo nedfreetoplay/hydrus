@@ -374,7 +374,7 @@ class GallerySeed( HydrusSerialisable.SerialisableBase ):
         
         if exception is not None:
             
-            first_line = HydrusText.GetFirstLine( repr( exception ) )
+            first_line = HydrusText.get_first_line(repr(exception))
             
             note = f'{first_line}{HC.UNICODE_ELLIPSIS} (Copy note to see full error)'
             note += '\n'

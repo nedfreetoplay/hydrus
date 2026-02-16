@@ -1487,7 +1487,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
                     
                 else:
                     
-                    message = HydrusText.GetFirstLine( str( e ) )
+                    message = HydrusText.get_first_line(str(e))
                     
                 
                 engine.login_manager.DelayLoginScript( login_domain, self._login_script_key, message )

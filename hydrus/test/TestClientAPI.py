@@ -445,7 +445,7 @@ class TestClientAPI( unittest.TestCase ):
             
             self.assertEqual( len( access_key_hex ), 64 )
             
-            access_key_hex = HydrusText.HexFilter( access_key_hex )
+            access_key_hex = HydrusText.hex_filter(access_key_hex)
             
             self.assertEqual( len( access_key_hex ), 64 )
             

@@ -248,7 +248,7 @@ class SingleFileMetadataImporterMediaTags( SingleFileMetadataImporterMedia, Hydr
         
         tags = HydrusLists.dedupe_list(tags)
         
-        HydrusText.HumanTextSort( tags )
+        HydrusText.human_text_sort(tags)
         
         return tags
         
@@ -777,7 +777,7 @@ class SingleFileMetadataImporterTXT( SingleFileMetadataImporterSidecar, HydrusSe
             raise Exception( f'Could not import from {path} (from file path {actual_file_path}: {e}' )
             
         
-        raw_text = HydrusText.CleanseImportText( raw_text )
+        raw_text = HydrusText.cleanse_import_text(raw_text)
         
         if self._separator == '\n':
             

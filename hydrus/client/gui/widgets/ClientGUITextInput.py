@@ -56,7 +56,7 @@ class TextAndPasteCtrl( QW.QWidget ):
         
         try:
             
-            texts = [ text for text in HydrusText.DeserialiseNewlinedTexts( raw_text ) ]
+            texts = [text for text in HydrusText.deserialise_newlined_texts(raw_text)]
             
             if not self._allow_empty_input:
                 
@@ -78,7 +78,7 @@ class TextAndPasteCtrl( QW.QWidget ):
         
         text = self._text_input.text()
         
-        text = HydrusText.StripIOInputLine( text )
+        text = HydrusText.strip_io_input_line(text)
         
         if text == '' and not self._allow_empty_input:
             

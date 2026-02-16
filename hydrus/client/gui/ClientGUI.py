@@ -8758,7 +8758,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
             self._last_clipboard_watched_text = text
             
-            for possible_url in HydrusText.DeserialiseNewlinedTexts( text ):
+            for possible_url in HydrusText.deserialise_newlined_texts(text):
                 
                 if not possible_url.startswith( 'http' ):
                     
