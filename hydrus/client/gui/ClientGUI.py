@@ -3576,10 +3576,10 @@ ATTACH "client.mappings.db" as external_mappings;'''
         profile_mode_message += 'More information is available in the help, under \'reducing lag\'.'
         
         ClientGUIMenus.AppendMenuItem( profiling, 'what is this?', 'Show profile info.', ClientGUIDialogsMessage.ShowInformation, self, profile_mode_message )
-        self._profile_mode_client_api_menu_item = ClientGUIMenus.AppendMenuCheckItem( profiling, 'profile mode (client api)', 'Run detailed \'profiles\' on Client API jobs.', HydrusProfiling.IsProfileMode( 'client_api' ), self.FlipProfileMode, 'client_api' )
-        self._profile_mode_db_menu_item = ClientGUIMenus.AppendMenuCheckItem( profiling, 'profile mode (db)', 'Run detailed \'profiles\' on db jobs.', HydrusProfiling.IsProfileMode( 'db' ), self.FlipProfileMode, 'db' )
-        self._profile_mode_threads_menu_item = ClientGUIMenus.AppendMenuCheckItem( profiling, 'profile mode (threads)', 'Run detailed \'profiles\' on background threaded tasks.', HydrusProfiling.IsProfileMode( 'threads' ), self.FlipProfileMode, 'threads' )
-        self._profile_mode_ui_menu_item = ClientGUIMenus.AppendMenuCheckItem( profiling, 'profile mode (ui)', 'Run detailed \'profiles\' on some Qt jobs.', HydrusProfiling.IsProfileMode( 'ui' ), self.FlipProfileMode, 'ui' )
+        self._profile_mode_client_api_menu_item = ClientGUIMenus.AppendMenuCheckItem(profiling, 'profile mode (client api)', 'Run detailed \'profiles\' on Client API jobs.', HydrusProfiling.is_profile_mode('client_api'), self.FlipProfileMode, 'client_api')
+        self._profile_mode_db_menu_item = ClientGUIMenus.AppendMenuCheckItem(profiling, 'profile mode (db)', 'Run detailed \'profiles\' on db jobs.', HydrusProfiling.is_profile_mode('db'), self.FlipProfileMode, 'db')
+        self._profile_mode_threads_menu_item = ClientGUIMenus.AppendMenuCheckItem(profiling, 'profile mode (threads)', 'Run detailed \'profiles\' on background threaded tasks.', HydrusProfiling.is_profile_mode('threads'), self.FlipProfileMode, 'threads')
+        self._profile_mode_ui_menu_item = ClientGUIMenus.AppendMenuCheckItem(profiling, 'profile mode (ui)', 'Run detailed \'profiles\' on some Qt jobs.', HydrusProfiling.is_profile_mode('ui'), self.FlipProfileMode, 'ui')
         ClientGUIMenus.AppendMenuCheckItem( profiling, 'query planner mode', 'Run detailed \'query plans\'.', HydrusProfiling.query_planner_mode, CG.client_controller.FlipQueryPlannerMode )
         
         ClientGUIMenus.AppendMenu( debug_menu, profiling, 'profiling' )
@@ -7808,12 +7808,12 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
     
     def FlipProfileMode( self, name ):
         
-        HydrusProfiling.FlipProfileMode( name )
+        HydrusProfiling.flip_profile_mode(name)
         
-        self._profile_mode_client_api_menu_item.setChecked( HydrusProfiling.IsProfileMode( 'client_api' ) )
-        self._profile_mode_db_menu_item.setChecked( HydrusProfiling.IsProfileMode( 'db' ) )
-        self._profile_mode_threads_menu_item.setChecked( HydrusProfiling.IsProfileMode( 'threads' ) )
-        self._profile_mode_ui_menu_item.setChecked( HydrusProfiling.IsProfileMode( 'ui' ) )
+        self._profile_mode_client_api_menu_item.setChecked(HydrusProfiling.is_profile_mode('client_api'))
+        self._profile_mode_db_menu_item.setChecked(HydrusProfiling.is_profile_mode('db'))
+        self._profile_mode_threads_menu_item.setChecked(HydrusProfiling.is_profile_mode('threads'))
+        self._profile_mode_ui_menu_item.setChecked(HydrusProfiling.is_profile_mode('ui'))
         
     
     def FlipSubscriptionsPaused( self ):

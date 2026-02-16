@@ -53,11 +53,11 @@ class CallAfterEventCatcher( QC.QObject ):
             
             if event.type() == CallAfterEventType and isinstance( event, CallAfterEvent ):
                 
-                if HydrusProfiling.IsProfileMode( 'ui' ):
+                if HydrusProfiling.is_profile_mode('ui'):
                     
                     summary = 'Profiling CallAfter Event: {}'.format( event.GetCall() )
                     
-                    HydrusProfiling.Profile( summary, HydrusData.Call( event.Execute ), min_duration_ms = HG.callto_profile_min_job_time_ms )
+                    HydrusProfiling.profile(summary, HydrusData.Call(event.Execute), min_duration_ms = HG.callto_profile_min_job_time_ms)
                     
                 else:
                     

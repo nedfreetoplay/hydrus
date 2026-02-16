@@ -441,7 +441,7 @@ class DBBase( object ):
             
             plan_lines = self._c.execute( 'EXPLAIN QUERY PLAN {}'.format( query ), *query_args ).fetchall()
             
-            HydrusProfiling.PrintQueryPlan( query, plan_lines )
+            HydrusProfiling.print_query_plan(query, plan_lines)
             
         
         return self._c.execute( query, *query_args )
@@ -469,7 +469,7 @@ class DBBase( object ):
                 
                 plan_lines = self._c.execute( 'EXPLAIN QUERY PLAN {}'.format( query ), args_iterator[0] ).fetchall()
                 
-                HydrusProfiling.PrintQueryPlan( query, plan_lines )
+                HydrusProfiling.print_query_plan(query, plan_lines)
                 
             
         

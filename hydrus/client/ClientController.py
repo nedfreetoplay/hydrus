@@ -1049,7 +1049,7 @@ class Controller( HydrusController.HydrusController ):
         
         from hydrus.core import HydrusProfiling
         
-        HydrusProfiling.FlipQueryPlannerMode()
+        HydrusProfiling.flip_query_planner_mode()
         
     
     def GetClipboardImage( self ):

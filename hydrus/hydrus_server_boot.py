@@ -130,7 +130,7 @@ try:
         
         from hydrus.core import HydrusProfiling
         
-        HydrusProfiling.StartProfileMode( 'db' )
+        HydrusProfiling.start_profile_mode('db')
         
     
     if result.temp_dir is not None:

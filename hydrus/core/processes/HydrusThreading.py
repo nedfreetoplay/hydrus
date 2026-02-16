@@ -405,11 +405,11 @@ class THREADCallToThread( DAEMON ):
                     
                     self._callable = ( callable, args, kwargs )
                     
-                    if HydrusProfiling.IsProfileMode( 'threads' ):
+                    if HydrusProfiling.is_profile_mode('threads'):
                         
                         summary = 'Profiling CallTo Job: {}'.format( callable )
                         
-                        HydrusProfiling.Profile( summary, HydrusData.Call( callable, *args, **kwargs ), min_duration_ms = HG.callto_profile_min_job_time_ms )
+                        HydrusProfiling.profile(summary, HydrusData.Call(callable, *args, **kwargs), min_duration_ms = HG.callto_profile_min_job_time_ms)
                         
                     else:
                         

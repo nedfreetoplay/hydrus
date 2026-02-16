@@ -1156,11 +1156,11 @@ class HydrusDB( HydrusDBBase.DBBase ):
                         HydrusData.show_text(summary)
                         
                     
-                    if HydrusProfiling.IsProfileMode( 'db' ):
+                    if HydrusProfiling.is_profile_mode('db'):
                         
                         summary = 'Profiling db job: ' + job.to_string()
                         
-                        HydrusProfiling.Profile(summary, HydrusData.Call(self._process_job, job), min_duration_ms = HG.db_profile_min_job_time_ms)
+                        HydrusProfiling.profile(summary, HydrusData.Call(self._process_job, job), min_duration_ms = HG.db_profile_min_job_time_ms)
                         
                     else:
                         

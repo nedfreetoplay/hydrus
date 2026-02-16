@@ -133,7 +133,7 @@ try:
         
         from hydrus.core import HydrusProfiling
         
-        HydrusProfiling.StartProfileMode( 'db' )
+        HydrusProfiling.start_profile_mode('db')
         
     
     HG.boot_with_network_traffic_paused_command_line = result.pause_network_traffic
