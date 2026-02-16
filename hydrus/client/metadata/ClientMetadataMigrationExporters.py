@@ -227,7 +227,7 @@ class SingleFileMetadataExporterMediaTags( SingleFileMetadataExporterMedia, Hydr
         
         hashes = { hash }
         
-        tags = HydrusTags.CleanTags( rows )
+        tags = HydrusTags.clean_tags(rows)
         
         if len( tags ) > 0:
             

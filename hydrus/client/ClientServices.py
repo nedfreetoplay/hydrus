@@ -1638,7 +1638,7 @@ class ServiceRestricted( ServiceRemote ):
                                     
                                     try:
                                         
-                                        summary = tag_filter.GetChangesSummaryText( old_tag_filter )
+                                        summary = tag_filter.get_changes_summary_text(old_tag_filter)
                                         
                                         message = 'The tag filter for "{}" just changed! Changes are:{}{}'.format( self._name, '\n' * 2, summary )
                                         

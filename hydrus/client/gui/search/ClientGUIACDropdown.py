@@ -493,7 +493,7 @@ def ShouldDoExactSearch( parsed_autocomplete_text: ClientSearchAutocomplete.Pars
     
     if ':' in strict_search_text:
         
-        ( namespace, test_text ) = HydrusTags.SplitTag( strict_search_text )
+        ( namespace, test_text ) = HydrusTags.split_tag(strict_search_text)
         
     else:
         
@@ -3545,7 +3545,7 @@ class AutoCompleteDropdownTagsWrite( AutoCompleteDropdownTags ):
             
             tags = [ text for text in HydrusText.DeserialiseNewlinedTexts( raw_text ) ]
             
-            tags = HydrusTags.CleanTags( tags )
+            tags = HydrusTags.clean_tags(tags)
             
             self.tagsPasted.emit( list( tags ) )
             
@@ -3614,7 +3614,7 @@ class AutoCompleteDropdownTagsWrite( AutoCompleteDropdownTags ):
             
             tags = [ text for text in HydrusText.DeserialiseNewlinedTexts( raw_text ) ]
             
-            tags = HydrusTags.CleanTags( tags )
+            tags = HydrusTags.clean_tags(tags)
             
             if len( tags ) > 1:
                 
@@ -3781,9 +3781,9 @@ class EditAdvancedORPredicates( ClientGUIScrolledPanels.EditPanel ):
                         
                         try:
                             
-                            tag_string = HydrusTags.CleanTag( tag_string )
+                            tag_string = HydrusTags.clean_tag(tag_string)
                             
-                            HydrusTags.CheckTagNotEmpty( tag_string )
+                            HydrusTags.check_tag_not_empty(tag_string)
                             
                         except Exception as e:
                             
@@ -3792,7 +3792,7 @@ class EditAdvancedORPredicates( ClientGUIScrolledPanels.EditPanel ):
                         
                         if '*' in tag_string:
                             
-                            ( namespace, subtag ) = HydrusTags.SplitTag( tag_string )
+                            ( namespace, subtag ) = HydrusTags.split_tag(tag_string)
                             
                             if len( namespace ) > 0 and subtag == '*':
                                 

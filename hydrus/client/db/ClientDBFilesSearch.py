@@ -433,7 +433,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
         
         service_ids_to_service_keys = self.modules_services.GetServiceIdsToServiceKeys()
         
-        ( namespace, subtag ) = HydrusTags.SplitTag( tag )
+        ( namespace, subtag ) = HydrusTags.split_tag(tag)
         
         tag_id = self.modules_tags.GetTagId( tag )
         
@@ -774,7 +774,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
     
     def GetHashIdsFromWildcardComplexLocation( self, tag_display_type: int, location_context: ClientLocation.LocationContext, tag_context: ClientSearchTagContext.TagContext, wildcard, hash_ids = None, hash_ids_table_name = None, job_status = None ):
         
-        ( namespace_wildcard, subtag_wildcard ) = HydrusTags.SplitTag( wildcard )
+        ( namespace_wildcard, subtag_wildcard ) = HydrusTags.split_tag(wildcard)
         
         if subtag_wildcard == '*':
             
@@ -1322,7 +1322,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
             
             def sort_longest_tag_first_key( s ):
                 
-                return ( 1 if HydrusTags.IsUnnamespaced( s ) else 0, -len( s ) )
+                return (1 if HydrusTags.is_unnamespaced(s) else 0, -len(s))
                 
             
             tags_to_include = list( tags_to_include )

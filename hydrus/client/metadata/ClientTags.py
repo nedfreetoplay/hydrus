@@ -66,7 +66,7 @@ def RenderTag( tag, render_for_user: bool ):
             
         
     
-    ( namespace, subtag ) = HydrusTags.SplitTag( tag )
+    ( namespace, subtag ) = HydrusTags.split_tag(tag)
     
     if namespace == '':
         

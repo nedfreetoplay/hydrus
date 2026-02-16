@@ -48,7 +48,7 @@ class HydrusResourceClientAPIRestrictedManageFavouriteTagsSetFavouriteTags( Hydr
             
             set_tags = request.parsed_request_args.GetValue( 'set', list, expected_list_type = str )
             
-            set_tags = HydrusTags.CleanTags( set_tags )
+            set_tags = HydrusTags.clean_tags(set_tags)
             
             favourite_tags = set_tags
             
@@ -58,9 +58,9 @@ class HydrusResourceClientAPIRestrictedManageFavouriteTagsSetFavouriteTags( Hydr
             
             remove_tags = request.parsed_request_args.GetValue( 'remove', list, expected_list_type = str, default_value = [] )
             
-            add_tags = HydrusTags.CleanTags( add_tags )
+            add_tags = HydrusTags.clean_tags(add_tags)
             
-            remove_tags = HydrusTags.CleanTags( remove_tags )
+            remove_tags = HydrusTags.clean_tags(remove_tags)
             
             favourite_tags = set( favourite_tags )
             

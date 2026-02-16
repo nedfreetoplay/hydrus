@@ -555,13 +555,13 @@ class MigrationSourceHTA( MigrationSource ):
             return data
             
         
-        if not self._tag_filter.AllowsEverything():
+        if not self._tag_filter.allows_everything():
             
             filtered_data = []
             
             for ( hash, tags ) in data:
                 
-                tags = self._tag_filter.Filter( tags )
+                tags = self._tag_filter.filter(tags)
                 
                 if len( tags ) > 0:
                     
@@ -656,9 +656,9 @@ class MigrationSourceHTPA( MigrationSource ):
             return data
             
         
-        if not ( self._left_tag_filter.AllowsEverything() and self._right_tag_filter.AllowsEverything() ):
+        if not (self._left_tag_filter.allows_everything() and self._right_tag_filter.allows_everything()):
             
-            data = [ ( left_tag, right_tag ) for ( left_tag, right_tag ) in data if self._left_tag_filter.TagOK( left_tag ) and self._right_tag_filter.TagOK( right_tag ) ]
+            data = [( left_tag, right_tag ) for ( left_tag, right_tag ) in data if self._left_tag_filter.tag_ok(left_tag) and self._right_tag_filter.tag_ok(right_tag)]
             
         
         if self._left_side_needs_count or self._right_side_needs_count or self._either_side_needs_count:

@@ -58,7 +58,7 @@ class HydrusResourceClientAPIRestrictedAddTagsAddTags( HydrusResourceClientAPIRe
                 
                 HydrusNetworkVariableHandling.TestVariableType( 'tags in service_keys_to_tags', tags, list, expected_list_type = str )
                 
-                tags = HydrusTags.CleanTags( tags )
+                tags = HydrusTags.clean_tags(tags)
                 
                 if len( tags ) == 0:
                     
@@ -186,7 +186,7 @@ class HydrusResourceClientAPIRestrictedAddTagsAddTags( HydrusResourceClientAPIRe
                     
                     try:
                         
-                        tag = HydrusTags.CleanTag( tag )
+                        tag = HydrusTags.clean_tag(tag)
                         
                     except Exception as e:
                         
@@ -345,7 +345,7 @@ class HydrusResourceClientAPIRestrictedAddTagsGetTagSiblingsParents( HydrusResou
         
         ClientLocalServerCore.CheckTags( tags )
         
-        tags = HydrusTags.CleanTags( tags )
+        tags = HydrusTags.clean_tags(tags)
         
         tags_to_service_keys_to_siblings_and_parents = CG.client_controller.read('tag_siblings_and_parents_lookup', ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, tags)
         
@@ -387,9 +387,9 @@ class HydrusResourceClientAPIRestrictedAddTagsCleanTags( HydrusResourceClientAPI
         
         tags = request.parsed_request_args.GetValue( 'tags', list, expected_list_type = str )
         
-        tags = list( HydrusTags.CleanTags( tags ) )
+        tags = list(HydrusTags.clean_tags(tags))
         
-        tags = HydrusTags.SortNumericTags( tags )
+        tags = HydrusTags.sort_numeric_tags(tags)
         
         body_dict = {
             'tags' : tags

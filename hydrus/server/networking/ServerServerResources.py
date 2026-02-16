@@ -1241,7 +1241,7 @@ class HydrusResourceRestrictedTagFilter( HydrusResourceRestricted ):
             
             self._service.SetTagFilter( tag_filter )
             
-            summary_text = tag_filter.GetChangesSummaryText( old_tag_filter )
+            summary_text = tag_filter.get_changes_summary_text(old_tag_filter)
             
             HydrusData.print_text(
                 'Account {} changed the tag filter. Rule changes are:{}{}.'.format(

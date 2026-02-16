@@ -756,7 +756,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         
         # the cleantags here converts to unicode, which is important!
         
-        example_tags = HydrusTags.CleanTags( [ 'creator:creator', 'series:series', 'title:title' ] )
+        example_tags = HydrusTags.clean_tags(['creator:creator', 'series:series', 'title:title'])
         
         from hydrus.client.gui.metadata import ClientGUITagSummaryGenerator
         
@@ -772,7 +772,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         
         separator = '-'
         
-        example_tags = HydrusTags.CleanTags( [ 'volume:3', 'chapter:10', 'page:330', 'page:331' ] )
+        example_tags = HydrusTags.clean_tags(['volume:3', 'chapter:10', 'page:330', 'page:331'])
         
         tsg = ClientGUITagSummaryGenerator.TagSummaryGenerator( namespace_info = namespace_info, separator = separator, example_tags = example_tags )
         
@@ -789,7 +789,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         
         separator = ' - '
         
-        example_tags = HydrusTags.CleanTags( [ 'creator:creator', 'series:series', 'title:title', 'volume:1', 'chapter:1', 'page:1' ] )
+        example_tags = HydrusTags.clean_tags(['creator:creator', 'series:series', 'title:title', 'volume:1', 'chapter:1', 'page:1'])
         
         tsg = ClientGUITagSummaryGenerator.TagSummaryGenerator( namespace_info = namespace_info, separator = separator, example_tags = example_tags )
         

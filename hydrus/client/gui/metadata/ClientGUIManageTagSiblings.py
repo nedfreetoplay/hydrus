@@ -441,8 +441,8 @@ class ManageTagSiblings( ClientGUIScrolledPanels.ManagePanel ):
                 try:
                     
                     pair = (
-                        HydrusTags.CleanTag( tags[ 2 * i ] ),
-                        HydrusTags.CleanTag( tags[ ( 2 * i ) + 1 ] )
+                        HydrusTags.clean_tag(tags[2 * i]),
+                        HydrusTags.clean_tag(tags[(2 * i) + 1])
                     )
                     
                 except Exception as e:

@@ -710,7 +710,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
     
     def AddTags( self, tags ):
         
-        tags = HydrusTags.CleanTags( tags )
+        tags = HydrusTags.clean_tags(tags)
         
         self._tags.update( tags )
         

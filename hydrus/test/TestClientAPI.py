@@ -455,9 +455,9 @@ class TestClientAPI( unittest.TestCase ):
                 
                 search_tag_filter = HydrusTags.TagFilter()
                 
-                search_tag_filter.SetRule( '', HC.FILTER_BLACKLIST )
-                search_tag_filter.SetRule( ' :', HC.FILTER_BLACKLIST )
-                search_tag_filter.SetRule( 'green', HC.FILTER_WHITELIST )
+                search_tag_filter.set_rule('', HC.FILTER_BLACKLIST)
+                search_tag_filter.set_rule(' :', HC.FILTER_BLACKLIST)
+                search_tag_filter.set_rule('green', HC.FILTER_WHITELIST)
                 
                 api_permissions.SetSearchTagFilter( search_tag_filter )
                 
@@ -3204,7 +3204,7 @@ class TestClientAPI( unittest.TestCase ):
         
         clean_tags = [ "bikini", "blue eyes", "character:samus aran", "::)", "10", "11", "9", "wew", "flower" ]
         
-        clean_tags = HydrusTags.SortNumericTags( clean_tags )
+        clean_tags = HydrusTags.sort_numeric_tags(clean_tags)
         
         expected_result[ 'tags' ] = clean_tags
         

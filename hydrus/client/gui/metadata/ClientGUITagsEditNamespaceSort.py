@@ -38,7 +38,7 @@ def EditNamespaceSort( win: QW.QWidget, sort_data ):
     
     edited_namespaces = [ namespace.replace( escaped_char, correct_char ) for namespace in edited_escaped_namespaces ]
     
-    edited_namespaces = [ HydrusTags.CleanTag( namespace ) for namespace in edited_namespaces if HydrusTags.TagOK( namespace ) ]
+    edited_namespaces = [HydrusTags.clean_tag(namespace) for namespace in edited_namespaces if HydrusTags.tag_ok(namespace)]
     
     if len( edited_namespaces ) > 0:
         

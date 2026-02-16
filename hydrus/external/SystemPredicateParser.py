@@ -967,11 +967,11 @@ def parse_value( parse_result: SystemPredParseResult, spec ):
         
         from hydrus.core import HydrusTags
         
-        tag = HydrusTags.CleanTag( raw_tag )
+        tag = HydrusTags.clean_tag(raw_tag)
         
         try:
             
-            HydrusTags.CheckTagNotEmpty( tag )
+            HydrusTags.check_tag_not_empty(tag)
             
         except Exception as e:
             

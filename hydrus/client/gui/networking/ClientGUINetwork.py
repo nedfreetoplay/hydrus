@@ -870,7 +870,7 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 bandwidth_rules = panel.GetValue()
                 
-                self._controller.network_engine.bandwidth_manager.SetRules( network_context, bandwidth_rules )
+                self._controller.network_engine.bandwidth_manager.set_rules(network_context, bandwidth_rules)
                 
             
         
@@ -1099,7 +1099,7 @@ class ReviewNetworkContextBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 self._bandwidth_rules = panel.GetValue()
                 
-                self._controller.network_engine.bandwidth_manager.SetRules( self._network_context, self._bandwidth_rules )
+                self._controller.network_engine.bandwidth_manager.set_rules(self._network_context, self._bandwidth_rules)
                 
                 self._rules_job.Wake()
                 

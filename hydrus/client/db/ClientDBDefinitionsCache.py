@@ -483,11 +483,11 @@ class ClientDBCacheLocalTags( ClientDBModule.ClientDBModule ):
     
     def GetTagId( self, tag ) -> int:
         
-        clean_tag = HydrusTags.CleanTag( tag )
+        clean_tag = HydrusTags.clean_tag(tag)
         
         try:
             
-            HydrusTags.CheckTagNotEmpty( clean_tag )
+            HydrusTags.check_tag_not_empty(clean_tag)
             
         except HydrusExceptions.TagSizeException:
             

@@ -96,7 +96,7 @@ class NetworkJobControl( QW.QFrame ):
                 
                 bandwidth_rules = panel.GetValue()
                 
-                CG.client_controller.network_engine.bandwidth_manager.SetRules( network_context, bandwidth_rules )
+                CG.client_controller.network_engine.bandwidth_manager.set_rules(network_context, bandwidth_rules)
                 
             
         

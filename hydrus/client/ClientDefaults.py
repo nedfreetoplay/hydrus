@@ -808,7 +808,7 @@ def SetDefaultBandwidthManagerRules( bandwidth_manager ):
     
     rules.AddRule( HC.BANDWIDTH_TYPE_DATA, 86400, 16 * GB ) # check your inbox lad
     
-    bandwidth_manager.SetRules( ClientNetworkingContexts.GLOBAL_NETWORK_CONTEXT, rules )
+    bandwidth_manager.set_rules(ClientNetworkingContexts.GLOBAL_NETWORK_CONTEXT, rules)
     
     #
     
@@ -818,7 +818,7 @@ def SetDefaultBandwidthManagerRules( bandwidth_manager ):
     
     rules.AddRule( HC.BANDWIDTH_TYPE_DATA, 86400, 8 * GB ) # don't go nuts on a site in a single day
     
-    bandwidth_manager.SetRules( ClientNetworkingContexts.NetworkContext( CC.NETWORK_CONTEXT_DOMAIN ), rules )
+    bandwidth_manager.set_rules(ClientNetworkingContexts.NetworkContext(CC.NETWORK_CONTEXT_DOMAIN), rules)
     
     #
     
@@ -826,7 +826,7 @@ def SetDefaultBandwidthManagerRules( bandwidth_manager ):
     
     rules.AddRule( HC.BANDWIDTH_TYPE_DATA, 86400, 2 * GB ) # don't sync a giant db in one day, but we can push it more
     
-    bandwidth_manager.SetRules( ClientNetworkingContexts.NetworkContext( CC.NETWORK_CONTEXT_HYDRUS ), rules )
+    bandwidth_manager.set_rules(ClientNetworkingContexts.NetworkContext(CC.NETWORK_CONTEXT_HYDRUS), rules)
     
     #
     
@@ -834,7 +834,7 @@ def SetDefaultBandwidthManagerRules( bandwidth_manager ):
     
     rules.AddRule( HC.BANDWIDTH_TYPE_DATA, 300, 1024 * MB ) # just a careful stopgap
     
-    bandwidth_manager.SetRules( ClientNetworkingContexts.NetworkContext( CC.NETWORK_CONTEXT_DOWNLOADER_PAGE ), rules )
+    bandwidth_manager.set_rules(ClientNetworkingContexts.NetworkContext(CC.NETWORK_CONTEXT_DOWNLOADER_PAGE), rules)
     
     #
     
@@ -845,7 +845,7 @@ def SetDefaultBandwidthManagerRules( bandwidth_manager ):
     
     rules.AddRule( HC.BANDWIDTH_TYPE_DATA, 86400, 1024 * MB ) # catch up on a stonking bump in chunks every day
     
-    bandwidth_manager.SetRules( ClientNetworkingContexts.NetworkContext( CC.NETWORK_CONTEXT_SUBSCRIPTION ), rules )
+    bandwidth_manager.set_rules(ClientNetworkingContexts.NetworkContext(CC.NETWORK_CONTEXT_SUBSCRIPTION), rules)
     
     #
     
@@ -853,7 +853,7 @@ def SetDefaultBandwidthManagerRules( bandwidth_manager ):
     
     # watchers have time pressure, so no additional rules beyond global and domain limits
     
-    bandwidth_manager.SetRules( ClientNetworkingContexts.NetworkContext( CC.NETWORK_CONTEXT_WATCHER_PAGE ), rules )
+    bandwidth_manager.set_rules(ClientNetworkingContexts.NetworkContext(CC.NETWORK_CONTEXT_WATCHER_PAGE), rules)
     
 
 DEFAULT_USER_AGENT = 'Mozilla/5.0 (compatible; Hydrus Client)'

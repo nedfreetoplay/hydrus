@@ -112,7 +112,7 @@ class IncrementalTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
         
         medias_to_namespaced_subtags = self._GetMediasToNamespacedSubtags( namespace )
         
-        namespaced_subtags = HydrusTags.SortNumericTags( medias_to_namespaced_subtags[ first_media ] )
+        namespaced_subtags = HydrusTags.sort_numeric_tags(medias_to_namespaced_subtags[ first_media])
         
         for subtag in namespaced_subtags:
             
@@ -175,7 +175,7 @@ class IncrementalTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 for tag in current_and_pending_tags:
                     
-                    ( n, subtag ) = HydrusTags.SplitTag( tag )
+                    ( n, subtag ) = HydrusTags.split_tag(tag)
                     
                     if n == namespace:
                         
@@ -266,7 +266,7 @@ class IncrementalTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
         
         for ( media, tag ) in medias_and_tags:
             
-            ( n, subtag ) = HydrusTags.SplitTag( tag )
+            ( n, subtag ) = HydrusTags.split_tag(tag)
             
             namespaced_subtags = medias_to_namespaced_subtags[ media ]
             

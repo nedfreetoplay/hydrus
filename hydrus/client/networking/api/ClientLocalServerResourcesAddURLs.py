@@ -248,7 +248,7 @@ class HydrusResourceClientAPIRestrictedAddURLsImportURL( HydrusResourceClientAPI
             
             filterable_tags = request.parsed_request_args.GetValue( 'filterable_tags', list, expected_list_type = str )
             
-            filterable_tags = HydrusTags.CleanTags( filterable_tags )
+            filterable_tags = HydrusTags.clean_tags(filterable_tags)
             
         
         additional_service_keys_to_tags = ClientTags.ServiceKeysToTags()
@@ -263,7 +263,7 @@ class HydrusResourceClientAPIRestrictedAddURLsImportURL( HydrusResourceClientAPI
                 
                 ClientLocalServerCore.CheckTagService( service_key )
                 
-                tags = HydrusTags.CleanTags( tags )
+                tags = HydrusTags.clean_tags(tags)
                 
                 if len( tags ) == 0:
                     

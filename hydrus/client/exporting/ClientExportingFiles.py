@@ -54,7 +54,7 @@ def GenerateExportFilename( destination_directory, media, terms, file_index, do_
             
             tags = tags_manager.GetNamespaceSlice( CC.COMBINED_TAG_SERVICE_KEY, ( term, ), ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL )
             
-            subtags = sorted( ( HydrusTags.SplitTag( tag )[1] for tag in tags ) )
+            subtags = sorted((HydrusTags.split_tag(tag)[1] for tag in tags))
             
             filename += clean_tag_text( ', '.join( subtags ) )
             
@@ -73,7 +73,7 @@ def GenerateExportFilename( destination_directory, media, terms, file_index, do_
                     
                 else:
                     
-                    tags = [ HydrusTags.SplitTag( tag )[1] for tag in tags ]
+                    tags = [HydrusTags.split_tag(tag)[1] for tag in tags]
                     
                 
                 filename += clean_tag_text( ', '.join( tags ) )
@@ -99,7 +99,7 @@ def GenerateExportFilename( destination_directory, media, terms, file_index, do_
             
             tag = term
             
-            ( namespace, subtag ) = HydrusTags.SplitTag( tag )
+            ( namespace, subtag ) = HydrusTags.split_tag(tag)
             
             if tags_manager.HasTag( subtag, ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL ):
                 

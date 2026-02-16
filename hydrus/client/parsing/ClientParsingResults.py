@@ -358,10 +358,10 @@ class ParsableContentDescriptionTag( ParsableContentDescription ):
                     
                 else:
                     
-                    combined_tag = HydrusTags.CombineTag( self.namespace, parsed_text )
+                    combined_tag = HydrusTags.combine_tag(self.namespace, parsed_text)
                     
                 
-                tag = HydrusTags.CleanTag( combined_tag )
+                tag = HydrusTags.clean_tag(combined_tag)
                 
             except Exception as e:
                 
@@ -370,7 +370,7 @@ class ParsableContentDescriptionTag( ParsableContentDescription ):
             
             try:
                 
-                HydrusTags.CheckTagNotEmpty( tag )
+                HydrusTags.check_tag_not_empty(tag)
                 
             except HydrusExceptions.TagSizeException:
                 
@@ -698,14 +698,14 @@ class ParsedPost( object ):
                     
                 else:
                     
-                    combined_tag = HydrusTags.CombineTag( namespace, subtag_or_tag )
+                    combined_tag = HydrusTags.combine_tag(namespace, subtag_or_tag)
                     
                 
                 tag_results.append( combined_tag )
                 
             
         
-        tag_results = HydrusTags.CleanTags( tag_results )
+        tag_results = HydrusTags.clean_tags(tag_results)
         
         return tag_results
         

@@ -604,128 +604,128 @@ class TestSerialisables( unittest.TestCase ):
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( tags ), { 'smile', 'blue eyes', 'title:test title', 'series:neon genesis evangelion', 'series:kill la kill' } )
+        self.assertEqual(tag_filter.filter(tags), {'smile', 'blue eyes', 'title:test title', 'series:neon genesis evangelion', 'series:kill la kill'})
         
         #
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( '', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( ':', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule('', HC.FILTER_BLACKLIST)
+        tag_filter.set_rule(':', HC.FILTER_BLACKLIST)
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( tags ), set() )
+        self.assertEqual(tag_filter.filter(tags), set())
         
         #
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( '', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( ':', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( 'series:', HC.FILTER_WHITELIST )
+        tag_filter.set_rule('', HC.FILTER_BLACKLIST)
+        tag_filter.set_rule(':', HC.FILTER_BLACKLIST)
+        tag_filter.set_rule('series:', HC.FILTER_WHITELIST)
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( tags ), { 'series:neon genesis evangelion', 'series:kill la kill' } )
+        self.assertEqual(tag_filter.filter(tags), {'series:neon genesis evangelion', 'series:kill la kill'})
         
         #
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( '', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( ':', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( 'series:kill la kill', HC.FILTER_WHITELIST )
+        tag_filter.set_rule('', HC.FILTER_BLACKLIST)
+        tag_filter.set_rule(':', HC.FILTER_BLACKLIST)
+        tag_filter.set_rule('series:kill la kill', HC.FILTER_WHITELIST)
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( tags ), { 'series:kill la kill' } )
+        self.assertEqual(tag_filter.filter(tags), {'series:kill la kill'})
         
         #
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( '', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( ':', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( 'smile', HC.FILTER_WHITELIST )
+        tag_filter.set_rule('', HC.FILTER_BLACKLIST)
+        tag_filter.set_rule(':', HC.FILTER_BLACKLIST)
+        tag_filter.set_rule('smile', HC.FILTER_WHITELIST)
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( tags ), { 'smile' } )
+        self.assertEqual(tag_filter.filter(tags), {'smile'})
         
         #
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( ':', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule(':', HC.FILTER_BLACKLIST)
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( tags ), { 'smile', 'blue eyes' } )
+        self.assertEqual(tag_filter.filter(tags), {'smile', 'blue eyes'})
         
         #
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( ':', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( 'series:', HC.FILTER_WHITELIST )
+        tag_filter.set_rule(':', HC.FILTER_BLACKLIST)
+        tag_filter.set_rule('series:', HC.FILTER_WHITELIST)
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( tags ), { 'smile', 'blue eyes', 'series:neon genesis evangelion', 'series:kill la kill' } )
+        self.assertEqual(tag_filter.filter(tags), {'smile', 'blue eyes', 'series:neon genesis evangelion', 'series:kill la kill'})
         
         #
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( ':', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( 'series:kill la kill', HC.FILTER_WHITELIST )
+        tag_filter.set_rule(':', HC.FILTER_BLACKLIST)
+        tag_filter.set_rule('series:kill la kill', HC.FILTER_WHITELIST)
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( tags ), { 'smile', 'blue eyes', 'series:kill la kill' } )
+        self.assertEqual(tag_filter.filter(tags), {'smile', 'blue eyes', 'series:kill la kill'})
         
         #
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( 'series:', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule('series:', HC.FILTER_BLACKLIST)
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( tags ), { 'smile', 'blue eyes', 'title:test title' } )
+        self.assertEqual(tag_filter.filter(tags), {'smile', 'blue eyes', 'title:test title'})
         
         #
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( 'series:', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( 'series:neon genesis evangelion', HC.FILTER_WHITELIST )
+        tag_filter.set_rule('series:', HC.FILTER_BLACKLIST)
+        tag_filter.set_rule('series:neon genesis evangelion', HC.FILTER_WHITELIST)
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( tags ), { 'smile', 'blue eyes', 'title:test title', 'series:neon genesis evangelion' } )
+        self.assertEqual(tag_filter.filter(tags), {'smile', 'blue eyes', 'title:test title', 'series:neon genesis evangelion'})
         
         #
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( '', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule('', HC.FILTER_BLACKLIST)
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( tags ), { 'title:test title', 'series:neon genesis evangelion', 'series:kill la kill' } )
+        self.assertEqual(tag_filter.filter(tags), {'title:test title', 'series:neon genesis evangelion', 'series:kill la kill'})
         
         #
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( '', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( 'blue eyes', HC.FILTER_WHITELIST )
+        tag_filter.set_rule('', HC.FILTER_BLACKLIST)
+        tag_filter.set_rule('blue eyes', HC.FILTER_WHITELIST)
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( tags ), { 'title:test title', 'series:neon genesis evangelion', 'series:kill la kill', 'blue eyes' } )
+        self.assertEqual(tag_filter.filter(tags), {'title:test title', 'series:neon genesis evangelion', 'series:kill la kill', 'blue eyes'})
         
         # blacklist namespace test
         
@@ -735,31 +735,31 @@ class TestSerialisables( unittest.TestCase ):
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( 'nintendo', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule('nintendo', HC.FILTER_BLACKLIST)
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( blacklist_tags ), { 'studio:nintendo' } )
+        self.assertEqual(tag_filter.filter(blacklist_tags), {'studio:nintendo'})
         
         #
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( 'nintendo', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule('nintendo', HC.FILTER_BLACKLIST)
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( blacklist_tags, apply_unnamespaced_rules_to_namespaced_tags = True ), set() )
+        self.assertEqual(tag_filter.filter(blacklist_tags, apply_unnamespaced_rules_to_namespaced_tags = True), set())
         
         #
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( 'nintendo', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( 'studio:nintendo', HC.FILTER_WHITELIST )
+        tag_filter.set_rule('nintendo', HC.FILTER_BLACKLIST)
+        tag_filter.set_rule('studio:nintendo', HC.FILTER_WHITELIST)
         
         self._dump_and_load_and_test( tag_filter, test )
         
-        self.assertEqual( tag_filter.Filter( blacklist_tags, apply_unnamespaced_rules_to_namespaced_tags = True ), { 'studio:nintendo' } )
+        self.assertEqual(tag_filter.filter(blacklist_tags, apply_unnamespaced_rules_to_namespaced_tags = True), {'studio:nintendo'})
         
     

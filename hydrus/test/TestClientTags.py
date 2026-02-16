@@ -433,7 +433,7 @@ class TestTagDisplayManager( unittest.TestCase ):
         
         filter_pages = HydrusTags.TagFilter()
         
-        filter_pages.SetRule( 'page:', HC.FILTER_BLACKLIST )
+        filter_pages.set_rule('page:', HC.FILTER_BLACKLIST)
         
         tag_display_manager = ClientTagsHandling.TagDisplayManager()
         
@@ -457,7 +457,7 @@ class TestTagDisplayManager( unittest.TestCase ):
         
         self.assertTrue( len( selection_tags ) < len( tags ) )
         
-        self.assertEqual( selection_tags, filter_pages.Filter( tags ) )
+        self.assertEqual(selection_tags, filter_pages.filter(tags))
         
     
 

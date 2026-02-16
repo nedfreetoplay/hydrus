@@ -1067,7 +1067,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
             
             tag_analogue = self._value
             
-            ( namespace, subtag ) = HydrusTags.SplitTag( tag_analogue )
+            ( namespace, subtag ) = HydrusTags.split_tag(tag_analogue)
             
             if '*' in namespace:
                 
@@ -1395,7 +1395,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
         
         if self._predicate_type == PREDICATE_TYPE_TAG:
             
-            ( namespace, subtag ) = HydrusTags.SplitTag( self._value )
+            ( namespace, subtag ) = HydrusTags.split_tag(self._value)
             
             return Predicate( self._predicate_type, subtag, self._inclusive, count = self._count.Duplicate() )
             
@@ -1657,7 +1657,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
             else:
                 
-                pertinent_tags = { tag for tag in tags if HydrusTags.SplitTag( tag )[0] == namespace }
+                pertinent_tags = {tag for tag in tags if HydrusTags.split_tag(tag)[0] == namespace}
                 
             
             return number_test.Test( len( pertinent_tags ) )
@@ -1911,7 +1911,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                     
                 else:
                     
-                    inclusive_result = True in ( namespace == t_namespace for ( t_namespace, t_subtag ) in ( HydrusTags.SplitTag( tag ) for tag in tags ) )
+                    inclusive_result = True in (namespace == t_namespace for ( t_namespace, t_subtag ) in (HydrusTags.split_tag(tag) for tag in tags))
                     
                 
             elif self._predicate_type == PREDICATE_TYPE_WILDCARD:
@@ -2841,7 +2841,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                     
                 
             
-            base = HydrusTags.CombineTag( 'system', base )
+            base = HydrusTags.combine_tag('system', base)
             
             base = ClientTags.RenderTag( base, render_for_user )
             
@@ -2884,7 +2884,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
             
             pretty_namespace = ClientTags.RenderNamespaceForUser( namespace )
             
-            anything_tag = HydrusTags.CombineTag( pretty_namespace, '*anything*' )
+            anything_tag = HydrusTags.combine_tag(pretty_namespace, '*anything*')
             
             anything_tag = ClientTags.RenderTag( anything_tag, render_for_user )
             
@@ -2894,7 +2894,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
             
             if self._value.startswith( '*:' ):
                 
-                ( any_namespace, subtag ) = HydrusTags.SplitTag( self._value )
+                ( any_namespace, subtag ) = HydrusTags.split_tag(self._value)
                 
                 wildcard = '{} (any namespace)'.format( subtag )
                 

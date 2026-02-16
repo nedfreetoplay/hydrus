@@ -435,7 +435,7 @@ class RelatedTagsPanel( QW.QWidget ):
             
             for ( tag_slice, weight_percent ) in related_tags_search_tag_slices_weight_percent:
                 
-                if HydrusTags.IsNamespaceTagSlice( tag_slice ):
+                if HydrusTags.is_namespace_tag_slice(tag_slice):
                     
                     tag_slice = tag_slice[ : -1 ]
                     
@@ -445,7 +445,7 @@ class RelatedTagsPanel( QW.QWidget ):
             
             for ( tag_slice, weight_percent ) in related_tags_result_tag_slices_weight_percent:
                 
-                if HydrusTags.IsNamespaceTagSlice( tag_slice ):
+                if HydrusTags.is_namespace_tag_slice(tag_slice):
                     
                     tag_slice = tag_slice[ : -1 ]
                     

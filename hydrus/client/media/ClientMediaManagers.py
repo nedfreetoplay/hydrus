@@ -1864,7 +1864,7 @@ class TagsManager( object ):
             
             combined_tags = statuses_to_tags[ HC.CONTENT_STATUS_CURRENT ].union( statuses_to_tags[ HC.CONTENT_STATUS_PENDING ] )
             
-            pairs = [ HydrusTags.SplitTag( tag ) for tag in combined_tags ]
+            pairs = [HydrusTags.split_tag(tag) for tag in combined_tags]
             
             slice_tags = []
             

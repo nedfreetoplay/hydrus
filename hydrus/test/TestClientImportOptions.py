@@ -1009,7 +1009,7 @@ class TestTagImportOptions( unittest.TestCase ):
         
         blacklist = default_tag_import_options.GetTagBlacklist()
         
-        self.assertEqual( blacklist.Filter( some_tags ), some_tags )
+        self.assertEqual(blacklist.filter(some_tags), some_tags)
         
         whitelist = default_tag_import_options.GetTagWhitelist()
         
@@ -1038,7 +1038,7 @@ class TestTagImportOptions( unittest.TestCase ):
         
         tag_blacklist = HydrusTags.TagFilter()
         
-        tag_blacklist.SetRule( 'series:', HC.FILTER_BLACKLIST )
+        tag_blacklist.set_rule('series:', HC.FILTER_BLACKLIST)
         
         service_keys_to_service_tag_import_options = { example_service_key : TagImportOptionsLegacy.ServiceTagImportOptions( get_tags = True ) }
         
@@ -1110,7 +1110,7 @@ class TestTagImportOptions( unittest.TestCase ):
         
         get_tags_filter = HydrusTags.TagFilter()
         
-        get_tags_filter.SetRule( 'series:', HC.FILTER_BLACKLIST )
+        get_tags_filter.set_rule('series:', HC.FILTER_BLACKLIST)
         
         service_keys_to_service_tag_import_options = { example_service_key : TagImportOptionsLegacy.ServiceTagImportOptions( get_tags = True, get_tags_filter = get_tags_filter ) }
         
@@ -1297,7 +1297,7 @@ class TestServiceTagImportOptions( unittest.TestCase ):
         
         only_namespaced = HydrusTags.TagFilter()
         
-        only_namespaced.SetRule( '', HC.FILTER_BLACKLIST )
+        only_namespaced.set_rule('', HC.FILTER_BLACKLIST)
         
         service_tag_import_options = TagImportOptionsLegacy.ServiceTagImportOptions( get_tags = True, get_tags_filter = only_namespaced )
         
@@ -1307,9 +1307,9 @@ class TestServiceTagImportOptions( unittest.TestCase ):
         
         only_samus = HydrusTags.TagFilter()
         
-        only_samus.SetRule( '', HC.FILTER_BLACKLIST )
-        only_samus.SetRule( ':', HC.FILTER_BLACKLIST )
-        only_samus.SetRule( 'character:samus aran', HC.FILTER_WHITELIST )
+        only_samus.set_rule('', HC.FILTER_BLACKLIST)
+        only_samus.set_rule(':', HC.FILTER_BLACKLIST)
+        only_samus.set_rule('character:samus aran', HC.FILTER_WHITELIST)
         
         service_tag_import_options = TagImportOptionsLegacy.ServiceTagImportOptions( get_tags = True, get_tags_filter = only_samus )
         
@@ -1443,7 +1443,7 @@ class TestServiceTagImportOptions( unittest.TestCase ):
         
         only_unnamespaced = HydrusTags.TagFilter()
         
-        only_unnamespaced.SetRule( ':', HC.FILTER_BLACKLIST )
+        only_unnamespaced.set_rule(':', HC.FILTER_BLACKLIST)
         
         TG.test_controller.SetRead( 'filter_existing_tags', existing_tags )
         

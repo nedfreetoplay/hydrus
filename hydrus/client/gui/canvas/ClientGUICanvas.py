@@ -2589,7 +2589,7 @@ class CanvasWithHovers( Canvas ):
                     display_string += ' (-)'
                     
                 
-                ( namespace, subtag ) = HydrusTags.SplitTag( tag )
+                ( namespace, subtag ) = HydrusTags.split_tag(tag)
                 
                 if namespace in namespace_colours:
                     

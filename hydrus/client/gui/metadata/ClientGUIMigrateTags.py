@@ -377,7 +377,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             tag_filter = self._migration_source_tag_filter.GetValue()
             
-            extra_filter_info_strings.append( 'for tags "{}"'.format( HydrusText.ElideText( tag_filter.ToPermittedString(), 96 ) ) )
+            extra_filter_info_strings.append( 'for tags "{}"'.format(HydrusText.ElideText(tag_filter.to_permitted_string(), 96)))
             
             if source_service_key == self.HTA_SERVICE_KEY:
                 
@@ -420,8 +420,8 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             left_tag_pair_filter = self._migration_source_left_tag_pair_filter.GetValue()
             right_tag_pair_filter = self._migration_source_right_tag_pair_filter.GetValue()
             
-            left_s = left_tag_pair_filter.ToPermittedString()
-            right_s = right_tag_pair_filter.ToPermittedString()
+            left_s = left_tag_pair_filter.to_permitted_string()
+            right_s = right_tag_pair_filter.to_permitted_string()
             
             if left_s == right_s:
                 

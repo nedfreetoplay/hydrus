@@ -1321,7 +1321,7 @@ class TestNetworkingJob( unittest.TestCase ):
         
         job.engine.bandwidth_manager.report_data_used([DOMAIN_NETWORK_CONTEXT], 50)
         
-        job.engine.bandwidth_manager.SetRules( DOMAIN_NETWORK_CONTEXT, RESTRICTIVE_DATA_RULES )
+        job.engine.bandwidth_manager.set_rules(DOMAIN_NETWORK_CONTEXT, RESTRICTIVE_DATA_RULES)
         
         self.assertEqual( job.TryToStartBandwidth(), False )
         
@@ -1333,7 +1333,7 @@ class TestNetworkingJob( unittest.TestCase ):
         
         job.engine.bandwidth_manager.report_data_used([DOMAIN_NETWORK_CONTEXT], 50)
         
-        job.engine.bandwidth_manager.SetRules( DOMAIN_NETWORK_CONTEXT, RESTRICTIVE_DATA_RULES )
+        job.engine.bandwidth_manager.set_rules(DOMAIN_NETWORK_CONTEXT, RESTRICTIVE_DATA_RULES)
         
         self.assertEqual( job.TryToStartBandwidth(), True )
         
@@ -1354,7 +1354,7 @@ class TestNetworkingJob( unittest.TestCase ):
         
         self.assertEqual( job.TryToStartBandwidth(), True )
         
-        job.engine.bandwidth_manager.SetRules( DOMAIN_NETWORK_CONTEXT, PERMISSIVE_DATA_RULES )
+        job.engine.bandwidth_manager.set_rules(DOMAIN_NETWORK_CONTEXT, PERMISSIVE_DATA_RULES)
         
         self.assertEqual( job.TryToStartBandwidth(), True )
         
@@ -1366,7 +1366,7 @@ class TestNetworkingJob( unittest.TestCase ):
         
         self.assertEqual( job.TryToStartBandwidth(), True )
         
-        job.engine.bandwidth_manager.SetRules( DOMAIN_NETWORK_CONTEXT, PERMISSIVE_DATA_RULES )
+        job.engine.bandwidth_manager.set_rules(DOMAIN_NETWORK_CONTEXT, PERMISSIVE_DATA_RULES)
         
         self.assertEqual( job.TryToStartBandwidth(), True )
         
@@ -1493,7 +1493,7 @@ class TestNetworkingJobHydrus( unittest.TestCase ):
         
         job.engine.bandwidth_manager.report_data_used([HYDRUS_NETWORK_CONTEXT], 50)
         
-        job.engine.bandwidth_manager.SetRules( HYDRUS_NETWORK_CONTEXT, RESTRICTIVE_DATA_RULES )
+        job.engine.bandwidth_manager.set_rules(HYDRUS_NETWORK_CONTEXT, RESTRICTIVE_DATA_RULES)
         
         self.assertEqual( job.TryToStartBandwidth(), False )
         
@@ -1505,7 +1505,7 @@ class TestNetworkingJobHydrus( unittest.TestCase ):
         
         job.engine.bandwidth_manager.report_data_used([HYDRUS_NETWORK_CONTEXT], 50)
         
-        job.engine.bandwidth_manager.SetRules( HYDRUS_NETWORK_CONTEXT, RESTRICTIVE_DATA_RULES )
+        job.engine.bandwidth_manager.set_rules(HYDRUS_NETWORK_CONTEXT, RESTRICTIVE_DATA_RULES)
         
         self.assertEqual( job.TryToStartBandwidth(), True )
         
@@ -1526,7 +1526,7 @@ class TestNetworkingJobHydrus( unittest.TestCase ):
         
         self.assertEqual( job.TryToStartBandwidth(), True )
         
-        job.engine.bandwidth_manager.SetRules( HYDRUS_NETWORK_CONTEXT, PERMISSIVE_DATA_RULES )
+        job.engine.bandwidth_manager.set_rules(HYDRUS_NETWORK_CONTEXT, PERMISSIVE_DATA_RULES)
         
         self.assertEqual( job.TryToStartBandwidth(), True )
         
@@ -1538,7 +1538,7 @@ class TestNetworkingJobHydrus( unittest.TestCase ):
         
         self.assertEqual( job.TryToStartBandwidth(), True )
         
-        job.engine.bandwidth_manager.SetRules( HYDRUS_NETWORK_CONTEXT, PERMISSIVE_DATA_RULES )
+        job.engine.bandwidth_manager.set_rules(HYDRUS_NETWORK_CONTEXT, PERMISSIVE_DATA_RULES)
         
         self.assertEqual( job.TryToStartBandwidth(), True )
         

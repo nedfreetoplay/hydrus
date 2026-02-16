@@ -481,8 +481,8 @@ class DuplicateContentMergeOptions( HydrusSerialisable.SerialisableBase ):
             first_tags = media_result_a.GetTagsManager().GetCurrentAndPending( service_key, ClientTags.TAG_DISPLAY_STORAGE )
             second_tags = media_result_b.GetTagsManager().GetCurrentAndPending( service_key, ClientTags.TAG_DISPLAY_STORAGE )
             
-            first_tags = tag_filter.Filter( first_tags )
-            second_tags = tag_filter.Filter( second_tags )
+            first_tags = tag_filter.filter(first_tags)
+            second_tags = tag_filter.filter(second_tags)
             
             if action == HC.CONTENT_MERGE_ACTION_TWO_WAY_MERGE:
                 

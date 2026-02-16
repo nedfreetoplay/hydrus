@@ -331,7 +331,7 @@ class EditDuplicateContentMergeOptionsWidget( ClientGUICommon.StaticBox ):
             
         
         pretty_action = HC.content_merge_string_lookup[ action ]
-        pretty_tag_filter = tag_filter.ToPermittedString()
+        pretty_tag_filter = tag_filter.to_permitted_string()
         
         display_tuple = ( service_name, pretty_action, pretty_tag_filter )
         

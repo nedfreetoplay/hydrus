@@ -267,7 +267,7 @@ class TagPresentationPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         if namespace != 'system':
             
-            namespace = HydrusTags.StripTagTextOfGumpf( namespace )
+            namespace = HydrusTags.strip_tag_text_of_gumpf(namespace)
             
         
         existing_namespaces = self._namespace_colours.GetNamespaceColours().keys()

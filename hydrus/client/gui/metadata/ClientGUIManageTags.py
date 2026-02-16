@@ -521,7 +521,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
         
         def _EnterTags( self, tags, only_add = False, only_remove = False, forced_reason = None ):
             
-            tags = HydrusTags.CleanTags( tags )
+            tags = HydrusTags.clean_tags(tags)
             
             if not self._i_am_local_tag_service and self._service.HasPermission( HC.CONTENT_TYPE_MAPPINGS, HC.PERMISSION_ACTION_MODERATE ):
                 
@@ -900,7 +900,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             
             if len( tags ) > 0:
                 
-                tags = HydrusTags.SortNumericTags( tags )
+                tags = HydrusTags.sort_numeric_tags(tags)
                 
                 text = '\n'.join( tags )
                 
@@ -1033,7 +1033,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                 tags_to_remove = [ tag for tag in selected_tags if tag in removable_tags ]
                 
             
-            tags_to_remove = HydrusTags.SortNumericTags( tags_to_remove )
+            tags_to_remove = HydrusTags.sort_numeric_tags(tags_to_remove)
             
             self.RemoveTags( tags_to_remove )
             

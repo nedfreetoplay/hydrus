@@ -37,11 +37,11 @@ def ConvertSubtagToSearchable( subtag ):
 
 def ConvertTagToSearchable( tag ):
     
-    ( namespace, subtag ) = HydrusTags.SplitTag( tag )
+    ( namespace, subtag ) = HydrusTags.split_tag(tag)
     
     searchable_subtag = ConvertSubtagToSearchable( subtag )
     
-    return HydrusTags.CombineTag( namespace, searchable_subtag )
+    return HydrusTags.combine_tag(namespace, searchable_subtag)
     
 
 class TagContext( HydrusSerialisable.SerialisableBase ):

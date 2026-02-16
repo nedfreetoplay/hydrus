@@ -427,19 +427,19 @@ class TestMigration( unittest.TestCase ):
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( '', HC.FILTER_WHITELIST )
-        tag_filter.SetRule( ':', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule('', HC.FILTER_WHITELIST)
+        tag_filter.set_rule(':', HC.FILTER_BLACKLIST)
         
         source = ClientMigration.MigrationSourceHTA( self, md5_hta_path, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY ), 'md5', None, tag_filter )
         
-        expected_data = [ ( self._sha256_to_md5[ hash ], tag_filter.Filter( tags ) ) for ( hash, tags ) in self._hashes_to_current_tags.items() ]
+        expected_data = [( self._sha256_to_md5[ hash ], tag_filter.filter(tags)) for (hash, tags) in self._hashes_to_current_tags.items()]
         expected_data = [ ( hash, tags ) for ( hash, tags ) in expected_data if len( tags ) > 0 ]
         
         run_test( source, expected_data )
         
         source = ClientMigration.MigrationSourceHTA( self, sha256_hta_path, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY ), 'sha256', None, tag_filter )
         
-        expected_data = [ ( hash, tag_filter.Filter( tags ) ) for ( hash, tags ) in self._hashes_to_current_tags.items() ]
+        expected_data = [( hash, tag_filter.filter(tags)) for (hash, tags) in self._hashes_to_current_tags.items()]
         expected_data = [ ( hash, tags ) for ( hash, tags ) in expected_data if len( tags ) > 0 ]
         
         run_test( source, expected_data )
@@ -564,19 +564,19 @@ class TestMigration( unittest.TestCase ):
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( '', HC.FILTER_WHITELIST )
-        tag_filter.SetRule( ':', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule('', HC.FILTER_WHITELIST)
+        tag_filter.set_rule(':', HC.FILTER_BLACKLIST)
         
         source = ClientMigration.MigrationSourceTagServiceMappings( self, CC.DEFAULT_LOCAL_TAG_SERVICE_KEY, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY ), 'sha256', None, tag_filter, ( HC.CONTENT_STATUS_CURRENT, ) )
         
-        expected_data = [ ( hash, tag_filter.Filter( tags ) ) for ( hash, tags ) in self._hashes_to_current_tags.items() ]
+        expected_data = [( hash, tag_filter.filter(tags)) for (hash, tags) in self._hashes_to_current_tags.items()]
         expected_data = [ ( hash, tags ) for ( hash, tags ) in expected_data if len( tags ) > 0 ]
         
         run_test( source, expected_data )
         
         source = ClientMigration.MigrationSourceTagServiceMappings( self, tag_repo_service_key, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY ), 'sha256', None, tag_filter, ( HC.CONTENT_STATUS_CURRENT, ) )
         
-        expected_data = [ ( hash, tag_filter.Filter( tags ) ) for ( hash, tags ) in self._hashes_to_current_tags.items() ]
+        expected_data = [( hash, tag_filter.filter(tags)) for (hash, tags) in self._hashes_to_current_tags.items()]
         expected_data = [ ( hash, tags ) for ( hash, tags ) in expected_data if len( tags ) > 0 ]
         
         run_test( source, expected_data )
@@ -842,8 +842,8 @@ class TestMigration( unittest.TestCase ):
         
         namespace_filter = HydrusTags.TagFilter()
         
-        namespace_filter.SetRule( ':', HC.FILTER_WHITELIST )
-        namespace_filter.SetRule( '', HC.FILTER_BLACKLIST )
+        namespace_filter.set_rule(':', HC.FILTER_WHITELIST)
+        namespace_filter.set_rule('', HC.FILTER_BLACKLIST)
         
         test_filters = []
         
@@ -861,7 +861,7 @@ class TestMigration( unittest.TestCase ):
             
             source = ClientMigration.MigrationSourceHTPA( self, htpa_path, content_type, left_tag_filter, right_tag_filter, left_side_needs_count, right_side_needs_count, either_side_needs_count, needs_count_service_key )
             
-            expected_data = [ ( left_tag, right_tag ) for ( left_tag, right_tag ) in current if left_tag_filter.TagOK( left_tag ) and right_tag_filter.TagOK( right_tag ) ]
+            expected_data = [( left_tag, right_tag ) for ( left_tag, right_tag ) in current if left_tag_filter.tag_ok(left_tag) and right_tag_filter.tag_ok(right_tag)]
             
             run_test( source, expected_data )
             
@@ -936,8 +936,8 @@ class TestMigration( unittest.TestCase ):
         
         namespace_filter = HydrusTags.TagFilter()
         
-        namespace_filter.SetRule( ':', HC.FILTER_WHITELIST )
-        namespace_filter.SetRule( '', HC.FILTER_BLACKLIST )
+        namespace_filter.set_rule(':', HC.FILTER_WHITELIST)
+        namespace_filter.set_rule('', HC.FILTER_BLACKLIST)
         
         test_filters = []
         
@@ -961,7 +961,7 @@ class TestMigration( unittest.TestCase ):
                 
                 for content_list in content_lists:
                     
-                    expected_data.update( ( ( left_tag, right_tag ) for ( left_tag, right_tag ) in content_list if left_tag_filter.TagOK( left_tag ) and right_tag_filter.TagOK( right_tag ) ) )
+                    expected_data.update((( left_tag, right_tag ) for ( left_tag, right_tag ) in content_list if left_tag_filter.tag_ok(left_tag) and right_tag_filter.tag_ok(right_tag)))
                     
                 
                 run_test( source, expected_data )

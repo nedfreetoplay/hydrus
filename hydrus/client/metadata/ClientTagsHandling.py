@@ -808,14 +808,14 @@ class TagDisplayManager( HydrusSerialisable.SerialisableBase ):
                 
                 tag_filter = self._tag_display_types_to_service_keys_to_tag_filters[ tag_display_type ][ service_key ]
                 
-                tags = tag_filter.Filter( tags )
+                tags = tag_filter.filter(tags)
                 
             
             if service_key != CC.COMBINED_TAG_SERVICE_KEY and CC.COMBINED_TAG_SERVICE_KEY in self._tag_display_types_to_service_keys_to_tag_filters[ tag_display_type ]:
                 
                 tag_filter = self._tag_display_types_to_service_keys_to_tag_filters[ tag_display_type ][ CC.COMBINED_TAG_SERVICE_KEY ]
                 
-                tags = tag_filter.Filter( tags )
+                tags = tag_filter.filter(tags)
                 
             
             return tags
@@ -874,7 +874,7 @@ class TagDisplayManager( HydrusSerialisable.SerialisableBase ):
             
             tag_filter = self._tag_display_types_to_service_keys_to_tag_filters[ tag_display_type ][ service_key ]
             
-            tag_filter.SetRules( tags, HC.FILTER_BLACKLIST )
+            tag_filter.set_rules(tags, HC.FILTER_BLACKLIST)
             
             self._dirty = True
             
@@ -900,7 +900,7 @@ class TagDisplayManager( HydrusSerialisable.SerialisableBase ):
         
         with self._lock:
             
-            if tag_filter.AllowsEverything():
+            if tag_filter.allows_everything():
                 
                 if service_key in self._tag_display_types_to_service_keys_to_tag_filters[ tag_display_type ]:
                     

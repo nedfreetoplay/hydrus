@@ -1106,18 +1106,18 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
                 
                 if sort_type == 'left':
                     
-                    ( part_one, part_two ) = ( HydrusTags.SplitTag( left ), HydrusTags.SplitTag( right ) )
+                    ( part_one, part_two ) = (HydrusTags.split_tag(left), HydrusTags.split_tag(right))
                     
                 elif sort_type == 'right':
                     
-                    ( part_one, part_two ) = ( HydrusTags.SplitTag( right ), HydrusTags.SplitTag( left ) )
+                    ( part_one, part_two ) = (HydrusTags.split_tag(right), HydrusTags.split_tag(left))
                     
                 
             elif c.GetContentType() == HC.CONTENT_TYPE_MAPPINGS:
                 
                 ( tag, hashes ) = c.GetContentData()
                 
-                part_one = HydrusTags.SplitTag( tag )
+                part_one = HydrusTags.split_tag(tag)
                 part_two = None
                 
             else:

@@ -786,7 +786,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                             
                             potentially_dirty_tag = tag
                             
-                            tag = HydrusTags.CleanTag( potentially_dirty_tag )
+                            tag = HydrusTags.clean_tag(potentially_dirty_tag)
                             
                             if tag != potentially_dirty_tag:
                                 
@@ -813,7 +813,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                         
                         if action == HC.CONTENT_UPDATE_ADD:
                             
-                            if not CG.client_controller.tag_display_manager.TagOK( ClientTags.TAG_DISPLAY_STORAGE, service_key, tag ):
+                            if not CG.client_controller.tag_display_manager.tag_ok(ClientTags.TAG_DISPLAY_STORAGE, service_key, tag):
                                 
                                 continue
                                 
@@ -826,7 +826,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                             
                         elif action == HC.CONTENT_UPDATE_PEND:
                             
-                            if not CG.client_controller.tag_display_manager.TagOK( ClientTags.TAG_DISPLAY_STORAGE, service_key, tag ):
+                            if not CG.client_controller.tag_display_manager.tag_ok(ClientTags.TAG_DISPLAY_STORAGE, service_key, tag):
                                 
                                 continue
                                 

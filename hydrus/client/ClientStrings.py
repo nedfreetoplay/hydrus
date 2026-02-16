@@ -1463,9 +1463,9 @@ class StringTagFilter( StringProcessingStep ):
     
     def ConvertAndFilter( self, tag_texts ):
         
-        tags = HydrusTags.CleanTags( tag_texts )
+        tags = HydrusTags.clean_tags(tag_texts)
         
-        tags = self._tag_filter.Filter( tags, apply_unnamespaced_rules_to_namespaced_tags = True )
+        tags = self._tag_filter.filter(tags, apply_unnamespaced_rules_to_namespaced_tags = True)
         
         tags = sorted( tags, key = HydrusText.HumanTextSortKey )
         
@@ -1514,7 +1514,7 @@ class StringTagFilter( StringProcessingStep ):
         
         try:
             
-            tags = HydrusTags.CleanTags( [ text ] )
+            tags = HydrusTags.clean_tags([text])
             
             if len( tags ) == 0:
                 
@@ -1530,7 +1530,7 @@ class StringTagFilter( StringProcessingStep ):
             raise HydrusExceptions.StringMatchException( '{} was not a valid tag!'.format( presentation_text ) )
             
         
-        if not self._tag_filter.TagOK( tag, apply_unnamespaced_rules_to_namespaced_tags = True ):
+        if not self._tag_filter.tag_ok(tag, apply_unnamespaced_rules_to_namespaced_tags = True):
             
             raise HydrusExceptions.StringMatchException( '{} did not pass the tag filter!'.format( presentation_text ) )
             
@@ -1543,7 +1543,7 @@ class StringTagFilter( StringProcessingStep ):
             return 'tag filter'
             
         
-        result = '{}, such as {}'.format( self._tag_filter.ToPermittedString(), self._example_string )
+        result = '{}, such as {}'.format(self._tag_filter.to_permitted_string(), self._example_string)
         
         if with_type:
             

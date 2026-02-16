@@ -1024,9 +1024,9 @@ class DB( HydrusDB.HydrusDB ):
     
     def _GetMasterTagId( self, tag ):
         
-        tag = HydrusTags.CleanTag( tag )
+        tag = HydrusTags.clean_tag(tag)
         
-        HydrusTags.CheckTagNotEmpty( tag )
+        HydrusTags.check_tag_not_empty(tag)
         
         result = self._execute('SELECT master_tag_id FROM tags WHERE tag = ?;', (tag,)).fetchone()
         

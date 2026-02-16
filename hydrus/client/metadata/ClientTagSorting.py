@@ -129,7 +129,7 @@ HydrusSerialisable.SERIALISABLE_TYPES_TO_OBJECT_TYPES[ HydrusSerialisable.SERIAL
 
 def lexicographic_key( tag ):
     
-    ( namespace, subtag ) = HydrusTags.SplitTag( tag )
+    ( namespace, subtag ) = HydrusTags.split_tag(tag)
     
     comparable_subtag = HydrusText.HumanTextSortKey( subtag )
     
@@ -147,7 +147,7 @@ def lexicographic_key( tag ):
 
 def subtag_lexicographic_key( tag ):
     
-    ( namespace, subtag ) = HydrusTags.SplitTag( tag )
+    ( namespace, subtag ) = HydrusTags.split_tag(tag)
     
     comparable_subtag = HydrusText.HumanTextSortKey( subtag )
     
@@ -156,7 +156,7 @@ def subtag_lexicographic_key( tag ):
 
 def namespace_az_key( tag ):
     
-    ( namespace, subtag ) = HydrusTags.SplitTag( tag )
+    ( namespace, subtag ) = HydrusTags.split_tag(tag)
     
     if namespace == '':
         
@@ -185,7 +185,7 @@ def namespace_user_key_factory():
     
     def namespace_user_key( tag ):
         
-        ( namespace, subtag ) = HydrusTags.SplitTag( tag )
+        ( namespace, subtag ) = HydrusTags.split_tag(tag)
         
         if namespace in namespace_list_fast:
             

@@ -140,7 +140,7 @@ class TagSummaryGenerator( HydrusSerialisable.SerialisableBase ):
         
         for tag in tags:
             
-            ( namespace, subtag ) = HydrusTags.SplitTag( tag )
+            ( namespace, subtag ) = HydrusTags.split_tag(tag)
             
             if namespace in self._interesting_namespaces:
                 
@@ -152,9 +152,9 @@ class TagSummaryGenerator( HydrusSerialisable.SerialisableBase ):
         
         for ( namespace, unsorted_l ) in list( namespaces_to_subtags.items() ):
             
-            sorted_l = HydrusTags.SortNumericTags( unsorted_l )
+            sorted_l = HydrusTags.sort_numeric_tags(unsorted_l)
             
-            sorted_l = HydrusTags.CollapseMultipleSortedNumericTagsToMinMax( sorted_l )
+            sorted_l = HydrusTags.collapse_multiple_sorted_numeric_tags_to_min_max(sorted_l)
             
             namespaces_to_subtags[ namespace ] = sorted_l
             
@@ -370,7 +370,7 @@ class EditTagSummaryGeneratorPanel( ClientGUIScrolledPanels.EditPanel ):
         text_colour = self._text_colour.GetValue()
         namespace_info = self._namespaces_listbox.GetData()
         separator = self._separator.text()
-        example_tags = HydrusTags.CleanTags( HydrusText.DeserialiseNewlinedTexts( self._example_tags.toPlainText() ) )
+        example_tags = HydrusTags.clean_tags(HydrusText.DeserialiseNewlinedTexts(self._example_tags.toPlainText()))
         
         return TagSummaryGenerator( background_colour, text_colour, namespace_info, separator, example_tags, show )
         

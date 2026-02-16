@@ -428,7 +428,7 @@ class EditClientServicePanel( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            name_to_display = hta_path + ' (' + ', '.join( HydrusTags.ConvertUglyNamespacesToPrettyStrings( namespaces ) ) + ')'
+            name_to_display = hta_path + ' (' + ', '.join(HydrusTags.convert_ugly_namespaces_to_pretty_strings(namespaces)) + ')'
             
         
         return name_to_display
@@ -3261,7 +3261,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
                 
                 self._tag_filter_button.setEnabled( True )
                 
-                tt = 'See which tags this repository accepts. Summary:{}{}'.format( '\n' * 2, tag_filter.ToPermittedString() )
+                tt = 'See which tags this repository accepts. Summary:{}{}'.format( '\n' * 2, tag_filter.to_permitted_string())
                 
                 self._tag_filter_button.setToolTip( ClientGUIFunctions.WrapToolTip( tt ) )
                 

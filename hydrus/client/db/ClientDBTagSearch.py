@@ -591,7 +591,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
             return set()
             
         
-        ( namespace, half_complete_searchable_subtag ) = HydrusTags.SplitTag( search_text )
+        ( namespace, half_complete_searchable_subtag ) = HydrusTags.split_tag(search_text)
         
         if half_complete_searchable_subtag == '':
             
@@ -1417,13 +1417,13 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
             tags_table_name = self.GetTagsTableName( file_service_id, tag_service_id )
             
         
-        if tag_filter.AllowsEverything():
+        if tag_filter.allows_everything():
             
             self._execute(f'INSERT OR IGNORE INTO {temp_tag_ids_table_name} ( tag_id ) SELECT tag_id FROM {tags_table_name};')
             
         else:
             
-            tag_slices_to_rules = tag_filter.GetTagSlicesToRules()
+            tag_slices_to_rules = tag_filter.get_tag_slices_to_rules()
             
             # KISS: do 'alls', then namespaces, then tags
             
@@ -1450,7 +1450,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
                     continue
                     
                 
-                if HydrusTags.IsNamespaceTagSlice( tag_slice ):
+                if HydrusTags.is_namespace_tag_slice(tag_slice):
                     
                     namespace = tag_slice[:-1]
                     
@@ -1479,7 +1479,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
                     continue
                     
                 
-                if not HydrusTags.IsNamespaceTagSlice( tag_slice ):
+                if not HydrusTags.is_namespace_tag_slice(tag_slice):
                     
                     tag_id = self.modules_tags.GetTagId( tag_slice )
                     

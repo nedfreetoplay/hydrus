@@ -1496,7 +1496,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
                     
                     edited_duplicates_auto_resolution_rules = panel.GetValue()
                     
-                    CG.client_controller.duplicates_auto_resolution_manager.SetRules( edited_duplicates_auto_resolution_rules )
+                    CG.client_controller.duplicates_auto_resolution_manager.set_rules(edited_duplicates_auto_resolution_rules)
                     
                 
             
