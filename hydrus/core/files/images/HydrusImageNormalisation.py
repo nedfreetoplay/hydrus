@@ -394,7 +394,7 @@ def NormaliseICCProfilePILImageToSRGB( icc_profile_bytes: bytes, pil_image: PILI
             
         else:
             
-            if HydrusImageColours.PILImageHasTransparency( pil_image ):
+            if HydrusImageColours.pil_image_has_transparency(pil_image):
                 
                 outputMode = 'RGBA'
                 
@@ -424,7 +424,7 @@ def NormaliseICCProfilePILImageToSRGB( icc_profile_bytes: bytes, pil_image: PILI
 
 def NormalisePILImageToRGB( pil_image: PILImage.Image ) -> PILImage.Image:
     
-    if HydrusImageColours.PILImageHasTransparency( pil_image ):
+    if HydrusImageColours.pil_image_has_transparency(pil_image):
         
         desired_mode = 'RGBA'
         
@@ -524,9 +524,9 @@ def RotateEXIFPILImage( pil_image: PILImage.Image )-> PILImage.Image:
 
 def StripOutAnyUselessAlphaChannel( numpy_image: numpy.ndarray ) -> numpy.ndarray:
     
-    if HydrusImageColours.NumPyImageHasUselessAlphaChannel( numpy_image ):
+    if HydrusImageColours.numpy_image_has_useless_alpha_channel(numpy_image):
         
-        channel_number = HydrusImageColours.GetNumPyAlphaChannelNumber( numpy_image )
+        channel_number = HydrusImageColours.get_numpy_alpha_channel_number(numpy_image)
         
         numpy_image = numpy_image[:,:,:channel_number].copy()
         
@@ -542,9 +542,9 @@ def StripOutAnyUselessAlphaChannel( numpy_image: numpy.ndarray ) -> numpy.ndarra
 
 def StripOutAnyAlphaChannel( numpy_image: numpy.ndarray ) -> numpy.ndarray:
     
-    if HydrusImageColours.NumPyImageHasAlphaChannel( numpy_image ):
+    if HydrusImageColours.numpy_image_has_alpha_channel(numpy_image):
         
-        channel_number = HydrusImageColours.GetNumPyAlphaChannelNumber( numpy_image )
+        channel_number = HydrusImageColours.get_numpy_alpha_channel_number(numpy_image)
         
         numpy_image = numpy_image[:,:,:channel_number].copy()
         

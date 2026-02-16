@@ -557,7 +557,7 @@ def GenerateThumbnailBytesFromPIL( pil_image: PILImage.Image ) -> bytes:
     
     f = io.BytesIO()
     
-    if HydrusImageColours.PILImageHasTransparency( pil_image ):
+    if HydrusImageColours.pil_image_has_transparency(pil_image):
         
         pil_image.save( f, 'PNG' )
         

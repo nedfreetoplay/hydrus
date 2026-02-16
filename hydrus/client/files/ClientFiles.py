@@ -203,7 +203,7 @@ def HasTransparency( path, mime, duration_ms = None, num_frames = None, resoluti
             
             numpy_image = HydrusImageHandling.GenerateNumPyImage( path, mime )
             
-            return HydrusImageColours.NumPyImageHasUsefulAlphaChannel( numpy_image )
+            return HydrusImageColours.numpy_image_has_useful_alpha_channel(numpy_image)
             
         elif mime in HC.ANIMATIONS:
             
@@ -231,7 +231,7 @@ def HasTransparency( path, mime, duration_ms = None, num_frames = None, resoluti
                     
                     if not we_checked_for_just_alpha_channel:
                         
-                        if not HydrusImageColours.NumPyImageHasAlphaChannel( numpy_image ):
+                        if not HydrusImageColours.numpy_image_has_alpha_channel(numpy_image):
                             
                             return False
                             
@@ -239,7 +239,7 @@ def HasTransparency( path, mime, duration_ms = None, num_frames = None, resoluti
                         we_checked_for_just_alpha_channel = True
                         
                     
-                    if HydrusImageColours.NumPyImageHasUsefulAlphaChannel( numpy_image ):
+                    if HydrusImageColours.numpy_image_has_useful_alpha_channel(numpy_image):
                         
                         return True
                         

@@ -736,7 +736,7 @@ def GenerateImageVisualDataNumPy( numpy_image: numpy.ndarray ) -> VisualData:
     
     if has_alpha:
         
-        alpha_channel = HydrusImageColours.GetNumPyAlphaChannel( numpy_image )
+        alpha_channel = HydrusImageColours.get_numpy_alpha_channel(numpy_image)
         
         if JPEG_ARTIFACT_BLUR_FOR_PROCESSING:
             
