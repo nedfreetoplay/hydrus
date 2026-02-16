@@ -19,7 +19,7 @@ def GetFrameDurationsMSUgoira( media: ClientMediaResult.MediaResult ):
     
     try:
         
-        frameData = HydrusUgoiraHandling.GetUgoiraFrameDataJSON( path )
+        frameData = HydrusUgoiraHandling.get_ugoira_frame_data_json(path)
         
         if frameData is not None:
             
@@ -133,7 +133,7 @@ class UgoiraRenderer(object):
 
         self._next_render_index = 0
 
-        self._frame_data = HydrusUgoiraHandling.GetFramePathsUgoira( path )
+        self._frame_data = HydrusUgoiraHandling.get_frame_paths_ugoira(path)
 
         self._zip = HydrusArchiveHandling.get_zip_as_path(path)
 
@@ -167,7 +167,7 @@ def ConvertUgoiraToBytesForAPI( media: ClientMediaResult.MediaResult, format: in
     
     path = client_files_manager.GetFilePath( media.GetHash(), media.GetMime() )
     
-    frame_paths = HydrusUgoiraHandling.GetFramePathsUgoira( path )
+    frame_paths = HydrusUgoiraHandling.get_frame_paths_ugoira(path)
 
     zip = HydrusArchiveHandling.get_zip_as_path(path)
     

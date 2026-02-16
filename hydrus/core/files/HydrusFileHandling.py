@@ -294,7 +294,7 @@ def generate_thumbnail_num_py(path, target_resolution, mime, duration_ms, num_fr
             
             desired_thumb_frame_index = int( ( percentage_in / 100.0 ) * ( num_frames - 1 ) )
             
-            thumbnail_numpy = HydrusUgoiraHandling.GenerateThumbnailNumPyFromUgoiraPath( path, target_resolution, desired_thumb_frame_index )
+            thumbnail_numpy = HydrusUgoiraHandling.generate_thumbnail_numpy_from_ugoira_path(path, target_resolution, desired_thumb_frame_index)
             
         except Exception as e:
             
@@ -594,7 +594,7 @@ def get_file_info(path, mime = None, ok_to_look_for_hydrus_updates = False):
         
     elif mime == HC.ANIMATION_UGOIRA: # must be before VIEWABLE_ANIMATIONS
         
-        ( ( width, height ), duration_ms, num_frames ) = HydrusUgoiraHandling.GetUgoiraProperties( path )
+        ( ( width, height ), duration_ms, num_frames ) = HydrusUgoiraHandling.get_ugoira_properties(path)
         
     elif mime in HC.VIDEO or mime in HC.HEIF_TYPE_SEQUENCES or mime in ( HC.IMAGE_AVIF_SEQUENCE, HC.ANIMATION_JXL ):
         
@@ -827,7 +827,7 @@ def get_mime(path, ok_to_look_for_hydrus_updates = False):
                     return HC.APPLICATION_PROCREATE
                     
                 
-                if HydrusUgoiraHandling.ZipLooksLikeUgoira( path ):
+                if HydrusUgoiraHandling.zip_looks_like_ugoira(path):
                     
                     return HC.ANIMATION_UGOIRA
                     
