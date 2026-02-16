@@ -218,7 +218,7 @@ def generate_thumbnail_num_py(path, target_resolution, mime, duration_ms, num_fr
         
         try:
             
-            thumbnail_numpy = HydrusPSDHandling.GenerateThumbnailNumPyFromPSDPath( path, target_resolution )
+            thumbnail_numpy = HydrusPSDHandling.generate_thumbnail_numpy_from_psd_path(path, target_resolution)
             
         except Exception as e:
             
@@ -584,7 +584,7 @@ def get_file_info(path, mime = None, ok_to_look_for_hydrus_updates = False):
         
         try:
             
-            ( width, height ) = HydrusPSDHandling.GetPSDResolution( path )
+            ( width, height ) = HydrusPSDHandling.get_psd_resolution(path)
             
         except Exception as e:
             

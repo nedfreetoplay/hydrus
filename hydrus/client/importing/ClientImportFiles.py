@@ -418,7 +418,7 @@ class FileImportJob( object ):
                 
                 if mime == HC.APPLICATION_PSD:
                     
-                    has_icc_profile = HydrusPSDHandling.PSDHasICCProfile( self._temp_path )
+                    has_icc_profile = HydrusPSDHandling.psd_has_icc_profile(self._temp_path)
                     
                 else:
                     

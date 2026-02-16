@@ -262,7 +262,7 @@ def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = 
             HydrusData.show_text('Loading PSD')
             
         
-        pil_image = HydrusPSDHandling.GeneratePILImageFromPSD( path )
+        pil_image = HydrusPSDHandling.generate_pil_image_from_psd(path)
         
         return GenerateNumPyImageFromPILImage( pil_image )
         
