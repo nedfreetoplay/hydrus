@@ -1221,7 +1221,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
             
             try:
                 
-                my_media = self._GetMedia( media.GetHashes() )[0]
+                my_media = self._GetMedia(media.get_hashes())[0]
                 
                 self._HitMedia( my_media, False, False )
                 

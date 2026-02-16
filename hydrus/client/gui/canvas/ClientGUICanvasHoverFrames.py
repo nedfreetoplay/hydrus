@@ -149,7 +149,7 @@ class RatingIncDecCanvas( ClientGUIRatings.RatingIncDec ):
             
         else:
             
-            self._hashes = self._current_media.GetHashes()
+            self._hashes = self._current_media.get_hashes()
             
             ( self._rating_state, self._rating ) = ClientRatings.GetIncDecStateFromMedia( ( self._current_media, ), self._service_key )
             
@@ -415,7 +415,7 @@ class RatingNumericalCanvas( ClientGUIRatings.RatingNumericalControl ):
             
         else:
             
-            self._hashes = self._current_media.GetHashes()
+            self._hashes = self._current_media.get_hashes()
             
             ( self._rating_state, self._rating ) = ClientRatings.GetNumericalStateFromMedia( ( self._current_media, ), self._service_key )
             

@@ -1255,7 +1255,7 @@ class ClientToServerUpdate( HydrusSerialisable.SerialisableBase ):
             
             for ( content, reason ) in contents_and_reasons:
                 
-                hashes.update( content.GetHashes() )
+                hashes.update(content.get_hashes())
                 
             
         

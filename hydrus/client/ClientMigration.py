@@ -87,10 +87,10 @@ class MigrationDestinationHTA( MigrationDestination ):
         
         if HydrusTime.TimeHasPassed( self._time_started + 120 ):
             
-            self._hta.Optimise()
+            self._hta.optimise()
             
         
-        self._hta.Close()
+        self._hta.close()
         
         self._hta = None
         
@@ -105,7 +105,7 @@ class MigrationDestinationHTA( MigrationDestination ):
         
         for ( hash, tags ) in data:
             
-            self._hta.AddMappings( hash, tags )
+            self._hta.add_mappings(hash, tags)
             
             num_done += len( tags )
             
@@ -121,9 +121,9 @@ class MigrationDestinationHTA( MigrationDestination ):
         
         hta_hash_type = HydrusTagArchive.hash_str_to_type_lookup[ self._desired_hash_type ]
         
-        self._hta.SetHashType( hta_hash_type )
+        self._hta.set_hash_type(hta_hash_type)
         
-        self._hta.BeginBigJob()
+        self._hta.begin_big_job()
         
     
 class MigrationDestinationHTPA( MigrationDestination ):
@@ -148,10 +148,10 @@ class MigrationDestinationHTPA( MigrationDestination ):
         
         if HydrusTime.TimeHasPassed( self._time_started + 120 ):
             
-            self._htpa.Optimise()
+            self._htpa.optimise()
             
         
-        self._htpa.Close()
+        self._htpa.close()
         
         self._htpa = None
         
@@ -162,7 +162,7 @@ class MigrationDestinationHTPA( MigrationDestination ):
         
         data = source.GetSomeData()
         
-        self._htpa.AddPairs( data )
+        self._htpa.add_pairs(data)
         
         num_done = len( data )
         
@@ -177,9 +177,9 @@ class MigrationDestinationHTPA( MigrationDestination ):
         
         pair_type = content_types_to_pair_types[ self._content_type ]
         
-        self._htpa.SetPairType( pair_type )
+        self._htpa.set_pair_type(pair_type)
         
-        self._htpa.BeginBigJob()
+        self._htpa.begin_big_job()
         
     
 class MigrationDestinationList( MigrationDestination ):
@@ -538,7 +538,7 @@ class MigrationSourceHTA( MigrationSource ):
         
         self._hta.commit_big_job()
         
-        self._hta.Close()
+        self._hta.close()
         
         self._hta = None
         self._iterator = None
@@ -607,11 +607,11 @@ class MigrationSourceHTA( MigrationSource ):
         
         self._hta = HydrusTagArchive.HydrusTagArchive( self._path )
         
-        self._hta.BeginBigJob()
+        self._hta.begin_big_job()
         
-        self._source_hash_type = HydrusTagArchive.hash_type_to_str_lookup[ self._hta.GetHashType() ]
+        self._source_hash_type = HydrusTagArchive.hash_type_to_str_lookup[ self._hta.get_hash_type()]
         
-        self._iterator = self._hta.IterateMappings()
+        self._iterator = self._hta.iterate_mappings()
         
     
 class MigrationSourceHTPA( MigrationSource ):
@@ -639,7 +639,7 @@ class MigrationSourceHTPA( MigrationSource ):
         
         self._htpa.commit_big_job()
         
-        self._htpa.Close()
+        self._htpa.close()
         
         self._htpa = None
         self._iterator = None
@@ -673,9 +673,9 @@ class MigrationSourceHTPA( MigrationSource ):
         
         self._htpa = HydrusTagArchive.HydrusTagPairArchive( self._path )
         
-        self._htpa.BeginBigJob()
+        self._htpa.begin_big_job()
         
-        self._iterator = self._htpa.IteratePairs()
+        self._iterator = self._htpa.iterate_pairs()
         
     
 class MigrationSourceList( MigrationSource ):

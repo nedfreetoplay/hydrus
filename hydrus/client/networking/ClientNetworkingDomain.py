@@ -497,7 +497,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
         
         for parser in self._parsers:
             
-            namespaces.update( parser.GetNamespaces() )
+            namespaces.update(parser.get_namespaces())
             
         
         self._parser_namespaces = sorted( namespaces )

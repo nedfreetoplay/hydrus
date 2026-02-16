@@ -452,7 +452,7 @@ class ContentUpdatePackage( object ):
                     locations = set()
                     
                 
-                num_files += len( content_update.GetHashes() )
+                num_files += len(content_update.get_hashes())
                 
             
         

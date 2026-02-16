@@ -841,7 +841,7 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
             
             if delete_b:
                 
-                self._hashes_due_to_be_deleted_in_this_batch.update( media_b.GetHashes() )
+                self._hashes_due_to_be_deleted_in_this_batch.update(media_b.get_hashes())
                 
             
             if duplicate_type == HC.DUPLICATE_BETTER:

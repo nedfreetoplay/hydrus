@@ -1073,7 +1073,7 @@ class MediaList( object ):
                 
                 for media in self._sorted_media:
                     
-                    result.extend( media.GetHashes( is_in_file_service_key, discriminant, is_not_in_file_service_key, ordered ) )
+                    result.extend(media.get_hashes(is_in_file_service_key, discriminant, is_not_in_file_service_key, ordered))
                     
                 
             else:
@@ -1082,7 +1082,7 @@ class MediaList( object ):
                 
                 for media in self._sorted_media:
                     
-                    result.update( media.GetHashes( is_in_file_service_key, discriminant, is_not_in_file_service_key, ordered ) )
+                    result.update(media.get_hashes(is_in_file_service_key, discriminant, is_not_in_file_service_key, ordered))
                     
                 
             

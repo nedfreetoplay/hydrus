@@ -832,7 +832,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                             
                             try:
                                 
-                                tags = filename_tagging_options.GetTags( tag_service_key, path )
+                                tags = filename_tagging_options.get_tags(tag_service_key, path)
                                 
                                 if len( tags ) > 0:
                                     

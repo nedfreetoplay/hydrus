@@ -60,7 +60,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
         
         for m in self._current_media:
             
-            self._hashes.update( m.GetHashes() )
+            self._hashes.update(m.get_hashes())
             
         
         if CG.client_controller.new_options.GetBoolean( 'use_listbook_for_tag_service_panels' ):
@@ -817,7 +817,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                     raise Exception( 'Unknown tag action choice!' )
                     
                 
-                hashes = set( itertools.chain.from_iterable( ( m.GetHashes() for m in media_to_affect ) ) )
+                hashes = set(itertools.chain.from_iterable((m.get_hashes() for m in media_to_affect)))
                 
                 if len( hashes ) > 0:
                     
@@ -952,7 +952,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             
             for m in self._media:
                 
-                hashes.update( m.GetHashes() )
+                hashes.update(m.get_hashes())
                 
             
             def do_it( tag_service_key, hashes ):
@@ -984,7 +984,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                 return
                 
             
-            hashes_and_current_tags = [ ( m.GetHashes(), m.GetTagsManager().GetCurrent( self._tag_service_key, ClientTags.TAG_DISPLAY_STORAGE ) ) for m in self._media ]
+            hashes_and_current_tags = [(m.get_hashes(), m.GetTagsManager().GetCurrent(self._tag_service_key, ClientTags.TAG_DISPLAY_STORAGE)) for m in self._media]
             
             for tag in tags:
                 
@@ -1164,7 +1164,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                     
                     for m in self._media:
                         
-                        if HydrusLists.sets_intersect(m.GetHashes(), content_update.GetHashes()):
+                        if HydrusLists.sets_intersect(m.get_hashes(), content_update.GetHashes()):
                             
                             m.GetMediaResult().ProcessContentUpdate( service_key, content_update )
                             

@@ -1458,7 +1458,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
         
         if content.HasHashes():
             
-            hashes = content.GetHashes()
+            hashes = content.get_hashes()
             
             num_files_to_show = self._num_files_to_show.GetValue()
             

@@ -187,7 +187,7 @@ def GetQueryHeadersQualityInfo( query_headers: collections.abc.Iterable[ ClientI
         
         fsc = query_log_container.GetFileSeedCache()
         
-        hashes = fsc.GetHashes()
+        hashes = fsc.get_hashes()
         
         media_results = CG.client_controller.read('media_results', hashes)
         

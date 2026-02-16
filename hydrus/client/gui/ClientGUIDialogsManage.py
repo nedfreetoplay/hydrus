@@ -38,7 +38,7 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
         
         for m in media:
             
-            self._hashes.update( m.GetHashes() )
+            self._hashes.update(m.get_hashes())
             
         
         super().__init__(parent, 'manage ratings for ' + HydrusNumbers.to_human_int(len(self._hashes)) + ' files', position ='topleft')
@@ -258,7 +258,7 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
             
             content_update_package = ClientContentUpdates.ContentUpdatePackage()
             
-            hashes = { hash for hash in itertools.chain.from_iterable( ( media.GetHashes() for media in self._media ) ) }
+            hashes = {hash for hash in itertools.chain.from_iterable((media.get_hashes() for media in self._media))}
             
             for ( service_key, control ) in self._service_keys_to_controls.items():
                 
@@ -376,7 +376,7 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
             
             content_update_package = ClientContentUpdates.ContentUpdatePackage()
             
-            hashes = { hash for hash in itertools.chain.from_iterable( ( media.GetHashes() for media in self._media ) ) }
+            hashes = {hash for hash in itertools.chain.from_iterable((media.get_hashes() for media in self._media))}
             
             for ( service_key, control ) in list(self._service_keys_to_controls.items()):
                 
@@ -539,7 +539,7 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
             
             content_update_package = ClientContentUpdates.ContentUpdatePackage()
             
-            hashes = { hash for hash in itertools.chain.from_iterable( ( media.GetHashes() for media in self._media ) ) }
+            hashes = {hash for hash in itertools.chain.from_iterable((media.get_hashes() for media in self._media))}
             
             for ( service_key, control ) in list(self._service_keys_to_controls.items()):
                 

@@ -211,7 +211,7 @@ class FileFilter( HydrusSerialisable.SerialisableBase ):
             
             for m in media_list.GetSelectedMedia():
                 
-                hashes.update( m.GetHashes() )
+                hashes.update(m.get_hashes())
                 
             
             return hashes
@@ -224,7 +224,7 @@ class FileFilter( HydrusSerialisable.SerialisableBase ):
                 
                 if m not in media_list.GetSelectedMedia():
                     
-                    hashes.update( m.GetHashes() )
+                    hashes.update(m.get_hashes())
                     
                 
             

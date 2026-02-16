@@ -517,7 +517,7 @@ class TagImportOptionsLegacy( HydrusSerialisable.SerialisableBase ):
                 
                 service_filterable_tags.update( external_filterable_tags )
                 
-                service_tags = service_tag_import_options.GetTags( service_key, status, media_result, service_filterable_tags, service_additional_tags )
+                service_tags = service_tag_import_options.get_tags(service_key, status, media_result, service_filterable_tags, service_additional_tags)
                 
             else:
                 

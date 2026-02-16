@@ -424,7 +424,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             
             s += f' - {selected_files_string} selected, '
             
-            if len( self._selected_media ) == 1 and len( list(self._selected_media)[0].GetHashes() ) == 1 and CG.client_controller.new_options.GetBoolean( 'show_extended_single_file_info_in_status_bar' ):
+            if len( self._selected_media ) == 1 and len(list(self._selected_media)[0].get_hashes()) == 1 and CG.client_controller.new_options.GetBoolean('show_extended_single_file_info_in_status_bar'):
                 
                 # TODO: Were I feeling clever, this guy would also emit a tooltip, which we can calculate here no prob
                 
@@ -539,7 +539,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             
             for media in self._GetSelectedMediaOrdered():
                 
-                result.extend( media.GetHashes( is_in_file_service_key, discriminant, is_not_in_file_service_key, ordered ) )
+                result.extend(media.get_hashes(is_in_file_service_key, discriminant, is_not_in_file_service_key, ordered))
                 
             
         else:
@@ -548,7 +548,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             
             for media in self._selected_media:
                 
-                result.update( media.GetHashes( is_in_file_service_key, discriminant, is_not_in_file_service_key, ordered ) )
+                result.update(media.get_hashes(is_in_file_service_key, discriminant, is_not_in_file_service_key, ordered))
                 
             
         
@@ -1628,7 +1628,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                         
                         for content_update in content_updates:
                             
-                            hashes = content_update.GetHashes()
+                            hashes = content_update.get_hashes()
                             
                             if hash_a in hashes:
                                 

@@ -91,7 +91,7 @@ class CollectComboCtrl( QW.QComboBox ):
         
         for media_sort in CG.client_controller.new_options.GetDefaultNamespaceSorts():
             
-            namespaces = media_sort.GetNamespaces()
+            namespaces = media_sort.get_namespaces()
             
             try:
                 
