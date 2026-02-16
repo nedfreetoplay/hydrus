@@ -9,7 +9,7 @@ from hydrus.core import HydrusConstants as HC
 from hydrus.core import HydrusExceptions
 from hydrus.core import HydrusText
 
-def ExtractSingleFileFromZip( path_to_zip, filename_to_extract, extract_into_file_path ):
+def extract_single_file_from_zip(path_to_zip, filename_to_extract, extract_into_file_path):
     
     with zipfile.ZipFile( path_to_zip ) as zip_handle:
         
@@ -23,17 +23,17 @@ def ExtractSingleFileFromZip( path_to_zip, filename_to_extract, extract_into_fil
         
     
 
-def ExtractCoverPage( path_to_zip, extract_path, mime ):
+def extract_cover_page(path_to_zip, extract_path, mime):
     
     with zipfile.ZipFile( path_to_zip ) as zip_handle:
         
         if mime == HC.APPLICATION_EPUB:
             
-            path = GetCoverPagePathFromEpub( zip_handle )
+            path = get_cover_page_path_from_epub(zip_handle)
             
         else:
             
-            path = GetCoverPagePath( zip_handle )
+            path = get_cover_page_path(zip_handle)
             
         
         with zip_handle.open( path ) as reader:
@@ -46,7 +46,7 @@ def ExtractCoverPage( path_to_zip, extract_path, mime ):
         
     
 
-def GetCoverPagePath( zip_handle: zipfile.ZipFile ):
+def get_cover_page_path(zip_handle: zipfile.ZipFile):
     
     # this probably depth-first fails with a crazy multiple-nested-subdirectory structure, but we'll cross that bridge when we come to it
     all_file_paths = [ zip_info.filename for zip_info in zip_handle.infolist() if not zip_info.is_dir() ]
@@ -74,7 +74,7 @@ def GetCoverPagePath( zip_handle: zipfile.ZipFile ):
     raise HydrusExceptions.NoThumbnailFileException( 'Sorry, could not find an image file in there!' )
     
 
-def GetCoverPagePathFromEpub( zip_handle: zipfile.ZipFile ):
+def get_cover_page_path_from_epub(zip_handle: zipfile.ZipFile):
     
     container_path = 'META-INF/container.xml'
     
@@ -174,17 +174,17 @@ def GetCoverPagePathFromEpub( zip_handle: zipfile.ZipFile ):
     # with and without covers, and it might be nice for hydrus to display that difference well.
     
 
-def GetSingleFileFromZipBytes( path_to_zip, path_in_zip ):
+def get_single_file_from_zip_bytes(path_to_zip, path_in_zip):
     
-    return GetZipAsPath( path_to_zip, path_in_zip = path_in_zip ).read_bytes()
+    return get_zip_as_path(path_to_zip, path_in_zip = path_in_zip).read_bytes()
     
 
-def GetZipAsPath( path_to_zip, path_in_zip="" ):
+def get_zip_as_path(path_to_zip, path_in_zip=""):
     
     return zipfile.Path( path_to_zip, at=path_in_zip )
     
 
-def IsEncryptedZip( path_to_zip ):
+def is_encrypted_zip(path_to_zip):
     
     ENCRYPTED_FLAG = 0x1
     
@@ -243,7 +243,7 @@ def filename_has_video_ext( filename: str ):
     return False
     
 
-def ZipLooksLikeCBZ( path_to_zip ):
+def zip_looks_like_cbz(path_to_zip):
     
     # TODO: we should probably wangle this away from 'zip' and towards 'archive', but it is fine as a first step
     
@@ -347,7 +347,7 @@ def ZipLooksLikeCBZ( path_to_zip ):
         
         try:
             
-            path = GetCoverPagePath( zip_handle )
+            path = get_cover_page_path(zip_handle)
             
             with zip_handle.open( path ) as reader:
                 
@@ -402,11 +402,11 @@ def ZipLooksLikeCBZ( path_to_zip ):
     return True
     
 
-def MimeFromOpenDocument( path ):
+def mime_from_open_document(path):
     
     try:
         
-        mimetype_data = GetZipAsPath( path, 'mimetype' ).read_text()
+        mimetype_data = get_zip_as_path(path, 'mimetype').read_text()
         
         filetype = HC.mime_enum_lookup.get(mimetype_data, None)
         

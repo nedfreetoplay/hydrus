@@ -118,7 +118,7 @@ def GenerateThumbnailNumPy( path, target_resolution, mime, duration_ms, num_fram
         
         try:
             
-            HydrusArchiveHandling.ExtractCoverPage( path, temp_path, mime )
+            HydrusArchiveHandling.extract_cover_page(path, temp_path, mime)
             
             cover_mime = GetMime( temp_path )
             
@@ -469,7 +469,7 @@ def GetFileInfo( path, mime = None, ok_to_look_for_hydrus_updates = False ):
         
         try:
             
-            HydrusArchiveHandling.ExtractCoverPage( path, temp_path, mime )
+            HydrusArchiveHandling.extract_cover_page(path, temp_path, mime)
             
             cover_mime = GetMime( temp_path )
             
@@ -798,7 +798,7 @@ def GetMime( path, ok_to_look_for_hydrus_updates = False ):
                 
                 try:
                     
-                    if HydrusArchiveHandling.IsEncryptedZip( path ):
+                    if HydrusArchiveHandling.is_encrypted_zip(path):
                         
                         return HC.APPLICATION_ZIP
                         
@@ -808,7 +808,7 @@ def GetMime( path, ok_to_look_for_hydrus_updates = False ):
                     return HC.APPLICATION_ZIP
                     
                 
-                opendoc_mime = HydrusArchiveHandling.MimeFromOpenDocument( path )
+                opendoc_mime = HydrusArchiveHandling.mime_from_open_document(path)
 
                 if opendoc_mime is not None:
                     
@@ -832,7 +832,7 @@ def GetMime( path, ok_to_look_for_hydrus_updates = False ):
                     return HC.ANIMATION_UGOIRA
                     
                 
-                if HydrusArchiveHandling.ZipLooksLikeCBZ( path ):
+                if HydrusArchiveHandling.zip_looks_like_cbz(path):
                     
                     return HC.APPLICATION_CBZ
                     

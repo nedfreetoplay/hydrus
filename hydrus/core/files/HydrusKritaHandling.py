@@ -14,7 +14,7 @@ def MergedPILImageFromKra( path ):
     
     try:
         
-        zip_path_file_obj = HydrusArchiveHandling.GetZipAsPath( path, KRITA_FILE_MERGED ).open( 'rb' )
+        zip_path_file_obj = HydrusArchiveHandling.get_zip_as_path(path, KRITA_FILE_MERGED).open('rb')
         
         return HydrusImageHandling.GeneratePILImage( zip_path_file_obj )
         
@@ -28,7 +28,7 @@ def ThumbnailPILImageFromKra( path ):
     
     try:
         
-        zip_path_file_obj = HydrusArchiveHandling.GetZipAsPath( path, KRITA_FILE_THUMB ).open( 'rb' )
+        zip_path_file_obj = HydrusArchiveHandling.get_zip_as_path(path, KRITA_FILE_THUMB).open('rb')
         
         return HydrusImageHandling.GeneratePILImage( zip_path_file_obj )
         
@@ -64,7 +64,7 @@ def GetKraProperties( path ):
     
     try:
         
-        data_file = HydrusArchiveHandling.GetZipAsPath( path, DOCUMENT_INFO_FILE ).open( 'rb' )
+        data_file = HydrusArchiveHandling.get_zip_as_path(path, DOCUMENT_INFO_FILE).open('rb')
         
         root = ET.parse( data_file )
         

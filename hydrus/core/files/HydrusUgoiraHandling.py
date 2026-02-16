@@ -153,7 +153,7 @@ def ZipLooksLikeUgoira( path_to_zip ):
         
         try:
             
-            path = HydrusArchiveHandling.GetCoverPagePath( zip_handle )
+            path = HydrusArchiveHandling.get_cover_page_path(zip_handle)
             
             with zip_handle.open( path ) as reader:
                 
@@ -176,7 +176,7 @@ def ZipLooksLikeUgoira( path_to_zip ):
 
 def GetUgoiraJSON( path: str ):
     
-    jsonFile = HydrusArchiveHandling.GetZipAsPath( path, 'animation.json' )
+    jsonFile = HydrusArchiveHandling.get_zip_as_path(path, 'animation.json')
 
     if not jsonFile.exists():
         
@@ -264,7 +264,7 @@ def GetUgoiraFramePIL( path: str, frameIndex: int ) -> PILImage.Image:
     
     frameName = framePaths[frameIndex]
     
-    frameFromZip = HydrusArchiveHandling.GetZipAsPath( path, frameName ).open( 'rb' )
+    frameFromZip = HydrusArchiveHandling.get_zip_as_path(path, frameName).open('rb')
     
     return HydrusImageHandling.GeneratePILImage( frameFromZip )
     

@@ -1,6 +1,6 @@
 from hydrus.core import HydrusConstants as HC
 from hydrus.core import HydrusExceptions
-from hydrus.core.files.HydrusArchiveHandling import GetZipAsPath
+from hydrus.core.files.HydrusArchiveHandling import get_zip_as_path
 from hydrus.core.files.images import HydrusImageHandling
 
 import xml.etree.ElementTree as ET
@@ -19,7 +19,7 @@ def MimeFromMicrosoftOpenXMLDocument(path: str):
     
     try:
         
-        file = GetZipAsPath( path, '[Content_Types].xml' ).open( 'rb' )
+        file = get_zip_as_path(path, '[Content_Types].xml').open('rb')
         
         root = ET.parse( file )
         
@@ -62,7 +62,7 @@ def GenerateThumbnailNumPyFromOfficePath( path: str, target_resolution: tuple[ i
     
     try:
         
-        zip_path_file_obj = GetZipAsPath( path, 'docProps/thumbnail.jpeg' ).open( 'rb' )
+        zip_path_file_obj = get_zip_as_path(path, 'docProps/thumbnail.jpeg').open('rb')
         
     except FileNotFoundError:
         
@@ -88,7 +88,7 @@ PPTX_PIXEL_PER_EMU = PPTX_ASSUMED_DPI / 914400
 
 def PowerPointResolution( path: str ):
     
-    file = GetZipAsPath( path, 'ppt/presentation.xml' ).open( 'rb' )
+    file = get_zip_as_path(path, 'ppt/presentation.xml').open('rb')
     
     root = ET.parse( file )
     
@@ -107,7 +107,7 @@ def PowerPointResolution( path: str ):
 
 def OfficeDocumentWordCount( path: str ):
     
-    file = GetZipAsPath( path, 'docProps/app.xml' ).open( 'rb' )
+    file = get_zip_as_path(path, 'docProps/app.xml').open('rb')
     
     root = ET.parse( file )
     
