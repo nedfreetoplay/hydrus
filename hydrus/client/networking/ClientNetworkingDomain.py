@@ -291,7 +291,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
                     
                 else:
                     
-                    message = 'Could not find an API/Redirect URL Class for ' + url + ' as it and its API url classes linked in a loop of size ' + HydrusNumbers.ToHumanInt( loop_size ) + '!'
+                    message = 'Could not find an API/Redirect URL Class for ' + url + ' as it and its API url classes linked in a loop of size ' + HydrusNumbers.to_human_int(loop_size) + '!'
                     
                 
                 raise HydrusExceptions.URLClassException( message )

@@ -1743,7 +1743,7 @@ class MultipleGalleryImport( HydrusSerialisable.SerialisableBase ):
                     all_search_urls_flat.extend( initial_search_urls )
                     
                 
-                query_text = HydrusNumbers.ToHumanInt( len( groups_of_query_data ) ) + ' queries'
+                query_text = HydrusNumbers.to_human_int(len(groups_of_query_data)) + ' queries'
                 
                 groups_of_query_data = [ ( query_text, all_search_urls_flat ) ]
                 

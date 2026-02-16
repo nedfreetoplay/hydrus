@@ -41,7 +41,7 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
             self._hashes.update( m.GetHashes() )
             
         
-        super().__init__( parent, 'manage ratings for ' + HydrusNumbers.ToHumanInt( len( self._hashes ) ) + ' files', position = 'topleft' )
+        super().__init__(parent, 'manage ratings for ' + HydrusNumbers.to_human_int(len(self._hashes)) + ' files', position ='topleft')
         
         #
         

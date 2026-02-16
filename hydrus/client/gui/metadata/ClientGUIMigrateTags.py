@@ -98,7 +98,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         if self._hashes is not None:
             
-            self._migration_source_file_filtering_type.addItem( '{} files'.format( HydrusNumbers.ToHumanInt( len( self._hashes ) ) ), self.HASHES_LOCATION )
+            self._migration_source_file_filtering_type.addItem( '{} files'.format(HydrusNumbers.to_human_int(len(self._hashes))), self.HASHES_LOCATION)
             
             self._migration_source_file_filtering_type.SetValue( self.HASHES_LOCATION )
             
@@ -358,7 +358,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY )
                 hashes = self._hashes
                 
-                extra_filter_info_strings.append( 'for {} files'.format( HydrusNumbers.ToHumanInt( len( hashes ) ) ) )
+                extra_filter_info_strings.append( 'for {} files'.format(HydrusNumbers.to_human_int(len(hashes))))
                 
             else:
                 

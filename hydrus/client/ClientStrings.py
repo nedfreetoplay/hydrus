@@ -491,7 +491,7 @@ class StringConverter( StringProcessingStep ):
             
             if simple:
                 
-                label = '{} changes'.format( HydrusNumbers.ToHumanInt( num_rules ) )
+                label = '{} changes'.format(HydrusNumbers.to_human_int(num_rules))
                 
             else:
                 
@@ -514,19 +514,19 @@ class StringConverter( StringProcessingStep ):
         
         if conversion_type == STRING_CONVERSION_REMOVE_TEXT_FROM_BEGINNING:
             
-            return 'remove the first ' + HydrusNumbers.ToHumanInt( data ) + ' characters'
+            return 'remove the first ' + HydrusNumbers.to_human_int(data) + ' characters'
             
         elif conversion_type == STRING_CONVERSION_REMOVE_TEXT_FROM_END:
             
-            return 'remove the last ' + HydrusNumbers.ToHumanInt( data ) + ' characters'
+            return 'remove the last ' + HydrusNumbers.to_human_int(data) + ' characters'
             
         elif conversion_type == STRING_CONVERSION_CLIP_TEXT_FROM_BEGINNING:
             
-            return 'take the first ' + HydrusNumbers.ToHumanInt( data ) + ' characters'
+            return 'take the first ' + HydrusNumbers.to_human_int(data) + ' characters'
             
         elif conversion_type == STRING_CONVERSION_CLIP_TEXT_FROM_END:
             
-            return 'take the last ' + HydrusNumbers.ToHumanInt( data ) + ' characters'
+            return 'take the last ' + HydrusNumbers.to_human_int(data) + ' characters'
             
         elif conversion_type == STRING_CONVERSION_PREPEND_TEXT:
             
@@ -540,7 +540,7 @@ class StringConverter( StringProcessingStep ):
             
             ( population_text, num_chars ) = data
             
-            return f'append with {HydrusNumbers.ToHumanInt( num_chars )} random characters, from "{population_text}"'
+            return f'append with {HydrusNumbers.to_human_int(num_chars)} random characters, from "{population_text}"'
             
         elif conversion_type == STRING_CONVERSION_ENCODE:
             
@@ -815,12 +815,12 @@ class StringMatch( StringProcessingStep ):
         
         if self._min_chars is not None and text_len < self._min_chars:
             
-            raise HydrusExceptions.StringMatchException( presentation_text + ' had fewer than ' + HydrusNumbers.ToHumanInt( self._min_chars ) + ' characters' )
+            raise HydrusExceptions.StringMatchException(presentation_text + ' had fewer than ' + HydrusNumbers.to_human_int(self._min_chars) + ' characters')
             
         
         if self._max_chars is not None and text_len > self._max_chars:
             
-            raise HydrusExceptions.StringMatchException( presentation_text + ' had more than ' + HydrusNumbers.ToHumanInt( self._max_chars ) + ' characters' )
+            raise HydrusExceptions.StringMatchException(presentation_text + ' had more than ' + HydrusNumbers.to_human_int(self._max_chars) + ' characters')
             
         
         if self._match_type == STRING_MATCH_FIXED:
@@ -1132,7 +1132,7 @@ class StringSlicer( StringProcessingStep ):
             
         elif self.SelectsOne():
             
-            result = 'selecting the {} string'.format( HydrusNumbers.IndexToPrettyOrdinalString( self._index_start ) )
+            result = 'selecting the {} string'.format(HydrusNumbers.index_to_pretty_ordinal_string(self._index_start))
             
         elif self._index_start is None and self._index_end is None:
             
@@ -1140,15 +1140,15 @@ class StringSlicer( StringProcessingStep ):
             
         elif self._index_start is not None and self._index_end is None:
             
-            result = 'selecting the {} string and onwards'.format( HydrusNumbers.IndexToPrettyOrdinalString( self._index_start ) )
+            result = 'selecting the {} string and onwards'.format(HydrusNumbers.index_to_pretty_ordinal_string(self._index_start))
             
         elif self._index_start is None and self._index_end is not None:
             
-            result = 'selecting up to and including the {} string'.format( HydrusNumbers.IndexToPrettyOrdinalString( self._index_end - 1 ) )
+            result = 'selecting up to and including the {} string'.format(HydrusNumbers.index_to_pretty_ordinal_string(self._index_end - 1))
             
         else:
             
-            result = 'selecting the {} string up to and including the {} string'.format( HydrusNumbers.IndexToPrettyOrdinalString( self._index_start ), HydrusNumbers.IndexToPrettyOrdinalString( self._index_end - 1 ) )
+            result = 'selecting the {} string up to and including the {} string'.format(HydrusNumbers.index_to_pretty_ordinal_string(self._index_start), HydrusNumbers.index_to_pretty_ordinal_string(self._index_end - 1))
             
         
         if with_type:
@@ -1413,7 +1413,7 @@ class StringSplitter( StringProcessingStep ):
         
         if self._max_splits is not None:
             
-            result = '{}, at most {} times'.format( result, HydrusNumbers.ToHumanInt( self._max_splits ) )
+            result = '{}, at most {} times'.format(result, HydrusNumbers.to_human_int(self._max_splits))
             
         
         if with_type:

@@ -847,7 +847,7 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
                         break
                         
                     
-                    message = f'Clearing orphans: {HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do )}'
+                    message = f'Clearing orphans: {HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do)}'
                     
                     job_status.SetStatusText( message )
                     job_status.SetGauge( num_done, num_to_do )
@@ -872,9 +872,9 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
             
             if num_files_cleared_out > 0:
                 
-                HydrusData.print_text(f'During potential duplicate pair local storage resync, I cleared out pairs for {HydrusNumbers.ToHumanInt(num_files_cleared_out)} files.')
+                HydrusData.print_text(f'During potential duplicate pair local storage resync, I cleared out pairs for {HydrusNumbers.to_human_int(num_files_cleared_out)} files.')
                 
-                job_status.SetStatusText( f'Done! Pairs for {HydrusNumbers.ToHumanInt(num_files_cleared_out)} out-of-domain files cleared out.' )
+                job_status.SetStatusText( f'Done! Pairs for {HydrusNumbers.to_human_int(num_files_cleared_out)} out-of-domain files cleared out.')
                 
             else:
                 

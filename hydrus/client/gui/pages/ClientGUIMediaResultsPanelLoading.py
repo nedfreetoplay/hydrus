@@ -23,11 +23,11 @@ class MediaResultsPanelLoading( ClientGUIMediaResultsPanel.MediaResultsPanel ):
         
         if self._current is not None:
             
-            s += ' ' + HydrusNumbers.ToHumanInt( self._current )
+            s += ' ' + HydrusNumbers.to_human_int(self._current)
             
             if self._max is not None:
                 
-                s += ' of ' + HydrusNumbers.ToHumanInt( self._max )
+                s += ' of ' + HydrusNumbers.to_human_int(self._max)
                 
             
         

@@ -768,7 +768,7 @@ class FileSearchContext( HydrusSerialisable.SerialisableBase ):
         
         if len( pred_strings ) > 3:
             
-            return f'{HydrusNumbers.ToHumanInt( len( pred_strings ) )} predicates'
+            return f'{HydrusNumbers.to_human_int(len(pred_strings))} predicates'
             
         else:
             

@@ -1844,7 +1844,7 @@ class CanvasPanel( Canvas ):
             
             if num_notes > 0:
                 
-                notes_str = '{} ({})'.format( notes_str, HydrusNumbers.ToHumanInt( num_notes ) )
+                notes_str = '{} ({})'.format(notes_str, HydrusNumbers.to_human_int(num_notes))
                 
             
             ClientGUIMenus.AppendMenuItem( manage_menu, notes_str, 'Manage this file\'s notes.', self._ManageNotes )
@@ -3215,11 +3215,11 @@ class CanvasMediaList( CanvasWithHovers ):
         
         if self._current_media is None:
             
-            index_string = '-/' + HydrusNumbers.ToHumanInt( len( self._media_list ) )
+            index_string = '-/' + HydrusNumbers.to_human_int(len(self._media_list))
             
         else:
             
-            index_string = HydrusNumbers.ValueRangeToPrettyString( self._media_list.IndexOf( self._current_media ) + 1, len( self._media_list ) )
+            index_string = HydrusNumbers.value_range_to_pretty_string(self._media_list.IndexOf(self._current_media) + 1, len(self._media_list))
             
         
         return index_string
@@ -3429,7 +3429,7 @@ def CommitArchiveDelete( deletee_location_context: ClientLocation.LocationContex
             CG.client_controller.pub( 'message', job_status )
             
         
-        job_status.SetStatusText( f'Deleting: {HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do )}' )
+        job_status.SetStatusText( f'Deleting: {HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do)}')
         job_status.SetGauge( num_done, num_to_do )
         
         if CG.client_controller.new_options.GetBoolean( 'delete_lock_for_archived_files' ) and CG.client_controller.new_options.GetBoolean( 'delete_lock_reinbox_deletees_after_archive_delete' ):
@@ -3468,7 +3468,7 @@ def CommitArchiveDelete( deletee_location_context: ClientLocation.LocationContex
             CG.client_controller.pub( 'message', job_status )
             
         
-        job_status.SetStatusText( f'Archiving: {HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do )}' )
+        job_status.SetStatusText( f'Archiving: {HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do)}')
         job_status.SetGauge( num_done, num_to_do )
         
         content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_ARCHIVE, block_of_kept_hashes ) )
@@ -3690,7 +3690,7 @@ class CanvasMediaListFilterArchiveDelete( CanvasMediaList ):
             
             if len( kept ) > 0:
                 
-                kept_label = 'keep {}'.format( HydrusNumbers.ToHumanInt( len( kept ) ) )
+                kept_label = 'keep {}'.format(HydrusNumbers.to_human_int(len(kept)))
                 
             else:
                 
@@ -3752,14 +3752,14 @@ class CanvasMediaListFilterArchiveDelete( CanvasMediaList ):
                                 
                             else:
                                 
-                                num_label = f'all {HydrusNumbers.ToHumanInt( num_deletable )}'
+                                num_label = f'all {HydrusNumbers.to_human_int(num_deletable)}'
                                 
                             
                             delete_label = f'delete {num_label} from {location_label}, sending directly to trash'
                             
                         else:
                             
-                            delete_label = f'delete {HydrusNumbers.ToHumanInt( num_deletable )} from {location_label}'
+                            delete_label = f'delete {HydrusNumbers.to_human_int(num_deletable)} from {location_label}'
                             
                         
                         deletion_options.append( ( location_context, delete_label ) )
@@ -4505,7 +4505,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
             
             if num_notes > 0:
                 
-                notes_str = '{} ({})'.format( notes_str, HydrusNumbers.ToHumanInt( num_notes ) )
+                notes_str = '{} ({})'.format(notes_str, HydrusNumbers.to_human_int(num_notes))
                 
             
             ClientGUIMenus.AppendMenuItem( manage_menu, notes_str, 'Manage this file\'s notes.', self._ManageNotes )

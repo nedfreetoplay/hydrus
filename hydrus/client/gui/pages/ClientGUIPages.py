@@ -223,7 +223,7 @@ class Page( QW.QWidget ):
                 raise HydrusExceptions.CancelledException()
                 
             
-            status = f'Loading initial files{HC.UNICODE_ELLIPSIS} {HydrusNumbers.ValueRangeToPrettyString( len( self._initial_media_results_loaded ), len( self._initial_hashes ) )}'
+            status = f'Loading initial files{HC.UNICODE_ELLIPSIS} {HydrusNumbers.value_range_to_pretty_string(len(self._initial_media_results_loaded), len(self._initial_hashes))}'
             
             self._SetPrettyStatus( status, override = True )
             
@@ -585,12 +585,12 @@ class Page( QW.QWidget ):
         
         if num_files > 0:
             
-            name_for_menu = '{} - {} files'.format( name_for_menu, HydrusNumbers.ToHumanInt( num_files ) )
+            name_for_menu = '{} - {} files'.format(name_for_menu, HydrusNumbers.to_human_int(num_files))
             
         
         if num_value != num_range:
             
-            name_for_menu = '{} - {}'.format( name_for_menu, HydrusNumbers.ValueRangeToPrettyString( num_value, num_range ) )
+            name_for_menu = '{} - {}'.format(name_for_menu, HydrusNumbers.value_range_to_pretty_string(num_value, num_range))
             
         
         return HydrusText.ElideText( name_for_menu, 32, elide_center = True ) if elide else name_for_menu
@@ -1285,7 +1285,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
                 
                 statement = ConvertReasonsAndPagesToStatement( reasons_and_pages )
                 
-                message = f'Are you sure you want to close {HydrusNumbers.ToHumanInt( actual_num_pages )} {pages_description}?'
+                message = f'Are you sure you want to close {HydrusNumbers.to_human_int(actual_num_pages)} {pages_description}?'
                 message += '\n' * 2
                 message += statement
                 
@@ -1303,7 +1303,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
                 
             else:
                 
-                message = f'Close {HydrusNumbers.ToHumanInt( actual_num_pages )} {pages_description}?'
+                message = f'Close {HydrusNumbers.to_human_int(actual_num_pages)} {pages_description}?'
                 
                 result = ClientGUIDialogsQuick.GetYesNo( self, message )
                 
@@ -1344,7 +1344,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
             
             hashes = page.GetHashes()
             
-            message = f'This will collect the {HydrusNumbers.ToHumanInt(len(hashes))} files in this page and place them, in current order, in a single new search page. This can work on a page of pages.'
+            message = f'This will collect the {HydrusNumbers.to_human_int(len(hashes))} files in this page and place them, in current order, in a single new search page. This can work on a page of pages.'
             message += '\n\n'
             message += 'The old page will be closed, no matter its type.'
             
@@ -1378,7 +1378,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
         
         hashes = HydrusLists.dedupe_list(hashes)
         
-        message = f'This will collect the {HydrusNumbers.ToHumanInt(len(hashes))} files in view in the {HydrusNumbers.ToHumanInt(len(closees))} pages and place them, in current order, in a single new search page.'
+        message = f'This will collect the {HydrusNumbers.to_human_int(len(hashes))} files in view in the {HydrusNumbers.to_human_int(len(closees))} pages and place them, in current order, in a single new search page.'
         message += '\n\n'
         message += 'All the pages harvested from will be closed, no matter their type.'
         
@@ -1633,7 +1633,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
         
         if a or b or c:
             
-            num_string += HydrusNumbers.ToHumanInt( num_files )
+            num_string += HydrusNumbers.to_human_int(num_files)
             
         
         if import_page_progress_display:
@@ -1645,7 +1645,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
                     num_string += ' - '
                     
                 
-                num_string += HydrusNumbers.ValueRangeToPrettyString( num_value, num_range )
+                num_string += HydrusNumbers.value_range_to_pretty_string(num_value, num_range)
                 
             
         
@@ -1842,7 +1842,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
             
             if CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
                 
-                label = 'page weight: {}'.format( HydrusNumbers.ToHumanInt( page.GetTotalWeight() ) )
+                label = 'page weight: {}'.format(HydrusNumbers.to_human_int(page.GetTotalWeight()))
                 
                 ClientGUIMenus.AppendMenuLabel( menu, label, label )
                 
@@ -2303,7 +2303,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
             
             if num_pages_held > 0:
                 
-                message += f'\n\nIt is holding {HydrusNumbers.ToHumanInt( num_pages_held )} pages.'
+                message += f'\n\nIt is holding {HydrusNumbers.to_human_int(num_pages_held)} pages.'
                 
             else:
                 
@@ -2577,12 +2577,12 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
         
         if num_files > 0:
             
-            name_for_menu = '{} - {} files'.format( name_for_menu, HydrusNumbers.ToHumanInt( num_files ) )
+            name_for_menu = '{} - {} files'.format(name_for_menu, HydrusNumbers.to_human_int(num_files))
             
         
         if num_value != num_range:
             
-            name_for_menu = '{} - {}'.format( name_for_menu, HydrusNumbers.ValueRangeToPrettyString( num_value, num_range ) )
+            name_for_menu = '{} - {}'.format(name_for_menu, HydrusNumbers.value_range_to_pretty_string(num_value, num_range))
             
         
         return HydrusText.ElideText( name_for_menu, 32, elide_center = True ) if elide else name_for_menu
@@ -2829,14 +2829,14 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
         
         ( num_files, ( num_value, num_range ) ) = self.GetNumFileSummary()
         
-        num_string = HydrusNumbers.ToHumanInt( num_files )
+        num_string = HydrusNumbers.to_human_int(num_files)
         
         if num_range > 0 and num_value != num_range:
             
-            num_string += ', ' + HydrusNumbers.ValueRangeToPrettyString( num_value, num_range )
+            num_string += ', ' + HydrusNumbers.value_range_to_pretty_string(num_value, num_range)
             
         
-        return HydrusNumbers.ToHumanInt( self.count() ) + ' pages, ' + num_string + ' files'
+        return HydrusNumbers.to_human_int(self.count()) + ' pages, ' + num_string + ' files'
         
     
     def GetSerialisablePage( self, only_changed_page_data, about_to_save ):

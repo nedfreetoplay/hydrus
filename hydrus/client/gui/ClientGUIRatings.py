@@ -57,7 +57,7 @@ def DrawIncDec( painter: QG.QPainter, x, y, service_key, rating_state, rating, s
             pad_size = QC.QSize( int( min( size.width() / PAD_PX, PAD_PX ) ), PAD_PX ) #allow X pad to go smaller, Y pad as normal
             
         
-        text = HydrusNumbers.ToHumanInt( rating )
+        text = HydrusNumbers.to_human_int(rating)
         
         original_font = painter.font()
         

@@ -2129,7 +2129,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             
         
-        HydrusData.print_text('Update OK. ' + HydrusNumbers.ToHumanInt(total_definition_rows) + ' definition rows and ' + HydrusNumbers.ToHumanInt(total_content_rows) + ' content rows in ' + HydrusNumbers.ToHumanInt(len(updates)) + ' update files.')
+        HydrusData.print_text('Update OK. ' + HydrusNumbers.to_human_int(total_definition_rows) + ' definition rows and ' + HydrusNumbers.to_human_int(total_content_rows) + ' content rows in ' + HydrusNumbers.to_human_int(len(updates)) + ' update files.')
         
         return update_hashes
         
@@ -4710,7 +4710,7 @@ class DB( HydrusDB.HydrusDB ):
                 raise Exception( 'Was asked to generate service info for an unknown type: {}'.format( info_type ) )
                 
             
-            HydrusData.print_text('Regenerated a service info number: {} - {} - {}'.format(service_name, HC.service_info_enum_str_lookup[ info_type], HydrusNumbers.ToHumanInt(info)))
+            HydrusData.print_text('Regenerated a service info number: {} - {} - {}'.format(service_name, HC.service_info_enum_str_lookup[ info_type], HydrusNumbers.to_human_int(info)))
             
             self._execute('INSERT OR IGNORE INTO service_info ( service_id, info_type, info ) VALUES ( ?, ?, ? )', (service_id, info_type, info))
             

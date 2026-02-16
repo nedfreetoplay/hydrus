@@ -463,7 +463,7 @@ class ContentUpdatePackage( object ):
             s += ', '.join( locations ) + '->'
             
         
-        s += ', '.join( actions ) + extra_words + ' ' + HydrusNumbers.ToHumanInt( num_files ) + ' files'
+        s += ', '.join( actions ) + extra_words + ' ' + HydrusNumbers.to_human_int(num_files) + ' files'
         
         return s
         

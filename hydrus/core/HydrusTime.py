@@ -302,7 +302,7 @@ def TimeDeltaToPrettyTimeDelta( seconds: float, show_seconds = True, no_bigger_t
             
             if time_quantity > 0:
                 
-                s = HydrusNumbers.ToHumanInt( time_quantity ) + ' ' + time_string
+                s = HydrusNumbers.to_human_int(time_quantity) + ' ' + time_string
                 
                 if time_quantity > 1:
                     
@@ -331,7 +331,7 @@ def TimeDeltaToPrettyTimeDelta( seconds: float, show_seconds = True, no_bigger_t
         
         if int( seconds ) == seconds:
             
-            result = HydrusNumbers.ToHumanInt( seconds ) + ' seconds'
+            result = HydrusNumbers.to_human_int(seconds) + ' seconds'
             
         else:
             
@@ -518,7 +518,7 @@ def MillisecondsDurationToPrettyTime( duration_ms: int | None, force_numbers = F
         
         if int( detailed_seconds ) == detailed_seconds:
             
-            detailed_seconds_result = f'{HydrusNumbers.ToHumanInt( detailed_seconds )} seconds'
+            detailed_seconds_result = f'{HydrusNumbers.to_human_int(detailed_seconds)} seconds'
             
         else:
             

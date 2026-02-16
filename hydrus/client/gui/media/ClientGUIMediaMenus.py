@@ -130,7 +130,7 @@ def AddDuplicatesMenu( win: QW.QWidget, command_processor: CAC.ApplicationComman
                     
                     if count > 0:
                         
-                        label = 'view {} {}'.format( HydrusNumbers.ToHumanInt( count ), HC.duplicate_type_string_lookup[ duplicate_type ] )
+                        label = 'view {} {}'.format(HydrusNumbers.to_human_int(count), HC.duplicate_type_string_lookup[ duplicate_type])
                         
                         ClientGUIMenus.AppendMenuItem( duplicates_menu, label, 'Show these duplicates in a new page.', ClientGUIMediaSimpleActions.ShowDuplicatesInNewPage, job_location_context, focused_hash, duplicate_type )
                         
@@ -187,7 +187,7 @@ def AddDuplicatesMenu( win: QW.QWidget, command_processor: CAC.ApplicationComman
         
         if multiple_selected:
             
-            label = 'set this file as better than the ' + HydrusNumbers.ToHumanInt( num_selected - 1 ) + ' other selected'
+            label = 'set this file as better than the ' + HydrusNumbers.to_human_int(num_selected - 1) + ' other selected'
             
             ClientGUIMenus.AppendMenuItem( duplicates_menu, label, 'Set the focused media to be better than the other selected files.', command_processor.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_DUPLICATE_MEDIA_SET_FOCUSED_BETTER ) )
             
@@ -585,7 +585,7 @@ def AddKnownURLsViewCopyMenu( win: QW.QWidget, command_processor: CAC.Applicatio
             
             urls = [ url for ( label, url ) in focus_matched_labels_and_urls ]
             
-            label = 'this file\'s ' + HydrusNumbers.ToHumanInt( len( urls ) ) + ' recognised urls'
+            label = 'this file\'s ' + HydrusNumbers.to_human_int(len(urls)) + ' recognised urls'
             
             ClientGUIMenus.AppendMenuItem( urls_visit_menu, label, 'Open these urls in your web browser.', ClientGUIMediaModalActions.OpenURLs, win, urls )
             
@@ -598,7 +598,7 @@ def AddKnownURLsViewCopyMenu( win: QW.QWidget, command_processor: CAC.Applicatio
             
             urls = [ url for ( label, url ) in focus_labels_and_urls ]
             
-            label = 'this file\'s ' + HydrusNumbers.ToHumanInt( len( urls ) ) + ' urls'
+            label = 'this file\'s ' + HydrusNumbers.to_human_int(len(urls)) + ' urls'
             
             ClientGUIMenus.AppendMenuItem( urls_visit_menu, label, 'Open these urls in your web browser.', ClientGUIMediaModalActions.OpenURLs, win, urls )
             
@@ -679,7 +679,7 @@ def AddLocalFilesMoveAddToMenu( win: QW.QWidget, menu: QW.QMenu, local_file_serv
         
         for ( s_k, count ) in local_file_service_keys.items():
             
-            label = f'{CG.client_controller.services_manager.GetName( s_k )} ({HydrusNumbers.ToHumanInt(count)} files)'
+            label = f'{CG.client_controller.services_manager.GetName( s_k )} ({HydrusNumbers.to_human_int(count)} files)'
             description = label
             call = None
             
@@ -702,7 +702,7 @@ def AddLocalFilesMoveAddToMenu( win: QW.QWidget, menu: QW.QMenu, local_file_serv
                 data = ( s_k, HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_ADD, None )
             )
             
-            label = f'{CG.client_controller.services_manager.GetName( s_k )} ({HydrusNumbers.ToHumanInt(count)} files)'
+            label = f'{CG.client_controller.services_manager.GetName( s_k )} ({HydrusNumbers.to_human_int(count)} files)'
             description = 'Duplicate the files to this local file domain.'
             call = HydrusData.Call( process_application_command_call, application_command )
             
@@ -725,7 +725,7 @@ def AddLocalFilesMoveAddToMenu( win: QW.QWidget, menu: QW.QMenu, local_file_serv
                 data = ( dest_s_k, HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_MOVE_MERGE, source_s_k )
             )
             
-            label = f'from {CG.client_controller.services_manager.GetName( source_s_k )} to {CG.client_controller.services_manager.GetName( dest_s_k )} ({HydrusNumbers.ToHumanInt(count)} files)'
+            label = f'from {CG.client_controller.services_manager.GetName( source_s_k )} to {CG.client_controller.services_manager.GetName( dest_s_k )} ({HydrusNumbers.to_human_int(count)} files)'
             description = 'Add the files to the destination and delete from the source. Works when files are already in the destination.'
             call = HydrusData.Call( process_application_command_call, application_command )
             
@@ -748,7 +748,7 @@ def AddLocalFilesMoveAddToMenu( win: QW.QWidget, menu: QW.QMenu, local_file_serv
                 data = ( dest_s_k, HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_MOVE, source_s_k )
             )
             
-            label = f'from {CG.client_controller.services_manager.GetName( source_s_k )} to {CG.client_controller.services_manager.GetName( dest_s_k )} ({HydrusNumbers.ToHumanInt(count)} files)'
+            label = f'from {CG.client_controller.services_manager.GetName( source_s_k )} to {CG.client_controller.services_manager.GetName( dest_s_k )} ({HydrusNumbers.to_human_int(count)} files)'
             description = 'Add the files to the destination and delete from the source. Only works on files not already in the destination.'
             call = HydrusData.Call( process_application_command_call, application_command )
             
@@ -1020,7 +1020,7 @@ def AddShareMenu( win: QW.QWidget, command_processor: CAC.ApplicationCommandProc
             
             application_command = CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_COPY_FILE_SERVICE_FILENAMES, simple_data = hacky_ipfs_dict )
             
-            ClientGUIMenus.AppendMenuItem( share_menu, f'copy {name} multihashes ({HydrusNumbers.ToHumanInt(ipfs_service_keys_to_num_filenames[ipfs_service_key])} hashes)', 'Copy the selected files\' multihashes to the clipboard.', command_processor.ProcessApplicationCommand, application_command )
+            ClientGUIMenus.AppendMenuItem(share_menu, f'copy {name} multihashes ({HydrusNumbers.to_human_int(ipfs_service_keys_to_num_filenames[ipfs_service_key])} hashes)', 'Copy the selected files\' multihashes to the clipboard.', command_processor.ProcessApplicationCommand, application_command)
             
         
         copy_hashes_menu = ClientGUIMenus.GenerateMenu( share_menu )
@@ -1035,7 +1035,7 @@ def AddShareMenu( win: QW.QWidget, command_processor: CAC.ApplicationCommandProc
         
         if len( blurhashes ) > 0:
             
-            ClientGUIMenus.AppendMenuItem( copy_hashes_menu, f'blurhash ({HydrusNumbers.ToHumanInt(len(blurhashes))} hashes)', 'Copy these files\' blurhashes.', command_processor.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_COPY_FILE_HASHES, simple_data = ( CAC.FILE_COMMAND_TARGET_SELECTED_FILES, 'blurhash' ) ) )
+            ClientGUIMenus.AppendMenuItem(copy_hashes_menu, f'blurhash ({HydrusNumbers.to_human_int(len(blurhashes))} hashes)', 'Copy these files\' blurhashes.', command_processor.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand(CAC.SIMPLE_COPY_FILE_HASHES, simple_data = (CAC.FILE_COMMAND_TARGET_SELECTED_FILES, 'blurhash')))
             
         
         pixel_hashes = [ media.GetFileInfoManager().pixel_hash for media in selected_media ]
@@ -1043,7 +1043,7 @@ def AddShareMenu( win: QW.QWidget, command_processor: CAC.ApplicationCommandProc
         
         if len( pixel_hashes ):
             
-            ClientGUIMenus.AppendMenuItem( copy_hashes_menu, f'pixel hashes ({HydrusNumbers.ToHumanInt(len(pixel_hashes))} hashes)', 'Copy these files\' pixel hashes.', command_processor.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_COPY_FILE_HASHES, simple_data = ( CAC.FILE_COMMAND_TARGET_SELECTED_FILES, 'pixel_hash' ) ) )
+            ClientGUIMenus.AppendMenuItem(copy_hashes_menu, f'pixel hashes ({HydrusNumbers.to_human_int(len(pixel_hashes))} hashes)', 'Copy these files\' pixel hashes.', command_processor.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand(CAC.SIMPLE_COPY_FILE_HASHES, simple_data = (CAC.FILE_COMMAND_TARGET_SELECTED_FILES, 'pixel_hash')))
             
         
         ClientGUIMenus.AppendMenu( share_menu, copy_hashes_menu, 'copy hashes' )
@@ -1103,7 +1103,7 @@ def AddShareMenu( win: QW.QWidget, command_processor: CAC.ApplicationCommandProc
         
         ClientGUIMenus.AppendMenu( share_menu, copy_hash_menu, 'copy hash' )
         
-        hash_id_str = HydrusNumbers.ToHumanInt( focused_media.GetHashId() )
+        hash_id_str = HydrusNumbers.to_human_int(focused_media.GetHashId())
         
         ClientGUIMenus.AppendMenuItem( share_menu, 'copy file id ({})'.format( hash_id_str ), 'Copy this file\'s internal file/hash_id.', command_processor.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_COPY_FILE_ID, simple_data = CAC.FILE_COMMAND_TARGET_FOCUSED_FILE ) )
         

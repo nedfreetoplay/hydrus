@@ -425,7 +425,7 @@ class FileFilter( HydrusSerialisable.SerialisableBase ):
         
         my_count = filter_counts[ self ]
         
-        s += ' ({})'.format( HydrusNumbers.ToHumanInt( my_count ) )
+        s += ' ({})'.format(HydrusNumbers.to_human_int(my_count))
         
         if self.filter_type == FILE_FILTER_ALL:
             

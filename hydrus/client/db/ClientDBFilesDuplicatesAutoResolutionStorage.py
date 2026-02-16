@@ -653,7 +653,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
                         
                         self._UpdateRuleCount( rule_id, ClientDuplicatesAutoResolution.DUPLICATE_STATUS_NOT_SEARCHED, num_added )
                         
-                        HydrusData.print_text(f'During auto-resolution potential pair-sync, added {HydrusNumbers.ToHumanInt(num_added)} pairs for rule {resolution_rule.GetName()}, ({rule_id}).')
+                        HydrusData.print_text(f'During auto-resolution potential pair-sync, added {HydrusNumbers.to_human_int(num_added)} pairs for rule {resolution_rule.GetName()}, ({rule_id}).')
                         
                         all_were_good = False
                         
@@ -676,7 +676,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
                             
                             self._UpdateRuleCount( rule_id, status, - num_deleted )
                             
-                            HydrusData.print_text(f'During auto-resolution potential pair-sync, deleted {HydrusNumbers.ToHumanInt(num_deleted)} pairs for rule {resolution_rule.GetName()} ({rule_id}), status {status} ({ClientDuplicatesAutoResolution.duplicate_status_str_lookup[ status]}).')
+                            HydrusData.print_text(f'During auto-resolution potential pair-sync, deleted {HydrusNumbers.to_human_int(num_deleted)} pairs for rule {resolution_rule.GetName()} ({rule_id}), status {status} ({ClientDuplicatesAutoResolution.duplicate_status_str_lookup[ status]}).')
                             
                             all_were_good = False
                             
@@ -717,7 +717,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
             
             self._execute_many('DELETE FROM duplicate_files_auto_resolution_rules WHERE rule_id = ?;', ((rule_id,) for rule_id in orphaned_on_our_side))
             
-            HydrusData.show_text(f'Deleted {HydrusNumbers.ToHumanInt(len(orphaned_on_our_side))} orphaned auto-resolution rule definitions!')
+            HydrusData.show_text(f'Deleted {HydrusNumbers.to_human_int(len(orphaned_on_our_side))} orphaned auto-resolution rule definitions!')
             HydrusData.print_text(f'Deleted ids: {sorted(orphaned_on_our_side)}')
             
             all_were_good = False
@@ -732,7 +732,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
                 self.modules_serialisable.DeleteJSONDumpNamed( HydrusSerialisable.SERIALISABLE_TYPE_DUPLICATES_AUTO_RESOLUTION_RULE, dump_name = name )
                 
             
-            HydrusData.show_text(f'During auto-resolution rule-sync, deleted {HydrusNumbers.ToHumanInt(len(orphaned_on_object_side))} orphaned auto-resolution rule objects!')
+            HydrusData.show_text(f'During auto-resolution rule-sync, deleted {HydrusNumbers.to_human_int(len(orphaned_on_object_side))} orphaned auto-resolution rule objects!')
             HydrusData.print_text(f'Deleted names: {sorted(orphaned_object_names)}')
             
             all_were_good = False
@@ -782,7 +782,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
         
         for ( num_done, ( rule_id, rule ) ) in enumerate( self._rule_ids_to_rules.items() ):
             
-            job_status.SetStatusText( f'{HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do )}: {rule.GetName()}' )
+            job_status.SetStatusText( f'{HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do)}: {rule.GetName()}')
             job_status.SetGauge( num_done, num_to_do )
             
             ( num_deleted, num_added ) = self._ResyncToLocationContext( rule_id, rule.GetLocationContext() )
@@ -791,7 +791,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
                 
                 we_had_fixes = True
                 
-                HydrusData.show_text(f'During file domain resync, auto-resolution rule "{rule.GetName()}" lost {HydrusNumbers.ToHumanInt(num_deleted)} pairs and added {HydrusNumbers.ToHumanInt(num_added)} rows!')
+                HydrusData.show_text(f'During file domain resync, auto-resolution rule "{rule.GetName()}" lost {HydrusNumbers.to_human_int(num_deleted)} pairs and added {HydrusNumbers.to_human_int(num_added)} rows!')
                 
             
         

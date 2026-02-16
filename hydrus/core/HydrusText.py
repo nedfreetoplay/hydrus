@@ -169,7 +169,7 @@ def ConvertManyStringsToNiceInsertableHumanSummary( texts: collections.abc.Colle
                             line_under_construction = ''
                             texts_to_do.insert( 0, text )
                             
-                            lines.append( f'and {HydrusNumbers.ToHumanInt( len( texts_to_do ) )} others' )
+                            lines.append( f'and {HydrusNumbers.to_human_int(len(texts_to_do))} others')
                             
                             break
                             
@@ -249,7 +249,7 @@ def ConvertManyStringsToNiceInsertableHumanSummarySingleLine( texts: collections
             first_text = texts[0]
             num_texts = len( texts )
             
-            leading_example_result = f'"{first_text}" & {HydrusNumbers.ToHumanInt( num_texts - 1 )} other {collective_description_noun}'
+            leading_example_result = f'"{first_text}" & {HydrusNumbers.to_human_int(num_texts - 1)} other {collective_description_noun}'
             
             if len( leading_example_result ) <= LINE_NO_LONGER_THAN:
                 
@@ -257,7 +257,7 @@ def ConvertManyStringsToNiceInsertableHumanSummarySingleLine( texts: collections
                 
             else:
                 
-                return f'{HydrusNumbers.ToHumanInt( num_texts )} {collective_description_noun}'
+                return f'{HydrusNumbers.to_human_int(num_texts)} {collective_description_noun}'
                 
             
         
@@ -330,7 +330,7 @@ def GetFirstLineSummary( text: str | None ) -> str:
         
         if len( lines ) > 1:
             
-            return lines[0] + HC.UNICODE_ELLIPSIS + f' (+{HydrusNumbers.ToHumanInt(len( lines) - 1)} lines)'
+            return lines[0] + HC.UNICODE_ELLIPSIS + f' (+{HydrusNumbers.to_human_int(len(lines) - 1)} lines)'
             
         else:
             

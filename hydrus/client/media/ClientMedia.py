@@ -165,7 +165,7 @@ def GetMediasFiletypeSummaryString( medias: collections.abc.Collection[ "Media" 
                     
                     collections_suffix = 's' if num_collections > 1 else ''
                     
-                    return 'file{} in {} collection{}'.format( suffix, HydrusNumbers.ToHumanInt( num_collections ), collections_suffix )
+                    return 'file{} in {} collection{}'.format(suffix, HydrusNumbers.to_human_int(num_collections), collections_suffix)
                     
                 else:
                     
@@ -219,7 +219,7 @@ def GetMediasFiletypeSummaryString( medias: collections.abc.Collection[ "Media" 
             filetype_summary = GetDescriptor( plural, mimes, num_collections )
             
         
-        return f'{HydrusNumbers.ToHumanInt( num_files )} {filetype_summary}'
+        return f'{HydrusNumbers.to_human_int(num_files)} {filetype_summary}'
         
 
 def GetMediasTagCount( pool, tag_service_key, tag_display_type ):

@@ -203,7 +203,7 @@ class CheckerOptions( HydrusSerialisable.SerialisableBase ):
             
             ( current_files_found, current_time_delta ) = self._GetCurrentFilesVelocity( file_seed_cache, last_check_time )
             
-            pretty_current_velocity += HydrusNumbers.ToHumanInt( current_files_found ) + ' files in previous ' + HydrusTime.TimeDeltaToPrettyTimeDelta( current_time_delta )
+            pretty_current_velocity += HydrusNumbers.to_human_int(current_files_found) + ' files in previous ' + HydrusTime.TimeDeltaToPrettyTimeDelta(current_time_delta)
             
         
         return pretty_current_velocity
@@ -224,7 +224,7 @@ class CheckerOptions( HydrusSerialisable.SerialisableBase ):
             
             if self._intended_files_per_check == int( self._intended_files_per_check ):
                 
-                intended_files_per_check_str = HydrusNumbers.ToHumanInt( self._intended_files_per_check )
+                intended_files_per_check_str = HydrusNumbers.to_human_int(self._intended_files_per_check)
                 
             else:
                 
@@ -243,7 +243,7 @@ class CheckerOptions( HydrusSerialisable.SerialisableBase ):
             
         else:
             
-            death_statement = 'Stopping if file velocity falls below ' + HydrusNumbers.ToHumanInt( death_files_found ) + ' files per ' + HydrusTime.TimeDeltaToPrettyTimeDelta( death_time_delta ) + '.'
+            death_statement = 'Stopping if file velocity falls below ' + HydrusNumbers.to_human_int(death_files_found) + ' files per ' + HydrusTime.TimeDeltaToPrettyTimeDelta(death_time_delta) + '.'
             
         
         return timing_statement + '\n' * 2 + death_statement

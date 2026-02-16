@@ -645,7 +645,7 @@ class FileViewingStatsManager( object ):
             last_viewed_string = 'last {}'.format( HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( max( last_viewed_times_ms ) ) ) )
             
         
-        return 'viewed {} times{}, totalling {}, {}'.format( HydrusNumbers.ToHumanInt( views_total ), canvas_type_string, HydrusTime.TimeDeltaToPrettyTimeDelta( HydrusTime.SecondiseMSFloat( viewtime_ms_total ) ), last_viewed_string )
+        return 'viewed {} times{}, totalling {}, {}'.format(HydrusNumbers.to_human_int(views_total), canvas_type_string, HydrusTime.TimeDeltaToPrettyTimeDelta(HydrusTime.SecondiseMSFloat(viewtime_ms_total)), last_viewed_string)
         
     
     def GetTimesManager( self ) -> TimesManager:

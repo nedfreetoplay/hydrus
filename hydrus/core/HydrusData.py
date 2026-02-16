@@ -417,7 +417,7 @@ def base_to_human_bytes(size, sig_figs = 3):
     
     if size < 1024:
         
-        return HydrusNumbers.ToHumanInt( size ) + 'B'
+        return HydrusNumbers.to_human_int(size) + 'B'
         
     
     suffixes = ( '', 'K', 'M', 'G', 'T', 'P' )

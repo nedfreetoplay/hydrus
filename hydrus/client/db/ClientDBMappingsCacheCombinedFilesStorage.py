@@ -118,7 +118,7 @@ class ClientDBMappingsCacheCombinedFilesStorage( ClientDBModule.ClientDBModule )
             
             if i % 100 == 0 and status_hook is not None:
                 
-                message = 'regenerating pending tags {}'.format( HydrusNumbers.ValueRangeToPrettyString( i + 1, num_to_do ) )
+                message = 'regenerating pending tags {}'.format(HydrusNumbers.value_range_to_pretty_string(i + 1, num_to_do))
                 
                 status_hook( message )
                 

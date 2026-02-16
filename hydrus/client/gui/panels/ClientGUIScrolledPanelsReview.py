@@ -471,7 +471,7 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
         fp = locations_to_file_weights[ base_location ]
         tp = locations_to_thumb_weights[ base_location ]
         
-        p = HydrusNumbers.FloatToPercentage
+        p = HydrusNumbers.float_to_percentage
         
         current_bytes = fp * f_space + tp * t_space_max
         
@@ -1240,7 +1240,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
             
             if num_misc_objects > 0:
                 
-                ClientGUIDialogsMessage.ShowWarning( self, 'I found '+HydrusNumbers.ToHumanInt(num_misc_objects)+' misc objects in that png, but nothing downloader related.' )
+                ClientGUIDialogsMessage.ShowWarning(self, 'I found ' + HydrusNumbers.to_human_int(num_misc_objects) + ' misc objects in that png, but nothing downloader related.')
                 
             
             return
@@ -1414,7 +1414,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         
         if len( new_gugs ) + len( new_url_classes ) + len( new_parsers ) + len( new_domain_metadatas ) + len( new_login_scripts ) == 0:
             
-            ClientGUIDialogsMessage.ShowInformation( self, f'All {HydrusNumbers.ToHumanInt( total_num_dupes )} downloader objects in that package appeared to already be in the client, so nothing need be added.' )
+            ClientGUIDialogsMessage.ShowInformation(self, f'All {HydrusNumbers.to_human_int(total_num_dupes)} downloader objects in that package appeared to already be in the client, so nothing need be added.')
             
             return
             
@@ -1463,7 +1463,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
             if len( new_domain_metadatas ) > TOO_MANY_DM:
                 
                 message += '\n' * 2
-                message += 'There are more than ' + HydrusNumbers.ToHumanInt( TOO_MANY_DM ) + ' domain metadata objects. So I do not give you dozens of preview windows, I will only show you these first ' + HydrusNumbers.ToHumanInt( TOO_MANY_DM ) + '.'
+                message += 'There are more than ' + HydrusNumbers.to_human_int(TOO_MANY_DM) + ' domain metadata objects. So I do not give you dozens of preview windows, I will only show you these first ' + HydrusNumbers.to_human_int(TOO_MANY_DM) + '.'
                 
             
             new_domain_metadatas_to_show = new_domain_metadatas[:TOO_MANY_DM]
@@ -1487,7 +1487,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         if len( all_to_add ) > 20:
             
             message += '\n'
-            message += '(and ' + HydrusNumbers.ToHumanInt( len( all_to_add ) - 20 ) + ' others)'
+            message += '(and ' + HydrusNumbers.to_human_int(len(all_to_add) - 20) + ' others)'
             
         
         message += '\n' * 2
@@ -1521,11 +1521,11 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         num_new_gugs = len( new_gugs )
         num_aux = len( new_url_classes ) + len( new_parsers ) + len( new_login_scripts ) + len( new_domain_metadatas )
         
-        final_message = 'Successfully added ' + HydrusNumbers.ToHumanInt( num_new_gugs ) + ' new downloaders and ' + HydrusNumbers.ToHumanInt( num_aux ) + ' auxiliary objects.'
+        final_message = 'Successfully added ' + HydrusNumbers.to_human_int(num_new_gugs) + ' new downloaders and ' + HydrusNumbers.to_human_int(num_aux) + ' auxiliary objects.'
         
         if total_num_dupes > 0:
             
-            final_message += ' ' + HydrusNumbers.ToHumanInt( total_num_dupes ) + ' duplicate objects were not added (but some additional metadata may have been merged).'
+            final_message += ' ' + HydrusNumbers.to_human_int(total_num_dupes) + ' duplicate objects were not added (but some additional metadata may have been merged).'
             
         
         ClientGUIDialogsMessage.ShowInformation( self, final_message )
@@ -2225,7 +2225,7 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
         
         if len( hash_ids ) > 1000:
             
-            message = 'Are you sure you want to schedule "{}" on {} files?'.format( ClientFilesMaintenance.regen_file_enum_to_str_lookup[ job_type ], HydrusNumbers.ToHumanInt( len( hash_ids ) ) )
+            message = 'Are you sure you want to schedule "{}" on {} files?'.format(ClientFilesMaintenance.regen_file_enum_to_str_lookup[ job_type ], HydrusNumbers.to_human_int(len(hash_ids)))
             
             result = ClientGUIDialogsQuick.GetYesNo( self, message, yes_label = 'do it', no_label = 'forget it' )
             
@@ -2271,13 +2271,13 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
             num_to_do = 0
             
         
-        pretty_num_to_do = HydrusNumbers.ToHumanInt( num_to_do )
+        pretty_num_to_do = HydrusNumbers.to_human_int(num_to_do)
         
         not_due_num_to_do = self._job_types_to_not_due_counts[ job_type ]
         
         if not_due_num_to_do > 0:
             
-            pretty_num_to_do = '{} ({} is not yet due)'.format( pretty_num_to_do, HydrusNumbers.ToHumanInt( not_due_num_to_do ) )
+            pretty_num_to_do = '{} ({} is not yet due)'.format(pretty_num_to_do, HydrusNumbers.to_human_int(not_due_num_to_do))
             
         
         display_tuple = ( pretty_job_type, pretty_num_to_do )
@@ -2401,7 +2401,7 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
         
         def publish_callable( hash_ids ):
             
-            self._run_search_st.setText( '{} files found'.format( HydrusNumbers.ToHumanInt( len( hash_ids ) ) ) )
+            self._run_search_st.setText( '{} files found'.format(HydrusNumbers.to_human_int(len(hash_ids))))
             
             self._run_search.setEnabled( True )
             
@@ -2419,7 +2419,7 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
         
         message = ClientFilesMaintenance.regen_file_enum_to_description_lookup[ job_type ]
         message += '\n' * 2
-        message += 'This job has weight {}, where a normalised unit of file work has value {}.'.format( HydrusNumbers.ToHumanInt( ClientFilesMaintenance.regen_file_enum_to_job_weight_lookup[ job_type ] ), HydrusNumbers.ToHumanInt( ClientFilesMaintenance.NORMALISED_BIG_JOB_WEIGHT ) )
+        message += 'This job has weight {}, where a normalised unit of file work has value {}.'.format(HydrusNumbers.to_human_int(ClientFilesMaintenance.regen_file_enum_to_job_weight_lookup[ job_type]), HydrusNumbers.to_human_int(ClientFilesMaintenance.NORMALISED_BIG_JOB_WEIGHT))
         
         ClientGUIDialogsMessage.ShowInformation( self, message )
         
@@ -2487,7 +2487,7 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
         
         self._hash_ids = hash_ids
         
-        self._selected_files_st.setText( '{} files selected'.format(HydrusNumbers.ToHumanInt(len(hash_ids))) )
+        self._selected_files_st.setText( '{} files selected'.format(HydrusNumbers.to_human_int(len(hash_ids))))
         
         if len( hash_ids ) == 0:
             
@@ -2736,8 +2736,8 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
         
         #potentials_label = f'Total duplicate potential pairs: {HydrusNumbers.ToHumanInt( total_potential_pairs )}'
         potentials_label = f'Total potential duplicate pairs: disabled for now'
-        duplicates_label = f'Total files in duplicate groups: {HydrusNumbers.ToHumanInt( total_duplicate_files )}'
-        alternates_label = f'Total files in alternate groups: {HydrusNumbers.ToHumanInt( total_alternate_files )} ({HydrusNumbers.ToHumanInt( total_alternate_groups )} groups)'
+        duplicates_label = f'Total files in duplicate groups: {HydrusNumbers.to_human_int(total_duplicate_files)}'
+        alternates_label = f'Total files in alternate groups: {HydrusNumbers.to_human_int(total_alternate_files)} ({HydrusNumbers.to_human_int(total_alternate_groups)} groups)'
         
         self._potentials_st.setText( potentials_label )
         self._duplicates_st.setText( duplicates_label )
@@ -2840,7 +2840,7 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
                 #
                 
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = 'Total Ever Imported:' ), CC.FLAGS_ON_LEFT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.ToHumanInt( num_supertotal ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = HydrusNumbers.to_human_int(num_supertotal)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, QW.QWidget( self._files_content_panel ), CC.FLAGS_ON_LEFT )
                 QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = HydrusData.to_human_bytes(size_supertotal)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, QW.QWidget( self._files_content_panel ), CC.FLAGS_ON_LEFT )
@@ -2858,7 +2858,7 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
                 #
                 
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = 'Current:' ), CC.FLAGS_ON_LEFT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.ToHumanInt( num_total ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = HydrusNumbers.to_human_int(num_total)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( current_num_percent ) ), CC.FLAGS_ON_RIGHT )
                 QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = HydrusData.to_human_bytes(size_total)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( current_size_percent ) ), CC.FLAGS_ON_RIGHT )
@@ -2867,7 +2867,7 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
                 #
                 
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = 'Deleted:' ), CC.FLAGS_ON_LEFT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.ToHumanInt( num_deleted ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = HydrusNumbers.to_human_int(num_deleted)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( deleted_num_percent ) ), CC.FLAGS_ON_RIGHT )
                 QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = HydrusData.to_human_bytes(size_deleted)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( deleted_size_percent ) ), CC.FLAGS_ON_RIGHT )
@@ -2885,7 +2885,7 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
                 #
                 
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = 'Inbox:' ), CC.FLAGS_ON_LEFT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.ToHumanInt( num_inbox ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = HydrusNumbers.to_human_int(num_inbox)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( inbox_num_percent ) ), CC.FLAGS_ON_RIGHT )
                 QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = HydrusData.to_human_bytes(size_inbox)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( inbox_size_percent ) ), CC.FLAGS_ON_RIGHT )
@@ -2894,7 +2894,7 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
                 #
                 
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = 'Archive:' ), CC.FLAGS_ON_LEFT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.ToHumanInt( num_archive ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = HydrusNumbers.to_human_int(num_archive)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( archive_num_percent ) ), CC.FLAGS_ON_RIGHT )
                 QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = HydrusData.to_human_bytes(size_archive)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( archive_size_percent ) ), CC.FLAGS_ON_RIGHT )
@@ -2923,7 +2923,7 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
                 #
                 
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = 'Current:' ), CC.FLAGS_ON_LEFT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.ToHumanInt( num_total ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = HydrusNumbers.to_human_int(num_total)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, QW.QWidget( self._files_content_panel ), CC.FLAGS_ON_LEFT )
                 QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = HydrusData.to_human_bytes(size_total)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, QW.QWidget( self._files_content_panel ), CC.FLAGS_ON_LEFT )
@@ -2941,7 +2941,7 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
                 #
                 
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = 'Inbox:' ), CC.FLAGS_ON_LEFT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.ToHumanInt( num_inbox ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = HydrusNumbers.to_human_int(num_inbox)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( inbox_num_percent ) ), CC.FLAGS_ON_RIGHT )
                 QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = HydrusData.to_human_bytes(size_inbox)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( inbox_size_percent ) ), CC.FLAGS_ON_RIGHT )
@@ -2950,7 +2950,7 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
                 #
                 
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = 'Archive:' ), CC.FLAGS_ON_LEFT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.ToHumanInt( num_archive ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = HydrusNumbers.to_human_int(num_archive)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( archive_num_percent ) ), CC.FLAGS_ON_RIGHT )
                 QP.AddToLayout(text_table_layout, ClientGUICommon.BetterStaticText(self._files_content_panel, label = HydrusData.to_human_bytes(size_archive)), CC.FLAGS_ON_RIGHT)
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( archive_size_percent ) ), CC.FLAGS_ON_RIGHT )
@@ -3057,9 +3057,9 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
         
         ( media_views, media_viewtime, preview_views, preview_viewtime ) = total_viewtime
         
-        media_label = 'Total media views: ' + HydrusNumbers.ToHumanInt( media_views ) + ', totalling ' + HydrusTime.TimeDeltaToPrettyTimeDelta( media_viewtime )
+        media_label = 'Total media views: ' + HydrusNumbers.to_human_int(media_views) + ', totalling ' + HydrusTime.TimeDeltaToPrettyTimeDelta(media_viewtime)
         
-        preview_label = 'Total preview views: ' + HydrusNumbers.ToHumanInt( preview_views ) + ', totalling ' + HydrusTime.TimeDeltaToPrettyTimeDelta( preview_viewtime )
+        preview_label = 'Total preview views: ' + HydrusNumbers.to_human_int(preview_views) + ', totalling ' + HydrusTime.TimeDeltaToPrettyTimeDelta(preview_viewtime)
         
         self._media_views_st.setText( media_label )
         self._preview_views_st.setText( preview_label )
@@ -3273,7 +3273,7 @@ class ReviewDeferredDeleteTableData( ClientGUIScrolledPanels.ReviewPanel ):
         else:
             
             sort_num_rows = num_rows
-            pretty_num_rows = HydrusNumbers.ToHumanInt( sort_num_rows )
+            pretty_num_rows = HydrusNumbers.to_human_int(sort_num_rows)
             
         
         display_tuple = ( pretty_name, pretty_num_rows )
@@ -3518,7 +3518,7 @@ Vacuuming is an expensive operation. It creates one (temporary) copy of the data
         
         if sort_total_size > 0:
             
-            pretty_free_size = '{} ({})'.format( pretty_free_size, HydrusNumbers.FloatToPercentage( sort_free_size / sort_total_size ) )
+            pretty_free_size = '{} ({})'.format(pretty_free_size, HydrusNumbers.float_to_percentage(sort_free_size / sort_total_size))
             
         
         sort_last_vacuumed_ms = vacuum_dict[ 'last_vacuumed_ms' ]

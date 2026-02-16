@@ -400,7 +400,7 @@ class TagSuggestionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         pretty_tag_slice = HydrusTags.ConvertTagSliceToPrettyString( tag_slice )
         
-        pretty_weight = HydrusNumbers.ToHumanInt( weight ) + '%'
+        pretty_weight = HydrusNumbers.to_human_int(weight) + '%'
         
         display_tuple = ( pretty_tag_slice, pretty_weight )
         

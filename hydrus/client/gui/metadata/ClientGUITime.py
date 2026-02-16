@@ -546,7 +546,7 @@ class DateTimeWidgetValueRange( object ):
             
         elif self._set_count > 1:
             
-            s += f'{HydrusNumbers.ToHumanInt( self._set_count )} files set'
+            s += f'{HydrusNumbers.to_human_int(self._set_count)} files set'
             
             if self._min_value == self._max_value:
                 
@@ -566,7 +566,7 @@ class DateTimeWidgetValueRange( object ):
                 
             else:
                 
-                none_prefix = f'{HydrusNumbers.ToHumanInt(self._null_count)} files'
+                none_prefix = f'{HydrusNumbers.to_human_int(self._null_count)} files'
                 
             
             if s != '':

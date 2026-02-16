@@ -471,7 +471,7 @@ The formula should attempt to parse full or relative urls. If the url is relativ
                 self._test_fetch_result.setEnabled( True )
                 
             
-            result_lines = [ '*** ' + HydrusNumbers.ToHumanInt( len( parsed_urls ) ) + ' RESULTS BEGIN ***' ]
+            result_lines = [ '*** ' + HydrusNumbers.to_human_int(len(parsed_urls)) + ' RESULTS BEGIN ***']
             
             result_lines.extend( parsed_urls )
             
@@ -785,7 +785,7 @@ And pass that html to a number of 'parsing children' that will each look through
         
         def qt_code( parsed_post: ClientParsingResults.ParsedPost ):
             
-            result_lines = [ '*** ' + HydrusNumbers.ToHumanInt( len( parsed_post ) ) + ' RESULTS BEGIN ***' ]
+            result_lines = [ '*** ' + HydrusNumbers.to_human_int(len(parsed_post)) + ' RESULTS BEGIN ***']
             
             result_lines.extend( [ parsed_content.ToString() for parsed_content in parsed_post.parsed_contents ] )
             

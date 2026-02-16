@@ -2833,12 +2833,12 @@ class CanvasHoverFrameRightDuplicates( CanvasHoverFrame ):
         
         if total_score > 0:
             
-            text = 'score: +' + HydrusNumbers.ToHumanInt( total_score )
+            text = 'score: +' + HydrusNumbers.to_human_int(total_score)
             object_name = 'HydrusValid'
             
         elif total_score < 0:
             
-            text = 'score: ' + HydrusNumbers.ToHumanInt( total_score )
+            text = 'score: ' + HydrusNumbers.to_human_int(total_score)
             object_name = 'HydrusInvalid'
             
         else:

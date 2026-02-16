@@ -171,7 +171,7 @@ def RenderJSONParseRule( rule ):
         
         index = parse_rule
         
-        s = 'get the ' + HydrusNumbers.IndexToPrettyOrdinalString( index ) + ' item (for Objects, keys sorted)'
+        s = 'get the ' + HydrusNumbers.index_to_pretty_ordinal_string(index) + ' item (for Objects, keys sorted)'
         
     elif parse_rule_type == JSON_PARSE_RULE_TYPE_DICT_KEY:
         
@@ -185,7 +185,7 @@ def RenderJSONParseRule( rule ):
         
         index = parse_rule
         
-        s = 'de-minify json at the ' + HydrusNumbers.IndexToPrettyOrdinalString( index ) + ' item'
+        s = 'de-minify json at the ' + HydrusNumbers.index_to_pretty_ordinal_string(index) + ' item'
         
     elif parse_rule_type == JSON_PARSE_RULE_TYPE_ASCEND:
         
@@ -297,7 +297,7 @@ class ParseFormula( HydrusSerialisable.SerialisableBase ):
         
         texts = self.Parse( parsing_context, parsing_text, collapse_newlines )
         
-        pretty_texts = [ '*** ' + HydrusNumbers.ToHumanInt( len( texts ) ) + ' RESULTS BEGIN ***' ] + texts + [ '*** RESULTS END ***' ]
+        pretty_texts = [ '*** ' + HydrusNumbers.to_human_int(len(texts)) + ' RESULTS BEGIN ***'] + texts + ['*** RESULTS END ***']
         
         separator = self._GetParsePrettySeparator()
         
@@ -486,7 +486,7 @@ class ParseFormulaZipper( ParseFormula ):
             t = f'{self._name}: '
             
         
-        return f'ZIPPER: {t}with {HydrusNumbers.ToHumanInt( len( self._formulae ) )} formulae.'
+        return f'ZIPPER: {t}with {HydrusNumbers.to_human_int(len(self._formulae))} formulae.'
         
     
     def ToPrettyMultilineString( self ):
@@ -976,7 +976,7 @@ class ParseFormulaHTML( ParseFormula ):
             t = f'{self._name}: '
             
         
-        return f'HTML: {t}with {HydrusNumbers.ToHumanInt( len( self._tag_rules ) )} tag rules.'
+        return f'HTML: {t}with {HydrusNumbers.to_human_int(len(self._tag_rules))} tag rules.'
         
     
     def ToPrettyMultilineString( self ):
@@ -1238,7 +1238,7 @@ class ParseRuleHTML( HydrusSerialisable.SerialisableBase ):
                 
             else:
                 
-                s += ' the ' + HydrusNumbers.IndexToPrettyOrdinalString( self._tag_index )
+                s += ' the ' + HydrusNumbers.index_to_pretty_ordinal_string(self._tag_index)
                 
             
             if self._tag_name is not None:
@@ -1259,11 +1259,11 @@ class ParseRuleHTML( HydrusSerialisable.SerialisableBase ):
             
             if self._tag_name is None:
                 
-                s += ' ' + HydrusNumbers.ToHumanInt( self._tag_depth ) + ' tag levels'
+                s += ' ' + HydrusNumbers.to_human_int(self._tag_depth) + ' tag levels'
                 
             else:
                 
-                s += ' to the ' + HydrusNumbers.IntToPrettyOrdinalString( self._tag_depth ) + ' <' + self._tag_name + '> tag'
+                s += ' to the ' + HydrusNumbers.int_to_pretty_ordinal_string(self._tag_depth) + ' <' + self._tag_name + '> tag'
                 
             
         
@@ -1690,7 +1690,7 @@ class ParseFormulaJSON( ParseFormula ):
             t = f'{self._name}: '
             
         
-        return f'JSON: {t}with {HydrusNumbers.ToHumanInt( len( self._parse_rules ) )} parse rules.'
+        return f'JSON: {t}with {HydrusNumbers.to_human_int(len(self._parse_rules))} parse rules.'
         
     
     def ToPrettyMultilineString( self ):
@@ -2436,7 +2436,7 @@ class ContentParser( HydrusSerialisable.SerialisableBase ):
         
         results.sort()
         
-        result_lines = [ '*** ' + HydrusNumbers.ToHumanInt( len( results ) ) + ' RESULTS BEGIN ***' ]
+        result_lines = [ '*** ' + HydrusNumbers.to_human_int(len(results)) + ' RESULTS BEGIN ***']
         
         result_lines.extend( results )
         
@@ -2776,7 +2776,7 @@ class PageParser( HydrusSerialisable.SerialisableBaseNamed ):
         
         result_lines = []
         
-        result_lines.append( f'*** {HydrusNumbers.ToHumanInt( num_posts )} RESULTS BEGIN ***' + '\n' )
+        result_lines.append( f'*** {HydrusNumbers.to_human_int(num_posts)} RESULTS BEGIN ***' + '\n')
         
         result_lines.append( pretty_result_text )
         
@@ -2961,7 +2961,7 @@ class SubsidiaryPageParser( HydrusSerialisable.SerialisableBase ):
         
         result_lines = []
         
-        result_lines.append( f'*** {HydrusNumbers.ToHumanInt( num_posts )} RESULTS BEGIN ***' + '\n' )
+        result_lines.append( f'*** {HydrusNumbers.to_human_int(num_posts)} RESULTS BEGIN ***' + '\n')
         
         result_lines.append( pretty_result_text )
         

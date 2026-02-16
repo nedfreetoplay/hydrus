@@ -170,7 +170,7 @@ def ResolutionToPrettyString( resolution ):
     
     ( width, height ) = resolution
     
-    return '{}x{}'.format( HydrusNumbers.ToHumanInt( width ), HydrusNumbers.ToHumanInt( height ) )
+    return '{}x{}'.format(HydrusNumbers.to_human_int(width), HydrusNumbers.to_human_int(height))
     
 
 def ShowExceptionClient( e, do_wait = True ):

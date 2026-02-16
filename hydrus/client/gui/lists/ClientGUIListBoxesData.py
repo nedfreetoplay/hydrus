@@ -231,7 +231,7 @@ class ListBoxItemTextTag( ListBoxItem ):
     
     def _AppendParentSuffixTagTextWithNamespace( self, texts_with_namespaces ):
         
-        parents_text = ' ({} parents)'.format( HydrusNumbers.ToHumanInt( len( self._parent_tags ) ) )
+        parents_text = ' ({} parents)'.format(HydrusNumbers.to_human_int(len(self._parent_tags)))
         
         texts_with_namespaces.append( ( parents_text, 'namespace', '' ) )
         
@@ -411,22 +411,22 @@ class ListBoxItemTextTagWithCounts( ListBoxItemTextTag ):
             
             if self._current_count > 0:
                 
-                tag_text += ' ({})'.format( HydrusNumbers.ToHumanInt( self._current_count ) )
+                tag_text += ' ({})'.format(HydrusNumbers.to_human_int(self._current_count))
                 
             
             if self._pending_count > 0:
                 
-                tag_text += ' (+{})'.format( HydrusNumbers.ToHumanInt( self._pending_count ) )
+                tag_text += ' (+{})'.format(HydrusNumbers.to_human_int(self._pending_count))
                 
             
             if self._petitioned_count > 0:
                 
-                tag_text += ' (-{})'.format( HydrusNumbers.ToHumanInt( self._petitioned_count ) )
+                tag_text += ' (-{})'.format(HydrusNumbers.to_human_int(self._petitioned_count))
                 
             
             if self._deleted_count > 0:
                 
-                tag_text += ' (X{})'.format( HydrusNumbers.ToHumanInt( self._deleted_count ) )
+                tag_text += ' (X{})'.format(HydrusNumbers.to_human_int(self._deleted_count))
                 
             
         else:
@@ -618,7 +618,7 @@ class ListBoxItemPredicate( ListBoxItem ):
                 
             elif parent_decoration_allowed:
                 
-                parents_text = ' ({} parents)'.format( HydrusNumbers.ToHumanInt( len( parent_preds ) ) )
+                parents_text = ' ({} parents)'.format(HydrusNumbers.to_human_int(len(parent_preds)))
                 
                 first_row_of_texts_and_namespaces.append( ( parents_text, 'namespace', '' ) )
                 

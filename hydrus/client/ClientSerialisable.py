@@ -209,7 +209,7 @@ def GetPayloadTypeString( payload_obj ):
             type_string_counts[ GetPayloadTypeString( o ) ] += 1
             
         
-        type_string = ', '.join( ( HydrusNumbers.ToHumanInt( count ) + ' ' + s for ( s, count ) in list(type_string_counts.items()) ) )
+        type_string = ', '.join((HydrusNumbers.to_human_int(count) + ' ' + s for (s, count) in list(type_string_counts.items())))
         
         return 'A list of ' + type_string
         

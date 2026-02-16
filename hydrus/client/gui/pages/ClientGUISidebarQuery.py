@@ -82,7 +82,7 @@ class SystemHashLockPanel( ClientGUICommon.StaticBox ):
     
     def _UpdateLabel( self ):
         
-        self._unlock_button.setText( f'Locked at {HydrusNumbers.ToHumanInt( self._num_files )} files.' )
+        self._unlock_button.setText( f'Locked at {HydrusNumbers.to_human_int(self._num_files)} files.')
         
     
     def GetSyncsNew( self ):

@@ -65,7 +65,7 @@ def DoMoveOrDuplicateLocalFiles( dest_service_key: bytes, action: int, media_res
             break
             
         
-        job_status.SetStatusText( HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do ) )
+        job_status.SetStatusText(HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do))
         job_status.SetGauge( num_done, num_to_do )
         
         content_updates = []

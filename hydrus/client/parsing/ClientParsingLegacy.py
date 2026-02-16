@@ -528,7 +528,7 @@ class ParseRootFileLookup( HydrusSerialisable.SerialisableBaseNamed ):
             
         else:
             
-            job_status.SetVariable( 'script_status', f'Found {HydrusNumbers.ToHumanInt( len( parsed_post ) )} rows.' )
+            job_status.SetVariable( 'script_status', f'Found {HydrusNumbers.to_human_int(len(parsed_post))} rows.')
             
         
         return parsed_post

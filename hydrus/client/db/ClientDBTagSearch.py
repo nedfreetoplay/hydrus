@@ -1540,7 +1540,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
                     
                 
             
-            message = HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do )
+            message = HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do)
             
             CG.client_controller.frame_splash_status.SetSubtext( message )
             
@@ -1604,7 +1604,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         
         if len( missing_subtag_ids ) > 0:
             
-            HydrusData.show_text('Repopulated {} missing subtags for {}_{}.'.format(HydrusNumbers.ToHumanInt(len(missing_subtag_ids)), file_service_id, tag_service_id))
+            HydrusData.show_text('Repopulated {} missing subtags for {}_{}.'.format(HydrusNumbers.to_human_int(len(missing_subtag_ids)), file_service_id, tag_service_id))
             
         
     

@@ -534,14 +534,14 @@ class PreviewPanel( ClientGUICommon.StaticBox ):
             
         elif self._potential_duplicate_pairs_fragmentary_search.SearchDone():
             
-            self._search_results_label.setText( f'{HydrusNumbers.ToHumanInt(self._potential_duplicate_pairs_fragmentary_search.NumPairsInSearchSpace())} pairs searched; {HydrusNumbers.ToHumanInt( len( self._fetched_pairs ) )} matched' )
+            self._search_results_label.setText( f'{HydrusNumbers.to_human_int(self._potential_duplicate_pairs_fragmentary_search.NumPairsInSearchSpace())} pairs searched; {HydrusNumbers.to_human_int(len(self._fetched_pairs))} matched')
             
         else:
             
             value = self._potential_duplicate_pairs_fragmentary_search.NumPairsSearched()
             range = self._potential_duplicate_pairs_fragmentary_search.NumPairsInSearchSpace()
             
-            self._search_results_label.setText( f'{HydrusNumbers.ValueRangeToPrettyString(value, range)} pairs searched; {HydrusNumbers.ToHumanInt( len( self._fetched_pairs ) )} matched{HC.UNICODE_ELLIPSIS}' )
+            self._search_results_label.setText( f'{HydrusNumbers.value_range_to_pretty_string(value, range)} pairs searched; {HydrusNumbers.to_human_int(len(self._fetched_pairs))} matched{HC.UNICODE_ELLIPSIS}')
             
         
     
@@ -553,7 +553,7 @@ class PreviewPanel( ClientGUICommon.StaticBox ):
             
         else:
             
-            label = f'{HydrusNumbers.ToHumanInt( len( self._fetched_pairs_still_to_test ))} pairs still to test'
+            label = f'{HydrusNumbers.to_human_int(len(self._fetched_pairs_still_to_test))} pairs still to test'
             
         
         self._pairs_still_to_test_label.setText( label )
@@ -564,7 +564,7 @@ class PreviewPanel( ClientGUICommon.StaticBox ):
             
         else:
             
-            label = f'{HydrusNumbers.ToHumanInt(len(self._ab_pairs_that_pass))} pairs - double-click to open a media viewer'
+            label = f'{HydrusNumbers.to_human_int(len(self._ab_pairs_that_pass))} pairs - double-click to open a media viewer'
             
         
         self._pass_pairs_label.setText( label )
@@ -575,7 +575,7 @@ class PreviewPanel( ClientGUICommon.StaticBox ):
             
         else:
             
-            label = f'{HydrusNumbers.ToHumanInt(len(self._pairs_that_fail))} pairs - double-click to open a media viewer'
+            label = f'{HydrusNumbers.to_human_int(len(self._pairs_that_fail))} pairs - double-click to open a media viewer'
             
         
         self._fail_pairs_label.setText( label )

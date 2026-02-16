@@ -267,12 +267,12 @@ def add_extra_comments_to_job_status( job_status: ClientThreading.JobStatus ):
     
     if num_thumb_refits is not None:
         
-        extra_comments.append( 'thumbs needing regen: {}'.format( HydrusNumbers.ToHumanInt( num_thumb_refits ) ) )
+        extra_comments.append( 'thumbs needing regen: {}'.format(HydrusNumbers.to_human_int(num_thumb_refits)))
         
     
     if num_bad_files is not None:
         
-        extra_comments.append( 'missing or invalid files: {}'.format( HydrusNumbers.ToHumanInt( num_bad_files ) ) )
+        extra_comments.append( 'missing or invalid files: {}'.format(HydrusNumbers.to_human_int(num_bad_files)))
         
     
     sub_status_message = '\n'.join( extra_comments )
@@ -1363,7 +1363,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             num_jobs_done = vr_status[ 'num_jobs_done' ]
             
-            status_text = HydrusNumbers.ValueRangeToPrettyString( num_jobs_done, total_num_jobs_to_do )
+            status_text = HydrusNumbers.value_range_to_pretty_string(num_jobs_done, total_num_jobs_to_do)
             
             job_status.SetStatusText( status_text )
             
@@ -1605,7 +1605,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             num_jobs_done = vr_status[ 'num_jobs_done' ]
             
-            status_text = '{} - {}'.format( HydrusNumbers.ValueRangeToPrettyString( num_jobs_done, total_num_jobs_to_do ), regen_file_enum_to_str_lookup[ job_type ] )
+            status_text = '{} - {}'.format(HydrusNumbers.value_range_to_pretty_string(num_jobs_done, total_num_jobs_to_do), regen_file_enum_to_str_lookup[ job_type])
             
             job_status.SetStatusText( status_text )
             

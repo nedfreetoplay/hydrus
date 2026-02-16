@@ -159,7 +159,7 @@ def GetDuplicateComparisonStatementsFast( shown_media_result: ClientMediaResult.
                 percentage_difference = ( s_size / c_size ) - 1.0
                 
             
-            percentage_different_string = ' ({}{})'.format( sign, HydrusNumbers.FloatToPercentage( percentage_difference ) )
+            percentage_different_string = ' ({}{})'.format(sign, HydrusNumbers.float_to_percentage(percentage_difference))
             
             if they_are_pixel_duplicates:
                 
@@ -357,7 +357,7 @@ def GetDuplicateComparisonStatementsFast( shown_media_result: ClientMediaResult.
     if s_num_tags == c_num_tags:
         
         score = 0
-        statement = f'both have {HydrusNumbers.ToHumanInt(s_num_tags)} tags'
+        statement = f'both have {HydrusNumbers.to_human_int(s_num_tags)} tags'
         
     else:
         
@@ -387,7 +387,7 @@ def GetDuplicateComparisonStatementsFast( shown_media_result: ClientMediaResult.
             score = -duplicate_comparison_score_more_tags
             
         
-        statement = '{} tags {} {} tags'.format( HydrusNumbers.ToHumanInt( s_num_tags ), operator, HydrusNumbers.ToHumanInt( c_num_tags ) )
+        statement = '{} tags {} {} tags'.format(HydrusNumbers.to_human_int(s_num_tags), operator, HydrusNumbers.to_human_int(c_num_tags))
         
     
     statements_and_scores[ 'num_tags' ] = ( statement, score )
@@ -547,7 +547,7 @@ def GetDuplicateComparisonStatementsFast( shown_media_result: ClientMediaResult.
                     percentage_difference = ( s_duration_s / c_duration_s ) - 1.0
                     
                 
-                statement = f'{HydrusTime.TimeDeltaToPrettyTimeDelta( s_duration_s )} {operator} {HydrusTime.TimeDeltaToPrettyTimeDelta( c_duration_s )} ({sign}{HydrusNumbers.FloatToPercentage(percentage_difference)})'
+                statement = f'{HydrusTime.TimeDeltaToPrettyTimeDelta( s_duration_s )} {operator} {HydrusTime.TimeDeltaToPrettyTimeDelta( c_duration_s )} ({sign}{HydrusNumbers.float_to_percentage(percentage_difference)})'
                 
             
         elif s_has_duration:

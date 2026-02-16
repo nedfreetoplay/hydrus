@@ -604,7 +604,7 @@ class JobScheduler( threading.Thread ):
         
         with self._waiting_lock:
             
-            return HydrusNumbers.ToHumanInt( len( self._waiting ) ) + ' jobs'
+            return HydrusNumbers.to_human_int(len(self._waiting)) + ' jobs'
             
         
     
@@ -624,7 +624,7 @@ class JobScheduler( threading.Thread ):
             
             job_lines = [ repr( job ) for job in self._waiting ]
             
-            lines = [ HydrusNumbers.ToHumanInt( num_jobs ) + ' jobs:' ] + job_lines
+            lines = [HydrusNumbers.to_human_int(num_jobs) + ' jobs:'] + job_lines
             
             text = '\n'.join( lines )
             

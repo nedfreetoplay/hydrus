@@ -1486,7 +1486,7 @@ class Content( HydrusSerialisable.SerialisableBase ):
             
             hashes = self._content_data
             
-            text = 'FILES: ' + HydrusNumbers.ToHumanInt( len( hashes ) ) + ' files'
+            text = 'FILES: ' + HydrusNumbers.to_human_int(len(hashes)) + ' files'
             
         elif self._content_type == HC.CONTENT_TYPE_MAPPING:
             
@@ -1498,7 +1498,7 @@ class Content( HydrusSerialisable.SerialisableBase ):
             
             ( tag, hashes ) = self._content_data
             
-            text = 'MAPPINGS: ' + tag + ' for ' + HydrusNumbers.ToHumanInt( len( hashes ) ) + ' files'
+            text = 'MAPPINGS: ' + tag + ' for ' + HydrusNumbers.to_human_int(len(hashes)) + ' files'
             
         elif self._content_type == HC.CONTENT_TYPE_TAG_PARENTS:
             
@@ -2566,11 +2566,11 @@ class Petition( HydrusSerialisable.SerialisableBase ):
         
         if self._petition_header.content_type == HC.CONTENT_TYPE_MAPPINGS and num_sub_petitions > 1:
             
-            return '{} mappings in {} petitions'.format( HydrusNumbers.ToHumanInt( self.GetActualContentWeight() ), HydrusNumbers.ToHumanInt( num_sub_petitions ) )
+            return '{} mappings in {} petitions'.format(HydrusNumbers.to_human_int(self.GetActualContentWeight()), HydrusNumbers.to_human_int(num_sub_petitions))
             
         else:
             
-            return '{} {}'.format( HydrusNumbers.ToHumanInt( self.GetActualContentWeight() ), HC.content_type_string_lookup[ self._petition_header.content_type ] )
+            return '{} {}'.format(HydrusNumbers.to_human_int(self.GetActualContentWeight()), HC.content_type_string_lookup[ self._petition_header.content_type])
             
         
     

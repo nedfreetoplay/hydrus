@@ -221,14 +221,14 @@ class FileFilteringImportOptions( HydrusSerialisable.SerialisableBase ):
             
             ( width, height ) = self._min_resolution
             
-            statements.append( 'excluding < ( ' + HydrusNumbers.ToHumanInt( width ) + ' x ' + HydrusNumbers.ToHumanInt( height ) + ' )' )
+            statements.append( 'excluding < ( ' + HydrusNumbers.to_human_int(width) + ' x ' + HydrusNumbers.to_human_int(height) + ' )')
             
         
         if self._max_resolution is not None:
             
             ( width, height ) = self._max_resolution
             
-            statements.append( 'excluding > ( ' + HydrusNumbers.ToHumanInt( width ) + ' x ' + HydrusNumbers.ToHumanInt( height ) + ' )' )
+            statements.append( 'excluding > ( ' + HydrusNumbers.to_human_int(width) + ' x ' + HydrusNumbers.to_human_int(height) + ' )')
             
         
         #

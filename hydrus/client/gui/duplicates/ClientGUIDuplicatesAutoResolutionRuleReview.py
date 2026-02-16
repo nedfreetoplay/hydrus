@@ -254,7 +254,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         if len( selected_pairs ) > 5:
             
-            message = f'Are you sure you want to approve the {HydrusNumbers.ToHumanInt( len( selected_pairs ) )} pairs?'
+            message = f'Are you sure you want to approve the {HydrusNumbers.to_human_int(len(selected_pairs))} pairs?'
             
             result = ClientGUIDialogsQuick.GetYesNo( self, message )
             
@@ -303,7 +303,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             self._pending_action_pairs = [ pair for pair in self._pending_action_pairs if pair not in selected_pairs ]
             
-            self._pending_actions_label.setText( f'{HydrusNumbers.ToHumanInt(len(self._pending_action_pairs))} pairs remaining.' )
+            self._pending_actions_label.setText( f'{HydrusNumbers.to_human_int(len(self._pending_action_pairs))} pairs remaining.')
             
             self._pending_actions_pair_list.SetData( self._pending_action_pairs )
             
@@ -421,7 +421,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         if len( selected_pairs ) > 5:
             
-            message = f'Are you sure you want to deny the {HydrusNumbers.ToHumanInt( len( selected_pairs ) )} pairs?'
+            message = f'Are you sure you want to deny the {HydrusNumbers.to_human_int(len(selected_pairs))} pairs?'
             
             result = ClientGUIDialogsQuick.GetYesNo( self, message )
             
@@ -470,7 +470,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             self._pending_action_pairs = [ pair for pair in self._pending_action_pairs if pair not in selected_pairs ]
             
-            self._pending_actions_label.setText( f'{HydrusNumbers.ToHumanInt(len(self._pending_action_pairs))} pairs remaining.' )
+            self._pending_actions_label.setText( f'{HydrusNumbers.to_human_int(len(self._pending_action_pairs))} pairs remaining.')
             
             self._pending_actions_pair_list.SetData( self._pending_action_pairs )
             
@@ -560,7 +560,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             self._actioned_pairs_with_info = actioned_pairs_with_info
             
-            self._actioned_pairs_label.setText( f'Found {HydrusNumbers.ToHumanInt(len(actioned_pairs_with_info))} pairs.' )
+            self._actioned_pairs_label.setText( f'Found {HydrusNumbers.to_human_int(len(actioned_pairs_with_info))} pairs.')
             
             self._actioned_pairs_pair_list.SetData( self._actioned_pairs_with_info )
             
@@ -590,7 +590,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             self._denied_pairs_with_info = denied_pairs_with_info
             
-            self._denied_pairs_label.setText( f'Found {HydrusNumbers.ToHumanInt(len(denied_pairs_with_info))} pairs.' )
+            self._denied_pairs_label.setText( f'Found {HydrusNumbers.to_human_int(len(denied_pairs_with_info))} pairs.')
             
             self._denied_pairs_pair_list.SetData( self._denied_pairs_with_info )
             
@@ -620,7 +620,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             self._pending_action_pairs = pending_action_pairs
             
-            self._pending_actions_label.setText( f'Found {HydrusNumbers.ToHumanInt(len(pending_action_pairs))} pairs.' )
+            self._pending_actions_label.setText( f'Found {HydrusNumbers.to_human_int(len(pending_action_pairs))} pairs.')
             
             self._pending_actions_pair_list.SetData( self._pending_action_pairs )
             
@@ -714,7 +714,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         all_hashes = set( itertools.chain.from_iterable( [ ( media_result_1.GetHash(), media_result_2.GetHash() ) for ( media_result_1, media_result_2 ) in selected_pairs ] ) )
         
-        message = f'Are you sure you want to undo the auto-resolution actions covering these {HydrusNumbers.ToHumanInt( len( all_hashes ) )} files? This is a serious action and will reset all the duplicate file relationships these files have.\n\nThe only way to do this reliably is to completely dissolve the respective duplicate group(s), which may undo many other decisions. All the files in the duplicate group(s) (not just what you selected) will be queued up for search in the potential duplicates system once more. Any files that are in trash will be undeleted. This action will not remove the entries from this audit log nor undo any content merge.'
+        message = f'Are you sure you want to undo the auto-resolution actions covering these {HydrusNumbers.to_human_int(len(all_hashes))} files? This is a serious action and will reset all the duplicate file relationships these files have.\n\nThe only way to do this reliably is to completely dissolve the respective duplicate group(s), which may undo many other decisions. All the files in the duplicate group(s) (not just what you selected) will be queued up for search in the potential duplicates system once more. Any files that are in trash will be undeleted. This action will not remove the entries from this audit log nor undo any content merge.'
         
         result = ClientGUIDialogsQuick.GetYesNo( self, message )
         
@@ -744,7 +744,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             return
             
         
-        message = f'Are you sure you want to undo your deny decisions for these {HydrusNumbers.ToHumanInt( len( selected_pairs ) )} pairs? They will be queued up for re-search.'
+        message = f'Are you sure you want to undo your deny decisions for these {HydrusNumbers.to_human_int(len(selected_pairs))} pairs? They will be queued up for re-search.'
         
         result = ClientGUIDialogsQuick.GetYesNo( self, message )
         

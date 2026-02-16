@@ -1070,7 +1070,7 @@ class EditURLClassPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 if True in ( string_match.Matches( n ) for n in ( '0', '1', '10', '100', '42' ) ):
                     
-                    choices.append( ( HydrusNumbers.IntToPrettyOrdinalString( index + 1 ) + ' path component', ( ClientNetworkingURLClass.GALLERY_INDEX_TYPE_PATH_COMPONENT, index ) ) )
+                    choices.append((HydrusNumbers.int_to_pretty_ordinal_string(index + 1) + ' path component', (ClientNetworkingURLClass.GALLERY_INDEX_TYPE_PATH_COMPONENT, index)))
                     
                 
             

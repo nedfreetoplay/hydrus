@@ -627,7 +627,7 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
             
             if len( new_rules ) > self.WOAH_TOO_MANY_RULES_THRESHOLD:
                 
-                summary_components.append( 'Added {} rules'.format( HydrusNumbers.ToHumanInt( len( new_rules ) ) ) )
+                summary_components.append( 'Added {} rules'.format(HydrusNumbers.to_human_int(len(new_rules))))
                 
             else:
                 
@@ -641,7 +641,7 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
             
             if len( new_rules ) > self.WOAH_TOO_MANY_RULES_THRESHOLD:
                 
-                summary_components.append( 'Changed {} rules'.format( HydrusNumbers.ToHumanInt( len( new_rules ) ) ) )
+                summary_components.append( 'Changed {} rules'.format(HydrusNumbers.to_human_int(len(new_rules))))
                 
             else:
                 
@@ -655,7 +655,7 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
             
             if len( new_rules ) > self.WOAH_TOO_MANY_RULES_THRESHOLD:
                 
-                summary_components.append( 'Deleted {} rules'.format( HydrusNumbers.ToHumanInt( len( new_rules ) ) ) )
+                summary_components.append( 'Deleted {} rules'.format(HydrusNumbers.to_human_int(len(new_rules))))
                 
             else:
                 
@@ -762,7 +762,7 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
                     
                     if len( blacklist ) > self.WOAH_TOO_MANY_RULES_THRESHOLD:
                         
-                        text = 'blacklisting on {} rules'.format( HydrusNumbers.ToHumanInt( len( blacklist ) ) )
+                        text = 'blacklisting on {} rules'.format(HydrusNumbers.to_human_int(len(blacklist)))
                         
                     else:
                         
@@ -774,7 +774,7 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
                     
                     if len( whitelist ) > self.WOAH_TOO_MANY_RULES_THRESHOLD:
                         
-                        text += ' except {} other rules'.format( HydrusNumbers.ToHumanInt( len( whitelist ) ) )
+                        text += ' except {} other rules'.format(HydrusNumbers.to_human_int(len(whitelist)))
                         
                     else:
                         
@@ -830,7 +830,7 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
                         
                         if len( whitelist ) > self.WOAH_TOO_MANY_RULES_THRESHOLD:
                             
-                            text = 'only allowing on {} rules'.format( HydrusNumbers.ToHumanInt( len( whitelist ) ) )
+                            text = 'only allowing on {} rules'.format(HydrusNumbers.to_human_int(len(whitelist)))
                             
                         else:
                             
@@ -841,7 +841,7 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
                             
                             if len( functional_blacklist_set ) > self.WOAH_TOO_MANY_RULES_THRESHOLD:
                                 
-                                text += ' while still disllowing {} rules'.format( HydrusNumbers.ToHumanInt( len( functional_blacklist_set ) ) )
+                                text += ' while still disllowing {} rules'.format(HydrusNumbers.to_human_int(len(functional_blacklist_set)))
                                 
                             else:
                                 
@@ -863,7 +863,7 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
                     
                     if len( whitelist ) > self.WOAH_TOO_MANY_RULES_THRESHOLD:
                         
-                        text += ' and {} other rules'.format( HydrusNumbers.ToHumanInt( len( functional_whitelist_set ) ) )
+                        text += ' and {} other rules'.format(HydrusNumbers.to_human_int(len(functional_whitelist_set)))
                         
                     elif len( whitelist ) > 0:
                         
@@ -874,7 +874,7 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
                         
                         if len( functional_blacklist_set ) > self.WOAH_TOO_MANY_RULES_THRESHOLD:
                             
-                            text += ' while still disllowing {} rules'.format( HydrusNumbers.ToHumanInt( len( functional_blacklist_set ) ) )
+                            text += ' while still disllowing {} rules'.format(HydrusNumbers.to_human_int(len(functional_blacklist_set)))
                             
                         else:
                             
@@ -886,7 +886,7 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
                     
                     if len( blacklist ) > self.WOAH_TOO_MANY_RULES_THRESHOLD:
                         
-                        text = 'allowing all tags except on {} rules'.format( HydrusNumbers.ToHumanInt( len( blacklist ) ) )
+                        text = 'allowing all tags except on {} rules'.format(HydrusNumbers.to_human_int(len(blacklist)))
                         
                     else:
                         
@@ -895,7 +895,7 @@ class TagFilter( HydrusSerialisable.SerialisableBase ):
                     
                     if len( functional_whitelist_set ) > self.WOAH_TOO_MANY_RULES_THRESHOLD:
                         
-                        text += ' while still allowing {} rules'.format( HydrusNumbers.ToHumanInt( len( functional_whitelist_set ) ) )
+                        text += ' while still allowing {} rules'.format(HydrusNumbers.to_human_int(len(functional_whitelist_set)))
                         
                     elif len( functional_whitelist_set ) > 0:
                         

@@ -378,7 +378,7 @@ class NumberTest( HydrusSerialisable.SerialisableBase ):
         
         if absolute_number_renderer is None:
             
-            absolute_number_renderer = HydrusNumbers.ToHumanInt
+            absolute_number_renderer = HydrusNumbers.to_human_int
             
         
         if replacement_value_string is None:
@@ -403,7 +403,7 @@ class NumberTest( HydrusSerialisable.SerialisableBase ):
         
         if self.operator == NUMBER_TEST_OPERATOR_APPROXIMATE_PERCENT:
             
-            result += f' {HC.UNICODE_PLUS_OR_MINUS}{HydrusNumbers.FloatToPercentage(self.extra_value)}'
+            result += f' {HC.UNICODE_PLUS_OR_MINUS}{HydrusNumbers.float_to_percentage(self.extra_value)}'
             
         elif self.operator == NUMBER_TEST_OPERATOR_APPROXIMATE_ABSOLUTE:
             

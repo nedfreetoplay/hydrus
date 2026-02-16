@@ -254,7 +254,7 @@ class ShortcutsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         size = len( shortcuts )
         
-        return ( pretty_name, HydrusNumbers.ToHumanInt( size ) )
+        return ( pretty_name, HydrusNumbers.to_human_int(size))
         
     
     def _GetExistingCustomShortcutNames( self ):

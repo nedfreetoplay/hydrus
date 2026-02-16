@@ -1081,7 +1081,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
                         
                     elif rearrange_type == REARRANGE_THUMBNAILS_TYPE_FIXED:
                         
-                        s = f'{s} (to index {HydrusNumbers.ToHumanInt(rearrange_data)})'
+                        s = f'{s} (to index {HydrusNumbers.to_human_int(rearrange_data)})'
                         
                     
                 

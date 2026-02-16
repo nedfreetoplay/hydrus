@@ -38,7 +38,7 @@ class ThumbnailsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         self._thumbnail_dpr_percentage = ClientGUICommon.BetterSpinBox( thumbnail_appearance_box, min = 100, max = 800 )
         tt = 'If your OS runs at an UI scale greater than 100%, mirror it here and your thumbnails will look crisp. If you have multiple monitors at different UI scales, or you change UI scale regularly, set it to the largest one you use.'
         tt += '\n' * 2
-        tt += 'I believe the UI scale on the monitor this dialog opened on was {}'.format( HydrusNumbers.FloatToPercentage( self.devicePixelRatio() ) )
+        tt += 'I believe the UI scale on the monitor this dialog opened on was {}'.format(HydrusNumbers.float_to_percentage(self.devicePixelRatio()))
         self._thumbnail_dpr_percentage.setToolTip( ClientGUIFunctions.WrapToolTip( tt ) )
         
         self._video_thumbnail_percentage_in = ClientGUICommon.BetterSpinBox( thumbnail_appearance_box, min=0, max=100 )

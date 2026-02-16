@@ -565,7 +565,7 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
                 
                 self._wipe_workspace.setToolTip( ClientGUIFunctions.WrapToolTip( message ) )
                 
-                self._count_st.setText( f'{HydrusNumbers.ToHumanInt(len(pairs))} pairs.' )
+                self._count_st.setText( f'{HydrusNumbers.to_human_int(len(pairs))} pairs.')
                 
                 self._tag_parents.SetData( pairs )
                 

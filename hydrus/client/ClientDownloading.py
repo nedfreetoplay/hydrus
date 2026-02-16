@@ -268,7 +268,7 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
             
             total_done = total_hashes_in_this_run - len( hashes_still_to_download_in_this_run )
             
-            job_status.SetStatusText( 'downloading files: {}'.format( HydrusNumbers.ValueRangeToPrettyString( total_done, total_hashes_in_this_run ) ) )
+            job_status.SetStatusText( 'downloading files: {}'.format(HydrusNumbers.value_range_to_pretty_string(total_done, total_hashes_in_this_run)))
             job_status.SetGauge( total_done, total_hashes_in_this_run )
             
             try:
@@ -379,7 +379,7 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     if total_successful_hashes_in_this_run > 0:
                         
-                        job_status.SetStatusText( HydrusNumbers.ToHumanInt( total_successful_hashes_in_this_run ) + ' files downloaded' )
+                        job_status.SetStatusText(HydrusNumbers.to_human_int(total_successful_hashes_in_this_run) + ' files downloaded')
                         
                     
                     job_status_pub_job.Cancel()

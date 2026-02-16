@@ -444,7 +444,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
         
         if len( viable_petitions ) > 0:
             
-            text = 'Approve all the content in these {} petitions?'.format( HydrusNumbers.ToHumanInt( len( viable_petitions ) ) )
+            text = 'Approve all the content in these {} petitions?'.format(HydrusNumbers.to_human_int(len(viable_petitions)))
             
             result = ClientGUIDialogsQuick.GetYesNo( self, text )
             
@@ -726,7 +726,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
         
         if len( viable_petitions ) > 0:
             
-            text = 'Deny all the content in these {} petitions?'.format( HydrusNumbers.ToHumanInt( len( viable_petitions ) ) )
+            text = 'Deny all the content in these {} petitions?'.format(HydrusNumbers.to_human_int(len(viable_petitions)))
             
             result = ClientGUIDialogsQuick.GetYesNo( self, text )
             
@@ -832,7 +832,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
             
             ( st, button ) = self._petition_types_to_controls[ petition_type ]
             
-            st.setText( '{} petitions'.format( HydrusNumbers.ToHumanInt( count ) ) )
+            st.setText( '{} petitions'.format(HydrusNumbers.to_human_int(count)))
             
             button.setEnabled( count > 0 )
             
@@ -1561,7 +1561,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
                         
                         text = '\n'.join( copyable_items )
                         
-                        ClientGUIMenus.AppendMenuItem( menu, 'copy {} tags'.format( HydrusNumbers.ToHumanInt( len( copyable_items ) ) ), 'Copy this tag.', CG.client_controller.pub, 'clipboard', 'text', text )
+                        ClientGUIMenus.AppendMenuItem(menu, 'copy {} tags'.format(HydrusNumbers.to_human_int(len(copyable_items))), 'Copy this tag.', CG.client_controller.pub, 'clipboard', 'text', text)
                         
                     
                 
@@ -1853,7 +1853,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
                                         
                                     
                                 
-                                job_status.SetStatusText( HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do ) )
+                                job_status.SetStatusText(HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do))
                                 job_status.SetGauge( num_done, num_to_do )
                                 
                             

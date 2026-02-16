@@ -188,9 +188,9 @@ def report_content_speed_to_job_status( job_status, rows_done, total_rows, preci
     
     it_took = HydrusTime.GetNowPrecise() - precise_timestamp
     
-    rows_s = HydrusNumbers.ToHumanInt( int( num_rows / it_took ) )
+    rows_s = HydrusNumbers.to_human_int(int(num_rows / it_took))
     
-    popup_message = 'content row ' + HydrusNumbers.ValueRangeToPrettyString( rows_done, total_rows ) + ': processing ' + row_name + ' at ' + rows_s + ' rows/s'
+    popup_message = 'content row ' + HydrusNumbers.value_range_to_pretty_string(rows_done, total_rows) + ': processing ' + row_name + ' at ' + rows_s + ' rows/s'
     
     CG.client_controller.frame_splash_status.SetText( popup_message, print_to_log = False )
     job_status.SetStatusText( popup_message, 2 )
@@ -199,7 +199,7 @@ def report_speed_to_job_status( job_status, precise_timestamp, num_rows, row_nam
     
     it_took = HydrusTime.GetNowPrecise() - precise_timestamp
     
-    rows_s = HydrusNumbers.ToHumanInt( int( num_rows / it_took ) )
+    rows_s = HydrusNumbers.to_human_int(int(num_rows / it_took))
     
     popup_message = 'processing ' + row_name + ' at ' + rows_s + ' rows/s'
     
@@ -216,9 +216,9 @@ def report_speed_to_log( precise_timestamp, num_rows, row_name ):
     
     it_took = HydrusTime.GetNowPrecise() - precise_timestamp
     
-    rows_s = HydrusNumbers.ToHumanInt( int( num_rows / it_took ) )
+    rows_s = HydrusNumbers.to_human_int(int(num_rows / it_took))
     
-    summary = 'processed ' + HydrusNumbers.ToHumanInt( num_rows ) + ' ' + row_name + ' at ' + rows_s + ' rows/s'
+    summary = 'processed ' + HydrusNumbers.to_human_int(num_rows) + ' ' + row_name + ' at ' + rows_s + ' rows/s'
     
     HydrusData.print_text(summary)
     
@@ -888,7 +888,7 @@ class DB( HydrusDB.HydrusDB ):
             
             self.modules_tag_search.AddTags( file_service_id, tag_service_id, group_of_tag_ids )
             
-            message = HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do )
+            message = HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do)
             
             self._controller.frame_splash_status.SetSubtext( message )
             
@@ -1069,7 +1069,7 @@ class DB( HydrusDB.HydrusDB ):
                             # with fingers crossed this magically corrects all sorts of stuff
                             self.modules_content_updates.AddFiles( umbrella_master_service_id, import_rows )
                             
-                            HydrusData.show_text('Found and recovered {} records for files that were safely in specific component services components but not the master "{}". I have opened a new page with these files--they may have been faulty imports or faulty deletes, so you probably need to give them a look.'.format(HydrusNumbers.ToHumanInt(len(in_components_not_in_master)), description))
+                            HydrusData.show_text('Found and recovered {} records for files that were safely in specific component services components but not the master "{}". I have opened a new page with these files--they may have been faulty imports or faulty deletes, so you probably need to give them a look.'.format(HydrusNumbers.to_human_int(len(in_components_not_in_master)), description))
                             
                             service_key = self.modules_services.GetServiceKey( umbrella_master_service_id )
                             
@@ -1106,7 +1106,7 @@ class DB( HydrusDB.HydrusDB ):
                         
                         self.modules_hashes_local_cache.DropHashIdsFromCache( in_components_not_in_master )
                         
-                        HydrusData.show_text('Found and deleted {} records for files that were in specific service components but not the master "{}".'.format(HydrusNumbers.ToHumanInt(len(in_components_not_in_master)), description))
+                        HydrusData.show_text('Found and deleted {} records for files that were in specific service components but not the master "{}".'.format(HydrusNumbers.to_human_int(len(in_components_not_in_master)), description))
                         
                     
                 
@@ -1125,7 +1125,7 @@ class DB( HydrusDB.HydrusDB ):
                     
                     self.modules_content_updates.DeleteFiles( umbrella_master_service_id, in_master_not_in_components )
                     
-                    HydrusData.show_text('Found and deleted {} records for files that were in the master "{}" but not it its specific service components.'.format(HydrusNumbers.ToHumanInt(len(in_master_not_in_components)), description))
+                    HydrusData.show_text('Found and deleted {} records for files that were in the master "{}" but not it its specific service components.'.format(HydrusNumbers.to_human_int(len(in_master_not_in_components)), description))
                     
                 
             
@@ -1611,7 +1611,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 self._controller.pub( 'notify_new_pending' )
                 
-                HydrusData.show_text('Found {} bad mappings! They _should_ be deleted, and your pending counts should be updated.'.format(HydrusNumbers.ToHumanInt(total_fixed)))
+                HydrusData.show_text('Found {} bad mappings! They _should_ be deleted, and your pending counts should be updated.'.format(HydrusNumbers.to_human_int(total_fixed)))
                 
             
             job_status.DeleteStatusText( level = 2 )
@@ -2562,7 +2562,7 @@ class DB( HydrusDB.HydrusDB ):
         
         if len( names_to_analyze ) > 0:
             
-            jobs_to_do.append( 'analyze ' + HydrusNumbers.ToHumanInt( len( names_to_analyze ) ) + ' table_names' )
+            jobs_to_do.append( 'analyze ' + HydrusNumbers.to_human_int(len(names_to_analyze)) + ' table_names')
             
         
         return jobs_to_do
@@ -3609,7 +3609,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             else:
                 
-                message += 'at most ' + HydrusNumbers.ToHumanInt( limit )
+                message += 'at most ' + HydrusNumbers.to_human_int(limit)
                 
             
             message += ' trash files,'
@@ -3619,7 +3619,7 @@ class DB( HydrusDB.HydrusDB ):
                 message += ' with minimum age ' + HydrusTime.TimestampToPrettyTimeDelta( timestamp_cutoff, just_now_threshold = 0 ) + ','
                 
             
-            message += ' I found ' + HydrusNumbers.ToHumanInt( len( hash_ids ) ) + '.'
+            message += ' I found ' + HydrusNumbers.to_human_int(len(hash_ids)) + '.'
             
             HydrusData.show_text(message)
             
@@ -6266,7 +6266,7 @@ class DB( HydrusDB.HydrusDB ):
         
         for ( group_of_tag_ids, num_done, num_to_do ) in HydrusDB.read_large_id_query_in_separate_chunks(self._c, select_statement, BLOCK_SIZE):
             
-            message = 'Scanning tags: {} - Bad Found: {}'.format( HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do ), HydrusNumbers.ToHumanInt( bad_tag_count ) )
+            message = 'Scanning tags: {} - Bad Found: {}'.format(HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do), HydrusNumbers.to_human_int(bad_tag_count))
             
             if job_status is not None:
                 
@@ -6311,7 +6311,7 @@ class DB( HydrusDB.HydrusDB ):
         
         for ( i, ( tag_id, tag, cleaned_tag ) ) in enumerate( invalid_tag_ids_and_tags ):
             
-            message = 'Fixing bad tags: {}'.format( HydrusNumbers.ValueRangeToPrettyString( i + 1, bad_tag_count ) )
+            message = 'Fixing bad tags: {}'.format(HydrusNumbers.value_range_to_pretty_string(i + 1, bad_tag_count))
             
             if job_status is not None:
                 
@@ -6377,7 +6377,7 @@ class DB( HydrusDB.HydrusDB ):
                     
                 else:
                     
-                    message = 'Invalid tag scanning: {} bad tags found and fixed! They have been written to the log.'.format( HydrusNumbers.ToHumanInt( bad_tag_count ) )
+                    message = 'Invalid tag scanning: {} bad tags found and fixed! They have been written to the log.'.format(HydrusNumbers.to_human_int(bad_tag_count))
                     
                     self._cursor_transaction_wrapper.pub_after_job( 'notify_force_refresh_tags_data' )
                     
@@ -6426,9 +6426,9 @@ class DB( HydrusDB.HydrusDB ):
                 
                 if job_status is not None:
                     
-                    message = 'Doing "{}": {}'.format( name, HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do ) )
+                    message = 'Doing "{}": {}'.format(name, HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do))
                     message += '\n' * 2
-                    message += 'Total rows recovered: {}'.format( HydrusNumbers.ToHumanInt( num_rows_recovered ) )
+                    message += 'Total rows recovered: {}'.format(HydrusNumbers.to_human_int(num_rows_recovered))
                     
                     job_status.SetStatusText( message )
                     
@@ -6460,7 +6460,7 @@ class DB( HydrusDB.HydrusDB ):
         
         if job_status is not None:
             
-            job_status.SetStatusText( 'Done! Rows recovered: {}'.format( HydrusNumbers.ToHumanInt( num_rows_recovered ) ) )
+            job_status.SetStatusText( 'Done! Rows recovered: {}'.format(HydrusNumbers.to_human_int(num_rows_recovered)))
             
             job_status.Finish()
             
@@ -6568,7 +6568,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 for ( group_of_ids, num_done, num_to_do ) in HydrusDB.read_large_id_query_in_separate_chunks(self._c, 'SELECT hash_id FROM {};'.format(table_name), 1024):
                     
-                    message = 'repopulating {} {}'.format( HydrusNumbers.ValueRangeToPrettyString( i + 1, len( file_service_ids ) ), HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do ) )
+                    message = 'repopulating {} {}'.format(HydrusNumbers.value_range_to_pretty_string(i + 1, len(file_service_ids)), HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do))
                     
                     job_status.SetStatusText( message )
                     self._controller.frame_splash_status.SetSubtext( message )
@@ -6599,14 +6599,14 @@ class DB( HydrusDB.HydrusDB ):
     
     def _report_overupdated_db(self, version):
         
-        message = 'This client\'s database is version {}, but the software is version {}! This situation only sometimes works, and when it does not, it can break things! If you are not sure what is going on, or if you accidentally installed an older version of the software to a newer database, force-kill this client in Task Manager right now. Otherwise, ok this dialog box to continue.'.format( HydrusNumbers.ToHumanInt( version ), HydrusNumbers.ToHumanInt( HC.SOFTWARE_VERSION ) )
+        message = 'This client\'s database is version {}, but the software is version {}! This situation only sometimes works, and when it does not, it can break things! If you are not sure what is going on, or if you accidentally installed an older version of the software to a newer database, force-kill this client in Task Manager right now. Otherwise, ok this dialog box to continue.'.format(HydrusNumbers.to_human_int(version), HydrusNumbers.to_human_int(HC.SOFTWARE_VERSION))
         
         self._controller.blocking_safe_show_message(message)
         
     
     def _report_underupdated_db(self, version):
         
-        message = 'This client\'s database is version {}, but the software is significantly later, {}! Trying to update many versions in one go can be dangerous due to bitrot. I suggest you try at most to only do 10 versions at once. If you want to try a big jump anyway, you should make sure you have a backup beforehand so you can roll back to it in case the update makes your db unbootable. If you would rather try smaller updates, or you do not have a backup, force-kill this client in Task Manager right now. Otherwise, ok this dialog box to continue.'.format( HydrusNumbers.ToHumanInt( version ), HydrusNumbers.ToHumanInt( HC.SOFTWARE_VERSION ) )
+        message = 'This client\'s database is version {}, but the software is significantly later, {}! Trying to update many versions in one go can be dangerous due to bitrot. I suggest you try at most to only do 10 versions at once. If you want to try a big jump anyway, you should make sure you have a backup beforehand so you can roll back to it in case the update makes your db unbootable. If you would rather try smaller updates, or you do not have a backup, force-kill this client in Task Manager right now. Otherwise, ok this dialog box to continue.'.format(HydrusNumbers.to_human_int(version), HydrusNumbers.to_human_int(HC.SOFTWARE_VERSION))
         
         self._controller.blocking_safe_show_message(message)
         
@@ -6864,7 +6864,7 @@ class DB( HydrusDB.HydrusDB ):
                         
                         problems_found = True
                         
-                        HydrusData.show_text('{} surplus files in {}_{}!'.format(HydrusNumbers.ToHumanInt(len(hash_ids_in_this_cache_but_not_in_file_service)), file_service_id, tag_service_id))
+                        HydrusData.show_text('{} surplus files in {}_{}!'.format(HydrusNumbers.to_human_int(len(hash_ids_in_this_cache_but_not_in_file_service)), file_service_id, tag_service_id))
                         
                         with self._make_temporary_integer_table(hash_ids_in_this_cache_but_not_in_file_service, 'hash_id') as temp_hash_id_table_name:
                             
@@ -6890,7 +6890,7 @@ class DB( HydrusDB.HydrusDB ):
                         
                         problems_found = True
                         
-                        HydrusData.show_text('{} missing files in {}_{}!'.format(HydrusNumbers.ToHumanInt(len(hash_ids_in_file_service_and_not_in_cache_that_have_tags)), file_service_id, tag_service_id))
+                        HydrusData.show_text('{} missing files in {}_{}!'.format(HydrusNumbers.to_human_int(len(hash_ids_in_file_service_and_not_in_cache_that_have_tags)), file_service_id, tag_service_id))
                         
                         with self._make_temporary_integer_table(hash_ids_in_file_service_and_not_in_cache_that_have_tags, 'hash_id') as temp_hash_id_table_name:
                             
@@ -8541,7 +8541,7 @@ class DB( HydrusDB.HydrusDB ):
             
             def ask_what_to_do_transparency_recheck_644( num_transparent_files ):
                 
-                message = f'Hey, I have changed how I detect transparency in files. Files that only have a barely-noticeable handful of 98% opaque pixels are now considered non-transparent. You have {HydrusNumbers.ToHumanInt(num_transparent_files)} images and animations that are currently considered as having transparency. Do you want to schedule a transparency-rescan for all of them to clear out the previous false positives?'
+                message = f'Hey, I have changed how I detect transparency in files. Files that only have a barely-noticeable handful of 98% opaque pixels are now considered non-transparent. You have {HydrusNumbers.to_human_int(num_transparent_files)} images and animations that are currently considered as having transparency. Do you want to schedule a transparency-rescan for all of them to clear out the previous false positives?'
                 message += '\n' * 2
                 message += 'I recommend you say yes unless the number here is truly huge and you do not want hydrus to be eventually loading all those files (e.g. if your files are stored in the cloud and you need to keep bandwidth usage down).'
                 
@@ -8798,7 +8798,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             
         
-        self._controller.frame_splash_status.SetTitleText( 'updated db to v{}'.format( HydrusNumbers.ToHumanInt( version + 1 ) ) )
+        self._controller.frame_splash_status.SetTitleText( 'updated db to v{}'.format(HydrusNumbers.to_human_int(version + 1)))
         
         self._execute('UPDATE version SET version = ?;', (version + 1,))
         

@@ -276,11 +276,11 @@ class PredicateCount( object ):
         
         if self.min_current_count > 0 or self.max_current_count > 0:
             
-            number_text = HydrusNumbers.ToHumanInt( self.min_current_count )
+            number_text = HydrusNumbers.to_human_int(self.min_current_count)
             
             if self.max_current_count > self.min_current_count:
                 
-                number_text = '{}-{}'.format( number_text, HydrusNumbers.ToHumanInt( self.max_current_count ) )
+                number_text = '{}-{}'.format(number_text, HydrusNumbers.to_human_int(self.max_current_count))
                 
             
             suffix_components.append( '({})'.format( number_text ) )
@@ -288,11 +288,11 @@ class PredicateCount( object ):
         
         if self.min_pending_count > 0 or self.max_pending_count > 0:
             
-            number_text = HydrusNumbers.ToHumanInt( self.min_pending_count )
+            number_text = HydrusNumbers.to_human_int(self.min_pending_count)
             
             if self.max_pending_count > self.min_pending_count:
                 
-                number_text = '{}-{}'.format( number_text, HydrusNumbers.ToHumanInt( self.max_pending_count ) )
+                number_text = '{}-{}'.format(number_text, HydrusNumbers.to_human_int(self.max_pending_count))
                 
             
             suffix_components.append( '(+{})'.format( number_text ) )
@@ -2004,7 +2004,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                     
                 elif self._predicate_type == PREDICATE_TYPE_SYSTEM_FRAMERATE:
                     
-                    absolute_number_renderer = lambda s: f'{HydrusNumbers.ToHumanInt(s)}fps'
+                    absolute_number_renderer = lambda s: f'{HydrusNumbers.to_human_int(s)}fps'
                     
                     base = 'framerate'
                     has_phrase = 'has framerate'
@@ -2122,7 +2122,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                             base = 'number of {} tags'.format( ClientTags.RenderNamespaceForUser( namespace ) )
                             
                         
-                        base += ' {} {}'.format( operator, HydrusNumbers.ToHumanInt( value ) )
+                        base += ' {} {}'.format(operator, HydrusNumbers.to_human_int(value))
                         
                     
                 
@@ -2161,7 +2161,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                     
                     ( operator, size, unit ) = self._value
                     
-                    base += ' ' + operator + ' ' + str( size ) + HydrusNumbers.IntToUnit( unit )
+                    base += ' ' + operator + ' ' + str( size ) + HydrusNumbers.int_to_unit(unit)
                     
                 
             elif self._predicate_type == PREDICATE_TYPE_SYSTEM_LIMIT:
@@ -2172,7 +2172,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                     
                     value = self._value
                     
-                    base += ' is ' + HydrusNumbers.ToHumanInt( value )
+                    base += ' is ' + HydrusNumbers.to_human_int(value)
                     
                 
             elif self._predicate_type in ( PREDICATE_TYPE_SYSTEM_IMPORT_TIME, PREDICATE_TYPE_SYSTEM_LAST_VIEWED_TIME, PREDICATE_TYPE_SYSTEM_MODIFIED_TIME, PREDICATE_TYPE_SYSTEM_ARCHIVED_TIME  ):
@@ -2213,7 +2213,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                             
                             if quantity > 0:
                                 
-                                str_component = '{} {}'.format( HydrusNumbers.ToHumanInt( quantity ), label )
+                                str_component = '{} {}'.format(HydrusNumbers.to_human_int(quantity), label)
                                 
                                 if quantity > 1:
                                     
@@ -2291,7 +2291,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                     
                     ( operator, num_pixels, unit ) = self._value
                     
-                    base += ' ' + operator + ' ' + str( num_pixels ) + ' ' + HydrusNumbers.IntToPixels( unit )
+                    base += ' ' + operator + ' ' + str( num_pixels ) + ' ' + HydrusNumbers.int_to_pixels(unit)
                     
                 
             elif self._predicate_type == PREDICATE_TYPE_SYSTEM_KNOWN_URLS:
@@ -2424,7 +2424,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                         
                     else:
                         
-                        base = f'{base} {is_phrase} {HydrusNumbers.ToHumanInt( len( hashes ) )} hashes'
+                        base = f'{base} {is_phrase} {HydrusNumbers.to_human_int(len(hashes))} hashes'
                         
                     
                 
@@ -2628,7 +2628,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                         
                     else:
                         
-                        hash_string = f'{HydrusNumbers.ToHumanInt( len( hashes ) )} files'
+                        hash_string = f'{HydrusNumbers.to_human_int(len(hashes))} files'
                         
                     
                     base += f' {hash_string} with distance of {max_hamming}'
@@ -2654,12 +2654,12 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                         
                         if len( pixel_hashes ) > 0:
                             
-                            components.append( f'{HydrusNumbers.ToHumanInt( len( pixel_hashes ) )} pixel')
+                            components.append( f'{HydrusNumbers.to_human_int(len(pixel_hashes))} pixel')
                             
                         
                         if len( perceptual_hashes ) > 0:
                             
-                            components.append( f'{HydrusNumbers.ToHumanInt( len( perceptual_hashes ) )} perceptual')
+                            components.append( f'{HydrusNumbers.to_human_int(len(perceptual_hashes))} perceptual')
                             
                         
                         component_string = ', '.join( components )
@@ -2756,7 +2756,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                         o_text = 'unknown'
                         
                     
-                    base = f'{base}: {n_text} {o_text} {HydrusNumbers.ToHumanInt( num )}'
+                    base = f'{base}: {n_text} {o_text} {HydrusNumbers.to_human_int(num)}'
                     
                 
             elif self._predicate_type == PREDICATE_TYPE_SYSTEM_FILE_RELATIONSHIPS_COUNT:
@@ -2784,7 +2784,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                         o_text = ' '
                         
                     
-                    base += ' - has' + o_text + HydrusNumbers.ToHumanInt( num_relationships ) + ' ' + HC.duplicate_type_string_lookup[ dupe_type ]
+                    base += ' - has' + o_text + HydrusNumbers.to_human_int(num_relationships) + ' ' + HC.duplicate_type_string_lookup[ dupe_type]
                     
                 
             elif self._predicate_type == PREDICATE_TYPE_SYSTEM_FILE_RELATIONSHIPS_KING:
@@ -2826,7 +2826,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                     
                     if view_type == 'views':
                         
-                        value_string = HydrusNumbers.ToHumanInt( viewing_value )
+                        value_string = HydrusNumbers.to_human_int(viewing_value)
                         
                     elif view_type == 'viewtime':
                         

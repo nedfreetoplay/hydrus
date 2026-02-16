@@ -689,7 +689,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                         message = 'Hey, it looks like one of the thumbnail views on a page not currently in view'
                         
                     
-                    message += f' is very very very tall. I want to make it {HydrusNumbers.ToHumanInt( virtual_height )} pixels tall, but Qt only supports a max virtual scroll height of {HydrusNumbers.ToHumanInt( MAX_HEIGHT )} pixels.'
+                    message += f' is very very very tall. I want to make it {HydrusNumbers.to_human_int(virtual_height)} pixels tall, but Qt only supports a max virtual scroll height of {HydrusNumbers.to_human_int(MAX_HEIGHT)} pixels.'
                     message += '\n\n'
                     message += 'This page will handle ctrl+a and do its math correct (albeit slowly!), but you will not be able to scroll down all the way. This situation is probably not stable and you should rethink your query (e.g. adding a system:limit and doing the job in batches) before there is a real problem.'
                     message += '\n\n'
@@ -1702,7 +1702,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
             
             if num_notes > 0:
                 
-                notes_str = '{} ({})'.format( notes_str, HydrusNumbers.ToHumanInt( num_notes ) )
+                notes_str = '{} ({})'.format(notes_str, HydrusNumbers.to_human_int(num_notes))
                 
             
             ClientGUIMenus.AppendMenuItem( manage_menu, notes_str, 'Manage notes for the focused file.', self._ManageNotes )
@@ -2687,7 +2687,7 @@ class Thumbnail( Selectable ):
             
             icon = CC.global_pixmaps().collection
             
-            num_files_str = HydrusNumbers.ToHumanInt( media.GetNumFiles() )
+            num_files_str = HydrusNumbers.to_human_int(media.GetNumFiles())
             
             ( text_size, num_files_str ) = ClientGUIFunctions.GetTextSizeFromPainter( painter, num_files_str )
             

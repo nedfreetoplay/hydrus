@@ -1847,7 +1847,7 @@ class BetterListCtrlPanel( QW.QWidget ):
         
         if can_present_messages and num_added > 0:
             
-            message = '{} objects added!'.format( HydrusNumbers.ToHumanInt( num_added ) )
+            message = '{} objects added!'.format(HydrusNumbers.to_human_int(num_added))
             
             ClientGUIDialogsMessage.ShowInformation( self, message )
             
@@ -2118,7 +2118,7 @@ class BetterListCtrlPanel( QW.QWidget ):
         
         from hydrus.client.gui import ClientGUIDialogsQuick
         
-        message = 'Try to import the {} dropped files to this list? I am expecting json or png files.'.format( HydrusNumbers.ToHumanInt( len( paths ) ) )
+        message = 'Try to import the {} dropped files to this list? I am expecting json or png files.'.format(HydrusNumbers.to_human_int(len(paths)))
         
         result = ClientGUIDialogsQuick.GetYesNo( self, message )
         

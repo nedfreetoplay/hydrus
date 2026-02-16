@@ -460,7 +460,7 @@ class AddEditDeleteListBox( QW.QWidget ):
         
         from hydrus.client.gui import ClientGUIDialogsQuick
         
-        result = ClientGUIDialogsQuick.GetYesNo( self, 'Remove {} selected?'.format( HydrusNumbers.ToHumanInt( num_selected ) ) )
+        result = ClientGUIDialogsQuick.GetYesNo(self, 'Remove {} selected?'.format(HydrusNumbers.to_human_int(num_selected)))
         
         if result != QW.QDialog.DialogCode.Accepted:
             
@@ -737,7 +737,7 @@ class AddEditDeleteListBox( QW.QWidget ):
             
             if num_added > 0:
                 
-                message = '{} objects added!'.format( HydrusNumbers.ToHumanInt( num_added ) )
+                message = '{} objects added!'.format(HydrusNumbers.to_human_int(num_added))
                 
                 ClientGUIDialogsMessage.ShowInformation( self, message )
                 
@@ -1053,7 +1053,7 @@ class QueueListBox( QW.QWidget ):
         
         from hydrus.client.gui import ClientGUIDialogsQuick
         
-        result = ClientGUIDialogsQuick.GetYesNo( self, 'Remove {} selected?'.format( HydrusNumbers.ToHumanInt( num_selected ) ) )
+        result = ClientGUIDialogsQuick.GetYesNo(self, 'Remove {} selected?'.format(HydrusNumbers.to_human_int(num_selected)))
         
         if result == QW.QDialog.DialogCode.Accepted:
             
@@ -1343,7 +1343,7 @@ class QueueListBox( QW.QWidget ):
             
             if num_added > 0:
                 
-                message = '{} objects added!'.format( HydrusNumbers.ToHumanInt( num_added ) )
+                message = '{} objects added!'.format(HydrusNumbers.to_human_int(num_added))
                 
                 ClientGUIDialogsMessage.ShowInformation( self, message )
                 
@@ -3444,7 +3444,7 @@ class ListBoxTags( ListBox ):
                 
             else:
                 
-                selection_string = '{} selected'.format( HydrusNumbers.ToHumanInt( len( selected_copyable_tag_strings ) ) )
+                selection_string = '{} selected'.format(HydrusNumbers.to_human_int(len(selected_copyable_tag_strings)))
                 
             
             ClientGUIMenus.AppendMenuItem( copy_menu, selection_string, 'Copy the selected tags to your clipboard.', self._ProcessMenuCopyEvent, COPY_SELECTED_TAGS )
@@ -3463,7 +3463,7 @@ class ListBoxTags( ListBox ):
                         
                     else:
                         
-                        sub_selection_string = '{} selected subtags'.format( HydrusNumbers.ToHumanInt( len( selected_copyable_subtag_strings_set ) ) )
+                        sub_selection_string = '{} selected subtags'.format(HydrusNumbers.to_human_int(len(selected_copyable_subtag_strings_set)))
                         
                         ClientGUIMenus.AppendMenuItem( copy_menu, sub_selection_string, 'Copy the selected subtags to your clipboard.', self._ProcessMenuCopyEvent, COPY_SELECTED_SUBTAGS )
                         
@@ -3481,7 +3481,7 @@ class ListBoxTags( ListBox ):
                         
                     else:
                         
-                        sub_selection_string_underscores = '{} selected subtags with underscores'.format( HydrusNumbers.ToHumanInt( len( selected_copyable_subtag_strings_with_underscores_set ) ) )
+                        sub_selection_string_underscores = '{} selected subtags with underscores'.format(HydrusNumbers.to_human_int(len(selected_copyable_subtag_strings_with_underscores_set)))
                         
                         ClientGUIMenus.AppendMenuItem( copy_menu, sub_selection_string_underscores, 'Copy the selected subtags to your clipboard, with underscores.', self._ProcessMenuCopyEvent, COPY_SELECTED_SUBTAGS_WITH_UNDERSCORES )
                         
@@ -3512,7 +3512,7 @@ class ListBoxTags( ListBox ):
                     
                 else:
                     
-                    selection_string = '{} selected, with OR predicates collapsed'.format( HydrusNumbers.ToHumanInt( len( selected_copyable_tag_strings_with_collapsed_ors ) ) )
+                    selection_string = '{} selected, with OR predicates collapsed'.format(HydrusNumbers.to_human_int(len(selected_copyable_tag_strings_with_collapsed_ors)))
                     
                 
                 ClientGUIMenus.AppendMenuItem( copy_menu, selection_string, 'Copy the selected tags to your clipboard, with OR predicates collapsed.', self._ProcessMenuCopyEvent, COPY_SELECTED_TAGS, collapse_ors = True )
@@ -3530,10 +3530,10 @@ class ListBoxTags( ListBox ):
                     
                 else:
                     
-                    selection_string = '{} selected'.format( HydrusNumbers.ToHumanInt( len( selected_copyable_tag_strings ) ) )
+                    selection_string = '{} selected'.format(HydrusNumbers.to_human_int(len(selected_copyable_tag_strings)))
                     
                 
-                selection_string += f' and {HydrusNumbers.ToHumanInt( num_parents )} parents'
+                selection_string += f' and {HydrusNumbers.to_human_int(num_parents)} parents'
                 
                 ClientGUIMenus.AppendMenuItem( copy_menu, selection_string, 'Copy the selected tags and their (deduplicated) parents to your clipboard.', self._ProcessMenuCopyEvent, COPY_SELECTED_TAGS, include_parents = True )
                 
@@ -3728,7 +3728,7 @@ class ListBoxTags( ListBox ):
                         
                     else:
                         
-                        siblings_menu.setTitle( '{} siblings'.format( HydrusNumbers.ToHumanInt( num_siblings ) ) )
+                        siblings_menu.setTitle( '{} siblings'.format(HydrusNumbers.to_human_int(num_siblings)))
                         
                         #
                         
@@ -3771,7 +3771,7 @@ class ListBoxTags( ListBox ):
                         
                     else:
                         
-                        parents_menu.setTitle( '{} parents, {} children'.format( HydrusNumbers.ToHumanInt( num_parents ), HydrusNumbers.ToHumanInt( num_children ) ) )
+                        parents_menu.setTitle( '{} parents, {} children'.format(HydrusNumbers.to_human_int(num_parents), HydrusNumbers.to_human_int(num_children)))
                         
                         ClientGUIMenus.AppendSeparator( parents_menu )
                         
@@ -4012,7 +4012,7 @@ class ListBoxTags( ListBox ):
                     
                 else:
                     
-                    namespace_label = f'{HydrusNumbers.ToHumanInt( len( namespaces ) )} selected namespaces from here'
+                    namespace_label = f'{HydrusNumbers.to_human_int(len(namespaces))} selected namespaces from here'
                     
                 
                 if len( selected_actual_tags ) == 1:
@@ -4023,7 +4023,7 @@ class ListBoxTags( ListBox ):
                     
                 else:
                     
-                    actual_tag_label = f'{HydrusNumbers.ToHumanInt( len( selected_actual_tags ) )} selected tags from here'
+                    actual_tag_label = f'{HydrusNumbers.to_human_int(len(selected_actual_tags))} selected tags from here'
                     
                 
                 hide_menu = ClientGUIMenus.GenerateMenu( menu )
@@ -4103,7 +4103,7 @@ class ListBoxTags( ListBox ):
                     
                 else:
                     
-                    label = f'Add {HydrusNumbers.ToHumanInt( len( to_add ) )} selected tags to favourites'
+                    label = f'Add {HydrusNumbers.to_human_int(len(to_add))} selected tags to favourites'
                     
                 
                 description = 'Add these tags to the favourites list.'
@@ -4121,7 +4121,7 @@ class ListBoxTags( ListBox ):
                     
                 else:
                     
-                    label = f'Remove {HydrusNumbers.ToHumanInt( len( to_remove ) )} selected tags from favourites'
+                    label = f'Remove {HydrusNumbers.to_human_int(len(to_remove))} selected tags from favourites'
                     
                 
                 description = 'Add these tags to the favourites list.'
@@ -5331,7 +5331,7 @@ class StaticBoxSorterForListBoxTags( ClientGUICommon.StaticBox ):
             
             if max_number is not None:
                 
-                title = f'{title} (for first {HydrusNumbers.ToHumanInt(max_number)} files)'
+                title = f'{title} (for first {HydrusNumbers.to_human_int(max_number)} files)'
                 
             
         

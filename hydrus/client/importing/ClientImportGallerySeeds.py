@@ -63,29 +63,29 @@ def GenerateGallerySeedLogStatus( statuses_to_counts ):
     
     if num_successful > 0:
         
-        s = HydrusNumbers.ToHumanInt( num_successful ) + ' successful'
+        s = HydrusNumbers.to_human_int(num_successful) + ' successful'
         
         status_strings.append( s )
         
     
     if num_ignored > 0:
         
-        status_strings.append( HydrusNumbers.ToHumanInt( num_ignored ) + ' ignored' )
+        status_strings.append(HydrusNumbers.to_human_int(num_ignored) + ' ignored')
         
     
     if num_failed > 0:
         
-        status_strings.append( HydrusNumbers.ToHumanInt( num_failed ) + ' failed' )
+        status_strings.append(HydrusNumbers.to_human_int(num_failed) + ' failed')
         
     
     if num_skipped > 0:
         
-        status_strings.append( HydrusNumbers.ToHumanInt( num_skipped ) + ' skipped' )
+        status_strings.append(HydrusNumbers.to_human_int(num_skipped) + ' skipped')
         
     
     if num_unknown > 0:
         
-        status_strings.append( HydrusNumbers.ToHumanInt( num_unknown ) + ' pending' )
+        status_strings.append(HydrusNumbers.to_human_int(num_unknown) + ' pending')
         
     
     status = ', '.join( status_strings )
@@ -560,11 +560,11 @@ class GallerySeed( HydrusSerialisable.SerialisableBase ):
                 
                 status = CC.STATUS_SUCCESSFUL_AND_NEW
                 
-                note = HydrusNumbers.ToHumanInt( num_urls_added ) + ' new urls found'
+                note = HydrusNumbers.to_human_int(num_urls_added) + ' new urls found'
                 
                 if num_urls_already_in_file_seed_cache > 0:
                     
-                    note += ' (' + HydrusNumbers.ToHumanInt( num_urls_already_in_file_seed_cache ) + ' of page already in)'
+                    note += ' (' + HydrusNumbers.to_human_int(num_urls_already_in_file_seed_cache) + ' of page already in)'
                     
                 
                 if not can_search_for_more_files:
@@ -599,18 +599,18 @@ class GallerySeed( HydrusSerialisable.SerialisableBase ):
                     
                     added_new_gallery_pages = True
                     
-                    note += f' - {HydrusNumbers.ToHumanInt( len( new_sub_gallery_seeds ) )} sub-gallery urls found'
+                    note += f' - {HydrusNumbers.to_human_int(len(new_sub_gallery_seeds))} sub-gallery urls found'
                     
                     num_dupe_items = len( sub_gallery_seeds ) - len( new_sub_gallery_seeds )
                     
                     if num_dupe_items > 0:
                         
-                        note += f', but {HydrusNumbers.ToHumanInt( num_dupe_items )} had already been visited this run and were not added'
+                        note += f', but {HydrusNumbers.to_human_int(num_dupe_items)} had already been visited this run and were not added'
                         
                     
                 elif len( sub_gallery_seeds ) > 0:
                     
-                    note += f' - {HydrusNumbers.ToHumanInt( len( sub_gallery_seeds ) )} sub-gallery urls found, but they had all already been visited this run and were not added'
+                    note += f' - {HydrusNumbers.to_human_int(len(sub_gallery_seeds))} sub-gallery urls found, but they had all already been visited this run and were not added'
                     
                 
                 if self._can_generate_more_pages and can_add_more_gallery_urls:
@@ -621,20 +621,20 @@ class GallerySeed( HydrusSerialisable.SerialisableBase ):
                     
                     if len( new_next_page_gallery_seeds ) > 0:
                         
-                        note += f' - {HydrusNumbers.ToHumanInt( len( new_next_page_gallery_seeds ) )} next gallery pages found'
+                        note += f' - {HydrusNumbers.to_human_int(len(new_next_page_gallery_seeds))} next gallery pages found'
                         
                         num_dupe_items = len( next_page_gallery_seeds ) - len( new_next_page_gallery_seeds )
                         
                         if num_dupe_items > 0:
                             
-                            note += f', but {HydrusNumbers.ToHumanInt( num_dupe_items )} had already been visited this run and were not added'
+                            note += f', but {HydrusNumbers.to_human_int(num_dupe_items)} had already been visited this run and were not added'
                             
                         
                     else:
                         
                         if len( next_page_gallery_seeds ) > 0:
                             
-                            note += f' - {HydrusNumbers.ToHumanInt(len( next_page_gallery_seeds ))} next gallery pages found, but they had all already been visited this run and were not added'
+                            note += f' - {HydrusNumbers.to_human_int(len(next_page_gallery_seeds))} next gallery pages found, but they had all already been visited this run and were not added'
                             
                         
                         # we have failed to parse a next page url, but we would still like one, so let's see if the url match can provide one

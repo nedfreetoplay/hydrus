@@ -1238,7 +1238,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
                         
                         c.update( results )
                         
-                        test_result_text = '{} pass, {} blocked!'.format( HydrusNumbers.ToHumanInt( c[ True ] ), HydrusNumbers.ToHumanInt( c[ False ] ) )
+                        test_result_text = '{} pass, {} blocked!'.format(HydrusNumbers.to_human_int(c[ True]), HydrusNumbers.to_human_int(c[ False]))
                         
                         self._test_result_st.setObjectName( 'HydrusInvalid' )
                         

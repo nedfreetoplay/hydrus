@@ -3148,7 +3148,7 @@ class ListBoxTagsActiveSearchPredicates( ClientGUIListBoxes.ListBoxTagsPredicate
                 
             else:
                 
-                desc = '{} search terms'.format( HydrusNumbers.ToHumanInt( len( editable_and_invertible_predicates ) ) )
+                desc = '{} search terms'.format(HydrusNumbers.to_human_int(len(editable_and_invertible_predicates)))
                 
             
             label = 'edit {}'.format( desc )

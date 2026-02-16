@@ -571,7 +571,7 @@ class PopupMessage( PopupWindow ):
             
             ( hashes, attached_files_label ) = result
             
-            text = '{} - show {} files'.format( attached_files_label, HydrusNumbers.ToHumanInt( len( hashes ) ) )
+            text = '{} - show {} files'.format(attached_files_label, HydrusNumbers.to_human_int(len(hashes)))
             
             if self._show_files_button.text() != text:
                 
@@ -1520,6 +1520,6 @@ class PopupMessageSummaryBar( QW.QFrame ):
             
         else:
             
-            self._text.setText( HydrusNumbers.ToHumanInt(num_messages_pending)+' messages' )
+            self._text.setText(HydrusNumbers.to_human_int(num_messages_pending) + ' messages')
             
         

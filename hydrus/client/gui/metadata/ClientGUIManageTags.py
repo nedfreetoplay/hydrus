@@ -667,11 +667,11 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                         
                         [ ( tag, count ) ] = tag_counts
                         
-                        text = '{} "{}" for {} files'.format( choice_text_prefix, HydrusText.ElideText( tag, 64 ), HydrusNumbers.ToHumanInt( count ) )
+                        text = '{} "{}" for {} files'.format(choice_text_prefix, HydrusText.ElideText( tag, 64 ), HydrusNumbers.to_human_int(count))
                         
                     else:
                         
-                        text = '{} {} tags'.format( choice_text_prefix, HydrusNumbers.ToHumanInt( len( choice_tags ) ) )
+                        text = '{} {} tags'.format(choice_text_prefix, HydrusNumbers.to_human_int(len(choice_tags)))
                         
                     
                     data = ( choice_action, choice_tags )
@@ -687,11 +687,11 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                         t_c = tag_counts
                         
                     
-                    t_c_lines.extend( ( '{} - {} files'.format( tag, HydrusNumbers.ToHumanInt( count ) ) for ( tag, count ) in t_c ) )
+                    t_c_lines.extend(( '{} - {} files'.format(tag, HydrusNumbers.to_human_int(count)) for (tag, count) in t_c))
                     
                     if len( tag_counts ) > 25:
                         
-                        t_c_lines.append( 'and {} others'.format( HydrusNumbers.ToHumanInt( len( tag_counts ) - 25 ) ) )
+                        t_c_lines.append( 'and {} others'.format(HydrusNumbers.to_human_int(len(tag_counts) - 25)))
                         
                     
                     tooltip = '\n'.join( t_c_lines )
@@ -707,7 +707,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                         
                     else:
                         
-                        message = 'Of the {} files being managed, some have that tag, but not all of them do, so there are different things you can do.'.format( HydrusNumbers.ToHumanInt( len( self._media ) ) )
+                        message = 'Of the {} files being managed, some have that tag, but not all of them do, so there are different things you can do.'.format(HydrusNumbers.to_human_int(len(self._media)))
                         
                     
                     ( choice_action, tags ) = ClientGUIDialogsQuick.SelectFromListButtons( self, 'What would you like to do?', bdc_choices, message = message )
@@ -734,7 +734,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                         
                     else:
                         
-                        tag_text = 'the ' + HydrusNumbers.ToHumanInt( len( tags ) ) + ' tags'
+                        tag_text = 'the ' + HydrusNumbers.to_human_int(len(tags)) + ' tags'
                         
                     
                     message = 'Enter a reason for ' + tag_text + ' to be removed. A janitor will review your petition.'
@@ -1044,7 +1044,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             
             num_deleted_mappings = sum( ( m.GetTagsManager().GetNumDeletedMappings( tag_context, ClientTags.TAG_DISPLAY_STORAGE ) for m in self._media ) )
             
-            self._deleted_tags_label.setText( f'{HydrusNumbers.ToHumanInt( num_deleted_mappings )} deleted mappings' )
+            self._deleted_tags_label.setText( f'{HydrusNumbers.to_human_int(num_deleted_mappings)} deleted mappings')
             
             self._deleted_tags_panel.setVisible( num_deleted_mappings > 0 )
             
@@ -1195,7 +1195,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                         
                     else:
                         
-                        message = 'Are you sure you want to remove these ' + HydrusNumbers.ToHumanInt( len( tags ) ) + ' tags?'
+                        message = 'Are you sure you want to remove these ' + HydrusNumbers.to_human_int(len(tags)) + ' tags?'
                         
                     
                     result = ClientGUIDialogsQuick.GetYesNo( self, message )

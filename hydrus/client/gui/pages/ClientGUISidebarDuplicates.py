@@ -460,7 +460,7 @@ class PreparationPanel( QW.QWidget ):
             
             total_num_files = sum( searched_distances_to_count.values() )
             
-            self._eligible_files.setText( '{} eligible files in the system.'.format(HydrusNumbers.ToHumanInt(total_num_files)) )
+            self._eligible_files.setText( '{} eligible files in the system.'.format(HydrusNumbers.to_human_int(total_num_files)))
             
             search_distance = CG.client_controller.new_options.GetInteger( 'similar_files_duplicate_pairs_search_distance' )
             
@@ -480,7 +480,7 @@ class PreparationPanel( QW.QWidget ):
                     
                 else:
                     
-                    self._num_searched.SetValue( 'Searched ' + HydrusNumbers.ValueRangeToPrettyString( num_searched, total_num_files ) + ' files at this distance.', num_searched, total_num_files )
+                    self._num_searched.SetValue( 'Searched ' + HydrusNumbers.value_range_to_pretty_string(num_searched, total_num_files) + ' files at this distance.', num_searched, total_num_files)
                     
                 
                 show_percentage_page_name = True
@@ -494,7 +494,7 @@ class PreparationPanel( QW.QWidget ):
                 
                 if show_percentage_page_name:
                     
-                    percent_string = HydrusNumbers.FloatToPercentage( percent_done )
+                    percent_string = HydrusNumbers.float_to_percentage(percent_done)
                     
                     if percent_string == '100.0%':
                         

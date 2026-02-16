@@ -112,7 +112,7 @@ class TestClientDBDuplicates( unittest.TestCase ):
         # initial number pair combinations is (n(n-1))/2
         self._expected_num_potentials = int( n * ( n - 1 ) / 2 )
         
-        size_pred = ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( '=', 65535, HydrusNumbers.UnitToInt( 'B' ) ) )
+        size_pred = ClientSearchPredicate.Predicate(ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_SIZE, ( '=', 65535, HydrusNumbers.unit_to_int('B')))
         png_pred = ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, ( HC.IMAGE_PNG, ) )
         
         location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )

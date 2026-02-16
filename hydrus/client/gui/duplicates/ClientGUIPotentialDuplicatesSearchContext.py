@@ -377,7 +377,7 @@ class EditPotentialDuplicatesSearchContextPanel( ClientGUICommon.StaticBox ):
                 
                 if self._potential_duplicate_pairs_fragmentary_search.SearchDone():
                     
-                    text = f'{HydrusNumbers.ToHumanInt( num_pairs_in_search_space )} pairs; {HydrusNumbers.ToHumanInt( self._num_potential_duplicate_pairs )} match'
+                    text = f'{HydrusNumbers.to_human_int(num_pairs_in_search_space)} pairs; {HydrusNumbers.to_human_int(self._num_potential_duplicate_pairs)} match'
                     
                 else:
                     
@@ -395,21 +395,21 @@ class EditPotentialDuplicatesSearchContextPanel( ClientGUICommon.StaticBox ):
                     
                     estimate = estimate_base * estimate_base_multiplier
                     
-                    text = f'{HydrusNumbers.ToHumanInt(num_pairs_in_search_space)} pairs; ~{HydrusNumbers.ToHumanInt( estimate )} match'
+                    text = f'{HydrusNumbers.to_human_int(num_pairs_in_search_space)} pairs; ~{HydrusNumbers.to_human_int(estimate)} match'
                     
                 
             else:
                 
                 if self._potential_duplicate_pairs_fragmentary_search.SearchDone():
                     
-                    text = f'{HydrusNumbers.ToHumanInt(num_pairs_in_search_space)} pairs searched; {HydrusNumbers.ToHumanInt( self._num_potential_duplicate_pairs )} match'
+                    text = f'{HydrusNumbers.to_human_int(num_pairs_in_search_space)} pairs searched; {HydrusNumbers.to_human_int(self._num_potential_duplicate_pairs)} match'
                     
                 else:
                     
                     value = num_pairs_searched
                     range = num_pairs_in_search_space
                     
-                    text = f'{HydrusNumbers.ValueRangeToPrettyString(value, range)} pairs searched; {HydrusNumbers.ToHumanInt( self._num_potential_duplicate_pairs )} match{HC.UNICODE_ELLIPSIS}'
+                    text = f'{HydrusNumbers.value_range_to_pretty_string(value, range)} pairs searched; {HydrusNumbers.to_human_int(self._num_potential_duplicate_pairs)} match{HC.UNICODE_ELLIPSIS}'
                     
                 
             

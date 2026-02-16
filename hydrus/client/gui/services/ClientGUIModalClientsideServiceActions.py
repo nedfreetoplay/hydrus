@@ -87,7 +87,7 @@ class ReviewPurgeTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             return
             
         
-        text = f'Start this purge job on {HydrusNumbers.ToHumanInt( len( tags_to_purge ) )} tags?'
+        text = f'Start this purge job on {HydrusNumbers.to_human_int(len(tags_to_purge))} tags?'
         
         result = ClientGUIDialogsQuick.GetYesNo( self, text )
         

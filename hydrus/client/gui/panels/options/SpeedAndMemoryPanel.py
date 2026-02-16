@@ -372,7 +372,7 @@ class SpeedAndMemoryPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         image_cache_estimate = cache_size // estimated_bytes_per_fullscreen
         
-        self._estimated_number_fullscreens.setText( '(about {}-{} images the size of your screen)'.format( HydrusNumbers.ToHumanInt( image_cache_estimate // 2 ), HydrusNumbers.ToHumanInt( image_cache_estimate * 2 ) ) )
+        self._estimated_number_fullscreens.setText( '(about {}-{} images the size of your screen)'.format(HydrusNumbers.to_human_int(image_cache_estimate // 2), HydrusNumbers.to_human_int(image_cache_estimate * 2)))
         
         num_pixels = cache_size * ( self._image_cache_storage_limit_percentage.value() / 100 ) / 3
         
@@ -382,7 +382,7 @@ class SpeedAndMemoryPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         resolution = ( int( 16 * unit_length ), int( 9 * unit_length ) )
         
-        self._image_cache_storage_limit_percentage_st.setText( '% - {} pixels, or a ~{} image'.format( HydrusNumbers.ToHumanInt( num_pixels ), ClientData.ResolutionToPrettyString( resolution ) ) )
+        self._image_cache_storage_limit_percentage_st.setText( '% - {} pixels, or a ~{} image'.format(HydrusNumbers.to_human_int(num_pixels), ClientData.ResolutionToPrettyString(resolution)))
         
         num_pixels = cache_size * ( self._image_cache_prefetch_limit_percentage.value() / 100 ) / 3
         
@@ -398,7 +398,7 @@ class SpeedAndMemoryPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         small_resolution = ( int( 16 * unit_length ), int( 9 * unit_length ) )
         
-        self._image_cache_prefetch_limit_percentage_st.setText( '% - {} pixels: 5x ~{}, max ~{}'.format( HydrusNumbers.ToHumanInt( num_pixels ), ClientData.ResolutionToPrettyString( small_resolution ), ClientData.ResolutionToPrettyString( big_resolution ) ) )
+        self._image_cache_prefetch_limit_percentage_st.setText( '% - {} pixels: 5x ~{}, max ~{}'.format(HydrusNumbers.to_human_int(num_pixels), ClientData.ResolutionToPrettyString(small_resolution), ClientData.ResolutionToPrettyString(big_resolution)))
         
         #
         
@@ -456,7 +456,7 @@ class SpeedAndMemoryPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         estimate = value // estimated_bytes_per_fullscreen
         
-        self._estimated_number_image_tiles.setText( '(about {} fullscreens)'.format( HydrusNumbers.ToHumanInt( estimate ) ) )
+        self._estimated_number_image_tiles.setText( '(about {} fullscreens)'.format(HydrusNumbers.to_human_int(estimate)))
         
     
     def EventThumbnailsUpdate( self ):
@@ -471,7 +471,7 @@ class SpeedAndMemoryPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         estimated_thumbs = value // estimated_bytes_per_thumb
         
-        self._estimated_number_thumbnails.setText( '(at '+res_string+', about '+HydrusNumbers.ToHumanInt(estimated_thumbs)+' thumbnails)' )
+        self._estimated_number_thumbnails.setText( '(at ' + res_string +', about ' + HydrusNumbers.to_human_int(estimated_thumbs) + ' thumbnails)')
         
     
     def EventVideoBufferUpdate( self ):
@@ -480,7 +480,7 @@ class SpeedAndMemoryPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         estimated_720p_frames = int( value // ( 1280 * 720 * 3 ) )
         
-        self._estimated_number_video_frames.setText( '(about '+HydrusNumbers.ToHumanInt(estimated_720p_frames)+' frames of 720p video)' )
+        self._estimated_number_video_frames.setText( '(about ' + HydrusNumbers.to_human_int(estimated_720p_frames) + ' frames of 720p video)')
         
     
     def UpdateOptions( self ):

@@ -350,7 +350,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
             CG.client_controller.pub( 'modal_message', job_status )
             
             job_status.SetStatusTitle( prefix_string + 'running' )
-            job_status.SetStatusText( 'errors found so far: ' + HydrusNumbers.ToHumanInt( num_errors ) )
+            job_status.SetStatusText( 'errors found so far: ' + HydrusNumbers.to_human_int(num_errors))
             
             db_names = [name for ( index, name, path ) in self._execute('PRAGMA database_list;') if name not in ('mem', 'temp', 'durable_temp')]
             
@@ -363,7 +363,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
                     if should_quit:
                         
                         job_status.SetStatusTitle( prefix_string + 'cancelled' )
-                        job_status.SetStatusText( 'errors found: ' + HydrusNumbers.ToHumanInt( num_errors ) )
+                        job_status.SetStatusText( 'errors found: ' + HydrusNumbers.to_human_int(num_errors))
                         
                         return
                         
@@ -380,14 +380,14 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
                         num_errors += 1
                         
                     
-                    job_status.SetStatusText( 'errors found so far: ' + HydrusNumbers.ToHumanInt( num_errors ) )
+                    job_status.SetStatusText( 'errors found so far: ' + HydrusNumbers.to_human_int(num_errors))
                     
                 
             
         finally:
             
             job_status.SetStatusTitle( prefix_string + 'completed' )
-            job_status.SetStatusText( 'errors found: ' + HydrusNumbers.ToHumanInt( num_errors ) )
+            job_status.SetStatusText( 'errors found: ' + HydrusNumbers.to_human_int(num_errors))
             
             HydrusData.print_text(job_status.ToString())
             

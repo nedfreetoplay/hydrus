@@ -120,7 +120,7 @@ def ImportURLs( win: QW.QWidget, gallery_seed_log: ClientImportGallerySeeds.Gall
         num_urls = len( urls )
         num_removed = num_urls - len( filtered_urls )
         
-        message = 'Of the ' + HydrusNumbers.ToHumanInt( num_urls ) + ' URLs you mean to add, ' + HydrusNumbers.ToHumanInt( num_removed ) + ' are already in the search log. Would you like to only add new URLs or add everything (which will force a re-check of the duplicates)?'
+        message = 'Of the ' + HydrusNumbers.to_human_int(num_urls) + ' URLs you mean to add, ' + HydrusNumbers.to_human_int(num_removed) + ' are already in the search log. Would you like to only add new URLs or add everything (which will force a re-check of the duplicates)?'
         
         ( result, was_cancelled ) = ClientGUIDialogsQuick.GetYesNo( win, message, yes_label = 'only add new urls', no_label = 'add all urls, even duplicates', check_for_cancelled = True )
         
@@ -206,22 +206,22 @@ def PopulateGallerySeedLogButton( win: QW.QWidget, menu: QW.QMenu, gallery_seed_
     
     if num_successful > 0:
         
-        ClientGUIMenus.AppendMenuItem( menu, 'delete {} \'successful\' gallery log entries from the log'.format( HydrusNumbers.ToHumanInt( num_successful ) ), 'Tell this log to clear out successful records, reducing the size of the queue.', ClearGallerySeeds, win, gallery_seed_log, ( CC.STATUS_SUCCESSFUL_AND_NEW, ), gallery_type_string )
+        ClientGUIMenus.AppendMenuItem(menu, 'delete {} \'successful\' gallery log entries from the log'.format(HydrusNumbers.to_human_int(num_successful)), 'Tell this log to clear out successful records, reducing the size of the queue.', ClearGallerySeeds, win, gallery_seed_log, (CC.STATUS_SUCCESSFUL_AND_NEW,), gallery_type_string)
         
     
     if num_errors > 0:
         
-        ClientGUIMenus.AppendMenuItem( menu, 'delete {} \'failed\' gallery log entries from the log'.format( HydrusNumbers.ToHumanInt( num_errors ) ), 'Tell this log to clear out errored records, reducing the size of the queue.', ClearGallerySeeds, win, gallery_seed_log, ( CC.STATUS_ERROR, ), gallery_type_string )
+        ClientGUIMenus.AppendMenuItem(menu, 'delete {} \'failed\' gallery log entries from the log'.format(HydrusNumbers.to_human_int(num_errors)), 'Tell this log to clear out errored records, reducing the size of the queue.', ClearGallerySeeds, win, gallery_seed_log, (CC.STATUS_ERROR,), gallery_type_string)
         
     
     if num_vetoed > 0:
         
-        ClientGUIMenus.AppendMenuItem( menu, 'delete {} \'ignored\' gallery log entries from the log'.format( HydrusNumbers.ToHumanInt( num_vetoed ) ), 'Tell this log to clear out ignored records, reducing the size of the queue.', ClearGallerySeeds, win, gallery_seed_log, ( CC.STATUS_VETOED, ), gallery_type_string )
+        ClientGUIMenus.AppendMenuItem(menu, 'delete {} \'ignored\' gallery log entries from the log'.format(HydrusNumbers.to_human_int(num_vetoed)), 'Tell this log to clear out ignored records, reducing the size of the queue.', ClearGallerySeeds, win, gallery_seed_log, (CC.STATUS_VETOED,), gallery_type_string)
         
     
     if num_skipped > 0:
         
-        ClientGUIMenus.AppendMenuItem( menu, 'delete {} \'skipped\' gallery log entries from the log'.format( HydrusNumbers.ToHumanInt( num_skipped ) ), 'Tell this log to clear out skipped records, reducing the size of the queue.', ClearGallerySeeds, win, gallery_seed_log, ( CC.STATUS_SKIPPED, ), gallery_type_string )
+        ClientGUIMenus.AppendMenuItem(menu, 'delete {} \'skipped\' gallery log entries from the log'.format(HydrusNumbers.to_human_int(num_skipped)), 'Tell this log to clear out skipped records, reducing the size of the queue.', ClearGallerySeeds, win, gallery_seed_log, (CC.STATUS_SKIPPED,), gallery_type_string)
         
     
     ClientGUIMenus.AppendSeparator( menu )
@@ -314,7 +314,7 @@ class EditGallerySeedLogPanel( ClientGUIScrolledPanels.EditPanel ):
             
             gallery_seed_index = self._gallery_seed_log.GetGallerySeedIndex( gallery_seed )
             
-            pretty_gallery_seed_index = HydrusNumbers.ToHumanInt( gallery_seed_index )
+            pretty_gallery_seed_index = HydrusNumbers.to_human_int(gallery_seed_index)
             
         except Exception as e:
             
@@ -399,7 +399,7 @@ class EditGallerySeedLogPanel( ClientGUIScrolledPanels.EditPanel ):
         
         if len( gallery_seeds_to_delete ) > 0:
             
-            message = 'Are you sure you want to delete the {} selected entries? This is only useful if you have a really really huge list.'.format( HydrusNumbers.ToHumanInt( len( gallery_seeds_to_delete ) ) )
+            message = 'Are you sure you want to delete the {} selected entries? This is only useful if you have a really really huge list.'.format(HydrusNumbers.to_human_int(len(gallery_seeds_to_delete)))
             
             result = ClientGUIDialogsQuick.GetYesNo( self, message )
             

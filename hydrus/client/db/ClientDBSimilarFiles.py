@@ -197,7 +197,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
         
         while len( process_queue ) > 0:
             
-            job_status.SetStatusText( 'generating new branch -- ' + HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do ), 2 )
+            job_status.SetStatusText( 'generating new branch -- ' + HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do), 2)
             
             ( parent_id, perceptual_hash_id, perceptual_hash, children ) = process_queue.popleft()
             
@@ -482,7 +482,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
         
         # removal of old branch and maintenance schedule
         
-        job_status.SetStatusText( HydrusNumbers.ToHumanInt( len( unbalanced_nodes ) ) + ' leaves found--now clearing out old branch', 2 )
+        job_status.SetStatusText(HydrusNumbers.to_human_int(len(unbalanced_nodes)) + ' leaves found--now clearing out old branch', 2)
         
         unbalanced_perceptual_hash_ids = { p_id for ( p_id, p_h ) in unbalanced_nodes }
         
@@ -890,7 +890,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
                     
                 
             
-            job_status.SetStatusText( HydrusNumbers.ToHumanInt( len( all_nodes ) ) + ' leaves found, now regenerating' )
+            job_status.SetStatusText(HydrusNumbers.to_human_int(len(all_nodes)) + ' leaves found, now regenerating')
             
             ( root_id, root_perceptual_hash ) = self._PopBestRootNode( all_nodes ) #HydrusLists.RandomPop( all_nodes )
             
@@ -1111,7 +1111,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
             
             if HG.db_report_mode:
                 
-                HydrusData.show_text('Similar file search touched {} nodes over {} cycles.'.format(HydrusNumbers.ToHumanInt(total_nodes_searched), HydrusNumbers.ToHumanInt(num_cycles)))
+                HydrusData.show_text('Similar file search touched {} nodes over {} cycles.'.format(HydrusNumbers.to_human_int(total_nodes_searched), HydrusNumbers.to_human_int(num_cycles)))
                 
             
             # so, now we have perceptual_hash_ids and distances. let's map that to actual files.

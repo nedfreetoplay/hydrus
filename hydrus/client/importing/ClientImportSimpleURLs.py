@@ -343,13 +343,13 @@ class SimpleDownloaderImport( HydrusSerialisable.SerialisableBase ):
                         ClientImporting.WakeRepeatingJob( self._files_repeating_job )
                         
                     
-                    parser_status = 'page checked OK with formula "' + simple_downloader_formula.get_name() + '" - ' + HydrusNumbers.ToHumanInt(num_new) + ' new urls'
+                    parser_status = 'page checked OK with formula "' + simple_downloader_formula.get_name() + '" - ' + HydrusNumbers.to_human_int(num_new) + ' new urls'
                     
                     num_already_in_file_seed_cache = len( file_seeds ) - num_new
                     
                     if num_already_in_file_seed_cache > 0:
                         
-                        parser_status += ' (' + HydrusNumbers.ToHumanInt( num_already_in_file_seed_cache ) + ' already in queue)'
+                        parser_status += ' (' + HydrusNumbers.to_human_int(num_already_in_file_seed_cache) + ' already in queue)'
                         
                     
                     gallery_seed_status = CC.STATUS_SUCCESSFUL_AND_NEW

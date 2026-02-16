@@ -675,7 +675,7 @@ class TestPanelPageParserSubsidiary( TestPanelPageParser ):
                     preview = 'PREVIEW:' + '\n' + str( preview[:self.MAX_CHARS_IN_PREVIEW] )
                     
                 
-                description = HydrusNumbers.ToHumanInt( len( separation_example_data ) ) + ' subsidiary posts parsed'
+                description = HydrusNumbers.to_human_int(len(separation_example_data)) + ' subsidiary posts parsed'
                 
             except Exception as e:
                 

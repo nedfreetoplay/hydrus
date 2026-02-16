@@ -247,7 +247,7 @@ class DownloaderExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
         if len( export_object ) > 20:
             
             message += '\n'
-            message += '(and ' + HydrusNumbers.ToHumanInt( len( export_object ) - 20 ) + ' others)'
+            message += '(and ' + HydrusNumbers.to_human_int(len(export_object) - 20) + ' others)'
             
         
         message += '\n' * 2
@@ -284,7 +284,7 @@ class DownloaderExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
             else:
                 
-                title += ' - ' + HydrusNumbers.ToHumanInt( num_gugs ) + ' downloaders'
+                title += ' - ' + HydrusNumbers.to_human_int(num_gugs) + ' downloaders'
                 
                 description = ', '.join( gug_names )
                 

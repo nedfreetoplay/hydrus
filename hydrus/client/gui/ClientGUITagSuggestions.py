@@ -402,16 +402,16 @@ class RelatedTagsPanel( QW.QWidget ):
                     
                 else:
                     
-                    tags_s = 'tags ({} skipped)'.format( HydrusNumbers.ToHumanInt( num_skipped ) )
+                    tags_s = 'tags ({} skipped)'.format(HydrusNumbers.to_human_int(num_skipped))
                     
                 
                 if num_done == num_to_do:
                     
-                    num_done_s = 'Searched {} {} in '.format( HydrusNumbers.ToHumanInt( num_done ), tags_s )
+                    num_done_s = 'Searched {} {} in '.format(HydrusNumbers.to_human_int(num_done), tags_s)
                     
                 else:
                     
-                    num_done_s = '{} {} searched fully in '.format( HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do ), tags_s )
+                    num_done_s = '{} {} searched fully in '.format(HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do), tags_s)
                     
                 
                 label = '{}{}.'.format( num_done_s, HydrusTime.TimeDeltaToPrettyTimeDelta( total_time_took ) )

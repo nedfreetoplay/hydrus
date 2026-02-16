@@ -101,7 +101,7 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
             framerate_insert = f', {round( framerate )}fps'
             
         
-        info_string += f' ({HydrusNumbers.ToHumanInt( num_frames )} frames{framerate_insert})'
+        info_string += f' ({HydrusNumbers.to_human_int(num_frames)} frames{framerate_insert})'
         
     
     if has_audio:
@@ -113,14 +113,14 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
     
     if num_words is not None:
         
-        info_string += f' ({HydrusNumbers.ToHumanInt( num_words )} words)'
+        info_string += f' ({HydrusNumbers.to_human_int(num_words)} words)'
         
     
     pretty_info_lines.append( ClientMediaResultPrettyInfoObjects.PrettyMediaResultInfoLine( info_string, True ) )
     
     if file_info_manager.size is not None:
         
-        pretty_info_lines.append( ClientMediaResultPrettyInfoObjects.PrettyMediaResultInfoLine( f'{HydrusNumbers.ToHumanInt( file_info_manager.size )} bytes', False ) )
+        pretty_info_lines.append(ClientMediaResultPrettyInfoObjects.PrettyMediaResultInfoLine( f'{HydrusNumbers.to_human_int(file_info_manager.size)} bytes', False))
         
     
     if file_info_manager.FiletypeIsForced():

@@ -327,7 +327,7 @@ class LocationContext( HydrusSerialisable.SerialisableBase ):
             
         else:
             
-            service_string = '{} services'.format( HydrusNumbers.ToHumanInt( len( service_keys_to_consider ) ) )
+            service_string = '{} services'.format(HydrusNumbers.to_human_int(len(service_keys_to_consider)))
             
         
         return prefix + service_string

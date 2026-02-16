@@ -78,7 +78,7 @@ def FlipQueryPlannerMode():
         
         queries_planned = set()
         
-        HydrusData.show_text('Query Planning done: {} queries analyzed'.format(HydrusNumbers.ToHumanInt(query_planner_query_count)))
+        HydrusData.show_text('Query Planning done: {} queries analyzed'.format(HydrusNumbers.to_human_int(query_planner_query_count)))
         
     
 
@@ -320,5 +320,5 @@ def StopProfileMode():
         ( slow, fast ) = ( profile_slow_count, profile_fast_count )
         
     
-    HydrusData.show_text(f'Profiling "{old_name}" done: {HydrusNumbers.ToHumanInt(slow)} slow jobs, {HydrusNumbers.ToHumanInt(fast)} fast jobs')
+    HydrusData.show_text(f'Profiling "{old_name}" done: {HydrusNumbers.to_human_int(slow)} slow jobs, {HydrusNumbers.to_human_int(fast)} fast jobs')
     

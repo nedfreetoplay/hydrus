@@ -70,7 +70,7 @@ def ActionAutoResolutionReviewPairs( rule: "DuplicatesAutoResolutionRule", decis
     
     for ( num_done, num_to_do, chunk ) in HydrusLists.split_list_into_chunks_rich(approve_pairs, 4):
         
-        message = f'approving: {HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do )}'
+        message = f'approving: {HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do)}'
         
         if status_hook is not None:
             
@@ -83,7 +83,7 @@ def ActionAutoResolutionReviewPairs( rule: "DuplicatesAutoResolutionRule", decis
     
     for ( num_done, num_to_do, chunk ) in HydrusLists.split_list_into_chunks_rich(deny_pairs, 4):
         
-        message = f'denying: {HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do )}'
+        message = f'denying: {HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do)}'
         
         if status_hook is not None:
             
@@ -453,17 +453,17 @@ class DuplicatesAutoResolutionRule( HydrusSerialisable.SerialisableBaseNamed ):
         
         if not_searched > 0:
             
-            result += f'{HydrusNumbers.ToHumanInt( not_searched )} to search, '
+            result += f'{HydrusNumbers.to_human_int(not_searched)} to search, '
             
         
         if not_tested > 0:
             
-            result += f'{HydrusNumbers.ToHumanInt( not_tested )} still to test, '
+            result += f'{HydrusNumbers.to_human_int(not_tested)} still to test, '
             
         
         if ready_to_action > 0:
             
-            result += f'{HydrusNumbers.ToHumanInt( ready_to_action )} ready to resolve, '
+            result += f'{HydrusNumbers.to_human_int(ready_to_action)} ready to resolve, '
             
         
         if not_searched + not_tested + ready_to_action == 0:
@@ -471,21 +471,21 @@ class DuplicatesAutoResolutionRule( HydrusSerialisable.SerialisableBaseNamed ):
             result += 'Done! '
             
         
-        result += f'{HydrusNumbers.ToHumanInt( actioned )} pairs resolved'
+        result += f'{HydrusNumbers.to_human_int(actioned)} pairs resolved'
         
         if failed_test > 0:
             
-            result += f' ({HydrusNumbers.ToHumanInt( failed_test )} failed the test)'
+            result += f' ({HydrusNumbers.to_human_int(failed_test)} failed the test)'
             
         
         if denied > 0:
             
-            result += f' ({HydrusNumbers.ToHumanInt( denied )} denied by user)'
+            result += f' ({HydrusNumbers.to_human_int(denied)} denied by user)'
             
         
         if not_match > 0:
             
-            result += f' ({HydrusNumbers.ToHumanInt( not_match )} did not match the search)'
+            result += f' ({HydrusNumbers.to_human_int(not_match)} did not match the search)'
             
         
         return result

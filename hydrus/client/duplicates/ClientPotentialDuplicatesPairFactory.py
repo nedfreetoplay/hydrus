@@ -334,7 +334,7 @@ class PotentialDuplicatePairFactoryDBGroupMode( PotentialDuplicatePairFactoryDB 
                 value = self._potential_duplicate_pairs_fragmentary_search.NumPairsSearched()
                 range = self._potential_duplicate_pairs_fragmentary_search.NumPairsInSearchSpace()
                 
-                loading_text = f'Searching for group; {HydrusNumbers.ValueRangeToPrettyString(value, range)} pairs searched{HC.UNICODE_ELLIPSIS}'
+                loading_text = f'Searching for group; {HydrusNumbers.value_range_to_pretty_string(value, range)} pairs searched{HC.UNICODE_ELLIPSIS}'
                 
             else:
                 
@@ -406,7 +406,7 @@ class PotentialDuplicatePairFactoryDBMixed( PotentialDuplicatePairFactoryDB ):
             value = self._potential_duplicate_pairs_fragmentary_search.NumPairsSearched()
             range = self._potential_duplicate_pairs_fragmentary_search.NumPairsInSearchSpace()
             
-            loading_text = f'{HydrusNumbers.ValueRangeToPrettyString(value, range)} pairs searched; {HydrusNumbers.ToHumanInt( len( self._fetched_media_result_pairs_and_distances ) )} matched{HC.UNICODE_ELLIPSIS}'
+            loading_text = f'{HydrusNumbers.value_range_to_pretty_string(value, range)} pairs searched; {HydrusNumbers.to_human_int(len(self._fetched_media_result_pairs_and_distances))} matched{HC.UNICODE_ELLIPSIS}'
             
         
         return loading_text

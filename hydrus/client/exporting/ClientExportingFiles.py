@@ -596,7 +596,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
         
         for ( num_done, num_to_do, block_of_hash_ids ) in HydrusLists.split_list_into_chunks_rich(query_hash_ids, CHUNK_SIZE):
             
-            job_status.SetStatusText( 'searching: {}'.format( HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do ) ) )
+            job_status.SetStatusText( 'searching: {}'.format(HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do)))
             
             if job_status.IsCancelled():
                 
@@ -639,7 +639,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
         
         for ( i, media_result ) in enumerate( media_results ):
             
-            job_status.SetStatusText( 'exporting: {}'.format( HydrusNumbers.ValueRangeToPrettyString( i + 1, len( media_results ) ) ) )
+            job_status.SetStatusText( 'exporting: {}'.format(HydrusNumbers.value_range_to_pretty_string(i + 1, len(media_results))))
             
             if job_status.IsCancelled():
                 
@@ -790,7 +790,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
         
         if num_actually_copied > 0:
             
-            HydrusData.print_text('Export folder ' + self._name + ' exported ' + HydrusNumbers.ToHumanInt(num_actually_copied) + ' files.')
+            HydrusData.print_text('Export folder ' + self._name + ' exported ' + HydrusNumbers.to_human_int(num_actually_copied) + ' files.')
             
         
         if self._export_type == HC.EXPORT_FOLDER_TYPE_SYNCHRONISE:
@@ -804,7 +804,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                     return
                     
                 
-                job_status.SetStatusText( 'delete-synchronising: {}'.format( HydrusNumbers.ValueRangeToPrettyString( i + 1, len( deletee_paths ) ) ) )
+                job_status.SetStatusText( 'delete-synchronising: {}'.format(HydrusNumbers.value_range_to_pretty_string(i + 1, len(deletee_paths))))
                 
                 ClientPaths.DeletePath( deletee_path )
                 
@@ -845,7 +845,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             
             if len( deletee_paths ) > 0:
                 
-                HydrusData.print_text('Export folder {} deleted {} files and {} folders.'.format(self._name, HydrusNumbers.ToHumanInt(len(deletee_paths)), HydrusNumbers.ToHumanInt(len(deletee_dirs))))
+                HydrusData.print_text('Export folder {} deleted {} files and {} folders.'.format(self._name, HydrusNumbers.to_human_int(len(deletee_paths)), HydrusNumbers.to_human_int(len(deletee_dirs))))
                 
             
         
@@ -864,7 +864,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                     return
                     
                 
-                job_status.SetStatusText( 'deleting: {}'.format( HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do ) ) )
+                job_status.SetStatusText( 'deleting: {}'.format(HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do)))
                 
                 content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, { media_result.GetHash() for media_result in chunk_of_media_results }, reason = reason )
                 

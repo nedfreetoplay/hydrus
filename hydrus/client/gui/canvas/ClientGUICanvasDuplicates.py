@@ -92,7 +92,7 @@ def THREADCommitDuplicatePairDecisions(
         
         num_done = i
         
-        job_status.SetStatusText( f'decisions: {HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do )}' )
+        job_status.SetStatusText( f'decisions: {HydrusNumbers.value_range_to_pretty_string(num_done, num_to_do)}')
         job_status.SetGauge( num_done, num_to_do )
         
         CommitDecision( potential_duplicate_pair_factory, duplicate_pair_decision )
@@ -463,7 +463,7 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
             progress = self._current_pair_index + 1
             total = len( self._batch_of_pairs_to_process )
             
-            index_string = HydrusNumbers.ValueRangeToPrettyString( progress, total )
+            index_string = HydrusNumbers.value_range_to_pretty_string(progress, total)
             
             num_committable = self._GetNumCommittableDecisions()
             num_deletable = self._GetNumCommittableDeletes()
@@ -472,12 +472,12 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
             
             if num_committable > 0:
                 
-                components.append( '{} decisions'.format( HydrusNumbers.ToHumanInt( num_committable ) ) )
+                components.append( '{} decisions'.format(HydrusNumbers.to_human_int(num_committable)))
                 
             
             if num_deletable > 0:
                 
-                components.append( '{} deletes'.format( HydrusNumbers.ToHumanInt( num_deletable ) ) )
+                components.append( '{} deletes'.format(HydrusNumbers.to_human_int(num_deletable)))
                 
             
             if len( components ) == 0:
@@ -601,7 +601,7 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
                 value = self._num_items_to_commit - num_work_to_do
                 range = self._num_items_to_commit
                 
-                self._loading_text = f'committed {HydrusNumbers.ValueRangeToPrettyString( value, range )} decisions{HC.UNICODE_ELLIPSIS}'
+                self._loading_text = f'committed {HydrusNumbers.value_range_to_pretty_string(value, range)} decisions{HC.UNICODE_ELLIPSIS}'
                 
             
             NUM_DECISIONS_IN_BLOCK = 4
@@ -1081,12 +1081,12 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
                         
                         if num_committable > 0:
                             
-                            components.append( '{} decisions'.format( HydrusNumbers.ToHumanInt( num_committable ) ) )
+                            components.append( '{} decisions'.format(HydrusNumbers.to_human_int(num_committable)))
                             
                         
                         if num_deletable > 0:
                             
-                            components.append( '{} deletes'.format( HydrusNumbers.ToHumanInt( num_deletable ) ) )
+                            components.append( '{} deletes'.format(HydrusNumbers.to_human_int(num_deletable)))
                             
                         
                         label = 'commit {} and continue?'.format( ' and '.join( components ) )
@@ -1397,12 +1397,12 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
             
             if num_committable > 0:
                 
-                components.append( '{} decisions'.format( HydrusNumbers.ToHumanInt( num_committable ) ) )
+                components.append( '{} decisions'.format(HydrusNumbers.to_human_int(num_committable)))
                 
             
             if num_deletable > 0:
                 
-                components.append( '{} deletes'.format( HydrusNumbers.ToHumanInt( num_deletable ) ) )
+                components.append( '{} deletes'.format(HydrusNumbers.to_human_int(num_deletable)))
                 
             
             label = 'commit {}?'.format( ' and '.join( components ) )

@@ -1169,7 +1169,7 @@ class AnimationBar( QW.QWidget ):
                 
                 if num_frames_are_useful:
                     
-                    progress_strings.append( HydrusNumbers.ValueRangeToPrettyString( current_frame_index + 1, self._num_frames ) )
+                    progress_strings.append(HydrusNumbers.value_range_to_pretty_string(current_frame_index + 1, self._num_frames))
                     
                 
                 if current_timestamp_ms is not None:

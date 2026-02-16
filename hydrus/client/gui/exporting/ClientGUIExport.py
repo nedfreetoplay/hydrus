@@ -467,7 +467,7 @@ If you select synchronise, be careful!'''
             
             self._test_context_factory.SetExampleMediaResults( media_results )
             
-            self._update_test_context_factory_button.setText( f'got {HydrusNumbers.ToHumanInt(len( media_results))} files!' )
+            self._update_test_context_factory_button.setText( f'got {HydrusNumbers.to_human_int(len(media_results))} files!')
             
         
         self._update_test_context_factory_button.setEnabled( False )
@@ -739,7 +739,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
             path = str( e )
             
         
-        pretty_number = HydrusNumbers.ToHumanInt( number )
+        pretty_number = HydrusNumbers.to_human_int(number)
         pretty_mime = HC.mime_string_lookup[ mime ]
         
         pretty_path = path
@@ -914,7 +914,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 try:
                     
-                    x_of_y = HydrusNumbers.ValueRangeToPrettyString( index, num_to_do )
+                    x_of_y = HydrusNumbers.value_range_to_pretty_string(index, num_to_do)
                     
                     job_status.SetStatusText( 'Exporting: {}'.format( x_of_y ) )
                     job_status.SetGauge( index, num_to_do )
@@ -981,7 +981,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                     
                     HydrusData.print_exception(e, do_wait = False)
                     
-                    ClientGUIDialogsMessage.ShowCritical( win, 'Problem during file export!', f'Encountered a problem while attempting to export file #{HydrusNumbers.ToHumanInt( number )}:\n\n{e}' )
+                    ClientGUIDialogsMessage.ShowCritical(win, 'Problem during file export!', f'Encountered a problem while attempting to export file #{HydrusNumbers.to_human_int(number)}:\n\n{e}')
                     
                     break
                     
