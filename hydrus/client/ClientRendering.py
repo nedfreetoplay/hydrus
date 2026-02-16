@@ -990,7 +990,7 @@ class RasterContainerVideo( RasterContainer ):
             
             if self._stop or HG.started_shutdown:
                 
-                self._renderer.Stop()
+                self._renderer.stop()
                 
                 self._renderer = None
                 

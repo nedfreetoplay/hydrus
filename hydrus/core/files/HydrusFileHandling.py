@@ -319,7 +319,7 @@ def generate_thumbnail_num_py(path, target_resolution, mime, duration_ms, num_fr
                 
             finally:
                 
-                renderer.Stop()
+                renderer.stop()
                 
             
         except Exception as e:
@@ -345,7 +345,7 @@ def generate_thumbnail_num_py(path, target_resolution, mime, duration_ms, num_fr
                     
                 finally:
                     
-                    renderer.Stop()
+                    renderer.stop()
                     
                 
             except Exception as e:
@@ -598,7 +598,7 @@ def get_file_info(path, mime = None, ok_to_look_for_hydrus_updates = False):
         
     elif mime in HC.VIDEO or mime in HC.HEIF_TYPE_SEQUENCES or mime in ( HC.IMAGE_AVIF_SEQUENCE, HC.ANIMATION_JXL ):
         
-        ( ( width, height ), duration_ms, num_frames, has_audio ) = HydrusVideoHandling.GetFFMPEGVideoProperties( path )
+        ( ( width, height ), duration_ms, num_frames, has_audio ) = HydrusVideoHandling.get_ffmpeg_video_properties(path)
         
     elif mime in HC.VIEWABLE_ANIMATIONS:
         
@@ -610,9 +610,9 @@ def get_file_info(path, mime = None, ok_to_look_for_hydrus_updates = False):
         
     elif mime in HC.AUDIO:
         
-        ffmpeg_lines = HydrusVideoHandling.GetFFMPEGInfoLines( path )
+        ffmpeg_lines = HydrusVideoHandling.get_ffmpeg_info_lines(path)
         
-        ( file_duration_in_s, stream_duration_in_s ) = HydrusVideoHandling.ParseFFMPEGDuration( ffmpeg_lines )
+        ( file_duration_in_s, stream_duration_in_s ) = HydrusVideoHandling.parse_ffmpeg_duration(ffmpeg_lines)
         
         if file_duration_in_s is None:
             
@@ -841,7 +841,7 @@ def get_mime(path, ok_to_look_for_hydrus_updates = False):
                 
             if mime in ( HC.UNDETERMINED_WM, HC.UNDETERMINED_MP4 ):
                 
-                return HydrusVideoHandling.GetMime( path )
+                return HydrusVideoHandling.get_mime(path)
                 
             elif mime == HC.UNDETERMINED_PNG:
                 
@@ -868,7 +868,7 @@ def get_mime(path, ok_to_look_for_hydrus_updates = False):
             elif mime == HC.UNDETERMINED_JXL:
                 
                 # disabled animated jxl for now--ffmpeg getting in an infinite loop!
-                if HydrusVideoHandling.FileIsAnimated( path ):
+                if HydrusVideoHandling.file_is_animated(path):
                     
                     return HC.ANIMATION_JXL
                     
@@ -933,7 +933,7 @@ def get_mime(path, ok_to_look_for_hydrus_updates = False):
         
         try:
             
-            mime = HydrusVideoHandling.GetMime( path )
+            mime = HydrusVideoHandling.get_mime(path)
             
             if mime != HC.APPLICATION_UNKNOWN:
                 

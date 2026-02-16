@@ -459,7 +459,7 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                         target_width = min( media_width, my_raw_width )
                         target_height = min( media_height, my_raw_height )
                         
-                        self._video_container.Stop()
+                        self._video_container.stop()
                         
                         self._video_container = ClientRendering.RasterContainerVideo( self._media, ( target_width, target_height ), init_position = self._current_frame_index, frame_durations_ms = self._frame_durations_ms )
                         
@@ -468,7 +468,7 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                     
                     if my_raw_width < media_width or my_raw_height < media_height: # i.e. new zoom is scaled
                         
-                        self._video_container.Stop()
+                        self._video_container.stop()
                         
                         self._video_container = ClientRendering.RasterContainerVideo( self._media, ( my_raw_width, my_raw_height ), init_position = self._current_frame_index, frame_durations_ms = self._frame_durations_ms )
                         
@@ -843,7 +843,7 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         if self._video_container is not None:
             
-            self._video_container.Stop()
+            self._video_container.stop()
             
         
         self._video_container = None
