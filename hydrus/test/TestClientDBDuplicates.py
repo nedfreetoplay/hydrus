@@ -83,10 +83,10 @@ class TestClientDBDuplicates( unittest.TestCase ):
         
         self._clear_db()
         
-        self._dupe_hashes = [ HydrusData.GenerateKey() for i in range( 16 ) ]
-        self._second_group_dupe_hashes = [ HydrusData.GenerateKey() for i in range( 4 ) ]
-        self._similar_looking_alternate_hashes = [ HydrusData.GenerateKey() for i in range( 5 ) ]
-        self._similar_looking_false_positive_hashes = [ HydrusData.GenerateKey() for i in range( 5 ) ]
+        self._dupe_hashes = [HydrusData.generate_key() for i in range(16)]
+        self._second_group_dupe_hashes = [HydrusData.generate_key() for i in range(4)]
+        self._similar_looking_alternate_hashes = [HydrusData.generate_key() for i in range(5)]
+        self._similar_looking_false_positive_hashes = [HydrusData.generate_key() for i in range(5)]
         
         self._all_hashes = set()
         

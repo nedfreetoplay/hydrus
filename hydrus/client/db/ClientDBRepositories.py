@@ -425,8 +425,8 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         
         rows = self._Execute( query, ( False, ) ).fetchall()
         
-        update_indices_to_unprocessed_hash_ids = HydrusData.BuildKeyToSetDict( ( ( update_index, hash_id ) for ( update_index, hash_id, content_type ) in rows ) )
-        hash_ids_to_content_types_to_process = HydrusData.BuildKeyToSetDict( ( ( hash_id, content_type ) for ( update_index, hash_id, content_type ) in rows ) )
+        update_indices_to_unprocessed_hash_ids = HydrusData.build_key_to_set_dict(((update_index, hash_id) for (update_index, hash_id, content_type) in rows))
+        hash_ids_to_content_types_to_process = HydrusData.build_key_to_set_dict(((hash_id, content_type) for (update_index, hash_id, content_type) in rows))
         
         all_hash_ids = set( hash_ids_to_content_types_to_process.keys() )
         

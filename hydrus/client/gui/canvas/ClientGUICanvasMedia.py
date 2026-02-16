@@ -1688,7 +1688,7 @@ class MediaContainer( QW.QWidget ):
             
             self._show_action = CC.MEDIA_VIEWER_ACTION_SHOW_OPEN_EXTERNALLY_BUTTON
             
-            HydrusData.ShowText( 'MPV is not available!' )
+            HydrusData.show_text('MPV is not available!')
             
         
         if self._show_action in ( CC.MEDIA_VIEWER_ACTION_DO_NOT_SHOW_ON_ACTIVATION_OPEN_EXTERNALLY, CC.MEDIA_VIEWER_ACTION_DO_NOT_SHOW ):
@@ -3422,7 +3422,7 @@ class StaticImage( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
             ideal_tile_dimension = CG.client_controller.new_options.GetInteger( 'ideal_tile_dimension' )
             
-            nice_number = HydrusData.GetNicelyDivisibleNumberForZoom( self._zoom / self.devicePixelRatio(), ideal_tile_dimension )
+            nice_number = HydrusData.get_nicely_divisible_number_for_zoom(self._zoom / self.devicePixelRatio(), ideal_tile_dimension)
             
             if nice_number == -1:
                 
@@ -3441,7 +3441,7 @@ class StaticImage( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
             if HG.canvas_tile_outline_mode:
                 
-                HydrusData.ShowText( '{} from zoom {} and nice number {}'.format( tile_dimension, self._zoom, nice_number ) )
+                HydrusData.show_text('{} from zoom {} and nice number {}'.format(tile_dimension, self._zoom, nice_number))
                 
             
         

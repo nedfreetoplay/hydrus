@@ -42,7 +42,7 @@ def ClearAllFalsePositives( win, hashes ):
                 message = f'{HydrusNumbers.ToHumanInt( num_cleared )} false positive relationships cleared.'
                 
             
-            HydrusData.ShowText( message )
+            HydrusData.show_text(message)
             
         
         CG.client_controller.call_to_thread(do_it)
@@ -79,7 +79,7 @@ def ClearInternalFalsePositives( win, hashes ):
                 message = f'{HydrusNumbers.ToHumanInt( num_cleared )} false positive relationships cleared.'
                 
             
-            HydrusData.ShowText( message )
+            HydrusData.show_text(message)
             
         
         CG.client_controller.call_to_thread(do_it)

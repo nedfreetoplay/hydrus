@@ -45,7 +45,7 @@ def GetFFMPEGVersion():
     
     cmd = [ FFMPEG_PATH, '-version' ]
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         
@@ -61,7 +61,7 @@ def GetFFMPEGVersion():
         
     except Exception as e:
         
-        HydrusData.ShowException( e )
+        HydrusData.show_exception(e)
         
         return 'unable to execute ffmpeg at path "{}"'.format( FFMPEG_PATH )
         
@@ -88,14 +88,14 @@ def GetFFMPEGVersion():
     
     message = 'FFMPEG was recently contacted to fetch version information. While FFMPEG could be found, the response could not be understood. Significant debug information has been printed to the log, which hydrus_dev would be interested in.'
     
-    HydrusData.ShowText( message )
+    HydrusData.show_text(message)
     
     message += '\n' * 2
     message += 'STDOUT Response: {}'.format( stdout )
     message += '\n' * 2
     message += 'STDERR Response: {}'.format( stderr )
     
-    HydrusData.Print( message )
+    HydrusData.print_text(message)
     
     HydrusEnvironment.DumpEnv()
     
@@ -127,7 +127,7 @@ def HandleFFMPEGFileNotFoundAndGenerateException( e, path ):
         message += '\n' * 2
         message += 'You can check your current FFMPEG status through help->about.'
         
-        HydrusData.ShowText( message )
+        HydrusData.show_text(message)
         
         FFMPEG_MISSING_ERROR_PUBBED = True
         
@@ -143,14 +143,14 @@ def HandleFFMPEGNoContentAndGenerateException( path, stdout, stderr ):
         
         message = f'FFMPEG, which hydrus uses to parse and render some media, and here was trying to look at "{path}", did not return any data on a recent file metadata check! More debug info has been written to the log.'
         
-        HydrusData.ShowText( message )
+        HydrusData.show_text(message)
         
         message += '\n' * 2
         message += 'STDOUT Response: {}'.format( stdout )
         message += '\n' * 2
         message += 'STDERR Response: {}'.format( stderr )
         
-        HydrusData.DebugPrint( message )
+        HydrusData.debug_print(message)
         
         HydrusEnvironment.DumpEnv()
         
@@ -174,7 +174,7 @@ def RenderImageToImagePath( path, temp_image_path ):
         cmd = [ FFMPEG_PATH, "-xerror", '-y', "-i", path, temp_image_path ]
         
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         
@@ -196,7 +196,7 @@ def RenderImageToRawRGBABytes( path ):
     
     cmd = [ FFMPEG_PATH, "-xerror", '-i', path, '-f', 'rawvideo', '-pix_fmt', 'rgba', '-' ]
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         
@@ -218,7 +218,7 @@ def RenderImageToPNGBytes( path ):
     
     cmd = [ FFMPEG_PATH, "-xerror", '-i', path, '-f', 'image2pipe', '-vcodec', 'png', '-' ]
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         

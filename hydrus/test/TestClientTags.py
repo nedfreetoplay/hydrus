@@ -19,9 +19,9 @@ class TestMergeTagsManagers( unittest.TestCase ):
     
     def test_merge( self ):
         
-        first = HydrusData.GenerateKey()
-        second = HydrusData.GenerateKey()
-        third = HydrusData.GenerateKey()
+        first = HydrusData.generate_key()
+        second = HydrusData.generate_key()
+        third = HydrusData.generate_key()
         
         #
         
@@ -101,20 +101,20 @@ class TestMergeTagsManagers( unittest.TestCase ):
 
 class TestTagsManager( unittest.TestCase ):
     
-    _first_key: bytes = HydrusData.GenerateKey()
-    _second_key: bytes = HydrusData.GenerateKey()
-    _third_key: bytes = HydrusData.GenerateKey()
+    _first_key: bytes = HydrusData.generate_key()
+    _second_key: bytes = HydrusData.generate_key()
+    _third_key: bytes = HydrusData.generate_key()
     
-    _pending_service_key: bytes = HydrusData.GenerateKey()
-    _content_update_service_key: bytes = HydrusData.GenerateKey()
-    _reset_service_key: bytes = HydrusData.GenerateKey()
+    _pending_service_key: bytes = HydrusData.generate_key()
+    _content_update_service_key: bytes = HydrusData.generate_key()
+    _reset_service_key: bytes = HydrusData.generate_key()
     
     @classmethod
     def setUpClass( cls ):
         
-        cls._first_key = HydrusData.GenerateKey()
-        cls._second_key = HydrusData.GenerateKey()
-        cls._third_key = HydrusData.GenerateKey()
+        cls._first_key = HydrusData.generate_key()
+        cls._second_key = HydrusData.generate_key()
+        cls._third_key = HydrusData.generate_key()
         
         service_keys_to_statuses_to_tags = collections.defaultdict( HydrusData.default_dict_set )
         
@@ -146,9 +146,9 @@ class TestTagsManager( unittest.TestCase ):
         
         #
         
-        cls._pending_service_key = HydrusData.GenerateKey()
-        cls._content_update_service_key = HydrusData.GenerateKey()
-        cls._reset_service_key = HydrusData.GenerateKey()
+        cls._pending_service_key = HydrusData.generate_key()
+        cls._content_update_service_key = HydrusData.generate_key()
+        cls._reset_service_key = HydrusData.generate_key()
         
         other_service_keys_to_statuses_to_tags = collections.defaultdict( HydrusData.default_dict_set )
         
@@ -272,7 +272,7 @@ class TestTagsManager( unittest.TestCase ):
     
     def test_process_content_update( self ):
         
-        hashes = { HydrusData.GenerateKey() for i in range( 6 ) }
+        hashes = {HydrusData.generate_key() for i in range(6)}
         
         #
         

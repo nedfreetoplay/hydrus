@@ -170,7 +170,7 @@ class ColumnListStatus( HydrusSerialisable.SerialisableBase ):
         
         if column_index >= len( self._column_types_in_order ):
             
-            HydrusData.ShowText( f'A column status ("{self._column_list_type}") was asked for a non-existing column index ("{column_index}")!' )
+            HydrusData.show_text(f'A column status ("{self._column_list_type}") was asked for a non-existing column index ("{column_index}")!')
             
             return self._column_types_in_order[-1]
             

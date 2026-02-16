@@ -50,8 +50,8 @@ class ClientDBRatings( ClientDBModule.ClientDBModule ):
     
     def GetHashIdsToRatings( self, hash_ids_table_name ):
         
-        hash_ids_to_local_star_ratings = HydrusData.BuildKeyToListDict( ( ( hash_id, ( service_id, rating ) ) for ( service_id, hash_id, rating ) in self._Execute( 'SELECT service_id, hash_id, rating FROM {} CROSS JOIN local_ratings USING ( hash_id );'.format( hash_ids_table_name ) ) ) )
-        hash_ids_to_local_incdec_ratings = HydrusData.BuildKeyToListDict( ( ( hash_id, ( service_id, rating ) ) for ( service_id, hash_id, rating ) in self._Execute( 'SELECT service_id, hash_id, rating FROM {} CROSS JOIN local_incdec_ratings USING ( hash_id );'.format( hash_ids_table_name ) ) ) )
+        hash_ids_to_local_star_ratings = HydrusData.build_key_to_list_dict(((hash_id, (service_id, rating)) for (service_id, hash_id, rating) in self._Execute('SELECT service_id, hash_id, rating FROM {} CROSS JOIN local_ratings USING ( hash_id );'.format(hash_ids_table_name))))
+        hash_ids_to_local_incdec_ratings = HydrusData.build_key_to_list_dict(((hash_id, (service_id, rating)) for (service_id, hash_id, rating) in self._Execute('SELECT service_id, hash_id, rating FROM {} CROSS JOIN local_incdec_ratings USING ( hash_id );'.format(hash_ids_table_name))))
         
         hash_ids_to_local_ratings = collections.defaultdict( list )
         

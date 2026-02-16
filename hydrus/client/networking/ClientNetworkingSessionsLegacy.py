@@ -67,7 +67,7 @@ def ConvertLegacyToNewSessions( legacy_session_manager: NetworkSessionManagerLeg
     
     for ( network_context, session ) in network_contexts_to_sessions.items():
         
-        session_container_name = HydrusData.GenerateKey().hex()
+        session_container_name = HydrusData.generate_key().hex()
         
         session_container = ClientNetworkingSessions.NetworkSessionManagerSessionContainer( session_container_name, network_context = network_context, session = session )
         

@@ -151,7 +151,7 @@ class ClientDBNotesMap( ClientDBModule.ClientDBModule ):
         
         query = 'SELECT file_notes.hash_id, label, note FROM {} CROSS JOIN file_notes USING ( hash_id ), labels, notes ON ( file_notes.name_id = labels.label_id AND file_notes.note_id = notes.note_id );'.format( hash_ids_table_name )
         
-        hash_ids_to_names_and_notes = HydrusData.BuildKeyToListDict( ( ( hash_id, ( name, note ) ) for ( hash_id, name, note ) in self._Execute( query ) ) )
+        hash_ids_to_names_and_notes = HydrusData.build_key_to_list_dict(((hash_id, (name, note)) for (hash_id, name, note) in self._Execute(query)))
         
         return hash_ids_to_names_and_notes
         

@@ -280,7 +280,7 @@ class EditNodes( QW.QWidget ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception(e)
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             
@@ -496,7 +496,7 @@ The formula should attempt to parse full or relative urls. If the url is relativ
                 
             except Exception as e:
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception(e)
                 
                 message = 'Could not parse!'
                 
@@ -762,12 +762,12 @@ And pass that html to a number of 'parsing children' that will each look through
                 
             except UnicodeDecodeError:
                 
-                self._example_data.setPlainText( 'The fetched data, which had length ' + HydrusData.ToHumanBytes( len( parsing_text ) ) + ', did not appear to be displayable text.' )
+                self._example_data.setPlainText( 'The fetched data, which had length ' + HydrusData.to_human_bytes(len(parsing_text)) + ', did not appear to be displayable text.')
                 
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception(e)
             
             message = 'Could not fetch data!'
             message += '\n' * 2
@@ -806,7 +806,7 @@ And pass that html to a number of 'parsing children' that will each look through
                 
             except Exception as e:
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception(e)
                 
                 message = 'Could not parse!'
                 
@@ -1134,7 +1134,7 @@ class ManageParsingScriptsPanel( ClientGUIScrolledPanels.ManagePanel ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception(e)
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', str(e) )
             
@@ -1167,7 +1167,7 @@ class ManageParsingScriptsPanel( ClientGUIScrolledPanels.ManagePanel ):
                     
                 except Exception as e:
                     
-                    HydrusData.PrintException( e )
+                    HydrusData.print_exception(e)
                     
                     ClientGUIDialogsMessage.ShowCritical( self, 'Problem loading!', str(e) )
                     
@@ -1182,7 +1182,7 @@ class ManageParsingScriptsPanel( ClientGUIScrolledPanels.ManagePanel ):
                     
                 except Exception as e:
                     
-                    HydrusData.PrintException( e )
+                    HydrusData.print_exception(e)
                     
                     ClientGUIDialogsMessage.ShowCritical( self, 'Problem loading!', 'I could not understand what was encoded in the png!' )
                     

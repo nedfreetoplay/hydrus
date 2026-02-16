@@ -492,7 +492,7 @@ class CanvasHoverFrame( QW.QFrame ):
             
             if HG.hover_window_report_mode:
                 
-                HydrusData.ShowText( repr( self ) + ' - lowering' )
+                HydrusData.show_text(repr(self) + ' - lowering')
                 
             
             self.hide()
@@ -514,7 +514,7 @@ class CanvasHoverFrame( QW.QFrame ):
             
             if HG.hover_window_report_mode:
                 
-                HydrusData.ShowText( repr( self ) + ' - raising' )
+                HydrusData.show_text(repr(self) + ' - raising')
                 
             
             self.show()
@@ -573,7 +573,7 @@ class CanvasHoverFrame( QW.QFrame ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception(e)
             
             return True
             
@@ -728,10 +728,10 @@ class CanvasHoverFrame( QW.QFrame ):
             
             if HG.hover_window_report_mode:
                 
-                HydrusData.ShowText( 'showing' )
+                HydrusData.show_text('showing')
                 
                 h1 = get_logic_report_string()
-                HydrusData.ShowText( h1 )
+                HydrusData.show_text(h1)
                 
             
             self._SizeAndPosition()
@@ -742,11 +742,11 @@ class CanvasHoverFrame( QW.QFrame ):
                 
                 if h1 == h2:
                     
-                    HydrusData.ShowText( 'no change' )
+                    HydrusData.show_text('no change')
                     
                 else:
                     
-                    HydrusData.ShowText( h2 )
+                    HydrusData.show_text(h2)
                     
                 
             
@@ -756,8 +756,8 @@ class CanvasHoverFrame( QW.QFrame ):
             
             if HG.hover_window_report_mode:
                 
-                HydrusData.ShowText( 'hiding' )
-                HydrusData.ShowText( get_logic_report_string() )
+                HydrusData.show_text('hiding')
+                HydrusData.show_text(get_logic_report_string())
                 
             
             self._LowerHover()
@@ -1644,7 +1644,7 @@ class InboxIconClickFilter( QC.QObject ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception(e)
             
             return True
             
@@ -2075,7 +2075,7 @@ class NotePanel( QW.QWidget ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception(e)
             
             return True
             

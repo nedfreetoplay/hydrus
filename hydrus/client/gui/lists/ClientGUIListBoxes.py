@@ -244,9 +244,9 @@ class BetterQListWidget( QW.QListWidget ):
                 
             except Exception as e:
                 
-                HydrusData.ShowText( 'Could not copy some text from a list!' )
+                HydrusData.show_text('Could not copy some text from a list!')
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception(e)
                 
             
         else:
@@ -603,7 +603,7 @@ class AddEditDeleteListBox( QW.QWidget ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception(e)
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             
@@ -638,7 +638,7 @@ class AddEditDeleteListBox( QW.QWidget ):
                         
                     except Exception as e:
                         
-                        HydrusData.PrintException( e )
+                        HydrusData.print_exception(e)
                         
                         ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', str(e) )
                         
@@ -653,7 +653,7 @@ class AddEditDeleteListBox( QW.QWidget ):
                         
                     except Exception as e:
                         
-                        HydrusData.PrintException( e )
+                        HydrusData.print_exception(e)
                         
                         ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', 'I could not understand what was encoded in the png!' )
                         
@@ -707,7 +707,7 @@ class AddEditDeleteListBox( QW.QWidget ):
                 
             else:
                 
-                bad_object_type_names.add( HydrusData.GetTypeName( type( obj ) ) )
+                bad_object_type_names.add(HydrusData.get_type_name(type(obj)))
                 
             
         
@@ -721,7 +721,7 @@ class AddEditDeleteListBox( QW.QWidget ):
                 message += '\n' * 2
                 message += 'Whereas this control only allows:'
                 message += '\n' * 2
-                message += '\n'.join( ( HydrusData.GetTypeName( o ) for o in self._permitted_object_types ) )
+                message += '\n'.join((HydrusData.get_type_name(o) for o in self._permitted_object_types))
                 
                 ClientGUIDialogsMessage.ShowWarning( self, message )
                 
@@ -756,7 +756,7 @@ class AddEditDeleteListBox( QW.QWidget ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception(e)
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             
@@ -1209,7 +1209,7 @@ class QueueListBox( QW.QWidget ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception(e)
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             
@@ -1244,7 +1244,7 @@ class QueueListBox( QW.QWidget ):
                         
                     except Exception as e:
                         
-                        HydrusData.PrintException( e )
+                        HydrusData.print_exception(e)
                         
                         ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', str(e) )
                         
@@ -1259,7 +1259,7 @@ class QueueListBox( QW.QWidget ):
                         
                     except Exception as e:
                         
-                        HydrusData.PrintException( e )
+                        HydrusData.print_exception(e)
                         
                         ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', 'I could not understand what was encoded in the png!' )
                         
@@ -1313,7 +1313,7 @@ class QueueListBox( QW.QWidget ):
                 
             else:
                 
-                bad_object_type_names.add( HydrusData.GetTypeName( type( obj ) ) )
+                bad_object_type_names.add(HydrusData.get_type_name(type(obj)))
                 
             
         
@@ -1327,7 +1327,7 @@ class QueueListBox( QW.QWidget ):
                 message += '\n' * 2
                 message += 'Whereas this control only allows:'
                 message += '\n' * 2
-                message += '\n'.join( ( HydrusData.GetTypeName( o ) for o in self._permitted_object_types ) )
+                message += '\n'.join((HydrusData.get_type_name(o) for o in self._permitted_object_types))
                 
                 ClientGUIDialogsMessage.ShowWarning( self, message )
                 
@@ -2531,7 +2531,7 @@ class ListBox( QW.QScrollArea ):
         
         if HG.gui_report_mode:
             
-            HydrusData.ShowText( f'Setting a virtual size on {self}. Num terms: {len( self._ordered_terms)}, Text height: {text_height}, Total Positional Rows: {self._total_positional_rows}, My Height: {my_size.height()}, Ideal Height: {ideal_virtual_size.height()}' )
+            HydrusData.show_text(f'Setting a virtual size on {self}. Num terms: {len(self._ordered_terms)}, Text height: {text_height}, Total Positional Rows: {self._total_positional_rows}, My Height: {my_size.height()}, Ideal Height: {ideal_virtual_size.height()}')
             
         
         if ideal_virtual_size != my_size:
@@ -2757,7 +2757,7 @@ class ListBox( QW.QScrollArea ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception(e)
             
             return True
             
@@ -3351,7 +3351,7 @@ class ListBoxTags( ListBox ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception(e)
             
             return True
             

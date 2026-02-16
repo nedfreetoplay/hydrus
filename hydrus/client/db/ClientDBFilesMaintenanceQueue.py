@@ -109,7 +109,7 @@ class ClientDBFilesMaintenanceQueue( ClientDBModule.ClientDBModule ):
                     splayed_job_types = HydrusLists.SplayListForDB( possible_job_types )
                     
                     # temp to file jobs
-                    hash_ids_to_job_types = HydrusData.BuildKeyToSetDict( self._Execute( f'SELECT hash_id, job_type FROM {temp_hash_ids_table_name} CROSS JOIN file_maintenance_jobs USING ( hash_id ) WHERE time_can_start < ? AND job_type IN {splayed_job_types};', ( HydrusTime.GetNow(), ) ) )
+                    hash_ids_to_job_types = HydrusData.build_key_to_set_dict(self._Execute(f'SELECT hash_id, job_type FROM {temp_hash_ids_table_name} CROSS JOIN file_maintenance_jobs USING ( hash_id ) WHERE time_can_start < ? AND job_type IN {splayed_job_types};', (HydrusTime.GetNow(),)))
                     
                 
                 hash_ids_to_hashes = self.modules_hashes_local_cache.GetHashIdsToHashes( hash_ids = hash_ids )

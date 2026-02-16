@@ -202,7 +202,7 @@ class ClientDBFilesViewingStats( ClientDBModule.ClientDBModule ):
         
         query = 'SELECT hash_id, canvas_type, last_viewed_timestamp_ms, views, viewtime_ms FROM {} CROSS JOIN file_viewing_stats USING ( hash_id );'.format( hash_ids_table_name )
         
-        return HydrusData.BuildKeyToListDict( ( ( hash_id, ( canvas_type, last_viewed_timestamp_ms, views, viewtime_ms ) ) for ( hash_id, canvas_type, last_viewed_timestamp_ms, views, viewtime_ms ) in self._Execute( query ) ) )
+        return HydrusData.build_key_to_list_dict(((hash_id, (canvas_type, last_viewed_timestamp_ms, views, viewtime_ms)) for (hash_id, canvas_type, last_viewed_timestamp_ms, views, viewtime_ms) in self._Execute(query)))
         
     
     def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:

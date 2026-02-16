@@ -522,7 +522,7 @@ class ThumbnailCache( object ):
                 
                 if HG.file_report_mode:
                     
-                    HydrusData.ShowText( 'Thumbnail {} wrong size ({}x{} instead of {}x{}), scheduling regeneration from source.'.format( hash.hex(), current_width, current_height, expected_width, expected_height ) )
+                    HydrusData.show_text('Thumbnail {} wrong size ({}x{} instead of {}x{}), scheduling regeneration from source.'.format(hash.hex(), current_width, current_height, expected_width, expected_height))
                     
                 
                 with self._lock:
@@ -541,7 +541,7 @@ class ThumbnailCache( object ):
                 
                 if HG.file_report_mode:
                     
-                    HydrusData.ShowText( 'Thumbnail {} wrong size ({}x{} instead of {}x{}), only scaling due to no local source.'.format( hash.hex(), current_width, current_height, expected_width, expected_height ) )
+                    HydrusData.show_text('Thumbnail {} wrong size ({}x{} instead of {}x{}), only scaling due to no local source.'.format(hash.hex(), current_width, current_height, expected_width, expected_height))
                     
                 
             
@@ -555,7 +555,7 @@ class ThumbnailCache( object ):
         
         if self._thumbnail_error_occurred:
             
-            HydrusData.Print( summary )
+            HydrusData.print_text(summary)
             
         else:
             
@@ -1018,7 +1018,7 @@ class ThumbnailCache( object ):
                 
                 hash = media_result.GetHash()
                 
-                HydrusData.ShowText( 'Thumbnail {} now regenerating from source.'.format( hash.hex() ) )
+                HydrusData.show_text('Thumbnail {} now regenerating from source.'.format(hash.hex()))
                 
             
             try:

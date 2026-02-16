@@ -57,7 +57,7 @@ def GetFFMPEGInfoLines( path, count_frames_manually = False, only_first_second =
             
         
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         
@@ -808,7 +808,7 @@ def VideoHasAudio( path, info_lines ) -> bool:
         '-' ] )
         
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         
@@ -972,7 +972,7 @@ class VideoRendererFFMPEG( object ):
         ] )
         
         
-        HydrusData.CheckProgramIsNotShuttingDown()
+        HydrusData.check_program_is_not_shutting_down()
         
         try:
             

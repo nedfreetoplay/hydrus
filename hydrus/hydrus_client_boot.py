@@ -172,8 +172,8 @@ except Exception as e:
     
     try:
         
-        HydrusData.DebugPrint( title )
-        HydrusData.PrintException( e )
+        HydrusData.debug_print(title)
+        HydrusData.print_exception(e)
         
     except Exception as e:
         
@@ -226,7 +226,7 @@ except Exception as e:
         
         try:
             
-            HydrusData.Print( message )
+            HydrusData.print_text(message)
             
         except Exception as e:
             
@@ -245,7 +245,7 @@ def boot():
         
         try:
             
-            HydrusData.Print( 'hydrus client started' )
+            HydrusData.print_text('hydrus client started')
             
             if not HG.twisted_is_broke:
                 
@@ -265,11 +265,11 @@ def boot():
             
         except Exception as e:
             
-            HydrusData.Print( 'hydrus client failed' )
+            HydrusData.print_text('hydrus client failed')
             
             import traceback
             
-            HydrusData.Print( traceback.format_exc() )
+            HydrusData.print_text(traceback.format_exc())
             
         finally:
             
@@ -291,7 +291,7 @@ def boot():
                 reactor.callFromThread( target )
                 
             
-            HydrusData.Print( 'hydrus client shut down' )
+            HydrusData.print_text('hydrus client shut down')
             
         
     

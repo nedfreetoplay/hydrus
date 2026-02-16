@@ -13,7 +13,7 @@ class AnimationRendererPIL( object ):
         
         if HG.media_load_report_mode:
             
-            HydrusData.ShowText( 'Loading animation: ' + path )
+            HydrusData.show_text('Loading animation: ' + path)
             
         
         self._path = path
@@ -47,7 +47,7 @@ class AnimationRendererPIL( object ):
         
         if HG.media_load_report_mode:
             
-            HydrusData.ShowText( 'Loading animation with PIL' )
+            HydrusData.show_text('Loading animation with PIL')
             
         
         # dequantize = False since we'll be doing that later for each frame in turn

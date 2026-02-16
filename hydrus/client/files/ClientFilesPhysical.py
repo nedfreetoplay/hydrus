@@ -50,7 +50,7 @@ def GranulariseStorageFolder( base_location_path: str, prefix_type, starting_pre
                     
                 else:
                     
-                    HydrusData.Print( f'When granularising folders, I saw a weird directory, "{source_path}"! How did this thing sneak into Hydrus File Storage? Maybe it is an old prefix stub--an fragment of a previous maintenance job? You probably want to check it out and clean it up (if it is called like "file_storage/f23/3" and is empty, just delete it).' )
+                    HydrusData.print_text(f'When granularising folders, I saw a weird directory, "{source_path}"! How did this thing sneak into Hydrus File Storage? Maybe it is an old prefix stub--an fragment of a previous maintenance job? You probably want to check it out and clean it up (if it is called like "file_storage/f23/3" and is empty, just delete it).')
                     
                 
                 continue
@@ -68,13 +68,13 @@ def GranulariseStorageFolder( base_location_path: str, prefix_type, starting_pre
                 
             else:
                 
-                HydrusData.Print( f'When granularising folders, I failed to find a destination for the file with path "{source_path}"! I imagine it does not have a nice normal hex name and snuck into Hydrus File Storage by accident. You probably want to clean it up.')
+                HydrusData.print_text(f'When granularising folders, I failed to find a destination for the file with path "{source_path}"! I imagine it does not have a nice normal hex name and snuck into Hydrus File Storage by accident. You probably want to clean it up.')
                 
             
         
         if len( os.listdir( source_subfolder.path ) ) == 0:
             
-            HydrusData.Print( f'When granularising folders, I finished migrating out of the path "{source_subfolder.path}", and since it was empty when I was done, I deleted it!' )
+            HydrusData.print_text(f'When granularising folders, I finished migrating out of the path "{source_subfolder.path}", and since it was empty when I was done, I deleted it!')
             
             HydrusPaths.RecyclePath( source_subfolder.path )
             
@@ -97,9 +97,9 @@ class FilesStorageBaseLocation( object ):
             
         except Exception as e:
             
-            HydrusData.Print( f'While trying to realise your file location storage path {path} to determine symlinks and such, the following error occured. Please forward to hydev.' )
+            HydrusData.print_text(f'While trying to realise your file location storage path {path} to determine symlinks and such, the following error occured. Please forward to hydev.')
             
-            HydrusData.PrintException( e, do_wait = False )
+            HydrusData.print_exception(e, do_wait = False)
             
             real_path = 'Could not determine real path--check log!'
             
@@ -141,7 +141,7 @@ class FilesStorageBaseLocation( object ):
             
         else:
             
-            return f'{pretty_path} ({self.ideal_weight}, {HydrusData.ToHumanBytes( self.max_num_bytes )})'
+            return f'{pretty_path} ({self.ideal_weight}, {HydrusData.to_human_bytes(self.max_num_bytes)})'
             
         
     

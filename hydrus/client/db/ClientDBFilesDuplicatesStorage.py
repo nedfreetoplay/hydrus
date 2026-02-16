@@ -796,7 +796,7 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
                 
                 ( media_id, ) = result
                 
-                HydrusData.Print( f'When looking for the media_id {media_id} of hash_id {hash_id}, it did not have a member row but did have a definiton row!' )
+                HydrusData.print_text(f'When looking for the media_id {media_id} of hash_id {hash_id}, it did not have a member row but did have a definiton row!')
                 
             
             self._Execute( 'INSERT INTO duplicate_file_members ( media_id, hash_id ) VALUES ( ?, ? );', ( media_id, hash_id ) )

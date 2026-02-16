@@ -1754,7 +1754,7 @@ class WidgetEventFilter ( QC.QObject ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception(e)
             
             return True
             

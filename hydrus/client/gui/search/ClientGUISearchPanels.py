@@ -34,7 +34,7 @@ class EditFavouriteSearchPanel( ClientGUIScrolledPanels.EditPanel ):
         self._media_sort = ClientGUIMediaResultsPanelSortCollect.MediaSortControl( self, media_sort = media_sort )
         self._media_collect = ClientGUIMediaResultsPanelSortCollect.MediaCollectControl( self )
         
-        page_key = HydrusData.GenerateKey()
+        page_key = HydrusData.generate_key()
         
         from hydrus.client.gui.search import ClientGUIACDropdown
         
@@ -229,7 +229,7 @@ class EditFavouriteSearchesPanel( ClientGUIScrolledPanels.EditPanel ):
             ( foldername, name, file_search_context, synchronised, media_sort, media_collect ) = search_row
             
         
-        name = HydrusData.GetNonDupeName( name, existing_names )
+        name = HydrusData.get_non_dupe_name(name, existing_names)
         
         with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit favourite search' ) as dlg:
             

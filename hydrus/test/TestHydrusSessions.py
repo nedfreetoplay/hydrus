@@ -17,8 +17,8 @@ class TestSessions( unittest.TestCase ):
         
         discard = TG.test_controller.GetWrite( 'session' ) # just to discard gumph from testserver
         
-        session_key_1 = HydrusData.GenerateKey()
-        service_key = HydrusData.GenerateKey()
+        session_key_1 = HydrusData.generate_key()
+        service_key = HydrusData.generate_key()
         
         permissions = [ HC.GET_DATA, HC.POST_DATA, HC.POST_PETITIONS, HC.RESOLVE_PETITIONS, HC.MANAGE_USERS, HC.GENERAL_ADMIN, HC.EDIT_SERVICES ]
         
@@ -26,13 +26,13 @@ class TestSessions( unittest.TestCase ):
         created = HydrusTime.GetNow() - 100000
         expires = HydrusTime.GetNow() + 300
         
-        account_key_1 = HydrusData.GenerateKey()
-        account_key_2 = HydrusData.GenerateKey()
+        account_key_1 = HydrusData.generate_key()
+        account_key_2 = HydrusData.generate_key()
         
-        access_key_1 = HydrusData.GenerateKey()
+        access_key_1 = HydrusData.generate_key()
         hashed_access_key_1 = hashlib.sha256( access_key_1 ).digest()
         
-        access_key_2 = HydrusData.GenerateKey()
+        access_key_2 = HydrusData.generate_key()
         hashed_access_key_2 = hashlib.sha256( access_key_2 ).digest()
         
         account = HydrusNetwork.Account( account_key_1, account_type, created, expires )
@@ -55,7 +55,7 @@ class TestSessions( unittest.TestCase ):
         
         with self.assertRaises( HydrusExceptions.SessionException ):
             
-            session_manager.GetAccount( service_key, HydrusData.GenerateKey() )
+            session_manager.GetAccount(service_key, HydrusData.generate_key())
             
         
         # test fetching a session already in db, after bootup
@@ -80,9 +80,9 @@ class TestSessions( unittest.TestCase ):
         
         with self.assertRaises( HydrusExceptions.ServerBusyException ):
             
-            session_manager.AddSession( service_key, HydrusData.GenerateKey() )
+            session_manager.AddSession(service_key, HydrusData.generate_key())
             
-            session_manager.GetAccountFromAccessKey( service_key, HydrusData.GenerateKey() )
+            session_manager.GetAccountFromAccessKey(service_key, HydrusData.generate_key())
             
         
         # but ok to get for a session that already exists while busy

@@ -105,7 +105,7 @@ class ManageClientServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
     
     def _Add( self, service_type ):
         
-        service_key = HydrusData.GenerateKey()
+        service_key = HydrusData.generate_key()
         name = 'new service'
         
         service = ClientServices.GenerateService( service_key, service_type, name )
@@ -819,7 +819,7 @@ class EditServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Problem parsing!', 'Could not parse that registration token!' )
                 
@@ -2457,7 +2457,7 @@ class ReviewServiceFileSubPanel( ClientGUICommon.StaticBox ):
         num_files = service_info[ HC.SERVICE_INFO_NUM_FILES ]
         total_size = service_info[ HC.SERVICE_INFO_TOTAL_SIZE ]
         
-        text = HydrusNumbers.ToHumanInt( num_files ) + ' files, totalling ' + HydrusData.ToHumanBytes( total_size )
+        text = HydrusNumbers.ToHumanInt( num_files ) + ' files, totalling ' + HydrusData.to_human_bytes(total_size)
         
         if service.GetServiceType() in ( HC.LOCAL_FILE_DOMAIN, HC.COMBINED_LOCAL_FILE_DOMAINS, HC.HYDRUS_LOCAL_FILE_STORAGE, HC.FILE_REPOSITORY ):
             
@@ -2788,7 +2788,7 @@ class ReviewServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
             
             if not isinstance( etype, HydrusExceptions.ServerBusyException ):
                 
-                HydrusData.ShowExceptionTuple( etype, value, tb, do_wait = False )
+                HydrusData.show_exception_tuple(etype, value, tb, do_wait = False)
                 
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem!', str( value ) )
@@ -3144,7 +3144,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
             
             if not isinstance( etype, HydrusExceptions.ServerBusyException ):
                 
-                HydrusData.ShowExceptionTuple( etype, value, tb, do_wait = False )
+                HydrusData.show_exception_tuple(etype, value, tb, do_wait = False)
                 
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem!', str( value ) )
@@ -3604,7 +3604,7 @@ class ReviewServiceIPFSSubPanel( ClientGUICommon.StaticBox ):
         
         pretty_multihash = multihash
         pretty_num_files = HydrusNumbers.ToHumanInt( num_files )
-        pretty_total_size = HydrusData.ToHumanBytes( total_size )
+        pretty_total_size = HydrusData.to_human_bytes(total_size)
         pretty_note = note
         
         display_tuple = ( pretty_multihash, pretty_num_files, pretty_total_size, pretty_note )

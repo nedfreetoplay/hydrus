@@ -865,7 +865,7 @@ class AccountType( HydrusSerialisable.SerialisableBase ):
         
         if account_type_key is None:
             
-            account_type_key = HydrusData.GenerateKey()
+            account_type_key = HydrusData.generate_key()
             
         
         if title is None:
@@ -1122,7 +1122,7 @@ class AccountType( HydrusSerialisable.SerialisableBase ):
     @staticmethod
     def GenerateNewAccountType( title, permissions, bandwidth_rules ):
         
-        account_type_key = HydrusData.GenerateKey()
+        account_type_key = HydrusData.generate_key()
         
         return AccountType( account_type_key = account_type_key, title = title, permissions = permissions, bandwidth_rules = bandwidth_rules )
         
@@ -1130,7 +1130,7 @@ class AccountType( HydrusSerialisable.SerialisableBase ):
     @staticmethod
     def GenerateNullAccountType():
         
-        account_type_key = HydrusData.GenerateKey()
+        account_type_key = HydrusData.generate_key()
         
         title = 'null account'
         permissions = {}
@@ -3015,7 +3015,7 @@ class ServerServiceRepository( ServerServiceRestricted ):
                 
                 if self._metadata.UpdateIsEmpty( self._next_nullification_update_index ):
                     
-                    HydrusData.Print( 'Account history for "{}" update {} was empty, so nothing to anonymise.'.format( self._name, self._next_nullification_update_index ) )
+                    HydrusData.print_text('Account history for "{}" update {} was empty, so nothing to anonymise.'.format(self._name, self._next_nullification_update_index))
                     
                     self._next_nullification_update_index += 1
                     
@@ -3036,7 +3036,7 @@ class ServerServiceRepository( ServerServiceRestricted ):
             
             try:
                 
-                HydrusData.Print( 'Nullifying account history for "{}" update {}.'.format( self._name, self._next_nullification_update_index ) )
+                HydrusData.print_text('Nullifying account history for "{}" update {}.'.format(self._name, self._next_nullification_update_index))
                 
                 update_started = HydrusTime.GetNowFloat()
                 
@@ -3046,7 +3046,7 @@ class ServerServiceRepository( ServerServiceRestricted ):
                 
                 with self._lock:
                     
-                    HydrusData.Print( 'Account history for "{}" update {} was anonymised in {}.'.format( self._name, self._next_nullification_update_index, HydrusTime.TimeDeltaToPrettyTimeDelta( update_took ) ) )
+                    HydrusData.print_text('Account history for "{}" update {} was anonymised in {}.'.format(self._name, self._next_nullification_update_index, HydrusTime.TimeDeltaToPrettyTimeDelta(update_took)))
                     
                     self._next_nullification_update_index += 1
                     

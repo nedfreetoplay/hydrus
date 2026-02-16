@@ -56,5 +56,5 @@ class HydrusRequestLogging( HydrusRequest ):
         
         message = str( host.port ) + ' ' + str( self.method, 'utf-8' ) + ' ' + str( self.path, 'utf-8' ) + ' ' + status_text + ' in ' + HydrusTime.TimeDeltaToPrettyTimeDelta( HydrusTime.GetNowPrecise() - self.start_time )
         
-        HydrusData.Print( message )
+        HydrusData.print_text(message)
         

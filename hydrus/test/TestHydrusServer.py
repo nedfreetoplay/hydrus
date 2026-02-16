@@ -39,7 +39,7 @@ with open( HydrusStaticDir.GetStaticPath( 'hydrus_small.png' ), 'rb' ) as f_g:
 
 class TestServer( unittest.TestCase ):
     
-    _access_key: bytes = HydrusData.GenerateKey()
+    _access_key: bytes = HydrusData.generate_key()
     
     _serverside_file_service: typing.Any = None
     _serverside_tag_service: typing.Any = None
@@ -55,15 +55,15 @@ class TestServer( unittest.TestCase ):
     @classmethod
     def setUpClass( cls ):
         
-        cls._access_key = HydrusData.GenerateKey()
+        cls._access_key = HydrusData.generate_key()
         
-        cls._serverside_file_service = HydrusNetwork.GenerateService( HydrusData.GenerateKey(), HC.FILE_REPOSITORY, 'file repo', HC.DEFAULT_SERVICE_PORT + 1 )
-        cls._serverside_tag_service = HydrusNetwork.GenerateService( HydrusData.GenerateKey(), HC.TAG_REPOSITORY, 'tag repo', HC.DEFAULT_SERVICE_PORT )
-        cls._serverside_admin_service = HydrusNetwork.GenerateService( HydrusData.GenerateKey(), HC.SERVER_ADMIN, 'server admin', HC.DEFAULT_SERVER_ADMIN_PORT )
+        cls._serverside_file_service = HydrusNetwork.GenerateService(HydrusData.generate_key(), HC.FILE_REPOSITORY, 'file repo', HC.DEFAULT_SERVICE_PORT + 1)
+        cls._serverside_tag_service = HydrusNetwork.GenerateService(HydrusData.generate_key(), HC.TAG_REPOSITORY, 'tag repo', HC.DEFAULT_SERVICE_PORT)
+        cls._serverside_admin_service = HydrusNetwork.GenerateService(HydrusData.generate_key(), HC.SERVER_ADMIN, 'server admin', HC.DEFAULT_SERVER_ADMIN_PORT)
         
-        cls._clientside_file_service = ClientServices.GenerateService( HydrusData.GenerateKey(), HC.FILE_REPOSITORY, 'file repo' )
-        cls._clientside_tag_service = ClientServices.GenerateService( HydrusData.GenerateKey(), HC.TAG_REPOSITORY, 'tag repo' )
-        cls._clientside_admin_service = ClientServices.GenerateService( HydrusData.GenerateKey(), HC.SERVER_ADMIN, 'server admin' )
+        cls._clientside_file_service = ClientServices.GenerateService(HydrusData.generate_key(), HC.FILE_REPOSITORY, 'file repo')
+        cls._clientside_tag_service = ClientServices.GenerateService(HydrusData.generate_key(), HC.TAG_REPOSITORY, 'tag repo')
+        cls._clientside_admin_service = ClientServices.GenerateService(HydrusData.generate_key(), HC.SERVER_ADMIN, 'server admin')
         
         cls._clientside_file_service.SetCredentials( HydrusNetwork.Credentials( '127.0.0.1', HC.DEFAULT_SERVICE_PORT + 1, cls._access_key ) )
         cls._clientside_tag_service.SetCredentials( HydrusNetwork.Credentials( '127.0.0.1', HC.DEFAULT_SERVICE_PORT, cls._access_key ) )
@@ -75,7 +75,7 @@ class TestServer( unittest.TestCase ):
         services_manager._keys_to_services[ cls._clientside_tag_service.GetServiceKey() ] = cls._clientside_tag_service
         services_manager._keys_to_services[ cls._clientside_admin_service.GetServiceKey() ] = cls._clientside_admin_service
         
-        account_key = HydrusData.GenerateKey()
+        account_key = HydrusData.generate_key()
         account_type = HydrusNetwork.AccountType.GenerateAdminAccountType( HC.SERVER_ADMIN )
         created = HydrusTime.GetNow() - 100000
         expires = None
@@ -85,7 +85,7 @@ class TestServer( unittest.TestCase ):
         cls._service_keys_to_empty_account_types = {}
         cls._service_keys_to_empty_accounts = {}
         
-        cls._file_hash = HydrusData.GenerateKey()
+        cls._file_hash = HydrusData.generate_key()
         
         def TWISTEDSetup():
             
@@ -232,7 +232,7 @@ class TestServer( unittest.TestCase ):
         
         # account key from file
         
-        test_hash = HydrusData.GenerateKey()
+        test_hash = HydrusData.generate_key()
         
         TG.test_controller.SetRead( 'account_key_from_content', self._account.GetAccountKey() )
         
@@ -283,9 +283,9 @@ class TestServer( unittest.TestCase ):
         
         # petition
         
-        petitioner_account = HydrusNetwork.Account.GenerateUnknownAccount( HydrusData.GenerateKey() )
+        petitioner_account = HydrusNetwork.Account.GenerateUnknownAccount(HydrusData.generate_key())
         reason = 'it sucks'
-        actions_and_contents = ( HC.CONTENT_UPDATE_PETITION, [ HydrusNetwork.Content( HC.CONTENT_TYPE_FILES, [ HydrusData.GenerateKey() for i in range( 10 ) ] ) ] )
+        actions_and_contents = ( HC.CONTENT_UPDATE_PETITION, [HydrusNetwork.Content(HC.CONTENT_TYPE_FILES, [HydrusData.generate_key() for i in range(10)])])
         
         petition_header = HydrusNetwork.PetitionHeader(
             content_type = HC.CONTENT_TYPE_FILES,
@@ -315,7 +315,7 @@ class TestServer( unittest.TestCase ):
         for i in range( 100, 200 ):
             
             definitions_update.AddRow( ( HC.DEFINITIONS_TYPE_TAGS, i, 'series:test ' + str( i ) ) )
-            definitions_update.AddRow( ( HC.DEFINITIONS_TYPE_HASHES, i + 500, HydrusData.GenerateKey() ) )
+            definitions_update.AddRow(( HC.DEFINITIONS_TYPE_HASHES, i + 500, HydrusData.generate_key()))
             
         
         definitions_update_network_bytes = definitions_update.DumpToNetworkBytes()
@@ -414,7 +414,7 @@ class TestServer( unittest.TestCase ):
         
         # access_key
         
-        registration_key = HydrusData.GenerateKey()
+        registration_key = HydrusData.generate_key()
         
         TG.test_controller.SetRead( 'access_key', self._access_key )
         
@@ -430,7 +430,7 @@ class TestServer( unittest.TestCase ):
         
         TG.test_controller.SetRead( 'service', service )
         
-        TG.test_controller.SetRead( 'account_key_from_access_key', HydrusData.GenerateKey() )
+        TG.test_controller.SetRead( 'account_key_from_access_key', HydrusData.generate_key())
         TG.test_controller.SetRead( 'account', self._account )
         
         # account
@@ -453,7 +453,7 @@ class TestServer( unittest.TestCase ):
         
         TG.test_controller.SetRead( 'account_info', account_info )
         
-        response = service.Request( HC.GET, 'account_info', { 'subject_account_key' : HydrusData.GenerateKey() } )
+        response = service.Request(HC.GET, 'account_info', { 'subject_account_key' : HydrusData.generate_key()})
         
         self.assertEqual( response[ 'account_info' ], account_info )
         
@@ -486,7 +486,7 @@ class TestServer( unittest.TestCase ):
         
         # registration_keys
         
-        registration_key = HydrusData.GenerateKey()
+        registration_key = HydrusData.generate_key()
         
         TG.test_controller.SetRead( 'registration_keys', [ registration_key ] )
         
@@ -499,7 +499,7 @@ class TestServer( unittest.TestCase ):
         
         # init
         
-        access_key = HydrusData.GenerateKey()
+        access_key = HydrusData.generate_key()
         
         TG.test_controller.SetRead( 'access_key', access_key )
         
@@ -540,7 +540,7 @@ class TestServer( unittest.TestCase ):
         # account from mapping
         
         test_tag = 'character:samus aran'
-        test_hash = HydrusData.GenerateKey()
+        test_hash = HydrusData.generate_key()
         
         TG.test_controller.SetRead( 'account_key_from_content', self._account.GetAccountKey() )
         

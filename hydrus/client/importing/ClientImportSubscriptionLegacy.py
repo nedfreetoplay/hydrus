@@ -129,7 +129,7 @@ class SubscriptionQueryLegacy( HydrusSerialisable.SerialisableBase ):
         
         if HG.subscription_report_mode:
             
-            HydrusData.ShowText( 'Query "' + self.GetHumanName() + '" bandwidth/domain test. Bandwidth ok: {}'.format( bandwidth_ok ) )
+            HydrusData.show_text('Query "' + self.GetHumanName() + '" bandwidth/domain test. Bandwidth ok: {}'.format(bandwidth_ok))
             
         
         return bandwidth_ok
@@ -174,7 +174,7 @@ class SubscriptionQueryLegacy( HydrusSerialisable.SerialisableBase ):
         
         if HG.subscription_report_mode:
             
-            HydrusData.ShowText( 'Query "' + self.GetHumanName() + '" domain test. Domain ok: {}'.format( domain_ok ) )
+            HydrusData.show_text('Query "' + self.GetHumanName() + '" domain test. Domain ok: {}'.format(domain_ok))
             
         
         return domain_ok
@@ -324,7 +324,7 @@ class SubscriptionQueryLegacy( HydrusSerialisable.SerialisableBase ):
         
         if HG.subscription_report_mode:
             
-            HydrusData.ShowText( 'Query "' + self._query + '" HasFileWorkToDo test. Next import is ' + repr( file_seed ) + '.' )
+            HydrusData.show_text('Query "' + self._query + '" HasFileWorkToDo test. Next import is ' + repr(file_seed) + '.')
             
         
         return file_seed is not None
@@ -349,7 +349,7 @@ class SubscriptionQueryLegacy( HydrusSerialisable.SerialisableBase ):
         
         if HG.subscription_report_mode:
             
-            HydrusData.ShowText( 'Query "' + self._query + '" IsSyncDue test. Paused/dead status is {}/{}, check time due is {}, and check_now is {}.'.format( self._paused, self.IsDead(), HydrusTime.TimeHasPassed( self._next_check_time ), self._check_now ) )
+            HydrusData.show_text('Query "' + self._query + '" IsSyncDue test. Paused/dead status is {}/{}, check time due is {}, and check_now is {}.'.format(self._paused, self.IsDead(), HydrusTime.TimeHasPassed(self._next_check_time), self._check_now))
             
         
         if self._paused or self.IsDead():
@@ -476,7 +476,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
         
         if gug_key_and_name is None:
             
-            gug_key_and_name = ( HydrusData.GenerateKey(), 'unknown source' )
+            gug_key_and_name = (HydrusData.generate_key(), 'unknown source')
             
         
         self._gug_key_and_name = gug_key_and_name
@@ -530,7 +530,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
             message += '\n'
             message += 'No delays: {}'.format( self._NoDelays() )
             
-            HydrusData.ShowText( message )
+            HydrusData.show_text(message)
             
         
         return p1 and p2 and p3
@@ -672,7 +672,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
                         message += '\n' * 2
                         message += 'The subscription has paused. Please see if you can fix the problem and then unpause. If the login script stopped because of missing cookies or similar, it may be broken. Please check out Hydrus Companion for a better login solution.'
                         
-                        HydrusData.ShowText( message )
+                        HydrusData.show_text(message)
                         
                         self._DelayWork( 300, login_fail_reason )
                         
@@ -688,7 +688,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
         
         if HG.subscription_report_mode:
             
-            HydrusData.ShowText( 'Query "' + query.GetHumanName() + '" pre-work file login test. Login ok: ' + str( result ) + '.' )
+            HydrusData.show_text('Query "' + query.GetHumanName() + '" pre-work file login test. Login ok: ' + str(result) + '.')
             
         
         return result
@@ -732,7 +732,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
                         message += '\n' * 2
                         message += 'The subscription has paused. Please see if you can fix the problem and then unpause. If the login script stopped because of missing cookies or similar, it may be broken. Please check out Hydrus Companion for a better login solution.'
                         
-                        HydrusData.ShowText( message )
+                        HydrusData.show_text(message)
                         
                         self._DelayWork( 300, login_fail_reason )
                         
@@ -748,7 +748,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
         
         if HG.subscription_report_mode:
             
-            HydrusData.ShowText( 'Query "' + query.GetHumanName() + '" pre-work sync login test. Login ok: ' + str( result ) + '.' )
+            HydrusData.show_text('Query "' + query.GetHumanName() + '" pre-work sync login test. Login ok: ' + str(result) + '.')
             
         
         return result

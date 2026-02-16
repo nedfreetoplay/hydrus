@@ -14,7 +14,7 @@ class JobStatus( object ):
     
     def __init__( self, pausable = False, cancellable = False, maintenance_mode = HC.MAINTENANCE_FORCED, only_start_if_unbusy = False, stop_time = None, cancel_on_shutdown = True ):
         
-        self._key = HydrusData.GenerateKey()
+        self._key = HydrusData.generate_key()
         
         self._creation_time = HydrusTime.GetNowFloat()
         

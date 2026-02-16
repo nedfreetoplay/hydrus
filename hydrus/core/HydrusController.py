@@ -223,7 +223,7 @@ class HydrusController( object ):
     
     def _show_just_woke_to_user(self) -> None:
         
-        HydrusData.Print( 'Just woke from sleep.' )
+        HydrusData.print_text('Just woke from sleep.')
         
     
     def _shutdown_daemons(self):
@@ -308,15 +308,15 @@ class HydrusController( object ):
     
     def blocking_safe_show_critical_message(self, title: str, message: str):
         
-        HydrusData.DebugPrint( title )
-        HydrusData.DebugPrint( message )
+        HydrusData.debug_print(title)
+        HydrusData.debug_print(message)
         
         input( 'Press Enter to continue.' )
         
     
     def blocking_safe_show_message(self, message: str):
         
-        HydrusData.DebugPrint( message )
+        HydrusData.debug_print(message)
         
         input( 'Press Enter to continue.' )
         
@@ -378,7 +378,7 @@ class HydrusController( object ):
                 what_to_report.append( kwargs )
                 
             
-            HydrusData.ShowText( tuple( what_to_report ) )
+            HydrusData.show_text(tuple(what_to_report))
             
         
         call_to_thread = self._get_call_to_thread()
@@ -402,7 +402,7 @@ class HydrusController( object ):
                 what_to_report.append( kwargs )
                 
             
-            HydrusData.ShowText( tuple( what_to_report ) )
+            HydrusData.show_text(tuple(what_to_report))
             
         
         call_to_thread = self._get_call_to_thread_long_running()
@@ -414,7 +414,7 @@ class HydrusController( object ):
         
         if self._i_own_running_file:
             
-            HydrusData.CleanRunningFile( self.db_dir, self._name )
+            HydrusData.clean_running_file(self.db_dir, self._name)
             
         
     
@@ -449,13 +449,13 @@ class HydrusController( object ):
         
         summary = self._fast_job_scheduler.GetPrettyJobSummary()
         
-        HydrusData.ShowText( 'fast scheduler:' )
-        HydrusData.ShowText( summary )
+        HydrusData.show_text('fast scheduler:')
+        HydrusData.show_text(summary)
         
         summary = self._slow_job_scheduler.GetPrettyJobSummary()
         
-        HydrusData.ShowText( 'slow scheduler:' )
-        HydrusData.ShowText( summary )
+        HydrusData.show_text('slow scheduler:')
+        HydrusData.show_text(summary)
         
     
     def doing_fast_exit(self) -> bool:
@@ -600,7 +600,7 @@ class HydrusController( object ):
             
         except Exception as e:
             
-            HydrusData.Print( 'Failed to initialise temp folder.' )
+            HydrusData.print_text('Failed to initialise temp folder.')
             
         
         from hydrus.core.files import HydrusFileHandling
@@ -698,7 +698,7 @@ class HydrusController( object ):
     
     def record_running_start(self):
         
-        self._last_shutdown_was_bad = HydrusData.LastShutdownWasBad( self.db_dir, self._name )
+        self._last_shutdown_was_bad = HydrusData.last_shutdown_was_bad(self.db_dir, self._name)
         
         self._i_own_running_file = True
         

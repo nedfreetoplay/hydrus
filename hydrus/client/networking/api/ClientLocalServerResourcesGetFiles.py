@@ -584,7 +584,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetLocalFileStorageLocations( Hyd
         
         all_subfolders = CG.client_controller.client_files_manager.GetAllSubfolders()
         
-        base_locations_to_subfolders = HydrusData.BuildKeyToListDict( [ ( subfolder.base_location, subfolder ) for subfolder in all_subfolders ] )
+        base_locations_to_subfolders = HydrusData.build_key_to_list_dict([(subfolder.base_location, subfolder) for subfolder in all_subfolders])
         
         locations_list = []
         

@@ -258,7 +258,7 @@ class NetworkEngine( object ):
                     
                 except Exception as e:
                     
-                    HydrusData.ShowException( e )
+                    HydrusData.show_exception(e)
                     
                     return
                     
@@ -322,7 +322,7 @@ class NetworkEngine( object ):
                         
                     except Exception as e:
                         
-                        HydrusData.ShowException( e )
+                        HydrusData.show_exception(e)
                         
                         job.SetStatus( str( e ) )
                         

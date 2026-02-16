@@ -1727,8 +1727,8 @@ class EditLoginScriptPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 login_result = str( e )
                 
-                HydrusData.Print( 'During login test, encountered this halt/error:' )
-                HydrusData.PrintException( e )
+                HydrusData.print_text('During login test, encountered this halt/error:')
+                HydrusData.print_exception(e)
                 
             finally:
                 

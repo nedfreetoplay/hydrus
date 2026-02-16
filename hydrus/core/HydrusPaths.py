@@ -138,9 +138,9 @@ def DeletePath( path ) -> bool:
     
     if HG.file_report_mode:
         
-        HydrusData.ShowText( 'Deleting {}'.format( path ) )
+        HydrusData.show_text('Deleting {}'.format(path))
         
-        HydrusData.ShowText( ''.join( traceback.format_stack() ) )
+        HydrusData.show_text(''.join(traceback.format_stack()))
         
     
     try:
@@ -168,12 +168,12 @@ def DeletePath( path ) -> bool:
                 
                 # file in use by another process
                 
-                HydrusData.DebugPrint( 'Trying to delete ' + path + ' failed because it was in use by another process.' )
+                HydrusData.debug_print('Trying to delete ' + path + ' failed because it was in use by another process.')
                 
             else:
                 
-                HydrusData.ShowText( 'Trying to delete ' + path + ' caused the following error:' )
-                HydrusData.ShowException( e )
+                HydrusData.show_text('Trying to delete ' + path + ' caused the following error:')
+                HydrusData.show_exception(e)
                 
             
             return False
@@ -206,12 +206,12 @@ def DeletePath( path ) -> bool:
                 
                 # file in use by another process
                 
-                HydrusData.DebugPrint( 'Trying to delete ' + path + ' failed because it was in use by another process.' )
+                HydrusData.debug_print('Trying to delete ' + path + ' failed because it was in use by another process.')
                 
             else:
                 
-                HydrusData.ShowText( 'Trying to delete ' + path + ' caused the following error:' )
-                HydrusData.ShowException( e )
+                HydrusData.show_text('Trying to delete ' + path + ' caused the following error:')
+                HydrusData.show_exception(e)
                 
             
             return False
@@ -622,7 +622,7 @@ def FigureOutDBDir( arg_db_dir: str ):
                     raise Exception( f'Neither the default db path "{db_dir}", nor the userpath fallback "{HC.USERPATH_DB_DIR}", were writeable-to!' )
                     
                 
-                HydrusData.Print( f'The given db path "{db_dir}" is not writeable-to! Falling back to userpath at "{HC.USERPATH_DB_DIR}".' )
+                HydrusData.print_text(f'The given db path "{db_dir}" is not writeable-to! Falling back to userpath at "{HC.USERPATH_DB_DIR}".')
                 
                 HC.WE_SWITCHED_TO_USERPATH = True
                 
@@ -843,7 +843,7 @@ def LaunchDirectory( path ):
                 raise NotImplementedError( 'Unknown platform!' )
                 
             
-            HydrusData.CheckProgramIsNotShuttingDown()
+            HydrusData.check_program_is_not_shutting_down()
             
             HydrusSubprocess.RunSubprocess( cmd, this_is_a_potentially_long_lived_external_guy = True )
             
@@ -886,20 +886,20 @@ def LaunchFile( path, launch_path = None ):
                 
                 message = 'Attempting to launch ' + path + ' using command ' + repr( cmd ) + '.'
                 
-                HydrusData.ShowText( message )
+                HydrusData.show_text(message)
                 
             
             try:
                 
-                HydrusData.CheckProgramIsNotShuttingDown()
+                HydrusData.check_program_is_not_shutting_down()
                 
                 HydrusSubprocess.RunSubprocess( cmd, this_is_a_potentially_long_lived_external_guy = True, hide_terminal = False )
                 
             except Exception as e:
                 
-                HydrusData.ShowText( 'Could not launch a file! Command used was:' + '\n' + str( cmd ) )
+                HydrusData.show_text('Could not launch a file! Command used was:' + '\n' + str(cmd))
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception(e)
                 
             
         
@@ -1311,7 +1311,7 @@ def MirrorFile( source, dest ) -> bool:
                 message += ' You are also on Linux, where these temp dir rules are not uncommon!'
                 
             
-            HydrusData.ShowText( message )
+            HydrusData.show_text(message)
             
         
         raise
@@ -1457,7 +1457,7 @@ def OpenFileLocation( path ):
             raise NotImplementedError( 'Unknown platform!' )
             
         
-        HydrusData.CheckProgramIsNotShuttingDown()
+        HydrusData.check_program_is_not_shutting_down()
         
         HydrusSubprocess.RunSubprocess( cmd, this_is_a_potentially_long_lived_external_guy = True )
         
@@ -1491,7 +1491,7 @@ def PathIsFree( path ):
         
     except OSError as e: # 'already in use by another process' or an odd filename too long error
         
-        HydrusData.Print( 'Already in use/inaccessible: ' + path )
+        HydrusData.print_text('Already in use/inaccessible: ' + path)
         
         return False
         
@@ -1505,7 +1505,7 @@ def PathIsFree( path ):
         
     except Exception as e:
         
-        HydrusData.Print( 'Could not open the file: ' + path )
+        HydrusData.print_text('Could not open the file: ' + path)
         
         return False
         
@@ -1543,9 +1543,9 @@ def RecyclePath( path ):
     
     if HG.file_report_mode:
         
-        HydrusData.ShowText( 'Recycling {}'.format( path ) )
+        HydrusData.show_text('Recycling {}'.format(path))
         
-        HydrusData.ShowText( ''.join( traceback.format_stack() ) )
+        HydrusData.show_text(''.join(traceback.format_stack()))
         
     
     MAX_NUM_ATTEMPTS = 3
@@ -1585,23 +1585,23 @@ def RecyclePath( path ):
                     
                 else:
                     
-                    HydrusData.Print( f'I keep getting the 0x80270021 error when trying to recycle "{path}"!' )
+                    HydrusData.print_text(f'I keep getting the 0x80270021 error when trying to recycle "{path}"!')
                     
-                    HydrusData.PrintException( e, do_wait = False )
+                    HydrusData.print_exception(e, do_wait = False)
                     
                 
             elif isinstance( e, OSError ) and 'Errno 36' in str( e ):
                 
-                HydrusData.Print( f'Could not recycle "{path}" because a filename would be too long! (maybe Linux .trashinfo?)' )
+                HydrusData.print_text(f'Could not recycle "{path}" because a filename would be too long! (maybe Linux .trashinfo?)')
                 
             else:
                 
-                HydrusData.Print( f'Trying to recycle "{path}" created this error:' )
+                HydrusData.print_text(f'Trying to recycle "{path}" created this error:')
                 
-                HydrusData.PrintException( e, do_wait = False )
+                HydrusData.print_exception(e, do_wait = False)
                 
             
-            HydrusData.Print( 'I will fully delete it instead.' )
+            HydrusData.print_text('I will fully delete it instead.')
             
             DeletePath( path )
             
@@ -1702,7 +1702,7 @@ def TryToGiveFileNicePermissionBits( path ):
         
     except Exception as e:
         
-        HydrusData.Print( 'Wanted to add read and write permission to "{}", but had an error: {}'.format( path, str( e ) ) )
+        HydrusData.print_text('Wanted to add read and write permission to "{}", but had an error: {}'.format(path, str(e)))
         
     
 
@@ -1740,6 +1740,6 @@ def TryToMakeFileWriteable( path: str, path_stat: os.stat_result ):
         
     except Exception as e:
         
-        HydrusData.Print( 'Wanted to add user write permission to "{}", but had an error: {}'.format( path, str( e ) ) )
+        HydrusData.print_text('Wanted to add user write permission to "{}", but had an error: {}'.format(path, str(e)))
         
     

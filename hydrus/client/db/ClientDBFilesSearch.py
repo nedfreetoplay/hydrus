@@ -1519,7 +1519,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
             
             if not SHOWN_UNINITIALISED_SEARCH_ERROR:
                 
-                HydrusData.ShowText( 'Hey, the search you just performed came up with zero results in part because it failed to initialise properly. Please contact hydev with any details you have.\n\nTo stop spam, this message will only show one time per program boot. The error may happen again, silently.' )
+                HydrusData.show_text('Hey, the search you just performed came up with zero results in part because it failed to initialise properly. Please contact hydev with any details you have.\n\nTo stop spam, this message will only show one time per program boot. The error may happen again, silently.')
                 
                 SHOWN_UNINITIALISED_SEARCH_ERROR = True
                 
@@ -2819,7 +2819,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                 
             except HydrusExceptions.DataMissing:
                 
-                HydrusData.ShowText( 'A file search query was run for a file service that does not exist! If you just removed a service, you might want to try checking the search and/or restarting the client.' )
+                HydrusData.show_text('A file search query was run for a file service that does not exist! If you just removed a service, you might want to try checking the search and/or restarting the client.')
                 
                 return []
                 
@@ -2837,7 +2837,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                 
             except HydrusExceptions.DataMissing:
                 
-                HydrusData.ShowText( 'A file search query was run for a file service that does not exist! If you just removed a service, you might want to try checking the search and/or restarting the client.' )
+                HydrusData.show_text('A file search query was run for a file service that does not exist! If you just removed a service, you might want to try checking the search and/or restarting the client.')
                 
                 return []
                 
@@ -2853,7 +2853,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
             
         except HydrusExceptions.DataMissing:
             
-            HydrusData.ShowText( 'A file search query was run for a tag service that does not exist! If you just removed a service, you might want to check the search and/or restart the client.' )
+            HydrusData.show_text('A file search query was run for a tag service that does not exist! If you just removed a service, you might want to check the search and/or restart the client.')
             
             return []
             

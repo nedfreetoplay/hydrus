@@ -100,7 +100,7 @@ class ClientDBFilesMaintenance( ClientDBModule.ClientDBModule ):
                     
                     if mime != original_mime:
                         
-                        HydrusData.Print( f'File Maintenance: File {hash.hex()} changed filetype from {HC.mime_string_lookup[ original_mime ]} to {HC.mime_string_lookup[ mime ]}.' )
+                        HydrusData.print_text(f'File Maintenance: File {hash.hex()} changed filetype from {HC.mime_string_lookup[ original_mime]} to {HC.mime_string_lookup[ mime]}.')
                         
                         if ( mime in HC.HYDRUS_UPDATE_FILES or original_mime in HC.HYDRUS_UPDATE_FILES ):
                             
@@ -110,7 +110,7 @@ class ClientDBFilesMaintenance( ClientDBModule.ClientDBModule ):
                     
                     if mime in HC.MIMES_WITH_THUMBNAILS and resolution_changed:
                         
-                        HydrusData.Print( f'File Maintenance: File {hash.hex()} changed resolution from {ClientData.ResolutionToPrettyString( original_resolution )} to {ClientData.ResolutionToPrettyString( ( width, height ) )}.' )
+                        HydrusData.print_text(f'File Maintenance: File {hash.hex()} changed resolution from {ClientData.ResolutionToPrettyString(original_resolution)} to {ClientData.ResolutionToPrettyString((width, height))}.')
                         
                         self._ScheduleJobsForChangedAppearance( hash_id )
                         

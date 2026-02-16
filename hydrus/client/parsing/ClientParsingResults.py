@@ -18,7 +18,7 @@ def ConvertParsableContentDescriptionsToPrettyString( parsable_content_descripti
     # when this was tuple hell, this guy used to go "tags: creator, series, unnamespaced". it would be neat to have that compression again, so think about it
     # maybe each subclass could have the ability to do STATICToMassString( pcds ) or something, and then I just group by
     
-    content_types_to_pcds = HydrusData.BuildKeyToSetDict( [ ( pcd.content_type, pcd ) for pcd in parsable_content_descriptions ] )
+    content_types_to_pcds = HydrusData.build_key_to_set_dict([(pcd.content_type, pcd) for pcd in parsable_content_descriptions])
     
     content_types = sorted( content_types_to_pcds.keys(), key = lambda content_type: HC.content_type_string_lookup[ content_type ] )
     

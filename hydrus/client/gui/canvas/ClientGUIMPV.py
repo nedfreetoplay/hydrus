@@ -146,7 +146,7 @@ def log_handler( loglevel, component, message ):
             
         
     
-    HydrusData.DebugPrint( '[MPV {}] {}: {}'.format( loglevel, component, message ) )
+    HydrusData.debug_print('[MPV {}] {}: {}'.format(loglevel, component, message))
     
 
 class MPVEmergencyDumpOutSignaller( QC.QObject ):
@@ -781,12 +781,12 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         except mpv.ShutdownError:
             
             # libmpv core probably shut down
-            HydrusData.ShowText( 'While trying to handle another error, the mpv window could not show the error fallback png! Program may be unstable, restart ASAP recommended.' )
+            HydrusData.show_text('While trying to handle another error, the mpv window could not show the error fallback png! Program may be unstable, restart ASAP recommended.')
             
         
         if self._media is not None:
             
-            HydrusData.ShowText( f'The file with hash "{self._media.GetHash().hex()}" seems to have failed to load in mpv. In order to preserve program stability, I have unloaded it immediately!' )
+            HydrusData.show_text(f'The file with hash "{self._media.GetHash().hex()}" seems to have failed to load in mpv. In order to preserve program stability, I have unloaded it immediately!')
             
         
     
@@ -935,7 +935,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception(e)
             
             return True
             
@@ -967,7 +967,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                     
                     hash = original_media.GetHash()
                     
-                    HydrusData.ShowText( f'This file ({hash.hex()}) would have triggered the crash handling now.' )
+                    HydrusData.show_text(f'This file ({hash.hex()}) would have triggered the crash handling now.')
                     
                 
                 return
@@ -997,7 +997,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
                 message = f'Sorry, this media appears to have a serious problem in mpv! To avoid crashes, I have unloaded it and will not allow it again this program boot. The file is possibly truncated or otherwise corrupted, but if you think it is good, please send it to hydev for more testing. The specific errors should be written to the log.{media_line}'
                 
-                HydrusData.DebugPrint( message )
+                HydrusData.debug_print(message)
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Error', f'{message}\n\nThe first error was:\n\n{reason}' )
                 
@@ -1011,7 +1011,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
                 message = f'A media loaded in MPV appears to have had an error. This may not be a big deal, or it may herald a crash. The specific errors should be written after this message. They are not positively known as crashy, but if you are getting crashes, please send the file and these errors to hydev so he can test his end.{media_line}'
                 
-                HydrusData.DebugPrint( message )
+                HydrusData.debug_print(message)
                 
             
         
@@ -1447,7 +1447,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                         
                     except Exception as e:
                         
-                        HydrusData.ShowException( e )
+                        HydrusData.show_exception(e)
                         
                     
                     self._player.volume = ClientGUIMediaVolume.GetCorrectCurrentVolume( self._canvas_type )
@@ -1467,8 +1467,8 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                         
                     else:
                         
-                        HydrusData.ShowText( 'Unknown MPV File Load Error:' )
-                        HydrusData.ShowExceptionTuple( etype, value, tb, do_wait = False )
+                        HydrusData.show_text('Unknown MPV File Load Error:')
+                        HydrusData.show_exception_tuple(etype, value, tb, do_wait = False)
                         
                     
                     self.SetMedia( None )
@@ -1509,8 +1509,8 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         def errback_callable( etype, value, tb ):
             
-            HydrusData.ShowText( 'Unable to terminate mpv instance:' )
-            HydrusData.ShowExceptionTuple( etype, value, tb, do_wait = False )
+            HydrusData.show_text('Unable to terminate mpv instance:')
+            HydrusData.show_exception_tuple(etype, value, tb, do_wait = False)
             
             self._current_mpv_player_state = MPV_WIDGET_STATE_READY_TO_DESTROY
             
@@ -1583,7 +1583,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
             if not os.path.exists( default_mpv_config_path ):
                 
-                HydrusData.ShowText( 'There is no default mpv configuration file to load! Perhaps there is a problem with your install?' )
+                HydrusData.show_text('There is no default mpv configuration file to load! Perhaps there is a problem with your install?')
                 
                 return
                 
@@ -1625,14 +1625,14 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
             except Exception as e:
                 
-                HydrusData.ShowText( 'MPV could not load its configuration file! This was probably due to an invalid parameter value inside the conf. The error follows:' )
+                HydrusData.show_text('MPV could not load its configuration file! This was probably due to an invalid parameter value inside the conf. The error follows:')
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception(e)
                 
             
         else:
             
-            HydrusData.Print( 'Was unable to load mpv.conf--has the MPV API changed?' )
+            HydrusData.print_text('Was unable to load mpv.conf--has the MPV API changed?')
             
         
     

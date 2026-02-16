@@ -32,7 +32,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
         
         self._Execute( 'DELETE FROM deferred_delete_tables WHERE name = ?;', ( deletee_table_name, ) )
         
-        HydrusData.Print( f'Deferred delete table {deletee_table_name} successfully dropped.' )
+        HydrusData.print_text(f'Deferred delete table {deletee_table_name} successfully dropped.')
         
     
     def _GetDeferredDeleteTableName( self ) -> tuple[ str | None, int | None ]:
@@ -279,7 +279,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
                     
                     if time_took > 1:
                         
-                        HydrusData.Print( 'Analyzed ' + name + ' in ' + HydrusTime.TimeDeltaToPrettyTimeDelta( time_took ) )
+                        HydrusData.print_text('Analyzed ' + name + ' in ' + HydrusTime.TimeDeltaToPrettyTimeDelta(time_took))
                         
                     
                     p1 = CG.client_controller.should_stop_this_work(maintenance_mode, stop_time = stop_time)
@@ -295,7 +295,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
                 
                 job_status.SetStatusText( 'done!' )
                 
-                HydrusData.Print( job_status.ToString() )
+                HydrusData.print_text(job_status.ToString())
                 
             finally:
                 
@@ -372,10 +372,10 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
                         
                         if num_errors == 0:
                             
-                            HydrusData.Print( 'During a db integrity check, these errors were discovered:' )
+                            HydrusData.print_text('During a db integrity check, these errors were discovered:')
                             
                         
-                        HydrusData.Print( text )
+                        HydrusData.print_text(text)
                         
                         num_errors += 1
                         
@@ -389,7 +389,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
             job_status.SetStatusTitle( prefix_string + 'completed' )
             job_status.SetStatusText( 'errors found: ' + HydrusNumbers.ToHumanInt( num_errors ) )
             
-            HydrusData.Print( job_status.ToString() )
+            HydrusData.print_text(job_status.ToString())
             
             job_status.Finish()
             
@@ -421,12 +421,12 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
         
         if len( all_surplus_table_names ) == 0:
             
-            HydrusData.ShowText( 'No orphan tables!' )
+            HydrusData.show_text('No orphan tables!')
             
         
         for table_name in all_surplus_table_names:
             
-            HydrusData.ShowText( f'Cleared orphan table "{table_name}"' )
+            HydrusData.show_text(f'Cleared orphan table "{table_name}"')
             
             self.DeferredDropTable( table_name )
             

@@ -227,7 +227,7 @@ class MediaViewerPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
         except ValueError:
             
-            HydrusData.ShowText( 'Could not parse those slideshow durations, so they were not saved!' )
+            HydrusData.show_text('Could not parse those slideshow durations, so they were not saved!')
             
         
         self._new_options.SetBoolean( 'slideshow_always_play_duration_media_once_through', self._slideshow_always_play_duration_media_once_through.isChecked() )

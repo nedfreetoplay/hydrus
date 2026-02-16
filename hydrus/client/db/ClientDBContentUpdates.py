@@ -187,8 +187,8 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                     
                 except Exception as e:
                     
-                    HydrusData.Print( 'Problem with duplicate update signal:' )
-                    HydrusData.PrintException( e, do_wait = False )
+                    HydrusData.print_text('Problem with duplicate update signal:')
+                    HydrusData.print_exception(e, do_wait = False)
                     
             
             if service_id == self.modules_services.combined_local_file_domains_service_id:
@@ -199,8 +199,8 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                     
                 except Exception as e:
                     
-                    HydrusData.Print( 'Problem with duplicate update signal:' )
-                    HydrusData.PrintException( e, do_wait = False )
+                    HydrusData.print_text('Problem with duplicate update signal:')
+                    HydrusData.print_exception(e, do_wait = False)
                     
                 
             
@@ -369,8 +369,8 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                     
                 except Exception as e:
                     
-                    HydrusData.Print( 'Problem with duplicate update signal:' )
-                    HydrusData.PrintException( e, do_wait = False )
+                    HydrusData.print_text('Problem with duplicate update signal:')
+                    HydrusData.print_exception(e, do_wait = False)
                     
                 
             
@@ -382,8 +382,8 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                     
                 except Exception as e:
                     
-                    HydrusData.Print( 'Problem with duplicate update signal:' )
-                    HydrusData.PrintException( e, do_wait = False )
+                    HydrusData.print_text('Problem with duplicate update signal:')
+                    HydrusData.print_exception(e, do_wait = False)
                     
                 
             
@@ -429,8 +429,8 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                         
                     except Exception as e:
                         
-                        HydrusData.Print( 'Problem with duplicate update signal:' )
-                        HydrusData.PrintException( e, do_wait = False )
+                        HydrusData.print_text('Problem with duplicate update signal:')
+                        HydrusData.print_exception(e, do_wait = False)
                         
                     
                 

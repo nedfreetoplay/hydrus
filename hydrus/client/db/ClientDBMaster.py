@@ -119,12 +119,12 @@ class ClientDBMasterHashes( ClientDBModule.ClientDBModule ):
                             
                             if not pubbed_error:
                                 
-                                HydrusData.ShowText( 'A file identifier was missing! This is a serious error that means your client database had an orphan file id! You have very likely encountered database corruption, perhaps recently, or perhaps years ago, please check the "help I had a file identifier missing error.txt" document under install_dir/db folder. Additional info has been written to the log.' )
+                                HydrusData.show_text('A file identifier was missing! This is a serious error that means your client database had an orphan file id! You have very likely encountered database corruption, perhaps recently, or perhaps years ago, please check the "help I had a file identifier missing error.txt" document under install_dir/db folder. Additional info has been written to the log.')
                                 
                                 pubbed_error = True
                                 
                             
-                            HydrusData.DebugPrint( 'Database master hash definition error: hash_id {} was missing! Replaced with hash {}.'.format( hash_id, hash.hex() ) )
+                            HydrusData.debug_print('Database master hash definition error: hash_id {} was missing! Replaced with hash {}.'.format(hash_id, hash.hex()))
                             
                         else:
                             
@@ -132,17 +132,17 @@ class ClientDBMasterHashes( ClientDBModule.ClientDBModule ):
                             
                             if not pubbed_error:
                                 
-                                HydrusData.ShowText( 'A file identifier was missing! This is a serious error that means your client database had an orphan file id! Luckily, I was able to find a duplicate record in another location and fill in the missing record. You have, however, very likely encountered database corruption, perhaps recently, or perhaps years ago, please check the "help my db is broke.txt" document under install_dir/db folder as background reading. Additional info has been written to the log.' )
+                                HydrusData.show_text('A file identifier was missing! This is a serious error that means your client database had an orphan file id! Luckily, I was able to find a duplicate record in another location and fill in the missing record. You have, however, very likely encountered database corruption, perhaps recently, or perhaps years ago, please check the "help my db is broke.txt" document under install_dir/db folder as background reading. Additional info has been written to the log.')
                                 
                                 pubbed_error = True
                                 
                             
-                            HydrusData.DebugPrint( 'Database master hash definition error: hash_id {} was missing! Recovered from local hashes cache with hash {}.'.format( hash_id, hash.hex() ) )
+                            HydrusData.debug_print('Database master hash definition error: hash_id {} was missing! Recovered from local hashes cache with hash {}.'.format(hash_id, hash.hex()))
                             
                         
                         self._Execute( 'INSERT OR IGNORE INTO hashes ( hash_id, hash ) VALUES ( ?, ? );', ( hash_id, sqlite3.Binary( hash ) ) )
                         
-                        HydrusData.PrintException( Exception( 'Missing file identifier stack trace.' ) )
+                        HydrusData.print_exception(Exception('Missing file identifier stack trace.'))
                         
                         uncached_hash_ids_to_hashes[ hash_id ] = hash
                         
@@ -557,7 +557,7 @@ class ClientDBMasterTags( ClientDBModule.ClientDBModule ):
                     
                     if tag_id not in uncached_tag_ids_to_tags:
                         
-                        tag = 'unknown tag:' + HydrusData.GenerateKey().hex()
+                        tag = 'unknown tag:' + HydrusData.generate_key().hex()
                         
                         ( namespace, subtag ) = HydrusTags.SplitTag( tag )
                         

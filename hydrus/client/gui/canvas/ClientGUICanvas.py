@@ -306,7 +306,7 @@ class LayoutEventSilencer( QC.QObject ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception(e)
             
             return True
             
@@ -345,7 +345,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         self._new_options = CG.client_controller.new_options
         
         self._canvas_type = CC.CANVAS_MEDIA_VIEWER
-        self._canvas_key = HydrusData.GenerateKey()
+        self._canvas_key = HydrusData.generate_key()
         
         self._force_maintain_pan_and_zoom = False
         
@@ -1676,7 +1676,7 @@ class MediaContainerDragClickReportingFilter( QC.QObject ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception(e)
             
             return True
             
@@ -1780,7 +1780,7 @@ class CanvasPanel( Canvas ):
             ClientGUIMediaMenus.AddFileViewingStatsMenu( info_menu, (self._current_media,) )
             
             filetype_summary = ClientMedia.GetMediasFiletypeSummaryString( [ self._current_media ] )
-            size_summary = HydrusData.ToHumanBytes( self._current_media.GetSize() )
+            size_summary = HydrusData.to_human_bytes(self._current_media.GetSize())
             
             info_summary = f'{filetype_summary}, {size_summary}'
             
@@ -4391,7 +4391,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
             ClientGUIMediaMenus.AddFileViewingStatsMenu( info_menu, ( self._current_media, ) )
             
             filetype_summary = ClientMedia.GetMediasFiletypeSummaryString( [ self._current_media ] )
-            size_summary = HydrusData.ToHumanBytes( self._current_media.GetSize() )
+            size_summary = HydrusData.to_human_bytes(self._current_media.GetSize())
             
             info_summary = f'{filetype_summary}, {size_summary}'
             

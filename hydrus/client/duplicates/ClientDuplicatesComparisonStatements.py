@@ -166,7 +166,7 @@ def GetDuplicateComparisonStatementsFast( shown_media_result: ClientMediaResult.
                 score = 0
                 
             
-            statement = '{} {} {}{}'.format( HydrusData.ToHumanBytes( s_size ), operator, HydrusData.ToHumanBytes( c_size ), percentage_different_string )
+            statement = '{} {} {}{}'.format(HydrusData.to_human_bytes(s_size), operator, HydrusData.to_human_bytes(c_size), percentage_different_string)
             
             statements_and_scores[ 'filesize' ]  = ( statement, score )
             
@@ -744,9 +744,9 @@ def GetDuplicateComparisonStatementsSlow( shown_media_result: ClientMediaResult.
                     
                     HAVE_SHOWN_VISUAL_DUPLICATES_ERROR = True
                     
-                    HydrusData.ShowText( 'The "A and B are visual duplicates" test threw an error! You should have more info in your log. Please let hydev know the details.' )
+                    HydrusData.show_text('The "A and B are visual duplicates" test threw an error! You should have more info in your log. Please let hydev know the details.')
                     
-                    HydrusData.ShowException( e, do_wait = False )
+                    HydrusData.show_exception(e, do_wait = False)
                     
                 
             
@@ -783,7 +783,7 @@ def GetVisualData( media_result: ClientMediaResult.MediaResult ) -> ClientVisual
             
         except Exception as e:
             
-            HydrusData.Print( f'Hey, the media with hash {hash.hex()} failed to generate visual data! Hydev would be interested in seeing this file!' )
+            HydrusData.print_text(f'Hey, the media with hash {hash.hex()} failed to generate visual data! Hydev would be interested in seeing this file!')
             
             raise
             
@@ -822,7 +822,7 @@ def GetVisualDataTiled( media_result: ClientMediaResult.MediaResult ) -> ClientV
             
         except Exception as e:
             
-            HydrusData.Print( f'Hey, the media with hash {hash.hex()} failed to generate tiled visual data! Hydev would be interested in seeing this file!' )
+            HydrusData.print_text(f'Hey, the media with hash {hash.hex()} failed to generate tiled visual data! Hydev would be interested in seeing this file!')
             
             raise
             

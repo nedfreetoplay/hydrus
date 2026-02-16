@@ -162,8 +162,8 @@ class TestServerDB( unittest.TestCase ):
         tag_1 = 'character:samus aran'
         tag_2 = 'typo'
         
-        tag_1_hashes = [ HydrusData.GenerateKey() for i in range( 100 ) ]
-        tag_2_hashes = tag_1_hashes[50:] + [ HydrusData.GenerateKey() for i in range( 50 ) ]
+        tag_1_hashes = [HydrusData.generate_key() for i in range(100)]
+        tag_2_hashes = tag_1_hashes[50:] + [HydrusData.generate_key() for i in range(50)]
         
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
@@ -194,7 +194,7 @@ class TestServerDB( unittest.TestCase ):
         
         # get some into the db as existing tags, since count adjustment logic can change
         
-        hashes = [ HydrusData.GenerateKey() for i in range( 5 ) ]
+        hashes = [HydrusData.generate_key() for i in range(5)]
         
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
@@ -249,7 +249,7 @@ class TestServerDB( unittest.TestCase ):
         
         # get some into the db as existing tags, since count adjustment logic can change
         
-        hashes = [ HydrusData.GenerateKey() for i in range( 5 ) ]
+        hashes = [HydrusData.generate_key() for i in range(5)]
         
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
@@ -317,7 +317,7 @@ class TestServerDB( unittest.TestCase ):
     def _test_account_fetching_from_content( self ):
         
         tag = 'character:samus aran'
-        hash = HydrusData.GenerateKey()
+        hash = HydrusData.generate_key()
         
         mappings_content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( tag, ( hash, ) ) )
         mapping_content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPING, ( tag, hash ) )
@@ -456,7 +456,7 @@ class TestServerDB( unittest.TestCase ):
         
         # files
         
-        hashes = [ HydrusData.GenerateKey() for i in range( 20 ) ]
+        hashes = [HydrusData.generate_key() for i in range(20)]
         
         service_info = self._read( 'service_info', self._file_service_key )
         
@@ -549,8 +549,8 @@ class TestServerDB( unittest.TestCase ):
         tag_1 = 'character:samus aran'
         tag_2 = 'typo'
         
-        tag_1_hashes = [ HydrusData.GenerateKey() for i in range( 100 ) ]
-        tag_2_hashes = tag_1_hashes[50:] + [ HydrusData.GenerateKey() for i in range( 50 ) ]
+        tag_1_hashes = [HydrusData.generate_key() for i in range(100)]
+        tag_2_hashes = tag_1_hashes[50:] + [HydrusData.generate_key() for i in range(50)]
         
         # add with admin
         
@@ -681,7 +681,7 @@ class TestServerDB( unittest.TestCase ):
         
         # get some into the db as existing tags, since count adjustment logic can change
         
-        hashes = [ HydrusData.GenerateKey() for i in range( 5 ) ]
+        hashes = [HydrusData.generate_key() for i in range(5)]
         
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
@@ -880,7 +880,7 @@ class TestServerDB( unittest.TestCase ):
         
         # get some into the db as existing tags, since count adjustment logic can change
         
-        hashes = [ HydrusData.GenerateKey() for i in range( 5 ) ]
+        hashes = [HydrusData.generate_key() for i in range(5)]
         
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
@@ -1065,8 +1065,8 @@ class TestServerDB( unittest.TestCase ):
     
     def _test_service_creation( self ):
         
-        self._tag_service_key = HydrusData.GenerateKey()
-        self._file_service_key = HydrusData.GenerateKey()
+        self._tag_service_key = HydrusData.generate_key()
+        self._file_service_key = HydrusData.generate_key()
         
         current_services = self._read( 'services' )
         

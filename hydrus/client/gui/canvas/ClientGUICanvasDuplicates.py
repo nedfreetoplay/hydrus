@@ -1137,7 +1137,7 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
                         
                     else:
                         
-                        HydrusData.Print( 'Rows that could not be displayed:' )
+                        HydrusData.print_text('Rows that could not be displayed:')
                         
                         for duplicate_pair_decision in self._duplicate_pair_decisions:
                             

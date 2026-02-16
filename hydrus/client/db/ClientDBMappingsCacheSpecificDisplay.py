@@ -147,12 +147,12 @@ class ClientDBMappingsCacheSpecificDisplay( ClientDBModule.ClientDBModule ):
         # temp hashes to mappings
         storage_current_mapping_ids_raw = self._Execute( 'SELECT tag_id, hash_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_ids_table_name, cache_current_mappings_table_name ) ).fetchall()
         
-        storage_current_mapping_ids_dict = HydrusData.BuildKeyToSetDict( storage_current_mapping_ids_raw )
+        storage_current_mapping_ids_dict = HydrusData.build_key_to_set_dict(storage_current_mapping_ids_raw)
         
         # temp hashes to mappings
         storage_pending_mapping_ids_raw = self._Execute( 'SELECT tag_id, hash_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_ids_table_name, cache_pending_mappings_table_name ) ).fetchall()
         
-        storage_pending_mapping_ids_dict = HydrusData.BuildKeyToSetDict( storage_pending_mapping_ids_raw )
+        storage_pending_mapping_ids_dict = HydrusData.build_key_to_set_dict(storage_pending_mapping_ids_raw)
         
         all_storage_tag_ids = set( storage_current_mapping_ids_dict.keys() )
         all_storage_tag_ids.update( storage_pending_mapping_ids_dict.keys() )
@@ -331,12 +331,12 @@ class ClientDBMappingsCacheSpecificDisplay( ClientDBModule.ClientDBModule ):
         # temp hashes to mappings
         current_mapping_ids_raw = self._Execute( 'SELECT tag_id, hash_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_id_table_name, cache_display_current_mappings_table_name ) ).fetchall()
         
-        current_mapping_ids_dict = HydrusData.BuildKeyToSetDict( current_mapping_ids_raw )
+        current_mapping_ids_dict = HydrusData.build_key_to_set_dict(current_mapping_ids_raw)
         
         # temp hashes to mappings
         pending_mapping_ids_raw = self._Execute( 'SELECT tag_id, hash_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_id_table_name, cache_display_pending_mappings_table_name ) ).fetchall()
         
-        pending_mapping_ids_dict = HydrusData.BuildKeyToSetDict( pending_mapping_ids_raw )
+        pending_mapping_ids_dict = HydrusData.build_key_to_set_dict(pending_mapping_ids_raw)
         
         all_ids_seen = set( current_mapping_ids_dict.keys() )
         all_ids_seen.update( pending_mapping_ids_dict.keys() )

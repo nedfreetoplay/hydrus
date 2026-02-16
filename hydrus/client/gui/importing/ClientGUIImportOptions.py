@@ -2011,7 +2011,7 @@ class ImportOptionsButton( ClientGUICommon.ButtonWithMenuArrow ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception(e)
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             
@@ -2052,7 +2052,7 @@ class ImportOptionsButton( ClientGUICommon.ButtonWithMenuArrow ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception(e)
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             
@@ -2093,7 +2093,7 @@ class ImportOptionsButton( ClientGUICommon.ButtonWithMenuArrow ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception(e)
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             

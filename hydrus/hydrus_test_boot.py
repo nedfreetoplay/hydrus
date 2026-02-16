@@ -92,7 +92,7 @@ def boot():
             
         except Exception as e:
             
-            HydrusData.DebugPrint( traceback.format_exc() )
+            HydrusData.debug_print(traceback.format_exc())
             
         finally:
             
@@ -125,7 +125,7 @@ def boot():
         
     except Exception as e:
         
-        HydrusData.DebugPrint( traceback.format_exc() )
+        HydrusData.debug_print(traceback.format_exc())
         
     finally:
         

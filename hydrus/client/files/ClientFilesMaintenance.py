@@ -377,7 +377,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             file_is_missing = True
             
-            HydrusData.DebugPrint( 'Missing file: {}!'.format( hash.hex() ) )
+            HydrusData.debug_print('Missing file: {}!'.format(hash.hex()))
             
         
         if not file_is_missing and job_type in ( REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_REMOVE_RECORD, REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_TRY_URL, REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_TRY_URL_ELSE_REMOVE_RECORD, REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_SILENT_DELETE ):
@@ -388,7 +388,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 file_is_invalid = True
                 
-                HydrusData.DebugPrint( 'Invalid file: {} actually had hash {}!'.format( hash.hex(), actual_hash.hex() ) )
+                HydrusData.debug_print('Invalid file: {} actually had hash {}!'.format(hash.hex(), actual_hash.hex()))
                 
             
         
@@ -428,8 +428,8 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     
                 except Exception as e:
                     
-                    HydrusData.Print( 'Tried to export tags for missing file {}, but encountered this error:'.format( hash.hex() ) )
-                    HydrusData.PrintException( e, do_wait = False )
+                    HydrusData.print_text('Tried to export tags for missing file {}, but encountered this error:'.format(hash.hex()))
+                    HydrusData.print_exception(e, do_wait = False)
                     
                 
             
@@ -459,8 +459,8 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     
                 except Exception as e:
                     
-                    HydrusData.Print( 'Tried to export URLs for missing file {}, but encountered this error:'.format( hash.hex() ) )
-                    HydrusData.PrintException( e, do_wait = False )
+                    HydrusData.print_text('Tried to export URLs for missing file {}, but encountered this error:'.format(hash.hex()))
+                    HydrusData.print_exception(e, do_wait = False)
                     
                 
             
@@ -551,7 +551,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     message += '\n' * 2
                     message += 'To stop spam, this message will only show one time per program boot. The error may happen again, silently.'
                     
-                    HydrusData.ShowText( message )
+                    HydrusData.show_text(message)
                     
                 
             
@@ -605,7 +605,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                         message += ' Wanted to leave no deletion record.'
                         
                     
-                    HydrusData.Print( message )
+                    HydrusData.print_text(message)
                     
                     if not self._pubbed_message_about_archive_delete_lock:
                         
@@ -613,7 +613,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                         message += '\n' * 2
                         message += 'To stop spam, this message will only show one time per program boot. The error may happen again, silently.'
                         
-                        HydrusData.ShowText( message )
+                        HydrusData.show_text(message)
                         
                         self._pubbed_message_about_archive_delete_lock = True
                         
@@ -626,11 +626,11 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     self._controller.write_synchronous('content_updates', content_update_package)
                     
-                    HydrusData.Print( f'During file maintenance, physically deleted {media_result.GetHash().hex()}!' )
+                    HydrusData.print_text(f'During file maintenance, physically deleted {media_result.GetHash().hex()}!')
                     
                     if not leave_deletion_record:
                         
-                        HydrusData.Print( f'Clearing delete record for {media_result.GetHash().hex()}!' )
+                        HydrusData.print_text(f'Clearing delete record for {media_result.GetHash().hex()}!')
                         
                         content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_CLEAR_DELETE_RECORD, ( hash, ) )
                         
@@ -656,7 +656,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                         message += '\n' * 2
                         message += 'To stop spam, this message will only show one time per program boot. The error may happen again, silently.'
                         
-                        HydrusData.ShowText( message )
+                        HydrusData.show_text(message)
                         
                     
             
@@ -1119,7 +1119,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     if HG.file_report_mode:
                         
-                        HydrusData.ShowText( 'file maintenance: {} for {}'.format( regen_file_enum_to_str_lookup[ job_type ], hash.hex() ) )
+                        HydrusData.show_text('file maintenance: {} for {}'.format(regen_file_enum_to_str_lookup[ job_type], hash.hex()))
                         
                     
                     if job_done_hook is not None:
@@ -1251,7 +1251,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                         
                     except IOError as e:
                         
-                        HydrusData.PrintException( e )
+                        HydrusData.print_exception(e)
                         
                         job_status = ClientThreading.JobStatus()
                         
@@ -1272,7 +1272,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                         
                     except Exception as e:
                         
-                        HydrusData.PrintException( e )
+                        HydrusData.print_exception(e)
                         
                         job_status = ClientThreading.JobStatus()
                         
@@ -1421,11 +1421,11 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                         
                         message = 'There appears to be a problem with your file metadata store. Some files that were supposed to be undergoing maintenance did not return the correct metadata. Extra information has been printed to the log; please let hydev know.'
                         
-                        HydrusData.Print( message )
-                        HydrusData.Print( 'Desired hashes:' )
-                        HydrusData.Print( '\n'.join( sorted( [ h.hex() for h in hashes ] ) ) )
-                        HydrusData.Print( 'Received hashes:' )
-                        HydrusData.Print( '\n'.join( sorted( [ h.hex() for h in hashes_to_media_results.keys() ] ) ) )
+                        HydrusData.print_text(message)
+                        HydrusData.print_text('Desired hashes:')
+                        HydrusData.print_text('\n'.join(sorted([h.hex() for h in hashes])))
+                        HydrusData.print_text('Received hashes:')
+                        HydrusData.print_text('\n'.join(sorted([h.hex() for h in hashes_to_media_results.keys()])))
                         
                         raise Exception( message )
                         
@@ -1448,7 +1448,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 if not work_done:
                     
-                    HydrusData.ShowText( 'No file maintenance due!' )
+                    HydrusData.show_text('No file maintenance due!')
                     
                 
                 self._controller.pub( 'notify_files_maintenance_done' )
@@ -1585,7 +1585,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         if self._serious_error_encountered and pub_job_status:
             
-            HydrusData.ShowText( 'Sorry, the file maintenance system has encountered a serious error and will perform no more jobs this program boot. Please shut the client down and check your hard drive health immediately.' )
+            HydrusData.show_text('Sorry, the file maintenance system has encountered a serious error and will perform no more jobs this program boot. Please shut the client down and check your hard drive health immediately.')
             
             return
             

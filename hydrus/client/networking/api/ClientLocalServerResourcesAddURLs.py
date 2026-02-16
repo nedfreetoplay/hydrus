@@ -152,7 +152,7 @@ class HydrusResourceClientAPIRestrictedAddURLsGetURLFiles( HydrusResourceClientA
             
             d = {
                 'status': file_import_status.status,
-                'hash': HydrusData.BytesToNoneOrHex( file_import_status.hash ),
+                'hash': HydrusData.bytes_to_none_or_hex(file_import_status.hash),
                 'note': file_import_status.note
             }
             

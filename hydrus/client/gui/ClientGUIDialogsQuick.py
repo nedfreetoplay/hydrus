@@ -233,7 +233,7 @@ def OpenDocumentation( win: QW.QWidget, documentation_path: str ):
         
     else:
         
-        HydrusData.Print( f'Was asked to open "{documentation_path}", which appeared to be "{local_path}" locally, but it did not seem to exist!' )
+        HydrusData.print_text(f'Was asked to open "{documentation_path}", which appeared to be "{local_path}" locally, but it did not seem to exist!')
         
         message = 'You do not have a local help! Are you running from source? Would you like to open the online help or see a guide on how to build your own?'
         
@@ -272,16 +272,16 @@ def PresentClipboardParseError( win: QW.QWidget, content: str, expected_content_
     
     if len( content ) > MAX_CONTENT_SIZE:
         
-        log_message += '\nFirst {} of content received (total was {}):\n'.format( HydrusData.ToHumanBytes( MAX_CONTENT_SIZE ), HydrusData.ToHumanBytes( len( content ) ) ) + content[:MAX_CONTENT_SIZE]
+        log_message += '\nFirst {} of content received (total was {}):\n'.format(HydrusData.to_human_bytes(MAX_CONTENT_SIZE), HydrusData.to_human_bytes(len(content))) + content[:MAX_CONTENT_SIZE]
         
     else:
         
-        log_message += '\nContent received ({}):\n'.format( HydrusData.ToHumanBytes( len( content ) ) ) + content[:MAX_CONTENT_SIZE]
+        log_message += '\nContent received ({}):\n'.format(HydrusData.to_human_bytes(len(content))) + content[:MAX_CONTENT_SIZE]
         
     
-    HydrusData.DebugPrint( log_message )
+    HydrusData.debug_print(log_message)
     
-    HydrusData.PrintException( e, do_wait = False )
+    HydrusData.print_exception(e, do_wait = False)
     
     message = 'Sorry, I could not understand what was in the clipboard. I was expecting "{}" but received this text:\n\n{}\n\nMore details have been written to the log, but the general error was:\n\n{}'.format( expected_content_description, HydrusText.ElideText( content, 64 ), repr( e ) )
     

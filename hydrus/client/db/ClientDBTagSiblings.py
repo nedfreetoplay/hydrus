@@ -81,7 +81,7 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
     
     def _GenerateApplicationDicts( self ):
         
-        unsorted_dict = HydrusData.BuildKeyToListDict( ( master_service_id, ( index, application_service_id ) ) for ( master_service_id, index, application_service_id ) in self._Execute( 'SELECT master_service_id, service_index, application_service_id FROM tag_sibling_application;' ) )
+        unsorted_dict = HydrusData.build_key_to_list_dict((master_service_id, (index, application_service_id)) for (master_service_id, index, application_service_id) in self._Execute('SELECT master_service_id, service_index, application_service_id FROM tag_sibling_application;'))
         
         self._service_ids_to_applicable_service_ids = collections.defaultdict( list )
         
@@ -622,7 +622,7 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
         with self._MakeTemporaryIntegerTable( ideal_tag_ids, 'ideal_tag_id' ) as temp_table_name:
             
             # temp tags to lookup
-            ideal_tag_ids_to_chain_members = HydrusData.BuildKeyToSetDict( self._Execute( 'SELECT ideal_tag_id, bad_tag_id FROM {} CROSS JOIN {} USING ( ideal_tag_id );'.format( temp_table_name, cache_tag_siblings_lookup_table_name ) ) )
+            ideal_tag_ids_to_chain_members = HydrusData.build_key_to_set_dict(self._Execute('SELECT ideal_tag_id, bad_tag_id FROM {} CROSS JOIN {} USING ( ideal_tag_id );'.format(temp_table_name, cache_tag_siblings_lookup_table_name)))
             
         
         # this returns ideal in the chain, and chains of size 1

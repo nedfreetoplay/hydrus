@@ -83,7 +83,7 @@ def GetFFMPEGPSDLines( path ):
     
     cmd = [ HydrusFFMPEG.FFMPEG_PATH, "-xerror", "-i", path ]
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         

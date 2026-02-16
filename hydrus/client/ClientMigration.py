@@ -287,7 +287,7 @@ class MigrationDestinationTagServiceMappings( MigrationDestinationTagService ):
         
         num_done = len( pairs )
         
-        tags_to_hashes = HydrusData.BuildKeyToListDict( pairs )
+        tags_to_hashes = HydrusData.build_key_to_list_dict(pairs)
         
         if self._content_action == HC.CONTENT_UPDATE_PETITION:
             

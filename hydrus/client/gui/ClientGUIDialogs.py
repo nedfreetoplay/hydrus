@@ -619,7 +619,7 @@ class DialogSelectFromURLTree( Dialog ):
     
     def _RenderItemName( self, name, size ):
         
-        return name + ' - ' + HydrusData.ToHumanBytes( size )
+        return name + ' - ' + HydrusData.to_human_bytes(size)
         
     
     def GetURLs( self ):

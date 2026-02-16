@@ -205,7 +205,7 @@ class AutoCompleteDropdownMetadataConditional( ClientGUIACDropdown.AutocompleteD
         location_context = file_search_context.GetLocationContext()
         tag_context = file_search_context.GetTagContext()
         
-        page_key = HydrusData.GenerateKey()
+        page_key = HydrusData.generate_key()
         for_metadata_conditional = True
         
         super().__init__( parent, location_context, tag_context, file_search_context, page_key, for_metadata_conditional )

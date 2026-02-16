@@ -170,7 +170,7 @@ class DAEMON( threading.Thread ):
         
         if HG.daemon_report_mode:
             
-            HydrusData.ShowText( self._name + ' doing a job.' )
+            HydrusData.show_text(self._name + ' doing a job.')
             
         
     
@@ -302,9 +302,9 @@ class DAEMONWorker( DAEMON ):
                     
                 except Exception as e:
                     
-                    HydrusData.ShowText( 'Daemon ' + self._name + ' encountered an exception:' )
+                    HydrusData.show_text('Daemon ' + self._name + ' encountered an exception:')
                     
-                    HydrusData.ShowException( e )
+                    HydrusData.show_exception(e)
                     
                 
                 self._DoAWait( self._period )
@@ -426,9 +426,9 @@ class THREADCallToThread( DAEMON ):
                     
                 except Exception as e:
                     
-                    HydrusData.Print( traceback.format_exc() )
+                    HydrusData.print_text(traceback.format_exc())
                     
-                    HydrusData.ShowException( e )
+                    HydrusData.show_exception(e)
                     
                 finally:
                     
@@ -697,9 +697,9 @@ class JobScheduler( threading.Thread ):
                 
             except Exception as e:
                 
-                HydrusData.Print( traceback.format_exc() )
+                HydrusData.print_text(traceback.format_exc())
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception(e)
                 
             
             time.sleep( 0.00001 )

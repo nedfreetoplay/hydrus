@@ -30,7 +30,7 @@ def ConvertGalleryIdentifierToGUGKeyAndName( gallery_identifier ):
             
         
     
-    return ( HydrusData.GenerateKey(), gug_name )
+    return (HydrusData.generate_key(), gug_name)
     
 def ConvertGalleryIdentifierToGUGName( gallery_identifier ):
     
@@ -366,7 +366,7 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
                 
             except Exception as e:
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception(e)
                 
                 hashes_still_to_download_in_this_run = 0
                 

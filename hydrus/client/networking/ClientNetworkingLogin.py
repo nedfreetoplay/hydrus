@@ -563,7 +563,7 @@ class NetworkLoginManager( HydrusSerialisable.SerialisableBase ):
             
             self._domains_to_login_info[ login_domain ] = ( login_script_key_and_name, credentials, login_access_type, login_access_text, active, validity, validity_error_text, no_work_until, no_work_until_reason )
             
-            HydrusData.ShowText( 'The login for "' + login_domain + '" failed! It will not be reattempted until the problem is fixed. The failure reason was:' + '\n' * 2 + validity_error_text )
+            HydrusData.show_text('The login for "' + login_domain + '" failed! It will not be reattempted until the problem is fixed. The failure reason was:' + '\n' * 2 + validity_error_text)
             
             self._SetDirty()
             
@@ -858,7 +858,7 @@ class NetworkLoginManager( HydrusSerialisable.SerialisableBase ):
         
         # test cookies here or something
         
-        HydrusData.ShowText( 'Looks like tumblr GDPR click-through worked! You should be good for a year, at which point we should have an automatic solution for this!' )
+        HydrusData.show_text('Looks like tumblr GDPR click-through worked! You should be good for a year, at which point we should have an automatic solution for this!')
         
     
 HydrusSerialisable.SERIALISABLE_TYPES_TO_OBJECT_TYPES[ HydrusSerialisable.SERIALISABLE_TYPE_NETWORK_LOGIN_MANAGER ] = NetworkLoginManager
@@ -1003,11 +1003,11 @@ class LoginProcessDomain( LoginProcess ):
         
         CG.client_controller.pub( 'message', job_status )
         
-        HydrusData.Print( 'Starting login for ' + login_domain )
+        HydrusData.print_text('Starting login for ' + login_domain)
         
         result = self.login_script.Start( self.engine, self.network_context, self.credentials, job_status = job_status )
         
-        HydrusData.Print( 'Finished login for ' + self.network_context.context_data + '. Result was: ' + result )
+        HydrusData.print_text('Finished login for ' + self.network_context.context_data + '. Result was: ' + result)
         
         job_status.SetStatusText( result )
         
@@ -1074,7 +1074,7 @@ class LoginScriptHydrus( object ):
             
             if self._IsLoggedIn( engine, network_context ):
                 
-                HydrusData.Print( 'Successfully logged into ' + service.get_name() + '.')
+                HydrusData.print_text('Successfully logged into ' + service.get_name() + '.')
                 
             elif service.IsFunctional():
                 
@@ -1127,7 +1127,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
         
         super().__init__( name )
         
-        self._login_script_key = HydrusData.GenerateKey()
+        self._login_script_key = HydrusData.generate_key()
         self._required_cookies_info = required_cookies_info # string match : string match
         self._credential_definitions = credential_definitions
         self._login_steps = login_steps
@@ -1411,7 +1411,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
     
     def RegenerateLoginScriptKey( self ):
         
-        self._login_script_key = HydrusData.GenerateKey()
+        self._login_script_key = HydrusData.generate_key()
         
     
     def SetLoginScriptKey( self, login_script_key ):
@@ -1461,7 +1461,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 if test_result_callable is not None:
                     
-                    HydrusData.ShowException( e )
+                    HydrusData.show_exception(e)
                     
                 
                 message = str( e )
@@ -1474,7 +1474,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 if test_result_callable is not None:
                     
-                    HydrusData.ShowException( e )
+                    HydrusData.show_exception(e)
                     
                 
                 if isinstance( e, HydrusExceptions.InsufficientCredentialsException ):
@@ -1498,7 +1498,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 if test_result_callable is not None:
                     
-                    HydrusData.ShowException( e )
+                    HydrusData.show_exception(e)
                     
                 
                 message = str( e )
@@ -1519,7 +1519,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
             
             if test_result_callable is not None:
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception(e)
                 
             
             message = str( e )

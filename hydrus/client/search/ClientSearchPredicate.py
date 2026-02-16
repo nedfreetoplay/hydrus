@@ -480,7 +480,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
         
         if self._predicate_type == PREDICATE_TYPE_PARENT:
             
-            self._parent_key = HydrusData.GenerateKey()
+            self._parent_key = HydrusData.generate_key()
             
         else:
             
@@ -601,7 +601,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
                 ( service_key_or_none, tag_display_type, statuses, tag ) = self._value
                 
-                serialisable_service_key_or_none = HydrusData.BytesToNoneOrHex( service_key_or_none )
+                serialisable_service_key_or_none = HydrusData.bytes_to_none_or_hex(service_key_or_none)
                 serialisable_statuses = tuple( statuses )
                 
                 serialisable_value = ( serialisable_service_key_or_none, tag_display_type, serialisable_statuses, tag )
@@ -699,7 +699,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
                 ( serialisable_key_or_none, tag_display_type, serialisable_statuses, tag ) = serialisable_value
                 
-                service_key_or_none = HydrusData.HexToNoneOrBytes( serialisable_key_or_none )
+                service_key_or_none = HydrusData.hex_to_none_or_bytes(serialisable_key_or_none)
                 statuses = tuple( serialisable_statuses )
                 
                 self._value = ( service_key_or_none, tag_display_type, statuses, tag )
@@ -1306,7 +1306,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
             
         except Exception as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception(e)
             
             return None
             
@@ -2945,7 +2945,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
             
         except Exception as e:
             
-            HydrusData.PrintException( e, do_wait = False )
+            HydrusData.print_exception(e, do_wait = False)
             
             return 'error:cannot render this predicate, check log'
             

@@ -23,7 +23,7 @@ class TestManagers( unittest.TestCase ):
             self.assertEqual(service.get_name(), name)
             
         
-        repo_key = HydrusData.GenerateKey()
+        repo_key = HydrusData.generate_key()
         repo_type = HC.TAG_REPOSITORY
         repo_name = 'test tag repo'
         
@@ -64,9 +64,9 @@ class TestManagers( unittest.TestCase ):
     
     def test_undo( self ):
         
-        hash_1 = HydrusData.GenerateKey()
-        hash_2 = HydrusData.GenerateKey()
-        hash_3 = HydrusData.GenerateKey()
+        hash_1 = HydrusData.generate_key()
+        hash_2 = HydrusData.generate_key()
+        hash_3 = HydrusData.generate_key()
         
         command_1 = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_ARCHIVE, { hash_1 } ) )
         command_2 = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_INBOX, { hash_2 } ) )

@@ -47,7 +47,7 @@ MOCK_SUBDOMAIN = 'top.wew.lad'
 MOCK_URL = 'https://wew.lad/folder/request&key1=value1&key2=value2'
 MOCK_SUBURL = 'https://top.wew.lad/folder2/request&key1=value1&key2=value2'
 
-MOCK_HYDRUS_SERVICE_KEY = HydrusData.GenerateKey()
+MOCK_HYDRUS_SERVICE_KEY = HydrusData.generate_key()
 MOCK_HYDRUS_ADDRESS = '123.45.67.89'
 MOCK_HYDRUS_DOMAIN = '123.45.67.89:45871'
 MOCK_HYDRUS_URL = 'https://123.45.67.89:45871/muh_hydrus_command'

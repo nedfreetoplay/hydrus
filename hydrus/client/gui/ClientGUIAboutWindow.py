@@ -24,12 +24,12 @@ def render_availability_line( name: str, is_ok: bool, is_module_not_found: bool,
         
     else:
         
-        HydrusData.ShowText( f'Module {name} failed to import because of the following:' )
-        HydrusData.ShowText( error_trace )
+        HydrusData.show_text(f'Module {name} failed to import because of the following:')
+        HydrusData.show_text(error_trace)
         
         if name == 'mpv' and 'sio_flush' in error_trace:
             
-            HydrusData.ShowText( 'Hey I noticed you have "sio_flush" in your mpv error text. We have been able to fix this for other users by moving them to running from source. This is not super difficult to set up, and there are several other benefits, so please check the "running from source" guide in the help!' )
+            HydrusData.show_text('Hey I noticed you have "sio_flush" in your mpv error text. We have been able to fix this for other users by moving them to running from source. This is not super difficult to set up, and there are several other benefits, so please check the "running from source" guide in the help!')
             
         
         return f'{name}: no - error'
@@ -92,7 +92,7 @@ def ShowAboutWindow( win: QW.QWidget ):
         
         if HC.RUNNING_FROM_FROZEN_BUILD and HC.PLATFORM_MACOS:
             
-            HydrusData.ShowText( 'The macOS App does not come with MPV support on its own, but if your system has the dev library, libmpv1 or libmpv2, it will try to import it. It seems your system does not have this, or it failed to import. The specific error follows:' )
+            HydrusData.show_text('The macOS App does not come with MPV support on its own, but if your system has the dev library, libmpv1 or libmpv2, it will try to import it. It seems your system does not have this, or it failed to import. The specific error follows:')
             
         
     
@@ -214,8 +214,8 @@ def ShowAboutWindow( win: QW.QWidget ):
             message += '\n\nAlso, since you are on macOS, you should know that a common reason for Jpeg-XL not loading is that it is not bundled with their python package on macOS. Your error below probably talks about a missing .dylib or .so file. If you run from source, you can resolve this by opening a terminal and running "brew install jpeg-xl", and then restarting hydrus.'
             
         
-        HydrusData.ShowText( message )
-        HydrusData.ShowText( HydrusImageHandling.JXL_ERROR_TEXT )
+        HydrusData.show_text(message)
+        HydrusData.show_text(HydrusImageHandling.JXL_ERROR_TEXT)
         
     
     availability_lines = []

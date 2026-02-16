@@ -198,7 +198,7 @@ class ColourPickerButton( QW.QPushButton ):
             
         except Exception as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception(e)
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             

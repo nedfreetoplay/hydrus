@@ -292,7 +292,7 @@ class DB( HydrusDB.HydrusDB ):
                     
                     if time_took > 1:
                         
-                        HydrusData.Print( 'Analyzed ' + name + ' in ' + HydrusTime.TimeDeltaToPrettyTimeDelta( time_took ) )
+                        HydrusData.print_text('Analyzed ' + name + ' in ' + HydrusTime.TimeDeltaToPrettyTimeDelta(time_took))
                         
                     
                     if SG.server_controller.should_stop_this_work(maintenance_mode, stop_time = stop_time):
@@ -316,7 +316,7 @@ class DB( HydrusDB.HydrusDB ):
         
         if not locked:
             
-            HydrusData.Print( 'Could not backup because the server was locked.' )
+            HydrusData.print_text('Could not backup because the server was locked.')
             
             return
             
@@ -331,7 +331,7 @@ class DB( HydrusDB.HydrusDB ):
             
             for filename in self._db_filenames.values():
                 
-                HydrusData.Print( 'backing up: copying ' + filename )
+                HydrusData.print_text('backing up: copying ' + filename)
                 
                 source = os.path.join( self._db_dir, filename )
                 dest = os.path.join( backup_path, filename )
@@ -341,7 +341,7 @@ class DB( HydrusDB.HydrusDB ):
             
             for filename in [ self._ssl_cert_filename, self._ssl_key_filename ]:
                 
-                HydrusData.Print( 'backing up: copying ' + filename )
+                HydrusData.print_text('backing up: copying ' + filename)
                 
                 source = os.path.join( self._db_dir, filename )
                 dest = os.path.join( backup_path, filename )
@@ -349,12 +349,12 @@ class DB( HydrusDB.HydrusDB ):
                 HydrusPaths.MirrorFile( source, dest )
                 
             
-            HydrusData.Print( 'backing up: copying files' )
+            HydrusData.print_text('backing up: copying files')
             HydrusPaths.MirrorTree( self._files_dir, os.path.join( backup_path, 'server_files' ) )
             
             self._InitDBConnection()
             
-            HydrusData.Print( 'backing up: done!' )
+            HydrusData.print_text('backing up: done!')
             
         finally:
             
@@ -1432,7 +1432,7 @@ class DB( HydrusDB.HydrusDB ):
         
         SG.server_controller.pub( 'update_session_accounts', service_key, ( subject_account_key, ) )
         
-        HydrusData.Print(
+        HydrusData.print_text(
             'Account {} changed the account type of {} from "{}" to "{}".'.format(
                 admin_account.GetAccountKey().hex(),
                 subject_account_key.hex(),
@@ -1470,7 +1470,7 @@ class DB( HydrusDB.HydrusDB ):
         
         SG.server_controller.pub( 'update_session_accounts', service_key, ( subject_account_key, ) )
         
-        HydrusData.Print(
+        HydrusData.print_text(
             'Account {} banned {} with reason "{}" until "{}".'.format(
                 admin_account.GetAccountKey().hex(),
                 subject_account_key.hex(),
@@ -1508,7 +1508,7 @@ class DB( HydrusDB.HydrusDB ):
         
         SG.server_controller.pub( 'update_session_accounts', service_key, ( subject_account_key, ) )
         
-        HydrusData.Print(
+        HydrusData.print_text(
             'Account {} deleted all content by {}.'.format(
                 admin_account_key.hex(),
                 subject_account_key.hex()
@@ -1535,7 +1535,7 @@ class DB( HydrusDB.HydrusDB ):
         
         SG.server_controller.pub( 'update_session_accounts', service_key, ( subject_account_key, ) )
         
-        HydrusData.Print(
+        HydrusData.print_text(
             'Account {} changed the expiration of {} from "{}" to "{}".'.format(
                 admin_account.GetAccountKey().hex(),
                 subject_account_key.hex(),
@@ -1575,7 +1575,7 @@ class DB( HydrusDB.HydrusDB ):
             m = 'Account {} set {} with a message.'
             
         
-        HydrusData.Print(
+        HydrusData.print_text(
             m.format(
                 admin_account.GetAccountKey().hex(),
                 subject_account_key.hex()
@@ -1602,7 +1602,7 @@ class DB( HydrusDB.HydrusDB ):
         
         SG.server_controller.pub( 'update_session_accounts', service_key, ( subject_account_key, ) )
         
-        HydrusData.Print(
+        HydrusData.print_text(
             'Account {} unbanned {}.'.format(
                 admin_account.GetAccountKey().hex(),
                 subject_account_key.hex()
@@ -1663,7 +1663,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 modification_account_type_keys_to_account_type_ids[ account_type_key ] = account_type_id
                 
-                HydrusData.Print(
+                HydrusData.print_text(
                     'Account {} added a new account type, "{}".'.format(
                         admin_account.GetAccountKey().hex(),
                         account_type.GetTitle()
@@ -1682,7 +1682,7 @@ class DB( HydrusDB.HydrusDB ):
                     
                     self._Execute( 'UPDATE account_types SET dump = ? WHERE service_id = ? AND account_type_id = ?;', ( dump, service_id, account_type_id ) )
                     
-                    HydrusData.Print(
+                    HydrusData.print_text(
                         'Account {} updated the account type, "{}".'.format(
                             admin_account.GetAccountKey().hex(),
                             account_type.GetTitle()
@@ -1707,7 +1707,7 @@ class DB( HydrusDB.HydrusDB ):
             deletee_account_type = current_account_type_keys_to_account_types[ deletee_account_type_key ]
             new_account_type = future_account_type_keys_to_account_types[ new_account_type_key ]
             
-            HydrusData.Print(
+            HydrusData.print_text(
                 'Account {} deleted the account type, "{}", replacing them with "{}".'.format(
                     admin_account.GetAccountKey().hex(),
                     deletee_account_type.GetTitle(),
@@ -1941,7 +1941,7 @@ class DB( HydrusDB.HydrusDB ):
             
             # we don't want a random sample, we want to sample grouped by account id, so let's be a bit more clever about it
             
-            petitioner_account_ids_to_reason_ids = HydrusData.BuildKeyToListDict( petition_ids )
+            petitioner_account_ids_to_reason_ids = HydrusData.build_key_to_list_dict(petition_ids)
             
             petition_ids = []
             
@@ -2079,7 +2079,7 @@ class DB( HydrusDB.HydrusDB ):
         
         ( name, ) = self._Execute( 'SELECT name FROM services WHERE service_id = ?;', ( service_id, ) ).fetchone()
         
-        HydrusData.Print( 'Creating update for ' + repr( name ) + ' from ' + HydrusTime.TimestampToPrettyTime( begin, in_utc = True ) + ' to ' + HydrusTime.TimestampToPrettyTime( end, in_utc = True ) )
+        HydrusData.print_text('Creating update for ' + repr(name) + ' from ' + HydrusTime.TimestampToPrettyTime(begin, in_utc = True) + ' to ' + HydrusTime.TimestampToPrettyTime(end, in_utc = True))
         
         updates = self._RepositoryGenerateUpdates( service_id, begin, end )
         
@@ -2129,7 +2129,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             
         
-        HydrusData.Print( 'Update OK. ' + HydrusNumbers.ToHumanInt( total_definition_rows ) + ' definition rows and ' + HydrusNumbers.ToHumanInt( total_content_rows ) + ' content rows in ' + HydrusNumbers.ToHumanInt( len( updates ) ) + ' update files.' )
+        HydrusData.print_text('Update OK. ' + HydrusNumbers.ToHumanInt(total_definition_rows) + ' definition rows and ' + HydrusNumbers.ToHumanInt(total_content_rows) + ' content rows in ' + HydrusNumbers.ToHumanInt(len(updates)) + ' update files.')
         
         return update_hashes
         
@@ -2167,7 +2167,7 @@ class DB( HydrusDB.HydrusDB ):
         
         query = 'SELECT service_tag_id, service_hash_id FROM {} WHERE account_id = ? LIMIT {};'.format( current_mappings_table_name, num_rows_do_delete_at_a_time )
         
-        mappings_dict = HydrusData.BuildKeyToListDict( self._Execute( query, ( subject_account_id, ) ) )
+        mappings_dict = HydrusData.build_key_to_list_dict(self._Execute(query, (subject_account_id,)))
         
         while len( mappings_dict ) > 0:
             
@@ -2181,7 +2181,7 @@ class DB( HydrusDB.HydrusDB ):
                 return we_deleted_everything
                 
             
-            mappings_dict = HydrusData.BuildKeyToListDict( self._Execute( query, ( subject_account_id, ) ) )
+            mappings_dict = HydrusData.build_key_to_list_dict(self._Execute(query, (subject_account_id,)))
             
         
         ( current_tag_parents_table_name, deleted_tag_parents_table_name, pending_tag_parents_table_name, petitioned_tag_parents_table_name ) = GenerateRepositoryTagParentsTableNames( service_id )
@@ -2581,7 +2581,7 @@ class DB( HydrusDB.HydrusDB ):
         
         ( current_mappings_table_name, deleted_mappings_table_name, pending_mappings_table_name, petitioned_mappings_table_name ) = GenerateRepositoryMappingsTableNames( service_id )
         
-        service_tag_ids_to_service_hash_ids = HydrusData.BuildKeyToListDict( self._Execute( 'SELECT service_tag_id, service_hash_id FROM ' + current_mappings_table_name + ' WHERE mapping_timestamp BETWEEN ? AND ?;', ( begin, end ) ) )
+        service_tag_ids_to_service_hash_ids = HydrusData.build_key_to_list_dict(self._Execute('SELECT service_tag_id, service_hash_id FROM ' + current_mappings_table_name + ' WHERE mapping_timestamp BETWEEN ? AND ?;', (begin, end)))
         
         for ( service_tag_id, service_hash_ids ) in list(service_tag_ids_to_service_hash_ids.items()):
             
@@ -2593,7 +2593,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             
         
-        service_tag_ids_to_service_hash_ids = HydrusData.BuildKeyToListDict( self._Execute( 'SELECT service_tag_id, service_hash_id FROM ' + deleted_mappings_table_name + ' WHERE mapping_timestamp BETWEEN ? AND ?;', ( begin, end ) ) )
+        service_tag_ids_to_service_hash_ids = HydrusData.build_key_to_list_dict(self._Execute('SELECT service_tag_id, service_hash_id FROM ' + deleted_mappings_table_name + ' WHERE mapping_timestamp BETWEEN ? AND ?;', (begin, end)))
         
         for ( service_tag_id, service_hash_ids ) in list(service_tag_ids_to_service_hash_ids.items()):
             
@@ -3014,7 +3014,7 @@ class DB( HydrusDB.HydrusDB ):
         
         reason = self._GetReason( reason_id )
         
-        tag_ids_to_hash_ids = HydrusData.BuildKeyToListDict( self._Execute( f'SELECT service_tag_id, service_hash_id FROM {petitioned_mappings_table_name} WHERE account_id = ? AND reason_id = ? LIMIT ?;', ( petitioner_account_id, reason_id, MAX_MAPPINGS_PER_PETITION ) ) )
+        tag_ids_to_hash_ids = HydrusData.build_key_to_list_dict(self._Execute(f'SELECT service_tag_id, service_hash_id FROM {petitioned_mappings_table_name} WHERE account_id = ? AND reason_id = ? LIMIT ?;', (petitioner_account_id, reason_id, MAX_MAPPINGS_PER_PETITION)))
         
         if len( tag_ids_to_hash_ids ) == 0:
             
@@ -4710,7 +4710,7 @@ class DB( HydrusDB.HydrusDB ):
                 raise Exception( 'Was asked to generate service info for an unknown type: {}'.format( info_type ) )
                 
             
-            HydrusData.Print( 'Regenerated a service info number: {} - {} - {}'.format( service_name, HC.service_info_enum_str_lookup[ info_type ], HydrusNumbers.ToHumanInt( info ) ) )
+            HydrusData.print_text('Regenerated a service info number: {} - {} - {}'.format(service_name, HC.service_info_enum_str_lookup[ info_type], HydrusNumbers.ToHumanInt(info)))
             
             self._Execute( 'INSERT OR IGNORE INTO service_info ( service_id, info_type, info ) VALUES ( ?, ?, ? )', ( service_id, info_type, info ) )
             
@@ -4934,7 +4934,7 @@ class DB( HydrusDB.HydrusDB ):
     
     def _UpdateDB( self, version ):
         
-        HydrusData.Print( 'The server is updating to version ' + str( version + 1 ) )
+        HydrusData.print_text('The server is updating to version ' + str(version + 1))
         
         if version == 433:
             
@@ -4993,7 +4993,7 @@ class DB( HydrusDB.HydrusDB ):
                 self._Execute( 'CREATE TABLE deferred_physical_file_deletes ( master_hash_id INTEGER PRIMARY KEY );' )
                 self._Execute( 'CREATE TABLE deferred_physical_thumbnail_deletes ( master_hash_id INTEGER PRIMARY KEY );' )
                 
-                HydrusData.Print( 'Populating deferred physical file delete tables' + HC.UNICODE_ELLIPSIS )
+                HydrusData.print_text('Populating deferred physical file delete tables' + HC.UNICODE_ELLIPSIS)
                 
                 for service_id in self._GetServiceIds( ( HC.FILE_REPOSITORY, ) ):
                     
@@ -5012,12 +5012,12 @@ class DB( HydrusDB.HydrusDB ):
             
             self._Execute( 'CREATE TABLE IF NOT EXISTS service_info ( service_id INTEGER, info_type INTEGER, info INTEGER, PRIMARY KEY ( service_id, info_type ) );' )
             
-            HydrusData.Print( 'Populating new cached counts table' + HC.UNICODE_ELLIPSIS )
+            HydrusData.print_text('Populating new cached counts table' + HC.UNICODE_ELLIPSIS)
             
             self._RepositoryRegenerateServiceInfo()
             
         
-        HydrusData.Print( 'The server has updated to version ' + str( version + 1 ) )
+        HydrusData.print_text('The server has updated to version ' + str(version + 1))
         
         self._Execute( 'UPDATE version SET version = ?;', ( version + 1, ) )
         
@@ -5028,7 +5028,7 @@ class DB( HydrusDB.HydrusDB ):
         
         if not locked:
             
-            HydrusData.Print( 'Could not vacuum because the server was locked!' )
+            HydrusData.print_text('Could not vacuum because the server was locked!')
             
             return
             
@@ -5051,7 +5051,7 @@ class DB( HydrusDB.HydrusDB ):
                     
                 except Exception as e:
                     
-                    HydrusData.Print( 'Cannot vacuum "{}": {}'.format( db_path, e ) )
+                    HydrusData.print_text('Cannot vacuum "{}": {}'.format(db_path, e))
                     
                     continue
                     
@@ -5081,15 +5081,15 @@ class DB( HydrusDB.HydrusDB ):
                             
                             time_took = HydrusTime.GetNowPrecise() - started
                             
-                            HydrusData.Print( 'Vacuumed ' + db_path + ' in ' + HydrusTime.TimeDeltaToPrettyTimeDelta( time_took ) )
+                            HydrusData.print_text('Vacuumed ' + db_path + ' in ' + HydrusTime.TimeDeltaToPrettyTimeDelta(time_took))
                             
                             names_done.append( name )
                             
                         except Exception as e:
                             
-                            HydrusData.Print( 'vacuum failed:' )
+                            HydrusData.print_text('vacuum failed:')
                             
-                            HydrusData.ShowException( e )
+                            HydrusData.show_exception(e)
                             
                             return
                             

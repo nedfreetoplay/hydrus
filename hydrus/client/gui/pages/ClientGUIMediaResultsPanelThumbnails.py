@@ -2335,8 +2335,8 @@ class Thumbnail( Selectable ):
             
         except Exception as e:
             
-            HydrusData.ShowText( f'Failed to render thumbnail for file {media.GetDisplayMedia().GetHash().hex()}!' )
-            HydrusData.ShowException( e, do_wait = False )
+            HydrusData.show_text(f'Failed to render thumbnail for file {media.GetDisplayMedia().GetHash().hex()}!')
+            HydrusData.show_exception(e, do_wait = False)
             
             thumbnail_hydrus_bmp = CG.client_controller.thumbnails_cache.GetHydrusPlaceholderThumbnail()
             

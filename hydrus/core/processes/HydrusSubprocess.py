@@ -158,7 +158,7 @@ def GetSubprocessKWArgs( hide_terminal = True, text = False ):
         
         message = 'KWargs are: {}'.format( sbp_kwargs )
         
-        HydrusData.ShowText( message )
+        HydrusData.show_text(message)
         
     
     return sbp_kwargs
@@ -233,16 +233,16 @@ def RunSubprocessRawCall( cmd, start_new_session, bufsize, stdin_pipe, stdout_pi
         
     except FileNotFoundError:
         
-        HydrusData.ShowText( f'Got a file not found on this external program call: {cmd}')
-        HydrusData.ShowText( f'If the error is not obvious, you might want to talk to hydev about it. Maybe your env PATH is unusual. Your env will follow, and here were the sbp kwargs used in the subprocess call: {sbp_kwargs}')
+        HydrusData.show_text(f'Got a file not found on this external program call: {cmd}')
+        HydrusData.show_text(f'If the error is not obvious, you might want to talk to hydev about it. Maybe your env PATH is unusual. Your env will follow, and here were the sbp kwargs used in the subprocess call: {sbp_kwargs}')
         HydrusEnvironment.DumpEnv()
         
         raise
         
     except Exception as e:
         
-        HydrusData.ShowText( f'Had a problem with an external program! Error will follow; command was: {cmd}' )
-        HydrusData.ShowException( e )
+        HydrusData.show_text(f'Had a problem with an external program! Error will follow; command was: {cmd}')
+        HydrusData.show_exception(e)
         
         raise
         
@@ -283,17 +283,17 @@ def RunSubprocess( cmd, timeout: int = 15, bufsize: int = 65536, this_is_a_poten
         
         if stdout is None and stderr is None:
             
-            HydrusData.ShowText( 'No stdout or stderr came back.' )
+            HydrusData.show_text('No stdout or stderr came back.')
             
         
         if stdout is not None:
             
-            HydrusData.ShowText( 'stdout: ' + repr( stdout ) )
+            HydrusData.show_text('stdout: ' + repr(stdout))
             
         
         if stderr is not None:
             
-            HydrusData.ShowText( 'stderr: ' + repr( stderr ) )
+            HydrusData.show_text('stderr: ' + repr(stderr))
             
         
     
@@ -402,7 +402,7 @@ class SubprocessContext( object ):
                 
                 try:
                     
-                    HydrusData.CheckProgramIsNotShuttingDown()
+                    HydrusData.check_program_is_not_shutting_down()
                     
                 except HydrusExceptions.ShutdownException:
                     
@@ -434,7 +434,7 @@ class SubprocessContext( object ):
                     
                 except ValueError: # probably got terminated at an inconvenient time
                     
-                    HydrusData.Print( f'Probably not a big deal, but the Subprocess Command "{self._cmd}" closed its stdout early. If this keeps happening, please let hydev know!' )
+                    HydrusData.print_text(f'Probably not a big deal, but the Subprocess Command "{self._cmd}" closed its stdout early. If this keeps happening, please let hydev know!')
                     
                     return
                     

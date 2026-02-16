@@ -71,7 +71,7 @@ def RaiseMissingUPnPcError( operation ):
     
     if not UPNPC_MISSING_ERROR_PRINTED:
         
-        HydrusData.ShowText( message )
+        HydrusData.show_text(message)
         
         UPNPC_MISSING_ERROR_PRINTED = True
         
@@ -89,7 +89,7 @@ def GetExternalIP():
         
         cmd = [ UPNPC_PATH, '-l' ]
         
-        HydrusData.CheckProgramIsNotShuttingDown()
+        HydrusData.check_program_is_not_shutting_down()
         
         try:
             
@@ -145,7 +145,7 @@ def AddUPnPMapping( internal_client, internal_port, external_port, protocol, des
     
     cmd = [ UPNPC_PATH, '-e', description, '-a', internal_client, str( internal_port ), str( external_port ), protocol, str( duration ) ]
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         
@@ -203,7 +203,7 @@ def GetUPnPMappings():
     
     cmd = [ UPNPC_PATH, '-l' ]
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         
@@ -294,10 +294,10 @@ def GetUPnPMappingsParseResponse( stdout ):
         
     except Exception as e:
         
-        HydrusData.Print( 'UPnP problem:' )
-        HydrusData.Print( traceback.format_exc() )
-        HydrusData.Print( 'Full response follows:' )
-        HydrusData.Print( stdout )
+        HydrusData.print_text('UPnP problem:')
+        HydrusData.print_text(traceback.format_exc())
+        HydrusData.print_text('Full response follows:')
+        HydrusData.print_text(stdout)
         
         raise Exception( 'Problem while trying to parse UPnP mappings:' + '\n' * 2 + str( e ) )
         
@@ -311,7 +311,7 @@ def RemoveUPnPMapping( external_port, protocol ):
     
     cmd = [ UPNPC_PATH, '-d', str( external_port ), protocol ]
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         
@@ -374,7 +374,7 @@ class ServicesUPnPManager( object ):
                 
                 if not UPNPC_MANAGER_ERROR_PRINTED:
                     
-                    HydrusData.ShowText( 'Hydrus was set up to manage your services\' port forwards with UPnP, but the miniupnpc executable is not available. Please check install_dir/bin/upnpc_readme.txt for more details.' )
+                    HydrusData.show_text('Hydrus was set up to manage your services\' port forwards with UPnP, but the miniupnpc executable is not available. Please check install_dir/bin/upnpc_readme.txt for more details.')
                     
                     UPNPC_MANAGER_ERROR_PRINTED = True
                     
@@ -429,7 +429,7 @@ class ServicesUPnPManager( object ):
                     
                 except HydrusExceptions.RouterException:
                     
-                    HydrusData.Print( 'The UPnP Daemon tried to add {}:{}->external:{} but it failed. Please try it manually to get a full log of what happened.'.format( local_ip, internal_port, upnp_port ) )
+                    HydrusData.print_text('The UPnP Daemon tried to add {}:{}->external:{} but it failed. Please try it manually to get a full log of what happened.'.format(local_ip, internal_port, upnp_port))
                     
                     return
                     

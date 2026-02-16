@@ -282,7 +282,7 @@ class URLDomainMask( HydrusSerialisable.SerialisableBase ):
             
             last_ditch = repr( ( self._raw_domains, self._domain_regexes, self.match_subdomains ) )
             
-            HydrusData.Print( f'Problem hashing a Domain Mask! The details are: {last_ditch}' )
+            HydrusData.print_text(f'Problem hashing a Domain Mask! The details are: {last_ditch}')
             
             return last_ditch.__hash__()
             
@@ -502,7 +502,7 @@ class URLClass( HydrusSerialisable.SerialisableBaseNamed ):
         
         if url_class_key is None:
             
-            url_class_key = HydrusData.GenerateKey()
+            url_class_key = HydrusData.generate_key()
             
         
         if url_type is None:
@@ -893,7 +893,7 @@ class URLClass( HydrusSerialisable.SerialisableBaseNamed ):
             
             ( url_type, preferred_scheme, netloc, match_subdomains, keep_matched_subdomains, serialisable_path_components, serialisable_parameters, example_url ) = old_serialisable_info
             
-            url_class_key = HydrusData.GenerateKey()
+            url_class_key = HydrusData.generate_key()
             
             serialisable_url_class_key = url_class_key.hex()
             
@@ -1701,7 +1701,7 @@ class URLClass( HydrusSerialisable.SerialisableBaseNamed ):
     
     def RegenerateClassKey( self ):
         
-        self._url_class_key = HydrusData.GenerateKey()
+        self._url_class_key = HydrusData.generate_key()
         
     
     def SetAlphabetiseGetParameters( self, alphabetise_get_parameters: bool ):

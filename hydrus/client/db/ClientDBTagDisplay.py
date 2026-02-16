@@ -409,7 +409,7 @@ class ClientDBTagDisplay( ClientDBModule.ClientDBModule ):
                     
                     showed_bad_tag_error = True
                     
-                    HydrusData.ShowText( 'Hey, you seem to have an invalid tag in view right now! Please run the \'fix invalid tags\' routine under the \'database\' menu asap!' )
+                    HydrusData.show_text('Hey, you seem to have an invalid tag in view right now! Please run the \'fix invalid tags\' routine under the \'database\' menu asap!')
                     
                 
                 continue

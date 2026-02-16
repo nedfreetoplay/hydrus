@@ -30,5 +30,5 @@ def DumpEnv( env = None ):
             
         
     
-    HydrusData.ShowText( 'Full environment:\n' + '\n'.join( rows ) )
+    HydrusData.show_text('Full environment:\n' + '\n'.join(rows))
     

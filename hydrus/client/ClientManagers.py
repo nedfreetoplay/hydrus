@@ -247,9 +247,9 @@ class BitmapManager( object ):
                 
                 self._media_background_pixmap = None
                 
-                HydrusData.ShowText( 'Loading a bmp caused an error!' )
+                HydrusData.show_text('Loading a bmp caused an error!')
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception(e)
                 
                 return None
                 

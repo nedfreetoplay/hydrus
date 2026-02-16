@@ -114,7 +114,7 @@ class BandwidthRulesCtrl( ClientGUICommon.StaticBox ):
         
         if bandwidth_type == HC.BANDWIDTH_TYPE_DATA:
             
-            pretty_max_allowed = HydrusData.ToHumanBytes( max_allowed )
+            pretty_max_allowed = HydrusData.to_human_bytes(max_allowed)
             
         elif bandwidth_type == HC.BANDWIDTH_TYPE_REQUESTS:
             

@@ -69,7 +69,7 @@ class ClientDBServicePaths( ClientDBModule.ClientDBModule ):
         
         query = 'SELECT hash_id, service_id, filename FROM {} CROSS JOIN service_filenames USING ( hash_id );'.format( hash_ids_table_name )
         
-        hash_ids_to_service_ids_and_filenames = HydrusData.BuildKeyToListDict( ( ( hash_id, ( service_id, filename ) ) for ( hash_id, service_id, filename ) in self._Execute( query ) ) )
+        hash_ids_to_service_ids_and_filenames = HydrusData.build_key_to_list_dict(((hash_id, (service_id, filename)) for (hash_id, service_id, filename) in self._Execute(query)))
         
         return hash_ids_to_service_ids_and_filenames
         

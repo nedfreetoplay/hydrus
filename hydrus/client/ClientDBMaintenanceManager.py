@@ -147,13 +147,13 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     self._serious_error_encountered = True
                     
-                    HydrusData.PrintException( e )
+                    HydrusData.print_exception(e)
                     
                     message = 'There was an unexpected problem during deferred table delete database maintenance work! This maintenance system will not run again this program boot. A full traceback of this error should be written to the log.'
                     message += '\n' * 2
                     message += str( e )
                     
-                    HydrusData.ShowText( message )
+                    HydrusData.show_text(message)
                     
                 finally:
                     

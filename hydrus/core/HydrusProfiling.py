@@ -70,7 +70,7 @@ def FlipQueryPlannerMode():
         
         query_planner_mode = True
         
-        HydrusData.ShowText( 'Query Planner mode on!' )
+        HydrusData.show_text('Query Planner mode on!')
         
     else:
         
@@ -78,7 +78,7 @@ def FlipQueryPlannerMode():
         
         queries_planned = set()
         
-        HydrusData.ShowText( 'Query Planning done: {} queries analyzed'.format( HydrusNumbers.ToHumanInt( query_planner_query_count ) ) )
+        HydrusData.show_text('Query Planning done: {} queries analyzed'.format(HydrusNumbers.ToHumanInt(query_planner_query_count)))
         
     
 
@@ -217,7 +217,7 @@ def Profile( summary, func, min_duration_ms = 20, show_summary = False ):
                 
                 if show_summary:
                     
-                    HydrusData.ShowText( summary )
+                    HydrusData.show_text(summary)
                     
                 
                 PrintProfile( summary, profile_text = profile_text )
@@ -300,7 +300,7 @@ def StartProfileMode( name ):
         profile_fast_count = 0
         
     
-    HydrusData.ShowText( f'Profile mode "{name}" on!' )
+    HydrusData.show_text(f'Profile mode "{name}" on!')
     
 
 def StopProfileMode():
@@ -320,5 +320,5 @@ def StopProfileMode():
         ( slow, fast ) = ( profile_slow_count, profile_fast_count )
         
     
-    HydrusData.ShowText( f'Profiling "{old_name}" done: {HydrusNumbers.ToHumanInt( slow )} slow jobs, {HydrusNumbers.ToHumanInt( fast )} fast jobs' )
+    HydrusData.show_text(f'Profiling "{old_name}" done: {HydrusNumbers.ToHumanInt(slow)} slow jobs, {HydrusNumbers.ToHumanInt(fast)} fast jobs')
     

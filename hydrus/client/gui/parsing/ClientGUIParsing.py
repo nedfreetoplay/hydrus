@@ -1118,7 +1118,7 @@ class EditContentParsersPanel( ClientGUICommon.StaticBox ):
                 
                 existing_names.discard( content_parser.GetName() )
                 
-                non_dupe_name = HydrusData.GetNonDupeName( edited_content_parser.GetName(), existing_names )
+                non_dupe_name = HydrusData.get_non_dupe_name(edited_content_parser.GetName(), existing_names)
                 
                 edited_content_parser.SetName( non_dupe_name )
                 

@@ -109,7 +109,7 @@ class HydrusResourceClientAPIRestrictedAddFilesAddFile( HydrusResourceClientAPIR
             
         
         body_dict[ 'status' ] = file_import_status.status
-        body_dict[ 'hash' ] = HydrusData.BytesToNoneOrHex( file_import_status.hash )
+        body_dict[ 'hash' ] = HydrusData.bytes_to_none_or_hex(file_import_status.hash)
         body_dict[ 'note' ] = file_import_status.note
         
         body = ClientLocalServerCore.Dumps( body_dict, request.preferred_mime )

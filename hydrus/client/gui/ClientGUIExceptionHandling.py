@@ -16,7 +16,7 @@ def HandlePaintEventException( win: QW.QWidget, e: Exception ):
         message += '\n\n'
         message += f'The name of the window is "{win}", and the exception trace will follow. Please send it to hydev! You will not see any more of these error popups this program boot, but it is probably still happening. Stuff is probably drawing bad somewhere.'
         
-        HydrusData.ShowText( message )
-        HydrusData.ShowException( e, do_wait = False )
+        HydrusData.show_text(message)
+        HydrusData.show_exception(e, do_wait = False)
         
     

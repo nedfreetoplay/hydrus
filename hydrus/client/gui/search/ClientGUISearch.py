@@ -441,7 +441,7 @@ class EditPredicatesPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 except HydrusExceptions.DataMissing:
                     
-                    HydrusData.ShowText( 'Hey, I was asked to edit a rating predicate that seems to refer to a service that no longer exists. I cannot do that, so it was ignored!' )
+                    HydrusData.show_text('Hey, I was asked to edit a rating predicate that seems to refer to a service that no longer exists. I cannot do that, so it was ignored!')
                     
                     continue
                     

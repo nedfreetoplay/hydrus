@@ -164,7 +164,7 @@ def DumpToPNG( width, payload_bytes, title, payload_description, text, path ):
         
     except Exception as e:
         
-        HydrusData.ShowException( e )
+        HydrusData.show_exception(e)
         
         raise Exception( 'Could not save the png!' ) from e
         
@@ -226,7 +226,7 @@ def GetPayloadDescriptionAndBytes( payload_obj ):
     
     ( payload_bytes, payload_length ) = GetPayloadBytesAndLength( payload_obj )
     
-    payload_description = GetPayloadTypeString( payload_obj ) + ' - ' + HydrusData.ToHumanBytes( payload_length )
+    payload_description = GetPayloadTypeString( payload_obj ) + ' - ' + HydrusData.to_human_bytes(payload_length)
     
     return ( payload_description, payload_bytes )
     
@@ -271,7 +271,7 @@ def LoadFromPNG( path ):
                 
             except Exception as e:
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception(e)
                 
                 raise Exception( '"{}" did not appear to be a valid image!'.format( path ) ) from e
                 
@@ -332,7 +332,7 @@ def LoadFromNumPyImage( numpy_image: numpy.ndarray ):
         
     except Exception as e:
         
-        HydrusData.PrintException( e )
+        HydrusData.print_exception(e)
         
         message = 'The image loaded, but it did not seem to be a hydrus serialised png! The error was: {}'.format( repr( e ) )
         message += '\n' * 2

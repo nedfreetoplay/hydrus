@@ -220,7 +220,7 @@ def report_speed_to_log( precise_timestamp, num_rows, row_name ):
     
     summary = 'processed ' + HydrusNumbers.ToHumanInt( num_rows ) + ' ' + row_name + ' at ' + rows_s + ' rows/s'
     
-    HydrusData.Print( summary )
+    HydrusData.print_text(summary)
     
 
 class JobDatabaseClient( HydrusDBBase.JobDatabase ):
@@ -231,9 +231,9 @@ class JobDatabaseClient( HydrusDBBase.JobDatabase ):
             
             if QC.QThread.currentThread() == CG.client_controller.main_qt_thread:
                 
-                HydrusData.Print( 'ui-hang event processing: begin' )
+                HydrusData.print_text('ui-hang event processing: begin')
                 QW.QApplication.instance().processEvents()
-                HydrusData.Print( 'ui-hang event processing: end' )
+                HydrusData.print_text('ui-hang event processing: end')
                 
             
         
@@ -1069,7 +1069,7 @@ class DB( HydrusDB.HydrusDB ):
                             # with fingers crossed this magically corrects all sorts of stuff
                             self.modules_content_updates.AddFiles( umbrella_master_service_id, import_rows )
                             
-                            HydrusData.ShowText( 'Found and recovered {} records for files that were safely in specific component services components but not the master "{}". I have opened a new page with these files--they may have been faulty imports or faulty deletes, so you probably need to give them a look.'.format( HydrusNumbers.ToHumanInt( len( in_components_not_in_master ) ), description ) )
+                            HydrusData.show_text('Found and recovered {} records for files that were safely in specific component services components but not the master "{}". I have opened a new page with these files--they may have been faulty imports or faulty deletes, so you probably need to give them a look.'.format(HydrusNumbers.ToHumanInt(len(in_components_not_in_master)), description))
                             
                             service_key = self.modules_services.GetServiceKey( umbrella_master_service_id )
                             
@@ -1106,7 +1106,7 @@ class DB( HydrusDB.HydrusDB ):
                         
                         self.modules_hashes_local_cache.DropHashIdsFromCache( in_components_not_in_master )
                         
-                        HydrusData.ShowText( 'Found and deleted {} records for files that were in specific service components but not the master "{}".'.format( HydrusNumbers.ToHumanInt( len( in_components_not_in_master ) ), description ) )
+                        HydrusData.show_text('Found and deleted {} records for files that were in specific service components but not the master "{}".'.format(HydrusNumbers.ToHumanInt(len(in_components_not_in_master)), description))
                         
                     
                 
@@ -1125,7 +1125,7 @@ class DB( HydrusDB.HydrusDB ):
                     
                     self.modules_content_updates.DeleteFiles( umbrella_master_service_id, in_master_not_in_components )
                     
-                    HydrusData.ShowText( 'Found and deleted {} records for files that were in the master "{}" but not it its specific service components.'.format( HydrusNumbers.ToHumanInt( len( in_master_not_in_components ) ), description ) )
+                    HydrusData.show_text('Found and deleted {} records for files that were in the master "{}" but not it its specific service components.'.format(HydrusNumbers.ToHumanInt(len(in_master_not_in_components)), description))
                     
                 
             
@@ -1138,7 +1138,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             else:
                 
-                HydrusData.ShowText( 'No orphan file records found!' )
+                HydrusData.show_text('No orphan file records found!')
                 
             
         finally:
@@ -1330,9 +1330,9 @@ class DB( HydrusDB.HydrusDB ):
             
             ( current_mappings_table_name, deleted_mappings_table_name, pending_mappings_table_name, petitioned_mappings_table_name ) = ClientDBMappingsStorage.GenerateMappingsTableNames( service_id )
             
-            pending_rescinded_mappings_ids = list( HydrusData.BuildKeyToListDict( self._Execute( 'SELECT tag_id, hash_id FROM ' + pending_mappings_table_name + ';' ) ).items() )
+            pending_rescinded_mappings_ids = list(HydrusData.build_key_to_list_dict(self._Execute('SELECT tag_id, hash_id FROM ' + pending_mappings_table_name + ';')).items())
             
-            petitioned_rescinded_mappings_ids = list( HydrusData.BuildKeyToListDict( self._Execute( 'SELECT tag_id, hash_id FROM ' + petitioned_mappings_table_name + ';' ) ).items() )
+            petitioned_rescinded_mappings_ids = list(HydrusData.build_key_to_list_dict(self._Execute('SELECT tag_id, hash_id FROM ' + petitioned_mappings_table_name + ';')).items())
             
             self.modules_content_updates.UpdateMappings( service_id, pending_rescinded_mappings_ids = pending_rescinded_mappings_ids, petitioned_rescinded_mappings_ids = petitioned_rescinded_mappings_ids )
             
@@ -1502,7 +1502,7 @@ class DB( HydrusDB.HydrusDB ):
         message += '\n' * 2
         message += text
         
-        HydrusData.DebugPrint( message )
+        HydrusData.debug_print(message)
         
         self._controller.blocking_safe_show_critical_message('hydrus db failed', message)
         
@@ -1577,7 +1577,7 @@ class DB( HydrusDB.HydrusDB ):
                 #
                 
                 both_current_and_pending_mappings = list(
-                    HydrusData.BuildKeyToSetDict(
+                    HydrusData.build_key_to_set_dict(
                         self._Execute( 'SELECT tag_id, hash_id FROM {} CROSS JOIN {} USING ( tag_id, hash_id );'.format( pending_mappings_table_name, current_mappings_table_name ) )
                     ).items()
                 )
@@ -1589,7 +1589,7 @@ class DB( HydrusDB.HydrusDB ):
                 #
                 
                 both_deleted_and_petitioned_mappings = list(
-                    HydrusData.BuildKeyToSetDict(
+                    HydrusData.build_key_to_set_dict(
                         self._Execute( 'SELECT tag_id, hash_id FROM {} CROSS JOIN {} USING ( tag_id, hash_id );'.format( petitioned_mappings_table_name, deleted_mappings_table_name ) )
                     ).items()
                 )
@@ -1603,7 +1603,7 @@ class DB( HydrusDB.HydrusDB ):
             
             if total_fixed == 0:
                 
-                HydrusData.ShowText( 'No inconsistent mappings found!' )
+                HydrusData.show_text('No inconsistent mappings found!')
                 
             else:
                 
@@ -1611,7 +1611,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 self._controller.pub( 'notify_new_pending' )
                 
-                HydrusData.ShowText( 'Found {} bad mappings! They _should_ be deleted, and your pending counts should be updated.'.format( HydrusNumbers.ToHumanInt( total_fixed ) ) )
+                HydrusData.show_text('Found {} bad mappings! They _should_ be deleted, and your pending counts should be updated.'.format(HydrusNumbers.ToHumanInt(total_fixed)))
                 
             
             job_status.DeleteStatusText( level = 2 )
@@ -2635,7 +2635,7 @@ class DB( HydrusDB.HydrusDB ):
                 message += '\n\n'
                 message += 'Please run _database->check and repair->fix invalid tags_. If everything seems good after that and you do not get this message again, you should be all fixed. You might want to search your pending tags (do "system:has tags" with "include current tags" turned off) afterwards to see if any tags are mangled text.'
                 
-                HydrusData.ShowText( message )
+                HydrusData.show_text(message)
                 
                 raise HydrusExceptions.VetoException( 'Invalid tag detected!' )
                 
@@ -2661,7 +2661,7 @@ class DB( HydrusDB.HydrusDB ):
                         
                         ( current_mappings_table_name, deleted_mappings_table_name, pending_mappings_table_name, petitioned_mappings_table_name ) = ClientDBMappingsStorage.GenerateMappingsTableNames( service_id )
                         
-                        pending_dict = HydrusData.BuildKeyToListDict( self._Execute( 'SELECT tag_id, hash_id FROM ' + pending_mappings_table_name + ' ORDER BY tag_id LIMIT ?;', ( ideal_weight, ) ) )
+                        pending_dict = HydrusData.build_key_to_list_dict(self._Execute('SELECT tag_id, hash_id FROM ' + pending_mappings_table_name + ' ORDER BY tag_id LIMIT ?;', (ideal_weight,)))
                         
                         pending_mapping_ids = list( pending_dict.items() )
                         
@@ -2677,7 +2677,7 @@ class DB( HydrusDB.HydrusDB ):
                             message += '\n' * 2
                             message += 'Please run _database->check and repair->fix logically inconsistent mappings_. If everything seems good after that and you do not get this message again, you should be all fixed. If not, you may need to regenerate your mappings storage cache under the \'database\' menu. If that does not work, hydev would like to know about it!'
                             
-                            HydrusData.ShowText( message )
+                            HydrusData.show_text(message)
                             
                             raise HydrusExceptions.VetoException( 'Logically inconsistent mappings detected!' )
                             
@@ -2697,7 +2697,7 @@ class DB( HydrusDB.HydrusDB ):
                     
                     if account.HasPermission( HC.CONTENT_TYPE_MAPPINGS, HC.PERMISSION_ACTION_PETITION ):
                         
-                        petitioned_dict = HydrusData.BuildKeyToListDict( [ ( ( tag_id, reason_id ), hash_id ) for ( tag_id, hash_id, reason_id ) in self._Execute( 'SELECT tag_id, hash_id, reason_id FROM ' + petitioned_mappings_table_name + ' ORDER BY reason_id LIMIT ?;', ( ideal_weight, ) ) ] )
+                        petitioned_dict = HydrusData.build_key_to_list_dict([((tag_id, reason_id), hash_id) for (tag_id, hash_id, reason_id) in self._Execute('SELECT tag_id, hash_id, reason_id FROM ' + petitioned_mappings_table_name + ' ORDER BY reason_id LIMIT ?;', (ideal_weight,))])
                         
                         petitioned_mapping_ids = list( petitioned_dict.items() )
                         
@@ -2717,7 +2717,7 @@ class DB( HydrusDB.HydrusDB ):
                             message += '\n' * 2
                             message += 'Please run _database->check and repair->fix logically inconsistent mappings_. If everything seems good after that and you do not get this message again, you should be all fixed. If not, you may need to regenerate your mappings storage cache under the \'database\' menu. If that does not work, hydev would like to know about it!'
                             
-                            HydrusData.ShowText( message )
+                            HydrusData.show_text(message)
                             
                             raise HydrusExceptions.VetoException( 'Logically inconsistent mappings detected!' )
                             
@@ -3621,7 +3621,7 @@ class DB( HydrusDB.HydrusDB ):
             
             message += ' I found ' + HydrusNumbers.ToHumanInt( len( hash_ids ) ) + '.'
             
-            HydrusData.ShowText( message )
+            HydrusData.show_text(message)
             
         
         return self.modules_hashes_local_cache.GetHashes( hash_ids )
@@ -3631,7 +3631,7 @@ class DB( HydrusDB.HydrusDB ):
         
         if HG.file_import_report_mode:
             
-            HydrusData.ShowText( 'File import job starting db job' )
+            HydrusData.show_text('File import job starting db job')
             
         
         file_import_options = file_import_job.GetFileImportOptions()
@@ -3654,14 +3654,14 @@ class DB( HydrusDB.HydrusDB ):
             
             if HG.file_import_report_mode:
                 
-                HydrusData.ShowText( 'File import job adding new file' )
+                HydrusData.show_text('File import job adding new file')
                 
             
             ( size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) = file_import_job.GetFileInfo()
             
             if HG.file_import_report_mode:
                 
-                HydrusData.ShowText( 'File import job adding file info row' )
+                HydrusData.show_text('File import job adding file info row')
                 
             
             self.modules_files_metadata_basic.AddFilesInfo( [ ( hash_id, size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) ], overwrite = True )
@@ -3689,7 +3689,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 if HG.file_import_report_mode:
                     
-                    HydrusData.ShowText( 'File import job associating perceptual_hashes' )
+                    HydrusData.show_text('File import job associating perceptual_hashes')
                     
                 
                 self.modules_similar_files.SetPerceptualHashes( hash_id, perceptual_hashes )
@@ -3697,7 +3697,7 @@ class DB( HydrusDB.HydrusDB ):
             
             if HG.file_import_report_mode:
                 
-                HydrusData.ShowText( 'File import job adding file to local file domain' )
+                HydrusData.show_text('File import job adding file to local file domain')
                 
             
             #
@@ -3747,7 +3747,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 if HG.file_import_report_mode:
                     
-                    HydrusData.ShowText( 'File import job archiving new file' )
+                    HydrusData.show_text('File import job archiving new file')
                     
                 
                 if hash_id not in self.modules_files_inbox.inbox_hash_ids:
@@ -3767,7 +3767,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 if HG.file_import_report_mode:
                     
-                    HydrusData.ShowText( 'File import job inboxing new file' )
+                    HydrusData.show_text('File import job inboxing new file')
                     
                 
                 self.modules_files_inbox.InboxFiles( ( hash_id, ) )
@@ -3787,7 +3787,7 @@ class DB( HydrusDB.HydrusDB ):
         
         if HG.file_import_report_mode:
             
-            HydrusData.ShowText( 'File import job done at db level, final status: {}'.format( file_import_status.ToString() ) )
+            HydrusData.show_text('File import job done at db level, final status: {}'.format(file_import_status.ToString()))
             
         
         return file_import_status
@@ -3801,7 +3801,7 @@ class DB( HydrusDB.HydrusDB ):
             
         except Exception as e:
             
-            HydrusData.ShowText( 'Was unable to parse an incoming update!' )
+            HydrusData.show_text('Was unable to parse an incoming update!')
             
             raise
             
@@ -4434,14 +4434,14 @@ class DB( HydrusDB.HydrusDB ):
         
         if isinstance( e, MemoryError ):
             
-            HydrusData.ShowText( 'The client is running out of memory! Restart it ASAP!' )
+            HydrusData.show_text('The client is running out of memory! Restart it ASAP!')
             
         
         tb = traceback.format_exc()
         
         if 'malformed' in tb:
             
-            HydrusData.ShowText( 'A database exception looked like it could be a very serious \'database image is malformed\' error! Unless you know otherwise, please shut down the client immediately and check the \'help my db is broke.txt\' under install_dir/db.' )
+            HydrusData.show_text('A database exception looked like it could be a very serious \'database image is malformed\' error! Unless you know otherwise, please shut down the client immediately and check the \'help my db is broke.txt\' under install_dir/db.')
             
         
         if job.IsSynchronous():
@@ -4456,7 +4456,7 @@ class DB( HydrusDB.HydrusDB ):
             
         else:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception(e)
             
         
     
@@ -5331,13 +5331,13 @@ class DB( HydrusDB.HydrusDB ):
                             
                             self._Execute( 'INSERT OR IGNORE INTO hashes ( hash_id, hash ) VALUES ( ?, ? );', ( definition_id, sqlite3.Binary( hash ) ) )
                             
-                            HydrusData.Print( '{} {} had no master definition, but I was able to recover from the local cache'.format( definition_column_name, definition_id ) )
+                            HydrusData.print_text('{} {} had no master definition, but I was able to recover from the local cache'.format(definition_column_name, definition_id))
                             
                             num_recovered += 1
                             
                         else:
                             
-                            HydrusData.Print( '{} {} had no master definition, it has been purged from the database!'.format( definition_column_name, definition_id ) )
+                            HydrusData.print_text('{} {} had no master definition, it has been purged from the database!'.format(definition_column_name, definition_id))
                             
                             for ( table_name, column_name ) in all_tables_and_columns:
                                 
@@ -5843,7 +5843,7 @@ class DB( HydrusDB.HydrusDB ):
             
             job_status.FinishAndDismiss( 5 )
             
-            HydrusData.ShowText( 'Now the mappings cache regen is done, you might want to restart the program.' )
+            HydrusData.show_text('Now the mappings cache regen is done, you might want to restart the program.')
             
             self._cursor_transaction_wrapper.pub_after_job( 'notify_new_tag_display_application' )
             self._cursor_transaction_wrapper.pub_after_job( 'notify_force_refresh_tags_data' )
@@ -5911,7 +5911,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 if job_status.IsCancelled():
                     
-                    HydrusData.ShowText( 'Since you cancelled the job early, you should run the job again or run _database->regenerate->local tags cache_ when it is convenient!' )
+                    HydrusData.show_text('Since you cancelled the job early, you should run the job again or run _database->regenerate->local tags cache_ when it is convenient!')
                     
                     break
                     
@@ -6335,7 +6335,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 existing_tags.add( potential_new_cleaned_tag )
                 
-                potential_new_cleaned_tag = HydrusData.GetNonDupeName( cleaned_tag, existing_tags )
+                potential_new_cleaned_tag = HydrusData.get_non_dupe_name(cleaned_tag, existing_tags)
                 
             
             cleaned_tag = potential_new_cleaned_tag
@@ -6359,11 +6359,11 @@ class DB( HydrusDB.HydrusDB ):
             
             try:
                 
-                HydrusData.Print( f'Invalid tag fixing: tag_id {tag_id}: "{tag}" replaced with "{cleaned_tag}"' )
+                HydrusData.print_text(f'Invalid tag fixing: tag_id {tag_id}: "{tag}" replaced with "{cleaned_tag}"')
                 
             except Exception as e:
                 
-                HydrusData.Print( f'Invalid tag fixing: tag_id {tag_id}: Could not even print the bad tag to the log! It is now known as "{cleaned_tag}"' )
+                HydrusData.print_text(f'Invalid tag fixing: tag_id {tag_id}: Could not even print the bad tag to the log! It is now known as "{cleaned_tag}"')
                 
             
         
@@ -6382,7 +6382,7 @@ class DB( HydrusDB.HydrusDB ):
                     self._cursor_transaction_wrapper.pub_after_job( 'notify_force_refresh_tags_data' )
                     
                 
-                HydrusData.Print( message )
+                HydrusData.print_text(message)
                 
                 job_status.SetStatusText( message )
                 
@@ -6864,7 +6864,7 @@ class DB( HydrusDB.HydrusDB ):
                         
                         problems_found = True
                         
-                        HydrusData.ShowText( '{} surplus files in {}_{}!'.format( HydrusNumbers.ToHumanInt( len( hash_ids_in_this_cache_but_not_in_file_service ) ), file_service_id, tag_service_id ) )
+                        HydrusData.show_text('{} surplus files in {}_{}!'.format(HydrusNumbers.ToHumanInt(len(hash_ids_in_this_cache_but_not_in_file_service)), file_service_id, tag_service_id))
                         
                         with self._MakeTemporaryIntegerTable( hash_ids_in_this_cache_but_not_in_file_service, 'hash_id' ) as temp_hash_id_table_name:
                             
@@ -6890,7 +6890,7 @@ class DB( HydrusDB.HydrusDB ):
                         
                         problems_found = True
                         
-                        HydrusData.ShowText( '{} missing files in {}_{}!'.format( HydrusNumbers.ToHumanInt( len( hash_ids_in_file_service_and_not_in_cache_that_have_tags ) ), file_service_id, tag_service_id ) )
+                        HydrusData.show_text('{} missing files in {}_{}!'.format(HydrusNumbers.ToHumanInt(len(hash_ids_in_file_service_and_not_in_cache_that_have_tags)), file_service_id, tag_service_id))
                         
                         with self._MakeTemporaryIntegerTable( hash_ids_in_file_service_and_not_in_cache_that_have_tags, 'hash_id' ) as temp_hash_id_table_name:
                             
@@ -6902,7 +6902,7 @@ class DB( HydrusDB.HydrusDB ):
             
             if not problems_found:
                 
-                HydrusData.ShowText( 'All checks ok--no desynced mapping caches!' )
+                HydrusData.show_text('All checks ok--no desynced mapping caches!')
                 
             
         finally:
@@ -6939,8 +6939,8 @@ class DB( HydrusDB.HydrusDB ):
             
         except Exception as e:
             
-            HydrusData.Print( 'Failed options save dump:' )
-            HydrusData.Print( options )
+            HydrusData.print_text('Failed options save dump:')
+            HydrusData.print_text(options)
             
             raise
             
@@ -6992,7 +6992,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to check some API stuff failed! Please let hydrus dev know!'
                 
@@ -7024,7 +7024,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update some downloader objects failed! Please let hydrus dev know!'
                 
@@ -7168,7 +7168,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to check some API stuff failed! Please let hydrus dev know!'
                 
@@ -7198,7 +7198,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update some downloader objects failed! Please let hydrus dev know!'
                 
@@ -7223,7 +7223,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Some ugoira-scanning failed to schedule! This is not super important, but hydev would be interested in seeing the error that was printed to the log.'
                 
@@ -7271,7 +7271,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Some alternates metadata updates failed to schedule! This is not super important, but hydev would be interested in seeing the error that was printed to the log.'
                 
@@ -7299,7 +7299,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Some animation-scanning failed to schedule! This is not super important, but hydev would be interested in seeing the error that was printed to the log.'
                 
@@ -7319,7 +7319,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'A list setting failed to reset! This is not super important, but hydev would be interested in seeing the error that was printed to the log.'
                 
@@ -7348,7 +7348,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update some downloader objects failed! Please let hydrus dev know!'
                 
@@ -7382,7 +7382,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to check for archived time gaps failed! Please let hydrus dev know!'
                 
@@ -7414,7 +7414,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update some downloader objects failed! Please let hydrus dev know!'
                 
@@ -7437,7 +7437,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update some login stuff failed! Please let hydrus dev know!'
                 
@@ -7456,7 +7456,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'A file maintenance job failed to schedule! This is not super important, but hydev would be interested in seeing the error that was printed to the log.'
                 
@@ -7488,7 +7488,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update some downloader objects failed! Please let hydrus dev know!'
                 
@@ -7560,7 +7560,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update your options failed! Please let hydrus dev know!'
                 
@@ -7580,7 +7580,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update your options failed! Please let hydrus dev know!'
                 
@@ -7619,7 +7619,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Some file maintenance failed to schedule! This is not super important, but hydev would be interested in seeing the error that was printed to the log.'
                 
@@ -7747,7 +7747,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update some downloader objects failed! Please let hydrus dev know!'
                 
@@ -7784,7 +7784,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update some downloader objects failed! Please let hydrus dev know!'
                 
@@ -7821,7 +7821,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update your options failed! Please let hydrus dev know!'
                 
@@ -7837,7 +7837,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to scan and fix bad tags in the database failed! You can re-attempt this job under _database->check and repair->fix invalid tags_. Please let hydrus dev know!'
                 
@@ -7872,7 +7872,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update some downloader objects failed! Please let hydrus dev know!'
                 
@@ -7894,7 +7894,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update your options failed! Please let hydrus dev know!'
                 
@@ -7918,7 +7918,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Some file updates failed to schedule! This is not super important, but hydev would be interested in seeing the error that was printed to the log.'
                 
@@ -7972,7 +7972,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Had a problem removing duplicate auto-resolution rules! Please let hydrus dev know.'
                 
@@ -7996,7 +7996,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Some file updates failed to schedule! This is not super important, but hydev would be interested in seeing the error that was printed to the log.'
                 
@@ -8032,7 +8032,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update some shortcuts failed! Please let hydrus dev know!'
                 
@@ -8072,7 +8072,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update some shortcuts failed! Please let hydrus dev know!'
                 
@@ -8104,7 +8104,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update some downloaders failed! Please let hydrus dev know!'
                 
@@ -8121,7 +8121,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update your options failed! Please let hydrus dev know!'
                 
@@ -8152,7 +8152,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update your options failed! Please let hydrus dev know!'
                 
@@ -8178,7 +8178,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to schedule avif files for some maintenance failed! Please let hydrus dev know!'
                 
@@ -8211,7 +8211,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update some downloaders failed! Please let hydrus dev know!'
                 
@@ -8233,7 +8233,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update your options failed! Please let hydrus dev know!'
                 
@@ -8261,7 +8261,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update your \'rating_incdec_height_px\' options failed! Please let hydrus dev know!'
                 
@@ -8312,7 +8312,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Failed to update auto-resolution rule denied tables!'
                 
@@ -8334,7 +8334,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Some metadata scanning failed to schedule! This is not super important, but hydev would be interested in seeing the error that was printed to the log.'
                 
@@ -8360,7 +8360,7 @@ class DB( HydrusDB.HydrusDB ):
                         
                         self.modules_serialisable.SetJSONDump( rule )
                         
-                        HydrusData.Print( '"B is better" rule that I just flipped to "A is better" and paused: ' + rule.GetName() )
+                        HydrusData.print_text('"B is better" rule that I just flipped to "A is better" and paused: ' + rule.GetName())
                         
                         we_did_it = True
                         
@@ -8375,7 +8375,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Had a problem updating duplicate auto-resolution rules! Please let hydrus dev know.'
                 
@@ -8399,7 +8399,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Some metadata scanning failed to schedule! This is not super important, but hydev would be interested in seeing the error that was printed to the log.'
                 
@@ -8423,7 +8423,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Some metadata scanning failed to schedule! This is not super important, but hydev would be interested in seeing the error that was printed to the log.'
                 
@@ -8457,7 +8457,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update some downloader objects failed! Please let hydrus dev know!'
                 
@@ -8508,7 +8508,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update your options failed! Please let hydrus dev know!'
                 
@@ -8529,7 +8529,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Some JXL-scanning failed to schedule! This is not super important, but hydev would be interested in seeing the error that was printed to the log.'
                 
@@ -8575,7 +8575,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Some transparency scanning failed to schedule! This is not super important, but hydev would be interested in seeing the error that was printed to the log.'
                 
@@ -8593,7 +8593,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Duplicates database maintenance failed! This is not super important, but hydev would be interested in seeing the error that was printed to the log.'
                 
@@ -8609,7 +8609,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to rename "all local files" failed! This is not super important, but hydev would be interested in seeing the error that was printed to the log.'
                 
@@ -8639,7 +8639,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update some downloaders failed! Please let hydrus dev know!'
                 
@@ -8655,7 +8655,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to rename "all my files" failed! This is not super important, but hydev would be interested in seeing the error that was printed to the log.'
                 
@@ -8675,7 +8675,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update your options failed! Please let hydrus dev know!'
                 
@@ -8693,7 +8693,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to resync your auto-resolution rules to their file domains failed! This is not super important, but hydev would be interested in seeing the error that was printed to the log.\n\nAlso, you might want to pause duplicates auto-resolution work right after the client boots, since it sounds like they have a file storage issue.'
                 
@@ -8725,7 +8725,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update some downloaders failed! Please let hydrus dev know!'
                 
@@ -8767,7 +8767,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update some http headers failed! Please let hydrus dev know!'
                 
@@ -8790,7 +8790,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'Trying to update your options failed! Please let hydrus dev know!'
                 
@@ -8969,7 +8969,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 if not self._have_printed_a_cannot_vacuum_message:
                     
-                    HydrusData.Print( 'Cannot vacuum "{}": {}'.format( db_path, e ) )
+                    HydrusData.print_text('Cannot vacuum "{}": {}'.format(db_path, e))
                     
                     self._have_printed_a_cannot_vacuum_message = True
                     
@@ -8987,7 +8987,7 @@ class DB( HydrusDB.HydrusDB ):
         
         if len( ok_names ) == 0:
             
-            HydrusData.ShowText( 'A call to vacuum was made, but none of those databases could be vacuumed! Maybe drive free space is tight and/or recently changed?' )
+            HydrusData.show_text('A call to vacuum was made, but none of those databases could be vacuumed! Maybe drive free space is tight and/or recently changed?')
             
             return
             
@@ -9028,15 +9028,15 @@ class DB( HydrusDB.HydrusDB ):
                     
                 except Exception as e:
                     
-                    HydrusData.Print( 'vacuum failed:' )
+                    HydrusData.print_text('vacuum failed:')
                     
-                    HydrusData.ShowException( e )
+                    HydrusData.show_exception(e)
                     
                     text = 'An attempt to vacuum the database failed.'
                     text += '\n' * 2
                     text += 'If the error is not obvious, please contact the hydrus developer.'
                     
-                    HydrusData.ShowText( text )
+                    HydrusData.show_text(text)
                     
                     return
                     

@@ -2910,7 +2910,7 @@ class PanelPredicateSystemSimilarToData( PanelPredicateSystemSingle ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', f'Sorry, seemed to be a problem: {e}' )
                 
@@ -2976,7 +2976,7 @@ class PanelPredicateSystemSimilarToData( PanelPredicateSystemSingle ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', f'Sorry, seemed to be a problem: {e}' )
                 

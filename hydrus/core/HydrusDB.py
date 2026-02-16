@@ -255,8 +255,8 @@ def VacuumDBInto( db_path: str ):
             
         except Exception as e2:
             
-            HydrusData.PrintException( e )
-            HydrusData.PrintException( e2 )
+            HydrusData.print_exception(e)
+            HydrusData.print_exception(e2)
             
             message = f'While attempting to vacuum "{db_path}", I could not rename "{vacuum_path}" to "{db_path}"! This is a bad situation, because now there is no database file in the desired location!'
             message += '\n\n'
@@ -284,8 +284,8 @@ def VacuumDBInto( db_path: str ):
         
     except Exception as e:
         
-        HydrusData.ShowText( f'Hey, the vacuum of "{db_path}" went ok, but I could not delete the leftover file "{deletee_path}"! Does hydrus not have delete permission on your db folder? In any case, please delete this file yourself.' )
-        HydrusData.ShowException( e )
+        HydrusData.show_text(f'Hey, the vacuum of "{db_path}" went ok, but I could not delete the leftover file "{deletee_path}"! Does hydrus not have delete permission on your db folder? In any case, please delete this file yourself.')
+        HydrusData.show_exception(e)
         
     
     vacuum_size = os.path.getsize( db_path )
@@ -294,7 +294,7 @@ def VacuumDBInto( db_path: str ):
     
     bytes_per_sec = vacuum_size / time_took
     
-    HydrusData.ShowText( f'Vacuumed {db_path} in {HydrusTime.TimeDeltaToPrettyTimeDelta( time_took )} ({HydrusData.ToHumanBytes(bytes_per_sec)}/s). It went from {HydrusData.ToHumanBytes( original_size )} to {HydrusData.ToHumanBytes( vacuum_size )}' )
+    HydrusData.show_text(f'Vacuumed {db_path} in {HydrusTime.TimeDeltaToPrettyTimeDelta(time_took)} ({HydrusData.to_human_bytes(bytes_per_sec)}/s). It went from {HydrusData.to_human_bytes(original_size)} to {HydrusData.to_human_bytes(vacuum_size)}')
     
 
 class HydrusDB( HydrusDBBase.DBBase ):
@@ -360,7 +360,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                 HydrusPaths.DeletePath( shm_lad )
                 
             
-            HydrusData.Print( 'Found and deleted the durable temporary database on boot. The last exit was probably not clean.' )
+            HydrusData.print_text('Found and deleted the durable temporary database on boot. The last exit was probably not clean.')
             
         
         self._InitExternalDatabases()
@@ -396,7 +396,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
         
         if free_space is not None and free_space < space_wanted:
             
-            raise HydrusExceptions.DBAccessException( 'Sorry, it looks like the database drive partition has less than {} free space. It needs this for database transactions, so please free up some space.'.format( HydrusData.ToHumanBytes( space_wanted ) ) )
+            raise HydrusExceptions.DBAccessException( 'Sorry, it looks like the database drive partition has less than {} free space. It needs this for database transactions, so please free up some space.'.format(HydrusData.to_human_bytes(space_wanted)))
             
         
         self._InitDB()
@@ -463,9 +463,9 @@ class HydrusDB( HydrusDBBase.DBBase ):
                     
                 except Exception as rollback_e:
                     
-                    HydrusData.Print( 'When the update failed, attempting to rollback the database failed.' )
+                    HydrusData.print_text('When the update failed, attempting to rollback the database failed.')
                     
-                    HydrusData.PrintException( rollback_e )
+                    HydrusData.print_exception(rollback_e)
                     
                 
                 raise e
@@ -556,7 +556,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
         message += '\n' * 2
         message += text
         
-        HydrusData.DebugPrint( message )
+        HydrusData.debug_print(message)
         
     
     def _DoAfterJobWork( self ):
@@ -644,7 +644,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                         
                     except Exception as e:
                         
-                        HydrusData.PrintException( e )
+                        HydrusData.print_exception(e)
                         
                         message = 'I am sorry, the recovery attempt failed because I could not rename the file. It looks like your hard drive is damaged or somehow read-only. Hydrus will now quit; please check out what could be wrong with your drive, and ask hydev for help if you need it!'
                         
@@ -809,7 +809,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                 message += '\n' * 2
                 message += str( e )
                 
-                HydrusData.DebugPrint( message )
+                HydrusData.debug_print(message)
                 
                 raise HydrusExceptions.DBAccessException( message )
                 
@@ -890,7 +890,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                 
                 if time_job_took > 15:
                     
-                    HydrusData.Print( f'The database job "{job.ToString()}" took {HydrusTime.TimeDeltaToPrettyTimeDelta( time_job_took )}.' )
+                    HydrusData.print_text(f'The database job "{job.ToString()}" took {HydrusTime.TimeDeltaToPrettyTimeDelta(time_job_took)}.')
                     
                 
             
@@ -922,13 +922,13 @@ class HydrusDB( HydrusDBBase.DBBase ):
                 
             except Exception as rollback_e:
                 
-                HydrusData.Print( 'When the transaction failed, attempting to rollback the database failed. Please restart the client as soon as is convenient.' )
+                HydrusData.print_text('When the transaction failed, attempting to rollback the database failed. Please restart the client as soon as is convenient.')
                 
                 self._CloseDBConnection()
                 
                 self._InitDBConnection()
                 
-                HydrusData.PrintException( rollback_e )
+                HydrusData.print_exception(rollback_e)
                 
             
         finally:
@@ -1072,7 +1072,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
             
         elif not ( cert_here or key_here ):
             
-            HydrusData.Print( 'Generating new cert/key files.' )
+            HydrusData.print_text('Generating new cert/key files.')
             
             if not HydrusEncryption.CRYPTO_OK:
                 
@@ -1153,7 +1153,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                         
                         summary = 'Running db job: ' + job.ToString()
                         
-                        HydrusData.ShowText( summary )
+                        HydrusData.show_text(summary)
                         
                     
                     if HydrusProfiling.IsProfileMode( 'db' ):

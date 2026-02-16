@@ -469,7 +469,7 @@ quick_inverse_lookups.update( {
 
 def ReportDeleteLockFailures( media_results: collections.abc.Collection[ ClientMediaResult.MediaResult ] ):
     
-    HydrusData.Print( 'Hey, we had a delete-lock problem. Here is the stack, which hydev may care to see:' )
+    HydrusData.print_text('Hey, we had a delete-lock problem. Here is the stack, which hydev may care to see:')
     
     traceback.print_stack()
     

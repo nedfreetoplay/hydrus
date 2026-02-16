@@ -165,7 +165,7 @@ class TestPanel( QW.QWidget ):
                 
                 example_data = 'fetch failed:' + '\n' * 2 + str( e )
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception(e)
                 
             
             CG.client_controller.CallAfterQtSafe( self, qt_code, example_data, example_bytes )
@@ -207,7 +207,7 @@ class TestPanel( QW.QWidget ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception(e)
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem loading!', str(e) )
             
@@ -284,7 +284,7 @@ class TestPanel( QW.QWidget ):
             
             if good_type_found:
                 
-                description = HydrusData.ToHumanBytes( len( example_data ) ) + ' total, ' + parse_phrase
+                description = HydrusData.to_human_bytes(len(example_data)) + ' total, ' + parse_phrase
                 
                 example_data_to_show = example_data
                 
@@ -550,7 +550,7 @@ class TestPanelPageParser( TestPanel ):
                         parse_phrase = 'looks like JSON'
                         
                     
-                    description = HydrusData.ToHumanBytes( len( post_conversion_example_data ) ) + ' total, ' + parse_phrase
+                    description = HydrusData.to_human_bytes(len(post_conversion_example_data)) + ' total, ' + parse_phrase
                     
                 except Exception as e:
                     

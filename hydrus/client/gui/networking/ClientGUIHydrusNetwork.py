@@ -685,7 +685,7 @@ class ReviewAccountsPanel( QW.QWidget ):
                         
                     except Exception as e:
                         
-                        HydrusData.PrintException( e )
+                        HydrusData.print_exception(e)
                         
                         continue
                         

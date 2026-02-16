@@ -14,7 +14,7 @@ from hydrus.client import ClientConstants as CC
 
 def DiscardBlankPerceptualHashes( perceptual_hashes ):
     
-    perceptual_hashes = { perceptual_hash for perceptual_hash in perceptual_hashes if HydrusData.Get64BitHammingDistance( perceptual_hash, CC.BLANK_PERCEPTUAL_HASH ) > 4 }
+    perceptual_hashes = {perceptual_hash for perceptual_hash in perceptual_hashes if HydrusData.get64_bit_hamming_distance(perceptual_hash, CC.BLANK_PERCEPTUAL_HASH) > 4}
     
     return perceptual_hashes
     
@@ -23,7 +23,7 @@ def GenerateUsefulShapePerceptualHashes( path, mime ):
     
     if HG.phash_generation_report_mode:
         
-        HydrusData.ShowText( 'phash generation: loading image' )
+        HydrusData.show_text('phash generation: loading image')
         
     
     try:
@@ -72,7 +72,7 @@ def GenerateShapePerceptualHashNumPy( numpy_image: numpy.ndarray, phash_length =
     
     if HG.phash_generation_report_mode:
         
-        HydrusData.ShowText( 'phash generation: image shape: {}'.format( numpy_image.shape ) )
+        HydrusData.show_text('phash generation: image shape: {}'.format(numpy_image.shape))
         
     
     if len( numpy_image.shape ) == 3:
@@ -130,7 +130,7 @@ def GenerateShapePerceptualHashNumPy( numpy_image: numpy.ndarray, phash_length =
     
     if HG.phash_generation_report_mode:
         
-        HydrusData.ShowText( 'phash generation: grey image shape: {}'.format( numpy_image_gray.shape ) )
+        HydrusData.show_text('phash generation: grey image shape: {}'.format(numpy_image_gray.shape))
         
     
     tiny_dimension = phash_dimension * 4
@@ -139,7 +139,7 @@ def GenerateShapePerceptualHashNumPy( numpy_image: numpy.ndarray, phash_length =
     
     if HG.phash_generation_report_mode:
         
-        HydrusData.ShowText( 'phash generation: tiny image shape: {}'.format( numpy_image_tiny.shape ) )
+        HydrusData.show_text('phash generation: tiny image shape: {}'.format(numpy_image_tiny.shape))
         
     
     # convert to float and calc dct
@@ -148,8 +148,8 @@ def GenerateShapePerceptualHashNumPy( numpy_image: numpy.ndarray, phash_length =
     
     if HG.phash_generation_report_mode:
         
-        HydrusData.ShowText( 'phash generation: tiny float image shape: {}'.format( numpy_image_tiny_float.shape ) )
-        HydrusData.ShowText( 'phash generation: generating dct' )
+        HydrusData.show_text('phash generation: tiny float image shape: {}'.format(numpy_image_tiny_float.shape))
+        HydrusData.show_text('phash generation: generating dct')
         
     
     dct_full = PILDCT( numpy_image_tiny_float )
@@ -171,7 +171,7 @@ def GenerateShapePerceptualHashNumPy( numpy_image: numpy.ndarray, phash_length =
     
     if HG.phash_generation_report_mode:
         
-        HydrusData.ShowText( 'phash generation: median: {}'.format( median ) )
+        HydrusData.show_text('phash generation: median: {}'.format(median))
         
     
     # make a monochromatic, 64-bit hash of whether the entry is above or below the median
@@ -180,7 +180,7 @@ def GenerateShapePerceptualHashNumPy( numpy_image: numpy.ndarray, phash_length =
     
     if HG.phash_generation_report_mode:
         
-        HydrusData.ShowText( 'phash generation: collapsing bytes' )
+        HydrusData.show_text('phash generation: collapsing bytes')
         
     
     # convert TTTFTFTF to 11101010 by repeatedly shifting answer and adding 0 or 1
@@ -233,7 +233,7 @@ def GenerateShapePerceptualHashNumPy( numpy_image: numpy.ndarray, phash_length =
     
     if HG.phash_generation_report_mode:
         
-        HydrusData.ShowText( 'phash generation: perceptual_hash: {}'.format( perceptual_hash.hex() ) )
+        HydrusData.show_text('phash generation: perceptual_hash: {}'.format(perceptual_hash.hex()))
         
     
     return perceptual_hash
@@ -254,7 +254,7 @@ def GenerateUsefulShapePerceptualHashesNumPy( numpy_image: numpy.ndarray ):
     
     if HG.phash_generation_report_mode:
         
-        HydrusData.ShowText( 'phash generation: final perceptual_hashes: {}'.format( [ phash.hexh() for phash in perceptual_hashes ] ) )
+        HydrusData.show_text('phash generation: final perceptual_hashes: {}'.format([phash.hexh() for phash in perceptual_hashes]))
         
     
     # we good

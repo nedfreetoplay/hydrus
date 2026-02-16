@@ -74,7 +74,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
                         message += '\n' * 2
                         message += 'To stop spam, this message will only show one time per program boot. The error may happen again, silently.'
                         
-                        HydrusData.ShowText( message )
+                        HydrusData.show_text(message)
                         
                         self._reported_on_a_broken_branch = True
                         
@@ -91,7 +91,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
                 
                 ( ancestor_perceptual_hash, ancestor_radius, ancestor_inner_id, ancestor_inner_population, ancestor_outer_id, ancestor_outer_population ) = result
                 
-                distance_to_ancestor = HydrusData.Get64BitHammingDistance( perceptual_hash, ancestor_perceptual_hash )
+                distance_to_ancestor = HydrusData.get64_bit_hamming_distance(perceptual_hash, ancestor_perceptual_hash)
                 
                 if ancestor_radius is None or distance_to_ancestor <= ancestor_radius:
                     
@@ -213,7 +213,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
                 
             else:
                 
-                children = sorted( ( ( HydrusData.Get64BitHammingDistance( perceptual_hash, child_perceptual_hash ), child_id, child_perceptual_hash ) for ( child_id, child_perceptual_hash ) in children ) )
+                children = sorted(((HydrusData.get64_bit_hamming_distance(perceptual_hash, child_perceptual_hash), child_id, child_perceptual_hash) for (child_id, child_perceptual_hash) in children))
                 
                 median_index = len( children ) // 2
                 
@@ -406,7 +406,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
         
         for ( v_id, v_perceptual_hash ) in viewpoints:
             
-            views = sorted( ( HydrusData.Get64BitHammingDistance( v_perceptual_hash, s_perceptual_hash ) for ( s_id, s_perceptual_hash ) in sample if v_id != s_id ) )
+            views = sorted((HydrusData.get64_bit_hamming_distance(v_perceptual_hash, s_perceptual_hash) for (s_id, s_perceptual_hash) in sample if v_id != s_id))
             
             # let's figure out the ratio of left_children to right_children, preferring 1:1, and convert it to a discrete integer score
             
@@ -540,7 +540,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
                 
                 self._Execute( 'DELETE FROM shape_maintenance_branch_regen;' )
                 
-                HydrusData.ShowText( 'Your similar files search tree seemed to be damaged. Please regenerate it under the _database_ menu!' )
+                HydrusData.show_text('Your similar files search tree seemed to be damaged. Please regenerate it under the _database_ menu!')
                 
                 return
                 
@@ -775,7 +775,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
                 
             except Exception as e:
                 
-                HydrusData.ShowText( 'It looks like similar files maintenance had trouble regenerating a branch of the search tree! You should try _database->regenerate->similar files search tree_, and if that still produces errors, let hydev know.' )
+                HydrusData.show_text('It looks like similar files maintenance had trouble regenerating a branch of the search tree! You should try _database->regenerate->similar files search tree_, and if that still produces errors, let hydev know.')
                 
                 raise
                 
@@ -860,33 +860,33 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
                 message += '\n'
                 message += 'More details have been written to log, including the file list for affected hashes. You may wish to manually schedule a "similar files regen" job for all the affected file hashes. You should also check out "help my db is broke.txt" in your install_dir/db folder, since there are no clean ways these bad nodes got into your database.'
                 
-                HydrusData.ShowText( message )
+                HydrusData.show_text(message)
                 
-                HydrusData.Print( 'The bad nodes:' )
+                HydrusData.print_text('The bad nodes:')
                 
                 for ( phash_id, phash ) in bad_nodes:
                     
                     if isinstance( phash, bytes ):
                         
-                        HydrusData.Print( f'phash_id: {phash_id}, presumably incorrect-length phash: "{phash.hex()}"' )
+                        HydrusData.print_text(f'phash_id: {phash_id}, presumably incorrect-length phash: "{phash.hex()}"')
                         
                     else:
                         
-                        HydrusData.Print( f'phash_id: {phash_id}, presumably corrupt phash: "{phash}"' )
+                        HydrusData.print_text(f'phash_id: {phash_id}, presumably corrupt phash: "{phash}"')
                         
                     
                 
-                HydrusData.Print( 'The affected hashes:' )
+                HydrusData.print_text('The affected hashes:')
                 
                 try:
                     
                     hash_ids_to_hashes = self.modules_hashes.GetHashIdsToHashes( hash_ids = affected_hash_ids )
                     
-                    HydrusData.Print( '\n'.join( ( hash.hex() for hash in hash_ids_to_hashes.values() ) ) )
+                    HydrusData.print_text('\n'.join((hash.hex() for hash in hash_ids_to_hashes.values())))
                     
                 except Exception as e:
                     
-                    HydrusData.Print( 'Could not print affected hashes (might be your regular hashes are busted too)' )
+                    HydrusData.print_text('Could not print affected hashes (might be your regular hashes are busted too)')
                     
                 
             
@@ -1057,7 +1057,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
                         
                         # first check the node itself--is it similar?
                         
-                        node_hamming_distance = HydrusData.Get64BitHammingDistance( search_perceptual_hash, node_perceptual_hash )
+                        node_hamming_distance = HydrusData.get64_bit_hamming_distance(search_perceptual_hash, node_perceptual_hash)
                         
                         if node_hamming_distance <= search_radius:
                             
@@ -1111,7 +1111,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
             
             if HG.db_report_mode:
                 
-                HydrusData.ShowText( 'Similar file search touched {} nodes over {} cycles.'.format( HydrusNumbers.ToHumanInt( total_nodes_searched ), HydrusNumbers.ToHumanInt( num_cycles ) ) )
+                HydrusData.show_text('Similar file search touched {} nodes over {} cycles.'.format(HydrusNumbers.ToHumanInt(total_nodes_searched), HydrusNumbers.ToHumanInt(num_cycles)))
                 
             
             # so, now we have perceptual_hash_ids and distances. let's map that to actual files.
@@ -1122,7 +1122,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
             with self._MakeTemporaryIntegerTable( similar_perceptual_hash_ids, 'phash_id' ) as temp_table_name:
                 
                 # temp perceptual_hashes to hash map
-                similar_perceptual_hash_ids_to_hash_ids = HydrusData.BuildKeyToListDict( self._Execute( 'SELECT phash_id, hash_id FROM {} CROSS JOIN shape_perceptual_hash_map USING ( phash_id );'.format( temp_table_name ) ) )
+                similar_perceptual_hash_ids_to_hash_ids = HydrusData.build_key_to_list_dict(self._Execute('SELECT phash_id, hash_id FROM {} CROSS JOIN shape_perceptual_hash_map USING ( phash_id );'.format(temp_table_name)))
                 
             
             similar_hash_ids_to_distances = {}

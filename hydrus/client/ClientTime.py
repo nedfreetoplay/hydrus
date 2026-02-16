@@ -87,7 +87,7 @@ def ParseDate( date_string: str ) -> float:
             
         except Exception as e:
             
-            HydrusData.Print( f'Dateparser failed to parse: "{date_string}"' )
+            HydrusData.print_text(f'Dateparser failed to parse: "{date_string}"')
             
         
     
@@ -109,7 +109,7 @@ def ParseDate( date_string: str ) -> float:
             
         except Exception as e:
             
-            HydrusData.Print( f'Dateutil failed to parse: "{date_string}"' )
+            HydrusData.print_text(f'Dateutil failed to parse: "{date_string}"')
             
         
     

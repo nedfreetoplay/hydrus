@@ -589,9 +589,9 @@ class TestClientDBTags( unittest.TestCase ):
         
         services = self._read( 'services' )
         
-        self._my_service_key = HydrusData.GenerateKey()
-        self._processing_service_key = HydrusData.GenerateKey()
-        self._public_service_key = HydrusData.GenerateKey()
+        self._my_service_key = HydrusData.generate_key()
+        self._processing_service_key = HydrusData.generate_key()
+        self._public_service_key = HydrusData.generate_key()
         
         services.append( ClientServices.GenerateService( self._my_service_key, HC.LOCAL_TAG, 'personal tags' ) )
         services.append( ClientServices.GenerateService( self._processing_service_key, HC.LOCAL_TAG, 'processing tags' ) )
@@ -881,7 +881,7 @@ class TestClientDBTags( unittest.TestCase ):
         
         services = self._read( 'services' )
         
-        other_service_keys = [ HydrusData.GenerateKey() for i in range( 32 ) ]
+        other_service_keys = [HydrusData.generate_key() for i in range(32)]
         
         for other_service_key in other_service_keys:
             

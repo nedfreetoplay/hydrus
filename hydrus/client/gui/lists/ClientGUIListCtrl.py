@@ -399,8 +399,8 @@ class HydrusListItemModel( QC.QAbstractItemModel ):
             
             datas_sorted = list( self._data_to_indices.keys() )
             
-            HydrusData.ShowText( 'A multi-column list failed to sort! Please send hydrus dev the traceback!' )
-            HydrusData.ShowException( e )
+            HydrusData.show_text('A multi-column list failed to sort! Please send hydrus dev the traceback!')
+            HydrusData.show_exception(e)
             
         
         self._indices_to_data = { index : data for ( index, data ) in enumerate( datas_sorted ) }
@@ -1160,7 +1160,7 @@ class BetterListCtrlTreeView( QW.QTreeView ):
                 
             except Exception as e:
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception(e)
                 
             
         
@@ -1422,9 +1422,9 @@ class BetterListCtrlTreeView( QW.QTreeView ):
             
         except Exception as e:
             
-            HydrusData.ShowText( 'An attempt to sort a multi-column list failed! Error follows:' )
+            HydrusData.show_text('An attempt to sort a multi-column list failed! Error follows:')
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception(e)
             
         
     
@@ -1826,7 +1826,7 @@ class BetterListCtrlPanel( QW.QWidget ):
                 
             else:
                 
-                bad_object_type_names.add( HydrusData.GetTypeName( type( obj ) ) )
+                bad_object_type_names.add(HydrusData.get_type_name(type(obj)))
                 
             
         
@@ -1838,7 +1838,7 @@ class BetterListCtrlPanel( QW.QWidget ):
             message += '\n' * 2
             message += 'Whereas this control only allows:'
             message += '\n' * 2
-            message += '\n'.join( ( HydrusData.GetTypeName( o ) for o in self._permitted_object_types ) )
+            message += '\n'.join((HydrusData.get_type_name(o) for o in self._permitted_object_types))
             
             ClientGUIDialogsMessage.ShowWarning( self, message )
             
@@ -1874,7 +1874,7 @@ class BetterListCtrlPanel( QW.QWidget ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Problem loading!', str(e) )
                 
@@ -1889,7 +1889,7 @@ class BetterListCtrlPanel( QW.QWidget ):
                 
             except HydrusExceptions.SerialisationException as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 if not have_shown_load_error:
                     
@@ -1908,7 +1908,7 @@ class BetterListCtrlPanel( QW.QWidget ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', f'I could not understand what was encoded in "{path}"!' )
                 
@@ -1929,7 +1929,7 @@ class BetterListCtrlPanel( QW.QWidget ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', str(e) )
                 
@@ -1944,7 +1944,7 @@ class BetterListCtrlPanel( QW.QWidget ):
                 
             except HydrusExceptions.SerialisationException as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 if not have_shown_load_error:
                     
@@ -1963,7 +1963,7 @@ class BetterListCtrlPanel( QW.QWidget ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Error', 'I could not understand what was encoded in "{path}"!' )
                 
@@ -2170,7 +2170,7 @@ class BetterListCtrlPanel( QW.QWidget ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception(e)
             
         
     

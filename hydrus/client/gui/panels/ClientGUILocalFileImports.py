@@ -281,7 +281,7 @@ class ReviewLocalFileImports( ClientGUIScrolledPanels.ReviewPanel ):
             
         else:
             
-            pretty_size = HydrusData.ToHumanBytes( local_file_parse.size )
+            pretty_size = HydrusData.to_human_bytes(local_file_parse.size)
             
         
         pretty_mime = local_file_parse.GetPrettyMime()
@@ -430,13 +430,13 @@ class ReviewLocalFileImports( ClientGUIScrolledPanels.ReviewPanel ):
                     
                     if not os.path.exists( path ):
                         
-                        HydrusData.Print( 'Missing file: ' + path )
+                        HydrusData.print_text('Missing file: ' + path)
                         
                         local_file_parse.result = RESULT_MISSING
                         
                     elif not HydrusPaths.PathIsFree( path ):
                         
-                        HydrusData.Print( 'File currently in use: ' + path )
+                        HydrusData.print_text('File currently in use: ' + path)
                         
                         local_file_parse.result = RESULT_OCCUPIED
                         
@@ -455,13 +455,13 @@ class ReviewLocalFileImports( ClientGUIScrolledPanels.ReviewPanel ):
                         
                         if size == 0:
                             
-                            HydrusData.Print( 'Empty file: ' + path )
+                            HydrusData.print_text('Empty file: ' + path)
                             
                             local_file_parse.result = RESULT_EMPTY
                             
                         elif path.endswith( os.path.sep + 'Thumbs.db' ) or path.endswith( os.path.sep + 'thumbs.db' ):
                             
-                            HydrusData.Print( 'In import parse, skipping Thumbs.db: ' + path )
+                            HydrusData.print_text('In import parse, skipping Thumbs.db: ' + path)
                             
                             local_file_parse.result = RESULT_UNIMPORTABLE
                             
@@ -475,8 +475,8 @@ class ReviewLocalFileImports( ClientGUIScrolledPanels.ReviewPanel ):
                                 
                             except Exception as e:
                                 
-                                HydrusData.Print( 'Problem parsing mime for: ' + path )
-                                HydrusData.PrintException( e )
+                                HydrusData.print_text('Problem parsing mime for: ' + path)
+                                HydrusData.print_exception(e)
                                 
                                 mime = HC.APPLICATION_UNKNOWN
                                 
@@ -489,7 +489,7 @@ class ReviewLocalFileImports( ClientGUIScrolledPanels.ReviewPanel ):
                                 
                             else:
                                 
-                                HydrusData.Print( 'During file import scan, unparsable file: ' + path )
+                                HydrusData.print_text('During file import scan, unparsable file: ' + path)
                                 
                                 local_file_parse.result = RESULT_UNIMPORTABLE
                                 

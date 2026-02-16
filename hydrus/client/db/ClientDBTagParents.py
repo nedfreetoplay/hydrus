@@ -315,7 +315,7 @@ class ClientDBTagParents( ClientDBModule.ClientDBModule ):
     
     def GenerateApplicationDicts( self ):
         
-        unsorted_dict = HydrusData.BuildKeyToListDict( ( master_service_id, ( index, application_service_id ) ) for ( master_service_id, index, application_service_id ) in self._Execute( 'SELECT master_service_id, service_index, application_service_id FROM tag_parent_application;' ) )
+        unsorted_dict = HydrusData.build_key_to_list_dict((master_service_id, (index, application_service_id)) for (master_service_id, index, application_service_id) in self._Execute('SELECT master_service_id, service_index, application_service_id FROM tag_parent_application;'))
         
         self._service_ids_to_applicable_service_ids = collections.defaultdict( list )
         
@@ -716,7 +716,7 @@ class ClientDBTagParents( ClientDBModule.ClientDBModule ):
         
         with self._MakeTemporaryIntegerTable( ideal_tag_ids, 'child_tag_id' ) as temp_table_name:
             
-            tag_ids_to_ancestors = HydrusData.BuildKeyToSetDict( self._Execute( 'SELECT child_tag_id, ancestor_tag_id FROM {} CROSS JOIN {} USING ( child_tag_id );'.format( temp_table_name, cache_tag_parents_lookup_table_name ) ) )
+            tag_ids_to_ancestors = HydrusData.build_key_to_set_dict(self._Execute('SELECT child_tag_id, ancestor_tag_id FROM {} CROSS JOIN {} USING ( child_tag_id );'.format(temp_table_name, cache_tag_parents_lookup_table_name)))
             
         
         for tag_id in ideal_tag_ids:
@@ -749,7 +749,7 @@ class ClientDBTagParents( ClientDBModule.ClientDBModule ):
         
         with self._MakeTemporaryIntegerTable( ideal_tag_ids, 'ancestor_tag_id' ) as temp_table_name:
             
-            tag_ids_to_descendants = HydrusData.BuildKeyToSetDict( self._Execute( 'SELECT ancestor_tag_id, child_tag_id FROM {} CROSS JOIN {} USING ( ancestor_tag_id );'.format( temp_table_name, cache_tag_parents_lookup_table_name ) ) )
+            tag_ids_to_descendants = HydrusData.build_key_to_set_dict(self._Execute('SELECT ancestor_tag_id, child_tag_id FROM {} CROSS JOIN {} USING ( ancestor_tag_id );'.format(temp_table_name, cache_tag_parents_lookup_table_name)))
             
         
         for ideal_tag_id in ideal_tag_ids:

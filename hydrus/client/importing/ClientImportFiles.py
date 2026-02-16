@@ -109,7 +109,7 @@ class FileImportJob( object ):
         
         if HG.file_import_report_mode:
             
-            HydrusData.ShowText( f'File import job created:\nSource: {human_file_description}\nRaw import path: {temp_path}.' )
+            HydrusData.show_text(f'File import job created:\nSource: {human_file_description}\nRaw import path: {temp_path}.')
             
         
         if file_import_options.IsDefault():
@@ -141,7 +141,7 @@ class FileImportJob( object ):
         
         if HG.file_import_report_mode:
             
-            HydrusData.ShowText( 'File import job testing if good to import for file import options' )
+            HydrusData.show_text('File import job testing if good to import for file import options')
             
         
         ( size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) = self._file_info
@@ -155,7 +155,7 @@ class FileImportJob( object ):
         
         if HG.file_import_report_mode:
             
-            HydrusData.ShowText( 'File import job starting work.' )
+            HydrusData.show_text('File import job starting work.')
             
         
         self.GeneratePreImportHashAndStatus( status_hook = status_hook )
@@ -211,7 +211,7 @@ class FileImportJob( object ):
         
         if HG.file_import_report_mode:
             
-            HydrusData.ShowText( 'File import job is done, now publishing content updates' )
+            HydrusData.show_text('File import job is done, now publishing content updates')
             
         
         self.WriteContentUpdates()
@@ -230,7 +230,7 @@ class FileImportJob( object ):
         
         if HG.file_import_report_mode:
             
-            HydrusData.ShowText( 'File import job hash: {}'.format( hash.hex() ) )
+            HydrusData.show_text('File import job hash: {}'.format(hash.hex()))
             
         
         if status_hook is not None:
@@ -249,7 +249,7 @@ class FileImportJob( object ):
         
         if HG.file_import_report_mode:
             
-            HydrusData.ShowText( 'File import job pre-import status: {}'.format( self._pre_import_file_status.ToString() ) )
+            HydrusData.show_text('File import job pre-import status: {}'.format(self._pre_import_file_status.ToString()))
             
         
     
@@ -273,7 +273,7 @@ class FileImportJob( object ):
         
         if HG.file_import_report_mode:
             
-            HydrusData.ShowText( 'File import job mime: {}'.format( HC.mime_string_lookup[ mime ] ) )
+            HydrusData.show_text('File import job mime: {}'.format(HC.mime_string_lookup[ mime]))
             
         
         new_options = CG.client_controller.new_options
@@ -284,14 +284,14 @@ class FileImportJob( object ):
             
             if HG.file_import_report_mode:
                 
-                HydrusData.ShowText( 'File import job testing for decompression bomb' )
+                HydrusData.show_text('File import job testing for decompression bomb')
                 
             
             if HydrusImageHandling.IsDecompressionBomb( self._temp_path ):
                 
                 if HG.file_import_report_mode:
                     
-                    HydrusData.ShowText( 'File import job: it was a decompression bomb' )
+                    HydrusData.show_text('File import job: it was a decompression bomb')
                     
                 
                 raise HydrusExceptions.DecompressionBombException( 'Image seems to be a Decompression Bomb!' )
@@ -309,7 +309,7 @@ class FileImportJob( object ):
         
         if HG.file_import_report_mode:
             
-            HydrusData.ShowText( 'File import job file info: {}'.format( self._file_info ) )
+            HydrusData.show_text('File import job file info: {}'.format(self._file_info))
             
         
         if mime in HC.MIMES_WITH_THUMBNAILS:
@@ -321,7 +321,7 @@ class FileImportJob( object ):
             
             if HG.file_import_report_mode:
                 
-                HydrusData.ShowText( 'File import job generating thumbnail' )
+                HydrusData.show_text('File import job generating thumbnail')
                 
             
             bounding_dimensions = CG.client_controller.options[ 'thumbnail_dimensions' ]
@@ -358,20 +358,20 @@ class FileImportJob( object ):
             
             if HG.file_import_report_mode:
                 
-                HydrusData.ShowText( 'File import job generating perceptual_hashes' )
+                HydrusData.show_text('File import job generating perceptual_hashes')
                 
             
             self._perceptual_hashes = ClientImagePerceptualHashes.GenerateUsefulShapePerceptualHashes( self._temp_path, mime )
             
             if HG.file_import_report_mode:
                 
-                HydrusData.ShowText( 'File import job generated {} perceptual_hashes: {}'.format( len( self._perceptual_hashes ), [ perceptual_hash.hex() for perceptual_hash in self._perceptual_hashes ] ) )
+                HydrusData.show_text('File import job generated {} perceptual_hashes: {}'.format(len(self._perceptual_hashes), [perceptual_hash.hex() for perceptual_hash in self._perceptual_hashes]))
                 
             
         
         if HG.file_import_report_mode:
             
-            HydrusData.ShowText( 'File import job generating other hashes' )
+            HydrusData.show_text('File import job generating other hashes')
             
         
         if status_hook is not None:

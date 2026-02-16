@@ -604,7 +604,7 @@ def ConvertQtKeyToShortcutKey( key_qt ):
             
             if HG.shortcut_report_mode:
                 
-                HydrusData.ShowText( f'This key ord was not allowed: {key_ord}' )
+                HydrusData.show_text(f'This key ord was not allowed: {key_ord}')
                 
             
             return ( SHORTCUT_TYPE_NOT_ALLOWED, key_ord )
@@ -689,7 +689,7 @@ def ConvertKeyEventToShortcut( event, shortcuts_merge_non_number_numpad_override
         
         if HG.gui_report_mode:
             
-            HydrusData.ShowText( 'key event caught: ' + repr( shortcut ) )
+            HydrusData.show_text('key event caught: ' + repr(shortcut))
             
         
         return shortcut
@@ -850,7 +850,7 @@ def ConvertMouseEventToShortcut( event: QG.QMouseEvent | QG.QWheelEvent ):
         
         if HG.gui_report_mode:
             
-            HydrusData.ShowText( 'mouse event caught: ' + repr( shortcut ) )
+            HydrusData.show_text('mouse event caught: ' + repr(shortcut))
             
         
         return shortcut
@@ -1597,7 +1597,7 @@ class ShortcutsHandler( QC.QObject ):
                     
                     message = 'Shortcut "' + shortcut.ToString() + '" did not match any command. The single click version is now being attempted.'
                     
-                    HydrusData.ShowText( message )
+                    HydrusData.show_text(message)
                     
                 
                 shortcut = shortcut.ConvertToSingleClick()
@@ -1610,7 +1610,7 @@ class ShortcutsHandler( QC.QObject ):
                     
                     message = 'Shortcut "' + shortcut.ToString() + '" did not match any command. A parent seems to want it, however, so the single click version will not be attempted.'
                     
-                    HydrusData.ShowText( message )
+                    HydrusData.show_text(message)
                     
                 
             
@@ -1637,7 +1637,7 @@ class ShortcutsHandler( QC.QObject ):
                     message += ' It was not processed.'
                     
                 
-                HydrusData.ShowText( message )
+                HydrusData.show_text(message)
                 
             
         
@@ -1674,7 +1674,7 @@ class ShortcutsHandler( QC.QObject ):
                             message += ' I am not in a state to catch it.'
                             
                         
-                        HydrusData.ShowText( message )
+                        HydrusData.show_text(message)
                         
                     
                     if i_should_catch_shortcut_event:
@@ -1756,7 +1756,7 @@ class ShortcutsHandler( QC.QObject ):
                                 message += ' I am not in a state to catch it.'
                                 
                             
-                            HydrusData.ShowText( message )
+                            HydrusData.show_text(message)
                             
                         
                         if i_should_catch_shortcut_event:
@@ -1776,7 +1776,7 @@ class ShortcutsHandler( QC.QObject ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception(e)
             
             return True
             
@@ -1898,7 +1898,7 @@ class ShortcutsDeactivationCatcher( QC.QObject ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception(e)
             
             return True
             
@@ -1957,7 +1957,7 @@ class ShortcutsManager( QC.QObject ):
                     
                     if HG.shortcut_report_mode:
                         
-                        HydrusData.ShowText( 'Shortcut "{}" matched on "{}" set to "{}" command.'.format( shortcut.ToString(), name, repr( command ) ) )
+                        HydrusData.show_text('Shortcut "{}" matched on "{}" set to "{}" command.'.format(shortcut.ToString(), name, repr(command)))
                         
                     
                     return command

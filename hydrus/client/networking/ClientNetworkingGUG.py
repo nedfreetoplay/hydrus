@@ -16,7 +16,7 @@ class GalleryURLGenerator( HydrusSerialisable.SerialisableBaseNamed ):
         
         if gug_key is None:
             
-            gug_key = HydrusData.GenerateKey()
+            gug_key = HydrusData.generate_key()
             
         
         if url_template is None:
@@ -224,7 +224,7 @@ class GalleryURLGenerator( HydrusSerialisable.SerialisableBaseNamed ):
     
     def RegenerateGUGKey( self ):
         
-        self._gallery_url_generator_key = HydrusData.GenerateKey()
+        self._gallery_url_generator_key = HydrusData.generate_key()
         
     
 HydrusSerialisable.SERIALISABLE_TYPES_TO_OBJECT_TYPES[ HydrusSerialisable.SERIALISABLE_TYPE_GALLERY_URL_GENERATOR ] = GalleryURLGenerator
@@ -239,7 +239,7 @@ class NestedGalleryURLGenerator( HydrusSerialisable.SerialisableBaseNamed ):
         
         if gug_key is None:
             
-            gug_key = HydrusData.GenerateKey()
+            gug_key = HydrusData.generate_key()
             
         
         if initial_search_text is None:
@@ -392,9 +392,9 @@ class NestedGalleryURLGenerator( HydrusSerialisable.SerialisableBaseNamed ):
     
     def RegenerateGUGKey( self ):
         
-        self._gallery_url_generator_key = HydrusData.GenerateKey()
+        self._gallery_url_generator_key = HydrusData.generate_key()
         
-        self._gug_keys_and_names = [ ( HydrusData.GenerateKey(), name ) for ( gug_key, name ) in self._gug_keys_and_names ]
+        self._gug_keys_and_names = [(HydrusData.generate_key(), name) for (gug_key, name) in self._gug_keys_and_names]
         
     
     def RepairGUGs( self, available_gugs ):

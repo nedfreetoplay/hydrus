@@ -80,7 +80,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
         
         if HG.gui_report_mode:
             
-            HydrusData.ShowText( f'Opening manage tags on these services: {services}' )
+            HydrusData.show_text(f'Opening manage tags on these services: {services}')
             
         
         default_tag_service_key = CG.client_controller.new_options.GetKey( 'default_tag_service_tab' )
@@ -92,7 +92,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             
             if HG.gui_report_mode:
                 
-                HydrusData.ShowText( 'Opening manage tags panel on {}, {}, {}'.format( service, name, service_key.hex() ) )
+                HydrusData.show_text('Opening manage tags panel on {}, {}, {}'.format(service, name, service_key.hex()))
                 
             
             page = self._Panel( self._tag_services, self._location_context, service.GetServiceKey(), self._tag_presentation_location, self._current_media, self._immediate_commit, canvas_key = self._canvas_key )
@@ -117,7 +117,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
         
         if HG.gui_report_mode:
             
-            HydrusData.ShowText( 'Opening manage tags panel, notebook tab count is {}'.format( self._tag_services.count() ) )
+            HydrusData.show_text('Opening manage tags panel, notebook tab count is {}'.format(self._tag_services.count()))
             
         
         #

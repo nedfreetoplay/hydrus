@@ -1120,7 +1120,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception(e)
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             

@@ -103,7 +103,7 @@ class ClientDBFilesDuplicatesFileSearch( ClientDBModule.ClientDBModule ):
             
             if do_report_mode:
                 
-                HydrusData.Print( f'This does appear to be a low hit-rate search, and the magic weights are: {estimated_num_file_search_based_hits_total * how_many_potential_rows_of_work_to_do_one_file_hit} versus {estimated_num_potential_based_rows_remaining}')
+                HydrusData.print_text(f'This does appear to be a low hit-rate search, and the magic weights are: {estimated_num_file_search_based_hits_total * how_many_potential_rows_of_work_to_do_one_file_hit} versus {estimated_num_potential_based_rows_remaining}')
                 
             
             if estimated_num_file_search_based_hits_total * how_many_potential_rows_of_work_to_do_one_file_hit < estimated_num_potential_based_rows_remaining:
@@ -367,19 +367,19 @@ class ClientDBFilesDuplicatesFileSearch( ClientDBModule.ClientDBModule ):
                     # we care about 'time per hit' here
                     num_guys = len( matching_pairs_and_distances )
                     
-                    HydrusData.Print( f'Fragmentary potential duplicates search did a file based search, with per-hit speed of: { HydrusTime.TimeDeltaToPrettyTimeDelta( time_took / num_guys ) }' )
+                    HydrusData.print_text(f'Fragmentary potential duplicates search did a file based search, with per-hit speed of: { HydrusTime.TimeDeltaToPrettyTimeDelta(time_took / num_guys) }')
                     
                 else:
                     
                     # we care about 'time per potential row' here
                     num_guys = len( relevant_pairs_and_distances )
                     
-                    HydrusData.Print( f'Fragmentary potential duplicates search did a potentials based search, with per-row speed of: { HydrusTime.TimeDeltaToPrettyTimeDelta( time_took / num_guys ) }' )
+                    HydrusData.print_text(f'Fragmentary potential duplicates search did a potentials based search, with per-row speed of: { HydrusTime.TimeDeltaToPrettyTimeDelta(time_took / num_guys) }')
                     
                 
             except Exception as e:
                 
-                HydrusData.Print( 'Could not profile the fragmentary duplicates search!' )
+                HydrusData.print_text('Could not profile the fragmentary duplicates search!')
                 
             
         

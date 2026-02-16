@@ -515,18 +515,18 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
             else:
                 
-                return HydrusData.ToHumanBytes( 0 )
+                return HydrusData.to_human_bytes(0)
                 
             
         else:
             
             if unknown_size:
                 
-                return HydrusData.ToHumanBytes( total_size ) + ' + some unknown size'
+                return HydrusData.to_human_bytes(total_size) + ' + some unknown size'
                 
             else:
                 
-                return HydrusData.ToHumanBytes( total_size )
+                return HydrusData.to_human_bytes(total_size)
                 
             
         
@@ -1116,7 +1116,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
                 if not MAC_QUARTZ_OK:
                     
-                    HydrusData.ShowText( 'Sorry, could not do the Quick Look integration--it looks like your venv does not support it. If you are running from source, try rebuilding it!' )
+                    HydrusData.show_text('Sorry, could not do the Quick Look integration--it looks like your venv does not support it. If you are running from source, try rebuilding it!')
                     
                 
                 ClientMacIntegration.show_quicklook_for_path( path )

@@ -133,7 +133,7 @@ def FileURLMappingHasUntrustworthyNeighbours( hash: bytes, lookup_urls: collecti
             # oh no, the file these lookup urls refer to has a different known url in the same domain+url_class
             # it is likely that an edit on this site points to the original elsewhere
             
-            HydrusData.Print( f'INFO: When a URL status lookup suggested {hash.hex()}, I discovered that that file\'s existing URL "{file_url}" had the same URL Class as one of the lookup URLs, which were{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary(lookup_urls)}. This made the lookup untrustworthy (probably evidence of a previous bad booru source reference, or merged URLs during duplicate processing).' )
+            HydrusData.print_text(f'INFO: When a URL status lookup suggested {hash.hex()}, I discovered that that file\'s existing URL "{file_url}" had the same URL Class as one of the lookup URLs, which were{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary(lookup_urls)}. This made the lookup untrustworthy (probably evidence of a previous bad booru source reference, or merged URLs during duplicate processing).')
             
             return True
             
@@ -2247,7 +2247,7 @@ class FileSeedCache( HydrusSerialisable.SerialisableBase ):
         self._file_seeds_to_observed_statuses = {}
         self._statuses_to_file_seeds = collections.defaultdict( set )
         
-        self._file_seed_cache_key = HydrusData.GenerateKey()
+        self._file_seed_cache_key = HydrusData.generate_key()
         
         self._status_cache = FileSeedCacheStatus()
         

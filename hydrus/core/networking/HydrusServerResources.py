@@ -905,7 +905,7 @@ class HydrusResource( Resource ):
                 
                 status_code = 500
                 
-                HydrusData.DebugPrint( failure.getTraceback() )
+                HydrusData.debug_print(failure.getTraceback())
                 
                 error_summary = f'The "{self._service.get_name()}" encountered an error it could not handle!\n\nHere is a full traceback of what happened. If you are using the hydrus client, it will be saved to your log. Please forward it to hydrus_dev@proton.me:\n\n' + failure.getTraceback()
                 
@@ -934,7 +934,7 @@ class HydrusResource( Resource ):
             
             try:
                 
-                HydrusData.DebugPrint( failure.getTraceback() )
+                HydrusData.debug_print(failure.getTraceback())
                 
             except Exception as e:
                 

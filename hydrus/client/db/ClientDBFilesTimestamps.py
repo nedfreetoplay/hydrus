@@ -206,7 +206,7 @@ class ClientDBFilesTimestamps( ClientDBModule.ClientDBModule ):
         
         hash_ids_to_file_modified_timestamps_ms = self.GetSimpleTimestampsMS( HC.TIMESTAMP_TYPE_MODIFIED_FILE, hash_ids_table_name )
         
-        hash_ids_to_domain_modified_timestamps_ms = HydrusData.BuildKeyToListDict( ( ( hash_id, ( domain, timestamp_ms ) ) for ( hash_id, domain, timestamp_ms ) in self._Execute( 'SELECT hash_id, domain, file_modified_timestamp_ms FROM {} CROSS JOIN file_domain_modified_timestamps USING ( hash_id ) CROSS JOIN url_domains USING ( domain_id );'.format( hash_ids_table_name ) ) ) )
+        hash_ids_to_domain_modified_timestamps_ms = HydrusData.build_key_to_list_dict(((hash_id, (domain, timestamp_ms)) for (hash_id, domain, timestamp_ms) in self._Execute('SELECT hash_id, domain, file_modified_timestamp_ms FROM {} CROSS JOIN file_domain_modified_timestamps USING ( hash_id ) CROSS JOIN url_domains USING ( domain_id );'.format(hash_ids_table_name))))
         
         hash_ids_to_timestamp_managers = {}
         

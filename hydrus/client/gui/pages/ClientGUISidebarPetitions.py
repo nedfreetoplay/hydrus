@@ -39,7 +39,7 @@ from hydrus.client.gui.widgets import ClientGUICommon
 from hydrus.client.metadata import ClientContentUpdates
 from hydrus.client.metadata import ClientTags
 
-fake_account_keys = [ HydrusData.GenerateKey() for i in range( 5 ) ]
+fake_account_keys = [HydrusData.generate_key() for i in range(5)]
 cached_local_media_results = []
 cached_fake_petition_headers_to_petitions = dict()
 
@@ -1321,7 +1321,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
                             
                         except HydrusExceptions.NotFoundException:
                             
-                            HydrusData.ShowText( 'That account id was not found!' )
+                            HydrusData.show_text('That account id was not found!')
                             
                             CG.client_controller.CallAfterQtSafe( self, qt_draw, [] )
                             
@@ -1798,8 +1798,8 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
                         
                     except Exception as e:
                         
-                        HydrusData.ShowText( 'Failed to fetch a petition!' )
-                        HydrusData.ShowException( e )
+                        HydrusData.show_text('Failed to fetch a petition!')
+                        HydrusData.show_exception(e)
                         
                         CG.client_controller.CallBlockingToQtFireAndForgetNoResponse( self, qt_petition_fetch_failed, fetch_petition_header )
                         
@@ -1875,8 +1875,8 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
                         
                     except Exception as e:
                         
-                        HydrusData.ShowText( 'Failed to upload a petition!' )
-                        HydrusData.ShowException( e )
+                        HydrusData.show_text('Failed to upload a petition!')
+                        HydrusData.show_exception(e)
                         
                         CG.client_controller.CallBlockingToQtFireAndForgetNoResponse( self, qt_petition_clear_failed, outgoing_petition )
                         

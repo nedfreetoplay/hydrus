@@ -587,7 +587,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         self._dictionary[ 'keys' ] = {
             'default_tag_service_tab' : CC.DEFAULT_LOCAL_TAG_SERVICE_KEY.hex(),
             'default_tag_service_search_page' : CC.COMBINED_TAG_SERVICE_KEY.hex(),
-            'default_gug_key' : HydrusData.GenerateKey().hex(),
+            'default_gug_key' : HydrusData.generate_key().hex(),
             'options_ratings_panel_template_service_key' : CC.PREVIEW_RATINGS_SERVICE_KEY.hex(),
         }
         
@@ -1402,7 +1402,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                 
             else:
                 
-                HydrusData.Print( f'Could not find {frame_key} in the frame locations options!' )
+                HydrusData.print_text(f'Could not find {frame_key} in the frame locations options!')
                 
                 return ( False, False, None, None, ( -1, -1 ), 'topleft', False, False )
                 

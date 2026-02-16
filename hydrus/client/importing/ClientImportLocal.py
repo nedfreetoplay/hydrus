@@ -219,8 +219,8 @@ class HDDImport( HydrusSerialisable.SerialisableBase ):
                         
                     except Exception as e:
                         
-                        HydrusData.ShowText( 'Trying to run metadata routing on the file "{}" threw an error!'.format( file_seed.file_seed_data ) )
-                        HydrusData.ShowException( e )
+                        HydrusData.show_text('Trying to run metadata routing on the file "{}" threw an error!'.format(file_seed.file_seed_data))
+                        HydrusData.show_exception(e)
                         
                     
                 
@@ -240,8 +240,8 @@ class HDDImport( HydrusSerialisable.SerialisableBase ):
                     
                 except Exception as e:
                     
-                    HydrusData.ShowText( 'While attempting to delete {}, the following error occurred:'.format( path ) )
-                    HydrusData.ShowException( e )
+                    HydrusData.show_text('While attempting to delete {}, the following error occurred:'.format(path))
+                    HydrusData.show_exception(e)
                     
                 
                 possible_sidecar_paths = set()
@@ -261,8 +261,8 @@ class HDDImport( HydrusSerialisable.SerialisableBase ):
                             
                         except Exception as e:
                             
-                            HydrusData.ShowText( 'While attempting to delete {}, the following error occurred:'.format( possible_sidecar_path ) )
-                            HydrusData.ShowException( e )
+                            HydrusData.show_text('While attempting to delete {}, the following error occurred:'.format(possible_sidecar_path))
+                            HydrusData.show_exception(e)
                             
                         
                     
@@ -460,7 +460,7 @@ class HDDImport( HydrusSerialisable.SerialisableBase ):
                     self._files_status = 'stopping work: {}'.format( str( e ) )
                     
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception(e)
                 
                 return
                 
@@ -653,11 +653,11 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                 
             except Exception as e:
                 
-                HydrusData.ShowText( f'Import folder tried to move "{path}", but it encountered an error:' )
+                HydrusData.show_text(f'Import folder tried to move "{path}", but it encountered an error:')
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception(e)
                 
-                HydrusData.ShowText( 'Import folder has been paused.' )
+                HydrusData.show_text('Import folder has been paused.')
                 
                 self._paused = True
                 
@@ -814,9 +814,9 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                                     
                                 except Exception as e:
                                     
-                                    HydrusData.ShowText( 'Trying to run metadata routing in the import folder "' + self._name + '" threw an error!' )
+                                    HydrusData.show_text('Trying to run metadata routing in the import folder "' + self._name + '" threw an error!')
                                     
-                                    HydrusData.ShowException( e )
+                                    HydrusData.show_exception(e)
                                     
                                 
                             
@@ -841,9 +841,9 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                                 
                             except Exception as e:
                                 
-                                HydrusData.ShowText( 'Trying to parse filename tags in the import folder "' + self._name + '" threw an error!' )
+                                HydrusData.show_text('Trying to parse filename tags in the import folder "' + self._name + '" threw an error!')
                                 
-                                HydrusData.ShowException( e )
+                                HydrusData.show_exception(e)
                                 
                             
                         
@@ -871,7 +871,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                     
                 elif file_seed.status == CC.STATUS_ERROR:
                     
-                    HydrusData.Print( f'Import folder "{self._name}" failed to import: "{path}"' )
+                    HydrusData.print_text(f'Import folder "{self._name}" failed to import: "{path}"')
                     
                 
                 i += 1
@@ -886,7 +886,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
         
         if num_files_imported > 0:
             
-            HydrusData.Print( 'Import folder ' + self._name + ' imported ' + HydrusNumbers.ToHumanInt( num_files_imported ) + ' files.' )
+            HydrusData.print_text('Import folder ' + self._name + ' imported ' + HydrusNumbers.ToHumanInt(num_files_imported) + ' files.')
             
             if len( presentation_hashes ) > 0:
                 
@@ -1048,9 +1048,9 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                 
             except Exception as e:
                 
-                HydrusData.Print( 'Failed to update import folder with new metadata routers.' )
+                HydrusData.print_text('Failed to update import folder with new metadata routers.')
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
             
             serialisable_metadata_routers = metadata_routers.GetSerialisableTuple()
@@ -1234,8 +1234,8 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             error_occured = True
             self._paused = True
             
-            HydrusData.ShowText( 'The import folder "' + self._name + '" encountered an exception! It has been paused!' )
-            HydrusData.ShowException( e )
+            HydrusData.show_text('The import folder "' + self._name + '" encountered an exception! It has been paused!')
+            HydrusData.show_exception(e)
             
         
         if checked_folder or did_import_file_work or error_occured:
@@ -1510,13 +1510,13 @@ class ImportFoldersManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 self._serious_error_encountered = True
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 message = 'There was an unexpected problem during import folders work! They will not run again this program boot. A full traceback of this error should be written to the log.'
                 message += '\n' * 2
                 message += str( e )
                 
-                HydrusData.ShowText( message )
+                HydrusData.show_text(message)
                 
                 return
                 

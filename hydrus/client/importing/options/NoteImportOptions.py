@@ -269,7 +269,7 @@ class NoteImportOptions( HydrusSerialisable.SerialisableBase ):
                         
                         existing_names = set( existing_names_to_notes.keys() )
                         
-                        name = HydrusData.GetNonDupeName( name, existing_names )
+                        name = HydrusData.get_non_dupe_name(name, existing_names)
                         
                     elif self._conflict_resolution == NOTE_IMPORT_CONFLICT_APPEND:
                         

@@ -321,7 +321,7 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
     
     def _Add( self, service_type ):
         
-        service_key = HydrusData.GenerateKey()
+        service_key = HydrusData.generate_key()
         
         port = self._GetNextPort()
         
@@ -464,7 +464,7 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception(e)
             
             raise HydrusExceptions.VetoException( 'There was an error: {}'.format( str( e ) ) )
             

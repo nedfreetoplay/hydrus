@@ -104,7 +104,7 @@ class TagPairActionContext( object ):
             current_pairs = self._current_statuses_to_pairs[ HC.CONTENT_STATUS_CURRENT ].union( self._current_statuses_to_pairs[ HC.CONTENT_STATUS_PENDING ] ).difference( self._current_statuses_to_pairs[ HC.CONTENT_STATUS_PETITIONED ] )
             
         
-        as_to_bs = HydrusData.BuildKeyToListDict( current_pairs )
+        as_to_bs = HydrusData.build_key_to_list_dict(current_pairs)
         
         pre_existing_loop_strings = []
         a_to_a_loop_strings = []
@@ -159,7 +159,7 @@ class TagPairActionContext( object ):
                                     current_pairs = self._current_statuses_to_pairs[ HC.CONTENT_STATUS_CURRENT ].union( self._current_statuses_to_pairs[ HC.CONTENT_STATUS_PENDING ] ).difference( self._current_statuses_to_pairs[ HC.CONTENT_STATUS_PETITIONED ] )
                                     
                                 
-                                as_to_bs = HydrusData.BuildKeyToListDict( current_pairs )
+                                as_to_bs = HydrusData.build_key_to_list_dict(current_pairs)
                                 
                                 continue
                                 

@@ -62,7 +62,7 @@ class TestSingleFileMetadataRouter( unittest.TestCase ):
         
         #
         
-        hash = HydrusData.GenerateKey()
+        hash = HydrusData.generate_key()
         size = 40960
         mime = HC.IMAGE_JPEG
         width = 640
@@ -199,7 +199,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         #
         
-        hash = HydrusData.GenerateKey()
+        hash = HydrusData.generate_key()
         size = 40960
         mime = HC.IMAGE_JPEG
         width = 640
@@ -290,7 +290,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         # simple
         
-        hash = HydrusData.GenerateKey()
+        hash = HydrusData.generate_key()
         
         media_result = HF.GetFakeMediaResult( hash )
         
@@ -327,7 +327,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         # simple
         
-        hash = HydrusData.GenerateKey()
+        hash = HydrusData.generate_key()
         size = 40960
         mime = HC.IMAGE_JPEG
         width = 640
@@ -396,7 +396,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         # simple
         
-        hash = HydrusData.GenerateKey()
+        hash = HydrusData.generate_key()
         size = 40960
         mime = HC.IMAGE_JPEG
         width = 640

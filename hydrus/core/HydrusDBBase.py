@@ -37,7 +37,7 @@ def CheckHasSpaceForDBTransaction( db_dir, num_bytes, no_temp_needed = False ):
             
             if approx_available_memory < num_bytes:
                 
-                raise Exception( f'I believe you need about {HydrusData.ToHumanBytes(temp_space_needed)} available memory, since you are running in no_db_temp_files mode, but you only seem to have {HydrusData.ToHumanBytes( approx_available_memory )}.' )
+                raise Exception( f'I believe you need about {HydrusData.to_human_bytes(temp_space_needed)} available memory, since you are running in no_db_temp_files mode, but you only seem to have {HydrusData.to_human_bytes(approx_available_memory)}.')
                 
             
         
@@ -45,7 +45,7 @@ def CheckHasSpaceForDBTransaction( db_dir, num_bytes, no_temp_needed = False ):
         
         if db_disk_free_space is not None and db_disk_free_space < destination_space_needed:
             
-            raise Exception( f'I believe you need about {HydrusData.ToHumanBytes( destination_space_needed )} on your db\'s disk partition (perhaps only temporarily), but you only seem to have {HydrusData.ToHumanBytes( db_disk_free_space )}.' )
+            raise Exception( f'I believe you need about {HydrusData.to_human_bytes(destination_space_needed)} on your db\'s disk partition (perhaps only temporarily), but you only seem to have {HydrusData.to_human_bytes(db_disk_free_space)}.')
             
         
     else:
@@ -62,14 +62,14 @@ def CheckHasSpaceForDBTransaction( db_dir, num_bytes, no_temp_needed = False ):
             
             if temp_disk_free_space is not None and temp_disk_free_space < space_needed:
                 
-                raise Exception( f'I believe you need about {HydrusData.ToHumanBytes( space_needed )} on your db\'s disk partition (perhaps only temporarily), which I think also holds your SQLite temporary path ({temp_dir}), but you only seem to have {HydrusData.ToHumanBytes( temp_disk_free_space )}.' )
+                raise Exception( f'I believe you need about {HydrusData.to_human_bytes(space_needed)} on your db\'s disk partition (perhaps only temporarily), which I think also holds your SQLite temporary path ({temp_dir}), but you only seem to have {HydrusData.to_human_bytes(temp_disk_free_space)}.')
                 
             
         else:
             
             if temp_disk_free_space is not None and temp_disk_free_space < temp_space_needed:
                 
-                message = f'I believe you need about {HydrusData.ToHumanBytes( temp_space_needed )} free on the disk partition holding your SQLite temporary path, which I think is "{temp_dir}", but you only seem to have {HydrusData.ToHumanBytes( temp_disk_free_space )}.'
+                message = f'I believe you need about {HydrusData.to_human_bytes(temp_space_needed)} free on the disk partition holding your SQLite temporary path, which I think is "{temp_dir}", but you only seem to have {HydrusData.to_human_bytes(temp_disk_free_space)}.'
                 
                 temp_total_space = HydrusPaths.GetTotalSpace( temp_dir )
                 
@@ -89,7 +89,7 @@ def CheckHasSpaceForDBTransaction( db_dir, num_bytes, no_temp_needed = False ):
             
             if db_disk_free_space is not None and db_disk_free_space < destination_space_needed:
                 
-                raise Exception( f'I believe you need about {HydrusData.ToHumanBytes( destination_space_needed )} on your db\'s disk partition (perhaps only temporarily), but you only seem to have {HydrusData.ToHumanBytes( db_disk_free_space )}.' )
+                raise Exception( f'I believe you need about {HydrusData.to_human_bytes(destination_space_needed)} on your db\'s disk partition (perhaps only temporarily), but you only seem to have {HydrusData.to_human_bytes(db_disk_free_space)}.')
                 
             
         
@@ -783,7 +783,7 @@ class DBCursorTransactionWrapper( DBBase ):
             
         else:
             
-            HydrusData.Print( 'Received a call to commit, but was not in a transaction!' )
+            HydrusData.print_text('Received a call to commit, but was not in a transaction!')
             
         
         self._committing_as_soon_as_possible = False
@@ -854,7 +854,7 @@ class DBCursorTransactionWrapper( DBBase ):
             
         else:
             
-            HydrusData.Print( 'Received a call to rollback, but was not in a transaction!' )
+            HydrusData.print_text('Received a call to rollback, but was not in a transaction!')
             
         
     
@@ -868,14 +868,14 @@ class DBCursorTransactionWrapper( DBBase ):
                 
             except sqlite3.OperationalError:
                 
-                HydrusData.Print( 'Tried to release a database savepoint, but failed!' )
+                HydrusData.print_text('Tried to release a database savepoint, but failed!')
                 
             
             self._Execute( 'SAVEPOINT hydrus_savepoint;' )
             
         else:
             
-            HydrusData.Print( 'Received a call to save, but was not in a transaction!' )
+            HydrusData.print_text('Received a call to save, but was not in a transaction!')
             
         
     

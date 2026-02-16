@@ -68,9 +68,9 @@ def CatchExceptionClient( etype, value, tb ):
         
         text = job_status.ToString()
         
-        HydrusData.Print( 'Uncaught exception:' )
+        HydrusData.print_text('Uncaught exception:')
         
-        HydrusData.DebugPrint( text )
+        HydrusData.debug_print(text)
         
         CG.client_controller.pub( 'message', job_status )
         
@@ -91,7 +91,7 @@ def CatchExceptionClient( etype, value, tb ):
             pass
             
         
-        HydrusData.ShowText( text )
+        HydrusData.show_text(text)
         
     
     time.sleep( 1 )
@@ -228,7 +228,7 @@ def ShowExceptionTupleClient( etype, value, tb, do_wait = True ):
     
     job_status.SetStatusText( first_line )
     
-    message = HydrusData.PrintExceptionTuple( etype, value, tb, do_wait = False )
+    message = HydrusData.print_exception_tuple(etype, value, tb, do_wait = False)
     
     job_status.SetTraceback( message )
     
@@ -247,7 +247,7 @@ def ShowTextClient( text ):
     
     text = job_status.ToString()
     
-    HydrusData.Print( text )
+    HydrusData.print_text(text)
     
     CG.client_controller.pub( 'message', job_status )
     
@@ -256,10 +256,10 @@ def ToHumanBytes( size ):
     
     sig_figs = CG.client_controller.new_options.GetInteger( 'human_bytes_sig_figs' )
     
-    return HydrusData.BaseToHumanBytes( size, sig_figs = sig_figs )
+    return HydrusData.base_to_human_bytes(size, sig_figs = sig_figs)
     
 
-HydrusData.ToHumanBytes = ToHumanBytes
+HydrusData.to_human_bytes = ToHumanBytes
 
 class Booru( HydrusData.HydrusYAMLBase ):
     

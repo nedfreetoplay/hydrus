@@ -137,7 +137,7 @@ class APIManager( HydrusSerialisable.SerialisableBase ):
     
     def GenerateSessionKey( self, access_key ):
         
-        session_key = HydrusData.GenerateKey()
+        session_key = HydrusData.generate_key()
         
         with self._lock:
             
@@ -244,7 +244,7 @@ class APIPermissions( HydrusSerialisable.SerialisableBaseNamed ):
         
         if access_key is None:
             
-            access_key = HydrusData.GenerateKey()
+            access_key = HydrusData.generate_key()
             
         
         if basic_permissions is None:
@@ -432,7 +432,7 @@ class APIPermissions( HydrusSerialisable.SerialisableBaseNamed ):
         
         with self._lock:
             
-            self._access_key = HydrusData.GenerateKey()
+            self._access_key = HydrusData.generate_key()
             
         
     

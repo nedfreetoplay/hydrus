@@ -174,7 +174,7 @@ class TestMigration( unittest.TestCase ):
         
         for i in range( 20 ):
             
-            service_key = HydrusData.GenerateKey()
+            service_key = HydrusData.generate_key()
             
             services.append( ClientServices.GenerateService( service_key, HC.TAG_REPOSITORY, 'test repo {}'.format( i ) ) )
             
@@ -205,7 +205,7 @@ class TestMigration( unittest.TestCase ):
         
         for i in range( 100 ):
             
-            hash = HydrusData.GenerateKey()
+            hash = HydrusData.generate_key()
             md5 = os.urandom( 16 )
             sha1 = os.urandom( 20 )
             sha512 = os.urandom( 64 )

@@ -282,8 +282,8 @@ def THREADDownloadURLs( job_status: ClientThreading.JobStatus, urls, title ):
             
             num_failed += 1
             
-            HydrusData.Print( url + ' failed to import!' )
-            HydrusData.PrintException( e )
+            HydrusData.print_text(url + ' failed to import!')
+            HydrusData.print_exception(e)
             
         finally:
             

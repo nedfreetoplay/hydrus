@@ -234,7 +234,7 @@ class ManageOptionsPanel( ClientGUIScrolledPanels.ManagePanel ):
             
         except Exception as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception(e)
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem saving options!', str( e ) )
             

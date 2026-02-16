@@ -624,7 +624,7 @@ class PreviewPanel( ClientGUICommon.StaticBox ):
             
             if not isinstance( e, HydrusExceptions.VetoException ):
                 
-                HydrusData.PrintException( e, do_wait = False )
+                HydrusData.print_exception(e, do_wait = False)
                 
             
             self._value = None

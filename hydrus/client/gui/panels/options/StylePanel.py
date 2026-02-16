@@ -41,7 +41,7 @@ class StylePanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception(e)
             
         
         self._qt_stylesheet_name.addItem( 'use default', None )
@@ -55,7 +55,7 @@ class StylePanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception(e)
             
         
         #
@@ -115,7 +115,7 @@ class StylePanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
         except Exception as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception(e)
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Critical', f'Could not apply style: {e}' )
             
@@ -135,7 +135,7 @@ class StylePanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
         except Exception as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception(e)
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Critical', f'Could not apply stylesheet: {e}' )
             

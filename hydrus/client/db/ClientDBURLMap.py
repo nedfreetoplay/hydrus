@@ -236,7 +236,7 @@ class ClientDBURLMap( ClientDBModule.ClientDBModule ):
         
         if hash_ids_table_name is not None:
             
-            hash_ids_to_urls = HydrusData.BuildKeyToSetDict( self._Execute( 'SELECT hash_id, url FROM {} CROSS JOIN url_map USING ( hash_id ) CROSS JOIN urls USING ( url_id );'.format( hash_ids_table_name ) ) )
+            hash_ids_to_urls = HydrusData.build_key_to_set_dict(self._Execute('SELECT hash_id, url FROM {} CROSS JOIN url_map USING ( hash_id ) CROSS JOIN urls USING ( url_id );'.format(hash_ids_table_name)))
             
         
         return hash_ids_to_urls

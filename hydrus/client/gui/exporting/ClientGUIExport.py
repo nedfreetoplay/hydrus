@@ -979,7 +979,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                     
                     win = CG.client_controller.GetMainTLW()
                     
-                    HydrusData.PrintException( e, do_wait = False )
+                    HydrusData.print_exception(e, do_wait = False)
                     
                     ClientGUIDialogsMessage.ShowCritical( win, 'Problem during file export!', f'Encountered a problem while attempting to export file #{HydrusNumbers.ToHumanInt( number )}:\n\n{e}' )
                     

@@ -671,7 +671,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         canvas_frame = ClientGUICanvasFrame.CanvasFrame( self.window(), set_parent = True )
         
-        page_key = HydrusData.GenerateKey()
+        page_key = HydrusData.generate_key()
         location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
         media_results = [ media_result_1, media_result_2 ]
         

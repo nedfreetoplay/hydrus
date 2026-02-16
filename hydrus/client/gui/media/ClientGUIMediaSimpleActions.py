@@ -178,7 +178,7 @@ def CopyServiceFilenamesToClipboard( service_key: bytes, medias: collections.abc
     
     if len( flat_media ) == 0:
         
-        HydrusData.ShowText( 'Could not find any files with the requested service!' )
+        HydrusData.show_text('Could not find any files with the requested service!')
         
         return
         
@@ -206,7 +206,7 @@ def CopyServiceFilenamesToClipboard( service_key: bytes, medias: collections.abc
         
     else:
         
-        HydrusData.ShowText( 'Could not find any service filenames for that selection!' )
+        HydrusData.show_text('Could not find any service filenames for that selection!')
         
     
 
@@ -383,13 +383,13 @@ def ShowDuplicatesInNewPage( location_context: ClientLocation.LocationContext, h
         
         if hashes is not None and len( hashes ) > 1:
             
-            HydrusData.ShowText( 'Could not find the members of this group in this location, so searched all known files and found more.' )
+            HydrusData.show_text('Could not find the members of this group in this location, so searched all known files and found more.')
             
             CG.client_controller.pub( 'new_page_query', location_context, initial_hashes = hashes )
             
         else:
             
-            HydrusData.ShowText( 'Sorry, could not find the members of this group either at the given location or in all known files. There may be a problem here, so let hydev know.' )
+            HydrusData.show_text('Sorry, could not find the members of this group either at the given location or in all known files. There may be a problem here, so let hydev know.')
             
         
     

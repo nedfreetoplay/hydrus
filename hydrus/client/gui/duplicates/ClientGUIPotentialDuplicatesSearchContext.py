@@ -53,7 +53,7 @@ class EditPotentialDuplicatesSearchContextPanel( ClientGUICommon.StaticBox ):
         
         if page_key is None:
             
-            page_key = HydrusData.GenerateKey()
+            page_key = HydrusData.generate_key()
             
         
         self._tag_autocomplete_1 = ClientGUIACDropdown.AutoCompleteDropdownTagsRead( self, page_key, file_search_context_1, allow_all_known_files = False, only_allow_local_file_domains = True, only_allow_combined_local_file_domains = True, allow_multiple_file_domains = False, synchronised = synchronised, force_system_everything = True )

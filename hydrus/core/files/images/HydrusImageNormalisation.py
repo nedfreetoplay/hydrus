@@ -319,9 +319,9 @@ def DequantizePILImage( pil_image: PILImage.Image ) -> PILImage.Image:
                 
             except Exception as e:
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception(e)
                 
-                HydrusData.ShowText( 'Failed to normalise image with ICC profile.' )
+                HydrusData.show_text('Failed to normalise image with ICC profile.')
                 
             
         except HydrusExceptions.DataMissing:
@@ -351,9 +351,9 @@ def DequantizePILImage( pil_image: PILImage.Image ) -> PILImage.Image:
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception(e)
             
-            HydrusData.ShowText( 'Failed to normalise image with ICC profile.' )
+            HydrusData.show_text('Failed to normalise image with ICC profile.')
             
         
         '''

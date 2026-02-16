@@ -1775,7 +1775,7 @@ class TagsManager( object ):
         flattened_s_k_s_t_t = itertools.chain.from_iterable( s_k_s_t_t_tupled )
         
         # service_key : [ statuses_to_tags ]
-        s_k_s_t_t_dict = HydrusData.BuildKeyToListDict( flattened_s_k_s_t_t )
+        s_k_s_t_t_dict = HydrusData.build_key_to_list_dict(flattened_s_k_s_t_t)
         
         # now let's merge so we have service_key : statuses_to_tags
         

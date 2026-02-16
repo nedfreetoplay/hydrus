@@ -61,7 +61,7 @@ def GetSafePosition( position: QC.QPoint, frame_key ):
             
             # user is using IceMongo Linux, a Free Libre Open Source derivation of WeasleBlue Linux, with the iJ4 5-D inverted Window Managing system, which has a holographically virtualised desktop system
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception(e)
             
         
         message = 'A window with frame key "{}" that wanted to display at "{}" could not be rescued from off-screen! Please let hydrus dev know!'.format( frame_key, position )
@@ -405,7 +405,7 @@ def SetInitialTLWSizeAndPosition( tlw: QW.QWidget, frame_key ):
     
     if we_care_about_off_screen_messages and position_message is not None:
         
-        HydrusData.ShowText( position_message )
+        HydrusData.show_text(position_message)
         
     
     if safe_position is not None:
@@ -531,7 +531,7 @@ class NewDialog( QP.Dialog ):
             
         except Exception as e:
             
-            HydrusData.PrintException( e, do_wait = False )
+            HydrusData.print_exception(e, do_wait = False)
             
             message = 'Hey, there was a problem when trying to check if this dialog was all good before close! This is probably because the data in the dialog was invalid somehow and my code cannot examine it properly. This error window is a last-ditch catch to ensure that you do not get locked into a non-closable dialog. Here is the summary of your error:'
             message += '\n\n'
@@ -565,7 +565,7 @@ class NewDialog( QP.Dialog ):
             
         except Exception as e:
             
-            HydrusData.PrintException( e, do_wait = False )
+            HydrusData.print_exception(e, do_wait = False)
             
             message = 'Hey, there was a problem when trying to check if we could close this dialog! This is probably because the data in the dialog was invalid somehow and my code cannot examine it properly. This error window is a last-ditch catch to ensure that you do not get locked into a non-closable dialog. Here is the summary of your error:'
             message += '\n\n'
@@ -605,13 +605,13 @@ class NewDialog( QP.Dialog ):
             
         except Exception as e:
             
-            HydrusData.ShowText( 'This dialog seems to have been unable to close for some reason. I am printing the stack to the log. The dialog may have already closed, or may attempt to close now. Please inform hydrus dev of this situation. I recommend you restart the client if you can. If the UI is locked, you will have to kill it via task manager.' )
+            HydrusData.show_text('This dialog seems to have been unable to close for some reason. I am printing the stack to the log. The dialog may have already closed, or may attempt to close now. Please inform hydrus dev of this situation. I recommend you restart the client if you can. If the UI is locked, you will have to kill it via task manager.')
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception(e)
             
             import traceback
             
-            HydrusData.DebugPrint( ''.join( traceback.format_stack() ) )
+            HydrusData.debug_print(''.join(traceback.format_stack()))
             
             try:
                 
@@ -619,7 +619,7 @@ class NewDialog( QP.Dialog ):
                 
             except Exception as e:
                 
-                HydrusData.ShowText( 'The dialog would not close on command.' )
+                HydrusData.show_text('The dialog would not close on command.')
                 
             
             try:
@@ -628,7 +628,7 @@ class NewDialog( QP.Dialog ):
                 
             except Exception as e:
                 
-                HydrusData.ShowText( 'The dialog would not destroy on command.' )
+                HydrusData.show_text('The dialog would not destroy on command.')
                 
             
         
@@ -842,7 +842,7 @@ class MaximiseRestoreCatcher( QC.QObject ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e, do_wait = False )
+            HydrusData.show_exception(e, do_wait = False)
             
         
         return False

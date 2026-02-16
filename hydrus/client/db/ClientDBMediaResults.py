@@ -299,8 +299,8 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
         
         service_ids_to_service_keys = self.modules_services.GetServiceIdsToServiceKeys()
         
-        hash_ids_to_raw_storage_tag_data = HydrusData.BuildKeyToListDict( storage_tag_data )
-        hash_ids_to_raw_display_tag_data = HydrusData.BuildKeyToListDict( display_tag_data )
+        hash_ids_to_raw_storage_tag_data = HydrusData.build_key_to_list_dict(storage_tag_data)
+        hash_ids_to_raw_display_tag_data = HydrusData.build_key_to_list_dict(display_tag_data)
         
         hash_ids_to_tag_managers = {}
         
@@ -310,22 +310,22 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
             raw_storage_tag_data = hash_ids_to_raw_storage_tag_data[ hash_id ]
             
             # service_id -> ( status, tag )
-            service_ids_to_storage_tag_data = HydrusData.BuildKeyToListDict( ( ( tag_service_id, ( status, tag_ids_to_tags[ tag_id ] ) ) for ( tag_service_id, status, tag_id ) in raw_storage_tag_data ) )
+            service_ids_to_storage_tag_data = HydrusData.build_key_to_list_dict(((tag_service_id, (status, tag_ids_to_tags[ tag_id])) for (tag_service_id, status, tag_id) in raw_storage_tag_data))
             
             service_keys_to_statuses_to_storage_tags = collections.defaultdict(
                 HydrusData.default_dict_set,
-                { service_ids_to_service_keys[ tag_service_id ] : HydrusData.BuildKeyToSetDict( status_and_tag ) for ( tag_service_id, status_and_tag ) in service_ids_to_storage_tag_data.items() }
+                {service_ids_to_service_keys[ tag_service_id ] : HydrusData.build_key_to_set_dict(status_and_tag) for (tag_service_id, status_and_tag) in service_ids_to_storage_tag_data.items()}
             )
             
             # service_id, status, tag_id
             raw_display_tag_data = hash_ids_to_raw_display_tag_data[ hash_id ]
             
             # service_id -> ( status, tag )
-            service_ids_to_display_tag_data = HydrusData.BuildKeyToListDict( ( ( tag_service_id, ( status, tag_ids_to_tags[ tag_id ] ) ) for ( tag_service_id, status, tag_id ) in raw_display_tag_data ) )
+            service_ids_to_display_tag_data = HydrusData.build_key_to_list_dict(((tag_service_id, (status, tag_ids_to_tags[ tag_id])) for (tag_service_id, status, tag_id) in raw_display_tag_data))
             
             service_keys_to_statuses_to_display_tags = collections.defaultdict(
                 HydrusData.default_dict_set,
-                { service_ids_to_service_keys[ tag_service_id ] : HydrusData.BuildKeyToSetDict( status_and_tag ) for ( tag_service_id, status_and_tag ) in service_ids_to_display_tag_data.items() }
+                {service_ids_to_service_keys[ tag_service_id ] : HydrusData.build_key_to_set_dict(status_and_tag) for (tag_service_id, status_and_tag) in service_ids_to_display_tag_data.items()}
             )
             
             tags_manager = ClientMediaManagers.TagsManager( service_keys_to_statuses_to_storage_tags, service_keys_to_statuses_to_display_tags )
@@ -368,7 +368,7 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
             
             current_and_pending_storage_tag_data = [ ( hash_id, ( tag_service_id, status, tag_id ) ) for ( hash_id, ( tag_service_id, status, tag_id ) ) in storage_tag_data if status in ( HC.CONTENT_STATUS_CURRENT, HC.CONTENT_STATUS_PENDING ) ]
             
-            seen_service_ids_to_seen_tag_ids = HydrusData.BuildKeyToSetDict( ( ( tag_service_id, tag_id ) for ( hash_id, ( tag_service_id, status, tag_id ) ) in current_and_pending_storage_tag_data ) )
+            seen_service_ids_to_seen_tag_ids = HydrusData.build_key_to_set_dict(((tag_service_id, tag_id) for (hash_id, (tag_service_id, status, tag_id)) in current_and_pending_storage_tag_data))
             
             seen_service_ids_to_tag_ids_to_implied_tag_ids = { tag_service_id : self.modules_tag_display.GetTagsToImplies( ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, tag_service_id, tag_ids ) for ( tag_service_id, tag_ids ) in seen_service_ids_to_seen_tag_ids.items() }
             

@@ -181,7 +181,7 @@ def boot():
         
     except HydrusExceptions.ShutdownException as e:
         
-        HydrusData.Print( e )
+        HydrusData.print_text(e)
         
         HG.server_action = 'exit'
         
@@ -204,7 +204,7 @@ def boot():
             
             if HG.server_action in ( 'start', 'restart' ):
                 
-                HydrusData.Print( 'Initialising controller' + HC.UNICODE_ELLIPSIS )
+                HydrusData.print_text('Initialising controller' + HC.UNICODE_ELLIPSIS)
                 
                 # noinspection PyUnresolvedReferences
                 target = reactor.run
@@ -220,7 +220,7 @@ def boot():
             
             error = str( e )
             
-            HydrusData.Print( error )
+            HydrusData.print_text(error)
             
         except Exception as e:
             
@@ -228,9 +228,9 @@ def boot():
             
             error = traceback.format_exc()
             
-            HydrusData.Print( 'Hydrus server failed' )
+            HydrusData.print_text('Hydrus server failed')
             
-            HydrusData.Print( error )
+            HydrusData.print_text(error)
             
         finally:
             
@@ -249,7 +249,7 @@ def boot():
             # noinspection PyUnresolvedReferences
             reactor.callFromThread( target )
             
-            HydrusData.Print( 'hydrus server shut down' )
+            HydrusData.print_text('hydrus server shut down')
             
         
     

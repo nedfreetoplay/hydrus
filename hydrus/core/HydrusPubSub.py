@@ -109,7 +109,7 @@ class HydrusPubSub( object ):
                     
                     if HG.pubsub_report_mode and not_a_report:
                         
-                        HydrusData.ShowText( ( topic, args, kwargs, callable_tuples ) )
+                        HydrusData.show_text((topic, args, kwargs, callable_tuples))
                         
                     
                     if HydrusProfiling.IsProfileMode( 'ui' ) and not_a_report:
@@ -145,7 +145,7 @@ class HydrusPubSub( object ):
                     
                 except Exception as e:
                     
-                    HydrusData.ShowException( e )
+                    HydrusData.show_exception(e)
                     
                 
             

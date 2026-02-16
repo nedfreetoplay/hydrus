@@ -51,7 +51,7 @@ if not PIL_HAS_HEIF:
         
     except Exception as e:
         
-        HydrusData.Print( 'Could not register HEIF Opener with plugin library.' )
+        HydrusData.print_text('Could not register HEIF Opener with plugin library.')
         
     
 
@@ -94,17 +94,17 @@ if not PIL_HAS_AVIF:
                     
                     AVIF_BACKUP_PLUGIN_OK = True
                     
-                    HydrusData.Print( 'AVIF Opener registered with legacy library.' )
+                    HydrusData.print_text('AVIF Opener registered with legacy library.')
                     
                 except Exception as e:
                     
-                    HydrusData.Print( 'Could not register AVIF Opener with main or legacy library.' )
+                    HydrusData.print_text('Could not register AVIF Opener with main or legacy library.')
                     
                 
             
         except Exception as e:
             
-            HydrusData.Print( 'Could not register AVIF Opener with main or legacy plugin library.' )
+            HydrusData.print_text('Could not register AVIF Opener with main or legacy plugin library.')
             
         
     
@@ -172,11 +172,11 @@ def SetEnableLoadTruncatedImages( value: bool ):
             
             import PIL
             
-            HydrusData.Print( f'Could not set the PIL image trunctation value to {value}--perhaps this version of PIL ({PIL.__version__})does not support it?' )
+            HydrusData.print_text(f'Could not set the PIL image trunctation value to {value}--perhaps this version of PIL ({PIL.__version__})does not support it?')
             
         except Exception as e:
             
-            HydrusData.Print( f'Could not set the PIL image trunctation value to {value}, and could not determine the PIL version! Something is busted!' )
+            HydrusData.print_text(f'Could not set the PIL image trunctation value to {value}, and could not determine the PIL version! Something is busted!')
             
         
         return False
@@ -252,14 +252,14 @@ def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = 
     
     if HG.media_load_report_mode:
         
-        HydrusData.ShowText( 'Loading media: ' + path )
+        HydrusData.show_text('Loading media: ' + path)
         
     
     if mime == HC.APPLICATION_PSD:
         
         if HG.media_load_report_mode:
             
-            HydrusData.ShowText( 'Loading PSD' )
+            HydrusData.show_text('Loading PSD')
             
         
         pil_image = HydrusPSDHandling.GeneratePILImageFromPSD( path )
@@ -271,7 +271,7 @@ def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = 
         
         if HG.media_load_report_mode:
             
-            HydrusData.ShowText( 'Loading KRA' )
+            HydrusData.show_text('Loading KRA')
             
         
         pil_image = HydrusKritaHandling.MergedPILImageFromKra( path )
@@ -297,7 +297,7 @@ def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = 
             
             if HG.media_load_report_mode:
                 
-                HydrusData.ShowText( 'Image has ICC, so switching to PIL' )
+                HydrusData.show_text('Image has ICC, so switching to PIL')
                 
             
             force_pil = True
@@ -308,7 +308,7 @@ def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = 
         
         if HG.media_load_report_mode:
             
-            HydrusData.ShowText( 'Loading with PIL' )
+            HydrusData.show_text('Loading with PIL')
             
         
         pil_image = GeneratePILImage( path )
@@ -319,7 +319,7 @@ def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = 
         
         if HG.media_load_report_mode:
             
-            HydrusData.ShowText( 'Loading with OpenCV' )
+            HydrusData.show_text('Loading with OpenCV')
             
         
         if mime in ( HC.IMAGE_JPEG, HC.IMAGE_TIFF ):
@@ -341,7 +341,7 @@ def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = 
             
             if HG.media_load_report_mode:
                 
-                HydrusData.ShowText( 'OpenCV Failed, loading with PIL' )
+                HydrusData.show_text('OpenCV Failed, loading with PIL')
                 
             
             pil_image = GeneratePILImage( path )

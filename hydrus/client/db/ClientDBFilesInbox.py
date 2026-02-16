@@ -153,7 +153,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
             
             self.modules_files_metadata_timestamps.SetSimpleTimestampsMS( HC.TIMESTAMP_TYPE_ARCHIVED, [ ( hash_id, imported_timestamp_ms ) ] )
             
-            HydrusData.Print( f'Filling in import archive time for {hash_id}: {imported_timestamp_ms}!' )
+            HydrusData.print_text(f'Filling in import archive time for {hash_id}: {imported_timestamp_ms}!')
             
             num_fixed += 1
             
@@ -165,7 +165,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
         
         if num_fixed > 0:
             
-            HydrusData.ShowText( f'{HydrusNumbers.ToHumanInt( num_fixed )} missing import archive times fixed!' )
+            HydrusData.show_text(f'{HydrusNumbers.ToHumanInt(num_fixed)} missing import archive times fixed!')
             
         
         if job_status is not None:
@@ -210,7 +210,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
             
             self.modules_files_metadata_timestamps.SetSimpleTimestampsMS( HC.TIMESTAMP_TYPE_ARCHIVED, [ ( hash_id, archive_time_ms ) ] )
             
-            HydrusData.Print( f'Filling in legacy archive time for {hash_id}: {archive_time_ms}!' )
+            HydrusData.print_text(f'Filling in legacy archive time for {hash_id}: {archive_time_ms}!')
             
             num_fixed += 1
             
@@ -222,7 +222,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
         
         if num_fixed > 0:
             
-            HydrusData.ShowText( f'{HydrusNumbers.ToHumanInt( num_fixed )} missing legacy archive times fixed!' )
+            HydrusData.show_text(f'{HydrusNumbers.ToHumanInt(num_fixed)} missing legacy archive times fixed!')
             
         
         if job_status is not None:

@@ -1148,7 +1148,7 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
         
         petitioned_files_table_name = GenerateFilesTableName( service_id, HC.CONTENT_STATUS_PETITIONED )
         
-        petitioned_rows = list( HydrusData.BuildKeyToListDict( self._Execute( 'SELECT reason_id, hash_id FROM {} ORDER BY reason_id LIMIT 100;'.format( petitioned_files_table_name ) ) ).items() )
+        petitioned_rows = list(HydrusData.build_key_to_list_dict(self._Execute('SELECT reason_id, hash_id FROM {} ORDER BY reason_id LIMIT 100;'.format(petitioned_files_table_name))).items())
         
         return petitioned_rows
         

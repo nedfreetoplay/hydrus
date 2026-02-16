@@ -227,12 +227,12 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
         # temp hashes to mappings
         current_mapping_ids_raw = self._Execute( 'SELECT tag_id, hash_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_ids_table_name, current_mappings_table_name ) ).fetchall()
         
-        current_mapping_ids_dict = HydrusData.BuildKeyToSetDict( current_mapping_ids_raw )
+        current_mapping_ids_dict = HydrusData.build_key_to_set_dict(current_mapping_ids_raw)
         
         # temp hashes to mappings
         pending_mapping_ids_raw = self._Execute( 'SELECT tag_id, hash_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_ids_table_name, pending_mappings_table_name ) ).fetchall()
         
-        pending_mapping_ids_dict = HydrusData.BuildKeyToSetDict( pending_mapping_ids_raw )
+        pending_mapping_ids_dict = HydrusData.build_key_to_set_dict(pending_mapping_ids_raw)
         
         all_ids_seen = set( current_mapping_ids_dict.keys() )
         all_ids_seen.update( pending_mapping_ids_dict.keys() )
@@ -388,12 +388,12 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
         # temp hashes to mappings
         current_mapping_ids_raw = self._Execute( 'SELECT tag_id, hash_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_id_table_name, cache_current_mappings_table_name ) ).fetchall()
         
-        current_mapping_ids_dict = HydrusData.BuildKeyToSetDict( current_mapping_ids_raw )
+        current_mapping_ids_dict = HydrusData.build_key_to_set_dict(current_mapping_ids_raw)
         
         # temp hashes to mappings
         pending_mapping_ids_raw = self._Execute( 'SELECT tag_id, hash_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_id_table_name, cache_pending_mappings_table_name ) ).fetchall()
         
-        pending_mapping_ids_dict = HydrusData.BuildKeyToSetDict( pending_mapping_ids_raw )
+        pending_mapping_ids_dict = HydrusData.build_key_to_set_dict(pending_mapping_ids_raw)
         
         all_ids_seen = set( current_mapping_ids_dict.keys() )
         all_ids_seen.update( pending_mapping_ids_dict.keys() )

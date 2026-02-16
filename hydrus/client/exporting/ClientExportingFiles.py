@@ -790,7 +790,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
         
         if num_actually_copied > 0:
             
-            HydrusData.Print( 'Export folder ' + self._name + ' exported ' + HydrusNumbers.ToHumanInt( num_actually_copied ) + ' files.' )
+            HydrusData.print_text('Export folder ' + self._name + ' exported ' + HydrusNumbers.ToHumanInt(num_actually_copied) + ' files.')
             
         
         if self._export_type == HC.EXPORT_FOLDER_TYPE_SYNCHRONISE:
@@ -845,7 +845,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             
             if len( deletee_paths ) > 0:
                 
-                HydrusData.Print( 'Export folder {} deleted {} files and {} folders.'.format( self._name, HydrusNumbers.ToHumanInt( len( deletee_paths ) ), HydrusNumbers.ToHumanInt( len( deletee_dirs ) ) ) )
+                HydrusData.print_text('Export folder {} deleted {} files and {} folders.'.format(self._name, HydrusNumbers.ToHumanInt(len(deletee_paths)), HydrusNumbers.ToHumanInt(len(deletee_dirs))))
                 
             
         
@@ -933,9 +933,9 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             
             message = f'The export folder "{self._name}" encountered an error! {pause_str}Please check the folder\'s settings and maybe report to hydrus dev if the error is complicated! The error follows:'
             
-            HydrusData.ShowText( message )
+            HydrusData.show_text(message)
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception(e)
             
             self._last_error = str( e )
             

@@ -180,7 +180,7 @@ def THREADUploadPending( service_key ):
             
             if account.IsUnknown():
                 
-                HydrusData.ShowText( 'Your account is currently unsynced, so the upload was cancelled. Please refresh the account under _review services_.' )
+                HydrusData.show_text('Your account is currently unsynced, so the upload was cancelled. Please refresh the account under _review services_.')
                 
                 return
                 
@@ -262,7 +262,7 @@ def THREADUploadPending( service_key ):
                 
                 call = HydrusData.Call( CG.client_controller.pub, 'open_manage_services_and_try_to_auto_create_account', service_key )
                 
-                call.SetLabel( 'open manage services and check for auto-creatable accounts' )
+                call.set_label('open manage services and check for auto-creatable accounts')
                 
                 unauthorised_job_status.SetUserCallable( call )
                 
@@ -275,7 +275,7 @@ def THREADUploadPending( service_key ):
                     ', '.join( ( HC.content_type_string_lookup[ content_type ] for content_type in paused_content_types ) )
                 )
                 
-                HydrusData.ShowText( message )
+                HydrusData.show_text(message)
                 
             
         else:
@@ -326,7 +326,7 @@ def THREADUploadPending( service_key ):
                     job_status.DeleteGauge()
                     job_status.SetStatusText( 'cancelled' )
                     
-                    HydrusData.Print( job_status.ToString() )
+                    HydrusData.print_text(job_status.ToString())
                     
                     job_status.FinishAndDismiss( 5 )
                     
@@ -388,13 +388,13 @@ def THREADUploadPending( service_key ):
                             
                         except HydrusExceptions.DataMissing:
                             
-                            HydrusData.ShowText( 'File {} could not be pinned!'.format( hash.hex() ) )
+                            HydrusData.show_text('File {} could not be pinned!'.format(hash.hex()))
                             
                             continue
                             
                         except Exception as e:
                             
-                            HydrusData.ShowText( 'File could not be pinned: {}'.format( e ) )
+                            HydrusData.show_text('File could not be pinned: {}'.format(e))
                             
                             return
                             
@@ -438,7 +438,7 @@ def THREADUploadPending( service_key ):
         
         if initial_num_pending > 0 and no_results_found and service_type == HC.TAG_REPOSITORY:
             
-            HydrusData.ShowText( 'Hey, your pending menu may have a miscount! It seems like you have pending count, but nothing was found in the database. Please run _database->regenerate->tag storage mappings cache (just pending, instant calculation) when convenient. Make sure it is the "instant, just pending" regeneration!' )
+            HydrusData.show_text('Hey, your pending menu may have a miscount! It seems like you have pending count, but nothing was found in the database. Please run _database->regenerate->tag storage mappings cache (just pending, instant calculation) when convenient. Make sure it is the "instant, just pending" regeneration!')
             
         
         job_status.DeleteGauge()
@@ -452,7 +452,7 @@ def THREADUploadPending( service_key ):
             
             possible_hash = bytes.fromhex( r.group() )
             
-            HydrusData.ShowText( 'Found a possible hash in that error message--trying to show it in a new page.' )
+            HydrusData.show_text('Found a possible hash in that error message--trying to show it in a new page.')
             
             CG.client_controller.pub( 'imported_files_to_page', [ possible_hash ], 'files that did not upload right' )
             
@@ -467,7 +467,7 @@ def THREADUploadPending( service_key ):
         
         CG.client_controller.pub( 'notify_pending_upload_finished', service_key )
         
-        HydrusData.Print( job_status.ToString() )
+        HydrusData.print_text(job_status.ToString())
         
         if len( content_types_to_request ) == 0:
             
@@ -737,19 +737,19 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
                     
                     self._controller.new_options.SetMediaViewOptions( edited_mimes_to_view_options )
                     
-                    HydrusData.ShowText( 'Hey, MPV was not working on a previous boot, but it looks like it is now. I have updated your media view settings to use MPV.')
+                    HydrusData.show_text('Hey, MPV was not working on a previous boot, but it looks like it is now. I have updated your media view settings to use MPV.')
                     
                 else:
                     
-                    HydrusData.ShowText( 'Hey, MPV was not working on a previous boot, but it looks like it is now. You might like to check your file view settings under options->media.')
+                    HydrusData.show_text('Hey, MPV was not working on a previous boot, but it looks like it is now. You might like to check your file view settings under options->media.')
                     
                 
             
         except Exception as e:
             
-            HydrusData.ShowText( 'Hey, while trying to check some MPV stuff on boot, I encountered an error. Please let hydev know.' )
+            HydrusData.show_text('Hey, while trying to check some MPV stuff on boot, I encountered an error. Please let hydev know.')
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception(e)
             
         
     
@@ -793,7 +793,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
                 CG.client_controller.write_synchronous('analyze', maintenance_mode = HC.MAINTENANCE_FORCED, stop_time = stop_time)
                 
             
-            HydrusData.ShowText( 'Done!' )
+            HydrusData.show_text('Done!')
             
         
         CG.client_controller.call_to_thread(do_it)
@@ -813,9 +813,9 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             all_names = [ s.GetName() for s in all_services ]
             
-            name = HydrusData.GetNonDupeName( 'public tag repository', all_names, do_casefold = True )
+            name = HydrusData.get_non_dupe_name('public tag repository', all_names, do_casefold = True)
             
-            service_key = HydrusData.GenerateKey()
+            service_key = HydrusData.generate_key()
             service_type = HC.TAG_REPOSITORY
             
             public_tag_repo = ClientServices.GenerateService( service_key, service_type, name )
@@ -830,7 +830,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             message += '\n' * 2
             message += 'The PTR has a lot of tags and will sync a little bit at a time when you are not using the client. Expect it to take a few weeks to sync fully.'
             
-            HydrusData.ShowText( message )
+            HydrusData.show_text(message)
             
         
         have_it_already = False
@@ -941,7 +941,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             service.Request( HC.POST, 'backup' )
             
-            HydrusData.ShowText( 'Server backup started!' )
+            HydrusData.show_text('Server backup started!')
             
             time.sleep( 10 )
             
@@ -961,7 +961,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             it_took = HydrusTime.GetNow() - started
             
-            HydrusData.ShowText( 'Server backup done in ' + HydrusTime.TimeDeltaToPrettyTimeDelta( it_took ) + '!' )
+            HydrusData.show_text('Server backup done in ' + HydrusTime.TimeDeltaToPrettyTimeDelta(it_took) + '!')
             
         
         message = 'This will tell the server to lock and copy its database files. It will probably take a few minutes to complete, during which time it will not be able to serve any requests.'
@@ -1017,7 +1017,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         if self._controller.new_options.GetBoolean( 'pause_import_folders_sync' ):
             
-            HydrusData.ShowText( 'Import folders are currently paused under the \'file\' menu. Please unpause them and try this again.' )
+            HydrusData.show_text('Import folders are currently paused under the \'file\' menu. Please unpause them and try this again.')
             
         
         if name is None:
@@ -1145,7 +1145,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
                     message = '{} orphans cleared!'.format( HydrusNumbers.ToHumanInt( num_done ) )
                     
                 
-                HydrusData.ShowText( message )
+                HydrusData.show_text(message)
                 
             
             CG.client_controller.call_to_thread(do_it)
@@ -1199,7 +1199,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             content = network_job.GetContentBytes()
             
-            text = 'Request complete. Length of response is ' + HydrusData.ToHumanBytes( len( content ) ) + '.'
+            text = 'Request complete. Length of response is ' + HydrusData.to_human_bytes(len(content)) + '.'
             
             yes_tuples = []
             
@@ -1280,7 +1280,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
     
     def _DebugIsolateMPVWindows( self ):
         
-        HydrusData.ShowText( f'Isolated {HydrusNumbers.ToHumanInt( len( self._persistent_mpv_widgets ) )} MPV widgets.' )
+        HydrusData.show_text(f'Isolated {HydrusNumbers.ToHumanInt(len(self._persistent_mpv_widgets))} MPV widgets.')
         
         self._isolated_mpv_widgets.extend( self._persistent_mpv_widgets )
         
@@ -1388,12 +1388,12 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         for i in range( 1, 7 ):
             
-            HydrusData.ShowText( 'This is a test popup message -- ' + str( i ) )
+            HydrusData.show_text('This is a test popup message -- ' + str(i))
             
         
         brother_classem_pinniped = '''++++What the fuck did you just fucking say about me, you worthless heretic? I'll have you know I graduated top of my aspirant tournament in the Heralds of Ultramar, and I've led an endless crusade of secret raids against the forces of The Great Enemy, and I have over 30 million confirmed purgings. I am trained in armored warfare and I'm the top brother in all the 8th Company. You are nothing to me but just another heretic. I will wipe you the fuck out with precision the likes of which has never been seen before in this Galaxy, mark my fucking words. You think you can get away with saying that shit to me over the Divine Astropathic Network? Think again, traitor. As we speak I am contacting my secret network of inquisitors across the galaxy and your malign powers are being traced right now so you better prepare for the holy storm, maggot. The storm that wipes out the pathetic little thing you call your soul. You're fucking dead, kid. I can transit the immaterium to anywhere, anytime, and I can kill you in over seven hundred ways, and that's just with my purity seals. Not only am I extensively trained in unarmed combat, but I have access to the entire arsenal of the Departmento Munitorum and I will use it to its full extent to wipe your miserable ass off the face of the galaxy, you little shit. If only you could have known what holy retribution your little "clever" comment was about to bring down upon you, maybe you would have held your fucking impure mutant tongue. But you couldn't, you didn't, and now you're paying the price, you Emperor-damned heretic.++++\n\n++++Better crippled in body than corrupt in mind++++\n\n++++The Emperor Protects++++'''
         
-        HydrusData.ShowText( 'This is a very long message:  \n\n' + brother_classem_pinniped )
+        HydrusData.show_text('This is a very long message:  \n\n' + brother_classem_pinniped)
         
         #
         
@@ -1413,9 +1413,9 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         job_status.SetStatusText( 'click the button m8' )
         
-        call = HydrusData.Call( HydrusData.ShowText, 'iv damke' )
+        call = HydrusData.Call(HydrusData.show_text, 'iv damke')
         
-        call.SetLabel( 'cheeki breeki' )
+        call.set_label('cheeki breeki')
         
         job_status.SetUserCallable( call )
         
@@ -1435,7 +1435,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             call = HydrusData.Call( CG.client_controller.pub, 'open_manage_services_and_try_to_auto_create_account', service_key )
             
-            call.SetLabel( 'open manage services and check for auto-creatable accounts' )
+            call.set_label('open manage services and check for auto-creatable accounts')
             
             job_status.SetUserCallable( call )
             
@@ -1464,7 +1464,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         job_status.SetVariable( 'attached_files_mergable', True )
         
-        hashes = [ HydrusData.GenerateKey() for i in range( 3 ) ]
+        hashes = [HydrusData.generate_key() for i in range(3)]
         
         job_status.SetFiles( hashes, 'cool pics' )
         
@@ -1478,7 +1478,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         job_status.SetVariable( 'attached_files_mergable', True )
         
-        job_status.SetFiles( [ HydrusData.GenerateKey() for i in range( 2 ) ] + [ hashes[0] ], 'cool pics' )
+        job_status.SetFiles([HydrusData.generate_key() for i in range(2)] + [hashes[0]], 'cool pics')
         
         self._controller.pub( 'message', job_status )
         
@@ -1504,7 +1504,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         call = HydrusData.Call( CG.client_controller.pub, 'make_new_subscription_gap_downloader', ( b'', 'safebooru tag search' ), 'skirt', file_import_options, tag_import_options, note_import_options, 2 )
         
-        call.SetLabel( 'start a new downloader for this to fill in the gap!' )
+        call.set_label('start a new downloader for this to fill in the gap!')
         
         job_status.SetUserCallable( call )
         
@@ -1555,13 +1555,13 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         e = HydrusExceptions.DataMissing( 'This is a test exception' )
         
-        HydrusData.ShowException( e, do_wait = False )
+        HydrusData.show_exception(e, do_wait = False)
         
         #
         
         for i in range( 1, 4 ):
             
-            self._controller.call_later(0.5 * i, HydrusData.ShowText, 'This is a delayed popup message -- ' + str(i))
+            self._controller.call_later(0.5 * i, HydrusData.show_text, 'This is a delayed popup message -- ' + str(i))
             
         
     
@@ -1583,7 +1583,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         if not HydrusMemory.PYMPLER_OK:
             
-            HydrusData.ShowText( 'Sorry, you need pympler for this!' )
+            HydrusData.show_text('Sorry, you need pympler for this!')
             
             return
             
@@ -1595,7 +1595,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         if not HydrusMemory.PYMPLER_OK:
             
-            HydrusData.ShowText( 'Sorry, you need pympler for this!' )
+            HydrusData.show_text('Sorry, you need pympler for this!')
             
             return
             
@@ -1607,7 +1607,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         if not HydrusMemory.PYMPLER_OK:
             
-            HydrusData.ShowText( 'Sorry, you need pympler for this!' )
+            HydrusData.show_text('Sorry, you need pympler for this!')
             
             return
             
@@ -1730,8 +1730,8 @@ QMenuBar::item { padding: 2px 8px; margin: 0px; }'''
             
         except Exception as e:
             
-            HydrusData.Print( 'I tried to do the menubar style hack, but got this exception (please let hydev know):' )
-            HydrusData.PrintException( e, do_wait = False)
+            HydrusData.print_text('I tried to do the menubar style hack, but got this exception (please let hydev know):')
+            HydrusData.print_exception(e, do_wait = False)
             
         
     
@@ -1785,7 +1785,7 @@ QMenuBar::item { padding: 2px 8px; margin: 0px; }'''
         text += 'Upload Time (UTC): ' + utc_time
         text += 'Upload Time (Your time): ' + local_time
         
-        HydrusData.Print( text )
+        HydrusData.print_text(text)
         
         ClientGUIDialogsMessage.ShowInformation( self, text + '\n' * 2 + 'This has been written to the log.' )
         
@@ -1974,7 +1974,7 @@ QMenuBar::item { padding: 2px 8px; margin: 0px; }'''
         
         if CG.client_controller.logger.CurrentlyCrashReporting():
             
-            HydrusData.ShowText( 'DO NOT PLAY ANYTHING WITH MPV WHILE CRASH REPORTING IS ON--IT WILL CAUSE A FAKE CRASH!' )
+            HydrusData.show_text('DO NOT PLAY ANYTHING WITH MPV WHILE CRASH REPORTING IS ON--IT WILL CAUSE A FAKE CRASH!')
             
         
 
@@ -2012,7 +2012,7 @@ QMenuBar::item { padding: 2px 8px; margin: 0px; }'''
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e, do_wait = False )
+                HydrusData.print_exception(e, do_wait = False)
                 
             
             return
@@ -2118,7 +2118,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         CG.client_controller.pub( 'clipboard', 'text', text )
         
-        HydrusData.ShowText( f'{HydrusNumbers.ToHumanInt(len(tables_and_columns))} table and column pairs sent to clipboard.' )
+        HydrusData.show_text(f'{HydrusNumbers.ToHumanInt(len(tables_and_columns))} table and column pairs sent to clipboard.')
         
     
     def _HowBonedAmI( self ):
@@ -2207,7 +2207,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                             
                             num_errors += 1
                             
-                            HydrusData.Print( update_path + ' did not load correctly!' )
+                            HydrusData.print_text(update_path + ' did not load correctly!')
                             
                             continue
                             
@@ -2224,7 +2224,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                             
                             num_errors += 1
                             
-                            HydrusData.Print( update_path + ' was not an update!' )
+                            HydrusData.print_text(update_path + ' was not an update!')
                             
                             continue
                             
@@ -3289,7 +3289,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         message += '\n' * 2
         message += 'Check the help for more info on how best to backup manually.'
         
-        self._menubar_database_multiple_location_label = ClientGUIMenus.AppendMenuItem( menu, 'database is stored in multiple locations', 'The database is migrated, and internal backups are not possible--click for more info.', HydrusData.ShowText, message )
+        self._menubar_database_multiple_location_label = ClientGUIMenus.AppendMenuItem(menu, 'database is stored in multiple locations', 'The database is migrated, and internal backups are not possible--click for more info.', HydrusData.show_text, message)
         
         ClientGUIMenus.AppendSeparator( menu )
         
@@ -3621,7 +3621,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             if HG.macos_antiflicker_test:
                 
-                HydrusData.ShowText( 'Hey, the macOS safety code is now disabled. Please open a new media viewer and see if a mix of video and images show ok, no 100% CPU problems.' )
+                HydrusData.show_text('Hey, the macOS safety code is now disabled. Please open a new media viewer and see if a mix of video and images show ok, no 100% CPU problems.')
                 
             
         
@@ -3639,10 +3639,10 @@ ATTACH "client.mappings.db" as external_mappings;'''
         ClientGUIMenus.AppendMenuItem(gui_actions, 'make a new page in five seconds', 'Throw a delayed page at the main notebook, giving you time to minimise or otherwise alter the client before it arrives.', self._controller.call_later, 5, self._controller.pub, 'new_page_query', default_location_context)
         ClientGUIMenus.AppendMenuItem( gui_actions, 'make a non-cancellable modal popup in five seconds', 'Throw up a delayed modal popup to test with. It will stay alive for five seconds.', self._DebugMakeDelayedModalPopup, False )
         ClientGUIMenus.AppendMenuItem( gui_actions, 'make a parentless text ctrl dialog', 'Make a parentless text control in a dialog to test some character event catching.', self._DebugMakeParentlessTextCtrl )
-        ClientGUIMenus.AppendMenuItem(gui_actions, 'make a popup in five seconds', 'Throw a delayed popup at the message manager, giving you time to minimise or otherwise alter the client before it arrives.', self._controller.call_later, 5, HydrusData.ShowText, 'This is a delayed popup message.')
+        ClientGUIMenus.AppendMenuItem(gui_actions, 'make a popup in five seconds', 'Throw a delayed popup at the message manager, giving you time to minimise or otherwise alter the client before it arrives.', self._controller.call_later, 5, HydrusData.show_text, 'This is a delayed popup message.')
         ClientGUIMenus.AppendMenuItem( gui_actions, 'make a QMessageBox', 'Open a modal message dialog.', self._DebugMakeQMessageBox )
         ClientGUIMenus.AppendMenuItem( gui_actions, 'make some popups', 'Throw some varied popups at the message manager, just to check it is working.', self._DebugMakeSomePopups )
-        ClientGUIMenus.AppendMenuItem(gui_actions, 'publish some sub files in five seconds', 'Publish some files like a subscription would.', self._controller.call_later, 5, lambda: CG.client_controller.pub('imported_files_to_page', [HydrusData.GenerateKey() for i in range(5)], 'example sub files'))
+        ClientGUIMenus.AppendMenuItem(gui_actions, 'publish some sub files in five seconds', 'Publish some files like a subscription would.', self._controller.call_later, 5, lambda: CG.client_controller.pub('imported_files_to_page', [HydrusData.generate_key() for i in range(5)], 'example sub files'))
         ClientGUIMenus.AppendMenuItem(gui_actions, 'refresh pages menu in five seconds', 'Delayed refresh the pages menu, giving you time to minimise or otherwise alter the client before it arrives.', self._controller.call_later, 5, self._menu_updater_pages.update)
         ClientGUIMenus.AppendMenuItem( gui_actions, 'reload current qss stylesheet', 'Reload the current QSS stylesheet. Helps if you just edited it on disk and do not want to restart.', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_RELOAD_CURRENT_STYLESHEET ) )
         ClientGUIMenus.AppendMenuItem( gui_actions, 'reload icon cache', 'Reload the icons and pixmaps that new icon menus and buttons rely on. Will not affect widgets that are already loaded!', self._ReloadIconCache )
@@ -3654,7 +3654,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         data_actions = ClientGUIMenus.GenerateMenu( debug_menu )
         
         ClientGUIMenus.AppendMenuCheckItem( data_actions, 'db ui-hang relief mode', 'Have UI-synchronised database jobs process pending Qt events while they wait.', HG.db_ui_hang_relief_mode, self._SwitchBoolean, 'db_ui_hang_relief_mode' )
-        ClientGUIMenus.AppendMenuItem( data_actions, 'flush log', 'Command the log to write any buffered contents to hard drive.', HydrusData.DebugPrint, 'Flushing log' )
+        ClientGUIMenus.AppendMenuItem(data_actions, 'flush log', 'Command the log to write any buffered contents to hard drive.', HydrusData.debug_print, 'Flushing log')
         ClientGUIMenus.AppendMenuItem(data_actions, 'force database commit', 'Command the database to flush all pending changes to disk.', CG.client_controller.force_database_commit)
         ClientGUIMenus.AppendMenuItem( data_actions, 'review threads', 'Show current threads and what they are doing.', self._ReviewThreads )
         ClientGUIMenus.AppendMenuItem( data_actions, 'show env', 'Print your current environment variables.', HydrusEnvironment.DumpEnv )
@@ -4149,7 +4149,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             service.Request( HC.POST, command )
             
-            HydrusData.ShowText( done_message )
+            HydrusData.show_text(done_message)
             
         
         if lock:
@@ -4197,8 +4197,8 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         def errback_callable( etype, value, tb ):
             
-            HydrusData.ShowText( 'Sorry, unable to load account types:' )
-            HydrusData.ShowExceptionTuple( etype, value, tb, do_wait = False )
+            HydrusData.show_text('Sorry, unable to load account types:')
+            HydrusData.show_exception_tuple(etype, value, tb, do_wait = False)
             
         
         job = ClientGUIAsync.AsyncQtJob( self, work_callable, publish_callable, errback_callable = errback_callable )
@@ -4625,7 +4625,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
             except Exception as e:
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception(e)
                 
             
             self._DoMenuBarStyleHack()
@@ -4646,7 +4646,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
             except Exception as e:
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception(e)
                 
             
         
@@ -5322,7 +5322,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         if export_path is None:
             
-            HydrusData.ShowText( 'Unfortunately, your export path could not be determined!' )
+            HydrusData.show_text('Unfortunately, your export path could not be determined!')
             
         else:
             
@@ -5709,7 +5709,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         CC.global_pixmaps().Reload()
         CC.global_icons().Reload()
         
-        HydrusData.ShowText( 'Icon cache reloaded!' )
+        HydrusData.show_text('Icon cache reloaded!')
         
     
     def _RepairInvalidTags( self ):
@@ -5823,7 +5823,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             service.Request( HC.POST, 'restart_services' )
             
-            HydrusData.ShowText( 'Server service restart started!' )
+            HydrusData.show_text('Server service restart started!')
             
             time_started = HydrusTime.GetNowMS()
             
@@ -5851,13 +5851,13 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
                 if HydrusTime.TimeHasPassedMS( time_started + ( 60 * 1000 ) ):
                     
-                    HydrusData.ShowText( 'It has been a minute and the server is not back up. Abandoning check--something is super delayed/not working!' )
+                    HydrusData.show_text('It has been a minute and the server is not back up. Abandoning check--something is super delayed/not working!')
                     
                     return
                     
                 
             
-            HydrusData.ShowText( 'Server is back up!' )
+            HydrusData.show_text('Server is back up!')
             
         
         message = 'This will tell the server to restart its services. If you have swapped in a new ssl cert, this will load that new one.'
@@ -5946,8 +5946,8 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         def errback_callable( etype, value, tb ):
             
-            HydrusData.ShowText( 'Sorry, unable to load accounts:' )
-            HydrusData.ShowExceptionTuple( etype, value, tb, do_wait = False )
+            HydrusData.show_text('Sorry, unable to load accounts:')
+            HydrusData.show_exception_tuple(etype, value, tb, do_wait = False)
             
         
         job = ClientGUIAsync.AsyncQtJob( self, work_callable, publish_callable, errback_callable = errback_callable )
@@ -6078,7 +6078,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         if self._controller.new_options.GetBoolean( 'pause_export_folders_sync' ):
             
-            HydrusData.ShowText( 'Export folders are currently paused under the \'file\' menu. Please unpause them and try this again.' )
+            HydrusData.show_text('Export folders are currently paused under the \'file\' menu. Please unpause them and try this again.')
             
         
         if name is None:
@@ -6176,7 +6176,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
                 if j[ 'version' ] != HC.CLIENT_API_VERSION:
                     
-                    HydrusData.ShowText( 'version incorrect!: {}, {}'.format( j[ 'version' ], HC.CLIENT_API_VERSION ) )
+                    HydrusData.show_text('version incorrect!: {}, {}'.format(j['version'], HC.CLIENT_API_VERSION))
                     
                 
                 #
@@ -6565,7 +6565,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             t += 0.1
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', HydrusData.ShowText, 'ui test done' )
+            CG.client_controller.CallLaterQtSafe(self, t, 'test job', HydrusData.show_text, 'ui test done')
             
         
         def do_it():
@@ -6598,7 +6598,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
             except ( HydrusExceptions.QtDeadWindowException, HydrusExceptions.ShutdownException ):
                 
-                HydrusData.Print( 'Test could not finish because of a shutdown, looks like.' )
+                HydrusData.print_text('Test could not finish because of a shutdown, looks like.')
                 
             
         
@@ -6612,9 +6612,9 @@ ATTACH "client.mappings.db" as external_mappings;'''
             host = '127.0.0.1'
             port = HC.DEFAULT_SERVER_ADMIN_PORT
             
-            HydrusData.ShowText( 'Creating admin service' + HC.UNICODE_ELLIPSIS )
+            HydrusData.show_text('Creating admin service' + HC.UNICODE_ELLIPSIS)
             
-            admin_service_key = HydrusData.GenerateKey()
+            admin_service_key = HydrusData.generate_key()
             service_type = HC.SERVER_ADMIN
             name = 'local server admin'
             
@@ -6646,7 +6646,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             #
             
-            HydrusData.ShowText( 'Admin service initialised.' )
+            HydrusData.show_text('Admin service initialised.')
             
             CG.client_controller.CallAfterQtSafe( self, ClientGUIFrames.ShowKeys, 'access', ( access_key, ) )
             
@@ -6654,19 +6654,19 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             time.sleep( 5 )
             
-            HydrusData.ShowText( 'Creating tag and file services' + HC.UNICODE_ELLIPSIS )
+            HydrusData.show_text('Creating tag and file services' + HC.UNICODE_ELLIPSIS)
             
             response = admin_service.Request( HC.GET, 'services' )
             
             serverside_services = response[ 'services' ]
             
-            service_key = HydrusData.GenerateKey()
+            service_key = HydrusData.generate_key()
             
             tag_service = HydrusNetwork.GenerateService( service_key, HC.TAG_REPOSITORY, 'tag service', HC.DEFAULT_SERVICE_PORT )
             
             serverside_services.append( tag_service )
             
-            service_key = HydrusData.GenerateKey()
+            service_key = HydrusData.generate_key()
             
             file_service = HydrusNetwork.GenerateService( service_key, HC.FILE_REPOSITORY, 'file service', HC.DEFAULT_SERVICE_PORT + 1 )
             
@@ -6685,7 +6685,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 self._controller.RefreshServices()
                 
             
-            HydrusData.ShowText( 'Done! Check services->review services to see your new server and its services.' )
+            HydrusData.show_text('Done! Check services->review services to see your new server and its services.')
             
         
         text = 'Woe unto you unless you click "no" NOW.'
@@ -6722,7 +6722,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         ClientVisualDataTuningSuite.RunTuningSuite( test_dir )
         
-        HydrusData.ShowText( 'Tuning suite done!' )
+        HydrusData.show_text('Tuning suite done!')
         
     
     def _RunVisualDuplicatesTuningSuiteAlpha( self ):
@@ -6749,7 +6749,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         ClientVisualDataTuningSuite.RunTuningSuiteAlpha( test_dir )
         
-        HydrusData.ShowText( 'Tuning suite done!' )
+        HydrusData.show_text('Tuning suite done!')
         
     
     def _SaveSplitterPositions( self ):
@@ -6770,7 +6770,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             service.Request( HC.POST, 'maintenance_regen_service_info' )
             
-            HydrusData.ShowText( 'Maintenance started!' )
+            HydrusData.show_text('Maintenance started!')
             
             time.sleep( 10 )
             
@@ -6790,7 +6790,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             it_took = HydrusTime.GetNow() - started
             
-            HydrusData.ShowText( 'Server maintenance done in ' + HydrusTime.TimeDeltaToPrettyTimeDelta( it_took ) + '!' )
+            HydrusData.show_text('Server maintenance done in ' + HydrusTime.TimeDeltaToPrettyTimeDelta(it_took) + '!')
             
         
         message = 'This will tell the server to recalculate the cached numbers for number of files, mappings, actionable petitions and so on. It may take a little while to complete, during which time it will not be able to serve any requests.'
@@ -7195,7 +7195,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
             if not there_was_work_to_do:
                 
-                HydrusData.ShowText( 'Seems like we are all synced already!' )
+                HydrusData.show_text('Seems like we are all synced already!')
                 
             
         
@@ -7210,15 +7210,15 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
             if result_bytes == b'1':
                 
-                HydrusData.ShowText( 'server is busy' )
+                HydrusData.show_text('server is busy')
                 
             elif result_bytes == b'0':
                 
-                HydrusData.ShowText( 'server is not busy' )
+                HydrusData.show_text('server is not busy')
                 
             else:
                 
-                HydrusData.ShowText( 'server responded in a way I do not understand' )
+                HydrusData.show_text('server responded in a way I do not understand')
                 
             
         
@@ -7296,7 +7296,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                 
                 self._have_shown_session_size_warning = True
                 
-                HydrusData.ShowText( 'Your session weight is {}, which is pretty big! To keep your UI lag-free, please try to close some pages or clear some finished downloaders!'.format( HydrusNumbers.ToHumanInt( total_active_weight ) ) )
+                HydrusData.show_text('Your session weight is {}, which is pretty big! To keep your UI lag-free, please try to close some pages or clear some finished downloaders!'.format(HydrusNumbers.ToHumanInt(total_active_weight)))
                 
             
             ClientGUIMenus.SetMenuItemLabel( self._menubar_pages_page_count, '{} pages open'.format( HydrusNumbers.ToHumanInt( total_active_page_count ) ) )
@@ -7427,7 +7427,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
             service.Request( HC.POST, 'vacuum' )
             
-            HydrusData.ShowText( 'Server vacuum started!' )
+            HydrusData.show_text('Server vacuum started!')
             
             result_bytes = b'1'
             
@@ -7445,7 +7445,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
             it_took = HydrusTime.GetNow() - started
             
-            HydrusData.ShowText( 'Server vacuum done in ' + HydrusTime.TimeDeltaToPrettyTimeDelta( it_took ) + '!' )
+            HydrusData.show_text('Server vacuum done in ' + HydrusTime.TimeDeltaToPrettyTimeDelta(it_took) + '!')
             
         
         message = 'This will tell the server to lock and vacuum its database files. It may take some time to complete, during which time it will not be able to serve any requests.'
@@ -7593,7 +7593,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         if page is None:
             
-            HydrusData.ShowText( 'Sorry, could not create the downloader page! Is your session super full atm?' )
+            HydrusData.show_text('Sorry, could not create the downloader page! Is your session super full atm?')
             
         
         panel = page.GetSidebar()
@@ -7706,7 +7706,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception(e)
             
             return True
             
@@ -8037,7 +8037,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
         except Exception as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception(e)
             
             raise HydrusExceptions.ServerException( str( e ) )
             
@@ -8053,7 +8053,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception(e)
             
         
     
@@ -8065,7 +8065,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception(e)
             
         
     
@@ -8699,13 +8699,13 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         usage_since_boot = global_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, HydrusTime.SecondiseMS( time_since_boot_ms ) )
         
-        bandwidth_status = HydrusData.ToHumanBytes( usage_since_boot )
+        bandwidth_status = HydrusData.to_human_bytes(usage_since_boot)
         
         current_usage = global_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, 1, for_user = True )
         
         if current_usage > 0:
             
-            bandwidth_status += ' (' + HydrusData.ToHumanBytes( current_usage ) + '/s)'
+            bandwidth_status += ' (' + HydrusData.to_human_bytes(current_usage) + '/s)'
             
         
         if self._controller.new_options.GetBoolean( 'pause_subs_sync' ):
@@ -8745,7 +8745,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
         except Exception as e:
             
-            HydrusData.ShowText( 'Could not access the clipboard: {}'.format( e ) )
+            HydrusData.show_text('Could not access the clipboard: {}'.format(e))
             
             self._clipboard_watcher_repeating_job.Cancel()
             
@@ -8775,7 +8775,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                     
                 except HydrusExceptions.DataMissing:
                     
-                    HydrusData.ShowText( 'Could not find a new page to place the clipboard URL. Perhaps the client is at its page limit.' )
+                    HydrusData.show_text('Could not find a new page to place the clipboard URL. Perhaps the client is at its page limit.')
                     
                     break
                     
@@ -8839,7 +8839,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                 
                 self._ui_update_windows.discard( window )
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception(e)
                 
             
         
@@ -9036,7 +9036,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
         except Exception as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception(e)
             
         
     
@@ -9100,7 +9100,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
             if free_space is not None and free_space < space_needed:
                 
-                text = f'You currently have very little free space ({HydrusData.ToHumanBytes( free_space )}) on your hydrus database drive partition. I think you should really have at least {HydrusData.ToHumanBytes( space_needed )} in order to save your exit data correctly. I recommend you free up disk space NOW.'
+                text = f'You currently have very little free space ({HydrusData.to_human_bytes(free_space)}) on your hydrus database drive partition. I think you should really have at least {HydrusData.to_human_bytes(space_needed)} in order to save your exit data correctly. I recommend you free up disk space NOW.'
                 
                 result = ClientGUIDialogsQuick.GetYesNo( self, text, yes_label = 'try exiting now', no_label = 'back out' )
                 
@@ -9231,7 +9231,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                 
                 self._controller.blocking_safe_show_critical_message('shutdown error', 'There was a problem trying to review pending shutdown maintenance work. No shutdown maintenance work will be done, and info has been written to the log. Please let hydev know.')
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception(e)
                 
                 HG.do_idle_shutdown_work = False
                 
