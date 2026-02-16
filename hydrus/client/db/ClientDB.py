@@ -2649,7 +2649,7 @@ class DB( HydrusDB.HydrusDB ):
         
         if service_type in HC.REPOSITORIES:
             
-            account = service.GetAccount()
+            account = service.get_account()
             
             client_to_server_update = HydrusNetwork.ClientToServerUpdate()
             

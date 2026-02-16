@@ -808,7 +808,7 @@ class ManageTagSiblings( ClientGUIScrolledPanels.ManagePanel ):
                 
                 if not self._i_am_local_tag_service:
                     
-                    account = self._service.GetAccount()
+                    account = self._service.get_account()
                     
                     if account.IsUnknown():
                         

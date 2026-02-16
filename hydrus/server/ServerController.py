@@ -418,7 +418,7 @@ class Controller( HydrusController.HydrusController ):
                 self.write_synchronous('dirty_services', dirty_services)
                 
             
-            dirty_accounts = self.server_session_manager.GetDirtyAccounts()
+            dirty_accounts = self.server_session_manager.get_dirty_accounts()
             
             if len( dirty_accounts ) > 0:
                 

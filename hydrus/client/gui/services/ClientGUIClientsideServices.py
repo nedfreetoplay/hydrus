@@ -2630,7 +2630,7 @@ class ReviewServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
     
     def _CopyAccountKey( self ):
         
-        account = self._service.GetAccount()
+        account = self._service.get_account()
         
         account_key = account.GetAccountKey()
         
@@ -2646,7 +2646,7 @@ class ReviewServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
     
     def _Refresh( self ):
         
-        account = self._service.GetAccount()
+        account = self._service.get_account()
         
         account_type = account.GetAccountType()
         

@@ -432,7 +432,7 @@ class ListAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         #
         
-        my_admin_account_key = self._service.GetAccount().GetAccountKey()
+        my_admin_account_key = self._service.get_account().GetAccountKey()
         
         accounts.sort( key = lambda a: ( a.GetAccountType().GetTitle(), a.GetAccountKey().hex() ) )
         
@@ -560,7 +560,7 @@ class ReviewAccountsPanel( QW.QWidget ):
             
             account_key = item.data( QC.Qt.ItemDataRole.UserRole )
             
-            my_admin_account = self._service.GetAccount()
+            my_admin_account = self._service.get_account()
             
             if account_key == my_admin_account.GetAccountKey():
                 
@@ -724,7 +724,7 @@ class ReviewAccountsPanel( QW.QWidget ):
                 key = lambda sak: ( self._account_keys_to_accounts[ sak ].GetAccountType().GetTitle(), sak.hex() )
             )
             
-            my_admin_account = self._service.GetAccount()
+            my_admin_account = self._service.get_account()
             
             my_admin_account_key = my_admin_account.GetAccountKey()
             

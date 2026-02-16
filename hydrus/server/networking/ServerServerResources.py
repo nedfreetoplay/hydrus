@@ -194,7 +194,7 @@ class HydrusResourceSessionKey( HydrusResourceHydrusNetwork ):
         
         access_key = self._parseHydrusNetworkAccessKey( request )
         
-        ( session_key, expires ) = SG.server_controller.server_session_manager.AddSession( self._service_key, access_key )
+        ( session_key, expires ) = SG.server_controller.server_session_manager.add_session(self._service_key, access_key)
         
         now = HydrusTime.GetNow()
         
@@ -260,12 +260,12 @@ class HydrusResourceRestricted( HydrusResourceHydrusNetwork ):
                 
             else:
                 
-                account = SG.server_controller.server_session_manager.GetAccountFromAccessKey( self._service_key, access_key )
+                account = SG.server_controller.server_session_manager.get_account_from_access_key(self._service_key, access_key)
                 
             
         else:
             
-            account = SG.server_controller.server_session_manager.GetAccount( self._service_key, session_key )
+            account = SG.server_controller.server_session_manager.get_account(self._service_key, session_key)
             
         
         request.hydrus_account = account
@@ -792,7 +792,7 @@ class HydrusResourceRestrictedAccountTypes( HydrusResourceRestricted ):
         
         SG.server_controller.write_synchronous('account_types', self._service_key, request.hydrus_account, account_types, deletee_account_type_keys_to_new_account_type_keys)
         
-        SG.server_controller.server_session_manager.RefreshAccounts( self._service_key )
+        SG.server_controller.server_session_manager.refresh_accounts(self._service_key)
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         

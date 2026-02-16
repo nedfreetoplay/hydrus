@@ -176,7 +176,7 @@ def THREADUploadPending( service_key ):
         
         if service_type in HC.REPOSITORIES:
             
-            account = service.GetAccount()
+            account = service.get_account()
             
             if account.IsUnknown():
                 

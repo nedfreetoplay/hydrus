@@ -2092,7 +2092,7 @@ class NetworkJobHydrus( NetworkJob ):
         
         if service_type in HC.RESTRICTED_SERVICES:
             
-            account = service.GetAccount()
+            account = service.get_account()
             
             account.report_data_used(num_bytes)
             
@@ -2115,7 +2115,7 @@ class NetworkJobHydrus( NetworkJob ):
         
         if service_type in HC.RESTRICTED_SERVICES:
             
-            account = service.GetAccount()
+            account = service.get_account()
             
             account.report_request_used()
             
