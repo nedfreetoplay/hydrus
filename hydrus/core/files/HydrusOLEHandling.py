@@ -86,7 +86,7 @@ GUID_MIMES = {
 
 OLE_HEADER = b'\xD0\xCF\x11\xE0\xA1\xB1\x1A\xE1'
     
-def isOleFile(path: str):
+def is_ole_file(path: str):
     
     if OLEFILE_OK:
         
@@ -103,9 +103,9 @@ def isOleFile(path: str):
         
     
 
-def MimeFromOLEFile(path: str):
+def mime_from_ole_file(path: str):
     
-    if not isOleFile( path ):
+    if not is_ole_file(path):
         
         return HC.APPLICATION_UNKNOWN
         
@@ -153,10 +153,10 @@ def MimeFromOLEFile(path: str):
         
     
 
-def OfficeOLEDocumentWordCount( path: str ):
+def office_ole_document_word_count(path: str):
     
     # Not all legacy office files are OLE
-    if not isOleFile( path ):
+    if not is_ole_file(path):
         
         raise HydrusExceptions.LimitedSupportFileException('File is not OLE!')
         
