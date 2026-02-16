@@ -1496,7 +1496,7 @@ class GalleryImportPanel( ClientGUICommon.StaticBox ):
         
         if self._gallery_import is not None:
             
-            ( gallery_status, file_status, files_paused, gallery_paused ) = self._gallery_import.GetStatus()
+            ( gallery_status, file_status, files_paused, gallery_paused ) = self._gallery_import.get_status()
             
             if files_paused:
                 
@@ -1966,7 +1966,7 @@ class WatcherReviewPanel( ClientGUICommon.StaticBox ):
         
         if self._watcher is not None:
             
-            ( file_status, files_paused, file_velocity_status, next_check_time, watcher_status, subject, checking_status, check_now, checking_paused ) = self._watcher.GetStatus()
+            ( file_status, files_paused, file_velocity_status, next_check_time, watcher_status, subject, checking_status, check_now, checking_paused ) = self._watcher.get_status()
             
             if files_paused:
                 

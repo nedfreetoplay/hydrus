@@ -514,7 +514,7 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
         
         if self.modules_services.GetService( service_id ).GetServiceType() == HC.FILE_REPOSITORY:
             
-            for ( block_of_hash_ids, num_done, num_to_do ) in HydrusDB.ReadLargeIdQueryInSeparateChunks( self._c, 'SELECT hash_id FROM {};'.format( pending_files_table_name ), 1024 ):
+            for ( block_of_hash_ids, num_done, num_to_do ) in HydrusDB.read_large_id_query_in_separate_chunks(self._c, 'SELECT hash_id FROM {};'.format(pending_files_table_name), 1024):
                 
                 self.DeferFilesDeleteIfNowOrphan( block_of_hash_ids, ignore_service_id = service_id )
                 
@@ -530,7 +530,7 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
         
         if self.modules_services.GetService( service_id ).GetServiceType() == HC.FILE_REPOSITORY:
             
-            for ( block_of_hash_ids, num_done, num_to_do ) in HydrusDB.ReadLargeIdQueryInSeparateChunks( self._c, 'SELECT hash_id FROM {};'.format( pending_files_table_name ), 1024 ):
+            for ( block_of_hash_ids, num_done, num_to_do ) in HydrusDB.read_large_id_query_in_separate_chunks(self._c, 'SELECT hash_id FROM {};'.format(pending_files_table_name), 1024):
                 
                 self.DeferFilesDeleteIfNowOrphan( block_of_hash_ids, ignore_service_id = service_id )
                 

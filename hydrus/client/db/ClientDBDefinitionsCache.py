@@ -546,7 +546,7 @@ class ClientDBCacheLocalTags( ClientDBModule.ClientDBModule ):
         
         full_query = '{};'.format( ' UNION '.join( queries ) )
         
-        for ( block_of_tag_ids, num_done, num_to_do ) in HydrusDB.ReadLargeIdQueryInSeparateChunks( self._c, full_query, 1024 ):
+        for ( block_of_tag_ids, num_done, num_to_do ) in HydrusDB.read_large_id_query_in_separate_chunks(self._c, full_query, 1024):
             
             self.AddTagIdsToCache( block_of_tag_ids )
             

@@ -9096,7 +9096,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         if not self._controller.doing_fast_exit():
             
-            ( space_needed, free_space ) = CG.client_controller.db.GetSafeTransactionDiskSpaceAndCurrentFreeSpace()
+            ( space_needed, free_space ) = CG.client_controller.db.get_safe_transaction_disk_space_and_current_free_space()
             
             if free_space is not None and free_space < space_needed:
                 

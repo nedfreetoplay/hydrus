@@ -1631,7 +1631,7 @@ class Controller( HydrusController.HydrusController ):
         job = self.CallRepeatingQtSafe( self.gui, 10.0, 10.0, 'repeating mouse idle check', self.CheckMouseIdle )
         self._daemon_jobs[ 'check_mouse_idle' ] = job
         
-        if self.db.IsFirstStart():
+        if self.db.is_first_start():
             
             message = 'Hi, this looks like the first time you have started the hydrus client. If this is not the first time you have run this client install, please check the help documentation under "install_dir/db".'
             message += '\n' * 2
@@ -1651,7 +1651,7 @@ class Controller( HydrusController.HydrusController ):
                 
             
         
-        if self.db.IsDBUpdated():
+        if self.db.is_db_updated():
             
             HydrusData.show_text('The client has updated to version {}!'.format(HC.SOFTWARE_VERSION))
             
@@ -2136,7 +2136,7 @@ class Controller( HydrusController.HydrusController ):
                             
                             from hydrus.core.networking import HydrusServerContextFactory
                             
-                            ( ssl_cert_path, ssl_key_path ) = self.db.GetSSLPaths()
+                            ( ssl_cert_path, ssl_key_path ) = self.db.get_ssl_paths()
                             
                             context_factory = HydrusServerContextFactory.GenerateSSLContextFactory( ssl_cert_path, ssl_key_path )
                             

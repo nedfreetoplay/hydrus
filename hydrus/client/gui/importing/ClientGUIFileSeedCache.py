@@ -1090,7 +1090,7 @@ class FileSeedCacheStatusControl( QW.QFrame ):
             
         else:
             
-            file_seed_cache_status = self._file_seed_cache.GetStatus()
+            file_seed_cache_status = self._file_seed_cache.get_status()
             
             ( num_done, num_to_do ) = file_seed_cache_status.GetValueRange()
             
@@ -1126,7 +1126,7 @@ class FileSeedCacheStatusControl( QW.QFrame ):
         
         if self._file_seed_cache is not None:
             
-            file_seed_cache_status = self._file_seed_cache.GetStatus()
+            file_seed_cache_status = self._file_seed_cache.get_status()
             
             ( num_done, num_to_do ) = file_seed_cache_status.GetValueRange()
             

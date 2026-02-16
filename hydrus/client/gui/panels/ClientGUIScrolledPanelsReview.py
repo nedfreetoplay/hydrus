@@ -1004,7 +1004,7 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         self._media_base_locations_to_ideal_usage = ClientFilesPhysical.FilesStorageBaseLocation.STATICGetIdealWeights( self._hydrus_local_file_storage_total_size, self._media_base_locations )
         
-        approx_total_db_size = self._controller.db.GetApproxTotalFileSize()
+        approx_total_db_size = self._controller.db.get_approx_total_file_size()
         
         self._current_db_path_st.setText( 'database (about ' + HydrusData.to_human_bytes(approx_total_db_size) + '): ' + self._controller.get_db_dir())
         self._current_install_path_st.setText( 'install: ' + HC.BASE_DIR )
@@ -3470,7 +3470,7 @@ Vacuuming is an expensive operation. It creates one (temporary) copy of the data
             page_count = vacuum_dict[ 'page_count' ]
             freelist_count = vacuum_dict[ 'freelist_count' ]
             
-            HydrusDB.CheckCanVacuumIntoData( path, page_size, page_count, freelist_count )
+            HydrusDB.check_can_vacuum_into_data(path, page_size, page_count, freelist_count)
             
         except Exception as e:
             
@@ -3577,7 +3577,7 @@ Vacuuming is an expensive operation. It creates one (temporary) copy of the data
         
         from hydrus.core import HydrusDB
         
-        vacuum_time_estimate = HydrusDB.GetApproxVacuumIntoDuration( db_size )
+        vacuum_time_estimate = HydrusDB.get_approx_vacuum_into_duration(db_size)
         
         pretty_vacuum_time_estimate = '{} to {}'.format( HydrusTime.TimeDeltaToPrettyTimeDelta( vacuum_time_estimate / 20 ), HydrusTime.TimeDeltaToPrettyTimeDelta( vacuum_time_estimate ) )
         

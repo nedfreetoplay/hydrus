@@ -785,7 +785,7 @@ class GallerySeedLogStatusControl( QW.QFrame ):
             
         else:
             
-            ( import_summary, ( num_done, num_to_do ) ) = self._gallery_seed_log.GetStatus()
+            ( import_summary, ( num_done, num_to_do ) ) = self._gallery_seed_log.get_status()
             
             self._log_summary_st.setText( import_summary )
             

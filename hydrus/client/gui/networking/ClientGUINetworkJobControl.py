@@ -253,7 +253,7 @@ class NetworkJobControl( QW.QFrame ):
             
             can_cancel = not self._network_job.IsDone()
             
-            ( status_text, current_speed, bytes_read, bytes_to_read ) = self._network_job.GetStatus()
+            ( status_text, current_speed, bytes_read, bytes_to_read ) = self._network_job.get_status()
             
             self._left_text.setText( HydrusText.GetFirstLine( status_text ) )
             

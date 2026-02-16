@@ -1517,7 +1517,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         
         BLOCK_SIZE = 10000
         
-        for ( group_of_subtag_ids, num_done, num_to_do ) in HydrusDB.ReadLargeIdQueryInSeparateChunks( self._c, query, BLOCK_SIZE ):
+        for ( group_of_subtag_ids, num_done, num_to_do ) in HydrusDB.read_large_id_query_in_separate_chunks(self._c, query, BLOCK_SIZE):
             
             for subtag_id in group_of_subtag_ids:
                 

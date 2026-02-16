@@ -323,7 +323,7 @@ class DB( HydrusDB.HydrusDB ):
         
         try:
             
-            self._CloseDBConnection()
+            self._close_db_connection()
             
             backup_path = os.path.join( self._db_dir, 'server_backup' )
             
@@ -352,7 +352,7 @@ class DB( HydrusDB.HydrusDB ):
             HydrusData.print_text('backing up: copying files')
             HydrusPaths.MirrorTree( self._files_dir, os.path.join( backup_path, 'server_files' ) )
             
-            self._InitDBConnection()
+            self._init_db_connection()
             
             HydrusData.print_text('backing up: done!')
             
@@ -383,7 +383,7 @@ class DB( HydrusDB.HydrusDB ):
             
         
     
-    def _CreateDB( self ):
+    def _create_db(self):
         
         HydrusPaths.MakeSureDirectoryExists( self._files_dir )
         
@@ -1263,7 +1263,7 @@ class DB( HydrusDB.HydrusDB ):
             
         
     
-    def _InitCaches( self ):
+    def _init_caches(self):
         
         self._over_monthly_data = False
         self._services_over_monthly_data = set()
@@ -1271,9 +1271,9 @@ class DB( HydrusDB.HydrusDB ):
         self._RefreshAccountInfoCache()
         
     
-    def _InitCommandsToMethods( self ):
+    def _init_commands_to_methods(self):
         
-        super()._InitCommandsToMethods()
+        super()._init_commands_to_methods()
         
         self._read_commands_to_methods.update(
             {
@@ -1330,7 +1330,7 @@ class DB( HydrusDB.HydrusDB ):
         )
         
     
-    def _InitExternalDatabases( self ):
+    def _init_external_databases(self):
         
         self._db_filenames[ 'external_mappings' ] = 'server.mappings.db'
         self._db_filenames[ 'external_master' ] = 'server.master.db'
@@ -1359,7 +1359,7 @@ class DB( HydrusDB.HydrusDB ):
         return self._service_ids_to_null_account_ids[ service_id ] == account_id
         
     
-    def _ManageDBError( self, job, e ):
+    def _manage_db_error(self, job, e):
         
         if isinstance( e, HydrusExceptions.NetworkException ):
             
@@ -2480,14 +2480,14 @@ class DB( HydrusDB.HydrusDB ):
         ( hash_id_map_table_name, tag_id_map_table_name ) = GenerateRepositoryMasterMapTableNames( service_id )
         ( current_files_table_name, deleted_files_table_name, pending_files_table_name, petitioned_files_table_name, ip_addresses_table_name ) = GenerateRepositoryFilesTableNames( service_id )
         
-        for ( block_of_master_hash_ids, num_done, num_to_do ) in HydrusDB.ReadLargeIdQueryInSeparateChunks( self._c, 'SELECT master_hash_id FROM {} CROSS JOIN {} USING ( service_hash_id );'.format( current_files_table_name, hash_id_map_table_name ), 1024 ):
+        for ( block_of_master_hash_ids, num_done, num_to_do ) in HydrusDB.read_large_id_query_in_separate_chunks(self._c, 'SELECT master_hash_id FROM {} CROSS JOIN {} USING ( service_hash_id );'.format(current_files_table_name, hash_id_map_table_name), 1024):
             
             self._DeferFilesDeleteIfNowOrphan( block_of_master_hash_ids, ignore_service_id = service_id )
             
         
         update_table_name = GenerateRepositoryUpdateTableName( service_id )
         
-        for ( block_of_master_hash_ids, num_done, num_to_do ) in HydrusDB.ReadLargeIdQueryInSeparateChunks( self._c, 'SELECT master_hash_id FROM {};'.format( update_table_name ), 1024 ):
+        for ( block_of_master_hash_ids, num_done, num_to_do ) in HydrusDB.read_large_id_query_in_separate_chunks(self._c, 'SELECT master_hash_id FROM {};'.format(update_table_name), 1024):
             
             self._DeferFilesDeleteIfNowOrphan( block_of_master_hash_ids, definitely_no_thumbnails = True, ignore_service_id = service_id )
             
@@ -4932,7 +4932,7 @@ class DB( HydrusDB.HydrusDB ):
             
         
     
-    def _UpdateDB( self, version ):
+    def _update_db(self, version):
         
         HydrusData.print_text('The server is updating to version ' + str(version + 1))
         
@@ -5000,7 +5000,7 @@ class DB( HydrusDB.HydrusDB ):
                     ( hash_id_map_table_name, tag_id_map_table_name ) = GenerateRepositoryMasterMapTableNames( service_id )
                     ( current_files_table_name, deleted_files_table_name, pending_files_table_name, petitioned_files_table_name, ip_addresses_table_name ) = GenerateRepositoryFilesTableNames( service_id )
                     
-                    for ( block_of_master_hash_ids, num_done, num_to_do ) in HydrusDB.ReadLargeIdQueryInSeparateChunks( self._c, 'SELECT master_hash_id FROM {} CROSS JOIN {} USING ( service_hash_id );'.format( deleted_files_table_name, hash_id_map_table_name ), 1024 ):
+                    for ( block_of_master_hash_ids, num_done, num_to_do ) in HydrusDB.read_large_id_query_in_separate_chunks(self._c, 'SELECT master_hash_id FROM {} CROSS JOIN {} USING ( service_hash_id );'.format(deleted_files_table_name, hash_id_map_table_name), 1024):
                         
                         self._DeferFilesDeleteIfNowOrphan( block_of_master_hash_ids )
                         
@@ -5047,7 +5047,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 try:
                     
-                    HydrusDB.CheckCanVacuumIntoCursor( db_path, self._c )
+                    HydrusDB.check_can_vacuum_into_cursor(db_path, self._c)
                     
                 except Exception as e:
                     
@@ -5063,7 +5063,7 @@ class DB( HydrusDB.HydrusDB ):
             
             if len( db_names ) > 0:
                 
-                self._CloseDBConnection()
+                self._close_db_connection()
                 
                 try:
                     
@@ -5077,7 +5077,7 @@ class DB( HydrusDB.HydrusDB ):
                             
                             started = HydrusTime.GetNowPrecise()
                             
-                            HydrusDB.VacuumDBInto( db_path )
+                            HydrusDB.vacuum_db_into(db_path)
                             
                             time_took = HydrusTime.GetNowPrecise() - started
                             
@@ -5097,7 +5097,7 @@ class DB( HydrusDB.HydrusDB ):
                     
                 finally:
                     
-                    self._InitDBConnection()
+                    self._init_db_connection()
                     
                 
             

@@ -56,7 +56,7 @@ class HydrusListItemModel( QC.QAbstractItemModel ):
         # an obvious extention here is to no longer use tuples for the main data/sort/display storage stuff, but dicts that do column_type->data, and then we can do dynamic column hiding and stuff and just do dict lookups
         
         self._column_list_type = column_list_type
-        self._column_list_status: ClientGUIListStatus.ColumnListStatus = CG.client_controller.column_list_manager.GetStatus( self._column_list_type )
+        self._column_list_status: ClientGUIListStatus.ColumnListStatus = CG.client_controller.column_list_manager.get_status(self._column_list_type)
         
         self._column_types_to_name_overrides = column_types_to_name_overrides
         
@@ -520,7 +520,7 @@ class BetterListCtrlTreeView( QW.QTreeView ):
         
         self._column_list_type = model.GetColumnListType()
         
-        self._column_list_status: ClientGUIListStatus.ColumnListStatus = CG.client_controller.column_list_manager.GetStatus( self._column_list_type )
+        self._column_list_status: ClientGUIListStatus.ColumnListStatus = CG.client_controller.column_list_manager.get_status(self._column_list_type)
         self._original_column_list_status = self._column_list_status
         
         self._temp_selected_data_record = []
@@ -1113,7 +1113,7 @@ class BetterListCtrlTreeView( QW.QTreeView ):
         self.blockSignals( True )
         self.header().blockSignals( True )
         
-        self._column_list_status: ClientGUIListStatus.ColumnListStatus = CG.client_controller.column_list_manager.GetStatus( self._column_list_type )
+        self._column_list_status: ClientGUIListStatus.ColumnListStatus = CG.client_controller.column_list_manager.get_status(self._column_list_type)
         self._original_column_list_status = self._column_list_status
         
         #

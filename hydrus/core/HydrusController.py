@@ -441,7 +441,7 @@ class HydrusController( object ):
             
         else:
             
-            return self.db.CurrentlyDoingJob()
+            return self.db.currently_doing_job()
             
         
     
@@ -470,7 +470,7 @@ class HydrusController( object ):
             raise Exception( 'Sorry, database does not seem to be alive at the moment!' )
             
         
-        self.db.ForceACommit()
+        self.db.force_a_commit()
         
     
     def get_boot_timestamp_ms(self):
@@ -485,7 +485,7 @@ class HydrusController( object ):
     
     def get_db_status(self):
         
-        return self.db.GetStatus()
+        return self.db.get_status()
         
     
     def get_hydrus_temp_dir(self):
@@ -775,11 +775,11 @@ class HydrusController( object ):
         
         if self.db is not None:
             
-            self.db.Shutdown()
+            self.db.shutdown()
             
             if not self._doing_fast_exit:
                 
-                while not self.db.LoopIsFinished():
+                while not self.db.loop_is_finished():
                     
                     self._publish_shutdown_subtext('waiting for db to finish up' + HC.UNICODE_ELLIPSIS)
                     
@@ -889,7 +889,7 @@ class HydrusController( object ):
     
     def wait_until_db_empty(self) -> None:
         
-        self.db.WaitUntilFree()
+        self.db.wait_until_free()
         
     
     def wait_until_model_free(self) -> None:

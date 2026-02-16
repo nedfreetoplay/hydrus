@@ -470,7 +470,7 @@ class Controller( HydrusController.HydrusController ):
                         
                         from hydrus.core.networking import HydrusServerContextFactory
                         
-                        ( ssl_cert_path, ssl_key_path ) = self.db.GetSSLPaths()
+                        ( ssl_cert_path, ssl_key_path ) = self.db.get_ssl_paths()
                         
                         context_factory = HydrusServerContextFactory.GenerateSSLContextFactory( ssl_cert_path, ssl_key_path )
                         

@@ -54,9 +54,9 @@ class TestClientDB( unittest.TestCase ):
     @classmethod
     def _delete_db( cls ):
         
-        cls._db.Shutdown()
+        cls._db.shutdown()
         
-        while not cls._db.LoopIsFinished():
+        while not cls._db.loop_is_finished():
             
             time.sleep( 0.1 )
             

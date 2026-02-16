@@ -52,7 +52,7 @@ class ClientDBMappingsCacheCombinedFilesStorage( ClientDBModule.ClientDBModule )
         
         if current_mappings_exist or pending_mappings_exist: # not worth iterating through all known tags for an empty service
             
-            for ( group_of_ids, num_done, num_to_do ) in HydrusDB.ReadLargeIdQueryInSeparateChunks( self._c, 'SELECT tag_id FROM tags;', 10000 ): # must be a cleverer way of doing this
+            for ( group_of_ids, num_done, num_to_do ) in HydrusDB.read_large_id_query_in_separate_chunks(self._c, 'SELECT tag_id FROM tags;', 10000): # must be a cleverer way of doing this
                 
                 with self._MakeTemporaryIntegerTable( group_of_ids, 'tag_id' ) as temp_table_name:
                     

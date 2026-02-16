@@ -1971,7 +1971,7 @@ class MultipleGalleryImport( HydrusSerialisable.SerialisableBase ):
                     
                     file_seed_cache = gallery_import.GetFileSeedCache()
                     
-                    if file_seed_cache.GetStatus().GetGenerationTime() > self._status_cache.GetGenerationTime(): # has there has been an update?
+                    if file_seed_cache.get_status().GetGenerationTime() > self._status_cache.GetGenerationTime(): # has there has been an update?
                         
                         self._SetStatusDirty()
                         

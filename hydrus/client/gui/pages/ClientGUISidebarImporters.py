@@ -532,7 +532,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
         
         ( status_enum, pretty_status ) = gallery_import.GetSimpleStatus()
         
-        file_seed_cache_status = gallery_import.GetFileSeedCache().GetStatus()
+        file_seed_cache_status = gallery_import.GetFileSeedCache().get_status()
         
         pretty_progress = file_seed_cache_status.GetStatusText( simple = True )
         
@@ -587,7 +587,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
         
         sort_status = ClientImporting.downloader_enum_sort_lookup[ status_enum ]
         
-        file_seed_cache_status = gallery_import.GetFileSeedCache().GetStatus()
+        file_seed_cache_status = gallery_import.GetFileSeedCache().get_status()
         
         ( num_done, num_total ) = file_seed_cache_status.GetValueRange()
         
@@ -1686,7 +1686,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
             pretty_checking_paused = ''
             
         
-        file_seed_cache_status = watcher.GetFileSeedCache().GetStatus()
+        file_seed_cache_status = watcher.GetFileSeedCache().get_status()
         
         pretty_progress = file_seed_cache_status.GetStatusText( simple = True )
         
@@ -1721,7 +1721,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
             sort_checking_paused = 1
             
         
-        file_seed_cache_status = watcher.GetFileSeedCache().GetStatus()
+        file_seed_cache_status = watcher.GetFileSeedCache().get_status()
         
         ( num_done, num_total ) = file_seed_cache_status.GetValueRange()
         

@@ -662,7 +662,7 @@ class MultipleWatcherImport( HydrusSerialisable.SerialisableBase ):
                     
                     file_seed_cache = watcher.GetFileSeedCache()
                     
-                    if file_seed_cache.GetStatus().GetGenerationTime() > self._status_cache.GetGenerationTime(): # has there has been an update?
+                    if file_seed_cache.get_status().GetGenerationTime() > self._status_cache.GetGenerationTime(): # has there has been an update?
                         
                         self._SetDirty()
                         

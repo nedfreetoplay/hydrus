@@ -831,13 +831,13 @@ class HydrusResourceRestrictedLockOn( HydrusResourceRestricted ):
             raise HydrusExceptions.BadRequestException( 'The server was already locked!' )
             
         
-        SG.server_controller.db.PauseAndDisconnect( True )
+        SG.server_controller.db.pause_and_disconnect(True)
         
         TIME_BLOCK = 0.25
         
         for i in range( int( 5 / TIME_BLOCK ) ):
             
-            if not SG.server_controller.db.IsConnected():
+            if not SG.server_controller.db.is_connected():
                 
                 break
                 
@@ -870,7 +870,7 @@ class HydrusResourceRestrictedLockOff( HydrusResourceRestricted ):
             raise HydrusExceptions.BadRequestException( 'The server is not busy!' )
             
         
-        SG.server_controller.db.PauseAndDisconnect( False )
+        SG.server_controller.db.pause_and_disconnect(False)
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
