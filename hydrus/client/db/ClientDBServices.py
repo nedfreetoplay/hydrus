@@ -84,14 +84,14 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
         self._InitCaches()
         
     
-    def _GetCriticalTableNames( self ) -> collections.abc.Collection[ str ]:
+    def _get_critical_table_names(self) -> collections.abc.Collection[ str]:
         
         return {
             'main.services'
         }
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict(self) -> dict:
         
         return {
             'main.services' : ( 'CREATE TABLE IF NOT EXISTS {} ( service_id INTEGER PRIMARY KEY AUTOINCREMENT, service_key BLOB_BYTES UNIQUE, service_type INTEGER, name TEXT, dictionary_string TEXT );', 400 ),
@@ -339,7 +339,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
         return service_types_to_service_ids
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         return []
         

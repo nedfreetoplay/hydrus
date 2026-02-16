@@ -21,7 +21,7 @@ class ClientDBServicePaths( ClientDBModule.ClientDBModule ):
         super().__init__( 'client service paths', cursor )
         
     
-    def _GetInitialIndexGenerationDict( self ) -> dict:
+    def _get_initial_index_generation_dict(self) -> dict:
         
         index_generation_dict = {}
         
@@ -41,7 +41,7 @@ class ClientDBServicePaths( ClientDBModule.ClientDBModule ):
         return index_generation_dict
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict(self) -> dict:
         
         return {
             'main.service_filenames' : ( 'CREATE TABLE IF NOT EXISTS {} ( service_id INTEGER, hash_id INTEGER, filename TEXT, PRIMARY KEY ( service_id, hash_id ) );', 400 ),
@@ -121,7 +121,7 @@ class ClientDBServicePaths( ClientDBModule.ClientDBModule ):
         return result
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         # if content type is a domain, then give urls? bleh
         

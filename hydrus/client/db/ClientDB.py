@@ -1155,8 +1155,8 @@ class DB( HydrusDB.HydrusDB ):
         
         for module in self._modules:
             
-            module.CreateInitialTables()
-            module.CreateInitialIndices()
+            module.create_initial_tables()
+            module.create_initial_indices()
             
         
         # intentionally not IF NOT EXISTS here, to catch double-creation accidents early and on a good table
@@ -3549,7 +3549,7 @@ class DB( HydrusDB.HydrusDB ):
     
     def _GetTablesAndColumnsUsingDefinitions( self, content_type ):
         
-        return HydrusLists.MassExtend( ( module.GetTablesAndColumnsThatUseDefinitions( content_type ) for module in self._modules ) )
+        return HydrusLists.MassExtend((module.get_tables_and_columns_that_use_definitions(content_type) for module in self._modules))
         
     
     def _GetTrashHashes( self, limit = None, minimum_age = None ):
@@ -5289,7 +5289,7 @@ class DB( HydrusDB.HydrusDB ):
         
         for module in self._modules:
             
-            all_tables_and_columns.extend( module.GetTablesAndColumnsThatUseDefinitions( HC.CONTENT_TYPE_HASH ) )
+            all_tables_and_columns.extend(module.get_tables_and_columns_that_use_definitions(HC.CONTENT_TYPE_HASH))
             
         
         temp_all_useful_definition_ids_table_name = 'durable_temp.all_useful_definition_ids_{}'.format( os.urandom( 8 ).hex() )

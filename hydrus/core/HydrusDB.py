@@ -955,14 +955,14 @@ class HydrusDB( HydrusDBBase.DBBase ):
         
         for module in self._modules:
             
-            module.Repair( version, self._cursor_transaction_wrapper )
+            module.repair(version, self._cursor_transaction_wrapper)
             
         
         if HG.controller.last_shutdown_was_bad():
             
             for module in self._modules:
                 
-                module.DoLastShutdownWasBadWork()
+                module.do_last_shutdown_was_bad_work()
                 
             
         

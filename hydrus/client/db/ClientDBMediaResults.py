@@ -591,7 +591,7 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
         return media_results
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         # if content type is a domain, then give urls? bleh
         

@@ -155,7 +155,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
         self.modules_services = modules_services
         
     
-    def _GetCriticalTableNames( self ) -> collections.abc.Collection[ str ]:
+    def _get_critical_table_names(self) -> collections.abc.Collection[ str]:
         
         return {
             'main.json_dict',
@@ -163,7 +163,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
         }
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict(self) -> dict:
         
         return {
             'main.json_dict' : ( 'CREATE TABLE IF NOT EXISTS {} ( name TEXT PRIMARY KEY, dump BLOB_BYTES );', 400 ),
@@ -474,7 +474,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
         return value
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         return []
         

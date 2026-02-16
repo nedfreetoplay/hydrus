@@ -156,7 +156,7 @@ class ClientDBFilesMetadataRich( ClientDBModule.ClientDBModule ):
         return self.GetHashIdStatus( hash_id, prefix = prefix )
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         return []
         

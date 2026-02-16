@@ -85,21 +85,21 @@ class ClientDBTagParents( ClientDBModule.ClientDBModule ):
         super().__init__( 'client tag parents', cursor )
         
     
-    def _GetInitialIndexGenerationDict( self ) -> dict:
+    def _get_initial_index_generation_dict(self) -> dict:
         
         index_generation_dict = {}
         
         return index_generation_dict
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict(self) -> dict:
         
         return {
             'main.tag_parent_application' : ( 'CREATE TABLE IF NOT EXISTS {} ( master_service_id INTEGER, service_index INTEGER, application_service_id INTEGER, PRIMARY KEY ( master_service_id, service_index ) );', 414 )
         }
         
     
-    def _GetServiceIndexGenerationDict( self, service_id ) -> dict:
+    def _get_service_index_generation_dict(self, service_id) -> dict:
         
         ( cache_ideal_tag_parents_lookup_table_name, cache_actual_tag_parents_lookup_table_name ) = GenerateTagParentsLookupCacheTableNames( service_id )
         
@@ -134,7 +134,7 @@ class ClientDBTagParents( ClientDBModule.ClientDBModule ):
         return index_generation_dict
         
     
-    def _GetServiceTableGenerationDict( self, service_id ) -> dict:
+    def _get_service_table_generation_dict(self, service_id) -> dict:
         
         ( cache_ideal_tag_parents_lookup_table_name, cache_actual_tag_parents_lookup_table_name ) = GenerateTagParentsLookupCacheTableNames( service_id )
         statuses_to_storage_table_names = GenerateTagParentsStorageTableNames( service_id )
@@ -149,7 +149,7 @@ class ClientDBTagParents( ClientDBModule.ClientDBModule ):
         }
         
     
-    def _GetServiceTablePrefixes( self ):
+    def _get_service_table_prefixes(self):
         
         return {
             TAG_PARENTS_IDEAL_PREFIX,
@@ -161,16 +161,16 @@ class ClientDBTagParents( ClientDBModule.ClientDBModule ):
         }
         
     
-    def _GetServiceIdsWeGenerateDynamicTablesFor( self ):
+    def _get_service_ids_we_generate_dynamic_tables_for(self):
         
         return self.modules_services.GetServiceIds( HC.REAL_TAG_SERVICES )
         
     
-    def _RepairRepopulateTables( self, repopulate_table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper ):
+    def _repair_repopulate_tables(self, repopulate_table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper):
         
-        for service_id in self._GetServiceIdsWeGenerateDynamicTablesFor():
+        for service_id in self._get_service_ids_we_generate_dynamic_tables_for():
             
-            table_generation_dict = self._GetServiceTableGenerationDict( service_id )
+            table_generation_dict = self._get_service_table_generation_dict(service_id)
             
             this_service_table_names = set( table_generation_dict.keys() )
             
@@ -291,16 +291,16 @@ class ClientDBTagParents( ClientDBModule.ClientDBModule ):
     
     def Generate( self, tag_service_id ):
         
-        table_generation_dict = self._GetServiceTableGenerationDict( tag_service_id )
+        table_generation_dict = self._get_service_table_generation_dict(tag_service_id)
         
         for ( table_name, ( create_query_without_name, version_added ) ) in table_generation_dict.items():
             
-            self._CreateTable( create_query_without_name, table_name )
+            self._create_table(create_query_without_name, table_name)
             
         
-        index_generation_dict = self._GetServiceIndexGenerationDict( tag_service_id )
+        index_generation_dict = self._get_service_index_generation_dict(tag_service_id)
         
-        for ( table_name, columns, unique, version_added ) in self._FlattenIndexGenerationDict( index_generation_dict ):
+        for ( table_name, columns, unique, version_added ) in self._flatten_index_generation_dict(index_generation_dict):
             
             self._create_index(table_name, columns, unique = unique)
             
@@ -536,13 +536,13 @@ class ClientDBTagParents( ClientDBModule.ClientDBModule ):
         return info
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         tables_and_columns = []
         
         if content_type == HC.CONTENT_TYPE_TAG:
             
-            for service_id in self._GetServiceIdsWeGenerateDynamicTablesFor():
+            for service_id in self._get_service_ids_we_generate_dynamic_tables_for():
                 
                 for table_name in GenerateTagParentsStorageTableNames( service_id ).values():
                     

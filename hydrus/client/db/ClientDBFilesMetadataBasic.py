@@ -13,7 +13,7 @@ class ClientDBFilesMetadataBasic( ClientDBModule.ClientDBModule ):
         super().__init__( 'client files simple metadata', cursor )
         
     
-    def _GetInitialIndexGenerationDict( self ) -> dict:
+    def _get_initial_index_generation_dict(self) -> dict:
         
         index_generation_dict = {}
         
@@ -33,7 +33,7 @@ class ClientDBFilesMetadataBasic( ClientDBModule.ClientDBModule ):
         return index_generation_dict
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict(self) -> dict:
         
         return {
             'main.files_info' : ( 'CREATE TABLE IF NOT EXISTS {} ( hash_id INTEGER PRIMARY KEY, size INTEGER, mime INTEGER, width INTEGER, height INTEGER, duration INTEGER, num_frames INTEGER, has_audio INTEGER_BOOLEAN, num_words INTEGER );', 400 ),
@@ -186,7 +186,7 @@ class ClientDBFilesMetadataBasic( ClientDBModule.ClientDBModule ):
         return result
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         if content_type == HC.CONTENT_TYPE_HASH:
             

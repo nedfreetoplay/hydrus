@@ -501,7 +501,7 @@ class ClientDBTagDisplay( ClientDBModule.ClientDBModule ):
         return tags_to_service_keys_to_siblings_and_parents
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         return []
         

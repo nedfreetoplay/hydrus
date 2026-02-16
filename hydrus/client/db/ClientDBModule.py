@@ -18,7 +18,7 @@ class ClientDBModule( HydrusDBModule.HydrusDBModule ):
         CG.client_controller.blocking_safe_show_critical_message('hydrus db failed', message)
         
     
-    def _PresentMissingIndicesWarningToUser( self, index_names: collections.abc.Collection[ str ] ):
+    def _present_missing_indices_warning_to_user(self, index_names: collections.abc.Collection[ str]):
         
         index_names = sorted( index_names )
         
@@ -32,7 +32,7 @@ class ClientDBModule( HydrusDBModule.HydrusDBModule ):
         CG.client_controller.frame_splash_status.SetText( 'recreating indices' )
         
     
-    def _PresentMissingTablesWarningToUser( self, table_names: collections.abc.Collection[ str ] ):
+    def _present_missing_tables_warning_to_user(self, table_names: collections.abc.Collection[ str]):
         
         table_names = sorted( table_names )
         
@@ -71,7 +71,7 @@ class ClientDBModule( HydrusDBModule.HydrusDBModule ):
         CG.client_controller.frame_splash_status.SetText( 'recreating tables' )
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         raise NotImplementedError()
         

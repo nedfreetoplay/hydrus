@@ -34,7 +34,7 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
         super().__init__( 'client hashes local cache', cursor )
         
     
-    def _DoLastShutdownWasBadWork( self ):
+    def _do_last_shutdown_was_bad_work(self):
         
         # We just had a crash, oh no! There is a chance we are desynced here, so let's see what was recently added and make sure we are good.
         
@@ -43,7 +43,7 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
         self.SyncHashIds( last_twenty_hash_ids )
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict(self) -> dict:
         
         return {
             'external_caches.local_hashes_cache' : ( 'CREATE TABLE IF NOT EXISTS {} ( hash_id INTEGER PRIMARY KEY, hash BLOB_BYTES UNIQUE );', 429 )
@@ -95,7 +95,7 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
             
         
     
-    def _RepairRepopulateTables( self, table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper ):
+    def _repair_repopulate_tables(self, table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper):
         
         self.Resync()
         
@@ -208,7 +208,7 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
         return hash_ids_to_hashes
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         # we actually provide a backup, which we may want to automate later in mappings caches etc...
         
@@ -389,7 +389,7 @@ class ClientDBCacheLocalTags( ClientDBModule.ClientDBModule ):
         super().__init__( 'client tags local cache', cursor )
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict(self) -> dict:
         
         return {
             'external_caches.local_tags_cache' : ( 'CREATE TABLE IF NOT EXISTS {} ( tag_id INTEGER PRIMARY KEY, tag TEXT UNIQUE );', 400 )
@@ -441,7 +441,7 @@ class ClientDBCacheLocalTags( ClientDBModule.ClientDBModule ):
             
         
     
-    def _RepairRepopulateTables( self, table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper ):
+    def _repair_repopulate_tables(self, table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper):
         
         self.Repopulate()
         
@@ -467,7 +467,7 @@ class ClientDBCacheLocalTags( ClientDBModule.ClientDBModule ):
         self._execute_many('DELETE FROM local_tags_cache WHERE tag_id = ?;', ((tag_id,) for tag_id in tag_ids))
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         # we actually provide a backup, which we may want to automate later in mappings caches etc...
         

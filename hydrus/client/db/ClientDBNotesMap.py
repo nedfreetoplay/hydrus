@@ -18,7 +18,7 @@ class ClientDBNotesMap( ClientDBModule.ClientDBModule ):
         super().__init__( 'client notes mapping', cursor )
         
     
-    def _GetInitialIndexGenerationDict( self ) -> dict:
+    def _get_initial_index_generation_dict(self) -> dict:
         
         index_generation_dict = {}
         
@@ -30,7 +30,7 @@ class ClientDBNotesMap( ClientDBModule.ClientDBModule ):
         return index_generation_dict
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict(self) -> dict:
         
         return {
             'main.file_notes' : ( 'CREATE TABLE IF NOT EXISTS {} ( hash_id INTEGER, name_id INTEGER, note_id INTEGER, PRIMARY KEY ( hash_id, name_id ) );', 400 )
@@ -156,7 +156,7 @@ class ClientDBNotesMap( ClientDBModule.ClientDBModule ):
         return hash_ids_to_names_and_notes
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         # if content type is a domain, then give urls? bleh
         

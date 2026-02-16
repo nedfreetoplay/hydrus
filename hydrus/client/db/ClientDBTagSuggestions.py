@@ -20,7 +20,7 @@ class ClientDBRecentTags( ClientDBModule.ClientDBModule ):
         super().__init__( 'client recent tags', cursor )
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict(self) -> dict:
         
         return {
             'main.recent_tags' : ( 'CREATE TABLE IF NOT EXISTS {} ( service_id INTEGER, tag_id INTEGER, timestamp_ms INTEGER, PRIMARY KEY ( service_id, tag_id ) );', 546 )
@@ -70,7 +70,7 @@ class ClientDBRecentTags( ClientDBModule.ClientDBModule ):
         return sorted_recent_tags
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         tables_and_columns = []
         

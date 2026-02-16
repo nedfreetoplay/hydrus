@@ -25,7 +25,7 @@ class ClientDBFilesMaintenanceQueue( ClientDBModule.ClientDBModule ):
         self.modules_hashes_local_cache = modules_hashes_local_cache
         
     
-    def _GetInitialIndexGenerationDict( self ) -> dict:
+    def _get_initial_index_generation_dict(self) -> dict:
         
         index_generation_dict = {}
         
@@ -36,7 +36,7 @@ class ClientDBFilesMaintenanceQueue( ClientDBModule.ClientDBModule ):
         return index_generation_dict
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict(self) -> dict:
         
         return {
             'external_caches.file_maintenance_jobs' : ( 'CREATE TABLE IF NOT EXISTS {} ( hash_id INTEGER, job_type INTEGER, time_can_start INTEGER, PRIMARY KEY ( hash_id, job_type ) );', 400 )
@@ -158,7 +158,7 @@ class ClientDBFilesMaintenanceQueue( ClientDBModule.ClientDBModule ):
         return job_types_to_counts
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         tables_and_columns = []
         

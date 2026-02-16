@@ -233,7 +233,7 @@ class DBLocationContextBranch( DBLocationContext, ClientDBModule.ClientDBModule 
         return '{} CROSS JOIN {} USING ( hash_id )'.format( table_phrase, self.SINGLE_TABLE_NAME )
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         return []
         
@@ -257,7 +257,7 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
         super().__init__( 'client file locations', cursor )
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict(self) -> dict:
         
         return {
             'main.local_file_deletion_reasons' : ( 'CREATE TABLE IF NOT EXISTS {} ( hash_id INTEGER PRIMARY KEY, reason_id INTEGER );', 400 ),
@@ -267,7 +267,7 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
         }
         
     
-    def _GetServiceIndexGenerationDict( self, service_id ) -> dict:
+    def _get_service_index_generation_dict(self, service_id) -> dict:
         
         ( current_files_table_name, deleted_files_table_name, pending_files_table_name, petitioned_files_table_name ) = GenerateFilesTableNames( service_id )
         
@@ -289,7 +289,7 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
         return index_generation_dict
         
     
-    def _GetServiceTableGenerationDict( self, service_id ) -> dict:
+    def _get_service_table_generation_dict(self, service_id) -> dict:
         
         ( current_files_table_name, deleted_files_table_name, pending_files_table_name, petitioned_files_table_name ) = GenerateFilesTableNames( service_id )
         
@@ -301,12 +301,12 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
         }
         
     
-    def _GetServiceIdsWeGenerateDynamicTablesFor( self ):
+    def _get_service_ids_we_generate_dynamic_tables_for(self):
         
         return self.modules_services.GetServiceIds( HC.REAL_FILE_SERVICES )
         
     
-    def _GetServiceTablePrefixes( self ):
+    def _get_service_table_prefixes(self):
         
         return {
             FILES_CURRENT_PREFIX,
@@ -761,16 +761,16 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
     
     def GenerateFilesTables( self, service_id: int ):
         
-        table_generation_dict = self._GetServiceTableGenerationDict( service_id )
+        table_generation_dict = self._get_service_table_generation_dict(service_id)
         
         for ( table_name, ( create_query_without_name, version_added ) ) in table_generation_dict.items():
             
-            self._CreateTable( create_query_without_name, table_name )
+            self._create_table(create_query_without_name, table_name)
             
         
-        index_generation_dict = self._GetServiceIndexGenerationDict( service_id )
+        index_generation_dict = self._get_service_index_generation_dict(service_id)
         
-        for ( table_name, columns, unique, version_added ) in self._FlattenIndexGenerationDict( index_generation_dict ):
+        for ( table_name, columns, unique, version_added ) in self._flatten_index_generation_dict(index_generation_dict):
             
             self._create_index(table_name, columns, unique = unique)
             
@@ -1167,7 +1167,7 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
         return '{} CROSS JOIN {} USING ( hash_id )'.format( table_name, files_table_name )
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         tables_and_columns = []
         

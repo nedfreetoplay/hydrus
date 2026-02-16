@@ -21,14 +21,14 @@ class ClientDBMasterHashes( ClientDBModule.ClientDBModule ):
         self._hash_ids_to_hashes_cache = {}
         
     
-    def _GetCriticalTableNames( self ) -> collections.abc.Collection[ str ]:
+    def _get_critical_table_names(self) -> collections.abc.Collection[ str]:
         
         return {
             'external_master.hashes'
         }
         
     
-    def _GetInitialIndexGenerationDict( self ) -> dict:
+    def _get_initial_index_generation_dict(self) -> dict:
         
         index_generation_dict = {}
         
@@ -41,7 +41,7 @@ class ClientDBMasterHashes( ClientDBModule.ClientDBModule ):
         return index_generation_dict
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict(self) -> dict:
         
         return {
             'external_master.hashes' : ( 'CREATE TABLE IF NOT EXISTS {} ( hash_id INTEGER PRIMARY KEY, hash BLOB_BYTES UNIQUE );', 400 ),
@@ -336,7 +336,7 @@ class ClientDBMasterHashes( ClientDBModule.ClientDBModule ):
         return hash_ids_to_hashes
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         if content_type == HC.CONTENT_TYPE_HASH:
             
@@ -382,7 +382,7 @@ class ClientDBMasterTexts( ClientDBModule.ClientDBModule ):
         super().__init__( 'client texts master', cursor )
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict(self) -> dict:
         
         return {
             'external_master.labels' : ( 'CREATE TABLE IF NOT EXISTS {} ( label_id INTEGER PRIMARY KEY, label TEXT UNIQUE );', 400 ),
@@ -392,7 +392,7 @@ class ClientDBMasterTexts( ClientDBModule.ClientDBModule ):
         }
         
     
-    def _RepairRepopulateTables( self, repopulate_table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper ):
+    def _repair_repopulate_tables(self, repopulate_table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper):
         
         if 'external_caches.notes_fts4' in repopulate_table_names:
             
@@ -438,7 +438,7 @@ class ClientDBMasterTexts( ClientDBModule.ClientDBModule ):
         return note_id
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         # maaaybe a note content_type in the end
         
@@ -488,7 +488,7 @@ class ClientDBMasterTags( ClientDBModule.ClientDBModule ):
         self._tag_ids_to_tags_cache = {}
         
     
-    def _GetCriticalTableNames( self ) -> collections.abc.Collection[ str ]:
+    def _get_critical_table_names(self) -> collections.abc.Collection[ str]:
         
         return {
             'external_master.namespaces',
@@ -497,7 +497,7 @@ class ClientDBMasterTags( ClientDBModule.ClientDBModule ):
         }
         
     
-    def _GetInitialIndexGenerationDict( self ) -> dict:
+    def _get_initial_index_generation_dict(self) -> dict:
         
         index_generation_dict = {}
         
@@ -509,7 +509,7 @@ class ClientDBMasterTags( ClientDBModule.ClientDBModule ):
         return index_generation_dict
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict(self) -> dict:
         
         return {
             'external_master.namespaces' : ( 'CREATE TABLE IF NOT EXISTS {} ( namespace_id INTEGER PRIMARY KEY, namespace TEXT UNIQUE );', 400 ),
@@ -621,7 +621,7 @@ class ClientDBMasterTags( ClientDBModule.ClientDBModule ):
         return subtag_id
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         # maybe content type subtag/namespace, which would useful for bad subtags, although that's tricky because then the knock-on is killing tag definition rows
         
@@ -804,7 +804,7 @@ class ClientDBMasterURLs( ClientDBModule.ClientDBModule ):
         super().__init__( 'client urls master', cursor )
         
     
-    def _GetInitialIndexGenerationDict( self ) -> dict:
+    def _get_initial_index_generation_dict(self) -> dict:
         
         index_generation_dict = {}
         
@@ -815,7 +815,7 @@ class ClientDBMasterURLs( ClientDBModule.ClientDBModule ):
         return index_generation_dict
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict(self) -> dict:
         
         return {
             'external_master.url_domains' : ( 'CREATE TABLE IF NOT EXISTS {} ( domain_id INTEGER PRIMARY KEY, domain TEXT UNIQUE );', 400 ),
@@ -823,7 +823,7 @@ class ClientDBMasterURLs( ClientDBModule.ClientDBModule ):
         }
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         # if content type is a domain, then give urls? bleh
         

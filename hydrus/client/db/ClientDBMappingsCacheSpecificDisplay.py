@@ -54,7 +54,7 @@ class ClientDBMappingsCacheSpecificDisplay( ClientDBModule.ClientDBModule ):
         return index_generation_dict
         
     
-    def _GetServiceIndexGenerationDict( self, service_id ) -> dict:
+    def _get_service_index_generation_dict(self, service_id) -> dict:
         
         tag_service_id = service_id
         
@@ -86,7 +86,7 @@ class ClientDBMappingsCacheSpecificDisplay( ClientDBModule.ClientDBModule ):
         return table_dict
         
     
-    def _GetServiceTableGenerationDict( self, service_id ) -> dict:
+    def _get_service_table_generation_dict(self, service_id) -> dict:
         
         tag_service_id = service_id
         
@@ -104,7 +104,7 @@ class ClientDBMappingsCacheSpecificDisplay( ClientDBModule.ClientDBModule ):
         return table_dict
         
     
-    def _GetServiceTablePrefixes( self ):
+    def _get_service_table_prefixes(self):
         
         return {
             ClientDBMappingsStorage.SPECIFIC_DISPLAY_MAPPINGS_CURRENT_PREFIX,
@@ -112,12 +112,12 @@ class ClientDBMappingsCacheSpecificDisplay( ClientDBModule.ClientDBModule ):
         }
         
     
-    def _GetServiceIdsWeGenerateDynamicTablesFor( self ):
+    def _get_service_ids_we_generate_dynamic_tables_for(self):
         
         return self.modules_services.GetServiceIds( HC.REAL_TAG_SERVICES )
         
     
-    def _RepairRepopulateTables( self, table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper ):
+    def _repair_repopulate_tables(self, table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper):
         
         file_service_ids = list( self.modules_services.GetServiceIds( HC.FILE_SERVICES_WITH_SPECIFIC_MAPPING_CACHES ) )
         tag_service_ids = list( self.modules_services.GetServiceIds( HC.REAL_TAG_SERVICES ) )
@@ -543,7 +543,7 @@ class ClientDBMappingsCacheSpecificDisplay( ClientDBModule.ClientDBModule ):
         
         for ( table_name, ( create_query_without_name, version_added ) ) in table_generation_dict.items():
             
-            self._CreateTable( create_query_without_name, table_name )
+            self._create_table(create_query_without_name, table_name)
             
         
         if populate_from_storage:
@@ -569,7 +569,7 @@ class ClientDBMappingsCacheSpecificDisplay( ClientDBModule.ClientDBModule ):
         
         index_generation_dict = self._GetServiceIndexGenerationDictSingle( file_service_id, tag_service_id )
         
-        for ( table_name, columns, unique, version_added ) in self._FlattenIndexGenerationDict( index_generation_dict ):
+        for ( table_name, columns, unique, version_added ) in self._flatten_index_generation_dict(index_generation_dict):
             
             self._create_index(table_name, columns, unique = unique)
             
@@ -580,13 +580,13 @@ class ClientDBMappingsCacheSpecificDisplay( ClientDBModule.ClientDBModule ):
         return self._missing_tag_service_pairs
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         tables_and_columns = []
         
         if content_type == HC.CONTENT_TYPE_TAG:
             
-            table_dict = self._GetServicesTableGenerationDict()
+            table_dict = self._get_services_table_generation_dict()
             
             for table_name in table_dict.keys():
                 
@@ -595,7 +595,7 @@ class ClientDBMappingsCacheSpecificDisplay( ClientDBModule.ClientDBModule ):
             
         elif content_type == HC.CONTENT_TYPE_HASH:
             
-            table_dict = self._GetServicesTableGenerationDict()
+            table_dict = self._get_services_table_generation_dict()
             
             for table_name in table_dict.keys():
                 

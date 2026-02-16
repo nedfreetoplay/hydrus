@@ -20,7 +20,7 @@ class ClientDBURLMap( ClientDBModule.ClientDBModule ):
         super().__init__( 'client urls mapping', cursor )
         
     
-    def _GetInitialIndexGenerationDict( self ) -> dict:
+    def _get_initial_index_generation_dict(self) -> dict:
         
         index_generation_dict = {}
         
@@ -31,7 +31,7 @@ class ClientDBURLMap( ClientDBModule.ClientDBModule ):
         return index_generation_dict
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict(self) -> dict:
         
         return {
             'main.url_map' : ( 'CREATE TABLE IF NOT EXISTS {} ( hash_id INTEGER, url_id INTEGER, PRIMARY KEY ( hash_id, url_id ) );', 485 )
@@ -242,7 +242,7 @@ class ClientDBURLMap( ClientDBModule.ClientDBModule ):
         return hash_ids_to_urls
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         # if content type is a domain, then give urls? bleh
         

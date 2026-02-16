@@ -17,7 +17,7 @@ class ClientDBRatings( ClientDBModule.ClientDBModule ):
         super().__init__( 'client ratings', cursor )
         
     
-    def _GetInitialIndexGenerationDict( self ) -> dict:
+    def _get_initial_index_generation_dict(self) -> dict:
         
         index_generation_dict = {}
         
@@ -34,7 +34,7 @@ class ClientDBRatings( ClientDBModule.ClientDBModule ):
         return index_generation_dict
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict(self) -> dict:
         
         return {
             'main.local_ratings' : ( 'CREATE TABLE IF NOT EXISTS {} ( service_id INTEGER, hash_id INTEGER, rating REAL, PRIMARY KEY ( service_id, hash_id ) );', 400 ),
@@ -82,7 +82,7 @@ class ClientDBRatings( ClientDBModule.ClientDBModule ):
         return info
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         tables_and_columns = []
         

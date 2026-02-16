@@ -155,7 +155,7 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
         return dupe_hash_ids
         
     
-    def _GetInitialIndexGenerationDict( self ) -> dict:
+    def _get_initial_index_generation_dict(self) -> dict:
         
         index_generation_dict = {}
         
@@ -170,7 +170,7 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
         return index_generation_dict
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict(self) -> dict:
         
         return {
             'main.alternate_file_groups' : ( 'CREATE TABLE IF NOT EXISTS {} ( alternates_group_id INTEGER PRIMARY KEY );', 469 ),
@@ -1027,7 +1027,7 @@ class ClientDBFilesDuplicatesStorage( ClientDBModule.ClientDBModule ):
         return table_join
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         tables_and_columns = []
         

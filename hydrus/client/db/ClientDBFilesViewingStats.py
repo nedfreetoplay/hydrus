@@ -22,7 +22,7 @@ class ClientDBFilesViewingStats( ClientDBModule.ClientDBModule ):
         super().__init__( 'client files viewing stats', cursor )
         
     
-    def _GetInitialIndexGenerationDict( self ) -> dict:
+    def _get_initial_index_generation_dict(self) -> dict:
         
         index_generation_dict = {}
         
@@ -36,7 +36,7 @@ class ClientDBFilesViewingStats( ClientDBModule.ClientDBModule ):
         return index_generation_dict
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict(self) -> dict:
         
         # TODO: Migrate last_viewed_timestamp over to the FilesTimestamps module
         # revisiting in 2025-01 and I care less, but maybe it is important somehow
@@ -205,7 +205,7 @@ class ClientDBFilesViewingStats( ClientDBModule.ClientDBModule ):
         return HydrusData.build_key_to_list_dict(((hash_id, (canvas_type, last_viewed_timestamp_ms, views, viewtime_ms)) for (hash_id, canvas_type, last_viewed_timestamp_ms, views, viewtime_ms) in self._execute(query)))
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         tables_and_columns = []
         

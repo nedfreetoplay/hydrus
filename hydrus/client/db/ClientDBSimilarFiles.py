@@ -282,7 +282,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
         return pixel_dupe_hash_ids
         
     
-    def _GetInitialIndexGenerationDict( self ) -> dict:
+    def _get_initial_index_generation_dict(self) -> dict:
         
         index_generation_dict = {}
         
@@ -301,7 +301,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
         return index_generation_dict
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict(self) -> dict:
         
         return {
             'external_master.shape_perceptual_hashes' : ( 'CREATE TABLE IF NOT EXISTS {} ( phash_id INTEGER PRIMARY KEY, phash BLOB_BYTES UNIQUE );', 451 ),
@@ -585,7 +585,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
             
         
     
-    def _RepairRepopulateTables( self, repopulate_table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper ):
+    def _repair_repopulate_tables(self, repopulate_table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper):
         
         if 'main.shape_vptree' in repopulate_table_names or 'main.shape_maintenance_branch_regen' in repopulate_table_names:
             
@@ -720,7 +720,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
         return self._stl(self._execute('SELECT hash_id FROM shape_search_cache WHERE searched_distance < ?;', (search_distance,)).fetchmany(num_to_get))
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         if content_type == HC.CONTENT_TYPE_HASH:
             

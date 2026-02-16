@@ -56,7 +56,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
             
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict(self) -> dict:
         
         return {
             'main.last_shutdown_work_time' : ( 'CREATE TABLE IF NOT EXISTS {} ( last_shutdown_work_time INTEGER );', 400 ),
@@ -414,7 +414,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
         
         for module in self._modules:
             
-            surplus_table_names = module.GetSurplusServiceTableNames( all_table_names )
+            surplus_table_names = module.get_surplus_service_table_names(all_table_names)
             
             all_surplus_table_names.update( surplus_table_names )
             
@@ -667,7 +667,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
         return names_to_analyze
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         tables_and_columns = []
         

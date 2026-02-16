@@ -89,7 +89,7 @@ class ClientDBMappingsCounts( ClientDBModule.ClientDBModule ):
         return table_dict
         
     
-    def _GetServiceTableGenerationDict( self, service_id ) -> dict:
+    def _get_service_table_generation_dict(self, service_id) -> dict:
         
         tag_service_id = service_id
         
@@ -111,7 +111,7 @@ class ClientDBMappingsCounts( ClientDBModule.ClientDBModule ):
         return table_dict
         
     
-    def _GetServiceTablePrefixes( self ):
+    def _get_service_table_prefixes(self):
         
         return {
             FILES_COMBINED_AC_CACHE_PREFIX,
@@ -121,12 +121,12 @@ class ClientDBMappingsCounts( ClientDBModule.ClientDBModule ):
         }
         
     
-    def _GetServiceIdsWeGenerateDynamicTablesFor( self ):
+    def _get_service_ids_we_generate_dynamic_tables_for(self):
         
         return self.modules_services.GetServiceIds( HC.REAL_TAG_SERVICES )
         
     
-    def _RepairRepopulateTables( self, table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper ):
+    def _repair_repopulate_tables(self, table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper):
         
         file_service_ids = list( self.modules_services.GetServiceIds( HC.FILE_SERVICES_WITH_SPECIFIC_TAG_LOOKUP_CACHES ) )
         file_service_ids.append( self.modules_services.combined_file_service_id )
@@ -238,7 +238,7 @@ class ClientDBMappingsCounts( ClientDBModule.ClientDBModule ):
         
         for ( table_name, ( create_query_without_name, version_added ) ) in table_generation_dict.items():
             
-            self._CreateTable( create_query_without_name, table_name )
+            self._create_table(create_query_without_name, table_name)
             
         
         #
@@ -557,13 +557,13 @@ class ClientDBMappingsCounts( ClientDBModule.ClientDBModule ):
         return 'SELECT tag_id FROM {} WHERE current_count > 0'.format( counts_cache_table_name )
     
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         tables_and_columns = []
         
         if content_type == HC.CONTENT_TYPE_TAG:
             
-            table_dict = self._GetServicesTableGenerationDict()
+            table_dict = self._get_services_table_generation_dict()
             
             for table_name in table_dict.keys():
                 

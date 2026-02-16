@@ -21,7 +21,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         self._db_dir = db_dir
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict(self) -> dict:
         
         return {
             'main.client_files_subfolders' : ( 'CREATE TABLE IF NOT EXISTS {} ( prefix TEXT, location TEXT, purge INTEGER_BOOLEAN, PRIMARY KEY ( prefix, location ) );', 541 ),
@@ -119,7 +119,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         return ( media_base_locations, thumbnail_override_base_location )
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         tables_and_columns = []
         

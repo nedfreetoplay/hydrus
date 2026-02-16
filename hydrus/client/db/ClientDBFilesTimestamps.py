@@ -43,7 +43,7 @@ class ClientDBFilesTimestamps( ClientDBModule.ClientDBModule ):
         self.modules_files_storage = modules_files_storage
         
     
-    def _GetInitialIndexGenerationDict( self ) -> dict:
+    def _get_initial_index_generation_dict(self) -> dict:
         
         index_generation_dict = {}
         
@@ -62,7 +62,7 @@ class ClientDBFilesTimestamps( ClientDBModule.ClientDBModule ):
         return index_generation_dict
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict(self) -> dict:
         
         return {
             'main.archive_timestamps' : ( 'CREATE TABLE IF NOT EXISTS {} ( hash_id INTEGER PRIMARY KEY, archived_timestamp_ms INTEGER );', 474 ),
@@ -247,7 +247,7 @@ class ClientDBFilesTimestamps( ClientDBModule.ClientDBModule ):
         return dict(self._execute(query))
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions(self, content_type: int) -> list[ tuple[ str, str]]:
         
         if content_type == HC.CONTENT_TYPE_HASH:
             
