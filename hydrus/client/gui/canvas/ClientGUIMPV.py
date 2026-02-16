@@ -1431,11 +1431,11 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                         
                         if mime == HC.ANIMATION_APNG:
                             
-                            self._times_to_play_animation = HydrusAnimationHandling.GetTimesToPlayAPNG( path )
+                            self._times_to_play_animation = HydrusAnimationHandling.get_times_to_play_apng(path)
                             
                         else:
                             
-                            self._times_to_play_animation = HydrusAnimationHandling.GetTimesToPlayPILAnimation( path )
+                            self._times_to_play_animation = HydrusAnimationHandling.get_times_to_play_pil_animation(path)
                             
                         
                     

@@ -602,7 +602,7 @@ def GetFileInfo( path, mime = None, ok_to_look_for_hydrus_updates = False ):
         
     elif mime in HC.VIEWABLE_ANIMATIONS:
         
-        ( ( width, height ), duration_ms, num_frames ) = HydrusAnimationHandling.GetAnimationProperties( path, mime )
+        ( ( width, height ), duration_ms, num_frames ) = HydrusAnimationHandling.get_animation_properties(path, mime)
         
     elif mime in HC.IMAGES:
         
@@ -845,7 +845,7 @@ def GetMime( path, ok_to_look_for_hydrus_updates = False ):
                 
             elif mime == HC.UNDETERMINED_PNG:
                 
-                if HydrusAnimationHandling.IsPNGAnimated( first_bytes_of_file ):
+                if HydrusAnimationHandling.is_png_animated(first_bytes_of_file):
                     
                     return HC.ANIMATION_APNG
                     
@@ -856,7 +856,7 @@ def GetMime( path, ok_to_look_for_hydrus_updates = False ):
                 
             elif mime == HC.UNDETERMINED_GIF:
                 
-                if HydrusAnimationHandling.PILAnimationHasDuration( path ):
+                if HydrusAnimationHandling.pil_animation_has_duration(path):
                     
                     return HC.ANIMATION_GIF
                     
@@ -879,7 +879,7 @@ def GetMime( path, ok_to_look_for_hydrus_updates = False ):
                 
             elif mime == HC.UNDETERMINED_WEBP:
                 
-                if HydrusAnimationHandling.PILAnimationHasDuration( path ):
+                if HydrusAnimationHandling.pil_animation_has_duration(path):
                     
                     return HC.ANIMATION_WEBP
                     
