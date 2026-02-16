@@ -433,7 +433,7 @@ class EditGUGPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 else:
                     
-                    url_class_text = 'Matched ' + url_class.GetName() + ' url class.'
+                    url_class_text = 'Matched ' + url_class.get_name() + ' url class.'
                     
                 
             except HydrusExceptions.URLClassException:
@@ -470,7 +470,7 @@ class EditNGUGPanel( ClientGUIScrolledPanels.EditPanel ):
         self._original_ngug = ngug
         self._available_gugs = list( available_gugs )
         
-        self._available_gugs.sort( key = lambda g: g.GetName() )
+        self._available_gugs.sort(key = lambda g: g.get_name())
         
         self._name = QW.QLineEdit( self )
         
@@ -751,7 +751,7 @@ class EditGUGsPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _ConvertGUGToDisplayTuple( self, gug ):
         
-        name = gug.GetName()
+        name = gug.get_name()
         example_url = gug.GetExampleURL()
         
         try:
@@ -787,9 +787,9 @@ class EditGUGsPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _ConvertNGUGToDisplayTuple( self, ngug ):
         
-        existing_names = { gug.GetName() for gug in self._gug_list_ctrl.GetData() }
+        existing_names = {gug.get_name() for gug in self._gug_list_ctrl.GetData()}
         
-        name = ngug.GetName()
+        name = ngug.get_name()
         gugs = ngug.GetGUGNames()
         missing = len( set( gugs ).difference( existing_names ) ) > 0
         
@@ -810,9 +810,9 @@ class EditGUGsPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _ConvertNGUGToSortTuple( self, ngug ):
         
-        existing_names = { gug.GetName() for gug in self._gug_list_ctrl.GetData() }
+        existing_names = {gug.get_name() for gug in self._gug_list_ctrl.GetData()}
         
-        name = ngug.GetName()
+        name = ngug.get_name()
         gugs = ngug.GetGUGNames()
         missing = len( set( gugs ).difference( existing_names ) ) > 0
         
@@ -841,7 +841,7 @@ class EditGUGsPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     if deletee_ngug_key in ngug.GetGUGKeys():
                         
-                        affected_ngug_names.append( ngug.GetName() )
+                        affected_ngug_names.append(ngug.get_name())
                         
                     
                 
@@ -849,7 +849,7 @@ class EditGUGsPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     affected_ngug_names.sort()
                     
-                    message = 'The GUG "' + deletee.GetName() + '" is in the NGUGs:'
+                    message = 'The GUG "' + deletee.get_name() + '" is in the NGUGs:'
                     message += '\n' * 2
                     message += '\n'.join( affected_ngug_names )
                     message += '\n' * 2
@@ -938,8 +938,8 @@ class EditGUGsPanel( ClientGUIScrolledPanels.EditPanel ):
         gugs = self._gug_list_ctrl.GetData()
         ngugs = self._ngug_list_ctrl.GetData()
         
-        names = { gug.GetName() for gug in gugs }
-        names.update( ( ngug.GetName() for ngug in ngugs ) )
+        names = {gug.get_name() for gug in gugs}
+        names.update((ngug.get_name() for ngug in ngugs))
         
         return names
         
@@ -1083,8 +1083,8 @@ class EditURLClassLinksPanel( ClientGUIScrolledPanels.EditPanel ):
         
         ( a, b ) = data
         
-        a_name = a.GetName()
-        b_name = b.GetName()
+        a_name = a.get_name()
+        b_name = b.get_name()
         
         return ( a_name, b_name )
         
@@ -1097,7 +1097,7 @@ class EditURLClassLinksPanel( ClientGUIScrolledPanels.EditPanel ):
         
         url_class = self._url_class_keys_to_url_classes[ url_class_key ]
         
-        url_class_name = url_class.GetName()
+        url_class_name = url_class.get_name()
         
         url_type = url_class.GetURLType()
         
@@ -1109,7 +1109,7 @@ class EditURLClassLinksPanel( ClientGUIScrolledPanels.EditPanel ):
             
             parser = self._parser_keys_to_parsers[ parser_key ]
             
-            parser_name = parser.GetName()
+            parser_name = parser.get_name()
             
         
         pretty_url_class_name = url_class_name
@@ -1147,16 +1147,16 @@ class EditURLClassLinksPanel( ClientGUIScrolledPanels.EditPanel ):
         matching_parsers = [ parser for parser in self._parsers if True in ( url_class.Matches( url ) for url in parser.GetExampleURLs() ) ]
         unmatching_parsers = [ parser for parser in self._parsers if parser not in matching_parsers ]
         
-        matching_parsers.sort( key = lambda p: p.GetName() )
-        unmatching_parsers.sort( key = lambda p: p.GetName() )
+        matching_parsers.sort(key = lambda p: p.get_name())
+        unmatching_parsers.sort(key = lambda p: p.get_name())
         
-        choice_tuples = [ ( parser.GetName(), parser ) for parser in matching_parsers ]
+        choice_tuples = [(parser.get_name(), parser) for parser in matching_parsers]
         choice_tuples.append( ( '------', None ) )
-        choice_tuples.extend( [ ( parser.GetName(), parser ) for parser in unmatching_parsers ] )
+        choice_tuples.extend([(parser.get_name(), parser) for parser in unmatching_parsers])
         
         try:
             
-            parser = ClientGUIDialogsQuick.SelectFromList( self, 'select parser for ' + url_class.GetName(), choice_tuples, sort_tuples = False, value_to_select = default_parser )
+            parser = ClientGUIDialogsQuick.SelectFromList(self, 'select parser for ' + url_class.get_name(), choice_tuples, sort_tuples = False, value_to_select = default_parser)
             
         except HydrusExceptions.CancelledException:
             

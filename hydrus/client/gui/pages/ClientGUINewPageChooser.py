@@ -134,7 +134,7 @@ class DialogPageChooser( ClientGUIDialogs.Dialog ):
             
         elif entry_type in ( 'page_query', 'page_petitions' ):
             
-            name = CG.client_controller.services_manager.GetService( obj ).GetName()
+            name = CG.client_controller.services_manager.GetService( obj ).get_name()
             
             button.setText( name )
             

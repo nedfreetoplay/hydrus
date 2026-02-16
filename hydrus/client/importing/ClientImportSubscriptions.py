@@ -311,7 +311,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
             
             try:
                 
-                query_log_container = CG.client_controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_header.GetQueryLogContainerName() )
+                query_log_container = CG.client_controller.read('serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_header.GetQueryLogContainerName())
                 
             except HydrusExceptions.DBException as e:
                 
@@ -337,7 +337,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                 
             finally:
                 
-                CG.client_controller.WriteSynchronous( 'serialisable', query_log_container )
+                CG.client_controller.write_synchronous('serialisable', query_log_container)
                 
             
         
@@ -706,7 +706,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                 # we don't want to hit any other urls of this type this sync
                 if not can_search_for_more_files:
                     
-                    special_stop_reason = f'previous {gallery_seed_url_class.GetName()} URL said: {stop_reason}'
+                    special_stop_reason = f'previous {gallery_seed_url_class.get_name()} URL said: {stop_reason}'
                     
                     if gallery_seed_url_class is not None:
                         
@@ -806,7 +806,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
             
             try:
                 
-                query_log_container = CG.client_controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_header.GetQueryLogContainerName() )
+                query_log_container = CG.client_controller.read('serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_header.GetQueryLogContainerName())
                 
             except HydrusExceptions.DBException as e:
                 
@@ -952,7 +952,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
             
             try:
                 
-                query_log_container = CG.client_controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_header.GetQueryLogContainerName() )
+                query_log_container = CG.client_controller.read('serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_header.GetQueryLogContainerName())
                 
             except HydrusExceptions.DBException as e:
                 
@@ -978,7 +978,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                 
             finally:
                 
-                CG.client_controller.WriteSynchronous( 'serialisable', query_log_container )
+                CG.client_controller.write_synchronous('serialisable', query_log_container)
                 
             
         
@@ -1145,7 +1145,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                             
                             hash = file_seed.GetHash()
                             
-                            media_result = CG.client_controller.Read( 'media_result', hash )
+                            media_result = CG.client_controller.read('media_result', hash)
                             
                             downloaded_tags = []
                             
@@ -1153,7 +1153,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                             
                             if content_update_package.HasContent():
                                 
-                                CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+                                CG.client_controller.write_synchronous('content_updates', content_update_package)
                                 
                             
                         
@@ -1840,7 +1840,7 @@ class SubscriptionJob( object ):
         
         self._subscription.Sync()
         
-        self._controller.WriteSynchronous( 'serialisable', self._subscription )
+        self._controller.write_synchronous('serialisable', self._subscription)
         
     
     def IsDone( self ):
@@ -2049,7 +2049,7 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
                         
                         job = SubscriptionJob( self._controller, subscription )
                         
-                        CG.client_controller.CallToThread( job.Work )
+                        CG.client_controller.call_to_thread(job.Work)
                         
                         self._names_to_running_subscription_info[ subscription.GetName() ] = ( job, subscription )
                         
@@ -2116,7 +2116,7 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
         
         with self._lock:
             
-            self._names_to_subscriptions = { subscription.GetName() : subscription for subscription in subscriptions }
+            self._names_to_subscriptions = {subscription.get_name() : subscription for subscription in subscriptions}
             
             self._names_that_cannot_run = set()
             self._names_to_next_work_time = {}

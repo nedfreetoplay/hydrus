@@ -20,8 +20,8 @@ class TestServerDB( unittest.TestCase ):
     
     _db: typing.Any = None
     
-    def _read( self, action, *args, **kwargs ): return TestServerDB._db.Read( action, *args, **kwargs )
-    def _write( self, action, *args, **kwargs ): return TestServerDB._db.Write( action, True, *args, **kwargs )
+    def _read( self, action, *args, **kwargs ): return TestServerDB._db.read(action, *args, **kwargs)
+    def _write( self, action, *args, **kwargs ): return TestServerDB._db.write(action, True, *args, **kwargs)
     
     @classmethod
     def setUpClass( cls ):

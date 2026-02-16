@@ -137,7 +137,7 @@ class TagSuggestionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         self._favourite_file_lookup_script = ClientGUICommon.BetterChoice( suggested_tags_file_lookup_script_panel )
         
-        script_names = sorted( CG.client_controller.Read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_PARSE_ROOT_FILE_LOOKUP ) )
+        script_names = sorted(CG.client_controller.read('serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_PARSE_ROOT_FILE_LOOKUP))
         
         for name in script_names:
             

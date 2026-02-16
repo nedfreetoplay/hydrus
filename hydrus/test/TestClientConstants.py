@@ -20,7 +20,7 @@ class TestManagers( unittest.TestCase ):
             
             self.assertEqual( service.GetServiceKey(), key )
             self.assertEqual( service.GetServiceType(), service_type )
-            self.assertEqual( service.GetName(), name )
+            self.assertEqual(service.get_name(), name)
             
         
         repo_key = HydrusData.GenerateKey()

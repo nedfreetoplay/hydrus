@@ -224,7 +224,7 @@ class TagPairActionContext( object ):
             
             ClientGUIDialogsMessage.ShowWarning( widget, message )
             
-            CG.client_controller.CallToThread( self.InformTagsInterest, all_tags )
+            CG.client_controller.call_to_thread(self.InformTagsInterest, all_tags)
             
             return
             
@@ -588,7 +588,7 @@ class TagPairActionContext( object ):
             
         
         # don't call the qt directly; we may still need to wait for IsReady on stuff that was already fetching before we were called
-        CG.client_controller.CallToThread( wait_for_preload )
+        CG.client_controller.call_to_thread(wait_for_preload)
         
     
     def GetContentUpdates( self ) -> list[ ClientContentUpdates.ContentUpdate ]:
@@ -914,7 +914,7 @@ class TagPairActionContext( object ):
             self._tags_being_fetched.update( unfetched_tags )
             
         
-        CG.client_controller.CallToThread( do_it_with_notify )
+        CG.client_controller.call_to_thread(do_it_with_notify)
         
     
     def IsReady( self ) -> bool:
@@ -943,7 +943,7 @@ class ParentActionContext( TagPairActionContext ):
         
         try:
             
-            statuses_to_pairs = CG.client_controller.Read( 'tag_parents', self._service_key, tags = tags, where_chain_includes_pending_or_petitioned = where_chain_includes_pending_or_petitioned )
+            statuses_to_pairs = CG.client_controller.read('tag_parents', self._service_key, tags = tags, where_chain_includes_pending_or_petitioned = where_chain_includes_pending_or_petitioned)
             
         except HydrusExceptions.ShutdownException:
             
@@ -1022,7 +1022,7 @@ class SiblingActionContext( TagPairActionContext ):
         
         try:
             
-            statuses_to_pairs = CG.client_controller.Read( 'tag_siblings', self._service_key, tags = tags, where_chain_includes_pending_or_petitioned = where_chain_includes_pending_or_petitioned )
+            statuses_to_pairs = CG.client_controller.read('tag_siblings', self._service_key, tags = tags, where_chain_includes_pending_or_petitioned = where_chain_includes_pending_or_petitioned)
             
         except HydrusExceptions.ShutdownException:
             

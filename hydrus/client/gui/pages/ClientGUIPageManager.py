@@ -157,7 +157,7 @@ def CreatePageManagerPetitions( petition_service_key ):
     
     petition_service = CG.client_controller.services_manager.GetService( petition_service_key )
     
-    page_name = petition_service.GetName() + ' petitions'
+    page_name = petition_service.get_name() + ' petitions'
     
     page_manager = CreatePageManager( page_name, ClientGUIPagesCore.PAGE_TYPE_PETITIONS )
     

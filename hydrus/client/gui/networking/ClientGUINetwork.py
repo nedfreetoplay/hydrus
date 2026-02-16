@@ -241,7 +241,7 @@ class EditNetworkContextPanel( ClientGUIScrolledPanels.EditPanel ):
             self._context_data_none.setVisible( False )
             
         
-        names = CG.client_controller.Read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_LEGACY )
+        names = CG.client_controller.read('serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_LEGACY)
         
         for name in names:
             

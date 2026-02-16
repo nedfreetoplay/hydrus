@@ -282,7 +282,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
                         HydrusData.Print( 'Analyzed ' + name + ' in ' + HydrusTime.TimeDeltaToPrettyTimeDelta( time_took ) )
                         
                     
-                    p1 = CG.client_controller.ShouldStopThisWork( maintenance_mode, stop_time = stop_time )
+                    p1 = CG.client_controller.should_stop_this_work(maintenance_mode, stop_time = stop_time)
                     p2 = job_status.IsCancelled()
                     
                     if p1 or p2:

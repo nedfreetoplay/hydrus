@@ -153,7 +153,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
         
         if making_it_dirty and not network_context.IsEphemeral():
             
-            self._dirty_tracker_container_names.add( tracker_container.GetName() )
+            self._dirty_tracker_container_names.add(tracker_container.get_name())
             
         
         return tracker_container.bandwidth_tracker
@@ -185,7 +185,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
             
             bandwidth_tracker = self._GetTracker( network_context, making_it_dirty = True )
             
-            bandwidth_tracker.ReportDataUsed( num_bytes )
+            bandwidth_tracker.report_data_used(num_bytes)
             
         
         self._my_bandwidth_tracker.ReportDataUsed( num_bytes )
@@ -197,7 +197,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
             
             bandwidth_tracker = self._GetTracker( network_context, making_it_dirty = True )
             
-            bandwidth_tracker.ReportRequestUsed()
+            bandwidth_tracker.report_request_used()
             
         
         self._my_bandwidth_tracker.ReportRequestUsed()
@@ -326,7 +326,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
                     
                     del self._network_contexts_to_tracker_containers[ network_context ]
                     
-                    tracker_container_name = tracker_container.GetName()
+                    tracker_container_name = tracker_container.get_name()
                     
                     if tracker_container_name in self._tracker_container_names_to_tracker_containers:
                         

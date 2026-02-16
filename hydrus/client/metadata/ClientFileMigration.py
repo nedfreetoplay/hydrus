@@ -88,7 +88,7 @@ def DoMoveOrDuplicateLocalFiles( dest_service_key: bytes, action: int, media_res
             content_updates.append( ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_UNDELETE, undelete_hashes ) )
             
         
-        CG.client_controller.WriteSynchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( dest_service_key, content_updates ) )
+        CG.client_controller.write_synchronous('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates(dest_service_key, content_updates))
         
         if action in ( HC.CONTENT_UPDATE_MOVE, HC.CONTENT_UPDATE_MOVE_MERGE ):
             
@@ -96,7 +96,7 @@ def DoMoveOrDuplicateLocalFiles( dest_service_key: bytes, action: int, media_res
             
             content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE_FROM_SOURCE_AFTER_MIGRATE, block_of_hashes, reason = 'Moved to {}'.format( dest_service_name ) ) ]
             
-            CG.client_controller.WriteSynchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( source_service_key, content_updates ) )
+            CG.client_controller.write_synchronous('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates(source_service_key, content_updates))
             
         
         pauser.Pause()

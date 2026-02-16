@@ -527,7 +527,7 @@ class RatingIncDec( QW.QWidget ):
                 
                 service = CG.client_controller.services_manager.GetService( self._service_key )
                 
-                tt = '{} - {}'.format( service.GetName(), service.ConvertRatingStateAndRatingToString( self._rating_state, self._rating ) )
+                tt = '{} - {}'.format(service.get_name(), service.ConvertRatingStateAndRatingToString(self._rating_state, self._rating))
                 
             except HydrusExceptions.DataMissing:
                 
@@ -774,7 +774,7 @@ class RatingLike( QW.QWidget ):
                 
                 service = CG.client_controller.services_manager.GetService( self._service_key )
                 
-                tt = '{} - {}'.format( service.GetName(), service.ConvertRatingStateToString( self._rating_state ) )
+                tt = '{} - {}'.format(service.get_name(), service.ConvertRatingStateToString(self._rating_state))
                 
             except HydrusExceptions.DataMissing:
                 
@@ -1067,7 +1067,7 @@ class RatingNumerical( QW.QWidget ):
                 
                 service = CG.client_controller.services_manager.GetService( self._service_key )
                 
-                tt = '{} - {}'.format( service.GetName(), service.ConvertRatingStateAndRatingToString( self._rating_state, self._rating ) )
+                tt = '{} - {}'.format(service.get_name(), service.ConvertRatingStateAndRatingToString(self._rating_state, self._rating))
                 
             except HydrusExceptions.DataMissing:
                 
@@ -1312,7 +1312,7 @@ class RatingPreviewServiceWrapper:
         
         self._service_type = rating_service.GetServiceType() if self._service_type is None else self._service_type
         
-        self._service_name = 'example service templated from ' + rating_service.GetName()
+        self._service_name = 'example service templated from ' + rating_service.get_name()
         
         self._modifiable_dict = rating_service.GetSerialisableDictionary() if self._modifiable_dict is None else self._modifiable_dict
         

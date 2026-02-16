@@ -751,7 +751,7 @@ class EditNoteImportOptionsPanel( QW.QWidget ):
             
             url_class_keys_to_url_classes = { url_class.GetClassKey() : url_class for url_class in url_classes }
             
-            url_class_names_and_default_note_import_options = sorted( ( ( url_class_keys_to_url_classes[ url_class_key ].GetName(), url_class_keys_to_default_note_import_options[ url_class_key ] ) for url_class_key in list( url_class_keys_to_default_note_import_options.keys() ) if url_class_key in url_class_keys_to_url_classes ) )
+            url_class_names_and_default_note_import_options = sorted(((url_class_keys_to_url_classes[ url_class_key ].get_name(), url_class_keys_to_default_note_import_options[ url_class_key]) for url_class_key in list(url_class_keys_to_default_note_import_options.keys()) if url_class_key in url_class_keys_to_url_classes))
             
             choice_tuples.extend( url_class_names_and_default_note_import_options )
             
@@ -1590,7 +1590,7 @@ class EditTagImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
             url_class_keys_to_url_classes = { url_class.GetClassKey() : url_class for url_class in url_classes }
             
-            url_class_names_and_default_tag_import_options = sorted( ( ( url_class_keys_to_url_classes[ url_class_key ].GetName(), url_class_keys_to_default_tag_import_options[ url_class_key ] ) for url_class_key in list( url_class_keys_to_default_tag_import_options.keys() ) if url_class_key in url_class_keys_to_url_classes ) )
+            url_class_names_and_default_tag_import_options = sorted(((url_class_keys_to_url_classes[ url_class_key ].get_name(), url_class_keys_to_default_tag_import_options[ url_class_key]) for url_class_key in list(url_class_keys_to_default_tag_import_options.keys()) if url_class_key in url_class_keys_to_url_classes))
             
             choice_tuples.extend( url_class_names_and_default_tag_import_options )
             

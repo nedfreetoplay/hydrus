@@ -179,7 +179,7 @@ class EditImportFoldersPanel( ClientGUIScrolledPanels.EditPanel ):
         
         import_folders = self._import_folders.GetData()
         
-        names = { import_folder.GetName() for import_folder in import_folders }
+        names = {import_folder.get_name() for import_folder in import_folders}
         
         return names
         

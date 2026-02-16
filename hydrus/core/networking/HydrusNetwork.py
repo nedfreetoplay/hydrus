@@ -2769,7 +2769,7 @@ class ServerService( object ):
         
         with self._lock:
             
-            self._bandwidth_tracker.ReportDataUsed( num_bytes )
+            self._bandwidth_tracker.report_data_used(num_bytes)
             
             self._SetDirty()
             
@@ -2779,7 +2779,7 @@ class ServerService( object ):
         
         with self._lock:
             
-            self._bandwidth_tracker.ReportRequestUsed()
+            self._bandwidth_tracker.report_request_used()
             
             self._SetDirty()
             
@@ -3040,7 +3040,7 @@ class ServerServiceRepository( ServerServiceRestricted ):
                 
                 update_started = HydrusTime.GetNowFloat()
                 
-                HG.controller.WriteSynchronous( 'nullify_history', service_key, nullification_begin, nullification_end )
+                HG.controller.write_synchronous('nullify_history', service_key, nullification_begin, nullification_end)
                 
                 update_took = HydrusTime.GetNowFloat() - update_started
                 
@@ -3138,7 +3138,7 @@ class ServerServiceRepository( ServerServiceRestricted ):
                     
                     end = begin + update_period
                     
-                    update_hashes = HG.controller.WriteSynchronous( 'create_update', service_key, begin, end )
+                    update_hashes = HG.controller.write_synchronous('create_update', service_key, begin, end)
                     
                     update_created = True
                     
@@ -3269,7 +3269,7 @@ class ServerServiceAdmin( ServerServiceRestricted ):
         
         with self._lock:
             
-            self._server_bandwidth_tracker.ReportDataUsed( num_bytes )
+            self._server_bandwidth_tracker.report_data_used(num_bytes)
             
             self._SetDirty()
             
@@ -3279,7 +3279,7 @@ class ServerServiceAdmin( ServerServiceRestricted ):
         
         with self._lock:
             
-            self._server_bandwidth_tracker.ReportRequestUsed()
+            self._server_bandwidth_tracker.report_request_used()
             
             self._SetDirty()
             

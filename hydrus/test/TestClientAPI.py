@@ -539,7 +539,7 @@ class TestClientAPI( unittest.TestCase ):
                 
                 body_dict = json.loads( text )
                 
-                self.assertEqual( body_dict[ 'name' ], api_permissions.GetName() )
+                self.assertEqual(body_dict[ 'name' ], api_permissions.get_name())
                 self.assertEqual( body_dict[ 'permits_everything' ], api_permissions.PermitsEverything() )
                 
                 if api_permissions.PermitsEverything():
@@ -7418,7 +7418,7 @@ class TestClientAPI( unittest.TestCase ):
                     'current' : {
                         random_file_service_hex_current.hex() : {
                             'time_imported' : HydrusTime.SecondiseMS( current_import_timestamp_ms ),
-                            'name' : TG.test_controller.services_manager.GetName( random_file_service_hex_current ),
+                            'name' : TG.test_controller.services_manager.get_name(random_file_service_hex_current),
                             'type' : TG.test_controller.services_manager.GetServiceType( random_file_service_hex_current ),
                             'type_pretty' : HC.service_string_lookup[ TG.test_controller.services_manager.GetServiceType( random_file_service_hex_current ) ]
                         }
@@ -7427,7 +7427,7 @@ class TestClientAPI( unittest.TestCase ):
                         random_file_service_hex_deleted.hex() : {
                             'time_deleted' : HydrusTime.SecondiseMS( deleted_deleted_timestamp_ms ),
                             'time_imported' : HydrusTime.SecondiseMS( previously_imported_timestamp_ms ),
-                            'name' : TG.test_controller.services_manager.GetName( random_file_service_hex_deleted ),
+                            'name' : TG.test_controller.services_manager.get_name(random_file_service_hex_deleted),
                             'type' : TG.test_controller.services_manager.GetServiceType( random_file_service_hex_deleted ),
                             'type_pretty' : HC.service_string_lookup[ TG.test_controller.services_manager.GetServiceType( random_file_service_hex_deleted ) ]
                         }
@@ -7458,7 +7458,7 @@ class TestClientAPI( unittest.TestCase ):
                     
                     metadata_row[ 'file_services' ][ 'current' ][ i_s_k.hex() ] = {
                         'time_imported' : HydrusTime.SecondiseMS( ipfs_import_timestamp_ms ),
-                        'name' : TG.test_controller.services_manager.GetName( i_s_k ),
+                        'name' : TG.test_controller.services_manager.get_name(i_s_k),
                         'type' : TG.test_controller.services_manager.GetServiceType( i_s_k ),
                         'type_pretty' : HC.service_string_lookup[ TG.test_controller.services_manager.GetServiceType( i_s_k ) ]
                     }

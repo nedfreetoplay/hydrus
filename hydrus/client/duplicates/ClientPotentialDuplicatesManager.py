@@ -38,7 +38,7 @@ class PotentialDuplicatesMaintenanceNumbersStore( object ):
             
             if self._need_new_maintenance_status:
                 
-                self._similar_files_maintenance_status = typing.cast( dict[ int, int ], CG.client_controller.Read( 'similar_files_maintenance_status' ) )
+                self._similar_files_maintenance_status = typing.cast(dict[ int, int ], CG.client_controller.read('similar_files_maintenance_status'))
                 
                 self._need_new_maintenance_status = False
                 
@@ -89,7 +89,7 @@ class PotentialDuplicatesMaintenanceManager( ClientDaemons.ManagerWithMainLoop )
                 
                 expected_work_period = 0.1
                 
-                still_maintenance_work_to_do = CG.client_controller.WriteSynchronous( 'maintain_similar_files_tree', work_period = expected_work_period )
+                still_maintenance_work_to_do = CG.client_controller.write_synchronous('maintain_similar_files_tree', work_period = expected_work_period)
                 
                 if not still_maintenance_work_to_do:
                     
@@ -113,7 +113,7 @@ class PotentialDuplicatesMaintenanceManager( ClientDaemons.ManagerWithMainLoop )
                 
                 search_distance = CG.client_controller.new_options.GetInteger( 'similar_files_duplicate_pairs_search_distance' )
                 
-                ( still_search_work_to_do, num_done ) = CG.client_controller.WriteSynchronous( 'maintain_similar_files_search_for_potential_duplicates', search_distance, work_period = expected_work_period )
+                ( still_search_work_to_do, num_done ) = CG.client_controller.write_synchronous('maintain_similar_files_search_for_potential_duplicates', search_distance, work_period = expected_work_period)
                 
                 total_time_took = HydrusTime.GetNowPrecise() - start_time
                 
@@ -139,7 +139,7 @@ class PotentialDuplicatesMaintenanceManager( ClientDaemons.ManagerWithMainLoop )
                             # it could be that a file got deleted or something in the moment before we did work
                             # it could be that the count is wrong
                             # let's fix it and see what happens next cycle
-                            CG.client_controller.WriteSynchronous( 'regenerate_similar_files_search_count_numbers' )
+                            CG.client_controller.write_synchronous('regenerate_similar_files_search_count_numbers')
                             
                             PotentialDuplicatesMaintenanceNumbersStore.instance().RefreshMaintenanceNumbers()
                             
@@ -176,7 +176,7 @@ class PotentialDuplicatesMaintenanceManager( ClientDaemons.ManagerWithMainLoop )
             return 0.1
             
         
-        if self._controller.CurrentlyIdle():
+        if self._controller.currently_idle():
             
             rest_ratio = CG.client_controller.new_options.GetInteger( 'potential_duplicates_search_rest_percentage_idle' ) / 100
             
@@ -197,7 +197,7 @@ class PotentialDuplicatesMaintenanceManager( ClientDaemons.ManagerWithMainLoop )
             return 0.5
             
         
-        if self._controller.CurrentlyIdle():
+        if self._controller.currently_idle():
             
             return HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'potential_duplicates_search_work_time_ms_idle' ) )
             
@@ -214,7 +214,7 @@ class PotentialDuplicatesMaintenanceManager( ClientDaemons.ManagerWithMainLoop )
             return True
             
         
-        if self._controller.CurrentlyIdle():
+        if self._controller.currently_idle():
             
             if self._controller.new_options.GetBoolean( 'maintain_similar_files_duplicate_pairs_during_idle' ):
                 

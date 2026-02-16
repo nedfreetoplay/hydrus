@@ -41,14 +41,14 @@ def AddDuplicatesMenu( win: QW.QWidget, command_processor: CAC.ApplicationComman
     
     combined_local_location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY )
     
-    if CG.client_controller.DBCurrentlyDoingJob():
+    if CG.client_controller.db_currently_doing_job():
         
         file_duplicate_info = {}
         hydrus_local_file_storage_file_duplicate_info = {}
         
     else:
         
-        file_duplicate_info = CG.client_controller.Read( 'file_duplicate_info', location_context, focused_hash )
+        file_duplicate_info = CG.client_controller.read('file_duplicate_info', location_context, focused_hash)
         
         if location_context.current_service_keys.isdisjoint( CG.client_controller.services_manager.GetServiceKeys( HC.SPECIFIC_LOCAL_FILE_SERVICES ) ):
             
@@ -56,7 +56,7 @@ def AddDuplicatesMenu( win: QW.QWidget, command_processor: CAC.ApplicationComman
             
         else:
             
-            hydrus_local_file_storage_file_duplicate_info = CG.client_controller.Read( 'file_duplicate_info', combined_local_location_context, focused_hash )
+            hydrus_local_file_storage_file_duplicate_info = CG.client_controller.read('file_duplicate_info', combined_local_location_context, focused_hash)
             
         
     
@@ -417,7 +417,7 @@ def AddKnownURLsViewCopyMenu( win: QW.QWidget, command_processor: CAC.Applicatio
                 
             else:
                 
-                label = url_class.GetName() + ': ' + ClientNetworkingFunctions.ConvertURLToHumanString( url )
+                label = url_class.get_name() + ': ' + ClientNetworkingFunctions.ConvertURLToHumanString(url)
                 
                 focus_matched_labels_and_urls.append( ( label, url ) )
                 
@@ -560,11 +560,11 @@ def AddKnownURLsViewCopyMenu( win: QW.QWidget, command_processor: CAC.Applicatio
             
             focus_media_url_classes = list( focus_media_url_classes )
             
-            focus_media_url_classes.sort( key = lambda url_class: url_class.GetName() )
+            focus_media_url_classes.sort(key = lambda url_class: url_class.get_name())
             
             for url_class in focus_media_url_classes:
                 
-                label = 'this file\'s ' + url_class.GetName() + ' urls'
+                label = 'this file\'s ' + url_class.get_name() + ' urls'
                 
                 ClientGUIMenus.AppendMenuItem( urls_force_refetch_menu, label, 'Re-download these URLs with forced metadata re-fetch enabled.', ClientGUIMediaModalActions.RedownloadURLClassURLsForceRefetch, win, { focus_media }, url_class )
                 
@@ -622,11 +622,11 @@ def AddKnownURLsViewCopyMenu( win: QW.QWidget, command_processor: CAC.Applicatio
             
             selected_media_url_classes = list( selected_media_url_classes )
             
-            selected_media_url_classes.sort( key = lambda url_class: url_class.GetName() )
+            selected_media_url_classes.sort(key = lambda url_class: url_class.get_name())
             
             for url_class in selected_media_url_classes:
                 
-                label = 'these files\' ' + url_class.GetName() + ' urls'
+                label = 'these files\' ' + url_class.get_name() + ' urls'
                 
                 ClientGUIMenus.AppendMenuItem( urls_visit_menu, label, 'Open this url class in your web browser for all files.', ClientGUIMediaModalActions.OpenMediaURLClassURLs, win, selected_media, url_class )
                 
@@ -932,7 +932,7 @@ def StartOtherHashMenuFetch( win: QW.QWidget, media: ClientMedia.MediaSingleton,
     
     def work_callable():
         
-        hashes_to_other_hashes = CG.client_controller.Read( 'file_hashes', ( hash, ), 'sha256', hash_type )
+        hashes_to_other_hashes = CG.client_controller.read('file_hashes', (hash,), 'sha256', hash_type)
         
         return hashes_to_other_hashes
         

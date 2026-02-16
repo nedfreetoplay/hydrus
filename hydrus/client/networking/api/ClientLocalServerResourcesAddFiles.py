@@ -130,7 +130,7 @@ class HydrusResourceClientAPIRestrictedAddFilesArchiveFiles( HydrusResourceClien
         
         content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_update )
         
-        CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+        CG.client_controller.write_synchronous('content_updates', content_update_package)
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
@@ -145,7 +145,7 @@ class HydrusResourceClientAPIRestrictedAddFilesClearDeletedFileRecord( HydrusRes
         
         hashes = set( ClientLocalServerCore.ParseHashes( request ) )
         
-        media_results = CG.client_controller.Read( 'media_results', hashes )
+        media_results = CG.client_controller.read('media_results', hashes)
         
         media_results = [ media_result for media_result in media_results if CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY in media_result.GetLocationsManager().GetDeleted() ]
         
@@ -155,7 +155,7 @@ class HydrusResourceClientAPIRestrictedAddFilesClearDeletedFileRecord( HydrusRes
         
         content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_update )
         
-        CG.client_controller.Write( 'content_updates', content_update_package )
+        CG.client_controller.write('content_updates', content_update_package)
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
@@ -184,7 +184,7 @@ class HydrusResourceClientAPIRestrictedAddFilesDeleteFiles( HydrusResourceClient
         
         if CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY in location_context.current_service_keys:
             
-            media_results = CG.client_controller.Read( 'media_results', hashes )
+            media_results = CG.client_controller.read('media_results', hashes)
             
             undeletable_media_results = [ m for m in media_results if m.IsPhysicalDeleteLocked() ]
             
@@ -204,7 +204,7 @@ class HydrusResourceClientAPIRestrictedAddFilesDeleteFiles( HydrusResourceClient
             
             content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( service_key, content_update )
             
-            CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+            CG.client_controller.write_synchronous('content_updates', content_update_package)
             
         
         response_context = HydrusServerResources.ResponseContext( 200 )
@@ -226,7 +226,7 @@ class HydrusResourceClientAPIRestrictedAddFilesMigrateFiles( HydrusResourceClien
             raise HydrusExceptions.BadRequestException( 'Sorry, you need to set a destination for the migration!' )
             
         
-        media_results = CG.client_controller.Read( 'media_results', hashes )
+        media_results = CG.client_controller.read('media_results', hashes)
         
         for media_result in media_results:
             
@@ -238,7 +238,7 @@ class HydrusResourceClientAPIRestrictedAddFilesMigrateFiles( HydrusResourceClien
         
         for service_key in location_context.current_service_keys:
             
-            CG.client_controller.CallToThread( ClientFileMigration.DoMoveOrDuplicateLocalFiles, service_key, HC.CONTENT_UPDATE_ADD, media_results )
+            CG.client_controller.call_to_thread(ClientFileMigration.DoMoveOrDuplicateLocalFiles, service_key, HC.CONTENT_UPDATE_ADD, media_results)
             
         
         response_context = HydrusServerResources.ResponseContext( 200 )
@@ -257,7 +257,7 @@ class HydrusResourceClientAPIRestrictedAddFilesUnarchiveFiles( HydrusResourceCli
         
         content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_update )
         
-        CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+        CG.client_controller.write_synchronous('content_updates', content_update_package)
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
@@ -275,7 +275,7 @@ class HydrusResourceClientAPIRestrictedAddFilesUndeleteFiles( HydrusResourceClie
         
         location_context.LimitToServiceTypes( CG.client_controller.services_manager.GetServiceType, ( HC.LOCAL_FILE_DOMAIN, HC.COMBINED_LOCAL_FILE_DOMAINS ) )
         
-        media_results = CG.client_controller.Read( 'media_results', hashes )
+        media_results = CG.client_controller.read('media_results', hashes)
         
         # this is the only scan I have to do. all the stuff like 'can I undelete from here' and 'what does an undelete to combined local media mean' is all sorted at the db level no worries
         media_results = [ media_result for media_result in media_results if CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY in media_result.GetLocationsManager().GetCurrent() ]
@@ -288,7 +288,7 @@ class HydrusResourceClientAPIRestrictedAddFilesUndeleteFiles( HydrusResourceClie
             
             content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( service_key, content_update )
             
-            CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+            CG.client_controller.write_synchronous('content_updates', content_update_package)
             
         
         response_context = HydrusServerResources.ResponseContext( 200 )

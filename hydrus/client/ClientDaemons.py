@@ -24,11 +24,11 @@ def DAEMONCheckExportFolders():
         
         try:
             
-            export_folder_names = controller.Read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER )
+            export_folder_names = controller.read('serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER)
             
             for name in export_folder_names:
                 
-                export_folder = controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER, name )
+                export_folder = controller.read('serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER, name)
                 
                 if controller.new_options.GetBoolean( 'pause_export_folders_sync' ) or HydrusThreading.IsThreadShuttingDown():
                     
@@ -56,11 +56,11 @@ def DAEMONMaintainTrash():
         
         max_size = HC.options[ 'trash_max_size' ] * 1048576
         
-        service_info = controller.Read( 'service_info', CC.TRASH_SERVICE_KEY )
+        service_info = controller.read('service_info', CC.TRASH_SERVICE_KEY)
         
         while service_info[ HC.SERVICE_INFO_TOTAL_SIZE ] > max_size:
             
-            hashes = controller.Read( 'trash_hashes', limit = 256 )
+            hashes = controller.read('trash_hashes', limit = 256)
             
             if len( hashes ) == 0:
                 
@@ -78,11 +78,11 @@ def DAEMONMaintainTrash():
                 
                 content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_update )
                 
-                controller.WriteSynchronous( 'content_updates', content_update_package )
+                controller.write_synchronous('content_updates', content_update_package)
                 
                 time.sleep( 0.01 )
                 
-                service_info = controller.Read( 'service_info', CC.TRASH_SERVICE_KEY )
+                service_info = controller.read('service_info', CC.TRASH_SERVICE_KEY)
                 
                 if service_info[ HC.SERVICE_INFO_TOTAL_SIZE ] <= max_size:
                     
@@ -98,7 +98,7 @@ def DAEMONMaintainTrash():
         
         max_age = HC.options[ 'trash_max_age' ] * 3600
         
-        hashes = controller.Read( 'trash_hashes', limit = 256, minimum_age = max_age )
+        hashes = controller.read('trash_hashes', limit = 256, minimum_age = max_age)
         
         while len( hashes ) > 0:
             
@@ -113,12 +113,12 @@ def DAEMONMaintainTrash():
                 
                 content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_update )
                 
-                controller.WriteSynchronous( 'content_updates', content_update_package )
+                controller.write_synchronous('content_updates', content_update_package)
                 
                 time.sleep( 0.01 )
                 
             
-            hashes = controller.Read( 'trash_hashes', limit = 256, minimum_age = max_age )
+            hashes = controller.read('trash_hashes', limit = 256, minimum_age = max_age)
             
             time.sleep( 2 )
             
@@ -247,7 +247,7 @@ class ManagerWithMainLoop( object ):
     
     def Start( self ):
         
-        self._controller.CallToThreadLongRunning( self.MainLoop )
+        self._controller.call_to_thread_long_running(self.MainLoop)
         
     
     def Wake( self ):

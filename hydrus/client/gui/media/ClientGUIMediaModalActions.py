@@ -144,13 +144,13 @@ def ApplyContentApplicationCommandToMedia( win: QW.QWidget, command: CAC.Applica
                 
                 job_status.SetGauge( i, num_to_do )
                 
-                CG.client_controller.WriteSynchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( service_key, content_update ) )
+                CG.client_controller.write_synchronous('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate(service_key, content_update))
                 
             
             job_status.FinishAndDismiss()
             
         
-        CG.client_controller.CallToThread( do_it )
+        CG.client_controller.call_to_thread(do_it)
         
     
     return True
@@ -177,7 +177,7 @@ def ClearDeleteRecord( win, media ):
             
             content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_update )
             
-            CG.client_controller.Write( 'content_updates', content_update_package )
+            CG.client_controller.write('content_updates', content_update_package)
             
         
     
@@ -222,7 +222,7 @@ def CopyHashesToClipboard( win: QW.QWidget, hash_type: str, medias: collections.
         num_hashes = len( sha256_hashes )
         num_remote_medias = len( [ not media.GetLocationsManager().IsLocal() for media in flat_media ] )
         
-        source_to_desired = CG.client_controller.Read( 'file_hashes', sha256_hashes, 'sha256', hash_type )
+        source_to_desired = CG.client_controller.read('file_hashes', sha256_hashes, 'sha256', hash_type)
         
         desired_hashes = [ source_to_desired[ source_hash ] for source_hash in sha256_hashes if source_hash in source_to_desired ]
         
@@ -309,7 +309,7 @@ def DoClearFileViewingStats( win: QW.QWidget, flat_medias: collections.abc.Colle
         
         content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILE_VIEWING_STATS, HC.CONTENT_UPDATE_DELETE, hashes )
         
-        CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_update ) )
+        CG.client_controller.write('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate(CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_update))
         
     
 
@@ -339,7 +339,7 @@ def DoOpenKnownURLFromShortcut( win, media ):
                 
             else:
                 
-                label = url_class.GetName() + ': ' + url
+                label = url_class.get_name() + ': ' + url
                 
                 matched_labels_and_urls.append( ( label, url ) )
                 
@@ -424,7 +424,7 @@ def EditFileNotes( win: QW.QWidget, media: ClientMedia.MediaSingleton, name_to_s
             
             content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.LOCAL_NOTES_SERVICE_KEY, content_updates )
             
-            CG.client_controller.Write( 'content_updates', content_update_package )
+            CG.client_controller.write('content_updates', content_update_package)
             
         
     
@@ -445,7 +445,7 @@ def EditFileTimestamps( win: QW.QWidget, ordered_medias: list[ ClientMedia.Media
             
             if content_update_package.HasContent():
                 
-                CG.client_controller.Write( 'content_updates', content_update_package )
+                CG.client_controller.write('content_updates', content_update_package)
                 
                 result = panel.GetFileModifiedUpdateData()
                 
@@ -493,7 +493,7 @@ def EditFileTimestamps( win: QW.QWidget, ordered_medias: list[ ClientMedia.Media
                         job_status.FinishAndDismiss()
                         
                     
-                    CG.client_controller.CallToThread( do_it )
+                    CG.client_controller.call_to_thread(do_it)
                     
                 
             
@@ -959,7 +959,7 @@ def MoveOrDuplicateLocalFiles( win: QW.QWidget, dest_service_key: bytes, action:
     
     applicable_media_results = [ m.GetMediaResult() for m in applicable_media ]
     
-    CG.client_controller.CallToThread( ClientFileMigration.DoMoveOrDuplicateLocalFiles, dest_service_key, action, applicable_media_results, source_service_key )
+    CG.client_controller.call_to_thread(ClientFileMigration.DoMoveOrDuplicateLocalFiles, dest_service_key, action, applicable_media_results, source_service_key)
     
 
 def OpenURLs( win: QW.QWidget, urls ):
@@ -1029,7 +1029,7 @@ def OpenURLs( win: QW.QWidget, urls ):
             
         
     
-    CG.client_controller.CallToThread( do_it, urls )
+    CG.client_controller.call_to_thread(do_it, urls)
     
 
 def OpenMediaURLs( win: QW.QWidget, medias ):
@@ -1090,7 +1090,7 @@ def RedownloadURLClassURLsForceRefetch( win: QW.QWidget, medias, url_class ):
         return
         
     
-    message = f'Open a new search page and force metadata redownload for {len( urls )} "{url_class.GetName()}" URLs? This is inefficient and should only be done to fill in known gaps in one-time jobs.'
+    message = f'Open a new search page and force metadata redownload for {len( urls )} "{url_class.get_name()}" URLs? This is inefficient and should only be done to fill in known gaps in one-time jobs.'
     message += '\n' * 2
     message += 'DO NOT USE THIS TO RECHECK TEN THOUSAND URLS EVERY MONTH JUST FOR MAYBE A FEW NEW TAGS.'
     
@@ -1153,7 +1153,7 @@ def SetFilesForcedFiletypes( win: QW.QWidget, medias: collections.abc.Collection
                     
                     hashes = { media.GetHash() for media in block_of_media }
                     
-                    CG.client_controller.WriteSynchronous( 'force_filetype', hashes, forced_mime )
+                    CG.client_controller.write_synchronous('force_filetype', hashes, forced_mime)
                     
                     hashes_we_needed_to_dupe = set()
                     
@@ -1179,7 +1179,7 @@ def SetFilesForcedFiletypes( win: QW.QWidget, medias: collections.abc.Collection
                     
                     if len( hashes_we_needed_to_dupe ) > 0:
                         
-                        CG.client_controller.WriteSynchronous( 'file_maintenance_add_jobs_hashes', hashes_we_needed_to_dupe, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_DELETE_NEIGHBOUR_DUPES, HydrusTime.GetNow() + 3600 )
+                        CG.client_controller.write_synchronous('file_maintenance_add_jobs_hashes', hashes_we_needed_to_dupe, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_DELETE_NEIGHBOUR_DUPES, HydrusTime.GetNow() + 3600)
                         
                     
                     pauser.Pause()
@@ -1340,7 +1340,7 @@ def UndeleteMedia( win, media ):
                 
                 content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( service_key, content_update )
                 
-                CG.client_controller.Write( 'content_updates', content_update_package )
+                CG.client_controller.write('content_updates', content_update_package)
                 
             
         

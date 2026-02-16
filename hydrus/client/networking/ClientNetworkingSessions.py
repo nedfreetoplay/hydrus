@@ -300,7 +300,7 @@ class NetworkSessionManager( HydrusSerialisable.SerialisableBase ):
                 
                 del self._network_contexts_to_session_containers[ network_context ]
                 
-                session_container_name = session_container.GetName()
+                session_container_name = session_container.get_name()
                 
                 if session_container_name in self._session_container_names_to_session_containers:
                     
@@ -466,7 +466,7 @@ class NetworkSessionManager( HydrusSerialisable.SerialisableBase ):
             
             if network_context in self._network_contexts_to_session_containers:
                 
-                self._dirty_session_container_names.add( self._network_contexts_to_session_containers[ network_context ].GetName() )
+                self._dirty_session_container_names.add(self._network_contexts_to_session_containers[ network_context ].get_name())
                 
             
         

@@ -252,7 +252,7 @@ class NetworkLoginManager( HydrusSerialisable.SerialisableBase ):
     def _RecalcCache( self ):
         
         self._login_script_keys_to_login_scripts = { login_script.GetLoginScriptKey() : login_script for login_script in self._login_scripts }
-        self._login_script_names_to_login_scripts = { login_script.GetName() : login_script for login_script in self._login_scripts }
+        self._login_script_names_to_login_scripts = {login_script.get_name() : login_script for login_script in self._login_scripts}
         
         self._RevalidateCache()
         
@@ -450,7 +450,7 @@ class NetworkLoginManager( HydrusSerialisable.SerialisableBase ):
         
         with self._lock:
             
-            login_scripts = [ login_script for login_script in self._login_scripts if login_script.GetName() not in login_script_names ]
+            login_scripts = [login_script for login_script in self._login_scripts if login_script.get_name() not in login_script_names]
             
         
         self.SetLoginScripts( login_scripts )
@@ -592,8 +592,8 @@ class NetworkLoginManager( HydrusSerialisable.SerialisableBase ):
             
             existing_login_scripts = list( self._login_scripts )
             
-            new_login_scripts = [ login_script for login_script in existing_login_scripts if login_script.GetName() not in login_script_names ]
-            new_login_scripts.extend( [ login_script for login_script in default_login_scripts if login_script.GetName() in login_script_names ] )
+            new_login_scripts = [login_script for login_script in existing_login_scripts if login_script.get_name() not in login_script_names]
+            new_login_scripts.extend([login_script for login_script in default_login_scripts if login_script.get_name() in login_script_names])
             
         
         self.SetLoginScripts( new_login_scripts, auto_link_these_names = login_script_names )
@@ -704,7 +704,7 @@ class NetworkLoginManager( HydrusSerialisable.SerialisableBase ):
                             if old_login_script_key_and_name[1] == login_script_key_and_name[1]:
                                 
                                 # this is probably a newly overwritten script
-                                if auto_link or login_script.GetName() in auto_link_these_names:
+                                if auto_link or login_script.get_name() in auto_link_these_names:
                                     
                                     if validity == VALIDITY_INVALID:
                                         
@@ -721,7 +721,7 @@ class NetworkLoginManager( HydrusSerialisable.SerialisableBase ):
                             
                         else:
                             
-                            if auto_link or login_script.GetName() in auto_link_these_names:
+                            if auto_link or login_script.get_name() in auto_link_these_names:
                                 
                                 credentials = {}
                                 
@@ -1074,7 +1074,7 @@ class LoginScriptHydrus( object ):
             
             if self._IsLoggedIn( engine, network_context ):
                 
-                HydrusData.Print( 'Successfully logged into ' + service.GetName() + '.' )
+                HydrusData.Print( 'Successfully logged into ' + service.get_name() + '.')
                 
             elif service.IsFunctional():
                 
@@ -1243,7 +1243,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
         
         #
         
-        cred_names_to_definitions = { credential_definition.GetName() : credential_definition for credential_definition in self._credential_definitions }
+        cred_names_to_definitions = {credential_definition.get_name() : credential_definition for credential_definition in self._credential_definitions}
         
         for ( pretty_name, text ) in given_credentials.items():
             
@@ -1260,7 +1260,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
     
     def CheckIsValid( self ):
         
-        defined_cred_names = { credential_definition.GetName() for credential_definition in self._credential_definitions }
+        defined_cred_names = {credential_definition.get_name() for credential_definition in self._credential_definitions}
         required_cred_names = { name for name in itertools.chain.from_iterable( ( step.GetRequiredCredentials() for step in self._login_steps ) ) }
         
         missing_definitions = required_cred_names.difference( defined_cred_names )
@@ -1286,7 +1286,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 missing_vars = sorted( missing_vars )
                 
-                raise HydrusExceptions.ValidationException( 'Missing temp variables for login step "' + login_step.GetName() + '": ' + ', '.join( missing_vars ) )
+                raise HydrusExceptions.ValidationException( 'Missing temp variables for login step "' + login_step.get_name() + '": ' + ', '.join(missing_vars))
                 
             
             temp_vars.update( set_vars )
@@ -1450,7 +1450,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
                     return message
                     
                 
-                job_status.SetStatusText( login_step.GetName() )
+                job_status.SetStatusText(login_step.get_name())
                 
             
             try:

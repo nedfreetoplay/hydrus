@@ -106,7 +106,7 @@ class HydrusResourceClientAPIRestrictedAccountVerify( HydrusResourceClientAPIRes
         
         body_dict = {}
         
-        body_dict[ 'name' ] = api_permissions.GetName()
+        body_dict[ 'name' ] = api_permissions.get_name()
         body_dict[ 'permits_everything' ] = api_permissions.PermitsEverything()
         body_dict[ 'basic_permissions' ] = sorted( basic_permissions ) # set->list for json
         body_dict[ 'human_description' ] = human_description
@@ -191,7 +191,7 @@ class HydrusResourceClientAPIRestrictedGetService( ClientLocalServerResources.Hy
         
         body_dict = {
             'service' : {
-                'name' : service.GetName(),
+                'name' : service.get_name(),
                 'type' : service.GetServiceType(),
                 'type_pretty' : HC.service_string_lookup[ service.GetServiceType() ],
                 'service_key' : service.GetServiceKey().hex()
@@ -348,7 +348,7 @@ class HydrusResourceClientAPIRestrictedGetServiceRatingSVG( ClientLocalServerRes
                 
             else:
                 
-                raise HydrusExceptions.NotFoundException( 'Rating service "{}" does not use a SVG icon!'.format( service.GetName() ) )
+                raise HydrusExceptions.NotFoundException( 'Rating service "{}" does not use a SVG icon!'.format(service.get_name()))
                 
             
         except HydrusExceptions.NotFoundException:
@@ -357,7 +357,7 @@ class HydrusResourceClientAPIRestrictedGetServiceRatingSVG( ClientLocalServerRes
             
         except Exception as e:
             
-            raise HydrusExceptions.ServerException( 'There was a problem getting the SVG file for rating service "{}"! Error follows: {}'.format( service.GetName(), str(e) ) )
+            raise HydrusExceptions.ServerException( 'There was a problem getting the SVG file for rating service "{}"! Error follows: {}'.format(service.get_name(), str(e)))
             
         
         response_context = HydrusServerResources.ResponseContext( 200, mime = HC.IMAGE_SVG, body = svg_content )

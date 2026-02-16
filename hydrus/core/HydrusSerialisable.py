@@ -223,7 +223,7 @@ def GetNoneableSerialisableTuple( obj_or_none ):
 
 def SetNonDupeName( obj, disallowed_names, do_casefold = False ):
     
-    non_dupe_name = HydrusData.GetNonDupeName( obj.GetName(), disallowed_names, do_casefold = do_casefold )
+    non_dupe_name = HydrusData.GetNonDupeName(obj.get_name(), disallowed_names, do_casefold = do_casefold)
     
     obj.SetName( non_dupe_name )
     

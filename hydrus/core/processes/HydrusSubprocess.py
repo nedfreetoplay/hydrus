@@ -54,7 +54,7 @@ def GetSubprocessEnv():
             
         
         remove_if_hydrus_base_dir = [ 'QT_PLUGIN_PATH', 'QML2_IMPORT_PATH', 'SSL_CERT_FILE' ]
-        hydrus_base_dir = HG.controller.GetDBDir()
+        hydrus_base_dir = HG.controller.get_db_dir()
         
         for key in remove_if_hydrus_base_dir:
             
@@ -391,7 +391,7 @@ class SubprocessContext( object ):
         
         self.process = RunSubprocessRawCall( cmd, start_new_session, bufsize, stdin_pipe, stdout_pipe, stderr_pipe, hide_terminal, text )
         
-        HG.controller.CallToThread( self._THREADReader )
+        HG.controller.call_to_thread(self._THREADReader)
         
     
     def _THREADReader( self ):

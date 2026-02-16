@@ -143,7 +143,7 @@ class ClientFilesManager( object ):
         
         known_base_locations = self._GetCurrentSubfolderBaseLocations()
         
-        ( media_base_locations, thumbnail_override_base_location ) = self._controller.Read( 'ideal_client_files_locations' )
+        ( media_base_locations, thumbnail_override_base_location ) = self._controller.read('ideal_client_files_locations')
         
         known_base_locations.update( media_base_locations )
         
@@ -194,7 +194,7 @@ class ClientFilesManager( object ):
             
             message = 'Hydrus found multiple missing locations in your file storage. Some of these locations seemed to be fixable, others did not. The client will now inform you about both problems.'
             
-            self._controller.BlockingSafeShowCriticalMessage( 'Multiple file location problems.', message )
+            self._controller.blocking_safe_show_critical_message('Multiple file location problems.', message)
             
         
         if len( correct_rows ) > 0:
@@ -209,9 +209,9 @@ class ClientFilesManager( object ):
             
             HydrusData.Print( summary_message )
             
-            self._controller.BlockingSafeShowCriticalMessage( 'About to auto-heal client file folders.', summary_message )
+            self._controller.blocking_safe_show_critical_message('About to auto-heal client file folders.', summary_message)
             
-            CG.client_controller.WriteSynchronous( 'repair_client_files', correct_rows )
+            CG.client_controller.write_synchronous('repair_client_files', correct_rows)
             
         
     
@@ -426,14 +426,14 @@ class ClientFilesManager( object ):
             # In general, I think this thing is going to determine the next migration destination and purge flag
             # the background file migrator will work on current purge flags and not talk to this guy until the current flags are clear 
             
-            ( ideal_media_base_locations, ideal_thumbnail_override_base_location ) = self._controller.Read( 'ideal_client_files_locations' )
+            ( ideal_media_base_locations, ideal_thumbnail_override_base_location ) = self._controller.read('ideal_client_files_locations')
             
             if False in ( base_location.PathExists() for base_location in ideal_media_base_locations ) or ( ideal_thumbnail_override_base_location is not None and not ideal_thumbnail_override_base_location.PathExists() ):
                 
                 return None
                 
             
-            service_info = CG.client_controller.Read( 'service_info', CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY )
+            service_info = CG.client_controller.read('service_info', CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY)
             
             hydrus_local_file_storage_total_size = service_info[ HC.SERVICE_INFO_TOTAL_SIZE ]
             
@@ -729,7 +729,7 @@ class ClientFilesManager( object ):
         
         self._ReinitSubfolders()
         
-        if CG.client_controller.IsFirstStart():
+        if CG.client_controller.is_first_start():
             
             try:
                 
@@ -751,7 +751,7 @@ class ClientFilesManager( object ):
                         
                         text = 'Attempting to create the database\'s client_files folder structure in {} failed!'.format( dir_to_test )
                         
-                        self._controller.BlockingSafeShowCriticalMessage( 'unable to create file structure', text )
+                        self._controller.blocking_safe_show_critical_message('unable to create file structure', text)
                         
                         raise
                         
@@ -761,7 +761,7 @@ class ClientFilesManager( object ):
                 
                 text = 'Attempting to create the database\'s client_files folder structure failed!'
                 
-                self._controller.BlockingSafeShowCriticalMessage( 'unable to create file structure', text )
+                self._controller.blocking_safe_show_critical_message('unable to create file structure', text)
                 
                 raise
                 
@@ -814,7 +814,7 @@ class ClientFilesManager( object ):
                     text += '\n' * 2
                     text += 'If this is happening on client boot, you should now be presented with a dialog to correct this manually!'
                     
-                    self._controller.BlockingSafeShowCriticalMessage( 'missing locations', text )
+                    self._controller.blocking_safe_show_critical_message('missing locations', text)
                     
                 else:
                     
@@ -824,7 +824,7 @@ class ClientFilesManager( object ):
                     text += '\n' * 2
                     text += 'If this is happening on client boot, you should now be presented with a dialog to correct this manually!'
                     
-                    self._controller.BlockingSafeShowCriticalMessage( 'missing locations', text )
+                    self._controller.blocking_safe_show_critical_message('missing locations', text)
                     
                 
             
@@ -832,7 +832,7 @@ class ClientFilesManager( object ):
     
     def _ReinitSubfolders( self ):
         
-        subfolders = self._controller.Read( 'client_files_subfolders' )
+        subfolders = self._controller.read('client_files_subfolders')
         
         self._prefixes_to_client_files_subfolders = collections.defaultdict( list )
         
@@ -871,7 +871,7 @@ class ClientFilesManager( object ):
         
         if CG.client_controller.new_options.GetBoolean( 'file_system_waits_on_wakeup' ):
             
-            while CG.client_controller.JustWokeFromSleep():
+            while CG.client_controller.just_woke_from_sleep():
                 
                 HydrusThreading.CheckIfThreadShuttingDown()
                 
@@ -884,7 +884,7 @@ class ClientFilesManager( object ):
         
         with self._master_locations_rwlock.read:
             
-            db_dir = self._controller.GetDBDir()
+            db_dir = self._controller.get_db_dir()
             
             client_files_default = os.path.join( db_dir, 'client_files' )
             
@@ -1032,7 +1032,7 @@ class ClientFilesManager( object ):
                                 
                                 orphan_type = 'file' if subfolder.IsForFiles() else 'thumbnail'
                                 
-                                is_an_orphan = CG.client_controller.Read( 'is_an_orphan', orphan_type, hash )
+                                is_an_orphan = CG.client_controller.read('is_an_orphan', orphan_type, hash)
                                 
                             except Exception as e:
                                 
@@ -1211,7 +1211,7 @@ class ClientFilesManager( object ):
                         
                         if not delete_ok and random.randint( 1, 52 ) != 52:
                             
-                            self._controller.WriteSynchronous( 'file_maintenance_add_jobs_hashes', { hash }, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_DELETE_NEIGHBOUR_DUPES, HydrusTime.GetNow() + ( 7 * 86400 ) )
+                            self._controller.write_synchronous('file_maintenance_add_jobs_hashes', {hash}, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_DELETE_NEIGHBOUR_DUPES, HydrusTime.GetNow() + (7 * 86400))
                             
                         
                     
@@ -1230,7 +1230,7 @@ class ClientFilesManager( object ):
             
             with self._master_locations_rwlock.read:
                 
-                ( file_hash, thumbnail_hash ) = self._controller.Read( 'deferred_physical_delete' )
+                ( file_hash, thumbnail_hash ) = self._controller.read('deferred_physical_delete')
                 
                 if file_hash is None and thumbnail_hash is None:
                     
@@ -1241,7 +1241,7 @@ class ClientFilesManager( object ):
                     
                     with self._GetPrefixRWLock( file_hash, 'f' ).write:
                         
-                        media_result = self._controller.Read( 'media_result', file_hash )
+                        media_result = self._controller.read('media_result', file_hash)
                         
                         expected_mime = media_result.GetMime()
                         
@@ -1280,7 +1280,7 @@ class ClientFilesManager( object ):
                         
                     
                 
-                self._controller.WriteSynchronous( 'clear_deferred_physical_delete', file_hash = file_hash, thumbnail_hash = thumbnail_hash )
+                self._controller.write_synchronous('clear_deferred_physical_delete', file_hash = file_hash, thumbnail_hash = thumbnail_hash)
                 
                 if num_files_deleted % 10 == 0 or num_thumbnails_deleted % 10 == 0:
                     
@@ -1460,7 +1460,7 @@ class ClientFilesManager( object ):
                     job_status.SetStatusText( text )
                     
                     # these two lines can cause a deadlock because the db sometimes calls stuff in here.
-                    self._controller.WriteSynchronous( 'relocate_client_files', source_subfolder, dest_subfolder )
+                    self._controller.write_synchronous('relocate_client_files', source_subfolder, dest_subfolder)
                     
                     self._Reinit()
                     

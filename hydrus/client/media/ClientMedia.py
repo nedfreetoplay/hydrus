@@ -2876,7 +2876,7 @@ class MediaSort( HydrusSerialisable.SerialisableBase ):
                 
                 service = CG.client_controller.services_manager.GetService( service_key )
                 
-                name = service.GetName()
+                name = service.get_name()
                 
             except HydrusExceptions.DataMissing:
                 

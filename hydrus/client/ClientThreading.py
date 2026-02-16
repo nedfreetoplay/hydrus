@@ -85,7 +85,7 @@ class JobStatus( object ):
                     return
                     
                 
-                if CG.client_controller.ShouldStopThisWork( self._maintenance_mode, self._stop_time ):
+                if CG.client_controller.should_stop_this_work(self._maintenance_mode, self._stop_time):
                     
                     self.Cancel()
                     

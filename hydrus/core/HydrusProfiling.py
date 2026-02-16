@@ -89,8 +89,8 @@ def IsProfileMode( name ):
 
 def PrintProfile( summary, profile_text = None ):
     
-    name = HG.controller.GetName()
-    db_dir = HG.controller.GetDBDir()
+    name = HG.controller.get_name()
+    db_dir = HG.controller.get_db_dir()
     
     pretty_timestamp = time.strftime( '%Y-%m-%d %H-%M-%S', time.localtime( profile_start_time ) )
     
@@ -124,8 +124,8 @@ def PrintQueryPlan( query, plan_lines ):
         return
         
     
-    name = HG.controller.GetName()
-    db_dir = HG.controller.GetDBDir()
+    name = HG.controller.get_name()
+    db_dir = HG.controller.get_db_dir()
     
     queries_planned.add( query )
     

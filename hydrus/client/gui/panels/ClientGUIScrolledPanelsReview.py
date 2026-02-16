@@ -129,11 +129,11 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         super().__init__( parent )
         
-        self._client_files_subfolders = CG.client_controller.Read( 'client_files_subfolders' )
+        self._client_files_subfolders = CG.client_controller.read('client_files_subfolders')
         
-        ( self._media_base_locations, self._ideal_thumbnails_base_location_override ) = self._controller.Read( 'ideal_client_files_locations' )
+        ( self._media_base_locations, self._ideal_thumbnails_base_location_override ) = self._controller.read('ideal_client_files_locations')
         
-        service_info = CG.client_controller.Read( 'service_info', CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY )
+        service_info = CG.client_controller.read('service_info', CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY)
         
         self._hydrus_local_file_storage_total_size = service_info[ HC.SERVICE_INFO_TOTAL_SIZE ]
         self._hydrus_local_file_storage_total_num = service_info[ HC.SERVICE_INFO_NUM_FILES ]
@@ -891,7 +891,7 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
     
     def _SaveToDB( self ):
         
-        self._controller.Write( 'ideal_client_files_locations', self._media_base_locations, self._ideal_thumbnails_base_location_override )
+        self._controller.write('ideal_client_files_locations', self._media_base_locations, self._ideal_thumbnails_base_location_override)
         
         self._controller.client_files_manager.Reinit()
         
@@ -998,15 +998,15 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
     
     def _Update( self ):
         
-        self._client_files_subfolders = CG.client_controller.Read( 'client_files_subfolders' )
+        self._client_files_subfolders = CG.client_controller.read('client_files_subfolders')
         
-        ( self._media_base_locations, self._ideal_thumbnails_base_location_override ) = self._controller.Read( 'ideal_client_files_locations' )
+        ( self._media_base_locations, self._ideal_thumbnails_base_location_override ) = self._controller.read('ideal_client_files_locations')
         
         self._media_base_locations_to_ideal_usage = ClientFilesPhysical.FilesStorageBaseLocation.STATICGetIdealWeights( self._hydrus_local_file_storage_total_size, self._media_base_locations )
         
         approx_total_db_size = self._controller.db.GetApproxTotalFileSize()
         
-        self._current_db_path_st.setText( 'database (about '+HydrusData.ToHumanBytes(approx_total_db_size)+'): '+self._controller.GetDBDir() )
+        self._current_db_path_st.setText( 'database (about ' + HydrusData.ToHumanBytes(approx_total_db_size) +'): ' + self._controller.get_db_dir())
         self._current_install_path_st.setText( 'install: ' + HC.BASE_DIR )
         
         approx_total_client_files = self._hydrus_local_file_storage_total_size
@@ -1256,7 +1256,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         
         for url_class in url_classes:
             
-            if url_class.GetName() in url_class_names_seen:
+            if url_class.get_name() in url_class_names_seen:
                 
                 continue
                 
@@ -1270,7 +1270,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 new_url_classes.append( url_class )
                 
-                url_class_names_seen.add( url_class.GetName() )
+                url_class_names_seen.add(url_class.get_name())
                 
             
         
@@ -1283,7 +1283,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         
         for gug in gugs:
             
-            if gug.GetName() in gug_names_seen:
+            if gug.get_name() in gug_names_seen:
                 
                 continue
                 
@@ -1296,7 +1296,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 new_gugs.append( gug )
                 
-                gug_names_seen.add( gug.GetName() )
+                gug_names_seen.add(gug.get_name())
                 
             
         
@@ -1309,7 +1309,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         
         for parser in parsers:
             
-            if parser.GetName() in parser_names_seen:
+            if parser.get_name() in parser_names_seen:
                 
                 continue
                 
@@ -1322,7 +1322,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 new_parsers.append( parser )
                 
-                parser_names_seen.add( parser.GetName() )
+                parser_names_seen.add(parser.get_name())
                 
             
         
@@ -1335,7 +1335,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         
         for login_script in login_scripts:
             
-            if login_script.GetName() in login_script_names_seen:
+            if login_script.get_name() in login_script_names_seen:
                 
                 continue
                 
@@ -1348,7 +1348,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 new_login_scripts.append( login_script )
                 
-                login_script_names_seen.add( login_script.GetName() )
+                login_script_names_seen.add(login_script.get_name())
                 
             
         
@@ -1424,10 +1424,10 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         if self._select_from_list.isChecked():
             
             choice_tuples = []
-            choice_tuples.extend( [ ( 'GUG: ' + gug.GetName(), gug, True ) for gug in new_gugs ] )
-            choice_tuples.extend( [ ( 'URL Class: ' + url_class.GetName(), url_class, True ) for url_class in new_url_classes ] )
-            choice_tuples.extend( [ ( 'Parser: ' + parser.GetName(), parser, True ) for parser in new_parsers ] )
-            choice_tuples.extend( [ ( 'Login Script: ' + login_script.GetName(), login_script, True ) for login_script in new_login_scripts ] )
+            choice_tuples.extend([( 'GUG: ' + gug.get_name(), gug, True) for gug in new_gugs])
+            choice_tuples.extend([( 'URL Class: ' + url_class.get_name(), url_class, True) for url_class in new_url_classes])
+            choice_tuples.extend([( 'Parser: ' + parser.get_name(), parser, True) for parser in new_parsers])
+            choice_tuples.extend([( 'Login Script: ' + login_script.get_name(), login_script, True) for login_script in new_login_scripts])
             choice_tuples.extend( [ ( 'Domain Metadata: ' + domain_metadata.GetDomain(), domain_metadata, True ) for domain_metadata in new_domain_metadatas ] )
             
             try:
@@ -1448,10 +1448,10 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         
         # final ask
         
-        new_gugs.sort( key = lambda o: o.GetName() )
-        new_url_classes.sort( key = lambda o: o.GetName() )
-        new_parsers.sort( key = lambda o: o.GetName() )
-        new_login_scripts.sort( key = lambda o: o.GetName() )
+        new_gugs.sort(key = lambda o: o.get_name())
+        new_url_classes.sort(key = lambda o: o.get_name())
+        new_parsers.sort(key = lambda o: o.get_name())
+        new_login_scripts.sort(key = lambda o: o.get_name())
         new_domain_metadatas.sort( key = lambda o: o.GetDomain() )
         
         if len( new_domain_metadatas ) > 0:
@@ -1980,7 +1980,7 @@ class ReviewFileHistory( ClientGUIScrolledPanels.ReviewPanel ):
             
             try:
                 
-                file_history = CG.client_controller.Read( 'file_history', num_steps, file_search_context = file_search_context, job_status = job_status )
+                file_history = CG.client_controller.read('file_history', num_steps, file_search_context = file_search_context, job_status = job_status)
                 
             except HydrusExceptions.DBException as e:
                 
@@ -2339,7 +2339,7 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
     
     def _DoAllWork( self ):
         
-        CG.client_controller.CallToThread( CG.client_controller.files_maintenance_manager.ForceMaintenance )
+        CG.client_controller.call_to_thread(CG.client_controller.files_maintenance_manager.ForceMaintenance)
         
     
     def _DoWork( self ):
@@ -2351,14 +2351,14 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
             return
             
         
-        CG.client_controller.CallToThread( CG.client_controller.files_maintenance_manager.ForceMaintenance, mandated_job_types = job_types )
+        CG.client_controller.call_to_thread(CG.client_controller.files_maintenance_manager.ForceMaintenance, mandated_job_types = job_types)
         
     
     def _RefreshWorkDue( self ):
         
         def work_callable():
             
-            job_types_to_counts = CG.client_controller.Read( 'file_maintenance_get_job_counts' )
+            job_types_to_counts = CG.client_controller.read('file_maintenance_get_job_counts')
             
             return job_types_to_counts
             
@@ -2394,7 +2394,7 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
         
         def work_callable():
             
-            query_hash_ids = CG.client_controller.Read( 'file_query_ids', file_search_context, apply_implicit_limit = False )
+            query_hash_ids = CG.client_controller.read('file_query_ids', file_search_context, apply_implicit_limit = False)
             
             return query_hash_ids
             
@@ -2434,7 +2434,7 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
         
         def work_callable():
             
-            query_hash_ids = CG.client_controller.Read( 'file_query_ids', file_search_context, apply_implicit_limit = False )
+            query_hash_ids = CG.client_controller.read('file_query_ids', file_search_context, apply_implicit_limit = False)
             
             return query_hash_ids
             
@@ -2461,7 +2461,7 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
         
         def work_callable():
             
-            query_hash_ids = CG.client_controller.Read( 'file_query_ids', file_search_context, apply_implicit_limit = False )
+            query_hash_ids = CG.client_controller.read('file_query_ids', file_search_context, apply_implicit_limit = False)
             
             return query_hash_ids
             
@@ -2670,7 +2670,7 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
         
         def work_callable():
             
-            boned_stats = CG.client_controller.Read( 'boned_stats', file_search_context = file_search_context, job_status = job_status )
+            boned_stats = CG.client_controller.read('boned_stats', file_search_context = file_search_context, job_status = job_status)
             
             return boned_stats
             
@@ -3129,7 +3129,7 @@ class JobSchedulerPanel( QW.QWidget ):
     
     def _RefreshSnapshot( self ):
         
-        jobs = self._controller.GetJobSchedulerSnapshot( self._scheduler_name )
+        jobs = self._controller.get_job_scheduler_snapshot(self._scheduler_name)
         
         self._list_ctrl.SetData( jobs )
         
@@ -3171,7 +3171,7 @@ class ThreadsPanel( QW.QWidget ):
     
     def _ConvertDataToDisplayTuple( self, thread ):
         
-        name = thread.GetName()
+        name = thread.get_name()
         thread_type = repr( type( thread ) )
         current_job = repr( thread.GetCurrentJobSummary() )
         
@@ -3186,7 +3186,7 @@ class ThreadsPanel( QW.QWidget ):
     
     def _ConvertDataToSortTuple( self, thread ):
         
-        name = thread.GetName()
+        name = thread.get_name()
         thread_type = repr( type( thread ) )
         current_job = repr( thread.GetCurrentJobSummary() )
         
@@ -3197,7 +3197,7 @@ class ThreadsPanel( QW.QWidget ):
     
     def _RefreshSnapshot( self ):
         
-        threads = self._controller.GetThreadsSnapshot()
+        threads = self._controller.get_threads_snapshot()
         
         self._list_ctrl.SetData( threads )
         
@@ -3317,7 +3317,7 @@ class ReviewDeferredDeleteTableData( ClientGUIScrolledPanels.ReviewPanel ):
         
         def work_callable( args ):
             
-            deferred_delete_data = self._controller.Read( 'deferred_delete_data' )
+            deferred_delete_data = self._controller.read('deferred_delete_data')
             
             return deferred_delete_data
             
@@ -3600,7 +3600,7 @@ Vacuuming is an expensive operation. It creates one (temporary) copy of the data
             
             if result == QW.QDialog.DialogCode.Accepted:
                 
-                self._controller.Write( 'vacuum', names )
+                self._controller.write('vacuum', names)
                 
                 self._OKParent()
                 

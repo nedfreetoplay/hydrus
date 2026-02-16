@@ -175,7 +175,7 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
             
             if content_update_package.HasContent():
                 
-                CG.client_controller.Write( 'content_updates', content_update_package )
+                CG.client_controller.write('content_updates', content_update_package)
                 
             
         finally:
@@ -226,7 +226,7 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
             
             for service in self._services:
                 
-                name = service.GetName()
+                name = service.get_name()
                 
                 service_key = service.GetServiceKey()
                 
@@ -351,7 +351,7 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
             
             for service in self._services:
                 
-                name = service.GetName()
+                name = service.get_name()
                 
                 service_key = service.GetServiceKey()
                 
@@ -499,7 +499,7 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
             
             for service in self._services:
                 
-                name = service.GetName()
+                name = service.get_name()
                 
                 service_key = service.GetServiceKey()
                 

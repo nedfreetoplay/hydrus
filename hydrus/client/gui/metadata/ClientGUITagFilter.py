@@ -829,7 +829,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
             
             ClientGUIMenus.AppendSeparator( menu )
             
-            for service in sorted( tag_repositories, key = lambda s: s.GetName() ):
+            for service in sorted(tag_repositories, key = lambda s: s.get_name()):
                 
                 service = typing.cast( ClientServices.ServiceRepository, service )
                 
@@ -1178,7 +1178,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     results = []
                     
-                    tags_to_siblings = CG.client_controller.Read( 'tag_siblings_lookup', CC.COMBINED_TAG_SERVICE_KEY, test_tags )
+                    tags_to_siblings = CG.client_controller.read('tag_siblings_lookup', CC.COMBINED_TAG_SERVICE_KEY, test_tags)
                     
                     for test_tag_and_siblings in tags_to_siblings.values():
                         

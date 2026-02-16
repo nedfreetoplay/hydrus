@@ -169,7 +169,7 @@ class EditDefaultImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         url_class_key = url_class.GetClassKey()
         
-        name = url_class.GetName()
+        name = url_class.get_name()
         url_type = url_class.GetURLType()
         
         pretty_name = name
@@ -876,7 +876,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
                     template = 'Remove {} from {}?'
                     
                 
-                text = template.format( file_desc, deletee_service.GetName() )
+                text = template.format(file_desc, deletee_service.get_name())
                 
                 content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, chunk_of_hashes ) for chunk_of_hashes in HydrusLists.SplitListIntoChunks( hashes, 16 ) ]
                 
@@ -925,14 +925,14 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     if deletee_service.HasPermission( HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_MODERATE ):
                         
-                        text = 'Admin-delete {} from {}?'.format( file_desc, deletee_service.GetName() )
+                        text = 'Admin-delete {} from {}?'.format(file_desc, deletee_service.get_name())
                         
                         save_reason = False
                         reason = 'admin'
                         
                     else:
                         
-                        text = 'Petition {} from {}?'.format( file_desc, deletee_service.GetName() )
+                        text = 'Petition {} from {}?'.format(file_desc, deletee_service.get_name())
                         
                         save_reason = True
                         reason = None

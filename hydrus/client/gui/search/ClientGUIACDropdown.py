@@ -182,11 +182,11 @@ def ReadFetch(
             
             we_need_results = not cache_valid
             
-            db_not_going_to_hang_if_we_hit_it = not CG.client_controller.DBCurrentlyDoingJob()
+            db_not_going_to_hang_if_we_hit_it = not CG.client_controller.db_currently_doing_job()
             
             if we_need_results or db_not_going_to_hang_if_we_hit_it:
                 
-                predicates = CG.client_controller.Read( 'file_system_predicates', file_search_context, force_system_everything = force_system_everything )
+                predicates = CG.client_controller.read('file_system_predicates', file_search_context, force_system_everything = force_system_everything)
                 
                 results_cache = ClientSearchAutocomplete.PredicateResultsCacheSystem( predicates )
                 
@@ -261,7 +261,7 @@ def ReadFetch(
                 
             else:
                 
-                exact_match_predicates = CG.client_controller.Read( 'autocomplete_predicates', ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, file_search_context, search_text = strict_search_text, exact_match = True, job_status = job_status )
+                exact_match_predicates = CG.client_controller.read('autocomplete_predicates', ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, file_search_context, search_text = strict_search_text, exact_match = True, job_status = job_status)
                 
                 small_exact_match_search = ShouldDoExactSearch( parsed_autocomplete_text )
                 
@@ -291,7 +291,7 @@ def ReadFetch(
                     
                     search_namespaces_into_full_tags = parsed_autocomplete_text.GetTagAutocompleteOptions().SearchNamespacesIntoFullTags()
                     
-                    predicates = CG.client_controller.Read( 'autocomplete_predicates', ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, file_search_context, search_text = autocomplete_search_text, job_status = job_status, search_namespaces_into_full_tags = search_namespaces_into_full_tags )
+                    predicates = CG.client_controller.read('autocomplete_predicates', ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, file_search_context, search_text = autocomplete_search_text, job_status = job_status, search_namespaces_into_full_tags = search_namespaces_into_full_tags)
                     
                     if job_status.IsCancelled():
                         
@@ -405,7 +405,7 @@ def ReadFetch(
                 
                 # now spend time fetching siblings if needed
                 
-                predicates = CG.client_controller.Read( 'media_predicates', tag_context, tags_to_count, job_status = job_status )
+                predicates = CG.client_controller.read('media_predicates', tag_context, tags_to_count, job_status = job_status)
                 
                 results_cache = ClientSearchAutocomplete.PredicateResultsCacheMedia( predicates )
                 
@@ -551,7 +551,7 @@ def WriteFetch(
             
         else:
             
-            original_exact_match_predicates = CG.client_controller.Read( 'autocomplete_predicates', ClientTags.TAG_DISPLAY_STORAGE, file_search_context, search_text = strict_search_text, exact_match = True, zero_count_ok = True, job_status = job_status )
+            original_exact_match_predicates = CG.client_controller.read('autocomplete_predicates', ClientTags.TAG_DISPLAY_STORAGE, file_search_context, search_text = strict_search_text, exact_match = True, zero_count_ok = True, job_status = job_status)
             
             exact_match_predicates = list( original_exact_match_predicates )
             
@@ -586,7 +586,7 @@ def WriteFetch(
                 
                 search_namespaces_into_full_tags = parsed_autocomplete_text.GetTagAutocompleteOptions().SearchNamespacesIntoFullTags()
                 
-                predicates = CG.client_controller.Read( 'autocomplete_predicates', ClientTags.TAG_DISPLAY_STORAGE, file_search_context, search_text = autocomplete_search_text, job_status = job_status, zero_count_ok = True, search_namespaces_into_full_tags = search_namespaces_into_full_tags )
+                predicates = CG.client_controller.read('autocomplete_predicates', ClientTags.TAG_DISPLAY_STORAGE, file_search_context, search_text = autocomplete_search_text, job_status = job_status, zero_count_ok = True, search_namespaces_into_full_tags = search_namespaces_into_full_tags)
                 
                 if is_explicit_wildcard:
                     
@@ -1236,7 +1236,7 @@ class AutoCompleteDropdown( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                     # this resulted in annoying miss-cases where ctrl+c et al were being passed to the list and so you couldn't copy text from the text input
                     # THUS we are moving to a strict whitelist. a handful of events will pass down to the list, everything else we jealously keep
                     
-                    CG.client_controller.ResetIdleTimer()
+                    CG.client_controller.reset_idle_timer()
                     
                     ( modifier, key ) = ClientGUIShortcuts.ConvertKeyEventToSimpleTuple( event )
                     
@@ -1694,11 +1694,11 @@ class ChildrenTab( ListBoxTagsPredicatesAC ):
                 
                 if len( uncached_context_tags ) > 0:
                     
-                    new_tags_to_child_tags = CG.client_controller.Read( 'tag_descendants_lookup', tag_service_key, uncached_context_tags )
+                    new_tags_to_child_tags = CG.client_controller.read('tag_descendants_lookup', tag_service_key, uncached_context_tags)
                     
                     new_child_tags = HydrusLists.MassUnion( new_tags_to_child_tags.values() )
                     
-                    child_predicates = CG.client_controller.Read(
+                    child_predicates = CG.client_controller.read(
                         'tag_predicates',
                         tag_display_type,
                         file_search_context,
@@ -2943,7 +2943,7 @@ class AutoCompleteDropdownTagsRead( AutocompleteDropdownTagsFileSearchContextORC
             under_construction_or_predicate = self._under_construction_or_predicate.Duplicate()
             
         
-        CG.client_controller.CallToThread( ReadFetch, self, job_status, self.SetPrefetchResults, self.SetFetchedResults, parsed_autocomplete_text, self._media_callable, fsc, self._search_pause_play.IsOn(), self._include_unusual_predicate_types, self._results_cache, under_construction_or_predicate, self._force_system_everything )
+        CG.client_controller.call_to_thread(ReadFetch, self, job_status, self.SetPrefetchResults, self.SetFetchedResults, parsed_autocomplete_text, self._media_callable, fsc, self._search_pause_play.IsOn(), self._include_unusual_predicate_types, self._results_cache, under_construction_or_predicate, self._force_system_everything)
         
     
     def _SynchronisedChanged( self, value ):
@@ -3585,7 +3585,7 @@ class AutoCompleteDropdownTagsWrite( AutoCompleteDropdownTags ):
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = self._location_context_button.GetValue(), tag_context = self._tag_context_button.GetValue() )
         
-        CG.client_controller.CallToThread( WriteFetch, self, job_status, self.SetPrefetchResults, self.SetFetchedResults, parsed_autocomplete_text, file_search_context, self._results_cache )
+        CG.client_controller.call_to_thread(WriteFetch, self, job_status, self.SetPrefetchResults, self.SetFetchedResults, parsed_autocomplete_text, file_search_context, self._results_cache)
         
     
     def _TryToProcessAPasteEvent( self ) -> bool:

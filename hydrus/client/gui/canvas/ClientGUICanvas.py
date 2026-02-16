@@ -393,7 +393,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         if self._current_media is not None:
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_ARCHIVE, ( self._current_media.GetHash(), ) ) ) )
+            CG.client_controller.write('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate(CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate(HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_ARCHIVE, (self._current_media.GetHash(),))))
             
         
     
@@ -440,7 +440,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
             for content_update_package in content_update_packages:
                 
-                CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+                CG.client_controller.write_synchronous('content_updates', content_update_package)
                 
             
         
@@ -450,7 +450,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
         else:
             
-            CG.client_controller.CallToThread( do_it, content_update_packages )
+            CG.client_controller.call_to_thread(do_it, content_update_packages)
             
             return True
             
@@ -489,7 +489,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             return
             
         
-        CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_INBOX, ( self._current_media.GetHash(), ) ) ) )
+        CG.client_controller.write('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate(CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate(HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_INBOX, (self._current_media.GetHash(),))))
         
     
     def _MaintainNeighbourPrefetch( self ):
@@ -606,7 +606,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                     
                     content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, pending_content_updates )
                     
-                    CG.client_controller.Write( 'content_updates', content_update_package )
+                    CG.client_controller.write('content_updates', content_update_package)
                     
                 
             
@@ -1520,7 +1520,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
             self.EndDrag()
             
-            CG.client_controller.ResetIdleTimer()
+            CG.client_controller.reset_idle_timer()
             
             self._SaveCurrentMediaViewTime()
             
@@ -3438,7 +3438,7 @@ def CommitArchiveDelete( deletee_location_context: ClientLocation.LocationContex
             
             content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_INBOX, block_of_deleted_hashes ) )
             
-            CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+            CG.client_controller.write_synchronous('content_updates', content_update_package)
             
             CG.client_controller.WaitUntilViewFree()
             
@@ -3454,7 +3454,7 @@ def CommitArchiveDelete( deletee_location_context: ClientLocation.LocationContex
             content_update_package.AddContentUpdate( deletee_file_service_key, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, block_of_deleted_hashes, reason = reason ) )
             
         
-        CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+        CG.client_controller.write_synchronous('content_updates', content_update_package)
         
         CG.client_controller.WaitUntilViewFree()
         
@@ -3473,7 +3473,7 @@ def CommitArchiveDelete( deletee_location_context: ClientLocation.LocationContex
         
         content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_ARCHIVE, block_of_kept_hashes ) )
         
-        CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+        CG.client_controller.write_synchronous('content_updates', content_update_package)
         
         CG.client_controller.WaitUntilViewFree()
         
@@ -3823,7 +3823,7 @@ class CanvasMediaListFilterArchiveDelete( CanvasMediaList ):
                 kept_mr = [ m.GetMediaResult() for m in kept ]
                 deleted_mr = [ m.GetMediaResult() for m in deleted ]
                 
-                CG.client_controller.CallToThread( CommitArchiveDelete, deletee_location_context, kept_mr, deleted_mr )
+                CG.client_controller.call_to_thread(CommitArchiveDelete, deletee_location_context, kept_mr, deleted_mr)
                 
             
         

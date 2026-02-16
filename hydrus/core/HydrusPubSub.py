@@ -167,7 +167,7 @@ class HydrusPubSub( object ):
         self._received_job_event.set()
         
     
-    def pubimmediate( self, topic, *args, **kwargs ):
+    def pub_immediate(self, topic, *args, **kwargs):
         
         with self._lock:
             

@@ -1379,7 +1379,7 @@ class BetterListCtrlTreeView( QW.QTreeView ):
     
     def SetNonDupeName( self, obj: object, do_casefold = False ):
         
-        current_names = { o.GetName() for o in self.GetData() if o is not obj }
+        current_names = {o.get_name() for o in self.GetData() if o is not obj}
 
         HydrusSerialisable.SetNonDupeName( obj, current_names, do_casefold = do_casefold )
         
@@ -1517,7 +1517,7 @@ class BetterListCtrlPanel( QW.QWidget ):
         
         selected = False
         
-        choice_tuples = [ ( default.GetName(), default, selected ) for default in defaults ]
+        choice_tuples = [(default.get_name(), default, selected) for default in defaults]
         
         from hydrus.client.gui import ClientGUIDialogsQuick
         

@@ -32,7 +32,7 @@ class HydrusResourceClientAPIRestrictedManageFileRelationshipsGetRelationships( 
         hashes = ClientLocalServerCore.ParseHashes( request )
         
         # maybe in future we'll just get the media results and dump the dict from there, but whatever
-        hashes_to_file_duplicates = CG.client_controller.Read( 'file_relationships_for_api', location_context, hashes )
+        hashes_to_file_duplicates = CG.client_controller.read('file_relationships_for_api', location_context, hashes)
         
         body_dict = { 'file_relationships' : hashes_to_file_duplicates }
         
@@ -50,7 +50,7 @@ class HydrusResourceClientAPIRestrictedManageFileRelationshipsGetPotentialsCount
         
         potential_duplicates_search_context = ClientLocalServerCore.ParsePotentialDuplicatesSearchContext( request )
         
-        count = CG.client_controller.Read( 'potential_duplicates_count', potential_duplicates_search_context )
+        count = CG.client_controller.read('potential_duplicates_count', potential_duplicates_search_context)
         
         body_dict = { 'potential_duplicates_count' : count }
         
@@ -140,7 +140,7 @@ class HydrusResourceClientAPIRestrictedManageFileRelationshipsGetRandomPotential
         
         potential_duplicates_search_context = ClientLocalServerCore.ParsePotentialDuplicatesSearchContext( request )
         
-        hashes = CG.client_controller.Read( 'random_potential_duplicate_hashes', potential_duplicates_search_context )
+        hashes = CG.client_controller.read('random_potential_duplicate_hashes', potential_duplicates_search_context)
         
         body_dict = { 'random_potential_duplicate_hashes' : [ hash.hex() for hash in hashes ] }
         
@@ -158,7 +158,7 @@ class HydrusResourceClientAPIRestrictedManageFileRelationshipsRemovePotentials( 
         
         hashes = ClientLocalServerCore.ParseHashes( request )
         
-        CG.client_controller.WriteSynchronous( 'remove_potential_pairs', hashes )
+        CG.client_controller.write_synchronous('remove_potential_pairs', hashes)
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
@@ -174,7 +174,7 @@ class HydrusResourceClientAPIRestrictedManageFileRelationshipsSetKings( HydrusRe
         
         for hash in hashes:
             
-            CG.client_controller.WriteSynchronous( 'duplicate_set_king', hash )
+            CG.client_controller.write_synchronous('duplicate_set_king', hash)
             
         
         response_context = HydrusServerResources.ResponseContext( 200 )
@@ -245,7 +245,7 @@ class HydrusResourceClientAPIRestrictedManageFileRelationshipsSetRelationships( 
             all_hashes.update( ( hash_a, hash_b ) )
             
         
-        media_results = CG.client_controller.Read( 'media_results', all_hashes )
+        media_results = CG.client_controller.read('media_results', all_hashes)
         
         hashes_to_media_results = { media_result.GetHash() : media_result for media_result in media_results }
         
@@ -311,7 +311,7 @@ class HydrusResourceClientAPIRestrictedManageFileRelationshipsSetRelationships( 
         
         if len( database_write_rows ) > 0:
             
-            CG.client_controller.WriteSynchronous( 'duplicate_pair_status', database_write_rows )
+            CG.client_controller.write_synchronous('duplicate_pair_status', database_write_rows)
             
         
         response_context = HydrusServerResources.ResponseContext( 200 )

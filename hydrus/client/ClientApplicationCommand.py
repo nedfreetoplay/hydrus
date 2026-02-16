@@ -1161,7 +1161,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
                     
                     service = services_manager.GetService( service_key )
                     
-                    components.append( service.GetName() )
+                    components.append(service.get_name())
                     
                 else:
                     

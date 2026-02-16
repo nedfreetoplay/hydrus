@@ -1003,7 +1003,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                 
                 try:
                     
-                    db_dir = HG.controller.GetDBDir()
+                    db_dir = HG.controller.get_db_dir()
                     
                     p = os.path.relpath( a_p, db_dir )
                     

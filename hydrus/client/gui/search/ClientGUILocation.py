@@ -31,7 +31,7 @@ class EditMultipleLocationContextPanel( ClientGUIScrolledPanels.EditPanel ):
         
         for service in services:
             
-            name = service.GetName()
+            name = service.get_name()
             service_key = service.GetServiceKey()
             
             starts_checked = service_key in self._original_location_context.current_service_keys
@@ -45,7 +45,7 @@ class EditMultipleLocationContextPanel( ClientGUIScrolledPanels.EditPanel ):
             
             for service in services:
                 
-                name = service.GetName()
+                name = service.get_name()
                 service_key = service.GetServiceKey()
                 
                 if service.GetServiceType() in HC.FILE_SERVICES_WITH_NO_DELETE_RECORD:
@@ -170,10 +170,10 @@ class LocationSearchContextButton( ClientGUICommon.BetterButton ):
                 
             else:
                 
-                name = service.GetName()
+                name = service.get_name()
                 
             
-            desc = 'Change the current file domain to {}.'.format( service.GetName() )
+            desc = 'Change the current file domain to {}.'.format(service.get_name())
             
             if service.GetServiceKey() == CC.COMBINED_DELETED_FILE_SERVICE_KEY:
                 

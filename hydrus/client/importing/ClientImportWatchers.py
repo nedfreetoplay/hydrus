@@ -627,7 +627,7 @@ class MultipleWatcherImport( HydrusSerialisable.SerialisableBase ):
             self._page_key = page_key
             
             # set a 2s period so the page value/range is breddy snappy
-            self._watchers_repeating_job = CG.client_controller.CallRepeating( ClientImporting.GetRepeatingJobInitialDelay(), 2.0, self.REPEATINGWorkOnWatchers )
+            self._watchers_repeating_job = CG.client_controller.call_repeating(ClientImporting.GetRepeatingJobInitialDelay(), 2.0, self.REPEATINGWorkOnWatchers)
             
             for watcher in self._watchers:
                 
@@ -1812,8 +1812,8 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
             
             self._UpdateFileVelocityStatus()
             
-            self._files_repeating_job = CG.client_controller.CallRepeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnFiles )
-            self._checker_repeating_job = CG.client_controller.CallRepeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnChecker )
+            self._files_repeating_job = CG.client_controller.call_repeating(ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnFiles)
+            self._checker_repeating_job = CG.client_controller.call_repeating(ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnChecker)
             
             self._files_repeating_job.SetThreadSlotType( 'watcher_files' )
             self._checker_repeating_job.SetThreadSlotType( 'watcher_check' )

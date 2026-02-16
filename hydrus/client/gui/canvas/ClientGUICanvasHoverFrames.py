@@ -90,7 +90,7 @@ class RatingIncDecCanvas( ClientGUIRatings.RatingIncDec ):
             
             content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_RATINGS, HC.CONTENT_UPDATE_ADD, ( rating, self._hashes ) )
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service_key, content_update ) )
+            CG.client_controller.write('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate(self._service_key, content_update))
             
         
     
@@ -236,7 +236,7 @@ class RatingLikeCanvas( ClientGUIRatings.RatingLike ):
             
             content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_RATINGS, HC.CONTENT_UPDATE_ADD, ( rating, self._hashes ) )
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service_key, content_update ) )
+            CG.client_controller.write('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate(self._service_key, content_update))
             
         
     
@@ -249,7 +249,7 @@ class RatingLikeCanvas( ClientGUIRatings.RatingLike ):
             
             content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_RATINGS, HC.CONTENT_UPDATE_ADD, ( rating, self._hashes ) )
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service_key, content_update ) )
+            CG.client_controller.write('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate(self._service_key, content_update))
             
         
     
@@ -331,7 +331,7 @@ class RatingNumericalCanvas( ClientGUIRatings.RatingNumericalControl ):
             
             content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_RATINGS, HC.CONTENT_UPDATE_ADD, ( rating, self._hashes ) )
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service_key, content_update ) )
+            CG.client_controller.write('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate(self._service_key, content_update))
             
         
     
@@ -366,7 +366,7 @@ class RatingNumericalCanvas( ClientGUIRatings.RatingNumericalControl ):
             
             content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_RATINGS, HC.CONTENT_UPDATE_ADD, ( rating, self._hashes ) )
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service_key, content_update ) )
+            CG.client_controller.write('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate(self._service_key, content_update))
             
         
     
@@ -1187,7 +1187,7 @@ class CanvasHoverFrameTop( CanvasHoverFrame ):
     
     def _ShowShortcutMenu( self ):
         
-        all_shortcut_names = CG.client_controller.Read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_SHORTCUT_SET )
+        all_shortcut_names = CG.client_controller.read('serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_SHORTCUT_SET)
         
         custom_shortcuts_names = [ name for name in all_shortcut_names if name not in ClientGUIShortcuts.SHORTCUTS_RESERVED_NAMES ]
         

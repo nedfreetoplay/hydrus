@@ -165,7 +165,7 @@ def ShowAboutWindow( win: QW.QWidget ):
     
     library_version_lines.append( '' )
     
-    boot_time_ms = CG.client_controller.GetBootTimestampMS()
+    boot_time_ms = CG.client_controller.get_boot_timestamp_ms()
     
     library_version_lines.append( f'boot time: {HydrusTime.TimestampToPrettyTimeDelta( boot_time_ms // 1000 )} ({HydrusTime.TimestampMSToPrettyTime( boot_time_ms )})' )
     

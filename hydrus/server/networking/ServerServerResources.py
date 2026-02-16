@@ -125,7 +125,7 @@ class HydrusResourceAccessKey( HydrusResourceHydrusNetwork ):
         
         registration_key = request.parsed_request_args[ 'registration_key' ]
         
-        access_key = SG.server_controller.Read( 'access_key', self._service_key, registration_key )
+        access_key = SG.server_controller.read('access_key', self._service_key, registration_key)
         
         body = HydrusNetworkVariableHandling.DumpHydrusArgsToNetworkBytes( { 'access_key' : access_key } )
         
@@ -140,7 +140,7 @@ class HydrusResourceAccessKeyVerification( HydrusResourceHydrusNetwork ):
         
         access_key = self._parseHydrusNetworkAccessKey( request )
         
-        verified = SG.server_controller.Read( 'verify_access_key', self._service_key, access_key )
+        verified = SG.server_controller.read('verify_access_key', self._service_key, access_key)
         
         body = HydrusNetworkVariableHandling.DumpHydrusArgsToNetworkBytes( { 'verified' : verified } )
         
@@ -153,7 +153,7 @@ class HydrusResourceAutoCreateAccountTypes( HydrusResourceHydrusNetwork ):
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        account_types = SG.server_controller.Read( 'auto_create_account_types', self._service_key )
+        account_types = SG.server_controller.read('auto_create_account_types', self._service_key)
         
         body = HydrusNetworkVariableHandling.DumpHydrusArgsToNetworkBytes( { 'account_types' : account_types } )
         
@@ -168,7 +168,7 @@ class HydrusResourceRestrictedAutoCreateRegistrationKey( HydrusResourceHydrusNet
         
         account_type_key = request.parsed_request_args[ 'account_type_key' ]
         
-        registration_key = SG.server_controller.Read( 'auto_create_registration_key', self._service_key, account_type_key )
+        registration_key = SG.server_controller.read('auto_create_registration_key', self._service_key, account_type_key)
         
         body = HydrusNetworkVariableHandling.DumpHydrusArgsToNetworkBytes( { 'registration_key' : registration_key } )
         
@@ -181,7 +181,7 @@ class HydrusResourceShutdown( HydrusResourceHydrusNetwork ):
     
     def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        SG.server_controller.ShutdownFromServer()
+        SG.server_controller.shutdown_from_server()
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
@@ -306,7 +306,7 @@ class HydrusResourceRestricted( HydrusResourceHydrusNetwork ):
         
         if account is not None:
             
-            account.ReportDataUsed( num_bytes )
+            account.report_data_used(num_bytes)
             
         
     
@@ -318,7 +318,7 @@ class HydrusResourceRestricted( HydrusResourceHydrusNetwork ):
         
         if account is not None:
             
-            account.ReportRequestUsed()
+            account.report_request_used()
             
         
     
@@ -487,9 +487,9 @@ class HydrusResourceRestrictedAccountInfo( HydrusResourceRestrictedAccountModify
         
         subject_account_key = request.parsed_request_args[ 'subject_account_key' ]
         
-        subject_account = SG.server_controller.Read( 'account', self._service_key, subject_account_key )
+        subject_account = SG.server_controller.read('account', self._service_key, subject_account_key)
         
-        account_info = SG.server_controller.Read( 'account_info', self._service_key, request.hydrus_account, subject_account )
+        account_info = SG.server_controller.read('account_info', self._service_key, request.hydrus_account, subject_account)
         
         body = HydrusNetworkVariableHandling.DumpHydrusArgsToNetworkBytes( { 'account_info' : account_info } )
         
@@ -504,7 +504,7 @@ class HydrusResourceRestrictedAccountKeyFromContent( HydrusResourceRestrictedAcc
         
         subject_content = request.parsed_request_args[ 'subject_content' ]
         
-        subject_account_key = SG.server_controller.Read( 'account_key_from_content', self._service_key, subject_content )
+        subject_account_key = SG.server_controller.read('account_key_from_content', self._service_key, subject_content)
         
         body = HydrusNetworkVariableHandling.DumpHydrusArgsToNetworkBytes( { 'subject_account_key' : subject_account_key } )
         
@@ -526,7 +526,7 @@ class HydrusResourceRestrictedAccountModifyAccountType( HydrusResourceRestricted
         
         account_type_key = request.parsed_request_args[ 'account_type_key' ]
         
-        SG.server_controller.WriteSynchronous( 'modify_account_account_type', self._service_key, request.hydrus_account, subject_account_key, account_type_key )
+        SG.server_controller.write_synchronous('modify_account_account_type', self._service_key, request.hydrus_account, subject_account_key, account_type_key)
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
@@ -568,7 +568,7 @@ class HydrusResourceRestrictedAccountModifyBan( HydrusResourceRestrictedAccountM
             raise HydrusExceptions.BadRequestException( 'The given expiration timestamp was not null or an integer!' )
             
         
-        SG.server_controller.WriteSynchronous( 'modify_account_ban', self._service_key, request.hydrus_account, subject_account_key, reason, expires )
+        SG.server_controller.write_synchronous('modify_account_ban', self._service_key, request.hydrus_account, subject_account_key, reason, expires)
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
@@ -582,7 +582,7 @@ class HydrusResourceRestrictedAccountModifyDeleteAllContent( HydrusResourceRestr
         
         subject_account_key = request.parsed_request_args[ 'subject_account_key' ]
         
-        everything_was_deleted = SG.server_controller.WriteSynchronous( 'modify_account_delete_all_content', self._service_key, request.hydrus_account, subject_account_key )
+        everything_was_deleted = SG.server_controller.write_synchronous('modify_account_delete_all_content', self._service_key, request.hydrus_account, subject_account_key)
         
         body = HydrusNetworkVariableHandling.DumpHydrusArgsToNetworkBytes( { 'everything_was_deleted' : everything_was_deleted } )
         
@@ -621,7 +621,7 @@ class HydrusResourceRestrictedAccountModifyExpires( HydrusResourceRestrictedAcco
             raise HydrusExceptions.BadRequestException( 'The given expiration timestamp was not None or an integer!' )
             
         
-        SG.server_controller.WriteSynchronous( 'modify_account_expires', self._service_key, request.hydrus_account, subject_account_key, expires )
+        SG.server_controller.write_synchronous('modify_account_expires', self._service_key, request.hydrus_account, subject_account_key, expires)
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
@@ -653,7 +653,7 @@ class HydrusResourceRestrictedAccountModifySetMessage( HydrusResourceRestrictedA
             raise HydrusExceptions.BadRequestException( 'The given message was not a string!' )
             
         
-        SG.server_controller.WriteSynchronous( 'modify_account_set_message', self._service_key, request.hydrus_account, subject_account_key, message )
+        SG.server_controller.write_synchronous('modify_account_set_message', self._service_key, request.hydrus_account, subject_account_key, message)
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
@@ -673,7 +673,7 @@ class HydrusResourceRestrictedAccountModifyUnban( HydrusResourceRestrictedAccoun
             raise HydrusExceptions.BadRequestException( 'I was expecting an account id, but did not get one!' )
             
         
-        SG.server_controller.WriteSynchronous( 'modify_account_unban', self._service_key, request.hydrus_account, subject_account_key )
+        SG.server_controller.write_synchronous('modify_account_unban', self._service_key, request.hydrus_account, subject_account_key)
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
@@ -698,7 +698,7 @@ class HydrusResourceRestrictedAccountOtherAccount( HydrusResourceRestrictedAccou
                 
                 subject_content = subject_identifier.GetContent()
                 
-                subject_account_key = SG.server_controller.Read( 'account_key_from_content', self._service_key, subject_content )
+                subject_account_key = SG.server_controller.read('account_key_from_content', self._service_key, subject_content)
                 
             else:
                 
@@ -718,7 +718,7 @@ class HydrusResourceRestrictedAccountOtherAccount( HydrusResourceRestrictedAccou
         
         try:
             
-            subject_account = SG.server_controller.Read( 'account', self._service_key, subject_account_key )
+            subject_account = SG.server_controller.read('account', self._service_key, subject_account_key)
             
         except HydrusExceptions.InsufficientCredentialsException as e:
             
@@ -738,7 +738,7 @@ class HydrusResourceRestrictedIP( HydrusResourceRestrictedAccountModify ):
         
         hash = request.parsed_request_args[ 'hash' ]
         
-        ( ip, timestamp ) = SG.server_controller.Read( 'ip', self._service_key, request.hydrus_account, hash )
+        ( ip, timestamp ) = SG.server_controller.read('ip', self._service_key, request.hydrus_account, hash)
         
         body = HydrusNetworkVariableHandling.DumpHydrusArgsToNetworkBytes( { 'ip' : ip, 'timestamp' : timestamp } )
         
@@ -751,7 +751,7 @@ class HydrusResourceRestrictedAllAccounts( HydrusResourceRestrictedAccountModify
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        accounts = SG.server_controller.Read( 'all_accounts', self._service_key, request.hydrus_account )
+        accounts = SG.server_controller.read('all_accounts', self._service_key, request.hydrus_account)
         
         body = HydrusNetworkVariableHandling.DumpHydrusArgsToNetworkBytes( { 'accounts' : accounts } )
         
@@ -776,7 +776,7 @@ class HydrusResourceRestrictedAccountTypes( HydrusResourceRestricted ):
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        account_types = SG.server_controller.Read( 'account_types', self._service_key, request.hydrus_account )
+        account_types = SG.server_controller.read('account_types', self._service_key, request.hydrus_account)
         
         body = HydrusNetworkVariableHandling.DumpHydrusArgsToNetworkBytes( { 'account_types' : account_types } )
         
@@ -790,7 +790,7 @@ class HydrusResourceRestrictedAccountTypes( HydrusResourceRestricted ):
         account_types = request.parsed_request_args[ 'account_types' ]
         deletee_account_type_keys_to_new_account_type_keys = request.parsed_request_args[ 'deletee_account_type_keys_to_new_account_type_keys' ]
         
-        SG.server_controller.WriteSynchronous( 'account_types', self._service_key, request.hydrus_account, account_types, deletee_account_type_keys_to_new_account_type_keys )
+        SG.server_controller.write_synchronous('account_types', self._service_key, request.hydrus_account, account_types, deletee_account_type_keys_to_new_account_type_keys)
         
         SG.server_controller.server_session_manager.RefreshAccounts( self._service_key )
         
@@ -808,7 +808,7 @@ class HydrusResourceRestrictedBackup( HydrusResourceRestricted ):
     
     def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        SG.server_controller.Write( 'backup' )
+        SG.server_controller.write('backup')
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
@@ -886,7 +886,7 @@ class HydrusResourceRestrictedMaintenanceRegenServiceInfo( HydrusResourceRestric
     
     def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        SG.server_controller.WriteSynchronous( 'maintenance_regen_service_info', self._service_key )
+        SG.server_controller.write_synchronous('maintenance_regen_service_info', self._service_key)
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
@@ -906,7 +906,7 @@ class HydrusResourceRestrictedNumPetitions( HydrusResourceRestricted ):
         
         subject_account_key = request.parsed_request_args.GetValueOrNone( 'subject_account_key', bytes )
         
-        petition_count_info = SG.server_controller.Read( 'num_petitions', self._service_key, request.hydrus_account, subject_account_key = subject_account_key )
+        petition_count_info = SG.server_controller.read('num_petitions', self._service_key, request.hydrus_account, subject_account_key = subject_account_key)
         
         body = HydrusNetworkVariableHandling.DumpHydrusArgsToNetworkBytes( { 'num_petitions' : petition_count_info } )
         
@@ -934,7 +934,7 @@ class HydrusResourceRestrictedPetition( HydrusResourceRestricted ):
         
         if subject_account_key is None or reason is None:
             
-            petitions_summary = SG.server_controller.Read( 'petitions_summary', self._service_key, request.hydrus_account, content_type, status, limit = 1, subject_account_key = subject_account_key )
+            petitions_summary = SG.server_controller.read('petitions_summary', self._service_key, request.hydrus_account, content_type, status, limit = 1, subject_account_key = subject_account_key)
             
             if len( petitions_summary ) == 0:
                 
@@ -958,7 +958,7 @@ class HydrusResourceRestrictedPetition( HydrusResourceRestricted ):
             reason = petition_header.reason
             
         
-        petition = SG.server_controller.Read( 'petition', self._service_key, request.hydrus_account, content_type, status, subject_account_key, reason )
+        petition = SG.server_controller.read('petition', self._service_key, request.hydrus_account, content_type, status, subject_account_key, reason)
         
         body = HydrusNetworkVariableHandling.DumpHydrusArgsToNetworkBytes( { 'petition' : petition } )
         
@@ -986,7 +986,7 @@ class HydrusResourceRestrictedPetitionsSummary( HydrusResourceRestricted ):
         subject_account_key = request.parsed_request_args.GetValueOrNone( 'subject_account_key', bytes )
         reason = request.parsed_request_args.GetValueOrNone( 'reason', str )
         
-        petitions_summary = SG.server_controller.Read( 'petitions_summary', self._service_key, request.hydrus_account, content_type, status, num, subject_account_key = subject_account_key, reason = reason )
+        petitions_summary = SG.server_controller.read('petitions_summary', self._service_key, request.hydrus_account, content_type, status, num, subject_account_key = subject_account_key, reason = reason)
         
         body = HydrusNetworkVariableHandling.DumpHydrusArgsToNetworkBytes( { 'petitions_summary' : petitions_summary } )
         
@@ -1017,7 +1017,7 @@ class HydrusResourceRestrictedRegistrationKeys( HydrusResourceRestricted ):
             expires = None
             
         
-        registration_keys = SG.server_controller.Read( 'registration_keys', self._service_key, request.hydrus_account, num, account_type_key, expires )
+        registration_keys = SG.server_controller.read('registration_keys', self._service_key, request.hydrus_account, num, account_type_key, expires)
         
         body = HydrusNetworkVariableHandling.DumpHydrusArgsToNetworkBytes( { 'registration_keys' : registration_keys } )
         
@@ -1058,7 +1058,7 @@ class HydrusResourceRestrictedRepositoryFile( HydrusResourceRestricted ):
         
         hash = request.parsed_request_args[ 'hash' ]
         
-        ( valid, mime ) = SG.server_controller.Read( 'service_has_file', self._service_key, hash )
+        ( valid, mime ) = SG.server_controller.read('service_has_file', self._service_key, hash)
         
         if not valid:
             
@@ -1083,7 +1083,7 @@ class HydrusResourceRestrictedRepositoryFile( HydrusResourceRestricted ):
         
         timestamp = self._service.GetMetadata().GetNextUpdateBegin() + 1
         
-        SG.server_controller.WriteSynchronous( 'file', self._service, request.hydrus_account, file_dict, timestamp )
+        SG.server_controller.write_synchronous('file', self._service, request.hydrus_account, file_dict, timestamp)
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
@@ -1107,7 +1107,7 @@ class HydrusResourceRestrictedRepositoryThumbnail( HydrusResourceRestricted ):
         
         hash = request.parsed_request_args[ 'hash' ]
         
-        ( valid, mime ) = SG.server_controller.Read( 'service_has_file', self._service_key, hash )
+        ( valid, mime ) = SG.server_controller.read('service_has_file', self._service_key, hash)
         
         if not valid:
             
@@ -1137,7 +1137,7 @@ class HydrusResourceRestrictedServiceInfo( HydrusResourceRestricted ):
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        service_info = SG.server_controller.Read( 'service_info', self._service_key )
+        service_info = SG.server_controller.read('service_info', self._service_key)
         
         body = HydrusNetworkVariableHandling.DumpHydrusArgsToNetworkBytes( { 'service_info' : list( service_info.items() ) } )
         
@@ -1155,7 +1155,7 @@ class HydrusResourceRestrictedServices( HydrusResourceRestricted ):
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        services = SG.server_controller.Read( 'services_from_account', request.hydrus_account )
+        services = SG.server_controller.read('services_from_account', request.hydrus_account)
         
         body = HydrusNetworkVariableHandling.DumpHydrusArgsToNetworkBytes( { 'services' : services } )
         
@@ -1179,7 +1179,7 @@ class HydrusResourceRestrictedServices( HydrusResourceRestricted ):
             
             SG.server_controller.SetServices( services )
             
-            service_keys_to_access_keys = SG.server_controller.WriteSynchronous( 'services', request.hydrus_account, services )
+            service_keys_to_access_keys = SG.server_controller.write_synchronous('services', request.hydrus_account, services)
             
         
         body = HydrusNetworkVariableHandling.DumpHydrusArgsToNetworkBytes( { 'service_keys_to_access_keys' : service_keys_to_access_keys } )
@@ -1303,7 +1303,7 @@ class HydrusResourceRestrictedUpdate( HydrusResourceRestricted ):
         
         timestamp = self._service.GetMetadata().GetNextUpdateBegin() + 1
         
-        SG.server_controller.WriteSynchronous( 'update', self._service_key, request.hydrus_account, client_to_server_update, timestamp )
+        SG.server_controller.write_synchronous('update', self._service_key, request.hydrus_account, client_to_server_update, timestamp)
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
@@ -1320,7 +1320,7 @@ class HydrusResourceRestrictedImmediateUpdate( HydrusResourceRestricted ):
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        updates = SG.server_controller.Read( 'immediate_update', self._service_key, request.hydrus_account )
+        updates = SG.server_controller.read('immediate_update', self._service_key, request.hydrus_account)
         
         updates = HydrusSerialisable.SerialisableList( updates )
         
@@ -1362,7 +1362,7 @@ class HydrusResourceRestrictedRestartServices( HydrusResourceRestricted ):
     
     def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        SG.server_controller.CallLater( 1.0, SG.server_controller.RestartServices )
+        SG.server_controller.call_later(1.0, SG.server_controller.RestartServices)
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
@@ -1379,7 +1379,7 @@ class HydrusResourceRestrictedVacuum( HydrusResourceRestricted ):
     
     def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        SG.server_controller.Write( 'vacuum' )
+        SG.server_controller.write('vacuum')
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         

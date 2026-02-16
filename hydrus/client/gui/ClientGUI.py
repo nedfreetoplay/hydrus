@@ -140,7 +140,7 @@ def CrashTheProgram( win: QW.QWidget ):
         
     else:
         
-        CG.client_controller.CallToThread( crashtime_not_nice )
+        CG.client_controller.call_to_thread(crashtime_not_nice)
         
     
 
@@ -171,7 +171,7 @@ def THREADUploadPending( service_key ):
         
         service = CG.client_controller.services_manager.GetService( service_key )
         
-        service_name = service.GetName()
+        service_name = service.get_name()
         service_type = service.GetServiceType()
         
         if service_type in HC.REPOSITORIES:
@@ -188,7 +188,7 @@ def THREADUploadPending( service_key ):
         
         job_status.SetStatusTitle( 'uploading pending to ' + service_name )
         
-        nums_pending = CG.client_controller.Read( 'nums_pending' )
+        nums_pending = CG.client_controller.read('nums_pending')
         
         nums_pending_for_this_service = nums_pending[ service_key ]
         
@@ -293,7 +293,7 @@ def THREADUploadPending( service_key ):
         
         current_ideal_weight = 100
         
-        result = CG.client_controller.Read( 'pending', service_key, content_types_to_request, ideal_weight = current_ideal_weight )
+        result = CG.client_controller.read('pending', service_key, content_types_to_request, ideal_weight = current_ideal_weight)
         
         CG.client_controller.pub( 'message', job_status )
         
@@ -303,7 +303,7 @@ def THREADUploadPending( service_key ):
             
             time_started_this_loop = HydrusTime.GetNowPrecise()
             
-            nums_pending = CG.client_controller.Read( 'nums_pending' )
+            nums_pending = CG.client_controller.read('nums_pending')
             
             nums_pending_for_this_service = nums_pending[ service_key ]
             
@@ -370,7 +370,7 @@ def THREADUploadPending( service_key ):
                     
                     if len( content_updates ) > 0:
                         
-                        CG.client_controller.WriteSynchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( service_key, content_updates ) )
+                        CG.client_controller.write_synchronous('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates(service_key, content_updates))
                         
                     
                 elif service_type == HC.IPFS:
@@ -409,7 +409,7 @@ def THREADUploadPending( service_key ):
                 
             except HydrusExceptions.ServerBusyException:
                 
-                job_status.SetStatusText( service.GetName() + ' was busy. please try again in a few minutes' )
+                job_status.SetStatusText(service.get_name() + ' was busy. please try again in a few minutes')
                 
                 job_status.Cancel()
                 
@@ -431,7 +431,7 @@ def THREADUploadPending( service_key ):
                 current_ideal_weight = min( 500, int( current_ideal_weight * 1.05 ) )
                 
             
-            result = CG.client_controller.Read( 'pending', service_key, content_types_to_request, ideal_weight = current_ideal_weight )
+            result = CG.client_controller.read('pending', service_key, content_types_to_request, ideal_weight = current_ideal_weight)
             
         
         finished_all_uploads = result is None
@@ -457,7 +457,7 @@ def THREADUploadPending( service_key ):
             CG.client_controller.pub( 'imported_files_to_page', [ possible_hash ], 'files that did not upload right' )
             
         
-        job_status.SetStatusText( service.GetName() + ' error' )
+        job_status.SetStatusText(service.get_name() + ' error')
         
         job_status.Cancel()
         
@@ -500,7 +500,7 @@ def THREADUploadPending( service_key ):
             )
             
         
-        CG.client_controller.Write( 'delete_service_info', service_key, types_to_delete )
+        CG.client_controller.write('delete_service_info', service_key, types_to_delete)
         
     
 
@@ -784,19 +784,19 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             if do_full:
                 
-                CG.client_controller.WriteSynchronous( 'analyze', maintenance_mode = HC.MAINTENANCE_FORCED, force_reanalyze = True )
+                CG.client_controller.write_synchronous('analyze', maintenance_mode = HC.MAINTENANCE_FORCED, force_reanalyze = True)
                 
             else:
                 
                 stop_time = HydrusTime.GetNow() + 120
                 
-                CG.client_controller.WriteSynchronous( 'analyze', maintenance_mode = HC.MAINTENANCE_FORCED, stop_time = stop_time )
+                CG.client_controller.write_synchronous('analyze', maintenance_mode = HC.MAINTENANCE_FORCED, stop_time = stop_time)
                 
             
             HydrusData.ShowText( 'Done!' )
             
         
-        CG.client_controller.CallToThread( do_it )
+        CG.client_controller.call_to_thread(do_it)
         
     
     def _AutoRepoSetup( self ):
@@ -869,7 +869,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            self._controller.CallToThread( do_it )
+            self._controller.call_to_thread(do_it)
             
         
     
@@ -923,7 +923,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             self._controller.SaveGUISession( session )
             
-            self._controller.Write( 'backup', path )
+            self._controller.write('backup', path)
             
             CG.client_controller.new_options.SetNoneableInteger( 'last_backup_time', HydrusTime.GetNow() )
             
@@ -972,7 +972,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             service = self._controller.services_manager.GetService( service_key )
             
-            self._controller.CallToThread( do_it, service )
+            self._controller.call_to_thread(do_it, service)
             
         
     
@@ -1009,7 +1009,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            self._controller.Write( 'db_integrity' )
+            self._controller.write('db_integrity')
             
         
     
@@ -1022,11 +1022,11 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         if name is None:
             
-            import_folders = self._controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_IMPORT_FOLDER )
+            import_folders = self._controller.read('serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_IMPORT_FOLDER)
             
         else:
             
-            import_folder = self._controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_IMPORT_FOLDER, name )
+            import_folder = self._controller.read('serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_IMPORT_FOLDER, name)
             
             import_folders = [ import_folder ]
             
@@ -1035,7 +1035,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             import_folder.CheckNow()
             
-            self._controller.WriteSynchronous( 'serialisable', import_folder )
+            self._controller.write_synchronous('serialisable', import_folder)
             
         
         self._controller.pub( 'notify_new_import_folders' )
@@ -1053,7 +1053,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_update )
             
-            self._controller.WriteSynchronous( 'content_updates', content_update_package )
+            self._controller.write_synchronous('content_updates', content_update_package)
             
             ClientGUIDialogsMessage.ShowInformation( self, 'Delete done! Please restart the client to see the changes in the UI.' )
             
@@ -1094,11 +1094,11 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
                 return
                 
             
-            self._controller.CallToThread( client_files_manager.ClearOrphans, path )
+            self._controller.call_to_thread(client_files_manager.ClearOrphans, path)
             
         elif result == 'delete':
             
-            self._controller.CallToThread( client_files_manager.ClearOrphans )
+            self._controller.call_to_thread(client_files_manager.ClearOrphans)
             
         
     
@@ -1116,7 +1116,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            self._controller.Write( 'clear_orphan_file_records' )
+            self._controller.write('clear_orphan_file_records')
             
         
     
@@ -1134,7 +1134,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             def do_it():
                 
-                num_done = controller.WriteSynchronous( 'maintain_hashed_serialisables', force_start = True )
+                num_done = controller.write_synchronous('maintain_hashed_serialisables', force_start = True)
                 
                 if num_done == 0:
                     
@@ -1148,7 +1148,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
                 HydrusData.ShowText( message )
                 
             
-            CG.client_controller.CallToThread( do_it )
+            CG.client_controller.call_to_thread(do_it)
             
         
     
@@ -1164,7 +1164,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            self._controller.Write( 'clear_orphan_tables' )
+            self._controller.write('clear_orphan_tables')
             
         
     
@@ -1182,7 +1182,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            self._controller.WriteSynchronous( 'cull_file_viewing_statistics' )
+            self._controller.write_synchronous('cull_file_viewing_statistics')
             
             ClientGUIDialogsMessage.ShowInformation( self, 'Cull done! Please restart the client to see the changes in the UI.' )
             
@@ -1275,7 +1275,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             return
             
         
-        self._controller.CallToThread( thread_wait, url )
+        self._controller.call_to_thread(thread_wait, url)
         
     
     def _DebugIsolateMPVWindows( self ):
@@ -1315,7 +1315,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             job_status.FinishAndDismiss()
             
         
-        self._controller.CallToThread( do_it, self._controller, cancellable )
+        self._controller.call_to_thread(do_it, self._controller, cancellable)
         
     
     def _DebugLongTextPopup( self ):
@@ -1338,7 +1338,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             t += 0.2
             
-            self._controller.CallLater( t, job_status.SetStatusText, text )
+            self._controller.call_later(t, job_status.SetStatusText, text)
             
         
         words = [ 'test', 'a', 'longish', 'statictext', 'm8' ]
@@ -1357,7 +1357,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             t += 0.2
             
-            self._controller.CallLater( t, job_status.SetStatusTitle, text )
+            self._controller.call_later(t, job_status.SetStatusTitle, text)
             
         
     
@@ -1532,9 +1532,9 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         self._controller.pub( 'message', job_status )
         
-        self._controller.CallLater( 2.0, job_status.SetStatusText, 'Pulsing subjob', level = 2 )
+        self._controller.call_later(2.0, job_status.SetStatusText, 'Pulsing subjob', level = 2)
         
-        self._controller.CallLater( 2.0, job_status.SetGauge, 0, None, level = 2 )
+        self._controller.call_later(2.0, job_status.SetGauge, 0, None, level = 2)
         
         #
         
@@ -1561,7 +1561,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         for i in range( 1, 4 ):
             
-            self._controller.CallLater( 0.5 * i, HydrusData.ShowText, 'This is a delayed popup message -- ' + str( i ) )
+            self._controller.call_later(0.5 * i, HydrusData.ShowText, 'This is a delayed popup message -- ' + str(i))
             
         
     
@@ -1617,7 +1617,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
     
     def _DebugShowScheduledJobs( self ):
         
-        self._controller.DebugShowScheduledJobs()
+        self._controller.debug_show_scheduled_jobs()
         
     
     def _DeleteGUISession( self, name ):
@@ -1628,7 +1628,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            self._controller.Write( 'delete_serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_GUI_SESSION_CONTAINER, name )
+            self._controller.write('delete_serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_GUI_SESSION_CONTAINER, name)
             
             self._controller.pub( 'notify_new_sessions' )
             
@@ -1683,7 +1683,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
                 return
                 
             
-            self._controller.Write( 'delete_service_info', types_to_delete = types_to_delete, service_key = service_key )
+            self._controller.write('delete_service_info', types_to_delete = types_to_delete, service_key = service_key)
             
         
     
@@ -1822,7 +1822,7 @@ QMenuBar::item { padding: 2px 8px; margin: 0px; }'''
                 return
                 
             
-            self._controller.Write( 'fix_logically_inconsistent_mappings', tag_service_key = tag_service_key )
+            self._controller.write('fix_logically_inconsistent_mappings', tag_service_key = tag_service_key)
             
         
     
@@ -1830,14 +1830,14 @@ QMenuBar::item { padding: 2px 8px; margin: 0px; }'''
         
         def do_it_scan_step( job_status ):
             
-            num_missing_legacy = self._controller.Read( 'missing_archive_timestamps_legacy_count', job_status )
+            num_missing_legacy = self._controller.read('missing_archive_timestamps_legacy_count', job_status)
             
             if job_status.IsCancelled():
                 
                 return
                 
             
-            num_missing_import = self._controller.Read( 'missing_archive_timestamps_import_count', job_status )
+            num_missing_import = self._controller.read('missing_archive_timestamps_import_count', job_status)
             
             if job_status.IsCancelled():
                 
@@ -1887,7 +1887,7 @@ QMenuBar::item { padding: 2px 8px; margin: 0px; }'''
                     return
                     
                 
-                self._controller.CallToThread( do_it_fix_step, job_status, jobs )
+                self._controller.call_to_thread(do_it_fix_step, job_status, jobs)
                 
             else:
                 
@@ -1903,11 +1903,11 @@ QMenuBar::item { padding: 2px 8px; margin: 0px; }'''
                 
                 if job == 'legacy':
                     
-                    self._controller.WriteSynchronous( 'missing_archive_timestamps_legacy_fillin', job_status )
+                    self._controller.write_synchronous('missing_archive_timestamps_legacy_fillin', job_status)
                     
                 elif job == 'import':
                     
-                    self._controller.WriteSynchronous( 'missing_archive_timestamps_import_fillin', job_status )
+                    self._controller.write_synchronous('missing_archive_timestamps_import_fillin', job_status)
                     
                 
                 if job_status.IsCancelled():
@@ -1933,7 +1933,7 @@ QMenuBar::item { padding: 2px 8px; margin: 0px; }'''
             job_status.SetStatusTitle( 'missing archive times work' )
             CG.client_controller.pub( 'message', job_status )
             
-            self._controller.CallToThread( do_it_scan_step, job_status )
+            self._controller.call_to_thread(do_it_scan_step, job_status)
             
         
     
@@ -1941,7 +1941,7 @@ QMenuBar::item { padding: 2px 8px; margin: 0px; }'''
         
         unchanged_page_data_hashes = session.GetUnchangedPageDataHashes()
         
-        have_hashed_serialised_objects = self._controller.Read( 'have_hashed_serialised_objects', unchanged_page_data_hashes )
+        have_hashed_serialised_objects = self._controller.read('have_hashed_serialised_objects', unchanged_page_data_hashes)
         
         if not have_hashed_serialised_objects:
             
@@ -1958,7 +1958,7 @@ QMenuBar::item { padding: 2px 8px; margin: 0px; }'''
         
         self._controller.new_options.FlipBoolean( option_name )
         
-        self._controller.WriteSynchronous( 'serialisable', self._controller.new_options )
+        self._controller.write_synchronous('serialisable', self._controller.new_options)
         
         self._last_clipboard_watched_text = ''
         
@@ -2112,7 +2112,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             return
             
         
-        tables_and_columns = self._controller.Read( 'tables_and_columns_using_definitions', content_type )
+        tables_and_columns = self._controller.read('tables_and_columns_using_definitions', content_type)
         
         text = '\n'.join( ( f'{table_name},{column_name}' for ( table_name, column_name ) in tables_and_columns ) )
         
@@ -2229,7 +2229,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                             continue
                             
                         
-                        self._controller.WriteSynchronous( 'import_update', update_network_bytes, update_network_string_hash, mime )
+                        self._controller.write_synchronous('import_update', update_network_bytes, update_network_string_hash, mime)
                         
                     finally:
                         
@@ -2268,7 +2268,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             return
             
         
-        self._controller.CallToThread( do_it, path )
+        self._controller.call_to_thread(do_it, path)
         
     
     def _ImportURL(
@@ -2601,8 +2601,8 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         def work_callable( args ):
             
-            import_folder_names = CG.client_controller.Read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_IMPORT_FOLDER )
-            export_folder_names = CG.client_controller.Read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER )
+            import_folder_names = CG.client_controller.read('serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_IMPORT_FOLDER)
+            export_folder_names = CG.client_controller.read('serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER)
             
             return ( import_folder_names, export_folder_names )
             
@@ -2704,11 +2704,11 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         def work_callable( args ):
             
-            gui_session_names = CG.client_controller.Read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_GUI_SESSION_CONTAINER )
+            gui_session_names = CG.client_controller.read('serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_GUI_SESSION_CONTAINER)
             
             if len( gui_session_names ) > 0:
                 
-                gui_session_names_to_backup_timestamps_ms = CG.client_controller.Read( 'serialisable_names_to_backup_timestamps_ms', HydrusSerialisable.SERIALISABLE_TYPE_GUI_SESSION_CONTAINER )
+                gui_session_names_to_backup_timestamps_ms = CG.client_controller.read('serialisable_names_to_backup_timestamps_ms', HydrusSerialisable.SERIALISABLE_TYPE_GUI_SESSION_CONTAINER)
                 
             else:
                 
@@ -2867,7 +2867,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         def work_callable( args ):
             
-            nums_pending = CG.client_controller.Read( 'nums_pending' )
+            nums_pending = CG.client_controller.read('nums_pending')
             
             return nums_pending
             
@@ -2884,7 +2884,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                     
                     service = self._controller.services_manager.GetService( service_key )
                     
-                    name = service.GetName()
+                    name = service.get_name()
                     
                     submenu = ClientGUIMenus.GenerateMenu( self._menubar_pending_submenu )
                     
@@ -2930,7 +2930,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                     service = self._controller.services_manager.GetService( service_key )
                     
                     service_type = service.GetServiceType()
-                    name = service.GetName()
+                    name = service.get_name()
                     
                     if service_type == HC.TAG_REPOSITORY:
                         
@@ -3162,7 +3162,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             have_undo_searches = len( self._predicate_history_added_to_search ) > 0 or len( self._predicate_history_removed_from_search ) > 0
             
-            undo_manager = self._controller.GetManager( 'undo' )
+            undo_manager = self._controller.get_manager('undo')
             
             ( undo_string, redo_string ) = undo_manager.GetUndoRedoStrings()
             
@@ -3553,7 +3553,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         debug_modes = ClientGUIMenus.GenerateMenu( debug_menu )
         
         ClientGUIMenus.AppendMenuCheckItem( debug_modes, 'force idle mode', 'Make the client consider itself idle and fire all maintenance routines right now. This may hang the gui for a while.', HG.force_idle_mode, self._SwitchBoolean, 'force_idle_mode' )
-        ClientGUIMenus.AppendMenuItem( debug_modes, 'simulate a wake from sleep', 'Tell the controller to pretend that it just woke up from sleep.', self._controller.SimulateWakeFromSleepEvent )
+        ClientGUIMenus.AppendMenuItem(debug_modes, 'simulate a wake from sleep', 'Tell the controller to pretend that it just woke up from sleep.', self._controller.simulate_wake_from_sleep_event)
         ClientGUIMenus.AppendMenuCheckItem( debug_modes, 'thumbnail debug mode', 'Show some thumbnail debug info.', HG.thumbnail_debug_mode, self._SwitchBoolean, 'thumbnail_debug_mode' )
         ClientGUIMenus.AppendSeparator( debug_modes )
         ClientGUIMenus.AppendMenuCheckItem( debug_modes, 'allow crashy files in mpv', 'Disable the crash handling that unloads files from mpv when they raise certain fatal errors.', HG.mpv_allow_crashy_files, self._FlipMPVCrashHandling )
@@ -3636,14 +3636,14 @@ ATTACH "client.mappings.db" as external_mappings;'''
         ClientGUIMenus.AppendMenuItem( gui_actions, 'isolate existing mpv widgets', 'Tell the client to hide and do not re-use all existing mpv widgets, forcing new ones to be created on next request. This helps test out busted mpv windows that lose audio etc..', self._DebugIsolateMPVWindows )
         ClientGUIMenus.AppendMenuItem( gui_actions, 'make a long text popup', 'Make a popup with text that will grow in size.', self._DebugLongTextPopup )
         ClientGUIMenus.AppendMenuItem( gui_actions, 'make a modal popup in five seconds', 'Throw up a delayed modal popup to test with. It will stay alive for five seconds.', self._DebugMakeDelayedModalPopup, True )
-        ClientGUIMenus.AppendMenuItem( gui_actions, 'make a new page in five seconds', 'Throw a delayed page at the main notebook, giving you time to minimise or otherwise alter the client before it arrives.', self._controller.CallLater, 5, self._controller.pub, 'new_page_query', default_location_context )
+        ClientGUIMenus.AppendMenuItem(gui_actions, 'make a new page in five seconds', 'Throw a delayed page at the main notebook, giving you time to minimise or otherwise alter the client before it arrives.', self._controller.call_later, 5, self._controller.pub, 'new_page_query', default_location_context)
         ClientGUIMenus.AppendMenuItem( gui_actions, 'make a non-cancellable modal popup in five seconds', 'Throw up a delayed modal popup to test with. It will stay alive for five seconds.', self._DebugMakeDelayedModalPopup, False )
         ClientGUIMenus.AppendMenuItem( gui_actions, 'make a parentless text ctrl dialog', 'Make a parentless text control in a dialog to test some character event catching.', self._DebugMakeParentlessTextCtrl )
-        ClientGUIMenus.AppendMenuItem( gui_actions, 'make a popup in five seconds', 'Throw a delayed popup at the message manager, giving you time to minimise or otherwise alter the client before it arrives.', self._controller.CallLater, 5, HydrusData.ShowText, 'This is a delayed popup message.' )
+        ClientGUIMenus.AppendMenuItem(gui_actions, 'make a popup in five seconds', 'Throw a delayed popup at the message manager, giving you time to minimise or otherwise alter the client before it arrives.', self._controller.call_later, 5, HydrusData.ShowText, 'This is a delayed popup message.')
         ClientGUIMenus.AppendMenuItem( gui_actions, 'make a QMessageBox', 'Open a modal message dialog.', self._DebugMakeQMessageBox )
         ClientGUIMenus.AppendMenuItem( gui_actions, 'make some popups', 'Throw some varied popups at the message manager, just to check it is working.', self._DebugMakeSomePopups )
-        ClientGUIMenus.AppendMenuItem( gui_actions, 'publish some sub files in five seconds', 'Publish some files like a subscription would.', self._controller.CallLater, 5, lambda: CG.client_controller.pub( 'imported_files_to_page', [ HydrusData.GenerateKey() for i in range( 5 ) ], 'example sub files' ) )
-        ClientGUIMenus.AppendMenuItem( gui_actions, 'refresh pages menu in five seconds', 'Delayed refresh the pages menu, giving you time to minimise or otherwise alter the client before it arrives.', self._controller.CallLater, 5, self._menu_updater_pages.update )
+        ClientGUIMenus.AppendMenuItem(gui_actions, 'publish some sub files in five seconds', 'Publish some files like a subscription would.', self._controller.call_later, 5, lambda: CG.client_controller.pub('imported_files_to_page', [HydrusData.GenerateKey() for i in range(5)], 'example sub files'))
+        ClientGUIMenus.AppendMenuItem(gui_actions, 'refresh pages menu in five seconds', 'Delayed refresh the pages menu, giving you time to minimise or otherwise alter the client before it arrives.', self._controller.call_later, 5, self._menu_updater_pages.update)
         ClientGUIMenus.AppendMenuItem( gui_actions, 'reload current qss stylesheet', 'Reload the current QSS stylesheet. Helps if you just edited it on disk and do not want to restart.', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_RELOAD_CURRENT_STYLESHEET ) )
         ClientGUIMenus.AppendMenuItem( gui_actions, 'reload icon cache', 'Reload the icons and pixmaps that new icon menus and buttons rely on. Will not affect widgets that are already loaded!', self._ReloadIconCache )
         ClientGUIMenus.AppendMenuItem( gui_actions, 'reset multi-column list settings to default', 'Reset all multi-column list widths and other display settings to default.', self._DebugResetColumnListManager )
@@ -3655,7 +3655,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         ClientGUIMenus.AppendMenuCheckItem( data_actions, 'db ui-hang relief mode', 'Have UI-synchronised database jobs process pending Qt events while they wait.', HG.db_ui_hang_relief_mode, self._SwitchBoolean, 'db_ui_hang_relief_mode' )
         ClientGUIMenus.AppendMenuItem( data_actions, 'flush log', 'Command the log to write any buffered contents to hard drive.', HydrusData.DebugPrint, 'Flushing log' )
-        ClientGUIMenus.AppendMenuItem( data_actions, 'force database commit', 'Command the database to flush all pending changes to disk.', CG.client_controller.ForceDatabaseCommit )
+        ClientGUIMenus.AppendMenuItem(data_actions, 'force database commit', 'Command the database to flush all pending changes to disk.', CG.client_controller.force_database_commit)
         ClientGUIMenus.AppendMenuItem( data_actions, 'review threads', 'Show current threads and what they are doing.', self._ReviewThreads )
         ClientGUIMenus.AppendMenuItem( data_actions, 'show env', 'Print your current environment variables.', HydrusEnvironment.DumpEnv )
         ClientGUIMenus.AppendMenuItem( data_actions, 'show scheduled jobs', 'Print some information about the currently scheduled jobs log.', self._DebugShowScheduledJobs )
@@ -3667,9 +3667,9 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         memory_actions = ClientGUIMenus.GenerateMenu( debug_menu )
         
-        ClientGUIMenus.AppendMenuItem( memory_actions, 'run fast memory maintenance', 'Tell all the fast caches to maintain themselves.', self._controller.MaintainMemoryFast )
-        ClientGUIMenus.AppendMenuItem( memory_actions, 'run slow memory maintenance', 'Tell all the slow caches to maintain themselves.', self._controller.MaintainMemorySlow )
-        ClientGUIMenus.AppendMenuItem( memory_actions, 'clear all rendering caches', 'Tell the image rendering system to forget all current images, tiles, and thumbs. This will often free up a bunch of memory immediately.', self._controller.ClearCaches )
+        ClientGUIMenus.AppendMenuItem(memory_actions, 'run fast memory maintenance', 'Tell all the fast caches to maintain themselves.', self._controller.maintain_memory_fast)
+        ClientGUIMenus.AppendMenuItem(memory_actions, 'run slow memory maintenance', 'Tell all the slow caches to maintain themselves.', self._controller.maintain_memory_slow)
+        ClientGUIMenus.AppendMenuItem(memory_actions, 'clear all rendering caches', 'Tell the image rendering system to forget all current images, tiles, and thumbs. This will often free up a bunch of memory immediately.', self._controller.clear_caches)
         ClientGUIMenus.AppendMenuItem( memory_actions, 'clear thumbnail cache', 'Tell the thumbnail cache to forget everything and redraw all current thumbs.', self._controller.pub, 'clear_thumbnail_cache' )
         
         if HydrusMemory.PYMPLER_OK:
@@ -3865,7 +3865,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         ClientGUIMenus.AppendSeparator( submenu )
         
-        ClientGUIMenus.AppendMenuItem( submenu, 'DEBUG: do tumblr GDPR click-through', 'Do a manual click-through for the tumblr GDPR page.', self._controller.CallLater, 0.0, self._controller.network_engine.login_manager.LoginTumblrGDPR )
+        ClientGUIMenus.AppendMenuItem(submenu, 'DEBUG: do tumblr GDPR click-through', 'Do a manual click-through for the tumblr GDPR page.', self._controller.call_later, 0.0, self._controller.network_engine.login_manager.LoginTumblrGDPR)
         
         ClientGUIMenus.AppendMenu( menu, submenu, 'logins (legacy; simple sites only)' )
         
@@ -4071,7 +4071,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         default_gui_session = HC.options[ 'default_gui_session' ]
         
-        existing_session_names = self._controller.Read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_GUI_SESSION_CONTAINER )
+        existing_session_names = self._controller.read('serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_GUI_SESSION_CONTAINER)
         
         cannot_load_from_db = default_gui_session not in existing_session_names
         
@@ -4079,7 +4079,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         if not load_a_blank_page:
             
-            if self._controller.LastShutdownWasBad():
+            if self._controller.last_shutdown_was_bad():
                 
                 # this can be upgraded to a nicer checkboxlist dialog to select pages or w/e
                 
@@ -4166,7 +4166,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         service = self._controller.services_manager.GetService( service_key )
         
-        self._controller.CallToThread( do_it, service, lock )
+        self._controller.call_to_thread(do_it, service, lock)
         
     
     def _STARTManageAccountTypes( self, service_key ):
@@ -4229,7 +4229,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                     admin_service.Request( HC.POST, 'account_types', { 'account_types' : account_types, 'deletee_account_type_keys_to_new_account_type_keys' : serialisable_deletee_account_type_keys_to_new_account_type_keys } )
                     
                 
-                self._controller.CallToThread( do_it )
+                self._controller.call_to_thread(do_it)
                 
             
         
@@ -4321,7 +4321,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         def qt_do_it():
             
-            export_folders = self._controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER )
+            export_folders = self._controller.read('serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER)
             
             with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit export folders' ) as dlg:
                 
@@ -4333,22 +4333,22 @@ ATTACH "client.mappings.db" as external_mappings;'''
                     
                     export_folders = panel.GetValue()
                     
-                    existing_db_names = set( self._controller.Read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER ) )
+                    existing_db_names = set(self._controller.read('serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER))
                     
                     good_names = set()
                     
                     for export_folder in export_folders:
                         
-                        self._controller.Write( 'serialisable', export_folder )
+                        self._controller.write('serialisable', export_folder)
                         
-                        good_names.add( export_folder.GetName() )
+                        good_names.add(export_folder.get_name())
                         
                     
                     names_to_delete = existing_db_names - good_names
                     
                     for name in names_to_delete:
                         
-                        self._controller.Write( 'delete_serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER, name )
+                        self._controller.write('delete_serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER, name)
                         
                     
                     self._controller.pub( 'notify_new_export_folders' )
@@ -4403,7 +4403,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
             
         
-        self._controller.CallToThread( THREAD_do_it, self._controller )
+        self._controller.call_to_thread(THREAD_do_it, self._controller)
         
     
     def _ManageGUGs( self ):
@@ -4433,7 +4433,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         def qt_do_it():
             
-            import_folders = self._controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_IMPORT_FOLDER )
+            import_folders = self._controller.read('serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_IMPORT_FOLDER)
             
             with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit import folders' ) as dlg:
                 
@@ -4445,7 +4445,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                     
                     import_folders = panel.GetValue()
                     
-                    existing_db_names = set( self._controller.Read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_IMPORT_FOLDER ) )
+                    existing_db_names = set(self._controller.read('serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_IMPORT_FOLDER))
                     
                     good_names = set()
                     
@@ -4453,14 +4453,14 @@ ATTACH "client.mappings.db" as external_mappings;'''
                         
                         good_names.add( import_folder.GetName() )
                         
-                        self._controller.Write( 'serialisable', import_folder )
+                        self._controller.write('serialisable', import_folder)
                         
                     
                     names_to_delete = existing_db_names.difference( good_names )
                     
                     for name in names_to_delete:
                         
-                        self._controller.Write( 'delete_serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_IMPORT_FOLDER, name )
+                        self._controller.write('delete_serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_IMPORT_FOLDER, name)
                         
                     
                     self._controller.pub( 'notify_new_import_folders' )
@@ -4513,7 +4513,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
             
         
-        self._controller.CallToThread( THREAD_do_it, self._controller )
+        self._controller.call_to_thread(THREAD_do_it, self._controller)
         
     
     def _ManageLogins( self ):
@@ -4961,7 +4961,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                         
                         query_log_container = ClientImportSubscriptionQuery.SubscriptionQueryLogContainer( missing_query_log_container_name )
                         
-                        CG.client_controller.WriteSynchronous( 'serialisable', query_log_container )
+                        CG.client_controller.write_synchronous('serialisable', query_log_container)
                         
                     
                     for subscription in subscriptions:
@@ -4995,13 +4995,13 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
                 if result == QW.QDialog.DialogCode.Accepted:
                     
-                    sub_dir = os.path.join( self._controller.GetDBDir(), 'orphaned_query_log_containers' )
+                    sub_dir = os.path.join(self._controller.get_db_dir(), 'orphaned_query_log_containers')
                     
                     HydrusPaths.MakeSureDirectoryExists( sub_dir )
                     
                     for surplus_query_log_container_name in surplus_query_log_container_names:
                         
-                        surplus_query_log_container = CG.client_controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, surplus_query_log_container_name )
+                        surplus_query_log_container = CG.client_controller.read('serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, surplus_query_log_container_name)
                         
                         backup_path = os.path.join( sub_dir, 'qlc_{}.json'.format( surplus_query_log_container_name ) )
                         
@@ -5010,7 +5010,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                             f.write( surplus_query_log_container.DumpToString() )
                             
                         
-                        CG.client_controller.WriteSynchronous( 'delete_serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, surplus_query_log_container_name )
+                        CG.client_controller.write_synchronous('delete_serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, surplus_query_log_container_name)
                         
                     
                 else:
@@ -5081,7 +5081,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                         expected_query_log_container_names.update( subscription.GetAllQueryLogContainerNames() )
                         
                     
-                    actual_query_log_container_names = set( CG.client_controller.Read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER ) )
+                    actual_query_log_container_names = set(CG.client_controller.read('serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER))
                     
                     missing_query_log_container_names = expected_query_log_container_names.difference( actual_query_log_container_names )
                     
@@ -5097,7 +5097,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                         
                         controller.pub( 'message', done_job_status )
                         
-                        CG.client_controller.WriteSynchronous(
+                        CG.client_controller.write_synchronous(
                         'serialisable_atomic',
                         overwrite_types_and_objs = ( [ HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION ], subscriptions ),
                         set_objs = edited_query_log_containers,
@@ -5126,7 +5126,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
             
         
-        self._controller.CallToThread( THREAD_do_it, self._controller )
+        self._controller.call_to_thread(THREAD_do_it, self._controller)
         
     
     def _ManageTagDisplay( self ):
@@ -5158,7 +5158,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         with ClientGUITopLevelWindowsPanels.DialogEdit( self, title ) as dlg:
             
-            ( master_service_keys_to_sibling_applicable_service_keys, master_service_keys_to_parent_applicable_service_keys ) = self._controller.Read( 'tag_display_application' )
+            ( master_service_keys_to_sibling_applicable_service_keys, master_service_keys_to_parent_applicable_service_keys ) = self._controller.read('tag_display_application')
             
             panel = ClientGUITagDisplayMaintenanceEdit.EditTagDisplayApplication( dlg, master_service_keys_to_sibling_applicable_service_keys, master_service_keys_to_parent_applicable_service_keys )
             
@@ -5168,7 +5168,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
                 ( edited_master_service_keys_to_sibling_applicable_service_keys, edited_master_service_keys_to_parent_applicable_service_keys ) = panel.GetValue()
                 
-                self._controller.Write( 'tag_display_application', edited_master_service_keys_to_sibling_applicable_service_keys, edited_master_service_keys_to_parent_applicable_service_keys )
+                self._controller.write('tag_display_application', edited_master_service_keys_to_sibling_applicable_service_keys, edited_master_service_keys_to_parent_applicable_service_keys)
                 
             
         
@@ -5313,7 +5313,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
     
     def _OpenDBFolder( self ):
         
-        HydrusPaths.LaunchDirectory( self._controller.GetDBDir() )
+        HydrusPaths.LaunchDirectory(self._controller.get_db_dir())
         
     
     def _OpenExportFolder( self ):
@@ -5361,7 +5361,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             self._controller.import_folders_manager.Wake()
             
         
-        self._controller.Write( 'save_options', HC.options )
+        self._controller.write('save_options', HC.options)
         
     
     def _RefreshCurrentPage( self ):
@@ -5387,7 +5387,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             media_status = page.GetPrettyStatusForStatusBar()
             
         
-        if self._controller.CurrentlyIdle():
+        if self._controller.currently_idle():
             
             idle_status = 'idle'
             idle_tooltip = 'client is idle, it can do maintenance work'
@@ -5398,10 +5398,10 @@ ATTACH "client.mappings.db" as external_mappings;'''
             idle_tooltip = None
             
         
-        hydrus_busy_status = self._controller.GetThreadPoolBusyStatus()
+        hydrus_busy_status = self._controller.get_thread_pool_busy_status()
         hydrus_busy_tooltip = 'just a simple measure of how much hydrus wants to do atm'
         
-        if self._controller.SystemBusy():
+        if self._controller.system_busy():
             
             busy_status = 'CPU busy'
             busy_tooltip = 'this computer has been doing work recently, so some hydrus maintenance will not start'
@@ -5422,7 +5422,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
     
     def _RefreshStatusBarDB( self ):
         
-        ( db_status, job_name ) = CG.client_controller.GetDBStatus()
+        ( db_status, job_name ) = CG.client_controller.get_db_status()
         
         if job_name is not None and job_name != '':
             
@@ -5457,7 +5457,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 return
                 
             
-            self._controller.Write( 'regenerate_tag_cache', tag_service_key = tag_service_key )
+            self._controller.write('regenerate_tag_cache', tag_service_key = tag_service_key)
             
         
     
@@ -5473,7 +5473,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            self._controller.Write( 'regenerate_local_hash_cache' )
+            self._controller.write('regenerate_local_hash_cache')
             
         
     
@@ -5489,7 +5489,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            self._controller.Write( 'regenerate_local_tag_cache' )
+            self._controller.write('regenerate_local_tag_cache')
             
         
     
@@ -5514,7 +5514,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 return
                 
             
-            self._controller.Write( 'regenerate_tag_display_mappings_cache', tag_service_key = tag_service_key )
+            self._controller.write('regenerate_tag_display_mappings_cache', tag_service_key = tag_service_key)
             
         
     
@@ -5539,7 +5539,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 return
                 
             
-            self._controller.Write( 'regenerate_tag_display_pending_mappings_cache', tag_service_key = tag_service_key )
+            self._controller.write('regenerate_tag_display_pending_mappings_cache', tag_service_key = tag_service_key)
             
         
     
@@ -5566,7 +5566,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 return
                 
             
-            self._controller.Write( 'regenerate_tag_mappings_cache', tag_service_key = tag_service_key )
+            self._controller.write('regenerate_tag_mappings_cache', tag_service_key = tag_service_key)
             
         
     
@@ -5591,7 +5591,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 return
                 
             
-            self._controller.Write( 'regenerate_tag_pending_mappings_cache', tag_service_key = tag_service_key )
+            self._controller.write('regenerate_tag_pending_mappings_cache', tag_service_key = tag_service_key)
             
         
     
@@ -5607,7 +5607,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            self._controller.Write( 'regenerate_similar_files_tree' )
+            self._controller.write('regenerate_similar_files_tree')
             
         
     
@@ -5632,7 +5632,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 return
                 
             
-            self._controller.Write( 'regenerate_searchable_subtag_maps', tag_service_key = tag_service_key )
+            self._controller.write('regenerate_searchable_subtag_maps', tag_service_key = tag_service_key)
             
         
     
@@ -5648,7 +5648,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            self._controller.Write( 'regenerate_tag_parents_cache' )
+            self._controller.write('regenerate_tag_parents_cache')
             
         
     
@@ -5664,7 +5664,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            self._controller.Write( 'regenerate_tag_siblings_and_parents_cache' )
+            self._controller.write('regenerate_tag_siblings_and_parents_cache')
             
         
     
@@ -5687,7 +5687,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             self._notebook.LoadGUISession( name )
             
-            self._controller.Write( 'delete_serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_GUI_SESSION_CONTAINER, name )
+            self._controller.write('delete_serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_GUI_SESSION_CONTAINER, name)
             
             self._controller.pub( 'notify_new_sessions' )
             
@@ -5700,7 +5700,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             CG.client_controller.CallBlockingToQtFireAndForgetNoResponse( self, qt_load )
             
         
-        self._controller.CallToThread( do_save )
+        self._controller.call_to_thread(do_save)
         
         
     
@@ -5730,7 +5730,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             self._controller.pub( 'message', job_status )
             
-            self._controller.Write( 'repair_invalid_tags', job_status = job_status )
+            self._controller.write('repair_invalid_tags', job_status = job_status)
             
         
     
@@ -5761,7 +5761,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             self._controller.pub( 'modal_message', job_status )
             
-            self._controller.Write( 'repopulate_mappings_from_cache', tag_service_key = tag_service_key, job_status = job_status )
+            self._controller.write('repopulate_mappings_from_cache', tag_service_key = tag_service_key, job_status = job_status)
             
         
     
@@ -5786,7 +5786,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 return
                 
             
-            self._controller.Write( 'repopulate_tag_cache_missing_subtags', tag_service_key = tag_service_key )
+            self._controller.write('repopulate_tag_cache_missing_subtags', tag_service_key = tag_service_key)
             
         
     
@@ -5811,7 +5811,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 return
                 
             
-            self._controller.Write( 'repopulate_tag_display_mappings_cache', tag_service_key = tag_service_key )
+            self._controller.write('repopulate_tag_display_mappings_cache', tag_service_key = tag_service_key)
             
         
     
@@ -5868,7 +5868,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             service = self._controller.services_manager.GetService( service_key )
             
-            self._controller.CallToThread( do_it, service )
+            self._controller.call_to_thread(do_it, service)
             
         
     
@@ -5889,7 +5889,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            self._controller.Write( 'resync_combined_deleted_files', do_full_rebuild = True )
+            self._controller.write('resync_combined_deleted_files', do_full_rebuild = True)
             
         
     
@@ -5914,7 +5914,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 return
                 
             
-            self._controller.Write( 'resync_tag_mappings_cache_files', tag_service_key = tag_service_key )
+            self._controller.write('resync_tag_mappings_cache_files', tag_service_key = tag_service_key)
             
         
     
@@ -6044,7 +6044,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         def work_callable():
             
-            vacuum_data = self._controller.Read( 'vacuum_data' )
+            vacuum_data = self._controller.read('vacuum_data')
             
             return vacuum_data
             
@@ -6083,11 +6083,11 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         if name is None:
             
-            export_folders = self._controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER )
+            export_folders = self._controller.read('serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER)
             
         else:
             
-            export_folder = self._controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER, name )
+            export_folder = self._controller.read('serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER, name)
             
             export_folders = [ export_folder ]
             
@@ -6096,7 +6096,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             export_folder.RunNow()
             
-            self._controller.WriteSynchronous( 'serialisable', export_folder )
+            self._controller.write_synchronous('serialisable', export_folder)
             
         
         self._controller.pub( 'notify_new_export_folders' )
@@ -6187,7 +6187,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
                 local_tag_service = random.choice( local_tag_services )
                 
-                local_tag_service_name = local_tag_service.GetName()
+                local_tag_service_name = local_tag_service.get_name()
                 
                 samus_url = 'https://safebooru.org/index.php?page=post&s=view&id=3195917'
                 samus_hash_hex = '78f92ba4a786225ee2a1236efa6b7dc81dd729faf4af99f96f3e20bad6d8b538'
@@ -6384,7 +6384,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
             
         
-        CG.client_controller.CallToThread( do_it )
+        CG.client_controller.call_to_thread(do_it)
         
     
     def _RunUITest( self ):
@@ -6602,7 +6602,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
             
         
-        CG.client_controller.CallToThread( do_it )
+        CG.client_controller.call_to_thread(do_it)
         
     
     def _RunServerTest( self ):
@@ -6680,7 +6680,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             with HG.dirty_object_lock:
                 
-                self._controller.WriteSynchronous( 'update_server_services', admin_service_key, serverside_services, service_keys_to_access_keys, deletee_service_keys )
+                self._controller.write_synchronous('update_server_services', admin_service_key, serverside_services, service_keys_to_access_keys, deletee_service_keys)
                 
                 self._controller.RefreshServices()
                 
@@ -6694,7 +6694,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            self._controller.CallToThread( do_it )
+            self._controller.call_to_thread(do_it)
             
         
     
@@ -6801,7 +6801,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             service = self._controller.services_manager.GetService( service_key )
             
-            self._controller.CallToThread( do_it, service )
+            self._controller.call_to_thread(do_it, service)
             
         
     
@@ -6856,7 +6856,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                 
             
         
-        self._controller.Write( 'set_password', password )
+        self._controller.write('set_password', password)
         
     
     def _SetMediaFocus( self ):
@@ -6940,7 +6940,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             return
             
         
-        if path == self._controller.GetDBDir():
+        if path == self._controller.get_db_dir():
             
             ClientGUIDialogsMessage.ShowWarning( self, 'That directory is your current database directory! You cannot backup to the same location you are backing up from!' )
             
@@ -7199,7 +7199,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                 
             
         
-        self._controller.CallToThread( do_it )
+        self._controller.call_to_thread(do_it)
         
     
     def _TestServerBusy( self, service_key ):
@@ -7224,7 +7224,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         service = self._controller.services_manager.GetService( service_key )
         
-        self._controller.CallToThread( do_it, service )
+        self._controller.call_to_thread(do_it, service)
         
     
     def _UnclosePage( self, closed_page_index = None ):
@@ -7411,11 +7411,11 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            self._controller.Write( 'vacuum', maintenance_mode = HC.MAINTENANCE_FORCED )
+            self._controller.write('vacuum', maintenance_mode = HC.MAINTENANCE_FORCED)
             
         elif result == QW.QDialog.DialogCode.Rejected:
             
-            self._controller.Write( 'vacuum', maintenance_mode = HC.MAINTENANCE_FORCED, force_vacuum = True )
+            self._controller.write('vacuum', maintenance_mode = HC.MAINTENANCE_FORCED, force_vacuum = True)
             
         
     
@@ -7456,7 +7456,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
             service = self._controller.services_manager.GetService( service_key )
             
-            self._controller.CallToThread( do_it, service )
+            self._controller.call_to_thread(do_it, service)
             
         
     
@@ -7535,7 +7535,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         only_save_last_session_during_idle = self._controller.new_options.GetBoolean( 'only_save_last_session_during_idle' )
         
-        if only_save_last_session_during_idle and not self._controller.CurrentlyIdle():
+        if only_save_last_session_during_idle and not self._controller.currently_idle():
             
             self._controller.CallLaterQtSafe( self, 60, 'auto session save wait loop', self.AutoSaveLastSession )
             
@@ -7563,7 +7563,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                     controller.CallLaterQtSafe( win, next_call_delay, 'auto save session', callable )
                     
                 
-                self._controller.CallToThread( do_it, self._controller, session, self, next_call_delay, callable )
+                self._controller.call_to_thread(do_it, self._controller, session, self, next_call_delay, callable)
                 
             
         
@@ -7653,7 +7653,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
     
     def DoFileStorageRebalance( self, job_status: ClientThreading.JobStatus ):
         
-        self._controller.CallToThread( self._controller.client_files_manager.Rebalance, job_status )
+        self._controller.call_to_thread(self._controller.client_files_manager.Rebalance, job_status)
         
         job_status.SetStatusTitle( 'rebalancing files' )
         
@@ -7822,7 +7822,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         self._controller.subscriptions_manager.Wake()
         
-        self._controller.Write( 'save_options', HC.options )
+        self._controller.write('save_options', HC.options)
         
         self._UpdateSystemTrayIcon()
         
@@ -7839,7 +7839,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            self._controller.Write( 'delete_pending', service_key )
+            self._controller.write('delete_pending', service_key)
             
         
     
@@ -8530,7 +8530,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                     
                 else:
                     
-                    existing_session_names = self._controller.Read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_GUI_SESSION_CONTAINER )
+                    existing_session_names = self._controller.read('serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_GUI_SESSION_CONTAINER)
                     
                     if name in existing_session_names:
                         
@@ -8573,7 +8573,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         self._FleshOutSessionWithCleanDataIfNeeded( notebook, name, session )
         
-        self._controller.CallToThread( self._controller.SaveGUISession, session )
+        self._controller.call_to_thread(self._controller.SaveGUISession, session)
         
     
     def RedownloadURLsForceFetch( self, urls ):
@@ -8693,7 +8693,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         global_tracker = self._controller.network_engine.bandwidth_manager.GetMySessionTracker()
         
-        boot_time_ms = self._controller.GetBootTimestampMS()
+        boot_time_ms = self._controller.get_boot_timestamp_ms()
         
         time_since_boot_ms = max( 1000, HydrusTime.GetNowMS() - boot_time_ms )
         
@@ -9028,9 +9028,9 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
             self._notebook.CleanBeforeDestroy()
             
-            self._controller.WriteSynchronous( 'save_options', HC.options )
+            self._controller.write_synchronous('save_options', HC.options)
             
-            self._controller.WriteSynchronous( 'serialisable', self._new_options )
+            self._controller.write_synchronous('serialisable', self._new_options)
             
             self._done_save_and_hide = True
             
@@ -9094,7 +9094,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
     
     def TryToExit( self, restart = False, force_shutdown_maintenance = False ):
         
-        if not self._controller.DoingFastExit():
+        if not self._controller.doing_fast_exit():
             
             ( space_needed, free_space ) = CG.client_controller.db.GetSafeTransactionDiskSpaceAndCurrentFreeSpace()
             
@@ -9173,7 +9173,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                 
                 idle_shutdown_action = self._controller.options[ 'idle_shutdown' ]
                 
-                last_shutdown_work_time = self._controller.Read( 'last_shutdown_work_time' )
+                last_shutdown_work_time = self._controller.read('last_shutdown_work_time')
                 
                 shutdown_work_period = self._controller.new_options.GetInteger( 'shutdown_work_period' )
                 
@@ -9198,7 +9198,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                             text = 'Is now a good time for the client to do up to ' + HydrusNumbers.ToHumanInt( idle_shutdown_max_minutes ) + ' minutes\' maintenance work? (Will auto-no in 15 seconds)'
                             text += '\n' * 2
                             
-                            if CG.client_controller.IsFirstStart():
+                            if CG.client_controller.is_first_start():
                                 
                                 text += 'Since this is your first session, this maintenance should just be some quick initialisation work. It should only take a few seconds.'
                                 text += '\n' * 2
@@ -9221,7 +9221,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                             else:
                                 
                                 # if they said no, don't keep asking
-                                self._controller.Write( 'register_shutdown_work' )
+                                self._controller.write('register_shutdown_work')
                                 
                             
                         
@@ -9229,7 +9229,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                 
             except Exception as e:
                 
-                self._controller.BlockingSafeShowCriticalMessage( 'shutdown error', 'There was a problem trying to review pending shutdown maintenance work. No shutdown maintenance work will be done, and info has been written to the log. Please let hydev know.' )
+                self._controller.blocking_safe_show_critical_message('shutdown error', 'There was a problem trying to review pending shutdown maintenance work. No shutdown maintenance work will be done, and info has been written to the log. Please let hydev know.')
                 
                 HydrusData.PrintException( e )
                 
@@ -9294,7 +9294,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         self._menu_updater_pending.update()
         
-        self._controller.CallToThread( THREADUploadPending, service_key )
+        self._controller.call_to_thread(THREADUploadPending, service_key)
         
         return True
         

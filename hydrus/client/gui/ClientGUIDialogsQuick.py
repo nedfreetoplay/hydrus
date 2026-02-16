@@ -158,11 +158,11 @@ def GetYesNo( win: QW.QWidget, message: str, title = 'Are you sure?', yes_label 
             
             if auto_yes_time is not None:
                 
-                CG.client_controller.CallToThread( run_auto_yes_no_gubbins, dlg, HydrusTime.GetNow() + auto_yes_time, dlg.windowTitle(), 'auto-yes', QW.QDialog.DialogCode.Accepted )
+                CG.client_controller.call_to_thread(run_auto_yes_no_gubbins, dlg, HydrusTime.GetNow() + auto_yes_time, dlg.windowTitle(), 'auto-yes', QW.QDialog.DialogCode.Accepted)
                 
             elif auto_no_time is not None:
                 
-                CG.client_controller.CallToThread( run_auto_yes_no_gubbins, dlg, HydrusTime.GetNow() + auto_no_time, dlg.windowTitle(), 'auto-no', QW.QDialog.DialogCode.Rejected )
+                CG.client_controller.call_to_thread(run_auto_yes_no_gubbins, dlg, HydrusTime.GetNow() + auto_no_time, dlg.windowTitle(), 'auto-no', QW.QDialog.DialogCode.Rejected)
                 
             
         
@@ -180,7 +180,7 @@ def GetYesNoNo( win: QW.QWidget, message: str, title = 'Are you sure?', yes_labe
         
         if auto_yes_time is not None:
             
-            CG.client_controller.CallToThread( run_auto_yes_no_gubbins, dlg, HydrusTime.GetNow() + auto_yes_time, dlg.windowTitle(), 'auto-yes', QW.QDialog.DialogCode.Accepted )
+            CG.client_controller.call_to_thread(run_auto_yes_no_gubbins, dlg, HydrusTime.GetNow() + auto_yes_time, dlg.windowTitle(), 'auto-yes', QW.QDialog.DialogCode.Accepted)
             
         
         result = dlg.exec()
@@ -400,7 +400,7 @@ def SelectServiceKey( service_types = None, service_keys = None, unallowed = Non
         
         services = { CG.client_controller.services_manager.GetService( service_key ) for service_key in service_keys }
         
-        choice_tuples = [ ( service.GetName(), service.GetServiceKey() ) for service in services ]
+        choice_tuples = [(service.get_name(), service.GetServiceKey()) for service in services]
         
         try:
             

@@ -234,7 +234,7 @@ class Page( QW.QWidget ):
         
         def work_callable( block_of_hashes ):
             
-            block_of_media_results = CG.client_controller.Read( 'media_results', block_of_hashes )
+            block_of_media_results = CG.client_controller.read('media_results', block_of_hashes)
             
             return block_of_media_results
             
@@ -1052,7 +1052,7 @@ def ShowReasonsAndPagesConfirmationDialog( win: QW.QWidget, reasons_and_pages, m
                 for ( reason, pages ) in reasons_and_pages:
                     
                     choice_tuples.extend(
-                        ( f'{reason}: {page.GetName()}', HydrusData.Call( catch_datamissing, page ), 'Show this page.' )
+                        ( f'{reason}: {page.get_name()}', HydrusData.Call(catch_datamissing, page), 'Show this page.')
                         for page
                         in pages
                     )
@@ -1183,7 +1183,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
     
     def _ClosePage( self, index, polite = True, delete_page = False ):
         
-        CG.client_controller.ResetIdleTimer()
+        CG.client_controller.reset_idle_timer()
         CG.client_controller.ResetPageChangeTimer()
         
         if index < 0 or index > self.count() - 1:
@@ -1577,7 +1577,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
         
         insertion_tab_index = min( insertion_tab_index, dest_notebook.count() )
         
-        dest_notebook.insertTab( insertion_tab_index, page, page.GetName() )
+        dest_notebook.insertTab(insertion_tab_index, page, page.get_name())
         
         if follow_dropped_page: dest_notebook.setCurrentIndex( insertion_tab_index )
         
@@ -2049,7 +2049,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
                 
             
         
-        existing_session_names = CG.client_controller.Read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_GUI_SESSION_CONTAINER )
+        existing_session_names = CG.client_controller.read('serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_GUI_SESSION_CONTAINER)
         
         if len( existing_session_names ) > 0 or click_over_page_of_pages:
             
@@ -2129,7 +2129,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
         
         ordered_pages = sorted( self.GetPages(), key = file_count_secondary, reverse = True )
         
-        ordered_pages = sorted( ordered_pages, key = lambda page: page.GetName(), reverse = order == 'desc' )
+        ordered_pages = sorted(ordered_pages, key = lambda page: page.get_name(), reverse =order == 'desc')
         
         self._SortPagesSetPages( ordered_pages )
         
@@ -2210,7 +2210,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
         
         try:
             
-            session = session = CG.client_controller.Read( 'gui_session', name, timestamp_ms )
+            session = session = CG.client_controller.read('gui_session', name, timestamp_ms)
             
         except Exception as e:
             
@@ -2245,7 +2245,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
         
         try:
             
-            session = CG.client_controller.Read( 'gui_session', name )
+            session = CG.client_controller.read('gui_session', name)
             
         except Exception as e:
             
@@ -2503,7 +2503,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
         
         for ( reason, pages ) in reasons_to_pages.items():
             
-            pages.sort( key = lambda p: HydrusText.HumanTextSortKey( p.GetName() ) )
+            pages.sort(key = lambda p: HydrusText.HumanTextSortKey(p.get_name()))
             
         
         reasons_and_pages = sorted( reasons_to_pages.items(), key = lambda a: len( a[1] ) )
@@ -3214,7 +3214,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
         
         if do_add:
             
-            media_results = CG.client_controller.Read( 'media_results', hashes, sorted = True )
+            media_results = CG.client_controller.read('media_results', hashes, sorted = True)
             
             dest_page.AddMediaResults( media_results )
             
@@ -3317,7 +3317,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
         
         # the 'too many pages open' thing used to be here
         
-        CG.client_controller.ResetIdleTimer()
+        CG.client_controller.reset_idle_timer()
         CG.client_controller.ResetPageChangeTimer()
         
         if initial_hashes is None:
@@ -3558,7 +3558,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
             return current_page.NewPagesNotebook( name = name, forced_insertion_index = forced_insertion_index, on_deepest_notebook = on_deepest_notebook, give_it_a_blank_page = give_it_a_blank_page )
             
         
-        CG.client_controller.ResetIdleTimer()
+        CG.client_controller.reset_idle_timer()
         CG.client_controller.ResetPageChangeTimer()
         
         page = PagesNotebook( self, name )
@@ -3622,7 +3622,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
                 
                 insert_index = min( index, self.count() )
                 
-                name = page.GetName()
+                name = page.get_name()
                 
                 self.insertTab( insert_index, page, name )
                 self.setCurrentIndex( insert_index )
@@ -3701,7 +3701,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
             
             def work_callable():
                 
-                media_results = CG.client_controller.Read( 'media_results', hashes, sorted = True )
+                media_results = CG.client_controller.read('media_results', hashes, sorted = True)
                 
                 return media_results
                 

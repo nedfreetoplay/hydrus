@@ -1074,7 +1074,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
                 
             else:
                 
-                raise Exception( self._name + ' was told to merge an unmergeable subscription, ' + subscription.GetName() + '!' )
+                raise Exception(self._name + ' was told to merge an unmergeable subscription, ' + subscription.get_name() + '!')
                 
             
         

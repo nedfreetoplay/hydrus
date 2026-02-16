@@ -216,7 +216,7 @@ class EditExportFoldersPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _GetExistingNames( self ):
         
-        existing_names = { export_folder.GetName() for export_folder in self._export_folders.GetData() }
+        existing_names = {export_folder.get_name() for export_folder in self._export_folders.GetData()}
         
         return existing_names
         
@@ -454,11 +454,11 @@ If you select synchronise, be careful!'''
             
             sort_by = ClientMedia.MediaSort( ( 'system', CC.SORT_FILES_BY_FILESIZE ), CC.SORT_ASC )
             
-            query_hash_ids = CG.client_controller.Read( 'file_query_ids', file_search_context, limit_sort_by = sort_by )
+            query_hash_ids = CG.client_controller.read('file_query_ids', file_search_context, limit_sort_by = sort_by)
             
             query_hash_ids = list( query_hash_ids )[:ClientGUIMetadataMigrationTest.HOW_MANY_EXAMPLE_OBJECTS_TO_USE]
             
-            media_results = CG.client_controller.Read( 'media_results_from_ids', query_hash_ids )
+            media_results = CG.client_controller.read('media_results_from_ids', query_hash_ids)
             
             return media_results
             
@@ -1003,7 +1003,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                     
                     content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, hashes, reason = reason )
                     
-                    CG.client_controller.WriteSynchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, content_update ) )
+                    CG.client_controller.write_synchronous('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, content_update))
                     
                 
             
@@ -1021,7 +1021,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
             CG.client_controller.CallAfterQtSafe( self, qt_done, quit_afterwards )
             
         
-        CG.client_controller.CallToThread( do_it, directory, metadata_routers, delete_afterwards, export_symlinks, quit_afterwards, self._media_to_number_indices )
+        CG.client_controller.call_to_thread(do_it, directory, metadata_routers, delete_afterwards, export_symlinks, quit_afterwards, self._media_to_number_indices)
         
     
     def _GetPath( self, media ):

@@ -284,7 +284,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         def work_callable():
             
-            CG.client_controller.CallLater( 4, CG.client_controller.pub, 'message', job_status )
+            CG.client_controller.call_later(4, CG.client_controller.pub, 'message', job_status)
             
             ClientDuplicatesAutoResolution.ActionAutoResolutionReviewPairs(
                 rule,
@@ -451,7 +451,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         def work_callable():
             
-            CG.client_controller.CallLater( 4, CG.client_controller.pub, 'message', job_status )
+            CG.client_controller.call_later(4, CG.client_controller.pub, 'message', job_status)
             
             ClientDuplicatesAutoResolution.ActionAutoResolutionReviewPairs(
                 rule,
@@ -549,7 +549,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         def work_callable():
             
-            actioned_pairs_with_info = CG.client_controller.Read( 'duplicates_auto_resolution_actioned_pairs', rule, fetch_limit = fetch_limit )
+            actioned_pairs_with_info = CG.client_controller.read('duplicates_auto_resolution_actioned_pairs', rule, fetch_limit = fetch_limit)
             
             reformatted_actioned_pairs_with_info = [ ( media_result_a, media_result_b, ( duplicate_type, timestamp_ms ) ) for ( media_result_a, media_result_b, duplicate_type, timestamp_ms ) in actioned_pairs_with_info ]
             
@@ -581,7 +581,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         def work_callable():
             
-            denied_pairs_with_info = CG.client_controller.Read( 'duplicates_auto_resolution_denied_pairs', rule, fetch_limit = fetch_limit )
+            denied_pairs_with_info = CG.client_controller.read('duplicates_auto_resolution_denied_pairs', rule, fetch_limit = fetch_limit)
             
             return denied_pairs_with_info
             
@@ -611,7 +611,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         def work_callable():
             
-            pending_action_pairs = CG.client_controller.Read( 'duplicates_auto_resolution_pending_action_pairs', rule, fetch_limit = fetch_limit )
+            pending_action_pairs = CG.client_controller.read('duplicates_auto_resolution_pending_action_pairs', rule, fetch_limit = fetch_limit)
             
             return pending_action_pairs
             
@@ -725,7 +725,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         ClientGUIMediaSimpleActions.UndeleteFiles( all_hashes )
         
-        CG.client_controller.WriteSynchronous( 'dissolve_duplicates_group', all_hashes )
+        CG.client_controller.write_synchronous('dissolve_duplicates_group', all_hashes)
         
         self._we_have_done_undos = True
         
@@ -753,7 +753,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             return
             
         
-        CG.client_controller.WriteSynchronous( 'duplicates_auto_resolution_rescind_denied_pairs', self._rule, selected_pairs )
+        CG.client_controller.write_synchronous('duplicates_auto_resolution_rescind_denied_pairs', self._rule, selected_pairs)
         
         self._we_have_done_undos = True
         

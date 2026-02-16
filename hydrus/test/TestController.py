@@ -132,7 +132,7 @@ class MockServicesManager( object ):
     
     def GetName( self, service_key ):
         
-        return self._service_keys_to_services[ service_key ].GetName()
+        return self._service_keys_to_services[ service_key ].get_name()
         
     
     def GetService( self, service_key ):
@@ -389,7 +389,7 @@ class Controller( object ):
     
     def pubimmediate( self, topic, *args, **kwargs ):
         
-        self._pubsub.pubimmediate( topic, *args, **kwargs )
+        self._pubsub.pub_immediate(topic, *args, **kwargs)
         
     
     def sub( self, object, method_name, topic ):
@@ -777,7 +777,7 @@ class Controller( object ):
         
         if self._test_db is not None:
             
-            return self._test_db.Read( name, *args, **kwargs )
+            return self._test_db.read(name, *args, **kwargs)
             
         
         try:
@@ -1066,7 +1066,7 @@ class Controller( object ):
         
         if self._test_db is not None:
             
-            return self._test_db.Write( name, *args, **kwargs )
+            return self._test_db.write(name, *args, **kwargs)
             
         
         self._write_call_args[ name ].append( ( args, kwargs ) )

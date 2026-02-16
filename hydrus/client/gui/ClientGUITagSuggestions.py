@@ -269,12 +269,12 @@ class RecentTagsPanel( QW.QWidget ):
         
         def do_it( service_key ):
             
-            recent_tags = CG.client_controller.Read( 'recent_tags', service_key )
+            recent_tags = CG.client_controller.read('recent_tags', service_key)
             
             CG.client_controller.CallAfterQtSafe( self, qt_code, recent_tags )
             
         
-        CG.client_controller.CallToThread( do_it, self._service_key )
+        CG.client_controller.call_to_thread(do_it, self._service_key)
         
     
     def _UpdateTagDisplay( self ):
@@ -292,7 +292,7 @@ class RecentTagsPanel( QW.QWidget ):
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            CG.client_controller.Write( 'push_recent_tags', self._service_key, None )
+            CG.client_controller.write('push_recent_tags', self._service_key, None)
             
             self._last_fetched_tags = []
             
@@ -453,7 +453,7 @@ class RelatedTagsPanel( QW.QWidget ):
                 result_tag_slices_weight_dict[ tag_slice ] = weight_percent / 100
                 
             
-            ( num_done, num_to_do, num_skipped, predicates ) = CG.client_controller.Read(
+            ( num_done, num_to_do, num_skipped, predicates ) = CG.client_controller.read(
                 'related_tags',
                 file_service_key,
                 tag_service_key,
@@ -507,7 +507,7 @@ class RelatedTagsPanel( QW.QWidget ):
         
         tag_service_key = self._service_key
         
-        CG.client_controller.CallToThread( do_it, file_service_key, tag_service_key, search_tags, other_tags_to_exclude )
+        CG.client_controller.call_to_thread(do_it, file_service_key, tag_service_key, search_tags, other_tags_to_exclude)
         
     
     def _UpdateTagDisplay( self ):
@@ -623,11 +623,11 @@ class FileLookupScriptTagsPanel( QW.QWidget ):
             
             def qt_code():
                 
-                script_names_to_scripts = { script.GetName() : script for script in scripts }
+                script_names_to_scripts = {script.get_name() : script for script in scripts}
                 
                 for ( name, script ) in list(script_names_to_scripts.items()):
                     
-                    self._script_choice.addItem( script.GetName(), script )
+                    self._script_choice.addItem(script.get_name(), script)
                     
                 
                 new_options = CG.client_controller.new_options
@@ -647,12 +647,12 @@ class FileLookupScriptTagsPanel( QW.QWidget ):
                 self._fetch_button.setEnabled( True )
                 
             
-            scripts = CG.client_controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_PARSE_ROOT_FILE_LOOKUP )
+            scripts = CG.client_controller.read('serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_PARSE_ROOT_FILE_LOOKUP)
             
             CG.client_controller.CallAfterQtSafe( self, qt_code )
             
         
-        CG.client_controller.CallToThread( do_it )
+        CG.client_controller.call_to_thread(do_it)
         
     
     def _SetTags( self, tags ):
@@ -710,7 +710,7 @@ class FileLookupScriptTagsPanel( QW.QWidget ):
         
         self._SetTags( [] )
         
-        CG.client_controller.CallToThread( self.THREADFetchTags, script, job_status, file_identifier )
+        CG.client_controller.call_to_thread(self.THREADFetchTags, script, job_status, file_identifier)
         
     
     def MediaUpdated( self ):

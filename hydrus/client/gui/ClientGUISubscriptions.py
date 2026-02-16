@@ -178,7 +178,7 @@ def GetQueryHeadersQualityInfo( query_headers: collections.abc.Iterable[ ClientI
         
         try:
             
-            query_log_container = CG.client_controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_header.GetQueryLogContainerName() )
+            query_log_container = CG.client_controller.read('serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_header.GetQueryLogContainerName())
             
         except HydrusExceptions.DataMissing:
             
@@ -189,7 +189,7 @@ def GetQueryHeadersQualityInfo( query_headers: collections.abc.Iterable[ ClientI
         
         hashes = fsc.GetHashes()
         
-        media_results = CG.client_controller.Read( 'media_results', hashes )
+        media_results = CG.client_controller.read('media_results', hashes)
         
         num_inbox = 0
         num_archived = 0
@@ -229,7 +229,7 @@ def GetQueryLogContainers( query_headers: collections.abc.Iterable[ ClientImport
         
         try:
             
-            query_log_container = CG.client_controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_header.GetQueryLogContainerName() )
+            query_log_container = CG.client_controller.read('serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_header.GetQueryLogContainerName())
             
         except HydrusExceptions.DBException as e:
             
@@ -818,7 +818,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 for query_log_container in query_log_containers:
                     
-                    self._names_to_edited_query_log_containers[ query_log_container.GetName() ] = query_log_container
+                    self._names_to_edited_query_log_containers[ query_log_container.get_name()] = query_log_container
                     
                 
                 self.setEnabled( True )
@@ -853,7 +853,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
             
             try:
                 
-                old_query_log_container = CG.client_controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_log_container_name )
+                old_query_log_container = CG.client_controller.read('serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_log_container_name)
                 
             except HydrusExceptions.DataMissing:
                 
@@ -1768,7 +1768,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 query_log_containers = unknown_subscription.query_log_containers
                 
             
-            old_names_to_query_log_containers = { query_log_container.GetName() : query_log_container for query_log_container in query_log_containers }
+            old_names_to_query_log_containers = {query_log_container.get_name() : query_log_container for query_log_container in query_log_containers}
             
             there_were_missing_query_log_containers = False
             
@@ -1792,7 +1792,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
             if there_were_missing_query_log_containers:
                 
-                message = 'When importing this subscription, "{}", there was missing log data! I will still let you add it, but some of its queries are incomplete. If you are ok with this, ok and then immediately re-open the manage subscriptions dialog to reinitialise the missing data back to zero (and clear any orphaned data that came with this). If you are not ok with this, cancel out now or cancel out of the whole manage subs dialog.'.format( subscription.GetName() )
+                message = 'When importing this subscription, "{}", there was missing log data! I will still let you add it, but some of its queries are incomplete. If you are ok with this, ok and then immediately re-open the manage subscriptions dialog to reinitialise the missing data back to zero (and clear any orphaned data that came with this). If you are not ok with this, cancel out now or cancel out of the whole manage subs dialog.'.format(subscription.get_name())
                 
                 result = ClientGUIDialogsQuick.GetYesNo( self, message, title = 'missing query log data!', yes_label = 'import it anyway', no_label = 'back out now' )
                 
@@ -1802,7 +1802,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 
             
-            new_names_to_query_log_containers = { query_log_container.GetName() : query_log_container for query_log_container in query_log_containers }
+            new_names_to_query_log_containers = {query_log_container.get_name() : query_log_container for query_log_container in query_log_containers}
             
             self._names_to_edited_query_log_containers.update( new_names_to_query_log_containers )
             
@@ -2156,7 +2156,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 for query_log_container in query_log_containers:
                     
-                    self._names_to_edited_query_log_containers[ query_log_container.GetName() ] = query_log_container
+                    self._names_to_edited_query_log_containers[ query_log_container.get_name()] = query_log_container
                     
                 
                 self.setEnabled( True )
@@ -2178,7 +2178,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         subscriptions = self._subscriptions.GetData()
         
-        names = { subscription.GetName() for subscription in subscriptions }
+        names = {subscription.get_name() for subscription in subscriptions}
         
         return names
         
@@ -2769,11 +2769,11 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     if len( dupe_query_texts_it_can_do ) == len( query_texts_we_want_to_dedupe_now ):
                         
-                        label = '{} (has all duplicate queries)'.format( subscription.GetName() )
+                        label = '{} (has all duplicate queries)'.format(subscription.get_name())
                         
                     else:
                         
-                        label = '{} (has {} duplicate queries)'.format( subscription.GetName(), HydrusNumbers.ValueRangeToPrettyString( len( dupe_query_texts_it_can_do ), len( query_texts_we_want_to_dedupe_now ) ) )
+                        label = '{} (has {} duplicate queries)'.format(subscription.get_name(), HydrusNumbers.ValueRangeToPrettyString(len(dupe_query_texts_it_can_do), len(query_texts_we_want_to_dedupe_now)))
                         
                     
                     choice_tuples.append( ( label, subscription, ', '.join( sorted( dupe_query_texts_it_can_do ) ) ) )
@@ -2789,7 +2789,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     master_subscription = choice_tuples[0][1]
                     
-                    message = 'Subscription "{}" will now dedupe the queries within itself. Is this ok?'.format( master_subscription.GetName() )
+                    message = 'Subscription "{}" will now dedupe the queries within itself. Is this ok?'.format(master_subscription.get_name())
                     
                     result = ClientGUIDialogsQuick.GetYesNo( self, message )
                     
@@ -2800,7 +2800,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 else:
                     
-                    choice_tuples.sort( key = lambda c_t: c_t[1].GetName() )
+                    choice_tuples.sort(key = lambda c_t: c_t[1].get_name())
                     
                     message = 'Which subscription is going to keep the queries? If the subscription cannot dedupe them all, you will be able to select another, to do the rest, in a moment.'
                     
@@ -2914,7 +2914,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         edited_query_log_containers = list( self._names_to_edited_query_log_containers.values() )
         
-        edited_query_log_containers = [ query_log_container for query_log_container in edited_query_log_containers if query_log_container.GetName() in required_query_log_container_names ]
+        edited_query_log_containers = [query_log_container for query_log_container in edited_query_log_containers if query_log_container.get_name() in required_query_log_container_names]
         
         deletee_query_log_container_names = self._original_existing_query_log_container_names.difference( required_query_log_container_names )
         
@@ -2991,9 +2991,9 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
             for mergeable_group in mergeable_groups:
                 
-                mergeable_group.sort( key = lambda sub: sub.GetName() )
+                mergeable_group.sort(key = lambda sub: sub.get_name())
                 
-                choice_tuples = [ ( sub.GetName(), sub ) for sub in mergeable_group ]
+                choice_tuples = [(sub.get_name(), sub) for sub in mergeable_group]
                 
                 try:
                     
@@ -3006,7 +3006,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 merged_sub = original_primary_sub.Duplicate()
                 
-                primary_sub_name = merged_sub.GetName()
+                primary_sub_name = merged_sub.get_name()
                 
                 mergeable_group.remove( original_primary_sub )
                 
@@ -3048,12 +3048,12 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
             for ( primary, merged_sub ) in primary_and_merged_replacement_tuples:
                 
-                if merged_sub.GetName() != primary.GetName():
+                if merged_sub.get_name() != primary.get_name():
                     
                     merged_sub.SetNonDupeName( existing_names, do_casefold = True )
                     
                 
-                existing_names.add( merged_sub.GetName() )
+                existing_names.add(merged_sub.get_name())
                 
             
             self._subscriptions.ReplaceDatas( primary_and_merged_replacement_tuples, sort_and_scroll = True )
@@ -3280,7 +3280,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
             final_subscription.SetNonDupeName( existing_names, do_casefold = True )
             
-            existing_names.add( final_subscription.GetName() )
+            existing_names.add(final_subscription.get_name())
             
         
         self._subscriptions.AddDatas( final_subscriptions, select_sort_and_scroll = True )

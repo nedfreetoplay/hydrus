@@ -109,8 +109,8 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
             
         
     
-    def _read( self, action, *args, **kwargs ): return TestClientDBDuplicatesAutoResolution._db.Read( action, *args, **kwargs )
-    def _write( self, action, *args, **kwargs ): return TestClientDBDuplicatesAutoResolution._db.Write( action, True, *args, **kwargs )
+    def _read( self, action, *args, **kwargs ): return TestClientDBDuplicatesAutoResolution._db.read(action, *args, **kwargs)
+    def _write( self, action, *args, **kwargs ): return TestClientDBDuplicatesAutoResolution._db.write(action, True, *args, **kwargs)
     
     def _compare_counts_cache( self, counts_cache_as_read, counts_we_expect ):
         

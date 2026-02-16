@@ -390,7 +390,7 @@ class ThumbnailCache( object ):
         
         self.Clear()
         
-        self._controller.CallToThreadLongRunning( self.MainLoop )
+        self._controller.call_to_thread_long_running(self.MainLoop)
         
         self._controller.sub( self, 'Clear', 'clear_thumbnail_cache' )
         self._controller.sub( self, 'ClearThumbnails', 'clear_thumbnails' )
@@ -1004,7 +1004,7 @@ class ThumbnailCache( object ):
             with self._lock:
                 
                 # got more important work or no work to do
-                if len( self._waterfall_queue ) > 0 or len( self._delayed_regeneration_queue ) == 0 or CG.client_controller.CurrentlyPubSubbing():
+                if len( self._waterfall_queue ) > 0 or len( self._delayed_regeneration_queue ) == 0 or CG.client_controller.currently_pub_subbing():
                     
                     continue
                     

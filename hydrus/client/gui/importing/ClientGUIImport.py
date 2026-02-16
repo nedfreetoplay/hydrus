@@ -692,7 +692,7 @@ class FilenameTaggingOptionsPanel( QW.QWidget ):
         
         def EnterTags( self, tags ):
             
-            CG.client_controller.Write( 'push_recent_tags', self._service_key, tags )
+            CG.client_controller.write('push_recent_tags', self._service_key, tags)
             
             if len( tags ) > 0:
                 
@@ -716,7 +716,7 @@ class FilenameTaggingOptionsPanel( QW.QWidget ):
         
         def EnterTagsSingle( self, tags ):
             
-            CG.client_controller.Write( 'push_recent_tags', self._service_key, tags )
+            CG.client_controller.write('push_recent_tags', self._service_key, tags)
             
             if len( tags ) > 0:
                 
@@ -1617,7 +1617,7 @@ class GUGKeyAndNameSelector( ClientGUICommon.BetterButton ):
         gugs = list( domain_manager.GetGUGs() )
         gug_keys_to_display = domain_manager.GetGUGKeysToDisplay()
         
-        gugs.sort( key = lambda g: g.GetName() )
+        gugs.sort(key = lambda g: g.get_name())
         
         functional_gugs = []
         non_functional_gugs = []
@@ -1634,9 +1634,9 @@ class GUGKeyAndNameSelector( ClientGUICommon.BetterButton ):
                 
             
         
-        choice_tuples = [ ( gug.GetName(), gug ) for gug in functional_gugs if gug.GetGUGKey() in gug_keys_to_display ]
+        choice_tuples = [(gug.get_name(), gug) for gug in functional_gugs if gug.GetGUGKey() in gug_keys_to_display]
         
-        second_choice_tuples = [ ( gug.GetName(), gug ) for gug in functional_gugs if gug.GetGUGKey() not in gug_keys_to_display ]
+        second_choice_tuples = [(gug.get_name(), gug) for gug in functional_gugs if gug.GetGUGKey() not in gug_keys_to_display]
         
         if len( second_choice_tuples ) > 0:
             
@@ -1649,7 +1649,7 @@ class GUGKeyAndNameSelector( ClientGUICommon.BetterButton ):
             
             for gug in non_functional_gugs:
                 
-                s = gug.GetName()
+                s = gug.get_name()
                 
                 try:
                     
@@ -1657,7 +1657,7 @@ class GUGKeyAndNameSelector( ClientGUICommon.BetterButton ):
                     
                 except HydrusExceptions.ParseException as e:
                     
-                    s = '{} ({})'.format( gug.GetName(), e )
+                    s = '{} ({})'.format(gug.get_name(), e)
                     
                 
                 non_functional_choice_tuples.append( ( s, gug ) )

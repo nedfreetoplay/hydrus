@@ -523,7 +523,7 @@ class TestSerialisables( unittest.TestCase ):
         
         def test( obj, dupe_obj ):
             
-            self.assertEqual( obj.GetName(), dupe_obj.GetName() )
+            self.assertEqual(obj.get_name(), dupe_obj.get_name())
             
             self.assertEqual( obj._gug_key_and_name, dupe_obj._gug_key_and_name )
             self.assertEqual( len( obj._query_headers ), len( dupe_obj._query_headers ) )

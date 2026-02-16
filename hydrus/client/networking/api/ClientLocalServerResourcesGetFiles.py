@@ -101,7 +101,7 @@ class HydrusResourceClientAPIRestrictedGetFilesSearchFiles( HydrusResourceClient
             
             request.disconnect_callables.append( job_status.Cancel )
             
-            hash_ids = CG.client_controller.Read( 'file_query_ids', file_search_context, job_status = job_status, sort_by = sort_by, apply_implicit_limit = False )
+            hash_ids = CG.client_controller.read('file_query_ids', file_search_context, job_status = job_status, sort_by = sort_by, apply_implicit_limit = False)
             
         
         request.client_api_permissions.SetLastSearchResults( hash_ids )
@@ -110,7 +110,7 @@ class HydrusResourceClientAPIRestrictedGetFilesSearchFiles( HydrusResourceClient
         
         if return_hashes:
             
-            hash_ids_to_hashes = CG.client_controller.Read( 'hash_ids_to_hashes', hash_ids = hash_ids )
+            hash_ids_to_hashes = CG.client_controller.read('hash_ids_to_hashes', hash_ids = hash_ids)
             
             # maintain sort
             body_dict[ 'hashes' ] = [ hash_ids_to_hashes[ hash_id ].hex() for hash_id in hash_ids ]
@@ -139,7 +139,7 @@ def ParseAndFetchMediaResult( request: HydrusServerRequest.HydrusRequest ) -> Cl
             
             request.client_api_permissions.CheckPermissionToSeeFiles( ( file_id, ) )
             
-            ( media_result, ) = CG.client_controller.Read( 'media_results_from_ids', ( file_id, ) )
+            ( media_result, ) = CG.client_controller.read('media_results_from_ids', (file_id,))
             
         elif 'hash' in request.parsed_request_args:
             
@@ -147,7 +147,7 @@ def ParseAndFetchMediaResult( request: HydrusServerRequest.HydrusRequest ) -> Cl
             
             hash = request.parsed_request_args.GetValue( 'hash', bytes )
             
-            media_result = CG.client_controller.Read( 'media_result', hash )
+            media_result = CG.client_controller.read('media_result', hash)
             
         else:
             
@@ -214,7 +214,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetRenderedFile( HydrusResourceCl
                 
                 request.client_api_permissions.CheckPermissionToSeeFiles( ( file_id, ) )
                 
-                ( media_result, ) = CG.client_controller.Read( 'media_results_from_ids', ( file_id, ) )
+                ( media_result, ) = CG.client_controller.read('media_results_from_ids', (file_id,))
                 
             elif 'hash' in request.parsed_request_args:
                 
@@ -222,7 +222,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetRenderedFile( HydrusResourceCl
                 
                 hash = request.parsed_request_args.GetValue( 'hash', bytes )
                 
-                media_result = CG.client_controller.Read( 'media_result', hash )
+                media_result = CG.client_controller.read('media_result', hash)
                 
             else:
                 
@@ -392,7 +392,7 @@ class HydrusResourceClientAPIRestrictedGetFilesFileHashes( HydrusResourceClientA
         
         ClientLocalServerCore.CheckHashLength( source_hashes, hash_type = source_hash_type )
         
-        source_to_desired = CG.client_controller.Read( 'file_hashes', source_hashes, source_hash_type, desired_hash_type )
+        source_to_desired = CG.client_controller.read('file_hashes', source_hashes, source_hash_type, desired_hash_type)
         
         encoded_source_to_desired = { source_hash.hex() : desired_hash.hex() for ( source_hash, desired_hash ) in source_to_desired.items() }
         
@@ -424,7 +424,7 @@ class HydrusResourceClientAPIRestrictedGetFilesFileMetadata( HydrusResourceClien
         
         hashes = ClientLocalServerCore.ParseHashes( request )
         
-        hash_ids_to_hashes = CG.client_controller.Read( 'hash_ids_to_hashes', hashes = hashes, create_new_hash_ids = create_new_file_ids )
+        hash_ids_to_hashes = CG.client_controller.read('hash_ids_to_hashes', hashes = hashes, create_new_hash_ids = create_new_file_ids)
         
         hashes_to_hash_ids = { hash : hash_id for ( hash_id, hash ) in hash_ids_to_hashes.items() }
         
@@ -457,7 +457,7 @@ class HydrusResourceClientAPIRestrictedGetFilesFileMetadata( HydrusResourceClien
             
         elif only_return_basic_information:
             
-            file_info_managers: list[ ClientMediaManagers.FileInfoManager ] = CG.client_controller.Read( 'file_info_managers_from_ids', hash_ids )
+            file_info_managers: list[ ClientMediaManagers.FileInfoManager ] = CG.client_controller.read('file_info_managers_from_ids', hash_ids)
             
             hashes_to_file_info_managers = { file_info_manager.hash : file_info_manager for file_info_manager in file_info_managers }
             
@@ -507,7 +507,7 @@ class HydrusResourceClientAPIRestrictedGetFilesFileMetadata( HydrusResourceClien
             
         else:
             
-            media_results: list[ ClientMediaResult.MediaResult ] = CG.client_controller.Read( 'media_results_from_ids', hash_ids )
+            media_results: list[ ClientMediaResult.MediaResult ] = CG.client_controller.read('media_results_from_ids', hash_ids)
             
             hashes_to_media_results = { media_result.GetFileInfoManager().hash : media_result for media_result in media_results }
             

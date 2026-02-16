@@ -31,7 +31,7 @@ def ClearAllFalsePositives( win, hashes ):
         
         def do_it():
             
-            num_cleared = CG.client_controller.WriteSynchronous( 'clear_all_false_positive_relations', hashes )
+            num_cleared = CG.client_controller.write_synchronous('clear_all_false_positive_relations', hashes)
             
             if num_cleared == 0:
                 
@@ -45,7 +45,7 @@ def ClearAllFalsePositives( win, hashes ):
             HydrusData.ShowText( message )
             
         
-        CG.client_controller.CallToThread( do_it )
+        CG.client_controller.call_to_thread(do_it)
         
     
 
@@ -68,7 +68,7 @@ def ClearInternalFalsePositives( win, hashes ):
         
         def do_it():
             
-            num_cleared = CG.client_controller.WriteSynchronous( 'clear_internal_false_positive_relations', hashes )
+            num_cleared = CG.client_controller.write_synchronous('clear_internal_false_positive_relations', hashes)
             
             if num_cleared == 0:
                 
@@ -82,7 +82,7 @@ def ClearInternalFalsePositives( win, hashes ):
             HydrusData.ShowText( message )
             
         
-        CG.client_controller.CallToThread( do_it )
+        CG.client_controller.call_to_thread(do_it)
         
     
 
@@ -109,7 +109,7 @@ def DissolveAlternateGroup( win, hashes ):
     
     if result == QW.QDialog.DialogCode.Accepted:
         
-        CG.client_controller.Write( 'dissolve_alternates_group', hashes )
+        CG.client_controller.write('dissolve_alternates_group', hashes)
         
     
 def DissolveDuplicateGroup( win, hashes ):
@@ -135,7 +135,7 @@ def DissolveDuplicateGroup( win, hashes ):
     
     if result == QW.QDialog.DialogCode.Accepted:
         
-        CG.client_controller.Write( 'dissolve_duplicates_group', hashes )
+        CG.client_controller.write('dissolve_duplicates_group', hashes)
         
     
 def RemoveFromAlternateGroup( win, hashes ):
@@ -161,7 +161,7 @@ def RemoveFromAlternateGroup( win, hashes ):
     
     if result == QW.QDialog.DialogCode.Accepted:
         
-        CG.client_controller.Write( 'remove_alternates_member', hashes )
+        CG.client_controller.write('remove_alternates_member', hashes)
         
     
 def RemoveFromDuplicateGroup( win, hashes ):
@@ -187,7 +187,7 @@ def RemoveFromDuplicateGroup( win, hashes ):
     
     if result == QW.QDialog.DialogCode.Accepted:
         
-        CG.client_controller.Write( 'remove_duplicates_member', hashes )
+        CG.client_controller.write('remove_duplicates_member', hashes)
         
     
 def RemovePotentials( win, hashes ):
@@ -209,7 +209,7 @@ def RemovePotentials( win, hashes ):
     
     if result == QW.QDialog.DialogCode.Accepted:
         
-        CG.client_controller.Write( 'remove_potential_pairs', hashes )
+        CG.client_controller.write('remove_potential_pairs', hashes)
         
     
 def ResetPotentialSearch( win, hashes ):
@@ -231,6 +231,6 @@ def ResetPotentialSearch( win, hashes ):
     
     if result == QW.QDialog.DialogCode.Accepted:
         
-        CG.client_controller.Write( 'reset_potential_search_status', hashes )
+        CG.client_controller.write('reset_potential_search_status', hashes)
         
     

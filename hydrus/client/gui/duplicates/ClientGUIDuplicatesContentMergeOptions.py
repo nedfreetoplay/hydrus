@@ -289,7 +289,7 @@ class EditDuplicateContentMergeOptionsWidget( ClientGUICommon.StaticBox ):
             
             service = CG.client_controller.services_manager.GetService( service_key )
             
-            service_name = service.GetName()
+            service_name = service.get_name()
             
             service_type = service.GetServiceType()
             

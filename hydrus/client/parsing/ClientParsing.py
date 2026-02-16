@@ -2519,9 +2519,9 @@ class PageParser( HydrusSerialisable.SerialisableBaseNamed ):
         serialisable_parser_key = self._parser_key.hex()
         serialisable_string_converter = self._string_converter.GetSerialisableTuple()
         
-        serialisable_subsidiary_page_parsers = HydrusSerialisable.SerialisableList( sorted( self._subsidiary_page_parsers, key = lambda spp: spp.GetPageParser().GetName().casefold() ) ).GetSerialisableTuple()
+        serialisable_subsidiary_page_parsers = HydrusSerialisable.SerialisableList(sorted(self._subsidiary_page_parsers, key = lambda spp: spp.GetPageParser().get_name().casefold())).GetSerialisableTuple()
         
-        serialisable_content_parsers = HydrusSerialisable.SerialisableList( sorted( self._content_parsers, key = lambda p: p.GetName().casefold() ) ).GetSerialisableTuple()
+        serialisable_content_parsers = HydrusSerialisable.SerialisableList(sorted(self._content_parsers, key = lambda p: p.get_name().casefold())).GetSerialisableTuple()
         
         return ( self._name, serialisable_parser_key, serialisable_string_converter, serialisable_subsidiary_page_parsers, serialisable_content_parsers, self._example_urls, self._example_parsing_context )
         
@@ -2740,7 +2740,7 @@ class PageParser( HydrusSerialisable.SerialisableBaseNamed ):
             
         else:
             
-            subsidiary_page_parsers = sorted( self._subsidiary_page_parsers, key = lambda spp: spp.GetPageParser().GetName().casefold() )
+            subsidiary_page_parsers = sorted(self._subsidiary_page_parsers, key = lambda spp: spp.GetPageParser().get_name().casefold())
             
             for subsidiary_page_parser in subsidiary_page_parsers:
                 

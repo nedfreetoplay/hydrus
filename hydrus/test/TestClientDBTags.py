@@ -576,8 +576,8 @@ class TestClientDBTags( unittest.TestCase ):
         cls._delete_db()
         
     
-    def _read( self, action, *args, **kwargs ): return TestClientDBTags._db.Read( action, *args, **kwargs )
-    def _write( self, action, *args, **kwargs ): return TestClientDBTags._db.Write( action, True, *args, **kwargs )
+    def _read( self, action, *args, **kwargs ): return TestClientDBTags._db.read(action, *args, **kwargs)
+    def _write( self, action, *args, **kwargs ): return TestClientDBTags._db.write(action, True, *args, **kwargs)
     
     def _clear_db( self ):
         

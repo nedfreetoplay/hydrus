@@ -491,8 +491,8 @@ class TestComparatorHardcoded( unittest.TestCase ):
         cls._delete_db()
         
     
-    def _read( self, action, *args, **kwargs ): return TestComparatorHardcoded._db.Read( action, *args, **kwargs )
-    def _write( self, action, *args, **kwargs ): return TestComparatorHardcoded._db.Write( action, True, *args, **kwargs )
+    def _read( self, action, *args, **kwargs ): return TestComparatorHardcoded._db.read(action, *args, **kwargs)
+    def _write( self, action, *args, **kwargs ): return TestComparatorHardcoded._db.write(action, True, *args, **kwargs)
     
     def _do_file_import( self, name ):
         
@@ -677,8 +677,8 @@ class TestComparatorVisualDuplicates( unittest.TestCase ):
         cls._delete_db()
         
     
-    def _read( self, action, *args, **kwargs ): return TestComparatorVisualDuplicates._db.Read( action, *args, **kwargs )
-    def _write( self, action, *args, **kwargs ): return TestComparatorVisualDuplicates._db.Write( action, True, *args, **kwargs )
+    def _read( self, action, *args, **kwargs ): return TestComparatorVisualDuplicates._db.read(action, *args, **kwargs)
+    def _write( self, action, *args, **kwargs ): return TestComparatorVisualDuplicates._db.write(action, True, *args, **kwargs)
     
     def _do_file_import( self, name ):
         

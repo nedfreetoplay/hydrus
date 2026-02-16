@@ -902,7 +902,7 @@ def ParseHashes( request: HydrusServerRequest.HydrusRequest, optional = False ):
         
         try:
             
-            hash_ids_to_hashes = CG.client_controller.Read( 'hash_ids_to_hashes', hash_ids = hash_ids, error_on_missing_hash_ids = True )
+            hash_ids_to_hashes = CG.client_controller.read('hash_ids_to_hashes', hash_ids = hash_ids, error_on_missing_hash_ids = True)
             
         except HydrusExceptions.DBException as e:
             

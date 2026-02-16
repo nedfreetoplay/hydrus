@@ -147,7 +147,7 @@ class HydrusResourceClientAPIRestrictedAddTagsAddTags( HydrusResourceClientAPIRe
         
         if not override_previously_deleted_mappings or not create_new_deleted_mappings:
             
-            media_results = CG.client_controller.Read( 'media_results', hashes )
+            media_results = CG.client_controller.read('media_results', hashes)
             
         
         for ( service_key, actions_to_tags ) in service_keys_to_actions_to_tags.items():
@@ -236,7 +236,7 @@ class HydrusResourceClientAPIRestrictedAddTagsAddTags( HydrusResourceClientAPIRe
         
         if content_update_package.HasContent():
             
-            CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+            CG.client_controller.write_synchronous('content_updates', content_update_package)
             
         
         response_context = HydrusServerResources.ResponseContext( 200 )
@@ -285,7 +285,7 @@ class HydrusResourceClientAPIRestrictedAddTagsSearchTags( HydrusResourceClientAP
             
             search_namespaces_into_full_tags = parsed_autocomplete_text.GetTagAutocompleteOptions().SearchNamespacesIntoFullTags()
             
-            predicates = CG.client_controller.Read( 'autocomplete_predicates', tag_display_type, file_search_context, search_text = autocomplete_search_text, job_status = job_status, search_namespaces_into_full_tags = search_namespaces_into_full_tags )
+            predicates = CG.client_controller.read('autocomplete_predicates', tag_display_type, file_search_context, search_text = autocomplete_search_text, job_status = job_status, search_namespaces_into_full_tags = search_namespaces_into_full_tags)
             
             display_tag_service_key = tag_context.display_service_key
             
@@ -347,7 +347,7 @@ class HydrusResourceClientAPIRestrictedAddTagsGetTagSiblingsParents( HydrusResou
         
         tags = HydrusTags.CleanTags( tags )
         
-        tags_to_service_keys_to_siblings_and_parents = CG.client_controller.Read( 'tag_siblings_and_parents_lookup', ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, tags )
+        tags_to_service_keys_to_siblings_and_parents = CG.client_controller.read('tag_siblings_and_parents_lookup', ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, tags)
         
         tags_dict = {}
         

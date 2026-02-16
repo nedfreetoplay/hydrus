@@ -210,9 +210,9 @@ class ManageOptionsPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         try:
             
-            CG.client_controller.WriteSynchronous( 'save_options', HC.options )
+            CG.client_controller.write_synchronous('save_options', HC.options)
             
-            CG.client_controller.WriteSynchronous( 'serialisable', self._new_options )
+            CG.client_controller.write_synchronous('serialisable', self._new_options)
             
             # TODO: move all this, including 'original options' gubbins, to the manageoptions call. this dialog shouldn't care about these signals
             # we do this to convert tuples to lists and so on

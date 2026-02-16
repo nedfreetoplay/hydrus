@@ -72,7 +72,7 @@ def GetThreadInfo( thread = None ):
     
 def IsThreadShuttingDown() -> bool:
     
-    if HG.controller.DoingFastExit():
+    if HG.controller.doing_fast_exit():
         
         return True
         
@@ -326,7 +326,7 @@ class DAEMONBackgroundWorker( DAEMONWorker ):
     
     def _ControllerIsOKWithIt( self ) -> bool:
         
-        return self._controller.GoodTimeToStartBackgroundWork()
+        return self._controller.good_time_to_start_background_work()
         
     
 # Big stuff that we want to run when the user sees, but not at the expense of something else, like laggy session load
@@ -334,7 +334,7 @@ class DAEMONForegroundWorker( DAEMONWorker ):
     
     def _ControllerIsOKWithIt( self ) -> bool:
         
-        return self._controller.GoodTimeToStartForegroundWork()
+        return self._controller.good_time_to_start_foreground_work()
         
     
 class THREADCallToThread( DAEMON ):
@@ -744,7 +744,7 @@ class SchedulableJob( object ):
     
     def _BootWorker( self ):
         
-        self._controller.CallToThread( self.Work )
+        self._controller.call_to_thread(self.Work)
         
     
     def Cancel( self ) -> None:
@@ -838,7 +838,7 @@ class SchedulableJob( object ):
         
         if self._thread_slot_type is not None:
             
-            if HG.controller.AcquireThreadSlot( self._thread_slot_type ):
+            if HG.controller.acquire_thread_slot(self._thread_slot_type):
                 
                 return True
                 
@@ -886,7 +886,7 @@ class SchedulableJob( object ):
         
         if self._thread_slot_type is not None:
             
-            if not self._currently_working.set() and self.IsDue() and not HG.controller.ThreadSlotsAreAvailable( self._thread_slot_type ):
+            if not self._currently_working.set() and self.IsDue() and not HG.controller.thread_slots_are_available(self._thread_slot_type):
                 
                 return True
                 
@@ -901,7 +901,7 @@ class SchedulableJob( object ):
             
             if self._should_delay_on_wakeup:
                 
-                while HG.controller.JustWokeFromSleep():
+                while HG.controller.just_woke_from_sleep():
                     
                     if IsThreadShuttingDown():
                         
@@ -923,7 +923,7 @@ class SchedulableJob( object ):
             
             if self._thread_slot_type is not None:
                 
-                HG.controller.ReleaseThreadSlot( self._thread_slot_type )
+                HG.controller.release_thread_slot(self._thread_slot_type)
                 
             
             self._actual_work_started.clear()

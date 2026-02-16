@@ -317,7 +317,7 @@ class PresentationImportOptions( HydrusSerialisable.SerialisableBase ):
         
         if len( needs_inbox_lookup ) > 0:
             
-            inbox_hashes = CG.client_controller.Read( 'inbox_hashes', needs_inbox_lookup )
+            inbox_hashes = CG.client_controller.read('inbox_hashes', needs_inbox_lookup)
             
             for ( hash, status ) in hashes_and_statuses:
                 
@@ -352,7 +352,7 @@ class PresentationImportOptions( HydrusSerialisable.SerialisableBase ):
             
             if not location_context.IsAllKnownFiles():
                 
-                presented_hashes = CG.client_controller.Read( 'filter_hashes', location_context, presented_hashes )
+                presented_hashes = CG.client_controller.read('filter_hashes', location_context, presented_hashes)
                 
             
         

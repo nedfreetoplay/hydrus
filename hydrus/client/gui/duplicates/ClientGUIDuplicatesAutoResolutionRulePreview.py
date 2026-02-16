@@ -209,7 +209,7 @@ class PreviewPanel( ClientGUICommon.StaticBox ):
         
         def work_callable():
             
-            potential_duplicate_id_pairs_and_distances: ClientPotentialDuplicatesSearchContext.PotentialDuplicateIdPairsAndDistances = CG.client_controller.Read( 'potential_duplicate_id_pairs_and_distances', location_context )
+            potential_duplicate_id_pairs_and_distances: ClientPotentialDuplicatesSearchContext.PotentialDuplicateIdPairsAndDistances = CG.client_controller.read('potential_duplicate_id_pairs_and_distances', location_context)
             
             return potential_duplicate_id_pairs_and_distances
             
@@ -256,7 +256,7 @@ class PreviewPanel( ClientGUICommon.StaticBox ):
                 return ( [], job_status )
                 
             
-            potential_duplicate_media_result_pairs_and_distances = CG.client_controller.Read( 'potential_duplicate_media_result_pairs_and_distances_fragmentary', potential_duplicate_pairs_fragmentary_search )
+            potential_duplicate_media_result_pairs_and_distances = CG.client_controller.read('potential_duplicate_media_result_pairs_and_distances_fragmentary', potential_duplicate_pairs_fragmentary_search)
             
             potential_duplicate_media_result_pairs_and_distances.Sort( ClientDuplicates.DUPE_PAIR_SORT_MIN_FILESIZE, False )
             

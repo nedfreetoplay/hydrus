@@ -1029,7 +1029,7 @@ class LocationsManager( object ):
         
         local_file_services = list( CG.client_controller.services_manager.GetServices( ( HC.LOCAL_FILE_DOMAIN, ) ) )
         
-        local_file_services.sort( key = lambda s: s.GetName() )
+        local_file_services.sort(key = lambda s: s.get_name())
         
         for local_service in local_file_services:
             
@@ -1044,7 +1044,7 @@ class LocationsManager( object ):
         
         remote_file_services = list( CG.client_controller.services_manager.GetServices( ( HC.FILE_REPOSITORY, HC.IPFS ) ) )
         
-        remote_file_services.sort( key = lambda s: s.GetName() )
+        remote_file_services.sort(key = lambda s: s.get_name())
         
         for remote_service in remote_file_services:
             

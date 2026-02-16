@@ -33,7 +33,7 @@ class HydrusSessionManagerServer( object ):
                 raise HydrusExceptions.ServerBusyException( 'Sorry, server is busy and cannot fetch account data right now!' )
                 
             
-            account = HG.controller.Read( 'account', service_key, account_key )
+            account = HG.controller.read('account', service_key, account_key)
             
             account_keys_to_accounts[ account_key ] = account
             
@@ -54,7 +54,7 @@ class HydrusSessionManagerServer( object ):
                 raise HydrusExceptions.ServerBusyException( 'Sorry, server is busy and cannot fetch account id data right now!' )
                 
             
-            account_key = HG.controller.Read( 'account_key_from_access_key', service_key, access_key )
+            account_key = HG.controller.read('account_key_from_access_key', service_key, access_key)
             
             self._service_keys_to_hashed_access_keys_to_account_keys[ service_key ][ hashed_access_key ] = account_key
             
@@ -78,7 +78,7 @@ class HydrusSessionManagerServer( object ):
             
             expires = now + HYDRUS_SESSION_LIFETIME
             
-            HG.controller.Write( 'session', session_key, service_key, account_key, expires )
+            HG.controller.write('session', session_key, service_key, account_key, expires)
             
             self._service_keys_to_session_keys_to_sessions[ service_key ][ session_key ] = ( account_key, expires )
             
@@ -157,7 +157,7 @@ class HydrusSessionManagerServer( object ):
             
             for account_key in account_keys:
                 
-                account = HG.controller.Read( 'account', service_key, account_key )
+                account = HG.controller.read('account', service_key, account_key)
                 
                 account_keys_to_accounts[ account_key ] = account
                 
@@ -176,7 +176,7 @@ class HydrusSessionManagerServer( object ):
                 
                 self._service_keys_to_hashed_access_keys_to_account_keys = collections.defaultdict( dict )
                 
-                existing_sessions = HG.controller.Read( 'sessions' )
+                existing_sessions = HG.controller.read('sessions')
                 
             else:
                 
@@ -186,7 +186,7 @@ class HydrusSessionManagerServer( object ):
                 
                 del self._service_keys_to_hashed_access_keys_to_account_keys[ service_key ]
                 
-                existing_sessions = HG.controller.Read( 'sessions', service_key )
+                existing_sessions = HG.controller.read('sessions', service_key)
                 
             
             for ( session_key, service_key, account, hashed_access_key, expires ) in existing_sessions:

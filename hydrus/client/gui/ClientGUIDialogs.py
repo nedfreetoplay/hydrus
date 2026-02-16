@@ -51,7 +51,7 @@ class Dialog( QP.Dialog ):
             CG.client_controller.CallAfterQtSafe( self, QP.CenterOnWindow, parent, self )
             
         
-        CG.client_controller.ResetIdleTimer()
+        CG.client_controller.reset_idle_timer()
         
     
     def keyPressEvent( self, event ):

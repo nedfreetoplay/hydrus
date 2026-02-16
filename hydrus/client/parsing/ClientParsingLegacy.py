@@ -311,7 +311,7 @@ class ParseRootFileLookup( HydrusSerialisable.SerialisableBaseNamed ):
             
             try:
                 
-                source_to_desired = CG.client_controller.Read( 'file_hashes', ( sha256_hash, ), 'sha256', hash_type )
+                source_to_desired = CG.client_controller.read('file_hashes', (sha256_hash,), 'sha256', hash_type)
                 
                 other_hash = list( source_to_desired.values() )[0]
                 

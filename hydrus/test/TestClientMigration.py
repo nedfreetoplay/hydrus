@@ -163,8 +163,8 @@ class TestMigration( unittest.TestCase ):
     def pub( self, *args, **kwargs ): pass
     def sub( self, *args, **kwargs ): pass
     
-    def Read( self, action, *args, **kwargs ): return TestMigration._db.Read( action, *args, **kwargs )
-    def WriteSynchronous( self, action, *args, **kwargs ): return TestMigration._db.Write( action, True, *args, **kwargs )
+    def Read( self, action, *args, **kwargs ): return TestMigration._db.read(action, *args, **kwargs)
+    def WriteSynchronous( self, action, *args, **kwargs ): return TestMigration._db.write(action, True, *args, **kwargs)
     
     def _set_up_services( self ):
         

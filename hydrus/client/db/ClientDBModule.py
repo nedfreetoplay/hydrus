@@ -15,7 +15,7 @@ class ClientDBModule( HydrusDBModule.HydrusDBModule ):
         
         HydrusData.DebugPrint( message )
         
-        CG.client_controller.BlockingSafeShowCriticalMessage( 'hydrus db failed', message )
+        CG.client_controller.blocking_safe_show_critical_message('hydrus db failed', message)
         
     
     def _PresentMissingIndicesWarningToUser( self, index_names: collections.abc.Collection[ str ] ):
@@ -27,7 +27,7 @@ class ClientDBModule( HydrusDBModule.HydrusDBModule ):
         
         message = 'Your "{}" database module is missing {} indices. More information has been written to the log. This may or may not be a big deal, and on its own this error is completely recoverable. If you do not have further problems, hydev does not need to know about it. The indices will be regenerated once you proceed--it may take some time.'.format( self.name, len( index_names ) )
         
-        CG.client_controller.BlockingSafeShowMessage( message )
+        CG.client_controller.blocking_safe_show_message(message)
         
         CG.client_controller.frame_splash_status.SetText( 'recreating indices' )
         
@@ -66,7 +66,7 @@ class ClientDBModule( HydrusDBModule.HydrusDBModule ):
         
         message += 'If you proceed, the missing tables will be recreated. {}'.format( recovery_info )
         
-        CG.client_controller.BlockingSafeShowMessage( message )
+        CG.client_controller.blocking_safe_show_message(message)
         
         CG.client_controller.frame_splash_status.SetText( 'recreating tables' )
         

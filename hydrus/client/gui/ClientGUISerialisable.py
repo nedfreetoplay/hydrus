@@ -277,7 +277,7 @@ class PNGsExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             ( payload_description, payload_bytes ) = ClientSerialisable.GetPayloadDescriptionAndBytes( obj )
             
-            title = obj.GetName()
+            title = obj.get_name()
             text = ''
             path = os.path.join( directory, title )
             

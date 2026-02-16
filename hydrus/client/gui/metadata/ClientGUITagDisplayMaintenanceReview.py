@@ -175,7 +175,7 @@ class ReviewTagDisplayMaintenancePanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             def work_callable( args ):
                 
-                status = CG.client_controller.Read( 'tag_display_maintenance_status', service_key )
+                status = CG.client_controller.read('tag_display_maintenance_status', service_key)
                 
                 time.sleep( 0.1 ) # for user feedback more than anything
                 

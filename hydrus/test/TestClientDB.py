@@ -89,8 +89,8 @@ class TestClientDB( unittest.TestCase ):
         cls._delete_db()
         
     
-    def _read( self, action, *args, **kwargs ): return TestClientDB._db.Read( action, *args, **kwargs )
-    def _write( self, action, *args, **kwargs ): return TestClientDB._db.Write( action, True, *args, **kwargs )
+    def _read( self, action, *args, **kwargs ): return TestClientDB._db.read(action, *args, **kwargs)
+    def _write( self, action, *args, **kwargs ): return TestClientDB._db.write(action, True, *args, **kwargs)
     
     def test_autocomplete( self ):
         
@@ -255,7 +255,7 @@ class TestClientDB( unittest.TestCase ):
         
         [ result ] = self._read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER )
         
-        self.assertEqual( result.GetName(), export_folder.GetName() )
+        self.assertEqual(result.get_name(), export_folder.GetName())
         
     
     def test_file_query_ids( self ):
@@ -1270,7 +1270,7 @@ class TestClientDB( unittest.TestCase ):
         
         for page_container in loaded_session.GetTopNotebook().GetPageContainers():
             
-            page_names.append( page_container.GetName() )
+            page_names.append(page_container.get_name())
             
         
         self.assertEqual( page_names, [ 'gallery', 'watcher', 'import', 'simple downloader', 'example tag repo petitions', 'search', 'search', 'files', 'wew lad', 'files' ] )
@@ -1394,7 +1394,7 @@ class TestClientDB( unittest.TestCase ):
         
         ( item, ) = result
         
-        self.assertEqual( item.GetName(), 'imp 1' )
+        self.assertEqual(item.get_name(), 'imp 1')
         
     
     def test_init( self ):

@@ -588,7 +588,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
     
     def _DoExport( self, job_status: ClientThreading.JobStatus ):
         
-        query_hash_ids = CG.client_controller.Read( 'file_query_ids', self._file_search_context, apply_implicit_limit = False )
+        query_hash_ids = CG.client_controller.read('file_query_ids', self._file_search_context, apply_implicit_limit = False)
         
         media_results = []
         
@@ -608,7 +608,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                 return
                 
             
-            more_media_results = CG.client_controller.Read( 'media_results_from_ids', block_of_hash_ids )
+            more_media_results = CG.client_controller.read('media_results_from_ids', block_of_hash_ids)
             
             media_results.extend( more_media_results )
             
@@ -868,7 +868,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, { media_result.GetHash() for media_result in chunk_of_media_results }, reason = reason )
                 
-                CG.client_controller.WriteSynchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, content_update ) )
+                CG.client_controller.write_synchronous('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate(CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, content_update))
                 
             
         
@@ -945,7 +945,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             self._overwrite_sidecars_on_next_run = False
             self._run_now = False
             
-            CG.client_controller.WriteSynchronous( 'serialisable', self )
+            CG.client_controller.write_synchronous('serialisable', self)
             
             job_status.FinishAndDismiss()
             

@@ -188,14 +188,14 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
             
             if state_local_service_timestamp:
                 
-                line = f'added to {local_file_service.GetName()}: {HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( timestamp_ms ) )}'
+                line = f'added to {local_file_service.get_name()}: {HydrusTime.TimestampToPrettyTimeDelta(HydrusTime.SecondiseMS(timestamp_ms))}'
                 
             else:
                 
-                line = local_file_service.GetName()
+                line = local_file_service.get_name()
                 
             
-            tooltip = f'added to {local_file_service.GetName()}: {HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( timestamp_ms ), reverse_iso_delta_setting = True )}'
+            tooltip = f'added to {local_file_service.get_name()}: {HydrusTime.TimestampToPrettyTimeDelta(HydrusTime.SecondiseMS(timestamp_ms), reverse_iso_delta_setting = True)}'
             
             pretty_info_lines.append( ClientMediaResultPrettyInfoObjects.PrettyMediaResultInfoLine( line, line_is_interesting, tooltip = tooltip ) )
             
@@ -229,9 +229,9 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
             
             timestamp_ms = times_manager.GetDeletedTimestampMS( local_file_service.GetServiceKey() )
             
-            line = f'removed from {local_file_service.GetName()} {HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( timestamp_ms ) )}'
+            line = f'removed from {local_file_service.get_name()} {HydrusTime.TimestampToPrettyTimeDelta(HydrusTime.SecondiseMS(timestamp_ms))}'
             
-            tooltip = f'removed from {local_file_service.GetName()} {HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( timestamp_ms ), reverse_iso_delta_setting = True )}'
+            tooltip = f'removed from {local_file_service.get_name()} {HydrusTime.TimestampToPrettyTimeDelta(HydrusTime.SecondiseMS(timestamp_ms), reverse_iso_delta_setting = True)}'
             
             line_is_interesting = False
             
@@ -297,14 +297,14 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
         
         if state_remote_service_timestamp:
             
-            line = f'{status_label} to {service.GetName()} {HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( timestamp_ms ) )}'
+            line = f'{status_label} to {service.get_name()} {HydrusTime.TimestampToPrettyTimeDelta(HydrusTime.SecondiseMS(timestamp_ms))}'
             
         else:
             
-            line = f'{status_label} to {service.GetName()}'
+            line = f'{status_label} to {service.get_name()}'
             
         
-        tooltip = f'{status_label} to {service.GetName()} {HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( timestamp_ms ), reverse_iso_delta_setting = True )}'
+        tooltip = f'{status_label} to {service.get_name()} {HydrusTime.TimestampToPrettyTimeDelta(HydrusTime.SecondiseMS(timestamp_ms), reverse_iso_delta_setting = True)}'
         
         pretty_info_lines.append( ClientMediaResultPrettyInfoObjects.PrettyMediaResultInfoLine( line, line_is_interesting, tooltip = tooltip ) )
         

@@ -693,7 +693,7 @@ class NetworkJob( object ):
         
         self._bandwidth_tracker.ReportDataUsed( num_bytes )
         
-        self.engine.bandwidth_manager.ReportDataUsed( self._network_contexts, num_bytes )
+        self.engine.bandwidth_manager.report_data_used(self._network_contexts, num_bytes)
         
     
     def _ResetForAnotherAttempt( self ):
@@ -1895,7 +1895,7 @@ class NetworkJob( object ):
                 
                 self._bandwidth_tracker.ReportRequestUsed()
                 
-                self.engine.bandwidth_manager.ReportRequestUsed( self._network_contexts )
+                self.engine.bandwidth_manager.report_request_used(self._network_contexts)
                 
                 return True
                 
@@ -2094,7 +2094,7 @@ class NetworkJobHydrus( NetworkJob ):
             
             account = service.GetAccount()
             
-            account.ReportDataUsed( num_bytes )
+            account.report_data_used(num_bytes)
             
         
         NetworkJob._ReportDataUsed( self, num_bytes )
@@ -2117,7 +2117,7 @@ class NetworkJobHydrus( NetworkJob ):
             
             account = service.GetAccount()
             
-            account.ReportRequestUsed()
+            account.report_request_used()
             
         
         response = NetworkJob._SendRequestAndGetResponse( self )

@@ -201,7 +201,7 @@ class FileImportJob( object ):
                 
                 self._file_import_options.GetLocationImportOptions().CheckReadyToImport()
                 
-                self._post_import_file_status = CG.client_controller.WriteSynchronous( 'import_file', self )
+                self._post_import_file_status = CG.client_controller.write_synchronous('import_file', self)
                 
             
         else:
@@ -238,7 +238,7 @@ class FileImportJob( object ):
             status_hook( 'checking for file status' )
             
         
-        self._pre_import_file_status = CG.client_controller.Read( 'hash_status', 'sha256', hash, prefix = 'file recognised' )
+        self._pre_import_file_status = CG.client_controller.read('hash_status', 'sha256', hash, prefix ='file recognised')
         
         if self._pre_import_file_status.hash is None:
             
@@ -524,11 +524,11 @@ class FileImportJob( object ):
         
         if self._post_import_file_status.AlreadyInDB():
             
-            media_result = CG.client_controller.Read( 'media_result', self._post_import_file_status.hash )
+            media_result = CG.client_controller.read('media_result', self._post_import_file_status.hash)
             
             content_update_package = self._file_import_options.GetLocationImportOptions().GetAlreadyInDBPostImportContentUpdatePackage( media_result )
             
-            CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+            CG.client_controller.write_synchronous('content_updates', content_update_package)
             
         
     

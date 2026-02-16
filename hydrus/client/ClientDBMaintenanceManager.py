@@ -25,14 +25,14 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             return True
             
         
-        if CG.client_controller.CurrentlyIdle():
+        if CG.client_controller.currently_idle():
             
             if not self._controller.new_options.GetBoolean( 'database_deferred_delete_maintenance_during_idle' ):
                 
                 return False
                 
             
-            if not self._controller.GoodTimeToStartBackgroundWork():
+            if not self._controller.good_time_to_start_background_work():
                 
                 return False
                 
@@ -59,7 +59,7 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             rest_ratio = CG.client_controller.new_options.GetInteger( 'deferred_table_delete_rest_percentage_work_hard' ) / 100
             
-        elif CG.client_controller.CurrentlyIdle():
+        elif CG.client_controller.currently_idle():
             
             rest_ratio = CG.client_controller.new_options.GetInteger( 'deferred_table_delete_rest_percentage_idle' ) / 100
             
@@ -79,7 +79,7 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             return HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'deferred_table_delete_work_time_ms_work_hard' ) )
             
-        elif CG.client_controller.CurrentlyIdle():
+        elif CG.client_controller.currently_idle():
             
             return HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'deferred_table_delete_work_time_ms_idle' ) )
             
@@ -141,7 +141,7 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 try:
                     
-                    still_work_to_do = CG.client_controller.WriteSynchronous( 'do_deferred_table_delete_work', time_to_stop )
+                    still_work_to_do = CG.client_controller.write_synchronous('do_deferred_table_delete_work', time_to_stop)
                     
                 except Exception as e:
                     

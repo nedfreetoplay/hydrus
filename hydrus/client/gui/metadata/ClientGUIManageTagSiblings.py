@@ -117,7 +117,7 @@ class ManageTagSiblings( ClientGUIScrolledPanels.ManagePanel ):
         
         if content_update_package.HasContent():
             
-            CG.client_controller.Write( 'content_updates', content_update_package )
+            CG.client_controller.write('content_updates', content_update_package)
             
         
     
@@ -717,7 +717,7 @@ class ManageTagSiblings( ClientGUIScrolledPanels.ManagePanel ):
             
             def work_callable():
                 
-                ( master_service_keys_to_sibling_applicable_service_keys, master_service_keys_to_parent_applicable_service_keys ) = CG.client_controller.Read( 'tag_display_application' )
+                ( master_service_keys_to_sibling_applicable_service_keys, master_service_keys_to_parent_applicable_service_keys ) = CG.client_controller.read('tag_display_application')
                 
                 service_keys_we_care_about = { s_k for ( s_k, s_ks ) in master_service_keys_to_sibling_applicable_service_keys.items() if service_key in s_ks }
                 
@@ -725,7 +725,7 @@ class ManageTagSiblings( ClientGUIScrolledPanels.ManagePanel ):
                 
                 for s_k in service_keys_we_care_about:
                     
-                    status = CG.client_controller.Read( 'tag_display_maintenance_status', s_k )
+                    status = CG.client_controller.read('tag_display_maintenance_status', s_k)
                     
                     work_to_do = status[ 'num_siblings_to_sync' ] > 0
                     

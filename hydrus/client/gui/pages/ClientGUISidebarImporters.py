@@ -757,7 +757,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
                         return all_media_results
                         
                     
-                    block_of_media_results = CG.client_controller.Read( 'media_results', block_of_hashes, sorted = True )
+                    block_of_media_results = CG.client_controller.read('media_results', block_of_hashes, sorted = True)
                     
                     all_media_results.extend( block_of_media_results )
                     
@@ -1078,7 +1078,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
             
             self._ClearExistingHighlightAndPanel()
             
-            media_results = CG.client_controller.Read( 'media_results', hashes, sorted = True )
+            media_results = CG.client_controller.read('media_results', hashes, sorted = True)
             
             panel = ClientGUIMediaResultsPanelThumbnails.MediaResultsPanelThumbnails( self._page, self._page_key, self._page_manager, media_results )
             
@@ -1945,7 +1945,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                         return all_media_results
                         
                     
-                    block_of_media_results = CG.client_controller.Read( 'media_results', block_of_hashes, sorted = True )
+                    block_of_media_results = CG.client_controller.read('media_results', block_of_hashes, sorted = True)
                     
                     all_media_results.extend( block_of_media_results )
                     
@@ -2240,7 +2240,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
             
             self._ClearExistingHighlightAndPanel()
             
-            media_results = CG.client_controller.Read( 'media_results', hashes, sorted = True )
+            media_results = CG.client_controller.read('media_results', hashes, sorted = True)
             
             panel = ClientGUIMediaResultsPanelThumbnails.MediaResultsPanelThumbnails( self._page, self._page_key, self._page_manager, media_results )
             
@@ -2704,7 +2704,7 @@ class SidebarImporterSimpleDownloader( SidebarImporter ):
         
         ( url, simple_downloader_formula ) = job
         
-        pretty_job = simple_downloader_formula.GetName() + ': ' + url
+        pretty_job = simple_downloader_formula.get_name() + ': ' + url
         
         return pretty_job
         
@@ -2715,14 +2715,14 @@ class SidebarImporterSimpleDownloader( SidebarImporter ):
             
             simple_downloader_formula = data
             
-            return simple_downloader_formula.GetName()
+            return simple_downloader_formula.get_name()
             
         
         def edit_callable( data ):
             
             simple_downloader_formula = data
             
-            name = simple_downloader_formula.GetName()
+            name = simple_downloader_formula.get_name()
             
             try:
                 
@@ -2769,7 +2769,7 @@ class SidebarImporterSimpleDownloader( SidebarImporter ):
         
         formulae = list( CG.client_controller.new_options.GetSimpleDownloaderFormulae() )
         
-        formulae.sort( key = lambda o: o.GetName() )
+        formulae.sort(key = lambda o: o.get_name())
         
         with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit simple downloader formulae' ) as dlg:
             
@@ -2829,11 +2829,11 @@ class SidebarImporterSimpleDownloader( SidebarImporter ):
         
         simple_downloader_formulae = list( CG.client_controller.new_options.GetSimpleDownloaderFormulae() )
         
-        simple_downloader_formulae.sort( key = lambda o: o.GetName() )
+        simple_downloader_formulae.sort(key = lambda o: o.get_name())
         
         for ( i, simple_downloader_formula ) in enumerate( simple_downloader_formulae ):
             
-            name = simple_downloader_formula.GetName()
+            name = simple_downloader_formula.get_name()
             
             self._formulae.addItem( name, simple_downloader_formula )
             
@@ -2938,7 +2938,7 @@ class SidebarImporterSimpleDownloader( SidebarImporter ):
         
         formula = self._formulae.GetValue()
         
-        formula_name = formula.GetName()
+        formula_name = formula.get_name()
         
         self._simple_downloader_import.SetFormulaName( formula_name )
         CG.client_controller.new_options.SetString( 'favourite_simple_downloader_formula', formula_name )

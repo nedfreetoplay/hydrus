@@ -891,7 +891,7 @@ def SetDefaultDomainManagerData( domain_manager ):
     
     domain_manager.SetGUGs( gugs )
     
-    gug_keys_to_display = [ gug.GetGUGKey() for gug in gugs if 'ugoira' not in gug.GetName() ]
+    gug_keys_to_display = [gug.GetGUGKey() for gug in gugs if 'ugoira' not in gug.get_name()]
     
     domain_manager.SetGUGKeysToDisplay( gug_keys_to_display )
     

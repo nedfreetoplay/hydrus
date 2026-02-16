@@ -134,7 +134,7 @@ def PurgeTags(
     
     migration_job = ClientMigration.MigrationJob( CG.client_controller, 'purging tags', source, destination )
     
-    CG.client_controller.CallToThread( migration_job.Run )
+    CG.client_controller.call_to_thread(migration_job.Run)
     
 
 def OpenPurgeTagsWindow(

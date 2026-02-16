@@ -890,8 +890,8 @@ class GalleryImport( HydrusSerialisable.SerialisableBase ):
             self._page_key = page_key
             self._publish_to_page = publish_to_page
             
-            self._files_repeating_job = CG.client_controller.CallRepeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnFiles )
-            self._gallery_repeating_job = CG.client_controller.CallRepeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnGallery )
+            self._files_repeating_job = CG.client_controller.call_repeating(ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnFiles)
+            self._gallery_repeating_job = CG.client_controller.call_repeating(ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnGallery)
             
             self._files_repeating_job.SetThreadSlotType( 'gallery_files' )
             self._gallery_repeating_job.SetThreadSlotType( 'gallery_search' )
@@ -1941,7 +1941,7 @@ class MultipleGalleryImport( HydrusSerialisable.SerialisableBase ):
             self._page_key = page_key
             
             # set a 2s period so the page value/range is breddy snappy
-            self._importers_repeating_job = CG.client_controller.CallRepeating( ClientImporting.GetRepeatingJobInitialDelay(), 2.0, self.REPEATINGWorkOnImporters )
+            self._importers_repeating_job = CG.client_controller.call_repeating(ClientImporting.GetRepeatingJobInitialDelay(), 2.0, self.REPEATINGWorkOnImporters)
             
             for gallery_import in self._gallery_imports:
                 

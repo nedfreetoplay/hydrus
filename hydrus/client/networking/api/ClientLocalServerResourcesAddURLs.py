@@ -106,7 +106,7 @@ class HydrusResourceClientAPIRestrictedAddURLsAssociateURL( HydrusResourceClient
         
         if content_update_package.HasContent():
             
-            CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+            CG.client_controller.write_synchronous('content_updates', content_update_package)
             
         
         response_context = HydrusServerResources.ResponseContext( 200 )
@@ -137,7 +137,7 @@ class HydrusResourceClientAPIRestrictedAddURLsGetURLFiles( HydrusResourceClientA
             raise HydrusExceptions.BadRequestException( e )
             
         
-        url_statuses = CG.client_controller.Read( 'url_statuses', normalised_url )
+        url_statuses = CG.client_controller.read('url_statuses', normalised_url)
         
         json_happy_url_statuses = []
         

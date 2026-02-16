@@ -131,7 +131,7 @@ def SetEnvTempDir( path ):
 
 def GetSubTempDir( prefix = '' ):
     
-    hydrus_temp_dir = HG.controller.GetHydrusTempDir()
+    hydrus_temp_dir = HG.controller.get_hydrus_temp_dir()
     
     return tempfile.mkdtemp( prefix = prefix, dir = hydrus_temp_dir )
     
@@ -140,7 +140,7 @@ def GetTempPath( suffix = '', dir = None ):
     
     if dir is None:
         
-        dir = HG.controller.GetHydrusTempDir()
+        dir = HG.controller.get_hydrus_temp_dir()
         
     
     return tempfile.mkstemp( suffix = suffix, prefix = 'hydrus', dir = dir )

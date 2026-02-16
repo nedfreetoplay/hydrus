@@ -116,7 +116,7 @@ class SingleFileMetadataExporterMediaNotes( SingleFileMetadataExporterMedia, Hyd
             names_and_notes.append( ( name, text ) )
             
         
-        media_result = CG.client_controller.Read( 'media_result', hash )
+        media_result = CG.client_controller.read('media_result', hash)
         
         note_import_options = NoteImportOptions.NoteImportOptions()
         
@@ -128,7 +128,7 @@ class SingleFileMetadataExporterMediaNotes( SingleFileMetadataExporterMedia, Hyd
         
         if content_update_package.HasContent():
             
-            CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+            CG.client_controller.write_synchronous('content_updates', content_update_package)
             
         
     
@@ -233,7 +233,7 @@ class SingleFileMetadataExporterMediaTags( SingleFileMetadataExporterMedia, Hydr
             
             content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_MAPPINGS, add_content_action, ( tag, hashes ) ) for tag in tags ]
             
-            CG.client_controller.WriteSynchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( self._service_key, content_updates ) )
+            CG.client_controller.write_synchronous('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates(self._service_key, content_updates))
             
         
     
@@ -318,7 +318,7 @@ class SingleFileMetadataExporterMediaTimestamps( SingleFileMetadataExporterMedia
         
         content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_TIMESTAMP, HC.CONTENT_UPDATE_SET, ( ( hash, ), new_timestamp_data ) ) ]
         
-        CG.client_controller.WriteSynchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_updates ) )
+        CG.client_controller.write_synchronous('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates(CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_updates))
         
     
     def GetExampleStrings( self ):
@@ -402,7 +402,7 @@ class SingleFileMetadataExporterMediaURLs( SingleFileMetadataExporterMedia, Hydr
         
         content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_URLS, HC.CONTENT_UPDATE_ADD, ( urls, hashes ) ) ]
         
-        CG.client_controller.WriteSynchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_updates ) )
+        CG.client_controller.write_synchronous('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates(CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_updates))
         
     
     def GetExampleStrings( self ):

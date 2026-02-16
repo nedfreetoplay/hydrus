@@ -305,7 +305,7 @@ class MigrationDestinationTagServiceMappings( MigrationDestinationTagService ):
         
         content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( self._tag_service_key, content_updates )
         
-        self._controller.WriteSynchronous( 'content_updates', content_update_package )
+        self._controller.write_synchronous('content_updates', content_update_package)
         
         return GetBasicSpeedStatement( num_done, time_started_precise )
         
@@ -346,7 +346,7 @@ class MigrationDestinationTagServicePairs( MigrationDestinationTagService ):
         
         content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( self._tag_service_key, content_updates )
         
-        self._controller.WriteSynchronous( 'content_updates', content_update_package )
+        self._controller.write_synchronous('content_updates', content_update_package)
         
         num_done = len( data )
         
@@ -475,7 +475,7 @@ class MigrationSourceHTA( MigrationSource ):
             
             for ( hash, tags ) in data:
                 
-                source_to_desired = self._controller.Read( 'file_hashes', ( hash, ), source_hash_type, desired_hash_type )
+                source_to_desired = self._controller.read('file_hashes', (hash,), source_hash_type, desired_hash_type)
                 
                 if len( source_to_desired ) == 0:
                     
@@ -506,7 +506,7 @@ class MigrationSourceHTA( MigrationSource ):
             
             all_hashes = [ hash for ( hash, tags ) in data ]
             
-            hashes_to_media_results = { media_result.GetHash() : media_result for media_result in self._controller.Read( 'media_results', all_hashes ) }
+            hashes_to_media_results = {media_result.GetHash() : media_result for media_result in self._controller.read('media_results', all_hashes)}
             
             for ( hash, tags ) in data:
                 
@@ -663,7 +663,7 @@ class MigrationSourceHTPA( MigrationSource ):
         
         if self._left_side_needs_count or self._right_side_needs_count or self._either_side_needs_count:
             
-            data = self._controller.Read( 'migration_filter_pairs_by_count', data, self._content_type, self._left_side_needs_count, self._right_side_needs_count, self._either_side_needs_count, self._needs_count_service_key )
+            data = self._controller.read('migration_filter_pairs_by_count', data, self._content_type, self._left_side_needs_count, self._right_side_needs_count, self._either_side_needs_count, self._needs_count_service_key)
             
         
         return data
@@ -727,12 +727,12 @@ class MigrationSourceTagServiceMappings( MigrationSource ):
     
     def CleanUp( self ):
         
-        self._controller.WriteSynchronous( 'migration_clear_job', self._database_temp_job_name )
+        self._controller.write_synchronous('migration_clear_job', self._database_temp_job_name)
         
     
     def GetSomeData( self ):
         
-        data = self._controller.Read( 'migration_get_mappings', self._database_temp_job_name, self._location_context, self._tag_service_key, self._desired_hash_type, self._tag_filter, self._content_statuses )
+        data = self._controller.read('migration_get_mappings', self._database_temp_job_name, self._location_context, self._tag_service_key, self._desired_hash_type, self._tag_filter, self._content_statuses)
         
         if len( data ) == 0:
             
@@ -746,7 +746,7 @@ class MigrationSourceTagServiceMappings( MigrationSource ):
         
         # later can spread this out into bunch of small jobs, a start and a continue, based on tag filter subsets
         
-        self._controller.WriteSynchronous( 'migration_start_mappings_job', self._database_temp_job_name, self._location_context, self._tag_service_key, self._tag_filter, self._hashes, self._content_statuses )
+        self._controller.write_synchronous('migration_start_mappings_job', self._database_temp_job_name, self._location_context, self._tag_service_key, self._tag_filter, self._hashes, self._content_statuses)
         
     
 class MigrationSourceTagServicePairs( MigrationSource ):
@@ -772,12 +772,12 @@ class MigrationSourceTagServicePairs( MigrationSource ):
     
     def CleanUp( self ):
         
-        self._controller.WriteSynchronous( 'migration_clear_job', self._database_temp_job_name )
+        self._controller.write_synchronous('migration_clear_job', self._database_temp_job_name)
         
     
     def GetSomeData( self ):
         
-        data = self._controller.Read( 'migration_get_pairs', self._database_temp_job_name, self._left_tag_filter, self._right_tag_filter )
+        data = self._controller.read('migration_get_pairs', self._database_temp_job_name, self._left_tag_filter, self._right_tag_filter)
         
         if len( data ) == 0:
             
@@ -786,7 +786,7 @@ class MigrationSourceTagServicePairs( MigrationSource ):
         
         if self._left_side_needs_count or self._right_side_needs_count or self._either_side_needs_count:
             
-            data = self._controller.Read( 'migration_filter_pairs_by_count', data, self._content_type, self._left_side_needs_count, self._right_side_needs_count, self._either_side_needs_count, self._needs_count_service_key )
+            data = self._controller.read('migration_filter_pairs_by_count', data, self._content_type, self._left_side_needs_count, self._right_side_needs_count, self._either_side_needs_count, self._needs_count_service_key)
             
         
         return data
@@ -794,6 +794,6 @@ class MigrationSourceTagServicePairs( MigrationSource ):
     
     def Prepare( self ):
         
-        self._controller.WriteSynchronous( 'migration_start_pairs_job', self._database_temp_job_name, self._tag_service_key, self._content_type, self._content_statuses )
+        self._controller.write_synchronous('migration_start_pairs_job', self._database_temp_job_name, self._tag_service_key, self._content_type, self._content_statuses)
         
     

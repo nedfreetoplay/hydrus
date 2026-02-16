@@ -20,7 +20,7 @@ from hydrus.core.networking import HydrusServerRequest
 
 def GetServerSummaryTexts( service ):
     
-    name = service.GetName()
+    name = service.get_name()
     service_type = service.GetServiceType()
     
     allows_non_local_connections = service.AllowsNonLocalConnections()
@@ -61,7 +61,7 @@ def GenerateEris( service ):
         
         return GenerateNormieEris( service )
         
-    name = service.GetName()
+    name = service.get_name()
     
     server_summary_texts = GetServerSummaryTexts( service )
     
@@ -238,7 +238,7 @@ def GenerateEris( service ):
 
 def GenerateNormieEris( service ):
     
-    name = service.GetName()
+    name = service.get_name()
     
     server_summary_texts = GetServerSummaryTexts( service )
     
@@ -776,7 +776,7 @@ class HydrusResource( Resource ):
             request.profile_result = call( request )
             
         
-        summary = 'Profiling {}: {}'.format( self._service.GetName(), request.path )
+        summary = 'Profiling {}: {}'.format(self._service.get_name(), request.path)
         
         HydrusProfiling.Profile( summary, do_it, min_duration_ms = HG.server_profile_min_job_time_ms )
         
@@ -907,7 +907,7 @@ class HydrusResource( Resource ):
                 
                 HydrusData.DebugPrint( failure.getTraceback() )
                 
-                error_summary = f'The "{self._service.GetName()}" encountered an error it could not handle!\n\nHere is a full traceback of what happened. If you are using the hydrus client, it will be saved to your log. Please forward it to hydrus_dev@proton.me:\n\n' + failure.getTraceback()
+                error_summary = f'The "{self._service.get_name()}" encountered an error it could not handle!\n\nHere is a full traceback of what happened. If you are using the hydrus client, it will be saved to your log. Please forward it to hydrus_dev@proton.me:\n\n' + failure.getTraceback()
                 
             
             # TODO: maybe pull the cbor stuff down to hydrus core here and respond with Dumps( blah, requested_mime ) instead
@@ -1108,9 +1108,9 @@ class HydrusResource( Resource ):
     
     def _reportDataUsed( self, request, num_bytes ):
         
-        self._service.ReportDataUsed( num_bytes )
+        self._service.report_data_used(num_bytes)
         
-        HG.controller.ReportDataUsed( num_bytes )
+        HG.controller.report_data_used(num_bytes)
         
     
     def _reportRequestStarted( self, request: HydrusServerRequest.HydrusRequest ):
@@ -1120,9 +1120,9 @@ class HydrusResource( Resource ):
     
     def _reportRequestUsed( self, request: HydrusServerRequest.HydrusRequest ):
         
-        self._service.ReportRequestUsed()
+        self._service.report_request_used()
         
-        HG.controller.ReportRequestUsed()
+        HG.controller.report_request_used()
         
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):

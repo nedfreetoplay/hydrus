@@ -279,7 +279,7 @@ def boot():
             
             if controller is not None:
                 
-                controller.pubimmediate( 'wake_daemons' )
+                controller.pub_immediate('wake_daemons')
                 
             
             if not HG.twisted_is_broke:

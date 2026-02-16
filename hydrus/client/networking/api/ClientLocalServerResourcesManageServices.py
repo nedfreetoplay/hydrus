@@ -36,7 +36,7 @@ class HydrusResourceClientAPIRestrictedManageServicesPendingCounts( HydrusResour
             HC.SERVICE_INFO_NUM_PETITIONED_FILES : 'petitioned_files',
         }
         
-        service_keys_to_info_types_to_counts = CG.client_controller.Read( 'nums_pending' )
+        service_keys_to_info_types_to_counts = CG.client_controller.read('nums_pending')
         
         body_dict = {
             'pending_counts' : { service_key.hex() : { info_type_to_str_lookup[ info_type ] : count for ( info_type, count ) in info_types_to_counts.items() } for ( service_key, info_types_to_counts ) in service_keys_to_info_types_to_counts.items() },
@@ -94,7 +94,7 @@ class HydrusResourceClientAPIRestrictedManageServicesForgetPending( HydrusResour
         
         ClientLocalServerCore.CheckUploadableService( service_key )
         
-        CG.client_controller.WriteSynchronous( 'delete_pending', service_key )
+        CG.client_controller.write_synchronous('delete_pending', service_key)
         
         body_dict = {}
         

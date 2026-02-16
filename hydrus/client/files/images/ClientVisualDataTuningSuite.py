@@ -322,7 +322,7 @@ def RunTuningSuiteAlpha( test_dir: str ):
         reports.append( report )
         
     
-    db_dir = CG.client_controller.GetDBDir()
+    db_dir = CG.client_controller.get_db_dir()
     
     log_path = os.path.join( db_dir, 'visual_tuning.log' )
     
@@ -933,7 +933,7 @@ def RunTuningSuite( test_dir: str ):
         reports.append( report )
         
     
-    db_dir = CG.client_controller.GetDBDir()
+    db_dir = CG.client_controller.get_db_dir()
     
     log_path = os.path.join( db_dir, 'visual_tuning.log' )
     

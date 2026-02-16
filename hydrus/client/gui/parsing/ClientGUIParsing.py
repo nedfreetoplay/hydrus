@@ -119,7 +119,7 @@ class DownloaderExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         choosable_gugs = [ gug for gug in self._network_engine.domain_manager.GetGUGs() if gug.IsFunctional() and gug not in existing_data ]
         
-        choice_tuples = [ ( gug.GetName(), gug, False ) for gug in choosable_gugs ]
+        choice_tuples = [(gug.get_name(), gug, False) for gug in choosable_gugs]
         
         try:
             
@@ -154,7 +154,7 @@ class DownloaderExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         choosable_login_scripts = [ ls for ls in self._network_engine.login_manager.GetLoginScripts() if ls not in existing_data ]
         
-        choice_tuples = [ ( login_script.GetName(), login_script, False ) for login_script in choosable_login_scripts ]
+        choice_tuples = [(login_script.get_name(), login_script, False) for login_script in choosable_login_scripts]
         
         try:
             
@@ -174,7 +174,7 @@ class DownloaderExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         choosable_parsers = [ p for p in self._network_engine.domain_manager.GetParsers() if p not in existing_data ]
         
-        choice_tuples = [ ( parser.GetName(), parser, False ) for parser in choosable_parsers ]
+        choice_tuples = [(parser.get_name(), parser, False) for parser in choosable_parsers]
         
         try:
             
@@ -194,7 +194,7 @@ class DownloaderExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         choosable_url_classes = [ u for u in self._network_engine.domain_manager.GetURLClasses() if u not in existing_data ]
         
-        choice_tuples = [ ( url_class.GetName(), url_class, False ) for url_class in choosable_url_classes ]
+        choice_tuples = [(url_class.get_name(), url_class, False) for url_class in choosable_url_classes]
         
         try:
             
@@ -226,7 +226,7 @@ class DownloaderExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
         else:
             
-            name = content.GetName()
+            name = content.get_name()
             
         
         t = content.SERIALISABLE_NAME
@@ -1129,7 +1129,7 @@ class EditContentParsersPanel( ClientGUICommon.StaticBox ):
     
     def _GetExistingNames( self ):
         
-        names = { content_parser.GetName() for content_parser in self._content_parsers.GetData() }
+        names = {content_parser.get_name() for content_parser in self._content_parsers.GetData()}
         
         return names
         
@@ -1588,7 +1588,7 @@ class EditPageParserPanel( ClientGUIScrolledPanels.EditPanel ):
         
         CG.client_controller.network_engine.AddJob( network_job )
         
-        CG.client_controller.CallToThread( wait_and_do_it, network_job )
+        CG.client_controller.call_to_thread(wait_and_do_it, network_job)
         
     
     def _GetPageParser( self ):
@@ -1823,7 +1823,7 @@ class EditParsersPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _GetExistingNames( self ):
         
-        names = { parser.GetName() for parser in self._parsers.GetData() }
+        names = {parser.get_name() for parser in self._parsers.GetData()}
         
         return names
         

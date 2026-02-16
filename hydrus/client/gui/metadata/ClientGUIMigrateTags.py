@@ -553,7 +553,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 migration_job = ClientMigration.MigrationJob( CG.client_controller, title, source, destination )
                 
-                CG.client_controller.CallToThread( migration_job.Run )
+                CG.client_controller.call_to_thread(migration_job.Run)
                 
             
         

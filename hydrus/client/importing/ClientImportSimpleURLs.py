@@ -343,7 +343,7 @@ class SimpleDownloaderImport( HydrusSerialisable.SerialisableBase ):
                         ClientImporting.WakeRepeatingJob( self._files_repeating_job )
                         
                     
-                    parser_status = 'page checked OK with formula "' + simple_downloader_formula.GetName() + '" - ' + HydrusNumbers.ToHumanInt( num_new ) + ' new urls'
+                    parser_status = 'page checked OK with formula "' + simple_downloader_formula.get_name() + '" - ' + HydrusNumbers.ToHumanInt(num_new) + ' new urls'
                     
                     num_already_in_file_seed_cache = len( file_seeds ) - num_new
                     
@@ -704,8 +704,8 @@ class SimpleDownloaderImport( HydrusSerialisable.SerialisableBase ):
             
             self._page_key = page_key
             
-            self._files_repeating_job = CG.client_controller.CallRepeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnFiles )
-            self._gallery_repeating_job = CG.client_controller.CallRepeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnGallery )
+            self._files_repeating_job = CG.client_controller.call_repeating(ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnFiles)
+            self._gallery_repeating_job = CG.client_controller.call_repeating(ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnGallery)
             
             self._files_repeating_job.SetThreadSlotType( 'misc' )
             self._gallery_repeating_job.SetThreadSlotType( 'misc' )
@@ -1422,8 +1422,8 @@ class URLsImport( HydrusSerialisable.SerialisableBase ):
             
             self._page_key = page_key
             
-            self._files_repeating_job = CG.client_controller.CallRepeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnFiles )
-            self._gallery_repeating_job = CG.client_controller.CallRepeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnGallery )
+            self._files_repeating_job = CG.client_controller.call_repeating(ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnFiles)
+            self._gallery_repeating_job = CG.client_controller.call_repeating(ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnGallery)
             
             self._files_repeating_job.SetThreadSlotType( 'misc' )
             self._gallery_repeating_job.SetThreadSlotType( 'misc' )

@@ -130,7 +130,7 @@ class ManageClientServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
     def _ConvertServiceToDisplayTuple( self, service ):
         
         service_type = service.GetServiceType()
-        name = service.GetName()
+        name = service.get_name()
         
         deletable = service_type in HC.ADDREMOVABLE_SERVICES
         
@@ -169,7 +169,7 @@ class ManageClientServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
     def _ConvertServiceToSortTuple( self, service ):
         
         service_type = service.GetServiceType()
-        name = service.GetName()
+        name = service.get_name()
         
         deletable = service_type in HC.ADDREMOVABLE_SERVICES
         
@@ -199,7 +199,7 @@ class ManageClientServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         services = self._listctrl.GetData()
         
-        names = { service.GetName() for service in services }
+        names = {service.get_name() for service in services}
         
         return names
         
@@ -233,13 +233,13 @@ class ManageClientServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
                 
                 if service.GetServiceType() == service_type and service in self._original_services:
                     
-                    service_info = CG.client_controller.Read( 'service_info', service.GetServiceKey() )
+                    service_info = CG.client_controller.read('service_info', service.GetServiceKey())
                     
                     num_files = service_info[ HC.SERVICE_INFO_NUM_FILES ]
                     
                     if num_files > 0:
                         
-                        message = 'The service {} needs to be empty before it can be deleted, but it seems to have {} files in it! Please delete or migrate all the files from it and then try again.'.format( service.GetName(), HydrusNumbers.ToHumanInt( num_files ) )
+                        message = 'The service {} needs to be empty before it can be deleted, but it seems to have {} files in it! Please delete or migrate all the files from it and then try again.'.format(service.get_name(), HydrusNumbers.ToHumanInt(num_files))
                         
                         ClientGUIDialogsMessage.ShowInformation( self, message )
                         
@@ -289,7 +289,7 @@ class ManageClientServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
                 
                 existing_names = self._GetExistingNames()
                 
-                existing_names.discard( service.GetName() )
+                existing_names.discard(service.get_name())
                 
                 HydrusSerialisable.SetNonDupeName( edited_service, existing_names, do_casefold = True )
                 
@@ -619,7 +619,7 @@ class EditServiceRemoteSubPanel( ClientGUICommon.StaticBox ):
         self._test_address_button.setEnabled( False )
         self._test_address_button.setText( 'testing' + HC.UNICODE_ELLIPSIS )
         
-        CG.client_controller.CallToThread( do_it )
+        CG.client_controller.call_to_thread(do_it)
         
     
     def GetCredentials( self ):
@@ -1886,7 +1886,7 @@ class ReviewServicePanel( QW.QWidget ):
         
         def work_callable():
             
-            service_id = CG.client_controller.Read( 'service_id', service_key )
+            service_id = CG.client_controller.read('service_id', service_key)
             
             return service_id
             
@@ -1916,7 +1916,7 @@ class ReviewServicePanel( QW.QWidget ):
             
             job_status = ClientThreading.JobStatus( pausable = True, cancellable = True )
             
-            job_status.SetStatusTitle( service.GetName() + ': immediate sync' )
+            job_status.SetStatusTitle(service.get_name() + ': immediate sync')
             job_status.SetStatusText( 'downloading' )
             
             CG.client_controller.pub( 'message', job_status )
@@ -1947,7 +1947,7 @@ class ReviewServicePanel( QW.QWidget ):
                 
                 precise_timestamp = HydrusTime.GetNowPrecise()
                 
-                CG.client_controller.WriteSynchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( service.GetServiceKey(), content_updates ) )
+                CG.client_controller.write_synchronous('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates(service.GetServiceKey(), content_updates))
                 
                 it_took = HydrusTime.GetNowPrecise() - precise_timestamp
                 
@@ -1967,7 +1967,7 @@ class ReviewServicePanel( QW.QWidget ):
             job_status.Finish()
             
         
-        CG.client_controller.CallToThread( do_it )
+        CG.client_controller.call_to_thread(do_it)
         
     
     def GetServiceKey( self ):
@@ -2001,7 +2001,7 @@ class ReviewServiceSubPanel( ClientGUICommon.StaticBox ):
     
     def _Refresh( self ):
         
-        name = self._service.GetName()
+        name = self._service.get_name()
         service_type = self._service.GetServiceType()
         
         label = name + ' - ' + HC.service_string_lookup[ service_type ]
@@ -2074,7 +2074,7 @@ class ReviewServiceClientAPISubPanel( ClientGUICommon.StaticBox ):
     
     def _ConvertDataToDisplayTuple( self, api_permissions ):
         
-        name = api_permissions.GetName()
+        name = api_permissions.get_name()
         
         pretty_name = name
         
@@ -2088,7 +2088,7 @@ class ReviewServiceClientAPISubPanel( ClientGUICommon.StaticBox ):
     
     def _ConvertDataToSortTuple( self, api_permissions ):
         
-        name = api_permissions.GetName()
+        name = api_permissions.get_name()
         
         basic_permissions_string = api_permissions.GetBasicPermissionsString()
         advanced_permissions_string = api_permissions.GetAdvancedPermissionsString()
@@ -2204,7 +2204,7 @@ class ReviewServiceClientAPISubPanel( ClientGUICommon.StaticBox ):
         
         existing_objects = list( self._permissions_list.GetData() )
         
-        existing_names = { p_o.GetName() for p_o in existing_objects }
+        existing_names = {p_o.get_name() for p_o in existing_objects}
         
         for dupe in dupes:
             
@@ -2212,7 +2212,7 @@ class ReviewServiceClientAPISubPanel( ClientGUICommon.StaticBox ):
             
             dupe.SetNonDupeName( existing_names, do_casefold = True )
             
-            existing_names.add( dupe.GetName() )
+            existing_names.add(dupe.get_name())
             
         
         existing_objects.extend( dupes )
@@ -2364,7 +2364,7 @@ class ReviewServiceHydrusLocalFileStorageSubPanel( ClientGUICommon.StaticBox ):
                 
                 content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_update )
                 
-                CG.client_controller.Write( 'content_updates', content_update_package )
+                CG.client_controller.write('content_updates', content_update_package)
                 
                 CG.client_controller.pub( 'service_updated', self._service )
                 
@@ -2373,7 +2373,7 @@ class ReviewServiceHydrusLocalFileStorageSubPanel( ClientGUICommon.StaticBox ):
     
     def _Refresh( self ):
         
-        CG.client_controller.CallToThread( self.THREADFetchInfo, self._service )
+        CG.client_controller.call_to_thread(self.THREADFetchInfo, self._service)
         
     
     def ServiceUpdated( self, service ):
@@ -2393,7 +2393,7 @@ class ReviewServiceHydrusLocalFileStorageSubPanel( ClientGUICommon.StaticBox ):
             self._deferred_delete_status.setText( text )
             
         
-        ( num_files, num_thumbnails ) = CG.client_controller.Read( 'num_deferred_file_deletes' )
+        ( num_files, num_thumbnails ) = CG.client_controller.read('num_deferred_file_deletes')
         
         if num_files == 0 and num_thumbnails == 0:
             
@@ -2432,7 +2432,7 @@ class ReviewServiceFileSubPanel( ClientGUICommon.StaticBox ):
     
     def _Refresh( self ):
         
-        CG.client_controller.CallToThread( self.THREADFetchInfo, self._service )
+        CG.client_controller.call_to_thread(self.THREADFetchInfo, self._service)
         
     
     def ServiceUpdated( self, service ):
@@ -2452,7 +2452,7 @@ class ReviewServiceFileSubPanel( ClientGUICommon.StaticBox ):
             self._file_info_st.setText( text )
             
         
-        service_info = CG.client_controller.Read( 'service_info', service.GetServiceKey() )
+        service_info = CG.client_controller.read('service_info', service.GetServiceKey())
         
         num_files = service_info[ HC.SERVICE_INFO_NUM_FILES ]
         total_size = service_info[ HC.SERVICE_INFO_TOTAL_SIZE ]
@@ -2997,7 +2997,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
             return
             
         
-        name = self._service.GetName()
+        name = self._service.get_name()
         
         message = 'This will flag the client to resync the information about which update files it should download. It will occur on the next download sync.'
         message += '\n' * 2
@@ -3039,7 +3039,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
                     
                     try:
                         
-                        job_status.SetStatusTitle( 'exporting updates for ' + service.GetName() )
+                        job_status.SetStatusTitle( 'exporting updates for ' + service.get_name())
                         CG.client_controller.pub( 'message', job_status )
                         
                         client_files_manager = CG.client_controller.client_files_manager
@@ -3102,7 +3102,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
         self._export_updates_button.setText( 'exporting' + HC.UNICODE_ELLIPSIS )
         self._export_updates_button.setEnabled( False )
         
-        CG.client_controller.CallToThread( do_it, path, self._service )
+        CG.client_controller.call_to_thread(do_it, path, self._service)
         
     
     def _FetchServiceInfo( self ):
@@ -3274,7 +3274,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
         
         self._metadata_st.setText( self._service.GetNextUpdateDueString() )
         
-        CG.client_controller.CallToThread( self.THREADFetchInfo, self._service )
+        CG.client_controller.call_to_thread(self.THREADFetchInfo, self._service)
         
     
     def _ReprocessDefinitions( self ):
@@ -3283,12 +3283,12 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
             
             service_key = service.GetServiceKey()
             
-            CG.client_controller.WriteSynchronous( 'reprocess_repository', service_key, ( HC.CONTENT_TYPE_DEFINITIONS, ) )
+            CG.client_controller.write_synchronous('reprocess_repository', service_key, (HC.CONTENT_TYPE_DEFINITIONS,))
             
             my_updater.Update()
             
         
-        name = self._service.GetName()
+        name = self._service.get_name()
         
         message = 'This will command the client to reprocess all definition updates for {}. It will not delete anything.'.format( name )
         message += '\n' * 2
@@ -3298,7 +3298,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            CG.client_controller.CallToThread( do_it, self._service, self._my_updater )
+            CG.client_controller.call_to_thread(do_it, self._service, self._my_updater)
             
         
     
@@ -3308,7 +3308,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
             
             service_key = service.GetServiceKey()
             
-            CG.client_controller.WriteSynchronous( 'reprocess_repository', service_key, content_types_to_reset )
+            CG.client_controller.write_synchronous('reprocess_repository', service_key, content_types_to_reset)
             
             my_updater.Update()
             
@@ -3320,7 +3320,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
             return
             
         
-        name = self._service.GetName()
+        name = self._service.get_name()
         
         message = 'This will command the client to reprocess ({}) for {}. It will not delete anything.'.format( ', '.join( ( HC.content_type_string_lookup[ content_type ] for content_type in content_types ) ), name )
         message += '\n' * 2
@@ -3330,13 +3330,13 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            CG.client_controller.CallToThread( do_it, self._service, self._my_updater, content_types )
+            CG.client_controller.call_to_thread(do_it, self._service, self._my_updater, content_types)
             
         
     
     def _Reset( self ):
         
-        name = self._service.GetName()
+        name = self._service.get_name()
         
         message = 'This will delete all the processed information for ' + name + ' from the database, including definitions.' + '\n' * 2 + 'Once the service is reset, you will have to reprocess everything from your downloaded update files. The client will naturally do this in its idle time as before, just starting over from the beginning.' + '\n' * 2 + 'This is a severe maintenance task that is only appropriate after trying to recover from critical database error. If you do not understand what this does, click no!'
         
@@ -3361,7 +3361,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
             
             service_key = service.GetServiceKey()
             
-            CG.client_controller.WriteSynchronous( 'reset_repository_processing', service_key, content_types_to_reset )
+            CG.client_controller.write_synchronous('reset_repository_processing', service_key, content_types_to_reset)
             
             my_updater.Update()
             
@@ -3373,7 +3373,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
             return
             
         
-        name = self._service.GetName()
+        name = self._service.get_name()
         
         message = 'You are about to delete and reprocess ({}) for {}.'.format( ', '.join( ( HC.content_type_string_lookup[ content_type ] for content_type in content_types ) ), name )
         message += '\n' * 2
@@ -3383,7 +3383,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            CG.client_controller.CallToThread( do_it, self._service, self._my_updater, content_types )
+            CG.client_controller.call_to_thread(do_it, self._service, self._my_updater, content_types)
             
         
     
@@ -3438,7 +3438,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
         
         self._sync_remote_now_button.setEnabled( False )
         
-        CG.client_controller.CallToThread( do_it, self._service, self._my_updater )
+        CG.client_controller.call_to_thread(do_it, self._service, self._my_updater)
         
     
     def _SyncProcessingNow( self ):
@@ -3460,7 +3460,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
             
             self._sync_processing_now_button.setEnabled( False )
             
-            CG.client_controller.CallToThread( do_it, self._service, self._my_updater )
+            CG.client_controller.call_to_thread(do_it, self._service, self._my_updater)
             
         
     
@@ -3553,7 +3553,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
                 
             
         
-        ( num_local_updates, num_updates, content_types_to_num_processed_updates, content_types_to_num_updates ) = CG.client_controller.Read( 'repository_progress', service.GetServiceKey() )
+        ( num_local_updates, num_updates, content_types_to_num_processed_updates, content_types_to_num_updates ) = CG.client_controller.read('repository_progress', service.GetServiceKey())
         
         is_mostly_caught_up = service.IsMostlyCaughtUp()
         
@@ -3642,7 +3642,7 @@ class ReviewServiceIPFSSubPanel( ClientGUICommon.StaticBox ):
     
     def _Refresh( self ):
         
-        CG.client_controller.CallToThread( self.THREADFetchInfo, self._service )
+        CG.client_controller.call_to_thread(self.THREADFetchInfo, self._service)
         
     
     def _SetNotes( self ):
@@ -3666,14 +3666,14 @@ class ReviewServiceIPFSSubPanel( ClientGUICommon.StaticBox ):
             
             for ( multihash, num_files, total_size, old_note ) in datas:
                 
-                hashes = CG.client_controller.Read( 'service_directory', self._service.GetServiceKey(), multihash )
+                hashes = CG.client_controller.read('service_directory', self._service.GetServiceKey(), multihash)
                 
                 content_update_row = ( hashes, multihash, note )
                 
                 content_updates.append( ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_DIRECTORIES, HC.CONTENT_UPDATE_ADD, content_update_row ) )
                 
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( self._service.GetServiceKey(), content_updates ) )
+            CG.client_controller.write('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates(self._service.GetServiceKey(), content_updates))
             
             self._my_updater.Update()
             
@@ -3694,7 +3694,7 @@ class ReviewServiceIPFSSubPanel( ClientGUICommon.StaticBox ):
                 
                 for ( multihash, num_files, total_size, note ) in shares:
                     
-                    hashes = CG.client_controller.Read( 'service_directory', service_key, multihash )
+                    hashes = CG.client_controller.read('service_directory', service_key, multihash)
                     
                     CG.client_controller.pub( 'new_page_query', location_context, initial_hashes = hashes, page_name = 'ipfs directory' )
                     
@@ -3711,7 +3711,7 @@ class ReviewServiceIPFSSubPanel( ClientGUICommon.StaticBox ):
         
         self._ipfs_shares_panel.setEnabled( False )
         
-        CG.client_controller.CallToThread( do_it, self._service.GetServiceKey(), shares )
+        CG.client_controller.call_to_thread(do_it, self._service.GetServiceKey(), shares)
         
     
     def _Unpin( self ):
@@ -3746,7 +3746,7 @@ class ReviewServiceIPFSSubPanel( ClientGUICommon.StaticBox ):
             
             self._ipfs_shares_panel.setEnabled( False )
             
-            CG.client_controller.CallToThread( do_it, self._service, multihashes )
+            CG.client_controller.call_to_thread(do_it, self._service, multihashes)
             
         
     
@@ -3774,7 +3774,7 @@ class ReviewServiceIPFSSubPanel( ClientGUICommon.StaticBox ):
             self._ipfs_shares.SetData( ipfs_shares )
             
         
-        ipfs_shares = CG.client_controller.Read( 'service_directories', service.GetServiceKey() )
+        ipfs_shares = CG.client_controller.read('service_directories', service.GetServiceKey())
         
         CG.client_controller.CallAfterQtSafe( self, qt_code, ipfs_shares )
         
@@ -3827,7 +3827,7 @@ class ReviewServiceRatingSubPanel( ClientGUICommon.StaticBox ):
             
             content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service.GetServiceKey(), content_update )
             
-            CG.client_controller.Write( 'content_updates', content_update_package, publish_content_updates = False )
+            CG.client_controller.write('content_updates', content_update_package, publish_content_updates = False)
             
             CG.client_controller.pub( 'service_updated', self._service )
             
@@ -3835,7 +3835,7 @@ class ReviewServiceRatingSubPanel( ClientGUICommon.StaticBox ):
     
     def _Refresh( self ):
         
-        CG.client_controller.CallToThread( self.THREADFetchInfo, self._service )
+        CG.client_controller.call_to_thread(self.THREADFetchInfo, self._service)
         
     
     def ServiceUpdated( self, service ):
@@ -3855,7 +3855,7 @@ class ReviewServiceRatingSubPanel( ClientGUICommon.StaticBox ):
             self._rating_info_st.setText( text )
             
         
-        service_info = CG.client_controller.Read( 'service_info', service.GetServiceKey() )
+        service_info = CG.client_controller.read('service_info', service.GetServiceKey())
         
         num_files = service_info[ HC.SERVICE_INFO_NUM_FILE_HASHES ]
         
@@ -3904,7 +3904,7 @@ class ReviewServiceTagSubPanel( ClientGUICommon.StaticBox ):
     
     def _Refresh( self ):
         
-        CG.client_controller.CallToThread( self.THREADFetchInfo, self._service )
+        CG.client_controller.call_to_thread(self.THREADFetchInfo, self._service)
         
     
     def ServiceUpdated( self, service ):
@@ -3924,7 +3924,7 @@ class ReviewServiceTagSubPanel( ClientGUICommon.StaticBox ):
             self._tag_info_st.setText( text )
             
         
-        service_info = CG.client_controller.Read( 'service_info', service.GetServiceKey() )
+        service_info = CG.client_controller.read('service_info', service.GetServiceKey())
         
         num_files = service_info[ HC.SERVICE_INFO_NUM_FILE_HASHES ]
         num_tags = service_info[ HC.SERVICE_INFO_NUM_TAGS ]
@@ -3987,7 +3987,7 @@ class ReviewServiceTrashSubPanel( ClientGUICommon.StaticBox ):
             
             def do_it( service ):
                 
-                hashes = CG.client_controller.Read( 'trash_hashes' )
+                hashes = CG.client_controller.read('trash_hashes')
                 
                 for group_of_hashes in HydrusLists.SplitIteratorIntoChunks( hashes, 16 ):
                     
@@ -3995,7 +3995,7 @@ class ReviewServiceTrashSubPanel( ClientGUICommon.StaticBox ):
                     
                     content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_update )
                     
-                    CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+                    CG.client_controller.write_synchronous('content_updates', content_update_package)
                     
                     time.sleep( 0.01 )
                     
@@ -4005,13 +4005,13 @@ class ReviewServiceTrashSubPanel( ClientGUICommon.StaticBox ):
             
             self._clear_trash.setEnabled( False )
             
-            CG.client_controller.CallToThread( do_it, self._service )
+            CG.client_controller.call_to_thread(do_it, self._service)
             
         
     
     def _Refresh( self ):
         
-        CG.client_controller.CallToThread( self.THREADFetchInfo, self._service )
+        CG.client_controller.call_to_thread(self.THREADFetchInfo, self._service)
         
     
     def _UndeleteAll( self ):
@@ -4024,7 +4024,7 @@ class ReviewServiceTrashSubPanel( ClientGUICommon.StaticBox ):
             
             def do_it( service ):
                 
-                hashes = CG.client_controller.Read( 'trash_hashes' )
+                hashes = CG.client_controller.read('trash_hashes')
                 
                 ClientGUIMediaSimpleActions.UndeleteFiles( hashes )
                 
@@ -4033,7 +4033,7 @@ class ReviewServiceTrashSubPanel( ClientGUICommon.StaticBox ):
             
             self._undelete_all.setEnabled( False )
             
-            CG.client_controller.CallToThread( do_it, self._service )
+            CG.client_controller.call_to_thread(do_it, self._service)
             
         
     
@@ -4055,7 +4055,7 @@ class ReviewServiceTrashSubPanel( ClientGUICommon.StaticBox ):
             self._undelete_all.setEnabled( num_files > 0 )
             
         
-        service_info = CG.client_controller.Read( 'service_info', service.GetServiceKey() )
+        service_info = CG.client_controller.read('service_info', service.GetServiceKey())
         
         num_files = service_info[ HC.SERVICE_INFO_NUM_FILES ]
         

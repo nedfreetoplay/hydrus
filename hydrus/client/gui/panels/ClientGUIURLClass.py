@@ -1483,7 +1483,7 @@ class EditURLClassesPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _ConvertDataToDisplayTuple( self, url_class ):
         
-        name = url_class.GetName()
+        name = url_class.get_name()
         url_type = url_class.GetURLType()
         
         try:
@@ -1543,7 +1543,7 @@ class EditURLClassesPanel( ClientGUIScrolledPanels.EditPanel ):
         
         url_classes = self._list_ctrl.GetData()
         
-        names = { url_class.GetName() for url_class in url_classes }
+        names = {url_class.get_name() for url_class in url_classes}
         
         return names
         
@@ -1586,7 +1586,7 @@ class EditURLClassesPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 else:
                     
-                    text = 'Matches "' + url_class.GetName() + '"'
+                    text = 'Matches "' + url_class.get_name() + '"'
                     
                     self._list_ctrl.SelectDatas( ( url_class, ), deselect_others = True )
                     self._list_ctrl.ScrollToData( url_class, do_focus = False )

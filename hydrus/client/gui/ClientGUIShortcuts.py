@@ -1823,7 +1823,7 @@ class ShortcutsHandler( QC.QObject ):
             self._parent_currently_activated = True
             
         
-        self._activating_wait_job = CG.client_controller.CallLater( 0.2, do_it )
+        self._activating_wait_job = CG.client_controller.call_later(0.2, do_it)
         
     
     def FrameDeactivated( self ):

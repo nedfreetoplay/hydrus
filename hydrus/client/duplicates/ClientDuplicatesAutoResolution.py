@@ -78,7 +78,7 @@ def ActionAutoResolutionReviewPairs( rule: "DuplicatesAutoResolutionRule", decis
             
         
         # this is safe to run on a bunch of related pairs like AB, AC, DB--the db figures that out
-        CG.client_controller.WriteSynchronous( 'duplicates_auto_resolution_approve_pending_pairs', rule, chunk )
+        CG.client_controller.write_synchronous('duplicates_auto_resolution_approve_pending_pairs', rule, chunk)
         
     
     for ( num_done, num_to_do, chunk ) in HydrusLists.SplitListIntoChunksRich( deny_pairs, 4 ):
@@ -91,7 +91,7 @@ def ActionAutoResolutionReviewPairs( rule: "DuplicatesAutoResolutionRule", decis
             
         
         # this is safe to run on a bunch of related pairs like AB, AC, DB--the db figures that out
-        CG.client_controller.WriteSynchronous( 'duplicates_auto_resolution_deny_pending_pairs', rule, chunk )
+        CG.client_controller.write_synchronous('duplicates_auto_resolution_deny_pending_pairs', rule, chunk)
         
     
 
@@ -1351,14 +1351,14 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _AbleToWorkIdleNormal( self ) -> bool:
         
-        if CG.client_controller.CurrentlyIdle():
+        if CG.client_controller.currently_idle():
             
             if not CG.client_controller.new_options.GetBoolean( 'duplicates_auto_resolution_during_idle' ):
                 
                 return False
                 
             
-            if not CG.client_controller.GoodTimeToStartBackgroundWork():
+            if not CG.client_controller.good_time_to_start_background_work():
                 
                 return False
                 
@@ -1495,7 +1495,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
             return 600
             
         
-        if CG.client_controller.CurrentlyIdle():
+        if CG.client_controller.currently_idle():
             
             rest_ratio = 1
             
@@ -1521,7 +1521,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
             return 600
             
         
-        if self._controller.CurrentlyIdle():
+        if self._controller.currently_idle():
             
             rest_ratio = CG.client_controller.new_options.GetInteger( 'duplicates_auto_resolution_rest_percentage_idle' ) / 100
             
@@ -1542,7 +1542,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
             return 0.5
             
         
-        if self._controller.CurrentlyIdle():
+        if self._controller.currently_idle():
             
             return HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'duplicates_auto_resolution_work_time_ms_idle' ) )
             
@@ -1558,9 +1558,9 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
         
         still_work_to_do = False
         
-        rules = CG.client_controller.Read( 'duplicates_auto_resolution_rules_with_counts' )
+        rules = CG.client_controller.read('duplicates_auto_resolution_rules_with_counts')
         
-        rules = sorted( rules, key = lambda r: HydrusText.HumanTextSortKey( r.GetName() ) )
+        rules = sorted(rules, key = lambda r: HydrusText.HumanTextSortKey(r.get_name()))
         
         with self._lock:
             
@@ -1585,7 +1585,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     while rule.HasSearchWorkToDo():
                         
-                        ( still_work_to_do_here, matching_pairs_produced_here ) = CG.client_controller.WriteSynchronous( 'duplicates_auto_resolution_do_search_work', rule )
+                        ( still_work_to_do_here, matching_pairs_produced_here ) = CG.client_controller.write_synchronous('duplicates_auto_resolution_do_search_work', rule)
                         
                         if HydrusTime.TimeHasPassedFloat( time_to_stop ):
                             
@@ -1620,7 +1620,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     while rule.HasResolutionWorkToDo():
                         
-                        media_result_pair = CG.client_controller.Read( 'duplicates_auto_resolution_resolution_pair', rule )
+                        media_result_pair = CG.client_controller.read('duplicates_auto_resolution_resolution_pair', rule)
                         
                         if previous_pair is not None and media_result_pair == previous_pair:
                             
@@ -1647,11 +1647,11 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
                             
                             if result is None:
                                 
-                                CG.client_controller.WriteSynchronous( 'duplicates_auto_resolution_commit_resolution_pair_failed', rule, media_result_pair )
+                                CG.client_controller.write_synchronous('duplicates_auto_resolution_commit_resolution_pair_failed', rule, media_result_pair)
                                 
                             else:
                                 
-                                CG.client_controller.WriteSynchronous( 'duplicates_auto_resolution_commit_resolution_pair_passed', rule, result )
+                                CG.client_controller.write_synchronous('duplicates_auto_resolution_commit_resolution_pair_passed', rule, result)
                                 
                             
                         
@@ -1696,7 +1696,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
     
     def GetRules( self ) -> list[ DuplicatesAutoResolutionRule ]:
         
-        rules = CG.client_controller.Read( 'duplicates_auto_resolution_rules_with_counts' )
+        rules = CG.client_controller.read('duplicates_auto_resolution_rules_with_counts')
         
         return rules
         
@@ -1753,14 +1753,14 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
     
     def PausePlayRule( self, rule ):
         
-        CG.client_controller.WriteSynchronous( 'duplicate_auto_resolution_flip_pause_play', rule )
+        CG.client_controller.write_synchronous('duplicate_auto_resolution_flip_pause_play', rule)
         
     
     def ResetRuleDenied( self, rules: collections.abc.Collection[ DuplicatesAutoResolutionRule ] ):
         
         for rule in rules:
             
-            CG.client_controller.WriteSynchronous( 'duplicates_auto_resolution_reset_rule_denied', rule )
+            CG.client_controller.write_synchronous('duplicates_auto_resolution_reset_rule_denied', rule)
             
         
     
@@ -1768,7 +1768,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
         
         for rule in rules:
             
-            CG.client_controller.WriteSynchronous( 'duplicates_auto_resolution_reset_rule_search_progress', rule )
+            CG.client_controller.write_synchronous('duplicates_auto_resolution_reset_rule_search_progress', rule)
             
         
     
@@ -1776,7 +1776,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
         
         for rule in rules:
             
-            CG.client_controller.WriteSynchronous( 'duplicates_auto_resolution_reset_rule_test_progress', rule )
+            CG.client_controller.write_synchronous('duplicates_auto_resolution_reset_rule_test_progress', rule)
             
         
     
@@ -1787,7 +1787,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
             self._working_hard_rules = set()
             
         
-        CG.client_controller.Write( 'duplicates_auto_resolution_set_rules', rules )
+        CG.client_controller.write('duplicates_auto_resolution_set_rules', rules)
         
     
     def SetWorkingHard( self, rule: DuplicatesAutoResolutionRule, work_hard: bool ):

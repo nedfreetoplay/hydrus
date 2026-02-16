@@ -110,7 +110,7 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
         
         self._this_is_for_metadata_alone = this_is_for_metadata_alone
         
-        CG.client_controller.CallToThread( self._Initialise )
+        CG.client_controller.call_to_thread(self._Initialise)
         
 
     def GetNumPyImage(self):
@@ -312,7 +312,7 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
                     
                     HydrusData.ShowText( m )
                     
-                    CG.client_controller.Write( 'file_maintenance_add_jobs_hashes', { self._hash }, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_METADATA )
+                    CG.client_controller.write('file_maintenance_add_jobs_hashes', {self._hash}, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_METADATA)
                     
                 
             
@@ -660,7 +660,7 @@ class RasterContainerVideo( RasterContainer ):
         self._rendered_first_frame = False
         self._ideal_next_frame = 0
         
-        CG.client_controller.CallToThread( self.THREADRender )
+        CG.client_controller.call_to_thread(self.THREADRender)
         
     
     def __del__( self ):

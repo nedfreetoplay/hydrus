@@ -241,7 +241,7 @@ class ShortcutsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def _GetDisplayTuple( self, shortcuts ):
         
-        name = shortcuts.GetName()
+        name = shortcuts.get_name()
         
         if name in ClientGUIShortcuts.shortcut_names_to_descriptions:
             
@@ -259,12 +259,12 @@ class ShortcutsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def _GetExistingCustomShortcutNames( self ):
         
-        return { shortcuts.GetName() for shortcuts in self._custom_shortcuts.GetData() }
+        return {shortcuts.get_name() for shortcuts in self._custom_shortcuts.GetData()}
         
     
     def _GetSortTuple( self, shortcuts ):
         
-        name = shortcuts.GetName()
+        name = shortcuts.get_name()
         
         if name in ClientGUIShortcuts.shortcut_names_to_descriptions:
             
@@ -286,7 +286,7 @@ class ShortcutsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         defaults = ClientDefaults.GetDefaultShortcuts()
         
-        names_to_sets = { shortcut_set.GetName() : shortcut_set for shortcut_set in defaults }
+        names_to_sets = {shortcut_set.get_name() : shortcut_set for shortcut_set in defaults}
         
         choice_tuples = [ ( name, name ) for name in names_to_sets ]
         
@@ -305,7 +305,7 @@ class ShortcutsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         for data in self._reserved_shortcuts.GetData():
             
-            if data.GetName() == name:
+            if data.get_name() == name:
                 
                 existing_data = data
                 
@@ -374,7 +374,7 @@ class ShortcutsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
             dupe_shortcut_sets = [ shortcut_set.Duplicate() for shortcut_set in shortcut_sets ]
             
-            CG.client_controller.Write( 'serialisables_overwrite', [ HydrusSerialisable.SERIALISABLE_TYPE_SHORTCUT_SET ], dupe_shortcut_sets )
+            CG.client_controller.write('serialisables_overwrite', [HydrusSerialisable.SERIALISABLE_TYPE_SHORTCUT_SET], dupe_shortcut_sets)
             
             ClientGUIShortcuts.shortcuts_manager().SetShortcutSets( shortcut_sets )
             

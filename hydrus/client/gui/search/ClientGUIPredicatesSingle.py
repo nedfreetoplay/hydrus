@@ -1657,7 +1657,7 @@ class PanelPredicateSystemKnownURLsURLClass( PanelPredicateSystemSingle ):
             
             if url_class.ShouldAssociateWithFiles():
                 
-                self._url_classes.addItem( url_class.GetName(), url_class )
+                self._url_classes.addItem(url_class.get_name(), url_class)
                 
             
         
@@ -1708,7 +1708,7 @@ class PanelPredicateSystemKnownURLsURLClass( PanelPredicateSystemSingle ):
         
         rule = url_class
         
-        url_class_name = url_class.GetName()
+        url_class_name = url_class.get_name()
         
         description = f'has url with class {url_class_name}' if operator else f'does not have url with class {url_class_name}'
         
@@ -2322,7 +2322,7 @@ class PredicateSystemRatingIncDec( PanelPredicateSystemSingle ):
             
             service = CG.client_controller.services_manager.GetService( self._service_key )
             
-            name = service.GetName()
+            name = service.get_name()
             
         except Exception as e:
             
@@ -2445,7 +2445,7 @@ class PredicateSystemRatingLike( PanelPredicateSystemSingle ):
             
             service = CG.client_controller.services_manager.GetService( self._service_key )
             
-            name = service.GetName()
+            name = service.get_name()
             
         except HydrusExceptions.DataMissing:
             
@@ -2600,7 +2600,7 @@ class PredicateSystemRatingNumerical( PanelPredicateSystemSingle ):
             
             service = CG.client_controller.services_manager.GetService( self._service_key )
             
-            name = service.GetName()
+            name = service.get_name()
             
         except HydrusExceptions.DataMissing:
             

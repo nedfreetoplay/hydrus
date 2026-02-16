@@ -113,7 +113,7 @@ class HydrusResourceClientAPIRestrictedManageDatabaseMrBones( HydrusResourceClie
         
         request.disconnect_callables.append( job_status.Cancel )
         
-        boned_stats = CG.client_controller.Read( 'boned_stats', file_search_context = file_search_context, job_status = job_status )
+        boned_stats = CG.client_controller.read('boned_stats', file_search_context = file_search_context, job_status = job_status)
         
         body_dict = { 'boned_stats' : boned_stats }
         

@@ -112,9 +112,9 @@ def MakeSomeFakePetitions( service_key: bytes ):
                     
                     search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, predicates = predicates )
                     
-                    file_query_ids = CG.client_controller.Read( 'file_query_ids', search_context )
+                    file_query_ids = CG.client_controller.read('file_query_ids', search_context)
                     
-                    media_results = CG.client_controller.Read( 'media_results_from_ids', file_query_ids )
+                    media_results = CG.client_controller.read('media_results_from_ids', file_query_ids)
                     
                     cached_local_media_results.extend( media_results )
                     
@@ -961,7 +961,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
         button.setEnabled( False )
         button.setText( 'Fetching' + HC.UNICODE_ELLIPSIS )
         
-        CG.client_controller.CallToThread( do_it, self._service )
+        CG.client_controller.call_to_thread(do_it, self._service)
         
     
     def _FlipSelected( self ):
@@ -1207,7 +1207,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
         
         if len( self._petition_headers_we_are_fetching ) > 0:
             
-            CG.client_controller.CallToThread( self.THREADPetitionFetcherAndUploader, self._petition_fetcher_and_uploader_work_lock, self._service )
+            CG.client_controller.call_to_thread(self.THREADPetitionFetcherAndUploader, self._petition_fetcher_and_uploader_work_lock, self._service)
             
         
         self._HighlightAPetitionIfNeeded()
@@ -1217,7 +1217,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
         
         with ClientGUICommon.BusyCursor():
             
-            media_results = CG.client_controller.Read( 'media_results', hashes )
+            media_results = CG.client_controller.read('media_results', hashes)
             
         
         panel = ClientGUIMediaResultsPanelThumbnails.MediaResultsPanelThumbnails( self._page, self._page_key, self._page_manager, media_results )
@@ -1346,7 +1346,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
         
         self._last_fetched_subject_account_key = subject_account_key
         
-        CG.client_controller.CallToThread( do_it, self._service, subject_account_key )
+        CG.client_controller.call_to_thread(do_it, self._service, subject_account_key)
         
     
     def _StartUploadingCompletedPetitions( self, petitions: collections.abc.Collection[ HydrusNetwork.Petition ] ):
@@ -1360,7 +1360,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
         
         self._MoveCurrentPetitionOutOfPendingUpload()
         
-        CG.client_controller.CallToThread( self.THREADPetitionFetcherAndUploader, self._petition_fetcher_and_uploader_work_lock, self._service )
+        CG.client_controller.call_to_thread(self.THREADPetitionFetcherAndUploader, self._petition_fetcher_and_uploader_work_lock, self._service)
         
     
     def _UpdateAccountKey( self ):
@@ -1574,7 +1574,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
         
         super().PageShown()
         
-        CG.client_controller.CallToThread( self.THREADPetitionFetcherAndUploader, self._petition_fetcher_and_uploader_work_lock, self._service )
+        CG.client_controller.call_to_thread(self.THREADPetitionFetcherAndUploader, self._petition_fetcher_and_uploader_work_lock, self._service)
         
     
     def ProcessCurrentPetition( self ):
@@ -1849,7 +1849,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
                                     
                                     if len( content_updates ) > 0:
                                         
-                                        CG.client_controller.WriteSynchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( service.GetServiceKey(), content_updates ) )
+                                        CG.client_controller.write_synchronous('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates(service.GetServiceKey(), content_updates))
                                         
                                     
                                 

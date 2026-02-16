@@ -44,7 +44,7 @@ def CommitDecision(
             
             for content_update_package in content_update_packages:
                 
-                CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+                CG.client_controller.write_synchronous('content_updates', content_update_package)
                 
             
         
@@ -63,7 +63,7 @@ def CommitDecision(
             duplicate_pair_decision.content_update_packages
         )
         
-        CG.client_controller.WriteSynchronous( 'duplicate_pair_status', ( info_tuple, ) )
+        CG.client_controller.write_synchronous('duplicate_pair_status', (info_tuple,))
         
     
 
@@ -242,7 +242,7 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
                 
             else:
                 
-                CG.client_controller.CallToThread( THREADCommitDuplicatePairDecisions, self._potential_duplicate_pair_factory, self._duplicate_pair_decisions_we_are_committing )
+                CG.client_controller.call_to_thread(THREADCommitDuplicatePairDecisions, self._potential_duplicate_pair_factory, self._duplicate_pair_decisions_we_are_committing)
                 
                 self._num_items_to_commit = 0
                 self._duplicate_pair_decisions_we_are_committing = []

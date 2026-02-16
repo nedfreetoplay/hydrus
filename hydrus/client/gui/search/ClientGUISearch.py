@@ -421,7 +421,7 @@ class EditPredicatesPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     service = CG.client_controller.services_manager.GetService( s_k )
                     
-                    return ( order_of_panels.index( service.GetServiceType() ), service.GetName() )
+                    return ( order_of_panels.index( service.GetServiceType() ), service.get_name())
                     
                 except HydrusExceptions.DataMissing:
                     

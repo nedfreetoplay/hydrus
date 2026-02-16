@@ -2459,7 +2459,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                             
                             service = CG.client_controller.services_manager.GetService( service_key_or_none )
                             
-                            name = service.GetName()
+                            name = service.get_name()
                             
                             base += f' in "{name}"'
                             
@@ -2567,7 +2567,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                         
                         service = CG.client_controller.services_manager.GetService( service_key )
                         
-                        name = service.GetName()
+                        name = service.get_name()
                         
                         if service.GetServiceType() == HC.LOCAL_RATING_INCDEC:
                             
@@ -2710,7 +2710,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                         
                         service = CG.client_controller.services_manager.GetService( service_key )
                         
-                        base += service.GetName()
+                        base += service.get_name()
                         
                     except HydrusExceptions.DataMissing:
                         

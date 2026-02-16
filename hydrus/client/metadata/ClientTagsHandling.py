@@ -389,7 +389,7 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         if rest_ratio is None:
             
-            if self._controller.CurrentlyIdle():
+            if self._controller.currently_idle():
                 
                 rest_ratio = CG.client_controller.new_options.GetInteger( 'tag_display_processing_rest_percentage_idle' ) / 100
                 
@@ -440,7 +440,7 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
             
         
-        if self._controller.CurrentlyIdle():
+        if self._controller.currently_idle():
             
             return HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'tag_display_processing_work_time_ms_idle' ) )
             
@@ -463,7 +463,7 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             return False
             
         
-        if self._controller.CurrentlyIdle():
+        if self._controller.currently_idle():
             
             if self._controller.new_options.GetBoolean( 'tag_display_maintenance_during_idle' ):
                 
@@ -491,7 +491,7 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             if service_key not in self._service_keys_to_needs_work:
                 
-                status = self._controller.Read( 'tag_display_maintenance_status', service_key )
+                status = self._controller.read('tag_display_maintenance_status', service_key)
                 
                 work_to_do = status[ 'num_siblings_to_sync' ] + status[ 'num_parents_to_sync' ] > 0
                 sync_halted = len( status[ 'waiting_on_tag_repos' ] ) > 0
@@ -570,7 +570,7 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 start_time = HydrusTime.GetNowPrecise()
                 
-                still_needs_work = self._controller.WriteSynchronous( 'sync_tag_display_maintenance', service_key, expected_work_period )
+                still_needs_work = self._controller.write_synchronous('sync_tag_display_maintenance', service_key, expected_work_period)
                 
                 finish_time = HydrusTime.GetNowPrecise()
                 

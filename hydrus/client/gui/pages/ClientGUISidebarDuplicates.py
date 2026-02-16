@@ -280,7 +280,7 @@ class FilterPanel( QW.QWidget ):
         
         def work_callable():
             
-            hashes = CG.client_controller.Read( 'random_potential_duplicate_hashes', potential_duplicates_search_context )
+            hashes = CG.client_controller.read('random_potential_duplicate_hashes', potential_duplicates_search_context)
             
             return hashes
             
@@ -532,7 +532,7 @@ class PreparationPanel( QW.QWidget ):
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            CG.client_controller.Write( 'regenerate_similar_files_search_count_numbers' )
+            CG.client_controller.write('regenerate_similar_files_search_count_numbers')
             
             self._RefreshMaintenanceNumbers()
             
@@ -550,7 +550,7 @@ class PreparationPanel( QW.QWidget ):
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            CG.client_controller.Write( 'regenerate_similar_files_tree' )
+            CG.client_controller.write('regenerate_similar_files_tree')
             
         
     
@@ -564,7 +564,7 @@ class PreparationPanel( QW.QWidget ):
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            CG.client_controller.Write( 'delete_potential_duplicate_pairs' )
+            CG.client_controller.write('delete_potential_duplicate_pairs')
             
             self._RefreshMaintenanceNumbers()
             
@@ -578,7 +578,7 @@ class PreparationPanel( QW.QWidget ):
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            CG.client_controller.Write( 'resync_potential_pairs_to_hydrus_local_file_storage' )
+            CG.client_controller.write('resync_potential_pairs_to_hydrus_local_file_storage')
             
             self._RefreshMaintenanceNumbers()
             
@@ -798,7 +798,7 @@ class SidebarDuplicateFilter( ClientGUISidebarCore.Sidebar ):
         
         if len( hashes ) > 0:
             
-            media_results = CG.client_controller.Read( 'media_results', hashes, sorted = True )
+            media_results = CG.client_controller.read('media_results', hashes, sorted = True)
             
         else:
             

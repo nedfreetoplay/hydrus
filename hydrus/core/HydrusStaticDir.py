@@ -55,7 +55,7 @@ def GetStaticPathWithResult( sub_path: str, force_install_dir = False ):
     
     if not force_install_dir and USE_USER_STATIC_DIR and HG.controller is not None:
         
-        user_path = os.path.join( HG.controller.GetDBDir(), 'static', sub_path )
+        user_path = os.path.join(HG.controller.get_db_dir(), 'static', sub_path)
         
         if os.path.exists( user_path ):
             

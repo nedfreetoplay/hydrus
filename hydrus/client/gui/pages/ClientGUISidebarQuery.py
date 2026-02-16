@@ -236,7 +236,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
     
     def _RefreshQuery( self ):
         
-        CG.client_controller.ResetIdleTimer()
+        CG.client_controller.reset_idle_timer()
         
         if self._page_manager.GetVariable( 'system_hash_locked' ):
             
@@ -264,7 +264,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
             
             sort_by = self._media_sort_widget.GetSort()
             
-            CG.client_controller.CallToThread( self.THREADDoQuery, self._page_manager, self._page_key, self._query_job_status, file_search_context, sort_by )
+            CG.client_controller.call_to_thread(self.THREADDoQuery, self._page_manager, self._page_key, self._query_job_status, file_search_context, sort_by)
             
             panel = ClientGUIMediaResultsPanelLoading.MediaResultsPanelLoading( self._page, self._page_key, self._page_manager )
             
@@ -634,7 +634,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
         
         CG.client_controller.file_viewing_stats_manager.Flush()
         
-        query_hash_ids = CG.client_controller.Read( 'file_query_ids', file_search_context, job_status = query_job_status, limit_sort_by = sort_by )
+        query_hash_ids = CG.client_controller.read('file_query_ids', file_search_context, job_status = query_job_status, limit_sort_by = sort_by)
         
         if query_job_status.IsCancelled():
             
@@ -655,7 +655,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
                 return
                 
             
-            more_media_results = CG.client_controller.Read( 'media_results_from_ids', sub_query_hash_ids )
+            more_media_results = CG.client_controller.read('media_results_from_ids', sub_query_hash_ids)
             
             media_results.extend( more_media_results )
             

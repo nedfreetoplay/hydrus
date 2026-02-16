@@ -400,7 +400,7 @@ class NestedGalleryURLGenerator( HydrusSerialisable.SerialisableBaseNamed ):
     def RepairGUGs( self, available_gugs ):
         
         available_keys_to_gugs = { gug.GetGUGKey() : gug for gug in available_gugs }
-        available_names_to_gugs = { gug.GetName() : gug for gug in available_gugs }
+        available_names_to_gugs = {gug.get_name() : gug for gug in available_gugs}
         
         good_gug_keys_and_names = []
         
@@ -419,7 +419,7 @@ class NestedGalleryURLGenerator( HydrusSerialisable.SerialisableBaseNamed ):
                 continue
                 
             
-            good_gug_keys_and_names.append( ( gug.GetGUGKey(), gug.GetName() ) )
+            good_gug_keys_and_names.append(( gug.GetGUGKey(), gug.get_name()))
             
         
         self._gug_keys_and_names = good_gug_keys_and_names

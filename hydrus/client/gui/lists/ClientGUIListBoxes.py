@@ -908,7 +908,7 @@ class AddEditDeleteListBoxUniqueNamedObjects( AddEditDeleteListBox ):
     
     def _SetNonDupeName( self, obj ):
         
-        disallowed_names = { o.GetName() for o in self.GetData() }
+        disallowed_names = {o.get_name() for o in self.GetData()}
         
         HydrusSerialisable.SetNonDupeName( obj, disallowed_names )
         
@@ -3593,7 +3593,7 @@ class ListBoxTags( ListBox ):
                 
                 def sp_work_callable():
                     
-                    selected_tag_to_service_keys_to_siblings_and_parents = CG.client_controller.Read( 'tag_siblings_and_parents_lookup', ClientTags.TAG_DISPLAY_DISPLAY_IDEAL, ( selected_tag, ) )
+                    selected_tag_to_service_keys_to_siblings_and_parents = CG.client_controller.read('tag_siblings_and_parents_lookup', ClientTags.TAG_DISPLAY_DISPLAY_IDEAL, (selected_tag,))
                     
                     service_keys_to_siblings_and_parents = selected_tag_to_service_keys_to_siblings_and_parents[ selected_tag ]
                     
@@ -4152,7 +4152,7 @@ class ListBoxTags( ListBox ):
                 
                 if result == QW.QDialog.DialogCode.Accepted:
                     
-                    CG.client_controller.Write( 'regenerate_tag_mappings_tags', selected_actual_tags )
+                    CG.client_controller.write('regenerate_tag_mappings_tags', selected_actual_tags)
                     
                 
             
@@ -4598,7 +4598,7 @@ class ListBoxTagsDisplayCapable( ListBoxTags ):
                 
                 tags_to_lookup = set( tags_to_terms.keys() )
                 
-                db_tags_to_ideals_and_parents = CG.client_controller.Read( 'tag_display_decorators', service_key, tags_to_lookup )
+                db_tags_to_ideals_and_parents = CG.client_controller.read('tag_display_decorators', service_key, tags_to_lookup)
                 
                 terms_to_info.update( { tags_to_terms[ tag ] : info for ( tag, info ) in db_tags_to_ideals_and_parents.items() } )
                 

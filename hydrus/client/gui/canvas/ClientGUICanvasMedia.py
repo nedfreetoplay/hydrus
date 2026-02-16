@@ -628,7 +628,7 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
             if self._current_timestamp_ms is None and self._video_container.IsInitialised():
                 
-                self._current_timestamp_ms = self._video_container.GetTimestampMS( self._current_frame_index )
+                self._current_timestamp_ms = self._video_container.get_timestamp_ms(self._current_frame_index)
                 
             
         

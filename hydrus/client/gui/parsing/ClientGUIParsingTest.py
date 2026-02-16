@@ -187,7 +187,7 @@ class TestPanel( QW.QWidget ):
             return
             
         
-        CG.client_controller.CallToThread( do_it, url )
+        CG.client_controller.call_to_thread(do_it, url)
         
     
     def _Paste( self ):

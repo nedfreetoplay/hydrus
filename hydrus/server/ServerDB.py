@@ -295,7 +295,7 @@ class DB( HydrusDB.HydrusDB ):
                         HydrusData.Print( 'Analyzed ' + name + ' in ' + HydrusTime.TimeDeltaToPrettyTimeDelta( time_took ) )
                         
                     
-                    if SG.server_controller.ShouldStopThisWork( maintenance_mode, stop_time = stop_time ):
+                    if SG.server_controller.should_stop_this_work(maintenance_mode, stop_time = stop_time):
                         
                         break
                         

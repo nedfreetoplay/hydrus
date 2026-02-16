@@ -47,7 +47,7 @@ class HydrusResourceClientAPIRestrictedManagePagesAddFiles( HydrusResourceClient
         
         hashes = ClientLocalServerCore.ParseHashes( request )
         
-        media_results = CG.client_controller.Read( 'media_results', hashes, sorted = True )
+        media_results = CG.client_controller.read('media_results', hashes, sorted = True)
         
         try:
             

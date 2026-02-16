@@ -76,8 +76,8 @@ class TestClientDBDuplicates( unittest.TestCase ):
         cls._delete_db()
         
     
-    def _read( self, action, *args, **kwargs ): return TestClientDBDuplicates._db.Read( action, *args, **kwargs )
-    def _write( self, action, *args, **kwargs ): return TestClientDBDuplicates._db.Write( action, True, *args, **kwargs )
+    def _read( self, action, *args, **kwargs ): return TestClientDBDuplicates._db.read(action, *args, **kwargs)
+    def _write( self, action, *args, **kwargs ): return TestClientDBDuplicates._db.write(action, True, *args, **kwargs)
     
     def _InitialiseState( self ):
         

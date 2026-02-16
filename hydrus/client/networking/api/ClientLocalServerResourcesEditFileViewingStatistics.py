@@ -78,7 +78,7 @@ class HydrusResourceClientAPIRestrictedEditFileViewingStatisticsIncrementFileVie
         
         content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_updates )
         
-        CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+        CG.client_controller.write_synchronous('content_updates', content_update_package)
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
@@ -144,7 +144,7 @@ class HydrusResourceClientAPIRestrictedEditFileViewingStatisticsSetFileViewingSt
         
         content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_updates )
         
-        CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+        CG.client_controller.write_synchronous('content_updates', content_update_package)
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         

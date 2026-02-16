@@ -231,7 +231,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
         
         for content_update_package in content_update_packages:
             
-            CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+            CG.client_controller.write_synchronous('content_updates', content_update_package)
             
         
     
@@ -861,7 +861,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                     recent_tags = random.sample( recent_tags, num_recent_tags )
                     
                 
-                CG.client_controller.Write( 'push_recent_tags', self._tag_service_key, recent_tags )
+                CG.client_controller.write('push_recent_tags', self._tag_service_key, recent_tags)
                 
             
             if len( content_updates_for_this_call ) > 0:
@@ -870,7 +870,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                 
                 if self._immediate_commit:
                     
-                    CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+                    CG.client_controller.write_synchronous('content_updates', content_update_package)
                     
                 else:
                     
@@ -926,7 +926,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                         
                         if self._immediate_commit:
                             
-                            CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+                            CG.client_controller.write_synchronous('content_updates', content_update_package)
                             
                         else:
                             

@@ -300,7 +300,7 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
     def _ConvertServiceToDisplayTuple( self, service ):
         
         port = service.GetPort()
-        name = service.GetName()
+        name = service.get_name()
         service_type = service.GetServiceType()
         
         pretty_port = str( port )
@@ -313,7 +313,7 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
     def _ConvertServiceToSortTuple( self, service ):
         
         port = service.GetPort()
-        name = service.GetName()
+        name = service.get_name()
         service_type = service.GetServiceType()
         
         return ( port, name, service_type )
@@ -475,7 +475,7 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         with HG.dirty_object_lock:
             
-            CG.client_controller.WriteSynchronous( 'update_server_services', admin_service_key, services, service_keys_to_access_keys, self._deletee_service_keys )
+            CG.client_controller.write_synchronous('update_server_services', admin_service_key, services, service_keys_to_access_keys, self._deletee_service_keys)
             
             CG.client_controller.RefreshServices()
             

@@ -508,7 +508,7 @@ The formula should attempt to parse full or relative urls. If the url is relativ
         data = self._example_data.toPlainText()
         referral_url = self._referral_url
         
-        CG.client_controller.CallToThread( do_it, node, data, referral_url )
+        CG.client_controller.call_to_thread(do_it, node, data, referral_url)
         
     
     def GetExampleData( self ):
@@ -828,7 +828,7 @@ And pass that html to a number of 'parsing children' that will each look through
         
         data = self._example_data.toPlainText()
         
-        CG.client_controller.CallToThread( do_it, script, job_status, data )
+        CG.client_controller.call_to_thread(do_it, script, job_status, data)
         
     
     def GetExampleData( self ):
@@ -903,7 +903,7 @@ class ManageParsingScriptsPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         for script_type in self.SCRIPT_TYPES:
             
-            scripts.extend( CG.client_controller.Read( 'serialisable_named', script_type ) )
+            scripts.extend(CG.client_controller.read('serialisable_named', script_type))
             
         
         self._scripts.SetData( scripts )
@@ -1028,7 +1028,7 @@ class ManageParsingScriptsPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         scripts = self._scripts.GetData()
         
-        CG.client_controller.Write( 'serialisables_overwrite', self.SCRIPT_TYPES, scripts )
+        CG.client_controller.write('serialisables_overwrite', self.SCRIPT_TYPES, scripts)
         
     
     def Delete( self ):

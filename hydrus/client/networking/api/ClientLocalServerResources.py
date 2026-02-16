@@ -51,7 +51,7 @@ class HydrusResourceClientAPI( HydrusServerResources.HydrusResource ):
     
     def _reportDataUsed( self, request, num_bytes ):
         
-        self._service.ReportDataUsed( num_bytes )
+        self._service.report_data_used(num_bytes)
         
     
     def _reportRequestStarted( self, request: HydrusServerRequest.HydrusRequest ):

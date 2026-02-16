@@ -164,7 +164,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                     
                 
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_ARCHIVE, hashes ) ) )
+            CG.client_controller.write('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate(CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate(HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_ARCHIVE, hashes)))
             
         
     
@@ -282,13 +282,13 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                     message_pubbed = True
                     
                 
-                CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+                CG.client_controller.write_synchronous('content_updates', content_update_package)
                 
             
             job_status.FinishAndDismiss()
             
         
-        CG.client_controller.CallToThread( do_it, content_update_packages )
+        CG.client_controller.call_to_thread(do_it, content_update_packages)
         
     
     def _DeselectSelect( self, media_to_deselect, media_to_select ):
@@ -852,7 +852,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                     
                 
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_INBOX, hashes ) ) )
+            CG.client_controller.write('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate(CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate(HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_INBOX, hashes)))
             
         
     
@@ -1043,7 +1043,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                         
                         content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, pending_content_updates )
                         
-                        CG.client_controller.Write( 'content_updates', content_update_package )
+                        CG.client_controller.write('content_updates', content_update_package)
                         
                     
                 
@@ -1148,11 +1148,11 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
                 if len( hashes ) == 1:
                     
-                    message = 'Enter a reason for this file to be removed from {}.'.format( remote_service.GetName() )
+                    message = 'Enter a reason for this file to be removed from {}.'.format(remote_service.get_name())
                     
                 else:
                     
-                    message = 'Enter a reason for these {} files to be removed from {}.'.format( HydrusNumbers.ToHumanInt( len( hashes ) ), remote_service.GetName() )
+                    message = 'Enter a reason for these {} files to be removed from {}.'.format(HydrusNumbers.ToHumanInt( len( hashes ) ), remote_service.get_name())
                     
                 
                 try:
@@ -1168,7 +1168,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
                 content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( remote_service_key, content_update )
                 
-                CG.client_controller.Write( 'content_updates', content_update_package )
+                CG.client_controller.write('content_updates', content_update_package)
                 
                 self.setFocus( QC.Qt.FocusReason.OtherFocusReason )
                 
@@ -1178,7 +1178,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
                 content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( remote_service_key, content_update )
                 
-                CG.client_controller.Write( 'content_updates', content_update_package )
+                CG.client_controller.write('content_updates', content_update_package)
                 
             
         
@@ -1322,13 +1322,13 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
                 media_results = [ m.GetMediaResult() for m in flat_media ]
                 
-                CG.client_controller.CallToThread( CG.client_controller.files_maintenance_manager.RunJobImmediately, media_results, job_type )
+                CG.client_controller.call_to_thread(CG.client_controller.files_maintenance_manager.RunJobImmediately, media_results, job_type)
                 
             else:
                 
                 hashes = { media.GetHash() for media in flat_media }
                 
-                CG.client_controller.CallToThread( CG.client_controller.files_maintenance_manager.ScheduleJob, hashes, job_type )
+                CG.client_controller.call_to_thread(CG.client_controller.files_maintenance_manager.ScheduleJob, hashes, job_type)
                 
             
         
@@ -1367,7 +1367,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
         
         hashes = self._GetSelectedHashes( discriminant = CC.DISCRIMINANT_NOT_LOCAL )
         
-        CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_RESCIND_PEND, hashes ) ) )
+        CG.client_controller.write('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate(CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate(HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_RESCIND_PEND, hashes)))
         
     
     def _RescindPetitionFiles( self, file_service_key ):
@@ -1376,7 +1376,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
         
         if hashes is not None and len( hashes ) > 0:   
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( file_service_key, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_RESCIND_PETITION, hashes ) ) )
+            CG.client_controller.write('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate(file_service_key, ClientContentUpdates.ContentUpdate(HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_RESCIND_PETITION, hashes)))
             
         
     
@@ -1386,7 +1386,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
         
         if hashes is not None and len( hashes ) > 0:   
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( file_service_key, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_RESCIND_PEND, hashes ) ) )
+            CG.client_controller.write('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate(file_service_key, ClientContentUpdates.ContentUpdate(HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_RESCIND_PEND, hashes)))
             
         
     
@@ -1654,7 +1654,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
         
         if len( pair_info ) > 0:
             
-            CG.client_controller.WriteSynchronous( 'duplicate_pair_status', pair_info )
+            CG.client_controller.write_synchronous('duplicate_pair_status', pair_info)
             
             return True
             
@@ -1789,7 +1789,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             
             if do_it:
                 
-                CG.client_controller.WriteSynchronous( 'duplicate_set_king', focused_hash )
+                CG.client_controller.write_synchronous('duplicate_set_king', focused_hash)
                 
             
         else:
@@ -1938,7 +1938,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
             return
             
         
-        CG.client_controller.CallToThread( ipfs_service.PinDirectory, hashes, note )
+        CG.client_controller.call_to_thread(ipfs_service.PinDirectory, hashes, note)
         
     
     def _UploadFiles( self, file_service_key ):
@@ -1947,7 +1947,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
         
         if hashes is not None and len( hashes ) > 0:   
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( file_service_key, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_PEND, hashes ) ) )
+            CG.client_controller.write('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate(file_service_key, ClientContentUpdates.ContentUpdate(HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_PEND, hashes)))
             
         
     
