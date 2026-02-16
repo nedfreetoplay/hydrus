@@ -150,7 +150,7 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
             
             self._service = CG.client_controller.services_manager.GetService( self._service_key )
             
-            self._i_am_local_tag_service = self._service.GetServiceType() == HC.LOCAL_TAG
+            self._i_am_local_tag_service = self._service.get_service_type() == HC.LOCAL_TAG
             
             self._parent_action_context = ClientGUITagActions.ParentActionContext( self._service_key )
             
@@ -756,7 +756,7 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
                     
                     account = self._service.get_account()
                     
-                    if account.IsUnknown():
+                    if account.is_unknown():
                         
                         looking_good = False
                         
@@ -764,7 +764,7 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
                         
                         status_text = '{}\n\n{}'.format( s, status_text )
                         
-                    elif not account.HasPermission( HC.CONTENT_TYPE_TAG_SIBLINGS, HC.PERMISSION_ACTION_PETITION ):
+                    elif not account.has_permission(HC.CONTENT_TYPE_TAG_SIBLINGS, HC.PERMISSION_ACTION_PETITION):
                         
                         looking_good = False
                         

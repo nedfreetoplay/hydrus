@@ -58,12 +58,12 @@ def DumpHydrusArgsToNetworkBytes( args ):
     
     if 'account' in args:
         
-        args[ 'account' ] = HydrusNetwork.Account.GenerateSerialisableTupleFromAccount( args[ 'account' ] )
+        args[ 'account' ] = HydrusNetwork.Account.generate_serialisable_tuple_from_account(args['account'])
         
     
     if 'accounts' in args:
         
-        args[ 'accounts' ] = list( map( HydrusNetwork.Account.GenerateSerialisableTupleFromAccount, args[ 'accounts' ] ) )
+        args[ 'accounts' ] = list(map(HydrusNetwork.Account.generate_serialisable_tuple_from_account, args['accounts']))
         
     
     if 'service_keys_to_access_keys' in args:
@@ -73,7 +73,7 @@ def DumpHydrusArgsToNetworkBytes( args ):
     
     if 'services' in args:
         
-        args[ 'services' ] = [ service.ToSerialisableTuple() for service in args[ 'services' ] ]
+        args[ 'services' ] = [service.to_serialisable_tuple() for service in args['services']]
         
     
     network_bytes = args.dump_to_network_bytes()
@@ -90,18 +90,18 @@ def DumpToGETQuery( args: dict[ str, object ] ):
         
         del args[ 'subject_identifier' ]
         
-        if subject_identifier.HasAccountKey():
+        if subject_identifier.has_account_key():
             
-            account_key = subject_identifier.GetAccountKey()
+            account_key = subject_identifier.get_account_key()
             
             args[ 'subject_account_key' ] = account_key
             
-        elif subject_identifier.HasContent():
+        elif subject_identifier.has_content():
             
-            content = subject_identifier.GetContent()
+            content = subject_identifier.get_content()
             
-            content_type = content.GetContentType()
-            content_data = content.GetContentData()
+            content_type = content.get_content_type()
+            content_data = content.get_content_data()
             
             if content_type == HC.CONTENT_TYPE_FILES:
                 
@@ -283,14 +283,14 @@ def ParseNetworkBytesToParsedHydrusArgs( network_bytes ):
     
     if 'account' in args:
         
-        args[ 'account' ] = HydrusNetwork.Account.GenerateAccountFromSerialisableTuple( args[ 'account' ] )
+        args[ 'account' ] = HydrusNetwork.Account.generate_account_from_serialisable_tuple(args['account'])
         
     
     if 'accounts' in args:
         
         account_tuples = args[ 'accounts' ]
         
-        args[ 'accounts' ] = [ HydrusNetwork.Account.GenerateAccountFromSerialisableTuple( account_tuple ) for account_tuple in account_tuples ]
+        args[ 'accounts' ] = [HydrusNetwork.Account.generate_account_from_serialisable_tuple(account_tuple) for account_tuple in account_tuples]
         
     
     if 'service_keys_to_access_keys' in args:
@@ -302,7 +302,7 @@ def ParseNetworkBytesToParsedHydrusArgs( network_bytes ):
         
         service_tuples = args[ 'services' ]
         
-        args[ 'services' ] = [ HydrusNetwork.GenerateServiceFromSerialisableTuple( service_tuple ) for service_tuple in service_tuples ]
+        args[ 'services' ] = [HydrusNetwork.generate_service_from_serialisable_tuple(service_tuple) for service_tuple in service_tuples]
         
     
     return args

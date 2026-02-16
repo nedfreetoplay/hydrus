@@ -170,7 +170,7 @@ class DialogGenerateNewAccounts( Dialog ):
         
         for account_type in account_types:
             
-            self._account_types.addItem( account_type.GetTitle(), account_type )
+            self._account_types.addItem(account_type.get_title(), account_type)
             
         
         self._account_types.setCurrentIndex( 0 )
@@ -216,7 +216,7 @@ class DialogGenerateNewAccounts( Dialog ):
         
         account_type = self._account_types.GetValue()
         
-        account_type_key = account_type.GetAccountTypeKey()
+        account_type_key = account_type.get_account_type_key()
         
         lifetime = self._lifetime.GetValue()
         

@@ -1310,7 +1310,7 @@ class RatingPreviewServiceWrapper:
         
         rating_service = CG.client_controller.services_manager.GetService( self._original_service_key )
         
-        self._service_type = rating_service.GetServiceType() if self._service_type is None else self._service_type
+        self._service_type = rating_service.get_service_type() if self._service_type is None else self._service_type
         
         self._service_name = 'example service templated from ' + rating_service.get_name()
         

@@ -182,7 +182,7 @@ class DB( HydrusDB.HydrusDB ):
     
     def _AddService( self, service ):
         
-        ( service_key, service_type, name, port, dictionary ) = service.ToTuple()
+        ( service_key, service_type, name, port, dictionary ) = service.to_tuple()
         
         dictionary_string = dictionary.dump_to_string()
         
@@ -192,7 +192,7 @@ class DB( HydrusDB.HydrusDB ):
         
         #
         
-        service_null_account_type = HydrusNetwork.AccountType.GenerateNullAccountType()
+        service_null_account_type = HydrusNetwork.AccountType.generate_null_account_type()
         
         service_null_account_type_id = self._AddAccountType( service_id, service_null_account_type )
         
@@ -212,7 +212,7 @@ class DB( HydrusDB.HydrusDB ):
         
         #
         
-        service_admin_account_type = HydrusNetwork.AccountType.GenerateAdminAccountType( service_type )
+        service_admin_account_type = HydrusNetwork.AccountType.generate_admin_account_type(service_type)
         
         service_admin_account_type_id = self._AddAccountType( service_id, service_admin_account_type )
         
@@ -438,7 +438,7 @@ class DB( HydrusDB.HydrusDB ):
         
         # set up server admin
         
-        admin_service = HydrusNetwork.GenerateService( HC.SERVER_ADMIN_KEY, HC.SERVER_ADMIN, 'server admin', HC.DEFAULT_SERVER_ADMIN_PORT )
+        admin_service = HydrusNetwork.generate_service(HC.SERVER_ADMIN_KEY, HC.SERVER_ADMIN, 'server admin', HC.DEFAULT_SERVER_ADMIN_PORT)
         
         self._AddService( admin_service ) # this sets up the admin account and a registration token by itself
         
@@ -572,7 +572,7 @@ class DB( HydrusDB.HydrusDB ):
         
         account_type = self._GetAccountType( service_id, account_type_id )
         
-        if account_type.IsNullAccount():
+        if account_type.is_null_account():
             
             result = self._execute('SELECT 1 FROM accounts WHERE account_type_id = ?;', (account_type_id,)).fetchone()
             
@@ -629,7 +629,7 @@ class DB( HydrusDB.HydrusDB ):
         
         dictionary = HydrusSerialisable.create_from_string(dictionary_string)
         
-        return HydrusNetwork.Account.GenerateAccountFromTuple( ( account_key, account_type, created, expires, dictionary ) )
+        return HydrusNetwork.Account.generate_account_from_tuple((account_key, account_type, created, expires, dictionary))
         
     
     def _GetAccountKeyFromContent( self, service_key, content ):
@@ -637,8 +637,8 @@ class DB( HydrusDB.HydrusDB ):
         service_id = self._GetServiceId( service_key )
         service_type = self._GetServiceType( service_id )
         
-        content_type = content.GetContentType()
-        content_data = content.GetContentData()
+        content_type = content.get_content_type()
+        content_data = content.get_content_data()
         
         if content_type == HC.CONTENT_TYPE_FILES:
             
@@ -772,7 +772,7 @@ class DB( HydrusDB.HydrusDB ):
             
             account = HydrusNetwork.Account( account_key, account_type, created, expires )
             
-            ( account_key, account_type, created, expires, dictionary ) = HydrusNetwork.Account.GenerateTupleFromAccount( account )
+            ( account_key, account_type, created, expires, dictionary ) = HydrusNetwork.Account.generate_tuple_from_account(account)
             
             dictionary_string = dictionary.dump_to_string()
             
@@ -812,7 +812,7 @@ class DB( HydrusDB.HydrusDB ):
         
         service_id = self._GetServiceId( service_key )
         
-        subject_account_key = subject_account.GetAccountKey()
+        subject_account_key = subject_account.get_account_key()
         
         subject_account_id = self._GetAccountId( subject_account_key )
         
@@ -883,7 +883,7 @@ class DB( HydrusDB.HydrusDB ):
         
         account_types = [ self._account_type_ids_to_account_types[ account_type_id ] for account_type_id in self._service_ids_to_account_type_ids[ service_id ] ]
         
-        auto_create_account_types = [ account_type for account_type in account_types if account_type.SupportsAutoCreateAccount() ]
+        auto_create_account_types = [account_type for account_type in account_types if account_type.supports_auto_create_account()]
         
         return auto_create_account_types
         
@@ -896,20 +896,20 @@ class DB( HydrusDB.HydrusDB ):
         
         account_type = self._GetAccountType( service_id, account_type_id )
         
-        if not account_type.SupportsAutoCreateAccount():
+        if not account_type.supports_auto_create_account():
             
-            raise HydrusExceptions.BadRequestException( '"{}" accounts do not support auto-creation!'.format( account_type.GetTitle() ) )
+            raise HydrusExceptions.BadRequestException( '"{}" accounts do not support auto-creation!'.format(account_type.get_title()))
             
         
-        if not account_type.CanAutoCreateAccountNow():
+        if not account_type.can_auto_create_account_now():
             
-            raise HydrusExceptions.BadRequestException( 'Please wait a bit--there are no new "{}" accounts available for now!'.format( account_type.GetTitle() ) )
+            raise HydrusExceptions.BadRequestException( 'Please wait a bit--there are no new "{}" accounts available for now!'.format(account_type.get_title()))
             
         
         num = 1
         expires = None
         
-        account_type.ReportAutoCreateAccount()
+        account_type.report_auto_create_account()
         
         self._execute('UPDATE account_types SET dump = ? WHERE service_id = ? AND account_type_id = ?;', (account_type.dump_to_string(), service_id, account_type_id))
         
@@ -1164,7 +1164,7 @@ class DB( HydrusDB.HydrusDB ):
             
             dictionary = HydrusSerialisable.create_from_string(dictionary_string)
             
-            service = HydrusNetwork.GenerateService( service_key, service_type, name, port, dictionary )
+            service = HydrusNetwork.generate_service(service_key, service_type, name, port, dictionary)
             
             services.append( service )
             
@@ -1416,14 +1416,14 @@ class DB( HydrusDB.HydrusDB ):
         
         subject_account = self._GetAccount( service_id, subject_account_id )
         
-        current_account_type_id = self._GetAccountTypeId( service_id, subject_account.GetAccountType().GetAccountTypeKey() )
+        current_account_type_id = self._GetAccountTypeId(service_id, subject_account.get_account_type().get_account_type_key())
         new_account_type_id = self._GetAccountTypeId( service_id, new_account_type_key )
         
         current_account_type = self._GetAccountType( service_id, current_account_type_id )
         
         new_account_type = self._GetAccountType( service_id, new_account_type_id )
         
-        if new_account_type.IsNullAccount():
+        if new_account_type.is_null_account():
             
             raise HydrusExceptions.BadRequestException( 'You cannot reassign anyone to the null account!' )
             
@@ -1434,10 +1434,10 @@ class DB( HydrusDB.HydrusDB ):
         
         HydrusData.print_text(
             'Account {} changed the account type of {} from "{}" to "{}".'.format(
-                admin_account.GetAccountKey().hex(),
+                admin_account.get_account_key().hex(),
                 subject_account_key.hex(),
-                current_account_type.GetTitle(),
-                new_account_type.GetTitle()
+                current_account_type.get_title(),
+                new_account_type.get_title()
             )
         )
         
@@ -1457,7 +1457,7 @@ class DB( HydrusDB.HydrusDB ):
         
         now = HydrusTime.get_now()
         
-        subject_account.Ban( reason, now, expires )
+        subject_account.ban(reason, now, expires)
         
         self._SaveAccounts( service_id, ( subject_account, ) )
         
@@ -1472,7 +1472,7 @@ class DB( HydrusDB.HydrusDB ):
         
         HydrusData.print_text(
             'Account {} banned {} with reason "{}" until "{}".'.format(
-                admin_account.GetAccountKey().hex(),
+                admin_account.get_account_key().hex(),
                 subject_account_key.hex(),
                 reason,
                 HydrusTime.timestamp_to_pretty_expires(expires)
@@ -1493,7 +1493,7 @@ class DB( HydrusDB.HydrusDB ):
         
         service_type = self._GetServiceType( service_id )
         
-        admin_account_key = admin_account.GetAccountKey()
+        admin_account_key = admin_account.get_account_key()
         
         admin_account_id = self._GetAccountId( admin_account_key )
         
@@ -1537,7 +1537,7 @@ class DB( HydrusDB.HydrusDB ):
         
         HydrusData.print_text(
             'Account {} changed the expiration of {} from "{}" to "{}".'.format(
-                admin_account.GetAccountKey().hex(),
+                admin_account.get_account_key().hex(),
                 subject_account_key.hex(),
                 HydrusTime.timestamp_to_pretty_expires(current_expires),
                 HydrusTime.timestamp_to_pretty_expires(new_expires)
@@ -1560,7 +1560,7 @@ class DB( HydrusDB.HydrusDB ):
         
         now = HydrusTime.get_now()
         
-        subject_account.SetMessage( message, now )
+        subject_account.set_message(message, now)
         
         self._SaveAccounts( service_id, ( subject_account, ) )
         
@@ -1577,7 +1577,7 @@ class DB( HydrusDB.HydrusDB ):
         
         HydrusData.print_text(
             m.format(
-                admin_account.GetAccountKey().hex(),
+                admin_account.get_account_key().hex(),
                 subject_account_key.hex()
             )
         )
@@ -1596,7 +1596,7 @@ class DB( HydrusDB.HydrusDB ):
         
         subject_account = self._GetAccount( service_id, subject_account_id )
         
-        subject_account.Unban()
+        subject_account.unban()
         
         self._SaveAccounts( service_id, ( subject_account, ) )
         
@@ -1604,7 +1604,7 @@ class DB( HydrusDB.HydrusDB ):
         
         HydrusData.print_text(
             'Account {} unbanned {}.'.format(
-                admin_account.GetAccountKey().hex(),
+                admin_account.get_account_key().hex(),
                 subject_account_key.hex()
             )
         )
@@ -1614,19 +1614,19 @@ class DB( HydrusDB.HydrusDB ):
         
         current_account_types = self._GetAccountTypes( service_key, admin_account )
         
-        account_types = [ at for at in account_types if not at.IsNullAccount() ]
+        account_types = [at for at in account_types if not at.is_null_account()]
         
-        account_types.extend( [ at for at in current_account_types if at.IsNullAccount() ] )
+        account_types.extend([at for at in current_account_types if at.is_null_account()])
         
         #
         
         service_id = self._GetServiceId( service_key )
         
-        current_account_type_keys_to_account_types = { account_type.GetAccountTypeKey() : account_type for account_type in current_account_types }
+        current_account_type_keys_to_account_types = {account_type.get_account_type_key() : account_type for account_type in current_account_types}
         
         current_account_type_keys = set( current_account_type_keys_to_account_types.keys() )
         
-        future_account_type_keys_to_account_types = { account_type.GetAccountTypeKey() : account_type for account_type in account_types }
+        future_account_type_keys_to_account_types = {account_type.get_account_type_key() : account_type for account_type in account_types}
         
         future_account_type_keys = set( future_account_type_keys_to_account_types.keys() )
         
@@ -1644,7 +1644,7 @@ class DB( HydrusDB.HydrusDB ):
                 raise HydrusExceptions.BadRequestException( 'Was a replacement account_type_key was not in the future account types.' )
                 
             
-            if future_account_type_keys_to_account_types[ deletee_account_type_keys_to_replacement_account_type_keys[ deletee_account_type_key ] ].IsNullAccount():
+            if future_account_type_keys_to_account_types[ deletee_account_type_keys_to_replacement_account_type_keys[ deletee_account_type_key ] ].is_null_account():
                 
                 raise HydrusExceptions.BadRequestException( 'You cannot assign people to the null account!' )
                 
@@ -1655,7 +1655,7 @@ class DB( HydrusDB.HydrusDB ):
         
         for account_type in account_types:
             
-            account_type_key = account_type.GetAccountTypeKey()
+            account_type_key = account_type.get_account_type_key()
             
             if account_type_key not in current_account_type_keys:
                 
@@ -1665,8 +1665,8 @@ class DB( HydrusDB.HydrusDB ):
                 
                 HydrusData.print_text(
                     'Account {} added a new account type, "{}".'.format(
-                        admin_account.GetAccountKey().hex(),
-                        account_type.GetTitle()
+                        admin_account.get_account_key().hex(),
+                        account_type.get_title()
                     )
                 )
                 
@@ -1684,8 +1684,8 @@ class DB( HydrusDB.HydrusDB ):
                     
                     HydrusData.print_text(
                         'Account {} updated the account type, "{}".'.format(
-                            admin_account.GetAccountKey().hex(),
-                            account_type.GetTitle()
+                            admin_account.get_account_key().hex(),
+                            account_type.get_title()
                         )
                     )
                     
@@ -1709,9 +1709,9 @@ class DB( HydrusDB.HydrusDB ):
             
             HydrusData.print_text(
                 'Account {} deleted the account type, "{}", replacing them with "{}".'.format(
-                    admin_account.GetAccountKey().hex(),
-                    deletee_account_type.GetTitle(),
-                    new_account_type.GetTitle()
+                    admin_account.get_account_key().hex(),
+                    deletee_account_type.get_title(),
+                    new_account_type.get_title()
                 )
             )
             
@@ -1726,7 +1726,7 @@ class DB( HydrusDB.HydrusDB ):
         
         current_service_keys = {service_key for ( service_key, ) in self._execute('SELECT service_key FROM services;')}
         
-        future_service_keys = { service.GetServiceKey() for service in services }
+        future_service_keys = {service.get_service_key() for service in services}
         
         for service_key in current_service_keys:
             
@@ -1740,11 +1740,11 @@ class DB( HydrusDB.HydrusDB ):
         
         for service in services:
             
-            service_key = service.GetServiceKey()
+            service_key = service.get_service_key()
             
             if service_key in current_service_keys:
                 
-                ( service_key, service_type, name, port, dictionary ) = service.ToTuple()
+                ( service_key, service_type, name, port, dictionary ) = service.to_tuple()
                 
                 service_id = self._GetServiceId( service_key )
                 
@@ -1778,9 +1778,9 @@ class DB( HydrusDB.HydrusDB ):
             
             self._service_ids_to_account_type_ids[ service_id ].add( account_type_id )
             self._account_type_ids_to_account_types[ account_type_id ] = account_type
-            self._service_ids_to_account_type_keys_to_account_type_ids[ service_id ][ account_type.GetAccountTypeKey() ] = account_type_id
+            self._service_ids_to_account_type_keys_to_account_type_ids[ service_id ][ account_type.get_account_type_key()] = account_type_id
             
-            if account_type.IsNullAccount():
+            if account_type.is_null_account():
                 
                 result = self._execute('SELECT account_id FROM accounts WHERE account_type_id = ?;', (account_type_id,)).fetchone()
                 
@@ -2092,7 +2092,7 @@ class DB( HydrusDB.HydrusDB ):
             
             for update in updates:
                 
-                num_rows = update.GetNumRows()
+                num_rows = update.get_num_rows()
                 
                 if isinstance( update, HydrusNetwork.DefinitionsUpdate ):
                     
@@ -2543,19 +2543,19 @@ class DB( HydrusDB.HydrusDB ):
             
             row = ( HC.DEFINITIONS_TYPE_HASHES, service_hash_id, hash )
             
-            definitions_update_builder.AddRow( row )
+            definitions_update_builder.add_row(row)
             
         
         for ( service_tag_id, tag ) in self._execute('SELECT service_tag_id, tag FROM ' + service_tag_ids_table_name + ' NATURAL JOIN tags WHERE tag_id_timestamp BETWEEN ? AND ?;', (begin, end)):
             
             row = ( HC.DEFINITIONS_TYPE_TAGS, service_tag_id, tag )
             
-            definitions_update_builder.AddRow( row )
+            definitions_update_builder.add_row(row)
             
         
-        definitions_update_builder.Finish()
+        definitions_update_builder.finish()
         
-        updates.extend( definitions_update_builder.GetUpdates() )
+        updates.extend(definitions_update_builder.get_updates())
         
         #
         
@@ -2567,14 +2567,14 @@ class DB( HydrusDB.HydrusDB ):
             
             file_row = ( service_hash_id, size, mime, timestamp, width, height, duration_ms, num_frames, num_words )
             
-            content_update_builder.AddRow( ( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_ADD, file_row ) )
+            content_update_builder.add_row((HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_ADD, file_row))
             
         
         service_hash_ids = [service_hash_id for ( service_hash_id, ) in self._execute('SELECT service_hash_id FROM ' + deleted_files_table_name + ' WHERE file_timestamp BETWEEN ? AND ?;', (begin, end))]
         
         for service_hash_id in service_hash_ids:
             
-            content_update_builder.AddRow( ( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, service_hash_id ) )
+            content_update_builder.add_row((HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, service_hash_id))
             
         
         #
@@ -2589,7 +2589,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 row_weight = len( block_of_service_hash_ids )
                 
-                content_update_builder.AddRow( ( HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_ADD, ( service_tag_id, block_of_service_hash_ids ) ), row_weight )
+                content_update_builder.add_row((HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_ADD, (service_tag_id, block_of_service_hash_ids)), row_weight)
                 
             
         
@@ -2601,7 +2601,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 row_weight = len( block_of_service_hash_ids )
                 
-                content_update_builder.AddRow( ( HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_DELETE, ( service_tag_id, block_of_service_hash_ids ) ), row_weight )
+                content_update_builder.add_row((HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_DELETE, (service_tag_id, block_of_service_hash_ids)), row_weight)
                 
             
         
@@ -2613,14 +2613,14 @@ class DB( HydrusDB.HydrusDB ):
         
         for pair in pairs:
             
-            content_update_builder.AddRow( ( HC.CONTENT_TYPE_TAG_PARENTS, HC.CONTENT_UPDATE_ADD, pair ) )
+            content_update_builder.add_row((HC.CONTENT_TYPE_TAG_PARENTS, HC.CONTENT_UPDATE_ADD, pair))
             
         
         pairs = self._execute('SELECT child_service_tag_id, parent_service_tag_id FROM ' + deleted_tag_parents_table_name + ' WHERE parent_timestamp BETWEEN ? AND ?;', (begin, end)).fetchall()
         
         for pair in pairs:
             
-            content_update_builder.AddRow( ( HC.CONTENT_TYPE_TAG_PARENTS, HC.CONTENT_UPDATE_DELETE, pair ) )
+            content_update_builder.add_row((HC.CONTENT_TYPE_TAG_PARENTS, HC.CONTENT_UPDATE_DELETE, pair))
             
         
         #
@@ -2631,21 +2631,21 @@ class DB( HydrusDB.HydrusDB ):
         
         for pair in pairs:
             
-            content_update_builder.AddRow( ( HC.CONTENT_TYPE_TAG_SIBLINGS, HC.CONTENT_UPDATE_ADD, pair ) )
+            content_update_builder.add_row((HC.CONTENT_TYPE_TAG_SIBLINGS, HC.CONTENT_UPDATE_ADD, pair))
             
         
         pairs = self._execute('SELECT bad_service_tag_id, good_service_tag_id FROM ' + deleted_tag_siblings_table_name + ' WHERE sibling_timestamp BETWEEN ? AND ?;', (begin, end)).fetchall()
         
         for pair in pairs:
             
-            content_update_builder.AddRow( ( HC.CONTENT_TYPE_TAG_SIBLINGS, HC.CONTENT_UPDATE_DELETE, pair ) )
+            content_update_builder.add_row((HC.CONTENT_TYPE_TAG_SIBLINGS, HC.CONTENT_UPDATE_DELETE, pair))
             
         
         #
         
-        content_update_builder.Finish()
+        content_update_builder.finish()
         
-        updates.extend( content_update_builder.GetUpdates() )
+        updates.extend(content_update_builder.get_updates())
         
         return updates
         
@@ -2944,7 +2944,7 @@ class DB( HydrusDB.HydrusDB ):
         petition_header = HydrusNetwork.PetitionHeader(
             content_type = HC.CONTENT_TYPE_FILES,
             status = HC.CONTENT_STATUS_PETITIONED,
-            account_key = petitioner_account.GetAccountKey(),
+            account_key = petitioner_account.get_account_key(),
             reason = reason
         )
         
@@ -3053,7 +3053,7 @@ class DB( HydrusDB.HydrusDB ):
         petition_header = HydrusNetwork.PetitionHeader(
             content_type = HC.CONTENT_TYPE_MAPPINGS,
             status = HC.CONTENT_STATUS_PETITIONED,
-            account_key = petitioner_account.GetAccountKey(),
+            account_key = petitioner_account.get_account_key(),
             reason = reason
         )
         
@@ -3129,24 +3129,24 @@ class DB( HydrusDB.HydrusDB ):
         
         petition_count_info = []
         
-        if account.HasPermission( HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_MODERATE ):
+        if account.has_permission(HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_MODERATE):
             
             petition_count_info.append( ( HC.CONTENT_TYPE_FILES, HC.CONTENT_STATUS_PETITIONED, HC.SERVICE_INFO_NUM_ACTIONABLE_FILE_DELETE_PETITIONS ) )
             
         
-        if account.HasPermission( HC.CONTENT_TYPE_MAPPINGS, HC.PERMISSION_ACTION_MODERATE ):
+        if account.has_permission(HC.CONTENT_TYPE_MAPPINGS, HC.PERMISSION_ACTION_MODERATE):
             
             petition_count_info.append( ( HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_STATUS_PETITIONED, HC.SERVICE_INFO_NUM_ACTIONABLE_MAPPING_DELETE_PETITIONS ) )
             
         
-        if account.HasPermission( HC.CONTENT_TYPE_TAG_PARENTS, HC.PERMISSION_ACTION_MODERATE ):
+        if account.has_permission(HC.CONTENT_TYPE_TAG_PARENTS, HC.PERMISSION_ACTION_MODERATE):
             
             petition_count_info.append( ( HC.CONTENT_TYPE_TAG_PARENTS, HC.CONTENT_STATUS_PENDING, HC.SERVICE_INFO_NUM_ACTIONABLE_PARENT_ADD_PETITIONS ) )
             
             petition_count_info.append( ( HC.CONTENT_TYPE_TAG_PARENTS, HC.CONTENT_STATUS_PETITIONED, HC.SERVICE_INFO_NUM_ACTIONABLE_PARENT_DELETE_PETITIONS ) )
             
         
-        if account.HasPermission( HC.CONTENT_TYPE_TAG_SIBLINGS, HC.PERMISSION_ACTION_MODERATE ):
+        if account.has_permission(HC.CONTENT_TYPE_TAG_SIBLINGS, HC.PERMISSION_ACTION_MODERATE):
             
             petition_count_info.append( ( HC.CONTENT_TYPE_TAG_SIBLINGS, HC.CONTENT_STATUS_PENDING, HC.SERVICE_INFO_NUM_ACTIONABLE_SIBLING_ADD_PETITIONS ) )
             
@@ -3580,7 +3580,7 @@ class DB( HydrusDB.HydrusDB ):
         petition_header = HydrusNetwork.PetitionHeader(
             content_type = HC.CONTENT_TYPE_TAG_PARENTS,
             status = HC.CONTENT_STATUS_PENDING,
-            account_key = petitioner_account.GetAccountKey(),
+            account_key = petitioner_account.get_account_key(),
             reason = reason
         )
         
@@ -3677,7 +3677,7 @@ class DB( HydrusDB.HydrusDB ):
         petition_header = HydrusNetwork.PetitionHeader(
             content_type = HC.CONTENT_TYPE_TAG_PARENTS,
             status = HC.CONTENT_STATUS_PETITIONED,
-            account_key = petitioner_account.GetAccountKey(),
+            account_key = petitioner_account.get_account_key(),
             reason = reason
         )
         
@@ -3749,7 +3749,7 @@ class DB( HydrusDB.HydrusDB ):
         petition_header = HydrusNetwork.PetitionHeader(
             content_type = HC.CONTENT_TYPE_TAG_SIBLINGS,
             status = HC.CONTENT_STATUS_PENDING,
-            account_key = petitioner_account.GetAccountKey(),
+            account_key = petitioner_account.get_account_key(),
             reason = reason
         )
         
@@ -3846,7 +3846,7 @@ class DB( HydrusDB.HydrusDB ):
         petition_header = HydrusNetwork.PetitionHeader(
             content_type = HC.CONTENT_TYPE_TAG_SIBLINGS,
             status = HC.CONTENT_STATUS_PETITIONED,
-            account_key = petitioner_account.GetAccountKey(),
+            account_key = petitioner_account.get_account_key(),
             reason = reason
         )
         
@@ -4154,16 +4154,16 @@ class DB( HydrusDB.HydrusDB ):
     
     def _RepositoryProcessAddFile( self, service, account, file_dict, timestamp ):
         
-        service_key = service.GetServiceKey()
+        service_key = service.get_service_key()
         
         service_id = self._GetServiceId( service_key )
         
-        account_key = account.GetAccountKey()
+        account_key = account.get_account_key()
         
         account_id = self._GetAccountId( account_key )
         
-        can_create_files = account.HasPermission( HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_CREATE )
-        can_moderate_files = account.HasPermission( HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_MODERATE )
+        can_create_files = account.has_permission(HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_CREATE)
+        can_moderate_files = account.has_permission(HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_MODERATE)
         
         # later add pend file here however that is neat
         
@@ -4171,7 +4171,7 @@ class DB( HydrusDB.HydrusDB ):
             
             if not can_moderate_files:
                 
-                max_storage = service.GetMaxStorage()
+                max_storage = service.get_max_storage()
                 
                 if max_storage is not None:
                     
@@ -4206,28 +4206,28 @@ class DB( HydrusDB.HydrusDB ):
         
         service_id = self._GetServiceId( service_key )
         
-        account_key = account.GetAccountKey()
+        account_key = account.get_account_key()
         
         account_id = self._GetAccountId( account_key )
         
-        can_petition_files = account.HasPermission( HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_PETITION )
-        can_moderate_files = account.HasPermission( HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_MODERATE )
+        can_petition_files = account.has_permission(HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_PETITION)
+        can_moderate_files = account.has_permission(HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_MODERATE)
         
-        can_petition_mappings = account.HasPermission( HC.CONTENT_TYPE_MAPPINGS, HC.PERMISSION_ACTION_PETITION )
-        can_create_mappings = account.HasPermission( HC.CONTENT_TYPE_MAPPINGS, HC.PERMISSION_ACTION_CREATE )
-        can_moderate_mappings = account.HasPermission( HC.CONTENT_TYPE_MAPPINGS, HC.PERMISSION_ACTION_MODERATE )
+        can_petition_mappings = account.has_permission(HC.CONTENT_TYPE_MAPPINGS, HC.PERMISSION_ACTION_PETITION)
+        can_create_mappings = account.has_permission(HC.CONTENT_TYPE_MAPPINGS, HC.PERMISSION_ACTION_CREATE)
+        can_moderate_mappings = account.has_permission(HC.CONTENT_TYPE_MAPPINGS, HC.PERMISSION_ACTION_MODERATE)
         
-        can_petition_tag_parents = account.HasPermission( HC.CONTENT_TYPE_TAG_PARENTS, HC.PERMISSION_ACTION_PETITION )
-        can_create_tag_parents = account.HasPermission( HC.CONTENT_TYPE_TAG_PARENTS, HC.PERMISSION_ACTION_CREATE )
-        can_moderate_tag_parents = account.HasPermission( HC.CONTENT_TYPE_TAG_PARENTS, HC.PERMISSION_ACTION_MODERATE )
+        can_petition_tag_parents = account.has_permission(HC.CONTENT_TYPE_TAG_PARENTS, HC.PERMISSION_ACTION_PETITION)
+        can_create_tag_parents = account.has_permission(HC.CONTENT_TYPE_TAG_PARENTS, HC.PERMISSION_ACTION_CREATE)
+        can_moderate_tag_parents = account.has_permission(HC.CONTENT_TYPE_TAG_PARENTS, HC.PERMISSION_ACTION_MODERATE)
         
-        can_petition_tag_siblings = account.HasPermission( HC.CONTENT_TYPE_TAG_SIBLINGS, HC.PERMISSION_ACTION_PETITION )
-        can_create_tag_siblings = account.HasPermission( HC.CONTENT_TYPE_TAG_SIBLINGS, HC.PERMISSION_ACTION_CREATE )
-        can_moderate_tag_siblings = account.HasPermission( HC.CONTENT_TYPE_TAG_SIBLINGS, HC.PERMISSION_ACTION_MODERATE )
+        can_petition_tag_siblings = account.has_permission(HC.CONTENT_TYPE_TAG_SIBLINGS, HC.PERMISSION_ACTION_PETITION)
+        can_create_tag_siblings = account.has_permission(HC.CONTENT_TYPE_TAG_SIBLINGS, HC.PERMISSION_ACTION_CREATE)
+        can_moderate_tag_siblings = account.has_permission(HC.CONTENT_TYPE_TAG_SIBLINGS, HC.PERMISSION_ACTION_MODERATE)
         
         if can_moderate_files or can_petition_files:
             
-            for ( hashes, reason ) in client_to_server_update.GetContentDataIterator( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_PETITION ):
+            for ( hashes, reason ) in client_to_server_update.get_content_data_iterator(HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_PETITION):
                 
                 master_hash_ids = self._GetMasterHashIds( hashes )
                 
@@ -4248,7 +4248,7 @@ class DB( HydrusDB.HydrusDB ):
         
         if can_moderate_files:
             
-            for ( hashes, reason ) in client_to_server_update.GetContentDataIterator( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DENY_PETITION ):
+            for ( hashes, reason ) in client_to_server_update.get_content_data_iterator(HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DENY_PETITION):
                 
                 master_hash_ids = self._GetMasterHashIds( hashes )
                 
@@ -4264,7 +4264,7 @@ class DB( HydrusDB.HydrusDB ):
         
         if can_create_mappings or can_moderate_mappings:
             
-            for ( ( tag, hashes ), reason ) in client_to_server_update.GetContentDataIterator( HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_PEND ):
+            for ( ( tag, hashes ), reason ) in client_to_server_update.get_content_data_iterator(HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_PEND):
                 
                 try:
                     
@@ -4285,7 +4285,7 @@ class DB( HydrusDB.HydrusDB ):
         
         if can_moderate_mappings or can_petition_mappings:
             
-            for ( ( tag, hashes ), reason ) in client_to_server_update.GetContentDataIterator( HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_PETITION ):
+            for ( ( tag, hashes ), reason ) in client_to_server_update.get_content_data_iterator(HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_PETITION):
                 
                 try:
                     
@@ -4317,7 +4317,7 @@ class DB( HydrusDB.HydrusDB ):
         
         if can_moderate_mappings:
             
-            for ( ( tag, hashes ), reason ) in client_to_server_update.GetContentDataIterator( HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_DENY_PETITION ):
+            for ( ( tag, hashes ), reason ) in client_to_server_update.get_content_data_iterator(HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_DENY_PETITION):
                 
                 try:
                     
@@ -4342,7 +4342,7 @@ class DB( HydrusDB.HydrusDB ):
         
         if can_create_tag_parents or can_moderate_tag_parents or can_petition_tag_parents:
             
-            for ( ( child_tag, parent_tag ), reason ) in client_to_server_update.GetContentDataIterator( HC.CONTENT_TYPE_TAG_PARENTS, HC.CONTENT_UPDATE_PEND ):
+            for ( ( child_tag, parent_tag ), reason ) in client_to_server_update.get_content_data_iterator(HC.CONTENT_TYPE_TAG_PARENTS, HC.CONTENT_UPDATE_PEND):
                 
                 try:
                     
@@ -4368,7 +4368,7 @@ class DB( HydrusDB.HydrusDB ):
                     
                 
             
-            for ( ( child_tag, parent_tag ), reason ) in client_to_server_update.GetContentDataIterator( HC.CONTENT_TYPE_TAG_PARENTS, HC.CONTENT_UPDATE_PETITION ):
+            for ( ( child_tag, parent_tag ), reason ) in client_to_server_update.get_content_data_iterator(HC.CONTENT_TYPE_TAG_PARENTS, HC.CONTENT_UPDATE_PETITION):
                 
                 try:
                     
@@ -4398,7 +4398,7 @@ class DB( HydrusDB.HydrusDB ):
         
         if can_moderate_tag_parents:
             
-            for ( ( child_tag, parent_tag ), reason ) in client_to_server_update.GetContentDataIterator( HC.CONTENT_TYPE_TAG_PARENTS, HC.CONTENT_UPDATE_DENY_PEND ):
+            for ( ( child_tag, parent_tag ), reason ) in client_to_server_update.get_content_data_iterator(HC.CONTENT_TYPE_TAG_PARENTS, HC.CONTENT_UPDATE_DENY_PEND):
                 
                 try:
                     
@@ -4413,7 +4413,7 @@ class DB( HydrusDB.HydrusDB ):
                 self._RepositoryDenyTagParentPend( service_id, child_master_tag_id, parent_master_tag_id )
                 
             
-            for ( ( child_tag, parent_tag ), reason ) in client_to_server_update.GetContentDataIterator( HC.CONTENT_TYPE_TAG_PARENTS, HC.CONTENT_UPDATE_DENY_PETITION ):
+            for ( ( child_tag, parent_tag ), reason ) in client_to_server_update.get_content_data_iterator(HC.CONTENT_TYPE_TAG_PARENTS, HC.CONTENT_UPDATE_DENY_PETITION):
                 
                 try:
                     
@@ -4438,7 +4438,7 @@ class DB( HydrusDB.HydrusDB ):
             
             # do delete before pend for petitions, since bad_tag is primary key!
             
-            for ( ( bad_tag, good_tag ), reason ) in client_to_server_update.GetContentDataIterator( HC.CONTENT_TYPE_TAG_SIBLINGS, HC.CONTENT_UPDATE_PETITION ):
+            for ( ( bad_tag, good_tag ), reason ) in client_to_server_update.get_content_data_iterator(HC.CONTENT_TYPE_TAG_SIBLINGS, HC.CONTENT_UPDATE_PETITION):
                 
                 try:
                     
@@ -4465,7 +4465,7 @@ class DB( HydrusDB.HydrusDB ):
                     
                 
             
-            for ( ( bad_tag, good_tag ), reason ) in client_to_server_update.GetContentDataIterator( HC.CONTENT_TYPE_TAG_SIBLINGS, HC.CONTENT_UPDATE_PEND ):
+            for ( ( bad_tag, good_tag ), reason ) in client_to_server_update.get_content_data_iterator(HC.CONTENT_TYPE_TAG_SIBLINGS, HC.CONTENT_UPDATE_PEND):
                 
                 try:
                     
@@ -4494,7 +4494,7 @@ class DB( HydrusDB.HydrusDB ):
         
         if can_moderate_tag_siblings:
             
-            for ( ( bad_tag, good_tag ), reason ) in client_to_server_update.GetContentDataIterator( HC.CONTENT_TYPE_TAG_SIBLINGS, HC.CONTENT_UPDATE_DENY_PEND ):
+            for ( ( bad_tag, good_tag ), reason ) in client_to_server_update.get_content_data_iterator(HC.CONTENT_TYPE_TAG_SIBLINGS, HC.CONTENT_UPDATE_DENY_PEND):
                 
                 try:
                     
@@ -4509,7 +4509,7 @@ class DB( HydrusDB.HydrusDB ):
                 self._RepositoryDenyTagSiblingPend( service_id, bad_master_tag_id, good_master_tag_id )
                 
             
-            for ( ( bad_tag, good_tag ), reason ) in client_to_server_update.GetContentDataIterator( HC.CONTENT_TYPE_TAG_SIBLINGS, HC.CONTENT_UPDATE_DENY_PETITION ):
+            for ( ( bad_tag, good_tag ), reason ) in client_to_server_update.get_content_data_iterator(HC.CONTENT_TYPE_TAG_SIBLINGS, HC.CONTENT_UPDATE_DENY_PETITION):
                 
                 try:
                     
@@ -4893,13 +4893,13 @@ class DB( HydrusDB.HydrusDB ):
         
         for account in accounts:
             
-            ( account_key, account_type, created, expires, dictionary ) = HydrusNetwork.Account.GenerateTupleFromAccount( account )
+            ( account_key, account_type, created, expires, dictionary ) = HydrusNetwork.Account.generate_tuple_from_account(account)
             
             dictionary_string = dictionary.dump_to_string()
             
             self._execute('UPDATE accounts SET dictionary_string = ? WHERE account_key = ?;', (dictionary_string, sqlite3.Binary(account_key)))
             
-            account.SetClean()
+            account.set_clean()
             
         
     
@@ -4922,13 +4922,13 @@ class DB( HydrusDB.HydrusDB ):
         
         for service in services:
             
-            ( service_key, service_type, name, port, dictionary ) = service.ToTuple()
+            ( service_key, service_type, name, port, dictionary ) = service.to_tuple()
             
             dictionary_string = dictionary.dump_to_string()
             
             self._execute('UPDATE services SET dictionary_string = ? WHERE service_key = ?;', (dictionary_string, sqlite3.Binary(service_key)))
             
-            service.SetClean()
+            service.set_clean()
             
         
     
@@ -4966,7 +4966,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 service_key = self._GetServiceKey( service_id )
                 
-                service_null_account_type = HydrusNetwork.AccountType.GenerateNullAccountType()
+                service_null_account_type = HydrusNetwork.AccountType.generate_null_account_type()
                 
                 service_null_account_type_id = self._AddAccountType( service_id, service_null_account_type )
                 

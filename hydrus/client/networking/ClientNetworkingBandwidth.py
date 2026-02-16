@@ -239,7 +239,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
                 
                 network_context = ClientNetworkingContexts.NetworkContext( CC.NETWORK_CONTEXT_DOMAIN, domain )
                 
-                bandwidth_rules = domain_metadata.GetBandwidthRules()
+                bandwidth_rules = domain_metadata.get_bandwidth_rules()
                 
                 self._network_contexts_to_bandwidth_rules[ network_context ] = bandwidth_rules
                 

@@ -132,7 +132,7 @@ class HydrusSessionManagerServer( object ):
             
             for ( service_key, account_keys_to_accounts ) in self._service_keys_to_account_keys_to_accounts.items():
                 
-                dirty_accounts = [ account_key for account_key in account_keys_to_accounts.values() if account_key.IsDirty() ]
+                dirty_accounts = [account_key for account_key in account_keys_to_accounts.values() if account_key.is_dirty()]
                 
                 if len( dirty_accounts ) > 0:
                     
@@ -191,7 +191,7 @@ class HydrusSessionManagerServer( object ):
             
             for ( session_key, service_key, account, hashed_access_key, expires ) in existing_sessions:
                 
-                account_key = account.GetAccountKey()
+                account_key = account.get_account_key()
                 
                 self._service_keys_to_session_keys_to_sessions[ service_key ][ session_key ] = ( account_key, expires )
                 
@@ -216,7 +216,7 @@ class HydrusSessionManagerServer( object ):
             
             for account in accounts:
                 
-                account_keys_to_accounts[ account.GetAccountKey() ] = account
+                account_keys_to_accounts[ account.get_account_key()] = account
                 
             
         

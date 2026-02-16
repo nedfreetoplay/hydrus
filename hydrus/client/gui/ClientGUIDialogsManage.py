@@ -228,7 +228,7 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
                 
                 name = service.get_name()
                 
-                service_key = service.GetServiceKey()
+                service_key = service.get_service_key()
                 
                 ( rating_state, rating ) = ClientRatings.GetIncDecStateFromMedia( self._media, service_key )
                 
@@ -353,7 +353,7 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
                 
                 name = service.get_name()
                 
-                service_key = service.GetServiceKey()
+                service_key = service.get_service_key()
                 
                 rating_state = ClientRatings.GetLikeStateFromMedia( self._media, service_key )
                 
@@ -501,7 +501,7 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
                 
                 name = service.get_name()
                 
-                service_key = service.GetServiceKey()
+                service_key = service.get_service_key()
                 
                 ( rating_state, rating ) = ClientRatings.GetNumericalStateFromMedia( self._media, service_key )
                 

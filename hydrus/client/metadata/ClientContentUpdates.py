@@ -11,9 +11,9 @@ def ConvertClientToServerUpdateToContentUpdates( client_to_server_update: Hydrus
     
     content_updates = []
     
-    for ( action, content, reason ) in client_to_server_update.IterateAllActionsAndContentsAndReasons():
+    for ( action, content, reason ) in client_to_server_update.iterate_all_actions_and_contents_and_reasons():
         
-        content_type = content.GetContentType()
+        content_type = content.get_content_type()
         
         if action == HC.CONTENT_UPDATE_PEND:
             
@@ -28,7 +28,7 @@ def ConvertClientToServerUpdateToContentUpdates( client_to_server_update: Hydrus
             continue
             
         
-        row = content.GetContentData()
+        row = content.get_content_data()
         
         content_update = ContentUpdate( content_type, content_update_action, row, reason = reason )
         
@@ -354,7 +354,7 @@ class ContentUpdatePackage( object ):
                 continue
                 
             
-            if service.GetServiceType() == HC.LOCAL_TAG:
+            if service.get_service_type() == HC.LOCAL_TAG:
                 
                 action = HC.CONTENT_UPDATE_ADD
                 
@@ -438,7 +438,7 @@ class ContentUpdatePackage( object ):
             
             for content_update in content_updates:
                 
-                ( data_type, action, row ) = content_update.ToTuple()
+                ( data_type, action, row ) = content_update.to_tuple()
                 
                 if data_type == HC.CONTENT_TYPE_MAPPINGS:
                     

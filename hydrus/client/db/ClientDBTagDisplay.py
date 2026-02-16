@@ -284,7 +284,7 @@ class ClientDBTagDisplay( ClientDBModule.ClientDBModule ):
             
             tag_services = self.modules_services.GetServices( HC.REAL_TAG_SERVICES )
             
-            search_service_keys = [ tag_service.GetServiceKey() for tag_service in tag_services ]
+            search_service_keys = [tag_service.get_service_key() for tag_service in tag_services]
             
         else:
             
@@ -440,7 +440,7 @@ class ClientDBTagDisplay( ClientDBModule.ClientDBModule ):
         
         tag_services = self.modules_services.GetServices( HC.REAL_TAG_SERVICES )
         
-        service_keys = [ tag_service.GetServiceKey() for tag_service in tag_services ]
+        service_keys = [tag_service.get_service_key() for tag_service in tag_services]
         
         tags_to_service_keys_to_siblings_and_parents = {}
         

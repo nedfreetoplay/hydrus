@@ -273,7 +273,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
         
         try:
             
-            gug.CheckFunctional()
+            gug.check_functional()
             
         except HydrusExceptions.ParseException as e:
             
@@ -1151,7 +1151,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                             
                             content_update_package = query_tag_import_options.GetContentUpdatePackage( file_seed.status, media_result, downloaded_tags ) # additional tags
                             
-                            if content_update_package.HasContent():
+                            if content_update_package.has_content():
                                 
                                 CG.client_controller.write_synchronous('content_updates', content_update_package)
                                 

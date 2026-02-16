@@ -57,9 +57,9 @@ class TestServer( unittest.TestCase ):
         
         cls._access_key = HydrusData.generate_key()
         
-        cls._serverside_file_service = HydrusNetwork.GenerateService(HydrusData.generate_key(), HC.FILE_REPOSITORY, 'file repo', HC.DEFAULT_SERVICE_PORT + 1)
-        cls._serverside_tag_service = HydrusNetwork.GenerateService(HydrusData.generate_key(), HC.TAG_REPOSITORY, 'tag repo', HC.DEFAULT_SERVICE_PORT)
-        cls._serverside_admin_service = HydrusNetwork.GenerateService(HydrusData.generate_key(), HC.SERVER_ADMIN, 'server admin', HC.DEFAULT_SERVER_ADMIN_PORT)
+        cls._serverside_file_service = HydrusNetwork.generate_service(HydrusData.generate_key(), HC.FILE_REPOSITORY, 'file repo', HC.DEFAULT_SERVICE_PORT + 1)
+        cls._serverside_tag_service = HydrusNetwork.generate_service(HydrusData.generate_key(), HC.TAG_REPOSITORY, 'tag repo', HC.DEFAULT_SERVICE_PORT)
+        cls._serverside_admin_service = HydrusNetwork.generate_service(HydrusData.generate_key(), HC.SERVER_ADMIN, 'server admin', HC.DEFAULT_SERVER_ADMIN_PORT)
         
         cls._clientside_file_service = ClientServices.GenerateService(HydrusData.generate_key(), HC.FILE_REPOSITORY, 'file repo')
         cls._clientside_tag_service = ClientServices.GenerateService(HydrusData.generate_key(), HC.TAG_REPOSITORY, 'tag repo')
@@ -71,12 +71,12 @@ class TestServer( unittest.TestCase ):
         
         services_manager = TG.test_controller.services_manager
         
-        services_manager._keys_to_services[ cls._clientside_file_service.GetServiceKey() ] = cls._clientside_file_service
-        services_manager._keys_to_services[ cls._clientside_tag_service.GetServiceKey() ] = cls._clientside_tag_service
-        services_manager._keys_to_services[ cls._clientside_admin_service.GetServiceKey() ] = cls._clientside_admin_service
+        services_manager._keys_to_services[ cls._clientside_file_service.get_service_key()] = cls._clientside_file_service
+        services_manager._keys_to_services[ cls._clientside_tag_service.get_service_key()] = cls._clientside_tag_service
+        services_manager._keys_to_services[ cls._clientside_admin_service.get_service_key()] = cls._clientside_admin_service
         
         account_key = HydrusData.generate_key()
-        account_type = HydrusNetwork.AccountType.GenerateAdminAccountType( HC.SERVER_ADMIN )
+        account_type = HydrusNetwork.AccountType.generate_admin_account_type(HC.SERVER_ADMIN)
         created = HydrusTime.get_now() - 100000
         expires = None
         
@@ -234,13 +234,13 @@ class TestServer( unittest.TestCase ):
         
         test_hash = HydrusData.generate_key()
         
-        TG.test_controller.SetRead( 'account_key_from_content', self._account.GetAccountKey() )
+        TG.test_controller.SetRead( 'account_key_from_content', self._account.get_account_key())
         
         content = HydrusNetwork.Content( content_type = HC.CONTENT_TYPE_FILES, content_data = ( test_hash, ) )
         
         response = service.Request( HC.GET, 'account_key_from_content', { 'subject_content' : content } )
         
-        self.assertEqual( repr( response[ 'subject_account_key' ] ), repr( self._account.GetAccountKey() ) )
+        self.assertEqual(repr( response[ 'subject_account_key' ] ), repr(self._account.get_account_key()))
         
         # thumbnail
         
@@ -269,7 +269,7 @@ class TestServer( unittest.TestCase ):
     
     def _test_repo( self, service ):
         
-        service_key = service.GetServiceKey()
+        service_key = service.get_service_key()
         
         # num_petitions
         
@@ -283,14 +283,14 @@ class TestServer( unittest.TestCase ):
         
         # petition
         
-        petitioner_account = HydrusNetwork.Account.GenerateUnknownAccount(HydrusData.generate_key())
+        petitioner_account = HydrusNetwork.Account.generate_unknown_account(HydrusData.generate_key())
         reason = 'it sucks'
         actions_and_contents = ( HC.CONTENT_UPDATE_PETITION, [HydrusNetwork.Content(HC.CONTENT_TYPE_FILES, [HydrusData.generate_key() for i in range(10)])])
         
         petition_header = HydrusNetwork.PetitionHeader(
             content_type = HC.CONTENT_TYPE_FILES,
             status = HC.CONTENT_STATUS_PETITIONED,
-            account_key = petitioner_account.GetAccountKey(),
+            account_key = petitioner_account.get_account_key(),
             reason = reason
         )
         
@@ -304,7 +304,7 @@ class TestServer( unittest.TestCase ):
         
         TG.test_controller.SetRead( 'petition', petition )
         
-        response = service.Request( HC.GET, 'petition', { 'content_type' : HC.CONTENT_TYPE_FILES, 'status' : HC.CONTENT_UPDATE_PETITION, 'account_key' : petitioner_account.GetAccountKey(), reason : reason } )
+        response = service.Request(HC.GET, 'petition', { 'content_type' : HC.CONTENT_TYPE_FILES, 'status' : HC.CONTENT_UPDATE_PETITION, 'account_key' : petitioner_account.get_account_key(), reason : reason})
         
         self.assertEqual(response[ 'petition' ].get_serialisable_tuple(), petition.get_serialisable_tuple())
         
@@ -314,8 +314,8 @@ class TestServer( unittest.TestCase ):
         
         for i in range( 100, 200 ):
             
-            definitions_update.AddRow( ( HC.DEFINITIONS_TYPE_TAGS, i, 'series:test ' + str( i ) ) )
-            definitions_update.AddRow(( HC.DEFINITIONS_TYPE_HASHES, i + 500, HydrusData.generate_key()))
+            definitions_update.add_row((HC.DEFINITIONS_TYPE_TAGS, i, 'series:test ' + str(i)))
+            definitions_update.add_row((HC.DEFINITIONS_TYPE_HASHES, i + 500, HydrusData.generate_key()))
             
         
         definitions_update_network_bytes = definitions_update.dump_to_network_bytes()
@@ -352,7 +352,7 @@ class TestServer( unittest.TestCase ):
         
         for row in rows:
             
-            content_update.AddRow( ( HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_ADD, row ) )
+            content_update.add_row((HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_ADD, row))
             
         
         content_update_network_bytes = content_update.dump_to_network_bytes()
@@ -383,7 +383,7 @@ class TestServer( unittest.TestCase ):
         
         metadata = HydrusNetwork.Metadata()
         
-        metadata.AppendUpdate([ definitions_update_hash, content_update_hash ], HydrusTime.get_now() - 101000, HydrusTime.get_now() - 1000, HydrusTime.get_now() + 100000)
+        metadata.append_update([definitions_update_hash, content_update_hash], HydrusTime.get_now() - 101000, HydrusTime.get_now() - 1000, HydrusTime.get_now() + 100000)
         
         service._metadata = metadata
         
@@ -443,7 +443,7 @@ class TestServer( unittest.TestCase ):
         
         TG.test_controller.SetRead( 'account', self._account )
         
-        response = service.Request( HC.GET, 'other_account', { 'subject_account_key' : self._account.GetAccountKey() } )
+        response = service.Request(HC.GET, 'other_account', { 'subject_account_key' : self._account.get_account_key()})
         
         self.assertEqual( repr( response[ 'account' ] ), repr( self._account ) )
         
@@ -459,7 +459,7 @@ class TestServer( unittest.TestCase ):
         
         # account_types
         
-        account_types = [ HydrusNetwork.AccountType.GenerateAdminAccountType( service.GetServiceType() ) ]
+        account_types = [HydrusNetwork.AccountType.generate_admin_account_type(service.get_service_type())]
         
         TG.test_controller.SetRead( 'account_types', account_types )
         
@@ -467,9 +467,9 @@ class TestServer( unittest.TestCase ):
         
         response = service.Request( HC.GET, 'account_types' )
         
-        self.assertEqual( response[ 'account_types' ][0].GetAccountTypeKey(), account_types[0].GetAccountTypeKey() )
+        self.assertEqual(response[ 'account_types' ][0].get_account_type_key(), account_types[0].get_account_type_key())
         
-        empty_account_type = HydrusNetwork.AccountType.GenerateNewAccountType( 'empty account', {}, HydrusNetworking.BandwidthRules() )
+        empty_account_type = HydrusNetwork.AccountType.generate_new_account_type('empty account', {}, HydrusNetworking.BandwidthRules())
         
         account_types.append( empty_account_type )
         
@@ -481,7 +481,7 @@ class TestServer( unittest.TestCase ):
         
         ( written_service_key, written_account, written_account_types, written_deletee_account_type_keys_to_new_account_type_keys ) = args
         
-        self.assertEqual( { wat.GetAccountTypeKey() for wat in written_account_types }, { at.GetAccountTypeKey() for at in account_types } )
+        self.assertEqual({wat.get_account_type_key() for wat in written_account_types}, {at.get_account_type_key() for at in account_types})
         self.assertEqual( written_deletee_account_type_keys_to_new_account_type_keys, {} )
         
         # registration_keys
@@ -542,13 +542,13 @@ class TestServer( unittest.TestCase ):
         test_tag = 'character:samus aran'
         test_hash = HydrusData.generate_key()
         
-        TG.test_controller.SetRead( 'account_key_from_content', self._account.GetAccountKey() )
+        TG.test_controller.SetRead( 'account_key_from_content', self._account.get_account_key())
         
         content = HydrusNetwork.Content( content_type = HC.CONTENT_TYPE_MAPPING, content_data = ( test_tag, test_hash ) )
         
         response = service.Request( HC.GET, 'account_key_from_content', { 'subject_content' : content } )
         
-        self.assertEqual( repr( response[ 'subject_account_key' ] ), repr( self._account.GetAccountKey() ) )
+        self.assertEqual(repr( response[ 'subject_account_key' ] ), repr(self._account.get_account_key()))
         
     
     def test_repository_file( self ):

@@ -113,7 +113,7 @@ class APIManager( HydrusSerialisable.SerialisableBase ):
         
         with self._lock:
             
-            self._access_keys_to_permissions[ api_permissions.GetAccessKey() ] = api_permissions
+            self._access_keys_to_permissions[ api_permissions.get_access_key()] = api_permissions
             
             self._SetDirty()
             
@@ -225,7 +225,7 @@ class APIManager( HydrusSerialisable.SerialisableBase ):
         
         with self._lock:
             
-            self._access_keys_to_permissions = { api_permissions.GetAccessKey() : api_permissions for api_permissions in api_permissions_objects }
+            self._access_keys_to_permissions = {api_permissions.get_access_key() : api_permissions for api_permissions in api_permissions_objects}
             
             self._SetDirty()
             

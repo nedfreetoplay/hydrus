@@ -2107,7 +2107,7 @@ class EditLoginStepPanel( ClientGUIScrolledPanels.EditPanel ):
         
         name = login_step.get_name()
         
-        ( scheme, method, subdomain, path, required_credentials, static_args, temp_args, required_cookies_info, content_parsers ) = login_step.ToTuple()
+        ( scheme, method, subdomain, path, required_credentials, static_args, temp_args, required_cookies_info, content_parsers ) = login_step.to_tuple()
         
         #
         

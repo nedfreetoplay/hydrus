@@ -719,7 +719,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                         
                     
                 
-                if not obj.IsDirty():
+                if not obj.is_dirty():
                     
                     return
                     
@@ -745,7 +745,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                         
                     
                 
-                if not obj.IsDirty():
+                if not obj.is_dirty():
                     
                     return
                     

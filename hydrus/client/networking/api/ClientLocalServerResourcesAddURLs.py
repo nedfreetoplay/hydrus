@@ -20,7 +20,7 @@ class HydrusResourceClientAPIRestrictedAddURLs( ClientLocalServerResources.Hydru
     
     def _CheckAPIPermissions( self, request: HydrusServerRequest.HydrusRequest ):
         
-        request.client_api_permissions.CheckPermission( ClientAPI.CLIENT_API_PERMISSION_ADD_URLS )
+        request.client_api_permissions.check_permission(ClientAPI.CLIENT_API_PERMISSION_ADD_URLS)
         
     
 
@@ -244,7 +244,7 @@ class HydrusResourceClientAPIRestrictedAddURLsImportURL( HydrusResourceClientAPI
         
         if 'filterable_tags' in request.parsed_request_args:
             
-            request.client_api_permissions.CheckPermission( ClientAPI.CLIENT_API_PERMISSION_ADD_TAGS )
+            request.client_api_permissions.check_permission(ClientAPI.CLIENT_API_PERMISSION_ADD_TAGS)
             
             filterable_tags = request.parsed_request_args.GetValue( 'filterable_tags', list, expected_list_type = str )
             
@@ -257,7 +257,7 @@ class HydrusResourceClientAPIRestrictedAddURLsImportURL( HydrusResourceClientAPI
             
             service_keys_to_additional_tags = request.parsed_request_args.GetValue( 'service_keys_to_additional_tags', dict )
             
-            request.client_api_permissions.CheckPermission( ClientAPI.CLIENT_API_PERMISSION_ADD_TAGS )
+            request.client_api_permissions.check_permission(ClientAPI.CLIENT_API_PERMISSION_ADD_TAGS)
             
             for ( service_key, tags ) in service_keys_to_additional_tags.items():
                 

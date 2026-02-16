@@ -1180,7 +1180,7 @@ class ReviewNetworkContextBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
             
         
-        rule_rows = self._bandwidth_rules.GetBandwidthStringsAndGaugeTuples( self._bandwidth_tracker, threshold = 0 )
+        rule_rows = self._bandwidth_rules.get_bandwidth_strings_and_gauge_tuples(self._bandwidth_tracker, threshold = 0)
         
         if rule_rows != self._last_fetched_rule_rows:
             

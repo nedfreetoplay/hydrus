@@ -339,7 +339,7 @@ class TagSuggestionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             tag_slice = tag_slice + ':'
             
         
-        existing_tag_slices = { existing_tag_slice for ( existing_tag_slice, existing_weight ) in list_ctrl.GetData() }
+        existing_tag_slices = {existing_tag_slice for ( existing_tag_slice, existing_weight ) in list_ctrl.get_data()}
         
         if tag_slice in existing_tag_slices:
             
@@ -381,7 +381,7 @@ class TagSuggestionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def _CanDeleteTagSliceWeight( self, list_ctrl ) -> bool:
         
-        selected_tag_slices_and_weights = list_ctrl.GetData( only_selected = True )
+        selected_tag_slices_and_weights = list_ctrl.get_data(only_selected = True)
         
         for ( tag_slice, weight ) in selected_tag_slices_and_weights:
             

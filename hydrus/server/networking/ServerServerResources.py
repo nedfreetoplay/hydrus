@@ -275,7 +275,7 @@ class HydrusResourceRestricted( HydrusResourceHydrusNetwork ):
     
     def _checkAccount( self, request: HydrusServerRequest.HydrusRequest ):
         
-        request.hydrus_account.CheckFunctional()
+        request.hydrus_account.check_functional()
         
         return request
         
@@ -287,7 +287,7 @@ class HydrusResourceRestricted( HydrusResourceHydrusNetwork ):
     
     def _checkBandwidth( self, request: HydrusServerRequest.HydrusRequest ):
         
-        if not self._service.BandwidthOK():
+        if not self._service.bandwidth_ok():
             
             raise HydrusExceptions.BandwidthException( 'This service has run out of bandwidth. Please try again later.' )
             
@@ -372,11 +372,11 @@ class HydrusResourceRestrictedOptions( HydrusResourceRestricted ):
         # so now this is just 'get the primitives' request, and it comes back as a straight up JSON dict
         # anything serialisable can be its own request and can have separate deserialisation error handling
         
-        if self._service.GetServiceType() in HC.REPOSITORIES:
+        if self._service.get_service_type() in HC.REPOSITORIES:
             
             service_options = {
-                'update_period' : self._service.GetUpdatePeriod(),
-                'nullification_period' : self._service.GetNullificationPeriod()
+                'update_period' : self._service.get_update_period(),
+                'nullification_period' : self._service.get_nullification_period()
             }
             
         else:
@@ -396,7 +396,7 @@ class HydrusResourceRestrictedOptionsModify( HydrusResourceRestricted ):
     
     def _checkAccountPermissions( self, request: HydrusServerRequest.HydrusRequest ):
         
-        request.hydrus_account.CheckPermission( HC.CONTENT_TYPE_OPTIONS, HC.PERMISSION_ACTION_MODERATE )
+        request.hydrus_account.check_permission(HC.CONTENT_TYPE_OPTIONS, HC.PERMISSION_ACTION_MODERATE)
         
     
 
@@ -416,15 +416,15 @@ class HydrusResourceRestrictedOptionsModifyNullificationPeriod( HydrusResourceRe
             raise HydrusExceptions.BadRequestException( 'The anonymisation period was too high. It needs to be lower than {}.'.format(HydrusTime.time_delta_to_pretty_time_delta(HydrusNetwork.MAX_NULLIFICATION_PERIOD)))
             
         
-        old_nullification_period = self._service.GetNullificationPeriod()
+        old_nullification_period = self._service.get_nullification_period()
         
         if old_nullification_period != nullification_period:
             
-            self._service.SetNullificationPeriod( nullification_period )
+            self._service.set_nullification_period(nullification_period)
             
             HydrusData.print_text(
                 'Account {} changed the anonymisation period from "{}" to "{}".'.format(
-                    request.hydrus_account.GetAccountKey().hex(),
+                    request.hydrus_account.get_account_key().hex(),
                     HydrusTime.time_delta_to_pretty_time_delta(old_nullification_period),
                     HydrusTime.time_delta_to_pretty_time_delta(nullification_period)
                 )
@@ -453,15 +453,15 @@ class HydrusResourceRestrictedOptionsModifyUpdatePeriod( HydrusResourceRestricte
             raise HydrusExceptions.BadRequestException( 'The update period was too high. It needs to be lower than {}.'.format(HydrusTime.time_delta_to_pretty_time_delta(HydrusNetwork.MAX_UPDATE_PERIOD)))
             
         
-        old_update_period = self._service.GetUpdatePeriod()
+        old_update_period = self._service.get_update_period()
         
         if old_update_period != update_period:
             
-            self._service.SetUpdatePeriod( update_period )
+            self._service.set_update_period(update_period)
             
             HydrusData.print_text(
                 'Account {} changed the update period from "{}" to "{}".'.format(
-                    request.hydrus_account.GetAccountKey().hex(),
+                    request.hydrus_account.get_account_key().hex(),
                     HydrusTime.time_delta_to_pretty_time_delta(old_update_period),
                     HydrusTime.time_delta_to_pretty_time_delta(update_period)
                 )
@@ -478,7 +478,7 @@ class HydrusResourceRestrictedAccountModify( HydrusResourceRestricted ):
     
     def _checkAccountPermissions( self, request: HydrusServerRequest.HydrusRequest ):
         
-        request.hydrus_account.CheckPermission( HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_MODERATE )
+        request.hydrus_account.check_permission(HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_MODERATE)
         
     
 class HydrusResourceRestrictedAccountInfo( HydrusResourceRestrictedAccountModify ):
@@ -690,13 +690,13 @@ class HydrusResourceRestrictedAccountOtherAccount( HydrusResourceRestrictedAccou
             
             subject_identifier = request.parsed_request_args[ 'subject_identifier' ]
             
-            if subject_identifier.HasAccountKey():
+            if subject_identifier.has_account_key():
                 
-                subject_account_key = subject_identifier.GetAccountKey()
+                subject_account_key = subject_identifier.get_account_key()
                 
-            elif subject_identifier.HasContent():
+            elif subject_identifier.has_content():
                 
-                subject_content = subject_identifier.GetContent()
+                subject_content = subject_identifier.get_content()
                 
                 subject_account_key = SG.server_controller.read('account_key_from_content', self._service_key, subject_content)
                 
@@ -766,11 +766,11 @@ class HydrusResourceRestrictedAccountTypes( HydrusResourceRestricted ):
         
         if request.IsGET():
             
-            request.hydrus_account.CheckPermission( HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_CREATE )
+            request.hydrus_account.check_permission(HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_CREATE)
             
         elif request.IsPOST():
             
-            request.hydrus_account.CheckPermission( HC.CONTENT_TYPE_ACCOUNT_TYPES, HC.PERMISSION_ACTION_MODERATE )
+            request.hydrus_account.check_permission(HC.CONTENT_TYPE_ACCOUNT_TYPES, HC.PERMISSION_ACTION_MODERATE)
             
         
     
@@ -803,7 +803,7 @@ class HydrusResourceRestrictedBackup( HydrusResourceRestricted ):
     
     def _checkAccountPermissions( self, request: HydrusServerRequest.HydrusRequest ):
         
-        request.hydrus_account.CheckPermission( HC.CONTENT_TYPE_SERVICES, HC.PERMISSION_ACTION_MODERATE )
+        request.hydrus_account.check_permission(HC.CONTENT_TYPE_SERVICES, HC.PERMISSION_ACTION_MODERATE)
         
     
     def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
@@ -819,7 +819,7 @@ class HydrusResourceRestrictedLockOn( HydrusResourceRestricted ):
     
     def _checkAccountPermissions( self, request: HydrusServerRequest.HydrusRequest ):
         
-        request.hydrus_account.CheckPermission( HC.CONTENT_TYPE_SERVICES, HC.PERMISSION_ACTION_MODERATE )
+        request.hydrus_account.check_permission(HC.CONTENT_TYPE_SERVICES, HC.PERMISSION_ACTION_MODERATE)
         
     
     def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
@@ -856,7 +856,7 @@ class HydrusResourceRestrictedLockOff( HydrusResourceRestricted ):
     
     def _checkAccountPermissions( self, request: HydrusServerRequest.HydrusRequest ):
         
-        request.hydrus_account.CheckPermission( HC.CONTENT_TYPE_SERVICES, HC.PERMISSION_ACTION_MODERATE )
+        request.hydrus_account.check_permission(HC.CONTENT_TYPE_SERVICES, HC.PERMISSION_ACTION_MODERATE)
         
     
     def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
@@ -881,7 +881,7 @@ class HydrusResourceRestrictedMaintenanceRegenServiceInfo( HydrusResourceRestric
     
     def _checkAccountPermissions( self, request: HydrusServerRequest.HydrusRequest ):
         
-        request.hydrus_account.CheckPermission( HC.CONTENT_TYPE_OPTIONS, HC.PERMISSION_ACTION_MODERATE )
+        request.hydrus_account.check_permission(HC.CONTENT_TYPE_OPTIONS, HC.PERMISSION_ACTION_MODERATE)
         
     
     def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
@@ -899,7 +899,7 @@ class HydrusResourceRestrictedNumPetitions( HydrusResourceRestricted ):
         
         # further permissions checked in the db
         
-        request.hydrus_account.CheckAtLeastOnePermission( [ ( content_type, HC.PERMISSION_ACTION_MODERATE ) for content_type in HC.SERVICE_TYPES_TO_CONTENT_TYPES[ self._service.GetServiceType() ] ] )
+        request.hydrus_account.check_at_least_one_permission([(content_type, HC.PERMISSION_ACTION_MODERATE) for content_type in HC.SERVICE_TYPES_TO_CONTENT_TYPES[ self._service.get_service_type()]])
         
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
@@ -922,7 +922,7 @@ class HydrusResourceRestrictedPetition( HydrusResourceRestricted ):
         
         content_type = request.parsed_request_args[ 'content_type' ]
         
-        request.hydrus_account.CheckPermission( content_type, HC.PERMISSION_ACTION_MODERATE )
+        request.hydrus_account.check_permission(content_type, HC.PERMISSION_ACTION_MODERATE)
         
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
@@ -974,7 +974,7 @@ class HydrusResourceRestrictedPetitionsSummary( HydrusResourceRestricted ):
         
         content_type = request.parsed_request_args[ 'content_type' ]
         
-        request.hydrus_account.CheckPermission( content_type, HC.PERMISSION_ACTION_MODERATE )
+        request.hydrus_account.check_permission(content_type, HC.PERMISSION_ACTION_MODERATE)
         
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
@@ -1000,7 +1000,7 @@ class HydrusResourceRestrictedRegistrationKeys( HydrusResourceRestricted ):
     
     def _checkAccountPermissions( self, request: HydrusServerRequest.HydrusRequest ):
         
-        request.hydrus_account.CheckPermission( HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_CREATE )
+        request.hydrus_account.check_permission(HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_CREATE)
         
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
@@ -1034,7 +1034,7 @@ class HydrusResourceRestrictedRepositoryFile( HydrusResourceRestricted ):
         
         if request.IsPOST():
             
-            request.hydrus_account.CheckPermission( HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_CREATE )
+            request.hydrus_account.check_permission(HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_CREATE)
             
         
     
@@ -1046,7 +1046,7 @@ class HydrusResourceRestrictedRepositoryFile( HydrusResourceRestricted ):
             
         else:
             
-            return request.hydrus_account.HasPermission( HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_CREATE )
+            return request.hydrus_account.has_permission(HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_CREATE)
             
         
     
@@ -1076,12 +1076,12 @@ class HydrusResourceRestrictedRepositoryFile( HydrusResourceRestricted ):
         
         file_dict = request.parsed_request_args
         
-        if self._service.LogUploaderIPs():
+        if self._service.log_uploader_ips():
             
             file_dict[ 'ip' ] = request.getClientIP()
             
         
-        timestamp = self._service.GetMetadata().GetNextUpdateBegin() + 1
+        timestamp = self._service.get_metadata().get_next_update_begin() + 1
         
         SG.server_controller.write_synchronous('file', self._service, request.hydrus_account, file_dict, timestamp)
         
@@ -1150,7 +1150,7 @@ class HydrusResourceRestrictedServices( HydrusResourceRestricted ):
     
     def _checkAccountPermissions( self, request: HydrusServerRequest.HydrusRequest ):
         
-        request.hydrus_account.CheckPermission( HC.CONTENT_TYPE_SERVICES, HC.PERMISSION_ACTION_MODERATE )
+        request.hydrus_account.check_permission(HC.CONTENT_TYPE_SERVICES, HC.PERMISSION_ACTION_MODERATE)
         
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
@@ -1168,7 +1168,7 @@ class HydrusResourceRestrictedServices( HydrusResourceRestricted ):
         
         services = request.parsed_request_args[ 'services' ]
         
-        unique_ports = { service.GetPort() for service in services }
+        unique_ports = {service.get_port() for service in services}
         
         if len( unique_ports ) < len( services ):
             
@@ -1210,7 +1210,7 @@ class HydrusResourceRestrictedTagFilter( HydrusResourceRestricted ):
         
         if request.IsPOST():
             
-            request.hydrus_account.CheckPermission( HC.CONTENT_TYPE_OPTIONS, HC.PERMISSION_ACTION_MODERATE )
+            request.hydrus_account.check_permission(HC.CONTENT_TYPE_OPTIONS, HC.PERMISSION_ACTION_MODERATE)
             
         else:
             
@@ -1222,7 +1222,7 @@ class HydrusResourceRestrictedTagFilter( HydrusResourceRestricted ):
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        tag_filter = self._service.GetTagFilter()
+        tag_filter = self._service.get_tag_filter()
         
         body = HydrusNetworkVariableHandling.DumpHydrusArgsToNetworkBytes( { 'tag_filter' : tag_filter } )
         
@@ -1235,17 +1235,17 @@ class HydrusResourceRestrictedTagFilter( HydrusResourceRestricted ):
         
         tag_filter = request.parsed_request_args[ 'tag_filter' ]
         
-        old_tag_filter = self._service.GetTagFilter()
+        old_tag_filter = self._service.get_tag_filter()
         
         if old_tag_filter != tag_filter:
             
-            self._service.SetTagFilter( tag_filter )
+            self._service.set_tag_filter(tag_filter)
             
             summary_text = tag_filter.get_changes_summary_text(old_tag_filter)
             
             HydrusData.print_text(
                 'Account {} changed the tag filter. Rule changes are:{}{}.'.format(
-                    request.hydrus_account.GetAccountKey().hex(),
+                    request.hydrus_account.get_account_key().hex(),
                     '\n',
                     summary_text
                 )
@@ -1268,7 +1268,7 @@ class HydrusResourceRestrictedUpdate( HydrusResourceRestricted ):
             
             # further permissions checked in the db
             
-            request.hydrus_account.CheckAtLeastOnePermission( [ ( content_type, HC.PERMISSION_ACTION_PETITION ) for content_type in HC.SERVICE_TYPES_TO_CONTENT_TYPES[ self._service.GetServiceType() ] ] )
+            request.hydrus_account.check_at_least_one_permission([(content_type, HC.PERMISSION_ACTION_PETITION) for content_type in HC.SERVICE_TYPES_TO_CONTENT_TYPES[ self._service.get_service_type()]])
             
         
     
@@ -1280,7 +1280,7 @@ class HydrusResourceRestrictedUpdate( HydrusResourceRestricted ):
         
         update_hash = request.parsed_request_args[ 'update_hash' ]
         
-        if not self._service.HasUpdateHash( update_hash ):
+        if not self._service.has_update_hash(update_hash):
             
             raise HydrusExceptions.NotFoundException( 'This update hash does not exist on this service!' )
             
@@ -1298,10 +1298,10 @@ class HydrusResourceRestrictedUpdate( HydrusResourceRestricted ):
         
         if isinstance( self._service, HydrusNetwork.ServerServiceRepositoryTag ):
             
-            client_to_server_update.ApplyTagFilterToPendingMappings( self._service.GetTagFilter() )
+            client_to_server_update.apply_tag_filter_to_pending_mappings(self._service.get_tag_filter())
             
         
-        timestamp = self._service.GetMetadata().GetNextUpdateBegin() + 1
+        timestamp = self._service.get_metadata().get_next_update_begin() + 1
         
         SG.server_controller.write_synchronous('update', self._service_key, request.hydrus_account, client_to_server_update, timestamp)
         
@@ -1315,7 +1315,7 @@ class HydrusResourceRestrictedImmediateUpdate( HydrusResourceRestricted ):
     
     def _checkAccountPermissions( self, request: HydrusServerRequest.HydrusRequest ):
         
-        request.hydrus_account.CheckAtLeastOnePermission( [ ( content_type, HC.PERMISSION_ACTION_MODERATE ) for content_type in HC.SERVICE_TYPES_TO_CONTENT_TYPES[ self._service.GetServiceType() ] ] )
+        request.hydrus_account.check_at_least_one_permission([(content_type, HC.PERMISSION_ACTION_MODERATE) for content_type in HC.SERVICE_TYPES_TO_CONTENT_TYPES[ self._service.get_service_type()]])
         
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
@@ -1343,7 +1343,7 @@ class HydrusResourceRestrictedMetadataUpdate( HydrusResourceRestricted ):
         
         since = request.parsed_request_args[ 'since' ]
         
-        metadata_slice = self._service.GetMetadataSlice( since )
+        metadata_slice = self._service.get_metadata_slice(since)
         
         body = HydrusNetworkVariableHandling.DumpHydrusArgsToNetworkBytes( { 'metadata_slice' : metadata_slice } )
         
@@ -1357,7 +1357,7 @@ class HydrusResourceRestrictedRestartServices( HydrusResourceRestricted ):
     
     def _checkAccountPermissions( self, request: HydrusServerRequest.HydrusRequest ):
         
-        request.hydrus_account.CheckPermission( HC.CONTENT_TYPE_SERVICES, HC.PERMISSION_ACTION_MODERATE )
+        request.hydrus_account.check_permission(HC.CONTENT_TYPE_SERVICES, HC.PERMISSION_ACTION_MODERATE)
         
     
     def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
@@ -1374,7 +1374,7 @@ class HydrusResourceRestrictedVacuum( HydrusResourceRestricted ):
     
     def _checkAccountPermissions( self, request: HydrusServerRequest.HydrusRequest ):
         
-        request.hydrus_account.CheckPermission( HC.CONTENT_TYPE_SERVICES, HC.PERMISSION_ACTION_MODERATE )
+        request.hydrus_account.check_permission(HC.CONTENT_TYPE_SERVICES, HC.PERMISSION_ACTION_MODERATE)
         
     
     def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):

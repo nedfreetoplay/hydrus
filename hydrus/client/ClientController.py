@@ -1870,7 +1870,7 @@ class Controller( HydrusController.HydrusController ):
         
         services = [ self.services_manager.GetService( service_key ) for service_key in ( CC.CLIENT_API_SERVICE_KEY, ) ]
         
-        services = [ service for service in services if service.GetPort() is not None ]
+        services = [service for service in services if service.get_port() is not None]
         
         self.call_to_thread_long_running(self.SetRunningTwistedServices, services)
         
@@ -2092,13 +2092,13 @@ class Controller( HydrusController.HydrusController ):
                 
                 for service in services:
                     
-                    service_key = service.GetServiceKey()
-                    service_type = service.GetServiceType()
+                    service_key = service.get_service_key()
+                    service_type = service.get_service_type()
                     
                     name = service.get_name()
                     
-                    port = service.GetPort()
-                    allow_non_local_connections = service.AllowsNonLocalConnections()
+                    port = service.get_port()
+                    allow_non_local_connections = service.allows_non_local_connections()
                     use_https = service.UseHTTPS()
                     
                     if port is None:
@@ -2243,7 +2243,7 @@ class Controller( HydrusController.HydrusController ):
         
         if HG.twisted_is_broke:
             
-            if True in ( service.GetPort() is not None for service in services ):
+            if True in (service.get_port() is not None for service in services):
                 
                 HydrusData.show_text('Twisted failed to import, so could not start the local booru/client api! Specific error has been printed to log. Please contact hydrus dev!')
                 
@@ -2262,7 +2262,7 @@ class Controller( HydrusController.HydrusController ):
             
             previous_services = self.services_manager.GetServices()
             
-            upnp_services = [ service for service in services if service.GetServiceType() in ( HC.CLIENT_API_SERVICE, ) ]
+            upnp_services = [service for service in services if service.get_service_type() in (HC.CLIENT_API_SERVICE,)]
             
             self.call_to_thread_long_running(self.services_upnp_manager.set_services, upnp_services)
             

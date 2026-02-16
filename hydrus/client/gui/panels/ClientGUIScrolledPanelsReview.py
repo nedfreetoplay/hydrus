@@ -1386,7 +1386,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
             
             if domain_metadata.HasBandwidthRules():
                 
-                bandwidth_rules = domain_metadata.GetBandwidthRules()
+                bandwidth_rules = domain_metadata.get_bandwidth_rules()
                 
                 if bandwidth_manager.AlreadyHaveExactlyTheseBandwidthRules( nc, bandwidth_rules ):
                     

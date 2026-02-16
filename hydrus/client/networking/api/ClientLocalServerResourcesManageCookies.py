@@ -19,7 +19,7 @@ class HydrusResourceClientAPIRestrictedManageCookies( ClientLocalServerResources
     
     def _CheckAPIPermissions( self, request: HydrusServerRequest.HydrusRequest ):
         
-        request.client_api_permissions.CheckPermission( ClientAPI.CLIENT_API_PERMISSION_MANAGE_HEADERS )
+        request.client_api_permissions.check_permission(ClientAPI.CLIENT_API_PERMISSION_MANAGE_HEADERS)
         
     
 

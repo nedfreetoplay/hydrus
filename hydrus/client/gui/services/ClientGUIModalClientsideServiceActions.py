@@ -155,7 +155,7 @@ def StartPurgeTagFilter(
     service_key: bytes
 ):
     
-    tag_filter: HydrusTags.TagFilter = CG.client_controller.services_manager.GetService( service_key ).GetTagFilter()
+    tag_filter: HydrusTags.TagFilter = CG.client_controller.services_manager.GetService( service_key ).get_tag_filter()
     
     text = f'This will start a purge job based on the rules in the current tag filter, "syncing" the mappings store to the filter by petitioning everything that retroactively violates the rules. The current tag filter for this service is:'
     text += '\n' * 2

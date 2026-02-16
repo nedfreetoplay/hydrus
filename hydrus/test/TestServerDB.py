@@ -44,17 +44,17 @@ class TestServerDB( unittest.TestCase ):
     
     def _test_account_creation( self ):
         
-        result = sorted( self._read( 'account_types', self._tag_service_key, self._tag_service_account ), key = lambda at: at.GetTitle() )
+        result = sorted(self._read( 'account_types', self._tag_service_key, self._tag_service_account ), key = lambda at: at.get_title())
         
         ( self._tag_service_admin_account_type, self._null_account_type ) = result
         
-        self.assertEqual( self._tag_service_admin_account_type.GetTitle(), 'administrator' )
-        self.assertEqual( self._null_account_type.GetTitle(), 'null account' )
+        self.assertEqual(self._tag_service_admin_account_type.get_title(), 'administrator')
+        self.assertEqual(self._null_account_type.get_title(), 'null account')
         
         #
         
-        self._regular_user_account_type = HydrusNetwork.AccountType.GenerateNewAccountType( 'regular user', { HC.CONTENT_TYPE_MAPPINGS : HC.PERMISSION_ACTION_CREATE, HC.CONTENT_TYPE_TAG_PARENTS : HC.PERMISSION_ACTION_PETITION, HC.CONTENT_TYPE_TAG_SIBLINGS : HC.PERMISSION_ACTION_PETITION }, HydrusNetworking.BandwidthRules() )
-        self._deletee_user_account_type = HydrusNetwork.AccountType.GenerateNewAccountType( 'deletee user', {}, HydrusNetworking.BandwidthRules() )
+        self._regular_user_account_type = HydrusNetwork.AccountType.generate_new_account_type('regular user', {HC.CONTENT_TYPE_MAPPINGS : HC.PERMISSION_ACTION_CREATE, HC.CONTENT_TYPE_TAG_PARENTS : HC.PERMISSION_ACTION_PETITION, HC.CONTENT_TYPE_TAG_SIBLINGS : HC.PERMISSION_ACTION_PETITION}, HydrusNetworking.BandwidthRules())
+        self._deletee_user_account_type = HydrusNetwork.AccountType.generate_new_account_type('deletee user', {}, HydrusNetworking.BandwidthRules())
         
         new_account_types = [ self._tag_service_admin_account_type, self._null_account_type, self._regular_user_account_type, self._deletee_user_account_type ]
         
@@ -65,13 +65,13 @@ class TestServerDB( unittest.TestCase ):
         edited_account_types = self._read( 'account_types', self._tag_service_key, self._tag_service_account )
         
         self.assertEqual(
-            { at.GetAccountTypeKey() for at in edited_account_types },
-            { at.GetAccountTypeKey() for at in ( self._tag_service_admin_account_type, self._null_account_type, self._regular_user_account_type, self._deletee_user_account_type ) }
+            {at.get_account_type_key() for at in edited_account_types},
+            {at.get_account_type_key() for at in (self._tag_service_admin_account_type, self._null_account_type, self._regular_user_account_type, self._deletee_user_account_type)}
         )
         
         #
         
-        r_keys = self._read( 'registration_keys', self._tag_service_key, self._tag_service_account, 5, self._deletee_user_account_type.GetAccountTypeKey(), HydrusTime.get_now() + 86400 * 365)
+        r_keys = self._read( 'registration_keys', self._tag_service_key, self._tag_service_account, 5, self._deletee_user_account_type.get_account_type_key(), HydrusTime.get_now() + 86400 * 365)
         
         access_keys = [ self._read( 'access_key', self._tag_service_key, r_key ) for r_key in r_keys ]
         
@@ -81,12 +81,12 @@ class TestServerDB( unittest.TestCase ):
         
         for account in accounts:
             
-            self.assertEqual( account.GetAccountType().GetAccountTypeKey(), self._deletee_user_account_type.GetAccountTypeKey() )
+            self.assertEqual(account.get_account_type().get_account_type_key(), self._deletee_user_account_type.get_account_type_key())
             
         
         #
         
-        deletee_account_type_keys_to_replacement_account_type_keys = { self._deletee_user_account_type.GetAccountTypeKey() : self._regular_user_account_type.GetAccountTypeKey() }
+        deletee_account_type_keys_to_replacement_account_type_keys = {self._deletee_user_account_type.get_account_type_key() : self._regular_user_account_type.get_account_type_key()}
         
         new_account_types = [ self._tag_service_admin_account_type, self._null_account_type, self._regular_user_account_type ]
         
@@ -98,12 +98,12 @@ class TestServerDB( unittest.TestCase ):
         
         for account in accounts:
             
-            self.assertEqual( account.GetAccountType().GetAccountTypeKey(), self._regular_user_account_type.GetAccountTypeKey() )
+            self.assertEqual(account.get_account_type().get_account_type_key(), self._regular_user_account_type.get_account_type_key())
             
         
         #
         
-        r_keys = self._read( 'registration_keys', self._tag_service_key, self._tag_service_account, 1, self._tag_service_admin_account_type.GetAccountTypeKey(), HydrusTime.get_now() + 86400 * 365)
+        r_keys = self._read( 'registration_keys', self._tag_service_key, self._tag_service_account, 1, self._tag_service_admin_account_type.get_account_type_key(), HydrusTime.get_now() + 86400 * 365)
         
         access_keys = [ self._read( 'access_key', self._tag_service_key, r_key ) for r_key in r_keys ]
         
@@ -113,14 +113,14 @@ class TestServerDB( unittest.TestCase ):
         
         for account in accounts:
             
-            self.assertEqual( account.GetAccountType().GetAccountTypeKey(), self._tag_service_admin_account_type.GetAccountTypeKey() )
+            self.assertEqual(account.get_account_type().get_account_type_key(), self._tag_service_admin_account_type.get_account_type_key())
             
         
         self._tag_service_regular_delete_all_content_account = accounts[0]
         
         #
         
-        r_keys = self._read( 'registration_keys', self._tag_service_key, self._tag_service_account, 5, self._regular_user_account_type.GetAccountTypeKey(), HydrusTime.get_now() + 86400 * 365)
+        r_keys = self._read( 'registration_keys', self._tag_service_key, self._tag_service_account, 5, self._regular_user_account_type.get_account_type_key(), HydrusTime.get_now() + 86400 * 365)
         
         self.assertEqual( len( r_keys ), 5 )
         
@@ -151,7 +151,7 @@ class TestServerDB( unittest.TestCase ):
     def _test_delete_all_content( self ):
         
         # this dude is an admin so he owns siblings and parents
-        delete_all_content_account_key = self._tag_service_regular_delete_all_content_account.GetAccountKey()
+        delete_all_content_account_key = self._tag_service_regular_delete_all_content_account.get_account_key()
         
         account_info = self._read( 'account_info', self._tag_service_key, self._tag_service_account, self._tag_service_regular_delete_all_content_account )
         
@@ -168,10 +168,10 @@ class TestServerDB( unittest.TestCase ):
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( tag_1, tag_1_hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content)
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( tag_2, tag_2_hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content)
         
         self._write( 'update', self._tag_service_key, self._tag_service_regular_delete_all_content_account, client_to_server_update, HydrusTime.get_now())
         
@@ -199,19 +199,19 @@ class TestServerDB( unittest.TestCase ):
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( child_tag_2, hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content)
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( parent_tag_2, hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content)
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( child_tag_4, hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content)
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( parent_tag_4, hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content)
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( replacement_parent_tag_4, hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content)
         
         self._write( 'update', self._tag_service_key, self._tag_service_regular_delete_all_content_account, client_to_server_update, HydrusTime.get_now())
         
@@ -220,13 +220,13 @@ class TestServerDB( unittest.TestCase ):
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_PARENTS, ( child_tag_1, parent_tag_1 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason = 'admin add' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content, reason ='admin add')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_PARENTS, ( child_tag_3, parent_tag_3 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason = 'admin add' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content, reason ='admin add')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_PARENTS, ( child_tag_4, parent_tag_4 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason = 'admin add' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content, reason ='admin add')
         
         self._write( 'update', self._tag_service_key, self._tag_service_regular_delete_all_content_account, client_to_server_update, HydrusTime.get_now())
         
@@ -254,19 +254,19 @@ class TestServerDB( unittest.TestCase ):
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( bad_tag_2, hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content)
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( good_tag_2, hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content)
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( bad_tag_4, hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content)
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( good_tag_4, hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content)
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( replacement_good_tag_4, hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content)
         
         self._write( 'update', self._tag_service_key, self._tag_service_regular_delete_all_content_account, client_to_server_update, HydrusTime.get_now())
         
@@ -277,13 +277,13 @@ class TestServerDB( unittest.TestCase ):
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_SIBLINGS, ( bad_tag_1, good_tag_1 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason = 'admin add' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content, reason ='admin add')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_SIBLINGS, ( bad_tag_3, good_tag_3 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason = 'admin add' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content, reason ='admin add')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_SIBLINGS, ( bad_tag_4, good_tag_4 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason = 'admin add' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content, reason ='admin add')
         
         self._write( 'update', self._tag_service_key, self._tag_service_regular_delete_all_content_account, client_to_server_update, HydrusTime.get_now())
         
@@ -291,7 +291,7 @@ class TestServerDB( unittest.TestCase ):
         
         account = self._read( 'account', self._tag_service_key, delete_all_content_account_key )
         
-        self.assertFalse( account.IsBanned() )
+        self.assertFalse(account.is_banned())
         
         ban_reason = 'oh no no no'
         
@@ -299,7 +299,7 @@ class TestServerDB( unittest.TestCase ):
         
         account = self._read( 'account', self._tag_service_key, delete_all_content_account_key )
         
-        self.assertTrue( account.IsBanned() )
+        self.assertTrue(account.is_banned())
         
         #
         
@@ -323,7 +323,7 @@ class TestServerDB( unittest.TestCase ):
         mapping_content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPING, ( tag, hash ) )
         
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, mappings_content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, mappings_content)
         
         self._write( 'update', self._tag_service_key, self._tag_service_regular_account, client_to_server_update, HydrusTime.get_now())
         
@@ -333,34 +333,34 @@ class TestServerDB( unittest.TestCase ):
         
         result = self._read( 'account_key_from_content', self._tag_service_key, mapping_content )
         
-        self.assertEqual( result, self._tag_service_regular_account.GetAccountKey() )
+        self.assertEqual(result, self._tag_service_regular_account.get_account_key())
         
     
     def _test_account_modification( self ):
         
-        regular_account_key = self._tag_service_regular_account.GetAccountKey()
+        regular_account_key = self._tag_service_regular_account.get_account_key()
         
         account = self._read( 'account', self._tag_service_key, regular_account_key )
         
-        self.assertEqual( account.GetAccountType().GetAccountTypeKey(), self._regular_user_account_type.GetAccountTypeKey() )
+        self.assertEqual(account.get_account_type().get_account_type_key(), self._regular_user_account_type.get_account_type_key())
         
-        self._write( 'modify_account_account_type', self._tag_service_key, self._tag_service_account, regular_account_key, self._tag_service_admin_account_type.GetAccountTypeKey() )
-        
-        account = self._read( 'account', self._tag_service_key, regular_account_key )
-        
-        self.assertEqual( account.GetAccountType().GetAccountTypeKey(), self._tag_service_admin_account_type.GetAccountTypeKey() )
-        
-        self._write( 'modify_account_account_type', self._tag_service_key, self._tag_service_account, regular_account_key, self._regular_user_account_type.GetAccountTypeKey() )
+        self._write( 'modify_account_account_type', self._tag_service_key, self._tag_service_account, regular_account_key, self._tag_service_admin_account_type.get_account_type_key())
         
         account = self._read( 'account', self._tag_service_key, regular_account_key )
         
-        self.assertEqual( account.GetAccountType().GetAccountTypeKey(), self._regular_user_account_type.GetAccountTypeKey() )
+        self.assertEqual(account.get_account_type().get_account_type_key(), self._tag_service_admin_account_type.get_account_type_key())
+        
+        self._write( 'modify_account_account_type', self._tag_service_key, self._tag_service_account, regular_account_key, self._regular_user_account_type.get_account_type_key())
+        
+        account = self._read( 'account', self._tag_service_key, regular_account_key )
+        
+        self.assertEqual(account.get_account_type().get_account_type_key(), self._regular_user_account_type.get_account_type_key())
         
         #
         
         account = self._read( 'account', self._tag_service_key, regular_account_key )
         
-        self.assertFalse( account.IsBanned() )
+        self.assertFalse(account.is_banned())
         
         ban_reason = 'oh no no no'
         
@@ -368,9 +368,9 @@ class TestServerDB( unittest.TestCase ):
         
         account = self._read( 'account', self._tag_service_key, regular_account_key )
         
-        self.assertTrue( account.IsBanned() )
+        self.assertTrue(account.is_banned())
         
-        ( reason, created, expires ) = account.GetBannedInfo()
+        ( reason, created, expires ) = account.get_banned_info()
         
         self.assertEqual( reason, ban_reason )
         self.assertTrue(HydrusTime.get_now() - 5 < created < HydrusTime.get_now() + 5)
@@ -383,9 +383,9 @@ class TestServerDB( unittest.TestCase ):
         
         account = self._read( 'account', self._tag_service_key, regular_account_key )
         
-        self.assertTrue( account.IsBanned() )
+        self.assertTrue(account.is_banned())
         
-        ( reason, created, expires ) = account.GetBannedInfo()
+        ( reason, created, expires ) = account.get_banned_info()
         
         self.assertEqual( reason, ban_reason )
         self.assertTrue(HydrusTime.get_now() - 5 < created < HydrusTime.get_now() + 5)
@@ -395,7 +395,7 @@ class TestServerDB( unittest.TestCase ):
         
         account = self._read( 'account', self._tag_service_key, regular_account_key )
         
-        self.assertFalse( account.IsBanned() )
+        self.assertFalse(account.is_banned())
         
         #
         
@@ -405,9 +405,9 @@ class TestServerDB( unittest.TestCase ):
         
         account = self._read( 'account', self._tag_service_key, regular_account_key )
         
-        self.assertTrue( account.IsExpired() )
+        self.assertTrue(account.is_expired())
         
-        self.assertEqual( set_expires, account.GetExpires() )
+        self.assertEqual(set_expires, account.get_expires())
         
         set_expires = HydrusTime.get_now() + 86400
         
@@ -415,9 +415,9 @@ class TestServerDB( unittest.TestCase ):
         
         account = self._read( 'account', self._tag_service_key, regular_account_key )
         
-        self.assertFalse( account.IsExpired() )
+        self.assertFalse(account.is_expired())
         
-        self.assertEqual( set_expires, account.GetExpires() )
+        self.assertEqual(set_expires, account.get_expires())
         
         set_expires = None
         
@@ -425,9 +425,9 @@ class TestServerDB( unittest.TestCase ):
         
         account = self._read( 'account', self._tag_service_key, regular_account_key )
         
-        self.assertFalse( account.IsExpired() )
+        self.assertFalse(account.is_expired())
         
-        self.assertEqual( set_expires, account.GetExpires() )
+        self.assertEqual(set_expires, account.get_expires())
         
         #
         
@@ -437,7 +437,7 @@ class TestServerDB( unittest.TestCase ):
         
         account = self._read( 'account', self._tag_service_key, regular_account_key )
         
-        ( message, created ) = account.GetMessageAndTimestamp()
+        ( message, created ) = account.get_message_and_timestamp()
         
         self.assertEqual( message, set_message )
         
@@ -447,7 +447,7 @@ class TestServerDB( unittest.TestCase ):
         
         account = self._read( 'account', self._tag_service_key, regular_account_key )
         
-        ( message, created ) = account.GetMessageAndTimestamp()
+        ( message, created ) = account.get_message_and_timestamp()
         
         self.assertEqual( message, set_message )
         
@@ -509,7 +509,7 @@ class TestServerDB( unittest.TestCase ):
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_FILES, deletee_hashes )
         
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason = 'files are bad' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PETITION, content, reason ='files are bad')
         
         self._write( 'update', self._file_service_key, self._file_service_account, client_to_server_update, HydrusTime.get_now())
         
@@ -557,10 +557,10 @@ class TestServerDB( unittest.TestCase ):
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( tag_1, tag_1_hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content)
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( tag_2, tag_2_hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content)
         
         self._write( 'update', self._tag_service_key, self._tag_service_account, client_to_server_update, HydrusTime.get_now())
         
@@ -578,10 +578,10 @@ class TestServerDB( unittest.TestCase ):
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( tag_1, tag_1_deletee_hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason = 'admin delete' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PETITION, content, reason ='admin delete')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( tag_2, tag_2_deletee_hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason = 'admin delete' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PETITION, content, reason ='admin delete')
         
         self._write( 'update', self._tag_service_key, self._tag_service_account, client_to_server_update, HydrusTime.get_now())
         
@@ -599,13 +599,13 @@ class TestServerDB( unittest.TestCase ):
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( tag_1, tag_1_petition_hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason = 'these are bad' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PETITION, content, reason ='these are bad')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( tag_2, tag_2_petition_hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason = 'these are bad' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PETITION, content, reason ='these are bad')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( tag_2, tag_2a_petition_hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason = 'bad for a stupid reason' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PETITION, content, reason ='bad for a stupid reason')
         
         self._write( 'update', self._tag_service_key, self._tag_service_regular_account, client_to_server_update, HydrusTime.get_now())
         
@@ -619,13 +619,13 @@ class TestServerDB( unittest.TestCase ):
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( tag_1, tag_1_petition_hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason = 'these are bad' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PETITION, content, reason ='these are bad')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( tag_2, tag_2_petition_hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason = 'these are bad' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PETITION, content, reason ='these are bad')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( tag_2, tag_2a_petition_hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_DENY_PETITION, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_DENY_PETITION, content)
         
         self._write( 'update', self._tag_service_key, self._tag_service_account, client_to_server_update, HydrusTime.get_now())
         
@@ -686,19 +686,19 @@ class TestServerDB( unittest.TestCase ):
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( child_tag_2, hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content)
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( parent_tag_2, hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content)
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( child_tag_4, hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content)
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( parent_tag_4, hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content)
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( replacement_parent_tag_4, hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content)
         
         self._write( 'update', self._tag_service_key, self._tag_service_account, client_to_server_update, HydrusTime.get_now())
         
@@ -713,13 +713,13 @@ class TestServerDB( unittest.TestCase ):
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_PARENTS, ( child_tag_1, parent_tag_1 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason = 'admin add' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content, reason ='admin add')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_PARENTS, ( child_tag_3, parent_tag_3 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason = 'admin add' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content, reason ='admin add')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_PARENTS, ( child_tag_4, parent_tag_4 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason = 'admin add' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content, reason ='admin add')
         
         self._write( 'update', self._tag_service_key, self._tag_service_account, client_to_server_update, HydrusTime.get_now())
         
@@ -733,7 +733,7 @@ class TestServerDB( unittest.TestCase ):
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_PARENTS, ( child_tag_1, parent_tag_1 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason = 'admin delete' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PETITION, content, reason ='admin delete')
         
         self._write( 'update', self._tag_service_key, self._tag_service_account, client_to_server_update, HydrusTime.get_now())
         
@@ -747,10 +747,10 @@ class TestServerDB( unittest.TestCase ):
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_PARENTS, ( child_tag_2, parent_tag_2 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason = 'this is great' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content, reason ='this is great')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_PARENTS, ( child_tag_2a, parent_tag_2a ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason = 'this is great' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content, reason ='this is great')
         
         self._write( 'update', self._tag_service_key, self._tag_service_regular_account, client_to_server_update, HydrusTime.get_now())
         
@@ -764,10 +764,10 @@ class TestServerDB( unittest.TestCase ):
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_PARENTS, ( child_tag_2, parent_tag_2 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason = 'this is great' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content, reason ='this is great')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_PARENTS, ( child_tag_2a, parent_tag_2a ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_DENY_PEND, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_DENY_PEND, content)
         
         self._write( 'update', self._tag_service_key, self._tag_service_account, client_to_server_update, HydrusTime.get_now())
         
@@ -783,19 +783,19 @@ class TestServerDB( unittest.TestCase ):
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_PARENTS, ( child_tag_2, parent_tag_2 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason = 'this is bad 2' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PETITION, content, reason ='this is bad 2')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_PARENTS, ( child_tag_3, parent_tag_3 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason = 'replacing 3' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PETITION, content, reason ='replacing 3')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_PARENTS, ( child_tag_4, parent_tag_4 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason = 'replacing 4' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PETITION, content, reason ='replacing 4')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_PARENTS, ( child_tag_3, replacement_parent_tag_3 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason = 'replacing 3' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content, reason ='replacing 3')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_PARENTS, ( child_tag_4, replacement_parent_tag_4 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason = 'replacing 4' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content, reason ='replacing 4')
         
         self._write( 'update', self._tag_service_key, self._tag_service_regular_account, client_to_server_update, HydrusTime.get_now())
         
@@ -810,19 +810,19 @@ class TestServerDB( unittest.TestCase ):
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_PARENTS, ( child_tag_2, parent_tag_2 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason = 'this is bad 2' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PETITION, content, reason ='this is bad 2')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_PARENTS, ( child_tag_3, parent_tag_3 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason = 'replacing 3' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PETITION, content, reason ='replacing 3')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_PARENTS, ( child_tag_4, parent_tag_4 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_DENY_PETITION, content, reason = 'replacing 4' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_DENY_PETITION, content, reason ='replacing 4')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_PARENTS, ( child_tag_3, replacement_parent_tag_3 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason = 'replacing 3' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content, reason ='replacing 3')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_PARENTS, ( child_tag_4, replacement_parent_tag_4 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_DENY_PEND, content, reason = 'replacing 4' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_DENY_PEND, content, reason ='replacing 4')
         
         self._write( 'update', self._tag_service_key, self._tag_service_account, client_to_server_update, HydrusTime.get_now())
         
@@ -885,19 +885,19 @@ class TestServerDB( unittest.TestCase ):
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( bad_tag_2, hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content)
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( good_tag_2, hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content)
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( bad_tag_4, hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content)
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( good_tag_4, hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content)
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( replacement_good_tag_4, hashes ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content)
         
         self._write( 'update', self._tag_service_key, self._tag_service_account, client_to_server_update, HydrusTime.get_now())
         
@@ -912,13 +912,13 @@ class TestServerDB( unittest.TestCase ):
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_SIBLINGS, ( bad_tag_1, good_tag_1 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason = 'admin add' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content, reason ='admin add')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_SIBLINGS, ( bad_tag_3, good_tag_3 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason = 'admin add' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content, reason ='admin add')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_SIBLINGS, ( bad_tag_4, good_tag_4 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason = 'admin add' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content, reason ='admin add')
         
         self._write( 'update', self._tag_service_key, self._tag_service_account, client_to_server_update, HydrusTime.get_now())
         
@@ -932,7 +932,7 @@ class TestServerDB( unittest.TestCase ):
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_SIBLINGS, ( bad_tag_1, good_tag_1 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason = 'admin delete' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PETITION, content, reason ='admin delete')
         
         self._write( 'update', self._tag_service_key, self._tag_service_account, client_to_server_update, HydrusTime.get_now())
         
@@ -946,10 +946,10 @@ class TestServerDB( unittest.TestCase ):
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_SIBLINGS, ( bad_tag_2, good_tag_2 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason = 'this is great' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content, reason ='this is great')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_SIBLINGS, ( bad_tag_2a, good_tag_2a ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason = 'this is great' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content, reason ='this is great')
         
         self._write( 'update', self._tag_service_key, self._tag_service_regular_account, client_to_server_update, HydrusTime.get_now())
         
@@ -963,10 +963,10 @@ class TestServerDB( unittest.TestCase ):
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_SIBLINGS, ( bad_tag_2, good_tag_2 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason = 'this is great' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content, reason ='this is great')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_SIBLINGS, ( bad_tag_2a, good_tag_2a ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_DENY_PEND, content )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_DENY_PEND, content)
         
         self._write( 'update', self._tag_service_key, self._tag_service_account, client_to_server_update, HydrusTime.get_now())
         
@@ -982,19 +982,19 @@ class TestServerDB( unittest.TestCase ):
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_SIBLINGS, ( bad_tag_2, good_tag_2 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason = 'this is bad 2' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PETITION, content, reason ='this is bad 2')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_SIBLINGS, ( bad_tag_3, good_tag_3 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason = 'replacing 3' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PETITION, content, reason ='replacing 3')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_SIBLINGS, ( bad_tag_4, good_tag_4 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason = 'replacing 4' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PETITION, content, reason ='replacing 4')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_SIBLINGS, ( bad_tag_3, replacement_good_tag_3 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason = 'replacing 3' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content, reason ='replacing 3')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_SIBLINGS, ( bad_tag_4, replacement_good_tag_4 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason = 'replacing 4' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content, reason ='replacing 4')
         
         self._write( 'update', self._tag_service_key, self._tag_service_regular_account, client_to_server_update, HydrusTime.get_now())
         
@@ -1009,19 +1009,19 @@ class TestServerDB( unittest.TestCase ):
         client_to_server_update = HydrusNetwork.ClientToServerUpdate()
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_SIBLINGS, ( bad_tag_2, good_tag_2 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason = 'this is bad 2' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PETITION, content, reason ='this is bad 2')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_SIBLINGS, ( bad_tag_3, good_tag_3 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason = 'replacing 3' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PETITION, content, reason ='replacing 3')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_SIBLINGS, ( bad_tag_4, good_tag_4 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_DENY_PETITION, content, reason = 'replacing 4' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_DENY_PETITION, content, reason ='replacing 4')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_SIBLINGS, ( bad_tag_3, replacement_good_tag_3 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason = 'replacing 3' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content, reason ='replacing 3')
         
         content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_SIBLINGS, ( bad_tag_4, replacement_good_tag_4 ) )
-        client_to_server_update.AddContent( HC.CONTENT_UPDATE_DENY_PEND, content, reason = 'replacing 4' )
+        client_to_server_update.add_content(HC.CONTENT_UPDATE_DENY_PEND, content, reason ='replacing 4')
         
         self._write( 'update', self._tag_service_key, self._tag_service_account, client_to_server_update, HydrusTime.get_now())
         
@@ -1058,7 +1058,7 @@ class TestServerDB( unittest.TestCase ):
         result = self._read( 'account', HC.SERVER_ADMIN_KEY, self._admin_account_key )
         
         self.assertEqual( type( result ), HydrusNetwork.Account )
-        self.assertEqual( result.GetAccountKey(), self._admin_account_key )
+        self.assertEqual(result.get_account_key(), self._admin_account_key)
         
         self._admin_account = result
         
@@ -1070,8 +1070,8 @@ class TestServerDB( unittest.TestCase ):
         
         current_services = self._read( 'services' )
         
-        self._tag_service = HydrusNetwork.GenerateService( self._tag_service_key, HC.TAG_REPOSITORY, 'tag repo', 100 )
-        self._file_service = HydrusNetwork.GenerateService( self._file_service_key, HC.FILE_REPOSITORY, 'file repo', 101 )
+        self._tag_service = HydrusNetwork.generate_service(self._tag_service_key, HC.TAG_REPOSITORY, 'tag repo', 100)
+        self._file_service = HydrusNetwork.generate_service(self._file_service_key, HC.FILE_REPOSITORY, 'file repo', 101)
         
         new_services = list( current_services )
         new_services.append( self._tag_service )
@@ -1090,8 +1090,8 @@ class TestServerDB( unittest.TestCase ):
         self._tag_service_account = self._read( 'account', self._tag_service_key, self._tag_service_account_key )
         self._file_service_account = self._read( 'account', self._file_service_key, self._file_service_account_key )
         
-        self.assertEqual( self._tag_service_account.GetAccountKey(), self._tag_service_account_key )
-        self.assertEqual( self._file_service_account.GetAccountKey(), self._file_service_account_key )
+        self.assertEqual(self._tag_service_account.get_account_key(), self._tag_service_account_key)
+        self.assertEqual(self._file_service_account.get_account_key(), self._file_service_account_key)
         
     
     def test_server( self ):

@@ -14,7 +14,7 @@ class HydrusResourceClientAPIRestrictedEditRatings( ClientLocalServerResources.H
     
     def _CheckAPIPermissions( self, request: HydrusServerRequest.HydrusRequest ):
         
-        request.client_api_permissions.CheckPermission( ClientAPI.CLIENT_API_PERMISSION_EDIT_RATINGS )
+        request.client_api_permissions.check_permission(ClientAPI.CLIENT_API_PERMISSION_EDIT_RATINGS)
         
     
 
@@ -40,7 +40,7 @@ class HydrusResourceClientAPIRestrictedEditRatingsSetRating( HydrusResourceClien
         
         rating_service = CG.client_controller.services_manager.GetService( rating_service_key )
         
-        rating_service_type = rating_service.GetServiceType()
+        rating_service_type = rating_service.get_service_type()
         
         none_ok = True
         

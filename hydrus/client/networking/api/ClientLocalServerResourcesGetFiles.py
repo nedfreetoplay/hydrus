@@ -29,7 +29,7 @@ class HydrusResourceClientAPIRestrictedGetFiles( ClientLocalServerResources.Hydr
     
     def _CheckAPIPermissions( self, request: HydrusServerRequest.HydrusRequest ):
         
-        request.client_api_permissions.CheckPermission( ClientAPI.CLIENT_API_PERMISSION_SEARCH_FILES )
+        request.client_api_permissions.check_permission(ClientAPI.CLIENT_API_PERMISSION_SEARCH_FILES)
         
     
 
@@ -572,7 +572,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetLocalPath( HydrusResourceClien
     
     def _CheckAPIPermissions( self, request: HydrusServerRequest.HydrusRequest ):
         
-        request.client_api_permissions.CheckPermission( ClientAPI.CLIENT_API_PERMISSION_SEE_LOCAL_PATHS )
+        request.client_api_permissions.check_permission(ClientAPI.CLIENT_API_PERMISSION_SEE_LOCAL_PATHS)
         
         super()._CheckAPIPermissions( request )
         

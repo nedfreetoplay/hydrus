@@ -421,7 +421,7 @@ class EditPredicatesPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     service = CG.client_controller.services_manager.GetService( s_k )
                     
-                    return ( order_of_panels.index( service.GetServiceType() ), service.get_name())
+                    return (order_of_panels.index(service.get_service_type()), service.get_name())
                     
                 except HydrusExceptions.DataMissing:
                     
@@ -446,7 +446,7 @@ class EditPredicatesPanel( ClientGUIScrolledPanels.EditPanel ):
                     continue
                     
                 
-                type = service.GetServiceType()
+                type = service.get_service_type()
                 
                 if type == HC.LOCAL_RATING_LIKE:
                     

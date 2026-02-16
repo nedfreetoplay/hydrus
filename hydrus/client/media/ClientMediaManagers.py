@@ -690,7 +690,7 @@ class FileViewingStatsManager( object ):
     
     def ProcessContentUpdate( self, content_update ):
         
-        ( data_type, action, row ) = content_update.ToTuple()
+        ( data_type, action, row ) = content_update.to_tuple()
         
         if action == HC.CONTENT_UPDATE_ADD:
             
@@ -1151,7 +1151,7 @@ class LocationsManager( object ):
     
     def ProcessContentUpdate( self, service_key, content_update ):
         
-        ( data_type, action, row ) = content_update.ToTuple()
+        ( data_type, action, row ) = content_update.to_tuple()
         
         if data_type == HC.CONTENT_TYPE_FILES:
             
@@ -1225,7 +1225,7 @@ class LocationsManager( object ):
                 
                 if content_update.HasReason():
                     
-                    reason = content_update.GetReason()
+                    reason = content_update.get_reason()
                     
                 else:
                     
@@ -1397,7 +1397,7 @@ class NotesManager( object ):
     
     def ProcessContentUpdate( self, content_update ):
         
-        ( data_type, action, row ) = content_update.ToTuple()
+        ( data_type, action, row ) = content_update.to_tuple()
         
         if action == HC.CONTENT_UPDATE_SET:
             
@@ -1477,7 +1477,7 @@ class RatingsManager( object ):
             return None
             
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         if service_key in self._service_keys_to_ratings:
             
@@ -1521,7 +1521,7 @@ class RatingsManager( object ):
     
     def ProcessContentUpdate( self, service_key, content_update ):
         
-        ( data_type, action, row ) = content_update.ToTuple()
+        ( data_type, action, row ) = content_update.to_tuple()
         
         if action == HC.CONTENT_UPDATE_ADD:
             

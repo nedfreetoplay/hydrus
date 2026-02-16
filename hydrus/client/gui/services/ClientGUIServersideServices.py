@@ -25,9 +25,9 @@ class EditServersideService( ClientGUIScrolledPanels.EditPanel ):
         
         super().__init__( parent )
         
-        duplicate_serverside_service = serverside_service.Duplicate()
+        duplicate_serverside_service = serverside_service.duplicate()
         
-        ( self._service_key, self._service_type, name, port, self._dictionary ) = duplicate_serverside_service.ToTuple()
+        ( self._service_key, self._service_type, name, port, self._dictionary ) = duplicate_serverside_service.to_tuple()
         
         self._service_panel = self._ServicePanel( self, name, port, self._dictionary )
         
@@ -77,7 +77,7 @@ class EditServersideService( ClientGUIScrolledPanels.EditPanel ):
             dictionary.update( dictionary_part )
             
         
-        return HydrusNetwork.GenerateService( self._service_key, self._service_type, name, port, dictionary )
+        return HydrusNetwork.generate_service(self._service_key, self._service_type, name, port, dictionary)
         
     
     class _ServicePanel( ClientGUICommon.StaticBox ):
@@ -299,9 +299,9 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
     
     def _ConvertServiceToDisplayTuple( self, service ):
         
-        port = service.GetPort()
+        port = service.get_port()
         name = service.get_name()
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         pretty_port = str( port )
         pretty_name = name
@@ -312,9 +312,9 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
     
     def _ConvertServiceToSortTuple( self, service ):
         
-        port = service.GetPort()
+        port = service.get_port()
         name = service.get_name()
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         return ( port, name, service_type )
         
@@ -327,9 +327,9 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         name = 'new service'
         
-        dictionary = HydrusNetwork.GenerateDefaultServiceDictionary( service_type )
+        dictionary = HydrusNetwork.generate_default_service_dictionary(service_type)
         
-        service = HydrusNetwork.GenerateService( service_key, service_type, name, port, dictionary )
+        service = HydrusNetwork.generate_service(service_key, service_type, name, port, dictionary)
         
         with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit serverside service' ) as dlg_edit:
             
@@ -368,7 +368,7 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
             
             for service in self._services_listctrl.GetData( only_selected = True ):
                 
-                self._deletee_service_keys.append( service.GetServiceKey() )
+                self._deletee_service_keys.append(service.get_service_key())
                 
             
             self._services_listctrl.DeleteSelected()
@@ -400,7 +400,7 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
                 
                 edited_service = panel.GetValue()
                 
-                if edited_service.GetName() != original_name:
+                if edited_service.get_name() != original_name:
                     
                     self._services_listctrl.SetNonDupeName( edited_service )
                     
@@ -414,7 +414,7 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
     
     def _GetNextPort( self ):
         
-        existing_ports = [ service.GetPort() for service in self._services_listctrl.GetData() ]
+        existing_ports = [service.get_port() for service in self._services_listctrl.GetData()]
         
         largest_port = max( existing_ports )
         
@@ -430,15 +430,15 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
     
     def _SetNonDupePort( self, new_service ):
         
-        existing_ports = [ service.GetPort() for service in self._services_listctrl.GetData() if service.GetServiceKey() != new_service.GetServiceKey() ]
+        existing_ports = [service.get_port() for service in self._services_listctrl.GetData() if service.get_service_key() != new_service.get_service_key()]
         
-        new_port = new_service.GetPort()
+        new_port = new_service.get_port()
         
         if new_port in existing_ports:
             
             next_port = self._GetNextPort()
             
-            new_service.SetPort( next_port )
+            new_service.set_port(next_port)
             
         
     
@@ -446,7 +446,7 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         services = self._services_listctrl.GetData()
         
-        unique_ports = { service.GetPort() for service in services }
+        unique_ports = {service.get_port() for service in services}
         
         if len( unique_ports ) < len( services ):
             
@@ -471,7 +471,7 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         service_keys_to_access_keys = dict( response[ 'service_keys_to_access_keys' ] )
         
-        admin_service_key = self._clientside_admin_service.GetServiceKey()
+        admin_service_key = self._clientside_admin_service.get_service_key()
         
         with HG.dirty_object_lock:
             

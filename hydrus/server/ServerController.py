@@ -295,7 +295,7 @@ class Controller( HydrusController.HydrusController ):
         
         self._services = self.read('services')
         
-        [ self._admin_service ] = [ service for service in self._services if service.GetServiceType() == HC.SERVER_ADMIN ]
+        [ self._admin_service ] = [service for service in self._services if service.get_service_type() == HC.SERVER_ADMIN]
         
         self.server_session_manager = HydrusSessions.HydrusSessionManagerServer()
         
@@ -306,7 +306,7 @@ class Controller( HydrusController.HydrusController ):
         
         HydrusController.HydrusController.init_view(self)
         
-        port = self._admin_service.GetPort()
+        port = self._admin_service.get_port()
         
         if HydrusNetworking.LocalPortInUse( port ):
             
@@ -353,22 +353,22 @@ class Controller( HydrusController.HydrusController ):
     
     def NullifyHistory( self ):
         
-        repositories = [ service for service in self._services if service.GetServiceType() in HC.REPOSITORIES ]
+        repositories = [service for service in self._services if service.get_service_type() in HC.REPOSITORIES]
         
         for service in repositories:
             
-            service.NullifyHistory()
+            service.nullify_history()
             
         
     
     def report_data_used(self, num_bytes):
         
-        self._admin_service.ServerReportDataUsed( num_bytes )
+        self._admin_service.server_report_data_used(num_bytes)
         
     
     def report_request_used(self):
         
-        self._admin_service.ServerReportRequestUsed()
+        self._admin_service.server_report_request_used()
         
     
     def RestartServices( self ):
@@ -411,7 +411,7 @@ class Controller( HydrusController.HydrusController ):
         
         with HG.dirty_object_lock:
             
-            dirty_services = [ service for service in self._services if service.IsDirty() ]
+            dirty_services = [service for service in self._services if service.is_dirty()]
             
             if len( dirty_services ) > 0:
                 
@@ -429,7 +429,7 @@ class Controller( HydrusController.HydrusController ):
     
     def ServerBandwidthOK( self ):
         
-        return self._admin_service.ServerBandwidthOK()
+        return self._admin_service.server_bandwidth_ok()
         
     
     def SetRunningTwistedServices( self, services ):
@@ -442,14 +442,14 @@ class Controller( HydrusController.HydrusController ):
                 
                 for service in services:
                     
-                    service_key = service.GetServiceKey()
-                    service_type = service.GetServiceType()
+                    service_key = service.get_service_key()
+                    service_type = service.get_service_type()
                     
                     name = service.get_name()
                     
                     try:
                         
-                        port = service.GetPort()
+                        port = service.get_port()
                         
                         if service_type == HC.SERVER_ADMIN:
                             
@@ -568,11 +568,11 @@ class Controller( HydrusController.HydrusController ):
         
         # first test available ports
         
-        my_ports = { s.GetPort() for s in self._services }
+        my_ports = {s.get_port() for s in self._services}
         
         for service in services:
             
-            port = service.GetPort()
+            port = service.get_port()
             
             if port not in my_ports and HydrusNetworking.LocalPortInUse( port ):
                 
@@ -586,7 +586,7 @@ class Controller( HydrusController.HydrusController ):
         
         self.call_to_thread(self.services_upnp_manager.set_services, self._services)
         
-        [ self._admin_service ] = [ service for service in self._services if service.GetServiceType() == HC.SERVER_ADMIN ]
+        [ self._admin_service ] = [service for service in self._services if service.get_service_type() == HC.SERVER_ADMIN]
         
         self.RestartServices()
         
@@ -614,11 +614,11 @@ class Controller( HydrusController.HydrusController ):
     
     def SyncRepositories( self ):
         
-        repositories = [ service for service in self._services if service.GetServiceType() in HC.REPOSITORIES ]
+        repositories = [service for service in self._services if service.get_service_type() in HC.REPOSITORIES]
         
         for service in repositories:
             
-            service.Sync()
+            service.sync()
             
         
     

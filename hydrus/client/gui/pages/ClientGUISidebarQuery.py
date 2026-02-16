@@ -625,7 +625,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
         
         def qt_code():
             
-            query_job_status.Finish()
+            query_job_status.finish()
             
             self.ShowFinishedQuery( query_job_status, media_results )
             

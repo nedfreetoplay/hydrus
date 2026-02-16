@@ -60,7 +60,7 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
     locations_manager = media_result.GetLocationsManager()
     times_manager = locations_manager.GetTimesManager()
     
-    ( hash_id, hash, size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) = file_info_manager.ToTuple()
+    ( hash_id, hash, size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) = file_info_manager.to_tuple()
     
     info_string = f'{HydrusData.to_human_bytes(size)} {HC.mime_string_lookup[ mime]}'
     
@@ -174,7 +174,7 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
     
     local_file_services = CG.client_controller.services_manager.GetLocalMediaFileServices()
     
-    current_local_file_services = [ service for service in local_file_services if service.GetServiceKey() in current_service_keys ]
+    current_local_file_services = [service for service in local_file_services if service.get_service_key() in current_service_keys]
     
     if len( current_local_file_services ) > 0:
         
@@ -184,7 +184,7 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
         
         for local_file_service in current_local_file_services:
             
-            timestamp_ms = times_manager.GetImportedTimestampMS( local_file_service.GetServiceKey() )
+            timestamp_ms = times_manager.GetImportedTimestampMS(local_file_service.get_service_key())
             
             if state_local_service_timestamp:
                 
@@ -205,7 +205,7 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
     
     #
     
-    deleted_local_file_services = [ service for service in local_file_services if service.GetServiceKey() in deleted_service_keys ]
+    deleted_local_file_services = [service for service in local_file_services if service.get_service_key() in deleted_service_keys]
     
     local_file_deletion_reason = locations_manager.GetLocalFileDeletionReason()
     
@@ -227,7 +227,7 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
         
         for local_file_service in deleted_local_file_services:
             
-            timestamp_ms = times_manager.GetDeletedTimestampMS( local_file_service.GetServiceKey() )
+            timestamp_ms = times_manager.GetDeletedTimestampMS(local_file_service.get_service_key())
             
             line = f'removed from {local_file_service.get_name()} {HydrusTime.timestamp_to_pretty_time_delta(HydrusTime.secondise_ms(timestamp_ms))}'
             
@@ -284,7 +284,7 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
             continue
             
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         if service_type == HC.IPFS:
             

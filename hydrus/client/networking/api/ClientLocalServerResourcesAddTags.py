@@ -29,7 +29,7 @@ class HydrusResourceClientAPIRestrictedAddTags( ClientLocalServerResources.Hydru
     
     def _CheckAPIPermissions( self, request: HydrusServerRequest.HydrusRequest ):
         
-        request.client_api_permissions.CheckPermission( ClientAPI.CLIENT_API_PERMISSION_ADD_TAGS )
+        request.client_api_permissions.check_permission(ClientAPI.CLIENT_API_PERMISSION_ADD_TAGS)
         
     
 
@@ -65,7 +65,7 @@ class HydrusResourceClientAPIRestrictedAddTagsAddTags( HydrusResourceClientAPIRe
                     continue
                     
                 
-                if service.GetServiceType() == HC.LOCAL_TAG:
+                if service.get_service_type() == HC.LOCAL_TAG:
                     
                     content_action = HC.CONTENT_UPDATE_ADD
                     
@@ -107,7 +107,7 @@ class HydrusResourceClientAPIRestrictedAddTagsAddTags( HydrusResourceClientAPIRe
                         raise HydrusExceptions.BadRequestException( 'Sorry, got an action, "{}", that was not an integer!'.format( parsed_content_action ) )
                         
                     
-                    if service.GetServiceType() == HC.LOCAL_TAG:
+                    if service.get_service_type() == HC.LOCAL_TAG:
                         
                         if content_action not in ( HC.CONTENT_UPDATE_ADD, HC.CONTENT_UPDATE_DELETE ):
                             
@@ -251,7 +251,7 @@ class HydrusResourceClientAPIRestrictedAddTagsSearchTags( HydrusResourceClientAP
         
         # this doesn't need 'add tags' atm. I was going to add it, but I'm not sure it is actually appropriate
         # this thing probably should have been in search files space, but whatever
-        request.client_api_permissions.CheckPermission( ClientAPI.CLIENT_API_PERMISSION_SEARCH_FILES )
+        request.client_api_permissions.check_permission(ClientAPI.CLIENT_API_PERMISSION_SEARCH_FILES)
         
     
     def _GetParsedAutocompleteText( self, search, tag_service_key ) -> ClientSearchAutocomplete.ParsedAutocompleteText:

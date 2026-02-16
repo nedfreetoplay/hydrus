@@ -22,7 +22,7 @@ class TestSessions( unittest.TestCase ):
         
         permissions = [ HC.GET_DATA, HC.POST_DATA, HC.POST_PETITIONS, HC.RESOLVE_PETITIONS, HC.MANAGE_USERS, HC.GENERAL_ADMIN, HC.EDIT_SERVICES ]
         
-        account_type = HydrusNetwork.AccountType.GenerateAdminAccountType( HC.SERVER_ADMIN )
+        account_type = HydrusNetwork.AccountType.generate_admin_account_type(HC.SERVER_ADMIN)
         created = HydrusTime.get_now() - 100000
         expires = HydrusTime.get_now() + 300
         

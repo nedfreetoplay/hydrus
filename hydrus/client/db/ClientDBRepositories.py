@@ -204,7 +204,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         
         if len( hash_ids ) > 0:
             
-            service_type = self.modules_services.GetService( service_id ).GetServiceType()
+            service_type = self.modules_services.GetService( service_id ).get_service_type()
             
             with self._make_temporary_integer_table(hash_ids, 'hash_id') as temp_hash_ids_table_name:
                 
@@ -298,7 +298,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         
         inserts = []
         
-        for ( update_index, update_hashes ) in metadata_slice.GetUpdateIndicesAndHashes():
+        for ( update_index, update_hashes ) in metadata_slice.get_update_indices_and_hashes():
             
             hash_ids = self.modules_hashes_local_cache.GetHashIds( update_hashes )
             
@@ -745,7 +745,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         
         service_id = self.modules_services.GetServiceId( service_key )
         
-        all_future_update_hash_ids = self.modules_hashes_local_cache.GetHashIds( metadata.GetUpdateHashes() )
+        all_future_update_hash_ids = self.modules_hashes_local_cache.GetHashIds(metadata.get_update_hashes())
         
         ( repository_updates_table_name, repository_unregistered_updates_table_name, repository_updates_processed_table_name ) = GenerateRepositoryUpdatesTableNames( service_id )
         
@@ -773,7 +773,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         
         inserts = []
         
-        for ( update_index, update_hashes ) in metadata.GetUpdateIndicesAndHashes():
+        for ( update_index, update_hashes ) in metadata.get_update_indices_and_hashes():
             
             for update_hash in update_hashes:
                 

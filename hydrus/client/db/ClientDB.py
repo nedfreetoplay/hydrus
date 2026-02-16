@@ -465,7 +465,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 service = self.modules_services.GetService( applicable_service_id )
                 
-                if service.GetServiceType() == HC.TAG_REPOSITORY:
+                if service.get_service_type() == HC.TAG_REPOSITORY:
                     
                     if self.modules_repositories.HasLotsOfOutstandingLocalProcessing( applicable_service_id, ( content_type, ) ):
                         
@@ -1326,7 +1326,7 @@ class DB( HydrusDB.HydrusDB ):
         
         service = self.modules_services.GetService( service_id )
         
-        if service.GetServiceType() == HC.TAG_REPOSITORY:
+        if service.get_service_type() == HC.TAG_REPOSITORY:
             
             ( current_mappings_table_name, deleted_mappings_table_name, pending_mappings_table_name, petitioned_mappings_table_name ) = ClientDBMappingsStorage.GenerateMappingsTableNames( service_id )
             
@@ -1339,7 +1339,7 @@ class DB( HydrusDB.HydrusDB ):
             self.modules_tag_siblings.DeletePending( service_id )
             self.modules_tag_parents.DeletePending( service_id )
             
-        elif service.GetServiceType() in ( HC.FILE_REPOSITORY, HC.IPFS ):
+        elif service.get_service_type() in (HC.FILE_REPOSITORY, HC.IPFS):
             
             self.modules_files_storage.DeletePending( service_id )
             
@@ -1355,8 +1355,8 @@ class DB( HydrusDB.HydrusDB ):
         
         service = self.modules_services.GetService( service_id )
         
-        service_key = service.GetServiceKey()
-        service_type = service.GetServiceType()
+        service_key = service.get_service_key()
+        service_type = service.get_service_type()
         
         # for a long time, much of this was done with foreign keys, which had to be turned on especially for this operation
         # however, this seemed to cause some immense temp drive space bloat when dropping the mapping tables, as there seems to be a trigger/foreign reference check for every row to be deleted
@@ -2576,8 +2576,8 @@ class DB( HydrusDB.HydrusDB ):
         
         for service in services:
             
-            service_key = service.GetServiceKey()
-            service_type = service.GetServiceType()
+            service_key = service.get_service_key()
+            service_type = service.get_service_type()
             
             service_id = self.modules_services.GetServiceId( service_key )
             
@@ -2645,7 +2645,7 @@ class DB( HydrusDB.HydrusDB ):
         
         service = self.modules_services.GetService( service_id )
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         if service_type in HC.REPOSITORIES:
             
@@ -2657,7 +2657,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 if HC.CONTENT_TYPE_MAPPINGS in content_types:
                     
-                    if account.HasPermission( HC.CONTENT_TYPE_MAPPINGS, HC.PERMISSION_ACTION_CREATE ):
+                    if account.has_permission(HC.CONTENT_TYPE_MAPPINGS, HC.PERMISSION_ACTION_CREATE):
                         
                         ( current_mappings_table_name, deleted_mappings_table_name, pending_mappings_table_name, petitioned_mappings_table_name ) = ClientDBMappingsStorage.GenerateMappingsTableNames( service_id )
                         
@@ -2691,11 +2691,11 @@ class DB( HydrusDB.HydrusDB ):
                             
                             content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( tag, hashes ) )
                             
-                            client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content )
+                            client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content)
                             
                         
                     
-                    if account.HasPermission( HC.CONTENT_TYPE_MAPPINGS, HC.PERMISSION_ACTION_PETITION ):
+                    if account.has_permission(HC.CONTENT_TYPE_MAPPINGS, HC.PERMISSION_ACTION_PETITION):
                         
                         petitioned_dict = HydrusData.build_key_to_list_dict([((tag_id, reason_id), hash_id) for (tag_id, hash_id, reason_id) in self._execute('SELECT tag_id, hash_id, reason_id FROM ' + petitioned_mappings_table_name + ' ORDER BY reason_id LIMIT ?;', (ideal_weight,))])
                         
@@ -2733,14 +2733,14 @@ class DB( HydrusDB.HydrusDB ):
                             
                             content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( tag, hashes ) )
                             
-                            client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason )
+                            client_to_server_update.add_content(HC.CONTENT_UPDATE_PETITION, content, reason)
                             
                         
                     
                 
                 if HC.CONTENT_TYPE_TAG_PARENTS in content_types:
                     
-                    if account.HasPermission( HC.CONTENT_TYPE_TAG_PARENTS, HC.PERMISSION_ACTION_PETITION ):
+                    if account.has_permission(HC.CONTENT_TYPE_TAG_PARENTS, HC.PERMISSION_ACTION_PETITION):
                         
                         statuses_to_storage_table_names = ClientDBTagParents.GenerateTagParentsStorageTableNames( service_id )
                         
@@ -2758,7 +2758,7 @@ class DB( HydrusDB.HydrusDB ):
                             
                             content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_PARENTS, ( child_tag, parent_tag ) )
                             
-                            client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason )
+                            client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content, reason)
                             
                         
                         petitioned = self._execute(f'SELECT child_tag_id, parent_tag_id, reason_id FROM {statuses_to_storage_table_names[ HC.CONTENT_STATUS_PETITIONED]} ORDER BY reason_id LIMIT ?;', (ideal_weight,)).fetchall()
@@ -2775,14 +2775,14 @@ class DB( HydrusDB.HydrusDB ):
                             
                             content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_PARENTS, ( child_tag, parent_tag ) )
                             
-                            client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason )
+                            client_to_server_update.add_content(HC.CONTENT_UPDATE_PETITION, content, reason)
                             
                         
                     
                 
                 if HC.CONTENT_TYPE_TAG_SIBLINGS in content_types:
                     
-                    if account.HasPermission( HC.CONTENT_TYPE_TAG_SIBLINGS, HC.PERMISSION_ACTION_PETITION ):
+                    if account.has_permission(HC.CONTENT_TYPE_TAG_SIBLINGS, HC.PERMISSION_ACTION_PETITION):
                         
                         statuses_to_storage_table_names = ClientDBTagSiblings.GenerateTagSiblingsStorageTableNames( service_id )
                         
@@ -2800,7 +2800,7 @@ class DB( HydrusDB.HydrusDB ):
                             
                             content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_SIBLINGS, ( bad_tag, good_tag ) )
                             
-                            client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason )
+                            client_to_server_update.add_content(HC.CONTENT_UPDATE_PEND, content, reason)
                             
                         
                         petitioned = self._execute(f'SELECT bad_tag_id, good_tag_id, reason_id FROM {statuses_to_storage_table_names[ HC.CONTENT_STATUS_PETITIONED]} ORDER BY reason_id LIMIT ?;', (ideal_weight,)).fetchall()
@@ -2817,7 +2817,7 @@ class DB( HydrusDB.HydrusDB ):
                             
                             content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_SIBLINGS, ( bad_tag, good_tag ) )
                             
-                            client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason )
+                            client_to_server_update.add_content(HC.CONTENT_UPDATE_PETITION, content, reason)
                             
                         
                     
@@ -2826,7 +2826,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 if HC.CONTENT_TYPE_FILES in content_types:
                     
-                    if account.HasPermission( HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_CREATE ):
+                    if account.has_permission(HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_CREATE):
                         
                         result = self.modules_files_storage.GetAPendingHashId( service_id )
                         
@@ -2840,7 +2840,7 @@ class DB( HydrusDB.HydrusDB ):
                             
                         
                     
-                    if account.HasPermission( HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_PETITION ):
+                    if account.has_permission(HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_PETITION):
                         
                         petitioned_rows = self.modules_files_storage.GetSomePetitionedRows( service_id )
                         
@@ -2852,13 +2852,13 @@ class DB( HydrusDB.HydrusDB ):
                             
                             content = HydrusNetwork.Content( HC.CONTENT_TYPE_FILES, hashes )
                             
-                            client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason )
+                            client_to_server_update.add_content(HC.CONTENT_UPDATE_PETITION, content, reason)
                             
                         
                     
                 
             
-            if client_to_server_update.HasContent():
+            if client_to_server_update.has_content():
                 
                 return client_to_server_update
                 
@@ -3371,7 +3371,7 @@ class DB( HydrusDB.HydrusDB ):
         
         service = self.modules_services.GetService( service_id )
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         if service_type in ( HC.HYDRUS_LOCAL_FILE_STORAGE, HC.COMBINED_LOCAL_FILE_DOMAINS, HC.LOCAL_FILE_DOMAIN, HC.LOCAL_FILE_UPDATE_DOMAIN, HC.FILE_REPOSITORY ):
             
@@ -4770,13 +4770,13 @@ class DB( HydrusDB.HydrusDB ):
                     
                     our_num_files = our_results[ HC.SERVICE_INFO_NUM_FILE_HASHES ]
                     
-                    other_services = [ service for service in self.modules_services.GetServices( HC.REAL_TAG_SERVICES ) if service.GetServiceKey() != tag_service_key ]
+                    other_services = [service for service in self.modules_services.GetServices( HC.REAL_TAG_SERVICES ) if service.get_service_key() != tag_service_key]
                     
                     other_num_files = []
                     
                     for other_service in other_services:
                         
-                        other_results = self._GetServiceInfo( other_service.GetServiceKey() )
+                        other_results = self._GetServiceInfo(other_service.get_service_key())
                         
                         other_num_files.append( other_results[ HC.SERVICE_INFO_NUM_FILE_HASHES ] )
                         
@@ -6157,7 +6157,7 @@ class DB( HydrusDB.HydrusDB ):
             
             for tag_service_id in missing_tag_service_ids:
                 
-                tag_service_key = self.modules_services.GetService( tag_service_id ).GetServiceKey()
+                tag_service_key = self.modules_services.GetService( tag_service_id ).get_service_key()
                 
                 self._RegenerateTagMappingsCache( tag_service_key = tag_service_key )
                 
@@ -6187,7 +6187,7 @@ class DB( HydrusDB.HydrusDB ):
             
             for tag_service_id in missing_tag_service_ids:
                 
-                tag_service_key = self.modules_services.GetService( tag_service_id ).GetServiceKey()
+                tag_service_key = self.modules_services.GetService( tag_service_id ).get_service_key()
                 
                 self._RegenerateTagDisplayMappingsCache( tag_service_key = tag_service_key )
                 
@@ -6462,7 +6462,7 @@ class DB( HydrusDB.HydrusDB ):
             
             job_status.SetStatusText( 'Done! Rows recovered: {}'.format(HydrusNumbers.to_human_int(num_rows_recovered)))
             
-            job_status.Finish()
+            job_status.finish()
             
         
     
@@ -6613,7 +6613,7 @@ class DB( HydrusDB.HydrusDB ):
     
     def _ResetRepository( self, service ):
         
-        ( service_key, service_type, name, dictionary ) = service.ToTuple()
+        ( service_key, service_type, name, dictionary ) = service.to_tuple()
         
         service_id = self.modules_services.GetServiceId( service_key )
         
@@ -6657,7 +6657,7 @@ class DB( HydrusDB.HydrusDB ):
         
         service = self.modules_services.GetService( service_id )
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         prefix = 'resetting content'
         
@@ -8811,7 +8811,7 @@ class DB( HydrusDB.HydrusDB ):
         
         admin_credentials = admin_service.GetCredentials()
         
-        ( host, admin_port ) = admin_credentials.GetAddress()
+        ( host, admin_port ) = admin_credentials.get_address()
         
         #
         
@@ -8819,7 +8819,7 @@ class DB( HydrusDB.HydrusDB ):
         
         for serverside_service in serverside_services:
             
-            service_key = serverside_service.GetServiceKey()
+            service_key = serverside_service.get_service_key()
             
             if service_key in current_service_keys:
                 
@@ -8829,17 +8829,17 @@ class DB( HydrusDB.HydrusDB ):
                 
                 credentials = service.GetCredentials()
                 
-                upnp_port = serverside_service.GetUPnPPort()
+                upnp_port = serverside_service.get_upnp_port()
                 
                 if upnp_port is None:
                     
-                    port = serverside_service.GetPort()
+                    port = serverside_service.get_port()
                     
-                    credentials.SetAddress( host, port )
+                    credentials.set_address(host, port)
                     
                 else:
                     
-                    credentials.SetAddress( host, upnp_port )
+                    credentials.set_address(host, upnp_port)
                     
                 
                 service.SetCredentials( credentials )
@@ -8850,7 +8850,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 if service_key in service_keys_to_access_keys:
                     
-                    service_type = serverside_service.GetServiceType()
+                    service_type = serverside_service.get_service_type()
                     name = serverside_service.get_name()
                     
                     service = ClientServices.GenerateService( service_key, service_type, name )
@@ -8859,24 +8859,24 @@ class DB( HydrusDB.HydrusDB ):
                     
                     credentials = service.GetCredentials()
                     
-                    upnp_port = serverside_service.GetUPnPPort()
+                    upnp_port = serverside_service.get_upnp_port()
                     
                     if upnp_port is None:
                         
-                        port = serverside_service.GetPort()
+                        port = serverside_service.get_port()
                         
-                        credentials.SetAddress( host, port )
+                        credentials.set_address(host, port)
                         
                     else:
                         
-                        credentials.SetAddress( host, upnp_port )
+                        credentials.set_address(host, upnp_port)
                         
                     
-                    credentials.SetAccessKey( access_key )
+                    credentials.set_access_key(access_key)
                     
                     service.SetCredentials( credentials )
                     
-                    ( service_key, service_type, name, dictionary ) = service.ToTuple()
+                    ( service_key, service_type, name, dictionary ) = service.to_tuple()
                     
                     self._AddService( service_key, service_type, name, dictionary )
                     
@@ -8907,7 +8907,7 @@ class DB( HydrusDB.HydrusDB ):
         
         current_service_keys = self.modules_services.GetServiceKeys()
         
-        future_service_keys = { service.GetServiceKey() for service in services }
+        future_service_keys = {service.get_service_key() for service in services}
         
         we_deleted_tag_service = False
         
@@ -8928,7 +8928,7 @@ class DB( HydrusDB.HydrusDB ):
         
         for service in services:
             
-            service_key = service.GetServiceKey()
+            service_key = service.get_service_key()
             
             if service_key in current_service_keys:
                 
@@ -8936,7 +8936,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             else:
                 
-                ( service_key, service_type, name, dictionary ) = service.ToTuple()
+                ( service_key, service_type, name, dictionary ) = service.to_tuple()
                 
                 self._AddService( service_key, service_type, name, dictionary )
                 

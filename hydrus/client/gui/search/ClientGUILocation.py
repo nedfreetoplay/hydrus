@@ -32,7 +32,7 @@ class EditMultipleLocationContextPanel( ClientGUIScrolledPanels.EditPanel ):
         for service in services:
             
             name = service.get_name()
-            service_key = service.GetServiceKey()
+            service_key = service.get_service_key()
             
             starts_checked = service_key in self._original_location_context.current_service_keys
             
@@ -46,9 +46,9 @@ class EditMultipleLocationContextPanel( ClientGUIScrolledPanels.EditPanel ):
             for service in services:
                 
                 name = service.get_name()
-                service_key = service.GetServiceKey()
+                service_key = service.get_service_key()
                 
-                if service.GetServiceType() in HC.FILE_SERVICES_WITH_NO_DELETE_RECORD:
+                if service.get_service_type() in HC.FILE_SERVICES_WITH_NO_DELETE_RECORD:
                     
                     continue
                     
@@ -157,14 +157,14 @@ class LocationSearchContextButton( ClientGUICommon.BetterButton ):
         
         for service in services:
             
-            if last_seen_service_type is not None and last_seen_service_type != service.GetServiceType():
+            if last_seen_service_type is not None and last_seen_service_type != service.get_service_type():
                 
                 ClientGUIMenus.AppendSeparator( menu )
                 
             
-            location_context = ClientLocation.LocationContext.STATICCreateSimple( service.GetServiceKey() )
+            location_context = ClientLocation.LocationContext.STATICCreateSimple(service.get_service_key())
             
-            if service.GetServiceType() == HC.COMBINED_FILE and self._is_paired_with_tag_domain:
+            if service.get_service_type() == HC.COMBINED_FILE and self._is_paired_with_tag_domain:
                 
                 name = 'all known files with tags'
                 
@@ -175,7 +175,7 @@ class LocationSearchContextButton( ClientGUICommon.BetterButton ):
             
             desc = 'Change the current file domain to {}.'.format(service.get_name())
             
-            if service.GetServiceKey() == CC.COMBINED_DELETED_FILE_SERVICE_KEY:
+            if service.get_service_key() == CC.COMBINED_DELETED_FILE_SERVICE_KEY:
                 
                 desc += ' Note this includes files deleted from any domain at all, including those removed from one local file domain but still in another local file domain.'
                 
@@ -189,9 +189,9 @@ class LocationSearchContextButton( ClientGUICommon.BetterButton ):
                 we_have_checked_something = True
                 
             
-            last_seen_service_type = service.GetServiceType()
+            last_seen_service_type = service.get_service_type()
             
-            if service.GetServiceType() == HC.LOCAL_FILE_TRASH_DOMAIN:
+            if service.get_service_type() == HC.LOCAL_FILE_TRASH_DOMAIN:
                 
                 ClientGUIMenus.AppendSeparator( menu )
                 

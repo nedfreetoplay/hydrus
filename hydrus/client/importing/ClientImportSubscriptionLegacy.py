@@ -1260,7 +1260,7 @@ def ConvertLegacySubscriptionToNew( legacy_subscription: SubscriptionLegacy ):
         
         query_header = ClientImportSubscriptionQuery.SubscriptionQueryHeader()
         
-        ( query_text, check_now, last_check_time, next_check_time, query_paused, status ) = query.ToTuple()
+        ( query_text, check_now, last_check_time, next_check_time, query_paused, status ) = query.to_tuple()
         
         query_header.SetQueryText( query_text )
         query_header.SetDisplayName( query.GetDisplayName() )

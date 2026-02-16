@@ -158,7 +158,7 @@ class EditDuplicateContentMergeOptionsWidget( ClientGUICommon.StaticBox ):
                 
                 service = services_manager.GetService( service_key )
                 
-                service_type = service.GetServiceType()
+                service_type = service.get_service_type()
                 
                 if service_type == HC.LOCAL_RATING_INCDEC:
                     
@@ -234,7 +234,7 @@ class EditDuplicateContentMergeOptionsWidget( ClientGUICommon.StaticBox ):
                 
                 service = services_manager.GetService( service_key )
                 
-                if service.GetServiceType() == HC.TAG_REPOSITORY:
+                if service.get_service_type() == HC.TAG_REPOSITORY:
                     
                     possible_actions = [ HC.CONTENT_MERGE_ACTION_COPY, HC.CONTENT_MERGE_ACTION_TWO_WAY_MERGE ]
                     
@@ -291,7 +291,7 @@ class EditDuplicateContentMergeOptionsWidget( ClientGUICommon.StaticBox ):
             
             service_name = service.get_name()
             
-            service_type = service.GetServiceType()
+            service_type = service.get_service_type()
             
         except HydrusExceptions.DataMissing:
             
@@ -402,7 +402,7 @@ class EditDuplicateContentMergeOptionsWidget( ClientGUICommon.StaticBox ):
             
             service = CG.client_controller.services_manager.GetService( service_key )
             
-            service_type = service.GetServiceType()
+            service_type = service.get_service_type()
             
             if service_type == HC.LOCAL_RATING_INCDEC:
                 
@@ -457,7 +457,7 @@ class EditDuplicateContentMergeOptionsWidget( ClientGUICommon.StaticBox ):
             
             service = CG.client_controller.services_manager.GetService( service_key )
             
-            if service.GetServiceType() == HC.TAG_REPOSITORY:
+            if service.get_service_type() == HC.TAG_REPOSITORY:
                 
                 possible_actions = [ HC.CONTENT_MERGE_ACTION_COPY, HC.CONTENT_MERGE_ACTION_TWO_WAY_MERGE ]
                 

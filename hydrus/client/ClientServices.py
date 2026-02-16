@@ -62,7 +62,7 @@ def GenerateDefaultServiceDictionary( service_type ):
         
         if service_type in HC.RESTRICTED_SERVICES:
             
-            dictionary[ 'account' ] = HydrusNetwork.Account.GenerateSerialisableTupleFromAccount( HydrusNetwork.Account.GenerateUnknownAccount() )
+            dictionary[ 'account' ] = HydrusNetwork.Account.generate_serialisable_tuple_from_account(HydrusNetwork.Account.generate_unknown_account())
             dictionary[ 'next_account_sync' ] = 0
             dictionary[ 'network_sync_paused' ] = False
             dictionary[ 'service_options' ] = HydrusSerialisable.SerialisableDictionary()
@@ -991,7 +991,7 @@ class ServiceRemote( Service ):
     
     def _GetBaseURL( self ):
         
-        full_host = self._credentials.GetPortedAddress()
+        full_host = self._credentials.get_ported_address()
         
         base_url = 'https://{}/'.format( full_host )
         
@@ -1078,7 +1078,7 @@ class ServiceRemote( Service ):
         
         with self._lock:
             
-            return CG.client_controller.network_engine.bandwidth_manager.GetBandwidthStringsAndGaugeTuples( self.network_context )
+            return CG.client_controller.network_engine.bandwidth_manager.get_bandwidth_strings_and_gauge_tuples(self.network_context)
             
         
     
@@ -1117,9 +1117,9 @@ class ServiceRestricted( ServiceRemote ):
     
     def _DealWithAccountError( self ):
         
-        account_key = self._account.GetAccountKey()
+        account_key = self._account.get_account_key()
         
-        self._account = HydrusNetwork.Account.GenerateUnknownAccount( account_key )
+        self._account = HydrusNetwork.Account.generate_unknown_account(account_key)
         
         CG.client_controller.pub( 'notify_account_sync_due' )
         
@@ -1134,9 +1134,9 @@ class ServiceRestricted( ServiceRemote ):
     
     def _DealWithFundamentalNetworkError( self ):
         
-        account_key = self._account.GetAccountKey()
+        account_key = self._account.get_account_key()
         
-        self._account = HydrusNetwork.Account.GenerateUnknownAccount( account_key )
+        self._account = HydrusNetwork.Account.generate_unknown_account(account_key)
         
         self._next_account_sync = HydrusTime.get_now() + ACCOUNT_SYNC_PERIOD
         
@@ -1147,7 +1147,7 @@ class ServiceRestricted( ServiceRemote ):
     
     def _GetErrorWaitPeriod( self ):
         
-        if self._account.HasPermission( HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_MODERATE ):
+        if self._account.has_permission(HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_MODERATE):
             
             return 900
             
@@ -1180,7 +1180,7 @@ class ServiceRestricted( ServiceRemote ):
         
         if including_account:
             
-            self._account.CheckFunctional()
+            self._account.check_functional()
             
         
         ServiceRemote._CheckFunctional( self, including_external_communication = including_external_communication, including_bandwidth = including_bandwidth )
@@ -1188,7 +1188,7 @@ class ServiceRestricted( ServiceRemote ):
     
     def _CheckCanCommunicateExternally( self, including_bandwidth = True ):
         
-        if not self._credentials.HasAccessKey():
+        if not self._credentials.has_access_key():
             
             raise HydrusExceptions.MissingCredentialsException( 'this service has no access key set' )
             
@@ -1198,9 +1198,9 @@ class ServiceRestricted( ServiceRemote ):
     
     def _CredentialsAreChanging( self ):
         
-        account_key = self._account.GetAccountKey()
+        account_key = self._account.get_account_key()
         
-        self._account = HydrusNetwork.Account.GenerateUnknownAccount( account_key )
+        self._account = HydrusNetwork.Account.generate_unknown_account(account_key)
         
         self._next_account_sync = HydrusTime.get_now()
         
@@ -1213,7 +1213,7 @@ class ServiceRestricted( ServiceRemote ):
         
         dictionary = ServiceRemote._GetSerialisableDictionary( self )
         
-        dictionary[ 'account' ] = HydrusNetwork.Account.GenerateSerialisableTupleFromAccount( self._account )
+        dictionary[ 'account' ] = HydrusNetwork.Account.generate_serialisable_tuple_from_account(self._account)
         dictionary[ 'next_account_sync' ] = self._next_account_sync
         dictionary[ 'network_sync_paused' ] = self._network_sync_paused
         dictionary[ 'service_options' ] = HydrusSerialisable.SerialisableDictionary( self._service_options )
@@ -1225,7 +1225,7 @@ class ServiceRestricted( ServiceRemote ):
         
         ServiceRemote._LoadFromDictionary( self, dictionary )
         
-        self._account = HydrusNetwork.Account.GenerateAccountFromSerialisableTuple( dictionary[ 'account' ] )
+        self._account = HydrusNetwork.Account.generate_account_from_serialisable_tuple(dictionary['account'])
         self._next_account_sync = dictionary[ 'next_account_sync' ]
         
         if 'network_sync_paused' not in dictionary:
@@ -1319,7 +1319,7 @@ class ServiceRestricted( ServiceRemote ):
         
         with self._lock:
             
-            return self._account.HasPermission( content_type, action )
+            return self._account.has_permission(content_type, action)
             
         
     
@@ -1332,7 +1332,7 @@ class ServiceRestricted( ServiceRemote ):
         
         with self._lock:
             
-            return self._account.IsDirty()
+            return self._account.is_dirty()
             
         
     
@@ -1450,7 +1450,7 @@ class ServiceRestricted( ServiceRemote ):
                 
                 if command == 'access_key_verification':
                     
-                    network_job.AddAdditionalHeader( 'Hydrus-Key', self._credentials.GetAccessKey().hex() )
+                    network_job.AddAdditionalHeader( 'Hydrus-Key', self._credentials.get_access_key().hex())
                     
                 
             
@@ -1541,14 +1541,14 @@ class ServiceRestricted( ServiceRemote ):
         
         ServiceRemote.SetClean( self )
         
-        self._account.SetClean()
+        self._account.set_clean()
         
     
     def SyncAccount( self, force = False ):
         
         with self._lock:
             
-            ( original_message, original_message_created ) = self._account.GetMessageAndTimestamp()
+            ( original_message, original_message_created ) = self._account.get_message_and_timestamp()
             
             name = self._name
             
@@ -1558,7 +1558,7 @@ class ServiceRestricted( ServiceRemote ):
                 
                 self._no_requests_until = 0
                 
-                self._account = HydrusNetwork.Account.GenerateUnknownAccount()
+                self._account = HydrusNetwork.Account.generate_unknown_account()
                 
             else:
                 
@@ -1587,7 +1587,7 @@ class ServiceRestricted( ServiceRemote ):
                     
                     self._account = account_response[ 'account' ]
                     
-                    ( message, message_created ) = self._account.GetMessageAndTimestamp()
+                    ( message, message_created ) = self._account.get_message_and_timestamp()
                     
                     if message != '' and message_created != original_message_created and not HydrusTime.time_has_passed(message_created + (86400 * 5)):
                         
@@ -1864,9 +1864,9 @@ class ServiceRepository( ServiceRestricted ):
                 
             else:
                 
-                do_it = self._metadata.UpdateDue( from_client = True )
+                do_it = self._metadata.update_due(from_client = True)
                 
-                next_update_index = self._metadata.GetNextUpdateIndex()
+                next_update_index = self._metadata.get_next_update_index()
                 
             
             service_key = self._service_key
@@ -1915,7 +1915,7 @@ class ServiceRepository( ServiceRestricted ):
                     self._do_a_full_metadata_resync = False
                     
                 
-                self._metadata.UpdateFromSlice( metadata_slice )
+                self._metadata.update_from_slice(metadata_slice)
                 
                 self._is_mostly_caught_up = None
                 
@@ -2126,7 +2126,7 @@ class ServiceRepository( ServiceRestricted ):
             
             if len( content_hashes_and_content_types ) > 0:
                 
-                content_hashes_and_content_types = self._metadata.SortContentHashesAndContentTypes( content_hashes_and_content_types )
+                content_hashes_and_content_types = self._metadata.sort_content_hashes_and_content_types(content_hashes_and_content_types)
                 
             
             HydrusData.print_text(title)
@@ -2194,13 +2194,13 @@ class ServiceRepository( ServiceRestricted ):
                         raise Exception( 'An unusual error has occured during repository processing: a definition update file ({}) has incorrect metadata. Your repository should be paused, and all update files have been scheduled for a metadata rescan. Please permit file maintenance under _database->file maintenance->manage scheduled jobs_ to finish its new work, which should fix this, before unpausing your repository.'.format( definition_hash.hex() ) )
                         
                     
-                    rows_in_this_update = definition_update.GetNumRows()
+                    rows_in_this_update = definition_update.get_num_rows()
                     rows_done_in_this_update = 0
                     
                     iterator_dict = {}
                     
-                    iterator_dict[ 'service_hash_ids_to_hashes' ] = iter( definition_update.GetHashIdsToHashes().items() )
-                    iterator_dict[ 'service_tag_ids_to_tags' ] = iter( definition_update.GetTagIdsToTags().items() )
+                    iterator_dict[ 'service_hash_ids_to_hashes' ] = iter(definition_update.get_hash_ids_to_hashes().items())
+                    iterator_dict[ 'service_tag_ids_to_tags' ] = iter(definition_update.get_tag_ids_to_tags().items())
                     
                     while len( iterator_dict ) > 0:
                         
@@ -2323,33 +2323,33 @@ class ServiceRepository( ServiceRestricted ):
                         raise Exception( 'An unusual error has occured during repository processing: a content update file ({}) has incorrect metadata. Your repository should be paused, and all update files have been scheduled for a metadata rescan. Please permit file maintenance under _database->file maintenance->manage scheduled jobs_ to finish its new work, which should fix this, before unpausing your repository.'.format( content_hash.hex() ) )
                         
                     
-                    rows_in_this_update = content_update.GetNumRows( content_types )
+                    rows_in_this_update = content_update.get_num_rows(content_types)
                     rows_done_in_this_update = 0
                     
                     iterator_dict = {}
                     
                     if HC.CONTENT_TYPE_FILES in content_types:
                         
-                        iterator_dict[ 'new_files' ] = iter( content_update.GetNewFiles() )
-                        iterator_dict[ 'deleted_files' ] = iter( content_update.GetDeletedFiles() )
+                        iterator_dict[ 'new_files' ] = iter(content_update.get_new_files())
+                        iterator_dict[ 'deleted_files' ] = iter(content_update.get_deleted_files())
                         
                     
                     if HC.CONTENT_TYPE_MAPPINGS in content_types:
                         
-                        iterator_dict[ 'new_mappings' ] = HydrusLists.smooth_out_mapping_iterator(content_update.GetNewMappings(), 50)
-                        iterator_dict[ 'deleted_mappings' ] = HydrusLists.smooth_out_mapping_iterator(content_update.GetDeletedMappings(), 50)
+                        iterator_dict[ 'new_mappings' ] = HydrusLists.smooth_out_mapping_iterator(content_update.get_new_mappings(), 50)
+                        iterator_dict[ 'deleted_mappings' ] = HydrusLists.smooth_out_mapping_iterator(content_update.get_deleted_mappings(), 50)
                         
                     
                     if HC.CONTENT_TYPE_TAG_PARENTS in content_types:
                         
-                        iterator_dict[ 'new_parents' ] = iter( content_update.GetNewTagParents() )
-                        iterator_dict[ 'deleted_parents' ] = iter( content_update.GetDeletedTagParents() )
+                        iterator_dict[ 'new_parents' ] = iter(content_update.get_new_tag_parents())
+                        iterator_dict[ 'deleted_parents' ] = iter(content_update.get_deleted_tag_parents())
                         
                     
                     if HC.CONTENT_TYPE_TAG_SIBLINGS in content_types:
                         
-                        iterator_dict[ 'new_siblings' ] = iter( content_update.GetNewTagSiblings() )
-                        iterator_dict[ 'deleted_siblings' ] = iter( content_update.GetDeletedTagSiblings() )
+                        iterator_dict[ 'new_siblings' ] = iter(content_update.get_new_tag_siblings())
+                        iterator_dict[ 'deleted_siblings' ] = iter(content_update.get_deleted_tag_siblings())
                         
                     
                     while len( iterator_dict ) > 0:
@@ -2470,7 +2470,7 @@ class ServiceRepository( ServiceRestricted ):
             
             update_period = service_options[ 'update_period' ]
             
-            self._metadata.CalculateNewNextUpdateDue( update_period )
+            self._metadata.calculate_new_next_update_due(update_period)
             
         
         ServiceRestricted._UpdateServiceOptions( self, service_options )
@@ -2531,7 +2531,7 @@ class ServiceRepository( ServiceRestricted ):
             self._next_account_sync = 1
             self._do_a_full_metadata_resync = True
             
-            self._metadata.UpdateASAP()
+            self._metadata.update_asap()
             
             self._SetDirty()
             
@@ -2552,7 +2552,7 @@ class ServiceRepository( ServiceRestricted ):
         
         with self._lock:
             
-            return self._metadata.GetNextUpdateDueString( from_client = True )
+            return self._metadata.get_next_update_due_string(from_client = True)
             
         
     
@@ -2609,7 +2609,7 @@ class ServiceRepository( ServiceRestricted ):
         
         with self._lock:
             
-            return self._metadata.GetUpdateHashes()
+            return self._metadata.get_update_hashes()
             
         
     
@@ -2654,7 +2654,7 @@ class ServiceRepository( ServiceRestricted ):
             
             if self._is_mostly_caught_up is None:
                 
-                if not self._metadata.HasDoneInitialSync():
+                if not self._metadata.has_done_initial_sync():
                     
                     self._is_mostly_caught_up = False
                     
@@ -2662,7 +2662,7 @@ class ServiceRepository( ServiceRestricted ):
                     
                 else:
                     
-                    next_begin = self._metadata.GetNextUpdateBegin()
+                    next_begin = self._metadata.get_next_update_begin()
                     
                     # haven't synced new metadata, so def not caught up
                     if next_begin < two_weeks_ago:
@@ -2697,7 +2697,7 @@ class ServiceRepository( ServiceRestricted ):
                 
             else:
                 
-                earliest_unsorted_update_timestamp = self._metadata.GetEarliestTimestampForTheseHashes( unprocessed_update_hashes )
+                earliest_unsorted_update_timestamp = self._metadata.get_earliest_timestamp_for_these_hashes(unprocessed_update_hashes)
                 
                 self._is_mostly_caught_up = earliest_unsorted_update_timestamp > two_weeks_ago
                 
@@ -2783,7 +2783,7 @@ class ServiceRepository( ServiceRestricted ):
             self._no_requests_reason = ''
             self._no_requests_until = 0
             
-            self._account = HydrusNetwork.Account.GenerateUnknownAccount()
+            self._account = HydrusNetwork.Account.generate_unknown_account()
             
             self._next_account_sync = 0
             
@@ -3040,7 +3040,7 @@ class ServiceIPFS( ServiceRemote ):
     
     def _GetAPIBaseURL( self ):
         
-        full_host = self._credentials.GetPortedAddress()
+        full_host = self._credentials.get_ported_address()
         
         api_base_url = 'http://{}/api/v0/'.format( full_host )
         
@@ -3445,7 +3445,7 @@ class ServicesManager( object ):
         
         with self._lock:
             
-            return [ service for service in self._services_sorted if service.GetServiceType() == HC.LOCAL_FILE_DOMAIN ]
+            return [service for service in self._services_sorted if service.get_service_type() == HC.LOCAL_FILE_DOMAIN]
             
         
     
@@ -3505,17 +3505,17 @@ class ServicesManager( object ):
             
             for service in self._services_sorted:
                 
-                if service.GetServiceType() in allowed_types and service.get_name() == service_name:
+                if service.get_service_type() in allowed_types and service.get_name() == service_name:
                     
-                    return service.GetServiceKey()
+                    return service.get_service_key()
                     
                 
             
             for service in self._services_sorted:
                 
-                if service.GetServiceType() in allowed_types and service.get_name().lower() == service_name.lower():
+                if service.get_service_type() in allowed_types and service.get_name().lower() == service_name.lower():
                     
-                    return service.GetServiceKey()
+                    return service.get_service_key()
                     
                 
             
@@ -3527,7 +3527,7 @@ class ServicesManager( object ):
         
         with self._lock:
             
-            filtered_service_keys = [ service.GetServiceKey() for service in self._services_sorted if service.GetServiceType() in desired_types ]
+            filtered_service_keys = [service.get_service_key() for service in self._services_sorted if service.get_service_type() in desired_types]
             
             return filtered_service_keys
             
@@ -3541,7 +3541,7 @@ class ServicesManager( object ):
             
             for desired_type in desired_types:
                 
-                services.extend( [ service for service in self._services_sorted if service.GetServiceType() == desired_type ] )
+                services.extend([service for service in self._services_sorted if service.get_service_type() == desired_type])
                 
             
             if randomised:

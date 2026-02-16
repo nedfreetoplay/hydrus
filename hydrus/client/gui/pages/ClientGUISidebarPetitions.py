@@ -50,8 +50,8 @@ def GenerateFakeReason() -> str:
 
 def GetPetitionActionInfo( petition: HydrusNetwork.Petition ):
     
-    add_contents = petition.GetContents( HC.CONTENT_UPDATE_PEND )
-    delete_contents = petition.GetContents( HC.CONTENT_UPDATE_PETITION )
+    add_contents = petition.get_contents(HC.CONTENT_UPDATE_PEND)
+    delete_contents = petition.get_contents(HC.CONTENT_UPDATE_PETITION)
     
     have_add = len( add_contents ) > 0
     have_delete = len( delete_contents ) > 0
@@ -93,7 +93,7 @@ def MakeSomeFakePetitions( service_key: bytes ):
             
             HydrusNetwork.PetitionHeader( content_type = content_type, status = status, account_key = SelectFakeAccountKey(), reason = GenerateFakeReason() )
             
-            petitioner_account = HydrusNetwork.Account.GenerateUnknownAccount( petition_header.account_key )
+            petitioner_account = HydrusNetwork.Account.generate_unknown_account(petition_header.account_key)
             
             if petition_header.content_type == HC.CONTENT_TYPE_MAPPINGS:
                 
@@ -202,9 +202,9 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
         super().__init__( parent, page, page_manager )
         
         self._service = CG.client_controller.services_manager.GetService( self._petition_service_key )
-        self._can_ban = self._service.HasPermission( HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_MODERATE )
+        self._can_ban = self._service.has_permission(HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_MODERATE)
         
-        service_type = self._service.GetServiceType()
+        service_type = self._service.get_service_type()
         
         self._petition_types_to_count = collections.Counter()
         self._current_petition = None
@@ -452,7 +452,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
                 
                 for petition in viable_petitions:
                     
-                    petition.ApproveAll()
+                    petition.approve_all()
                     
                 
                 self._StartUploadingCompletedPetitions( viable_petitions )
@@ -505,7 +505,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
         
         if self._current_petition is not None:
             
-            petition_header = self._current_petition.GetPetitionHeader()
+            petition_header = self._current_petition.get_petition_header()
             
             self._current_petition = None
             
@@ -526,7 +526,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
         
         if self._current_petition is not None:
             
-            current_header = self._current_petition.GetPetitionHeader()
+            current_header = self._current_petition.get_petition_header()
             
             # this is the hacky solution that uses no indices but is KISS
             
@@ -621,11 +621,11 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
             
             petition = self._petition_headers_to_fetched_petitions_cache[ petition_header ]
             
-            pretty_content = petition.GetContentSummary()
+            pretty_content = petition.get_content_summary()
             
             this_is_current_petition = False
             
-            if self._current_petition is not None and petition_header == self._current_petition.GetPetitionHeader():
+            if self._current_petition is not None and petition_header == self._current_petition.get_petition_header():
                 
                 this_is_current_petition = True
                 
@@ -676,7 +676,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
             
             this_is_current_petition = False
             
-            if self._current_petition is not None and petition_header == self._current_petition.GetPetitionHeader():
+            if self._current_petition is not None and petition_header == self._current_petition.get_petition_header():
                 
                 this_is_current_petition = True
                 
@@ -713,7 +713,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
             return
             
         
-        account_key = self._current_petition.GetPetitionerAccount().GetAccountKey()
+        account_key = self._current_petition.get_petitioner_account().get_account_key()
         
         CG.client_controller.pub( 'clipboard', 'text', account_key.hex() )
         
@@ -734,7 +734,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
                 
                 for petition in viable_petitions:
                     
-                    petition.DenyAll()
+                    petition.deny_all()
                     
                 
                 self._StartUploadingCompletedPetitions( viable_petitions )
@@ -771,8 +771,8 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
             
         else:
             
-            add_contents = self._current_petition.GetContents( HC.CONTENT_UPDATE_PEND )
-            delete_contents = self._current_petition.GetContents( HC.CONTENT_UPDATE_PETITION )
+            add_contents = self._current_petition.get_contents(HC.CONTENT_UPDATE_PEND)
+            delete_contents = self._current_petition.get_contents(HC.CONTENT_UPDATE_PETITION)
             
             have_add = len( add_contents ) > 0
             have_delete = len( delete_contents ) > 0
@@ -783,7 +783,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
             self._action_text.setObjectName( object_name )
             #self._action_text.setProperty( 'hydrus_text', hydrus_text )
             
-            reason = self._current_petition.GetReason()
+            reason = self._current_petition.get_reason()
             
             self._reason_text.setPlainText( reason )
             self._reason_text.setObjectName( object_name )
@@ -1056,7 +1056,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
             return
             
         
-        if self._current_petition is not None and petition_header == self._current_petition.GetPetitionHeader():
+        if self._current_petition is not None and petition_header == self._current_petition.get_petition_header():
             
             self._ClearCurrentPetition()
             
@@ -1100,9 +1100,9 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
             
             ( c, s ) = c_and_s
             
-            if c.GetContentType() in ( HC.CONTENT_TYPE_TAG_SIBLINGS, HC.CONTENT_TYPE_TAG_PARENTS ):
+            if c.get_content_type() in (HC.CONTENT_TYPE_TAG_SIBLINGS, HC.CONTENT_TYPE_TAG_PARENTS):
                 
-                ( left, right ) = c.GetContentData()
+                ( left, right ) = c.get_content_data()
                 
                 if sort_type == 'left':
                     
@@ -1113,9 +1113,9 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
                     ( part_one, part_two ) = (HydrusTags.split_tag(right), HydrusTags.split_tag(left))
                     
                 
-            elif c.GetContentType() == HC.CONTENT_TYPE_MAPPINGS:
+            elif c.get_content_type() == HC.CONTENT_TYPE_MAPPINGS:
                 
-                ( tag, hashes ) = c.GetContentData()
+                ( tag, hashes ) = c.get_content_data()
                 
                 part_one = HydrusTags.split_tag(tag)
                 part_two = None
@@ -1126,7 +1126,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
                 part_two = None
                 
             
-            return ( -c.GetVirtualWeight(), part_one, part_two )
+            return (-c.get_virtual_weight(), part_one, part_two)
             
         
         contents_and_checks.sort( key = key )
@@ -1176,7 +1176,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
         
         self._current_petition = petition
         
-        self._petitions_summary_list.UpdateDatas( ( self._current_petition.GetPetitionHeader(), ) )
+        self._petitions_summary_list.UpdateDatas(( self._current_petition.get_petition_header(),))
         
         self._DrawCurrentPetition()
         
@@ -1191,7 +1191,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
         
         if self._current_petition is not None and len( petitions_summary ) > 0:
             
-            current_petition_header = self._current_petition.GetPetitionHeader()
+            current_petition_header = self._current_petition.get_petition_header()
             
             if current_petition_header not in petitions_summary:
                 
@@ -1281,7 +1281,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
                     
                     if len( cached_fake_petition_headers_to_petitions ) == 0:
                         
-                        MakeSomeFakePetitions( service.GetServiceKey() )
+                        MakeSomeFakePetitions(service.get_service_key())
                         
                     
                     if subject_account_key is None:
@@ -1353,10 +1353,10 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
         
         for petition in petitions:
             
-            self._outgoing_petition_headers_to_petitions[ petition.GetPetitionHeader() ] = petition
+            self._outgoing_petition_headers_to_petitions[ petition.get_petition_header()] = petition
             
         
-        self._petitions_summary_list.UpdateDatas( [ petition.GetPetitionHeader() for petition in petitions ] )
+        self._petitions_summary_list.UpdateDatas([petition.get_petition_header() for petition in petitions])
         
         self._MoveCurrentPetitionOutOfPendingUpload()
         
@@ -1456,7 +1456,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
     
     def EventContentsDoubleClick( self, content ):
         
-        if content.HasHashes():
+        if content.has_hashes():
             
             hashes = content.get_hashes()
             
@@ -1473,7 +1473,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
     
     def EventModifyPetitioner( self ):
         
-        subject_account_key = self._current_petition.GetPetitionerAccount().GetAccountKey()
+        subject_account_key = self._current_petition.get_petitioner_account().get_account_key()
         
         subject_account_identifiers = [ HydrusNetwork.AccountIdentifier( account_key = subject_account_key ) ]
         
@@ -1523,17 +1523,17 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
         
         for content in contents:
             
-            content_type = content.GetContentType()
+            content_type = content.get_content_type()
             
             if content_type == HC.CONTENT_TYPE_MAPPINGS:
                 
-                ( tag, hashes ) = content.GetContentData()
+                ( tag, hashes ) = content.get_content_data()
                 
                 copyable_items_a.append( tag )
                 
             elif content_type in ( HC.CONTENT_TYPE_TAG_SIBLINGS, HC.CONTENT_TYPE_TAG_PARENTS ):
                 
-                ( tag_a, tag_b ) = content.GetContentData()
+                ( tag_a, tag_b ) = content.get_content_data()
                 
                 copyable_items_a.append( tag_a )
                 copyable_items_b.append( tag_b )
@@ -1597,11 +1597,11 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
                 
                 if contents_list.IsChecked( index ):
                     
-                    self._current_petition.Approve( action, content )
+                    self._current_petition.approve(action, content)
                     
                 else:
                     
-                    self._current_petition.Deny( action, content )
+                    self._current_petition.deny(action, content)
                     
                 
             
@@ -1650,7 +1650,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
         
         def qt_petition_cleared( petition: HydrusNetwork.Petition ):
             
-            petition_header = petition.GetPetitionHeader()
+            petition_header = petition.get_petition_header()
             
             if petition_header in self._outgoing_petition_headers_to_petitions:
                 
@@ -1677,7 +1677,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
         
         def qt_petition_clear_failed( petition: HydrusNetwork.Petition ):
             
-            petition_header = petition.GetPetitionHeader()
+            petition_header = petition.get_petition_header()
             
             if petition_header in self._outgoing_petition_headers_to_petitions:
                 
@@ -1722,7 +1722,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
         
         def qt_petition_fetched( petition: HydrusNetwork.Petition ):
             
-            petition_header = petition.GetPetitionHeader()
+            petition_header = petition.get_petition_header()
             
             if petition_header in self._petition_headers_we_are_fetching:
                 
@@ -1819,7 +1819,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
                         
                         try:
                             
-                            updates = outgoing_petition.GetCompletedUploadableClientToServerUpdates()
+                            updates = outgoing_petition.get_completed_uploadable_client_to_server_updates()
                             
                             num_to_do = len( updates )
                             
@@ -1857,9 +1857,9 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
                                 job_status.SetGauge( num_done, num_to_do )
                                 
                             
-                            if outgoing_petition.GetPetitionHeader() in cached_fake_petition_headers_to_petitions:
+                            if outgoing_petition.get_petition_header() in cached_fake_petition_headers_to_petitions:
                                 
-                                del cached_fake_petition_headers_to_petitions[ outgoing_petition.GetPetitionHeader() ]
+                                del cached_fake_petition_headers_to_petitions[ outgoing_petition.get_petition_header()]
                                 
                             
                         finally:

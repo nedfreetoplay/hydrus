@@ -29,7 +29,7 @@ class IncrementalTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
         
         self._service = CG.client_controller.services_manager.GetService( self._service_key )
         
-        self._i_am_local_tag_service = self._service.GetServiceType() == HC.LOCAL_TAG
+        self._i_am_local_tag_service = self._service.get_service_type() == HC.LOCAL_TAG
         
         label = 'Here you can add numerical tags incrementally to a selection of files, for instance adding page:1 -> page:20 to twenty files.'
         

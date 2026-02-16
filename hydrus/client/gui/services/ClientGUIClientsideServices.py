@@ -129,7 +129,7 @@ class ManageClientServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
     
     def _ConvertServiceToDisplayTuple( self, service ):
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         name = service.get_name()
         
         deletable = service_type in HC.ADDREMOVABLE_SERVICES
@@ -168,7 +168,7 @@ class ManageClientServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
     
     def _ConvertServiceToSortTuple( self, service ):
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         name = service.get_name()
         
         deletable = service_type in HC.ADDREMOVABLE_SERVICES
@@ -210,12 +210,12 @@ class ManageClientServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         selected_services = self._listctrl.GetData( only_selected = True )
         
-        deletable_services = [ service for service in selected_services if service.GetServiceType() in HC.ADDREMOVABLE_SERVICES ]
+        deletable_services = [service for service in selected_services if service.get_service_type() in HC.ADDREMOVABLE_SERVICES]
         
         for service_type in HC.MUST_HAVE_AT_LEAST_ONE_SERVICES:
             
-            num_in_all = len( [ service for service in all_services if service.GetServiceType() == service_type ] )
-            num_in_deletable = len( [ service for service in deletable_services if service.GetServiceType() == service_type ] )
+            num_in_all = len([service for service in all_services if service.get_service_type() == service_type])
+            num_in_deletable = len([service for service in deletable_services if service.get_service_type() == service_type])
             
             if num_in_deletable == num_in_all:
                 
@@ -231,9 +231,9 @@ class ManageClientServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
             
             for service in deletable_services:
                 
-                if service.GetServiceType() == service_type and service in self._original_services:
+                if service.get_service_type() == service_type and service in self._original_services:
                     
-                    service_info = CG.client_controller.read('service_info', service.GetServiceKey())
+                    service_info = CG.client_controller.read('service_info', service.get_service_key())
                     
                     num_files = service_info[ HC.SERVICE_INFO_NUM_FILES ]
                     
@@ -267,7 +267,7 @@ class ManageClientServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
             
         else:
             
-            selected_services = [ service for service in self._listctrl.GetData() if service.GetServiceKey() == auto_account_creation_service_key ]
+            selected_services = [service for service in self._listctrl.GetData() if service.get_service_key() == auto_account_creation_service_key]
             
         
         if len( selected_services ) == 0:
@@ -311,7 +311,7 @@ class ManageClientServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         services = self._listctrl.GetData()
         
-        new_service_keys = { service.GetServiceKey() for service in services }
+        new_service_keys = {service.get_service_key() for service in services}
         
         deletee_services = [ service for service in self._original_services if service.GetServiceKey() not in new_service_keys ]
         
@@ -352,7 +352,7 @@ class EditClientServicePanel( ClientGUIScrolledPanels.EditPanel ):
         
         duplicate_service = service.duplicate()
         
-        ( self._service_key, self._service_type, name, self._dictionary ) = duplicate_service.ToTuple()
+        ( self._service_key, self._service_type, name, self._dictionary ) = duplicate_service.to_tuple()
         
         self._service_panel = EditServiceSubPanel( self, name )
         
@@ -501,7 +501,7 @@ class EditServiceRemoteSubPanel( ClientGUICommon.StaticBox ):
         
         #
         
-        ( host, port ) = credentials.GetAddress()
+        ( host, port ) = credentials.get_address()
         
         self._host.setText( host )
         self._port.setValue( port )
@@ -557,7 +557,7 @@ class EditServiceRemoteSubPanel( ClientGUICommon.StaticBox ):
         
         def do_it():
             
-            full_host = credentials.GetPortedAddress()
+            full_host = credentials.get_ported_address()
             
             url = scheme + full_host + '/' + request
             
@@ -682,9 +682,9 @@ class EditServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
         
         #
         
-        if self._original_credentials.HasAccessKey():
+        if self._original_credentials.has_access_key():
             
-            self._access_key.setText( self._original_credentials.GetAccessKey().hex() )
+            self._access_key.setText(self._original_credentials.get_access_key().hex())
             
         
         #
@@ -746,7 +746,7 @@ class EditServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
         
         def work_callable():
             
-            full_host = credentials.GetPortedAddress()
+            full_host = credentials.get_ported_address()
             
             url = 'https://{}/auto_create_account_types'.format( full_host )
             
@@ -836,11 +836,11 @@ class EditServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
         
         def work_callable():
             
-            full_host = credentials.GetPortedAddress()
+            full_host = credentials.get_ported_address()
             
             # get a registration token
             
-            url = 'https://{}/auto_create_registration_key?account_type_key={}'.format( full_host, account_type.GetAccountTypeKey().hex() )
+            url = 'https://{}/auto_create_registration_key?account_type_key={}'.format(full_host, account_type.get_account_type_key().hex())
             
             network_job = ClientNetworkingJobs.NetworkJobHydrus( CC.TEST_SERVICE_KEY, 'GET', url )
             
@@ -888,7 +888,7 @@ class EditServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
         
         def work_callable():
             
-            full_host = credentials.GetPortedAddress()
+            full_host = credentials.get_ported_address()
             
             url = 'https://{}/access_key?registration_key={}'.format( full_host, registration_key.hex() )
             
@@ -943,8 +943,8 @@ class EditServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
             
         else:
             
-            unavailable_account_types = [ account_type for account_type in account_types if not account_type.CanAutoCreateAccountNow() ]
-            available_account_types = [ account_type for account_type in account_types if account_type.CanAutoCreateAccountNow() ]
+            unavailable_account_types = [account_type for account_type in account_types if not account_type.can_auto_create_account_now()]
+            available_account_types = [account_type for account_type in account_types if account_type.can_auto_create_account_now()]
             
             unavailable_text = ''
             
@@ -954,11 +954,11 @@ class EditServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
                 
                 for account_type in unavailable_account_types:
                     
-                    ( num_accounts, time_delta ) = account_type.GetAutoCreateAccountVelocity()
+                    ( num_accounts, time_delta ) = account_type.get_auto_create_account_velocity()
                     
-                    history = account_type.GetAutoCreateAccountHistory()
+                    history = account_type.get_auto_create_account_history()
                     
-                    text = '{} - {}'.format( account_type.GetTitle(), history.GetWaitingEstimate( HC.BANDWIDTH_TYPE_REQUESTS, time_delta, num_accounts ) )
+                    text = '{} - {}'.format(account_type.get_title(), history.GetWaitingEstimate(HC.BANDWIDTH_TYPE_REQUESTS, time_delta, num_accounts))
                     
                     unavailable_texts.append( text )
                     
@@ -973,7 +973,7 @@ class EditServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
                 
                 account_type = available_account_types[ 0 ]
                 
-                message = 'This server offers auto-creation of a "{}" account type. Is this ok?'.format( account_type.GetTitle() )
+                message = 'This server offers auto-creation of a "{}" account type. Is this ok?'.format(account_type.get_title())
                 message += unavailable_text
                 
                 result = ClientGUIDialogsQuick.GetYesNo( self, message, title = 'One account type available' )
@@ -988,7 +988,7 @@ class EditServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
                 message = 'Please select which account type you would like to create.'
                 message += unavailable_text
                 
-                choice_tuples = [ ( account_type.GetTitle(), account_type, ', '.join( account_type.GetPermissionStrings() ) ) for account_type in available_account_types ]
+                choice_tuples = [(account_type.get_title(), account_type, ', '.join(account_type.get_permission_strings())) for account_type in available_account_types]
                 
                 try:
                     
@@ -1085,7 +1085,7 @@ class EditServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
         
         if len( access_key ) > 0:
             
-            credentials.SetAccessKey( access_key )
+            credentials.set_access_key(access_key)
             
         
         return credentials
@@ -1099,9 +1099,9 @@ class EditServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
         
         if credentials != self._original_credentials:
             
-            account = HydrusNetwork.Account.GenerateUnknownAccount()
+            account = HydrusNetwork.Account.generate_unknown_account()
             
-            dictionary_part[ 'account' ] = HydrusNetwork.Account.GenerateSerialisableTupleFromAccount( account )
+            dictionary_part[ 'account' ] = HydrusNetwork.Account.generate_serialisable_tuple_from_account(account)
             
             network_context = ClientNetworkingContexts.NetworkContext( CC.NETWORK_CONTEXT_HYDRUS, self._service_key )
             
@@ -1792,11 +1792,11 @@ class ReviewServicePanel( QW.QWidget ):
         
         self._id_button.setFixedWidth( width )
         
-        self._service_key_button = ClientGUICommon.BetterButton( self, 'copy service key', CG.client_controller.pub, 'clipboard', 'text', service.GetServiceKey().hex() )
+        self._service_key_button = ClientGUICommon.BetterButton(self, 'copy service key', CG.client_controller.pub, 'clipboard', 'text', service.get_service_key().hex())
         
         self._refresh_button = ClientGUICommon.IconButton( self, CC.global_icons().refresh, self._RefreshButton )
         
-        service_type = self._service.GetServiceType()
+        service_type = self._service.get_service_type()
         
         subpanels = []
         
@@ -1817,12 +1817,12 @@ class ReviewServicePanel( QW.QWidget ):
             subpanels.append( ( ReviewServiceFileSubPanel( self, service ), CC.FLAGS_EXPAND_PERPENDICULAR ) )
             
         
-        if self._service.GetServiceKey() == CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY:
+        if self._service.get_service_key() == CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY:
             
             subpanels.append( ( ReviewServiceHydrusLocalFileStorageSubPanel( self, service ), CC.FLAGS_EXPAND_PERPENDICULAR ) )
             
         
-        if self._service.GetServiceKey() == CC.TRASH_SERVICE_KEY:
+        if self._service.get_service_key() == CC.TRASH_SERVICE_KEY:
             
             subpanels.append( ( ReviewServiceTrashSubPanel( self, service ), CC.FLAGS_EXPAND_PERPENDICULAR ) )
             
@@ -1882,7 +1882,7 @@ class ReviewServicePanel( QW.QWidget ):
     
     def _GetAndShowID( self ):
         
-        service_key = self._service.GetServiceKey()
+        service_key = self._service.get_service_key()
         
         def work_callable():
             
@@ -1923,7 +1923,7 @@ class ReviewServicePanel( QW.QWidget ):
             
             content_update_package = service.Request( HC.GET, 'immediate_content_update_package' )
             
-            c_u_p_num_rows = content_update_package.GetNumRows()
+            c_u_p_num_rows = content_update_package.get_num_rows()
             c_u_p_total_weight_processed = 0
             
             update_speed_string = ''
@@ -1947,7 +1947,7 @@ class ReviewServicePanel( QW.QWidget ):
                 
                 precise_timestamp = HydrusTime.get_now_precise()
                 
-                CG.client_controller.write_synchronous('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates(service.GetServiceKey(), content_updates))
+                CG.client_controller.write_synchronous('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates(service.get_service_key(), content_updates))
                 
                 it_took = HydrusTime.get_now_precise() - precise_timestamp
                 
@@ -1972,7 +1972,7 @@ class ReviewServicePanel( QW.QWidget ):
     
     def GetServiceKey( self ):
         
-        return self._service.GetServiceKey()
+        return self._service.get_service_key()
         
 
 class ReviewServiceSubPanel( ClientGUICommon.StaticBox ):
@@ -2002,7 +2002,7 @@ class ReviewServiceSubPanel( ClientGUICommon.StaticBox ):
     def _Refresh( self ):
         
         name = self._service.get_name()
-        service_type = self._service.GetServiceType()
+        service_type = self._service.get_service_type()
         
         label = name + ' - ' + HC.service_string_lookup[ service_type ]
         label += '\n\n'
@@ -2013,7 +2013,7 @@ class ReviewServiceSubPanel( ClientGUICommon.StaticBox ):
     
     def ServiceUpdated( self, service ):
         
-        if service.GetServiceKey() == self._service.GetServiceKey():
+        if service.get_service_key() == self._service.get_service_key():
             
             self._service = service
             
@@ -2112,7 +2112,7 @@ class ReviewServiceClientAPISubPanel( ClientGUICommon.StaticBox ):
         
         api_permissions = selected[0]
         
-        access_key = api_permissions.GetAccessKey()
+        access_key = api_permissions.get_access_key()
         
         text = access_key.hex()
         
@@ -2121,7 +2121,7 @@ class ReviewServiceClientAPISubPanel( ClientGUICommon.StaticBox ):
     
     def _AddFromAPI( self ):
         
-        port = self._service.GetPort()
+        port = self._service.get_port()
         
         if port is None:
             
@@ -2186,7 +2186,7 @@ class ReviewServiceClientAPISubPanel( ClientGUICommon.StaticBox ):
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            access_keys = [ api_permissions.GetAccessKey() for api_permissions in self._permissions_list.GetData( only_selected = True ) ]
+            access_keys = [api_permissions.get_access_key() for api_permissions in self._permissions_list.GetData(only_selected = True)]
             
             CG.client_controller.client_api_manager.DeleteAccess( access_keys )
             
@@ -2254,7 +2254,7 @@ class ReviewServiceClientAPISubPanel( ClientGUICommon.StaticBox ):
     
     def _OpenBaseURL( self ):
         
-        port = self._service.GetPort()
+        port = self._service.get_port()
         
         if port is None:
             
@@ -2271,7 +2271,7 @@ class ReviewServiceClientAPISubPanel( ClientGUICommon.StaticBox ):
                 scheme = 'http'
                 
             
-            url = '{}://127.0.0.1:{}/'.format( scheme, self._service.GetPort() )
+            url = '{}://127.0.0.1:{}/'.format(scheme, self._service.get_port())
             
             ClientPaths.LaunchURLInWebBrowser( url )
             
@@ -2279,7 +2279,7 @@ class ReviewServiceClientAPISubPanel( ClientGUICommon.StaticBox ):
     
     def _Refresh( self ):
         
-        port = self._service.GetPort()
+        port = self._service.get_port()
         
         if port is None:
             
@@ -2289,7 +2289,7 @@ class ReviewServiceClientAPISubPanel( ClientGUICommon.StaticBox ):
             
             status = 'The client api should be running on port {}.'.format( port )
             
-            upnp_port = self._service.GetUPnPPort()
+            upnp_port = self._service.get_upnp_port()
             
             if upnp_port is not None:
                 
@@ -2308,7 +2308,7 @@ class ReviewServiceClientAPISubPanel( ClientGUICommon.StaticBox ):
     
     def ServiceUpdated( self, service ):
         
-        if service.GetServiceKey() == self._service.GetServiceKey():
+        if service.get_service_key() == self._service.get_service_key():
             
             self._service = service
             
@@ -2378,7 +2378,7 @@ class ReviewServiceHydrusLocalFileStorageSubPanel( ClientGUICommon.StaticBox ):
     
     def ServiceUpdated( self, service ):
         
-        if service.GetServiceKey() == self._service.GetServiceKey():
+        if service.get_service_key() == self._service.get_service_key():
             
             self._service = service
             
@@ -2437,7 +2437,7 @@ class ReviewServiceFileSubPanel( ClientGUICommon.StaticBox ):
     
     def ServiceUpdated( self, service ):
         
-        if service.GetServiceKey() == self._service.GetServiceKey():
+        if service.get_service_key() == self._service.get_service_key():
             
             self._service = service
             
@@ -2452,14 +2452,14 @@ class ReviewServiceFileSubPanel( ClientGUICommon.StaticBox ):
             self._file_info_st.setText( text )
             
         
-        service_info = CG.client_controller.read('service_info', service.GetServiceKey())
+        service_info = CG.client_controller.read('service_info', service.get_service_key())
         
         num_files = service_info[ HC.SERVICE_INFO_NUM_FILES ]
         total_size = service_info[ HC.SERVICE_INFO_TOTAL_SIZE ]
         
         text = HydrusNumbers.to_human_int(num_files) + ' files, totalling ' + HydrusData.to_human_bytes(total_size)
         
-        if service.GetServiceType() in ( HC.LOCAL_FILE_DOMAIN, HC.COMBINED_LOCAL_FILE_DOMAINS, HC.HYDRUS_LOCAL_FILE_STORAGE, HC.FILE_REPOSITORY ):
+        if service.get_service_type() in (HC.LOCAL_FILE_DOMAIN, HC.COMBINED_LOCAL_FILE_DOMAINS, HC.HYDRUS_LOCAL_FILE_STORAGE, HC.FILE_REPOSITORY):
             
             num_deleted_files = service_info[ HC.SERVICE_INFO_NUM_DELETED_FILES ]
             
@@ -2511,11 +2511,11 @@ class ReviewServiceRemoteSubPanel( ClientGUICommon.StaticBox ):
         
         credentials = self._service.GetCredentials()
         
-        full_host = credentials.GetPortedAddress()
+        full_host = credentials.get_ported_address()
         
         self._address.setText( full_host )
         
-        ( is_ok, status_string ) = self._service.GetStatusInfo()
+        ( is_ok, status_string ) = self._service.get_status_info()
         
         self._functional.setText( status_string )
         
@@ -2530,7 +2530,7 @@ class ReviewServiceRemoteSubPanel( ClientGUICommon.StaticBox ):
         
         self._functional.style().polish( self._functional )
         
-        bandwidth_summary = self._service.GetBandwidthCurrentMonthSummary()
+        bandwidth_summary = self._service.get_bandwidth_current_month_summary()
         
         self._bandwidth_summary.setText( bandwidth_summary )
         
@@ -2545,7 +2545,7 @@ class ReviewServiceRemoteSubPanel( ClientGUICommon.StaticBox ):
         
         self._rule_widgets = []
         
-        bandwidth_rows = self._service.GetBandwidthStringsAndGaugeTuples()
+        bandwidth_rows = self._service.get_bandwidth_strings_and_gauge_tuples()
         
         for ( status, ( value, range ) ) in bandwidth_rows:
             
@@ -2561,7 +2561,7 @@ class ReviewServiceRemoteSubPanel( ClientGUICommon.StaticBox ):
     
     def ServiceUpdated( self, service ):
         
-        if service.GetServiceKey() == self._service.GetServiceKey():
+        if service.get_service_key() == self._service.get_service_key():
             
             self._service = service
             
@@ -2632,7 +2632,7 @@ class ReviewServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
         
         account = self._service.get_account()
         
-        account_key = account.GetAccountKey()
+        account_key = account.get_account_key()
         
         account_key_hex = account_key.hex()
         
@@ -2648,15 +2648,15 @@ class ReviewServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
         
         account = self._service.get_account()
         
-        account_type = account.GetAccountType()
+        account_type = account.get_account_type()
         
-        title = account_type.GetTitle()
+        title = account_type.get_title()
         
-        expires_status = account.GetExpiresString()
+        expires_status = account.get_expires_string()
         
         self._title_and_expires_st.setText( title+' that '+expires_status )
         
-        ( is_ok, status_string ) = account.GetStatusInfo()
+        ( is_ok, status_string ) = account.get_status_info()
         
         self._status_st.setText( status_string )
         
@@ -2671,7 +2671,7 @@ class ReviewServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
         
         self._status_st.style().polish( self._status_st )
         
-        ( message, message_created ) = account.GetMessageAndTimestamp()
+        ( message, message_created ) = account.get_message_and_timestamp()
         
         if message != '':
             
@@ -2697,7 +2697,7 @@ class ReviewServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
         
         #
         
-        bandwidth_summary = account.GetBandwidthCurrentMonthSummary()
+        bandwidth_summary = account.get_bandwidth_current_month_summary()
         
         self._bandwidth_summary.setText( bandwidth_summary )
         
@@ -2712,7 +2712,7 @@ class ReviewServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
         
         self._rule_widgets = []
         
-        bandwidth_rows = account.GetBandwidthStringsAndGaugeTuples()
+        bandwidth_rows = account.get_bandwidth_strings_and_gauge_tuples()
         
         for ( status, ( value, range ) ) in bandwidth_rows:
             
@@ -2738,7 +2738,7 @@ class ReviewServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
             self._refresh_account_button.setEnabled( False )
             
         
-        account_key = account.GetAccountKey()
+        account_key = account.get_account_key()
         
         if account_key is None or account_key == '':
             
@@ -2751,7 +2751,7 @@ class ReviewServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
         
         menu_template_items = []
         
-        p_s = account_type.GetPermissionStrings()
+        p_s = account_type.get_permission_strings()
         
         if len( p_s ) == 0:
             
@@ -2820,7 +2820,7 @@ class ReviewServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
     
     def ServiceUpdated( self, service ):
         
-        if service.GetServiceKey() == self._service.GetServiceKey():
+        if service.get_service_key() == self._service.get_service_key():
             
             self._service = service
             
@@ -2881,7 +2881,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
         
         #
         
-        content_types = tuple( HC.SERVICE_TYPES_TO_CONTENT_TYPES[ self._service.GetServiceType() ] )
+        content_types = tuple(HC.SERVICE_TYPES_TO_CONTENT_TYPES[ self._service.get_service_type()])
         
         self._content_types_to_gauges_and_buttons = {}
         
@@ -2926,7 +2926,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
             self._reset_processing_button.hide()
             
         
-        if not self._service.GetServiceType() == HC.TAG_REPOSITORY:
+        if not self._service.get_service_type() == HC.TAG_REPOSITORY:
             
             self._tag_filter_button.hide()
             
@@ -3025,7 +3025,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
             
             try:
                 
-                update_hashes = service.GetUpdateHashes()
+                update_hashes = service.get_update_hashes()
                 
                 num_to_do = len( update_hashes )
                 
@@ -3118,7 +3118,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
         
         def publish_callable( service_info_dict ):
             
-            if self._service.GetServiceType() == HC.TAG_REPOSITORY:
+            if self._service.get_service_type() == HC.TAG_REPOSITORY:
                 
                 service_info_types = HC.TAG_REPOSITORY_SERVICE_INFO_TYPES
                 
@@ -3231,7 +3231,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
         
         try:
             
-            update_period = self._service.GetUpdatePeriod()
+            update_period = self._service.get_update_period()
             
             repo_options_text_components.append( 'update period: {}'.format(HydrusTime.time_delta_to_pretty_time_delta(update_period)))
             
@@ -3242,7 +3242,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
         
         try:
             
-            nullification_period = self._service.GetNullificationPeriod()
+            nullification_period = self._service.get_nullification_period()
             
             repo_options_text_components.append( 'anonymisation period: {}'.format(HydrusTime.time_delta_to_pretty_time_delta(nullification_period)))
             
@@ -3253,11 +3253,11 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
         
         self._repo_options_st.setText( ', '.join( repo_options_text_components ) )
         
-        if self._service.GetServiceType() == HC.TAG_REPOSITORY:
+        if self._service.get_service_type() == HC.TAG_REPOSITORY:
             
             try:
                 
-                tag_filter = self._service.GetTagFilter()
+                tag_filter = self._service.get_tag_filter()
                 
                 self._tag_filter_button.setEnabled( True )
                 
@@ -3272,7 +3272,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
                 
             
         
-        self._metadata_st.setText( self._service.GetNextUpdateDueString() )
+        self._metadata_st.setText(self._service.get_next_update_due_string())
         
         CG.client_controller.call_to_thread(self.THREADFetchInfo, self._service)
         
@@ -3281,7 +3281,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
         
         def do_it( service, my_updater ):
             
-            service_key = service.GetServiceKey()
+            service_key = service.get_service_key()
             
             CG.client_controller.write_synchronous('reprocess_repository', service_key, (HC.CONTENT_TYPE_DEFINITIONS,))
             
@@ -3306,7 +3306,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
         
         def do_it( service, my_updater, content_types_to_reset ):
             
-            service_key = service.GetServiceKey()
+            service_key = service.get_service_key()
             
             CG.client_controller.write_synchronous('reprocess_repository', service_key, content_types_to_reset)
             
@@ -3359,7 +3359,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
         
         def do_it( service, my_updater, content_types_to_reset ):
             
-            service_key = service.GetServiceKey()
+            service_key = service.get_service_key()
             
             CG.client_controller.write_synchronous('reset_repository_processing', service_key, content_types_to_reset)
             
@@ -3391,7 +3391,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
         
         try:
             
-            tag_filter = self._service.GetTagFilter()
+            tag_filter = self._service.get_tag_filter()
             
         except HydrusExceptions.DataMissing:
             
@@ -3466,7 +3466,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
     
     def ServiceUpdated( self, service ):
         
-        if service.GetServiceKey() == self._service.GetServiceKey():
+        if service.get_service_key() == self._service.get_service_key():
             
             self._service = service
             
@@ -3525,7 +3525,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
             
             self._export_updates_button.setEnabled( d_value > 0 )
             
-            metadata_due = self._service.GetMetadata().UpdateDue( from_client = True )
+            metadata_due = self._service.get_metadata().update_due(from_client = True)
             updates_due = num_local_updates < num_updates
             
             download_work_to_do = metadata_due or updates_due
@@ -3553,7 +3553,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
                 
             
         
-        ( num_local_updates, num_updates, content_types_to_num_processed_updates, content_types_to_num_updates ) = CG.client_controller.read('repository_progress', service.GetServiceKey())
+        ( num_local_updates, num_updates, content_types_to_num_processed_updates, content_types_to_num_updates ) = CG.client_controller.read('repository_progress', service.get_service_key())
         
         is_mostly_caught_up = service.IsMostlyCaughtUp()
         
@@ -3666,14 +3666,14 @@ class ReviewServiceIPFSSubPanel( ClientGUICommon.StaticBox ):
             
             for ( multihash, num_files, total_size, old_note ) in datas:
                 
-                hashes = CG.client_controller.read('service_directory', self._service.GetServiceKey(), multihash)
+                hashes = CG.client_controller.read('service_directory', self._service.get_service_key(), multihash)
                 
                 content_update_row = ( hashes, multihash, note )
                 
                 content_updates.append( ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_DIRECTORIES, HC.CONTENT_UPDATE_ADD, content_update_row ) )
                 
             
-            CG.client_controller.write('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates(self._service.GetServiceKey(), content_updates))
+            CG.client_controller.write('content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates(self._service.get_service_key(), content_updates))
             
             self._my_updater.Update()
             
@@ -3711,7 +3711,7 @@ class ReviewServiceIPFSSubPanel( ClientGUICommon.StaticBox ):
         
         self._ipfs_shares_panel.setEnabled( False )
         
-        CG.client_controller.call_to_thread(do_it, self._service.GetServiceKey(), shares)
+        CG.client_controller.call_to_thread(do_it, self._service.get_service_key(), shares)
         
     
     def _Unpin( self ):
@@ -3757,7 +3757,7 @@ class ReviewServiceIPFSSubPanel( ClientGUICommon.StaticBox ):
     
     def ServiceUpdated( self, service ):
         
-        if service.GetServiceKey() == self._service.GetServiceKey():
+        if service.get_service_key() == self._service.get_service_key():
             
             self._service = service
             
@@ -3774,7 +3774,7 @@ class ReviewServiceIPFSSubPanel( ClientGUICommon.StaticBox ):
             self._ipfs_shares.SetData( ipfs_shares )
             
         
-        ipfs_shares = CG.client_controller.read('service_directories', service.GetServiceKey())
+        ipfs_shares = CG.client_controller.read('service_directories', service.get_service_key())
         
         CG.client_controller.CallAfterQtSafe( self, qt_code, ipfs_shares )
         
@@ -3825,7 +3825,7 @@ class ReviewServiceRatingSubPanel( ClientGUICommon.StaticBox ):
             
             content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_RATINGS, HC.CONTENT_UPDATE_ADVANCED, advanced_action )
             
-            content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service.GetServiceKey(), content_update )
+            content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate(self._service.get_service_key(), content_update)
             
             CG.client_controller.write('content_updates', content_update_package, publish_content_updates = False)
             
@@ -3840,7 +3840,7 @@ class ReviewServiceRatingSubPanel( ClientGUICommon.StaticBox ):
     
     def ServiceUpdated( self, service ):
         
-        if service.GetServiceKey() == self._service.GetServiceKey():
+        if service.get_service_key() == self._service.get_service_key():
             
             self._service = service
             
@@ -3855,7 +3855,7 @@ class ReviewServiceRatingSubPanel( ClientGUICommon.StaticBox ):
             self._rating_info_st.setText( text )
             
         
-        service_info = CG.client_controller.read('service_info', service.GetServiceKey())
+        service_info = CG.client_controller.read('service_info', service.get_service_key())
         
         num_files = service_info[ HC.SERVICE_INFO_NUM_FILE_HASHES ]
         
@@ -3897,7 +3897,7 @@ class ReviewServiceTagSubPanel( ClientGUICommon.StaticBox ):
         
         frame = ClientGUITopLevelWindowsPanels.FrameThatTakesScrollablePanel( tlw, 'migrate tags' )
         
-        panel = ClientGUIMigrateTags.MigrateTagsPanel( frame, self._service.GetServiceKey() )
+        panel = ClientGUIMigrateTags.MigrateTagsPanel(frame, self._service.get_service_key())
         
         frame.SetPanel( panel )
         
@@ -3909,7 +3909,7 @@ class ReviewServiceTagSubPanel( ClientGUICommon.StaticBox ):
     
     def ServiceUpdated( self, service ):
         
-        if service.GetServiceKey() == self._service.GetServiceKey():
+        if service.get_service_key() == self._service.get_service_key():
             
             self._service = service
             
@@ -3924,7 +3924,7 @@ class ReviewServiceTagSubPanel( ClientGUICommon.StaticBox ):
             self._tag_info_st.setText( text )
             
         
-        service_info = CG.client_controller.read('service_info', service.GetServiceKey())
+        service_info = CG.client_controller.read('service_info', service.get_service_key())
         
         num_files = service_info[ HC.SERVICE_INFO_NUM_FILE_HASHES ]
         num_tags = service_info[ HC.SERVICE_INFO_NUM_TAGS ]
@@ -3932,7 +3932,7 @@ class ReviewServiceTagSubPanel( ClientGUICommon.StaticBox ):
         
         text = HydrusNumbers.to_human_int(num_mappings) + ' total mappings involving ' + HydrusNumbers.to_human_int(num_tags) + ' different tags on ' + HydrusNumbers.to_human_int(num_files) + ' different files'
         
-        if service.GetServiceType() == HC.TAG_REPOSITORY:
+        if service.get_service_type() == HC.TAG_REPOSITORY:
             
             num_deleted_mappings = service_info[ HC.SERVICE_INFO_NUM_DELETED_MAPPINGS ]
             
@@ -4039,7 +4039,7 @@ class ReviewServiceTrashSubPanel( ClientGUICommon.StaticBox ):
     
     def ServiceUpdated( self, service ):
         
-        if service.GetServiceKey() == self._service.GetServiceKey():
+        if service.get_service_key() == self._service.get_service_key():
             
             self._service = service
             
@@ -4055,7 +4055,7 @@ class ReviewServiceTrashSubPanel( ClientGUICommon.StaticBox ):
             self._undelete_all.setEnabled( num_files > 0 )
             
         
-        service_info = CG.client_controller.read('service_info', service.GetServiceKey())
+        service_info = CG.client_controller.read('service_info', service.get_service_key())
         
         num_files = service_info[ HC.SERVICE_INFO_NUM_FILES ]
         

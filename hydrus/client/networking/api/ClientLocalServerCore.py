@@ -208,7 +208,7 @@ def CheckFileService( file_service_key: bytes ):
         raise HydrusExceptions.BadRequestException( 'Could not find the file service "{}"!'.format( file_service_key.hex() ) )
         
     
-    if service.GetServiceType() not in HC.ALL_FILE_SERVICES:
+    if service.get_service_type() not in HC.ALL_FILE_SERVICES:
         
         raise HydrusExceptions.BadRequestException( 'Sorry, the service key "{}" did not give a file service!'.format( file_service_key.hex() ) )
         
@@ -227,7 +227,7 @@ def CheckTagService( tag_service_key: bytes ):
         raise HydrusExceptions.BadRequestException( 'Could not find the tag service "{}"!'.format( tag_service_key.hex() ) )
         
     
-    if service.GetServiceType() not in HC.ALL_TAG_SERVICES:
+    if service.get_service_type() not in HC.ALL_TAG_SERVICES:
         
         raise HydrusExceptions.BadRequestException( 'Sorry, the service key "{}" did not give a tag service!'.format( tag_service_key.hex() ) )
         
@@ -266,7 +266,7 @@ def CheckUploadableService( service_key: bytes ):
         raise HydrusExceptions.BadRequestException( 'Could not find the service "{}"!'.format( service_key.hex() ) )
         
     
-    if service.GetServiceType() not in ( HC.IPFS, HC.FILE_REPOSITORY, HC.TAG_REPOSITORY ):
+    if service.get_service_type() not in (HC.IPFS, HC.FILE_REPOSITORY, HC.TAG_REPOSITORY):
         
         raise HydrusExceptions.BadRequestException( f'Sorry, the service key "{service_key.hex()}" was not for an uploadable service!' )
         
@@ -836,7 +836,7 @@ def ParseLocalFileDomainLocationContext( request: HydrusServerRequest.HydrusRequ
             
             service = CG.client_controller.services_manager.GetService( service_key )
             
-            if service.GetServiceType() not in ( HC.LOCAL_FILE_DOMAIN, ):
+            if service.get_service_type() not in (HC.LOCAL_FILE_DOMAIN,):
                 
                 raise HydrusExceptions.BadRequestException( 'Sorry, any custom file domain here must only declare local file domains.' )
                 

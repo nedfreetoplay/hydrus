@@ -283,7 +283,7 @@ class NestedGalleryURLGenerator( HydrusSerialisable.SerialisableBaseNamed ):
             
             if gug is not None:
                 
-                gug.CheckFunctional()
+                gug.check_functional()
                 
             
         

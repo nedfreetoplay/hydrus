@@ -59,7 +59,7 @@ def ApplyContentApplicationCommandToMedia( win: QW.QWidget, command: CAC.Applica
         return command_processed
         
     
-    service_type = service.GetServiceType()
+    service_type = service.get_service_type()
     
     if service_type == HC.LOCAL_FILE_DOMAIN:
         

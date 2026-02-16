@@ -18,8 +18,8 @@ class TestManagers( unittest.TestCase ):
         
         def test_service( service, key, service_type, name ):
             
-            self.assertEqual( service.GetServiceKey(), key )
-            self.assertEqual( service.GetServiceType(), service_type )
+            self.assertEqual(service.get_service_key(), key)
+            self.assertEqual(service.get_service_type(), service_type)
             self.assertEqual(service.get_name(), name)
             
         

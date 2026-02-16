@@ -1321,9 +1321,9 @@ class TestClientDB( unittest.TestCase ):
             
             media_result = self._read( 'media_result', written_hash )
             
-            ( mr_file_info_manager, mr_tags_manager, mr_locations_manager, mr_ratings_manager ) = media_result.ToTuple()
+            ( mr_file_info_manager, mr_tags_manager, mr_locations_manager, mr_ratings_manager ) = media_result.to_tuple()
             
-            ( mr_hash_id, mr_hash, mr_size, mr_mime, mr_width, mr_height, mr_duration, mr_num_frames, mr_has_audio, mr_num_words ) = mr_file_info_manager.ToTuple()
+            ( mr_hash_id, mr_hash, mr_size, mr_mime, mr_width, mr_height, mr_duration, mr_num_frames, mr_has_audio, mr_num_words ) = mr_file_info_manager.to_tuple()
             
             mr_inbox = mr_locations_manager.inbox
             
@@ -1588,9 +1588,9 @@ class TestClientDB( unittest.TestCase ):
         
         media_result = self._read( 'media_result', hash )
         
-        ( mr_file_info_manager, mr_tags_manager, mr_locations_manager, mr_ratings_manager ) = media_result.ToTuple()
+        ( mr_file_info_manager, mr_tags_manager, mr_locations_manager, mr_ratings_manager ) = media_result.to_tuple()
         
-        ( mr_hash_id, mr_hash, mr_size, mr_mime, mr_width, mr_height, mr_duration, mr_num_frames, mr_has_audio, mr_num_words ) = mr_file_info_manager.ToTuple()
+        ( mr_hash_id, mr_hash, mr_size, mr_mime, mr_width, mr_height, mr_duration, mr_num_frames, mr_has_audio, mr_num_words ) = mr_file_info_manager.to_tuple()
         
         mr_inbox = mr_locations_manager.inbox
         
@@ -1610,9 +1610,9 @@ class TestClientDB( unittest.TestCase ):
         
         ( media_result, ) = self._read( 'media_results_from_ids', ( 1, ) )
         
-        ( mr_file_info_manager, mr_tags_manager, mr_locations_manager, mr_ratings_manager ) = media_result.ToTuple()
+        ( mr_file_info_manager, mr_tags_manager, mr_locations_manager, mr_ratings_manager ) = media_result.to_tuple()
         
-        ( mr_hash_id, mr_hash, mr_size, mr_mime, mr_width, mr_height, mr_duration, mr_num_frames, mr_has_audio, mr_num_words ) = mr_file_info_manager.ToTuple()
+        ( mr_hash_id, mr_hash, mr_size, mr_mime, mr_width, mr_height, mr_duration, mr_num_frames, mr_has_audio, mr_num_words ) = mr_file_info_manager.to_tuple()
         
         mr_inbox = mr_locations_manager.inbox
         
@@ -1968,7 +1968,7 @@ class TestClientDB( unittest.TestCase ):
         
         service = ClientServices.GenerateService( service_key, HC.TAG_REPOSITORY, 'new tag repo' )
         
-        service._account._account_type = HydrusNetwork.AccountType.GenerateAdminAccountType( HC.TAG_REPOSITORY )
+        service._account._account_type = HydrusNetwork.AccountType.generate_admin_account_type(HC.TAG_REPOSITORY)
         
         services.append( service )
         
@@ -1990,9 +1990,9 @@ class TestClientDB( unittest.TestCase ):
         
         self.assertIsInstance( result, HydrusNetwork.ClientToServerUpdate )
         
-        self.assertTrue( result.HasContent() )
+        self.assertTrue(result.has_content())
         
-        self.assertEqual( set( result.GetHashes() ), set( hashes ) )
+        self.assertEqual(set(result.get_hashes()), set(hashes))
         
         #
         
@@ -2021,7 +2021,7 @@ class TestClientDB( unittest.TestCase ):
         
         result = self._read( 'services', ( HC.LOCAL_FILE_DOMAIN, HC.LOCAL_FILE_UPDATE_DOMAIN, HC.LOCAL_FILE_TRASH_DOMAIN, HC.HYDRUS_LOCAL_FILE_STORAGE, HC.COMBINED_LOCAL_FILE_DOMAINS, HC.LOCAL_TAG, HC.LOCAL_RATING_LIKE ) )
         
-        result_service_keys = { service.GetServiceKey() for service in result }
+        result_service_keys = {service.get_service_key() for service in result}
         
         self.assertEqual( { CC.TRASH_SERVICE_KEY, CC.LOCAL_FILE_SERVICE_KEY, CC.LOCAL_UPDATE_SERVICE_KEY, CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, CC.DEFAULT_LOCAL_TAG_SERVICE_KEY, CC.DEFAULT_LOCAL_DOWNLOADER_TAG_SERVICE_KEY, CC.DEFAULT_FAVOURITES_RATING_SERVICE_KEY }, result_service_keys )
         

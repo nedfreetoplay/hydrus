@@ -2158,7 +2158,7 @@ def ShouldShowRatingInThumbnail( media: ClientMedia.Media, service_key: bytes ) 
             
         else:
             
-            service_type = service.GetServiceType()
+            service_type = service.get_service_type()
             
             if service_type == HC.LOCAL_RATING_LIKE:
                 
@@ -2740,7 +2740,7 @@ class Thumbnail( Selectable ):
         
         #
         
-        service_types = [ services_manager.GetService( service_key ).GetServiceType() for service_key in current_to_display ]
+        service_types = [services_manager.GetService( service_key ).get_service_type() for service_key in current_to_display]
         
         if HC.FILE_REPOSITORY in service_types:
             
@@ -2754,7 +2754,7 @@ class Thumbnail( Selectable ):
         
         #
         
-        service_types = [ services_manager.GetService( service_key ).GetServiceType() for service_key in pending ]
+        service_types = [services_manager.GetService( service_key ).get_service_type() for service_key in pending]
         
         if HC.FILE_REPOSITORY in service_types:
             
@@ -2768,7 +2768,7 @@ class Thumbnail( Selectable ):
         
         #
         
-        service_types = [ services_manager.GetService( service_key ).GetServiceType() for service_key in petitioned ]
+        service_types = [services_manager.GetService( service_key ).get_service_type() for service_key in petitioned]
         
         if HC.FILE_REPOSITORY in service_types:
             

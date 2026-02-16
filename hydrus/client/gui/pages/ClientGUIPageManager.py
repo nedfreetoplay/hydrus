@@ -749,7 +749,7 @@ class PageManager( HydrusSerialisable.SerialisableBase ):
                 
                 petition_service = CG.client_controller.services_manager.GetService( petition_service_key )
                 
-                petition_service_type = petition_service.GetServiceType()
+                petition_service_type = petition_service.get_service_type()
                 
                 if petition_service_type in HC.LOCAL_FILE_SERVICES or petition_service_type == HC.FILE_REPOSITORY:
                     

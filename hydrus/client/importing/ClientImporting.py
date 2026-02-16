@@ -190,7 +190,7 @@ def THREADDownloadURL( job_status, url, url_string ):
         
     finally:
         
-        job_status.Finish()
+        job_status.finish()
         
     
 def THREADDownloadURLs( job_status: ClientThreading.JobStatus, urls, title ):

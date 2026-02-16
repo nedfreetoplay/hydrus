@@ -117,7 +117,7 @@ class DownloaderExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         existing_data = self._listctrl.GetData()
         
-        choosable_gugs = [ gug for gug in self._network_engine.domain_manager.GetGUGs() if gug.IsFunctional() and gug not in existing_data ]
+        choosable_gugs = [gug for gug in self._network_engine.domain_manager.GetGUGs() if gug.is_functional() and gug not in existing_data]
         
         choice_tuples = [(gug.get_name(), gug, False) for gug in choosable_gugs]
         
@@ -303,7 +303,7 @@ class DownloaderExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         existing_data = self._listctrl.GetData()
         
-        possible_new_gugs = [ gug for gug in self._network_engine.domain_manager.GetGUGs() if gug.IsFunctional() and gug not in existing_data and gug not in gugs_to_include ]
+        possible_new_gugs = [gug for gug in self._network_engine.domain_manager.GetGUGs() if gug.is_functional() and gug not in existing_data and gug not in gugs_to_include]
         
         interesting_gug_keys_and_names = list( itertools.chain.from_iterable( [ gug.GetGUGKeysAndNames() for gug in gugs_to_include if isinstance( gug, ClientNetworkingGUG.NestedGalleryURLGenerator ) ] ) )
         

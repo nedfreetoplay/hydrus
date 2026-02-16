@@ -458,7 +458,7 @@ class DuplicateContentMergeOptions( HydrusSerialisable.SerialisableBase ):
                 continue
                 
             
-            service_type = service.GetServiceType()
+            service_type = service.get_service_type()
             
             if service_type == HC.TAG_REPOSITORY and action == HC.CONTENT_MERGE_ACTION_MOVE:
                 
@@ -538,7 +538,7 @@ class DuplicateContentMergeOptions( HydrusSerialisable.SerialisableBase ):
             first_current_value = media_result_a.GetRatingsManager().GetRating( service_key )
             second_current_value = media_result_b.GetRatingsManager().GetRating( service_key )
             
-            service_type = service.GetServiceType()
+            service_type = service.get_service_type()
             
             if service_type in HC.STAR_RATINGS_SERVICES:
                 

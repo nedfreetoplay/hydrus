@@ -1270,7 +1270,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                     
                     service = CG.client_controller.services_manager.GetService( rating_service_key )
                     
-                    service_type = service.GetServiceType()
+                    service_type = service.get_service_type()
                     
                     if service_type == HC.LOCAL_RATING_INCDEC:
                         
@@ -1615,7 +1615,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                     
                     service = CG.client_controller.services_manager.GetService( rating_service_key )
                     
-                    service_type = service.GetServiceType()
+                    service_type = service.get_service_type()
                     
                     if service_type == HC.LOCAL_RATING_INCDEC:
                         
@@ -2126,7 +2126,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
             
             services = self.modules_services.GetServices( HC.REAL_TAG_SERVICES )
             
-            search_tag_service_keys = [ service.GetServiceKey() for service in services ]
+            search_tag_service_keys = [service.get_service_key() for service in services]
             
         else:
             
@@ -2517,11 +2517,11 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                 
                 service = CG.client_controller.services_manager.GetService( rating_service_key )
                 
-                service_type = service.GetServiceType()
+                service_type = service.get_service_type()
                 
                 if service_type in HC.STAR_RATINGS_SERVICES:
                     
-                    if service.GetServiceType() == HC.LOCAL_RATING_LIKE:
+                    if service.get_service_type() == HC.LOCAL_RATING_LIKE:
                         
                         half_a_star_value = 0.5
                         

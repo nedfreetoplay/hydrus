@@ -28,7 +28,7 @@ class TagPairActionContext( object ):
         
         self._service = CG.client_controller.services_manager.GetService( self._service_key )
         
-        self._i_am_local_tag_service = self._service.GetServiceType() == HC.LOCAL_TAG
+        self._i_am_local_tag_service = self._service.get_service_type() == HC.LOCAL_TAG
         
         self._original_statuses_to_pairs = collections.defaultdict( set )
         self._current_statuses_to_pairs = collections.defaultdict( set )
@@ -289,7 +289,7 @@ class TagPairActionContext( object ):
                 
             else:
                 
-                if self._service.HasPermission( content_type, HC.PERMISSION_ACTION_MODERATE ):
+                if self._service.has_permission(content_type, HC.PERMISSION_ACTION_MODERATE):
                     
                     reason = 'Entered by a janitor.'
                     
@@ -381,7 +381,7 @@ class TagPairActionContext( object ):
                 
             else:
                 
-                if self._service.HasPermission( content_type, HC.PERMISSION_ACTION_MODERATE ):
+                if self._service.has_permission(content_type, HC.PERMISSION_ACTION_MODERATE):
                     
                     reason = 'Entered by a janitor.'
                     

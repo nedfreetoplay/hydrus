@@ -1624,7 +1624,7 @@ class GUGKeyAndNameSelector( ClientGUICommon.BetterButton ):
         
         for gug in gugs:
             
-            if gug.IsFunctional():
+            if gug.is_functional():
                 
                 functional_gugs.append( gug )
                 
@@ -1653,7 +1653,7 @@ class GUGKeyAndNameSelector( ClientGUICommon.BetterButton ):
                 
                 try:
                     
-                    gug.CheckFunctional()
+                    gug.check_functional()
                     
                 except HydrusExceptions.ParseException as e:
                     

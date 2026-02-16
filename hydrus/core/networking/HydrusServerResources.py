@@ -21,9 +21,9 @@ from hydrus.core.networking import HydrusServerRequest
 def GetServerSummaryTexts( service ):
     
     name = service.get_name()
-    service_type = service.GetServiceType()
+    service_type = service.get_service_type()
     
-    allows_non_local_connections = service.AllowsNonLocalConnections()
+    allows_non_local_connections = service.allows_non_local_connections()
     
     welcome_text_1 = 'This is <b>' + name + '</b>,'
     welcome_text_2 = 'a ' + HC.service_string_lookup[ service_type ] + '.'
@@ -57,7 +57,7 @@ def GetServerSummaryTexts( service ):
     
 def GenerateEris( service ):
     
-    if hasattr( service, 'UseNormieEris' ) and service.UseNormieEris():
+    if hasattr( service, 'UseNormieEris' ) and service.use_normie_eris():
         
         return GenerateNormieEris( service )
         
@@ -429,7 +429,7 @@ class HydrusResource( Resource ):
         super().__init__()
         
         self._service = service
-        self._service_key = self._service.GetServiceKey()
+        self._service_key = self._service.get_service_key()
         self._domain = domain
         
     
@@ -552,7 +552,7 @@ class HydrusResource( Resource ):
         
         if request.requestHeaders.hasHeader( 'Origin' ):
             
-            if self._service.SupportsCORS():
+            if self._service.supports_cors():
                 
                 request.setHeader( 'Access-Control-Allow-Origin', '*' )
                 
@@ -1150,7 +1150,7 @@ class HydrusResource( Resource ):
             
             # this is a CORS request
             
-            if self._service.SupportsCORS():
+            if self._service.supports_cors():
                 
                 request.setHeader( 'Access-Control-Allow-Headers', '*' )
                 request.setHeader( 'Access-Control-Allow-Origin', '*' )

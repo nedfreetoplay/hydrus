@@ -27,7 +27,7 @@ class LocationImportOptions( HydrusSerialisable.SerialisableBase ):
         
         try:
             
-            fallback = CG.client_controller.services_manager.GetLocalMediaFileServices()[0].GetServiceKey()
+            fallback = CG.client_controller.services_manager.GetLocalMediaFileServices()[0].get_service_key()
             
         except Exception as e:
             

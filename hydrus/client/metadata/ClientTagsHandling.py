@@ -709,7 +709,7 @@ class TagDisplayManager( HydrusSerialisable.SerialisableBase ):
                 
             
         
-        self._tag_service_keys_to_tag_autocomplete_options = {tag_autocomplete_options.GetServiceKey() : tag_autocomplete_options for tag_autocomplete_options in HydrusSerialisable.create_from_serialisable_tuple(serialisable_tag_autocomplete_options)}
+        self._tag_service_keys_to_tag_autocomplete_options = {tag_autocomplete_options.get_service_key() : tag_autocomplete_options for tag_autocomplete_options in HydrusSerialisable.create_from_serialisable_tuple(serialisable_tag_autocomplete_options)}
         
     
     def _update_serialisable_info(self, version, old_serialisable_info):

@@ -127,7 +127,7 @@ class MockServicesManager( object ):
     
     def __init__( self, services ):
         
-        self._service_keys_to_services = { service.GetServiceKey() : service for service in services }
+        self._service_keys_to_services = {service.get_service_key() : service for service in services}
         
     
     def GetName( self, service_key ):

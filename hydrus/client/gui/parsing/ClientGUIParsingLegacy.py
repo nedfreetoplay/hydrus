@@ -321,7 +321,7 @@ class EditParseNodeContentLinkPanel( ClientGUIScrolledPanels.EditPanel ):
         
         notebook = QW.QTabWidget( self )
         
-        ( name, formula, children ) = node.ToTuple()
+        ( name, formula, children ) = node.to_tuple()
         
         #
         
@@ -552,7 +552,7 @@ class EditParsingScriptFileLookupPanel( ClientGUIScrolledPanels.EditPanel ):
         
         super().__init__( parent )
         
-        ( name, url, query_type, file_identifier_type, file_identifier_string_converter, file_identifier_arg_name, static_args, children ) = script.ToTuple()
+        ( name, url, query_type, file_identifier_type, file_identifier_string_converter, file_identifier_arg_name, static_args, children ) = script.to_tuple()
         
         #
         
@@ -814,7 +814,7 @@ And pass that html to a number of 'parsing children' that will each look through
                 
             finally:
                 
-                job_status.Finish()
+                job_status.finish()
                 
             
         

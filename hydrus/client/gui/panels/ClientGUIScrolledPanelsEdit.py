@@ -852,7 +852,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
             
             deletee_service = CG.client_controller.services_manager.GetService( deletee_file_service_key )
             
-            deletee_service_type = deletee_service.GetServiceType()
+            deletee_service_type = deletee_service.get_service_type()
             
             if deletee_service_type == HC.LOCAL_FILE_DOMAIN:
                 
@@ -910,7 +910,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
                 
             elif deletee_service_type == HC.FILE_REPOSITORY:
                 
-                if deletee_service.HasPermission( HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_PETITION ):
+                if deletee_service.has_permission(HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_PETITION):
                     
                     self._this_dialog_includes_service_keys = True
                     
@@ -923,7 +923,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
                         file_desc = '{} files'.format(HydrusNumbers.to_human_int(num_to_delete))
                         
                     
-                    if deletee_service.HasPermission( HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_MODERATE ):
+                    if deletee_service.has_permission(HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_MODERATE):
                         
                         text = 'Admin-delete {} from {}?'.format(file_desc, deletee_service.get_name())
                         

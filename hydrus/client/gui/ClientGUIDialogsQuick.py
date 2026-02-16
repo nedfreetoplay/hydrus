@@ -400,7 +400,7 @@ def SelectServiceKey( service_types = None, service_keys = None, unallowed = Non
         
         services = { CG.client_controller.services_manager.GetService( service_key ) for service_key in service_keys }
         
-        choice_tuples = [(service.get_name(), service.GetServiceKey()) for service in services]
+        choice_tuples = [(service.get_name(), service.get_service_key()) for service in services]
         
         try:
             

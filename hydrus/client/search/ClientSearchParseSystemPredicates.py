@@ -148,11 +148,11 @@ def rating_service_pred_generator( operator, value_and_service_name ):
         raise HydrusExceptions.BadRequestException( 'Could not find the service "{}"!'.format( service_name ) )
         
     
-    if service.GetServiceType() == HC.LOCAL_RATING_NUMERICAL and isinstance( value, int ):
+    if service.get_service_type() == HC.LOCAL_RATING_NUMERICAL and isinstance(value, int):
         
         value = service.ConvertStarsToRating( value )
         
-    elif service.GetServiceType() == HC.LOCAL_RATING_INCDEC:
+    elif service.get_service_type() == HC.LOCAL_RATING_INCDEC:
         
         if value == 'rated':
             

@@ -302,11 +302,11 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     try:
                         
-                        if service.GetServiceType() == HC.FILE_REPOSITORY:
+                        if service.get_service_type() == HC.FILE_REPOSITORY:
                             
                             file_repository = service
                             
-                            if file_repository.IsFunctional():
+                            if file_repository.is_functional():
                                 
                                 ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path()
                                 

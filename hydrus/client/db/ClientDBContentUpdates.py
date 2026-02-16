@@ -128,7 +128,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
             
             service = self.modules_services.GetService( service_id )
             
-            service_type = service.GetServiceType()
+            service_type = service.get_service_type()
             
             valid_rows = [ ( hash_id, timestamp_ms ) for ( hash_id, timestamp_ms ) in rows if hash_id in new_hash_ids ]
             
@@ -277,7 +277,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
         
         service = self.modules_services.GetService( service_id )
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         existing_hash_ids_to_timestamps_ms = self.modules_files_storage.GetCurrentHashIdsToTimestampsMS( service_id, hash_ids )
         
@@ -479,7 +479,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
             
             service = self.modules_services.GetService( service_id )
             
-            service_type = service.GetServiceType()
+            service_type = service.get_service_type()
             
             ultimate_mappings_ids = []
             ultimate_deleted_mappings_ids = []
@@ -495,7 +495,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
             
             for content_update in content_updates:
                 
-                ( data_type, action, row ) = content_update.ToTuple()
+                ( data_type, action, row ) = content_update.to_tuple()
                 
                 if service_type in HC.REAL_FILE_SERVICES:
                     
@@ -528,7 +528,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                                 
                                 ( file_info_manager, timestamp_ms ) = row
                                 
-                                ( hash_id, hash, size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) = file_info_manager.ToTuple()
+                                ( hash_id, hash, size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) = file_info_manager.to_tuple()
                                 
                                 self.modules_files_metadata_basic.AddFilesInfo( [ ( hash_id, size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) ] )
                                 
@@ -595,7 +595,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                                     
                                     if content_update.HasReason():
                                         
-                                        reason = content_update.GetReason()
+                                        reason = content_update.get_reason()
                                         
                                         # let's be careful only to set deletion reasons on valid hash ids
                                         location_context = ClientLocation.LocationContext( current_service_keys = ( service_key, ) )
@@ -643,7 +643,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                                 
                             elif action == HC.CONTENT_UPDATE_PETITION:
                                 
-                                reason = content_update.GetReason()
+                                reason = content_update.get_reason()
                                 
                                 reason_id = self.modules_texts.GetTextId( reason )
                                 
@@ -839,7 +839,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                             
                         elif action == HC.CONTENT_UPDATE_PETITION:
                             
-                            reason = content_update.GetReason()
+                            reason = content_update.get_reason()
                             
                             reason_id = self.modules_texts.GetTextId( reason )
                             
@@ -917,7 +917,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                                 continue
                                 
                             
-                            reason = content_update.GetReason()
+                            reason = content_update.get_reason()
                             
                             reason_id = self.modules_texts.GetTextId( reason )
                             
@@ -1025,7 +1025,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                                 continue
                                 
                             
-                            reason = content_update.GetReason()
+                            reason = content_update.get_reason()
                             
                             reason_id = self.modules_texts.GetTextId( reason )
                             

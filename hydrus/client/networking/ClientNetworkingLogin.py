@@ -350,7 +350,7 @@ class NetworkLoginManager( HydrusSerialisable.SerialisableBase ):
                 
                 try:
                     
-                    service.CheckFunctional( including_bandwidth = False, including_account = False )
+                    service.check_functional(including_bandwidth = False, including_account = False)
                     
                 except Exception as e:
                     
@@ -1056,7 +1056,7 @@ class LoginScriptHydrus( object ):
         
         url = base_url + 'session_key'
         
-        access_key = service.GetCredentials().GetAccessKey()
+        access_key = service.GetCredentials().get_access_key()
         
         network_job = ClientNetworkingJobs.NetworkJobHydrus( service_key, 'GET', url )
         
@@ -1076,9 +1076,9 @@ class LoginScriptHydrus( object ):
                 
                 HydrusData.print_text('Successfully logged into ' + service.get_name() + '.')
                 
-            elif service.IsFunctional():
+            elif service.is_functional():
                 
-                ( is_ok, status_string ) = service.GetStatusInfo()
+                ( is_ok, status_string ) = service.get_status_info()
                 
                 service.DelayFutureRequests( 'Could not log in for unknown reason. Current service status: {}'.format( status_string ) )
                 

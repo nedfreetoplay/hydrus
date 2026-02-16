@@ -1457,7 +1457,7 @@ class ShortcutSet( HydrusSerialisable.SerialisableBaseNamed ):
                     
                     service = services_manager.GetService( service_key )
                     
-                    service_type = service.GetServiceType()
+                    service_type = service.get_service_type()
                     
                     if service_type in HC.REAL_TAG_SERVICES:
                         

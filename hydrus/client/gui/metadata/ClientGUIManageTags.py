@@ -376,7 +376,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             
             self._service = CG.client_controller.services_manager.GetService( self._tag_service_key )
             
-            self._i_am_local_tag_service = self._service.GetServiceType() == HC.LOCAL_TAG
+            self._i_am_local_tag_service = self._service.get_service_type() == HC.LOCAL_TAG
             
             tags_panel = QW.QWidget( self )
             
@@ -422,7 +422,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             
             menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCall( 'migrate tags for these files', 'Migrate the tags for the files used to launch this manage tags panel.', self._MigrateTags ) )
             
-            if not self._i_am_local_tag_service and self._service.HasPermission( HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_MODERATE ):
+            if not self._i_am_local_tag_service and self._service.has_permission(HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_MODERATE):
                 
                 menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemSeparator() )
                 
@@ -523,7 +523,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             
             tags = HydrusTags.clean_tags(tags)
             
-            if not self._i_am_local_tag_service and self._service.HasPermission( HC.CONTENT_TYPE_MAPPINGS, HC.PERMISSION_ACTION_MODERATE ):
+            if not self._i_am_local_tag_service and self._service.has_permission(HC.CONTENT_TYPE_MAPPINGS, HC.PERMISSION_ACTION_MODERATE):
                 
                 forced_reason = 'Entered by a janitor.'
                 

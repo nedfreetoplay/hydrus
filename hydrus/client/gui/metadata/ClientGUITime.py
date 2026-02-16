@@ -315,7 +315,7 @@ class EditCheckerOptions( ClientGUIScrolledPanels.EditPanel ):
     
     def SetValue( self, checker_options ):
         
-        ( intended_files_per_check, never_faster_than, never_slower_than, death_file_velocity ) = checker_options.ToTuple()
+        ( intended_files_per_check, never_faster_than, never_slower_than, death_file_velocity ) = checker_options.to_tuple()
         
         self._intended_files_per_check.setValue( intended_files_per_check )
         self._never_faster_than.SetValue( never_faster_than )

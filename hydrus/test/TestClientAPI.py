@@ -260,7 +260,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'everything' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
@@ -471,7 +471,7 @@ class TestClientAPI( unittest.TestCase ):
                 self.assertFalse( api_permissions.PermitsEverything() )
                 
             
-            self.assertEqual( bytes.fromhex( access_key_hex ), api_permissions.GetAccessKey() )
+            self.assertEqual(bytes.fromhex( access_key_hex ), api_permissions.get_access_key())
             
             set_up_permissions[ name ] = api_permissions
             
@@ -557,7 +557,7 @@ class TestClientAPI( unittest.TestCase ):
         
         for api_permissions in set_up_permissions.values():
             
-            access_key_hex = api_permissions.GetAccessKey().hex()
+            access_key_hex = api_permissions.get_access_key().hex()
             
             do_good_verify_test( api_permissions, access_key_hex, 'Hydrus-Client-API-Access-Key' )
             
@@ -590,7 +590,7 @@ class TestClientAPI( unittest.TestCase ):
         
         for api_permissions in set_up_permissions.values():
             
-            access_key_hex = api_permissions.GetAccessKey().hex()
+            access_key_hex = api_permissions.get_access_key().hex()
             
             headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
             
@@ -656,7 +656,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'everything' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
@@ -917,7 +917,7 @@ class TestClientAPI( unittest.TestCase ):
         
         for api_permissions in should_work.union( should_break ):
             
-            access_key_hex = api_permissions.GetAccessKey().hex()
+            access_key_hex = api_permissions.get_access_key().hex()
             
             headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
             
@@ -1001,7 +1001,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'add_files' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
@@ -1042,7 +1042,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'add_files' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         # fail
         
@@ -1202,7 +1202,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'add_files' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex, 'Content-Type' : HC.mime_mimetype_string_lookup[ HC.APPLICATION_JSON ] }
         
@@ -1323,7 +1323,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'add_files' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex, 'Content-Type' : HC.mime_mimetype_string_lookup[ HC.APPLICATION_JSON ] }
         
@@ -1790,7 +1790,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'add_files' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         # as body
         
@@ -1877,7 +1877,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'everything' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex, 'Content-Type' : HC.mime_mimetype_string_lookup[ HC.APPLICATION_JSON ] }
         
@@ -2161,7 +2161,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'everything' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex, 'Content-Type' : HC.mime_mimetype_string_lookup[ HC.APPLICATION_JSON ] }
         
@@ -2331,7 +2331,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'everything' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex, 'Content-Type' : HC.mime_mimetype_string_lookup[ HC.APPLICATION_JSON ] }
         
@@ -2516,7 +2516,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'everything' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex, 'Content-Type' : HC.mime_mimetype_string_lookup[ HC.APPLICATION_JSON ] }
         
@@ -2790,7 +2790,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'everything' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex, 'Content-Type' : HC.mime_mimetype_string_lookup[ HC.APPLICATION_JSON ] }
         
@@ -3176,7 +3176,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'everything' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
@@ -3480,7 +3480,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'everything' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         #
         
@@ -3637,7 +3637,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'add_urls' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
@@ -3659,7 +3659,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'everything' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
@@ -3719,7 +3719,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'search_green_files' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
@@ -3840,7 +3840,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'everything' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
@@ -3997,7 +3997,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'everything' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
@@ -4069,7 +4069,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'everything' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
@@ -4345,7 +4345,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'everything' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex, 'Content-Type' : HC.mime_mimetype_string_lookup[ HC.APPLICATION_JSON ] }
         
@@ -4557,7 +4557,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'manage_headers' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
@@ -4702,7 +4702,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'manage_headers' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         #
         
@@ -5107,7 +5107,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'everything' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
@@ -5218,7 +5218,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'everything' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
@@ -5561,7 +5561,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'everything' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
@@ -6175,7 +6175,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'manage_pages' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
@@ -6256,7 +6256,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'manage_pages' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
@@ -6295,7 +6295,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'everything' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
@@ -6474,7 +6474,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'add_urls' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
@@ -6494,7 +6494,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'everything' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
@@ -6526,7 +6526,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'search_green_files' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
@@ -7173,7 +7173,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'everything' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
@@ -7215,7 +7215,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'search_green_files' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
@@ -7419,8 +7419,8 @@ class TestClientAPI( unittest.TestCase ):
                         random_file_service_hex_current.hex() : {
                             'time_imported' : HydrusTime.secondise_ms(current_import_timestamp_ms),
                             'name' : TG.test_controller.services_manager.get_name(random_file_service_hex_current),
-                            'type' : TG.test_controller.services_manager.GetServiceType( random_file_service_hex_current ),
-                            'type_pretty' : HC.service_string_lookup[ TG.test_controller.services_manager.GetServiceType( random_file_service_hex_current ) ]
+                            'type' : TG.test_controller.services_manager.get_service_type(random_file_service_hex_current),
+                            'type_pretty' : HC.service_string_lookup[ TG.test_controller.services_manager.get_service_type(random_file_service_hex_current)]
                         }
                     },
                     'deleted' : {
@@ -7428,8 +7428,8 @@ class TestClientAPI( unittest.TestCase ):
                             'time_deleted' : HydrusTime.secondise_ms(deleted_deleted_timestamp_ms),
                             'time_imported' : HydrusTime.secondise_ms(previously_imported_timestamp_ms),
                             'name' : TG.test_controller.services_manager.get_name(random_file_service_hex_deleted),
-                            'type' : TG.test_controller.services_manager.GetServiceType( random_file_service_hex_deleted ),
-                            'type_pretty' : HC.service_string_lookup[ TG.test_controller.services_manager.GetServiceType( random_file_service_hex_deleted ) ]
+                            'type' : TG.test_controller.services_manager.get_service_type(random_file_service_hex_deleted),
+                            'type_pretty' : HC.service_string_lookup[ TG.test_controller.services_manager.get_service_type(random_file_service_hex_deleted)]
                         }
                     }
                 },
@@ -7459,8 +7459,8 @@ class TestClientAPI( unittest.TestCase ):
                     metadata_row[ 'file_services' ][ 'current' ][ i_s_k.hex() ] = {
                         'time_imported' : HydrusTime.secondise_ms(ipfs_import_timestamp_ms),
                         'name' : TG.test_controller.services_manager.get_name(i_s_k),
-                        'type' : TG.test_controller.services_manager.GetServiceType( i_s_k ),
-                        'type_pretty' : HC.service_string_lookup[ TG.test_controller.services_manager.GetServiceType( i_s_k ) ]
+                        'type' : TG.test_controller.services_manager.get_service_type(i_s_k),
+                        'type_pretty' : HC.service_string_lookup[ TG.test_controller.services_manager.get_service_type(i_s_k)]
                     }
                     
                     metadata_row[ 'ipfs_multihashes' ][ i_s_k.hex() ] = multihash
@@ -7822,7 +7822,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'everything' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
@@ -8010,7 +8010,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'everything' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
@@ -8119,7 +8119,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'search_green_files' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
@@ -8321,7 +8321,7 @@ class TestClientAPI( unittest.TestCase ):
         
         api_permissions = set_up_permissions[ 'everything' ]
         
-        access_key_hex = api_permissions.GetAccessKey().hex()
+        access_key_hex = api_permissions.get_access_key().hex()
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         

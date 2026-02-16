@@ -72,7 +72,7 @@ class HydrusResourceClientAPIRestrictedAccountSessionKey( HydrusResourceClientAP
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        new_session_key = CG.client_controller.client_api_manager.GenerateSessionKey( request.client_api_permissions.GetAccessKey() )
+        new_session_key = CG.client_controller.client_api_manager.GenerateSessionKey(request.client_api_permissions.get_access_key())
         
         body_dict = {}
         
@@ -122,7 +122,7 @@ class HydrusResourceClientAPIRestrictedGetService( ClientLocalServerResources.Hy
     
     def _CheckAPIPermissions( self, request: HydrusServerRequest.HydrusRequest ):
         
-        request.client_api_permissions.CheckAtLeastOnePermission(
+        request.client_api_permissions.check_at_least_one_permission(
             (
                 ClientAPI.CLIENT_API_PERMISSION_ADD_FILES,
                 ClientAPI.CLIENT_API_PERMISSION_EDIT_RATINGS,
@@ -184,7 +184,7 @@ class HydrusResourceClientAPIRestrictedGetService( ClientLocalServerResources.Hy
             raise HydrusExceptions.NotFoundException( 'Sorry, did not find a service with key "{}"!'.format( service_key.hex() ) )
             
         
-        if service.GetServiceType() not in allowed_service_types:
+        if service.get_service_type() not in allowed_service_types:
             
             raise HydrusExceptions.BadRequestException( 'Sorry, for now, you cannot ask about this service!' )
             
@@ -192,9 +192,9 @@ class HydrusResourceClientAPIRestrictedGetService( ClientLocalServerResources.Hy
         body_dict = {
             'service' : {
                 'name' : service.get_name(),
-                'type' : service.GetServiceType(),
-                'type_pretty' : HC.service_string_lookup[ service.GetServiceType() ],
-                'service_key' : service.GetServiceKey().hex()
+                'type' : service.get_service_type(),
+                'type_pretty' : HC.service_string_lookup[ service.get_service_type()],
+                'service_key' : service.get_service_key().hex()
             }
         }
         
@@ -210,7 +210,7 @@ class HydrusResourceClientAPIRestrictedGetServices( ClientLocalServerResources.H
     
     def _CheckAPIPermissions( self, request: HydrusServerRequest.HydrusRequest ):
         
-        request.client_api_permissions.CheckAtLeastOnePermission(
+        request.client_api_permissions.check_at_least_one_permission(
             (
                 ClientAPI.CLIENT_API_PERMISSION_ADD_FILES,
                 ClientAPI.CLIENT_API_PERMISSION_EDIT_RATINGS,
@@ -275,7 +275,7 @@ class HydrusResourceClientAPIRestrictedGetServiceRatingSVG( ClientLocalServerRes
     
     def _CheckAPIPermissions( self, request: HydrusServerRequest.HydrusRequest ):
         
-        request.client_api_permissions.CheckAtLeastOnePermission(
+        request.client_api_permissions.check_at_least_one_permission(
             (
                 ClientAPI.CLIENT_API_PERMISSION_ADD_FILES,
                 ClientAPI.CLIENT_API_PERMISSION_EDIT_RATINGS,
@@ -326,7 +326,7 @@ class HydrusResourceClientAPIRestrictedGetServiceRatingSVG( ClientLocalServerRes
             raise HydrusExceptions.NotFoundException( 'Sorry, did not find a service with key "{}"!'.format( service_key.hex() ) )
             
         
-        if service.GetServiceType() not in allowed_service_types:
+        if service.get_service_type() not in allowed_service_types:
             
             raise HydrusExceptions.BadRequestException( 'This type of service cannot have a SVG associated with it!' )
             

@@ -172,13 +172,13 @@ def THREADUploadPending( service_key ):
         service = CG.client_controller.services_manager.GetService( service_key )
         
         service_name = service.get_name()
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         if service_type in HC.REPOSITORIES:
             
             account = service.get_account()
             
-            if account.IsUnknown():
+            if account.is_unknown():
                 
                 HydrusData.show_text('Your account is currently unsynced, so the upload was cancelled. Please refresh the account under _review services_.')
                 
@@ -219,7 +219,7 @@ def THREADUploadPending( service_key ):
                         continue
                         
                     
-                    if account.HasPermission( content_type, permission ):
+                    if account.has_permission(content_type, permission):
                         
                         if service.IsPausedUpdateProcessing( content_type ):
                             
@@ -240,7 +240,7 @@ def THREADUploadPending( service_key ):
             if len( unauthorised_content_types ) > 0:
                 
                 message = 'Unfortunately, your account ({}) does not have full permission to upload all your pending content of type ({})!'.format(
-                    account.GetAccountType().GetTitle(),
+                    account.get_account_type().get_title(),
                     ', '.join( ( HC.content_type_string_lookup[ content_type ] for content_type in unauthorised_content_types ) )
                 )
                 
@@ -1893,7 +1893,7 @@ QMenuBar::item { padding: 2px 8px; margin: 0px; }'''
                 
                 job_status.SetStatusText( 'No missing archive times found!' )
                 
-                job_status.Finish()
+                job_status.finish()
                 
             
         
@@ -1917,7 +1917,7 @@ QMenuBar::item { padding: 2px 8px; margin: 0px; }'''
                 
             
             job_status.SetStatusText( 'Done!' )
-            job_status.Finish()
+            job_status.finish()
             
         
         message = 'There are a couple of ways your client may be missing archive times for your files. This will scan for missing times and then present you with the results and a choice on what to do.'
@@ -2929,7 +2929,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                     
                     service = self._controller.services_manager.GetService( service_key )
                     
-                    service_type = service.GetServiceType()
+                    service_type = service.get_service_type()
                     name = service.get_name()
                     
                     if service_type == HC.TAG_REPOSITORY:
@@ -4214,7 +4214,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         with ClientGUITopLevelWindowsPanels.DialogEdit( self, title ) as dlg:
             
-            panel = ClientGUIHydrusNetwork.EditAccountTypesPanel( dlg, admin_service.GetServiceType(), account_types )
+            panel = ClientGUIHydrusNetwork.EditAccountTypesPanel(dlg, admin_service.get_service_type(), account_types)
             
             dlg.SetPanel( panel )
             
@@ -4748,7 +4748,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         service = self._controller.services_manager.GetService( service_key )
         
-        nullification_period = service.GetNullificationPeriod()
+        nullification_period = service.get_nullification_period()
         
         with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit anonymisation period' ) as dlg:
             
@@ -4816,7 +4816,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         service = self._controller.services_manager.GetService( service_key )
         
-        tag_filter = service.GetTagFilter()
+        tag_filter = service.get_tag_filter()
         
         with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit tag repository tag filter' ) as dlg:
             
@@ -4873,7 +4873,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         service = self._controller.services_manager.GetService( service_key )
         
-        update_period = service.GetUpdatePeriod()
+        update_period = service.get_update_period()
         
         with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit update period' ) as dlg:
             
@@ -6114,7 +6114,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             client_api_service = CG.client_controller.services_manager.GetService( CC.CLIENT_API_SERVICE_KEY )
             
-            port = client_api_service.GetPort()
+            port = client_api_service.get_port()
             
             was_running_before = port is not None
             
@@ -6313,7 +6313,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
                 samus_tag_info = hash_ids_to_hashes_and_tag_info[ samus_hash_id ][1]
                 
-                if samus_test_tag not in samus_tag_info[ local_tag_service.GetServiceKey().hex() ][ 'storage_tags' ][ str( HC.CONTENT_STATUS_CURRENT ) ]:
+                if samus_test_tag not in samus_tag_info[ local_tag_service.get_service_key().hex()]['storage_tags'][ str(HC.CONTENT_STATUS_CURRENT)]:
                     
                     raise Exception( 'Did not have the tag!' )
                     
@@ -6662,13 +6662,13 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             service_key = HydrusData.generate_key()
             
-            tag_service = HydrusNetwork.GenerateService( service_key, HC.TAG_REPOSITORY, 'tag service', HC.DEFAULT_SERVICE_PORT )
+            tag_service = HydrusNetwork.generate_service(service_key, HC.TAG_REPOSITORY, 'tag service', HC.DEFAULT_SERVICE_PORT)
             
             serverside_services.append( tag_service )
             
             service_key = HydrusData.generate_key()
             
-            file_service = HydrusNetwork.GenerateService( service_key, HC.FILE_REPOSITORY, 'file service', HC.DEFAULT_SERVICE_PORT + 1 )
+            file_service = HydrusNetwork.generate_service(service_key, HC.FILE_REPOSITORY, 'file service', HC.DEFAULT_SERVICE_PORT + 1)
             
             serverside_services.append( file_service )
             
@@ -9272,7 +9272,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                 
             else:
                 
-                service.CheckFunctional()
+                service.check_functional()
                 
             
             if isinstance( service, ClientServices.ServiceRepository ):
