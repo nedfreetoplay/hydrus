@@ -1,7 +1,7 @@
 import datetime
 import sys
 
-def nowutc():
+def now_utc():
     
     if sys.version_info < ( 3, 11 ):
         
@@ -14,7 +14,7 @@ def nowutc():
         
     
 
-def fromtimestamputc( timestamp ):
+def from_timestamp_utc(timestamp):
     
     if sys.version_info < ( 3, 11 ):
         

@@ -61,9 +61,9 @@ def GenerateOpenSSLCertAndKeyFile( cert_path, key_path ):
     ).serial_number(
         x509.random_serial_number()
     ).not_valid_before(
-        HydrusDateTime.nowutc()
+        HydrusDateTime.now_utc()
     ).not_valid_after(
-        HydrusDateTime.nowutc() + datetime.timedelta( days = 365 * 10 )
+        HydrusDateTime.now_utc() + datetime.timedelta(days =365 * 10)
     ).add_extension(
         x509.SubjectAlternativeName( [ x509.DNSName( 'localhost' ) ] ),
         critical = False

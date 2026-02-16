@@ -11,7 +11,7 @@ from hydrus.core.files.images import HydrusImageMathSlop as MathSlop
 def make_icc_header(profile_size: int) -> bytes:
     """Create a 128-byte ICC header (ICC v2.1)."""
     
-    now = HydrusDateTime.nowutc()
+    now = HydrusDateTime.now_utc()
     
     # Date/time is 6x uInt16: year, month, day, hour, minute, second
     dt_bytes = struct.pack(">6H", now.year, now.month, now.day, now.hour, now.minute, now.second)
