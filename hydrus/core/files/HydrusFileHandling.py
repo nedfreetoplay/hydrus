@@ -578,7 +578,7 @@ def get_file_info(path, mime = None, ok_to_look_for_hydrus_updates = False):
         
     elif mime == HC.APPLICATION_FLASH:
         
-        ( ( width, height ), duration_ms, num_frames ) = HydrusFlashHandling.GetFlashProperties( path )
+        ( ( width, height ), duration_ms, num_frames ) = HydrusFlashHandling.get_flash_properties(path)
         
     elif mime == HC.APPLICATION_PSD:
         
