@@ -44,11 +44,11 @@ class TestDaemons( unittest.TestCase ):
             # db read metadata
             # client files export with correct filename
             
-            HydrusPaths.MakeSureDirectoryExists( test_dir_dest )
+            HydrusPaths.make_sure_directory_exists(test_dir_dest)
             
             fake_file_path = os.path.join( test_dir_source, '0' )
             
-            HydrusPaths.MirrorFile( HydrusStaticDir.GetStaticPath( 'hydrus.png' ), fake_file_path )
+            HydrusPaths.mirror_file(HydrusStaticDir.GetStaticPath('hydrus.png'), fake_file_path)
             
             #
             
@@ -165,13 +165,13 @@ class TestDaemons( unittest.TestCase ):
         
         try:
             
-            HydrusPaths.MakeSureDirectoryExists( test_dir )
+            HydrusPaths.make_sure_directory_exists(test_dir)
             
             hydrus_png_path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
             
-            HydrusPaths.MirrorFile( hydrus_png_path, os.path.join( test_dir, '0' ) )
-            HydrusPaths.MirrorFile( hydrus_png_path, os.path.join( test_dir, '1' ) ) # previously imported
-            HydrusPaths.MirrorFile( hydrus_png_path, os.path.join( test_dir, '2' ) )
+            HydrusPaths.mirror_file(hydrus_png_path, os.path.join(test_dir, '0'))
+            HydrusPaths.mirror_file(hydrus_png_path, os.path.join(test_dir, '1')) # previously imported
+            HydrusPaths.mirror_file(hydrus_png_path, os.path.join(test_dir, '2'))
             
             with open( os.path.join( test_dir, '3' ), 'wb' ) as f: f.write( b'blarg' ) # broken
             with open( os.path.join( test_dir, '4' ), 'wb' ) as f: f.write( b'blarg' ) # previously failed

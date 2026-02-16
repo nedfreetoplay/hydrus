@@ -78,14 +78,14 @@ def RunTuningSuiteAlpha( test_dir: str ):
     # clear out last test
     if os.path.exists( out_dir ):
         
-        HydrusPaths.DeletePath( out_dir )
+        HydrusPaths.delete_path(out_dir)
         
     
     reports = []
     
     source_filenames = os.listdir( test_dir )
     
-    HydrusPaths.MakeSureDirectoryExists( out_dir )
+    HydrusPaths.make_sure_directory_exists(out_dir)
     
     for source_filename in source_filenames:
         
@@ -339,14 +339,14 @@ def RunTuningSuite( test_dir: str ):
     # clear out last test
     if os.path.exists( out_dir ):
         
-        HydrusPaths.DeletePath( out_dir )
+        HydrusPaths.delete_path(out_dir)
         
     
     reports = []
     
     source_filenames = os.listdir( test_dir )
     
-    HydrusPaths.MakeSureDirectoryExists( out_dir )
+    HydrusPaths.make_sure_directory_exists(out_dir)
     
     for source_filename in source_filenames:
         

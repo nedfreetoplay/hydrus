@@ -434,7 +434,7 @@ class ReviewLocalFileImports( ClientGUIScrolledPanels.ReviewPanel ):
                         
                         local_file_parse.result = RESULT_MISSING
                         
-                    elif not HydrusPaths.PathIsFree( path ):
+                    elif not HydrusPaths.path_is_free(path):
                         
                         HydrusData.print_text('File currently in use: ' + path)
                         

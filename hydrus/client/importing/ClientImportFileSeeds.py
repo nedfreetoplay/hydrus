@@ -1206,7 +1206,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                     status_hook( 'copying file to temp location' )
                     
                 
-                HydrusPaths.MirrorFile( path, temp_path )
+                HydrusPaths.mirror_file(path, temp_path)
                 
                 self.Import( temp_path, file_import_options, status_hook = status_hook )
                 

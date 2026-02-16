@@ -623,9 +623,9 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                     
                     dest_path = os.path.join( dest_dir, filename )
                     
-                    dest_path = HydrusPaths.AppendPathUntilNoConflicts( dest_path )
+                    dest_path = HydrusPaths.append_path_until_no_conflicts(dest_path)
                     
-                    HydrusPaths.MergeFile( path, dest_path )
+                    HydrusPaths.merge_file(path, dest_path)
                     
                 
                 possible_sidecar_paths = set()
@@ -643,9 +643,9 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                         
                         txt_dest_path = os.path.join( dest_dir, txt_filename )
                         
-                        txt_dest_path = HydrusPaths.AppendPathUntilNoConflicts( txt_dest_path )
+                        txt_dest_path = HydrusPaths.append_path_until_no_conflicts(txt_dest_path)
                         
-                        HydrusPaths.MergeFile( possible_sidecar_path, txt_dest_path )
+                        HydrusPaths.merge_file(possible_sidecar_path, txt_dest_path)
                         
                     
                 
@@ -674,9 +674,9 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
         
         job_status.SetStatusText( f'checking: found {HydrusNumbers.to_human_int(len(new_paths))} new files')
         
-        old_new_paths = HydrusPaths.FilterOlderModifiedFiles( new_paths, self._last_modified_time_skip_period )
+        old_new_paths = HydrusPaths.filter_older_modified_files(new_paths, self._last_modified_time_skip_period)
         
-        free_old_new_paths = HydrusPaths.FilterFreePaths( old_new_paths )
+        free_old_new_paths = HydrusPaths.filter_free_paths(old_new_paths)
         
         file_seeds = [ paths_to_file_seeds[ path ] for path in free_old_new_paths ]
         

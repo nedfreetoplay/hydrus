@@ -398,7 +398,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             error_dir = os.path.join(self._controller.get_db_dir(), 'missing_and_invalid_files')
             
-            HydrusPaths.MakeSureDirectoryExists( error_dir )
+            HydrusPaths.make_sure_directory_exists(error_dir)
             
             pretty_timestamp = time.strftime( '%Y-%m-%d %H-%M-%S', time.localtime(HydrusTime.SecondiseMS(self._controller.get_boot_timestamp_ms())))
             
@@ -530,13 +530,13 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             if do_export:
                 
-                HydrusPaths.MakeSureDirectoryExists( error_dir )
+                HydrusPaths.make_sure_directory_exists(error_dir)
                 
                 dest_path = os.path.join( error_dir, os.path.basename( path ) )
                 
                 try:
                     
-                    HydrusPaths.MergeFile( path, dest_path )
+                    HydrusPaths.merge_file(path, dest_path)
                     
                 except Exception as e:
                     
@@ -698,7 +698,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             path = self._controller.client_files_manager.GetFilePath( hash, mime )
             
-            HydrusPaths.TryToGiveFileNicePermissionBits( path )
+            HydrusPaths.try_to_give_file_nice_permission_bits(path)
             
         except HydrusExceptions.FileMissingException:
             
@@ -856,7 +856,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             if mime != original_mime and not media_result.GetFileInfoManager().FiletypeIsForced():
                 
-                if not HydrusPaths.PathIsFree( path ):
+                if not HydrusPaths.path_is_free(path):
                     
                     time.sleep( 0.5 )
                     

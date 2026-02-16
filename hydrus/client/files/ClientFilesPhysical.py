@@ -64,7 +64,7 @@ def GranulariseStorageFolder( base_location_path: str, prefix_type, starting_pre
                 
                 destination_path = destination_subfolder.GetFilePath( filename )
                 
-                HydrusPaths.MergeFile( source_path, destination_path )
+                HydrusPaths.merge_file(source_path, destination_path)
                 
             else:
                 
@@ -76,7 +76,7 @@ def GranulariseStorageFolder( base_location_path: str, prefix_type, starting_pre
             
             HydrusData.print_text(f'When granularising folders, I finished migrating out of the path "{source_subfolder.path}", and since it was empty when I was done, I deleted it!')
             
-            HydrusPaths.RecyclePath( source_subfolder.path )
+            HydrusPaths.recycle_path(source_subfolder.path)
             
         
     
@@ -88,12 +88,12 @@ class FilesStorageBaseLocation( object ):
         self.creation_path = path
         
         # it may seem silly to wash these like this, but it is nice and certain about slashes and so on, which we like
-        path = HydrusPaths.ConvertPortablePathToAbsPath( path )
-        portable_path = HydrusPaths.ConvertAbsPathToPortablePath( path )
+        path = HydrusPaths.convert_portable_path_to_abs_path(path)
+        portable_path = HydrusPaths.convert_abs_path_to_portable_path(path)
         
         try:
             
-            real_path = HydrusPaths.ConvertAbsPathToRealPath( path )
+            real_path = HydrusPaths.convert_abs_path_to_real_path(path)
             
         except Exception as e:
             
@@ -195,7 +195,7 @@ class FilesStorageBaseLocation( object ):
     
     def MakeSureExists( self ):
         
-        HydrusPaths.MakeSureDirectoryExists( self.path )
+        HydrusPaths.make_sure_directory_exists(self.path)
         
     
     def NeedsToRemoveSubfolders( self, current_num_bytes: int ):
@@ -380,7 +380,7 @@ class FilesStorageSubfolder( object ):
     
     def MakeSureExists( self ):
         
-        HydrusPaths.MakeSureDirectoryExists( self.path )
+        HydrusPaths.make_sure_directory_exists(self.path)
         
     
     def PathExists( self ):

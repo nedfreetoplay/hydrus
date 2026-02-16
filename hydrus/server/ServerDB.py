@@ -159,7 +159,7 @@ class DB( HydrusDB.HydrusDB ):
             
             source_path = file_dict[ 'path' ]
             
-            HydrusPaths.MirrorFile( source_path, dest_path )
+            HydrusPaths.mirror_file(source_path, dest_path)
             
         
         if 'thumbnail' in file_dict:
@@ -327,7 +327,7 @@ class DB( HydrusDB.HydrusDB ):
             
             backup_path = os.path.join( self._db_dir, 'server_backup' )
             
-            HydrusPaths.MakeSureDirectoryExists( backup_path )
+            HydrusPaths.make_sure_directory_exists(backup_path)
             
             for filename in self._db_filenames.values():
                 
@@ -336,7 +336,7 @@ class DB( HydrusDB.HydrusDB ):
                 source = os.path.join( self._db_dir, filename )
                 dest = os.path.join( backup_path, filename )
                 
-                HydrusPaths.MirrorFile( source, dest )
+                HydrusPaths.mirror_file(source, dest)
                 
             
             for filename in [ self._ssl_cert_filename, self._ssl_key_filename ]:
@@ -346,11 +346,11 @@ class DB( HydrusDB.HydrusDB ):
                 source = os.path.join( self._db_dir, filename )
                 dest = os.path.join( backup_path, filename )
                 
-                HydrusPaths.MirrorFile( source, dest )
+                HydrusPaths.mirror_file(source, dest)
                 
             
             HydrusData.print_text('backing up: copying files')
-            HydrusPaths.MirrorTree( self._files_dir, os.path.join( backup_path, 'server_files' ) )
+            HydrusPaths.mirror_tree(self._files_dir, os.path.join(backup_path, 'server_files'))
             
             self._init_db_connection()
             
@@ -385,13 +385,13 @@ class DB( HydrusDB.HydrusDB ):
     
     def _create_db(self):
         
-        HydrusPaths.MakeSureDirectoryExists( self._files_dir )
+        HydrusPaths.make_sure_directory_exists(self._files_dir)
         
         for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( '', prefix_length = 2 ):
             
             new_dir = os.path.join( self._files_dir, prefix )
             
-            HydrusPaths.MakeSureDirectoryExists( new_dir )
+            HydrusPaths.make_sure_directory_exists(new_dir)
             
         
         self._execute('CREATE TABLE services ( service_id INTEGER PRIMARY KEY, service_key BLOB_BYTES, service_type INTEGER, name TEXT, port INTEGER, dictionary_string TEXT );')

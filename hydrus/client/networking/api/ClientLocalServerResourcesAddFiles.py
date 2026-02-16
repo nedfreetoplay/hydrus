@@ -62,7 +62,7 @@ class HydrusResourceClientAPIRestrictedAddFilesAddFile( HydrusResourceClientAPIR
             
             request.temp_file_info = ( os_file_handle, temp_path )
             
-            HydrusPaths.MirrorFile( path, temp_path )
+            HydrusPaths.mirror_file(path, temp_path)
             
         
         ( os_file_handle, temp_path ) = request.temp_file_info
@@ -319,7 +319,7 @@ class HydrusResourceClientAPIRestrictedAddFilesGenerateHashes( HydrusResourceCli
             
             request.temp_file_info = ( os_file_handle, temp_path )
             
-            HydrusPaths.MirrorFile( path, temp_path )
+            HydrusPaths.mirror_file(path, temp_path)
             
         
         ( os_file_handle, temp_path ) = request.temp_file_info

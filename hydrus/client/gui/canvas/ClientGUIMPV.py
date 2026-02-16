@@ -1589,7 +1589,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
             else:
                 
-                HydrusPaths.MirrorFile( default_mpv_config_path, mpv_config_path )
+                HydrusPaths.mirror_file(default_mpv_config_path, mpv_config_path)
                 
             
         

@@ -67,7 +67,7 @@ class ExportingPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         if HC.options[ 'export_path' ] is not None:
             
-            abs_path = HydrusPaths.ConvertPortablePathToAbsPath( HC.options[ 'export_path' ] )
+            abs_path = HydrusPaths.convert_portable_path_to_abs_path(HC.options['export_path'])
             
             if abs_path is not None:
                 
@@ -170,7 +170,7 @@ class ExportingPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         if path != '':
             
-            HC.options[ 'export_path' ] = HydrusPaths.ConvertAbsPathToPortablePath( self._export_location.GetPath() )
+            HC.options[ 'export_path' ] = HydrusPaths.convert_abs_path_to_portable_path(self._export_location.GetPath())
             
         else:
             

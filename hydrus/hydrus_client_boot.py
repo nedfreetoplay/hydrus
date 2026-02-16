@@ -73,7 +73,7 @@ try:
     
     result = argparser.parse_args()
     
-    db_dir = HydrusPaths.FigureOutDBDir( result.db_dir )
+    db_dir = HydrusPaths.figure_out_db_dir(result.db_dir)
     
     HG.db_journal_mode = result.db_journal_mode
     

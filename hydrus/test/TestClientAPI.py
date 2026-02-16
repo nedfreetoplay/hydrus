@@ -1171,7 +1171,7 @@ class TestClientAPI( unittest.TestCase ):
         
         temp_hydrus_png_path = os.path.join( TG.test_controller.db_dir, 'hydrus_png_client_api_import_test.wew' )
         
-        HydrusPaths.MirrorFile( hydrus_png_path, temp_hydrus_png_path )
+        HydrusPaths.mirror_file(hydrus_png_path, temp_hydrus_png_path)
         
         body_dict = { 'path' : temp_hydrus_png_path, 'delete_after_successful_import' : True }
         

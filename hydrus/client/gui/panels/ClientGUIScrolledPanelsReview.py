@@ -429,7 +429,7 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             try:
                 
-                free_space = HydrusPaths.GetFreeSpace( path )
+                free_space = HydrusPaths.get_free_space(path)
                 pretty_free_space = HydrusData.to_human_bytes(free_space)
                 
             except Exception as e:
@@ -456,7 +456,7 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
             pretty_free_space = 'DOES NOT EXIST'
             
         
-        portable_location = HydrusPaths.ConvertAbsPathToPortablePath( base_location.path )
+        portable_location = HydrusPaths.convert_abs_path_to_portable_path(base_location.path)
         portable = not os.path.isabs( portable_location )
         
         if portable:
@@ -597,7 +597,7 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             try:
                 
-                free_space = HydrusPaths.GetFreeSpace( path )
+                free_space = HydrusPaths.get_free_space(path)
                 
             except Exception as e:
                 
@@ -622,7 +622,7 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
             free_space = 0
             
         
-        portable_location = HydrusPaths.ConvertAbsPathToPortablePath( base_location.path )
+        portable_location = HydrusPaths.convert_abs_path_to_portable_path(base_location.path)
         portable = not os.path.isabs( portable_location )
         
         fp = locations_to_file_weights[ base_location ]

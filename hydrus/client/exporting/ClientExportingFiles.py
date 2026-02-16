@@ -130,7 +130,7 @@ def GenerateExportFilename( destination_directory, media, terms, file_index, do_
         
     else:
         
-        fst = HydrusPaths.GetFileSystemType( destination_directory )
+        fst = HydrusPaths.get_file_system_type(destination_directory)
         
         if fst is None:
             
@@ -173,7 +173,7 @@ def GenerateExportFilename( destination_directory, media, terms, file_index, do_
         true_filename = hash.hex()
         
     
-    ( subdirs_elided, filename_elided ) = HydrusPaths.ElideFilenameSafely( destination_directory, subdirs, true_filename, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules )
+    ( subdirs_elided, filename_elided ) = HydrusPaths.elide_filename_safely(destination_directory, subdirs, true_filename, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules)
     
     if len( subdirs_elided ) > 0:
         
@@ -220,11 +220,11 @@ def GetExportPath():
             return None
             
         
-        HydrusPaths.MakeSureDirectoryExists( path )
+        HydrusPaths.make_sure_directory_exists(path)
         
     else:
         
-        path = HydrusPaths.ConvertPortablePathToAbsPath( portable_path )
+        path = HydrusPaths.convert_portable_path_to_abs_path(portable_path)
         
     
     return path
@@ -676,7 +676,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             
             if dest_path_dir not in dirs_we_checked_exist:
                 
-                HydrusPaths.MakeSureDirectoryExists( dest_path_dir )
+                HydrusPaths.make_sure_directory_exists(dest_path_dir)
                 
                 dirs_we_checked_exist.add( dest_path_dir )
                 
@@ -727,11 +727,11 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                     
                 else:
                     
-                    actually_copied = HydrusPaths.MirrorFile( source_path, dest_path )
+                    actually_copied = HydrusPaths.mirror_file(source_path, dest_path)
                     
                     if actually_copied:
                         
-                        HydrusPaths.TryToGiveFileNicePermissionBits( dest_path )
+                        HydrusPaths.try_to_give_file_nice_permission_bits(dest_path)
                         
                     
                 
@@ -768,7 +768,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                                     # ok this is the first time we have seen this guy. let's do a full delete so we can recreate from scratch
                                     # it is tempting to try for an 'update' instead of overwrite, but let's KISS
                                     # note non-recycling delete
-                                    HydrusPaths.DeletePath( sidecar_path )
+                                    HydrusPaths.delete_path(sidecar_path)
                                     
                                 
                             
@@ -839,7 +839,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 if os.path.exists( deletee_dir ):
                     
-                    HydrusPaths.DeletePath( deletee_dir )
+                    HydrusPaths.delete_path(deletee_dir)
                     
                 
             

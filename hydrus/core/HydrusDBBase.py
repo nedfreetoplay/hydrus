@@ -41,7 +41,7 @@ def check_has_space_for_db_transaction(db_dir, num_bytes, no_temp_needed = False
                 
             
         
-        db_disk_free_space = HydrusPaths.GetFreeSpace( db_dir )
+        db_disk_free_space = HydrusPaths.get_free_space(db_dir)
         
         if db_disk_free_space is not None and db_disk_free_space < destination_space_needed:
             
@@ -52,9 +52,9 @@ def check_has_space_for_db_transaction(db_dir, num_bytes, no_temp_needed = False
         
         temp_dir = HydrusTemp.GetCurrentSQLiteTempDir()
         
-        temp_disk_free_space = HydrusPaths.GetFreeSpace( temp_dir )
+        temp_disk_free_space = HydrusPaths.get_free_space(temp_dir)
         
-        temp_and_db_on_same_device = HydrusPaths.GetDevice( temp_dir ) == HydrusPaths.GetDevice( db_dir )
+        temp_and_db_on_same_device = HydrusPaths.get_device(temp_dir) == HydrusPaths.get_device(db_dir)
         
         if temp_and_db_on_same_device and temp_space_needed > 0:
             
@@ -71,7 +71,7 @@ def check_has_space_for_db_transaction(db_dir, num_bytes, no_temp_needed = False
                 
                 message = f'I believe you need about {HydrusData.to_human_bytes(temp_space_needed)} free on the disk partition holding your SQLite temporary path, which I think is "{temp_dir}", but you only seem to have {HydrusData.to_human_bytes(temp_disk_free_space)}.'
                 
-                temp_total_space = HydrusPaths.GetTotalSpace( temp_dir )
+                temp_total_space = HydrusPaths.get_total_space(temp_dir)
                 
                 if temp_total_space is not None and temp_total_space <= 4 * 1024 * 1024 * 1024:
                     
@@ -85,7 +85,7 @@ def check_has_space_for_db_transaction(db_dir, num_bytes, no_temp_needed = False
                 raise Exception( message )
                 
             
-            db_disk_free_space = HydrusPaths.GetFreeSpace( db_dir )
+            db_disk_free_space = HydrusPaths.get_free_space(db_dir)
             
             if db_disk_free_space is not None and db_disk_free_space < destination_space_needed:
                 

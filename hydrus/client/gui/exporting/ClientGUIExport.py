@@ -847,7 +847,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         directory = self._directory_picker.GetPath()
         
-        HydrusPaths.MakeSureDirectoryExists( directory )
+        HydrusPaths.make_sure_directory_exists(directory)
         
         pattern = self._pattern.text()
         
@@ -933,7 +933,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                     
                     path_dir = os.path.dirname( dest_path )
                     
-                    HydrusPaths.MakeSureDirectoryExists( path_dir )
+                    HydrusPaths.make_sure_directory_exists(path_dir)
                     
                     for metadata_router in metadata_routers:
                         
@@ -968,9 +968,9 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                             
                     else:
                         
-                        HydrusPaths.MirrorFile( source_path, dest_path )
+                        HydrusPaths.mirror_file(source_path, dest_path)
                         
-                        HydrusPaths.TryToGiveFileNicePermissionBits( dest_path )
+                        HydrusPaths.try_to_give_file_nice_permission_bits(dest_path)
                         
                     
                     actually_done_ok.append( media )
@@ -1121,7 +1121,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 return
                 
             
-            HydrusPaths.LaunchDirectory( directory )
+            HydrusPaths.launch_directory(directory)
             
         
     

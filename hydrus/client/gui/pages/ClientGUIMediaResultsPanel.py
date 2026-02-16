@@ -884,7 +884,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMedia.Liste
                 
                 launch_path = new_options.GetMimeLaunch( mime )
                 
-                HydrusPaths.LaunchFile( path, launch_path )
+                HydrusPaths.launch_file(path, launch_path)
                 
                 return
                 

@@ -160,7 +160,7 @@ def DumpToPNG( width, payload_bytes, title, payload_description, text, path ):
         
         cv2.imwrite( temp_path, finished_image, [ cv2.IMWRITE_PNG_COMPRESSION, 9 ] )
         
-        HydrusPaths.MirrorFile( temp_path, path )
+        HydrusPaths.mirror_file(temp_path, path)
         
     except Exception as e:
         
@@ -245,7 +245,7 @@ def LoadFromPNG( path ):
     
     try:
         
-        HydrusPaths.MirrorFile( path, temp_path )
+        HydrusPaths.mirror_file(path, temp_path)
         
         try:
             

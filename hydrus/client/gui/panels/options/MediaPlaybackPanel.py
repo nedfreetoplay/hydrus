@@ -563,7 +563,7 @@ class MediaPlaybackPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
             try:
                 
-                HydrusPaths.MirrorFile( mpv_conf_path, dest_mpv_conf_path )
+                HydrusPaths.mirror_file(mpv_conf_path, dest_mpv_conf_path)
                 
             except Exception as e:
                 

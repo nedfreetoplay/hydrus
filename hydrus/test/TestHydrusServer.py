@@ -122,7 +122,7 @@ class TestServer( unittest.TestCase ):
                 path_stat = os.stat( path )
                 
                 # this can be needed on a Windows device
-                HydrusPaths.TryToMakeFileWriteable( path, path_stat )
+                HydrusPaths.try_to_make_file_writeable(path, path_stat)
                 
             
             os.unlink( path )
@@ -176,7 +176,7 @@ class TestServer( unittest.TestCase ):
         
         path = ServerFiles.GetExpectedFilePath( self._file_hash )
         
-        HydrusPaths.MakeSureDirectoryExists( os.path.dirname( path ) )
+        HydrusPaths.make_sure_directory_exists(os.path.dirname(path))
         
         with open( path, 'wb' ) as f:
             
@@ -246,7 +246,7 @@ class TestServer( unittest.TestCase ):
         
         path = ServerFiles.GetExpectedThumbnailPath( self._file_hash )
         
-        HydrusPaths.MakeSureDirectoryExists( os.path.dirname( path ) )
+        HydrusPaths.make_sure_directory_exists(os.path.dirname(path))
         
         with open( path, 'wb' ) as f:
             
@@ -324,7 +324,7 @@ class TestServer( unittest.TestCase ):
         
         path = ServerFiles.GetExpectedFilePath( definitions_update_hash )
         
-        HydrusPaths.MakeSureDirectoryExists( path )
+        HydrusPaths.make_sure_directory_exists(path)
         
         with open( path, 'wb' ) as f:
             

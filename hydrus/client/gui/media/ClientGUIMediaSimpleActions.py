@@ -273,7 +273,7 @@ def OpenExternally( media: ClientMedia.MediaSingleton | None ) -> bool:
     
     launch_path = CG.client_controller.new_options.GetMimeLaunch( mime )
     
-    HydrusPaths.LaunchFile( path, launch_path )
+    HydrusPaths.launch_file(path, launch_path)
     
     return True
     

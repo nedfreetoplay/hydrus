@@ -39,11 +39,11 @@ def DeletePath( path, always_delete_fully = False ):
     
     if delete_to_recycle_bin and not always_delete_fully:
         
-        HydrusPaths.RecyclePath( path )
+        HydrusPaths.recycle_path(path)
         
     else:
         
-        HydrusPaths.DeletePath( path )
+        HydrusPaths.delete_path(path)
         
     
 
@@ -62,7 +62,7 @@ def LaunchURLInWebBrowser( url ):
         
     else:
         
-        HydrusPaths.LaunchFile( url, launch_path = web_browser_path )
+        HydrusPaths.launch_file(url, launch_path = web_browser_path)
         
     
 
@@ -74,7 +74,7 @@ def OpenFileLocation( path: str ):
                 
     else:
         
-        HydrusPaths.OpenFileLocation( path )
+        HydrusPaths.open_file_location(path)
         
     
 
@@ -88,7 +88,7 @@ def OpenFileLocations( paths: collections.abc.Sequence[str] ):
         
         for path in paths:
         
-            HydrusPaths.OpenFileLocation( path )
+            HydrusPaths.open_file_location(path)
             
     
 

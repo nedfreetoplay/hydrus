@@ -1960,7 +1960,7 @@ class NetworkJob( object ):
                 
                 self._stream_io.seek( 0 )
                 
-                for block in HydrusPaths.ReadFileLikeAsBlocks( self._stream_io ):
+                for block in HydrusPaths.read_file_like_as_blocks(self._stream_io):
                     
                     f_write.write( block )
                     

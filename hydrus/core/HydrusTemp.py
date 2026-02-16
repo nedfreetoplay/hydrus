@@ -38,7 +38,7 @@ def CleanUpTempPath( os_file_handle, temp_path ):
             path_stat = os.stat( temp_path )
             
             # this can be needed on a Windows device
-            HydrusPaths.TryToMakeFileWriteable( temp_path, path_stat )
+            HydrusPaths.try_to_make_file_writeable(temp_path, path_stat)
             
         
         os.remove( temp_path )
@@ -106,14 +106,14 @@ def SetEnvTempDir( path ):
     
     try:
         
-        HydrusPaths.MakeSureDirectoryExists( path )
+        HydrusPaths.make_sure_directory_exists(path)
         
     except Exception as e:
         
         raise Exception( f'Could not create the temp dir "{path}"!' )
         
     
-    if not HydrusPaths.DirectoryIsWriteable( path ):
+    if not HydrusPaths.directory_is_writeable(path):
         
         raise Exception( f'The given temp directory, "{path}", does not seem to be writeable-to!' )
         

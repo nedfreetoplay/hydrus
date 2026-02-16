@@ -45,7 +45,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         
         for ( prefix, creation_path, purge ) in self._execute('SELECT prefix, location, purge FROM client_files_subfolders;'):
             
-            abs_path = HydrusPaths.ConvertPortablePathToAbsPath( creation_path )
+            abs_path = HydrusPaths.convert_portable_path_to_abs_path(creation_path)
             
             base_location = paths_to_base_locations.get( abs_path, ClientFilesPhysical.FilesStorageBaseLocation( creation_path, 0 ) )
             
@@ -69,9 +69,9 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
             
             client_files_default = os.path.join( self._db_dir, 'client_files' )
             
-            HydrusPaths.MakeSureDirectoryExists( client_files_default )
+            HydrusPaths.make_sure_directory_exists(client_files_default)
             
-            portable_path = HydrusPaths.ConvertAbsPathToPortablePath( client_files_default )
+            portable_path = HydrusPaths.convert_abs_path_to_portable_path(client_files_default)
             
             for missing_prefix in missing_prefixes_f:
                 
@@ -130,9 +130,9 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         
         default_abs_path = os.path.join( self._db_dir, 'client_files' )
         
-        HydrusPaths.MakeSureDirectoryExists( default_abs_path )
+        HydrusPaths.make_sure_directory_exists(default_abs_path)
         
-        portable_path = HydrusPaths.ConvertAbsPathToPortablePath( default_abs_path )
+        portable_path = HydrusPaths.convert_abs_path_to_portable_path(default_abs_path)
         
         for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( 'f' ):
             
@@ -209,13 +209,13 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
             
             if os.path.exists( source_dir ):
                 
-                HydrusPaths.MergeTree( source_dir, dest_dir )
+                HydrusPaths.merge_tree(source_dir, dest_dir)
                 
             else:
                 
                 if not os.path.exists( dest_dir ):
                     
-                    HydrusPaths.MakeSureDirectoryExists( dest_dir )
+                    HydrusPaths.make_sure_directory_exists(dest_dir)
                     
                 
             
@@ -230,7 +230,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
                 
                 try:
                     
-                    HydrusPaths.RecyclePath( source_dir )
+                    HydrusPaths.recycle_path(source_dir)
                     
                 except Exception as e:
                     
@@ -299,7 +299,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         
         for base_location in media_base_locations:
             
-            portable_path = HydrusPaths.ConvertAbsPathToPortablePath( base_location.path )
+            portable_path = HydrusPaths.convert_abs_path_to_portable_path(base_location.path)
             ideal_weight = base_location.ideal_weight
             max_num_bytes = base_location.max_num_bytes
             
@@ -310,7 +310,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         
         if thumbnail_override_base_location is not None:
             
-            portable_path = HydrusPaths.ConvertAbsPathToPortablePath( thumbnail_override_base_location.path )
+            portable_path = HydrusPaths.convert_abs_path_to_portable_path(thumbnail_override_base_location.path)
             
             self._execute('INSERT INTO ideal_thumbnail_override_location ( location ) VALUES ( ? );', (portable_path,))
             

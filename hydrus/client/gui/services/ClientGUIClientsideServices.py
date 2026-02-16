@@ -420,7 +420,7 @@ class EditClientServicePanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _GetArchiveNameToDisplay( self, portable_hta_path, namespaces ):
         
-        hta_path = HydrusPaths.ConvertPortablePathToAbsPath( portable_hta_path )
+        hta_path = HydrusPaths.convert_portable_path_to_abs_path(portable_hta_path)
         
         if len( namespaces ) == 0:
             
@@ -3061,7 +3061,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
                                 
                                 dest_path = os.path.join( dest_dir, update_hash.hex() )
                                 
-                                HydrusPaths.MirrorFile( update_path, dest_path )
+                                HydrusPaths.mirror_file(update_path, dest_path)
                                 
                             except HydrusExceptions.FileMissingException:
                                 

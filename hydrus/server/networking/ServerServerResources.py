@@ -88,7 +88,7 @@ class HydrusResourceHydrusNetwork( HydrusServerResources.HydrusResource ):
                 
                 with open( temp_path, 'wb' ) as f:
                     
-                    for block in HydrusPaths.ReadFileLikeAsBlocks( request.content ): 
+                    for block in HydrusPaths.read_file_like_as_blocks(request.content): 
                         
                         f.write( block )
                         

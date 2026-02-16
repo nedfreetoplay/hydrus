@@ -806,7 +806,7 @@ class HydrusController( object ):
         
         if hasattr( self, '_hydrus_temp_dir' ):
             
-            HydrusPaths.DeletePath( self._hydrus_temp_dir )
+            HydrusPaths.delete_path(self._hydrus_temp_dir)
             
         
         with self._call_to_thread_lock:

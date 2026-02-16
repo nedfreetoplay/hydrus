@@ -86,7 +86,7 @@ def DoFileExportDragDrop( drag_object: QG.QDrag, page_key, media, alt_down ):
             
             if HydrusTime.TimeHasPassed( creation_time + TEMP_DIR_TIMEOUT ):
                 
-                HydrusPaths.DeletePath( path )
+                HydrusPaths.delete_path(path)
                 
             else:
                 
@@ -161,9 +161,9 @@ def DoFileExportDragDrop( drag_object: QG.QDrag, page_key, media, alt_down ):
             
             path_dir = os.path.dirname( dnd_path )
             
-            HydrusPaths.MakeSureDirectoryExists( path_dir )
+            HydrusPaths.make_sure_directory_exists(path_dir)
             
-            HydrusPaths.MirrorFile( original_path, dnd_path )
+            HydrusPaths.mirror_file(original_path, dnd_path)
             
             dnd_paths.append( dnd_path )
             

@@ -117,7 +117,7 @@ class ExternalProgramsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         if launch_path is None:
             
-            pretty_launch_path = 'default: {}'.format( HydrusPaths.GetDefaultLaunchPath() )
+            pretty_launch_path = 'default: {}'.format(HydrusPaths.get_default_launch_path())
             
         else:
             
