@@ -9,7 +9,7 @@ PROCREATE_DOCUMENT_ARCHIVE = 'Document.archive'
 # object key in plist to start from (trunk)
 PROCREATE_PROJECT_KEY = 1
 
-def ExtractZippedThumbnailToPath( path_to_zip, temp_path_file ):
+def extract_zipped_thumbnail_to_path(path_to_zip, temp_path_file):
     
     try:
         
@@ -21,7 +21,7 @@ def ExtractZippedThumbnailToPath( path_to_zip, temp_path_file ):
         
     
 
-def GetProcreatePlist( path ):
+def get_procreate_plist(path):
     
     plist_file = HydrusArchiveHandling.get_zip_as_path(path, PROCREATE_DOCUMENT_ARCHIVE)
 
@@ -36,11 +36,11 @@ def GetProcreatePlist( path ):
         
     
 
-def ZipLooksLikeProcreate( path ) -> bool:
+def zip_looks_like_procreate(path) -> bool:
     
     try:
         
-        document = GetProcreatePlist( path )
+        document = get_procreate_plist(path)
         
         objects = document['$objects']
         
@@ -56,13 +56,13 @@ def ZipLooksLikeProcreate( path ) -> bool:
         
     
 
-def GetProcreateResolution( path ): 
+def get_procreate_resolution(path): 
     
     # TODO: animation stuff from plist
     
     try:
         
-        document = GetProcreatePlist( path )
+        document = get_procreate_plist(path)
         
         objects = document['$objects']
         
