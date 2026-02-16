@@ -152,7 +152,7 @@ def GenerateThumbnailNumPy( path, target_resolution, mime, duration_ms, num_fram
         
         try:
             
-            HydrusClipHandling.ExtractDBPNGToPath( path, temp_path )
+            HydrusClipHandling.extract_dbpng_to_path(path, temp_path)
             
             thumbnail_numpy = HydrusImageHandling.GenerateThumbnailNumPyFromStaticImagePath( temp_path, target_resolution, HC.IMAGE_PNG )
             
@@ -486,7 +486,7 @@ def GetFileInfo( path, mime = None, ok_to_look_for_hydrus_updates = False ):
         
     elif mime == HC.APPLICATION_CLIP:
         
-        ( ( width, height ), duration_ms, num_frames ) = HydrusClipHandling.GetClipProperties( path )
+        ( ( width, height ), duration_ms, num_frames ) = HydrusClipHandling.get_clip_properties(path)
         
     elif mime == HC.APPLICATION_KRITA:
         

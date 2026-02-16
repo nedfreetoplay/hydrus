@@ -3,13 +3,13 @@ import sqlite3
 from hydrus.core import HydrusExceptions
 from hydrus.core import HydrusTemp
 
-def ExtractDBPNGToPath( path, temp_path ):
+def extract_dbpng_to_path(path, temp_path):
     
     ( os_file_handle, sqlite_temp_path ) = HydrusTemp.get_temp_path()
     
     try:
         
-        ( db, c ) = GetSQLiteDB( path, sqlite_temp_path )
+        ( db, c ) = get_sq_lite_db(path, sqlite_temp_path)
         
         try:
             
@@ -37,7 +37,7 @@ def ExtractDBPNGToPath( path, temp_path ):
         
     
 
-def GetClipProperties( path ):
+def get_clip_properties(path):
     
     ( os_file_handle, sqlite_temp_path ) = HydrusTemp.get_temp_path()
     
@@ -46,7 +46,7 @@ def GetClipProperties( path ):
     
     try:
         
-        ( db, c ) = GetSQLiteDB( path, sqlite_temp_path )
+        ( db, c ) = get_sq_lite_db(path, sqlite_temp_path)
         
         try:
             
@@ -134,7 +134,7 @@ def GetClipProperties( path ):
     return ( ( round( width_float * unit_conversion_multiplier ), round( height_float * unit_conversion_multiplier ) ), duration_ms, num_frames )
     
 
-def GetSQLiteDB( path, sqlite_temp_path ):
+def get_sq_lite_db(path, sqlite_temp_path):
     
     with open( path, 'rb' ) as f:
         
