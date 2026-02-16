@@ -5,7 +5,7 @@ from hydrus.core import HydrusTemp
 
 def ExtractDBPNGToPath( path, temp_path ):
     
-    ( os_file_handle, sqlite_temp_path ) = HydrusTemp.GetTempPath()
+    ( os_file_handle, sqlite_temp_path ) = HydrusTemp.get_temp_path()
     
     try:
         
@@ -33,13 +33,13 @@ def ExtractDBPNGToPath( path, temp_path ):
         
     finally:
         
-        HydrusTemp.CleanUpTempPath( os_file_handle, sqlite_temp_path )
+        HydrusTemp.clean_up_temp_path(os_file_handle, sqlite_temp_path)
         
     
 
 def GetClipProperties( path ):
     
-    ( os_file_handle, sqlite_temp_path ) = HydrusTemp.GetTempPath()
+    ( os_file_handle, sqlite_temp_path ) = HydrusTemp.get_temp_path()
     
     num_frames = None
     duration_ms = None
@@ -89,7 +89,7 @@ def GetClipProperties( path ):
         
     finally:
         
-        HydrusTemp.CleanUpTempPath( os_file_handle, sqlite_temp_path )
+        HydrusTemp.clean_up_temp_path(os_file_handle, sqlite_temp_path)
         
     
     # ok the deal here is that width and height is in the canvas units, which might be mm or inches instead of pixels

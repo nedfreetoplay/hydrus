@@ -159,7 +159,7 @@ try:
     
     if result.temp_dir is not None:
         
-        HydrusTemp.SetEnvTempDir( result.temp_dir )
+        HydrusTemp.set_env_temp_dir(result.temp_dir)
         
     
 except Exception as e:

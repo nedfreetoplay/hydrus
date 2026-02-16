@@ -174,11 +174,11 @@ def ShowAboutWindow( win: QW.QWidget ):
     library_version_lines.append( 'install dir: {}'.format( HC.BASE_DIR ) )
     library_version_lines.append( 'db dir: {}'.format( CG.client_controller.db_dir ) )
     
-    current_temp_dir = HydrusTemp.GetCurrentTempDir()
+    current_temp_dir = HydrusTemp.get_current_temp_dir()
     
-    library_version_lines.append( 'temp dir: {}'.format( HydrusTemp.GetCurrentTempDir() ) )
+    library_version_lines.append( 'temp dir: {}'.format(HydrusTemp.get_current_temp_dir()))
     
-    sqlite_temp_dir = HydrusTemp.GetCurrentSQLiteTempDir()
+    sqlite_temp_dir = HydrusTemp.get_current_sq_lite_temp_dir()
     
     if sqlite_temp_dir != current_temp_dir:
         

@@ -34,8 +34,8 @@ class TestDaemons( unittest.TestCase ):
     
     def test_export_folders_daemon( self ):
         
-        test_dir_source = HydrusTemp.GetSubTempDir( 'export_folder_test_source' )
-        test_dir_dest = HydrusTemp.GetSubTempDir( 'export_folder_test_dest' )
+        test_dir_source = HydrusTemp.get_sub_temp_dir('export_folder_test_source')
+        test_dir_dest = HydrusTemp.get_sub_temp_dir('export_folder_test_dest')
         
         try:
             
@@ -161,7 +161,7 @@ class TestDaemons( unittest.TestCase ):
     
     def test_import_folders_daemon( self ):
         
-        test_dir = HydrusTemp.GetSubTempDir( 'import_folder_test' )
+        test_dir = HydrusTemp.get_sub_temp_dir('import_folder_test')
         
         try:
             

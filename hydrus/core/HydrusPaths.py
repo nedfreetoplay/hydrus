@@ -1298,7 +1298,7 @@ def mirror_file(source, dest) -> bool:
         
         from hydrus.core import HydrusTemp
         
-        if isinstance( e, OSError ) and 'Errno 28' in str( e ) and dest.startswith( HydrusTemp.GetCurrentTempDir() ):
+        if isinstance( e, OSError ) and 'Errno 28' in str( e ) and dest.startswith(HydrusTemp.get_current_temp_dir()):
             
             message = 'The recent failed file copy looks like it was because your temporary folder ran out of disk space!'
             message += '\n' * 2

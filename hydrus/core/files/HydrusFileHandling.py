@@ -114,7 +114,7 @@ def GenerateThumbnailNumPy( path, target_resolution, mime, duration_ms, num_fram
     
     if mime == HC.APPLICATION_CBZ or mime == HC.APPLICATION_EPUB:
         
-        ( os_file_handle, temp_path ) = HydrusTemp.GetTempPath()
+        ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path()
         
         try:
             
@@ -143,12 +143,12 @@ def GenerateThumbnailNumPy( path, target_resolution, mime, duration_ms, num_fram
             
         finally:
             
-            HydrusTemp.CleanUpTempPath( os_file_handle, temp_path )
+            HydrusTemp.clean_up_temp_path(os_file_handle, temp_path)
             
         
     elif mime == HC.APPLICATION_CLIP:
         
-        ( os_file_handle, temp_path ) = HydrusTemp.GetTempPath()
+        ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path()
         
         try:
             
@@ -164,7 +164,7 @@ def GenerateThumbnailNumPy( path, target_resolution, mime, duration_ms, num_fram
             
         finally:
             
-            HydrusTemp.CleanUpTempPath( os_file_handle, temp_path )
+            HydrusTemp.clean_up_temp_path(os_file_handle, temp_path)
             
         
     elif mime == HC.APPLICATION_KRITA:
@@ -195,7 +195,7 @@ def GenerateThumbnailNumPy( path, target_resolution, mime, duration_ms, num_fram
         
     elif mime == HC.APPLICATION_PROCREATE:
         
-        ( os_file_handle, temp_path ) = HydrusTemp.GetTempPath()
+        ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path()
         
         try:
             
@@ -211,7 +211,7 @@ def GenerateThumbnailNumPy( path, target_resolution, mime, duration_ms, num_fram
             
         finally:
             
-            HydrusTemp.CleanUpTempPath( os_file_handle, temp_path )
+            HydrusTemp.clean_up_temp_path(os_file_handle, temp_path)
             
         
     elif mime == HC.APPLICATION_PSD:
@@ -465,7 +465,7 @@ def GetFileInfo( path, mime = None, ok_to_look_for_hydrus_updates = False ):
     # keep this in the specific-first, general-last test order
     if mime == HC.APPLICATION_CBZ or mime == HC.APPLICATION_EPUB:
         
-        ( os_file_handle, temp_path ) = HydrusTemp.GetTempPath()
+        ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path()
         
         try:
             
@@ -481,7 +481,7 @@ def GetFileInfo( path, mime = None, ok_to_look_for_hydrus_updates = False ):
             
         finally:
             
-            HydrusTemp.CleanUpTempPath( os_file_handle, temp_path )
+            HydrusTemp.clean_up_temp_path(os_file_handle, temp_path)
             
         
     elif mime == HC.APPLICATION_CLIP:

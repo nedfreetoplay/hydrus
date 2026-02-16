@@ -50,7 +50,7 @@ def check_has_space_for_db_transaction(db_dir, num_bytes, no_temp_needed = False
         
     else:
         
-        temp_dir = HydrusTemp.GetCurrentSQLiteTempDir()
+        temp_dir = HydrusTemp.get_current_sq_lite_temp_dir()
         
         temp_disk_free_space = HydrusPaths.get_free_space(temp_dir)
         

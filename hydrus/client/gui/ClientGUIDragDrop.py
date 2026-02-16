@@ -96,7 +96,7 @@ def DoFileExportDragDrop( drag_object: QG.QDrag, page_key, media, alt_down ):
         
         DND_TEMP_DIRS = new_list
         
-        this_dnd_temp_dir = HydrusTemp.GetSubTempDir( prefix = 'DnD' )
+        this_dnd_temp_dir = HydrusTemp.get_sub_temp_dir(prefix ='DnD')
         
         if this_dnd_temp_dir is None or not os.path.exists( this_dnd_temp_dir ):
             

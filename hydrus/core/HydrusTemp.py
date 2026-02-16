@@ -11,7 +11,7 @@ from hydrus.core import HydrusTime
 TEMP_PATH_LOCK = threading.Lock()
 IN_USE_TEMP_PATHS = set()
 
-def CleanUpTempPath( os_file_handle, temp_path ):
+def clean_up_temp_path(os_file_handle, temp_path):
     
     try:
         
@@ -52,7 +52,7 @@ def CleanUpTempPath( os_file_handle, temp_path ):
         
     
 
-def CleanUpOldTempPaths():
+def clean_up_old_temp_paths():
     
     with TEMP_PATH_LOCK:
         
@@ -82,27 +82,27 @@ def CleanUpOldTempPaths():
         
     
 
-def GetCurrentSQLiteTempDir():
+def get_current_sq_lite_temp_dir():
     
     if 'SQLITE_TMPDIR' in os.environ:
         
         return os.environ[ 'SQLITE_TMPDIR' ]
         
     
-    return GetCurrentTempDir()
+    return get_current_temp_dir()
     
 
-def GetCurrentTempDir():
+def get_current_temp_dir():
     
     return tempfile.gettempdir()
     
 
-def InitialiseHydrusTempDir():
+def initialise_hydrus_temp_dir():
     
     return tempfile.mkdtemp( prefix = 'hydrus' )
     
 
-def SetEnvTempDir( path ):
+def set_env_temp_dir(path):
     
     try:
         
@@ -129,14 +129,14 @@ def SetEnvTempDir( path ):
     tempfile.tempdir = path
     
 
-def GetSubTempDir( prefix = '' ):
+def get_sub_temp_dir(prefix =''):
     
     hydrus_temp_dir = HG.controller.get_hydrus_temp_dir()
     
     return tempfile.mkdtemp( prefix = prefix, dir = hydrus_temp_dir )
     
 
-def GetTempPath( suffix = '', dir = None ):
+def get_temp_path(suffix ='', dir = None):
     
     if dir is None:
         

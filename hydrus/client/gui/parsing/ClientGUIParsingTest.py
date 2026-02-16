@@ -256,7 +256,7 @@ class TestPanel( QW.QWidget ):
                 
                 if example_bytes is not None:
                     
-                    ( os_file_handle, temp_path ) = HydrusTemp.GetTempPath()
+                    ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path()
                     
                     try:
                         
@@ -273,7 +273,7 @@ class TestPanel( QW.QWidget ):
                         
                     finally:
                         
-                        HydrusTemp.CleanUpTempPath( os_file_handle, temp_path )
+                        HydrusTemp.clean_up_temp_path(os_file_handle, temp_path)
                         
                     
                 else:
