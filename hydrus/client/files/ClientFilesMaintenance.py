@@ -722,7 +722,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             try:
                 
-                raw_pil_image = HydrusImageOpening.RawOpenPILImage( path )
+                raw_pil_image = HydrusImageOpening.raw_open_pil_image(path)
                 
                 has_exif = HydrusImageMetadata.has_exif(raw_pil_image)
                 
@@ -795,7 +795,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 try:
                     
-                    raw_pil_image = HydrusImageOpening.RawOpenPILImage( path )
+                    raw_pil_image = HydrusImageOpening.raw_open_pil_image(path)
                     
                 except Exception as e:
                     

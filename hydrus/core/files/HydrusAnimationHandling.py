@@ -207,7 +207,7 @@ def get_apng_duration_ms_and_num_frames(path):
 
 def get_frame_durations_mspil_animation(path, human_file_description = None):
     
-    pil_image = HydrusImageOpening.RawOpenPILImage( path, human_file_description = human_file_description )
+    pil_image = HydrusImageOpening.raw_open_pil_image(path, human_file_description = human_file_description)
     
     times_to_play = get_times_to_play_pil_animation_from_pil(pil_image)
     
@@ -311,7 +311,7 @@ def get_times_to_play_pil_animation(path, human_file_description = None) -> int:
     
     try:
         
-        pil_image = HydrusImageOpening.RawOpenPILImage( path, human_file_description = human_file_description )
+        pil_image = HydrusImageOpening.raw_open_pil_image(path, human_file_description = human_file_description)
         
     except HydrusExceptions.UnsupportedFileException:
         
@@ -439,7 +439,7 @@ def get_web_p_frame_durations_ms(path):
 
 def pil_animation_has_duration(path):
     
-    pil_image = HydrusImageOpening.RawOpenPILImage( path )
+    pil_image = HydrusImageOpening.raw_open_pil_image(path)
     
     try:
         

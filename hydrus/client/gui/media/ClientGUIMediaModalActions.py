@@ -1231,7 +1231,7 @@ def ShowFileEmbeddedMetadata( win: QW.QWidget, media: ClientMedia.MediaSingleton
             
             path = CG.client_controller.client_files_manager.GetFilePath( hash, mime )
             
-            raw_pil_image = HydrusImageOpening.RawOpenPILImage( path )
+            raw_pil_image = HydrusImageOpening.raw_open_pil_image(path)
             
             if mime in HC.FILES_THAT_CAN_HAVE_EXIF:
                 
