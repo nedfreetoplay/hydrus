@@ -80,7 +80,7 @@ def ShowAboutWindow( win: QW.QWidget ):
         
     
     library_version_lines.append( 'python: {}'.format( v ) )
-    library_version_lines.append( 'FFMPEG: {}'.format( HydrusFFMPEG.GetFFMPEGVersion() ) )
+    library_version_lines.append( 'FFMPEG: {}'.format(HydrusFFMPEG.get_ffmpeg_version()))
     
     if ClientGUIMPV.MPV_IS_AVAILABLE:
         

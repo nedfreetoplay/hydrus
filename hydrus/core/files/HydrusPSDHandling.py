@@ -95,17 +95,17 @@ def GetFFMPEGPSDLines( path ):
         
     except FileNotFoundError as e:
         
-        raise HydrusFFMPEG.HandleFFMPEGFileNotFoundAndGenerateException( e, path )
+        raise HydrusFFMPEG.handle_ffmpeg_file_not_found_and_generate_exception(e, path)
         
     
     if stderr is None or len( stderr ) == 0:
         
-        raise HydrusFFMPEG.HandleFFMPEGNoContentAndGenerateException( path, stdout, stderr )
+        raise HydrusFFMPEG.handle_ffmpeg_no_content_and_generate_exception(path, stdout, stderr)
         
     
     lines = stderr.splitlines()
     
-    HydrusFFMPEG.CheckFFMPEGError( lines )
+    HydrusFFMPEG.check_ffmpeg_error(lines)
     
     return lines
     
@@ -163,7 +163,7 @@ def PSDHasICCProfile( path: str ):
 def GeneratePILImageFromPSD( path ):
     
     # could faff around with getting raw bytes and reshaping, but let's KISS for now
-    png_bytes = HydrusFFMPEG.RenderImageToPNGBytes( path )
+    png_bytes = HydrusFFMPEG.render_image_to_png_bytes(path)
     
     if len( png_bytes ) == 0:
         

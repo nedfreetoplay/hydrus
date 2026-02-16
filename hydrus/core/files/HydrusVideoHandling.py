@@ -69,19 +69,19 @@ def GetFFMPEGInfoLines( path, count_frames_manually = False, only_first_second =
         
     except FileNotFoundError as e:
         
-        raise HydrusFFMPEG.HandleFFMPEGFileNotFoundAndGenerateException( e, path )
+        raise HydrusFFMPEG.handle_ffmpeg_file_not_found_and_generate_exception(e, path)
         
     
     text = stderr
     
     if text is None or len( text ) == 0:
         
-        raise HydrusFFMPEG.HandleFFMPEGNoContentAndGenerateException( path, stdout, stderr )
+        raise HydrusFFMPEG.handle_ffmpeg_no_content_and_generate_exception(path, stdout, stderr)
         
     
     lines = text.splitlines()
     
-    HydrusFFMPEG.CheckFFMPEGError( lines )
+    HydrusFFMPEG.check_ffmpeg_error(lines)
     
     return lines
     
@@ -830,7 +830,7 @@ def VideoHasAudio( path, info_lines ) -> bool:
         
     except FileNotFoundError as e:
         
-        raise HydrusFFMPEG.HandleFFMPEGFileNotFoundAndGenerateException( e, path )
+        raise HydrusFFMPEG.handle_ffmpeg_file_not_found_and_generate_exception(e, path)
         
     
 
@@ -980,7 +980,7 @@ class VideoRendererFFMPEG( object ):
             
         except FileNotFoundError as e:
             
-            raise HydrusFFMPEG.HandleFFMPEGFileNotFoundAndGenerateException( e, self._path )
+            raise HydrusFFMPEG.handle_ffmpeg_file_not_found_and_generate_exception(e, self._path)
             
         
         if skip_frames > 0:

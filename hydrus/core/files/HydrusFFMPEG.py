@@ -23,7 +23,7 @@ if not os.path.exists( FFMPEG_PATH ):
     FFMPEG_PATH = os.path.basename( FFMPEG_PATH )
     
 
-def CheckFFMPEGError( lines ):
+def check_ffmpeg_error(lines):
     
     if len( lines ) == 0:
         
@@ -41,7 +41,7 @@ def CheckFFMPEGError( lines ):
         
     
 
-def GetFFMPEGVersion():
+def get_ffmpeg_version():
     
     cmd = [ FFMPEG_PATH, '-version' ]
     
@@ -106,7 +106,7 @@ def GetFFMPEGVersion():
     return 'unknown'
     
 
-def HandleFFMPEGFileNotFoundAndGenerateException( e, path ):
+def handle_ffmpeg_file_not_found_and_generate_exception(e, path):
     
     global FFMPEG_MISSING_ERROR_PUBBED
     
@@ -135,7 +135,7 @@ def HandleFFMPEGFileNotFoundAndGenerateException( e, path ):
     return FileNotFoundError( 'Cannot interact with media because FFMPEG not found--are you sure it is installed? Full error: ' + str( e ) )
     
 
-def HandleFFMPEGNoContentAndGenerateException( path, stdout, stderr ):
+def handle_ffmpeg_no_content_and_generate_exception(path, stdout, stderr):
     
     global FFMPEG_NO_CONTENT_ERROR_PUBBED
     
@@ -160,7 +160,7 @@ def HandleFFMPEGNoContentAndGenerateException( path, stdout, stderr ):
     return HydrusExceptions.DataMissing( 'Cannot interact with media because FFMPEG did not return any content.' )
     
 
-def RenderImageToImagePath( path, temp_image_path ):
+def render_image_to_image_path(path, temp_image_path):
     
     # -y to overwrite the temp path
     
@@ -186,11 +186,11 @@ def RenderImageToImagePath( path, temp_image_path ):
         
     except FileNotFoundError as e:
         
-        raise HandleFFMPEGFileNotFoundAndGenerateException( e, path )
+        raise handle_ffmpeg_file_not_found_and_generate_exception(e, path)
         
     
 
-def RenderImageToRawRGBABytes( path ):
+def render_image_to_raw_rgba_bytes(path):
     
     # no dimensions here, so called is responsible for reshaping numpy array or whatever
     
@@ -208,13 +208,13 @@ def RenderImageToRawRGBABytes( path ):
         
     except FileNotFoundError as e:
         
-        raise HandleFFMPEGFileNotFoundAndGenerateException( e, path )
+        raise handle_ffmpeg_file_not_found_and_generate_exception(e, path)
         
     
     return stdout
     
 
-def RenderImageToPNGBytes( path ):
+def render_image_to_png_bytes(path):
     
     cmd = [ FFMPEG_PATH, "-xerror", '-i', path, '-f', 'image2pipe', '-vcodec', 'png', '-' ]
     
@@ -230,7 +230,7 @@ def RenderImageToPNGBytes( path ):
         
     except FileNotFoundError as e:
         
-        raise HandleFFMPEGFileNotFoundAndGenerateException( e, path )
+        raise handle_ffmpeg_file_not_found_and_generate_exception(e, path)
         
     
     return stdout
