@@ -83,7 +83,7 @@ class MigrationDestinationHTA( MigrationDestination ):
     
     def CleanUp( self ):
         
-        self._hta.CommitBigJob()
+        self._hta.commit_big_job()
         
         if HydrusTime.TimeHasPassed( self._time_started + 120 ):
             
@@ -144,7 +144,7 @@ class MigrationDestinationHTPA( MigrationDestination ):
     
     def CleanUp( self ):
         
-        self._htpa.CommitBigJob()
+        self._htpa.commit_big_job()
         
         if HydrusTime.TimeHasPassed( self._time_started + 120 ):
             
@@ -536,7 +536,7 @@ class MigrationSourceHTA( MigrationSource ):
     
     def CleanUp( self ):
         
-        self._hta.CommitBigJob()
+        self._hta.commit_big_job()
         
         self._hta.Close()
         
@@ -637,7 +637,7 @@ class MigrationSourceHTPA( MigrationSource ):
     
     def CleanUp( self ):
         
-        self._htpa.CommitBigJob()
+        self._htpa.commit_big_job()
         
         self._htpa.Close()
         

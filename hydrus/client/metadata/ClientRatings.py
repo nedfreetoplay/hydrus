@@ -109,7 +109,7 @@ def ConvertStarsToRating( num_stars: int, allow_zero: bool, stars: int ) -> floa
 
 def GetIncDecStateFromMedia( media, service_key ):
     
-    values_seen = { m.GetRatingsManager().GetRating( service_key ) for m in media }
+    values_seen = {m.GetRatingsManager().get_rating(service_key) for m in media}
     
     if len( values_seen ) == 0:
         
@@ -123,7 +123,7 @@ def GetIncDecStateFromMedia( media, service_key ):
         
     else:
         
-        average_int = int( sum( ( m.GetRatingsManager().GetRating( service_key ) for m in media ) ) // len( media ) )
+        average_int = int(sum((m.GetRatingsManager().get_rating(service_key) for m in media)) // len(media))
         
         return ( MIXED, average_int )
         
@@ -139,7 +139,7 @@ def GetLikeStateFromMedia( media, service_key ):
         
         ratings_manager = m.GetRatingsManager()
         
-        rating = ratings_manager.GetRating( service_key )
+        rating = ratings_manager.get_rating(service_key)
         
         if rating == 1:
             
@@ -183,7 +183,7 @@ def GetNumericalStateFromMedia( media, service_key ):
         
         ratings_manager = m.GetRatingsManager()
         
-        rating = ratings_manager.GetRating( service_key )
+        rating = ratings_manager.get_rating(service_key)
         
         if rating is None:
             

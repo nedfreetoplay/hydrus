@@ -272,7 +272,7 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
                     
                 else:
                     
-                    rating = control.GetRating()
+                    rating = control.get_rating()
                     
                 
                 if rating != original_rating:
@@ -296,7 +296,7 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
                 
                 if rating_state == ClientRatings.SET:
                     
-                    rating = control.GetRating()
+                    rating = control.get_rating()
                     
                 else:
                     
@@ -319,7 +319,7 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
                     
                     if isinstance( rating, ( int, float ) ):
                         
-                        control.SetRating( rating )
+                        control.set_rating(rating)
                         
                     
                 
@@ -557,7 +557,7 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
                     
                 else:
                     
-                    rating = control.GetRating()
+                    rating = control.get_rating()
                     
                 
                 if rating != original_rating:
@@ -585,7 +585,7 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
                     
                 elif rating_state == ClientRatings.SET:
                     
-                    rating = control.GetRating()
+                    rating = control.get_rating()
                     
                 else:
                     
@@ -612,7 +612,7 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
                         
                     elif isinstance( rating, ( int, float ) ) and 0 <= rating <= 1:
                         
-                        control.SetRating( rating )
+                        control.set_rating(rating)
                         
                     
                 

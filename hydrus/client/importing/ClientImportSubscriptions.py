@@ -1141,7 +1141,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                     
                     if query_tag_import_options.HasAdditionalTags() and file_seed.status in CC.SUCCESSFUL_IMPORT_STATES:
                         
-                        if file_seed.HasHash():
+                        if file_seed.has_hash():
                             
                             hash = file_seed.GetHash()
                             

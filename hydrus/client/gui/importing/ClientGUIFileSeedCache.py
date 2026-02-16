@@ -572,7 +572,7 @@ class EditFileSeedCachePanel( ClientGUIScrolledPanels.EditPanel ):
         
         ClientGUIMenus.AppendSeparator( menu )
         
-        can_show_files_in_new_page = True in ( file_seed.HasHash() for file_seed in selected_file_seeds )
+        can_show_files_in_new_page = True in (file_seed.has_hash() for file_seed in selected_file_seeds)
         
         if can_show_files_in_new_page:
             
@@ -831,7 +831,7 @@ class EditFileSeedCachePanel( ClientGUIScrolledPanels.EditPanel ):
         
         if status_to_set == CC.STATUS_UNKNOWN:
             
-            deleted_and_clearable_file_seeds = [ file_seed for file_seed in file_seeds if file_seed.IsDeleted() and file_seed.HasHash() ]
+            deleted_and_clearable_file_seeds = [file_seed for file_seed in file_seeds if file_seed.IsDeleted() and file_seed.has_hash()]
             
             if len( deleted_and_clearable_file_seeds ) > 0:
                 
@@ -868,7 +868,7 @@ class EditFileSeedCachePanel( ClientGUIScrolledPanels.EditPanel ):
         
         for file_seed in self._list_ctrl.GetData( only_selected = True ):
             
-            if file_seed.HasHash():
+            if file_seed.has_hash():
                 
                 hashes.append( file_seed.GetHash() )
                 

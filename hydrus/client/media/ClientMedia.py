@@ -1168,7 +1168,7 @@ class MediaList( object ):
                     
                     ratings_manager = media.GetRatingsManager()
                     
-                    if ratings_manager.GetRating( unrated ) is not None:
+                    if ratings_manager.get_rating(unrated) is not None:
                         
                         continue
                         
@@ -2794,7 +2794,7 @@ class MediaSort( HydrusSerialisable.SerialisableBase ):
                 
                 x_ratings_manager = x.GetRatingsManager()
                 
-                rating = deal_with_none( x_ratings_manager.GetRating( service_key ) )
+                rating = deal_with_none(x_ratings_manager.get_rating(service_key))
                 
                 return rating
                 

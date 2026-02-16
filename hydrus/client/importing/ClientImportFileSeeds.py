@@ -3220,7 +3220,7 @@ class FileSeedCache( HydrusSerialisable.SerialisableBase ):
         
         with self._lock:
             
-            hashes = [ file_seed.GetHash() for file_seed in self._file_seeds if file_seed.HasHash() ]
+            hashes = [file_seed.GetHash() for file_seed in self._file_seeds if file_seed.has_hash()]
             
         
         return hashes
@@ -3273,7 +3273,7 @@ class FileSeedCache( HydrusSerialisable.SerialisableBase ):
         
         with self._lock:
             
-            hashes_and_statuses = [ ( file_seed.GetHash(), file_seed.status ) for file_seed in self._file_seeds if file_seed.HasHash() ]
+            hashes_and_statuses = [( file_seed.GetHash(), file_seed.status ) for file_seed in self._file_seeds if file_seed.has_hash()]
             
         
         return presentation_import_options.GetPresentedHashes( hashes_and_statuses )
