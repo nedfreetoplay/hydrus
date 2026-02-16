@@ -411,7 +411,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
         
         try:
             
-            while gallery_seed_log.WorkToDo():
+            while gallery_seed_log.work_to_do():
                 
                 p1 = not self._CanDoWorkNow()
                 ( login_ok, login_reason ) = query_header.GalleryLoginOK( CG.client_controller.network_engine, self._name )
@@ -727,7 +727,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
             
             # now clean up any lingering gallery seeds
             
-            while gallery_seed_log.WorkToDo():
+            while gallery_seed_log.work_to_do():
                 
                 gallery_seed = gallery_seed_log.GetNextGallerySeed( CC.STATUS_UNKNOWN )
                 

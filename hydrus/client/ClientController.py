@@ -76,9 +76,9 @@ class PubSubEventCatcher( QC.QObject ):
             
             if event.type() == PubSubEventType and isinstance( event, PubSubEvent ):
                 
-                if self._pubsub.WorkToDo():
+                if self._pubsub.work_to_do():
                     
-                    self._pubsub.Process()
+                    self._pubsub.process()
                     
                 
                 event.accept()

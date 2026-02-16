@@ -430,7 +430,7 @@ class HydrusController( object ):
     
     def currently_pub_subbing(self) -> bool:
         
-        return self._pubsub.WorkToDo() or self._pubsub.DoingWork()
+        return self._pubsub.work_to_do() or self._pubsub.doing_work()
         
     
     def db_currently_doing_job(self) -> bool:
@@ -824,7 +824,7 @@ class HydrusController( object ):
         
         HG.model_shutdown = True
         
-        self._pubsub.Wake()
+        self._pubsub.wake()
         
     
     def shutdown_view(self) -> None:
@@ -901,14 +901,14 @@ class HydrusController( object ):
     
     def wait_until_pub_subs_empty(self):
         
-        self._pubsub.WaitUntilFree()
+        self._pubsub.wait_until_free()
         
     
     def wake_daemon(self, name):
         
         if name in self._daemon_jobs:
             
-            self._daemon_jobs[ name ].Wake()
+            self._daemon_jobs[ name ].wake()
             
         
     

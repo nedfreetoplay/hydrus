@@ -3734,7 +3734,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         self._menubar_network_subscriptions_paused = ClientGUIMenus.AppendMenuCheckItem( submenu, 'subscriptions', 'Pause the client\'s synchronisation with website subscriptions.', self._controller.new_options.GetBoolean( 'pause_subs_sync' ), self.FlipSubscriptionsPaused )
         
-        self._menubar_network_nudge_subs = ClientGUIMenus.AppendMenuItem( submenu, 'nudge subscriptions awake', 'Tell the subs daemon to wake up, just in case any subs are due.', self._controller.subscriptions_manager.Wake )
+        self._menubar_network_nudge_subs = ClientGUIMenus.AppendMenuItem(submenu, 'nudge subscriptions awake', 'Tell the subs daemon to wake up, just in case any subs are due.', self._controller.subscriptions_manager.wake)
         
         ClientGUIMenus.AppendSeparator( submenu )
         
@@ -5112,7 +5112,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                         
                     except HydrusExceptions.CancelledException:
                         
-                        CG.client_controller.subscriptions_manager.Wake()
+                        CG.client_controller.subscriptions_manager.wake()
                         
                     finally:
                         
@@ -5358,7 +5358,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             self._controller.new_options.FlipBoolean( 'pause_import_folders_sync' )
             
-            self._controller.import_folders_manager.Wake()
+            self._controller.import_folders_manager.wake()
             
         
         self._controller.write('save_options', HC.options)
@@ -7820,7 +7820,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         self._controller.new_options.FlipBoolean( 'pause_subs_sync' )
         
-        self._controller.subscriptions_manager.Wake()
+        self._controller.subscriptions_manager.wake()
         
         self._controller.write('save_options', HC.options)
         

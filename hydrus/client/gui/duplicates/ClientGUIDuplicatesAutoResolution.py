@@ -1542,7 +1542,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
                     
                     edit_work_lock.release()
                     
-                    CG.client_controller.duplicates_auto_resolution_manager.Wake()
+                    CG.client_controller.duplicates_auto_resolution_manager.wake()
                     
                 
             
@@ -1554,7 +1554,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
         
         CG.client_controller.new_options.FlipBoolean( name )
         
-        CG.client_controller.duplicates_auto_resolution_manager.Wake()
+        CG.client_controller.duplicates_auto_resolution_manager.wake()
         
     
     def _FlipWorkingHard( self ):

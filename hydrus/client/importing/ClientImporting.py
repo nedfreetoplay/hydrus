@@ -366,7 +366,7 @@ def WakeRepeatingJob( job ):
     
     if job is not None:
         
-        job.Wake()
+        job.wake()
         
     
 

@@ -347,12 +347,12 @@ class PreparationPanel( QW.QWidget ):
         submenu_template_items = []
         
         check_manager = ClientGUICommon.CheckboxManagerOptions( 'maintain_similar_files_duplicate_pairs_during_idle' )
-        check_manager.AddNotifyCall( CG.client_controller.potential_duplicates_manager.Wake )
+        check_manager.AddNotifyCall(CG.client_controller.potential_duplicates_manager.wake)
         
         submenu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCheck( 'during idle time', 'Tell the client to find potential duplicate pairs in its idle time maintenance.', check_manager ) )
         
         check_manager = ClientGUICommon.CheckboxManagerOptions( 'maintain_similar_files_duplicate_pairs_during_active' )
-        check_manager.AddNotifyCall( CG.client_controller.potential_duplicates_manager.Wake )
+        check_manager.AddNotifyCall(CG.client_controller.potential_duplicates_manager.wake)
         
         submenu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCheck( 'during normal time', 'Tell the client to find potential duplicate pairs all the time.', check_manager ) )
         
@@ -644,7 +644,7 @@ class PreparationPanel( QW.QWidget ):
         
         self._maintenance_status_updater.update()
         
-        CG.client_controller.potential_duplicates_manager.Wake()
+        CG.client_controller.potential_duplicates_manager.wake()
         
     
     def NotifyNewMaintenanceNumbers( self ):
