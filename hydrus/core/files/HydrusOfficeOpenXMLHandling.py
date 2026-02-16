@@ -15,7 +15,7 @@ DOCX_XPATH_DEFAULT = ".//{*}Default[@Extension='xml'][@ContentType='application/
 XLSX_XPATH_DEFAULT = ".//{*}Default[@Extension='xml'][@ContentType='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml']"
 PPTX_XPATH_DEFAULT = ".//{*}Default[@Extension='xml'][@ContentType='application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml']"
 
-def MimeFromMicrosoftOpenXMLDocument(path: str):
+def mime_from_microsoft_open_xml_document(path: str):
     
     try:
         
@@ -58,7 +58,7 @@ def MimeFromMicrosoftOpenXMLDocument(path: str):
         
     
 
-def GenerateThumbnailNumPyFromOfficePath( path: str, target_resolution: tuple[ int, int ] ) -> bytes:
+def generate_thumbnail_num_py_from_office_path(path: str, target_resolution: tuple[ int, int]) -> bytes:
     
     try:
         
@@ -86,7 +86,7 @@ PPTX_ASSUMED_DPI = 300
 
 PPTX_PIXEL_PER_EMU = PPTX_ASSUMED_DPI / 914400
 
-def PowerPointResolution( path: str ):
+def power_point_resolution(path: str):
     
     file = get_zip_as_path(path, 'ppt/presentation.xml').open('rb')
     
@@ -105,7 +105,7 @@ def PowerPointResolution( path: str ):
     return ( width, height) 
     
 
-def OfficeDocumentWordCount( path: str ):
+def office_document_word_count(path: str):
     
     file = get_zip_as_path(path, 'docProps/app.xml').open('rb')
     
@@ -118,11 +118,11 @@ def OfficeDocumentWordCount( path: str ):
     return num_words
     
 
-def GetPPTXInfo( path: str ):
+def get_pptx_info(path: str):
     
     try:
         
-        ( width, height ) = PowerPointResolution( path )
+        ( width, height ) = power_point_resolution(path)
         
     except Exception as e:
         
@@ -130,7 +130,7 @@ def GetPPTXInfo( path: str ):
     
     try:
         
-        num_words = OfficeDocumentWordCount( path )
+        num_words = office_document_word_count(path)
         
     except Exception as e:
         
@@ -139,11 +139,11 @@ def GetPPTXInfo( path: str ):
     return ( num_words, ( width, height ) )
     
 
-def GetDOCXInfo( path:str ):
+def get_docx_info(path:str):
     
     try:
         
-        num_words = OfficeDocumentWordCount( path )
+        num_words = office_document_word_count(path)
         
     except Exception as e:
         

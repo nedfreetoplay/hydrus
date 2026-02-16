@@ -257,7 +257,7 @@ def generate_thumbnail_num_py(path, target_resolution, mime, duration_ms, num_fr
         
         try:
             
-            thumbnail_numpy = HydrusOfficeOpenXMLHandling.GenerateThumbnailNumPyFromOfficePath( path, target_resolution )
+            thumbnail_numpy = HydrusOfficeOpenXMLHandling.generate_thumbnail_num_py_from_office_path(path, target_resolution)
             
         except HydrusExceptions.NoThumbnailFileException:
             
@@ -547,7 +547,7 @@ def get_file_info(path, mime = None, ok_to_look_for_hydrus_updates = False):
         
         try:
             
-            ( num_words, ( width, height ) ) = HydrusOfficeOpenXMLHandling.GetPPTXInfo( path )
+            ( num_words, ( width, height ) ) = HydrusOfficeOpenXMLHandling.get_pptx_info(path)
             
         except HydrusExceptions.LimitedSupportFileException:
             
@@ -558,7 +558,7 @@ def get_file_info(path, mime = None, ok_to_look_for_hydrus_updates = False):
         
         try:
             
-            num_words = HydrusOfficeOpenXMLHandling.GetDOCXInfo( path )
+            num_words = HydrusOfficeOpenXMLHandling.get_docx_info(path)
             
         except HydrusExceptions.LimitedSupportFileException:
             
@@ -815,7 +815,7 @@ def get_mime(path, ok_to_look_for_hydrus_updates = False):
                     return opendoc_mime
                     
                 
-                microsoft_mime = HydrusOfficeOpenXMLHandling.MimeFromMicrosoftOpenXMLDocument( path )
+                microsoft_mime = HydrusOfficeOpenXMLHandling.mime_from_microsoft_open_xml_document(path)
                 
                 if microsoft_mime is not None:
                     
