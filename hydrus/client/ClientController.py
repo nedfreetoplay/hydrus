@@ -2264,7 +2264,7 @@ class Controller( HydrusController.HydrusController ):
             
             upnp_services = [ service for service in services if service.GetServiceType() in ( HC.CLIENT_API_SERVICE, ) ]
             
-            self.call_to_thread_long_running(self.services_upnp_manager.SetServices, upnp_services)
+            self.call_to_thread_long_running(self.services_upnp_manager.set_services, upnp_services)
             
             self.write_synchronous('update_services', services)
             

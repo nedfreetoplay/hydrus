@@ -63,7 +63,7 @@ EXTERNAL_IP[ 'time' ] = 0
 
 UPNPC_IS_MISSING = UPNPC_PATH is None
 
-def RaiseMissingUPnPcError( operation ):
+def raise_missing_upnpc_error(operation):
     
     message = 'Unfortunately, the operation "{}" requires miniupnpc, which does not seem to be available for your system. You can install it yourself easily, please check install_dir/bin/upnpc_readme.txt for more information!'.format( operation )
     
@@ -78,11 +78,11 @@ def RaiseMissingUPnPcError( operation ):
     
     raise FileNotFoundError( message )
     
-def GetExternalIP():
+def get_external_ip():
     
     if UPNPC_IS_MISSING:
         
-        RaiseMissingUPnPcError( 'fetch external IP' )
+        raise_missing_upnpc_error('fetch external IP')
         
     
     if HydrusTime.time_has_passed(EXTERNAL_IP['time'] + (3600 * 24)):
@@ -97,7 +97,7 @@ def GetExternalIP():
             
         except FileNotFoundError:
             
-            RaiseMissingUPnPcError( 'fetch external IP' )
+            raise_missing_upnpc_error('fetch external IP')
             
         
         if stderr is not None and len( stderr ) > 0:
@@ -132,15 +132,15 @@ def GetExternalIP():
     
     return EXTERNAL_IP[ 'ip' ]
     
-def GetLocalIP():
+def get_local_ip():
     
     return socket.gethostbyname( socket.gethostname() )
     
-def AddUPnPMapping( internal_client, internal_port, external_port, protocol, description, duration = 3600 ):
+def add_upnp_mapping(internal_client, internal_port, external_port, protocol, description, duration = 3600):
     
     if UPNPC_IS_MISSING:
         
-        RaiseMissingUPnPcError( 'add UPnP port forward' )
+        raise_missing_upnpc_error('add UPnP port forward')
         
     
     cmd = [ UPNPC_PATH, '-e', description, '-a', internal_client, str( internal_port ), str( external_port ), protocol, str( duration ) ]
@@ -153,12 +153,12 @@ def AddUPnPMapping( internal_client, internal_port, external_port, protocol, des
         
     except FileNotFoundError:
         
-        RaiseMissingUPnPcError( 'add UPnP port forward' )
+        raise_missing_upnpc_error('add UPnP port forward')
         
     
-    AddUPnPMappingCheckResponse( internal_client, internal_port, external_port, protocol, stdout, stderr )
+    add_upnp_mapping_check_response(internal_client, internal_port, external_port, protocol, stdout, stderr)
     
-def AddUPnPMappingCheckResponse( internal_client, internal_port, external_port, protocol, stdout, stderr ):
+def add_upnp_mapping_check_response(internal_client, internal_port, external_port, protocol, stdout, stderr):
     
     if stdout is not None and 'failed with code' in stdout:
         
@@ -194,11 +194,11 @@ def AddUPnPMappingCheckResponse( internal_client, internal_port, external_port, 
         raise Exception( 'Problem while trying to add UPnP mapping:' + '\n' * 2 + stderr )
         
     
-def GetUPnPMappings():
+def get_upnp_mappings():
     
     if UPNPC_IS_MISSING:
         
-        RaiseMissingUPnPcError( 'get current UPnP port forward mappings' )
+        raise_missing_upnpc_error('get current UPnP port forward mappings')
         
     
     cmd = [ UPNPC_PATH, '-l' ]
@@ -211,7 +211,7 @@ def GetUPnPMappings():
         
     except FileNotFoundError:
         
-        RaiseMissingUPnPcError( 'get current UPnP port forward mappings' )
+        raise_missing_upnpc_error('get current UPnP port forward mappings')
         
     
     if stderr is not None and len( stderr ) > 0:
@@ -220,10 +220,10 @@ def GetUPnPMappings():
         
     else:
         
-        return GetUPnPMappingsParseResponse( stdout )
+        return get_upnp_mappings_parse_response(stdout)
         
     
-def GetUPnPMappingsParseResponse( stdout ):
+def get_upnp_mappings_parse_response(stdout):
     
     try:
         
@@ -302,11 +302,11 @@ def GetUPnPMappingsParseResponse( stdout ):
         raise Exception( 'Problem while trying to parse UPnP mappings:' + '\n' * 2 + str( e ) )
         
     
-def RemoveUPnPMapping( external_port, protocol ):
+def remove_upnp_mapping(external_port, protocol):
     
     if UPNPC_IS_MISSING:
         
-        RaiseMissingUPnPcError( 'remove UPnP port forward' )
+        raise_missing_upnpc_error('remove UPnP port forward')
         
     
     cmd = [ UPNPC_PATH, '-d', str( external_port ), protocol ]
@@ -319,7 +319,7 @@ def RemoveUPnPMapping( external_port, protocol ):
         
     except FileNotFoundError:
         
-        RaiseMissingUPnPcError( 'remove UPnP port forward' )
+        raise_missing_upnpc_error('remove UPnP port forward')
         
     
     if stderr is not None and len( stderr ) > 0:
@@ -336,7 +336,7 @@ class ServicesUPnPManager( object ):
         self._services = services
         
     
-    def _RefreshUPnP( self, force_wipe = False ):
+    def _refresh_upnp(self, force_wipe = False):
         
         running_service_with_upnp = True in ( service.GetPort() is not None and service.GetUPnPPort() is not None for service in self._services )
         
@@ -355,7 +355,7 @@ class ServicesUPnPManager( object ):
         
         try:
             
-            local_ip = GetLocalIP()
+            local_ip = get_local_ip()
             
         except Exception as e:
             
@@ -364,7 +364,7 @@ class ServicesUPnPManager( object ):
         
         try:
             
-            current_mappings = GetUPnPMappings()
+            current_mappings = get_upnp_mappings()
             
         except FileNotFoundError:
             
@@ -402,7 +402,7 @@ class ServicesUPnPManager( object ):
                 
                 if port_is_incorrect or force_wipe:
                     
-                    RemoveUPnPMapping( current_external_port, 'TCP' )
+                    remove_upnp_mapping(current_external_port, 'TCP')
                     
                 
             
@@ -425,7 +425,7 @@ class ServicesUPnPManager( object ):
                 
                 try:
                     
-                    AddUPnPMapping( local_ip, internal_port, upnp_port, protocol, description, duration = duration )
+                    add_upnp_mapping(local_ip, internal_port, upnp_port, protocol, description, duration = duration)
                     
                 except HydrusExceptions.RouterException:
                     
@@ -437,21 +437,21 @@ class ServicesUPnPManager( object ):
             
         
     
-    def SetServices( self, services ):
+    def set_services(self, services):
         
         with self._lock:
             
             self._services = services
             
-            self._RefreshUPnP()
+            self._refresh_upnp()
             
         
     
-    def RefreshUPnP( self ):
+    def refresh_upnp(self):
         
         with self._lock:
             
-            self._RefreshUPnP()
+            self._refresh_upnp()
             
         
     

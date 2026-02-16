@@ -77,7 +77,7 @@ class TestNATPunch( unittest.TestCase ):
     
     def test_upnp_parsing( self ):
         
-        mappings = HydrusNATPunch.GetUPnPMappingsParseResponse( GET_MAPPINGS_OK )
+        mappings = HydrusNATPunch.get_upnp_mappings_parse_response(GET_MAPPINGS_OK)
         
         expected_mappings = {
             ( 'Hydrus Client API', '192.168.0.101', 45871, 45871, 'TCP', 0 ),
@@ -89,11 +89,11 @@ class TestNATPunch( unittest.TestCase ):
         
         #
         
-        HydrusNATPunch.AddUPnPMappingCheckResponse( TEST_ME_IP, 45871, 45871, 'TCP', ADD_STDOUT_OK, '' )
+        HydrusNATPunch.add_upnp_mapping_check_response(TEST_ME_IP, 45871, 45871, 'TCP', ADD_STDOUT_OK, '')
         
         try:
             
-            HydrusNATPunch.AddUPnPMappingCheckResponse( TEST_ME_IP, 4000, 45871, 'TCP', ADD_STDOUT_PORT_MAPPED_OTHER_PORT, '' )
+            HydrusNATPunch.add_upnp_mapping_check_response(TEST_ME_IP, 4000, 45871, 'TCP', ADD_STDOUT_PORT_MAPPED_OTHER_PORT, '')
             
         except HydrusExceptions.RouterException as e:
             
@@ -102,7 +102,7 @@ class TestNATPunch( unittest.TestCase ):
         
         try:
             
-            HydrusNATPunch.AddUPnPMappingCheckResponse( TEST_ME_IP, 45871, 45871, 'TCP', ADD_STDOUT_PORT_MAPPED_OTHER_COMP, '' )
+            HydrusNATPunch.add_upnp_mapping_check_response(TEST_ME_IP, 45871, 45871, 'TCP', ADD_STDOUT_PORT_MAPPED_OTHER_COMP, '')
             
         except HydrusExceptions.RouterException as e:
             

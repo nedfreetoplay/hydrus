@@ -644,7 +644,7 @@ class HydrusController( object ):
         
         self.services_upnp_manager = HydrusNATPunch.ServicesUPnPManager( upnp_services )
         
-        job = self.call_repeating(10.0, 43200.0, self.services_upnp_manager.RefreshUPnP)
+        job = self.call_repeating(10.0, 43200.0, self.services_upnp_manager.refresh_upnp)
         
         self._daemon_jobs[ 'services_upnp' ] = job
         

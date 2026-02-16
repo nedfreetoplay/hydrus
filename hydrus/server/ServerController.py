@@ -584,7 +584,7 @@ class Controller( HydrusController.HydrusController ):
         
         self._services = services
         
-        self.call_to_thread(self.services_upnp_manager.SetServices, self._services)
+        self.call_to_thread(self.services_upnp_manager.set_services, self._services)
         
         [ self._admin_service ] = [ service for service in self._services if service.GetServiceType() == HC.SERVER_ADMIN ]
         
