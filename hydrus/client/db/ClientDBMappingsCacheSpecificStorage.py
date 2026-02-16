@@ -459,7 +459,7 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
         
         BLOCK_SIZE = 10000
         
-        for ( num_done, num_to_do, block_of_hash_ids ) in HydrusLists.SplitListIntoChunksRich( hash_ids, BLOCK_SIZE ):
+        for ( num_done, num_to_do, block_of_hash_ids ) in HydrusLists.split_list_into_chunks_rich(hash_ids, BLOCK_SIZE):
             
             with self._make_temporary_integer_table(block_of_hash_ids, 'hash_id') as temp_hash_id_table_name:
                 

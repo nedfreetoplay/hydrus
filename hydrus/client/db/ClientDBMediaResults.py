@@ -216,7 +216,7 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
             
             if len( hash_ids ) > len( file_info_managers ):
                 
-                hash_ids = HydrusLists.DedupeList( hash_ids )
+                hash_ids = HydrusLists.dedupe_list(hash_ids)
                 
             
             hash_ids_to_file_info_managers = { file_info_manager.hash_id : file_info_manager for file_info_manager in file_info_managers }
@@ -237,7 +237,7 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
             
             if len( hashes ) > len( query_hash_ids ):
                 
-                hashes = HydrusLists.DedupeList( hashes )
+                hashes = HydrusLists.dedupe_list(hashes)
                 
             
             hashes_to_file_info_managers = { file_info_manager.hash : file_info_manager for file_info_manager in file_info_managers }
@@ -580,7 +580,7 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
             
             if len( hashes ) > len( query_hash_ids ):
                 
-                hashes = HydrusLists.DedupeList( hashes )
+                hashes = HydrusLists.dedupe_list(hashes)
                 
             
             hashes_to_media_results = { media_result.GetHash() : media_result for media_result in media_results }

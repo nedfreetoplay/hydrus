@@ -219,7 +219,7 @@ class SingleFileMetadataRouter( HydrusSerialisable.SerialisableBase ):
                 
             
         
-        rows = HydrusLists.DedupeList( rows )
+        rows = HydrusLists.dedupe_list(rows)
         
         rows = self._string_processor.ProcessStrings( starting_strings = rows )
         

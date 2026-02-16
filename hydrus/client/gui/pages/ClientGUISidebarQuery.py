@@ -475,7 +475,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
             
             existing_lock_hashes = self._GetExistingLockHashes()
             
-            updated_hashes = HydrusLists.DedupeList( existing_lock_hashes + hashes )
+            updated_hashes = HydrusLists.dedupe_list(existing_lock_hashes + hashes)
             
             self._UpdateSystemLockFiles( updated_hashes )
             
@@ -648,7 +648,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
         
         media_results = []
         
-        for ( num_done, num_to_do, sub_query_hash_ids ) in HydrusLists.SplitListIntoChunksRich( query_hash_ids, QUERY_CHUNK_SIZE ):
+        for ( num_done, num_to_do, sub_query_hash_ids ) in HydrusLists.split_list_into_chunks_rich(query_hash_ids, QUERY_CHUNK_SIZE):
             
             if query_job_status.IsCancelled():
                 

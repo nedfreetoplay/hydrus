@@ -545,7 +545,7 @@ class Page( QW.QWidget ):
             hashes = list( self._initial_hashes )
             hashes.extend( ( media_result.GetHash() for media_result in self._pre_initialisation_media_results ) )
             
-            hashes = HydrusLists.DedupeList( hashes )
+            hashes = HydrusLists.dedupe_list(hashes)
             
             return hashes
             
@@ -950,7 +950,7 @@ class Page( QW.QWidget ):
         
         if self._initial_hashes is not None and len( self._initial_hashes ) > 0:
             
-            self._initial_hash_blocks_still_to_load = list( HydrusLists.SplitListIntoChunks( self._initial_hashes, 100 ) )
+            self._initial_hash_blocks_still_to_load = list(HydrusLists.split_list_into_chunks(self._initial_hashes, 100))
             
             self._DoInitialMediaResultsLoadWork()
             
@@ -1376,7 +1376,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
             hashes.extend( page.GetHashes() )
             
         
-        hashes = HydrusLists.DedupeList( hashes )
+        hashes = HydrusLists.dedupe_list(hashes)
         
         message = f'This will collect the {HydrusNumbers.ToHumanInt(len(hashes))} files in view in the {HydrusNumbers.ToHumanInt(len(closees))} pages and place them, in current order, in a single new search page.'
         message += '\n\n'
@@ -2554,7 +2554,7 @@ class PagesNotebook( QP.TabWidgetWithDnD ):
             hashes.extend( page.GetHashes() )
             
         
-        hashes = HydrusLists.DedupeList( hashes )
+        hashes = HydrusLists.dedupe_list(hashes)
         
         return hashes
         

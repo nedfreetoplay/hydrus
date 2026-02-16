@@ -169,7 +169,7 @@ def ClearDeleteRecord( win, media ):
     
     if result == QW.QDialog.DialogCode.Accepted:
         
-        for chunk_of_media in HydrusLists.SplitIteratorIntoChunks( clearable_media, 64 ):
+        for chunk_of_media in HydrusLists.split_iterator_into_chunks(clearable_media, 64):
             
             clearee_hashes = [ m.GetHash() for m in chunk_of_media ]
             
@@ -563,7 +563,7 @@ def GetContentUpdatesForAppliedContentApplicationCommandRatingsSetFlip( service_
         
     else:
         
-        rows = [ ( thing_to_set, block_of_hashes ) for block_of_hashes in HydrusLists.SplitListIntoChunks( list( hashes ), BLOCK_SIZE ) ]
+        rows = [( thing_to_set, block_of_hashes ) for block_of_hashes in HydrusLists.split_list_into_chunks(list(hashes), BLOCK_SIZE)]
         
     
     content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_RATINGS, HC.CONTENT_UPDATE_ADD, row ) for row in rows ]
@@ -609,7 +609,7 @@ def GetContentUpdatesForAppliedContentApplicationCommandRatingsIncDec( service_k
             
         else:
             
-            rows = [ ( rating, block_of_hashes ) for block_of_hashes in HydrusLists.SplitListIntoChunks( list( hashes ), BLOCK_SIZE ) ]
+            rows = [( rating, block_of_hashes ) for block_of_hashes in HydrusLists.split_list_into_chunks(list(hashes), BLOCK_SIZE)]
             
         
         content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_RATINGS, HC.CONTENT_UPDATE_ADD, row ) for row in rows ]
@@ -672,7 +672,7 @@ def GetContentUpdatesForAppliedContentApplicationCommandRatingsNumericalIncDec( 
             
         else:
             
-            rows = [ ( rating, block_of_hashes ) for block_of_hashes in HydrusLists.SplitListIntoChunks( list( hashes ), BLOCK_SIZE ) ]
+            rows = [( rating, block_of_hashes ) for block_of_hashes in HydrusLists.split_list_into_chunks(list(hashes), BLOCK_SIZE)]
             
         
         content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_RATINGS, HC.CONTENT_UPDATE_ADD, row ) for row in rows ]
@@ -796,7 +796,7 @@ def GetContentUpdatesForAppliedContentApplicationCommandTags( win: QW.QWidget, s
         
     else:
         
-        rows = [ ( tag, block_of_hashes ) for block_of_hashes in HydrusLists.SplitListIntoChunks( list( hashes ), BLOCK_SIZE ) ]
+        rows = [( tag, block_of_hashes ) for block_of_hashes in HydrusLists.split_list_into_chunks(list(hashes), BLOCK_SIZE)]
         
     
     content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_MAPPINGS, content_update_action, row, reason = reason ) for row in rows ]
@@ -1141,7 +1141,7 @@ def SetFilesForcedFiletypes( win: QW.QWidget, medias: collections.abc.Collection
                     CG.client_controller.pub( 'message', job_status )
                     
                 
-                for ( num_done, num_to_do, block_of_media ) in HydrusLists.SplitListIntoChunksRich( medias, BLOCK_SIZE ):
+                for ( num_done, num_to_do, block_of_media ) in HydrusLists.split_list_into_chunks_rich(medias, BLOCK_SIZE):
                     
                     if job_status.IsCancelled():
                         
@@ -1272,7 +1272,7 @@ def UndeleteMedia( win, media ):
         return
         
     
-    media_deleted_service_keys = HydrusLists.MassUnion( ( m.GetLocationsManager().GetDeleted() for m in undeletable_media ) )
+    media_deleted_service_keys = HydrusLists.mass_union((m.GetLocationsManager().GetDeleted() for m in undeletable_media))
     
     local_file_services = CG.client_controller.services_manager.GetServices( ( HC.LOCAL_FILE_DOMAIN, ) )
     
@@ -1330,7 +1330,7 @@ def UndeleteMedia( win, media ):
         
         if do_it:
             
-            for chunk_of_media in HydrusLists.SplitIteratorIntoChunks( undeletable_media, 64 ):
+            for chunk_of_media in HydrusLists.split_iterator_into_chunks(undeletable_media, 64):
                 
                 service_key = undelete_service.GetServiceKey()
                 

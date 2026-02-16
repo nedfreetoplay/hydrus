@@ -278,7 +278,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
         
         tag_slices = [ self._CleanTagSliceInput( tag_slice ) for tag_slice in tag_slices ]
         
-        tag_slices = HydrusLists.DedupeList( tag_slices )
+        tag_slices = HydrusLists.dedupe_list(tag_slices)
         
         current_blacklist = set( self._advanced_blacklist.GetTagSlices() )
         

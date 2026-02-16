@@ -339,7 +339,7 @@ class JobStatus( object ):
             
         else:
             
-            hashes = HydrusLists.DedupeList( list( hashes ) )
+            hashes = HydrusLists.dedupe_list(list(hashes))
             
             self.SetVariable( 'attached_files', ( hashes, label ) )
             

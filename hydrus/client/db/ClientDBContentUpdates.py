@@ -682,7 +682,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                             
                             hash_ids = self.modules_hashes_local_cache.GetHashIds( hashes )
                             
-                            result = self._execute('SELECT SUM( size ) FROM files_info WHERE hash_id IN ' + HydrusLists.SplayListForDB(hash_ids) + ';').fetchone()
+                            result = self._execute('SELECT SUM( size ) FROM files_info WHERE hash_id IN ' + HydrusLists.splay_list_for_db(hash_ids) + ';').fetchone()
                             
                             total_size = self._get_sum_result(result)
                             

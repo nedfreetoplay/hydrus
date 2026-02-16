@@ -134,7 +134,7 @@ class ClientDBFilesViewingStats( ClientDBModule.ClientDBModule ):
             
         else:
             
-            canvas_type_predicate = f'canvas_type in {HydrusLists.SplayListForDB( desired_canvas_types )}'
+            canvas_type_predicate = f'canvas_type in {HydrusLists.splay_list_for_db(desired_canvas_types)}'
             
             group_by_phrase = ' GROUP BY hash_id'
             

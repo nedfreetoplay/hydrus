@@ -1164,7 +1164,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                     
                     for m in self._media:
                         
-                        if HydrusLists.SetsIntersect( m.GetHashes(), content_update.GetHashes() ):
+                        if HydrusLists.sets_intersect(m.GetHashes(), content_update.GetHashes()):
                             
                             m.GetMediaResult().ProcessContentUpdate( service_key, content_update )
                             

@@ -3422,7 +3422,7 @@ def CommitArchiveDelete( deletee_location_context: ClientLocation.LocationContex
     
     BLOCK_SIZE = 64
     
-    for ( num_done, num_to_do, block_of_deleted ) in HydrusLists.SplitListIntoChunksRich( deleted, BLOCK_SIZE ):
+    for ( num_done, num_to_do, block_of_deleted ) in HydrusLists.split_list_into_chunks_rich(deleted, BLOCK_SIZE):
         
         if not have_shown_popup and HydrusTime.TimeHasPassedFloat( start_time + 1 ):
             
@@ -3461,7 +3461,7 @@ def CommitArchiveDelete( deletee_location_context: ClientLocation.LocationContex
     
     kept_hashes = [ m.GetHash() for m in kept ]
     
-    for ( num_done, num_to_do, block_of_kept_hashes ) in HydrusLists.SplitListIntoChunksRich( kept_hashes, BLOCK_SIZE ):
+    for ( num_done, num_to_do, block_of_kept_hashes ) in HydrusLists.split_list_into_chunks_rich(kept_hashes, BLOCK_SIZE):
         
         if not have_shown_popup and HydrusTime.TimeHasPassedFloat( start_time + 1 ):
             
@@ -3718,7 +3718,7 @@ class CanvasMediaListFilterArchiveDelete( CanvasMediaList ):
                         location_contexts_to_present_options_for.append( possible_location_context_at_top )
                         
                     
-                    current_local_service_keys = HydrusLists.MassUnion( [ m.GetLocationsManager().GetCurrent() for m in deleted ] )
+                    current_local_service_keys = HydrusLists.mass_union([m.GetLocationsManager().GetCurrent() for m in deleted])
                     
                     local_file_domain_service_keys = [ service_key for service_key in current_local_service_keys if CG.client_controller.services_manager.GetServiceType( service_key ) == HC.LOCAL_FILE_DOMAIN ]
                     
@@ -3731,7 +3731,7 @@ class CanvasMediaListFilterArchiveDelete( CanvasMediaList ):
                         location_contexts_to_present_options_for.insert( 0, combined_local_file_domains_location_context )
                         
                     
-                    location_contexts_to_present_options_for = HydrusLists.DedupeList( location_contexts_to_present_options_for )
+                    location_contexts_to_present_options_for = HydrusLists.dedupe_list(location_contexts_to_present_options_for)
                     
                 
                 for location_context in location_contexts_to_present_options_for:

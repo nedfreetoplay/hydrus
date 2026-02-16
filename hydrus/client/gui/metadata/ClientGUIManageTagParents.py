@@ -405,7 +405,7 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
                 pairs.append( pair )
                 
             
-            pairs = HydrusLists.DedupeList( pairs )
+            pairs = HydrusLists.dedupe_list(pairs)
             
             return pairs
             

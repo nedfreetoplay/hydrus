@@ -86,7 +86,7 @@ def DoAliveOrDeadCheck( win: QW.QWidget, subscriptions: collections.abc.Collecti
             subs_to_pull_from = [ subscription for subscription in subscriptions if not subscription.IsPaused() ]
             
         
-        query_headers = HydrusLists.MassExtend( ( subscription.GetQueryHeaders() for subscription in subs_to_pull_from ) )
+        query_headers = HydrusLists.mass_extend((subscription.GetQueryHeaders() for subscription in subs_to_pull_from))
         
     
     do_alive = True

@@ -136,7 +136,7 @@ def GetFilesInfoPredicates( system_predicates: ClientSearchFileSearchContext.Fil
             
         else:
             
-            mimes_splayed = HydrusLists.SplayListForDB( mimes )
+            mimes_splayed = HydrusLists.splay_list_for_db(mimes)
             
             files_info_predicates.append( f'( ( mime IN {mimes_splayed} AND NOT EXISTS ( SELECT 1 FROM files_info_forced_filetypes WHERE hash_id = h1 AND forced_mime NOT IN {mimes_splayed} ) ) OR EXISTS ( SELECT 1 FROM files_info_forced_filetypes WHERE hash_id = h1 AND mime IN {mimes_splayed} ) )' )
             
@@ -332,7 +332,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
                 cancelled_hook = job_status.IsCancelled
                 
             
-            for group_of_hash_ids in HydrusLists.SplitIteratorIntoChunks( hash_ids, BLOCK_SIZE ):
+            for group_of_hash_ids in HydrusLists.split_iterator_into_chunks(hash_ids, BLOCK_SIZE):
                 
                 with self._make_temporary_integer_table(group_of_hash_ids, 'hash_id') as hash_ids_table_name:
                     
@@ -2254,14 +2254,14 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                     
                     if len( star_service_ids ) > 0:
                         
-                        query = f'SELECT DISTINCT hash_id FROM local_ratings WHERE service_id IN {HydrusLists.SplayListForDB( star_service_ids )};'
+                        query = f'SELECT DISTINCT hash_id FROM local_ratings WHERE service_id IN {HydrusLists.splay_list_for_db(star_service_ids)};'
                         
                         result_hash_ids.update(self._sti(self._execute_cancellable(query, (), cancelled_hook)))
                         
                     
                     if len( incdec_service_ids ) > 0:
                         
-                        query = f'SELECT DISTINCT hash_id FROM local_incdec_ratings WHERE service_id IN {HydrusLists.SplayListForDB( incdec_service_ids )} AND rating > 0;'
+                        query = f'SELECT DISTINCT hash_id FROM local_incdec_ratings WHERE service_id IN {HydrusLists.splay_list_for_db(incdec_service_ids)} AND rating > 0;'
                         
                         result_hash_ids.update(self._sti(self._execute_cancellable(query, (), cancelled_hook)))
                         
@@ -3122,7 +3122,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                     
                     desired_canvas_types = CG.client_controller.new_options.GetIntegerList( 'file_viewing_stats_interesting_canvas_types' )
                     
-                    desired_canvas_types_splayed = HydrusLists.SplayListForDB( desired_canvas_types )
+                    desired_canvas_types_splayed = HydrusLists.splay_list_for_db(desired_canvas_types)
                     
                     if sort_data == CC.SORT_FILES_BY_MEDIA_VIEWS:
                         

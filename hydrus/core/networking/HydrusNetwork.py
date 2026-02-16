@@ -1456,7 +1456,7 @@ class Content( HydrusSerialisable.SerialisableBase ):
             
             hashes = self._content_data
             
-            for chunk_of_hashes in HydrusLists.SplitListIntoChunks( hashes, 100 ):
+            for chunk_of_hashes in HydrusLists.split_list_into_chunks(hashes, 100):
                 
                 content = Content( content_type = self._content_type, content_data = chunk_of_hashes )
                 
@@ -1467,7 +1467,7 @@ class Content( HydrusSerialisable.SerialisableBase ):
             
             ( tag, hashes ) = self._content_data
             
-            for chunk_of_hashes in HydrusLists.SplitListIntoChunks( hashes, 500 ):
+            for chunk_of_hashes in HydrusLists.split_list_into_chunks(hashes, 500):
                 
                 content = Content( content_type = self._content_type, content_data = ( tag, chunk_of_hashes ) )
                 
@@ -2100,7 +2100,7 @@ class Metadata( HydrusSerialisable.SerialisableBase ):
             
             for ( update_index, ( update_hashes, begin, end ) ) in sorted( self._metadata.items() ):
                 
-                if HydrusLists.SetsIntersect( hashes, update_hashes ):
+                if HydrusLists.sets_intersect(hashes, update_hashes):
                     
                     return end
                     

@@ -670,7 +670,7 @@ class StringJoiner( StringProcessingStep ):
                 
             else:
                 
-                for chunk_of_texts in HydrusLists.SplitIteratorIntoChunks( texts, self._join_tuple_size ):
+                for chunk_of_texts in HydrusLists.split_iterator_into_chunks(texts, self._join_tuple_size):
                     
                     if len( chunk_of_texts ) == self._join_tuple_size:
                         

@@ -2988,7 +2988,7 @@ class PanelPredicateSystemSimilarToData( PanelPredicateSystemSingle ):
         
         new_text_lines.append( pixel_hash.hex() )
         
-        new_text_lines = HydrusLists.DedupeList( new_text_lines )
+        new_text_lines = HydrusLists.dedupe_list(new_text_lines)
         
         self._pixel_hashes.setPlainText( '\n'.join( new_text_lines ) )
         
@@ -2996,7 +2996,7 @@ class PanelPredicateSystemSimilarToData( PanelPredicateSystemSingle ):
         
         new_text_lines.extend( [ perceptual_hash.hex() for perceptual_hash in perceptual_hashes ] )
         
-        new_text_lines = HydrusLists.DedupeList( new_text_lines )
+        new_text_lines = HydrusLists.dedupe_list(new_text_lines)
         
         self._perceptual_hashes.setPlainText( '\n'.join( new_text_lines ) )
         

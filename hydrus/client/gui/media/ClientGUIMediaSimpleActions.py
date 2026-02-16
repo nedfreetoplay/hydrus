@@ -434,7 +434,7 @@ def UndeleteFiles( hashes ):
     
     local_file_service_keys = CG.client_controller.services_manager.GetServiceKeys( ( HC.LOCAL_FILE_DOMAIN, ) )
     
-    for chunk_of_hashes in HydrusLists.SplitIteratorIntoChunks( hashes, 64 ):
+    for chunk_of_hashes in HydrusLists.split_iterator_into_chunks(hashes, 64):
         
         media_results = CG.client_controller.read('media_results', chunk_of_hashes)
         

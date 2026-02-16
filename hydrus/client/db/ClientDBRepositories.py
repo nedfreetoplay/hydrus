@@ -411,7 +411,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
             ( min_unregistered_update_index, ) = result
             
         
-        predicate_phrase = 'processed = ? AND content_type IN {}'.format( HydrusLists.SplayListForDB( content_types_to_process ) )
+        predicate_phrase = 'processed = ? AND content_type IN {}'.format(HydrusLists.splay_list_for_db(content_types_to_process))
         
         if min_unregistered_update_index is not None:
             
@@ -659,7 +659,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
             
             i = definition_iterator_dict[ 'service_hash_ids_to_hashes' ]
             
-            for chunk in HydrusLists.SplitIteratorIntoAutothrottledChunks( i, 50, precise_time_to_stop ):
+            for chunk in HydrusLists.split_iterator_into_autothrottled_chunks(i, 50, precise_time_to_stop):
                 
                 inserts = []
                 
@@ -687,7 +687,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
             
             i = definition_iterator_dict[ 'service_tag_ids_to_tags' ]
             
-            for chunk in HydrusLists.SplitIteratorIntoAutothrottledChunks( i, 50, precise_time_to_stop ):
+            for chunk in HydrusLists.split_iterator_into_autothrottled_chunks(i, 50, precise_time_to_stop):
                 
                 inserts = []
                 

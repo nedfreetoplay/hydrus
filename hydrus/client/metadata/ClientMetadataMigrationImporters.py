@@ -246,7 +246,7 @@ class SingleFileMetadataImporterMediaTags( SingleFileMetadataImporterMedia, Hydr
         # turning ::) into :)
         tags = [ HydrusText.re_leading_double_colon.sub( ':', tag ) for tag in tags ]
         
-        tags = HydrusLists.DedupeList( tags )
+        tags = HydrusLists.dedupe_list(tags)
         
         HydrusText.HumanTextSort( tags )
         

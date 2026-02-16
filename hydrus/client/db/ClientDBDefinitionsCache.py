@@ -266,7 +266,7 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
         all_missing_hash_ids = set()
         all_incorrect_hash_ids = set()
         
-        for ( num_done, num_to_do, block_of_hash_ids ) in HydrusLists.SplitListIntoChunksRich( all_hash_ids, BLOCK_SIZE ):
+        for ( num_done, num_to_do, block_of_hash_ids ) in HydrusLists.split_list_into_chunks_rich(all_hash_ids, BLOCK_SIZE):
             
             if job_status.IsCancelled():
                 

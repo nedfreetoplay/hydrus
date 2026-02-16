@@ -372,7 +372,7 @@ class HydrusListItemModel( QC.QAbstractItemModel ):
             
             if data not in self._data_to_sort_tuples:
                 
-                sort_tuple = HydrusLists.ConvertTupleOfDatasToCasefolded( self._data_to_sort_tuple_func( data ) )
+                sort_tuple = HydrusLists.convert_tuple_of_datas_to_casefolded(self._data_to_sort_tuple_func(data))
                 
                 self._data_to_sort_tuples[ data ] = sort_tuple
                 
@@ -474,7 +474,7 @@ class HydrusListItemModel( QC.QAbstractItemModel ):
                     
                     existing_sort_tuple = self._data_to_sort_tuples[ data ]
                     
-                    new_sort_tuple = HydrusLists.ConvertTupleOfDatasToCasefolded( self._data_to_sort_tuple_func( data ) )
+                    new_sort_tuple = HydrusLists.convert_tuple_of_datas_to_casefolded(self._data_to_sort_tuple_func(data))
                     
                     if existing_sort_tuple[ existing_sort_logical_index ] != new_sort_tuple[ existing_sort_logical_index ]:
                         
@@ -2124,7 +2124,7 @@ class BetterListCtrlPanel( QW.QWidget ):
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            ( jsons, pngs ) = HydrusLists.PartitionIteratorIntoLists( lambda path: path.endswith( '.png' ), paths )
+            ( jsons, pngs ) = HydrusLists.partition_iterator_into_lists(lambda path: path.endswith('.png'), paths)
             
             self._ImportPNGs( pngs )
             self._ImportJSONs( jsons )

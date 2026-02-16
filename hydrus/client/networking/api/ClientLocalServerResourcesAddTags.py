@@ -170,7 +170,7 @@ class HydrusResourceClientAPIRestrictedAddTagsAddTags( HydrusResourceClientAPIRe
                         
                         tag = tag_item
                         
-                    elif HydrusLists.IsAListLikeCollection( tag_item ) and len( tag_item ) == 2:
+                    elif HydrusLists.is_a_list_like_collection(tag_item) and len(tag_item) == 2:
                         
                         ( tag, reason ) = tag_item
                         

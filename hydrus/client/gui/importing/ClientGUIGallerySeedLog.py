@@ -109,7 +109,7 @@ def ImportFromPNG( win: QW.QWidget, gallery_seed_log: ClientImportGallerySeeds.G
     
 def ImportURLs( win: QW.QWidget, gallery_seed_log: ClientImportGallerySeeds.GallerySeedLog, urls, can_generate_more_pages: bool ):
     
-    urls = HydrusLists.DedupeList( urls )
+    urls = HydrusLists.dedupe_list(urls)
     
     filtered_urls = [ url for url in urls if not gallery_seed_log.HasGalleryURL( url ) ]
     

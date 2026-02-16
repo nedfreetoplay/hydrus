@@ -245,7 +245,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
             
             BLOCK_SIZE = 4096
             
-            for ( num_done, num_to_do, batch_of_hash_ids ) in HydrusLists.SplitListIntoChunksRich( current_archived_hash_ids, BLOCK_SIZE ):
+            for ( num_done, num_to_do, batch_of_hash_ids ) in HydrusLists.split_list_into_chunks_rich(current_archived_hash_ids, BLOCK_SIZE):
                 
                 message = f'Searching current files: {HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do )}'
                 
@@ -292,7 +292,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
             
             BLOCK_SIZE = 4096
             
-            for ( num_done, num_to_do, batch_of_hash_ids ) in HydrusLists.SplitListIntoChunksRich( deleted_hash_ids, BLOCK_SIZE ):
+            for ( num_done, num_to_do, batch_of_hash_ids ) in HydrusLists.split_list_into_chunks_rich(deleted_hash_ids, BLOCK_SIZE):
                 
                 message = f'Searching deleted files: {HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do )}'
                 

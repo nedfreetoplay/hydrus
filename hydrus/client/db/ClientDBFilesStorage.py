@@ -819,7 +819,7 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
         if only_viewable:
             
             # hashes to mimes
-            result = self._execute('SELECT COUNT( * ) FROM {} CROSS JOIN files_info USING ( hash_id ) WHERE mime IN {};'.format(current_files_table_name, HydrusLists.SplayListForDB(HC.SEARCHABLE_MIMES))).fetchone()
+            result = self._execute('SELECT COUNT( * ) FROM {} CROSS JOIN files_info USING ( hash_id ) WHERE mime IN {};'.format(current_files_table_name, HydrusLists.splay_list_for_db(HC.SEARCHABLE_MIMES))).fetchone()
             
         else:
             

@@ -1666,7 +1666,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             normalised_urls.append( normalised_url )
             
         
-        normalised_urls = HydrusLists.DedupeList( normalised_urls )
+        normalised_urls = HydrusLists.dedupe_list(normalised_urls)
         
         return normalised_urls
         

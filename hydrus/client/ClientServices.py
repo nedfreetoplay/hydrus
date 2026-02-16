@@ -2336,8 +2336,8 @@ class ServiceRepository( ServiceRestricted ):
                     
                     if HC.CONTENT_TYPE_MAPPINGS in content_types:
                         
-                        iterator_dict[ 'new_mappings' ] = HydrusLists.SmoothOutMappingIterator( content_update.GetNewMappings(), 50 )
-                        iterator_dict[ 'deleted_mappings' ] = HydrusLists.SmoothOutMappingIterator( content_update.GetDeletedMappings(), 50 )
+                        iterator_dict[ 'new_mappings' ] = HydrusLists.smooth_out_mapping_iterator(content_update.GetNewMappings(), 50)
+                        iterator_dict[ 'deleted_mappings' ] = HydrusLists.smooth_out_mapping_iterator(content_update.GetDeletedMappings(), 50)
                         
                     
                     if HC.CONTENT_TYPE_TAG_PARENTS in content_types:

@@ -995,7 +995,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 actually_done_media_results = [ m.GetMediaResult() for m in actually_done_ok ]
                 
-                for ( num_done, num_to_do, chunk_of_deletee_media_results ) in HydrusLists.SplitListIntoChunksRich( actually_done_media_results, 64 ):
+                for ( num_done, num_to_do, chunk_of_deletee_media_results ) in HydrusLists.split_list_into_chunks_rich(actually_done_media_results, 64):
                     
                     reason = 'Deleted after manual export to "{}".'.format( directory )
                     

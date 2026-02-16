@@ -233,7 +233,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         selected_pairs = [ model.GetMediaResultPair( index.row() ) for index in indices ]
         
-        selected_pairs = HydrusLists.DedupeList( selected_pairs )
+        selected_pairs = HydrusLists.dedupe_list(selected_pairs)
         
         if len( selected_pairs ) == 0:
             
@@ -400,7 +400,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         selected_pairs = [ model.GetMediaResultPair( index.row() ) for index in indices ]
         
-        selected_pairs = HydrusLists.DedupeList( selected_pairs )
+        selected_pairs = HydrusLists.dedupe_list(selected_pairs)
         
         if len( selected_pairs ) == 0:
             
@@ -767,7 +767,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         selected_pairs = [ model.GetMediaResultPair( index.row() ) for index in indices ]
         
-        selected_pairs = HydrusLists.DedupeList( selected_pairs )
+        selected_pairs = HydrusLists.dedupe_list(selected_pairs)
         
         nothing_selected = len( selected_pairs ) == 0
         
@@ -781,7 +781,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         selected_pairs = [ model.GetMediaResultPair( index.row() ) for index in indices ]
         
-        selected_pairs = HydrusLists.DedupeList( selected_pairs )
+        selected_pairs = HydrusLists.dedupe_list(selected_pairs)
         
         nothing_selected = len( selected_pairs ) == 0
         
@@ -795,7 +795,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         selected_pairs = [ model.GetMediaResultPair( index.row() ) for index in indices ]
         
-        selected_pairs = HydrusLists.DedupeList( selected_pairs )
+        selected_pairs = HydrusLists.dedupe_list(selected_pairs)
         
         nothing_selected = len( selected_pairs ) == 0
         

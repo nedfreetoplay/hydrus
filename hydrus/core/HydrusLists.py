@@ -7,7 +7,7 @@ import random
 from hydrus.core import HydrusExceptions
 from hydrus.core import HydrusTime
 
-def DedupeList( xs: collections.abc.Iterable ):
+def dedupe_list(xs: collections.abc.Iterable):
     
     if isinstance( xs, set ):
         
@@ -55,7 +55,7 @@ class FastIndexUniqueList( collections.abc.MutableSequence ):
         
         if self._indices_dirty:
             
-            self._RecalcIndices()
+            self._recalc_indices()
             
         
         return self._items_to_indices.__contains__( item )
@@ -81,7 +81,7 @@ class FastIndexUniqueList( collections.abc.MutableSequence ):
             
             del self._list[ index ]
             
-            self._DirtyIndices()
+            self._dirty_indices()
             
         
     
@@ -133,14 +133,14 @@ class FastIndexUniqueList( collections.abc.MutableSequence ):
         self._items_to_indices[ value ] = index
         
     
-    def _DirtyIndices( self ):
+    def _dirty_indices(self):
         
         self._indices_dirty = True
         
         self._items_to_indices = {}
         
     
-    def _RecalcIndices( self ):
+    def _recalc_indices(self):
         
         self._items_to_indices = { item : index for ( index, item ) in enumerate( self._list ) }
         
@@ -156,14 +156,14 @@ class FastIndexUniqueList( collections.abc.MutableSequence ):
         
         self._list.clear()
         
-        self._DirtyIndices()
+        self._dirty_indices()
         
     
     def extend( self, items ):
         
         if self._indices_dirty is None:
             
-            self._RecalcIndices()
+            self._recalc_indices()
             
         
         for ( i, item ) in enumerate( items, start = len( self._list ) ):
@@ -181,7 +181,7 @@ class FastIndexUniqueList( collections.abc.MutableSequence ):
         
         if self._indices_dirty:
             
-            self._RecalcIndices()
+            self._recalc_indices()
             
         
         try:
@@ -218,7 +218,7 @@ class FastIndexUniqueList( collections.abc.MutableSequence ):
                 self._list.insert( insertion_index + i, item )
                 
             
-            self._DirtyIndices()
+            self._dirty_indices()
             
         
     
@@ -288,7 +288,7 @@ class FastIndexUniqueList( collections.abc.MutableSequence ):
         
         random.shuffle( self._list )
         
-        self._DirtyIndices()
+        self._dirty_indices()
         
     
     def remove( self, item ):
@@ -312,7 +312,7 @@ class FastIndexUniqueList( collections.abc.MutableSequence ):
         
         self._list.reverse()
         
-        self._DirtyIndices()
+        self._dirty_indices()
         
     
     def sort( self, key = None, reverse = False ):
@@ -330,11 +330,11 @@ class FastIndexUniqueList( collections.abc.MutableSequence ):
         
         self._list.sort( key = key, reverse = reverse )
         
-        self._DirtyIndices()
+        self._dirty_indices()
         
     
 
-def ConvertTupleOfDatasToCasefolded( l: collections.abc.Sequence ) -> tuple:
+def convert_tuple_of_datas_to_casefolded(l: collections.abc.Sequence) -> tuple:
     
     # TODO: We could convert/augment this guy to do HumanTextSort too so we have 3 < 22
     
@@ -346,7 +346,7 @@ def ConvertTupleOfDatasToCasefolded( l: collections.abc.Sequence ) -> tuple:
             
         elif isinstance( o, collections.abc.Sequence ):
             
-            return ConvertTupleOfDatasToCasefolded( o )
+            return convert_tuple_of_datas_to_casefolded(o)
             
         else:
             
@@ -357,7 +357,7 @@ def ConvertTupleOfDatasToCasefolded( l: collections.abc.Sequence ) -> tuple:
     return tuple( ( casefold_obj( obj ) for obj in l ) )
     
 
-def IntelligentMassIntersect( sets_to_reduce: collections.abc.Collection[ set ] ):
+def intelligent_mass_intersect(sets_to_reduce: collections.abc.Collection[ set]):
     
     answer = None
     
@@ -395,7 +395,7 @@ def IntelligentMassIntersect( sets_to_reduce: collections.abc.Collection[ set ] 
         
     
 
-def IterateListRandomlyAndFast( xs: list ):
+def iterate_list_randomly_and_fast(xs: list):
     
     # do this instead of a pre-for-loop shuffle on big lists
     
@@ -405,23 +405,23 @@ def IterateListRandomlyAndFast( xs: list ):
         
     
 
-def IsAListLikeCollection( obj ):
+def is_a_list_like_collection(obj):
     
     # protip: don't do isinstance( possible_list, collections.abc.Collection ) for a 'list' detection--strings pass it (and sometimes with infinite recursion) lol!
     return isinstance( obj, ( tuple, list, set, frozenset ) )
     
 
-def MassExtend( iterables ):
+def mass_extend(iterables):
     
     return [ item for item in itertools.chain.from_iterable( iterables ) ]
     
 
-def MassUnion( iterables ):
+def mass_union(iterables):
     
     return { item for item in itertools.chain.from_iterable( iterables ) }
     
 
-def MedianPop( population ):
+def median_pop(population):
     
     # assume it has at least one and comes sorted
     
@@ -432,21 +432,21 @@ def MedianPop( population ):
     return row
     
 
-def PartitionIterator( pred: collections.abc.Callable[ [ object ], bool ], stream: collections.abc.Iterable[ object ] ):
+def partition_iterator(pred: collections.abc.Callable[ [object], bool], stream: collections.abc.Iterable[ object]):
     
     ( t1, t2 ) = itertools.tee( stream )
     
     return ( itertools.filterfalse( pred, t1 ), filter( pred, t2 ) )
     
 
-def PartitionIteratorIntoLists( pred: collections.abc.Callable[ [ object ], bool ], stream: collections.abc.Iterable[ object ] ):
+def partition_iterator_into_lists(pred: collections.abc.Callable[ [object], bool], stream: collections.abc.Iterable[ object]):
     
-    ( a, b ) = PartitionIterator( pred, stream )
+    ( a, b ) = partition_iterator(pred, stream)
     
     return ( list( a ), list( b ) )
     
 
-def PullNFromIterator( iterator, n ):
+def pull_n_from_iterator(iterator, n):
     
     chunk = []
     
@@ -463,16 +463,16 @@ def PullNFromIterator( iterator, n ):
     return chunk
     
 
-def RandomiseListByChunks( xs, n ):
+def randomise_list_by_chunks(xs, n):
     
-    blocks = list( SplitListIntoChunks( xs, n ) )
+    blocks = list(split_list_into_chunks(xs, n))
     
     random.shuffle( blocks )
     
     return [ item for block in blocks for item in block ] # 2025-06-03 - hydev's first nested list comprehension
     
 
-def RandomPop( population ):
+def random_pop(population):
     
     random_index = random.randint( 0, len( population ) - 1 )
     
@@ -481,7 +481,7 @@ def RandomPop( population ):
     return row
     
 
-def SampleSetByGettingFirst( s: set, n ):
+def sample_set_by_getting_first(s: set, n):
     
     # sampling from a big set can be slow, so if we don't care about super random, let's just rip off the front and let __hash__ be our random
     
@@ -507,7 +507,7 @@ def SampleSetByGettingFirst( s: set, n ):
     return sample
     
 
-def SetsIntersect( a, b ):
+def sets_intersect(a, b):
     
     if not isinstance( a, set ):
         
@@ -517,7 +517,7 @@ def SetsIntersect( a, b ):
     return not a.isdisjoint( b )
     
 
-def SmoothOutMappingIterator( xs, n ):
+def smooth_out_mapping_iterator(xs, n):
     
     # de-spikifies mappings, so if there is ( tag, 20k files ), it breaks that up into manageable chunks
     
@@ -526,23 +526,23 @@ def SmoothOutMappingIterator( xs, n ):
     
     for ( tag_item, hash_items ) in xs:
         
-        for chunk_of_hash_items in SplitIteratorIntoChunks( hash_items, n ):
+        for chunk_of_hash_items in split_iterator_into_chunks(hash_items, n):
             
             yield ( tag_item, chunk_of_hash_items )
             
         
     
 
-def SplayListForDB( xs ):
+def splay_list_for_db(xs):
     
     return '(' + ','.join( ( str( x ) for x in xs ) ) + ')'
     
 
-def SplitIteratorIntoAutothrottledChunks( iterator, starting_n, precise_time_to_stop ):
+def split_iterator_into_autothrottled_chunks(iterator, starting_n, precise_time_to_stop):
     
     n = starting_n
     
-    chunk = PullNFromIterator( iterator, n )
+    chunk = pull_n_from_iterator(iterator, n)
     
     while len( chunk ) > 0:
         
@@ -569,11 +569,11 @@ def SplitIteratorIntoAutothrottledChunks( iterator, starting_n, precise_time_to_
             n = min( quad_speed, expected_items_in_remaining_time )
             
         
-        chunk = PullNFromIterator( iterator, n )
+        chunk = pull_n_from_iterator(iterator, n)
         
     
 
-def SplitIteratorIntoChunks( iterator, n ):
+def split_iterator_into_chunks(iterator, n):
     
     chunk = []
     
@@ -595,7 +595,7 @@ def SplitIteratorIntoChunks( iterator, n ):
         
     
 
-def SplitListIntoChunks( xs, n ):
+def split_list_into_chunks(xs, n):
     
     if isinstance( xs, set ):
         
@@ -608,7 +608,7 @@ def SplitListIntoChunks( xs, n ):
         
     
 
-def SplitListIntoChunksRich( xs, n ):
+def split_list_into_chunks_rich(xs, n):
     
     if isinstance( xs, set ):
         
@@ -623,7 +623,7 @@ def SplitListIntoChunksRich( xs, n ):
         
     
 
-def SplitMappingIteratorIntoAutothrottledChunks( iterator, starting_n, precise_time_to_stop ):
+def split_mapping_iterator_into_autothrottled_chunks(iterator, starting_n, precise_time_to_stop):
     
     n = starting_n
     

@@ -3989,7 +3989,7 @@ class ReviewServiceTrashSubPanel( ClientGUICommon.StaticBox ):
                 
                 hashes = CG.client_controller.read('trash_hashes')
                 
-                for group_of_hashes in HydrusLists.SplitIteratorIntoChunks( hashes, 16 ):
+                for group_of_hashes in HydrusLists.split_iterator_into_chunks(hashes, 16):
                     
                     content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, group_of_hashes )
                     

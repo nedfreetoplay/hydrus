@@ -104,7 +104,7 @@ class ListBoxTagsMediaSidebar( ClientGUIListBoxes.ListBoxTagsMedia ):
             
             or_preds = [ p for p in predicates if p.IsORPredicate() ]
             
-            sub_preds = HydrusLists.MassUnion( [ p.GetValue() for p in or_preds ] )
+            sub_preds = HydrusLists.mass_union([p.GetValue() for p in or_preds])
             
             CG.client_controller.pub( 'enter_predicates', self._page_key, or_preds, permit_remove = True, permit_add = False )
             CG.client_controller.pub( 'enter_predicates', self._page_key, sub_preds, permit_remove = False, permit_add = True )

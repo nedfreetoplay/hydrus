@@ -108,7 +108,7 @@ class NetworkEngine( object ):
             
             self._domains_to_login.extend( domains_to_login )
             
-            self._domains_to_login = HydrusLists.DedupeList( self._domains_to_login )
+            self._domains_to_login = HydrusLists.dedupe_list(self._domains_to_login)
             
         
     

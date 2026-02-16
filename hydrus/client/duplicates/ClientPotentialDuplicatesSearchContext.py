@@ -252,7 +252,7 @@ class PotentialDuplicateIdPairsAndDistances( object ):
     
     def IterateBlocks( self ):
         
-        for block in HydrusLists.SplitListIntoChunks( self._potential_id_pairs_and_distances, POTENTIAL_DUPLICATE_PAIRS_BLOCK_SIZE_GUIDELINE ):
+        for block in HydrusLists.split_list_into_chunks(self._potential_id_pairs_and_distances, POTENTIAL_DUPLICATE_PAIRS_BLOCK_SIZE_GUIDELINE):
             
             yield PotentialDuplicateIdPairsAndDistances( block )
             
@@ -367,14 +367,14 @@ class PotentialDuplicateIdPairsAndDistances( object ):
         self._potential_id_pairs_and_distances.sort()
         
         # this ensures we still have a decent random selection within that
-        self._potential_id_pairs_and_distances = HydrusLists.RandomiseListByChunks( self._potential_id_pairs_and_distances, POTENTIAL_DUPLICATE_PAIRS_BLOCK_SIZE_GUIDELINE )
+        self._potential_id_pairs_and_distances = HydrusLists.randomise_list_by_chunks(self._potential_id_pairs_and_distances, POTENTIAL_DUPLICATE_PAIRS_BLOCK_SIZE_GUIDELINE)
         
     
     def RandomiseForRichEstimate( self ):
         
         # we want hits early and thus are going for a very fine-grained randomisation
         # I'd just do random.shuffle but it is a bit slow at n=1 tbh
-        self._potential_id_pairs_and_distances = HydrusLists.RandomiseListByChunks( self._potential_id_pairs_and_distances, 32 )
+        self._potential_id_pairs_and_distances = HydrusLists.randomise_list_by_chunks(self._potential_id_pairs_and_distances, 32)
         
     
 

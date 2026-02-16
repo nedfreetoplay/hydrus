@@ -278,7 +278,7 @@ class DB( HydrusDB.HydrusDB ):
             
             try:
                 
-                for name in HydrusLists.IterateListRandomlyAndFast( names_to_analyze ):
+                for name in HydrusLists.iterate_list_randomly_and_fast(names_to_analyze):
                     
                     started = HydrusTime.GetNowPrecise()
                     
@@ -1102,7 +1102,7 @@ class DB( HydrusDB.HydrusDB ):
     
     def _GetServiceIds( self, limited_types = HC.ALL_SERVICES ):
         
-        return [service_id for ( service_id, ) in self._execute('SELECT service_id FROM services WHERE service_type IN ' + HydrusLists.SplayListForDB(limited_types) + ';')]
+        return [service_id for ( service_id, ) in self._execute('SELECT service_id FROM services WHERE service_type IN ' + HydrusLists.splay_list_for_db(limited_types) + ';')]
         
     
     def _GetServiceInfo( self, service_key: bytes ):
@@ -1123,7 +1123,7 @@ class DB( HydrusDB.HydrusDB ):
     
     def _GetServiceKeys( self, limited_types = HC.ALL_SERVICES ):
         
-        return [service_key for ( service_key, ) in self._execute('SELECT service_key FROM services WHERE service_type IN ' + HydrusLists.SplayListForDB(limited_types) + ';')]
+        return [service_key for ( service_key, ) in self._execute('SELECT service_key FROM services WHERE service_type IN ' + HydrusLists.splay_list_for_db(limited_types) + ';')]
         
     
     def _GetServiceName( self, service_id ):
@@ -1158,7 +1158,7 @@ class DB( HydrusDB.HydrusDB ):
         
         services = []
         
-        service_info = self._execute('SELECT service_key, service_type, name, port, dictionary_string FROM services WHERE service_type IN ' + HydrusLists.SplayListForDB(limited_types) + ';').fetchall()
+        service_info = self._execute('SELECT service_key, service_type, name, port, dictionary_string FROM services WHERE service_type IN ' + HydrusLists.splay_list_for_db(limited_types) + ';').fetchall()
         
         for ( service_key, service_type, name, port, dictionary_string ) in service_info:
             
@@ -1949,7 +1949,7 @@ class DB( HydrusDB.HydrusDB ):
             
             petition_account_ids = list( petitioner_account_ids_to_reason_ids.keys() )
             
-            for petition_account_id in HydrusLists.IterateListRandomlyAndFast( petition_account_ids ):
+            for petition_account_id in HydrusLists.iterate_list_randomly_and_fast(petition_account_ids):
                 
                 reason_ids = petitioner_account_ids_to_reason_ids[ petition_account_id ]
                 
@@ -2585,7 +2585,7 @@ class DB( HydrusDB.HydrusDB ):
         
         for ( service_tag_id, service_hash_ids ) in list(service_tag_ids_to_service_hash_ids.items()):
             
-            for block_of_service_hash_ids in HydrusLists.SplitListIntoChunks( service_hash_ids, MAX_CONTENT_CHUNK ):
+            for block_of_service_hash_ids in HydrusLists.split_list_into_chunks(service_hash_ids, MAX_CONTENT_CHUNK):
                 
                 row_weight = len( block_of_service_hash_ids )
                 
@@ -2597,7 +2597,7 @@ class DB( HydrusDB.HydrusDB ):
         
         for ( service_tag_id, service_hash_ids ) in list(service_tag_ids_to_service_hash_ids.items()):
             
-            for block_of_service_hash_ids in HydrusLists.SplitListIntoChunks( service_hash_ids, MAX_CONTENT_CHUNK ):
+            for block_of_service_hash_ids in HydrusLists.split_list_into_chunks(service_hash_ids, MAX_CONTENT_CHUNK):
                 
                 row_weight = len( block_of_service_hash_ids )
                 

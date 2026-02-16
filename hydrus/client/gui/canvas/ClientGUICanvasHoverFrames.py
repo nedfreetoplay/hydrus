@@ -121,7 +121,7 @@ class RatingIncDecCanvas( ClientGUIRatings.RatingIncDec ):
                     
                     hashes = content_update.GetHashes()
                     
-                    if HydrusLists.SetsIntersect( self._hashes, hashes ):
+                    if HydrusLists.sets_intersect(self._hashes, hashes):
                         
                         ( self._rating_state, self._rating ) = ClientRatings.GetIncDecStateFromMedia( ( self._current_media, ), self._service_key )
                         
@@ -268,7 +268,7 @@ class RatingLikeCanvas( ClientGUIRatings.RatingLike ):
                     
                     hashes = content_update.GetHashes()
                     
-                    if HydrusLists.SetsIntersect( self._hashes, hashes ):
+                    if HydrusLists.sets_intersect(self._hashes, hashes):
                         
                         self._SetRatingFromCurrentMedia()
                         
@@ -390,7 +390,7 @@ class RatingNumericalCanvas( ClientGUIRatings.RatingNumericalControl ):
                     
                     hashes = content_update.GetHashes()
                     
-                    if HydrusLists.SetsIntersect( self._hashes, hashes ):
+                    if HydrusLists.sets_intersect(self._hashes, hashes):
                         
                         ( self._rating_state, self._rating ) = ClientRatings.GetNumericalStateFromMedia( ( self._current_media, ), self._service_key )
                         

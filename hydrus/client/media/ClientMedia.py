@@ -1646,8 +1646,8 @@ class MediaCollection( MediaList, Media ):
         current = set( current_to_timestamps_ms.keys() )
         deleted = set( deleted_to_timestamps_ms.keys() )
         
-        pending = HydrusLists.MassUnion( [ locations_manager.GetPending() for locations_manager in all_locations_managers ] )
-        petitioned = HydrusLists.MassUnion( [ locations_manager.GetPetitioned() for locations_manager in all_locations_managers ] )
+        pending = HydrusLists.mass_union([locations_manager.GetPending() for locations_manager in all_locations_managers])
+        petitioned = HydrusLists.mass_union([locations_manager.GetPetitioned() for locations_manager in all_locations_managers])
         
         times_manager = ClientMediaManagers.TimesManager()
         

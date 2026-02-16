@@ -912,7 +912,7 @@ class TestClientDBTags( unittest.TestCase ):
                 # let's test a mix of atomic and complete sync
                 block_size = random.choice( [ 1, 3, 5 ] )
                 
-                for block_of_content_updates in HydrusLists.SplitListIntoChunks( content_updates, block_size ):
+                for block_of_content_updates in HydrusLists.split_list_into_chunks(content_updates, block_size):
                     
                     self._write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( other_service_key, block_of_content_updates ) )
                     

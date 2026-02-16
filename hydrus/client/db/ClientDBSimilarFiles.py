@@ -674,7 +674,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
         
         self._execute_many('DELETE FROM shape_perceptual_hash_map WHERE phash_id = ? AND hash_id = ?;', ((perceptual_hash_id, hash_id) for perceptual_hash_id in perceptual_hash_ids))
         
-        useful_perceptual_hash_ids = {perceptual_hash for ( perceptual_hash, ) in self._execute('SELECT phash_id FROM shape_perceptual_hash_map WHERE phash_id IN ' + HydrusLists.SplayListForDB(perceptual_hash_ids) + ';')}
+        useful_perceptual_hash_ids = {perceptual_hash for ( perceptual_hash, ) in self._execute('SELECT phash_id FROM shape_perceptual_hash_map WHERE phash_id IN ' + HydrusLists.splay_list_for_db(perceptual_hash_ids) + ';')}
         
         useless_perceptual_hash_ids = perceptual_hash_ids.difference( useful_perceptual_hash_ids )
         
@@ -947,7 +947,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
             similar_hash_ids_and_distances.extend( self.SearchPerceptualHashes( perceptual_hashes, max_hamming_distance ) )
             
         
-        similar_hash_ids_and_distances = HydrusLists.DedupeList( similar_hash_ids_and_distances )
+        similar_hash_ids_and_distances = HydrusLists.dedupe_list(similar_hash_ids_and_distances)
         
         return similar_hash_ids_and_distances
         
@@ -963,7 +963,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
             similar_hash_ids_and_distances.extend( [ ( pixel_dupe_hash_id, 0 ) for pixel_dupe_hash_id in pixel_dupe_hash_ids ] )
             
         
-        similar_hash_ids_and_distances = HydrusLists.DedupeList( similar_hash_ids_and_distances )
+        similar_hash_ids_and_distances = HydrusLists.dedupe_list(similar_hash_ids_and_distances)
         
         return similar_hash_ids_and_distances
         
@@ -1152,7 +1152,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
             similar_hash_ids_and_distances.extend( similar_hash_ids_to_distances.items() )
             
         
-        similar_hash_ids_and_distances = HydrusLists.DedupeList( similar_hash_ids_and_distances )
+        similar_hash_ids_and_distances = HydrusLists.dedupe_list(similar_hash_ids_and_distances)
         
         return similar_hash_ids_and_distances
         

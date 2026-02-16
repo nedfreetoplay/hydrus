@@ -264,7 +264,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
                 
                 CG.client_controller.pub( 'modal_message', job_status )
                 
-                for name in HydrusLists.IterateListRandomlyAndFast( names_to_analyze ):
+                for name in HydrusLists.iterate_list_randomly_and_fast(names_to_analyze):
                     
                     CG.client_controller.frame_splash_status.SetText( 'analyzing ' + name )
                     job_status.SetStatusText( 'analyzing ' + name )

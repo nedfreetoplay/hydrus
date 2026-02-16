@@ -594,7 +594,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
         
         CHUNK_SIZE = 64
         
-        for ( num_done, num_to_do, block_of_hash_ids ) in HydrusLists.SplitListIntoChunksRich( query_hash_ids, CHUNK_SIZE ):
+        for ( num_done, num_to_do, block_of_hash_ids ) in HydrusLists.split_list_into_chunks_rich(query_hash_ids, CHUNK_SIZE):
             
             job_status.SetStatusText( 'searching: {}'.format( HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do ) ) )
             
@@ -857,7 +857,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             
             CHUNK_SIZE = 64
             
-            for ( num_done, num_to_do, chunk_of_media_results ) in HydrusLists.SplitListIntoChunksRich( my_files_media_results, CHUNK_SIZE ):
+            for ( num_done, num_to_do, chunk_of_media_results ) in HydrusLists.split_list_into_chunks_rich(my_files_media_results, CHUNK_SIZE):
                 
                 if job_status.IsCancelled():
                     

@@ -287,7 +287,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
             
             all_pairs_for_this_table = self._execute(f'SELECT smaller_media_id, larger_media_id FROM {table_name};').fetchall()
             
-            for group_of_pairs in HydrusLists.SplitListIntoChunks( all_pairs_for_this_table, 10000 ):
+            for group_of_pairs in HydrusLists.split_list_into_chunks(all_pairs_for_this_table, 10000):
                 
                 valid_pairs = self.modules_files_duplicates_storage.FilterMediaIdPairs( location_context, group_of_pairs )
                 
@@ -324,7 +324,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
         
         not_searched_table_name = statuses_to_table_names[ ClientDuplicatesAutoResolution.DUPLICATE_STATUS_NOT_SEARCHED ]
         
-        for group_of_pairs in HydrusLists.SplitListIntoChunks( all_pairs, 10000 ):
+        for group_of_pairs in HydrusLists.split_list_into_chunks(all_pairs, 10000):
             
             pairs_to_add = set( self.modules_files_duplicates_storage.FilterMediaIdPairs( location_context, group_of_pairs ) )
             
@@ -636,7 +636,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
                     statuses_to_pairs_i_have[ status ] = pairs_i_have
                     
                 
-                all_my_pairs = HydrusLists.MassUnion( statuses_to_pairs_i_have.values() )
+                all_my_pairs = HydrusLists.mass_union(statuses_to_pairs_i_have.values())
                 
                 pairs_we_should_add = pairs_stored_in_duplicates_proper.difference( all_my_pairs )
                 

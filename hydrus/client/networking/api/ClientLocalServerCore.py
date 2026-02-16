@@ -932,7 +932,7 @@ def ParseHashes( request: HydrusServerRequest.HydrusRequest, optional = False ):
         raise HydrusExceptions.BadRequestException( 'Please include some files in your request--file_id or hash based!' )
         
     
-    hashes = HydrusLists.DedupeList( hashes )
+    hashes = HydrusLists.dedupe_list(hashes)
     
     if not optional or len( hashes ) > 0:
         

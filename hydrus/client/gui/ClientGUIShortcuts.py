@@ -525,7 +525,7 @@ simple_shortcut_name_to_action_lookup = {
     'custom' : SHORTCUTS_MEDIA_ACTIONS + SHORTCUTS_MEDIA_VIEWER_ACTIONS
 }
 
-simple_shortcut_name_to_action_lookup = { key : HydrusLists.DedupeList( value ) for ( key, value ) in simple_shortcut_name_to_action_lookup.items() }
+simple_shortcut_name_to_action_lookup = {key : HydrusLists.dedupe_list(value) for (key, value) in simple_shortcut_name_to_action_lookup.items()}
 
 CUMULATIVE_MOUSEWARP_MANHATTAN_LENGTH = 0
 
@@ -1587,7 +1587,7 @@ class ShortcutsHandler( QC.QObject ):
             
             ancestor_shortcuts_handlers = AncestorShortcutsHandlers( self._parent )
             
-            all_ancestor_shortcut_names = HydrusLists.MassUnion( [ ancestor_shortcuts_handler.GetShortcutNames() for ancestor_shortcuts_handler in ancestor_shortcuts_handlers ] )
+            all_ancestor_shortcut_names = HydrusLists.mass_union([ancestor_shortcuts_handler.GetShortcutNames() for ancestor_shortcuts_handler in ancestor_shortcuts_handlers])
             
             ancestor_command = shortcuts_manager().GetCommand( all_ancestor_shortcut_names, shortcut )
             

@@ -795,7 +795,7 @@ class ClientFilesManager( object ):
                     
                     missing_prefixes = sorted( missing_dict[ missing_base_location ] )
                     
-                    missing_prefixes_string = '    ' + '\n'.join( ( ', '.join( block ) for block in HydrusLists.SplitListIntoChunks( missing_prefixes, 32 ) ) )
+                    missing_prefixes_string = '    ' + '\n'.join(( ', '.join( block ) for block in HydrusLists.split_list_into_chunks(missing_prefixes, 32)))
                     
                     missing_string += '\n'
                     missing_string += str( missing_base_location )

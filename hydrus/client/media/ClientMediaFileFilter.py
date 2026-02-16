@@ -191,7 +191,7 @@ class FileFilter( HydrusSerialisable.SerialisableBase ):
                     
                 elif and_or_or == 'OR':
                     
-                    return sum( ( 1 for m in flat_media if HydrusLists.SetsIntersect( m.GetTagsManager().GetCurrentAndPending( tag_service_key, ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL ), select_tags ) ) )
+                    return sum((1 for m in flat_media if HydrusLists.sets_intersect(m.GetTagsManager().GetCurrentAndPending(tag_service_key, ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL), select_tags)))
                     
                 
             
@@ -272,7 +272,7 @@ class FileFilter( HydrusSerialisable.SerialisableBase ):
                     
                 elif and_or_or == 'OR':
                     
-                    filtered_media = [ m for m in flat_media if HydrusLists.SetsIntersect( m.GetTagsManager().GetCurrentAndPending( tag_service_key, ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL ), select_tags ) ]
+                    filtered_media = [m for m in flat_media if HydrusLists.sets_intersect(m.GetTagsManager().GetCurrentAndPending(tag_service_key, ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL), select_tags)]
                     
                 
             
@@ -336,7 +336,7 @@ class FileFilter( HydrusSerialisable.SerialisableBase ):
                     
                 elif and_or_or == 'OR':
                     
-                    filtered_media = { m for m in media_list.GetSortedMedia() if HydrusLists.SetsIntersect( m.GetTagsManager().GetCurrentAndPending( tag_service_key, ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL ), select_tags ) }
+                    filtered_media = {m for m in media_list.GetSortedMedia() if HydrusLists.sets_intersect(m.GetTagsManager().GetCurrentAndPending(tag_service_key, ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL), select_tags)}
                     
                 
             

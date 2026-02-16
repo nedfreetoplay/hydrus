@@ -58,7 +58,7 @@ def DoMoveOrDuplicateLocalFiles( dest_service_key: bytes, action: int, media_res
     
     now_ms = HydrusTime.GetNowMS()
     
-    for ( num_done, num_to_do, block_of_media_results ) in HydrusLists.SplitListIntoChunksRich( media_results, BLOCK_SIZE ):
+    for ( num_done, num_to_do, block_of_media_results ) in HydrusLists.split_list_into_chunks_rich(media_results, BLOCK_SIZE):
         
         if job_status.IsCancelled():
             

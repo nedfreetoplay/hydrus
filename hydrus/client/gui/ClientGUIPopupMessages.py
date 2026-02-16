@@ -793,7 +793,7 @@ class JobStatusPopupQueue( object ):
                             
                             new_hashes.extend( hashes )
                             
-                            new_hashes = HydrusLists.DedupeList( new_hashes )
+                            new_hashes = HydrusLists.dedupe_list(new_hashes)
                             
                             existing_job_status.SetFiles( new_hashes, existing_label )
                             

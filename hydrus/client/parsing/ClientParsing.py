@@ -152,7 +152,7 @@ def ParseHashesFromRawHexText( hash_type, hex_hashes_raw ):
     
     hex_hashes = [ hex_hash for hex_hash in hex_hashes if len( hex_hash ) % 2 == 0 ]
     
-    hex_hashes = HydrusLists.DedupeList( hex_hashes )
+    hex_hashes = HydrusLists.dedupe_list(hex_hashes)
     
     hashes = tuple( [ bytes.fromhex( hex_hash ) for hex_hash in hex_hashes ] )
     

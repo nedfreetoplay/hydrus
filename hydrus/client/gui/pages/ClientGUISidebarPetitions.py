@@ -1540,8 +1540,8 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
                 
             
         
-        copyable_items_a = HydrusLists.DedupeList( copyable_items_a )
-        copyable_items_b = HydrusLists.DedupeList( copyable_items_b )
+        copyable_items_a = HydrusLists.dedupe_list(copyable_items_a)
+        copyable_items_b = HydrusLists.dedupe_list(copyable_items_b)
         
         if len( copyable_items_a ) + len( copyable_items_b ) > 0:
             

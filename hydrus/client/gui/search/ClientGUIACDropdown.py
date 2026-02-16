@@ -353,7 +353,7 @@ def ReadFetch(
                 include_current_tags = tag_context.include_current_tags
                 include_pending_tags = tag_context.include_pending_tags
                 
-                for ( num_done, num_to_do, group_of_tags_managers ) in HydrusLists.SplitListIntoChunksRich( tags_managers, 1000 ):
+                for ( num_done, num_to_do, group_of_tags_managers ) in HydrusLists.split_list_into_chunks_rich(tags_managers, 1000):
                     
                     if include_current_tags:
                         
@@ -1696,7 +1696,7 @@ class ChildrenTab( ListBoxTagsPredicatesAC ):
                     
                     new_tags_to_child_tags = CG.client_controller.read('tag_descendants_lookup', tag_service_key, uncached_context_tags)
                     
-                    new_child_tags = HydrusLists.MassUnion( new_tags_to_child_tags.values() )
+                    new_child_tags = HydrusLists.mass_union(new_tags_to_child_tags.values())
                     
                     child_predicates = CG.client_controller.read(
                         'tag_predicates',
@@ -3332,7 +3332,7 @@ class ListBoxTagsActiveSearchPredicates( ClientGUIListBoxes.ListBoxTagsPredicate
             
             or_preds = [ p for p in predicates if p.IsORPredicate() ]
             
-            sub_preds = HydrusLists.MassUnion( [ p.GetValue() for p in or_preds ] )
+            sub_preds = HydrusLists.mass_union([p.GetValue() for p in or_preds])
             
             self._EnterPredicates( or_preds, permit_add = False )
             self._EnterPredicates( sub_preds, permit_remove = False )

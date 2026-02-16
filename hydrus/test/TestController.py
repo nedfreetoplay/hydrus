@@ -964,7 +964,7 @@ class Controller( object ):
             TestHydrusServer
         ]
         
-        module_lookup[ 'all' ] = sorted( HydrusLists.MassUnion( module_lookup.values() ), key = lambda d: d.__name__ )
+        module_lookup[ 'all' ] = sorted(HydrusLists.mass_union(module_lookup.values()), key = lambda d: d.__name__)
         
         if run_all:
             

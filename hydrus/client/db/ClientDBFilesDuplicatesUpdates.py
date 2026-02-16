@@ -840,7 +840,7 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
                 
                 all_bad_ids = [ ( king_hash_id, media_id ) for ( king_hash_id, media_id ) in all_ids_we_are_tracking if king_hash_id in bad_king_hash_ids ]
                 
-                for ( num_done, num_to_do, batch_of_bad_ids ) in HydrusLists.SplitListIntoChunksRich( all_bad_ids, 16 ):
+                for ( num_done, num_to_do, batch_of_bad_ids ) in HydrusLists.split_list_into_chunks_rich(all_bad_ids, 16):
                     
                     if job_status.IsCancelled():
                         

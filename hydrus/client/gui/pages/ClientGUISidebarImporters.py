@@ -738,7 +738,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
                 
                 have_published_job_status = False
                 
-                for ( i, block_of_hashes ) in enumerate( HydrusLists.SplitIteratorIntoChunks( hashes, BLOCK_SIZE ) ):
+                for ( i, block_of_hashes ) in enumerate(HydrusLists.split_iterator_into_chunks(hashes, BLOCK_SIZE)):
                     
                     num_done = i * BLOCK_SIZE
                     
@@ -1926,7 +1926,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                     return all_media_results
                     
                 
-                for ( i, block_of_hashes ) in enumerate( HydrusLists.SplitIteratorIntoChunks( hashes, BLOCK_SIZE ) ):
+                for ( i, block_of_hashes ) in enumerate(HydrusLists.split_iterator_into_chunks(hashes, BLOCK_SIZE)):
                     
                     num_done = i * BLOCK_SIZE
                     

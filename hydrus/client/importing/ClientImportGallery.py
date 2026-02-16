@@ -45,7 +45,7 @@ class GalleryImport( HydrusSerialisable.SerialisableBase ):
             initial_search_urls = []
             
         
-        initial_search_urls = HydrusLists.DedupeList( initial_search_urls )
+        initial_search_urls = HydrusLists.dedupe_list(initial_search_urls)
         
         super().__init__()
         

@@ -68,7 +68,7 @@ def ActionAutoResolutionReviewPairs( rule: "DuplicatesAutoResolutionRule", decis
     approve_pairs = [ ( decision.media_result_a, decision.media_result_b ) for decision in decisions if decision.approved ]
     deny_pairs = [ ( decision.media_result_a, decision.media_result_b ) for decision in decisions if not decision.approved ]
     
-    for ( num_done, num_to_do, chunk ) in HydrusLists.SplitListIntoChunksRich( approve_pairs, 4 ):
+    for ( num_done, num_to_do, chunk ) in HydrusLists.split_list_into_chunks_rich(approve_pairs, 4):
         
         message = f'approving: {HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do )}'
         
@@ -81,7 +81,7 @@ def ActionAutoResolutionReviewPairs( rule: "DuplicatesAutoResolutionRule", decis
         CG.client_controller.write_synchronous('duplicates_auto_resolution_approve_pending_pairs', rule, chunk)
         
     
-    for ( num_done, num_to_do, chunk ) in HydrusLists.SplitListIntoChunksRich( deny_pairs, 4 ):
+    for ( num_done, num_to_do, chunk ) in HydrusLists.split_list_into_chunks_rich(deny_pairs, 4):
         
         message = f'denying: {HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do )}'
         

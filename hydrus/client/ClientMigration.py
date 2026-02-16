@@ -546,7 +546,7 @@ class MigrationSourceHTA( MigrationSource ):
     
     def GetSomeData( self ):
         
-        data = HydrusLists.PullNFromIterator( self._iterator, 256 )
+        data = HydrusLists.pull_n_from_iterator(self._iterator, 256)
         
         if len( data ) == 0:
             
@@ -647,7 +647,7 @@ class MigrationSourceHTPA( MigrationSource ):
     
     def GetSomeData( self ):
         
-        data = HydrusLists.PullNFromIterator( self._iterator, 256 )
+        data = HydrusLists.pull_n_from_iterator(self._iterator, 256)
         
         if len( data ) == 0:
             
@@ -692,7 +692,7 @@ class MigrationSourceList( MigrationSource ):
     
     def GetSomeData( self ):
         
-        some_data = HydrusLists.PullNFromIterator( self._iterator, 5 )
+        some_data = HydrusLists.pull_n_from_iterator(self._iterator, 5)
         
         if len( some_data ) == 0:
             

@@ -801,7 +801,7 @@ class ParsedPost( object ):
                 
             
         
-        url_list = HydrusLists.DedupeList( url_list )
+        url_list = HydrusLists.dedupe_list(url_list)
         
         return url_list
         

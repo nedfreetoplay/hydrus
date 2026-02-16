@@ -67,7 +67,7 @@ def DAEMONMaintainTrash():
                 return
                 
             
-            for group_of_hashes in HydrusLists.SplitIteratorIntoChunks( hashes, 8 ):
+            for group_of_hashes in HydrusLists.split_iterator_into_chunks(hashes, 8):
                 
                 if HydrusThreading.IsThreadShuttingDown():
                     
@@ -102,7 +102,7 @@ def DAEMONMaintainTrash():
         
         while len( hashes ) > 0:
             
-            for group_of_hashes in HydrusLists.SplitIteratorIntoChunks( hashes, 8 ):
+            for group_of_hashes in HydrusLists.split_iterator_into_chunks(hashes, 8):
                 
                 if HydrusThreading.IsThreadShuttingDown():
                     

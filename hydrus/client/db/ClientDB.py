@@ -436,7 +436,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             
         
-        for block_of_tag_ids in HydrusLists.SplitIteratorIntoChunks( tag_ids_in_dispute, 1024 ):
+        for block_of_tag_ids in HydrusLists.split_iterator_into_chunks(tag_ids_in_dispute, 1024):
             
             self._CacheTagsSyncTags( tag_service_id, block_of_tag_ids, just_these_file_service_ids = file_service_ids )
             
@@ -618,8 +618,8 @@ class DB( HydrusDB.HydrusDB ):
             
             # first up, the removees. what is in actual but not ideal
             
-            some_removee_sibling_rows = HydrusLists.SampleSetByGettingFirst( sibling_rows_to_remove, 20 )
-            some_removee_parent_rows = HydrusLists.SampleSetByGettingFirst( parent_rows_to_remove, 20 )
+            some_removee_sibling_rows = HydrusLists.sample_set_by_getting_first(sibling_rows_to_remove, 20)
+            some_removee_parent_rows = HydrusLists.sample_set_by_getting_first(parent_rows_to_remove, 20)
             
             possibly_affected_tag_ids = set()
             
@@ -705,8 +705,8 @@ class DB( HydrusDB.HydrusDB ):
                 
                 # there is nothing to remove, so we'll now go for what is in ideal but not actual
                 
-                some_addee_sibling_rows = HydrusLists.SampleSetByGettingFirst( sibling_rows_to_add, 20 )
-                some_addee_parent_rows = HydrusLists.SampleSetByGettingFirst( parent_rows_to_add, 20 )
+                some_addee_sibling_rows = HydrusLists.sample_set_by_getting_first(sibling_rows_to_add, 20)
+                some_addee_parent_rows = HydrusLists.sample_set_by_getting_first(parent_rows_to_add, 20)
                 
                 if len( some_addee_sibling_rows ) + len( some_addee_parent_rows ) > 0:
                     
@@ -1479,7 +1479,7 @@ class DB( HydrusDB.HydrusDB ):
         
         if types_to_delete is not None:
             
-            predicates.append( 'info_type IN {}'.format( HydrusLists.SplayListForDB( types_to_delete ) ) )
+            predicates.append( 'info_type IN {}'.format(HydrusLists.splay_list_for_db(types_to_delete)))
             
         
         if len( predicates ) > 0:
@@ -3335,7 +3335,7 @@ class DB( HydrusDB.HydrusDB ):
         
         current_files_table_name = ClientDBFilesStorage.GenerateFilesTableName( service_id, HC.CONTENT_STATUS_CURRENT )
         
-        needed_hash_ids = self._stl(self._execute('SELECT hash_id FROM {} NATURAL JOIN files_info WHERE mime IN {} EXCEPT SELECT hash_id FROM remote_thumbnails WHERE service_id = ?;'.format(current_files_table_name, HydrusLists.SplayListForDB(HC.MIMES_WITH_THUMBNAILS)), (service_id,)))
+        needed_hash_ids = self._stl(self._execute('SELECT hash_id FROM {} NATURAL JOIN files_info WHERE mime IN {} EXCEPT SELECT hash_id FROM remote_thumbnails WHERE service_id = ?;'.format(current_files_table_name, HydrusLists.splay_list_for_db(HC.MIMES_WITH_THUMBNAILS)), (service_id,)))
         
         needed_hashes = []
         
@@ -3411,7 +3411,7 @@ class DB( HydrusDB.HydrusDB ):
         
         info_types = set( info_types )
         
-        results = {info_type : info for ( info_type, info ) in self._execute('SELECT info_type, info FROM service_info WHERE service_id = ? AND info_type IN ' + HydrusLists.SplayListForDB(info_types) + ';', (service_id,))}
+        results = {info_type : info for ( info_type, info ) in self._execute('SELECT info_type, info FROM service_info WHERE service_id = ? AND info_type IN ' + HydrusLists.splay_list_for_db(info_types) + ';', (service_id,))}
         
         if len( results ) != len( info_types ) and calculate_missing:
             
@@ -3549,7 +3549,7 @@ class DB( HydrusDB.HydrusDB ):
     
     def _GetTablesAndColumnsUsingDefinitions( self, content_type ):
         
-        return HydrusLists.MassExtend((module.get_tables_and_columns_that_use_definitions(content_type) for module in self._modules))
+        return HydrusLists.mass_extend((module.get_tables_and_columns_that_use_definitions(content_type) for module in self._modules))
         
     
     def _GetTrashHashes( self, limit = None, minimum_age = None ):
@@ -4955,7 +4955,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 i = content_iterator_dict[ 'new_files' ]
                 
-                for chunk in HydrusLists.SplitIteratorIntoAutothrottledChunks( i, FILES_INITIAL_CHUNK_SIZE, precise_time_to_stop ):
+                for chunk in HydrusLists.split_iterator_into_autothrottled_chunks(i, FILES_INITIAL_CHUNK_SIZE, precise_time_to_stop):
                     
                     files_info_rows = []
                     files_rows = []
@@ -4992,7 +4992,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 i = content_iterator_dict[ 'deleted_files' ]
                 
-                for chunk in HydrusLists.SplitIteratorIntoAutothrottledChunks( i, FILES_INITIAL_CHUNK_SIZE, precise_time_to_stop ):
+                for chunk in HydrusLists.split_iterator_into_autothrottled_chunks(i, FILES_INITIAL_CHUNK_SIZE, precise_time_to_stop):
                     
                     service_hash_ids = chunk
                     
@@ -5020,7 +5020,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 i = content_iterator_dict[ 'new_mappings' ]
                 
-                for chunk in HydrusLists.SplitMappingIteratorIntoAutothrottledChunks( i, MAPPINGS_INITIAL_CHUNK_SIZE, precise_time_to_stop ):
+                for chunk in HydrusLists.split_mapping_iterator_into_autothrottled_chunks(i, MAPPINGS_INITIAL_CHUNK_SIZE, precise_time_to_stop):
                     
                     mappings_ids = []
                     
@@ -5057,7 +5057,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 i = content_iterator_dict[ 'deleted_mappings' ]
                 
-                for chunk in HydrusLists.SplitMappingIteratorIntoAutothrottledChunks( i, MAPPINGS_INITIAL_CHUNK_SIZE, precise_time_to_stop ):
+                for chunk in HydrusLists.split_mapping_iterator_into_autothrottled_chunks(i, MAPPINGS_INITIAL_CHUNK_SIZE, precise_time_to_stop):
                     
                     deleted_mappings_ids = []
                     
@@ -5099,7 +5099,7 @@ class DB( HydrusDB.HydrusDB ):
                     
                     i = content_iterator_dict[ 'new_parents' ]
                     
-                    for chunk in HydrusLists.SplitIteratorIntoAutothrottledChunks( i, PAIR_ROWS_INITIAL_CHUNK_SIZE, precise_time_to_stop ):
+                    for chunk in HydrusLists.split_iterator_into_autothrottled_chunks(i, PAIR_ROWS_INITIAL_CHUNK_SIZE, precise_time_to_stop):
                         
                         parent_ids = []
                         tag_ids = set()
@@ -5138,7 +5138,7 @@ class DB( HydrusDB.HydrusDB ):
                     
                     i = content_iterator_dict[ 'deleted_parents' ]
                     
-                    for chunk in HydrusLists.SplitIteratorIntoAutothrottledChunks( i, PAIR_ROWS_INITIAL_CHUNK_SIZE, precise_time_to_stop ):
+                    for chunk in HydrusLists.split_iterator_into_autothrottled_chunks(i, PAIR_ROWS_INITIAL_CHUNK_SIZE, precise_time_to_stop):
                         
                         parent_ids = []
                         tag_ids = set()
@@ -5182,7 +5182,7 @@ class DB( HydrusDB.HydrusDB ):
                     
                     i = content_iterator_dict[ 'new_siblings' ]
                     
-                    for chunk in HydrusLists.SplitIteratorIntoAutothrottledChunks( i, PAIR_ROWS_INITIAL_CHUNK_SIZE, precise_time_to_stop ):
+                    for chunk in HydrusLists.split_iterator_into_autothrottled_chunks(i, PAIR_ROWS_INITIAL_CHUNK_SIZE, precise_time_to_stop):
                         
                         sibling_ids = []
                         tag_ids = set()
@@ -5223,7 +5223,7 @@ class DB( HydrusDB.HydrusDB ):
                     
                     i = content_iterator_dict[ 'deleted_siblings' ]
                     
-                    for chunk in HydrusLists.SplitIteratorIntoAutothrottledChunks( i, PAIR_ROWS_INITIAL_CHUNK_SIZE, precise_time_to_stop ):
+                    for chunk in HydrusLists.split_iterator_into_autothrottled_chunks(i, PAIR_ROWS_INITIAL_CHUNK_SIZE, precise_time_to_stop):
                         
                         sibling_ids = []
                         tag_ids = set()
@@ -5882,7 +5882,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 # yes we do want 'actual' here I think. we are regenning the actual current computation
                 # maybe we'll ultimately expand this to the ideal also, we'll see how it goes
-                affected_tag_ids = HydrusLists.MassUnion( ( self.modules_tag_display.GetChainsMembers( ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, tag_service_id, ( tag_id, ) ) for tag_id in tag_ids ) )
+                affected_tag_ids = HydrusLists.mass_union((self.modules_tag_display.GetChainsMembers(ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, tag_service_id, (tag_id,)) for tag_id in tag_ids))
                 
                 tag_service_ids_to_affected_tag_ids[ tag_service_id ] = affected_tag_ids
                 
@@ -5897,7 +5897,7 @@ class DB( HydrusDB.HydrusDB ):
                 job_status.SetStatusText( message )
                 self._controller.frame_splash_status.SetSubtext( message )
                 
-                all_affected_tag_ids = HydrusLists.MassUnion( tag_service_ids_to_affected_tag_ids.values() )
+                all_affected_tag_ids = HydrusLists.mass_union(tag_service_ids_to_affected_tag_ids.values())
                 
                 self.modules_tags_local_cache.DropTagIdsFromCache( all_affected_tag_ids )
                 # I think the clever add is done by later regen gubbins here
@@ -7216,7 +7216,7 @@ class DB( HydrusDB.HydrusDB ):
                     
                     mimes_we_want = ( HC.ANIMATION_UGOIRA, )
                     
-                    hash_ids = self._sts(self._execute('SELECT hash_id FROM {} CROSS JOIN files_info USING ( hash_id ) WHERE mime IN {};'.format(temp_hash_ids_table_name, HydrusLists.SplayListForDB(mimes_we_want))))
+                    hash_ids = self._sts(self._execute('SELECT hash_id FROM {} CROSS JOIN files_info USING ( hash_id ) WHERE mime IN {};'.format(temp_hash_ids_table_name, HydrusLists.splay_list_for_db(mimes_we_want))))
                     self.modules_files_maintenance_queue.AddJobs( hash_ids, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_METADATA )
                     self.modules_files_maintenance_queue.AddJobs( hash_ids, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FORCE_THUMBNAIL )
                     
@@ -7450,7 +7450,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 with self._make_temporary_integer_table(all_local_hash_ids, 'hash_id') as temp_hash_ids_table_name:
                     
-                    hash_ids = self._sts(self._execute('SELECT hash_id FROM {} CROSS JOIN files_info USING ( hash_id ) WHERE mime IN {};'.format(temp_hash_ids_table_name, HydrusLists.SplayListForDB(HC.FILES_THAT_HAVE_PERCEPTUAL_HASH))))
+                    hash_ids = self._sts(self._execute('SELECT hash_id FROM {} CROSS JOIN files_info USING ( hash_id ) WHERE mime IN {};'.format(temp_hash_ids_table_name, HydrusLists.splay_list_for_db(HC.FILES_THAT_HAVE_PERCEPTUAL_HASH))))
                     self.modules_files_maintenance_queue.AddJobs( hash_ids, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_CHECK_SIMILAR_FILES_MEMBERSHIP )
                     
                 
@@ -8166,7 +8166,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 table_join = self.modules_files_storage.GetTableJoinLimitedByFileDomain( self.modules_services.hydrus_local_file_storage_service_id, 'files_info', HC.CONTENT_STATUS_CURRENT )
                 
-                hash_ids = self._stl(self._execute('SELECT hash_id FROM {} WHERE mime IN {};'.format(table_join, HydrusLists.SplayListForDB([HC.IMAGE_AVIF]))))
+                hash_ids = self._stl(self._execute('SELECT hash_id FROM {} WHERE mime IN {};'.format(table_join, HydrusLists.splay_list_for_db([HC.IMAGE_AVIF]))))
                 
                 self.modules_files_maintenance_queue.AddJobs( hash_ids, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_HAS_EXIF )
                 self.modules_files_maintenance_queue.AddJobs( hash_ids, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_HAS_ICC_PROFILE )
@@ -8523,7 +8523,7 @@ class DB( HydrusDB.HydrusDB ):
                     
                     mimes_we_want = ( HC.IMAGE_JXL, )
                     
-                    hash_ids = self._sts(self._execute('SELECT hash_id FROM {} CROSS JOIN files_info USING ( hash_id ) WHERE mime IN {};'.format(temp_hash_ids_table_name, HydrusLists.SplayListForDB(mimes_we_want))))
+                    hash_ids = self._sts(self._execute('SELECT hash_id FROM {} CROSS JOIN files_info USING ( hash_id ) WHERE mime IN {};'.format(temp_hash_ids_table_name, HydrusLists.splay_list_for_db(mimes_we_want))))
                     self.modules_files_maintenance_queue.AddJobs( hash_ids, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_METADATA )
                     
                 
@@ -8560,7 +8560,7 @@ class DB( HydrusDB.HydrusDB ):
                     
                     mimes_we_want = HC.MIMES_THAT_WE_CAN_CHECK_FOR_TRANSPARENCY
                     
-                    hash_ids = self._sts(self._execute('SELECT hash_id FROM {} CROSS JOIN files_info USING ( hash_id ) CROSS JOIN has_transparency USING ( hash_id ) WHERE mime IN {};'.format(temp_hash_ids_table_name, HydrusLists.SplayListForDB(mimes_we_want))))
+                    hash_ids = self._sts(self._execute('SELECT hash_id FROM {} CROSS JOIN files_info USING ( hash_id ) CROSS JOIN has_transparency USING ( hash_id ) WHERE mime IN {};'.format(temp_hash_ids_table_name, HydrusLists.splay_list_for_db(mimes_we_want))))
                     
                     if len( hash_ids ) > 0:
                         
