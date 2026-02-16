@@ -125,7 +125,7 @@ def GetDefaultHentaiFoundryInfo():
     
 def GetDefaultGUGs():
     
-    paths = HydrusStaticDir.ListStaticDirFilePaths( os.path.join( 'default', 'gugs' ) )
+    paths = HydrusStaticDir.list_static_dir_file_paths(os.path.join('default', 'gugs'))
     
     from hydrus.client.networking import ClientNetworkingGUG
     
@@ -152,7 +152,7 @@ def GetDefaultSingleGUGs():
 
 def GetDefaultLoginScripts():
     
-    paths = HydrusStaticDir.ListStaticDirFilePaths( os.path.join( 'default', 'login_scripts' ) )
+    paths = HydrusStaticDir.list_static_dir_file_paths(os.path.join('default', 'login_scripts'))
     
     from hydrus.client.networking import ClientNetworkingLogin
     
@@ -161,7 +161,7 @@ def GetDefaultLoginScripts():
 
 def GetDefaultParsers():
     
-    paths = HydrusStaticDir.ListStaticDirFilePaths( os.path.join( 'default', 'parsers' ) )
+    paths = HydrusStaticDir.list_static_dir_file_paths(os.path.join('default', 'parsers'))
     
     from hydrus.client.parsing import ClientParsing
     
@@ -736,7 +736,7 @@ def GetDefaultShortcuts():
 
 def GetDefaultSimpleDownloaderFormulae():
     
-    paths = HydrusStaticDir.ListStaticDirFilePaths( os.path.join( 'default', 'simple_downloader_formulae' ) )
+    paths = HydrusStaticDir.list_static_dir_file_paths(os.path.join('default', 'simple_downloader_formulae'))
     
     from hydrus.client.parsing import ClientParsing
     
@@ -745,7 +745,7 @@ def GetDefaultSimpleDownloaderFormulae():
 
 def GetDefaultURLClasses():
     
-    paths = HydrusStaticDir.ListStaticDirFilePaths( os.path.join( 'default', 'url_classes' ) )
+    paths = HydrusStaticDir.list_static_dir_file_paths(os.path.join('default', 'url_classes'))
     
     from hydrus.client.networking import ClientNetworkingURLClass
     

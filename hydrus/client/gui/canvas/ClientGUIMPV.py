@@ -640,8 +640,8 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         # THUS, DO NOT EVER TALK TO THIS GUY DURING A paintEvent. fetch your data and call update() if it changed. Also, we now make sure _something_ is loaded as much as possible, even if it is a black square png
         # #####
         #
-        self._black_png_path = HydrusStaticDir.GetStaticPath( 'blacksquare.png' )
-        self._hydrus_png_path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+        self._black_png_path = HydrusStaticDir.get_static_path('blacksquare.png')
+        self._hydrus_png_path = HydrusStaticDir.get_static_path('hydrus.png')
         self._currently_in_media_load_error_state = False
         
         self._current_mpv_player_state = MPV_WIDGET_STATE_INITIALISING

@@ -35,7 +35,7 @@ def GetAvailableStyleSheets():
     
     extensions = [ '.qss', '.css' ]
     
-    for path in HydrusStaticDir.ListStaticDirFilePaths( 'qss' ):
+    for path in HydrusStaticDir.list_static_dir_file_paths('qss'):
         
         ( d, filename ) = os.path.split( path )
         
@@ -56,7 +56,7 @@ def InitialiseDefaults():
     
     try:
         
-        with open( HydrusStaticDir.GetStaticPath( os.path.join( 'qss', 'default_hydrus.qss' ) ), 'r', encoding = 'utf-8' ) as f:
+        with open(HydrusStaticDir.get_static_path(os.path.join('qss', 'default_hydrus.qss')), 'r', encoding ='utf-8') as f:
             
             DEFAULT_HYDRUS_STYLESHEET = f.read()
             
@@ -179,7 +179,7 @@ def SetStyleSheet( stylesheet, name, prepend_hydrus = True ):
 
 def SetStyleSheetFromPath( filename ):
     
-    path = HydrusStaticDir.GetStaticPath( os.path.join( 'qss', filename ) )
+    path = HydrusStaticDir.get_static_path(os.path.join('qss', filename))
     
     if not os.path.exists( path ):
         

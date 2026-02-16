@@ -240,7 +240,7 @@ class TestClientAPI( unittest.TestCase ):
         
         #
         
-        with open( HydrusStaticDir.GetStaticPath( 'hydrus.ico' ), 'rb' ) as f:
+        with open(HydrusStaticDir.get_static_path('hydrus.ico'), 'rb') as f:
             
             favicon = f.read()
             
@@ -1017,7 +1017,7 @@ class TestClientAPI( unittest.TestCase ):
         
         self.assertEqual( response.getheader( 'content-type' ), 'image/svg+xml' )
         
-        svg_path = HydrusStaticDir.GetRatingSVGPath( 'star' )
+        svg_path = HydrusStaticDir.get_rating_svg_path('star')
         
         svg_file = open( svg_path, 'rb' )
         
@@ -1088,7 +1088,7 @@ class TestClientAPI( unittest.TestCase ):
         
         TG.test_controller.SetRead( 'hash_status', f )
         
-        hydrus_png_path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+        hydrus_png_path = HydrusStaticDir.get_static_path('hydrus.png')
         
         with open( hydrus_png_path, 'rb' ) as f:
             
@@ -1800,7 +1800,7 @@ class TestClientAPI( unittest.TestCase ):
         
         f.hash = hash
         
-        hydrus_png_path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+        hydrus_png_path = HydrusStaticDir.get_static_path('hydrus.png')
         
         with open( hydrus_png_path, 'rb' ) as f:
             
@@ -1839,7 +1839,7 @@ class TestClientAPI( unittest.TestCase ):
         
         f.hash = hash
         
-        hydrus_png_path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+        hydrus_png_path = HydrusStaticDir.get_static_path('hydrus.png')
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex, 'Content-Type' : HC.mime_mimetype_string_lookup[ HC.APPLICATION_JSON ] }
         
@@ -8103,7 +8103,7 @@ class TestClientAPI( unittest.TestCase ):
         TG.test_controller.SetRead( 'media_result', media_result )
         TG.test_controller.SetRead( 'media_results_from_ids', ( media_result, ) )
         
-        path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+        path = HydrusStaticDir.get_static_path('hydrus.png')
         
         file_path = TG.test_controller.client_files_manager.GetFilePath( hash, HC.IMAGE_PNG, check_file_exists = False )
         
@@ -8111,7 +8111,7 @@ class TestClientAPI( unittest.TestCase ):
         
         thumb_hash = b'\x17\xde\xd6\xee\x1b\xfa\x002\xbdj\xc0w\x92\xce5\xf0\x12~\xfe\x915\xb3\xb3tA\xac\x90F\x95\xc2T\xc5'
         
-        path = HydrusStaticDir.GetStaticPath( 'hydrus_small.png' )
+        path = HydrusStaticDir.get_static_path('hydrus_small.png')
         
         thumb_path = TG.test_controller.client_files_manager._GenerateExpectedThumbnailPath( hash )
         
@@ -8438,7 +8438,7 @@ class TestClientAPI( unittest.TestCase ):
         
         data = response.read()
         
-        with open( HydrusStaticDir.GetStaticPath( 'hydrus.png' ), 'rb' ) as f:
+        with open(HydrusStaticDir.get_static_path('hydrus.png'), 'rb') as f:
             
             expected_data = f.read()
             

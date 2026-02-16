@@ -116,7 +116,7 @@ class TestClientDB( unittest.TestCase ):
         
         hash = b'\xadm5\x99\xa6\xc4\x89\xa5u\xeb\x19\xc0&\xfa\xce\x97\xa9\xcdey\xe7G(\xb0\xce\x94\xa6\x01\xd22\xf3\xc3'
         
-        path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+        path = HydrusStaticDir.get_static_path('hydrus.png')
         
         file_import_job = ClientImportFiles.FileImportJob( path, file_import_options )
         
@@ -362,7 +362,7 @@ class TestClientDB( unittest.TestCase ):
         
         hash = b'\xadm5\x99\xa6\xc4\x89\xa5u\xeb\x19\xc0&\xfa\xce\x97\xa9\xcdey\xe7G(\xb0\xce\x94\xa6\x01\xd22\xf3\xc3'
         
-        path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+        path = HydrusStaticDir.get_static_path('hydrus.png')
         
         file_import_options = FileImportOptionsLegacy.FileImportOptionsLegacy()
         file_import_options.SetIsDefault( True )
@@ -801,7 +801,7 @@ class TestClientDB( unittest.TestCase ):
         
         hash = b'\xadm5\x99\xa6\xc4\x89\xa5u\xeb\x19\xc0&\xfa\xce\x97\xa9\xcdey\xe7G(\xb0\xce\x94\xa6\x01\xd22\xf3\xc3'
         
-        path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+        path = HydrusStaticDir.get_static_path('hydrus.png')
         
         file_import_options = FileImportOptionsLegacy.FileImportOptionsLegacy()
         file_import_options.SetIsDefault( True )
@@ -840,7 +840,7 @@ class TestClientDB( unittest.TestCase ):
         
         md5 = bytes.fromhex( 'fdadb2cae78f2dfeb629449cd005f2a2' )
         
-        path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+        path = HydrusStaticDir.get_static_path('hydrus.png')
         
         ( media_result, ) = self._read( 'media_results', ( hash, ) )
         
@@ -959,7 +959,7 @@ class TestClientDB( unittest.TestCase ):
         
         md5 = bytes.fromhex( 'fdadb2cae78f2dfeb629449cd005f2a2' )
         
-        path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+        path = HydrusStaticDir.get_static_path('hydrus.png')
         
         ( media_result, ) = self._read( 'media_results', ( hash, ) )
         
@@ -1299,7 +1299,7 @@ class TestClientDB( unittest.TestCase ):
             
             TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
             
-            path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', filename ) )
+            path = HydrusStaticDir.get_static_path(os.path.join('testing', filename))
             
             hash = bytes.fromhex( hex_hash )
             
@@ -1434,7 +1434,7 @@ class TestClientDB( unittest.TestCase ):
         
         md5 = bytes.fromhex( 'fdadb2cae78f2dfeb629449cd005f2a2' )
         
-        path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+        path = HydrusStaticDir.get_static_path('hydrus.png')
         
         #
         
@@ -1503,7 +1503,7 @@ class TestClientDB( unittest.TestCase ):
         
         md5 = bytes.fromhex( 'fdadb2cae78f2dfeb629449cd005f2a2' )
         
-        path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+        path = HydrusStaticDir.get_static_path('hydrus.png')
         
         #
         
@@ -1569,7 +1569,7 @@ class TestClientDB( unittest.TestCase ):
         
         TestClientDB._clear_db()
         
-        path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+        path = HydrusStaticDir.get_static_path('hydrus.png')
         
         file_import_options = FileImportOptionsLegacy.FileImportOptionsLegacy()
         file_import_options.SetIsDefault( True )
@@ -1647,7 +1647,7 @@ class TestClientDB( unittest.TestCase ):
             
             TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
             
-            path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', filename ) )
+            path = HydrusStaticDir.get_static_path(os.path.join('testing', filename))
             
             file_import_job = ClientImportFiles.FileImportJob( path, file_import_options )
             
@@ -1887,7 +1887,7 @@ class TestClientDB( unittest.TestCase ):
             
             TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
             
-            path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', filename ) )
+            path = HydrusStaticDir.get_static_path(os.path.join('testing', filename))
             
             file_import_job = ClientImportFiles.FileImportJob( path, file_import_options )
             

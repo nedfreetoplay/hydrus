@@ -8,14 +8,14 @@ INSTALL_STATIC_DIR = os.path.join( HC.BASE_DIR, 'static' )
 
 USE_USER_STATIC_DIR = True
 
-def GetStaticIconPath( name: str, force_install_dir = False, force_svg = False ) -> str:
+def get_static_icon_path(name: str, force_install_dir = False, force_svg = False) -> str:
     
-    ( svg_path, was_userdir ) = GetStaticPathWithResult( name + '.svg', force_install_dir = force_install_dir )
+    ( svg_path, was_userdir ) = get_static_path_with_result(name + '.svg', force_install_dir = force_install_dir)
     
     if not force_svg and not was_userdir:
         
         # a little ugly, but user png has preference over install svg
-        ( png_path, was_userdir ) = GetStaticPathWithResult( name + '.png', force_install_dir = force_install_dir )
+        ( png_path, was_userdir ) = get_static_path_with_result(name + '.png', force_install_dir = force_install_dir)
         
         if was_userdir:
             
@@ -35,7 +35,7 @@ def GetStaticIconPath( name: str, force_install_dir = False, force_svg = False )
             
         else:
             
-            png_path = GetStaticPath( name + '.png', force_install_dir = force_install_dir )
+            png_path = get_static_path(name + '.png', force_install_dir = force_install_dir)
             
             path = png_path
             
@@ -44,14 +44,14 @@ def GetStaticIconPath( name: str, force_install_dir = False, force_svg = False )
     return path
     
 
-def GetStaticPath( sub_path: str, force_install_dir = False ):
+def get_static_path(sub_path: str, force_install_dir = False):
     
-    ( path, was_userdir ) = GetStaticPathWithResult( sub_path, force_install_dir = force_install_dir )
+    ( path, was_userdir ) = get_static_path_with_result(sub_path, force_install_dir = force_install_dir)
     
     return path
     
 
-def GetStaticPathWithResult( sub_path: str, force_install_dir = False ):
+def get_static_path_with_result(sub_path: str, force_install_dir = False):
     
     if not force_install_dir and USE_USER_STATIC_DIR and HG.controller is not None:
         
@@ -66,11 +66,11 @@ def GetStaticPathWithResult( sub_path: str, force_install_dir = False ):
     return ( os.path.join( INSTALL_STATIC_DIR, sub_path ), False )
     
 
-def GetRatingSVGPath( name ) -> str:
+def get_rating_svg_path(name) -> str:
     
     name = os.path.join( HC.USERPATH_SVG_ICON, name )
     
-    path = GetStaticIconPath( name, force_svg = True )
+    path = get_static_icon_path(name, force_svg = True)
     
     if os.path.exists( path ):
         
@@ -82,10 +82,10 @@ def GetRatingSVGPath( name ) -> str:
         
     
 
-def ListStaticDirFilePaths( sub_dir_path: str ):
+def list_static_dir_file_paths(sub_dir_path: str):
     
-    user_path = GetStaticPath( sub_dir_path )
-    install_path = GetStaticPath( sub_dir_path, force_install_dir = True )
+    user_path = get_static_path(sub_dir_path)
+    install_path = get_static_path(sub_dir_path, force_install_dir = True)
     
     dirs_to_do = []
     

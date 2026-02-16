@@ -735,7 +735,7 @@ class ThumbnailCache( object ):
             
             try:
                 
-                svg_thumbnail_path = HydrusStaticDir.GetStaticPath( 'image.svg' )
+                svg_thumbnail_path = HydrusStaticDir.get_static_path('image.svg')
                 
                 numpy_image_resolution = ClientSVGHandling.GetSVGResolution( svg_thumbnail_path )
                 

@@ -27,12 +27,12 @@ from hydrus.test import TestController
 from hydrus.test import TestGlobals as TG
 
 
-with open( HydrusStaticDir.GetStaticPath( 'hydrus.png' ), 'rb' ) as f_g:
+with open(HydrusStaticDir.get_static_path('hydrus.png'), 'rb') as f_g:
     
     EXAMPLE_FILE = f_g.read()
     
 
-with open( HydrusStaticDir.GetStaticPath( 'hydrus_small.png' ), 'rb' ) as f_g:
+with open(HydrusStaticDir.get_static_path('hydrus_small.png'), 'rb') as f_g:
     
     EXAMPLE_THUMBNAIL = f_g.read()
     
@@ -156,7 +156,7 @@ class TestServer( unittest.TestCase ):
         
         #
         
-        with open( HydrusStaticDir.GetStaticPath( 'hydrus.ico' ), 'rb' ) as f:
+        with open(HydrusStaticDir.get_static_path('hydrus.ico'), 'rb') as f:
             
             favicon = f.read()
             
@@ -198,7 +198,7 @@ class TestServer( unittest.TestCase ):
         
         #
         
-        path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+        path = HydrusStaticDir.get_static_path('hydrus.png')
         
         TG.test_controller.ClearWrites( 'file' )
         

@@ -25,7 +25,7 @@ from hydrus.client.search import ClientSearchTagContext
 from hydrus.test import TestGlobals as TG
 from hydrus.test import HelperFunctions
 
-with open( HydrusStaticDir.GetStaticPath( 'hydrus.png' ), 'rb' ) as f:
+with open(HydrusStaticDir.get_static_path('hydrus.png'), 'rb') as f:
     
     EXAMPLE_FILE = f.read()
     
@@ -48,7 +48,7 @@ class TestDaemons( unittest.TestCase ):
             
             fake_file_path = os.path.join( test_dir_source, '0' )
             
-            HydrusPaths.mirror_file(HydrusStaticDir.GetStaticPath('hydrus.png'), fake_file_path)
+            HydrusPaths.mirror_file(HydrusStaticDir.get_static_path('hydrus.png'), fake_file_path)
             
             #
             
@@ -167,7 +167,7 @@ class TestDaemons( unittest.TestCase ):
             
             HydrusPaths.make_sure_directory_exists(test_dir)
             
-            hydrus_png_path = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+            hydrus_png_path = HydrusStaticDir.get_static_path('hydrus.png')
             
             HydrusPaths.mirror_file(hydrus_png_path, os.path.join(test_dir, '0'))
             HydrusPaths.mirror_file(hydrus_png_path, os.path.join(test_dir, '1')) # previously imported

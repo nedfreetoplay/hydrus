@@ -38,7 +38,7 @@ class FrameSplashPanel( QW.QWidget ):
         self._initial_position = self.parentWidget().pos()
         
         # this is 124 x 166
-        self._hydrus_pixmap = QG.QPixmap( HydrusStaticDir.GetStaticPath( 'hydrus_splash.png' ) )
+        self._hydrus_pixmap = QG.QPixmap(HydrusStaticDir.get_static_path('hydrus_splash.png'))
         
         self._image_label = QW.QLabel( self )
         

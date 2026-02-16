@@ -1087,7 +1087,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         st.setWordWrap( True )
         st.setAlignment( QC.Qt.AlignmentFlag.AlignCenter )
         
-        lain_path = HydrusStaticDir.GetStaticPath( 'lain.jpg' )
+        lain_path = HydrusStaticDir.get_static_path('lain.jpg')
         
         lain_qt_pixmap = ClientRendering.GenerateHydrusBitmap( lain_path, HC.IMAGE_JPEG ).GetQtPixmap()
         
@@ -2533,7 +2533,7 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
         
         self._mr_bones_text = ClientGUICommon.BetterStaticText( self )
         
-        boned_path = HydrusStaticDir.GetStaticPath( 'boned.jpg' )
+        boned_path = HydrusStaticDir.get_static_path('boned.jpg')
         
         boned_qt_pixmap = ClientRendering.GenerateHydrusBitmap( boned_path, HC.IMAGE_JPEG ).GetQtPixmap()
         

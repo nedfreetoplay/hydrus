@@ -24,7 +24,7 @@ class HydrusService( Site ):
         
         self._service = service
         
-        self.hydrus_favicon = FileResource( HydrusStaticDir.GetStaticPath( 'hydrus.ico' ), defaultType = 'image/x-icon' )
+        self.hydrus_favicon = FileResource(HydrusStaticDir.get_static_path('hydrus.ico'), defaultType ='image/x-icon')
         
         service_type = self._service.GetServiceType()
         

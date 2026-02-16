@@ -87,7 +87,7 @@ class MediaPlaybackPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         mpv_panel = ClientGUICommon.StaticBox( self, 'mpv' )
         
-        self._mpv_conf_path = ClientGUIPathWidgets.FilePickerCtrl( mpv_panel, starting_directory = HydrusStaticDir.GetStaticPath( 'mpv-conf' ) )
+        self._mpv_conf_path = ClientGUIPathWidgets.FilePickerCtrl(mpv_panel, starting_directory = HydrusStaticDir.get_static_path('mpv-conf'))
         
         self._use_legacy_mpv_mediator = QW.QCheckBox( mpv_panel )
         self._use_legacy_mpv_mediator.setToolTip( ClientGUIFunctions.WrapToolTip( 'Leave this off it you can. You can try it if mpv errors out or does not show seekbar progress on any load (probably because of an older mpv version). If you have opened any mpv windows, restart the client to take effect.' ) )

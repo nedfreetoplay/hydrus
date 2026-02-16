@@ -669,7 +669,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         self._locator = QLocator.QLocator( self )
         
         # TODO: Rework this to StacicIconPath and change the fetch to name not name.png
-        self._locator.setIconPathFactory( HydrusStaticDir.GetStaticPath )
+        self._locator.setIconPathFactory(HydrusStaticDir.get_static_path)
         
         for provider in CC.command_palette_provider_str_lookup.keys():
             

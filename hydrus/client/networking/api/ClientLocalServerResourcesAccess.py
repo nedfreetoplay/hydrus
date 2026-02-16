@@ -339,7 +339,7 @@ class HydrusResourceClientAPIRestrictedGetServiceRatingSVG( ClientLocalServerRes
                 
                 svg_name = star_type.GetRatingSVG()
                 
-                svg_path = HydrusStaticDir.GetRatingSVGPath( svg_name )
+                svg_path = HydrusStaticDir.get_rating_svg_path(svg_name)
                 
                 with open( svg_path, 'rb' ) as f:
                     

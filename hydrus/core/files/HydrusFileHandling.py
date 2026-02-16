@@ -29,56 +29,56 @@ from hydrus.core.files import HydrusOLEHandling
 from hydrus.core.files.images import HydrusImageHandling
 from hydrus.core.networking import HydrusNetwork
 
-mimes_to_default_thumbnail_paths = collections.defaultdict( lambda: HydrusStaticDir.GetStaticPath( 'hydrus.png' ) )
+mimes_to_default_thumbnail_paths = collections.defaultdict(lambda: HydrusStaticDir.get_static_path('hydrus.png'))
 
 def InitialiseMimesToDefaultThumbnailPaths():
     
     for mime in HC.AUDIO:
         
-        mimes_to_default_thumbnail_paths[ mime ] = HydrusStaticDir.GetStaticPath( 'audio.png' )
+        mimes_to_default_thumbnail_paths[ mime ] = HydrusStaticDir.get_static_path('audio.png')
         
     
     for mime in HC.VIDEO:
         
-        mimes_to_default_thumbnail_paths[ mime ] = HydrusStaticDir.GetStaticPath( 'video.png' )
+        mimes_to_default_thumbnail_paths[ mime ] = HydrusStaticDir.get_static_path('video.png')
         
     
     for mime in HC.ANIMATIONS:
         
-        mimes_to_default_thumbnail_paths[ mime ] = HydrusStaticDir.GetStaticPath( 'video.png' )
+        mimes_to_default_thumbnail_paths[ mime ] = HydrusStaticDir.get_static_path('video.png')
         
     
     for mime in HC.ARCHIVES:
         
-        mimes_to_default_thumbnail_paths[ mime ] = HydrusStaticDir.GetStaticPath( 'zip.png' )
+        mimes_to_default_thumbnail_paths[ mime ] = HydrusStaticDir.get_static_path('zip.png')
         
     
     for mime in HC.IMAGES:
         
-        mimes_to_default_thumbnail_paths[ mime ] = HydrusStaticDir.GetStaticPath( 'image.png' )
+        mimes_to_default_thumbnail_paths[ mime ] = HydrusStaticDir.get_static_path('image.png')
         
     
-    mimes_to_default_thumbnail_paths[ HC.APPLICATION_UNKNOWN ] = HydrusStaticDir.GetStaticPath( 'hydrus.png' )
+    mimes_to_default_thumbnail_paths[ HC.APPLICATION_UNKNOWN ] = HydrusStaticDir.get_static_path('hydrus.png')
     
-    mimes_to_default_thumbnail_paths[ HC.APPLICATION_PDF ] = HydrusStaticDir.GetStaticPath( 'pdf.png' )
-    mimes_to_default_thumbnail_paths[ HC.APPLICATION_DOCX ] = HydrusStaticDir.GetStaticPath( 'docx.png' )
-    mimes_to_default_thumbnail_paths[ HC.APPLICATION_XLSX ] = HydrusStaticDir.GetStaticPath( 'xlsx.png' )
-    mimes_to_default_thumbnail_paths[ HC.APPLICATION_PPTX ] = HydrusStaticDir.GetStaticPath( 'pptx.png' )
-    mimes_to_default_thumbnail_paths[ HC.APPLICATION_DOC ] = HydrusStaticDir.GetStaticPath( 'doc.png' )
-    mimes_to_default_thumbnail_paths[ HC.APPLICATION_XLS ] = HydrusStaticDir.GetStaticPath( 'xls.png' )
-    mimes_to_default_thumbnail_paths[ HC.APPLICATION_PPT ] = HydrusStaticDir.GetStaticPath( 'ppt.png' )
-    mimes_to_default_thumbnail_paths[ HC.APPLICATION_EPUB ] = HydrusStaticDir.GetStaticPath( 'epub.png' )
-    mimes_to_default_thumbnail_paths[ HC.APPLICATION_DJVU ] = HydrusStaticDir.GetStaticPath( 'djvu.png' )
-    mimes_to_default_thumbnail_paths[ HC.APPLICATION_PSD ] = HydrusStaticDir.GetStaticPath( 'psd.png' )
-    mimes_to_default_thumbnail_paths[ HC.APPLICATION_CLIP ] = HydrusStaticDir.GetStaticPath( 'clip.png' )
-    mimes_to_default_thumbnail_paths[ HC.APPLICATION_SAI2 ] = HydrusStaticDir.GetStaticPath( 'sai.png' )
-    mimes_to_default_thumbnail_paths[ HC.APPLICATION_KRITA ] = HydrusStaticDir.GetStaticPath( 'krita.png' )
-    mimes_to_default_thumbnail_paths[ HC.APPLICATION_PAINT_DOT_NET ] = HydrusStaticDir.GetStaticPath( 'paintnet.png' )
-    mimes_to_default_thumbnail_paths[ HC.APPLICATION_FLASH ] = HydrusStaticDir.GetStaticPath( 'flash.png' )
-    mimes_to_default_thumbnail_paths[ HC.APPLICATION_XCF ] = HydrusStaticDir.GetStaticPath( 'xcf.png' )
-    mimes_to_default_thumbnail_paths[ HC.APPLICATION_PROCREATE ] = HydrusStaticDir.GetStaticPath( 'procreate.png' )
-    mimes_to_default_thumbnail_paths[ HC.APPLICATION_RTF ] = HydrusStaticDir.GetStaticPath( 'rtf.png' )
-    mimes_to_default_thumbnail_paths[ HC.IMAGE_SVG ] = HydrusStaticDir.GetStaticPath( 'svg.png' )
+    mimes_to_default_thumbnail_paths[ HC.APPLICATION_PDF ] = HydrusStaticDir.get_static_path('pdf.png')
+    mimes_to_default_thumbnail_paths[ HC.APPLICATION_DOCX ] = HydrusStaticDir.get_static_path('docx.png')
+    mimes_to_default_thumbnail_paths[ HC.APPLICATION_XLSX ] = HydrusStaticDir.get_static_path('xlsx.png')
+    mimes_to_default_thumbnail_paths[ HC.APPLICATION_PPTX ] = HydrusStaticDir.get_static_path('pptx.png')
+    mimes_to_default_thumbnail_paths[ HC.APPLICATION_DOC ] = HydrusStaticDir.get_static_path('doc.png')
+    mimes_to_default_thumbnail_paths[ HC.APPLICATION_XLS ] = HydrusStaticDir.get_static_path('xls.png')
+    mimes_to_default_thumbnail_paths[ HC.APPLICATION_PPT ] = HydrusStaticDir.get_static_path('ppt.png')
+    mimes_to_default_thumbnail_paths[ HC.APPLICATION_EPUB ] = HydrusStaticDir.get_static_path('epub.png')
+    mimes_to_default_thumbnail_paths[ HC.APPLICATION_DJVU ] = HydrusStaticDir.get_static_path('djvu.png')
+    mimes_to_default_thumbnail_paths[ HC.APPLICATION_PSD ] = HydrusStaticDir.get_static_path('psd.png')
+    mimes_to_default_thumbnail_paths[ HC.APPLICATION_CLIP ] = HydrusStaticDir.get_static_path('clip.png')
+    mimes_to_default_thumbnail_paths[ HC.APPLICATION_SAI2 ] = HydrusStaticDir.get_static_path('sai.png')
+    mimes_to_default_thumbnail_paths[ HC.APPLICATION_KRITA ] = HydrusStaticDir.get_static_path('krita.png')
+    mimes_to_default_thumbnail_paths[ HC.APPLICATION_PAINT_DOT_NET ] = HydrusStaticDir.get_static_path('paintnet.png')
+    mimes_to_default_thumbnail_paths[ HC.APPLICATION_FLASH ] = HydrusStaticDir.get_static_path('flash.png')
+    mimes_to_default_thumbnail_paths[ HC.APPLICATION_XCF ] = HydrusStaticDir.get_static_path('xcf.png')
+    mimes_to_default_thumbnail_paths[ HC.APPLICATION_PROCREATE ] = HydrusStaticDir.get_static_path('procreate.png')
+    mimes_to_default_thumbnail_paths[ HC.APPLICATION_RTF ] = HydrusStaticDir.get_static_path('rtf.png')
+    mimes_to_default_thumbnail_paths[ HC.IMAGE_SVG ] = HydrusStaticDir.get_static_path('svg.png')
     
 
 def GenerateDefaultThumbnail( mime: int, target_resolution: tuple[ int, int ] ):

@@ -488,7 +488,7 @@ class TestServerDB( unittest.TestCase ):
                 'width' : 200,
                 'mime' : 2,
                 'size' : 5270,
-                'path' : HydrusStaticDir.GetStaticPath( 'hydrus.png' ),
+                'path' : HydrusStaticDir.get_static_path('hydrus.png'),
                 'thumbnail' : b'abcd'
             }
             

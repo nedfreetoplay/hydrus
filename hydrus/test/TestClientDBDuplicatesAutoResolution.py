@@ -152,7 +152,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
             
             TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
             
-            path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', filename ) )
+            path = HydrusStaticDir.get_static_path(os.path.join('testing', filename))
             
             hash = bytes.fromhex( hex_hash )
             

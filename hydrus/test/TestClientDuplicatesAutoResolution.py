@@ -496,7 +496,7 @@ class TestComparatorHardcoded( unittest.TestCase ):
     
     def _do_file_import( self, name ):
         
-        path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', name ) )
+        path = HydrusStaticDir.get_static_path(os.path.join('testing', name))
         
         file_import_options = FileImportOptionsLegacy.FileImportOptionsLegacy()
         file_import_options.SetIsDefault( True )
@@ -682,7 +682,7 @@ class TestComparatorVisualDuplicates( unittest.TestCase ):
     
     def _do_file_import( self, name ):
         
-        path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', name ) )
+        path = HydrusStaticDir.get_static_path(os.path.join('testing', name))
         
         file_import_options = FileImportOptionsLegacy.FileImportOptionsLegacy()
         file_import_options.SetIsDefault( True )
