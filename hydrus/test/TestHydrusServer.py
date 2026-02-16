@@ -95,7 +95,7 @@ class TestServer( unittest.TestCase ):
             # if db test ran, this is still hanging around and read-only, so don't bother to fail overwriting
             if not os.path.exists( cls._ssl_cert_path ):
                 
-                HydrusEncryption.GenerateOpenSSLCertAndKeyFile( cls._ssl_cert_path, cls._ssl_key_path )
+                HydrusEncryption.generate_open_ssl_cert_and_key_file(cls._ssl_cert_path, cls._ssl_key_path)
                 
             
             from hydrus.core.networking import HydrusServerContextFactory

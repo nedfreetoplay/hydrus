@@ -1079,7 +1079,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                 raise Exception( 'The database was asked for ssl cert and keys to start either the server or the client api in https. The files do not exist yet, so the database wanted to create new ones, but unfortunately "cryptography" library is not available, so this cannot be done. If you are running from source, please install this module using pip. Or drop in your own client.crt/client.key or server.crt/server.key files in the db directory.' )
                 
             
-            HydrusEncryption.GenerateOpenSSLCertAndKeyFile( self._ssl_cert_path, self._ssl_key_path )
+            HydrusEncryption.generate_open_ssl_cert_and_key_file(self._ssl_cert_path, self._ssl_key_path)
             
         
         return ( self._ssl_cert_path, self._ssl_key_path )

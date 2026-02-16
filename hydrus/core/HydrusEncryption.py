@@ -30,7 +30,7 @@ except Exception as e:
     OPENSSL_OK = False
     
 
-def GenerateOpenSSLCertAndKeyFile( cert_path, key_path ):
+def generate_open_ssl_cert_and_key_file(cert_path, key_path):
     
     if not CRYPTO_OK:
         
