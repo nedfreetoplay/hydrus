@@ -172,7 +172,7 @@ def ConvertQtImageToNumPy( qt_image: QG.QImage, strip_useless_alpha = True ):
     
     if strip_useless_alpha:
         
-        numpy_image = HydrusImageNormalisation.StripOutAnyUselessAlphaChannel( numpy_image )
+        numpy_image = HydrusImageNormalisation.strip_out_any_useless_alpha_channel(numpy_image)
         
     
     return numpy_image

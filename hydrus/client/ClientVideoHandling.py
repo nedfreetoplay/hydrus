@@ -132,7 +132,7 @@ class AnimationRendererPIL( object ):
             
             try:
                 
-                current_frame = HydrusImageNormalisation.DequantizePILImage( self._pil_image )
+                current_frame = HydrusImageNormalisation.dequantize_pil_image(self._pil_image)
                 
                 # don't have to worry about pasting alpha-having transparent frames over the previous frame--PIL seems to handle this these days!
                 self._pil_canvas = current_frame

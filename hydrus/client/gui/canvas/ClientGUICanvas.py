@@ -1425,7 +1425,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
                 from hydrus.core.files.images import HydrusImageNormalisation
                 
-                HydrusImageNormalisation.SetDoICCProfileNormalisation( result )
+                HydrusImageNormalisation.set_do_icc_profile_normalisation(result)
                 
             elif action in ( CAC.SIMPLE_FLIP_TRANSPARENCY_CHECKERBOARD_MEDIA_VIEWER, CAC.SIMPLE_FLIP_TRANSPARENCY_CHECKERBOARD_MEDIA_VIEWER_DUPLICATE_FILTER, CAC.SIMPLE_FLIP_TRANSPARENCY_CHECKERBOARD_GREENSCREEN ):
                 

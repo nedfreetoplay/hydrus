@@ -1221,7 +1221,7 @@ class Controller( HydrusController.HydrusController ):
         from hydrus.core.files.images import HydrusImageColours
         
         HydrusImageHandling.set_enable_load_truncated_images(self.new_options.GetBoolean('enable_truncated_images_pil'))
-        HydrusImageNormalisation.SetDoICCProfileNormalisation( self.new_options.GetBoolean( 'do_icc_profile_normalisation' ) )
+        HydrusImageNormalisation.set_do_icc_profile_normalisation(self.new_options.GetBoolean('do_icc_profile_normalisation'))
         HydrusImageColours.set_has_transparency_strictness_level(self.new_options.GetInteger('file_has_transparency_strictness'))
         
         HydrusImageHandling.FORCE_PIL_ALWAYS = self.new_options.GetBoolean( 'load_images_with_pil' )

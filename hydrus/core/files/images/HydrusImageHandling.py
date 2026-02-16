@@ -350,9 +350,9 @@ def generate_numpy_image(path, mime, force_pil = False, human_file_description =
             
         else:
             
-            numpy_image = HydrusImageNormalisation.DequantizeFreshlyLoadedNumPyImage( numpy_image )
+            numpy_image = HydrusImageNormalisation.dequantize_freshly_loaded_num_py_image(numpy_image)
             
-            numpy_image = HydrusImageNormalisation.StripOutAnyUselessAlphaChannel( numpy_image )
+            numpy_image = HydrusImageNormalisation.strip_out_any_useless_alpha_channel(numpy_image)
             
         
     
@@ -377,7 +377,7 @@ def generate_numpy_image_from_pil_image(pil_image: PILImage.Image, strip_useless
     
     if strip_useless_alpha:
         
-        numpy_image = HydrusImageNormalisation.StripOutAnyUselessAlphaChannel( numpy_image )
+        numpy_image = HydrusImageNormalisation.strip_out_any_useless_alpha_channel(numpy_image)
         
     
     return numpy_image
@@ -389,7 +389,7 @@ def generate_pil_image(path: str | typing.BinaryIO, dequantize = True, human_fil
     
     try:
         
-        pil_image = HydrusImageNormalisation.RotateEXIFPILImage( pil_image )
+        pil_image = HydrusImageNormalisation.rotate_exifpil_image(pil_image)
         
         if dequantize:
             
@@ -403,13 +403,13 @@ def generate_pil_image(path: str | typing.BinaryIO, dequantize = True, human_fil
                 
                 numpy_image = generate_numpy_image_from_pil_image(pil_image)
                 
-                numpy_image = HydrusImageNormalisation.NormaliseNumPyImageToUInt8( numpy_image )
+                numpy_image = HydrusImageNormalisation.normalise_num_py_image_to_u_int8(numpy_image)
                 
                 pil_image = generate_pil_image_from_numpy_image(numpy_image)
                 
             
             # note this destroys animated gifs atm, it collapses down to one frame
-            pil_image = HydrusImageNormalisation.DequantizePILImage( pil_image )
+            pil_image = HydrusImageNormalisation.dequantize_pil_image(pil_image)
             
         
         return pil_image

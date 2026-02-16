@@ -728,7 +728,7 @@ def GenerateImageVisualDataNumPy( numpy_image: numpy.ndarray ) -> VisualData:
     
     resolution = ( width, height )
     
-    numpy_image_rgb = HydrusImageNormalisation.StripOutAnyAlphaChannel( numpy_image )
+    numpy_image_rgb = HydrusImageNormalisation.strip_out_any_alpha_channel(numpy_image)
     
     alpha_hist = None
     
@@ -794,7 +794,7 @@ def GenerateImageVisualDataTiledNumPy( numpy_image: numpy.ndarray ) -> VisualDat
     
     resolution = ( width, height )
     
-    numpy_image_rgb = HydrusImageNormalisation.StripOutAnyAlphaChannel( numpy_image )
+    numpy_image_rgb = HydrusImageNormalisation.strip_out_any_alpha_channel(numpy_image)
     
     had_alpha = numpy_image.shape != numpy_image_rgb.shape
     
