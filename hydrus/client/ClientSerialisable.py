@@ -177,17 +177,17 @@ def GetPayloadBytesAndLength( payload_obj ):
     
     if isinstance( payload_obj, bytes ):
         
-        return ( HydrusCompression.CompressBytesToBytes( payload_obj ), len( payload_obj ) )
+        return (HydrusCompression.compress_bytes_to_bytes(payload_obj), len(payload_obj))
         
     elif isinstance( payload_obj, str ):
         
-        return ( HydrusCompression.CompressStringToBytes( payload_obj ), len( payload_obj ) )
+        return (HydrusCompression.compress_string_to_bytes(payload_obj), len(payload_obj))
         
     else:
         
         payload_string = payload_obj.DumpToString()
         
-        return ( HydrusCompression.CompressStringToBytes( payload_string ), len( payload_string ) )
+        return (HydrusCompression.compress_string_to_bytes(payload_string), len(payload_string))
         
     
 def GetPayloadTypeString( payload_obj ):
@@ -349,7 +349,7 @@ def LoadStringFromPNG( path: str ) -> str:
     
     try:
         
-        payload_string = HydrusCompression.DecompressBytesToString( payload_bytes )
+        payload_string = HydrusCompression.decompress_bytes_to_string(payload_bytes)
         
     except Exception as e:
         

@@ -1573,7 +1573,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
                 raw_text = CG.client_controller.GetClipboardText()
                 
                 payload_description = 'clipboard text data'
-                payload = HydrusCompression.CompressStringToBytes( raw_text )
+                payload = HydrusCompression.compress_string_to_bytes(raw_text)
                 
             except HydrusExceptions.DataMissing as e:
                 

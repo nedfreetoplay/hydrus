@@ -14,11 +14,11 @@ except Exception as e: # ImportError wasn't enough here as Linux went up the sho
     pass # this is no big deal
     
 
-def CompressBytesToBytes( obj_bytes: bytes ) -> bytes:
+def compress_bytes_to_bytes(obj_bytes: bytes) -> bytes:
     
     return zlib.compress( obj_bytes, 9 )
     
-def CompressFastBytesToBytes( obj_bytes: bytes ) -> bytes:
+def compress_fast_bytes_to_bytes(obj_bytes: bytes) -> bytes:
     
     if LZ4_OK:
         
@@ -29,13 +29,13 @@ def CompressFastBytesToBytes( obj_bytes: bytes ) -> bytes:
         return obj_bytes
         
     
-def CompressStringToBytes( obj_string: str ) -> bytes:
+def compress_string_to_bytes(obj_string: str) -> bytes:
     
     obj_bytes = bytes( obj_string, 'utf-8' )
     
-    return CompressBytesToBytes( obj_bytes )
+    return compress_bytes_to_bytes(obj_bytes)
     
-def DecompressBytesToBytes( compressed_bytes: bytes ) -> bytes:
+def decompress_bytes_to_bytes(compressed_bytes: bytes) -> bytes:
     
     try:
         
@@ -55,15 +55,15 @@ def DecompressBytesToBytes( compressed_bytes: bytes ) -> bytes:
     
     return obj_bytes
     
-def DecompressBytesToString( compressed_bytes: bytes ) -> str:
+def decompress_bytes_to_string(compressed_bytes: bytes) -> str:
     
-    obj_bytes = DecompressBytesToBytes( compressed_bytes )
+    obj_bytes = decompress_bytes_to_bytes(compressed_bytes)
     
     obj_string = str( obj_bytes, 'utf-8' )
     
     return obj_string
     
-def DecompressFastBytesToBytes( compressed_bytes: bytes ) -> bytes:
+def decompress_fast_bytes_to_bytes(compressed_bytes: bytes) -> bytes:
     
     if LZ4_OK:
         

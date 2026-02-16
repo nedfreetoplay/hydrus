@@ -165,7 +165,7 @@ SERIALISABLE_TYPES_TO_OBJECT_TYPES = {}
 
 def CreateFromNetworkBytes( network_bytes: bytes, raise_error_on_future_version = False ) -> typing.Any:
     
-    obj_string = HydrusCompression.DecompressBytesToString( network_bytes )
+    obj_string = HydrusCompression.decompress_bytes_to_string(network_bytes)
     
     return CreateFromString( obj_string, raise_error_on_future_version = raise_error_on_future_version )
     
@@ -271,7 +271,7 @@ class SerialisableBase( object ):
         
         obj_string = self.DumpToString()
         
-        return HydrusCompression.CompressStringToBytes( obj_string )
+        return HydrusCompression.compress_string_to_bytes(obj_string)
         
     
     def DumpToString( self ):
