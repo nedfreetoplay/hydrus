@@ -1037,7 +1037,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             numpy_image = HydrusImageHandling.GenerateNumPyImage( thumbnail_path, thumbnail_mime )
             
-            return HydrusBlurhash.GetBlurhashFromNumPy( numpy_image )
+            return HydrusBlurhash.get_blurhash_from_num_py(numpy_image)
             
         except Exception as e:
             

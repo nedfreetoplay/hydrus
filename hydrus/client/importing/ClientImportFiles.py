@@ -341,7 +341,7 @@ class FileImportJob( object ):
             
             try:
                 
-                self._blurhash = HydrusBlurhash.GetBlurhashFromNumPy( thumbnail_numpy )
+                self._blurhash = HydrusBlurhash.get_blurhash_from_num_py(thumbnail_numpy)
                 
             except Exception as e:
                 

@@ -80,16 +80,16 @@ def FlattenMedia( medias ) -> list[ "MediaSingleton" ]:
     
 
 sort_data_to_blurhash_to_sortable_calls = {
-    CC.SORT_FILES_BY_AVERAGE_COLOUR_LIGHTNESS : HydrusBlurhash.ConvertBlurhashToSortableLightness,
-    CC.SORT_FILES_BY_AVERAGE_COLOUR_CHROMATIC_MAGNITUDE : HydrusBlurhash.ConvertBlurhashToSortableChromaticMagnitude,
-    CC.SORT_FILES_BY_AVERAGE_COLOUR_CHROMATICITY_GREEN_RED : HydrusBlurhash.ConvertBlurhashToSortableGreenRed,
-    CC.SORT_FILES_BY_AVERAGE_COLOUR_CHROMATICITY_BLUE_YELLOW : HydrusBlurhash.ConvertBlurhashToSortableBlueYellow,
-    CC.SORT_FILES_BY_AVERAGE_COLOUR_HUE : HydrusBlurhash.ConvertBlurhashToSortableHue
+    CC.SORT_FILES_BY_AVERAGE_COLOUR_LIGHTNESS : HydrusBlurhash.convert_blurhash_to_sortable_lightness,
+    CC.SORT_FILES_BY_AVERAGE_COLOUR_CHROMATIC_MAGNITUDE : HydrusBlurhash.convert_blurhash_to_sortable_chromatic_magnitude,
+    CC.SORT_FILES_BY_AVERAGE_COLOUR_CHROMATICITY_GREEN_RED : HydrusBlurhash.convert_blurhash_to_sortable_green_red,
+    CC.SORT_FILES_BY_AVERAGE_COLOUR_CHROMATICITY_BLUE_YELLOW : HydrusBlurhash.convert_blurhash_to_sortable_blue_yellow,
+    CC.SORT_FILES_BY_AVERAGE_COLOUR_HUE : HydrusBlurhash.convert_blurhash_to_sortable_hue
 }
 
 def GetBlurhashToSortableCall( sort_data: int ):
     
-    return sort_data_to_blurhash_to_sortable_calls.get( sort_data, HydrusBlurhash.ConvertBlurhashToSortableLightness )
+    return sort_data_to_blurhash_to_sortable_calls.get(sort_data, HydrusBlurhash.convert_blurhash_to_sortable_lightness)
     
 
 def GetLocalFileServiceKeys( flat_medias: collections.abc.Collection[ "MediaSingleton" ] ):
