@@ -307,11 +307,11 @@ def PILImageIsPNGWithSRGB( pil_image: PILImage.Image ):
 
 def DequantizePILImage( pil_image: PILImage.Image ) -> PILImage.Image:
     
-    if HydrusImageMetadata.HasICCProfile( pil_image ) and DO_ICC_PROFILE_NORMALISATION:
+    if HydrusImageMetadata.has_icc_profile(pil_image) and DO_ICC_PROFILE_NORMALISATION:
         
         try:
             
-            icc_profile_bytes = HydrusImageMetadata.GetICCProfileBytes( pil_image )
+            icc_profile_bytes = HydrusImageMetadata.get_icc_profile_bytes(pil_image)
             
             try:
                 
@@ -458,7 +458,7 @@ def RotateEXIFPILImage( pil_image: PILImage.Image )-> PILImage.Image:
         return pil_image
         
     
-    exif_dict = HydrusImageMetadata.GetEXIFDict( pil_image )
+    exif_dict = HydrusImageMetadata.get_exif_dict(pil_image)
     
     if exif_dict is not None:
         

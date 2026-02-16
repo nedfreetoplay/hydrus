@@ -184,7 +184,7 @@ def HasHumanReadableEmbeddedMetadata( path, mime, human_file_description = None 
             return False
             
         
-        has_human_readable_embedded_metadata = HydrusImageMetadata.HasHumanReadableEmbeddedMetadata( pil_image )
+        has_human_readable_embedded_metadata = HydrusImageMetadata.has_human_readable_embedded_metadata(pil_image)
         
     
     return has_human_readable_embedded_metadata

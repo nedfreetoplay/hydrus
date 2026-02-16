@@ -1235,19 +1235,19 @@ def ShowFileEmbeddedMetadata( win: QW.QWidget, media: ClientMedia.MediaSingleton
             
             if mime in HC.FILES_THAT_CAN_HAVE_EXIF:
                 
-                exif_dict = HydrusImageMetadata.GetEXIFDict( raw_pil_image )
+                exif_dict = HydrusImageMetadata.get_exif_dict(raw_pil_image)
                 
             
             if mime in HC.FILES_THAT_CAN_HAVE_HUMAN_READABLE_EMBEDDED_METADATA:
                 
-                file_text = HydrusImageMetadata.GetEmbeddedFileText( raw_pil_image )
+                file_text = HydrusImageMetadata.get_embedded_file_text(raw_pil_image)
                 
             
             if mime == HC.IMAGE_JPEG:
                 
                 extra_rows.append( ( 'progressive', 'yes' if 'progression' in raw_pil_image.info else 'no' ) )
                 
-                extra_rows.append( ( 'subsampling', HydrusImageMetadata.subsampling_str_lookup[ HydrusImageMetadata.GetJpegSubsamplingRaw( raw_pil_image ) ] ) )
+                extra_rows.append(( 'subsampling', HydrusImageMetadata.subsampling_str_lookup[ HydrusImageMetadata.get_jpeg_subsampling_raw(raw_pil_image)]))
                 
             
         

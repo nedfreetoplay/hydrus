@@ -398,7 +398,7 @@ class FileImportJob( object ):
                     raw_pil_image = HydrusImageOpening.RawOpenPILImage( self._temp_path, human_file_description = self._human_file_description )
                     
                 
-                has_exif = HydrusImageMetadata.HasEXIF( raw_pil_image )
+                has_exif = HydrusImageMetadata.has_exif(raw_pil_image)
                 
             except Exception as e:
                 
@@ -427,7 +427,7 @@ class FileImportJob( object ):
                         raw_pil_image = HydrusImageOpening.RawOpenPILImage( self._temp_path, human_file_description = self._human_file_description )
                         
                     
-                    has_icc_profile = HydrusImageMetadata.HasICCProfile( raw_pil_image )
+                    has_icc_profile = HydrusImageMetadata.has_icc_profile(raw_pil_image)
                     
                 
             except Exception as e:

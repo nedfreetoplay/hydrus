@@ -293,7 +293,7 @@ def generate_numpy_image(path, mime, force_pil = False, human_file_description =
             force_pil = True
             
         
-        if HydrusImageMetadata.HasICCProfile( pil_image ):
+        if HydrusImageMetadata.has_icc_profile(pil_image):
             
             if HG.media_load_report_mode:
                 
