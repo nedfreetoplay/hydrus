@@ -16,7 +16,7 @@ def GetSubprocessEnv():
     
     if HG.subprocess_report_mode:
         
-        HydrusEnvironment.DumpEnv()
+        HydrusEnvironment.dump_env()
         
     
     env = os.environ.copy()
@@ -235,7 +235,7 @@ def RunSubprocessRawCall( cmd, start_new_session, bufsize, stdin_pipe, stdout_pi
         
         HydrusData.show_text(f'Got a file not found on this external program call: {cmd}')
         HydrusData.show_text(f'If the error is not obvious, you might want to talk to hydev about it. Maybe your env PATH is unusual. Your env will follow, and here were the sbp kwargs used in the subprocess call: {sbp_kwargs}')
-        HydrusEnvironment.DumpEnv()
+        HydrusEnvironment.dump_env()
         
         raise
         

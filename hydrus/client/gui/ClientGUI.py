@@ -3657,7 +3657,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         ClientGUIMenus.AppendMenuItem(data_actions, 'flush log', 'Command the log to write any buffered contents to hard drive.', HydrusData.debug_print, 'Flushing log')
         ClientGUIMenus.AppendMenuItem(data_actions, 'force database commit', 'Command the database to flush all pending changes to disk.', CG.client_controller.force_database_commit)
         ClientGUIMenus.AppendMenuItem( data_actions, 'review threads', 'Show current threads and what they are doing.', self._ReviewThreads )
-        ClientGUIMenus.AppendMenuItem( data_actions, 'show env', 'Print your current environment variables.', HydrusEnvironment.DumpEnv )
+        ClientGUIMenus.AppendMenuItem(data_actions, 'show env', 'Print your current environment variables.', HydrusEnvironment.dump_env)
         ClientGUIMenus.AppendMenuItem( data_actions, 'show scheduled jobs', 'Print some information about the currently scheduled jobs log.', self._DebugShowScheduledJobs )
         ClientGUIMenus.AppendMenuItem( data_actions, 'subscription manager snapshot', 'Have the subscription system show what it is doing.', self._controller.subscriptions_manager.ShowSnapshot )
         ClientGUIMenus.AppendSeparator( data_actions )

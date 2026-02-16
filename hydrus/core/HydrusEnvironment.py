@@ -2,7 +2,7 @@ import os
 
 from hydrus.core import HydrusData
 
-def DumpEnv( env = None ):
+def dump_env(env = None):
     
     if env is None:
         
