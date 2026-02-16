@@ -25,7 +25,7 @@ CURRENT_TRACKER = None
 
 # pretty sure the Client should only ever call this stuff on the GUI thread of course, since it'll be touching Qt stuff
 
-def CheckPymplerOK():
+def check_pympler_ok():
     
     if not PYMPLER_OK:
         
@@ -33,9 +33,9 @@ def CheckPymplerOK():
         
     
 
-def PrintCurrentMemoryUse( classes_to_track = None ):
+def print_current_memory_use(classes_to_track = None):
     
-    CheckPymplerOK()
+    check_pympler_ok()
     
     HydrusData.print_text('---printing memory use to log---')
     
@@ -71,15 +71,15 @@ def PrintCurrentMemoryUse( classes_to_track = None ):
     HydrusData.debug_print('-----class-use snapshot done----')
     
 
-def PrintSnapshotDiff():
+def print_snapshot_diff():
     
-    CheckPymplerOK()
+    check_pympler_ok()
     
     global CURRENT_TRACKER
     
     if CURRENT_TRACKER is None:
         
-        TakeMemoryUseSnapshot()
+        take_memory_use_snapshot()
         
     
     HydrusData.print_text('---printing memory diff to log--')
@@ -92,7 +92,7 @@ def PrintSnapshotDiff():
     HydrusData.debug_print('----memory-use snapshot done----')
     
 
-def TakeMemoryUseSnapshot():
+def take_memory_use_snapshot():
     
     global CURRENT_TRACKER
     

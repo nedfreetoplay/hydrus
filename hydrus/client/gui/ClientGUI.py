@@ -1588,7 +1588,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             return
             
         
-        HydrusMemory.PrintSnapshotDiff()
+        HydrusMemory.print_snapshot_diff()
         
     
     def _DebugTakeMemoryUseSnapshot( self ):
@@ -1600,7 +1600,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             return
             
         
-        HydrusMemory.TakeMemoryUseSnapshot()
+        HydrusMemory.take_memory_use_snapshot()
         
     
     def _DebugPrintMemoryUse( self ):
@@ -1612,7 +1612,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             return
             
         
-        HydrusMemory.PrintCurrentMemoryUse( ( QW.QWidget, ) )
+        HydrusMemory.print_current_memory_use((QW.QWidget,))
         
     
     def _DebugShowScheduledJobs( self ):
