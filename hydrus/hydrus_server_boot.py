@@ -26,9 +26,9 @@ try:
     
     from hydrus.core import HydrusBoot
     
-    HydrusBoot.AddBaseDirToEnvPath()
+    HydrusBoot.add_base_dir_to_env_path()
     
-    HydrusBoot.DoPreImportEnvWork()
+    HydrusBoot.do_pre_import_env_work()
     
     from hydrus.core import HydrusConstants as HC
     

@@ -2,11 +2,10 @@ import os
 
 from hydrus.core import HydrusConstants as HC
 
-#
-
 try:
     
-    # obviously change this if we ever drop yaml from the requirements lol
+    # Разумеется, это нужно будет изменить, если мы когда-нибудь откажемся от YAML в списке зависимостей (лол).
+    # Я думаю это надо будет убрать в какой-нибудь файл в котором будет проходить проверка всех импортов.
     import yaml
     
 except Exception as e_yaml:
@@ -22,32 +21,33 @@ except Exception as e_yaml:
 
 ORIGINAL_PATH = None
 
-def AddBaseDirToEnvPath():
+def add_base_dir_to_env_path():
     
-    # doing it separate and early here is a thing to get mpv (and others) working with a frozen build, helping load the dll/so from the base dir using ctypes
+    # Выполнение этого действия отдельно и на раннем этапе необходимо для того, чтобы mpv (и другие компоненты) работали в «замороженной» (frozen) сборке; это позволяет загружать DLL или .so из базового каталога с помощью ctypes.
     
     if 'PATH' in os.environ:
         
         global ORIGINAL_PATH
-        
+
+        # Лол, эту переменную нужно сделать в нижем регистре, т.к. мы тут её как бы переопределяем.
         ORIGINAL_PATH = os.environ[ 'PATH' ]
         
         os.environ[ 'PATH' ] = HC.CONTENT_BASE_DIR + os.pathsep + os.environ[ 'PATH' ]
         
     
 
-def DoPreImportEnvWork():
+def do_pre_import_env_work():
     
     try:
         
-        # we need to do this before the first import cv2, so we'll stick it here
+        # Это нужно сделать до первого импорта cv2, поэтому мы разместим это здесь.
         
         import os
         
         os.environ[ 'OPENCV_LOG_LEVEL' ] = 'ERROR'
         os.environ[ 'OPENCV_FFMPEG_LEVEL' ] = '16' # AV_LOG_ERROR
         
-    except Exception as e:
+    except Exception:
         
         print( 'Could not set OpenCV logging envs.' )
         
