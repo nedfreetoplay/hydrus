@@ -97,7 +97,7 @@ def MessageHandler( msg_type, context, text ):
     if msg_type not in ( QC.QtMsgType.QtDebugMsg, QC.QtMsgType.QtInfoMsg ):
         
         # Set a breakpoint here to be able to see where the warnings originate from.
-        HydrusData.Print( text )
+        HydrusData.safe_print( text )
         
 
 class App( QW.QApplication ):
@@ -130,9 +130,9 @@ class App( QW.QApplication ):
                 
             except Exception as e:
                 
-                HydrusData.Print( f'Hey, while trying to determine if you have {desktop_name}.desktop file in your Applications dir, I ran into an error, which follows. This is not a huge deal, but hydev would like to see it.' )
+                HydrusData.safe_print( f'Hey, while trying to determine if you have {desktop_name}.desktop file in your Applications dir, I ran into an error, which follows. This is not a huge deal, but hydev would like to see it.' )
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
         
         self.setApplicationVersion( str( HC.SOFTWARE_VERSION ) )
@@ -294,9 +294,9 @@ class Controller( HydrusController.HydrusController ):
         
         text = 'A serious error occurred while trying to exit the program. Its traceback may be shown next. It should have also been written to client.log. You may need to quit the program from task manager.'
         
-        HydrusData.DebugPrint( text )
+        HydrusData.debug_print( text )
         
-        HydrusData.DebugPrint( traceback.format_exc() )
+        HydrusData.debug_print( traceback.format_exc() )
         
         if not self._doing_fast_exit:
             
@@ -425,7 +425,7 @@ class Controller( HydrusController.HydrusController ):
         
         with self._page_key_lock:
             
-            page_key = HydrusData.GenerateKey()
+            page_key = HydrusData.generate_key()
             
             self._alive_page_keys.add( page_key )
             
@@ -565,7 +565,7 @@ class Controller( HydrusController.HydrusController ):
         
         call = HydrusData.Call( func, *args, **kwargs )
         
-        call.SetLabel( label )
+        call.set_label( label )
         
         job = ClientThreading.QtAwareJob( self, job_scheduler, window, initial_delay, call )
         
@@ -585,7 +585,7 @@ class Controller( HydrusController.HydrusController ):
         
         call = HydrusData.Call( func, *args, **kwargs )
         
-        call.SetLabel( label )
+        call.set_label( label )
         
         job = ClientThreading.QtAwareRepeatingJob( self, job_scheduler, window, initial_delay, period, call )
         
@@ -748,9 +748,9 @@ class Controller( HydrusController.HydrusController ):
             
         except Exception as e:
             
-            HydrusData.Print( 'There was an error trying to start the splash screen!' )
+            HydrusData.safe_print( 'There was an error trying to start the splash screen!' )
             
-            HydrusData.Print( traceback.format_exc() )
+            HydrusData.safe_print( traceback.format_exc() )
             
             raise
             
@@ -1061,7 +1061,7 @@ class Controller( HydrusController.HydrusController ):
         
         if self._doing_fast_exit:
             
-            HydrusData.DebugPrint( 'doing fast shutdown' + HC.UNICODE_ELLIPSIS )
+            HydrusData.debug_print( 'doing fast shutdown' + HC.UNICODE_ELLIPSIS )
             
             save_objects_and_exit()
             
@@ -1655,7 +1655,7 @@ class Controller( HydrusController.HydrusController ):
                     
                 except Exception as e:
                     
-                    HydrusData.Print( 'Could not load Qt style: {}'.format( repr( e ) ) )
+                    HydrusData.safe_print( 'Could not load Qt style: {}'.format( repr( e ) ) )
                     
                 
             
@@ -1673,7 +1673,7 @@ class Controller( HydrusController.HydrusController ):
                     
                 except Exception as e:
                     
-                    HydrusData.Print( 'Could not load Qt stylesheet: {}'.format( repr( e ) ) )
+                    HydrusData.safe_print( 'Could not load Qt stylesheet: {}'.format( repr( e ) ) )
                     
                 
             
@@ -2024,7 +2024,7 @@ class Controller( HydrusController.HydrusController ):
         
         self.main_qt_thread = self.app.thread()
         
-        HydrusData.Print( 'booting controller' + HC.UNICODE_ELLIPSIS )
+        HydrusData.safe_print( 'booting controller' + HC.UNICODE_ELLIPSIS )
         
         self.frame_splash_status = ClientGUISplash.FrameSplashStatus()
         
@@ -2049,7 +2049,7 @@ class Controller( HydrusController.HydrusController ):
             self._qt_app_running = False
             
         
-        HydrusData.DebugPrint( 'shutting down controller' + HC.UNICODE_ELLIPSIS )
+        HydrusData.debug_print( 'shutting down controller' + HC.UNICODE_ELLIPSIS )
         
     
     def SaveDirtyObjectsImportant( self ):
@@ -2191,7 +2191,7 @@ class Controller( HydrusController.HydrusController ):
             
             def StartServices( *args, **kwargs ):
                 
-                HydrusData.Print( 'starting services' + HC.UNICODE_ELLIPSIS )
+                HydrusData.safe_print( 'starting services' + HC.UNICODE_ELLIPSIS )
                 
                 for service in services:
                     
@@ -2259,9 +2259,9 @@ class Controller( HydrusController.HydrusController ):
                             
                         except Exception as e:
                             
-                            HydrusData.Print( 'Could not bind to IPv6:' )
+                            HydrusData.safe_print( 'Could not bind to IPv6:' )
                             
-                            HydrusData.Print( str( e ) )
+                            HydrusData.safe_print( str( e ) )
                             
                         
                         ipv4_port = None
@@ -2289,7 +2289,7 @@ class Controller( HydrusController.HydrusController ):
                         
                         if HydrusNetworking.LocalPortInUse( port ):
                             
-                            HydrusData.Print( 'Running "{}" on port {}.'.format( name, port ) )
+                            HydrusData.safe_print( 'Running "{}" on port {}.'.format( name, port ) )
                             
                         else:
                             
@@ -2303,12 +2303,12 @@ class Controller( HydrusController.HydrusController ):
                         
                     
                 
-                HydrusData.Print( 'services started' )
+                HydrusData.safe_print( 'services started' )
                 
             
             if len( self._service_keys_to_connected_ports ) > 0:
                 
-                HydrusData.Print( 'stopping services' + HC.UNICODE_ELLIPSIS )
+                HydrusData.safe_print( 'stopping services' + HC.UNICODE_ELLIPSIS )
                 
                 deferreds = []
                 
@@ -2355,7 +2355,7 @@ class Controller( HydrusController.HydrusController ):
             
             HydrusData.ShowText( 'Twisted failed to import, so could not start the local client api! Specific error has been printed to log. Please contact hydrus dev!' )
             
-            HydrusData.Print( HG.twisted_is_broke_exception )
+            HydrusData.safe_print( HG.twisted_is_broke_exception )
             
         else:
             
@@ -2447,8 +2447,8 @@ class Controller( HydrusController.HydrusController ):
                 
             except Exception as e:
                 
-                HydrusData.Print( 'Twisted failed to shut down cleanly:' )
-                HydrusData.PrintException( e, do_wait = False )
+                HydrusData.safe_print( 'Twisted failed to shut down cleanly:' )
+                HydrusData.print_exception( e, do_wait = False )
                 
             
         
@@ -2591,7 +2591,7 @@ class Controller( HydrusController.HydrusController ):
             
         except ( HydrusExceptions.DBCredentialsException, HydrusExceptions.ShutdownException ) as e:
             
-            HydrusData.Print( e )
+            HydrusData.safe_print( e )
             
             self.clean_running_file()
             
@@ -2607,7 +2607,7 @@ class Controller( HydrusController.HydrusController ):
             
             trace = traceback.format_exc()
             
-            HydrusData.DebugPrint( trace )
+            HydrusData.debug_print( trace )
             
             text = 'A serious problem occurred while trying to start the program. Full details have been written to the log. The error is:'
             text += '\n' * 2
@@ -2621,12 +2621,12 @@ class Controller( HydrusController.HydrusController ):
             
             text = 'A serious error occurred while trying to start the program. The error will be shown next in a window. More information may have been written to client.log.'
             
-            HydrusData.DebugPrint( 'If the db crashed, another error may be written just above ^.' )
-            HydrusData.DebugPrint( text )
+            HydrusData.debug_print( 'If the db crashed, another error may be written just above ^.' )
+            HydrusData.debug_print( text )
             
             trace = traceback.format_exc()
             
-            HydrusData.DebugPrint( trace )
+            HydrusData.debug_print( trace )
             
             self.blocking_safe_show_critical_message( 'boot error', text )
             
@@ -2634,7 +2634,7 @@ class Controller( HydrusController.HydrusController ):
                 
                 hell_message = 'Looking at it, it looks like your database may be malformed! This is a serious error. Please check the \'Recovery->Help my db is broke\' document in the help as soon as you can for the next steps. The specific error will now follow.'
                 
-                HydrusData.DebugPrint( hell_message )
+                HydrusData.debug_print( hell_message )
                 
                 self.blocking_safe_show_critical_message( 'boot error', hell_message )
                 

@@ -170,7 +170,7 @@ class EditAPIPermissionsPanel( ClientGUIScrolledPanels.EditPanel ):
             message += '\n' * 2
             message += 'OBVIOUSLY ANYTHING THAT USES THIS CURRENT ACCESS KEY WILL LOSE ACCESS ONCE YOU CHANGE IT'
             
-            suggestions = [ HydrusData.GenerateKey().hex() ]
+            suggestions = [ HydrusData.generate_key().hex() ]
             
             new_access_key_hex = ClientGUIDialogsQuick.EnterText( self, message, default = self._access_key.text(), suggestions = suggestions )
             

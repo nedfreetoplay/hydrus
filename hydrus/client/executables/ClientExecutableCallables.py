@@ -24,7 +24,7 @@ class ClientExecutableCallable( HydrusSerialisable.SerialisableBaseNamed ):
             actual_call = ClientExecutableActualCall.ExecutableLocalProcessCall()
             
         
-        self._callable_key = HydrusData.GenerateKey()
+        self._callable_key = HydrusData.generate_key()
         self._pipeline_type = pipeline_type
         self._actual_call = actual_call
         
@@ -65,7 +65,7 @@ class ClientExecutableCallable( HydrusSerialisable.SerialisableBaseNamed ):
     
     def GenerateNewCallableKey( self ):
         
-        self._callable_key = HydrusData.GenerateKey()
+        self._callable_key = HydrusData.generate_key()
         
     
     def GetCall( self ):

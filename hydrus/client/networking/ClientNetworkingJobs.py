@@ -133,7 +133,7 @@ def ConvertStatusCodeAndDataIntoExceptionInfo( status_code, data, is_hydrus_serv
         
         smaller_chunk = large_chunk[:256]
         
-        HydrusData.DebugPrint( large_chunk )
+        HydrusData.debug_print( large_chunk )
         
         error_text = 'The server\'s error text was too long to display. The first part follows, while a larger chunk has been written to the log.'
         error_text += '\n'
@@ -646,7 +646,7 @@ class NetworkJob( object ):
                                 # ok this situation is actually ok(?)
                                 # turns out at least one decent server does this regularly, says 'here's 0-22MB' and gives you 128KB instead
                                 
-                                HydrusData.Print( 'Not enough data for URL {}: Was expecting {} in this range chunk, but the server only delivered {}!'.format( self._url, HydrusData.ToHumanBytes( self._num_bytes_expected_in_this_range_chunk ), HydrusData.ToHumanBytes( self._num_bytes_read_in_this_response ) ) )
+                                HydrusData.safe_print( 'Not enough data for URL {}: Was expecting {} in this range chunk, but the server only delivered {}!'.format( self._url, HydrusData.ToHumanBytes( self._num_bytes_expected_in_this_range_chunk ), HydrusData.ToHumanBytes( self._num_bytes_read_in_this_response ) ) )
                                 
                             
                         
@@ -863,9 +863,9 @@ class NetworkJob( object ):
             
             if HG.network_report_mode_silent:
                 
-                HydrusData.Print( 'Network error should follow:' )
-                HydrusData.PrintException( e )
-                HydrusData.Print( error )
+                HydrusData.safe_print( 'Network error should follow:' )
+                HydrusData.print_exception( e )
+                HydrusData.safe_print( error )
                 
             else:
                 
@@ -1596,7 +1596,7 @@ class NetworkJob( object ):
                                     
                                 except Exception as e_retry_after_2:
                                     
-                                    HydrusData.Print( f'Was given an unparsable Retry-After of {retry_after}!' )
+                                    HydrusData.safe_print( f'Was given an unparsable Retry-After of {retry_after}!' )
                                     
                                 
                             
@@ -1735,7 +1735,7 @@ class NetworkJob( object ):
                 
                 if not isinstance( e, ( HydrusExceptions.NetworkInfrastructureException, HydrusExceptions.StreamTimeoutException, HydrusExceptions.FileImportRulesException ) ):
                     
-                    HydrusData.Print( trace )
+                    HydrusData.safe_print( trace )
                     
                 
                 if isinstance( e, HydrusExceptions.NetworkInfrastructureException ):

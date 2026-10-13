@@ -194,7 +194,7 @@ def RegranulariseFileStorage( base_location_paths: list[ str ], prefix_types: li
                             
                             num_weird_dirs += 1
                             
-                            HydrusData.Print( f'When granularising folders, I saw a weird directory, "{entry.path}"! How did this thing sneak into Hydrus File Storage? Maybe it is an old prefix stub--a fragment of a previous maintenance job?' )
+                            HydrusData.safe_print( f'When granularising folders, I saw a weird directory, "{entry.path}"! How did this thing sneak into Hydrus File Storage? Maybe it is an old prefix stub--a fragment of a previous maintenance job?' )
                             
                         
                     else:
@@ -221,7 +221,7 @@ def RegranulariseFileStorage( base_location_paths: list[ str ], prefix_types: li
                             
                             num_weird_files += 1
                             
-                            HydrusData.Print( f'When regranularising folders, I failed to find a destination for the file with path "{source_path}"! I imagine it does not have a nice normal hex name and snuck into Hydrus File Storage by accident. You probably want to clean it up.')
+                            HydrusData.safe_print( f'When regranularising folders, I failed to find a destination for the file with path "{source_path}"! I imagine it does not have a nice normal hex name and snuck into Hydrus File Storage by accident. You probably want to clean it up.')
                             
                         
                     
@@ -280,8 +280,8 @@ def RegranulariseFileStorage( base_location_paths: list[ str ], prefix_types: li
                 
                 sorted_prefixes = sorted( base_location_paths_to_granular_folder_prefixes_deleted[ migrated_path ] )
                 
-                HydrusData.Print( f'When regranularising folders, I finished migrating prefixes completely out of the path "{migrated_path}". Since the folders were empty, I deleted them. The prefixes deleted were:' )
-                HydrusData.Print( ', '.join( sorted_prefixes ) )
+                HydrusData.safe_print( f'When regranularising folders, I finished migrating prefixes completely out of the path "{migrated_path}". Since the folders were empty, I deleted them. The prefixes deleted were:' )
+                HydrusData.safe_print( ', '.join( sorted_prefixes ) )
                 
             
         
@@ -307,9 +307,9 @@ class FilesStorageBaseLocation( object ):
             
         except Exception as e:
             
-            HydrusData.Print( f'While trying to realise your file location storage path {path} to determine symlinks and such, the following error occured. Please forward to hydev.' )
+            HydrusData.safe_print( f'While trying to realise your file location storage path {path} to determine symlinks and such, the following error occured. Please forward to hydev.' )
             
-            HydrusData.PrintException( e, do_wait = False )
+            HydrusData.print_exception( e, do_wait = False )
             
             real_path = 'Could not determine real path--check log!'
             

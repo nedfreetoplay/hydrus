@@ -255,7 +255,7 @@ class StringProcessorWidget( QW.QWidget ):
             
         else:
             
-            raise Exception( f'The imported object was wrong for this control! It appeared to be a {HydrusData.GetTypeName( obj )}.' )
+            raise Exception( f'The imported object was wrong for this control! It appeared to be a {HydrusData.get_type_name( obj )}.' )
             
         
     
@@ -267,7 +267,7 @@ class StringProcessorWidget( QW.QWidget ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             

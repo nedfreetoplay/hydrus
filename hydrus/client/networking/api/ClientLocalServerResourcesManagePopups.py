@@ -48,7 +48,7 @@ def JobStatusToDict( job_status: ClientThreading.JobStatus ):
         
         if user_callable is not None:
             
-            return_dict[ 'user_callable_label' ] = user_callable.GetLabel()
+            return_dict[ 'user_callable_label' ] = user_callable.get_label()
             
         
         network_job: ClientNetworkingJobs.NetworkJob = job_status.GetNetworkJob()

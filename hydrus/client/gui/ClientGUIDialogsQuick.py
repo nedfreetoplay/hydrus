@@ -249,9 +249,9 @@ def PresentClipboardParseError( win: QW.QWidget, content: str, expected_content_
         log_message += '\nContent received ({}):\n'.format( HydrusData.ToHumanBytes( len( content ) ) ) + content[:MAX_CONTENT_SIZE]
         
     
-    HydrusData.DebugPrint( log_message )
+    HydrusData.debug_print( log_message )
     
-    HydrusData.PrintException( e, do_wait = False )
+    HydrusData.print_exception( e, do_wait = False )
     
     message = 'Sorry, I could not understand what was in the clipboard. I was expecting "{}" but received this text:\n\n{}\n\nMore details have been written to the log, but the general error was:\n\n{}'.format( expected_content_description, HydrusText.ElideText( content, 64 ), repr( e ) )
     

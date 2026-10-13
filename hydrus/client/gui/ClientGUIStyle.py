@@ -109,8 +109,8 @@ def InitialiseDefaults():
         
     except Exception as e:
         
-        HydrusData.Print( 'Failed to load default hydrus qss:' )
-        HydrusData.PrintException( e )
+        HydrusData.safe_print( 'Failed to load default hydrus qss:' )
+        HydrusData.print_exception( e )
         
         DEFAULT_HYDRUS_STYLESHEET = ''
         

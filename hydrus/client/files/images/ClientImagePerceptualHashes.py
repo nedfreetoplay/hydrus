@@ -14,7 +14,7 @@ from hydrus.client import ClientConstants as CC
 
 def DiscardBlankPerceptualHashes( perceptual_hashes ):
     
-    perceptual_hashes = { perceptual_hash for perceptual_hash in perceptual_hashes if HydrusData.Get64BitHammingDistance( perceptual_hash, CC.BLANK_PERCEPTUAL_HASH ) > 4 }
+    perceptual_hashes = { perceptual_hash for perceptual_hash in perceptual_hashes if HydrusData.get_64_bit_hamming_distance( perceptual_hash, CC.BLANK_PERCEPTUAL_HASH ) > 4 }
     
     return perceptual_hashes
     

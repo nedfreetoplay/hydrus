@@ -280,7 +280,7 @@ class EditNodes( QW.QWidget ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             
@@ -1138,7 +1138,7 @@ class ManageParsingScriptsPanel( ClientGUIScrolledPanels.ManagePanel ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', str(e) )
             
@@ -1171,7 +1171,7 @@ class ManageParsingScriptsPanel( ClientGUIScrolledPanels.ManagePanel ):
                     
                 except Exception as e:
                     
-                    HydrusData.PrintException( e )
+                    HydrusData.print_exception( e )
                     
                     ClientGUIDialogsMessage.ShowCritical( self, 'Problem loading!', str(e) )
                     
@@ -1186,7 +1186,7 @@ class ManageParsingScriptsPanel( ClientGUIScrolledPanels.ManagePanel ):
                     
                 except Exception as e:
                     
-                    HydrusData.PrintException( e )
+                    HydrusData.print_exception( e )
                     
                     ClientGUIDialogsMessage.ShowCritical( self, 'Problem loading!', 'I could not understand what was encoded in the png!' )
                     

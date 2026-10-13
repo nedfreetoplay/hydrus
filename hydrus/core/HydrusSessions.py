@@ -72,7 +72,7 @@ class HydrusSessionManagerServer( object ):
             
             account = self._GetAccountFromAccountKey( service_key, account_key )
             
-            session_key = HydrusData.GenerateKey()
+            session_key = HydrusData.generate_key()
             
             now = HydrusTime.GetNow()
             

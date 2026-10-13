@@ -191,7 +191,7 @@ def DeletePath( path ) -> bool:
                 
                 # file in use by another process
                 
-                HydrusData.DebugPrint( 'Trying to delete ' + path + ' failed because it was in use by another process.' )
+                HydrusData.debug_print( 'Trying to delete ' + path + ' failed because it was in use by another process.' )
                 
             else:
                 
@@ -229,7 +229,7 @@ def DeletePath( path ) -> bool:
                 
                 # file in use by another process
                 
-                HydrusData.DebugPrint( 'Trying to delete ' + path + ' failed because it was in use by another process.' )
+                HydrusData.debug_print( 'Trying to delete ' + path + ' failed because it was in use by another process.' )
                 
             else:
                 
@@ -647,7 +647,7 @@ def FigureOutDBDir( arg_db_dir: str ):
                     raise Exception( f'Neither the default db path "{db_dir}", nor the userpath fallback "{HC.USERPATH_DB_DIR}", were writeable-to!' )
                     
                 
-                HydrusData.Print( f'The given db path "{db_dir}" is not writeable-to! Falling back to userpath at "{HC.USERPATH_DB_DIR}".' )
+                HydrusData.safe_print( f'The given db path "{db_dir}" is not writeable-to! Falling back to userpath at "{HC.USERPATH_DB_DIR}".' )
                 
                 HC.WE_SWITCHED_TO_USERPATH = True
                 
@@ -868,7 +868,7 @@ def LaunchDirectory( path ):
                 raise NotImplementedError( 'Unknown platform!' )
                 
             
-            HydrusData.CheckProgramIsNotShuttingDown()
+            HydrusData.check_program_is_not_shutting_down()
             
             HydrusSubprocess.RunSubprocess( cmd, this_is_a_potentially_long_lived_external_guy = True )
             
@@ -1055,7 +1055,7 @@ def permission_recovering_shutil_move( source, dest ):
         
         # sometimes a file ends up in storage with read-only bits. we do a 'move files now' and it breaks something
         # sometimes we can simply update the bits and things are fine, so let's try that now
-        HydrusData.Print( f'While trying to move "{source}" to "{dest}", we had a permission issue. Trying to set nicer permission bits now.' )
+        HydrusData.safe_print( f'While trying to move "{source}" to "{dest}", we had a permission issue. Trying to set nicer permission bits now.' )
         
         TryToGiveFileNicePermissionBits( source )
         
@@ -1520,7 +1520,7 @@ def OpenFileLocation( path ):
             raise NotImplementedError( 'Unknown platform!' )
             
         
-        HydrusData.CheckProgramIsNotShuttingDown()
+        HydrusData.check_program_is_not_shutting_down()
         
         HydrusSubprocess.RunSubprocess( cmd, this_is_a_potentially_long_lived_external_guy = True )
         
@@ -1587,7 +1587,7 @@ def PathIsFree( path ):
             
         except OSError as e: # 'already in use by another process' or an odd filename too long error
             
-            HydrusData.Print( 'Already in use/inaccessible: ' + path )
+            HydrusData.safe_print( 'Already in use/inaccessible: ' + path )
             
             return False
             
@@ -1602,7 +1602,7 @@ def PathIsFree( path ):
             
         except Exception as e:
             
-            HydrusData.Print( 'Could not open the file: ' + path )
+            HydrusData.safe_print( 'Could not open the file: ' + path )
             
             return False
             
@@ -1621,7 +1621,7 @@ def PathIsFree( path ):
                         
                     except BlockingIOError:
                         
-                        HydrusData.Print( 'Already in use/inaccessible due to exclusive lock: ' + path )
+                        HydrusData.safe_print( 'Already in use/inaccessible due to exclusive lock: ' + path )
                         
                         return False
                         
@@ -1631,8 +1631,8 @@ def PathIsFree( path ):
                         
                     except OSError as e:
                         
-                        HydrusData.Print( f'Got an OSError on a flock call to "{path}":' )
-                        HydrusData.PrintException( e, do_wait = False )
+                        HydrusData.safe_print( f'Got an OSError on a flock call to "{path}":' )
+                        HydrusData.print_exception( e, do_wait = False )
                         
                         return True
                         
@@ -1649,7 +1649,7 @@ def PathIsFree( path ):
             
         except Exception as e:
             
-            HydrusData.Print( 'Could not open the file: ' + path )
+            HydrusData.safe_print( 'Could not open the file: ' + path )
             
             return False
             
@@ -1737,23 +1737,23 @@ def RecyclePath( path ):
                     
                 else:
                     
-                    HydrusData.Print( f'I keep getting the 0x80270021 error when trying to recycle "{path}"!' )
+                    HydrusData.safe_print( f'I keep getting the 0x80270021 error when trying to recycle "{path}"!' )
                     
-                    HydrusData.PrintException( e, do_wait = False )
+                    HydrusData.print_exception( e, do_wait = False )
                     
                 
             elif isinstance( e, OSError ) and 'Errno 36' in str( e ):
                 
-                HydrusData.Print( f'Could not recycle "{path}" because a filename would be too long! (maybe Linux .trashinfo?)' )
+                HydrusData.safe_print( f'Could not recycle "{path}" because a filename would be too long! (maybe Linux .trashinfo?)' )
                 
             else:
                 
-                HydrusData.Print( f'Trying to recycle "{path}" created this error:' )
+                HydrusData.safe_print( f'Trying to recycle "{path}" created this error:' )
                 
-                HydrusData.PrintException( e, do_wait = False )
+                HydrusData.print_exception( e, do_wait = False )
                 
             
-            HydrusData.Print( 'I will fully delete it instead.' )
+            HydrusData.safe_print( 'I will fully delete it instead.' )
             
             DeletePath( path )
             
@@ -1854,7 +1854,7 @@ def TryToGiveFileNicePermissionBits( path ):
         
     except Exception as e:
         
-        HydrusData.Print( f'Wanted to add read and write permission to "{path}", but had an error: {e}' )
+        HydrusData.safe_print( f'Wanted to add read and write permission to "{path}", but had an error: {e}' )
         
     
 
@@ -1892,6 +1892,6 @@ def TryToMakeFileWriteable( path: str, path_stat: os.stat_result ):
         
     except Exception as e:
         
-        HydrusData.Print( 'Wanted to add user write permission to "{}", but had an error: {}'.format( path, str( e ) ) )
+        HydrusData.safe_print( 'Wanted to add user write permission to "{}", but had an error: {}'.format( path, str( e ) ) )
         
     

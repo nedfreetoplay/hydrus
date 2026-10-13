@@ -51,7 +51,7 @@ if not PIL_HAS_HEIF:
         
     except Exception as e:
         
-        HydrusData.Print( 'Could not register HEIF Opener with plugin library.' )
+        HydrusData.safe_print( 'Could not register HEIF Opener with plugin library.' )
         
     
 
@@ -94,17 +94,17 @@ if not PIL_HAS_AVIF:
                     
                     AVIF_BACKUP_PLUGIN_OK = True
                     
-                    HydrusData.Print( 'AVIF Opener registered with legacy library.' )
+                    HydrusData.safe_print( 'AVIF Opener registered with legacy library.' )
                     
                 except Exception as e:
                     
-                    HydrusData.Print( 'Could not register AVIF Opener with main or legacy library.' )
+                    HydrusData.safe_print( 'Could not register AVIF Opener with main or legacy library.' )
                     
                 
             
         except Exception as e:
             
-            HydrusData.Print( 'Could not register AVIF Opener with main or legacy plugin library.' )
+            HydrusData.safe_print( 'Could not register AVIF Opener with main or legacy plugin library.' )
             
         
     
@@ -173,11 +173,11 @@ def SetEnableLoadTruncatedImages( value: bool ):
             
             import PIL
             
-            HydrusData.Print( f'Could not set the PIL image trunctation value to {value}--perhaps this version of PIL ({PIL.__version__})does not support it?' )
+            HydrusData.safe_print( f'Could not set the PIL image trunctation value to {value}--perhaps this version of PIL ({PIL.__version__})does not support it?' )
             
         except Exception as e:
             
-            HydrusData.Print( f'Could not set the PIL image trunctation value to {value}, and could not determine the PIL version! Something is busted!' )
+            HydrusData.safe_print( f'Could not set the PIL image trunctation value to {value}, and could not determine the PIL version! Something is busted!' )
             
         
         return False

@@ -151,7 +151,7 @@ class ManagerWithMainLoop( object ):
             
             if HG.shutdown_report_mode:
                 
-                HydrusData.DebugPrint( f'MainLoop Manager "{self}" caught a Shutdown exception in its mainloop.' )
+                HydrusData.debug_print( f'MainLoop Manager "{self}" caught a Shutdown exception in its mainloop.' )
                 
             
             pass
@@ -160,7 +160,7 @@ class ManagerWithMainLoop( object ):
             
             if HG.shutdown_report_mode:
                 
-                HydrusData.DebugPrint( f'MainLoop Manager "{self}" is shut down!' )
+                HydrusData.debug_print( f'MainLoop Manager "{self}" is shut down!' )
                 
             
             self._DoPostMainLoopShutdown()

@@ -929,11 +929,11 @@ class LoginProcessDomain( LoginProcess ):
         
         CG.client_controller.pub( 'message', job_status )
         
-        HydrusData.Print( 'Starting login for ' + login_domain )
+        HydrusData.safe_print( 'Starting login for ' + login_domain )
         
         result = self.login_script.Start( self.engine, self.network_context, self.credentials, job_status = job_status )
         
-        HydrusData.Print( 'Finished login for ' + self.network_context.context_data + '. Result was: ' + result )
+        HydrusData.safe_print( 'Finished login for ' + self.network_context.context_data + '. Result was: ' + result )
         
         job_status.SetStatusText( result )
         
@@ -999,7 +999,7 @@ class LoginScriptHydrus( object ):
             
             if self._IsLoggedIn( engine, network_context ):
                 
-                HydrusData.Print( 'Successfully logged into ' + service.GetName() + '.' )
+                HydrusData.safe_print( 'Successfully logged into ' + service.GetName() + '.' )
                 
             elif service.IsFunctional():
                 
@@ -1052,7 +1052,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
         
         super().__init__( name )
         
-        self._login_script_key = HydrusData.GenerateKey()
+        self._login_script_key = HydrusData.generate_key()
         self._required_cookies_info = required_cookies_info # string match : string match
         self._credential_definitions = credential_definitions
         self._login_steps = login_steps
@@ -1334,7 +1334,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
     
     def RegenerateLoginScriptKey( self ):
         
-        self._login_script_key = HydrusData.GenerateKey()
+        self._login_script_key = HydrusData.generate_key()
         
     
     def SetLoginScriptKey( self, login_script_key ):

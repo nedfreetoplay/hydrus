@@ -26,7 +26,7 @@ class ORPredicateControl( QW.QWidget ):
             raise Exception( 'Launched an ORPredicateControl without an OR Pred!' )
             
         
-        page_key = HydrusData.GenerateKey()
+        page_key = HydrusData.generate_key()
         
         predicates = predicate.GetValue()
         

@@ -50,7 +50,7 @@ class GalleryImport( HydrusSerialisable.SerialisableBase ):
         super().__init__()
         
         self._creation_time = HydrusTime.GetNow()
-        self._gallery_import_key = HydrusData.GenerateKey()
+        self._gallery_import_key = HydrusData.generate_key()
         
         self._query = query
         
@@ -428,7 +428,7 @@ class GalleryImport( HydrusSerialisable.SerialisableBase ):
             
             gallery_seed.SetStatus( gallery_seed_status, note = gallery_seed_note )
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             with self._lock:
                 
@@ -1050,7 +1050,7 @@ class MultipleGalleryImport( HydrusSerialisable.SerialisableBase ):
         
         if gug_key_and_name is None:
             
-            gug_key_and_name = ( HydrusData.GenerateKey(), '' )
+            gug_key_and_name = ( HydrusData.generate_key(), '' )
             
         
         super().__init__()
@@ -1289,7 +1289,7 @@ class MultipleGalleryImport( HydrusSerialisable.SerialisableBase ):
             
             ( serialisable_gallery_identifier, serialisable_highlighted_gallery_import_key, file_limit, serialisable_file_import_options, serialisable_tag_import_options, serialisable_gallery_imports ) = old_serialisable_info
             
-            serialisable_gug_key_and_name = ( HydrusData.GenerateKey().hex(), 'unknown downloader' )
+            serialisable_gug_key_and_name = ( HydrusData.generate_key().hex(), 'unknown downloader' )
             
             gallery_imports = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_gallery_imports )
             
@@ -1867,7 +1867,7 @@ class MultipleGalleryImport( HydrusSerialisable.SerialisableBase ):
             
             if gug_key_and_name is None:
                 
-                gug_key_and_name = ( HydrusData.GenerateKey(), '' )
+                gug_key_and_name = ( HydrusData.generate_key(), '' )
                 
             
             if gug_key_and_name != self._gug_key_and_name:

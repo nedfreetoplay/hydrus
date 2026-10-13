@@ -760,7 +760,7 @@ class DBCursorTransactionWrapper( DBBase ):
             
         else:
             
-            HydrusData.Print( 'Received a call to commit, but was not in a transaction!' )
+            HydrusData.safe_print( 'Received a call to commit, but was not in a transaction!' )
             
         
         self._committing_as_soon_as_possible = False
@@ -831,7 +831,7 @@ class DBCursorTransactionWrapper( DBBase ):
             
         else:
             
-            HydrusData.Print( 'Received a call to rollback, but was not in a transaction!' )
+            HydrusData.safe_print( 'Received a call to rollback, but was not in a transaction!' )
             
         
     
@@ -845,14 +845,14 @@ class DBCursorTransactionWrapper( DBBase ):
                 
             except sqlite3.OperationalError:
                 
-                HydrusData.Print( 'Tried to release a database savepoint, but failed!' )
+                HydrusData.safe_print( 'Tried to release a database savepoint, but failed!' )
                 
             
             self._Execute( 'SAVEPOINT hydrus_savepoint;' )
             
         else:
             
-            HydrusData.Print( 'Received a call to save, but was not in a transaction!' )
+            HydrusData.safe_print( 'Received a call to save, but was not in a transaction!' )
             
         
     

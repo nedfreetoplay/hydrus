@@ -341,7 +341,7 @@ def LoadFromNumPyImage( numpy_image: numpy.ndarray ):
         
     except Exception as e:
         
-        HydrusData.PrintException( e )
+        HydrusData.print_exception( e )
         
         message = 'The image loaded, but it did not seem to be a hydrus serialised png! The error was: {}'.format( repr( e ) )
         message += '\n' * 2

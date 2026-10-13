@@ -182,7 +182,7 @@ def boot():
         
     except HydrusExceptions.ShutdownException as e:
         
-        HydrusData.Print( e )
+        HydrusData.safe_print( e )
         
         HG.server_action = 'exit'
         
@@ -205,7 +205,7 @@ def boot():
             
             if HG.server_action in ( 'start', 'restart' ):
                 
-                HydrusData.Print( 'Initialising controller' + HC.UNICODE_ELLIPSIS )
+                HydrusData.safe_print( 'Initialising controller' + HC.UNICODE_ELLIPSIS )
                 
                 controller = ServerController.Controller( db_dir, logger )
                 
@@ -216,7 +216,7 @@ def boot():
             
             error = str( e )
             
-            HydrusData.Print( error )
+            HydrusData.safe_print( error )
             
         except Exception as e:
             
@@ -224,9 +224,9 @@ def boot():
             
             error = traceback.format_exc()
             
-            HydrusData.Print( 'Hydrus server failed' )
+            HydrusData.safe_print( 'Hydrus server failed' )
             
-            HydrusData.Print( error )
+            HydrusData.safe_print( error )
             
         finally:
             
@@ -239,7 +239,7 @@ def boot():
                 controller.pubimmediate( 'wake_daemons' )
                 
             
-            HydrusData.Print( 'hydrus server shut down' )
+            HydrusData.safe_print( 'hydrus server shut down' )
             
         
     

@@ -1355,14 +1355,14 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     time.sleep( 5 )
                     
-                    HydrusData.Print( 'While doing auto-resolution work, we discovered an id that should not exist. If you just deleted one yourself this second, let hydev know as this should not happen. You might need to run the "orphan rule" maintenance job off the cog icon on the duplicates resolution sidebar panel.' )
-                    HydrusData.PrintException( e )
+                    HydrusData.safe_print( 'While doing auto-resolution work, we discovered an id that should not exist. If you just deleted one yourself this second, let hydev know as this should not happen. You might need to run the "orphan rule" maintenance job off the cog icon on the duplicates resolution sidebar panel.' )
+                    HydrusData.print_exception( e )
                     
                 except Exception as e:
                     
                     self._serious_error_encountered = True
                     
-                    HydrusData.PrintException( e )
+                    HydrusData.print_exception( e )
                     
                     message = 'There was an unexpected problem during duplicates auto-resolution work! This system will shut down and not start again until the program in restarted. A full traceback of this error should be written to the log.'
                     message += '\n' * 2

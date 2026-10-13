@@ -215,7 +215,7 @@ class ClientFilesManager( object ):
             summary_message += '\n' * 2
             summary_message += 'Assuming you did this on purpose, or hydrus recently inserted stub values after database corruption, Hydrus is ready to update its internal knowledge to reflect these new mappings as soon as this dialog closes. If you know these proposed fixes are incorrect, terminate the program now.'
             
-            HydrusData.Print( summary_message )
+            HydrusData.safe_print( summary_message )
             
             self._controller.blocking_safe_show_critical_message( 'About to auto-heal client file folders.', summary_message )
             
@@ -323,7 +323,7 @@ class ClientFilesManager( object ):
                 
                 #
                 
-                missing_dict = HydrusData.BuildKeyToListDict( [ ( subfolder.base_location, subfolder.prefix ) for subfolder in self._missing_subfolders ] )
+                missing_dict = HydrusData.build_key_to_list_dict( [ ( subfolder.base_location, subfolder.prefix ) for subfolder in self._missing_subfolders ] )
                 
                 missing_base_locations = sorted( missing_dict.keys(), key = lambda b_l: b_l.path )
                 
@@ -345,8 +345,8 @@ class ClientFilesManager( object ):
                 
                 if len( self._missing_subfolders ) > 4:
                     
-                    HydrusData.DebugPrint( 'Missing locations follow:' )
-                    HydrusData.DebugPrint( missing_string )
+                    HydrusData.debug_print( 'Missing locations follow:' )
+                    HydrusData.debug_print( missing_string )
                     
                     text = 'When initialising the client files manager, some file locations either did not exist or were not available! They have all been written to the log!'
                     text += '\n' * 2
@@ -1056,7 +1056,7 @@ class ClientFilesManager( object ):
                                     
                                     dest = HydrusPaths.AppendPathUntilNoConflicts( dest )
                                     
-                                    HydrusData.Print( 'Moving the orphan ' + path + ' to ' + dest )
+                                    HydrusData.safe_print( 'Moving the orphan ' + path + ' to ' + dest )
                                     
                                     try:
                                         
@@ -1121,7 +1121,7 @@ class ClientFilesManager( object ):
                             return
                             
                         
-                        HydrusData.Print( 'Deleting the orphan ' + path )
+                        HydrusData.safe_print( 'Deleting the orphan ' + path )
                         
                         status = 'deleting orphan files: ' + HydrusNumbers.ValueRangeToPrettyString( i + 1, len( orphan_paths ) )
                         
@@ -1148,7 +1148,7 @@ class ClientFilesManager( object ):
                             return
                             
                         
-                        HydrusData.Print( 'Deleting the orphan ' + path )
+                        HydrusData.safe_print( 'Deleting the orphan ' + path )
                         
                         status = 'deleting orphan thumbnails: ' + HydrusNumbers.ValueRangeToPrettyString( i + 1, len( orphan_thumbnails ) )
                         
@@ -1170,7 +1170,7 @@ class ClientFilesManager( object ):
             
             job_status.SetStatusText( final_text )
             
-            HydrusData.Print( job_status.ToString() )
+            HydrusData.safe_print( job_status.ToString() )
             
             job_status.Finish()
             
@@ -1277,7 +1277,7 @@ class ClientFilesManager( object ):
                             
                         except HydrusExceptions.FileMissingException:
                             
-                            HydrusData.Print( 'Wanted to physically delete the "{}" file, with expected mime "{}", but it was not found!'.format( file_hash.hex(), HC.mime_string_lookup[ expected_mime ] ) )
+                            HydrusData.safe_print( 'Wanted to physically delete the "{}" file, with expected mime "{}", but it was not found!'.format( file_hash.hex(), HC.mime_string_lookup[ expected_mime ] ) )
                             
                         
                     
@@ -1314,7 +1314,7 @@ class ClientFilesManager( object ):
             
             self._controller.pub( 'notify_new_physical_file_delete_numbers' )
             
-            HydrusData.Print( 'Physically deleted {} files and {} thumbnails from file storage.'.format( HydrusNumbers.ToHumanInt( num_files_deleted ), HydrusNumbers.ToHumanInt( num_files_deleted ) ) )
+            HydrusData.safe_print( 'Physically deleted {} files and {} thumbnails from file storage.'.format( HydrusNumbers.ToHumanInt( num_files_deleted ), HydrusNumbers.ToHumanInt( num_files_deleted ) ) )
             
         
     
@@ -1484,7 +1484,7 @@ class ClientFilesManager( object ):
                     
                     text = f'Moving "{source_subfolder}" to "{dest_subfolder}".'
                     
-                    HydrusData.Print( text )
+                    HydrusData.safe_print( text )
                     
                     job_status.SetStatusText( text )
                     
@@ -1638,11 +1638,11 @@ class ClientFilesManager( object ):
                         
                         os.utime( path, ( existing_access_time, modified_timestamp ) )
                         
-                        HydrusData.Print( 'Successfully changed modified time of "{}" from {} to {}.'.format( path, HydrusTime.TimestampToPrettyTime( int( existing_modified_time ) ), HydrusTime.TimestampToPrettyTime( int( modified_timestamp ) ) ))
+                        HydrusData.safe_print( 'Successfully changed modified time of "{}" from {} to {}.'.format( path, HydrusTime.TimestampToPrettyTime( int( existing_modified_time ) ), HydrusTime.TimestampToPrettyTime( int( modified_timestamp ) ) ))
                         
                     except PermissionError:
                         
-                        HydrusData.Print( 'Tried to set modified time of {} to file "{}", but did not have permission!'.format( HydrusTime.TimestampToPrettyTime( int( modified_timestamp ) ), path ) )
+                        HydrusData.safe_print( 'Tried to set modified time of {} to file "{}", but did not have permission!'.format( HydrusTime.TimestampToPrettyTime( int( modified_timestamp ) ), path ) )
                         
                     
                 

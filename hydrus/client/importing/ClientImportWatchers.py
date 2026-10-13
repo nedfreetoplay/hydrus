@@ -735,7 +735,7 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
         self._files_status = ''
         self._watcher_status = ''
         
-        self._watcher_key = HydrusData.GenerateKey()
+        self._watcher_key = HydrusData.generate_key()
         
         self._have_started = False
         
@@ -851,7 +851,7 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
             
             gallery_seed.SetStatus( CC.STATUS_ERROR, str( e ) )
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
         finally:
             

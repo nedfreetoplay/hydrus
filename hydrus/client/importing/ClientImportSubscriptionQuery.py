@@ -21,7 +21,7 @@ SUBSCRIPTION_BANDWIDTH_OK_WINDOW = 90
 
 def GenerateQueryLogContainerName() -> str:
     
-    return HydrusData.GenerateKey().hex()
+    return HydrusData.generate_key().hex()
     
 class SubscriptionQueryLogContainer( HydrusSerialisable.SerialisableBaseNamed ):
     

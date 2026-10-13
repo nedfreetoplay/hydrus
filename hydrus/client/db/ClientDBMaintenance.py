@@ -31,7 +31,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
         
         self._Execute( 'DELETE FROM deferred_delete_tables WHERE name = ?;', ( deletee_table_name, ) )
         
-        HydrusData.Print( f'Deferred delete table {deletee_table_name} successfully dropped.' )
+        HydrusData.safe_print( f'Deferred delete table {deletee_table_name} successfully dropped.' )
         
     
     def _GetDeferredDeleteTableName( self ) -> tuple[ str | None, int | None ]:
@@ -278,7 +278,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
                     
                     if time_took > 1:
                         
-                        HydrusData.Print( 'Analyzed ' + name + ' in ' + HydrusTime.TimeDeltaToPrettyTimeDelta( time_took ) )
+                        HydrusData.safe_print( 'Analyzed ' + name + ' in ' + HydrusTime.TimeDeltaToPrettyTimeDelta( time_took ) )
                         
                     
                     p1 = CG.client_controller.should_stop_this_work( maintenance_mode, stop_time = stop_time )
@@ -294,7 +294,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
                 
                 job_status.SetStatusText( 'done!' )
                 
-                HydrusData.Print( job_status.ToString() )
+                HydrusData.safe_print( job_status.ToString() )
                 
             finally:
                 

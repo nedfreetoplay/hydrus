@@ -2508,7 +2508,7 @@ class ContentParser( HydrusSerialisable.SerialisableBase ):
                 
             except Exception as e:
                 
-                HydrusData.Print( f'Could not unescape parsed title text: {parsing_context}' )
+                HydrusData.safe_print( f'Could not unescape parsed title text: {parsing_context}' )
                 
             
         
@@ -2600,7 +2600,7 @@ class PageParser( HydrusSerialisable.SerialisableBaseNamed ):
         
         if parser_key is None:
             
-            parser_key = HydrusData.GenerateKey()
+            parser_key = HydrusData.generate_key()
             
         
         if string_converter is None:
@@ -2915,7 +2915,7 @@ class PageParser( HydrusSerialisable.SerialisableBaseNamed ):
     
     def RegenerateParserKey( self ):
         
-        self._parser_key = HydrusData.GenerateKey()
+        self._parser_key = HydrusData.generate_key()
         
     
     def SetExampleURLs( self, example_urls ):

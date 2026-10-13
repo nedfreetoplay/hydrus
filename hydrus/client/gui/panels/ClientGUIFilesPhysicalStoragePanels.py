@@ -185,7 +185,7 @@ class ReviewGranularityPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             try:
                 
-                HydrusData.PrintException( e, do_wait = False )
+                HydrusData.print_exception( e, do_wait = False )
                 
                 message = 'Something went wrong with the granularisation!! This is bad news. If this is the second time you are seeing this error, the database should have been able to undo the work successfully and you can return to normal work.'
                 message += '\n\n'
@@ -384,7 +384,7 @@ class ReviewGranularityPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         def qt_error( e: Exception ):
             
-            HydrusData.PrintException( e, do_wait = False )
+            HydrusData.print_exception( e, do_wait = False )
             
             message = 'Something went wrong with the granularisation!! This may be bad news, but if it stopped half way through and you know how to fix the issue (maybe an errant file called "a" that you should move out?), you can just retry it and it will try to continue where it left off. The error, which has been written in more detail to log, was:'
             message += '\n\n'
@@ -796,9 +796,9 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 message = 'There was a problem finding the free space for "{path}"! Perhaps this location does not exist?'
                 
-                HydrusData.Print( message )
+                HydrusData.safe_print( message )
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 free_space = 0
                 pretty_free_space = 'problem finding free space'
@@ -963,9 +963,9 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 message = 'There was a problem finding the free space for "{path}"! Perhaps this location does not exist?'
                 
-                HydrusData.Print( message )
+                HydrusData.safe_print( message )
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 free_space = 0
                 

@@ -3575,7 +3575,7 @@ class StaticImage( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
             ideal_tile_dimension = CG.client_controller.new_options.GetInteger( 'ideal_tile_dimension' )
             
-            nice_number = HydrusData.GetNicelyDivisibleNumberForZoom( self._zoom / self.devicePixelRatio(), ideal_tile_dimension )
+            nice_number = HydrusData.get_nicely_divisible_number_for_zoom( self._zoom / self.devicePixelRatio(), ideal_tile_dimension )
             
             if nice_number == -1:
                 

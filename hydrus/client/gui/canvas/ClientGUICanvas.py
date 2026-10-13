@@ -402,7 +402,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         self._new_options = CG.client_controller.new_options
         
         self._canvas_type = CC.CANVAS_MEDIA_VIEWER
-        self._canvas_key = HydrusData.GenerateKey()
+        self._canvas_key = HydrusData.generate_key()
         
         self._force_maintain_pan_and_zoom = False
         

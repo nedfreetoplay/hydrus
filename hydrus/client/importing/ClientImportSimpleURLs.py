@@ -49,7 +49,7 @@ class SimpleDownloaderImport( HydrusSerialisable.SerialisableBase ):
         self._no_work_until_reason = ''
         
         self._page_key = b'initialising page key'
-        self._downloader_key = HydrusData.GenerateKey()
+        self._downloader_key = HydrusData.generate_key()
         
         self._gallery_status = ''
         self._files_status = ''
@@ -266,7 +266,7 @@ class SimpleDownloaderImport( HydrusSerialisable.SerialisableBase ):
             
             file_seed.SetStatus( CC.STATUS_ERROR, str( e ) )
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
         except Exception as e:
             
@@ -404,7 +404,7 @@ class SimpleDownloaderImport( HydrusSerialisable.SerialisableBase ):
                     
                     parser_status = str( e )
                     
-                    HydrusData.PrintException( e )
+                    HydrusData.print_exception( e )
                     
                 except Exception as e:
                     
@@ -938,7 +938,7 @@ class URLsImport( HydrusSerialisable.SerialisableBase ):
         self._no_work_until_reason = ''
         
         self._page_key = b'initialising page key'
-        self._downloader_key = HydrusData.GenerateKey()
+        self._downloader_key = HydrusData.generate_key()
         
         self._lock = threading.Lock()
         
@@ -1148,7 +1148,7 @@ class URLsImport( HydrusSerialisable.SerialisableBase ):
             
             file_seed.SetStatus( CC.STATUS_ERROR, str( e ) )
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
         except Exception as e:
             
@@ -1194,7 +1194,7 @@ class URLsImport( HydrusSerialisable.SerialisableBase ):
             
             gallery_seed.SetStatus( CC.STATUS_ERROR, str( e ) )
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
         except Exception as e:
             

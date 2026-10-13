@@ -634,7 +634,7 @@ class FilenameTaggingOptionsPanel( QW.QWidget ):
                 
             except HydrusExceptions.DataMissing as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
                 
@@ -665,7 +665,7 @@ class FilenameTaggingOptionsPanel( QW.QWidget ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
                 
@@ -683,7 +683,7 @@ class FilenameTaggingOptionsPanel( QW.QWidget ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
                 

@@ -269,7 +269,7 @@ class NetworkJobControl( QW.QFrame ):
                 
                 if bytes_to_read is not None and bytes_read != bytes_to_read:
                     
-                    speed_text += HydrusData.ConvertValueRangeToBytes( bytes_read, bytes_to_read )
+                    speed_text += HydrusData.convert_value_range_to_bytes( bytes_read, bytes_to_read )
                     
                 else:
                     

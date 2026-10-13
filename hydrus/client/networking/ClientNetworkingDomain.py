@@ -1791,7 +1791,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             if gug_key_and_name is None:
                 
-                ( gug_key, gug_name ) = ( HydrusData.GenerateKey(), '' )
+                ( gug_key, gug_name ) = ( HydrusData.generate_key(), '' )
                 
             else:
                 

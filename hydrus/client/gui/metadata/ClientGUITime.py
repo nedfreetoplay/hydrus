@@ -613,7 +613,7 @@ def GetQtDateTimeFromClipboard( win: QW.QWidget ):
         
     except HydrusExceptions.DataMissing as e:
         
-        HydrusData.PrintException( e )
+        HydrusData.print_exception( e )
         
         ClientGUIDialogsMessage.ShowCritical( win, 'Problem pasting!', str(e) )
         

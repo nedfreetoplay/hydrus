@@ -270,7 +270,7 @@ class BandwidthRules( HydrusSerialisable.SerialisableBase ):
                 
                 if bandwidth_type == HC.BANDWIDTH_TYPE_DATA:
                     
-                    s += HydrusData.ConvertValueRangeToBytes( usage, max_allowed )
+                    s += HydrusData.convert_value_range_to_bytes( usage, max_allowed )
                     
                 elif bandwidth_type == HC.BANDWIDTH_TYPE_REQUESTS:
                     

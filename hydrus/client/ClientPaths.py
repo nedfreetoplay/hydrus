@@ -23,8 +23,8 @@ if HC.PLATFORM_WINDOWS:
         
     except Exception as e:
         
-        HydrusData.Print( 'Could not import ClientWindowsIntegration--maybe you need PyWin32 in your venv?' )
-        HydrusData.PrintException( e, do_wait = False )
+        HydrusData.safe_print( 'Could not import ClientWindowsIntegration--maybe you need PyWin32 in your venv?' )
+        HydrusData.print_exception( e, do_wait = False )
         
     
 

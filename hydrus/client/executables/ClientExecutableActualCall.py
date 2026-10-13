@@ -528,7 +528,7 @@ class ExecutableLocalProcessDefaultLaunchFile( ExecutableActualCall ):
                 raise NotImplementedError( 'Unknown platform!' )
                 
             
-            HydrusData.CheckProgramIsNotShuttingDown()
+            HydrusData.check_program_is_not_shutting_down()
             
             HydrusSubprocess.RunSubprocess( cmd, this_is_a_potentially_long_lived_external_guy = not for_user_test )
             

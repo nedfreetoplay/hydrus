@@ -858,7 +858,7 @@ def GetVisualData( media_result: ClientMediaResult.MediaResult ) -> ClientVisual
             
         except Exception as e:
             
-            HydrusData.Print( f'Hey, the media with hash {hash.hex()} failed to generate visual data! Hydev would be interested in seeing this file!' )
+            HydrusData.safe_print( f'Hey, the media with hash {hash.hex()} failed to generate visual data! Hydev would be interested in seeing this file!' )
             
             raise
             
@@ -897,7 +897,7 @@ def GetVisualDataTiled( media_result: ClientMediaResult.MediaResult ) -> ClientV
             
         except Exception as e:
             
-            HydrusData.Print( f'Hey, the media with hash {hash.hex()} failed to generate tiled visual data! Hydev would be interested in seeing this file!' )
+            HydrusData.safe_print( f'Hey, the media with hash {hash.hex()} failed to generate tiled visual data! Hydev would be interested in seeing this file!' )
             
             raise
             

@@ -3563,7 +3563,7 @@ class AutoCompleteDropdownTagsWrite( AutoCompleteDropdownTags ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             
@@ -3634,7 +3634,7 @@ class AutoCompleteDropdownTagsWrite( AutoCompleteDropdownTags ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             

@@ -903,7 +903,7 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
             
             if num_files_cleared_out > 0:
                 
-                HydrusData.Print( f'During potential duplicate pair local storage resync, I cleared out pairs for {HydrusNumbers.ToHumanInt(num_files_cleared_out)} files.' )
+                HydrusData.safe_print( f'During potential duplicate pair local storage resync, I cleared out pairs for {HydrusNumbers.ToHumanInt(num_files_cleared_out)} files.' )
                 
                 job_status.SetStatusText( f'Done! Pairs for {HydrusNumbers.ToHumanInt(num_files_cleared_out)} out-of-domain files cleared out.' )
                 

@@ -209,7 +209,7 @@ class TestPanel( QW.QWidget ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem loading!', str(e) )
             

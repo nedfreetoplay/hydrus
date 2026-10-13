@@ -404,7 +404,7 @@ def TerminateAndReapProcess( process: subprocess.Popen ):
         
     except PermissionError as e:
         
-        HydrusData.Print( f'I tried to terminate the process {process} but got {e}!' )
+        HydrusData.safe_print( f'I tried to terminate the process {process} but got {e}!' )
         
     
     try:
@@ -419,7 +419,7 @@ def TerminateAndReapProcess( process: subprocess.Popen ):
             
         except PermissionError as e:
             
-            HydrusData.Print( f'I tried to kill the process {process} after post-terminate communicate timed out but got {e}!' )
+            HydrusData.safe_print( f'I tried to kill the process {process} after post-terminate communicate timed out but got {e}!' )
             
         
         try:
@@ -471,7 +471,7 @@ class SubprocessContext( object ):
                 
                 try:
                     
-                    HydrusData.CheckProgramIsNotShuttingDown()
+                    HydrusData.check_program_is_not_shutting_down()
                     
                 except HydrusExceptions.ShutdownException:
                     
@@ -503,7 +503,7 @@ class SubprocessContext( object ):
                     
                 except ValueError: # probably got terminated at an inconvenient time
                     
-                    HydrusData.Print( f'Probably not a big deal, but the Subprocess Command "{self._cmd}" closed its stdout early. If this keeps happening, please let hydev know!' )
+                    HydrusData.safe_print( f'Probably not a big deal, but the Subprocess Command "{self._cmd}" closed its stdout early. If this keeps happening, please let hydev know!' )
                     
                     return
                     

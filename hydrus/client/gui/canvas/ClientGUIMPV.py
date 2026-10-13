@@ -109,7 +109,7 @@ def GetClientAPIVersionString():
 
 def EmergencyAudioNullGlobal():
     
-    HydrusData.DebugPrint( 'We got a "no [audio] playback devices" error from MPV, so I will now emergency-set all players to null audio device to maintain stability. Open/apply the options dialog to attempt to re-set audio devices to all open mpv windows.' )
+    HydrusData.debug_print( 'We got a "no [audio] playback devices" error from MPV, so I will now emergency-set all players to null audio device to maintain stability. Open/apply the options dialog to attempt to re-set audio devices to all open mpv windows.' )
     
     # this is Qt thread so we can talk to this guy no prob
     MPVEmergencyDumpOutSignaller.instance().emergencyAudioNull.emit()
@@ -198,7 +198,7 @@ def log_handler( loglevel, component, message ):
             
         
     
-    HydrusData.DebugPrint( '[MPV {}] {}: {}'.format( loglevel, component, message ) )
+    HydrusData.debug_print( '[MPV {}] {}: {}'.format( loglevel, component, message ) )
     
 
 class MPVEmergencyDumpOutSignaller( QC.QObject ):
@@ -1105,7 +1105,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
                 message = f'Sorry, this media appears to have a serious problem in mpv! To avoid crashes, I have unloaded it and will not allow it again this program boot. The file is possibly truncated or otherwise corrupted, but if you think it is good, please send it to hydev for more testing. The specific errors should be written to the log.{media_line}'
                 
-                HydrusData.DebugPrint( message )
+                HydrusData.debug_print( message )
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Error', f'{message}\n\nThe first error was:\n\n{reason}' )
                 
@@ -1119,7 +1119,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
                 message = f'A media loaded in MPV appears to have had an error. This may not be a big deal, or it may herald a crash. The specific errors should be written after this message. They are not positively known as crashy, but if you are getting crashes, please send the file and these errors to hydev so he can test his end.{media_line}'
                 
-                HydrusData.DebugPrint( message )
+                HydrusData.debug_print( message )
                 
             
         
@@ -1760,7 +1760,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
         else:
             
-            HydrusData.Print( 'Was unable to load mpv.conf--has the MPV API changed?' )
+            HydrusData.safe_print( 'Was unable to load mpv.conf--has the MPV API changed?' )
             
         
     

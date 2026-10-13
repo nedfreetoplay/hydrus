@@ -1661,9 +1661,9 @@ class ServiceRestricted( ServiceRemote ):
                 
             except ( HydrusExceptions.CancelledException, HydrusExceptions.NetworkException ) as e:
                 
-                HydrusData.Print( 'Failed to refresh account for {}:'.format( name ) )
+                HydrusData.safe_print( 'Failed to refresh account for {}:'.format( name ) )
                 
-                HydrusData.Print( e )
+                HydrusData.safe_print( e )
                 
                 if force:
                     
@@ -1676,9 +1676,9 @@ class ServiceRestricted( ServiceRemote ):
                 
             except Exception:
                 
-                HydrusData.Print( 'Failed to refresh account for {}:'.format( name ) )
+                HydrusData.safe_print( 'Failed to refresh account for {}:'.format( name ) )
                 
-                HydrusData.Print( traceback.format_exc() )
+                HydrusData.safe_print( traceback.format_exc() )
                 
                 if force:
                     
@@ -1832,7 +1832,7 @@ class ServiceRepository( ServiceRestricted ):
         
         summary = '{} processed {} {} at {} rows/s'.format( self._name, HydrusNumbers.ToHumanInt( total_rows ), row_name, rows_s )
         
-        HydrusData.Print( summary )
+        HydrusData.safe_print( summary )
         
     
     def _ReportOngoingRowSpeed( self, job_status, rows_done, total_rows, precise_timestamp, rows_done_in_last_packet, row_name ):
@@ -1892,9 +1892,9 @@ class ServiceRepository( ServiceRestricted ):
                 
             except HydrusExceptions.NetworkException as e:
                 
-                HydrusData.Print( 'Attempting to download metadata for ' + name + ' resulted in a network error:' )
+                HydrusData.safe_print( 'Attempting to download metadata for ' + name + ' resulted in a network error:' )
                 
-                HydrusData.Print( e )
+                HydrusData.safe_print( e )
                 
                 return
                 
@@ -1993,9 +1993,9 @@ class ServiceRepository( ServiceRestricted ):
                         
                         self._DelayFutureRequests( str( e ) )
                         
-                        HydrusData.Print( 'Attempting to download an update for ' + name + ' resulted in a network error:' )
+                        HydrusData.safe_print( 'Attempting to download an update for ' + name + ' resulted in a network error:' )
                         
-                        HydrusData.Print( e )
+                        HydrusData.safe_print( e )
                         
                         return
                         
@@ -2131,7 +2131,7 @@ class ServiceRepository( ServiceRestricted ):
                 content_hashes_and_content_types = self._metadata.SortContentHashesAndContentTypes( content_hashes_and_content_types )
                 
             
-            HydrusData.Print( title )
+            HydrusData.safe_print( title )
             
             num_updates_done = 0
             num_updates_to_do = len( definition_hashes_and_content_types ) + len( content_hashes_and_content_types )
@@ -2944,9 +2944,9 @@ class ServiceRepository( ServiceRestricted ):
                         
                     except HydrusExceptions.NetworkException as e:
                         
-                        HydrusData.Print( 'Attempting to download a thumbnail for ' + name + ' resulted in a network error:' )
+                        HydrusData.safe_print( 'Attempting to download a thumbnail for ' + name + ' resulted in a network error:' )
                         
-                        HydrusData.Print( e )
+                        HydrusData.safe_print( e )
                         
                         return
                         
@@ -3296,8 +3296,8 @@ class ServiceIPFS( ServiceRemote ):
             
             message = 'IPFS was unable to pin--returned no hash!'
             
-            HydrusData.Print( message )
-            HydrusData.Print( parsing_text )
+            HydrusData.safe_print( message )
+            HydrusData.safe_print( parsing_text )
             
             raise HydrusExceptions.DataMissing( message )
             
@@ -3310,8 +3310,8 @@ class ServiceIPFS( ServiceRemote ):
             
             message = 'IPFS was unable to pin--returned empty multihash!'
             
-            HydrusData.Print( message )
-            HydrusData.Print( parsing_text )
+            HydrusData.safe_print( message )
+            HydrusData.safe_print( parsing_text )
             
             raise HydrusExceptions.DataMissing( message )
             

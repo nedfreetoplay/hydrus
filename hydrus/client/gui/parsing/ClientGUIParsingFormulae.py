@@ -382,7 +382,7 @@ class EditFormulaPanel( ClientGUIScrolledPanels.EditPanel ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', str(e) )
             
@@ -415,7 +415,7 @@ class EditFormulaPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 except Exception as e:
                     
-                    HydrusData.PrintException( e )
+                    HydrusData.print_exception( e )
                     
                     ClientGUIDialogsMessage.ShowCritical( self, 'Problem loading!', str(e) )
                     
@@ -430,7 +430,7 @@ class EditFormulaPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 except Exception as e:
                     
-                    HydrusData.PrintException( e )
+                    HydrusData.print_exception( e )
                     
                     ClientGUIDialogsMessage.ShowCritical( self, 'Problem loading!', 'I could not understand what was encoded in the png!' )
                     

@@ -467,7 +467,7 @@ class EditNetworkContextCustomHeadersPanel( ClientGUIScrolledPanels.EditPanel ):
         
         for ( network_context, ( key, value ), approved, reason ) in datas:
             
-            key = HydrusData.GetNonDupeName( key, existing_keys )
+            key = HydrusData.get_non_dupe_name( key, existing_keys )
             
             existing_keys.add( key )
             
@@ -1304,7 +1304,7 @@ class ReviewNetworkJobs( ClientGUIScrolledPanels.ReviewPanel ):
         pretty_url = url
         pretty_status = status
         pretty_current_speed = HydrusData.ToHumanBytes( current_speed ) + '/s'
-        pretty_progress = HydrusData.ConvertValueRangeToBytes( num_bytes_read, num_bytes_to_read )
+        pretty_progress = HydrusData.convert_value_range_to_bytes( num_bytes_read, num_bytes_to_read )
         
         display_tuple = ( pretty_position, pretty_url, pretty_status, pretty_current_speed, pretty_progress )
         
@@ -1714,7 +1714,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', str(e) )
             
@@ -1727,7 +1727,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
         except Exception as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Did not understand what was in the clipboard!', str(e) )
             
@@ -1778,7 +1778,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
         except Exception as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Had trouble importing what was in the clipboard!', str(e) )
             
@@ -2105,7 +2105,7 @@ class ReviewNetworkSessionPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', str(e) )
             
@@ -2118,7 +2118,7 @@ class ReviewNetworkSessionPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
         except Exception as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Did not understand what was in the clipboard!', str(e) )
             
@@ -2205,7 +2205,7 @@ class ReviewNetworkSessionPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
         except Exception as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Had trouble importing what was in the clipboard!', str(e) )
             

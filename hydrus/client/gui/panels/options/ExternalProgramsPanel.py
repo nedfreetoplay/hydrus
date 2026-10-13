@@ -1040,7 +1040,7 @@ class TestCallablePanel( ClientGUICommon.StaticBox ):
         
         def errback_callable( etype, value, tb ):
             
-            self._raw_output_text_box.setPlainText( HydrusData.ConvertExceptionTupleToSummary( etype, value, tb ) )
+            self._raw_output_text_box.setPlainText( HydrusData.convert_exception_tuple_to_summary( etype, value, tb ) )
             
         
         def ui_restoration_callable():
@@ -1084,7 +1084,7 @@ class TestCallablePanel( ClientGUICommon.StaticBox ):
         
         def errback_callable( etype, value, tb ):
             
-            self._raw_output_text_box.setPlainText( HydrusData.ConvertExceptionTupleToSummary( etype, value, tb ) )
+            self._raw_output_text_box.setPlainText( HydrusData.convert_exception_tuple_to_summary( etype, value, tb ) )
             
         
         def ui_restoration_callable():

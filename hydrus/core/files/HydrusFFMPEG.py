@@ -100,7 +100,7 @@ def GetFFMPEGInfoLines( path: str, video_stream_mapping_to_count_frames_manually
             
         
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         
@@ -137,7 +137,7 @@ def GetFFMPEGVersion():
     
     cmd = [ ffmpeg_path, '-version' ]
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         
@@ -187,7 +187,7 @@ def GetFFMPEGVersion():
     message += '\n' * 2
     message += 'STDERR Response: {}'.format( stderr )
     
-    HydrusData.Print( message )
+    HydrusData.safe_print( message )
     
     HydrusEnvironment.DumpEnv()
     
@@ -242,7 +242,7 @@ def HandleFFMPEGNoContentAndGenerateException( path, stdout, stderr ):
         message += '\n' * 2
         message += 'STDERR Response: {}'.format( stderr )
         
-        HydrusData.DebugPrint( message )
+        HydrusData.debug_print( message )
         
         HydrusEnvironment.DumpEnv()
         

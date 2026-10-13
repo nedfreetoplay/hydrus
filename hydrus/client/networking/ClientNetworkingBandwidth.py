@@ -131,7 +131,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
             
             bandwidth_tracker = HydrusNetworking.BandwidthTracker()
             
-            tracker_container_name = HydrusData.GenerateKey().hex()
+            tracker_container_name = HydrusData.generate_key().hex()
             
             tracker_container = NetworkBandwidthManagerTrackerContainer( tracker_container_name, network_context = network_context, bandwidth_tracker = bandwidth_tracker )
             

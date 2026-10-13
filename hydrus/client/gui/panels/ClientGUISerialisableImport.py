@@ -50,7 +50,7 @@ def IngestClipboard():
             
         except Exception as e:
             
-            HydrusData.PrintException( e, do_wait = False )
+            HydrusData.print_exception( e, do_wait = False )
             
             raise Exception( f'Problem pasting image! Full error written to log; {e}' )
             
@@ -63,7 +63,7 @@ def IngestClipboard():
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e, do_wait = False )
+            HydrusData.print_exception( e, do_wait = False )
             
             raise Exception( f'Problem pasting paths! Full error written to log; {e}' )
             
@@ -82,7 +82,7 @@ def IngestClipboard():
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e, do_wait = False )
+            HydrusData.print_exception( e, do_wait = False )
             
             raise Exception( f'Problem pasting text! Full error written to log; {e}' )
             
@@ -107,7 +107,7 @@ def IngestPaths( paths ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e, do_wait = False )
+                HydrusData.print_exception( e, do_wait = False )
                 
                 raise Exception( f'Problem loading PNG at path "{path}"! Full error written to log; {e}' )
                 
@@ -125,7 +125,7 @@ def IngestPaths( paths ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e, do_wait = False )
+                HydrusData.print_exception( e, do_wait = False )
                 
                 raise Exception( f'Problem loading assumed JSON at path "{path}"! Full error written to log; {e}' )
                 
@@ -267,7 +267,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Error', 'I could not understand what was encoded in {}!'.format( payload_description ) )
                 
@@ -625,9 +625,9 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
             
         except Exception as e:
             
-            HydrusData.Print( 'Hey, I was trying to set up a GUG (downloader) but the GUG store was messed up. Here is the error:' )
+            HydrusData.safe_print( 'Hey, I was trying to set up a GUG (downloader) but the GUG store was messed up. Here is the error:' )
             
-            HydrusData.PrintException( e, do_wait = False )
+            HydrusData.print_exception( e, do_wait = False )
             
         
     

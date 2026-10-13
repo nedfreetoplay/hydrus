@@ -266,7 +266,7 @@ def THREADUploadPending( service_key ):
                 
                 call = HydrusData.Call( CG.client_controller.pub, 'open_manage_services_and_try_to_auto_create_account', service_key )
                 
-                call.SetLabel( 'open _services->edit_ and check for auto-creatable accounts' )
+                call.set_label( 'open _services->edit_ and check for auto-creatable accounts' )
                 
                 unauthorised_job_status.SetUserCallable( call )
                 
@@ -330,7 +330,7 @@ def THREADUploadPending( service_key ):
                     job_status.DeleteGauge()
                     job_status.SetStatusText( 'cancelled' )
                     
-                    HydrusData.Print( job_status.ToString() )
+                    HydrusData.safe_print( job_status.ToString() )
                     
                     job_status.FinishAndDismiss( 5 )
                     
@@ -471,7 +471,7 @@ def THREADUploadPending( service_key ):
         
         CG.client_controller.pub( 'notify_pending_upload_finished', service_key )
         
-        HydrusData.Print( job_status.ToString() )
+        HydrusData.safe_print( job_status.ToString() )
         
         if len( content_types_to_request ) == 0:
             
@@ -843,9 +843,9 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             all_names = [ s.GetName() for s in all_services ]
             
-            name = HydrusData.GetNonDupeName( 'public tag repository', all_names, do_casefold = True )
+            name = HydrusData.get_non_dupe_name( 'public tag repository', all_names, do_casefold = True )
             
-            service_key = HydrusData.GenerateKey()
+            service_key = HydrusData.generate_key()
             service_type = HC.TAG_REPOSITORY
             
             public_tag_repo = ClientServices.GenerateService( service_key, service_type, name )
@@ -1447,7 +1447,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         call = HydrusData.Call( HydrusData.ShowText, 'iv damke' )
         
-        call.SetLabel( 'cheeki breeki' )
+        call.set_label( 'cheeki breeki' )
         
         job_status.SetUserCallable( call )
         
@@ -1467,7 +1467,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             call = HydrusData.Call( CG.client_controller.pub, 'open_manage_services_and_try_to_auto_create_account', service_key )
             
-            call.SetLabel( 'open _services->edit_ and check for auto-creatable accounts' )
+            call.set_label( 'open _services->edit_ and check for auto-creatable accounts' )
             
             job_status.SetUserCallable( call )
             
@@ -1496,7 +1496,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         job_status.SetVariable( 'attached_files_mergable', True )
         
-        hashes = [ HydrusData.GenerateKey() for i in range( 3 ) ]
+        hashes = [ HydrusData.generate_key() for i in range( 3 ) ]
         
         job_status.SetFiles( hashes, 'cool pics' )
         
@@ -1510,7 +1510,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         job_status.SetVariable( 'attached_files_mergable', True )
         
-        job_status.SetFiles( [ HydrusData.GenerateKey() for i in range( 2 ) ] + [ hashes[0] ], 'cool pics' )
+        job_status.SetFiles( [ HydrusData.generate_key() for i in range( 2 ) ] + [ hashes[0] ], 'cool pics' )
         
         self._controller.pub( 'message', job_status )
         
@@ -1526,7 +1526,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         call = HydrusData.Call( CG.client_controller.pub, 'make_new_subscription_gap_downloader', ( b'', 'booru tag search' ), 'skirt', import_options_container, 2 )
         
-        call.SetLabel( 'start a new downloader for this to fill in the gap!' )
+        call.set_label( 'start a new downloader for this to fill in the gap!' )
         
         job_status.SetUserCallable( call )
         
@@ -1789,8 +1789,8 @@ QMenuBar::item { padding: 2px 8px; margin: 0px; }'''
             
         except Exception as e:
             
-            HydrusData.Print( 'I tried to do the menubar style hack, but got this exception (please let hydev know):' )
-            HydrusData.PrintException( e, do_wait = False)
+            HydrusData.safe_print( 'I tried to do the menubar style hack, but got this exception (please let hydev know):' )
+            HydrusData.print_exception( e, do_wait = False)
             
         
     
@@ -1844,7 +1844,7 @@ QMenuBar::item { padding: 2px 8px; margin: 0px; }'''
         text += 'Upload Time (UTC): ' + utc_time
         text += 'Upload Time (Your time): ' + local_time
         
-        HydrusData.Print( text )
+        HydrusData.safe_print( text )
         
         ClientGUIDialogsMessage.ShowInformation( self, text + '\n' * 2 + 'This has been written to the log.' )
         
@@ -2170,7 +2170,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                             
                             num_errors += 1
                             
-                            HydrusData.Print( update_path + ' did not load correctly!' )
+                            HydrusData.safe_print( update_path + ' did not load correctly!' )
                             
                             continue
                             
@@ -2187,7 +2187,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                             
                             num_errors += 1
                             
-                            HydrusData.Print( update_path + ' was not an update!' )
+                            HydrusData.safe_print( update_path + ' was not an update!' )
                             
                             continue
                             
@@ -3644,7 +3644,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         ClientGUIMenus.AppendMenuItem( gui_actions, 'make a popup in five seconds', 'Throw a delayed popup at the message manager, giving you time to minimise or otherwise alter the client before it arrives.', self._controller.call_later, 5, HydrusData.ShowText, 'This is a delayed popup message.' )
         ClientGUIMenus.AppendMenuItem( gui_actions, 'make a QMessageBox', 'Open a modal message dialog.', self._DebugMakeQMessageBox )
         ClientGUIMenus.AppendMenuItem( gui_actions, 'make some popups', 'Throw some varied popups at the message manager, just to check it is working.', self._DebugMakeSomePopups )
-        ClientGUIMenus.AppendMenuItem( gui_actions, 'publish some sub files in five seconds', 'Publish some files like a subscription would.', self._controller.call_later, 5, lambda: CG.client_controller.pub( 'imported_files_to_page', [ HydrusData.GenerateKey() for i in range( 5 ) ], 'example sub files' ) )
+        ClientGUIMenus.AppendMenuItem( gui_actions, 'publish some sub files in five seconds', 'Publish some files like a subscription would.', self._controller.call_later, 5, lambda: CG.client_controller.pub( 'imported_files_to_page', [ HydrusData.generate_key() for i in range( 5 ) ], 'example sub files' ) )
         ClientGUIMenus.AppendMenuItem( gui_actions, 'refresh pages menu in five seconds', 'Delayed refresh the pages menu, giving you time to minimise or otherwise alter the client before it arrives.', self._controller.call_later, 5, self._menu_updater_pages.update )
         ClientGUIMenus.AppendMenuItem( gui_actions, 'reload current qss stylesheet', 'Reload the current QSS stylesheet. Helps if you just edited it on disk and do not want to restart.', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_RELOAD_CURRENT_STYLESHEET ) )
         ClientGUIMenus.AppendMenuItem( gui_actions, 'reload icon cache', 'Reload the icons and pixmaps that new icon menus and buttons rely on. Will not affect widgets that are already loaded!', self._ReloadIconCache )
@@ -3655,7 +3655,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         data_actions = ClientGUIMenus.GenerateMenu( debug_menu )
         
-        ClientGUIMenus.AppendMenuItem( data_actions, 'flush log', 'Command the log to write any buffered contents to hard drive.', HydrusData.DebugPrint, 'Flushing log' )
+        ClientGUIMenus.AppendMenuItem( data_actions, 'flush log', 'Command the log to write any buffered contents to hard drive.', HydrusData.debug_print, 'Flushing log' )
         ClientGUIMenus.AppendMenuItem( data_actions, 'force database commit', 'Command the database to flush all pending changes to disk.', CG.client_controller.force_database_commit )
         ClientGUIMenus.AppendMenuItem( data_actions, 'review threads', 'Show current threads and what they are doing.', self._ReviewThreads )
         ClientGUIMenus.AppendMenuItem( data_actions, 'scan file storage folders', 'Test out that thing.', self._DebugScanStorage )
@@ -6507,7 +6507,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
             except ( HydrusExceptions.QtDeadWindowException, HydrusExceptions.ShutdownException ):
                 
-                HydrusData.Print( 'Test could not finish because of a shutdown, looks like.' )
+                HydrusData.safe_print( 'Test could not finish because of a shutdown, looks like.' )
                 
             
         
@@ -6523,7 +6523,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             HydrusData.ShowText( 'Creating admin service' + HC.UNICODE_ELLIPSIS )
             
-            admin_service_key = HydrusData.GenerateKey()
+            admin_service_key = HydrusData.generate_key()
             service_type = HC.SERVER_ADMIN
             name = 'local server admin'
             
@@ -6569,13 +6569,13 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             serverside_services = response[ 'services' ]
             
-            service_key = HydrusData.GenerateKey()
+            service_key = HydrusData.generate_key()
             
             tag_service = HydrusNetwork.GenerateService( service_key, HC.TAG_REPOSITORY, 'tag service', HC.DEFAULT_SERVICE_PORT )
             
             serverside_services.append( tag_service )
             
-            service_key = HydrusData.GenerateKey()
+            service_key = HydrusData.generate_key()
             
             file_service = HydrusNetwork.GenerateService( service_key, HC.FILE_REPOSITORY, 'file service', HC.DEFAULT_SERVICE_PORT + 1 )
             
@@ -7187,7 +7187,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e, do_wait = False )
+                HydrusData.print_exception( e, do_wait = False )
                 
             
             return
@@ -8172,7 +8172,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
         except Exception as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             raise HydrusExceptions.ServerException( str( e ) )
             
@@ -9175,7 +9175,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
         except Exception as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
         
     
@@ -9370,7 +9370,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                 
                 self._controller.blocking_safe_show_critical_message( 'shutdown error', 'There was a problem trying to review pending shutdown maintenance work. No shutdown maintenance work will be done, and info has been written to the log. Please let hydev know.' )
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 HG.do_idle_shutdown_work = False
                 

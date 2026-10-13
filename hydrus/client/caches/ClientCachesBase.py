@@ -70,7 +70,7 @@ class DataCache( object ):
         
         if HG.cache_report_mode:
             
-            HydrusData.ShowText( 'Cache "{}" removing specific item "{}", size "{}". Current size {}.'.format( self._name, key, HydrusData.ToHumanBytes( entry.size_estimate ), HydrusData.ConvertValueRangeToBytes( self._total_estimated_memory_footprint, self._cache_size ) ) )
+            HydrusData.ShowText( 'Cache "{}" removing specific item "{}", size "{}". Current size {}.'.format( self._name, key, HydrusData.ToHumanBytes( entry.size_estimate ), HydrusData.convert_value_range_to_bytes( self._total_estimated_memory_footprint, self._cache_size ) ) )
             
         
     
@@ -128,7 +128,7 @@ class DataCache( object ):
         
         if HG.cache_report_mode:
             
-            HydrusData.ShowText( 'Cache "{}" removing oldest item "{}", size "{}". Current size {}.'.format( self._name, key, HydrusData.ToHumanBytes( entry.size_estimate ), HydrusData.ConvertValueRangeToBytes( self._total_estimated_memory_footprint, self._cache_size ) ) )
+            HydrusData.ShowText( 'Cache "{}" removing oldest item "{}", size "{}". Current size {}.'.format( self._name, key, HydrusData.ToHumanBytes( entry.size_estimate ), HydrusData.convert_value_range_to_bytes( self._total_estimated_memory_footprint, self._cache_size ) ) )
             
         
     
@@ -200,7 +200,7 @@ class DataCache( object ):
                             self._name,
                             key,
                             HydrusData.ToHumanBytes( entry.size_estimate ),
-                            HydrusData.ConvertValueRangeToBytes( self._total_estimated_memory_footprint, self._cache_size )
+                            HydrusData.convert_value_range_to_bytes( self._total_estimated_memory_footprint, self._cache_size )
                         )
                     )
                     

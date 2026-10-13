@@ -346,7 +346,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
             
         except Exception as e:
             
-            HydrusData.PrintException( e, do_wait = False )
+            HydrusData.print_exception( e, do_wait = False )
             
             message = f'Granularisation failed!! I am paused now, but when this dialog is closed, I will attempt to undo and return to granularisation {starting_granularity}. If you do not want to attempt to repair the damage, kill the hydrus process now. The status window will move to the bottom-right of the main gui window. Just wait it out please.'
             message += '\n\n'

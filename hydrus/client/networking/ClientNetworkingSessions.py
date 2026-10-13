@@ -235,7 +235,7 @@ class NetworkSessionManagerSessionContainer( HydrusSerialisable.SerialisableBase
             
         except Exception as e:
             
-            HydrusData.Print( "Could not load and set cookies for session {}".format( self.network_context ) )
+            HydrusData.safe_print( "Could not load and set cookies for session {}".format( self.network_context ) )
             
         
     
@@ -296,8 +296,8 @@ class NetworkSessionManagerSessionContainer( HydrusSerialisable.SerialisableBase
                     
                     self.printed_connection_pool_error = True
                     
-                    HydrusData.Print( 'There was a problem clearing the connection pool. The full error should follow. To stop spam, this message will only show one time per program boot. The error may happen again, silently.' )
-                    HydrusData.PrintException( e, do_wait = False )
+                    HydrusData.safe_print( 'There was a problem clearing the connection pool. The full error should follow. To stop spam, this message will only show one time per program boot. The error may happen again, silently.' )
+                    HydrusData.print_exception( e, do_wait = False )
                     
                 
             
@@ -407,7 +407,7 @@ class NetworkSessionManager( HydrusSerialisable.SerialisableBase ):
     
     def _InitialiseSessionContainer( self, network_context ):
         
-        session_container_name = HydrusData.GenerateKey().hex()
+        session_container_name = HydrusData.generate_key().hex()
         
         session_container = NetworkSessionManagerSessionContainer( session_container_name, network_context = network_context )
         

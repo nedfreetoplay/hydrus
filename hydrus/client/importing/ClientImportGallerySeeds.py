@@ -138,7 +138,7 @@ class GallerySeed( HydrusSerialisable.SerialisableBase ):
         
         self._force_next_page_url_generation = False
         
-        self._run_token = HydrusData.GenerateKey()
+        self._run_token = HydrusData.generate_key()
         
     
     def __eq__( self, other ):
@@ -809,7 +809,7 @@ class GallerySeedLog( HydrusSerialisable.SerialisableBase ):
         
         self._gallery_seeds_to_indices = {}
         
-        self._gallery_seed_log_key = HydrusData.GenerateKey()
+        self._gallery_seed_log_key = HydrusData.generate_key()
         
         self._status_cache = None
         

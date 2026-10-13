@@ -185,8 +185,8 @@ except Exception as e:
     
     try:
         
-        HydrusData.DebugPrint( title )
-        HydrusData.PrintException( e )
+        HydrusData.debug_print( title )
+        HydrusData.print_exception( e )
         
     except Exception as e:
         
@@ -239,7 +239,7 @@ except Exception as e:
         
         try:
             
-            HydrusData.Print( message )
+            HydrusData.safe_print( message )
             
         except Exception as e:
             
@@ -258,7 +258,7 @@ def boot():
         
         try:
             
-            HydrusData.Print( 'hydrus client started' )
+            HydrusData.safe_print( 'hydrus client started' )
             
             from hydrus.client import ClientController
             
@@ -268,11 +268,11 @@ def boot():
             
         except Exception as e:
             
-            HydrusData.Print( 'hydrus client failed' )
+            HydrusData.safe_print( 'hydrus client failed' )
             
             import traceback
             
-            HydrusData.Print( traceback.format_exc() )
+            HydrusData.safe_print( traceback.format_exc() )
             
         finally:
             
@@ -306,7 +306,7 @@ def boot():
                     
                 
             
-            HydrusData.Print( 'hydrus client shut down' )
+            HydrusData.safe_print( 'hydrus client shut down' )
             
         
     

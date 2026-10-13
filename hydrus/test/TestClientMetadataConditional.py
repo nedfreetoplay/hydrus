@@ -22,8 +22,8 @@ class TestClientMetadataConditional( unittest.TestCase ):
     
     def test_mc_empty( self ):
         
-        media_result_jpeg = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_png = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_PNG )
+        media_result_jpeg = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_png = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_PNG )
         
         mc = ClientMetadataConditional.MetadataConditional()
         
@@ -33,8 +33,8 @@ class TestClientMetadataConditional( unittest.TestCase ):
     
     def test_mc_single( self ):
         
-        media_result_jpeg = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_png = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_PNG )
+        media_result_jpeg = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_png = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_PNG )
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext(
             ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ),
@@ -54,8 +54,8 @@ class TestClientMetadataConditional( unittest.TestCase ):
     
     def test_mc_double_fail( self ):
         
-        media_result_jpeg = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_png = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_PNG )
+        media_result_jpeg = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_png = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_PNG )
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext(
             ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ),
@@ -76,8 +76,8 @@ class TestClientMetadataConditional( unittest.TestCase ):
     
     def test_mc_double_success( self ):
         
-        media_result_jpeg = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_png = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_PNG )
+        media_result_jpeg = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_png = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_PNG )
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext(
             ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ),
@@ -105,8 +105,8 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         media_result_pass.GetLocationsManager().inbox = False
         media_result_fail.GetLocationsManager().inbox = True
@@ -121,8 +121,8 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         media_result_pass.GetLocationsManager().inbox = True
         media_result_fail.GetLocationsManager().inbox = False
@@ -137,8 +137,8 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_PNG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_PNG )
         
         self.assertTrue( pred.TestMediaResult( media_result_pass ) )
         self.assertFalse( pred.TestMediaResult( media_result_fail ) )
@@ -146,49 +146,49 @@ class TestPredicateTesting( unittest.TestCase ):
         # copied this from some other unit test--whatever
         
         system_predicate = ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = { HC.IMAGE_JPEG } )
-        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         self.assertTrue( system_predicate.TestMediaResult( fake_media_result ) )
         
         #
         
         system_predicate = ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = { HC.IMAGE_JPEG }, inclusive = False )
-        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         self.assertFalse( system_predicate.TestMediaResult( fake_media_result ) )
         
         #
         
         system_predicate = ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = { HC.IMAGE_JPEG } )
-        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_PNG )
+        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_PNG )
         
         self.assertFalse( system_predicate.TestMediaResult( fake_media_result ) )
         
         # 
         
         system_predicate = ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = { HC.IMAGE_JPEG, HC.APPLICATION_PDF } )
-        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         self.assertTrue( system_predicate.TestMediaResult( fake_media_result ) )
         
         #
         
         system_predicate = ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = { HC.IMAGE_JPEG, HC.APPLICATION_PDF } )
-        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_PNG )
+        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_PNG )
         
         self.assertFalse( system_predicate.TestMediaResult( fake_media_result ) )
         
         # 
         
         system_predicate = ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = { HC.GENERAL_IMAGE, HC.GENERAL_VIDEO } )
-        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         self.assertTrue( system_predicate.TestMediaResult( fake_media_result ) )
         
         # 
         
         system_predicate = ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = { HC.GENERAL_IMAGE, HC.GENERAL_VIDEO } )
-        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.ANIMATION_GIF )
+        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.ANIMATION_GIF )
         
         self.assertFalse( system_predicate.TestMediaResult( fake_media_result ) )
         
@@ -199,7 +199,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_fail = media_result_pass.Duplicate()
         
         media_result_pass.GetFileInfoManager().height = 195
@@ -215,7 +215,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_fail = media_result_pass.Duplicate()
         
         media_result_pass.GetFileInfoManager().width = 195
@@ -231,7 +231,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_fail = media_result_pass.Duplicate()
         
         media_result_pass.GetFileInfoManager().width = 200
@@ -250,7 +250,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_fail = media_result_pass.Duplicate()
         
         media_result_pass.GetFileInfoManager().width = 640
@@ -269,9 +269,9 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass_1 = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.ANIMATION_GIF )
-        media_result_pass_2 = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_GIF )
-        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.ANIMATION_GIF )
+        media_result_pass_1 = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.ANIMATION_GIF )
+        media_result_pass_2 = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_GIF )
+        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.ANIMATION_GIF )
         
         media_result_pass_1.GetFileInfoManager().duration_ms = 190
         media_result_pass_2.GetFileInfoManager().duration_ms = None
@@ -288,9 +288,9 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass_1 = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.ANIMATION_GIF )
-        media_result_pass_2 = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_GIF )
-        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.ANIMATION_GIF )
+        media_result_pass_1 = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.ANIMATION_GIF )
+        media_result_pass_2 = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_GIF )
+        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.ANIMATION_GIF )
         
         media_result_pass_1.GetFileInfoManager().duration_ms = 3000
         media_result_pass_2.GetFileInfoManager().duration_ms = None
@@ -311,9 +311,9 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass_1 = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.ANIMATION_GIF )
-        media_result_pass_2 = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_GIF )
-        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.ANIMATION_GIF )
+        media_result_pass_1 = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.ANIMATION_GIF )
+        media_result_pass_2 = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_GIF )
+        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.ANIMATION_GIF )
         
         media_result_pass_1.GetFileInfoManager().num_frames = 150
         media_result_pass_2.GetFileInfoManager().num_frames = None
@@ -330,7 +330,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_fail = media_result_pass.Duplicate()
         
         media_result_pass.GetFileInfoManager().has_exif = True
@@ -345,7 +345,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_fail = media_result_pass.Duplicate()
         
         media_result_pass.GetFileInfoManager().has_exif = False
@@ -361,7 +361,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_fail = media_result_pass.Duplicate()
         
         media_result_pass.GetFileInfoManager().has_xmp = True
@@ -376,7 +376,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_fail = media_result_pass.Duplicate()
         
         media_result_pass.GetFileInfoManager().has_xmp = False
@@ -392,7 +392,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_fail = media_result_pass.Duplicate()
         
         media_result_pass.GetFileInfoManager().has_iptc = True
@@ -407,7 +407,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_fail = media_result_pass.Duplicate()
         
         media_result_pass.GetFileInfoManager().has_iptc = False
@@ -423,7 +423,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_fail = media_result_pass.Duplicate()
         
         media_result_pass.GetFileInfoManager().has_audio = True
@@ -438,7 +438,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_fail = media_result_pass.Duplicate()
         
         media_result_pass.GetFileInfoManager().has_audio = False
@@ -454,7 +454,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_fail = media_result_pass.Duplicate()
         
         media_result_pass.GetFileInfoManager().original_mime = HC.IMAGE_JPEG
@@ -469,7 +469,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_fail = media_result_pass.Duplicate()
         
         media_result_fail.GetFileInfoManager().original_mime = HC.IMAGE_JPEG
@@ -485,7 +485,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_fail = media_result_pass.Duplicate()
         
         media_result_pass.GetFileInfoManager().has_transparency = True
@@ -500,7 +500,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_fail = media_result_pass.Duplicate()
         
         media_result_pass.GetFileInfoManager().has_transparency = False
@@ -516,7 +516,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_fail = media_result_pass.Duplicate()
         
         media_result_pass.GetFileInfoManager().has_human_readable_embedded_metadata = True
@@ -531,7 +531,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_fail = media_result_pass.Duplicate()
         
         media_result_pass.GetFileInfoManager().has_human_readable_embedded_metadata = False
@@ -547,7 +547,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_fail = media_result_pass.Duplicate()
         
         media_result_pass.GetFileInfoManager().has_software_source = True
@@ -562,7 +562,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_fail = media_result_pass.Duplicate()
         
         media_result_pass.GetFileInfoManager().has_software_source = False
@@ -578,7 +578,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_fail = media_result_pass.Duplicate()
         
         media_result_pass.GetFileInfoManager().has_icc_profile = True
@@ -593,7 +593,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_fail = media_result_pass.Duplicate()
         
         media_result_pass.GetFileInfoManager().has_icc_profile = False
@@ -609,7 +609,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         media_result_pass.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
@@ -646,7 +646,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG, include_some_tags = False )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG, include_some_tags = False )
         
         media_result_pass.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
@@ -666,7 +666,7 @@ class TestPredicateTesting( unittest.TestCase ):
             )
         )
         
-        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG, include_some_tags = False )
+        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG, include_some_tags = False )
         
         media_result_fail.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
@@ -687,7 +687,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG, include_some_tags = False )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG, include_some_tags = False )
         
         media_result_pass.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
@@ -716,7 +716,7 @@ class TestPredicateTesting( unittest.TestCase ):
             )
         )
         
-        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG, include_some_tags = False )
+        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG, include_some_tags = False )
         
         media_result_fail.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
@@ -755,7 +755,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG, include_some_tags = False )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG, include_some_tags = False )
         
         media_result_pass.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
@@ -784,7 +784,7 @@ class TestPredicateTesting( unittest.TestCase ):
             )
         )
         
-        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG, include_some_tags = False )
+        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG, include_some_tags = False )
         
         media_result_fail.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
@@ -820,7 +820,7 @@ class TestPredicateTesting( unittest.TestCase ):
     def test_type_num_urls( self ):
         
         system_predicate = ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_NUM_URLS, value = ClientNumberTest.NumberTest.STATICCreateFromCharacters( '>', 1 ) )
-        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey() )
+        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key() )
         
         fake_media_result.GetLocationsManager()._urls = {
             'http://somesite.com/123456',
@@ -834,7 +834,7 @@ class TestPredicateTesting( unittest.TestCase ):
         #
         
         system_predicate = ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_NUM_URLS, value = ClientNumberTest.NumberTest.STATICCreateFromCharacters( '>', 1 ) )
-        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey() )
+        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key() )
         
         fake_media_result.GetLocationsManager()._urls = set()
         
@@ -873,9 +873,9 @@ class TestPredicateTesting( unittest.TestCase ):
             
             self.assertTrue( pred.CanTestMediaResult() )
             
-            media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-            media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-            media_result_null = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+            media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+            media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+            media_result_null = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
             
             media_result_pass.GetTimesManager().SetImportedTimestampMS( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, HydrusTime.GetNowMS() + pass_delta )
             media_result_fail.GetTimesManager().SetImportedTimestampMS( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, HydrusTime.GetNowMS() + fail_delta )
@@ -891,9 +891,9 @@ class TestPredicateTesting( unittest.TestCase ):
             
             self.assertTrue( pred.CanTestMediaResult() )
             
-            media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-            media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-            media_result_null = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+            media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+            media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+            media_result_null = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
             
             media_result_pass.GetTimesManager().SetFileModifiedTimestampMS( HydrusTime.GetNowMS() + pass_delta )
             media_result_fail.GetTimesManager().SetFileModifiedTimestampMS( HydrusTime.GetNowMS() + fail_delta )
@@ -909,9 +909,9 @@ class TestPredicateTesting( unittest.TestCase ):
             
             self.assertTrue( pred.CanTestMediaResult() )
             
-            media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-            media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-            media_result_null = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+            media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+            media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+            media_result_null = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
             
             media_result_pass.GetTimesManager().SetLastViewedTimestampMS( CC.CANVAS_MEDIA_VIEWER, HydrusTime.GetNowMS() + pass_delta )
             media_result_fail.GetTimesManager().SetLastViewedTimestampMS( CC.CANVAS_MEDIA_VIEWER, HydrusTime.GetNowMS() + fail_delta )
@@ -927,9 +927,9 @@ class TestPredicateTesting( unittest.TestCase ):
             
             self.assertTrue( pred.CanTestMediaResult() )
             
-            media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-            media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-            media_result_null = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+            media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+            media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+            media_result_null = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
             
             media_result_pass.GetTimesManager().SetArchivedTimestampMS( HydrusTime.GetNowMS() + pass_delta )
             media_result_fail.GetTimesManager().SetArchivedTimestampMS( HydrusTime.GetNowMS() + fail_delta )
@@ -959,7 +959,7 @@ class TestPredicateTesting( unittest.TestCase ):
         )
         
         system_predicate = ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_KNOWN_URLS, value = ( True, 'url_class', url_class, 'whatever' ) )
-        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey() )
+        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key() )
         
         fake_media_result.GetLocationsManager()._urls = {
             'http://somesite.com/123456',
@@ -989,7 +989,7 @@ class TestPredicateTesting( unittest.TestCase ):
         )
         
         system_predicate = ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_KNOWN_URLS, value = ( True, 'url_class', url_class, 'whatever' ) )
-        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey() )
+        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key() )
         
         fake_media_result.GetLocationsManager()._urls = {
             'http://somesite.com/123456',
@@ -1008,7 +1008,7 @@ class TestPredicateTesting( unittest.TestCase ):
     def test_type_url_domain( self ):
         
         system_predicate = ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_KNOWN_URLS, value = ( True, 'domain', 'somesite.com', 'whatever' ) )
-        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey() )
+        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key() )
         
         fake_media_result.GetLocationsManager()._urls = {
             'http://somesite.com/123456',
@@ -1026,7 +1026,7 @@ class TestPredicateTesting( unittest.TestCase ):
         #
         
         system_predicate = ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_KNOWN_URLS, value = ( True, 'domain', 'obscuresite.com', 'whatever' ) )
-        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey() )
+        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key() )
         
         fake_media_result.GetLocationsManager()._urls = {
             'http://somesite.com/123456',
@@ -1045,7 +1045,7 @@ class TestPredicateTesting( unittest.TestCase ):
     def test_type_url_exact_match( self ):
         
         system_predicate = ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_KNOWN_URLS, value = ( True, 'exact_match', 'http://somesite.com/123456', 'whatever' ) )
-        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey() )
+        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key() )
         
         fake_media_result.GetLocationsManager()._urls = {
             'http://somesite.com/123456',
@@ -1063,7 +1063,7 @@ class TestPredicateTesting( unittest.TestCase ):
         #
         
         system_predicate = ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_KNOWN_URLS, value = ( True, 'exact_match', 'http://obscuresite.com/123456', 'whatever' ) )
-        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey() )
+        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key() )
         
         fake_media_result.GetLocationsManager()._urls = {
             'http://somesite.com/123456',
@@ -1082,7 +1082,7 @@ class TestPredicateTesting( unittest.TestCase ):
     def test_type_url_regex( self ):
         
         system_predicate = ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_KNOWN_URLS, value = ( True, 'regex', 'some..te', 'whatever' ) )
-        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey() )
+        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key() )
         
         fake_media_result.GetLocationsManager()._urls = {
             'http://somesite.com/123456',
@@ -1100,7 +1100,7 @@ class TestPredicateTesting( unittest.TestCase ):
         #
         
         system_predicate = ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_KNOWN_URLS, value = ( True, 'regex', 'obscure..te', 'whatever' ) )
-        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey() )
+        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key() )
         
         fake_media_result.GetLocationsManager()._urls = {
             'http://somesite.com/123456',
@@ -1128,8 +1128,8 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass_1 = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
-        media_result_pass_2 = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass_1 = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
+        media_result_pass_2 = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_fail = media_result_pass_1.Duplicate()
         
         media_result_pass_1.GetFileInfoManager().width = 195
@@ -1150,7 +1150,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         media_result_pass.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
@@ -1161,7 +1161,7 @@ class TestPredicateTesting( unittest.TestCase ):
             )
         )
         
-        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         media_result_fail.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
@@ -1181,7 +1181,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         media_result_pass.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
@@ -1192,7 +1192,7 @@ class TestPredicateTesting( unittest.TestCase ):
             )
         )
         
-        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         media_result_fail.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
@@ -1213,7 +1213,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         media_result_pass.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
@@ -1224,7 +1224,7 @@ class TestPredicateTesting( unittest.TestCase ):
             )
         )
         
-        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         media_result_fail.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
@@ -1244,7 +1244,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         media_result_pass.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
@@ -1255,7 +1255,7 @@ class TestPredicateTesting( unittest.TestCase ):
             )
         )
         
-        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         media_result_fail.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
@@ -1276,7 +1276,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         media_result_pass.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
@@ -1287,7 +1287,7 @@ class TestPredicateTesting( unittest.TestCase ):
             )
         )
         
-        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         media_result_fail.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
@@ -1307,7 +1307,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         media_result_pass.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
@@ -1318,7 +1318,7 @@ class TestPredicateTesting( unittest.TestCase ):
             )
         )
         
-        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         media_result_fail.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
@@ -1339,7 +1339,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_pass.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
             ClientContentUpdates.ContentUpdate(
@@ -1350,7 +1350,7 @@ class TestPredicateTesting( unittest.TestCase ):
         )
         
         
-        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         media_result_fail.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
@@ -1370,7 +1370,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_pass.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
             ClientContentUpdates.ContentUpdate(
@@ -1381,7 +1381,7 @@ class TestPredicateTesting( unittest.TestCase ):
         )
         
         
-        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         media_result_fail.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
@@ -1401,7 +1401,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_pass.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
             ClientContentUpdates.ContentUpdate(
@@ -1412,7 +1412,7 @@ class TestPredicateTesting( unittest.TestCase ):
         )
         
         
-        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         media_result_fail.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
@@ -1432,7 +1432,7 @@ class TestPredicateTesting( unittest.TestCase ):
         
         self.assertTrue( pred.CanTestMediaResult() )
         
-        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_pass = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         media_result_pass.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
             ClientContentUpdates.ContentUpdate(
@@ -1443,7 +1443,7 @@ class TestPredicateTesting( unittest.TestCase ):
         )
         
         
-        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        media_result_fail = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
         media_result_fail.GetTagsManager().ProcessContentUpdate(
             CC.DEFAULT_LOCAL_TAG_SERVICE_KEY,
@@ -1463,9 +1463,9 @@ class TestPredicateValueExtraction( unittest.TestCase ):
     
     def test_extract_value( self ):
         
-        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.IMAGE_JPEG )
+        fake_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.IMAGE_JPEG )
         
-        fake_non_image_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.GenerateKey(), mime = HC.APPLICATION_XLS )
+        fake_non_image_media_result = HelperFunctions.GetFakeMediaResult( HydrusData.generate_key(), mime = HC.APPLICATION_XLS )
         fake_non_image_media_result.GetFileInfoManager().width = None
         fake_non_image_media_result.GetFileInfoManager().height = None
         

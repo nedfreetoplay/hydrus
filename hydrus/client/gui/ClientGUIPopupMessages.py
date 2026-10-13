@@ -606,7 +606,7 @@ class PopupMessage( PopupWindow ):
             
         else:
             
-            self._user_callable_button.setText( user_callable.GetLabel() )
+            self._user_callable_button.setText( user_callable.get_label() )
             
             self._user_callable_button.show()
             
@@ -1018,9 +1018,9 @@ class PopupMessageManager( QW.QFrame ):
             
             text = 'The popup message manager experienced a fatal error and will now stop working! Please restart the client as soon as possible! If this keeps happening, please email the details and your client.log to the hydrus developer.'
             
-            HydrusData.Print( text )
+            HydrusData.safe_print( text )
             
-            HydrusData.Print( traceback.format_exc() )
+            HydrusData.safe_print( traceback.format_exc() )
             
             ClientGUIDialogsMessage.ShowCritical( gui_frame, 'Popup Message Manager failure!', text )
             
@@ -1113,7 +1113,7 @@ class PopupMessageManager( QW.QFrame ):
             
         except Exception as e:
             
-            HydrusData.Print( traceback.format_exc() )
+            HydrusData.safe_print( traceback.format_exc() )
             
         
     

@@ -998,7 +998,7 @@ class EditFileNotesPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolle
             return
             
         
-        name = HydrusData.GetNonDupeName( name, existing_names )
+        name = HydrusData.get_non_dupe_name( name, existing_names )
         
         self._AddNotePanel( name, '' )
         
@@ -1259,7 +1259,7 @@ class EditFileNotesPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolle
             return
             
         
-        name = HydrusData.GetNonDupeName( name, existing_names )
+        name = HydrusData.get_non_dupe_name( name, existing_names )
         
         self._notebook.setTabText( index, name )
         

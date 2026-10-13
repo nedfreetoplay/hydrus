@@ -27,7 +27,7 @@ class HydrusController( object ):
         
         self._name = 'hydrus'
         
-        self._boot_id = HydrusData.GenerateKey()
+        self._boot_id = HydrusData.generate_key()
         
         self._last_shutdown_was_bad = False
         self._i_own_running_file = False
@@ -111,7 +111,7 @@ class HydrusController( object ):
     
     def _show_just_woke_to_user( self ) -> None:
         
-        HydrusData.Print( 'Just woke from sleep.' )
+        HydrusData.safe_print( 'Just woke from sleep.' )
     
     def _shutdown_daemons( self ):
         
@@ -186,14 +186,14 @@ class HydrusController( object ):
     
     def blocking_safe_show_critical_message( self, title: str, message: str ):
         
-        HydrusData.DebugPrint( title )
-        HydrusData.DebugPrint( message )
+        HydrusData.debug_print( title )
+        HydrusData.debug_print( message )
         
         input( 'Press Enter to continue.' )
     
     def blocking_safe_show_message( self, message: str ):
         
-        HydrusData.DebugPrint( message )
+        HydrusData.debug_print( message )
         
         input( 'Press Enter to continue.' )
     
@@ -284,7 +284,7 @@ class HydrusController( object ):
         
         if self._i_own_running_file:
             
-            HydrusData.CleanRunningFile( self.db_dir, self._name )
+            HydrusData.clean_running_file( self.db_dir, self._name )
     
     def clear_caches( self ) -> None:
         
@@ -425,7 +425,7 @@ class HydrusController( object ):
             
         except Exception as e:
             
-            HydrusData.Print( 'Failed to initialise temp folder.' )
+            HydrusData.safe_print( 'Failed to initialise temp folder.' )
             
         
         from hydrus.core.files import HydrusFileHandling
@@ -508,7 +508,7 @@ class HydrusController( object ):
     
     def record_running_start( self ):
         
-        self._last_shutdown_was_bad = HydrusData.LastShutdownWasBad( self.db_dir, self._name )
+        self._last_shutdown_was_bad = HydrusData.last_shutdown_was_bad( self.db_dir, self._name )
         
         self._i_own_running_file = True
         
@@ -619,8 +619,8 @@ class HydrusController( object ):
                 
             except Exception as e:
                 
-                HydrusData.Print( 'While shutting down, could not delete the temp dir "{self._hydrus_temp_dir}"! Error follows:' )
-                HydrusData.PrintException( e, do_wait = False )
+                HydrusData.safe_print( 'While shutting down, could not delete the temp dir "{self._hydrus_temp_dir}"! Error follows:' )
+                HydrusData.print_exception( e, do_wait = False )
                 
             
         
@@ -706,7 +706,7 @@ class HydrusController( object ):
             
             if HG.shutdown_report_mode:
                 
-                HydrusData.Print( 'Just sent twisted shutdown call.' )
+                HydrusData.safe_print( 'Just sent twisted shutdown call.' )
     
     def system_busy( self ):
         

@@ -229,7 +229,7 @@ class ImportOptionsManager( HydrusSerialisable.SerialisableBase ):
     
     def _AddFavourite( self, name: str, import_options_container: ImportOptionsContainer.ImportOptionsContainer ):
         
-        actual_name = HydrusData.GetNonDupeName( name, set( self._names_to_favourite_import_options_containers.keys() ) )
+        actual_name = HydrusData.get_non_dupe_name( name, set( self._names_to_favourite_import_options_containers.keys() ) )
         
         self._names_to_favourite_import_options_containers[ actual_name ] = import_options_container
         

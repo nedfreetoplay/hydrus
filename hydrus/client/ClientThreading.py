@@ -14,7 +14,7 @@ class JobStatus( object ):
     
     def __init__( self, pausable = False, cancellable = False, maintenance_mode = HC.MAINTENANCE_FORCED, only_start_if_unbusy = False, stop_time = None, cancel_on_shutdown = True ):
         
-        self._key = HydrusData.GenerateKey()
+        self._key = HydrusData.generate_key()
         
         self._creation_time = HydrusTime.GetNowFloat()
         
@@ -362,13 +362,13 @@ class JobStatus( object ):
             
             self.SetStatusText( first_line )
             
-            nice_trace = HydrusData.ConvertExceptionTupleToNiceTrace( etype, value, tb )
+            nice_trace = HydrusData.convert_exception_tuple_to_nice_trace( etype, value, tb )
             
             self.SetVariable( 'traceback', nice_trace )
             
         except Exception as e:
             
-            HydrusData.PrintExceptionTuple( etype, value, tb )
+            HydrusData.print_exception_tuple( etype, value, tb )
             
             self.SetStatusText( 'Encountered exception I could not parse!' )
             

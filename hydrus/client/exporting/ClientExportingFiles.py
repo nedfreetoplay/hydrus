@@ -790,7 +790,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
         
         if num_actually_copied > 0:
             
-            HydrusData.Print( 'Export folder ' + self._name + ' exported ' + HydrusNumbers.ToHumanInt( num_actually_copied ) + ' files.' )
+            HydrusData.safe_print( 'Export folder ' + self._name + ' exported ' + HydrusNumbers.ToHumanInt( num_actually_copied ) + ' files.' )
             
         
         if self._export_type == HC.EXPORT_FOLDER_TYPE_SYNCHRONISE:
@@ -845,7 +845,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             
             if len( deletee_paths ) > 0:
                 
-                HydrusData.Print( 'Export folder {} deleted {} files and {} folders.'.format( self._name, HydrusNumbers.ToHumanInt( len( deletee_paths ) ), HydrusNumbers.ToHumanInt( len( deletee_dirs ) ) ) )
+                HydrusData.safe_print( 'Export folder {} deleted {} files and {} folders.'.format( self._name, HydrusNumbers.ToHumanInt( len( deletee_paths ) ), HydrusNumbers.ToHumanInt( len( deletee_dirs ) ) ) )
                 
             
         

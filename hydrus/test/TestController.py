@@ -95,9 +95,9 @@ DB_DIR = None
 
 tiniest_gif = b'\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x00\xFF\x00\x2C\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x00\x3B'
 
-LOCAL_RATING_LIKE_SERVICE_KEY = HydrusData.GenerateKey()
-LOCAL_RATING_NUMERICAL_SERVICE_KEY = HydrusData.GenerateKey()
-LOCAL_RATING_INCDEC_SERVICE_KEY = HydrusData.GenerateKey()
+LOCAL_RATING_LIKE_SERVICE_KEY = HydrusData.generate_key()
+LOCAL_RATING_NUMERICAL_SERVICE_KEY = HydrusData.generate_key()
+LOCAL_RATING_INCDEC_SERVICE_KEY = HydrusData.generate_key()
 
 callable_P = typing.ParamSpec( 'callable_P' )
 callable_R = typing.TypeVar( 'callable_R' )
@@ -201,7 +201,7 @@ class Controller( object ):
         
         self._timestamps_ms = collections.defaultdict( lambda: 0 )
         
-        self._boot_id = HydrusData.GenerateKey()
+        self._boot_id = HydrusData.generate_key()
         
         self.main_qt_thread = self.app.thread()
         
@@ -267,10 +267,10 @@ class Controller( object ):
         self.example_numerical_rating_service_key = LOCAL_RATING_NUMERICAL_SERVICE_KEY
         self.example_incdec_rating_service_key = LOCAL_RATING_INCDEC_SERVICE_KEY
         
-        self.example_file_repo_service_key_1 = HydrusData.GenerateKey()
-        self.example_file_repo_service_key_2 = HydrusData.GenerateKey()
-        self.example_tag_repo_service_key = HydrusData.GenerateKey()
-        self.example_ipfs_service_key = HydrusData.GenerateKey()
+        self.example_file_repo_service_key_1 = HydrusData.generate_key()
+        self.example_file_repo_service_key_2 = HydrusData.generate_key()
+        self.example_tag_repo_service_key = HydrusData.generate_key()
+        self.example_ipfs_service_key = HydrusData.generate_key()
         
         services = []
         
@@ -463,7 +463,7 @@ class Controller( object ):
     
     def AcquirePageKey( self ):
         
-        return HydrusData.GenerateKey()
+        return HydrusData.generate_key()
         
     
     def AmInTheMainQtThread( self ) -> bool:
@@ -596,7 +596,7 @@ class Controller( object ):
         
         call = HydrusData.Call( func, *args, **kwargs )
         
-        call.SetLabel( label )
+        call.set_label( label )
         
         job = ClientThreading.QtAwareJob( self, self._job_scheduler, window, initial_delay, call )
         

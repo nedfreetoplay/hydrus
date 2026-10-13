@@ -623,7 +623,7 @@ def VideoHasAudio( path, info_lines ) -> bool:
         '-' ] )
         
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         
@@ -804,7 +804,7 @@ class VideoRendererFFMPEG( object ):
             '-'
         ] )
         
-        HydrusData.CheckProgramIsNotShuttingDown()
+        HydrusData.check_program_is_not_shutting_down()
         
         try:
             

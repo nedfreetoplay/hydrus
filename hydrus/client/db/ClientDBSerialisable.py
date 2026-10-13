@@ -45,7 +45,7 @@ def ExportBrokenHashedJSONDump( db_dir, dump, dump_descriptor ):
     
 def DealWithBrokenJSONDump( db_dir, dump, dump_object_descriptor, dump_descriptor ):
     
-    HydrusData.Print( 'I am exporting a broken dump. The full object descriptor is: {}'.format( dump_object_descriptor ) )
+    HydrusData.safe_print( 'I am exporting a broken dump. The full object descriptor is: {}'.format( dump_object_descriptor ) )
     
     timestamp_string = time.strftime( '%Y-%m-%d %H-%M-%S' )
     hex_chars = os.urandom( 4 ).hex()
@@ -84,7 +84,7 @@ def GenerateBigSQLiteDumpBuffer( dump ):
         
     except Exception as e:
         
-        HydrusData.PrintException( e )
+        HydrusData.print_exception( e )
         
         raise Exception( 'While trying to save data to the database, it could not be decoded from UTF-8 to bytes! This could indicate an encoding error, such as Shift JIS sneaking into a downloader page! Please let hydrus dev know about this! Full error was written to the log!' )
         
@@ -100,7 +100,7 @@ def GenerateBigSQLiteDumpBuffer( dump ):
         
     except Exception as e:
         
-        HydrusData.PrintException( e )
+        HydrusData.print_exception( e )
         
         raise Exception( 'While trying to save data to the database, it would not form into a buffer! Please let hydrus dev know about this! Full error was written to the log!' )
         
@@ -239,7 +239,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                     shown_missing_dump_message = True
                     
                 
-                HydrusData.Print( 'Was asked to fetch named JSON object "{}", but it was missing!'.format( hash.hex() ) )
+                HydrusData.safe_print( 'Was asked to fetch named JSON object "{}", but it was missing!'.format( hash.hex() ) )
                 
                 continue
                 
@@ -278,7 +278,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                     shown_broken_dump_message = True
                     
                 
-                HydrusData.Print( 'Was asked to fetch named JSON object "{}", but it was malformed!'.format( hash.hex() ) )
+                HydrusData.safe_print( 'Was asked to fetch named JSON object "{}", but it was malformed!'.format( hash.hex() ) )
                 
             
             obj = HydrusSerialisable.CreateFromSerialisableTuple( ( dump_type, version, serialisable_info ) )
@@ -438,7 +438,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
     
     def GetJSONDumpNamesToBackupTimestampsMS( self, dump_type ):
         
-        names_to_backup_timestamps_ms = HydrusData.BuildKeyToListDict( self._Execute( 'SELECT dump_name, timestamp_ms FROM json_dumps_named WHERE dump_type = ? ORDER BY timestamp_ms ASC;', ( dump_type, ) ) )
+        names_to_backup_timestamps_ms = HydrusData.build_key_to_list_dict( self._Execute( 'SELECT dump_name, timestamp_ms FROM json_dumps_named WHERE dump_type = ? ORDER BY timestamp_ms ASC;', ( dump_type, ) ) )
         
         for ( name, timestamp_ms_list ) in list( names_to_backup_timestamps_ms.items() ):
             
@@ -558,8 +558,8 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
             except Exception as e:
                 
                 HydrusData.ShowException( e )
-                HydrusData.Print( obj )
-                HydrusData.Print( serialisable_info )
+                HydrusData.safe_print( obj )
+                HydrusData.safe_print( serialisable_info )
                 
                 raise Exception( 'Trying to json dump the hashed object ' + str( obj ) + ' caused an error. Its serialisable info has been dumped to the log.' )
                 
@@ -576,12 +576,12 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 
             except Exception as e:
                 
-                HydrusData.DebugPrint( dump )
+                HydrusData.debug_print( dump )
                 HydrusData.ShowText( 'Had a problem saving a hashed JSON object. The dump has been printed to the log.' )
                 
                 try:
                     
-                    HydrusData.Print( 'Dump had length {}!'.format( HydrusData.ToHumanBytes( len( dump_buffer ) ) ) )
+                    HydrusData.safe_print( 'Dump had length {}!'.format( HydrusData.ToHumanBytes( len( dump_buffer ) ) ) )
                     
                 except Exception as e:
                     
@@ -629,8 +629,8 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
             except Exception as e:
                 
                 HydrusData.ShowException( e )
-                HydrusData.Print( obj )
-                HydrusData.Print( serialisable_info )
+                HydrusData.safe_print( obj )
+                HydrusData.safe_print( serialisable_info )
                 
                 raise Exception( 'Trying to json dump the object ' + str( obj ) + ' with name ' + dump_name + ' caused an error. Its serialisable info has been dumped to the log.' )
                 
@@ -679,12 +679,12 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 
             except Exception as e:
                 
-                HydrusData.DebugPrint( dump )
+                HydrusData.debug_print( dump )
                 HydrusData.ShowText( 'Had a problem saving a JSON object. The dump has been printed to the log.' )
                 
                 try:
                     
-                    HydrusData.Print( 'Dump had length {}!'.format( HydrusData.ToHumanBytes( len( dump_buffer ) ) ) )
+                    HydrusData.safe_print( 'Dump had length {}!'.format( HydrusData.ToHumanBytes( len( dump_buffer ) ) ) )
                     
                 except Exception as e:
                     
@@ -758,8 +758,8 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
             except Exception as e:
                 
                 HydrusData.ShowException( e )
-                HydrusData.Print( obj )
-                HydrusData.Print( serialisable_info )
+                HydrusData.safe_print( obj )
+                HydrusData.safe_print( serialisable_info )
                 
                 raise Exception( 'Trying to json dump the object ' + str( obj ) + ' caused an error. Its serialisable info has been dumped to the log.' )
                 
@@ -774,7 +774,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 
             except Exception as e:
                 
-                HydrusData.DebugPrint( dump )
+                HydrusData.debug_print( dump )
                 HydrusData.ShowText( 'Had a problem saving a JSON object. The dump has been printed to the log.' )
                 
                 raise
@@ -833,7 +833,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 
             except Exception as e:
                 
-                HydrusData.DebugPrint( dump )
+                HydrusData.debug_print( dump )
                 HydrusData.ShowText( 'Had a problem saving a JSON object. The dump has been printed to the log.' )
                 
                 raise

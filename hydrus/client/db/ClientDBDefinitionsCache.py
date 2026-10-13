@@ -322,7 +322,7 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
             
             bad_hash_ids_text = ', '.join( ( str( hash_id ) for hash_id in sorted( all_excess_hash_ids ) ) )
             
-            HydrusData.Print( f'Deleted excess desynced local hash_ids: {bad_hash_ids_text}' )
+            HydrusData.safe_print( f'Deleted excess desynced local hash_ids: {bad_hash_ids_text}' )
             
             status_text_info.append( f'{HydrusNumbers.ToHumanInt( len( all_excess_hash_ids ) ) } excess hash records' )
             
@@ -331,7 +331,7 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
             
             bad_hash_ids_text = ', '.join( ( str( hash_id ) for hash_id in sorted( all_missing_hash_ids ) ) )
             
-            HydrusData.Print( f'Added missing desynced local hash_ids: {bad_hash_ids_text}' )
+            HydrusData.safe_print( f'Added missing desynced local hash_ids: {bad_hash_ids_text}' )
             
             status_text_info.append( f'{HydrusNumbers.ToHumanInt( len( all_missing_hash_ids ) ) } missing hash records' )
             
@@ -340,7 +340,7 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
             
             bad_hash_ids_text = ', '.join( ( str( hash_id ) for hash_id in sorted( all_incorrect_hash_ids ) ) )
             
-            HydrusData.Print( f'Fixed incorrect desynced local hash_ids: {bad_hash_ids_text}' )
+            HydrusData.safe_print( f'Fixed incorrect desynced local hash_ids: {bad_hash_ids_text}' )
             
             status_text_info.append( f'{HydrusNumbers.ToHumanInt( len( all_incorrect_hash_ids ) ) } incorrect hash records' )
             

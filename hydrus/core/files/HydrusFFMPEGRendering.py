@@ -40,7 +40,7 @@ def RenderAnyAttachedStillImageToPath( file_path, output_path ):
     # note the "-update 1" says "keep overwriting every frame onto the output" just to suppress a warning; -frames:v 1 makes it moot
     cmd = [ ffmpeg_path, "-xerror", '-y', '-i', file_path, '-map', image_stream_mapping, '-frames:v', '1', '-update', '1', '-f', 'image2', '-c:v', 'png', output_path ]
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         
@@ -74,7 +74,7 @@ def RenderImageToImagePath( path, temp_image_path ):
         cmd = [ ffmpeg_path, "-xerror", '-y', "-i", path, temp_image_path ]
         
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         
@@ -98,7 +98,7 @@ def RenderImageToRawRGBABytes( path ):
     
     cmd = [ ffmpeg_path, "-xerror", '-i', path, '-f', 'rawvideo', '-pix_fmt', 'rgba', '-' ]
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         
@@ -122,7 +122,7 @@ def RenderImageToPNGBytes( path ):
     
     cmd = [ ffmpeg_path, "-xerror", '-i', path, '-f', 'image2pipe', '-vcodec', 'png', '-' ]
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         

@@ -311,7 +311,7 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
     
     def _Add( self, service_type ):
         
-        service_key = HydrusData.GenerateKey()
+        service_key = HydrusData.generate_key()
         
         port = self._GetNextPort()
         

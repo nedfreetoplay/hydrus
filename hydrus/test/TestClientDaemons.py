@@ -67,8 +67,8 @@ class TestDaemons( unittest.TestCase ):
                 phrase = '{hash}'
             )
             
-            hash_1 = HydrusData.GenerateKey()
-            hash_2 = HydrusData.GenerateKey()
+            hash_1 = HydrusData.generate_key()
+            hash_2 = HydrusData.generate_key()
             mime = HC.IMAGE_JPEG
             
             fake_media_result_1 = HelperFunctions.GetFakeMediaResult( hash_1, mime )

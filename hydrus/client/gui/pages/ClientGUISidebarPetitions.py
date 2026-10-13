@@ -39,7 +39,7 @@ from hydrus.client.gui.widgets import ClientGUICommon
 from hydrus.client.metadata import ClientContentUpdates
 from hydrus.client.metadata import ClientTags
 
-fake_account_keys = [ HydrusData.GenerateKey() for i in range( 5 ) ]
+fake_account_keys = [ HydrusData.generate_key() for i in range( 5 ) ]
 cached_local_media_results = []
 cached_fake_petition_headers_to_petitions = dict()
 

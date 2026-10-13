@@ -1810,7 +1810,7 @@ class BetterListCtrlPanel( QW.QWidget ):
                 
             else:
                 
-                bad_object_type_names.add( HydrusData.GetTypeName( type( obj ) ) )
+                bad_object_type_names.add( HydrusData.get_type_name( type( obj ) ) )
                 
             
         
@@ -1822,7 +1822,7 @@ class BetterListCtrlPanel( QW.QWidget ):
             message += '\n' * 2
             message += 'Whereas this control only allows:'
             message += '\n' * 2
-            message += '\n'.join( ( HydrusData.GetTypeName( o ) for o in self._permitted_object_types ) )
+            message += '\n'.join( ( HydrusData.get_type_name( o ) for o in self._permitted_object_types ) )
             
             ClientGUIDialogsMessage.ShowWarning( self, message )
             
@@ -1858,7 +1858,7 @@ class BetterListCtrlPanel( QW.QWidget ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Problem loading!', str(e) )
                 
@@ -1873,7 +1873,7 @@ class BetterListCtrlPanel( QW.QWidget ):
                 
             except HydrusExceptions.SerialisationException as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 if not have_shown_load_error:
                     
@@ -1892,7 +1892,7 @@ class BetterListCtrlPanel( QW.QWidget ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', f'I could not understand what was encoded in "{path}"!' )
                 
@@ -1913,7 +1913,7 @@ class BetterListCtrlPanel( QW.QWidget ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', str(e) )
                 
@@ -1928,7 +1928,7 @@ class BetterListCtrlPanel( QW.QWidget ):
                 
             except HydrusExceptions.SerialisationException as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 if not have_shown_load_error:
                     
@@ -1947,7 +1947,7 @@ class BetterListCtrlPanel( QW.QWidget ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Error', 'I could not understand what was encoded in "{path}"!' )
                 

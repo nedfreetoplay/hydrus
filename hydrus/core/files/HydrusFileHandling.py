@@ -104,14 +104,14 @@ def PrintMoreThumbErrorInfo( e: Exception, message, extra_description: str | Non
     
     if not isinstance( e, HydrusExceptions.NoThumbnailFileException ):
         
-        HydrusData.Print( message )
+        HydrusData.safe_print( message )
         
         if extra_description is not None:
             
-            HydrusData.Print( f'Extra info: {extra_description}' )
+            HydrusData.safe_print( f'Extra info: {extra_description}' )
             
         
-        HydrusData.PrintException( e )
+        HydrusData.print_exception( e )
         
     
 
@@ -675,8 +675,8 @@ def GetFileInfo( path, mime = None, ok_to_look_for_hydrus_updates = False ):
             
         except Exception as e:
             
-            HydrusData.Print( 'Problem calculating resolution for "{}":'.format( path ) )
-            HydrusData.PrintException( e )
+            HydrusData.safe_print( 'Problem calculating resolution for "{}":'.format( path ) )
+            HydrusData.print_exception( e )
             
         
     elif mime == HC.ANIMATION_UGOIRA: # must be before VIEWABLE_ANIMATIONS
@@ -1036,8 +1036,8 @@ def GetMime( path, ok_to_look_for_hydrus_updates = False ):
             
         except Exception as e:
             
-            HydrusData.Print( 'FFMPEG had trouble with: ' + path )
-            HydrusData.PrintException( e, do_wait = False )
+            HydrusData.safe_print( 'FFMPEG had trouble with: ' + path )
+            HydrusData.print_exception( e, do_wait = False )
             
         
     

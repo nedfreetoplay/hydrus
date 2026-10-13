@@ -476,7 +476,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
         
         if gug_key_and_name is None:
             
-            gug_key_and_name = ( HydrusData.GenerateKey(), '' )
+            gug_key_and_name = ( HydrusData.generate_key(), '' )
             
         
         self._gug_key_and_name = gug_key_and_name
@@ -849,7 +849,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
             
             ( serialisable_gallery_identifier, serialisable_gallery_stream_identifiers, serialisable_queries, serialisable_checker_options, initial_file_limit, periodic_file_limit, paused, serialisable_file_import_options, serialisable_tag_import_options, no_work_until, no_work_until_reason, publish_files_to_popup_button, publish_files_to_page, merge_query_publish_events ) = old_serialisable_info
             
-            serialisable_gug_key_and_name = ( HydrusData.GenerateKey().hex(), 'unknown downloader' )
+            serialisable_gug_key_and_name = ( HydrusData.generate_key().hex(), 'unknown downloader' )
             
             paused = True
             

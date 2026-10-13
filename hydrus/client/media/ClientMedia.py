@@ -274,7 +274,7 @@ class Media( object ):
     
     def __init__( self ):
         
-        self._id = HydrusData.GenerateKey()
+        self._id = HydrusData.generate_key()
         self._id_hash = self._id.__hash__()
         
     

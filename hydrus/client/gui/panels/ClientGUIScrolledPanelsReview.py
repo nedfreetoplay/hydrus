@@ -786,7 +786,7 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
         
         self._search_panel = ClientGUICommon.StaticBox( self._new_work_panel, 'select files by search' )
         
-        page_key = HydrusData.GenerateKey()
+        page_key = HydrusData.generate_key()
         
         default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
         

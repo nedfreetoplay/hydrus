@@ -893,7 +893,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                     
                 elif file_seed.status == CC.STATUS_ERROR:
                     
-                    HydrusData.Print( f'Import folder "{self._name}" failed to import: "{path}"' )
+                    HydrusData.safe_print( f'Import folder "{self._name}" failed to import: "{path}"' )
                     
                 
                 i += 1
@@ -908,7 +908,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
         
         if num_files_imported > 0:
             
-            HydrusData.Print( 'Import folder ' + self._name + ' imported ' + HydrusNumbers.ToHumanInt( num_files_imported ) + ' files.' )
+            HydrusData.safe_print( 'Import folder ' + self._name + ' imported ' + HydrusNumbers.ToHumanInt( num_files_imported ) + ' files.' )
             
             if len( presentation_hashes ) > 0:
                 
@@ -1070,9 +1070,9 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                 
             except Exception as e:
                 
-                HydrusData.Print( 'Failed to update import folder with new metadata routers.' )
+                HydrusData.safe_print( 'Failed to update import folder with new metadata routers.' )
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
             
             serialisable_metadata_routers = metadata_routers.GetSerialisableTuple()
@@ -1593,7 +1593,7 @@ class ImportFoldersManager( ClientDaemons.ManagerWithMainLoop ):
             
             self._serious_error_encountered = True
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             message = 'There was an unexpected problem during import folders work! They will not run again this program boot. A full traceback of this error should be written to the log.'
             message += '\n' * 2

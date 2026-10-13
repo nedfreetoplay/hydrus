@@ -189,7 +189,7 @@ def generate_query_header( query_text: str, checker_options: CheckerImportOption
 
 def generate_query_log_container() -> ClientImportSubscriptionQuery.SubscriptionQueryLogContainer:
     
-    query_log_container = ClientImportSubscriptionQuery.SubscriptionQueryLogContainer( HydrusData.GenerateKey().hex() )
+    query_log_container = ClientImportSubscriptionQuery.SubscriptionQueryLogContainer( HydrusData.generate_key().hex() )
     
     return query_log_container
     

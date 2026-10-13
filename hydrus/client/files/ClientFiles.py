@@ -283,8 +283,8 @@ def HasTransparency( path, mime, duration_ms = None, num_frames = None, resoluti
         
     except HydrusExceptions.DamagedOrUnusualFileException as e:
         
-        HydrusData.Print( 'Problem determining transparency for "{}":'.format( path ) )
-        HydrusData.PrintException( e )
+        HydrusData.safe_print( 'Problem determining transparency for "{}":'.format( path ) )
+        HydrusData.print_exception( e )
         
         return False
         

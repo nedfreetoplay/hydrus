@@ -1386,7 +1386,7 @@ class TestClientAPI( unittest.TestCase ):
         
         #
         
-        hash = HydrusData.GenerateKey()
+        hash = HydrusData.generate_key()
         
         # missing file
         
@@ -1412,7 +1412,7 @@ class TestClientAPI( unittest.TestCase ):
         
         with mock.patch.object( HydrusTime, 'GetNowMS', return_value = magic_now ):
             
-            hash = HydrusData.GenerateKey()
+            hash = HydrusData.generate_key()
             
             media_result = HF.GetFakeMediaResult( hash )
             
@@ -1454,11 +1454,11 @@ class TestClientAPI( unittest.TestCase ):
         
         with mock.patch.object( HydrusTime, 'GetNowMS', return_value = magic_now ):
             
-            hash = HydrusData.GenerateKey()
+            hash = HydrusData.generate_key()
             
             media_result = HF.GetFakeMediaResult( hash )
             
-            some_file_service_key = HydrusData.GenerateKey()
+            some_file_service_key = HydrusData.generate_key()
             
             media_result.GetLocationsManager()._current = { CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, some_file_service_key }
             media_result.GetLocationsManager()._service_keys_to_filenames = {
@@ -1509,8 +1509,8 @@ class TestClientAPI( unittest.TestCase ):
         
         file_id = random.randint( 10000, 15000 )
         
-        hash = HydrusData.GenerateKey()
-        hashes = { HydrusData.GenerateKey() for i in range( 10 ) }
+        hash = HydrusData.generate_key()
+        hashes = { HydrusData.generate_key() for i in range( 10 ) }
         
         file_ids_to_hashes = { file_id : hash for ( file_id, hash ) in zip( random.sample( range( 2000 ), 10 ), hashes ) }
         

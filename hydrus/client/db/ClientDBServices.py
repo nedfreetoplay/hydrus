@@ -256,7 +256,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
         
         existing_names = { service.GetName() for service in self._service_ids_to_services.values() }
         
-        return HydrusData.GetNonDupeName( name, existing_names, do_casefold = True )
+        return HydrusData.get_non_dupe_name( name, existing_names, do_casefold = True )
         
     
     def GetService( self, service_id ) -> typing.Any:

@@ -103,7 +103,7 @@ def ShutdownThread( thread ) -> None:
     
     if HG.shutdown_report_mode:
         
-        HydrusData.DebugPrint( f'Thread "{thread}" is getting an external shutdown call.' )
+        HydrusData.debug_print( f'Thread "{thread}" is getting an external shutdown call.' )
         
     
     thread_info = GetThreadInfo( thread )
@@ -306,7 +306,7 @@ class DAEMONWorker( DAEMON ):
                     
                     if HG.shutdown_report_mode:
                         
-                        HydrusData.DebugPrint( f'Daemon worker "{self._name}" encountered a Shutdown exception inside of the main callable.' )
+                        HydrusData.debug_print( f'Daemon worker "{self._name}" encountered a Shutdown exception inside of the main callable.' )
                         
                     
                     return
@@ -325,7 +325,7 @@ class DAEMONWorker( DAEMON ):
             
             if HG.shutdown_report_mode:
                 
-                HydrusData.DebugPrint( f'Daemon worker "{self._name}" encountered a Shutdown exception outside of the main callable.' )
+                HydrusData.debug_print( f'Daemon worker "{self._name}" encountered a Shutdown exception outside of the main callable.' )
                 
             
             return
@@ -334,7 +334,7 @@ class DAEMONWorker( DAEMON ):
             
             if HG.shutdown_report_mode:
                 
-                HydrusData.DebugPrint( f'Daemon CallToWorker "{self._name}" is shut down!' )
+                HydrusData.debug_print( f'Daemon CallToWorker "{self._name}" is shut down!' )
                 
             
         
@@ -440,14 +440,14 @@ class THREADCallToThread( DAEMON ):
                     
                     if HG.shutdown_report_mode:
                         
-                        HydrusData.DebugPrint( f'Daemon CallToWorker "{self._name}" encountered a Shutdown exception while processing a job.' )
+                        HydrusData.debug_print( f'Daemon CallToWorker "{self._name}" encountered a Shutdown exception while processing a job.' )
                         
                     
                     return
                     
                 except Exception as e:
                     
-                    HydrusData.Print( traceback.format_exc() )
+                    HydrusData.safe_print( traceback.format_exc() )
                     
                     HydrusData.ShowException( e )
                     
@@ -463,7 +463,7 @@ class THREADCallToThread( DAEMON ):
             
             if HG.shutdown_report_mode:
                 
-                HydrusData.DebugPrint( f'Daemon CallToWorker "{self._name}" encountered a Shutdown exception while waiting on its job queue.' )
+                HydrusData.debug_print( f'Daemon CallToWorker "{self._name}" encountered a Shutdown exception while waiting on its job queue.' )
                 
             
             return
@@ -472,7 +472,7 @@ class THREADCallToThread( DAEMON ):
             
             if HG.shutdown_report_mode:
                 
-                HydrusData.DebugPrint( f'Daemon CallToWorker "{self._name}" is shut down!' )
+                HydrusData.debug_print( f'Daemon CallToWorker "{self._name}" is shut down!' )
                 
             
         
@@ -897,14 +897,14 @@ class JobScheduler( threading.Thread ):
                 
                 if HG.shutdown_report_mode:
                     
-                    HydrusData.DebugPrint( f'Job Scheduler encountered a Shutdown exception in its mainloop.' )
+                    HydrusData.debug_print( f'Job Scheduler encountered a Shutdown exception in its mainloop.' )
                     
                 
                 return
                 
             except Exception as e:
                 
-                HydrusData.Print( traceback.format_exc() )
+                HydrusData.safe_print( traceback.format_exc() )
                 
                 HydrusData.ShowException( e )
                 

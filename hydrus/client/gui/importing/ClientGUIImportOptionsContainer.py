@@ -42,7 +42,7 @@ def GetPasteObject( win: QW.QWidget ) -> ImportOptionsContainer.ImportOptionsCon
         
     except HydrusExceptions.DataMissing as e:
         
-        HydrusData.PrintException( e )
+        HydrusData.print_exception( e )
         
         ClientGUIDialogsMessage.ShowCritical( win, 'Problem pasting!', str(e) )
         

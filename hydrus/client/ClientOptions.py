@@ -640,7 +640,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         self._dictionary[ 'keys' ] = {
             'default_tag_service_tab' : CC.DEFAULT_LOCAL_TAG_SERVICE_KEY.hex(),
             'default_tag_service_search_page' : CC.COMBINED_TAG_SERVICE_KEY.hex(),
-            'default_gug_key' : HydrusData.GenerateKey().hex(),
+            'default_gug_key' : HydrusData.generate_key().hex(),
             'options_ratings_panel_template_service_key' : CC.PREVIEW_RATINGS_SERVICE_KEY.hex(),
         }
         
@@ -1256,8 +1256,8 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                     
                 except Exception as e:
                     
-                    HydrusData.Print( 'Problem updating options web browser launch path:' )
-                    HydrusData.PrintException( e, do_wait = False )
+                    HydrusData.safe_print( 'Problem updating options web browser launch path:' )
+                    HydrusData.print_exception( e, do_wait = False )
                     
                     web_browser_launch_paths = HydrusSerialisable.SerialisableList( [ None ] )
                     
@@ -1352,8 +1352,8 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                     
                 except Exception as e:
                     
-                    HydrusData.Print( 'Problem updating options open externally launch paths:' )
-                    HydrusData.PrintException( e, do_wait = False )
+                    HydrusData.safe_print( 'Problem updating options open externally launch paths:' )
+                    HydrusData.print_exception( e, do_wait = False )
                     
                     open_externally_launch_paths = HydrusSerialisable.SerialisableDictionary( { HC.GENERAL_FILE : HydrusSerialisable.SerialisableList( [ None ] ) } )
                     
@@ -1644,7 +1644,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                 
             else:
                 
-                HydrusData.Print( f'Could not find {frame_key} in the frame locations options!' )
+                HydrusData.safe_print( f'Could not find {frame_key} in the frame locations options!' )
                 
                 return ( False, False, None, None, ( -1, -1 ), 'topleft', False, False )
                 

@@ -730,7 +730,7 @@ class AddEditDeleteListBox( QW.QWidget ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             
@@ -765,7 +765,7 @@ class AddEditDeleteListBox( QW.QWidget ):
                         
                     except Exception as e:
                         
-                        HydrusData.PrintException( e )
+                        HydrusData.print_exception( e )
                         
                         ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', str(e) )
                         
@@ -780,7 +780,7 @@ class AddEditDeleteListBox( QW.QWidget ):
                         
                     except Exception as e:
                         
-                        HydrusData.PrintException( e )
+                        HydrusData.print_exception( e )
                         
                         ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', 'I could not understand what was encoded in the png!' )
                         
@@ -834,7 +834,7 @@ class AddEditDeleteListBox( QW.QWidget ):
                 
             else:
                 
-                bad_object_type_names.add( HydrusData.GetTypeName( type( obj ) ) )
+                bad_object_type_names.add( HydrusData.get_type_name( type( obj ) ) )
                 
             
         
@@ -848,7 +848,7 @@ class AddEditDeleteListBox( QW.QWidget ):
                 message += '\n' * 2
                 message += 'Whereas this control only allows:'
                 message += '\n' * 2
-                message += '\n'.join( ( HydrusData.GetTypeName( o ) for o in self._permitted_object_types ) )
+                message += '\n'.join( ( HydrusData.get_type_name( o ) for o in self._permitted_object_types ) )
                 
                 ClientGUIDialogsMessage.ShowWarning( self, message )
                 
@@ -883,7 +883,7 @@ class AddEditDeleteListBox( QW.QWidget ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             
@@ -1338,7 +1338,7 @@ class QueueListBox( QW.QWidget ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             
@@ -1373,7 +1373,7 @@ class QueueListBox( QW.QWidget ):
                         
                     except Exception as e:
                         
-                        HydrusData.PrintException( e )
+                        HydrusData.print_exception( e )
                         
                         ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', str(e) )
                         
@@ -1388,7 +1388,7 @@ class QueueListBox( QW.QWidget ):
                         
                     except Exception as e:
                         
-                        HydrusData.PrintException( e )
+                        HydrusData.print_exception( e )
                         
                         ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', 'I could not understand what was encoded in the png!' )
                         
@@ -1442,7 +1442,7 @@ class QueueListBox( QW.QWidget ):
                 
             else:
                 
-                bad_object_type_names.add( HydrusData.GetTypeName( type( obj ) ) )
+                bad_object_type_names.add( HydrusData.get_type_name( type( obj ) ) )
                 
             
         
@@ -1456,7 +1456,7 @@ class QueueListBox( QW.QWidget ):
                 message += '\n' * 2
                 message += 'Whereas this control only allows:'
                 message += '\n' * 2
-                message += '\n'.join( ( HydrusData.GetTypeName( o ) for o in self._permitted_object_types ) )
+                message += '\n'.join( ( HydrusData.get_type_name( o ) for o in self._permitted_object_types ) )
                 
                 ClientGUIDialogsMessage.ShowWarning( self, message )
                 

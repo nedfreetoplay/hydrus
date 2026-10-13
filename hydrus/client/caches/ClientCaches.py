@@ -638,7 +638,7 @@ class ThumbnailCache( object ):
         
         if self._thumbnail_error_occurred:
             
-            HydrusData.Print( summary )
+            HydrusData.safe_print( summary )
             
         else:
             

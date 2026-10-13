@@ -72,7 +72,7 @@ def ConvertLegacyToNewBandwidth( legacy_bandwidth_manager: NetworkBandwidthManag
     
     for ( network_context, bandwidth_tracker ) in network_contexts_to_bandwidth_trackers.items():
         
-        tracker_container_name = HydrusData.GenerateKey().hex()
+        tracker_container_name = HydrusData.generate_key().hex()
         
         tracker_container = ClientNetworkingBandwidth.NetworkBandwidthManagerTrackerContainer( tracker_container_name, network_context = network_context, bandwidth_tracker = bandwidth_tracker )
         

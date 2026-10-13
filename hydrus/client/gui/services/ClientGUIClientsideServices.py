@@ -105,7 +105,7 @@ class ManageClientServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
     
     def _Add( self, service_type ):
         
-        service_key = HydrusData.GenerateKey()
+        service_key = HydrusData.generate_key()
         name = 'new service'
         
         service = ClientServices.GenerateService( service_key, service_type, name )
@@ -801,7 +801,7 @@ class EditServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Problem parsing!', 'Could not parse that registration token!' )
                 
@@ -2807,7 +2807,7 @@ class ReviewServiceHydrusAccountSubPanel( ClientGUICommon.StaticBox ):
             
             if not isinstance( etype, ( HydrusExceptions.ServerBusyException, HydrusExceptions.CancelledException ) ):
                 
-                HydrusData.PrintExceptionTuple( etype, value, tb, do_wait = False )
+                HydrusData.print_exception_tuple( etype, value, tb, do_wait = False )
                 
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem!', str( value ) )
