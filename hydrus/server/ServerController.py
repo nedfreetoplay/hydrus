@@ -179,10 +179,10 @@ class Controller( HydrusController.HydrusController ):
         
         SG.server_controller = self
         
-        self.CallToThreadLongRunning( self.DAEMONPubSub )
+        self.call_to_thread_long_running( self.DAEMONPubSub )
         
     
-    def _InitDB( self ):
+    def _init_db( self ):
         
         self.db = ServerDB.DB( self, self.db_dir, 'server' )
         
@@ -216,7 +216,7 @@ class Controller( HydrusController.HydrusController ):
         
         pauser = HydrusThreading.BigJobPauser()
         
-        ( file_hash, thumbnail_hash ) = self.Read( 'deferred_physical_delete' )
+        ( file_hash, thumbnail_hash ) = self.read( 'deferred_physical_delete' )
         
         while ( file_hash is not None or thumbnail_hash is not None ) and not HG.started_shutdown:
             
@@ -244,9 +244,9 @@ class Controller( HydrusController.HydrusController ):
                     
                 
             
-            self.WriteSynchronous( 'clear_deferred_physical_delete', file_hash = file_hash, thumbnail_hash = thumbnail_hash )
+            self.write_synchronous( 'clear_deferred_physical_delete', file_hash = file_hash, thumbnail_hash = thumbnail_hash )
             
-            ( file_hash, thumbnail_hash ) = self.Read( 'deferred_physical_delete' )
+            ( file_hash, thumbnail_hash ) = self.read( 'deferred_physical_delete' )
             
             pauser.Pause()
             
@@ -265,13 +265,13 @@ class Controller( HydrusController.HydrusController ):
         
         HydrusData.Print( 'Shutting down daemons' + HC.UNICODE_ELLIPSIS )
         
-        self.ShutdownView()
+        self.shutdown_view()
         
         HydrusData.Print( 'Shutting down db' + HC.UNICODE_ELLIPSIS )
         
-        self.ShutdownModel()
+        self.shutdown_model()
         
-        self.CleanRunningFile()
+        self.clean_running_file()
         
     
     def GetFilesDir( self ):
@@ -284,11 +284,11 @@ class Controller( HydrusController.HydrusController ):
         return list( self._services )
         
     
-    def InitModel( self ):
+    def init_model( self ):
         
-        HydrusController.HydrusController.InitModel( self )
+        HydrusController.HydrusController.init_model( self )
         
-        self._services = self.Read( 'services' )
+        self._services = self.read( 'services' )
         
         [ self._admin_service ] = [ service for service in self._services if service.GetServiceType() == HC.SERVER_ADMIN ]
         
@@ -297,9 +297,9 @@ class Controller( HydrusController.HydrusController ):
         self._service_keys_to_connected_ports = {}
         
     
-    def InitView( self ):
+    def init_view( self ):
         
-        HydrusController.HydrusController.InitView( self )
+        HydrusController.HydrusController.init_view( self )
         
         port = self._admin_service.GetPort()
         
@@ -314,36 +314,36 @@ class Controller( HydrusController.HydrusController ):
         
         #
         
-        job = self.CallRepeating( 5.0, HydrusNetwork.UPDATE_CHECKING_PERIOD, self.SyncRepositories )
+        job = self.call_repeating( 5.0, HydrusNetwork.UPDATE_CHECKING_PERIOD, self.SyncRepositories )
         job.WakeOnPubSub( 'notify_new_repo_sync' )
         
         self._daemon_jobs[ 'sync_repositories' ] = job
         
-        job = self.CallRepeating( 0.0, 30.0, self.SaveDirtyObjects )
+        job = self.call_repeating( 0.0, 30.0, self.SaveDirtyObjects )
         
         self._daemon_jobs[ 'save_dirty_objects' ] = job
         
-        job = self.CallRepeating( 30.0, 86400.0, self.DoDeferredPhysicalDeletes )
+        job = self.call_repeating( 30.0, 86400.0, self.DoDeferredPhysicalDeletes )
         job.WakeOnPubSub( 'notify_new_physical_file_deletes' )
         
         self._daemon_jobs[ 'deferred_physical_deletes' ] = job
         
-        job = self.CallRepeating( 120.0, 3600.0 * 4, self.NullifyHistory )
+        job = self.call_repeating( 120.0, 3600.0 * 4, self.NullifyHistory )
         job.WakeOnPubSub( 'notify_new_nullification' )
         
         self._daemon_jobs[ 'nullify_history' ] = job
         
     
-    def JustWokeFromSleep( self ):
+    def just_woke_from_sleep( self ):
         
         return False
         
     
-    def MaintainDB( self, maintenance_mode = HC.MAINTENANCE_FORCED, stop_time = None ):
+    def maintain_db( self, maintenance_mode = HC.MAINTENANCE_FORCED, stop_time = None ):
         
         stop_time = HydrusTime.GetNow() + 10
         
-        self.WriteSynchronous( 'analyze', maintenance_mode = maintenance_mode, stop_time = stop_time )
+        self.write_synchronous( 'analyze', maintenance_mode = maintenance_mode, stop_time = stop_time )
         
     
     def NullifyHistory( self ):
@@ -356,12 +356,12 @@ class Controller( HydrusController.HydrusController ):
             
         
     
-    def ReportDataUsed( self, num_bytes ):
+    def report_data_used( self, num_bytes ):
         
         self._admin_service.ServerReportDataUsed( num_bytes )
         
     
-    def ReportRequestUsed( self ):
+    def report_request_used( self ):
         
         self._admin_service.ServerReportRequestUsed()
         
@@ -373,15 +373,15 @@ class Controller( HydrusController.HydrusController ):
     
     def Run( self ):
         
-        self.RecordRunningStart()
+        self.record_running_start()
         
         HydrusData.Print( 'Initialising db' + HC.UNICODE_ELLIPSIS )
         
-        self.InitModel()
+        self.init_model()
         
         HydrusData.Print( 'Initialising workers' + HC.UNICODE_ELLIPSIS )
         
-        self.InitView()
+        self.init_view()
         
         HydrusData.Print( 'Server is running. Press Ctrl+C to quit.' )
         
@@ -410,14 +410,14 @@ class Controller( HydrusController.HydrusController ):
             
             if len( dirty_services ) > 0:
                 
-                self.WriteSynchronous( 'dirty_services', dirty_services )
+                self.write_synchronous( 'dirty_services', dirty_services )
                 
             
             dirty_accounts = self.server_session_manager.GetDirtyAccounts()
             
             if len( dirty_accounts ) > 0:
                 
-                self.WriteSynchronous( 'dirty_accounts', dirty_accounts )
+                self.write_synchronous( 'dirty_accounts', dirty_accounts )
                 
             
         
@@ -554,7 +554,7 @@ class Controller( HydrusController.HydrusController ):
                 
             
         
-        self.StartTwistedIfNeeded()
+        self.start_twisted_if_needed()
         
         threads.blockingCallFromThread( reactor, TWISTEDDoIt )
         
@@ -586,7 +586,7 @@ class Controller( HydrusController.HydrusController ):
         self.RestartServices()
         
     
-    def ShutdownView( self ):
+    def shutdown_view( self ):
         
         try:
             
@@ -598,10 +598,10 @@ class Controller( HydrusController.HydrusController ):
             HydrusData.PrintException( e, do_wait = False )
             
         
-        HydrusController.HydrusController.ShutdownView( self )
+        HydrusController.HydrusController.shutdown_view( self )
         
     
-    def ShutdownFromServer( self ):
+    def shutdown_from_server( self ):
         
         HydrusData.Print( 'Received a server shut down request' + HC.UNICODE_ELLIPSIS )
         

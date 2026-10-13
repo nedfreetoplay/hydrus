@@ -1588,7 +1588,7 @@ class EditPageParserPanel( ClientGUIScrolledPanels.EditPanel ):
         
         CG.client_controller.network_engine.AddJob( network_job )
         
-        CG.client_controller.CallToThread( wait_and_do_it, network_job )
+        CG.client_controller.call_to_thread( wait_and_do_it, network_job )
         
     
     def _GetPageParser( self ):

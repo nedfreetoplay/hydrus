@@ -220,7 +220,7 @@ class Page( QW.QWidget ):
         
         def work_callable( block_of_hashes ):
             
-            block_of_media_results = CG.client_controller.Read( 'media_results', block_of_hashes )
+            block_of_media_results = CG.client_controller.read( 'media_results', block_of_hashes )
             
             return block_of_media_results
             
@@ -1361,7 +1361,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
     
     def _ClosePage( self, index, polite = True, delete_page = False ):
         
-        CG.client_controller.ResetIdleTimer()
+        CG.client_controller.reset_idle_timer()
         CG.client_controller.ResetPageChangeTimer()
         
         if index < 0 or index > self.count() - 1:
@@ -2254,7 +2254,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
                 
             
         
-        existing_session_names = CG.client_controller.Read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_GUI_SESSION_CONTAINER )
+        existing_session_names = CG.client_controller.read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_GUI_SESSION_CONTAINER )
         
         if len( existing_session_names ) > 0 or click_over_page_of_pages:
             
@@ -2422,7 +2422,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
         
         try:
             
-            session = session = CG.client_controller.Read( 'gui_session', name, timestamp_ms )
+            session = session = CG.client_controller.read( 'gui_session', name, timestamp_ms )
             
         except Exception as e:
             
@@ -2457,7 +2457,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
         
         try:
             
-            session = CG.client_controller.Read( 'gui_session', name )
+            session = CG.client_controller.read( 'gui_session', name )
             
         except Exception as e:
             
@@ -3509,7 +3509,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
         
         if do_add:
             
-            media_results = CG.client_controller.Read( 'media_results', hashes, sorted = True )
+            media_results = CG.client_controller.read( 'media_results', hashes, sorted = True )
             
             dest_page.AddMediaResults( media_results )
             
@@ -3612,7 +3612,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
         
         # the 'too many pages open' thing used to be here
         
-        CG.client_controller.ResetIdleTimer()
+        CG.client_controller.reset_idle_timer()
         CG.client_controller.ResetPageChangeTimer()
         
         if initial_hashes is None:
@@ -3856,7 +3856,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
             return current_page.NewPagesNotebook( name = name, forced_insertion_index = forced_insertion_index, on_deepest_notebook = on_deepest_notebook, give_it_a_blank_page = give_it_a_blank_page )
             
         
-        CG.client_controller.ResetIdleTimer()
+        CG.client_controller.reset_idle_timer()
         CG.client_controller.ResetPageChangeTimer()
         
         page = PagesNotebook( self, name )
@@ -4000,7 +4000,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
             
             def work_callable():
                 
-                media_results = CG.client_controller.Read( 'media_results', hashes, sorted = True )
+                media_results = CG.client_controller.read( 'media_results', hashes, sorted = True )
                 
                 return media_results
                 

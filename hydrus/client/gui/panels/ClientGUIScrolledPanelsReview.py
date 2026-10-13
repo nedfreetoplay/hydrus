@@ -619,7 +619,7 @@ class ReviewFileHistory( ClientGUIScrolledPanels.ReviewPanel ):
             
             try:
                 
-                file_history = CG.client_controller.Read( 'file_history', num_steps, file_search_context = file_search_context, job_status = job_status )
+                file_history = CG.client_controller.read( 'file_history', num_steps, file_search_context = file_search_context, job_status = job_status )
                 
             except HydrusExceptions.DBException as e:
                 
@@ -1008,7 +1008,7 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
     
     def _DoAllWork( self ):
         
-        CG.client_controller.CallToThread( CG.client_controller.files_maintenance_manager.ForceMaintenance )
+        CG.client_controller.call_to_thread( CG.client_controller.files_maintenance_manager.ForceMaintenance )
         
     
     def _DoWork( self ):
@@ -1020,14 +1020,14 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
             return
             
         
-        CG.client_controller.CallToThread( CG.client_controller.files_maintenance_manager.ForceMaintenance, mandated_job_types = job_types )
+        CG.client_controller.call_to_thread( CG.client_controller.files_maintenance_manager.ForceMaintenance, mandated_job_types = job_types )
         
     
     def _RefreshWorkDue( self ):
         
         def work_callable():
             
-            job_types_to_counts = CG.client_controller.Read( 'file_maintenance_get_job_counts' )
+            job_types_to_counts = CG.client_controller.read( 'file_maintenance_get_job_counts' )
             
             return job_types_to_counts
             
@@ -1064,7 +1064,7 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
         
         def work_callable():
             
-            query_hash_ids = CG.client_controller.Read( 'file_query_ids', file_search_context, apply_implicit_limit = False )
+            query_hash_ids = CG.client_controller.read( 'file_query_ids', file_search_context, apply_implicit_limit = False )
             
             return query_hash_ids
             
@@ -1107,7 +1107,7 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
         
         def work_callable():
             
-            query_hash_ids = CG.client_controller.Read( 'file_query_ids', file_search_context, apply_implicit_limit = False )
+            query_hash_ids = CG.client_controller.read( 'file_query_ids', file_search_context, apply_implicit_limit = False )
             
             return query_hash_ids
             
@@ -1137,7 +1137,7 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
         
         def work_callable():
             
-            query_hash_ids = CG.client_controller.Read( 'file_query_ids', file_search_context, apply_implicit_limit = False )
+            query_hash_ids = CG.client_controller.read( 'file_query_ids', file_search_context, apply_implicit_limit = False )
             
             return query_hash_ids
             
@@ -1348,7 +1348,7 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
         
         def work_callable():
             
-            boned_stats = CG.client_controller.Read( 'boned_stats', file_search_context = file_search_context, job_status = job_status )
+            boned_stats = CG.client_controller.read( 'boned_stats', file_search_context = file_search_context, job_status = job_status )
             
             return boned_stats
             
@@ -1802,7 +1802,7 @@ class JobSchedulerPanel( QW.QWidget ):
     
     def _RefreshSnapshot( self ):
         
-        jobs = self._controller.GetJobSchedulerSnapshot( self._scheduler_name )
+        jobs = self._controller.get_job_scheduler_snapshot( self._scheduler_name )
         
         self._list_ctrl.SetData( jobs )
         
@@ -1870,7 +1870,7 @@ class ThreadsPanel( QW.QWidget ):
     
     def _RefreshSnapshot( self ):
         
-        threads = self._controller.GetThreadsSnapshot()
+        threads = self._controller.get_threads_snapshot()
         
         self._list_ctrl.SetData( threads )
         
@@ -1990,7 +1990,7 @@ class ReviewDeferredDeleteTableData( ClientGUIScrolledPanels.ReviewPanel ):
         
         def work_callable( args ):
             
-            deferred_delete_data = self._controller.Read( 'deferred_delete_data' )
+            deferred_delete_data = self._controller.read( 'deferred_delete_data' )
             
             return deferred_delete_data
             
@@ -2273,7 +2273,7 @@ Vacuuming is an expensive operation. It creates one (temporary) copy of the data
             
             if result == QW.QDialog.DialogCode.Accepted:
                 
-                self._controller.Write( 'vacuum', names )
+                self._controller.write( 'vacuum', names )
                 
                 self._OKParent()
                 

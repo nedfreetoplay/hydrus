@@ -259,9 +259,9 @@ class ManageOptionsPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         try:
             
-            CG.client_controller.WriteSynchronous( 'save_options', HC.options )
+            CG.client_controller.write_synchronous( 'save_options', HC.options )
             
-            CG.client_controller.WriteSynchronous( 'serialisable', self._new_options )
+            CG.client_controller.write_synchronous( 'serialisable', self._new_options )
             
         except Exception as e:
             

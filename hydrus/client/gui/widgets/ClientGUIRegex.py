@@ -163,7 +163,7 @@ class RegexButton( ClientGUICommon.BetterButton ):
                 
                 HC.options[ 'regex_favourites' ] = regex_favourites
                 
-                CG.client_controller.Write( 'save_options', HC.options )
+                CG.client_controller.write( 'save_options', HC.options )
                 
             
         

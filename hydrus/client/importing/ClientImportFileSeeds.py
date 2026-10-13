@@ -127,7 +127,7 @@ def FileURLMappingHasUntrustworthyNeighbours( hash: bytes, lookup_urls: collecti
     lookup_url_domains = { ClientNetworkingFunctions.ConvertURLIntoDomain( lookup_url ) for lookup_url in lookup_urls } 
     lookup_url_classes = { CG.client_controller.network_engine.domain_manager.GetURLClass( lookup_url ) for lookup_url in lookup_urls }
     
-    media_result = CG.client_controller.Read( 'media_result', hash )
+    media_result = CG.client_controller.read( 'media_result', hash )
     
     existing_file_urls = media_result.GetLocationsManager().GetURLs()
     
@@ -310,7 +310,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
         
         if len( tags ) > 0:
             
-            tags_to_siblings = CG.client_controller.Read( 'tag_siblings_lookup', CC.COMBINED_TAG_SERVICE_KEY, tags )
+            tags_to_siblings = CG.client_controller.read( 'tag_siblings_lookup', CC.COMBINED_TAG_SERVICE_KEY, tags )
             
             all_chain_tags = set( itertools.chain.from_iterable( tags_to_siblings.values() ) )
             
@@ -754,7 +754,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                 return
                 
             
-            media_result = CG.client_controller.Read( 'media_result', hash )
+            media_result = CG.client_controller.read( 'media_result', hash )
             
             for entry in entries_to_do:
                 
@@ -1010,7 +1010,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
         
         for ( hash_type, found_hash ) in jobs:
             
-            file_import_status = CG.client_controller.Read( 'hash_status', hash_type, found_hash, prefix = '{} hash recognised'.format( hash_type ) )
+            file_import_status = CG.client_controller.read( 'hash_status', hash_type, found_hash, prefix = '{} hash recognised'.format( hash_type ) )
             
             # there's some subtle gubbins going on here
             # an sha256 'haven't seen this before' result will not set the hash here and so will not count as a match
@@ -1099,7 +1099,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                 continue
                 
             
-            results = CG.client_controller.Read( 'url_statuses', lookup_url )
+            results = CG.client_controller.read( 'url_statuses', lookup_url )
             
             # I was tempted to write a duplicate-merge system here that would discount lesser quality dupes, but what metadata to assign is a tricky question!!
             # better solved with an ongoing duplicate content sync than retroactive metadata refetch gubbins
@@ -1413,7 +1413,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
             
             hash = file_import_status.hash
             
-            media_result = CG.client_controller.Read( 'media_result', hash )
+            media_result = CG.client_controller.read( 'media_result', hash )
             
             from hydrus.client.media import ClientMediaManagers
             
@@ -1452,7 +1452,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
         
         if hash is not None:
             
-            media_result = CG.client_controller.Read( 'media_result', hash )
+            media_result = CG.client_controller.read( 'media_result', hash )
             
             # TODO: rewangle this to a GUI-level overseer that'll do Qt signals or whatever. page_key is probably unavoidable
             CG.client_controller.pub( 'add_media_results', page_key, ( media_result, ) )
@@ -1962,7 +1962,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
             
             if media_result is None:
                 
-                media_result = CG.client_controller.Read( 'media_result', hash )
+                media_result = CG.client_controller.read( 'media_result', hash )
                 
             
             extra_content_update_package = location_import_options.GetAlreadyInDBPostImportContentUpdatePackage( media_result )
@@ -1988,7 +1988,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
             
             if media_result is None:
                 
-                media_result = CG.client_controller.Read( 'media_result', hash )
+                media_result = CG.client_controller.read( 'media_result', hash )
                 
             
             for ( service_key, content_updates ) in tag_import_options.GetContentUpdatePackage( self.status, media_result, set( self._tags ), external_filterable_tags = self._external_filterable_tags, external_additional_service_keys_to_tags = self._external_additional_service_keys_to_tags ).IterateContentUpdates():
@@ -2003,7 +2003,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
             
             if media_result is None:
                 
-                media_result = CG.client_controller.Read( 'media_result', hash )
+                media_result = CG.client_controller.read( 'media_result', hash )
                 
             
             names_and_notes = sorted( self._names_and_notes_dict.items() )
@@ -2020,7 +2020,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
         
         if content_update_package.HasContent():
             
-            CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+            CG.client_controller.write_synchronous( 'content_updates', content_update_package )
             
         
         return did_work

@@ -1531,7 +1531,7 @@ class DB( HydrusDB.HydrusDB ):
         
         HydrusData.DebugPrint( message )
         
-        self._controller.BlockingSafeShowCriticalMessage( 'hydrus db failed', message )
+        self._controller.blocking_safe_show_critical_message( 'hydrus db failed', message )
         
     
     def _DoAfterJobWork( self ):
@@ -6220,7 +6220,7 @@ class DB( HydrusDB.HydrusDB ):
             message += '\n' * 2
             message += 'If you want to go ahead, click ok on this message and the client will fill these tables with the correct data. It may take some time. If you want to solve this problem otherwise, kill the hydrus process now.'
             
-            self._controller.BlockingSafeShowMessage( message )
+            self._controller.blocking_safe_show_message( message )
             
             for tag_service_id in missing_tag_service_ids:
                 
@@ -6252,7 +6252,7 @@ class DB( HydrusDB.HydrusDB ):
             message += '\n' * 2
             message += 'If you want to go ahead, click ok on this message and the client will fill these tables with the correct data. It may take some time. If you want to solve this problem otherwise, kill the hydrus process now.'
             
-            self._controller.BlockingSafeShowMessage( message )
+            self._controller.blocking_safe_show_message( message )
             
             for tag_service_id in missing_tag_service_ids:
                 
@@ -6287,7 +6287,7 @@ class DB( HydrusDB.HydrusDB ):
             message += '\n' * 2
             message += 'If you want to go ahead, click ok on this message and the client will fill these tables with the correct data. It may take some time. If you want to solve this problem otherwise, kill the hydrus process now.'
             
-            self._controller.BlockingSafeShowMessage( message )
+            self._controller.blocking_safe_show_message( message )
             
             for tag_service_id in missing_tag_service_ids:
                 
@@ -6317,7 +6317,7 @@ class DB( HydrusDB.HydrusDB ):
             message += '\n' * 2
             message += 'If you want to go ahead, click ok on this message and the client will fill these tables with the correct data. It may take some time. If you want to solve this problem otherwise, kill the hydrus process now.'
             
-            self._controller.BlockingSafeShowMessage( message )
+            self._controller.blocking_safe_show_message( message )
             
             for tag_service_id in missing_tag_service_ids:
                 
@@ -6349,7 +6349,7 @@ class DB( HydrusDB.HydrusDB ):
             message += '\n' * 2
             message += 'If you want to go ahead, click ok on this message and the client will fill these tables with the correct data. It may take some time. If you want to solve this problem otherwise, kill the hydrus process now.'
             
-            self._controller.BlockingSafeShowMessage( message )
+            self._controller.blocking_safe_show_message( message )
             
             for ( file_service_id, tag_service_id ) in missing_tag_search_service_pairs:
                 
@@ -6375,7 +6375,7 @@ class DB( HydrusDB.HydrusDB ):
             message += '\n' * 2
             message += 'If you do not already know what caused this, it was likely a hard drive fault--either due to a recent abrupt power cut or actual hardware failure. Check the \'Recovery->Help my db is broke\' document in the help as soon as you can.'
             
-            self._controller.BlockingSafeShowMessage( message )
+            self._controller.blocking_safe_show_message( message )
             
             from hydrus.client import ClientOptions
             
@@ -6732,14 +6732,14 @@ class DB( HydrusDB.HydrusDB ):
         
         message = 'This client\'s database is version {}, but the software is version {}! This situation only sometimes works, and when it does not, it can break things! If you are not sure what is going on, or if you accidentally installed an older version of the software to a newer database, force-kill this client in Task Manager right now. Otherwise, ok this dialog box to continue.'.format( HydrusNumbers.ToHumanInt( version ), HydrusNumbers.ToHumanInt( HC.SOFTWARE_VERSION ) )
         
-        self._controller.BlockingSafeShowMessage( message )
+        self._controller.blocking_safe_show_message( message )
         
     
     def _ReportUnderupdatedDB( self, version ):
         
         message = 'This client\'s database is version {}, but the software is significantly later, {}! Trying to update many versions in one go can be dangerous due to bitrot. I suggest you try at most to only do 10 versions at once. If you want to try a big jump anyway, you should make sure you have a backup beforehand so you can roll back to it in case the update makes your db unbootable. If you would rather try smaller updates, or you do not have a backup, force-kill this client in Task Manager right now. Otherwise, ok this dialog box to continue.'.format( HydrusNumbers.ToHumanInt( version ), HydrusNumbers.ToHumanInt( HC.SOFTWARE_VERSION ) )
         
-        self._controller.BlockingSafeShowMessage( message )
+        self._controller.blocking_safe_show_message( message )
         
     
     def _ResetRepository( self, service ):
@@ -7932,7 +7932,7 @@ class DB( HydrusDB.HydrusDB ):
                             
                         else:
                             
-                            CG.client_controller.BlockingSafeShowCriticalMessage( 'Problem updating!', message )
+                            CG.client_controller.blocking_safe_show_critical_message( 'Problem updating!', message )
                             
                         
                         problem_locations.add( absolute_location )
@@ -8812,7 +8812,7 @@ class DB( HydrusDB.HydrusDB ):
                 continue
                 
             
-            if self._controller.ShouldStopThisWork( maintenance_mode, stop_time = stop_time ):
+            if self._controller.should_stop_this_work( maintenance_mode, stop_time = stop_time ):
                 
                 return
                 

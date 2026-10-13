@@ -235,7 +235,7 @@ class ServiceTagImportOptions( HydrusSerialisable.SerialisableBase ):
                 
                 tags.difference_update( applicable_tags )
                 
-                existing_applicable_tags = CG.client_controller.Read( 'filter_existing_tags', service_key, applicable_tags )
+                existing_applicable_tags = CG.client_controller.read( 'filter_existing_tags', service_key, applicable_tags )
                 
                 tags.update( existing_applicable_tags )
                 

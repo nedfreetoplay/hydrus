@@ -181,7 +181,7 @@ def GetQueryHeadersQualityInfo( query_headers: collections.abc.Iterable[ ClientI
         
         try:
             
-            query_log_container = CG.client_controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_header.GetQueryLogContainerName() )
+            query_log_container = CG.client_controller.read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_header.GetQueryLogContainerName() )
             
         except HydrusExceptions.DataMissing:
             
@@ -192,7 +192,7 @@ def GetQueryHeadersQualityInfo( query_headers: collections.abc.Iterable[ ClientI
         
         hashes = fsc.GetHashes()
         
-        media_results = CG.client_controller.Read( 'media_results', hashes )
+        media_results = CG.client_controller.read( 'media_results', hashes )
         
         num_inbox = 0
         num_archived = 0
@@ -232,7 +232,7 @@ def GetQueryLogContainers( query_headers: collections.abc.Iterable[ ClientImport
         
         try:
             
-            query_log_container = CG.client_controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_header.GetQueryLogContainerName() )
+            query_log_container = CG.client_controller.read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_header.GetQueryLogContainerName() )
             
         except HydrusExceptions.DBException as e:
             
@@ -872,7 +872,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
             
             try:
                 
-                old_query_log_container = CG.client_controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_log_container_name )
+                old_query_log_container = CG.client_controller.read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_log_container_name )
                 
             except HydrusExceptions.DataMissing:
                 

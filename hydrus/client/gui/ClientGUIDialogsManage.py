@@ -171,7 +171,7 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
             
             if content_update_package.HasContent():
                 
-                CG.client_controller.Write( 'content_updates', content_update_package )
+                CG.client_controller.write( 'content_updates', content_update_package )
                 
             
         finally:

@@ -241,7 +241,7 @@ class HDDImport( HydrusSerialisable.SerialisableBase ):
                 
                 hash = file_seed.GetHash()
                 
-                media_result = CG.client_controller.Read( 'media_result', hash )
+                media_result = CG.client_controller.read( 'media_result', hash )
                 
                 for router in self._metadata_routers:
                     
@@ -432,7 +432,7 @@ class HDDImport( HydrusSerialisable.SerialisableBase ):
         
         self._page_key = page_key
         
-        self._files_repeating_job = CG.client_controller.CallRepeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnFiles )
+        self._files_repeating_job = CG.client_controller.call_repeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnFiles )
         
         self._files_repeating_job.SetThreadSlotType( 'misc' )
         
@@ -800,7 +800,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             
             if HydrusTime.TimeHasPassed( time_to_save ):
                 
-                CG.client_controller.WriteSynchronous( 'serialisable', self )
+                CG.client_controller.write_synchronous( 'serialisable', self )
                 
                 time_to_save = HydrusTime.GetNow() + SAVE_PERIOD
                 
@@ -826,7 +826,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                         
                         if len( self._metadata_routers ) > 0:
                             
-                            media_result = CG.client_controller.Read( 'media_result', hash )
+                            media_result = CG.client_controller.read( 'media_result', hash )
                             
                             for metadata_router in self._metadata_routers:
                                 
@@ -873,7 +873,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                             
                             content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromServiceKeysToTags( { hash }, service_keys_to_tags )
                             
-                            CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+                            CG.client_controller.write_synchronous( 'content_updates', content_update_package )
                             
                         
                     
@@ -1327,7 +1327,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
         
         if checked_folder or did_import_file_work or error_occured:
             
-            CG.client_controller.WriteSynchronous( 'serialisable', self )
+            CG.client_controller.write_synchronous( 'serialisable', self )
             
         
         job_status.FinishAndDismiss()
@@ -1477,7 +1477,7 @@ class ImportFoldersManager( ClientDaemons.ManagerWithMainLoop ):
         
         try:
             
-            import_folder = self._controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_IMPORT_FOLDER, name )
+            import_folder = self._controller.read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_IMPORT_FOLDER, name )
             
         except HydrusExceptions.DBException as e:
             
@@ -1523,7 +1523,7 @@ class ImportFoldersManager( ClientDaemons.ManagerWithMainLoop ):
         
         if not self._import_folder_names_fetched:
             
-            import_folder_names = self._controller.Read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_IMPORT_FOLDER )
+            import_folder_names = self._controller.read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_IMPORT_FOLDER )
             
             with self._lock:
                 

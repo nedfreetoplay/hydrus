@@ -283,12 +283,12 @@ class RecentTagsPanel( QW.QWidget ):
         
         def do_it( service_key ):
             
-            recent_tags = CG.client_controller.Read( 'recent_tags', service_key )
+            recent_tags = CG.client_controller.read( 'recent_tags', service_key )
             
             CG.client_controller.CallAfterQtSafe( self, qt_code, recent_tags )
             
         
-        CG.client_controller.CallToThread( do_it, self._service_key )
+        CG.client_controller.call_to_thread( do_it, self._service_key )
         
     
     def _UpdateTagDisplay( self ):
@@ -306,7 +306,7 @@ class RecentTagsPanel( QW.QWidget ):
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            CG.client_controller.Write( 'push_recent_tags', self._service_key, None )
+            CG.client_controller.write( 'push_recent_tags', self._service_key, None )
             
             self._last_fetched_tags = []
             
@@ -479,7 +479,7 @@ class RelatedTagsPanel( QW.QWidget ):
             
             tag_context = self._tag_context_button.GetValue()
             
-            ( num_done, num_to_do, num_skipped, predicates ) = CG.client_controller.Read(
+            ( num_done, num_to_do, num_skipped, predicates ) = CG.client_controller.read(
                 'related_tags',
                 file_service_key,
                 tag_context,
@@ -545,7 +545,7 @@ class RelatedTagsPanel( QW.QWidget ):
             tag_display_type = ClientTags.TAG_DISPLAY_STORAGE
             
         
-        CG.client_controller.CallToThread( do_it, file_service_key, tag_service_key, tag_display_type, search_tags, other_tags_to_exclude )
+        CG.client_controller.call_to_thread( do_it, file_service_key, tag_service_key, tag_display_type, search_tags, other_tags_to_exclude )
         
     
     def _NotifyChangesToSearchContext( self ):
@@ -727,7 +727,7 @@ class FileLookupScriptTagsPanel( QW.QWidget ):
         self._script_choice.setEnabled( False )
         self._fetch_button.setEnabled( False )
         
-        CG.client_controller.CallToThread( do_it )
+        CG.client_controller.call_to_thread( do_it )
         
     
     def _SetTags( self, tags ):

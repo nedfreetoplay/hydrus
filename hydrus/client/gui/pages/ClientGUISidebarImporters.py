@@ -736,7 +736,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
                         return all_media_results
                         
                     
-                    block_of_media_results = CG.client_controller.Read( 'media_results', block_of_hashes, sorted = True )
+                    block_of_media_results = CG.client_controller.read( 'media_results', block_of_hashes, sorted = True )
                     
                     all_media_results.extend( block_of_media_results )
                     
@@ -1073,7 +1073,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
             
             self._ClearExistingHighlightAndPanel()
             
-            media_results = CG.client_controller.Read( 'media_results', hashes, sorted = True )
+            media_results = CG.client_controller.read( 'media_results', hashes, sorted = True )
             
             panel = ClientGUIMediaResultsPanelThumbnails.MediaResultsPanelThumbnails( self._page, self._page_key, self._page_manager, media_results )
             
@@ -1862,7 +1862,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                         return all_media_results
                         
                     
-                    block_of_media_results = CG.client_controller.Read( 'media_results', block_of_hashes, sorted = True )
+                    block_of_media_results = CG.client_controller.read( 'media_results', block_of_hashes, sorted = True )
                     
                     all_media_results.extend( block_of_media_results )
                     
@@ -2154,7 +2154,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
             
             self._ClearExistingHighlightAndPanel()
             
-            media_results = CG.client_controller.Read( 'media_results', hashes, sorted = True )
+            media_results = CG.client_controller.read( 'media_results', hashes, sorted = True )
             
             panel = ClientGUIMediaResultsPanelThumbnails.MediaResultsPanelThumbnails( self._page, self._page_key, self._page_manager, media_results )
             

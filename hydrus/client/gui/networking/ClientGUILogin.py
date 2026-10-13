@@ -1724,7 +1724,7 @@ class EditLoginScriptPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 network_engine = ClientNetworking.NetworkEngine( CG.client_controller, bandwidth_manager, session_manager, domain_manager, login_manager )
                 
-                CG.client_controller.CallToThreadLongRunning( network_engine.MainLoop )
+                CG.client_controller.call_to_thread_long_running( network_engine.MainLoop )
                 
                 network_context = ClientNetworkingContexts.NetworkContext.STATICGenerateForDomain( domain )
                 
@@ -1813,7 +1813,7 @@ class EditLoginScriptPanel( ClientGUIScrolledPanels.EditPanel ):
         
         self._currently_testing = True
         
-        CG.client_controller.CallToThread( do_it, login_script, self._test_domain, self._test_credentials, network_job_presentation_context_factory )
+        CG.client_controller.call_to_thread( do_it, login_script, self._test_domain, self._test_credentials, network_job_presentation_context_factory )
         
     
     def _EditExampleDomainsInfo( self ):

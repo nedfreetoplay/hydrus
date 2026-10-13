@@ -78,6 +78,6 @@ class IPFSDaemonStatusAndInteractionPanel( ClientGUICommon.StaticBox ):
         
         service = self._service_callable()
         
-        CG.client_controller.CallToThread( do_it, service )
+        CG.client_controller.call_to_thread( do_it, service )
         
     

@@ -333,7 +333,7 @@ class PopupMessage( PopupWindow ):
             
             def work_callable():
                 
-                presented_hashes = CG.client_controller.Read( 'filter_hashes', location_context, hashes )
+                presented_hashes = CG.client_controller.read( 'filter_hashes', location_context, hashes )
                 
                 if len( presented_hashes ) > 0:
                     

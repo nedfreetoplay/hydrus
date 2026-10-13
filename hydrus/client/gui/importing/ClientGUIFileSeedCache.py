@@ -885,12 +885,12 @@ class EditFileSeedCachePanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     def do_it():
                         
-                        CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+                        CG.client_controller.write_synchronous( 'content_updates', content_update_package )
                         
                         CG.client_controller.CallAfterQtSafe( self, qt_once_done )
                         
                     
-                    CG.client_controller.CallToThread( do_it )
+                    CG.client_controller.call_to_thread( do_it )
                     
                     return
                     

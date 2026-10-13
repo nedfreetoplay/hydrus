@@ -247,7 +247,7 @@ class EditPotentialDuplicatesSearchContextPanel( ClientGUICommon.StaticBox ):
             
             start_time = HydrusTime.GetNowPrecise()
             
-            count = CG.client_controller.Read( 'potential_duplicates_count_fragmentary', potential_duplicate_pairs_fragmentary_search )
+            count = CG.client_controller.read( 'potential_duplicates_count_fragmentary', potential_duplicate_pairs_fragmentary_search )
             
             actual_work_period = HydrusTime.GetNowPrecise() - start_time
             
@@ -298,7 +298,7 @@ class EditPotentialDuplicatesSearchContextPanel( ClientGUICommon.StaticBox ):
         
         def work_callable():
             
-            potential_duplicate_id_pairs_and_distances: ClientPotentialDuplicatesSearchContext.PotentialDuplicateIdPairsAndDistances = CG.client_controller.Read( 'potential_duplicate_id_pairs_and_distances', location_context )
+            potential_duplicate_id_pairs_and_distances: ClientPotentialDuplicatesSearchContext.PotentialDuplicateIdPairsAndDistances = CG.client_controller.read( 'potential_duplicate_id_pairs_and_distances', location_context )
             
             return potential_duplicate_id_pairs_and_distances
             

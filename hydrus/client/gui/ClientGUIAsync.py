@@ -147,7 +147,7 @@ class AsyncQtJob( object ):
     
     def start( self ):
         
-        CG.client_controller.CallToThread( self._doWork )
+        CG.client_controller.call_to_thread( self._doWork )
         
     
 
@@ -264,7 +264,7 @@ class AsyncQtUpdater( object ):
     
     def _startWork( self ):
         
-        CG.client_controller.CallToThread( self._doWork )
+        CG.client_controller.call_to_thread( self._doWork )
         
     
     def update( self ):

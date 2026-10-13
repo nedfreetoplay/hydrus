@@ -59,13 +59,13 @@ def CommitContentUpdatePackagesAsync( title: str, content_update_packages: list[
                     
                 
             
-            CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+            CG.client_controller.write_synchronous( 'content_updates', content_update_package )
             
         
         job_status.FinishAndDismiss()
         
     
-    CG.client_controller.CallToThread( do_it )
+    CG.client_controller.call_to_thread( do_it )
     
 
 def GetLocalMediaPaths( medias: collections.abc.Collection[ ClientMedia.Media ] ):
@@ -375,7 +375,7 @@ def ShowDuplicatesInNewPage( location_context: ClientLocation.LocationContext, h
     
     # TODO: this can be replaced by a call to the MediaResult when it holds these hashes
     # don't forget to return itself in position 0!
-    hashes = CG.client_controller.Read( 'file_duplicate_hashes', location_context, hash, duplicate_type )
+    hashes = CG.client_controller.read( 'file_duplicate_hashes', location_context, hash, duplicate_type )
     
     if hashes is not None and len( hashes ) > 1:
         
@@ -385,7 +385,7 @@ def ShowDuplicatesInNewPage( location_context: ClientLocation.LocationContext, h
         
         location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY )
         
-        hashes = CG.client_controller.Read( 'file_duplicate_hashes', location_context, hash, duplicate_type )
+        hashes = CG.client_controller.read( 'file_duplicate_hashes', location_context, hash, duplicate_type )
         
         if hashes is not None and len( hashes ) > 1:
             
@@ -469,7 +469,7 @@ def UndeleteFiles( hashes ):
     
     for chunk_of_hashes in HydrusLists.SplitIteratorIntoChunks( hashes, 64 ):
         
-        media_results = CG.client_controller.Read( 'media_results', chunk_of_hashes )
+        media_results = CG.client_controller.read( 'media_results', chunk_of_hashes )
         
         service_keys_to_hashes = collections.defaultdict( list )
         
@@ -496,7 +496,7 @@ def UndeleteFiles( hashes ):
             
             content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( service_key, content_update )
             
-            CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+            CG.client_controller.write_synchronous( 'content_updates', content_update_package )
             
         
     

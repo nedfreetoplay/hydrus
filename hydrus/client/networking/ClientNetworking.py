@@ -177,7 +177,7 @@ class NetworkEngine( object ):
                         
                         validation_process = job.GenerateValidationPopupProcess()
                         
-                        self.controller.CallToThread( validation_process.Start )
+                        self.controller.call_to_thread( validation_process.Start )
                         
                         self._current_validation_process = validation_process
                         
@@ -268,7 +268,7 @@ class NetworkEngine( object ):
                     return
                     
                 
-                self.controller.CallToThread( login_process.Start )
+                self.controller.call_to_thread( login_process.Start )
                 
                 self._AssignCurrentLoginProcess( login_process )
                 
@@ -336,7 +336,7 @@ class NetworkEngine( object ):
                         return True
                         
                     
-                    self.controller.CallToThread( login_process.Start )
+                    self.controller.call_to_thread( login_process.Start )
                     
                     self._AssignCurrentLoginProcess( login_process )
                     
@@ -388,7 +388,7 @@ class NetworkEngine( object ):
                     
                     return True
                     
-                elif self.controller.JustWokeFromSleep():
+                elif self.controller.just_woke_from_sleep():
                     
                     job.SetStatus( 'looks like computer just woke up, waiting a bit' )
                     
@@ -418,7 +418,7 @@ class NetworkEngine( object ):
                     
                     self._active_domains_counter[ job.GetSecondLevelDomain() ] += 1
                     
-                    self.controller.CallToThread( job.Start )
+                    self.controller.call_to_thread( job.Start )
                     
                     self._jobs_running.append( job )
                     

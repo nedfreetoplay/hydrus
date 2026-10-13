@@ -252,7 +252,7 @@ class LookupScriptsCache( object ):
                 
                 self._need_to_refresh.clear()
                 
-                self._scripts = CG.client_controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_PARSE_ROOT_FILE_LOOKUP )
+                self._scripts = CG.client_controller.read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_PARSE_ROOT_FILE_LOOKUP )
                 
             
             return list( self._scripts )
@@ -358,7 +358,7 @@ class ParseRootFileLookup( HydrusSerialisable.SerialisableBaseNamed ):
             
             try:
                 
-                source_to_desired = CG.client_controller.Read( 'file_hashes', ( sha256_hash, ), 'sha256', hash_type )
+                source_to_desired = CG.client_controller.read( 'file_hashes', ( sha256_hash, ), 'sha256', hash_type )
                 
                 other_hash = list( source_to_desired.values() )[0]
                 

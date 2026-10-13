@@ -465,7 +465,7 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         with HG.dirty_object_lock:
             
-            CG.client_controller.WriteSynchronous( 'update_server_services', admin_service_key, services, service_keys_to_access_keys, self._deletee_service_keys )
+            CG.client_controller.write_synchronous( 'update_server_services', admin_service_key, services, service_keys_to_access_keys, self._deletee_service_keys )
             
             CG.client_controller.RefreshServices()
             

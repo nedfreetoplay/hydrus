@@ -1111,7 +1111,7 @@ class HydrusResource( Resource ):
         
         self._service.ReportDataUsed( num_bytes )
         
-        HG.controller.ReportDataUsed( num_bytes )
+        HG.controller.report_data_used( num_bytes )
         
     
     def _reportRequestStarted( self, request: HydrusServerRequest.HydrusRequest ):
@@ -1123,7 +1123,7 @@ class HydrusResource( Resource ):
         
         self._service.ReportRequestUsed()
         
-        HG.controller.ReportRequestUsed()
+        HG.controller.report_request_used()
         
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):

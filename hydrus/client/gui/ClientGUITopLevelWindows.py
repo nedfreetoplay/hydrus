@@ -571,7 +571,7 @@ class NewDialog( QP.Dialog ):
         
         self.setWindowIcon( CC.global_icons().hydrus_frame )
         
-        CG.client_controller.ResetIdleTimer()
+        CG.client_controller.reset_idle_timer()
         
         self._widget_event_filter = QP.WidgetEventFilter( self )
         
@@ -855,7 +855,7 @@ class Frame( QW.QWidget ):
         
         self.setWindowIcon( CC.global_icons().hydrus_frame )
         
-        CG.client_controller.ResetIdleTimer()
+        CG.client_controller.reset_idle_timer()
         
         self._widget_event_filter = QP.WidgetEventFilter( self )
         
@@ -893,7 +893,7 @@ class MainFrame( QW.QMainWindow ):
         
         self._widget_event_filter = QP.WidgetEventFilter( self )
         
-        CG.client_controller.ResetIdleTimer()
+        CG.client_controller.reset_idle_timer()
         
     
     def CleanBeforeDestroy( self ):

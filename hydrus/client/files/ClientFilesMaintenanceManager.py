@@ -84,14 +84,14 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         CG.client_controller.WaitUntilViewFree()
         
-        if CG.client_controller.CurrentlyIdle():
+        if CG.client_controller.currently_idle():
             
             if not self._controller.new_options.GetBoolean( 'file_maintenance_during_idle' ):
                 
                 return False
                 
             
-            if not self._controller.GoodTimeToStartBackgroundWork():
+            if not self._controller.good_time_to_start_background_work():
                 
                 return False
                 
@@ -168,11 +168,11 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         if file_was_bad:
             
-            error_dir = os.path.join( self._controller.GetDBDir(), 'missing_and_invalid_files' )
+            error_dir = os.path.join( self._controller.get_db_dir(), 'missing_and_invalid_files' )
             
             HydrusPaths.MakeSureDirectoryExists( error_dir )
             
-            pretty_timestamp = time.strftime( '%Y-%m-%d %H-%M-%S', time.localtime( HydrusTime.SecondiseMS( self._controller.GetBootTimestampMS() ) ) )
+            pretty_timestamp = time.strftime( '%Y-%m-%d %H-%M-%S', time.localtime( HydrusTime.SecondiseMS( self._controller.get_boot_timestamp_ms() ) ) )
             
             missing_hashes_filename = '{} missing hashes.txt'.format( pretty_timestamp )
             
@@ -364,7 +364,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, content_update )
                     
-                    self._controller.WriteSynchronous( 'content_updates', content_update_package )
+                    self._controller.write_synchronous( 'content_updates', content_update_package )
                     
                     message = f'During file maintenance, failed to physically delete {media_result.GetHash().hex()}!'
                     
@@ -396,7 +396,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_update )
                     
-                    self._controller.WriteSynchronous( 'content_updates', content_update_package )
+                    self._controller.write_synchronous( 'content_updates', content_update_package )
                     
                     HydrusData.Print( f'During file maintenance, physically deleted {media_result.GetHash().hex()}!' )
                     
@@ -408,7 +408,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                         
                         content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_update )
                         
-                        self._controller.WriteSynchronous( 'content_updates', content_update_package )
+                        self._controller.write_synchronous( 'content_updates', content_update_package )
                         
                     
                     if not self._pubbed_message_about_bad_file_record_delete:
@@ -449,7 +449,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             cleared_jobs = [ ( hash, job_type, None ) for hash in hashes ]
             
-            self._controller.WriteSynchronous( 'file_maintenance_clear_jobs', cleared_jobs )
+            self._controller.write_synchronous( 'file_maintenance_clear_jobs', cleared_jobs )
             
         
     
@@ -807,7 +807,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 if needed_to_dupe_the_file:
                     
-                    self._controller.WriteSynchronous( 'file_maintenance_add_jobs_hashes', { hash }, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_DELETE_NEIGHBOUR_DUPES, HydrusTime.GetNow() + 3600 )
+                    self._controller.write_synchronous( 'file_maintenance_add_jobs_hashes', { hash }, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_DELETE_NEIGHBOUR_DUPES, HydrusTime.GetNow() + 3600 )
                     
                 
             
@@ -1222,7 +1222,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 if HydrusTime.TimeHasPassed( last_time_jobs_were_cleared + 10 ) or len( cleared_jobs ) > 256:
                     
-                    self._controller.WriteSynchronous( 'file_maintenance_clear_jobs', cleared_jobs )
+                    self._controller.write_synchronous( 'file_maintenance_clear_jobs', cleared_jobs )
                     
                     last_time_jobs_were_cleared = HydrusTime.GetNow()
                     
@@ -1234,7 +1234,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             if len( cleared_jobs ) > 0:
                 
-                self._controller.Write( 'file_maintenance_clear_jobs', cleared_jobs )
+                self._controller.write( 'file_maintenance_clear_jobs', cleared_jobs )
                 
             
         
@@ -1243,7 +1243,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         with self._lock:
             
-            self._controller.WriteSynchronous( 'file_maintenance_cancel_jobs', job_type )
+            self._controller.write_synchronous( 'file_maintenance_cancel_jobs', job_type )
             
             self._reset_background_event.set()
             
@@ -1271,7 +1271,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         job_status = ClientThreading.JobStatus( cancellable = True )
         
-        job_types_to_counts = CG.client_controller.Read( 'file_maintenance_get_job_counts' )
+        job_types_to_counts = CG.client_controller.read( 'file_maintenance_get_job_counts' )
         
         # in a dict so the hook has scope to alter it
         vr_status = {}
@@ -1309,7 +1309,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 while True:
                     
-                    hashes_to_job_types = self._controller.Read( 'file_maintenance_get_jobs', mandated_job_types )
+                    hashes_to_job_types = self._controller.read( 'file_maintenance_get_jobs', mandated_job_types )
                     
                     if len( hashes_to_job_types ) == 0:
                         
@@ -1332,7 +1332,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     hashes = set( hashes_to_job_types.keys() )
                     
-                    media_results = self._controller.Read( 'media_results', hashes )
+                    media_results = self._controller.read( 'media_results', hashes )
                     
                     hashes_to_media_results = { media_result.GetHash() : media_result for media_result in media_results }
                     
@@ -1423,7 +1423,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         with self._maintenance_lock:
             
-            hashes_to_job_types = self._controller.Read( 'file_maintenance_get_jobs' )
+            hashes_to_job_types = self._controller.read( 'file_maintenance_get_jobs' )
             
             if len( hashes_to_job_types ) > 0:
                 
@@ -1437,7 +1437,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     hashes = set( hashes_to_job_types.keys() )
                     
-                    media_results = self._controller.Read( 'media_results', hashes )
+                    media_results = self._controller.read( 'media_results', hashes )
                     
                     hashes_to_media_results = { media_result.GetHash() : media_result for media_result in media_results }
                     
@@ -1568,7 +1568,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         with self._lock:
             
-            self._controller.Write( 'file_maintenance_add_jobs_hashes', hashes, job_type, time_can_start )
+            self._controller.write( 'file_maintenance_add_jobs_hashes', hashes, job_type, time_can_start )
             
         
         self.WakeIfNotWorking()
@@ -1578,7 +1578,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         with self._lock:
             
-            self._controller.Write( 'file_maintenance_add_jobs', hash_ids, job_type, time_can_start )
+            self._controller.write( 'file_maintenance_add_jobs', hash_ids, job_type, time_can_start )
             
         
         self.WakeIfNotWorking()

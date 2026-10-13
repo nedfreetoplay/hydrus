@@ -270,7 +270,7 @@ class ReviewGranularityPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         self.setEnabled( False )
         
-        CG.client_controller.CallToThread( do_it )
+        CG.client_controller.call_to_thread( do_it )
         
         with ClientGUITopLevelWindowsPanels.DialogNullipotent( self, 'Granularising', hide_buttons = True ) as dlg:
             
@@ -435,7 +435,7 @@ class ReviewGranularityPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
             
         
-        CG.client_controller.CallToThread( do_it )
+        CG.client_controller.call_to_thread( do_it )
         
         with ClientGUITopLevelWindowsPanels.DialogNullipotent( self, 'Granularising', hide_buttons = True ) as dlg:
             
@@ -478,11 +478,11 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         super().__init__( parent )
         
-        ( self._current_granularity, self._client_files_subfolders ) = CG.client_controller.Read( 'client_files_subfolders' )
+        ( self._current_granularity, self._client_files_subfolders ) = CG.client_controller.read( 'client_files_subfolders' )
         
-        ( self._media_base_locations, self._ideal_thumbnails_base_location_override ) = self._controller.Read( 'ideal_client_files_locations' )
+        ( self._media_base_locations, self._ideal_thumbnails_base_location_override ) = self._controller.read( 'ideal_client_files_locations' )
         
-        service_info = CG.client_controller.Read( 'service_info', CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY )
+        service_info = CG.client_controller.read( 'service_info', CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY )
         
         self._hydrus_local_file_storage_total_size = service_info[ HC.SERVICE_INFO_TOTAL_SIZE ]
         self._hydrus_local_file_storage_total_num = service_info[ HC.SERVICE_INFO_NUM_FILES ]
@@ -1265,7 +1265,7 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
     
     def _SaveToDB( self ):
         
-        self._controller.Write( 'ideal_client_files_locations', self._media_base_locations, self._ideal_thumbnails_base_location_override )
+        self._controller.write( 'ideal_client_files_locations', self._media_base_locations, self._ideal_thumbnails_base_location_override )
         
         self._controller.client_files_manager.Reinit()
         
@@ -1372,15 +1372,15 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
     
     def _Update( self ):
         
-        ( self._current_granularity, self._client_files_subfolders ) = CG.client_controller.Read( 'client_files_subfolders' )
+        ( self._current_granularity, self._client_files_subfolders ) = CG.client_controller.read( 'client_files_subfolders' )
         
-        ( self._media_base_locations, self._ideal_thumbnails_base_location_override ) = self._controller.Read( 'ideal_client_files_locations' )
+        ( self._media_base_locations, self._ideal_thumbnails_base_location_override ) = self._controller.read( 'ideal_client_files_locations' )
         
         self._media_base_locations_to_ideal_usage = ClientFilesPhysical.FilesStorageBaseLocation.STATICGetIdealWeights( self._hydrus_local_file_storage_total_size, self._media_base_locations )
         
         approx_total_db_size = self._controller.db.GetApproxTotalFileSize()
         
-        self._current_db_path_st.setText( 'database (about '+HydrusData.ToHumanBytes(approx_total_db_size)+'): '+self._controller.GetDBDir() )
+        self._current_db_path_st.setText( 'database (about '+HydrusData.ToHumanBytes(approx_total_db_size)+'): '+self._controller.get_db_dir() )
         self._current_install_path_st.setText( 'install: ' + HC.BASE_DIR )
         
         approx_total_client_files = self._hydrus_local_file_storage_total_size

@@ -37,7 +37,7 @@ class TrashMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             able_to_work = False
             
         
-        if not controller.CurrentlyIdle() and not controller.new_options.GetBoolean( 'maintain_trash_in_normal_time' ):
+        if not controller.currently_idle() and not controller.new_options.GetBoolean( 'maintain_trash_in_normal_time' ):
             
             able_to_work = False
             
@@ -59,7 +59,7 @@ class TrashMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             start_time = HydrusTime.GetNowFloat()
             
-            still_work_to_do = controller.WriteSynchronous( 'maintain_trash', expected_work_period )
+            still_work_to_do = controller.write_synchronous( 'maintain_trash', expected_work_period )
             
             actual_work_period = HydrusTime.GetNowFloat() - start_time
             

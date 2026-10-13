@@ -3029,7 +3029,7 @@ class ServerServiceRepository( ServerServiceRestricted ):
                 
                 update_started = HydrusTime.GetNowFloat()
                 
-                HG.controller.WriteSynchronous( 'nullify_history', service_key, nullification_begin, nullification_end )
+                HG.controller.write_synchronous( 'nullify_history', service_key, nullification_begin, nullification_end )
                 
                 update_took = HydrusTime.GetNowFloat() - update_started
                 
@@ -3127,7 +3127,7 @@ class ServerServiceRepository( ServerServiceRestricted ):
                     
                     end = begin + update_period
                     
-                    update_hashes = HG.controller.WriteSynchronous( 'create_update', service_key, begin, end )
+                    update_hashes = HG.controller.write_synchronous( 'create_update', service_key, begin, end )
                     
                     update_created = True
                     

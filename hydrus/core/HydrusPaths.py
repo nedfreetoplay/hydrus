@@ -89,7 +89,7 @@ def ConvertAbsPathToPortablePath( abs_path, base_dir_override = None ):
         
         if base_dir_override is None:
             
-            base_dir = HG.controller.GetDBDir()
+            base_dir = HG.controller.get_db_dir()
             
         else:
             
@@ -133,7 +133,7 @@ def ConvertPortablePathToAbsPath( portable_path, base_dir_override = None ):
         
         if base_dir_override is None:
             
-            base_dir = HG.controller.GetDBDir()
+            base_dir = HG.controller.get_db_dir()
             
         else:
             

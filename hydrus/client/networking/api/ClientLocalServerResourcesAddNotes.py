@@ -54,7 +54,7 @@ class HydrusResourceClientAPIRestrictedAddNotesSetNotes( HydrusResourceClientAPI
             note_import_options.SetExtendExistingNoteIfPossible( extend_existing_note_if_possible )
             note_import_options.SetConflictResolution( conflict_resolution )
             
-            media_result = CG.client_controller.Read( 'media_result', hash )
+            media_result = CG.client_controller.read( 'media_result', hash )
             
             existing_names_to_notes = media_result.GetNotesManager().GetNamesToNotes()
             
@@ -69,7 +69,7 @@ class HydrusResourceClientAPIRestrictedAddNotesSetNotes( HydrusResourceClientAPI
             
             content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.LOCAL_NOTES_SERVICE_KEY, content_updates )
             
-            CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+            CG.client_controller.write_synchronous( 'content_updates', content_update_package )
             
         
         body_dict = {
@@ -105,7 +105,7 @@ class HydrusResourceClientAPIRestrictedAddNotesDeleteNotes( HydrusResourceClient
         
         content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.LOCAL_NOTES_SERVICE_KEY, content_updates )
         
-        CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+        CG.client_controller.write_synchronous( 'content_updates', content_update_package )
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         

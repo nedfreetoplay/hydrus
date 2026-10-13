@@ -374,7 +374,7 @@ class ShortcutsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
             dupe_shortcut_sets = [ shortcut_set.Duplicate() for shortcut_set in shortcut_sets ]
             
-            CG.client_controller.Write( 'serialisables_overwrite', [ HydrusSerialisable.SERIALISABLE_TYPE_SHORTCUT_SET ], dupe_shortcut_sets )
+            CG.client_controller.write( 'serialisables_overwrite', [ HydrusSerialisable.SERIALISABLE_TYPE_SHORTCUT_SET ], dupe_shortcut_sets )
             
             ClientGUIShortcuts.shortcuts_manager().SetShortcutSets( shortcut_sets )
             

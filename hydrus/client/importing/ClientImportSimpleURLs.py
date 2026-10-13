@@ -740,8 +740,8 @@ class SimpleDownloaderImport( HydrusSerialisable.SerialisableBase ):
             
             self._page_key = page_key
             
-            self._files_repeating_job = CG.client_controller.CallRepeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnFiles )
-            self._gallery_repeating_job = CG.client_controller.CallRepeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnGallery )
+            self._files_repeating_job = CG.client_controller.call_repeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnFiles )
+            self._gallery_repeating_job = CG.client_controller.call_repeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnGallery )
             
             self._files_repeating_job.SetThreadSlotType( 'misc' )
             self._gallery_repeating_job.SetThreadSlotType( 'misc' )
@@ -1439,8 +1439,8 @@ class URLsImport( HydrusSerialisable.SerialisableBase ):
             
             self._page_key = page_key
             
-            self._files_repeating_job = CG.client_controller.CallRepeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnFiles )
-            self._gallery_repeating_job = CG.client_controller.CallRepeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnGallery )
+            self._files_repeating_job = CG.client_controller.call_repeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnFiles )
+            self._gallery_repeating_job = CG.client_controller.call_repeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnGallery )
             
             self._files_repeating_job.SetThreadSlotType( 'misc' )
             self._gallery_repeating_job.SetThreadSlotType( 'misc' )

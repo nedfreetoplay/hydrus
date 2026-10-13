@@ -130,7 +130,7 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     job_status.SetStatusText( 'initialising downloader' )
                     
-                    job_status_pub_job = self._controller.CallLater( 2.0, self._controller.pub, 'message', job_status )
+                    job_status_pub_job = self._controller.call_later( 2.0, self._controller.pub, 'message', job_status )
                     
                 
                 num_before = len( self._hashes_still_to_download_in_this_run )
@@ -179,7 +179,7 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
             errors_occured = []
             file_successful = False
             
-            media_result = self._controller.Read( 'media_result', hash )
+            media_result = self._controller.read( 'media_result', hash )
             
             service_keys = list( media_result.GetLocationsManager().GetCurrent() )
             

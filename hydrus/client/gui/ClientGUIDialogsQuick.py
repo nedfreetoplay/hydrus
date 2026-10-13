@@ -177,11 +177,11 @@ def GetYesNo( win: QW.QWidget, message: str, title = 'Are you sure?', yes_label 
             
             if auto_yes_time is not None:
                 
-                CG.client_controller.CallToThread( run_auto_yes_no_gubbins, dlg, HydrusTime.GetNow() + auto_yes_time, dlg.windowTitle(), 'auto-yes', QW.QDialog.DialogCode.Accepted )
+                CG.client_controller.call_to_thread( run_auto_yes_no_gubbins, dlg, HydrusTime.GetNow() + auto_yes_time, dlg.windowTitle(), 'auto-yes', QW.QDialog.DialogCode.Accepted )
                 
             elif auto_no_time is not None:
                 
-                CG.client_controller.CallToThread( run_auto_yes_no_gubbins, dlg, HydrusTime.GetNow() + auto_no_time, dlg.windowTitle(), 'auto-no', QW.QDialog.DialogCode.Rejected )
+                CG.client_controller.call_to_thread( run_auto_yes_no_gubbins, dlg, HydrusTime.GetNow() + auto_no_time, dlg.windowTitle(), 'auto-no', QW.QDialog.DialogCode.Rejected )
                 
             
         
@@ -199,7 +199,7 @@ def GetYesNoNo( win: QW.QWidget, message: str, title = 'Are you sure?', yes_labe
         
         if auto_yes_time is not None:
             
-            CG.client_controller.CallToThread( run_auto_yes_no_gubbins, dlg, HydrusTime.GetNow() + auto_yes_time, dlg.windowTitle(), 'auto-yes', QW.QDialog.DialogCode.Accepted )
+            CG.client_controller.call_to_thread( run_auto_yes_no_gubbins, dlg, HydrusTime.GetNow() + auto_yes_time, dlg.windowTitle(), 'auto-yes', QW.QDialog.DialogCode.Accepted )
             
         
         result = dlg.exec()

@@ -695,7 +695,7 @@ class FilenameTaggingOptionsPanel( QW.QWidget ):
         
         def EnterTags( self, tags ):
             
-            CG.client_controller.Write( 'push_recent_tags', self._service_key, tags )
+            CG.client_controller.write( 'push_recent_tags', self._service_key, tags )
             
             if len( tags ) > 0:
                 
@@ -719,7 +719,7 @@ class FilenameTaggingOptionsPanel( QW.QWidget ):
         
         def EnterTagsSingle( self, tags ):
             
-            CG.client_controller.Write( 'push_recent_tags', self._service_key, tags )
+            CG.client_controller.write( 'push_recent_tags', self._service_key, tags )
             
             if len( tags ) > 0:
                 

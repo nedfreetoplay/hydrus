@@ -1901,11 +1901,11 @@ class ServiceRepository( ServiceRestricted ):
             
             if do_a_full_metadata_resync:
                 
-                CG.client_controller.WriteSynchronous( 'set_repository_update_hashes', service_key, metadata_slice )
+                CG.client_controller.write_synchronous( 'set_repository_update_hashes', service_key, metadata_slice )
                 
             else:
                 
-                CG.client_controller.WriteSynchronous( 'associate_repository_update_hashes', service_key, metadata_slice )
+                CG.client_controller.write_synchronous( 'associate_repository_update_hashes', service_key, metadata_slice )
                 
             
             with self._lock:
@@ -1939,7 +1939,7 @@ class ServiceRepository( ServiceRestricted ):
             service_key = self._service_key
             
         
-        update_hashes = CG.client_controller.Read( 'missing_repository_update_hashes', service_key )
+        update_hashes = CG.client_controller.read( 'missing_repository_update_hashes', service_key )
         
         if len( update_hashes ) > 0:
             
@@ -2063,7 +2063,7 @@ class ServiceRepository( ServiceRestricted ):
                     
                     try:
                         
-                        CG.client_controller.WriteSynchronous( 'import_update', update_network_string, update_hash, mime )
+                        CG.client_controller.write_synchronous( 'import_update', update_network_string, update_hash, mime )
                         
                     except Exception as e:
                         
@@ -2102,7 +2102,7 @@ class ServiceRepository( ServiceRestricted ):
                 
             
         
-        if CG.client_controller.ShouldStopThisWork( maintenance_mode, stop_time = stop_time ):
+        if CG.client_controller.should_stop_this_work( maintenance_mode, stop_time = stop_time ):
             
             return
             
@@ -2119,7 +2119,7 @@ class ServiceRepository( ServiceRestricted ):
             
             content_types_to_process = self._GetContentTypesWeAreProcessing()
             
-            ( this_is_first_definitions_work, definition_hashes_and_content_types, this_is_first_content_work, content_hashes_and_content_types ) = CG.client_controller.Read( 'repository_update_hashes_to_process', self._service_key, content_types_to_process )
+            ( this_is_first_definitions_work, definition_hashes_and_content_types, this_is_first_content_work, content_hashes_and_content_types ) = CG.client_controller.read( 'repository_update_hashes_to_process', self._service_key, content_types_to_process )
             
             if len( definition_hashes_and_content_types ) == 0 and len( content_hashes_and_content_types ) == 0:
                 
@@ -2168,7 +2168,7 @@ class ServiceRepository( ServiceRestricted ):
                         
                     except HydrusExceptions.FileMissingException:
                         
-                        CG.client_controller.WriteSynchronous( 'schedule_repository_update_file_maintenance', self._service_key, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_PRESENCE_REMOVE_RECORD )
+                        CG.client_controller.write_synchronous( 'schedule_repository_update_file_maintenance', self._service_key, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_PRESENCE_REMOVE_RECORD )
                         
                         raise Exception( 'An unusual error has occured during repository processing: a definition update file ({}) was missing. Your repository should be paused, and all update files have been scheduled for a presence check. I recommend you run _database->maintenance->clear/fix orphan file records_ too. Please then permit file maintenance under _database->file maintenance->manage scheduled jobs_ to finish its new work, which should fix this, before unpausing your repository.'.format( definition_hash.hex() ) )
                         
@@ -2184,14 +2184,14 @@ class ServiceRepository( ServiceRestricted ):
                         
                     except Exception as e:
                         
-                        CG.client_controller.WriteSynchronous( 'schedule_repository_update_file_maintenance', self._service_key, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_REMOVE_RECORD )
+                        CG.client_controller.write_synchronous( 'schedule_repository_update_file_maintenance', self._service_key, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_REMOVE_RECORD )
                         
                         raise Exception( 'An unusual error has occured during repository processing: a definition update file ({}) was invalid. Your repository should be paused, and all update files have been scheduled for an integrity check. Please permit file maintenance under _database->file maintenance->manage scheduled jobs_ to finish its new work, which should fix this, before unpausing your repository.'.format( definition_hash.hex() ) )
                         
                     
                     if not isinstance( definition_update, HydrusNetwork.DefinitionsUpdate ):
                         
-                        CG.client_controller.WriteSynchronous( 'schedule_repository_update_file_maintenance', self._service_key, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_METADATA )
+                        CG.client_controller.write_synchronous( 'schedule_repository_update_file_maintenance', self._service_key, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_METADATA )
                         
                         raise Exception( 'An unusual error has occured during repository processing: a definition update file ({}) has incorrect metadata. Your repository should be paused, and all update files have been scheduled for a metadata rescan. Please permit file maintenance under _database->file maintenance->manage scheduled jobs_ to finish its new work, which should fix this, before unpausing your repository.'.format( definition_hash.hex() ) )
                         
@@ -2213,7 +2213,7 @@ class ServiceRepository( ServiceRestricted ):
                             expected_work_period = HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_very_idle' ) )
                             rest_ratio = CG.client_controller.new_options.GetInteger( 'repository_processing_rest_percentage_very_idle' ) / 100
                             
-                        elif CG.client_controller.CurrentlyIdle():
+                        elif CG.client_controller.currently_idle():
                             
                             expected_work_period = HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_idle' ) )
                             rest_ratio = CG.client_controller.new_options.GetInteger( 'repository_processing_rest_percentage_idle' ) / 100
@@ -2226,7 +2226,7 @@ class ServiceRepository( ServiceRestricted ):
                         
                         start_time = HydrusTime.GetNowPrecise()
                         
-                        num_rows_done = CG.client_controller.WriteSynchronous( 'process_repository_definitions', self._service_key, definition_hash, iterator_dict, content_types, job_status, expected_work_period )
+                        num_rows_done = CG.client_controller.write_synchronous( 'process_repository_definitions', self._service_key, definition_hash, iterator_dict, content_types, job_status, expected_work_period )
                         
                         actual_work_period = HydrusTime.GetNowPrecise() - start_time
                         
@@ -2237,12 +2237,12 @@ class ServiceRepository( ServiceRestricted ):
                         
                         if ( this_is_first_definitions_work or total_definition_rows_completed > 10000 ) and not did_definition_analyze:
                             
-                            CG.client_controller.WriteSynchronous( 'analyze', maintenance_mode = maintenance_mode )
+                            CG.client_controller.write_synchronous( 'analyze', maintenance_mode = maintenance_mode )
                             
                             did_definition_analyze = True
                             
                         
-                        if CG.client_controller.ShouldStopThisWork( maintenance_mode, stop_time = stop_time ) or job_status.IsCancelled():
+                        if CG.client_controller.should_stop_this_work( maintenance_mode, stop_time = stop_time ) or job_status.IsCancelled():
                             
                             return
                             
@@ -2259,7 +2259,7 @@ class ServiceRepository( ServiceRestricted ):
                 
                 if ( this_is_first_definitions_work or total_definition_rows_completed > 10000 ) and not did_definition_analyze:
                     
-                    CG.client_controller.WriteSynchronous( 'analyze', maintenance_mode = maintenance_mode )
+                    CG.client_controller.write_synchronous( 'analyze', maintenance_mode = maintenance_mode )
                     
                     did_definition_analyze = True
                     
@@ -2269,7 +2269,7 @@ class ServiceRepository( ServiceRestricted ):
                 self._LogFinalRowSpeed( definition_start_time, total_definition_rows_completed, 'definitions' )
                 
             
-            if CG.client_controller.ShouldStopThisWork( maintenance_mode, stop_time = stop_time ) or job_status.IsCancelled():
+            if CG.client_controller.should_stop_this_work( maintenance_mode, stop_time = stop_time ) or job_status.IsCancelled():
                 
                 return
                 
@@ -2297,7 +2297,7 @@ class ServiceRepository( ServiceRestricted ):
                         
                     except HydrusExceptions.FileMissingException:
                         
-                        CG.client_controller.WriteSynchronous( 'schedule_repository_update_file_maintenance', self._service_key, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_PRESENCE_REMOVE_RECORD )
+                        CG.client_controller.write_synchronous( 'schedule_repository_update_file_maintenance', self._service_key, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_PRESENCE_REMOVE_RECORD )
                         
                         raise Exception( 'An unusual error has occured during repository processing: a content update file ({}) was missing. Your repository should be paused, and all update files have been scheduled for a presence check. I recommend you run _database->maintenance->clear/fix orphan file records_ too. Please then permit file maintenance under _database->file maintenance->manage scheduled jobs_ to finish its new work, which should fix this, before unpausing your repository.'.format( content_hash.hex() ) )
                         
@@ -2313,14 +2313,14 @@ class ServiceRepository( ServiceRestricted ):
                         
                     except Exception as e:
                         
-                        CG.client_controller.WriteSynchronous( 'schedule_repository_update_file_maintenance', self._service_key, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_REMOVE_RECORD )
+                        CG.client_controller.write_synchronous( 'schedule_repository_update_file_maintenance', self._service_key, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_REMOVE_RECORD )
                         
                         raise Exception( 'An unusual error has occured during repository processing: a content update file ({}) was invalid. Your repository should be paused, and all update files have been scheduled for an integrity check. Please permit file maintenance under _database->file maintenance->manage scheduled jobs_ to finish its new work, which should fix this, before unpausing your repository.'.format( content_hash.hex() ) )
                         
                     
                     if not isinstance( content_update, HydrusNetwork.ContentUpdate ):
                         
-                        CG.client_controller.WriteSynchronous( 'schedule_repository_update_file_maintenance', self._service_key, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_METADATA )
+                        CG.client_controller.write_synchronous( 'schedule_repository_update_file_maintenance', self._service_key, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_METADATA )
                         
                         raise Exception( 'An unusual error has occured during repository processing: a content update file ({}) has incorrect metadata. Your repository should be paused, and all update files have been scheduled for a metadata rescan. Please permit file maintenance under _database->file maintenance->manage scheduled jobs_ to finish its new work, which should fix this, before unpausing your repository.'.format( content_hash.hex() ) )
                         
@@ -2363,7 +2363,7 @@ class ServiceRepository( ServiceRestricted ):
                             expected_work_period = HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_very_idle' ) )
                             rest_ratio = CG.client_controller.new_options.GetInteger( 'repository_processing_rest_percentage_very_idle' ) / 100
                             
-                        elif CG.client_controller.CurrentlyIdle():
+                        elif CG.client_controller.currently_idle():
                             
                             expected_work_period = HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_idle' ) )
                             rest_ratio = CG.client_controller.new_options.GetInteger( 'repository_processing_rest_percentage_idle' ) / 100
@@ -2376,7 +2376,7 @@ class ServiceRepository( ServiceRestricted ):
                         
                         start_time = HydrusTime.GetNowPrecise()
                         
-                        num_rows_done = CG.client_controller.WriteSynchronous( 'process_repository_content', self._service_key, content_hash, iterator_dict, content_types, job_status, expected_work_period )
+                        num_rows_done = CG.client_controller.write_synchronous( 'process_repository_content', self._service_key, content_hash, iterator_dict, content_types, job_status, expected_work_period )
                         
                         actual_work_period = HydrusTime.GetNowPrecise() - start_time
                         
@@ -2387,12 +2387,12 @@ class ServiceRepository( ServiceRestricted ):
                         
                         if ( this_is_first_content_work or total_content_rows_completed > 10000 ) and not did_content_analyze:
                             
-                            CG.client_controller.WriteSynchronous( 'analyze', maintenance_mode = maintenance_mode )
+                            CG.client_controller.write_synchronous( 'analyze', maintenance_mode = maintenance_mode )
                             
                             did_content_analyze = True
                             
                         
-                        if CG.client_controller.ShouldStopThisWork( maintenance_mode, stop_time = stop_time ) or job_status.IsCancelled():
+                        if CG.client_controller.should_stop_this_work( maintenance_mode, stop_time = stop_time ) or job_status.IsCancelled():
                             
                             return
                             
@@ -2409,7 +2409,7 @@ class ServiceRepository( ServiceRestricted ):
                 
                 if ( this_is_first_content_work or total_content_rows_completed > 10000 ) and not did_content_analyze:
                     
-                    CG.client_controller.WriteSynchronous( 'analyze', maintenance_mode = maintenance_mode )
+                    CG.client_controller.write_synchronous( 'analyze', maintenance_mode = maintenance_mode )
                     
                     did_content_analyze = True
                     
@@ -2492,7 +2492,7 @@ class ServiceRepository( ServiceRestricted ):
         
         content_types_we_are_processing = self._GetContentTypesWeAreProcessing()
         
-        ( num_local_updates, num_updates, content_types_to_num_processed_updates, content_types_to_num_updates ) = CG.client_controller.Read( 'repository_progress', service_key )
+        ( num_local_updates, num_updates, content_types_to_num_processed_updates, content_types_to_num_updates ) = CG.client_controller.read( 'repository_progress', service_key )
         
         for ( content_type, num_processed_updates ) in content_types_to_num_processed_updates.items():
             
@@ -2685,9 +2685,9 @@ class ServiceRepository( ServiceRestricted ):
         
         content_types_to_process = self._GetContentTypesWeAreProcessing()
         
-        ( this_is_first_definitions_work, definition_hashes_and_content_types, this_is_first_content_work, content_hashes_and_content_types ) = CG.client_controller.Read( 'repository_update_hashes_to_process', self._service_key, content_types_to_process )
+        ( this_is_first_definitions_work, definition_hashes_and_content_types, this_is_first_content_work, content_hashes_and_content_types ) = CG.client_controller.read( 'repository_update_hashes_to_process', self._service_key, content_types_to_process )
         
-        missing_update_hashes = CG.client_controller.Read( 'missing_repository_update_hashes', service_key )
+        missing_update_hashes = CG.client_controller.read( 'missing_repository_update_hashes', service_key )
         
         unprocessed_update_hashes = set( ( hash for ( hash, content_types ) in definition_hashes_and_content_types ) ).union( ( hash for ( hash, content_types ) in content_hashes_and_content_types ) ).union( missing_update_hashes )
         
@@ -2799,7 +2799,7 @@ class ServiceRepository( ServiceRestricted ):
         CG.client_controller.pub( 'notify_account_sync_due' )
         CG.client_controller.pub( 'important_dirt_to_clean' )
         
-        CG.client_controller.Write( 'reset_repository', self )
+        CG.client_controller.write( 'reset_repository', self )
         
     
     def SetTagFilter( self, tag_filter: HydrusTags.TagFilter ):
@@ -2881,7 +2881,7 @@ class ServiceRepository( ServiceRestricted ):
             service_key = self._service_key
             
         
-        thumbnail_hashes = CG.client_controller.Read( 'missing_thumbnail_hashes', service_key )
+        thumbnail_hashes = CG.client_controller.read( 'missing_thumbnail_hashes', service_key )
         
         num_to_do = len( thumbnail_hashes )
         
@@ -3162,7 +3162,7 @@ class ServiceIPFS( ServiceRemote ):
                 job_status.SetStatusText( 'ensuring files are pinned: ' + HydrusNumbers.ValueRangeToPrettyString( i, len( hashes ) ) )
                 job_status.SetGauge( i, len( hashes ) )
                 
-                media_result = CG.client_controller.Read( 'media_result', hash )
+                media_result = CG.client_controller.read( 'media_result', hash )
                 
                 mime = media_result.GetMime()
                 
@@ -3231,7 +3231,7 @@ class ServiceIPFS( ServiceRemote ):
             
             content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_DIRECTORIES, HC.CONTENT_UPDATE_ADD, content_update_row ) ]
             
-            CG.client_controller.WriteSynchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( self._service_key, content_updates ) )
+            CG.client_controller.write_synchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( self._service_key, content_updates ) )
             
             job_status.SetStatusText( 'done!' )
             
@@ -3316,7 +3316,7 @@ class ServiceIPFS( ServiceRemote ):
             raise HydrusExceptions.DataMissing( message )
             
         
-        media_result = CG.client_controller.Read( 'media_result', hash )
+        media_result = CG.client_controller.read( 'media_result', hash )
         
         file_info_manager = media_result.GetFileInfoManager()
         
@@ -3324,7 +3324,7 @@ class ServiceIPFS( ServiceRemote ):
         
         content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_ADD, content_update_row ) ]
         
-        CG.client_controller.WriteSynchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( self._service_key, content_updates ) )
+        CG.client_controller.write_synchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( self._service_key, content_updates ) )
         
         return multihash
         
@@ -3349,7 +3349,7 @@ class ServiceIPFS( ServiceRemote ):
         
         content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_DIRECTORIES, HC.CONTENT_UPDATE_DELETE, multihash ) ]
         
-        CG.client_controller.WriteSynchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( self._service_key, content_updates ) )
+        CG.client_controller.write_synchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( self._service_key, content_updates ) )
         
     
     def UnpinFile( self, hash, multihash ):
@@ -3372,7 +3372,7 @@ class ServiceIPFS( ServiceRemote ):
         
         content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, { hash } ) ]
         
-        CG.client_controller.WriteSynchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( self._service_key, content_updates ) )
+        CG.client_controller.write_synchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( self._service_key, content_updates ) )
         
     
 
@@ -3562,7 +3562,7 @@ class ServicesManager( object ):
         
         with self._lock:
             
-            services = self._controller.Read( 'services' )
+            services = self._controller.read( 'services' )
             
             self._SetServices( services )
             

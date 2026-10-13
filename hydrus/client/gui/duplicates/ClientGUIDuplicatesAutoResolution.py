@@ -1591,7 +1591,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            CG.client_controller.Write( 'duplicates_auto_resolution_maintenance_fix_orphan_rules' )
+            CG.client_controller.write( 'duplicates_auto_resolution_maintenance_fix_orphan_rules' )
             
         
     
@@ -1603,7 +1603,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            CG.client_controller.Write( 'duplicates_auto_resolution_maintenance_fix_orphan_potential_pairs' )
+            CG.client_controller.write( 'duplicates_auto_resolution_maintenance_fix_orphan_potential_pairs' )
             
         
     
@@ -1672,7 +1672,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
                 
             
         
-        CG.client_controller.CallToThread( do_it )
+        CG.client_controller.call_to_thread( do_it )
         
     
     def _FlipBoolean( self, name ):
@@ -1795,7 +1795,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
         
         def work_callable( args ):
             
-            rules = CG.client_controller.Read( 'duplicates_auto_resolution_rules_with_counts' )
+            rules = CG.client_controller.read( 'duplicates_auto_resolution_rules_with_counts' )
             
             return rules
             
@@ -1832,7 +1832,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            CG.client_controller.Write( 'duplicates_auto_resolution_maintenance_regen_numbers' )
+            CG.client_controller.write( 'duplicates_auto_resolution_maintenance_regen_numbers' )
             
         
     
@@ -1916,7 +1916,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            CG.client_controller.Write( 'duplicates_auto_resolution_maintenance_resync_rules_to_location_contexts' )
+            CG.client_controller.write( 'duplicates_auto_resolution_maintenance_resync_rules_to_location_contexts' )
             
         
     

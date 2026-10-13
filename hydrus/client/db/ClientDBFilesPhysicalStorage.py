@@ -332,7 +332,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
             
             message = 'You just cancelled the regranularisation process! I will now attempt to undo it. The status window will move to the bottom-right of the main gui window. Just wait it out please.'
             
-            CG.client_controller.BlockingSafeShowMessage( message )
+            CG.client_controller.blocking_safe_show_message( message )
             
             job_status = ClientThreading.JobStatus( pausable = True )
             
@@ -354,7 +354,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
             message += '\n\n'
             message += str( e )
             
-            CG.client_controller.BlockingSafeShowCriticalMessage( 'Problem with granularisation!', message )
+            CG.client_controller.blocking_safe_show_critical_message( 'Problem with granularisation!', message )
             
             job_status = ClientThreading.JobStatus( pausable = True )
             

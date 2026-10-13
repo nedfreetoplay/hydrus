@@ -266,7 +266,7 @@ def VacuumDBInto( db_path: str ):
             message += '\n\n'
             message += f'The program will exit suddenly and rudely after this message is closed.'
             
-            HG.controller.BlockingSafeShowCriticalMessage( 'CRITICAL VACUUM ERROR', message )
+            HG.controller.blocking_safe_show_critical_message( 'CRITICAL VACUUM ERROR', message )
             
             HydrusExit.CRITICALInitiateImmediateProgramHalt()
             
@@ -486,7 +486,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
         
         self._CloseDBConnection()
         
-        self._controller.CallToThreadLongRunning( self.MainLoop )
+        self._controller.call_to_thread_long_running( self.MainLoop )
         
         while not self._ready_to_serve_requests:
             
@@ -615,7 +615,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
             
             message = f'Holy hell, it looks like the database files "{missing_paths_summary}" disappeared while the program was working! Obviously something very bad has happened, and the program will now immediately quit. You will have to investigate this. hydev can help you figure it out.'
             
-            self._controller.BlockingSafeShowCriticalMessage( 'recovering from failed vacuum!', message )
+            self._controller.blocking_safe_show_critical_message( 'recovering from failed vacuum!', message )
             
             HydrusExit.CRITICALInitiateImmediateProgramHalt()
             
@@ -646,7 +646,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                         message += f'There is also a file called "{vacuum_path}". This is the file that should have become your new vacuumed database file. You should not delete this file yet, since we may need it for recovery purposes if "{deletee_path}" is damaged, but it is the product of a failed vacuum operation and cannot be trusted, so you should plan to delete it if everything else goes well.'
                         
                     
-                    self._controller.BlockingSafeShowCriticalMessage( 'recovering from failed vacuum!', message )
+                    self._controller.blocking_safe_show_critical_message( 'recovering from failed vacuum!', message )
                     
                     try:
                         
@@ -658,7 +658,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                         
                         message = 'I am sorry, the recovery attempt failed because I could not rename the file. It looks like your hard drive is damaged or somehow read-only. Hydrus will now quit; please check out what could be wrong with your drive, and ask hydev for help if you need it!'
                         
-                        HG.controller.BlockingSafeShowCriticalMessage( 'REPAIR FAILURE', message )
+                        HG.controller.blocking_safe_show_critical_message( 'REPAIR FAILURE', message )
                         
                         HydrusExit.CRITICALInitiateImmediateProgramHalt()
                         
@@ -695,7 +695,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                     
                     message = f'While the main database file, "{main_db_path}", exists, the external files {missing_external_paths_summary} do not!\n\nIf this is a surprise to you, you have probably had a hard drive failure. You must close this process immediately and diagnose what has happened. Check the \'Recovery->Help my db is broke\' document in the help for additional reading.\n\nIf this is not a surprise, then you may continue if you wish, and hydrus will do its best to reconstruct the missing files. You will see more error prompts.'
                     
-                    self._controller.BlockingSafeShowCriticalMessage( 'missing database file!', message )
+                    self._controller.blocking_safe_show_critical_message( 'missing database file!', message )
                     
                 
             
@@ -878,7 +878,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
             
             self.publish_status_update()
             
-            idle_at_job_start = self._controller.CurrentlyIdle()
+            idle_at_job_start = self._controller.currently_idle()
             time_job_started = HydrusTime.GetNowPrecise()
             
             result = None
@@ -892,7 +892,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                 result = self._Write( action, *args, **kwargs )
                 
             
-            idle_at_job_end = self._controller.CurrentlyIdle()
+            idle_at_job_end = self._controller.currently_idle()
             
             if not idle_at_job_start or not idle_at_job_end:
                 
@@ -982,7 +982,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
             module.Repair( version, self._cursor_transaction_wrapper )
             
         
-        if HG.controller.LastShutdownWasBad():
+        if HG.controller.last_shutdown_was_bad():
             
             for module in self._modules:
                 

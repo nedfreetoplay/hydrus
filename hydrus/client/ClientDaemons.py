@@ -19,11 +19,11 @@ def DAEMONCheckExportFolders():
         
         try:
             
-            export_folder_names = controller.Read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER )
+            export_folder_names = controller.read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER )
             
             for name in export_folder_names:
                 
-                export_folder = controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER, name )
+                export_folder = controller.read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER, name )
                 
                 if controller.new_options.GetBoolean( 'pause_export_folders_sync' ) or HydrusThreading.IsThreadShuttingDown():
                     
@@ -186,7 +186,7 @@ class ManagerWithMainLoop( object ):
     
     def Start( self ):
         
-        self._controller.CallToThreadLongRunning( self.MainLoop )
+        self._controller.call_to_thread_long_running( self.MainLoop )
         
     
     def Wake( self ):
