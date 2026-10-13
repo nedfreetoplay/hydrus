@@ -44,7 +44,7 @@ def IngestClipboard():
             
             payload_bytes = ClientSerialisable.LoadFromQtImage( qt_image )
             
-            payload_text = HydrusCompression.DecompressBytesToString( payload_bytes )
+            payload_text = HydrusCompression.decompress_bytes_to_string( payload_bytes )
             
             return [ ( 'clipboard image data', payload_text ) ]
             
@@ -101,7 +101,7 @@ def IngestPaths( paths ):
                 
                 payload_bytes = ClientSerialisable.LoadFromPNG( path )
                 
-                payload_text = HydrusCompression.DecompressBytesToString( payload_bytes )
+                payload_text = HydrusCompression.decompress_bytes_to_string( payload_bytes )
                 
                 payloads.append( ( f'PNG "{path}"', payload_text ) )
                 

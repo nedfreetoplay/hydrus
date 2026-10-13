@@ -1141,7 +1141,7 @@ class HydrusBitmap( ClientCachesBase.CacheableObject ):
         
         if self._compressed:
             
-            self._data = HydrusCompression.CompressFastBytesToBytes( data )
+            self._data = HydrusCompression.compress_fast_bytes_to_bytes( data )
             
         else:
             
@@ -1156,7 +1156,7 @@ class HydrusBitmap( ClientCachesBase.CacheableObject ):
         
         if self._compressed:
             
-            return HydrusCompression.DecompressFastBytesToBytes( self._data )
+            return HydrusCompression.decompress_fast_bytes_to_bytes( self._data )
             
         else:
             
