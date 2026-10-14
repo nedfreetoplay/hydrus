@@ -1,7 +1,7 @@
 import datetime
 import sys
 
-def nowutc():
+def now_utc():
     
     if sys.version_info < ( 3, 11 ):
         
@@ -11,10 +11,8 @@ def nowutc():
     else:
         
         return datetime.datetime.now( datetime.UTC )
-        
-    
 
-def fromtimestamputc( timestamp ):
+def from_timestamp_utc( timestamp ):
     
     if sys.version_info < ( 3, 11 ):
         
@@ -24,5 +22,3 @@ def fromtimestamputc( timestamp ):
     else:
         
         return datetime.datetime.fromtimestamp( timestamp, datetime.UTC )
-        
-    
