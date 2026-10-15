@@ -13,7 +13,7 @@ class ClientDBFilesMetadataBasic( ClientDBModule.ClientDBModule ):
         super().__init__( 'client files simple metadata', cursor )
         
     
-    def _GetInitialIndexGenerationDict( self ) -> dict:
+    def _get_initial_index_generation_dict( self ) -> dict:
         
         index_generation_dict = {}
         
@@ -59,7 +59,7 @@ class ClientDBFilesMetadataBasic( ClientDBModule.ClientDBModule ):
             
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict( self ) -> dict:
         
         # yo, do you want to collapse these boolean 'has_x' tables into one guy with a status_type column and a ( status_type | hash ) index?
         # in my experience this sort of thing is not as KISS as one dreams and the index column of '80,000 instances each of only five distinct values' tends to perform and store like garbage
@@ -233,7 +233,7 @@ class ClientDBFilesMetadataBasic( ClientDBModule.ClientDBModule ):
         return result
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         if content_type == HC.CONTENT_TYPE_HASH:
             

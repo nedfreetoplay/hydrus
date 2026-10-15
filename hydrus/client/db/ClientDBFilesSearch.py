@@ -1048,7 +1048,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
         return nonzero_tag_hash_ids
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         tables_and_columns = []
         
@@ -3069,7 +3069,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         return query_hash_ids
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         tables_and_columns = []
         

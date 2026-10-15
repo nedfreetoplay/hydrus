@@ -123,7 +123,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         return granularity
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict( self ) -> dict:
         
         return {
             'main.current_client_files_locations' : ( 'CREATE TABLE IF NOT EXISTS {} ( location_id INTEGER PRIMARY KEY, location TEXT UNIQUE );', 660 ),
@@ -267,7 +267,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         return ( media_base_locations, thumbnail_override_base_location )
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         tables_and_columns = []
         
