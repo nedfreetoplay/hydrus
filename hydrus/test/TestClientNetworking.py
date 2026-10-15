@@ -1149,7 +1149,7 @@ class TestNetworkingEngine( unittest.TestCase ):
         self.assertFalse( engine.IsRunning() )
         self.assertFalse( engine.IsShutdown() )
         
-        mock_controller.CallToThread( engine.MainLoop )
+        mock_controller.call_to_thread( engine.MainLoop )
         
         time.sleep( 0.1 )
         
@@ -1170,7 +1170,7 @@ class TestNetworkingEngine( unittest.TestCase ):
         self.assertFalse( engine.IsRunning() )
         self.assertFalse( engine.IsShutdown() )
         
-        mock_controller.CallToThread( engine.MainLoop )
+        mock_controller.call_to_thread( engine.MainLoop )
         
         time.sleep( 0.1 )
         
@@ -1198,7 +1198,7 @@ class TestNetworkingEngine( unittest.TestCase ):
         self.assertFalse( engine.IsRunning() )
         self.assertFalse( engine.IsShutdown() )
         
-        mock_controller.CallToThread( engine.MainLoop )
+        mock_controller.call_to_thread( engine.MainLoop )
         
         #
         

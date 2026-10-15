@@ -555,7 +555,7 @@ class ThreadWorkerPool( object ):
                     
                 
             
-            call_to_thread = THREADCallToThread( self._controller, 'CallToThreadLongRunning' )
+            call_to_thread = THREADCallToThread( self._controller, 'call_to_thread_long_running' )
             
             self._long_running_call_to_threads.append( call_to_thread )
             

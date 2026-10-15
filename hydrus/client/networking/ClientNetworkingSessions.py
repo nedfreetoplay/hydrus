@@ -157,7 +157,7 @@ class NetworkSessionManagerSessionContainer( HydrusSerialisable.SerialisableBase
         
         if curl_cffi_definition is not None and not ClientNetworkingCurlCFFI.CURL_CFFI_OK:
             
-            if CG.client_controller.IsBooted():
+            if CG.client_controller.is_booted():
                 
                 HydrusData.ShowText( 'You are set up to use the curl_cffi test, but it is not available! Pausing all network traffic and resetting the setting! Fix the situation and restart the client.' )
                 

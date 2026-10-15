@@ -309,7 +309,7 @@ class DB( HydrusDB.HydrusDB ):
     
     def _Backup( self, path ):
         
-        self._CloseDBConnection()
+        self._close_db_connection()
         
         job_status = ClientThreading.JobStatus( cancellable = True )
         
@@ -338,7 +338,7 @@ class DB( HydrusDB.HydrusDB ):
                 HydrusPaths.MirrorFile( source, dest )
                 
             
-            additional_filenames = self._GetPossibleAdditionalDBFilenames()
+            additional_filenames = self._get_possible_additional_db_filenames()
             
             for additional_filename in additional_filenames:
                 
@@ -370,7 +370,7 @@ class DB( HydrusDB.HydrusDB ):
             
         finally:
             
-            self._InitDBConnection()
+            self._init_db_connection()
             
             job_status.SetStatusText( 'backup complete!' )
             
@@ -865,7 +865,7 @@ class DB( HydrusDB.HydrusDB ):
         
         BLOCK_SIZE = 10000
         
-        for ( group_of_tag_ids, num_done, num_to_do ) in HydrusDB.ReadLargeIdQueryInSeparateChunks( self._c, full_query, BLOCK_SIZE ):
+        for ( group_of_tag_ids, num_done, num_to_do ) in HydrusDB.read_large_id_query_in_separate_chunks( self._c, full_query, BLOCK_SIZE ):
             
             self.modules_tag_search.AddTags( file_service_id, tag_service_id, group_of_tag_ids )
             
@@ -927,13 +927,13 @@ class DB( HydrusDB.HydrusDB ):
             
         
     
-    def _CleanAfterJobWork( self ):
+    def _clean_after_job_work( self ):
         
         self._after_job_content_update_packages.clear()
         self._regen_tags_managers_hash_ids.clear()
         self._regen_tags_managers_tag_ids.clear()
         
-        HydrusDB.HydrusDB._CleanAfterJobWork( self )
+        HydrusDB.HydrusDB._clean_after_job_work( self )
         
     
     def _ClearOrphanFileRecords( self ):
@@ -1163,7 +1163,7 @@ class DB( HydrusDB.HydrusDB ):
             
         
     
-    def _CreateDB( self ):
+    def _create_db( self ):
         
         # main
         
@@ -1523,7 +1523,7 @@ class DB( HydrusDB.HydrusDB ):
         self._cursor_transaction_wrapper.pub_after_job( 'notify_new_pending' )
         
     
-    def _DisplayCatastrophicError( self, text ):
+    def _display_catastrophic_error( self, text ):
         
         message = 'The db encountered a serious error! This is going to be written to the log as well, but here it is for a screenshot:'
         message += '\n' * 2
@@ -1534,7 +1534,7 @@ class DB( HydrusDB.HydrusDB ):
         self._controller.blocking_safe_show_critical_message( 'hydrus db failed', message )
         
     
-    def _DoAfterJobWork( self ):
+    def _do_after_job_work( self ):
         
         for content_update_package in self._after_job_content_update_packages:
             
@@ -1562,7 +1562,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             
         
-        HydrusDB.HydrusDB._DoAfterJobWork( self )
+        HydrusDB.HydrusDB._do_after_job_work( self )
         
     
     def _FixLogicallyInconsistentMappings( self, tag_service_key = None ):
@@ -2963,9 +2963,9 @@ class DB( HydrusDB.HydrusDB ):
         return None
         
     
-    def _GetPossibleAdditionalDBFilenames( self ):
+    def _get_possible_additional_db_filenames( self ):
         
-        paths = HydrusDB.HydrusDB._GetPossibleAdditionalDBFilenames( self )
+        paths = HydrusDB.HydrusDB._get_possible_additional_db_filenames( self )
         
         paths.append( 'mpv.conf' )
         
@@ -3882,9 +3882,9 @@ class DB( HydrusDB.HydrusDB ):
         self.modules_content_updates.AddFiles( self.modules_services.local_update_service_id, [ ( hash_id, now_ms ) ] )
         
     
-    def _InitCommandsToMethods( self ):
+    def _init_commands_to_methods( self ):
         
-        super()._InitCommandsToMethods()
+        super()._init_commands_to_methods()
         
         self._read_commands_to_methods.update(
             {
@@ -4094,7 +4094,7 @@ class DB( HydrusDB.HydrusDB ):
         )
         
     
-    def _InitExternalDatabases( self ):
+    def _init_external_databases( self ):
         
         self._db_filenames[ 'external_caches' ] = 'client.caches.db'
         self._db_filenames[ 'external_mappings' ] = 'client.mappings.db'
@@ -4137,7 +4137,7 @@ class DB( HydrusDB.HydrusDB ):
             
         
     
-    def _LoadModules( self ):
+    def _load_modules( self ):
         
         self.modules_db_maintenance = ClientDBMaintenance.ClientDBMaintenance( self._c, self._db_dir, self._db_filenames, self._cursor_transaction_wrapper, self._modules )
         
@@ -4566,7 +4566,7 @@ class DB( HydrusDB.HydrusDB ):
         return still_work_to_do
         
     
-    def _ManageDBError( self, job, e ):
+    def _manage_db_error( self, job, e ):
         
         if isinstance( e, MemoryError ):
             
@@ -6191,13 +6191,13 @@ class DB( HydrusDB.HydrusDB ):
             
         
     
-    def _RepairDB( self, version ):
+    def _repair_db( self, version ):
         
         # migrate most of this gubbins to the new modules system, and HydrusDB tbh!
         
         self._controller.frame_splash_status.SetText( 'checking database' )
         
-        HydrusDB.HydrusDB._RepairDB( self, version )
+        HydrusDB.HydrusDB._repair_db( self, version )
         
         # caches
         
@@ -6400,7 +6400,7 @@ class DB( HydrusDB.HydrusDB ):
         
         bad_tag_count = 0
         
-        for ( group_of_tag_ids, num_done, num_to_do ) in HydrusDB.ReadLargeIdQueryInSeparateChunks( self._c, select_statement, BLOCK_SIZE ):
+        for ( group_of_tag_ids, num_done, num_to_do ) in HydrusDB.read_large_id_query_in_separate_chunks( self._c, select_statement, BLOCK_SIZE ):
             
             message = 'Scanning tags: {} - Bad Found: {}'.format( HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do ), HydrusNumbers.ToHumanInt( bad_tag_count ) )
             
@@ -6558,7 +6558,7 @@ class DB( HydrusDB.HydrusDB ):
             
             select_statement = 'SELECT hash_id FROM {};'.format( current_files_table_name )
             
-            for ( group_of_hash_ids, num_done, num_to_do ) in HydrusDB.ReadLargeIdQueryInSeparateChunks( self._c, select_statement, BLOCK_SIZE ):
+            for ( group_of_hash_ids, num_done, num_to_do ) in HydrusDB.read_large_id_query_in_separate_chunks( self._c, select_statement, BLOCK_SIZE ):
                 
                 if job_status is not None:
                     
@@ -6697,7 +6697,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 table_name = ClientDBFilesStorage.GenerateFilesTableName( file_service_id, HC.CONTENT_STATUS_CURRENT )
                 
-                for ( group_of_ids, num_done, num_to_do ) in HydrusDB.ReadLargeIdQueryInSeparateChunks( self._c, 'SELECT hash_id FROM {};'.format( table_name ), 1024 ):
+                for ( group_of_ids, num_done, num_to_do ) in HydrusDB.read_large_id_query_in_separate_chunks( self._c, 'SELECT hash_id FROM {};'.format( table_name ), 1024 ):
                     
                     message = 'repopulating {} {}'.format( HydrusNumbers.ValueRangeToPrettyString( i + 1, len( file_service_ids ) ), HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do ) )
                     
@@ -6728,14 +6728,14 @@ class DB( HydrusDB.HydrusDB ):
             
         
     
-    def _ReportOverupdatedDB( self, version ):
+    def _report_overupdated_db( self, version ):
         
         message = 'This client\'s database is version {}, but the software is version {}! This situation only sometimes works, and when it does not, it can break things! If you are not sure what is going on, or if you accidentally installed an older version of the software to a newer database, force-kill this client in Task Manager right now. Otherwise, ok this dialog box to continue.'.format( HydrusNumbers.ToHumanInt( version ), HydrusNumbers.ToHumanInt( HC.SOFTWARE_VERSION ) )
         
         self._controller.blocking_safe_show_message( message )
         
     
-    def _ReportUnderupdatedDB( self, version ):
+    def _report_underupdated_db( self, version ):
         
         message = 'This client\'s database is version {}, but the software is significantly later, {}! Trying to update many versions in one go can be dangerous due to bitrot. I suggest you try at most to only do 10 versions at once. If you want to try a big jump anyway, you should make sure you have a backup beforehand so you can roll back to it in case the update makes your db unbootable. If you would rather try smaller updates, or you do not have a backup, force-kill this client in Task Manager right now. Otherwise, ok this dialog box to continue.'.format( HydrusNumbers.ToHumanInt( version ), HydrusNumbers.ToHumanInt( HC.SOFTWARE_VERSION ) )
         
@@ -7093,7 +7093,7 @@ class DB( HydrusDB.HydrusDB ):
         self._SaveOptions( self._controller.options )
         
     
-    def _UpdateDB( self, version ):
+    def _update_db( self, version ):
         
         self._controller.frame_splash_status.SetText( 'updating db to v' + str( version + 1 ) )
         
@@ -7686,7 +7686,7 @@ class DB( HydrusDB.HydrusDB ):
                 from hydrus.client.gui import ClientGUIDialogsQuick
                 from qtpy import QtWidgets as QW
                 
-                result = ClientGUIDialogsQuick.GetYesNo( CG.client_controller.GetMainTLW(), message, title = 'Re-do transparency check?', yes_label = 'yes, re-scan these files', no_label = 'no, do not do it' )
+                result = ClientGUIDialogsQuick.GetYesNo( CG.client_controller.get_main_tlw(), message, title = 'Re-do transparency check?', yes_label = 'yes, re-scan these files', no_label = 'no, do not do it' )
                 
                 return result == QW.QDialog.DialogCode.Accepted
                 
@@ -7709,7 +7709,7 @@ class DB( HydrusDB.HydrusDB ):
                             
                         else:
                             
-                            do_transparency_recheck = self._controller.CallBlockingToQtTLW( ask_what_to_do_transparency_recheck_644, len( hash_ids ) )
+                            do_transparency_recheck = self._controller.call_blocking_to_qt_tlw( ask_what_to_do_transparency_recheck_644, len( hash_ids ) )
                             
                         
                         if do_transparency_recheck:
@@ -8342,7 +8342,7 @@ class DB( HydrusDB.HydrusDB ):
                     from hydrus.client.gui import ClientGUIDialogsQuick
                     from qtpy import QtWidgets as QW
                     
-                    result = ClientGUIDialogsQuick.GetYesNo( CG.client_controller.GetMainTLW(), message, title = 'Check all images for new metadata?', yes_label = 'yes, re-scan the images', no_label = 'no, do not do it' )
+                    result = ClientGUIDialogsQuick.GetYesNo( CG.client_controller.get_main_tlw(), message, title = 'Check all images for new metadata?', yes_label = 'yes, re-scan the images', no_label = 'no, do not do it' )
                     
                     return result == QW.QDialog.DialogCode.Accepted
                     
@@ -8355,7 +8355,7 @@ class DB( HydrusDB.HydrusDB ):
                     
                 else:
                     
-                    do_it = self._controller.CallBlockingToQtTLW( ask_what_to_do_metadata_regen_682 )
+                    do_it = self._controller.call_blocking_to_qt_tlw( ask_what_to_do_metadata_regen_682 )
                     
                 
                 if do_it:
@@ -8798,7 +8798,7 @@ class DB( HydrusDB.HydrusDB ):
             
             try:
                 
-                HydrusDB.CheckCanVacuumIntoCursor( db_path, self._c )
+                HydrusDB.check_can_vacuum_into_cursor( db_path, self._c )
                 
             except Exception as e:
                 
@@ -8833,7 +8833,7 @@ class DB( HydrusDB.HydrusDB ):
         
         job_status.SetStatusTitle( 'database maintenance - vacuum' )
         
-        self._CloseDBConnection()
+        self._close_db_connection()
         
         successful_names = []
         
@@ -8857,7 +8857,7 @@ class DB( HydrusDB.HydrusDB ):
                     self._controller.frame_splash_status.SetText( 'vacuuming ' + name )
                     job_status.SetStatusText( 'vacuuming ' + name )
                     
-                    HydrusDB.VacuumDBInto( db_path )
+                    HydrusDB.vacuum_db_into( db_path )
                     
                     successful_names.append( name )
                     
@@ -8881,7 +8881,7 @@ class DB( HydrusDB.HydrusDB ):
             
         finally:
             
-            self._InitDBConnection()
+            self._init_db_connection()
             
             for name in successful_names:
                 
@@ -8943,7 +8943,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             
         
-        additional_filenames = self._GetPossibleAdditionalDBFilenames()
+        additional_filenames = self._get_possible_additional_db_filenames()
         
         for additional_filename in additional_filenames:
             

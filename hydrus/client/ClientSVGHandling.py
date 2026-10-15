@@ -66,7 +66,7 @@ def GenerateThumbnailNumPyFromSVGPath( path: str, target_resolution: tuple[int, 
             
         
     
-    return CG.client_controller.CallBlockingToQtTLW( qt_code )
+    return CG.client_controller.call_blocking_to_qt_tlw( qt_code )
     
 
 HydrusSVGHandling.GenerateThumbnailNumPyFromSVGPath = GenerateThumbnailNumPyFromSVGPath
@@ -91,7 +91,7 @@ def GetSVGResolution( path: str ):
             
         
     
-    return CG.client_controller.CallBlockingToQtTLW( qt_code )
+    return CG.client_controller.call_blocking_to_qt_tlw( qt_code )
     
 
 HydrusSVGHandling.GetSVGResolution = GetSVGResolution

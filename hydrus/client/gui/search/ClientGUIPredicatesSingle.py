@@ -2934,11 +2934,11 @@ class PanelPredicateSystemSimilarToData( PanelPredicateSystemSingle ):
     
     def _Paste( self ):
         
-        if CG.client_controller.ClipboardHasImage():
+        if CG.client_controller.clipboard_has_image():
             
             try:
                 
-                qt_image = CG.client_controller.GetClipboardImage()
+                qt_image = CG.client_controller.get_clipboard_image()
                 
                 numpy_image = ClientGUIFunctionsImage.ConvertQtImageToNumPy( qt_image )
                 
@@ -2957,9 +2957,9 @@ class PanelPredicateSystemSimilarToData( PanelPredicateSystemSingle ):
             
         else:
             
-            if CG.client_controller.ClipboardHasLocalPaths():
+            if CG.client_controller.clipboard_has_local_paths():
                 
-                paths = CG.client_controller.GetClipboardLocalPaths()
+                paths = CG.client_controller.get_clipboard_local_paths()
                 
                 if len( paths ) == 0:
                     
@@ -2974,7 +2974,7 @@ class PanelPredicateSystemSimilarToData( PanelPredicateSystemSingle ):
                 
                 try:
                     
-                    raw_text = CG.client_controller.GetClipboardText()
+                    raw_text = CG.client_controller.get_clipboard_text()
                     
                 except HydrusExceptions.DataMissing as e:
                     

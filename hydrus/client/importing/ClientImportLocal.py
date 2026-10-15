@@ -185,7 +185,7 @@ class HDDImport( HydrusSerialisable.SerialisableBase ):
             
             file_import_options_legacy = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_options )
             
-            if CG.client_controller.IsBooted():
+            if CG.client_controller.is_booted():
                 
                 optional_parent_container = CG.client_controller.import_options_manager.GenerateFullImportOptionsContainer( ImportOptionsContainer.ImportOptionsContainer(), IOC.IMPORT_OPTIONS_CALLER_TYPE_LOCAL_IMPORT )
                 
@@ -491,7 +491,7 @@ class HDDImport( HydrusSerialisable.SerialisableBase ):
                 
                 self._WorkOnFiles()
                 
-                CG.client_controller.WaitUntilViewFree()
+                CG.client_controller.wait_until_view_free()
                 
                 self._SerialisableChangeMade()
                 
@@ -1202,7 +1202,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             file_import_options_legacy = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_file_import_options )
             tag_import_options_legacy = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tag_import_options )
             
-            if CG.client_controller.IsBooted():
+            if CG.client_controller.is_booted():
                 
                 optional_parent_container = CG.client_controller.import_options_manager.GenerateFullImportOptionsContainer( ImportOptionsContainer.ImportOptionsContainer(), IOC.IMPORT_OPTIONS_CALLER_TYPE_LOCAL_IMPORT_FOLDER )
                 
@@ -1581,7 +1581,7 @@ class ImportFoldersManager( ClientDaemons.ManagerWithMainLoop ):
         
         self._CheckShutdown()
         
-        self._controller.WaitUntilViewFree()
+        self._controller.wait_until_view_free()
         
         try:
             

@@ -103,7 +103,7 @@ class SpecificImportOptionsContainerButton( ClientGUICommon.ButtonWithMenuArrow 
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             

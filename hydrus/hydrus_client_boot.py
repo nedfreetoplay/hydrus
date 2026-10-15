@@ -230,25 +230,19 @@ except Exception as e:
         
         from hydrus.client.gui import ClientGUIDialogsMessage
         
-        ClientGUIDialogsMessage.ShowCritical( None, title, str( e ) )
-        ClientGUIDialogsMessage.ShowCritical( None, title, 'Here is the full error:\n\n' + traceback.format_exc() )
+        ClientGUIDialogsMessage.ShowCritical(None, title, str(e))
+        ClientGUIDialogsMessage.ShowCritical(None, title, 'Here is the full error:\n\n' + traceback.format_exc())
         
-    except Exception as e:
-        
+    except Exception:
         message = 'Could not start up Qt to show the error visually!'
         
         try:
+            HydrusData.safe_print(message)
             
-            HydrusData.safe_print( message )
-            
-        except Exception as e:
-            
+        except Exception:
             print( message )
-            
-        
     
-    sys.exit( 1 )
-    
+    sys.exit(1)
 
 def boot():
     
@@ -264,15 +258,15 @@ def boot():
             
             controller = ClientController.Controller( db_dir, logger )
             
-            controller.Run()
+            controller.run()
             
-        except Exception as e:
+        except Exception:
             
-            HydrusData.safe_print( 'hydrus client failed' )
+            HydrusData.safe_print('hydrus client failed')
             
             import traceback
             
-            HydrusData.safe_print( traceback.format_exc() )
+            HydrusData.safe_print(traceback.format_exc())
             
         finally:
             

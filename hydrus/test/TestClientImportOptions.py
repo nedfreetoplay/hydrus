@@ -750,8 +750,8 @@ class TestPresentationImportOptions( unittest.TestCase ):
         
         # all good
         
-        TG.test_controller.ClearReads( 'inbox_hashes' )
-        TG.test_controller.ClearReads( 'file_query_ids' )
+        TG.test_controller.clear_reads( 'inbox_hashes' )
+        TG.test_controller.clear_reads( 'file_query_ids' )
         
         presentation_import_options = PresentationImportOptions.PresentationImportOptions()
         
@@ -774,12 +774,12 @@ class TestPresentationImportOptions( unittest.TestCase ):
             already_in_and_archived_hash
         ]
         
-        TG.test_controller.SetRead( 'inbox_hashes', 'not used' )
-        TG.test_controller.SetRead( 'filter_hashes', expected_result )
+        TG.test_controller.set_read( 'inbox_hashes', 'not used' )
+        TG.test_controller.set_read( 'filter_hashes', expected_result )
         
         result = presentation_import_options.GetPresentedHashes( hashes_and_statuses )
         
-        [ ( args, kwargs ) ] = TG.test_controller.GetRead( 'filter_hashes' )
+        [ ( args, kwargs ) ] = TG.test_controller.get_read( 'filter_hashes' )
         
         self.assertEqual( args, ( ClientLocation.LocationContext( current_service_keys = ( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, ) ), pre_filter_expected_result ) )
         
@@ -787,8 +787,8 @@ class TestPresentationImportOptions( unittest.TestCase ):
         
         # all good and trash too
         
-        TG.test_controller.ClearReads( 'inbox_hashes' )
-        TG.test_controller.ClearReads( 'file_query_ids' )
+        TG.test_controller.clear_reads( 'inbox_hashes' )
+        TG.test_controller.clear_reads( 'file_query_ids' )
         
         presentation_import_options = PresentationImportOptions.PresentationImportOptions()
         
@@ -812,12 +812,12 @@ class TestPresentationImportOptions( unittest.TestCase ):
             new_and_inboxed_but_trashed_hash
         ]
         
-        TG.test_controller.SetRead( 'inbox_hashes', 'not used' )
-        TG.test_controller.SetRead( 'filter_hashes', expected_result )
+        TG.test_controller.set_read( 'inbox_hashes', 'not used' )
+        TG.test_controller.set_read( 'filter_hashes', expected_result )
         
         result = presentation_import_options.GetPresentedHashes( hashes_and_statuses )
         
-        [ ( args, kwargs ) ] = TG.test_controller.GetRead( 'filter_hashes' )
+        [ ( args, kwargs ) ] = TG.test_controller.get_read( 'filter_hashes' )
         
         self.assertEqual( args, ( ClientLocation.LocationContext( current_service_keys = ( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ) ), pre_filter_expected_result ) )
         
@@ -825,8 +825,8 @@ class TestPresentationImportOptions( unittest.TestCase ):
         
         # silent
         
-        TG.test_controller.ClearReads( 'inbox_hashes' )
-        TG.test_controller.ClearReads( 'file_query_ids' )
+        TG.test_controller.clear_reads( 'inbox_hashes' )
+        TG.test_controller.clear_reads( 'file_query_ids' )
         
         presentation_import_options = PresentationImportOptions.PresentationImportOptions()
         
@@ -836,8 +836,8 @@ class TestPresentationImportOptions( unittest.TestCase ):
         
         expected_result = []
         
-        TG.test_controller.SetRead( 'inbox_hashes', 'not used' )
-        TG.test_controller.SetRead( 'filter_hashes', 'not used' )
+        TG.test_controller.set_read( 'inbox_hashes', 'not used' )
+        TG.test_controller.set_read( 'filter_hashes', 'not used' )
         
         result = presentation_import_options.GetPresentedHashes( hashes_and_statuses )
         
@@ -845,8 +845,8 @@ class TestPresentationImportOptions( unittest.TestCase ):
         
         # new files only
         
-        TG.test_controller.ClearReads( 'inbox_hashes' )
-        TG.test_controller.ClearReads( 'file_query_ids' )
+        TG.test_controller.clear_reads( 'inbox_hashes' )
+        TG.test_controller.clear_reads( 'file_query_ids' )
         
         presentation_import_options = PresentationImportOptions.PresentationImportOptions()
         
@@ -865,12 +865,12 @@ class TestPresentationImportOptions( unittest.TestCase ):
             new_and_archived_hash
         ]
         
-        TG.test_controller.SetRead( 'inbox_hashes', 'not used' )
-        TG.test_controller.SetRead( 'filter_hashes', expected_result )
+        TG.test_controller.set_read( 'inbox_hashes', 'not used' )
+        TG.test_controller.set_read( 'filter_hashes', expected_result )
         
         result = presentation_import_options.GetPresentedHashes( hashes_and_statuses )
         
-        [ ( args, kwargs ) ] = TG.test_controller.GetRead( 'filter_hashes' )
+        [ ( args, kwargs ) ] = TG.test_controller.get_read( 'filter_hashes' )
         
         self.assertEqual( args, ( ClientLocation.LocationContext( current_service_keys = ( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, ) ), pre_filter_expected_result ) )
         
@@ -878,8 +878,8 @@ class TestPresentationImportOptions( unittest.TestCase ):
         
         # inbox only
         
-        TG.test_controller.ClearReads( 'inbox_hashes' )
-        TG.test_controller.ClearReads( 'file_query_ids' )
+        TG.test_controller.clear_reads( 'inbox_hashes' )
+        TG.test_controller.clear_reads( 'file_query_ids' )
         
         presentation_import_options = PresentationImportOptions.PresentationImportOptions()
         
@@ -912,16 +912,16 @@ class TestPresentationImportOptions( unittest.TestCase ):
             already_in_and_inboxed_hash
         ]
         
-        TG.test_controller.SetRead( 'inbox_hashes', inbox_filter_answer )
-        TG.test_controller.SetRead( 'filter_hashes', expected_result )
+        TG.test_controller.set_read( 'inbox_hashes', inbox_filter_answer )
+        TG.test_controller.set_read( 'filter_hashes', expected_result )
         
         result = presentation_import_options.GetPresentedHashes( hashes_and_statuses )
         
-        [ ( args, kwargs ) ] = TG.test_controller.GetRead( 'inbox_hashes' )
+        [ ( args, kwargs ) ] = TG.test_controller.get_read( 'inbox_hashes' )
         
         self.assertEqual( args, ( pre_inbox_filter_expected_result, ) )
         
-        [ ( args, kwargs ) ] = TG.test_controller.GetRead( 'filter_hashes' )
+        [ ( args, kwargs ) ] = TG.test_controller.get_read( 'filter_hashes' )
         
         self.assertEqual( args, ( ClientLocation.LocationContext( current_service_keys = ( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, ) ), pre_filter_expected_result ) )
         
@@ -929,8 +929,8 @@ class TestPresentationImportOptions( unittest.TestCase ):
         
         # new only
         
-        TG.test_controller.ClearReads( 'inbox_hashes' )
-        TG.test_controller.ClearReads( 'file_query_ids' )
+        TG.test_controller.clear_reads( 'inbox_hashes' )
+        TG.test_controller.clear_reads( 'file_query_ids' )
         
         presentation_import_options = PresentationImportOptions.PresentationImportOptions()
         
@@ -949,12 +949,12 @@ class TestPresentationImportOptions( unittest.TestCase ):
             new_and_archived_hash
         ]
         
-        TG.test_controller.SetRead( 'inbox_hashes', 'not used' )
-        TG.test_controller.SetRead( 'filter_hashes', expected_result )
+        TG.test_controller.set_read( 'inbox_hashes', 'not used' )
+        TG.test_controller.set_read( 'filter_hashes', expected_result )
         
         result = presentation_import_options.GetPresentedHashes( hashes_and_statuses )
         
-        [ ( args, kwargs ) ] = TG.test_controller.GetRead( 'filter_hashes' )
+        [ ( args, kwargs ) ] = TG.test_controller.get_read( 'filter_hashes' )
         
         self.assertEqual( args, ( ClientLocation.LocationContext( current_service_keys = ( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, ) ), pre_filter_expected_result ) )
         
@@ -962,8 +962,8 @@ class TestPresentationImportOptions( unittest.TestCase ):
         
         # new and inbox only
         
-        TG.test_controller.ClearReads( 'inbox_hashes' )
-        TG.test_controller.ClearReads( 'file_query_ids' )
+        TG.test_controller.clear_reads( 'inbox_hashes' )
+        TG.test_controller.clear_reads( 'file_query_ids' )
         
         presentation_import_options = PresentationImportOptions.PresentationImportOptions()
         
@@ -991,16 +991,16 @@ class TestPresentationImportOptions( unittest.TestCase ):
             new_and_inboxed_hash
         ]
         
-        TG.test_controller.SetRead( 'inbox_hashes', inbox_filter_answer )
-        TG.test_controller.SetRead( 'filter_hashes', expected_result )
+        TG.test_controller.set_read( 'inbox_hashes', inbox_filter_answer )
+        TG.test_controller.set_read( 'filter_hashes', expected_result )
         
         result = presentation_import_options.GetPresentedHashes( hashes_and_statuses )
         
-        [ ( args, kwargs ) ] = TG.test_controller.GetRead( 'inbox_hashes' )
+        [ ( args, kwargs ) ] = TG.test_controller.get_read( 'inbox_hashes' )
         
         self.assertEqual( args, ( pre_inbox_filter_expected_result, ) )
         
-        [ ( args, kwargs ) ] = TG.test_controller.GetRead( 'filter_hashes' )
+        [ ( args, kwargs ) ] = TG.test_controller.get_read( 'filter_hashes' )
         
         self.assertEqual( args, ( ClientLocation.LocationContext( current_service_keys = ( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, ) ), pre_filter_expected_result ) )
         
@@ -1008,8 +1008,8 @@ class TestPresentationImportOptions( unittest.TestCase ):
         
         # new or inbox only
         
-        TG.test_controller.ClearReads( 'inbox_hashes' )
-        TG.test_controller.ClearReads( 'file_query_ids' )
+        TG.test_controller.clear_reads( 'inbox_hashes' )
+        TG.test_controller.clear_reads( 'file_query_ids' )
         
         presentation_import_options = PresentationImportOptions.PresentationImportOptions()
         
@@ -1039,16 +1039,16 @@ class TestPresentationImportOptions( unittest.TestCase ):
             already_in_and_inboxed_hash,
         ]
         
-        TG.test_controller.SetRead( 'inbox_hashes', inbox_filter_answer )
-        TG.test_controller.SetRead( 'filter_hashes', expected_result )
+        TG.test_controller.set_read( 'inbox_hashes', inbox_filter_answer )
+        TG.test_controller.set_read( 'filter_hashes', expected_result )
         
         result = presentation_import_options.GetPresentedHashes( hashes_and_statuses )
         
-        [ ( args, kwargs ) ] = TG.test_controller.GetRead( 'inbox_hashes' )
+        [ ( args, kwargs ) ] = TG.test_controller.get_read( 'inbox_hashes' )
         
         self.assertEqual( args, ( pre_inbox_filter_expected_result, ) )
         
-        [ ( args, kwargs ) ] = TG.test_controller.GetRead( 'filter_hashes' )
+        [ ( args, kwargs ) ] = TG.test_controller.get_read( 'filter_hashes' )
         
         self.assertEqual( args, ( ClientLocation.LocationContext( current_service_keys = ( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, ) ), pre_filter_expected_result ) )
         
@@ -1514,7 +1514,7 @@ class TestServiceTagImportOptions( unittest.TestCase ):
         
         #
         
-        TG.test_controller.SetRead( 'filter_existing_tags', existing_tags )
+        TG.test_controller.set_read( 'filter_existing_tags', existing_tags )
         
         service_tag_import_options = TagImportOptions.ServiceTagImportOptions( get_tags = True, only_add_existing_tags = True )
         
@@ -1529,7 +1529,7 @@ class TestServiceTagImportOptions( unittest.TestCase ):
         
         only_unnamespaced.SetRule( ':', HC.FILTER_BLACKLIST )
         
-        TG.test_controller.SetRead( 'filter_existing_tags', existing_tags )
+        TG.test_controller.set_read( 'filter_existing_tags', existing_tags )
         
         service_tag_import_options = TagImportOptions.ServiceTagImportOptions( get_tags = True, only_add_existing_tags = True, only_add_existing_tags_filter = only_unnamespaced )
         

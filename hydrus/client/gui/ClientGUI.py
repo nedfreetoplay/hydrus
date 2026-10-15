@@ -422,7 +422,7 @@ def THREADUploadPending( service_key ):
             
             CG.client_controller.pub( 'notify_new_pending' )
             
-            CG.client_controller.WaitUntilViewFree()
+            CG.client_controller.wait_until_view_free()
             
             total_time_this_loop_took = HydrusTime.GetNowPrecise() - time_started_this_loop
             
@@ -647,9 +647,9 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         self._RefreshStatusBar()
         
-        self._bandwidth_repeating_job = self._controller.CallRepeatingQtSafe( self, 1.0, 1.0, 'repeating bandwidth status update', self.REPEATINGBandwidth )
+        self._bandwidth_repeating_job = self._controller.call_repeating_qt_safe( self, 1.0, 1.0, 'repeating bandwidth status update', self.REPEATINGBandwidth )
         
-        self._page_update_repeating_job = self._controller.CallRepeatingQtSafe( self, 0.25, 0.25, 'repeating page update', self.REPEATINGPageUpdate )
+        self._page_update_repeating_job = self._controller.call_repeating_qt_safe( self, 0.25, 0.25, 'repeating page update', self.REPEATINGPageUpdate )
         
         self._clipboard_watcher_repeating_job = None
         
@@ -690,7 +690,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         self._notebook.freshSessionLoaded.connect( self.ReportFreshSessionLoaded )
         
-        self._controller.CallLaterQtSafe( self, 0.5, 'initialise session', self._InitialiseSession ) # do this in callafter as some pages want to talk to controller.gui, which doesn't exist yet!
+        self._controller.call_later_qt_safe( self, 0.5, 'initialise session', self._InitialiseSession ) # do this in callafter as some pages want to talk to controller.gui, which doesn't exist yet!
         
         ClientGUIFunctions.UpdateAppDisplayName()
         
@@ -854,7 +854,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             all_services.append( public_tag_repo )
             
-            self._controller.SetServices( all_services )
+            self._controller.Set_services( all_services )
             
             message = 'PTR setup done! Check _services->review_ to see it.'
             message += '\n' * 2
@@ -947,11 +947,11 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             session = self._FleshOutSessionWithCleanDataIfNeeded( self._notebook, CC.LAST_SESSION_SESSION_NAME, session )
             
-            self._controller.SaveGUISession( session )
+            self._controller.save_gui_session( session )
             
             session.SetName( CC.EXIT_SESSION_SESSION_NAME )
             
-            self._controller.SaveGUISession( session )
+            self._controller.save_gui_session( session )
             
             self._controller.write( 'backup', path )
             
@@ -1015,7 +1015,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             if self._clipboard_watcher_repeating_job is None:
                 
-                self._clipboard_watcher_repeating_job = self._controller.CallRepeatingQtSafe( self, 1.0, 1.0, 'repeating clipboard watcher', self.REPEATINGClipboardWatcher )
+                self._clipboard_watcher_repeating_job = self._controller.call_repeating_qt_safe( self, 1.0, 1.0, 'repeating clipboard watcher', self.REPEATINGClipboardWatcher )
                 
             
         else:
@@ -1295,7 +1295,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
                 job_status.FinishAndDismiss( seconds = 3 )
                 
             
-            CG.client_controller.CallAfterQtSafe( self, qt_code, network_job )
+            CG.client_controller.call_after_qt_safe( self, qt_code, network_job )
             
         
         try:
@@ -1903,7 +1903,7 @@ QMenuBar::item { padding: 2px 8px; margin: 0px; }'''
                 return
                 
             
-            CG.client_controller.CallAfterQtSafe( self, qt_present_results, job_status, num_missing_legacy, num_missing_import )
+            CG.client_controller.call_after_qt_safe( self, qt_present_results, job_status, num_missing_legacy, num_missing_import )
             
         
         def qt_present_results( job_status, num_missing_legacy, num_missing_import ):
@@ -3284,7 +3284,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         ClientGUIMenus.AppendSeparator( backup_submenu )
         
-        self._menubar_database_restore_backup = ClientGUIMenus.AppendMenuItem( backup_submenu, 'restore from a database backup' + HC.UNICODE_ELLIPSIS, 'Restore the database from an external location.', self._controller.RestoreDatabase )
+        self._menubar_database_restore_backup = ClientGUIMenus.AppendMenuItem( backup_submenu, 'restore from a database backup' + HC.UNICODE_ELLIPSIS, 'Restore the database from an external location.', self._controller.restore_database )
         
         message = 'Your database is stored across multiple locations. The in-client backup routine can only handle simple databases (in one location), so the menu commands to backup have been hidden. To back up, please use a third-party program that will work better than anything I can write.'
         message += '\n' * 2
@@ -3580,7 +3580,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         self._profile_mode_db_menu_item = ClientGUIMenus.AppendMenuCheckItem( profiling, 'profile mode (db)', 'Run detailed \'profiles\' on db jobs.', HydrusProfiling.IsProfileMode( 'db' ), self.FlipProfileMode, 'db' )
         self._profile_mode_threads_menu_item = ClientGUIMenus.AppendMenuCheckItem( profiling, 'profile mode (threads)', 'Run detailed \'profiles\' on background threaded tasks.', HydrusProfiling.IsProfileMode( 'threads' ), self.FlipProfileMode, 'threads' )
         self._profile_mode_ui_menu_item = ClientGUIMenus.AppendMenuCheckItem( profiling, 'profile mode (ui)', 'Run detailed \'profiles\' on some Qt jobs.', HydrusProfiling.IsProfileMode( 'ui' ), self.FlipProfileMode, 'ui' )
-        ClientGUIMenus.AppendMenuCheckItem( profiling, 'query planner mode', 'Run detailed \'query plans\'.', HydrusProfiling.query_planner_mode, CG.client_controller.FlipQueryPlannerMode )
+        ClientGUIMenus.AppendMenuCheckItem( profiling, 'query planner mode', 'Run detailed \'query plans\'.', HydrusProfiling.query_planner_mode, CG.client_controller.flip_query_planner_mode )
         
         ClientGUIMenus.AppendMenu( debug_menu, profiling, 'profiling' )
         
@@ -3708,8 +3708,8 @@ ATTACH "client.mappings.db" as external_mappings;'''
         ClientGUIMenus.AppendSeparator( tests )
         ClientGUIMenus.AppendMenuCheckItem( tests, 'fake petition mode', 'Fill the petition panels with fake local data for testing.', HG.fake_petition_mode, self._SwitchBoolean, 'fake_petition_mode' )
         ClientGUIMenus.AppendSeparator( tests )
-        ClientGUIMenus.AppendMenuItem( tests, 'do self-sigterm', 'Test a sigterm call for fast, non-ui-originating shutdown.', CG.client_controller.DoSelfSigterm )
-        ClientGUIMenus.AppendMenuItem( tests, 'do self-sigterm (fake)', 'Test a sigterm call for fast, non-ui-originating shutdown.', CG.client_controller.DoSelfSigtermFake )
+        ClientGUIMenus.AppendMenuItem( tests, 'do self-sigterm', 'Test a sigterm call for fast, non-ui-originating shutdown.', CG.client_controller.do_self_sigterm )
+        ClientGUIMenus.AppendMenuItem( tests, 'do self-sigterm (fake)', 'Test a sigterm call for fast, non-ui-originating shutdown.', CG.client_controller.do_self_sigterm_fake )
         ClientGUIMenus.AppendSeparator( tests )
         
         ClientGUIMenus.AppendSeparator( tests )
@@ -4123,7 +4123,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                     
                     self._first_session_loaded = True
                     
-                    self._controller.ReportFirstSessionInitialised()
+                    self._controller.report_first_session_initialised()
                     
                 else:
                     
@@ -4136,7 +4136,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
                 #self._controller.CallLaterQtSafe(self, 1.0, 'adjust size', self.adjustSize ) # some i3 thing--doesn't layout main gui on init for some reason
                 
-                self._controller.CallLaterQtSafe(self, last_session_save_period_minutes * 60, 'auto save session', self.AutoSaveLastSession )
+                self._controller.call_later_qt_safe(self, last_session_save_period_minutes * 60, 'auto save session', self.AutoSaveLastSession )
                 
                 self._BootOrStopClipboardWatcherIfNeeded()
                 
@@ -4144,7 +4144,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
             
         
-        self._controller.CallLaterQtSafe( self, 0.25, 'load initial session', do_it, default_gui_session, load_a_blank_page )
+        self._controller.call_later_qt_safe( self, 0.25, 'load initial session', do_it, default_gui_session, load_a_blank_page )
         
     
     def _LaunchWhatIsThisObject( self ):
@@ -4681,7 +4681,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         self.SetStatusBarDirty()
         self._controller.pub( 'refresh_page_name' )
         
-        CG.client_controller.ReinitGlobalSettings()
+        CG.client_controller.reinit_global_settings()
         
         self._menu_item_help_darkmode.setChecked( CG.client_controller.new_options.GetString( 'current_colourset' ) == 'darkmode' )
         self._menu_item_help_advanced_mode.setChecked( self._new_options.GetBoolean( 'advanced_mode' ) )
@@ -5757,9 +5757,9 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         def do_save():
             
-            CG.client_controller.SaveGUISession( session )
+            CG.client_controller.save_gui_session( session )
             
-            CG.client_controller.CallBlockingToQtFireAndForgetNoResponse( self, qt_load )
+            CG.client_controller.call_blocking_to_qt_fire_and_forget_no_response( self, qt_load )
             
         
         self._controller.call_to_thread( do_save )
@@ -6186,7 +6186,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
                 client_api_service._port = port
                 
-                CG.client_controller.RestartClientServerServices()
+                CG.client_controller.restart_client_server_services()
                 
                 time.sleep( 5 )
                 
@@ -6254,7 +6254,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
                 try:
                     
-                    page_key = CG.client_controller.CallBlockingToQtTLW( qt_session_gubbins )
+                    page_key = CG.client_controller.call_blocking_to_qt_tlw( qt_session_gubbins )
                     
                 except HydrusExceptions.ShutdownException:
                     
@@ -6286,7 +6286,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                     
                     client_api_service._port = None
                     
-                    CG.client_controller.RestartClientServerServices()
+                    CG.client_controller.restart_client_server_services()
                     
                 
                 job_status.FinishAndDismiss()
@@ -6304,7 +6304,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             t = 1.0
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', frame.deleteLater )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', frame.deleteLater )
             
         
         def qt_open_pages():
@@ -6315,39 +6315,39 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', self._notebook.NewPageQuery, default_location_context, page_name = 'test', on_deepest_notebook = True )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', self._notebook.NewPageQuery, default_location_context, page_name = 'test', on_deepest_notebook = True )
             
             t += 0.25
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_NEW_PAGE_OF_PAGES ) )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_NEW_PAGE_OF_PAGES ) )
             
             t += 0.25
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', page_of_pages.NewPageQuery, default_location_context, page_name ='test', on_deepest_notebook = False )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', page_of_pages.NewPageQuery, default_location_context, page_name ='test', on_deepest_notebook = False )
             
             t += 0.25
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_NEW_DUPLICATE_FILTER_PAGE ) )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_NEW_DUPLICATE_FILTER_PAGE ) )
             
             t += 0.25
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_NEW_GALLERY_DOWNLOADER_PAGE ) )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_NEW_GALLERY_DOWNLOADER_PAGE ) )
             
             t += 0.25
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_NEW_SIMPLE_DOWNLOADER_PAGE ) )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_NEW_SIMPLE_DOWNLOADER_PAGE ) )
             
             t += 0.25
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_NEW_URL_DOWNLOADER_PAGE ) )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_NEW_URL_DOWNLOADER_PAGE ) )
             
             t += 0.25
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_NEW_WATCHER_DOWNLOADER_PAGE ) )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_NEW_WATCHER_DOWNLOADER_PAGE ) )
             
             t += 0.25
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', self.ProposeSaveGUISession, CC.LAST_SESSION_SESSION_NAME  )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', self.ProposeSaveGUISession, CC.LAST_SESSION_SESSION_NAME  )
             
             return page_of_pages
             
@@ -6356,7 +6356,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             self._notebook.CloseCurrentPage()
             
-            CG.client_controller.CallLaterQtSafe( self, 0.5, 'test job', self._UnclosePage )
+            CG.client_controller.call_later_qt_safe( self, 0.5, 'test job', self._UnclosePage )
             
         
         def qt_close_pages( page_of_pages ):
@@ -6369,18 +6369,18 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             for i in indices:
                 
-                CG.client_controller.CallLaterQtSafe( self, t, 'test job', page_of_pages._ClosePage, i )
+                CG.client_controller.call_later_qt_safe( self, t, 'test job', page_of_pages._ClosePage, i )
                 
                 t += 0.25
                 
             
             t += 0.25
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', self._notebook.CloseCurrentPage )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', self._notebook.CloseCurrentPage )
             
             t += 0.25
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', self.DeleteAllClosedPages )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', self.DeleteAllClosedPages )
             
         
         def qt_test_ac():
@@ -6393,17 +6393,17 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             t = 0.5
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', page.SetSearchFocus )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', page.SetSearchFocus )
             
             ac_widget = page.GetSidebar()._tag_autocomplete._text_ctrl
             
             t += 0.5
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_SET_MEDIA_FOCUS ) )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_SET_MEDIA_FOCUS ) )
             
             t += 0.5
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_SET_SEARCH_FOCUS ) )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_SET_SEARCH_FOCUS ) )
             
             t += 0.5
             
@@ -6411,36 +6411,36 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             for c in 'the colour of her hair':
                 
-                CG.client_controller.CallLaterQtSafe( self, t, 'test job', uias.Char, ac_widget, ord( c ), text = c  )
+                CG.client_controller.call_later_qt_safe( self, t, 'test job', uias.Char, ac_widget, ord( c ), text = c  )
                 
                 t += 0.01
                 
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', uias.Char, ac_widget, QC.Qt.Key.Key_Return )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', uias.Char, ac_widget, QC.Qt.Key.Key_Return )
             
             t += SYS_PRED_REFRESH
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', uias.Char, ac_widget, QC.Qt.Key.Key_Return )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', uias.Char, ac_widget, QC.Qt.Key.Key_Return )
             
             t += SYS_PRED_REFRESH
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', uias.Char, ac_widget, QC.Qt.Key.Key_Down )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', uias.Char, ac_widget, QC.Qt.Key.Key_Down )
             
             t += 0.05
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', uias.Char, ac_widget, QC.Qt.Key.Key_Return )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', uias.Char, ac_widget, QC.Qt.Key.Key_Return )
             
             t += SYS_PRED_REFRESH
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', uias.Char, ac_widget, QC.Qt.Key.Key_Down )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', uias.Char, ac_widget, QC.Qt.Key.Key_Down )
             
             t += 0.05
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', uias.Char, ac_widget, QC.Qt.Key.Key_Return )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', uias.Char, ac_widget, QC.Qt.Key.Key_Return )
             
             t += SYS_PRED_REFRESH
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', uias.Char, ac_widget, QC.Qt.Key.Key_Return )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', uias.Char, ac_widget, QC.Qt.Key.Key_Return )
             
             for i in range( 20 ):
                 
@@ -6448,33 +6448,33 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
                 for j in range( i + 1 ):
                     
-                    CG.client_controller.CallLaterQtSafe( self, t, 'test job', uias.Char, ac_widget, QC.Qt.Key.Key_Down )
+                    CG.client_controller.call_later_qt_safe( self, t, 'test job', uias.Char, ac_widget, QC.Qt.Key.Key_Down )
                     
                     t += 0.1
                     
                 
-                CG.client_controller.CallLaterQtSafe( self, t, 'test job', uias.Char, ac_widget, QC.Qt.Key.Key_Return )
+                CG.client_controller.call_later_qt_safe( self, t, 'test job', uias.Char, ac_widget, QC.Qt.Key.Key_Return )
                 
                 t += SYS_PRED_REFRESH
                 
-                CG.client_controller.CallLaterQtSafe( self, t, 'test job', uias.Char, None, QC.Qt.Key.Key_Return )
+                CG.client_controller.call_later_qt_safe( self, t, 'test job', uias.Char, None, QC.Qt.Key.Key_Return )
                 
             
             t += 1.0
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', uias.Char, ac_widget, QC.Qt.Key.Key_Down )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', uias.Char, ac_widget, QC.Qt.Key.Key_Down )
             
             t += 0.05
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', uias.Char, ac_widget, QC.Qt.Key.Key_Return )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', uias.Char, ac_widget, QC.Qt.Key.Key_Return )
             
             t += 1.0
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', self._notebook.CloseCurrentPage )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', self._notebook.CloseCurrentPage )
             
             t += 0.1
             
-            CG.client_controller.CallLaterQtSafe( self, t, 'test job', HydrusData.ShowText, 'ui test done' )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', HydrusData.ShowText, 'ui test done' )
             
         
         def do_it():
@@ -6483,19 +6483,19 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
                 # pages
                 
-                CG.client_controller.CallBlockingToQt( self, qt_review_services )
+                CG.client_controller.call_blocking_to_qt( self, qt_review_services )
                 
                 time.sleep( 3 )
                 
-                page_of_pages = CG.client_controller.CallBlockingToQt( self, qt_open_pages )
+                page_of_pages = CG.client_controller.call_blocking_to_qt( self, qt_open_pages )
                 
                 time.sleep( 4 )
                 
-                CG.client_controller.CallBlockingToQt( self, qt_close_unclose_one_page )
+                CG.client_controller.call_blocking_to_qt( self, qt_close_unclose_one_page )
                 
                 time.sleep( 1.5 )
                 
-                CG.client_controller.CallBlockingToQt( self, qt_close_pages, page_of_pages )
+                CG.client_controller.call_blocking_to_qt( self, qt_close_pages, page_of_pages )
                 
                 time.sleep( 5 )
                 
@@ -6503,7 +6503,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
                 # a/c
                 
-                CG.client_controller.CallBlockingToQt( self, qt_test_ac )
+                CG.client_controller.call_blocking_to_qt( self, qt_test_ac )
                 
             except ( HydrusExceptions.QtDeadWindowException, HydrusExceptions.ShutdownException ):
                 
@@ -6533,7 +6533,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             all_services.append( admin_service )
             
-            self._controller.SetServices( all_services )
+            self._controller.Set_services( all_services )
             
             time.sleep( 1 )
             
@@ -6557,7 +6557,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             HydrusData.ShowText( 'Admin service initialised.' )
             
-            CG.client_controller.CallAfterQtSafe( self, ClientGUIFrames.ShowKeys, 'access', ( access_key, ) )
+            CG.client_controller.call_after_qt_safe( self, ClientGUIFrames.ShowKeys, 'access', ( access_key, ) )
             
             #
             
@@ -6591,7 +6591,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
                 self._controller.write_synchronous( 'update_server_services', admin_service_key, serverside_services, service_keys_to_access_keys, deletee_service_keys )
                 
-                self._controller.RefreshServices()
+                self._controller.refresh_services()
                 
             
             HydrusData.ShowText( 'Done! Check _services->review_ to see your new server and its services.' )
@@ -7321,7 +7321,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         ( time_closed, page ) = self._closed_pages.pop( closed_page_index )
         
-        self._controller.UnclosePageKeys( page.GetPageKeys() )
+        self._controller.unclose_page_keys( page.GetPageKeys() )
         
         self._controller.pub( 'unclose_this_page', page )
         
@@ -7628,7 +7628,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         if only_save_last_session_during_idle and not self._controller.currently_idle():
             
-            self._controller.CallLaterQtSafe( self, 60, 'auto session save wait loop', self.AutoSaveLastSession )
+            self._controller.call_later_qt_safe( self, 60, 'auto session save wait loop', self.AutoSaveLastSession )
             
         else:
             
@@ -7802,7 +7802,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                                 self._SystemTrayHide( happening_because_of_main_gui_minimise = True )
                                 
                             
-                            CG.client_controller.CallAfterQtSafe( self, do_it )
+                            CG.client_controller.call_after_qt_safe( self, do_it )
                             
                         else:
                             
@@ -8348,7 +8348,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         self._closed_pages.append( ( close_time, page ) )
         
-        self._controller.ClosePageKeys( page.GetPageKeys() )
+        self._controller.close_page_keys( page.GetPageKeys() )
         
         open_pages = self._notebook.GetPageKeys()
         self.page_nav_history.CleanPages( open_pages )
@@ -8713,7 +8713,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         self._FleshOutSessionWithCleanDataIfNeeded( notebook, name, session )
         
-        self._controller.call_to_thread( self._controller.SaveGUISession, session )
+        self._controller.call_to_thread( self._controller.save_gui_session, session )
         
     
     def RedownloadURLsForceFetch( self, urls ):
@@ -8797,7 +8797,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         if self._ui_update_repeating_job is None:
             
-            self._ui_update_repeating_job = self._controller.CallRepeatingQtSafe( self, 0.0, 0.1, 'repeating ui update', self.REPEATINGUIUpdate )
+            self._ui_update_repeating_job = self._controller.call_repeating_qt_safe( self, 0.0, 0.1, 'repeating ui update', self.REPEATINGUIUpdate )
             
         
     
@@ -8818,7 +8818,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
             qt_media_player.TryToUnload()
             
-            self._controller.CallLaterQtSafe( self, 2.0, 'purge QMediaPlayer', self._UnloadAndPurgeQtMediaPlayer, qt_media_player )
+            self._controller.call_later_qt_safe( self, 2.0, 'purge QMediaPlayer', self._UnloadAndPurgeQtMediaPlayer, qt_media_player )
             
         
     
@@ -8829,7 +8829,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             qt_media_player.setParent( self )
             
         
-        self._controller.CallLaterQtSafe( self, 0.5, 'start QMediaPlayer purge', self._UnloadAndPurgeQtMediaPlayer, qt_media_player )
+        self._controller.call_later_qt_safe( self, 0.5, 'start QMediaPlayer purge', self._UnloadAndPurgeQtMediaPlayer, qt_media_player )
         
     
     def REPEATINGBandwidth( self ):
@@ -8885,7 +8885,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         try:
             
-            text = CG.client_controller.GetClipboardText()
+            text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing:
             
@@ -9005,12 +9005,12 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
             self._first_session_loaded = True
             
-            self._controller.ReportFirstSessionInitialised()
+            self._controller.report_first_session_initialised()
             
         
         if gui_session.GetName() == CC.LAST_SESSION_SESSION_NAME:
             
-            self._controller.ReportLastSessionLoaded( gui_session )
+            self._controller.report_last_session_loaded( gui_session )
             
         
     
@@ -9152,11 +9152,11 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                 
                 session = self._FleshOutSessionWithCleanDataIfNeeded( self._notebook, CC.LAST_SESSION_SESSION_NAME, session )
                 
-                self._controller.SaveGUISession( session )
+                self._controller.save_gui_session( session )
                 
                 session.SetName( CC.EXIT_SESSION_SESSION_NAME )
                 
-                self._controller.SaveGUISession( session )
+                self._controller.save_gui_session( session )
                 
             
             #
@@ -9235,7 +9235,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         if not self._controller.doing_fast_exit():
             
-            ( space_needed, free_space ) = CG.client_controller.db.GetSafeTransactionDiskSpaceAndCurrentFreeSpace()
+            ( space_needed, free_space ) = CG.client_controller.db.get_safe_transaction_disk_space_and_current_free_space()
             
             if free_space is not None and free_space < space_needed:
                 
@@ -9330,7 +9330,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                         
                         time_to_stop = HydrusTime.GetNow() + ( idle_shutdown_max_minutes * 60 )
                         
-                        work_to_do = self._controller.GetIdleShutdownWorkDue( time_to_stop )
+                        work_to_do = self._controller.get_idle_shutdown_work_due( time_to_stop )
                         
                         if len( work_to_do ) > 0:
                             
@@ -9376,7 +9376,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                 
             
         
-        CG.client_controller.CallAfterQtSafe( self, self._controller.Exit )
+        CG.client_controller.call_after_qt_safe( self, self._controller.exit )
         
     
     def TryToOpenManageServicesForAutoAccountCreation( self, service_key: bytes ):

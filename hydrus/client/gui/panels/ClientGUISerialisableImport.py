@@ -36,11 +36,11 @@ from hydrus.client.parsing import ClientParsing
 
 def IngestClipboard():
     
-    if CG.client_controller.ClipboardHasImage():
+    if CG.client_controller.clipboard_has_image():
         
         try:
             
-            qt_image = CG.client_controller.GetClipboardImage()
+            qt_image = CG.client_controller.get_clipboard_image()
             
             payload_bytes = ClientSerialisable.LoadFromQtImage( qt_image )
             
@@ -55,11 +55,11 @@ def IngestClipboard():
             raise Exception( f'Problem pasting image! Full error written to log; {e}' )
             
         
-    elif CG.client_controller.ClipboardHasLocalPaths():
+    elif CG.client_controller.clipboard_has_local_paths():
         
         try:
             
-            paths = CG.client_controller.GetClipboardLocalPaths()
+            paths = CG.client_controller.get_clipboard_local_paths()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -74,7 +74,7 @@ def IngestClipboard():
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
             payload_text = raw_text
             

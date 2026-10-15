@@ -123,7 +123,7 @@ class DuplicateContentMergeOptions( HydrusSerialisable.SerialisableBase ):
     
     def _GetSerialisableInfo( self ):
         
-        if CG.client_controller.IsBooted():
+        if CG.client_controller.is_booted():
             
             services_manager = CG.client_controller.services_manager
             

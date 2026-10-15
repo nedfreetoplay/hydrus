@@ -17,7 +17,7 @@ def DoClick( click, panel, do_delayed_ok_afterwards = False ):
     
     if do_delayed_ok_afterwards:
         
-        TG.test_controller.CallLaterQtSafe( panel, 1, 'test click', PressKeyOnFocusedWindow, QC.Qt.Key.Key_Return )
+        TG.test_controller.call_later_qt_safe( panel, 1, 'test click', PressKeyOnFocusedWindow, QC.Qt.Key.Key_Return )
         
     
     QW.QApplication.processEvents()
@@ -200,6 +200,6 @@ class TestListBoxes( unittest.TestCase ):
                 
             
         
-        TG.test_controller.CallBlockingToQtTLW( qt_code )
+        TG.test_controller.call_blocking_to_qt_tlw( qt_code )
         
     

@@ -514,7 +514,7 @@ class EditImportFolderPanel( ClientGUIScrolledPanels.EditPanel ):
             ClientGUIDialogsMessage.ShowWarning( self, f'The path you have entered--"{path}"--does not exist! The dialog will not force you to correct it, but this import folder will do no work as long as the location is missing!' )
             
         
-        ( dirs_that_allow_internal_work, dirs_that_cannot_be_touched ) = CG.client_controller.GetImportSensitiveDirectories()
+        ( dirs_that_allow_internal_work, dirs_that_cannot_be_touched ) = CG.client_controller.get_import_sensitive_directories()
         
         sensitive_paths = list( dirs_that_allow_internal_work ) + list( dirs_that_cannot_be_touched )
         

@@ -82,7 +82,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _AbleToDoBackgroundMaintenance( self ):
         
-        CG.client_controller.WaitUntilViewFree()
+        CG.client_controller.wait_until_view_free()
         
         if CG.client_controller.currently_idle():
             
@@ -336,7 +336,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 for url in useful_urls:
                     
-                    CG.client_controller.CallBlockingToQtTLW( qt_add_url, url )
+                    CG.client_controller.call_blocking_to_qt_tlw( qt_add_url, url )
                     
                 
             

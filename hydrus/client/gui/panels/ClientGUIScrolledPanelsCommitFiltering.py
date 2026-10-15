@@ -201,7 +201,7 @@ class QuestionArchiveDeleteFinishFilteringPanel( ClientGUIScrolledPanels.Resizin
             
             if len( delayed_delete_buttons ) > 0:
                 
-                CG.client_controller.CallLaterQtSafe( self, 1.2, 'delayed button enable', do_it )
+                CG.client_controller.call_later_qt_safe( self, 1.2, 'delayed button enable', do_it )
                 
             
         

@@ -1227,12 +1227,12 @@ def GenerateTestNetworkJobPresentationContextFactory( window: QW.QWidget, networ
         
         def enter_call():
             
-            CG.client_controller.CallAfterQtSafe( window, qt_set_it, network_job )
+            CG.client_controller.call_after_qt_safe( window, qt_set_it, network_job )
             
         
         def exit_call():
             
-            CG.client_controller.CallAfterQtSafe( window, qt_set_it, None )
+            CG.client_controller.call_after_qt_safe( window, qt_set_it, None )
             
         
         return ClientImporting.NetworkJobPresentationContext( enter_call, exit_call )
@@ -1695,7 +1695,7 @@ class EditLoginScriptPanel( ClientGUIScrolledPanels.EditPanel ):
             self._test_listctrl.AddData( test_result )
             
         
-        qt_add_result_callable = lambda s: CG.client_controller.CallAfterQtSafe( self, qt_add_result, s )
+        qt_add_result_callable = lambda s: CG.client_controller.call_after_qt_safe( self, qt_add_result, s )
         
         def clean_up( final_result ):
             
@@ -1741,7 +1741,7 @@ class EditLoginScriptPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 network_engine.Shutdown()
                 
-                CG.client_controller.CallAfterQtSafe( self, clean_up, login_result )
+                CG.client_controller.call_after_qt_safe( self, clean_up, login_result )
                 
             
         

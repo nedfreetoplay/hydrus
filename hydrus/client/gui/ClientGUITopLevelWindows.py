@@ -148,7 +148,7 @@ def GetSafeSize( tlw: QW.QWidget, min_size: QC.QSize, gravity ) -> QC.QSize:
     
     if parent_widget is None:
         
-        main_gui = CG.client_controller.GetMainGUI()
+        main_gui = CG.client_controller.get_main_gui()
         
         if main_gui is not None and tlw != main_gui:
             
@@ -175,7 +175,7 @@ def GetSafeSize( tlw: QW.QWidget, min_size: QC.QSize, gravity ) -> QC.QSize:
         # so borrow main gui's
         if frame_padding.isEmpty():
             
-            main_gui = CG.client_controller.GetMainGUI()
+            main_gui = CG.client_controller.get_main_gui()
             
             if main_gui is not None and QP.isValid( main_gui ) and not main_gui.isFullScreen():
                 
@@ -374,7 +374,7 @@ def SetInitialTLWSizeAndPosition( tlw: QW.QWidget, frame_key ):
     
     if parent is None:
         
-        main_gui = CG.client_controller.GetMainGUI()
+        main_gui = CG.client_controller.get_main_gui()
         
         if main_gui is not None and tlw != main_gui:
             
@@ -499,7 +499,7 @@ def SetInitialTLWSizeAndPosition( tlw: QW.QWidget, frame_key ):
             
             if not isinstance( tlw, ClientGUI.FrameGUI ):
                 
-                CG.client_controller.CallLaterQtSafe( tlw, 0.1, 'macOS position fix', tlw.move, safe_position )
+                CG.client_controller.call_later_qt_safe( tlw, 0.1, 'macOS position fix', tlw.move, safe_position )
                 
             
         
@@ -837,7 +837,7 @@ class Frame( QW.QWidget ):
         
         window_flag = QC.Qt.WindowType.Window
         
-        if parent is not None and CG.client_controller.IsBooted() and CG.client_controller.new_options.GetBoolean( 'make_child_frames_qt_tool' ):
+        if parent is not None and CG.client_controller.is_booted() and CG.client_controller.new_options.GetBoolean( 'make_child_frames_qt_tool' ):
             
             window_flag = QC.Qt.WindowType.Tool
             
@@ -968,7 +968,7 @@ class FrameThatResizes( Frame ):
         
         # maximise sends a pre-maximise size event that poisons last_size if this is immediate
         # and generally a good idea to wait here to handle some init states
-        CG.client_controller.CallLaterQtSafe( self, 0.1, 'save frame size and position: {}'.format( self._frame_key ), SaveTLWSizeAndPosition, self, self._frame_key )
+        CG.client_controller.call_later_qt_safe( self, 0.1, 'save frame size and position: {}'.format( self._frame_key ), SaveTLWSizeAndPosition, self, self._frame_key )
         
     
     def _StartSaveTLWSizeAndPositionTimer( self ):
@@ -1031,7 +1031,7 @@ class MainFrameThatResizes( MainFrame ):
         
         # maximise sends a pre-maximise size event that poisons last_size if this is immediate
         # and generally a good idea to wait here to handle some init states
-        CG.client_controller.CallLaterQtSafe( self, 0.1, 'save frame size and position: {}'.format( self._frame_key ), SaveTLWSizeAndPosition, self, self._frame_key )
+        CG.client_controller.call_later_qt_safe( self, 0.1, 'save frame size and position: {}'.format( self._frame_key ), SaveTLWSizeAndPosition, self, self._frame_key )
         
     
     def _StartSaveTLWSizeAndPositionTimer( self ):

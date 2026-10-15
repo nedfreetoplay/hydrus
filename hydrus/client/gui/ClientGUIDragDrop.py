@@ -289,7 +289,7 @@ class FileDropTarget( QC.QObject ):
                 
                 if page_key is not None:
                     
-                    CG.client_controller.CallAfterQtSafe( self, self._media_callable, page_key, hashes )  # callafter so we can terminate dnd event now
+                    CG.client_controller.call_after_qt_safe( self, self._media_callable, page_key, hashes )  # callafter so we can terminate dnd event now
                     
                 
             
@@ -361,7 +361,7 @@ class FileDropTarget( QC.QObject ):
                 
                 if len( paths ) > 0:
                     
-                    CG.client_controller.CallAfterQtSafe( self, self._filenames_callable, paths ) # callafter to terminate dnd event now
+                    CG.client_controller.call_after_qt_safe( self, self._filenames_callable, paths ) # callafter to terminate dnd event now
                     
                 
             
@@ -382,7 +382,7 @@ class FileDropTarget( QC.QObject ):
                             continue
                             
                         
-                        CG.client_controller.CallAfterQtSafe( self, self._url_callable, url ) # callafter to terminate dnd event now
+                        CG.client_controller.call_after_qt_safe( self, self._url_callable, url ) # callafter to terminate dnd event now
                         
                     
                 

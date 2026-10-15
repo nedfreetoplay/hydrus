@@ -540,7 +540,7 @@ class TestClientDBTags( unittest.TestCase ):
         # class variable
         cls._db = ClientDB.DB( TG.test_controller, TestController.DB_DIR, 'client' )
         
-        TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
+        TG.test_controller.set_read( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
         
     
     @classmethod
@@ -564,7 +564,7 @@ class TestClientDBTags( unittest.TestCase ):
         
         del cls._db
         
-        TG.test_controller.ClearTestDB()
+        TG.test_controller.clear_test_db()
         
     
     @classmethod
@@ -790,7 +790,7 @@ class TestClientDBTags( unittest.TestCase ):
             
             for filename in filenames:
                 
-                TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
+                TG.test_controller.set_read( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
                 
                 path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', filename ) )
                 
@@ -1101,7 +1101,7 @@ class TestClientDBTags( unittest.TestCase ):
         
         # import a file
         
-        TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
+        TG.test_controller.set_read( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
         
         path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', 'muh_jpg.jpg' ) )
         
@@ -1201,7 +1201,7 @@ class TestClientDBTags( unittest.TestCase ):
         
         # import a file
         
-        TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
+        TG.test_controller.set_read( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
         
         path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', 'muh_jpg.jpg' ) )
         
@@ -1302,7 +1302,7 @@ class TestClientDBTags( unittest.TestCase ):
         
         # import a file
         
-        TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
+        TG.test_controller.set_read( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
         
         path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', 'muh_jpg.jpg' ) )
         
@@ -1405,7 +1405,7 @@ class TestClientDBTags( unittest.TestCase ):
         
         # import a file
         
-        TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
+        TG.test_controller.set_read( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
         
         path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', 'muh_jpg.jpg' ) )
         
@@ -1507,7 +1507,7 @@ class TestClientDBTags( unittest.TestCase ):
         
         # import a file
         
-        TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
+        TG.test_controller.set_read( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
         
         path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', 'muh_jpg.jpg' ) )
         
@@ -2635,7 +2635,7 @@ class TestClientDBTags( unittest.TestCase ):
                 
                 for filename in ( 'muh_jpg.jpg', 'muh_png.png', 'muh_apng.png' ):
                     
-                    TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
+                    TG.test_controller.set_read( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
                     
                     path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', filename ) )
                     

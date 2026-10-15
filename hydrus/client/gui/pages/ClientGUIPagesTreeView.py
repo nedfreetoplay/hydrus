@@ -407,7 +407,7 @@ class TabWidgetWithDnD( QW.QTabWidget ):
         
         self._my_current_drag_object.setDragCursor( cursor.pixmap(), QC.Qt.DropAction.MoveAction )
         
-        CG.client_controller.CallLaterQtSafe( self, 0.1, 'checking DnD is ok', self._CheckDnDIsOK, self._my_current_drag_object )
+        CG.client_controller.call_later_qt_safe( self, 0.1, 'checking DnD is ok', self._CheckDnDIsOK, self._my_current_drag_object )
         
         self._my_current_drag_object.exec_( QC.Qt.DropAction.MoveAction )
         
@@ -652,7 +652,7 @@ class TabWidgetWithDnD( QW.QTabWidget ):
                     page_key = source_notebook.GetPageKey()
                     
                 
-                CG.client_controller.CallAfterQtSafe( self, CG.client_controller.gui.ShowPage, page_key )
+                CG.client_controller.call_after_qt_safe( self, CG.client_controller.gui.ShowPage, page_key )
                 
             
         

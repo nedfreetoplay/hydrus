@@ -93,7 +93,7 @@ class TagSortPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         try:
             
-            text = CG.client_controller.GetClipboardText()
+            text = CG.client_controller.get_clipboard_text()
             
         except Exception as e:
             

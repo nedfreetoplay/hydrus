@@ -17,7 +17,7 @@ from hydrus.core.processes import HydrusProcess
 from hydrus.core.processes import HydrusSubprocess
 from hydrus.core.processes import HydrusThreading
 
-class HydrusController( object ):
+class HydrusController:
     
     def __init__( self, db_dir: str, logger: HydrusLogger.HydrusLogger ):
         
@@ -69,11 +69,11 @@ class HydrusController( object ):
         self.touch_time( 'boot' )
         self.touch_time( 'last_sleep_check' )
     
-    def _get_pubsub_valid_callable( self ):
+    def _get_pubsub_valid_callable(self):
         
         return lambda o: True
     
-    def _get_appropriate_job_scheduler( self, time_delta ):
+    def _get_appropriate_job_scheduler(self, time_delta):
         
         if time_delta <= 1.0:
             
@@ -83,37 +83,34 @@ class HydrusController( object ):
             
             return self._slow_job_scheduler
     
-    def _get_wake_delay_period_ms( self ):
+    def _get_wake_delay_period_ms(self):
         
         return 15 * 1000
     
-    def _init_db( self ):
+    def _init_db(self):
         
         raise NotImplementedError()
     
-    def _init_hydrus_temp_dir( self ):
+    def _init_hydrus_temp_dir(self):
         
         self._hydrus_temp_dir = HydrusTemp.InitialiseHydrusTempDir()
     
-    def _publish_shutdown_subtext( self, text ):
+    def _publish_shutdown_subtext(self, text):
         
         pass
     
-    def _read( self, action, *args, **kwargs ):
-        
-        result = self.db.Read( action, *args, **kwargs )
-        
-        return result
+    def _read(self, action, *args, **kwargs):
+        return self.db.read(action, *args, **kwargs)
     
-    def _report_shutdown_daemons_status( self ):
+    def _report_shutdown_daemons_status(self):
         
         pass
     
-    def _show_just_woke_to_user( self ) -> None:
+    def _show_just_woke_to_user(self) -> None:
         
-        HydrusData.safe_print( 'Just woke from sleep.' )
+        HydrusData.safe_print('Just woke from sleep.')
     
-    def _shutdown_daemons( self ):
+    def _shutdown_daemons(self):
         
         for job in self._daemon_jobs.values():
             
@@ -139,13 +136,13 @@ class HydrusController( object ):
         
         self._daemon_jobs = {}
     
-    def _write( self, action, synchronous, *args, **kwargs ):
+    def _write(self, action, synchronous, *args, **kwargs):
         
-        result = self.db.Write( action, synchronous, *args, **kwargs )
+        result = self.db.write( action, synchronous, *args, **kwargs )
         
         return result
     
-    def pub( self, topic, *args, **kwargs ) -> None:
+    def pub(self, topic, *args, **kwargs) -> None:
         
         if HG.model_shutdown:
             
@@ -155,15 +152,15 @@ class HydrusController( object ):
             
             self._pubsub.pub( topic, *args, **kwargs )
     
-    def pubimmediate( self, topic, *args, **kwargs ) -> None:
+    def pubimmediate(self, topic, *args, **kwargs) -> None:
         
         self._pubsub.pubimmediate( topic, *args, **kwargs )
     
-    def sub( self, object, method_name, topic ) -> None:
+    def sub(self, object, method_name, topic) -> None:
         
         self._pubsub.sub( object, method_name, topic )
     
-    def acquire_thread_slot( self, thread_type ) -> bool:
+    def acquire_thread_slot(self, thread_type) -> bool:
         
         with self._thread_slot_lock:
             
@@ -184,20 +181,20 @@ class HydrusController( object ):
                 
                 return False
     
-    def blocking_safe_show_critical_message( self, title: str, message: str ):
+    def blocking_safe_show_critical_message(self, title: str, message: str):
         
         HydrusData.debug_print( title )
         HydrusData.debug_print( message )
         
         input( 'Press Enter to continue.' )
     
-    def blocking_safe_show_message( self, message: str ):
+    def blocking_safe_show_message(self, message: str):
         
         HydrusData.debug_print( message )
         
         input( 'Press Enter to continue.' )
     
-    def thread_slots_are_available( self, thread_type ) -> bool:
+    def thread_slots_are_available(self, thread_type) -> bool:
         
         with self._thread_slot_lock:
             
@@ -210,7 +207,7 @@ class HydrusController( object ):
             
             return current_threads < max_threads
     
-    def call_later( self, initial_delay, func, *args, **kwargs ) -> HydrusThreading.SingleJob:
+    def call_later(self, initial_delay, func, *args, **kwargs) -> HydrusThreading.SingleJob:
         
         job_scheduler = self._get_appropriate_job_scheduler( initial_delay )
         
@@ -222,7 +219,7 @@ class HydrusController( object ):
         
         return job
     
-    def call_repeating( self, initial_delay, period, func, *args, **kwargs ) -> HydrusThreading.RepeatingJob:
+    def call_repeating(self, initial_delay, period, func, *args, **kwargs) -> HydrusThreading.RepeatingJob:
         
         job_scheduler = self._get_appropriate_job_scheduler( period )
         
@@ -258,55 +255,41 @@ class HydrusController( object ):
         call_to_thread.put( callable, *args, **kwargs )
     
     def call_to_thread_long_running( self, callable, *args, **kwargs ) -> None:
-        
         if HG.callto_report_mode:
             
             what_to_report = [ callable ]
             
-            if len( args ) > 0:
+            if len(args) > 0:
                 
                 what_to_report.append( args )
-                
             
-            if len( kwargs ) > 0:
-                
+            if len(kwargs) > 0:
                 what_to_report.append( kwargs )
-                
             
-            HydrusData.ShowText( tuple( what_to_report ) )
-            
+            HydrusData.ShowText(tuple(what_to_report))
         
         call_to_thread = self._thread_worker_pool.GetCallToThreadLongRunning()
         
-        call_to_thread.put( callable, *args, **kwargs )
+        call_to_thread.put(callable, *args, **kwargs)
     
     def clean_running_file( self ) -> None:
-        
         if self._i_own_running_file:
-            
             HydrusData.clean_running_file( self.db_dir, self._name )
     
     def clear_caches( self ) -> None:
-        
         pass
     
     def currently_idle( self ) -> bool:
-        
         return True
     
     def currently_pub_subbing( self ) -> bool:
-        
         return not self._pubsub.CurrentlyIdle()
     
     def db_currently_doing_job( self ) -> bool:
-        
         if self.db is None:
-            
             return False
-            
         else:
-            
-            return self.db.CurrentlyDoingJob()
+            return self.db.currently_doing_job()
     
     def debug_show_scheduled_jobs( self ):
         
@@ -347,7 +330,7 @@ class HydrusController( object ):
     
     def get_db_status( self ):
         
-        return self.db.GetStatus()
+        return self.db.get_status()
     
     def get_hydrus_temp_dir( self ):
         
@@ -440,7 +423,7 @@ class HydrusController( object ):
         
         self._init_db()
         
-        self.call_repeating( 5, 15, self.db.ScheduleCommitCheck )
+        self.call_repeating( 5, 15, self.db.schedule_commit_check )
         
         # reset after a long db update
         self.touch_time( 'last_sleep_check' )
@@ -467,14 +450,10 @@ class HydrusController( object ):
         self._daemon_jobs[ 'maintain_memory_slow' ] = job
     
     def is_first_start( self ):
-        
         if self.db is None:
-            
             return False
-            
         else:
-            
-            return self.db.IsFirstStart()
+            return self.db.is_first_start()
     
     def last_shutdown_was_bad( self ):
         
@@ -503,7 +482,6 @@ class HydrusController( object ):
         self._thread_worker_pool.MaintainCallToThreads()
     
     def read( self, action, *args, **kwargs ):
-        
         return self._read( action, *args, **kwargs )
     
     def record_running_start( self ):
@@ -596,18 +574,15 @@ class HydrusController( object ):
         
         if self.db is not None:
             
-            self.db.Shutdown()
+            self.db.shutdown()
             
             if not self._doing_fast_exit:
                 
-                while not self.db.LoopIsFinished():
+                while not self.db.loop_is_finished():
                     
                     self._publish_shutdown_subtext( 'waiting for db to finish up' + HC.UNICODE_ELLIPSIS )
                     
                     time.sleep( 0.1 )
-                    
-                
-            
         
         HydrusTemp.CleanUpOldTempPaths()
         

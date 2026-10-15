@@ -500,7 +500,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -904,7 +904,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
         
         self._redundant_st.setText( text )
         
-        CG.client_controller.CallLaterQtSafe( self._redundant_st, 2, 'clear redundant error', self._redundant_st.setVisible, False )
+        CG.client_controller.call_later_qt_safe( self._redundant_st, 2, 'clear redundant error', self._redundant_st.setVisible, False )
         
     
     def _SimpleAddBlacklistMultiple( self, tag_slices ):

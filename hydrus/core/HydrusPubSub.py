@@ -6,7 +6,7 @@ from hydrus.core import HydrusExceptions
 from hydrus.core import HydrusGlobals as HG
 from hydrus.core import HydrusProfiling
 
-class HydrusPubSub( object ):
+class HydrusPubSub:
     
     def __init__( self, valid_callable ):
         
@@ -25,7 +25,6 @@ class HydrusPubSub( object ):
         
         self._topics_to_objects = {}
         self._topics_to_method_names = {}
-        
     
     def _GetCallableTuples( self, topic ):
         
@@ -66,12 +65,10 @@ class HydrusPubSub( object ):
             
         
         return callable_tuples
-        
     
     def CurrentlyIdle( self ):
         
         return self._i_am_idle.is_set()
-        
     
     def Process( self ):
         
@@ -152,8 +149,6 @@ class HydrusPubSub( object ):
         finally:
             
             self._i_am_idle.set()
-            
-        
     
     def pub( self, topic, *args, **kwargs ):
         
@@ -173,7 +168,6 @@ class HydrusPubSub( object ):
         
         self._received_job_event.set()
         self._received_job_event.clear()
-        
     
     def pubimmediate( self, topic, *args, **kwargs ):
         
@@ -185,8 +179,6 @@ class HydrusPubSub( object ):
         for ( obj, callable ) in callable_tuples:
             
             callable( *args, **kwargs )
-            
-        
     
     def shutdown( self ):
         
@@ -194,7 +186,6 @@ class HydrusPubSub( object ):
         
         self._received_job_event.set()
         self._i_am_idle.set()
-        
     
     def sub( self, object, method_name, topic ):
         
@@ -205,24 +196,18 @@ class HydrusPubSub( object ):
             
             self._topics_to_objects[ topic ].add( object )
             self._topics_to_method_names[ topic ].add( method_name )
-            
-        
     
     def WaitOnPub( self ):
         
         self._received_job_event.wait()
-        
     
     def WaitUntilFree( self ):
         
         self._i_am_idle.wait()
-        
     
     def WorkToDo( self ):
         
         with self._lock:
             
             return len( self._pubsubs ) > 0
-            
-        
-    
+

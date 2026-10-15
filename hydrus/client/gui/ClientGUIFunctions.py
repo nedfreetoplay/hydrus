@@ -380,14 +380,14 @@ def NotebookScreenToHitTest( notebook, screen_position ):
 
 def SetFocusLater( win: QW.QWidget ):
     
-    CG.client_controller.CallAfterQtSafe( win, win.setFocus, QC.Qt.FocusReason.OtherFocusReason )
+    CG.client_controller.call_after_qt_safe( win, win.setFocus, QC.Qt.FocusReason.OtherFocusReason )
     
 
 def ShowMicroNotification( widget: QW.QWidget, text ):
     
     # we add a tiny delay here because many 'paste' events and such will trigger some ui updates and/or focus bouncing that will clear an instantaneous tooltip
     
-    CG.client_controller.CallLaterQtSafe(
+    CG.client_controller.call_later_qt_safe(
         widget,
         0.05,
         'tooltip micro-notification',

@@ -172,7 +172,7 @@ def log_handler( loglevel, component, message ):
     
     if log_message_is_about_no_audio_devices( component, message ):
         
-        CG.client_controller.CallAfterQtSafe( CG.client_controller.gui, EmergencyAudioNullGlobal )
+        CG.client_controller.call_after_qt_safe( CG.client_controller.gui, EmergencyAudioNullGlobal )
         
         return
         
@@ -190,7 +190,7 @@ def log_handler( loglevel, component, message ):
         
         try:
             
-            CG.client_controller.CallBlockingToQtTLW( EmergencyDumpOutGlobal, probably_crashy, f'{component}: {message}' )
+            CG.client_controller.call_blocking_to_qt_tlw( EmergencyDumpOutGlobal, probably_crashy, f'{component}: {message}' )
             
         except HydrusExceptions.ShutdownException:
             
@@ -915,7 +915,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
             event_type = event.event_id.value
             
-            CG.client_controller.CallAfterQtSafe( self, qt_code, event_type )
+            CG.client_controller.call_after_qt_safe( self, qt_code, event_type )
             
         
         self._player.register_event_callback( event_handler )
@@ -1703,11 +1703,11 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         self._mpv_mediator.SetAudioDeviceFromOptions()
         
-        mpv_config_path = CG.client_controller.GetMPVConfPath()
+        mpv_config_path = CG.client_controller.get_mpv_conf_path()
         
         if not os.path.exists( mpv_config_path ):
             
-            default_mpv_config_path = CG.client_controller.GetDefaultMPVConfPath()
+            default_mpv_config_path = CG.client_controller.get_default_mpv_conf_path()
             
             if not os.path.exists( default_mpv_config_path ):
                 

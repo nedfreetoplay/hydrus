@@ -64,7 +64,7 @@ class CollectComboCtrl( QW.QComboBox ):
         
         if media_collect.DoesACollect():
             
-            CG.client_controller.CallAfterQtSafe( self, self.SetCollectByValue, media_collect )
+            CG.client_controller.call_after_qt_safe( self, self.SetCollectByValue, media_collect )
             
         
     

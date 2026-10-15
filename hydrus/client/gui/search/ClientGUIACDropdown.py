@@ -176,7 +176,7 @@ def ReadFetch(
             
             AppendLoadingPredicate( matches, 'loading system predicates' )
             
-            CG.client_controller.CallAfterQtSafe( win, prefetch_callable, job_status, matches, parsed_autocomplete_text )
+            CG.client_controller.call_after_qt_safe( win, prefetch_callable, job_status, matches, parsed_autocomplete_text )
             
             cache_valid = isinstance( results_cache, ClientSearchAutocomplete.PredicateResultsCacheSystem )
             
@@ -215,7 +215,7 @@ def ReadFetch(
             
             try:
                 
-                media = CG.client_controller.CallBlockingToQt( win, qt_media_callable )
+                media = CG.client_controller.call_blocking_to_qt( win, qt_media_callable )
                 
             except ( HydrusExceptions.QtDeadWindowException, HydrusExceptions.ShutdownException ):
                 
@@ -285,7 +285,7 @@ def ReadFetch(
                     
                     AppendLoadingPredicate( exact_match_matches, 'loading full results' )
                     
-                    CG.client_controller.CallAfterQtSafe( win, prefetch_callable, job_status, exact_match_matches, parsed_autocomplete_text )
+                    CG.client_controller.call_after_qt_safe( win, prefetch_callable, job_status, exact_match_matches, parsed_autocomplete_text )
                     
                     #
                     
@@ -324,7 +324,7 @@ def ReadFetch(
                 
                 AppendLoadingPredicate( matches, 'calculating results' )
                 
-                CG.client_controller.CallAfterQtSafe( win, prefetch_callable, job_status, matches, parsed_autocomplete_text )
+                CG.client_controller.call_after_qt_safe( win, prefetch_callable, job_status, matches, parsed_autocomplete_text )
                 
                 # it is possible that media will change between calls to this, so don't cache it
                 
@@ -399,7 +399,7 @@ def ReadFetch(
                 
                 AppendLoadingPredicate( prefetch_matches, 'loading sibling data' )
                 
-                CG.client_controller.CallAfterQtSafe( win, prefetch_callable, job_status, prefetch_matches, parsed_autocomplete_text )
+                CG.client_controller.call_after_qt_safe( win, prefetch_callable, job_status, prefetch_matches, parsed_autocomplete_text )
                 
                 #
                 
@@ -447,7 +447,7 @@ def ReadFetch(
         return
         
     
-    CG.client_controller.CallAfterQtSafe( win, results_callable, job_status, parsed_autocomplete_text, results_cache, matches )
+    CG.client_controller.call_after_qt_safe( win, results_callable, job_status, parsed_autocomplete_text, results_cache, matches )
     
 
 def PutAtTopOfMatches( matches: collections.abc.MutableSequence[ ClientSearchPredicate.Predicate ], predicate: ClientSearchPredicate.Predicate, insert_if_does_not_exist: bool = True ):
@@ -575,7 +575,7 @@ def WriteFetch(
                 
                 AppendLoadingPredicate( exact_match_matches, 'loading full results' )
                 
-                CG.client_controller.CallAfterQtSafe( win, prefetch_callable, job_status, exact_match_matches, parsed_autocomplete_text )
+                CG.client_controller.call_after_qt_safe( win, prefetch_callable, job_status, exact_match_matches, parsed_autocomplete_text )
                 
                 if job_status.IsCancelled():
                     
@@ -615,7 +615,7 @@ def WriteFetch(
     
     InsertTagPredicates( matches, display_tag_service_key, parsed_autocomplete_text, allow_auto_wildcard_conversion )
     
-    CG.client_controller.CallAfterQtSafe( win, results_callable, job_status, parsed_autocomplete_text, results_cache, matches )
+    CG.client_controller.call_after_qt_safe( win, results_callable, job_status, parsed_autocomplete_text, results_cache, matches )
     
 
 class ListBoxTagsPredicatesAC( ClientGUIListBoxes.ListBoxTagsPredicates ):
@@ -970,12 +970,12 @@ class AutoCompleteDropdown( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         self._refresh_results_updater.Update()
         
-        CG.client_controller.CallLaterQtSafe( self, 0.05, 'hide/show dropdown', self._DropdownHideShow )
+        CG.client_controller.call_later_qt_safe( self, 0.05, 'hide/show dropdown', self._DropdownHideShow )
         
         # trying a second go to see if that improves some positioning
-        CG.client_controller.CallLaterQtSafe( self, 0.25, 'hide/show dropdown', self._DropdownHideShow )
+        CG.client_controller.call_later_qt_safe( self, 0.25, 'hide/show dropdown', self._DropdownHideShow )
         
-        CG.client_controller.CallLaterQtSafe( self, 0.05, 'do autocomplete background colour', self._UpdateBackgroundColour )
+        CG.client_controller.call_later_qt_safe( self, 0.05, 'do autocomplete background colour', self._UpdateBackgroundColour )
         
     
     def _BroadcastChoices( self, predicates, shift_down ):
@@ -2809,7 +2809,7 @@ class AutoCompleteDropdownTagsRead( AutocompleteDropdownTagsFileSearchContextORC
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -3559,7 +3559,7 @@ class AutoCompleteDropdownTagsWrite( AutoCompleteDropdownTags ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -3630,7 +3630,7 @@ class AutoCompleteDropdownTagsWrite( AutoCompleteDropdownTags ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             

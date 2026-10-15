@@ -741,7 +741,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
                 self._value = tuple( HydrusSerialisable.CreateFromSerialisableTuple( serialisable_or_predicates ) )
                 
-                if CG.client_controller.IsBooted():
+                if CG.client_controller.is_booted():
                     
                     try:
                         

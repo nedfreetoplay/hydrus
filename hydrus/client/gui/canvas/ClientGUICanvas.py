@@ -2379,12 +2379,12 @@ class CanvasWithHovers( Canvas ):
         
         if CG.client_controller.new_options.GetBoolean( 'always_start_media_viewers_always_on_top' ) and not self.IsAlwaysOnTopWhilePlaying():
             
-            CG.client_controller.CallLaterQtSafe( self, 0.1, 'setting media viewer window on top', self._FlipWindowAlwaysOnTop )
+            CG.client_controller.call_later_qt_safe( self, 0.1, 'setting media viewer window on top', self._FlipWindowAlwaysOnTop )
             
         
         if CG.client_controller.new_options.GetBoolean( 'always_start_media_viewers_frameless' ):
             
-            CG.client_controller.CallLaterQtSafe( self, 0.1, 'removing titlebar from media viewer', self._FlipShowHideWindowFrame )
+            CG.client_controller.call_later_qt_safe( self, 0.1, 'removing titlebar from media viewer', self._FlipShowHideWindowFrame )
             
         
         self._cursor_autohide_timer = QC.QTimer( self )
@@ -3677,7 +3677,7 @@ def CommitArchiveDelete( deletee_location_context: ClientLocation.LocationContex
             
             CG.client_controller.write_synchronous( 'content_updates', content_update_package )
             
-            CG.client_controller.WaitUntilViewFree()
+            CG.client_controller.wait_until_view_free()
             
         
         content_update_package = ClientContentUpdates.ContentUpdatePackage()
@@ -3693,7 +3693,7 @@ def CommitArchiveDelete( deletee_location_context: ClientLocation.LocationContex
         
         CG.client_controller.write_synchronous( 'content_updates', content_update_package )
         
-        CG.client_controller.WaitUntilViewFree()
+        CG.client_controller.wait_until_view_free()
         
     
     kept_hashes = [ m.GetHash() for m in kept ]
@@ -3712,7 +3712,7 @@ def CommitArchiveDelete( deletee_location_context: ClientLocation.LocationContex
         
         CG.client_controller.write_synchronous( 'content_updates', content_update_package )
         
-        CG.client_controller.WaitUntilViewFree()
+        CG.client_controller.wait_until_view_free()
         
     
     job_status.SetStatusText( 'Done!' )
@@ -3744,7 +3744,7 @@ class CanvasMediaListFilterArchiveDelete( CanvasMediaList ):
         
         if first_media is not None:
             
-            CG.client_controller.CallAfterQtSafe( self, self.SetMedia, first_media ) # don't set this until we have a size > (20, 20)!
+            CG.client_controller.call_after_qt_safe( self, self.SetMedia, first_media ) # don't set this until we have a size > (20, 20)!
             
         
     
@@ -4304,7 +4304,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
         
         if first_media is not None:
             
-            CG.client_controller.CallAfterQtSafe( self, self.SetMedia, first_media ) # don't set this until we have a size > (20, 20)!
+            CG.client_controller.call_after_qt_safe( self, self.SetMedia, first_media ) # don't set this until we have a size > (20, 20)!
             
         
         CG.client_controller.sub( self, 'AddMediaResults', 'add_media_results' )

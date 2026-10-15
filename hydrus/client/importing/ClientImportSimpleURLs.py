@@ -211,7 +211,7 @@ class SimpleDownloaderImport( HydrusSerialisable.SerialisableBase ):
             
             file_import_options_legacy = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_file_import_options )
             
-            if CG.client_controller.IsBooted():
+            if CG.client_controller.is_booted():
                 
                 optional_parent_container = CG.client_controller.import_options_manager.GenerateFullImportOptionsContainer( ImportOptionsContainer.ImportOptionsContainer(), IOC.IMPORT_OPTIONS_CALLER_TYPE_POST_URLS )
                 
@@ -814,7 +814,7 @@ class SimpleDownloaderImport( HydrusSerialisable.SerialisableBase ):
                 
                 self._WorkOnFiles()
                 
-                CG.client_controller.WaitUntilViewFree()
+                CG.client_controller.wait_until_view_free()
                 
                 self._SerialisableChangeMade()
                 
@@ -882,7 +882,7 @@ class SimpleDownloaderImport( HydrusSerialisable.SerialisableBase ):
                 
                 time.sleep( 1 )
                 
-                CG.client_controller.WaitUntilViewFree()
+                CG.client_controller.wait_until_view_free()
                 
                 self._SerialisableChangeMade()
                 
@@ -1090,7 +1090,7 @@ class URLsImport( HydrusSerialisable.SerialisableBase ):
             tag_import_options_legacy = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tag_import_options )
             note_import_options_legacy = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_note_import_options )
             
-            if CG.client_controller.IsBooted():
+            if CG.client_controller.is_booted():
                 
                 optional_parent_container = CG.client_controller.import_options_manager.GenerateFullImportOptionsContainer( ImportOptionsContainer.ImportOptionsContainer(), IOC.IMPORT_OPTIONS_CALLER_TYPE_POST_URLS )
                 
@@ -1513,7 +1513,7 @@ class URLsImport( HydrusSerialisable.SerialisableBase ):
                 
                 self._WorkOnFiles()
                 
-                CG.client_controller.WaitUntilViewFree()
+                CG.client_controller.wait_until_view_free()
                 
                 self._SerialisableChangeMade()
                 
@@ -1576,7 +1576,7 @@ class URLsImport( HydrusSerialisable.SerialisableBase ):
                 
                 time.sleep( 1 )
                 
-                CG.client_controller.WaitUntilViewFree()
+                CG.client_controller.wait_until_view_free()
                 
                 self._SerialisableChangeMade()
                 

@@ -34,7 +34,7 @@ class CaptureAPIAccessPermissionsRequestPanel( ClientGUIScrolledPanels.ReviewPan
         
         self.widget().setLayout( vbox )
         
-        self._repeating_job = CG.client_controller.CallRepeatingQtSafe( self, 0.0, 0.5, 'repeating client api permissions check', self.REPEATINGUpdate )
+        self._repeating_job = CG.client_controller.call_repeating_qt_safe( self, 0.0, 0.5, 'repeating client api permissions check', self.REPEATINGUpdate )
         
     
     def GetAPIAccessPermissions( self ):

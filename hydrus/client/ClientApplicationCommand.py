@@ -1205,7 +1205,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
                         
                         value_string = 'uncertain rating, "{}"'.format( value )
                         
-                        if CG.client_controller is not None and CG.client_controller.IsBooted():
+                        if CG.client_controller is not None and CG.client_controller.is_booted():
                             
                             try:
                                 

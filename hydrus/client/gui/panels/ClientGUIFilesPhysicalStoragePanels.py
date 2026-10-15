@@ -249,17 +249,17 @@ class ReviewGranularityPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 time_took_float = HydrusTime.GetNowFloat() - time_started_float
                 
-                CG.client_controller.CallAfterQtSafe( self, qt_ok, time_took_float, num_files_moved, num_weird_dirs, num_weird_files )
+                CG.client_controller.call_after_qt_safe( self, qt_ok, time_took_float, num_files_moved, num_weird_dirs, num_weird_files )
                 
             except Exception as e:
                 
                 if isinstance( e, HydrusExceptions.DBException ) and isinstance( e.db_e, HydrusExceptions.CancelledException ):
                     
-                    CG.client_controller.CallAfterQtSafe( self, qt_cancelled )
+                    CG.client_controller.call_after_qt_safe( self, qt_cancelled )
                     
                 else:
                     
-                    CG.client_controller.CallAfterQtSafe( self, qt_error, e )
+                    CG.client_controller.call_after_qt_safe( self, qt_error, e )
                     
                 
             finally:
@@ -423,15 +423,15 @@ class ReviewGranularityPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 time_took_float = HydrusTime.GetNowFloat() - time_started_float
                 
-                CG.client_controller.CallAfterQtSafe( self, qt_ok, time_took_float, num_files_moved, num_weird_dirs, num_weird_files )
+                CG.client_controller.call_after_qt_safe( self, qt_ok, time_took_float, num_files_moved, num_weird_dirs, num_weird_files )
                 
             except HydrusExceptions.CancelledException:
                 
-                CG.client_controller.CallAfterQtSafe( self, qt_cancelled )
+                CG.client_controller.call_after_qt_safe( self, qt_cancelled )
                 
             except Exception as e:
                 
-                CG.client_controller.CallAfterQtSafe( self, qt_error, e )
+                CG.client_controller.call_after_qt_safe( self, qt_error, e )
                 
             
         
@@ -1378,7 +1378,7 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         self._media_base_locations_to_ideal_usage = ClientFilesPhysical.FilesStorageBaseLocation.STATICGetIdealWeights( self._hydrus_local_file_storage_total_size, self._media_base_locations )
         
-        approx_total_db_size = self._controller.db.GetApproxTotalFileSize()
+        approx_total_db_size = self._controller.db.get_approx_total_file_size()
         
         self._current_db_path_st.setText( 'database (about '+HydrusData.ToHumanBytes(approx_total_db_size)+'): '+self._controller.get_db_dir() )
         self._current_install_path_st.setText( 'install: ' + HC.BASE_DIR )

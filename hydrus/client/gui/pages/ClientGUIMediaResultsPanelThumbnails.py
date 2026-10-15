@@ -126,7 +126,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         # WOOP WOOP, this does not work well when called here!
         # if we set it here, it sets to 126 or whatever, and then when the page is later, actually shown, it gets transmogrified into half, 63
         # therefore we do it on the next frame and reset on pageshown, let's go
-        CG.client_controller.CallAfterQtSafe( self, self._ResetThumbnailScrollSingleStep )
+        CG.client_controller.call_after_qt_safe( self, self._ResetThumbnailScrollSingleStep )
         
         CG.client_controller.sub( self, 'MaintainPageCache', 'memory_maintenance_pulse' )
         CG.client_controller.sub( self, 'NotifyFilesNeedRedraw', 'notify_files_need_redraw' )
@@ -1332,7 +1332,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                         
                         self._my_current_drag_object = QG.QDrag( self )
                         
-                        CG.client_controller.CallLaterQtSafe( self, 0.1, 'doing DnD check', self._CheckDnDIsOK, self._my_current_drag_object )
+                        CG.client_controller.call_later_qt_safe( self, 0.1, 'doing DnD check', self._CheckDnDIsOK, self._my_current_drag_object )
                         
                         result = ClientGUIDragDrop.DoFileExportDragDrop( self._my_current_drag_object, self._page_key, media, alt_down )
                         
@@ -1465,7 +1465,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         # the halving happens _after_ showEvent completes
         # it re-breaks on every hide but does not compound, so there is an idempotent mess-up here. I think a misfiring 'adjust for device independent pixels' call somewhere
         # I worked on this a bit and think it is a QGV Qt bug. wasn't true for QWidget
-        CG.client_controller.CallAfterQtSafe( self, self._ResetThumbnailScrollSingleStep )
+        CG.client_controller.call_after_qt_safe( self, self._ResetThumbnailScrollSingleStep )
         
     
     def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ) -> bool:

@@ -39,7 +39,7 @@ class AsyncQtJob( object ):
             
         else:
             
-            win_to_use = CG.client_controller.GetMainTLW()
+            win_to_use = CG.client_controller.get_main_tlw()
             
         
         ClientGUIDialogsMessage.ShowCritical( win_to_use, 'Error', message )
@@ -62,7 +62,7 @@ class AsyncQtJob( object ):
             
             try:
                 
-                CG.client_controller.CallBlockingToQt( self._win, self._publish_callable, result )
+                CG.client_controller.call_blocking_to_qt( self._win, self._publish_callable, result )
                 
             except ( HydrusExceptions.QtDeadWindowException, HydrusExceptions.ShutdownException ):
                 
@@ -81,7 +81,7 @@ class AsyncQtJob( object ):
                 
                 try:
                     
-                    CG.client_controller.CallBlockingToQt( self._win, self._ui_restoration_callable )
+                    CG.client_controller.call_blocking_to_qt( self._win, self._ui_restoration_callable )
                     
                 except ( HydrusExceptions.QtDeadWindowException, HydrusExceptions.ShutdownException ):
                     
@@ -105,7 +105,7 @@ class AsyncQtJob( object ):
             
             try:
                 
-                CG.client_controller.CallBlockingToQt( self._win, self._errback_callable, etype, value, tb )
+                CG.client_controller.call_blocking_to_qt( self._win, self._errback_callable, etype, value, tb )
                 
                 we_have_reported_ok = True
                 
@@ -124,7 +124,7 @@ class AsyncQtJob( object ):
             
             try:
                 
-                CG.client_controller.CallBlockingToQtTLW( self._DefaultErrback, etype, value, tb )
+                CG.client_controller.call_blocking_to_qt_tlw( self._DefaultErrback, etype, value, tb )
                 
                 we_have_reported_ok = True
                 
@@ -211,7 +211,7 @@ class AsyncQtUpdater( object ):
                 
                 try:
                     
-                    pre_work_args = CG.client_controller.CallBlockingToQt( self._win, self._pre_work_callable )
+                    pre_work_args = CG.client_controller.call_blocking_to_qt( self._win, self._pre_work_callable )
                     
                 except ( HydrusExceptions.QtDeadWindowException, HydrusExceptions.ShutdownException ):
                     
@@ -236,7 +236,7 @@ class AsyncQtUpdater( object ):
             
             try:
                 
-                CG.client_controller.CallBlockingToQt( self._win, qt_deliver_result, result )
+                CG.client_controller.call_blocking_to_qt( self._win, qt_deliver_result, result )
                 
             except ( HydrusExceptions.QtDeadWindowException, HydrusExceptions.ShutdownException ):
                 
@@ -255,7 +255,7 @@ class AsyncQtUpdater( object ):
                     
                     if self._win is not None:
                         
-                        CG.client_controller.CallAfterQtSafe( self._win, self.update )
+                        CG.client_controller.call_after_qt_safe( self._win, self.update )
                         
                     
                 
@@ -347,7 +347,7 @@ class FastThreadToGUIUpdater( object ):
                     
                     self._callafter_waiting = True
                     
-                    CG.client_controller.CallAfterQtSafe( self._win, self.QtDoIt )
+                    CG.client_controller.call_after_qt_safe( self._win, self.QtDoIt )
                     
                 
             
@@ -382,7 +382,7 @@ class FastThreadToGUIUpdater( object ):
                 
             elif not ( self._callafter_waiting or HG.view_shutdown ):
                 
-                CG.client_controller.CallAfterQtSafe( self._win, self.QtDoIt )
+                CG.client_controller.call_after_qt_safe( self._win, self.QtDoIt )
                 
             
         

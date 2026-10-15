@@ -241,11 +241,11 @@ def get_type_name( obj_type ):
         
         return repr( obj_type )
 
-def last_shutdown_was_bad( db_path, instance ):
+def last_shutdown_was_bad(db_path, instance):
     
-    path = os.path.join( db_path, instance + '_running' )
+    path = os.path.join(db_path, instance + '_running')
     
-    if os.path.exists( path ):
+    if os.path.exists(path):
         
         return True
         
@@ -264,44 +264,30 @@ def merge_key_to_list_dicts( key_to_list_dicts ):
     
     return result
 
-def safe_print( text ):
-    
+def safe_print(text: object):
     try:
+        print(str(text))
         
-        print( str( text ) )
-        
-    except Exception as e:
-        
-        print( repr( text ) )
+    except Exception:
+        print(repr(text))
 
 # DELETE: Надо изменить эту хрень. Пускай лучше все вызывают оригинальную функцию.
 ShowText = safe_print
 
 def convert_exception_tuple_to_nice_trace( etype, value, tb ):
-    
     if etype is None:
-        
         etype = HydrusExceptions.UnknownException
-        
     
     if etype == HydrusExceptions.ShutdownException:
-        
         return
-        
     
     if value is None:
-        
         value = 'Unknown error'
-        
     
     if tb is None:
-        
         trace = 'No error trace!'
-        
     else:
-        
         trace = ''.join( traceback.format_exception( etype, value, tb ) )
-        
     
     trace = trace.rstrip()
     

@@ -137,7 +137,7 @@ def ResultsFetch(
                         
                         ClientGUIACDropdown.AppendLoadingPredicate( exact_match_matches, 'loading full results' )
                         
-                        CG.client_controller.CallAfterQtSafe( win, prefetch_callable, job_status, exact_match_matches, parsed_autocomplete_text )
+                        CG.client_controller.call_after_qt_safe( win, prefetch_callable, job_status, exact_match_matches, parsed_autocomplete_text )
                         
                         #
                         
@@ -192,7 +192,7 @@ def ResultsFetch(
     
     ClientSearchPredicate.SetPredicatesInclusivity( results, parsed_autocomplete_text.inclusive )
     
-    CG.client_controller.CallAfterQtSafe( win, results_callable, job_status, parsed_autocomplete_text, results_cache, results )
+    CG.client_controller.call_after_qt_safe( win, results_callable, job_status, parsed_autocomplete_text, results_cache, results )
     
 
 class AutoCompleteDropdownMetadataConditional( ClientGUIACDropdown.AutocompleteDropdownTagsFileSearchContextORCapable ):
@@ -326,7 +326,7 @@ class AutoCompleteDropdownMetadataConditional( ClientGUIACDropdown.AutocompleteD
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             

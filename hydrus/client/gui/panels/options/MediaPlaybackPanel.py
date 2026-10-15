@@ -689,7 +689,7 @@ class MediaPlaybackPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         if mpv_conf_path is not None and mpv_conf_path != '' and os.path.exists( mpv_conf_path ) and os.path.isfile( mpv_conf_path ):
             
-            dest_mpv_conf_path = CG.client_controller.GetMPVConfPath()
+            dest_mpv_conf_path = CG.client_controller.get_mpv_conf_path()
             
             try:
                 

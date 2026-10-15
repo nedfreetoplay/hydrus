@@ -279,7 +279,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             job_status.SetStatusText( status )
             
-            CG.client_controller.CallAfterQtSafe( self, sensitive_status_hook, status )
+            CG.client_controller.call_after_qt_safe( self, sensitive_status_hook, status )
             
         
         def work_callable():
@@ -446,7 +446,7 @@ class ReviewActionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             job_status.SetStatusText( status )
             
-            CG.client_controller.CallAfterQtSafe( self, sensitive_status_hook, status )
+            CG.client_controller.call_after_qt_safe( self, sensitive_status_hook, status )
             
         
         def work_callable():

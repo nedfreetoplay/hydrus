@@ -611,7 +611,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
         
         if len( self.last_seen_predicates ) > 0 and not file_search_context.IsComplete():
             
-            CG.client_controller.CallAfterQtSafe( self, self.RefreshQuery )
+            CG.client_controller.call_after_qt_safe( self, self.RefreshQuery )
             
         
     
@@ -662,7 +662,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
             
             CG.client_controller.pub( 'set_num_query_results', page_key, num_done, num_to_do )
             
-            CG.client_controller.WaitUntilViewFree()
+            CG.client_controller.wait_until_view_free()
             
         
         file_search_context.SetComplete()
@@ -671,7 +671,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
         
         page_manager.SetDirty()
         
-        CG.client_controller.CallAfterQtSafe( self, qt_code )
+        CG.client_controller.call_after_qt_safe( self, qt_code )
         
     
     def REPEATINGPageUpdate( self ):

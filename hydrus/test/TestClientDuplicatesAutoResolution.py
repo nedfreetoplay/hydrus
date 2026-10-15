@@ -37,7 +37,7 @@ class TestComparatorOneFileHardcoded( unittest.TestCase ):
         # class variable
         cls._db = ClientDB.DB( TG.test_controller, TestController.DB_DIR, 'client' )
         
-        TG.test_controller.SetTestDB( cls._db )
+        TG.test_controller.set_test_db( cls._db )
         
     
     @classmethod
@@ -61,7 +61,7 @@ class TestComparatorOneFileHardcoded( unittest.TestCase ):
         
         del cls._db
         
-        TG.test_controller.ClearTestDB()
+        TG.test_controller.clear_test_db()
         
     
     @classmethod
@@ -69,7 +69,7 @@ class TestComparatorOneFileHardcoded( unittest.TestCase ):
         
         cls._db = ClientDB.DB( TG.test_controller, TestController.DB_DIR, 'client' )
         
-        TG.test_controller.SetTestDB( cls._db )
+        TG.test_controller.set_test_db( cls._db )
         
     
     @classmethod
@@ -619,7 +619,7 @@ class TestComparatorHardcoded( unittest.TestCase ):
         # class variable
         cls._db = ClientDB.DB( TG.test_controller, TestController.DB_DIR, 'client' )
         
-        TG.test_controller.SetTestDB( cls._db )
+        TG.test_controller.set_test_db( cls._db )
         
     
     @classmethod
@@ -643,7 +643,7 @@ class TestComparatorHardcoded( unittest.TestCase ):
         
         del cls._db
         
-        TG.test_controller.ClearTestDB()
+        TG.test_controller.clear_test_db()
         
     
     @classmethod
@@ -651,7 +651,7 @@ class TestComparatorHardcoded( unittest.TestCase ):
         
         cls._db = ClientDB.DB( TG.test_controller, TestController.DB_DIR, 'client' )
         
-        TG.test_controller.SetTestDB( cls._db )
+        TG.test_controller.set_test_db( cls._db )
         
     
     @classmethod
@@ -857,7 +857,7 @@ class TestComparatorVisualDuplicates( unittest.TestCase ):
         # class variable
         cls._db = ClientDB.DB( TG.test_controller, TestController.DB_DIR, 'client' )
         
-        TG.test_controller.SetTestDB( cls._db )
+        TG.test_controller.set_test_db( cls._db )
         
     
     @classmethod
@@ -881,7 +881,7 @@ class TestComparatorVisualDuplicates( unittest.TestCase ):
         
         del cls._db
         
-        TG.test_controller.ClearTestDB()
+        TG.test_controller.clear_test_db()
         
     
     @classmethod
@@ -889,7 +889,7 @@ class TestComparatorVisualDuplicates( unittest.TestCase ):
         
         cls._db = ClientDB.DB( TG.test_controller, TestController.DB_DIR, 'client' )
         
-        TG.test_controller.SetTestDB( cls._db )
+        TG.test_controller.set_test_db( cls._db )
         
     
     @classmethod

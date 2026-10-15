@@ -123,7 +123,7 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             self._CheckShutdown()
             
         
-        self._controller.WaitUntilViewFree()
+        self._controller.wait_until_view_free()
         
         with self._lock:
             

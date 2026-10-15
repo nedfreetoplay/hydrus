@@ -48,7 +48,7 @@ class Dialog( QP.Dialog ):
         
         if parent is not None and position == 'center':
             
-            CG.client_controller.CallAfterQtSafe( self, QP.CenterOnWindow, parent, self )
+            CG.client_controller.call_after_qt_safe( self, QP.CenterOnWindow, parent, self )
             
         
         CG.client_controller.reset_idle_timer()

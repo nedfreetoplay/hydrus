@@ -58,7 +58,7 @@ class HydrusResourceClientAPI( HydrusServerResources.HydrusResource ):
         
         HydrusServerResources.HydrusResource._reportRequestStarted( self, request )
         
-        CG.client_controller.ResetIdleTimerFromClientAPI()
+        CG.client_controller.reset_idle_timer_from_client_api()
         
     
     def _checkService( self, request: HydrusServerRequest.HydrusRequest ):

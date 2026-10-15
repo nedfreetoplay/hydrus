@@ -726,7 +726,7 @@ class AddEditDeleteListBox( QW.QWidget ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -879,7 +879,7 @@ class AddEditDeleteListBox( QW.QWidget ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -1334,7 +1334,7 @@ class QueueListBox( QW.QWidget ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             

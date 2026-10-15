@@ -556,7 +556,7 @@ class BetterListCtrlTreeView( QW.QTreeView ):
         # This sets header data, so we can now do header-section-sizing gubbins
         self.setModel( model )
         
-        main_tlw = CG.client_controller.GetMainTLW()
+        main_tlw = CG.client_controller.get_main_tlw()
         
         # Note: now (2024-08) we moved to TreeView, I have no idea what the status of this stuff is
         # if last section is set too low, for instance 3, the column seems unable to ever shrink from initial (expanded to fill space) size
@@ -620,7 +620,7 @@ class BetterListCtrlTreeView( QW.QTreeView ):
         self.header().setContextMenuPolicy( QC.Qt.ContextMenuPolicy.CustomContextMenu )
         self.header().customContextMenuRequested.connect( self._ShowHeaderMenu )
         
-        CG.client_controller.CallAfterQtSafe( self, self._InitialiseColumnWidths )
+        CG.client_controller.call_after_qt_safe( self, self._InitialiseColumnWidths )
         
         CG.client_controller.sub( self, 'NotifySettingsUpdated', 'reset_all_listctrl_status' )
         CG.client_controller.sub( self, 'NotifySettingsUpdated', 'reset_listctrl_status' )
@@ -630,7 +630,7 @@ class BetterListCtrlTreeView( QW.QTreeView ):
         
         MIN_SECTION_SIZE_CHARS = 3
         
-        main_tlw = CG.client_controller.GetMainTLW()
+        main_tlw = CG.client_controller.get_main_tlw()
         
         last_column_index = self._column_list_status.GetColumnCount() - 1
         
@@ -671,7 +671,7 @@ class BetterListCtrlTreeView( QW.QTreeView ):
         
         status.SetColumnListType( self._column_list_type )
         
-        main_tlw = CG.client_controller.GetMainTLW()
+        main_tlw = CG.client_controller.get_main_tlw()
         
         columns = []
         
@@ -952,7 +952,7 @@ class BetterListCtrlTreeView( QW.QTreeView ):
     
     def EventShowMenu( self ):
         
-        CG.client_controller.CallAfterQtSafe( self, self._ShowRowsMenu )
+        CG.client_controller.call_after_qt_safe( self, self._ShowRowsMenu )
         
     
     def count( self ):
@@ -1106,7 +1106,7 @@ class BetterListCtrlTreeView( QW.QTreeView ):
         
         #
         
-        main_tlw = CG.client_controller.GetMainTLW()
+        main_tlw = CG.client_controller.get_main_tlw()
         
         MIN_SECTION_SIZE_CHARS = 3
         
@@ -1251,7 +1251,7 @@ class BetterListCtrlTreeView( QW.QTreeView ):
             
             last_column_chars = self._original_column_list_status.GetColumnWidth( last_column_type )
             
-            main_tlw = CG.client_controller.GetMainTLW()
+            main_tlw = CG.client_controller.get_main_tlw()
             
             width += ClientGUIFunctions.ConvertTextToPixelWidth( main_tlw, last_column_chars )
             
@@ -1684,11 +1684,11 @@ class BetterListCtrlPanel( QW.QWidget ):
     
     def _ImportFromClipboard( self ):
         
-        if CG.client_controller.ClipboardHasImage():
+        if CG.client_controller.clipboard_has_image():
             
             try:
                 
-                qt_image = CG.client_controller.GetClipboardImage()
+                qt_image = CG.client_controller.get_clipboard_image()
                 
             except Exception as e:
                 
@@ -1722,7 +1722,7 @@ class BetterListCtrlPanel( QW.QWidget ):
             
             try:
                 
-                raw_text = CG.client_controller.GetClipboardText()
+                raw_text = CG.client_controller.get_clipboard_text()
                 
             except HydrusExceptions.DataMissing as e:
                 

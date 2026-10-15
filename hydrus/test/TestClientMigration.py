@@ -147,7 +147,7 @@ class TestMigration( unittest.TestCase ):
         
         del cls._db
         
-        TG.test_controller.ClearTestDB()
+        TG.test_controller.clear_test_db()
         
     
     @classmethod

@@ -111,7 +111,7 @@ def run_auto_yes_no_gubbins( dlg: QW.QDialog, time_to_fire, original_title, acti
     
     while not HydrusTime.TimeHasPassed( time_to_fire ):
         
-        job = CG.client_controller.CallLaterQtSafe( dlg, 0.0, 'dialog auto yes/no title set', qt_set_title )
+        job = CG.client_controller.call_later_qt_safe( dlg, 0.0, 'dialog auto yes/no title set', qt_set_title )
         
         if job.IsDead(): # window closed
             
@@ -121,7 +121,7 @@ def run_auto_yes_no_gubbins( dlg: QW.QDialog, time_to_fire, original_title, acti
         time.sleep( 1 )
         
     
-    job = CG.client_controller.CallLaterQtSafe( dlg, 0.0, 'dialog auto yes/no fire', qt_fire_button )
+    job = CG.client_controller.call_later_qt_safe( dlg, 0.0, 'dialog auto yes/no fire', qt_fire_button )
     
 
 LAST_FOLDER_SELECTED = None
@@ -374,7 +374,7 @@ def SelectServiceKey( service_types = None, service_keys = None, unallowed = Non
         
         try:
             
-            tlw = CG.client_controller.GetMainTLW()
+            tlw = CG.client_controller.get_main_tlw()
             
             service_key = SelectFromList( tlw, message, choice_tuples )
             

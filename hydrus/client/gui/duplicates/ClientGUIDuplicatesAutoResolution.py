@@ -705,7 +705,7 @@ class EditPairComparatorOneFileMetadataConditionalPanel( ClientGUIScrolledPanels
         
         self.widget().setLayout( vbox )
         
-        CG.client_controller.CallAfterQtSafe( self, ClientGUIFunctions.SetFocusLater, self._metadata_conditional )
+        CG.client_controller.call_after_qt_safe( self, ClientGUIFunctions.SetFocusLater, self._metadata_conditional )
         
     
     def GetValue( self ):
@@ -1661,7 +1661,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
                     
                     rules = CG.client_controller.duplicates_auto_resolution_manager.GetRules()
                     
-                    CG.client_controller.CallBlockingToQtFireAndForgetNoResponse( self, do_it_qt, rules )
+                    CG.client_controller.call_blocking_to_qt_fire_and_forget_no_response( self, do_it_qt, rules )
                     
                 finally:
                     

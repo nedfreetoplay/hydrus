@@ -62,7 +62,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         del cls._db
         
-        TG.test_controller.ClearTestDB()
+        TG.test_controller.clear_test_db()
         
     
     @classmethod
@@ -70,7 +70,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         cls._db = ClientDB.DB( TG.test_controller, TestController.DB_DIR, 'client' )
         
-        TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
+        TG.test_controller.set_read( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
         
     
     @classmethod
@@ -152,7 +152,7 @@ class TestClientDBDuplicatesAutoResolution( unittest.TestCase ):
         
         for filename in test_files:
             
-            TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
+            TG.test_controller.set_read( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
             
             path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', filename ) )
             

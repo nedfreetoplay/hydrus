@@ -932,7 +932,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
                 
             
             # It is important for stability/deadlock purposes that we create a new canvas not in the same event as when we unwind preview viewer and such
-            CG.client_controller.CallAfterQtSafe( self, do_it )
+            CG.client_controller.call_after_qt_safe( self, do_it )
             
         
     

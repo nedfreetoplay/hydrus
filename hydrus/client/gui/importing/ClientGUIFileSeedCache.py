@@ -112,7 +112,7 @@ def ImportFromClipboard( win: QW.QWidget, file_seed_cache: ClientImportFileSeeds
     
     try:
         
-        raw_text = CG.client_controller.GetClipboardText()
+        raw_text = CG.client_controller.get_clipboard_text()
         
     except HydrusExceptions.DataMissing as e:
         
@@ -417,7 +417,7 @@ class EditFileSeedCachePanel( ClientGUIScrolledPanels.EditPanel ):
         
         CG.client_controller.sub( self, 'NotifyFileSeedsUpdated', 'file_seed_cache_file_seeds_updated' )
         
-        CG.client_controller.CallAfterQtSafe( self, self._UpdateText )
+        CG.client_controller.call_after_qt_safe( self, self._UpdateText )
         
     
     def _ConvertFileSeedToDisplayTuple( self, file_seed: ClientImportFileSeeds.FileSeed ):
@@ -887,7 +887,7 @@ class EditFileSeedCachePanel( ClientGUIScrolledPanels.EditPanel ):
                         
                         CG.client_controller.write_synchronous( 'content_updates', content_update_package )
                         
-                        CG.client_controller.CallAfterQtSafe( self, qt_once_done )
+                        CG.client_controller.call_after_qt_safe( self, qt_once_done )
                         
                     
                     CG.client_controller.call_to_thread( do_it )

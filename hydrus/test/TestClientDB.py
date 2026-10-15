@@ -50,7 +50,7 @@ class TestClientDB( unittest.TestCase ):
         # class variable
         cls._db = ClientDB.DB( TG.test_controller, TestController.DB_DIR, 'client' )
         
-        TG.test_controller.SetTestDB( cls._db )
+        TG.test_controller.set_test_db( cls._db )
         
     
     @classmethod
@@ -74,7 +74,7 @@ class TestClientDB( unittest.TestCase ):
         
         del cls._db
         
-        TG.test_controller.ClearTestDB()
+        TG.test_controller.clear_test_db()
         
     
     @classmethod
@@ -82,7 +82,7 @@ class TestClientDB( unittest.TestCase ):
         
         cls._db = ClientDB.DB( TG.test_controller, TestController.DB_DIR, 'client' )
         
-        TG.test_controller.SetTestDB( cls._db )
+        TG.test_controller.set_test_db( cls._db )
         
     
     @classmethod
@@ -1304,7 +1304,7 @@ class TestClientDB( unittest.TestCase ):
         
         for ( filename, hex_hash, size, mime, width, height, durations, possible_num_frames, has_audio, num_words ) in test_files:
             
-            TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
+            TG.test_controller.set_read( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
             
             path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', filename ) )
             
@@ -1648,7 +1648,7 @@ class TestClientDB( unittest.TestCase ):
         
         for filename in test_files:
             
-            TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
+            TG.test_controller.set_read( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
             
             path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', filename ) )
             
@@ -1887,7 +1887,7 @@ class TestClientDB( unittest.TestCase ):
         
         for ( hash, filename ) in test_files.items():
             
-            TG.test_controller.SetRead( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
+            TG.test_controller.set_read( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
             
             path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', filename ) )
             

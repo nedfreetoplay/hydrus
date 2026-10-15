@@ -62,7 +62,7 @@ def ImportFromClipboard( win: QW.QWidget, gallery_seed_log: ClientImportGalleryS
     
     try:
         
-        raw_text = CG.client_controller.GetClipboardText()
+        raw_text = CG.client_controller.get_clipboard_text()
         
     except HydrusExceptions.DataMissing as e:
         
@@ -306,7 +306,7 @@ class EditGallerySeedLogPanel( ClientGUIScrolledPanels.EditPanel ):
         
         CG.client_controller.sub( self, 'NotifyGallerySeedsUpdated', 'gallery_seed_log_gallery_seeds_updated' )
         
-        CG.client_controller.CallAfterQtSafe( self, self._UpdateText )
+        CG.client_controller.call_after_qt_safe( self, self._UpdateText )
         
     
     def _ConvertGallerySeedToDisplayTuple( self, gallery_seed ):

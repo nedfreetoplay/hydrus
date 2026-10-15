@@ -68,7 +68,7 @@ class IPFSDaemonStatusAndInteractionPanel( ClientGUICommon.StaticBox ):
                 
             finally:
                 
-                CG.client_controller.CallAfterQtSafe( self, qt_clean_up, result, is_running )
+                CG.client_controller.call_after_qt_safe( self, qt_clean_up, result, is_running )
                 
             
         

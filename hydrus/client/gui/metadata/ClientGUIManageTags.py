@@ -113,7 +113,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             if service_key == default_tag_service_key:
                 
                 # Py 3.11/PyQt6 6.5.0/two tabs/total tab characters > ~12/select second tab during init = first tab disappears bug
-                CG.client_controller.CallAfterQtSafe( self._tag_services, self._tag_services.setCurrentWidget, page )
+                CG.client_controller.call_after_qt_safe( self._tag_services, self._tag_services.setCurrentWidget, page )
                 
             
         
@@ -130,7 +130,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
         
         self.widget().setLayout( vbox )
         
-        CG.client_controller.CallAfterQtSafe( self._tag_services, self._tag_services.currentChanged.connect, self.EventServiceChanged )
+        CG.client_controller.call_after_qt_safe( self._tag_services, self._tag_services.currentChanged.connect, self.EventServiceChanged )
         
         if self._canvas_key is not None:
             
@@ -141,7 +141,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
         
         self._UpdatePageTabNames()
         
-        CG.client_controller.CallAfterQtSafe( self, self._NotifyCurrentPageWeAreLookingAtIt )
+        CG.client_controller.call_after_qt_safe( self, self._NotifyCurrentPageWeAreLookingAtIt )
         
     
     def _GetContentUpdatePackages( self ):
@@ -166,7 +166,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             
             current_page = typing.cast( ManageTagsPanel._Panel, current_page )
             
-            CG.client_controller.CallAfterQtSafe( current_page, current_page.NotifyPageChange )
+            CG.client_controller.call_after_qt_safe( current_page, current_page.NotifyPageChange )
             
         
     
@@ -998,7 +998,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             
             def do_it( tag_service_key, hashes ):
                 
-                tlw = CG.client_controller.GetMainTLW()
+                tlw = CG.client_controller.get_main_tlw()
                 
                 frame = ClientGUITopLevelWindowsPanels.FrameThatTakesScrollablePanel( tlw, 'migrate tags' )
                 
@@ -1007,7 +1007,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                 frame.SetPanel( panel )
                 
             
-            CG.client_controller.CallAfterQtSafe( self, do_it, self._tag_service_key, hashes )
+            CG.client_controller.call_after_qt_safe( self, do_it, self._tag_service_key, hashes )
             
             self.OK()
             

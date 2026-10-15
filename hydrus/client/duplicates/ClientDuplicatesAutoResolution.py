@@ -1341,7 +1341,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
         
         if able_to_work:
             
-            CG.client_controller.WaitUntilViewFree()
+            CG.client_controller.wait_until_view_free()
             
             with self._edit_work_lock:
                 

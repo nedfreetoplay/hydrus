@@ -547,7 +547,7 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             self._CheckShutdown()
             
         
-        self._controller.WaitUntilViewFree()
+        self._controller.wait_until_view_free()
         
         if self._WorkPermitted() and self._WorkToDo():
             

@@ -285,7 +285,7 @@ class RecentTagsPanel( QW.QWidget ):
             
             recent_tags = CG.client_controller.read( 'recent_tags', service_key )
             
-            CG.client_controller.CallAfterQtSafe( self, qt_code, recent_tags )
+            CG.client_controller.call_after_qt_safe( self, qt_code, recent_tags )
             
         
         CG.client_controller.call_to_thread( do_it, self._service_key )
@@ -496,7 +496,7 @@ class RelatedTagsPanel( QW.QWidget ):
             
             predicates = ClientSearchPredicate.SortPredicates( predicates )
             
-            CG.client_controller.CallAfterQtSafe( self, qt_code, predicates, num_done, num_to_do, num_skipped, total_time_took )
+            CG.client_controller.call_after_qt_safe( self, qt_code, predicates, num_done, num_to_do, num_skipped, total_time_took )
             
         
         self._last_max_time_to_take = max_time_to_take
@@ -611,7 +611,7 @@ class RelatedTagsPanel( QW.QWidget ):
         if not self._have_done_search_with_this_search_context:
             
             # if we schedule this in _this_ qt event, it tends to crowd out stuff like dialog init. so let's give at least on frame of break
-            CG.client_controller.CallAfterQtSafe( self, self._RepeatLastSearch )
+            CG.client_controller.call_after_qt_safe( self, self._RepeatLastSearch )
             
         
     
@@ -721,7 +721,7 @@ class FileLookupScriptTagsPanel( QW.QWidget ):
             
             scripts = ClientParsingLegacy.LookupScriptsCache.instance().GetScripts()
             
-            CG.client_controller.CallAfterQtSafe( self, qt_code )
+            CG.client_controller.call_after_qt_safe( self, qt_code )
             
         
         self._script_choice.setEnabled( False )

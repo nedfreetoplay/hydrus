@@ -630,7 +630,7 @@ class FilenameTaggingOptionsPanel( QW.QWidget ):
             
             try:
                 
-                raw_text = CG.client_controller.GetClipboardText()
+                raw_text = CG.client_controller.get_clipboard_text()
                 
             except HydrusExceptions.DataMissing as e:
                 
@@ -875,7 +875,7 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
             if service_key == default_tag_service_key:
                 
                 # Py 3.11/PyQt6 6.5.0/two tabs/total tab characters > ~12/select second tab = first tab disappears bug
-                CG.client_controller.CallAfterQtSafe( self, self._notebook.setCurrentWidget, page )
+                CG.client_controller.call_after_qt_safe( self, self._notebook.setCurrentWidget, page )
                 
             
         
@@ -889,7 +889,7 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
         
         self._notebook.currentChanged.connect( self._SaveDefaultTagServiceKey )
         
-        CG.client_controller.CallAfterQtSafe( self, self._SetSearchFocus )
+        CG.client_controller.call_after_qt_safe( self, self._SetSearchFocus )
         
     
     def _SaveDefaultTagServiceKey( self ):
@@ -1065,7 +1065,7 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
                 self._schedule_refresh_file_list_job = None
                 
             
-            self._schedule_refresh_file_list_job = CG.client_controller.CallLaterQtSafe( self, 0.5, 'refresh path list', self.RefreshFileList )
+            self._schedule_refresh_file_list_job = CG.client_controller.call_later_qt_safe( self, 0.5, 'refresh path list', self.RefreshFileList )
             
         
         def SetSearchFocus( self ):
@@ -1265,7 +1265,7 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
                 self._schedule_refresh_file_list_job = None
                 
             
-            self._schedule_refresh_file_list_job = CG.client_controller.CallLaterQtSafe( self, 0.5, 'refresh path list', self.RefreshFileList )
+            self._schedule_refresh_file_list_job = CG.client_controller.call_later_qt_safe( self, 0.5, 'refresh path list', self.RefreshFileList )
             
         
         def SetSearchFocus( self ):
@@ -1367,7 +1367,7 @@ class EditFilenameTaggingOptionPanel( ClientGUIScrolledPanels.EditPanel ):
             self._schedule_refresh_tags_job = None
             
         
-        self._schedule_refresh_tags_job = CG.client_controller.CallLaterQtSafe( self, 0.5, 'refresh tags', self.RefreshTags )
+        self._schedule_refresh_tags_job = CG.client_controller.call_later_qt_safe( self, 0.5, 'refresh tags', self.RefreshTags )
         
     
 class GalleryImportPanel( ClientGUICommon.StaticBox ):

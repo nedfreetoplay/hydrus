@@ -258,7 +258,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
         
         self.widget().setLayout( vbox )
         
-        CG.client_controller.CallAfterQtSafe( self, self._SetFocus )
+        CG.client_controller.call_after_qt_safe( self, self._SetFocus )
         
     
     def _GetExistingSharedFileDeletionReason( self ):
@@ -1024,11 +1024,11 @@ class EditFileNotesPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolle
         
         if CG.client_controller.new_options.GetBoolean( 'start_note_editing_at_end' ):
             
-            CG.client_controller.CallAfterQtSafe( control, control.moveCursor, QG.QTextCursor.MoveOperation.End )
+            CG.client_controller.call_after_qt_safe( control, control.moveCursor, QG.QTextCursor.MoveOperation.End )
             
         else:
             
-            CG.client_controller.CallAfterQtSafe( control, control.moveCursor, QG.QTextCursor.MoveOperation.Start )
+            CG.client_controller.call_after_qt_safe( control, control.moveCursor, QG.QTextCursor.MoveOperation.Start )
             
         
         self._UpdateButtons()
@@ -1122,7 +1122,7 @@ class EditFileNotesPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolle
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -1914,7 +1914,7 @@ class EditURLsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPane
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             

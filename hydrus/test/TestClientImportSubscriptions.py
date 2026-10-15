@@ -77,7 +77,7 @@ class TestSubscription( unittest.TestCase ):
         
         engine = ClientNetworking.NetworkEngine( mock_controller, bandwidth_manager, session_manager, domain_manager, login_manager )
         
-        mock_controller.CallToThread( engine.MainLoop )
+        mock_controller.call_to_thread( engine.MainLoop )
         
         return ( mock_controller, engine )
         

@@ -99,7 +99,7 @@ class ManageClientServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         if auto_account_creation_service_key is not None:
             
-            CG.client_controller.CallLaterQtSafe( self, 1.2, 'auto-account creation spawn', self._Edit, auto_account_creation_service_key = auto_account_creation_service_key )
+            CG.client_controller.call_later_qt_safe( self, 1.2, 'auto-account creation spawn', self._Edit, auto_account_creation_service_key = auto_account_creation_service_key )
             
         
     
@@ -302,7 +302,7 @@ class ManageClientServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         services = self._listctrl.GetData()
         
-        CG.client_controller.SetServices( services )
+        CG.client_controller.Set_services( services )
         
         CG.client_controller.pub( 'clear_thumbnail_cache' )
         
@@ -565,11 +565,11 @@ class EditServiceRemoteSubPanel( ClientGUICommon.StaticBox ):
                 
                 network_job.WaitUntilDone()
                 
-                CG.client_controller.CallAfterQtSafe( self, qt_done, 'Looks good!' )
+                CG.client_controller.call_after_qt_safe( self, qt_done, 'Looks good!' )
                 
             except HydrusExceptions.NetworkException as e:
                 
-                CG.client_controller.CallAfterQtSafe( self, qt_done, 'Problem with that address: ' + str(e) )
+                CG.client_controller.call_after_qt_safe( self, qt_done, 'Problem with that address: ' + str(e) )
                 
             
         
@@ -699,7 +699,7 @@ class EditServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
         
         if auto_account_creation_service_key is not None:
             
-            CG.client_controller.CallLaterQtSafe( self, 1.2, 'auto-account service spawn', self._STARTFetchAutoAccountCreationAccountTypes )
+            CG.client_controller.call_later_qt_safe( self, 1.2, 'auto-account service spawn', self._STARTFetchAutoAccountCreationAccountTypes )
             
         
     
@@ -2396,7 +2396,7 @@ class ReviewServiceHydrusLocalFileStorageSubPanel( ClientGUICommon.StaticBox ):
             text = '{} files and {} thumbnails are awaiting physical deletion from file storage.'.format( HydrusNumbers.ToHumanInt( num_files ), HydrusNumbers.ToHumanInt( num_thumbnails ) )
             
         
-        CG.client_controller.CallAfterQtSafe( self, qt_code, text )
+        CG.client_controller.call_after_qt_safe( self, qt_code, text )
         
     
 class ReviewServiceFileSubPanel( ClientGUICommon.StaticBox ):
@@ -2458,7 +2458,7 @@ class ReviewServiceFileSubPanel( ClientGUICommon.StaticBox ):
             text += ' - ' + HydrusNumbers.ToHumanInt( num_deleted_files ) + ' deleted files'
             
         
-        CG.client_controller.CallAfterQtSafe( self, qt_code, text )
+        CG.client_controller.call_after_qt_safe( self, qt_code, text )
         
     
 class ReviewServiceRemoteSubPanel( ClientGUICommon.StaticBox ):
@@ -3127,7 +3127,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
                 
             finally:
                 
-                CG.client_controller.CallAfterQtSafe( self, qt_done )
+                CG.client_controller.call_after_qt_safe( self, qt_done )
                 
             
         
@@ -3558,7 +3558,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
         
         is_mostly_caught_up = service.IsMostlyCaughtUp()
         
-        CG.client_controller.CallAfterQtSafe( self, qt_code, num_local_updates, num_updates, content_types_to_num_processed_updates, content_types_to_num_updates, is_mostly_caught_up )
+        CG.client_controller.call_after_qt_safe( self, qt_code, num_local_updates, num_updates, content_types_to_num_processed_updates, content_types_to_num_updates, is_mostly_caught_up )
         
     
 
@@ -3704,7 +3704,7 @@ class ReviewServiceIPFSSubPanel( ClientGUICommon.StaticBox ):
                 
             finally:
                 
-                CG.client_controller.CallAfterQtSafe( self, qt_done )
+                CG.client_controller.call_after_qt_safe( self, qt_done )
                 
             
         
@@ -3735,7 +3735,7 @@ class ReviewServiceIPFSSubPanel( ClientGUICommon.StaticBox ):
                 
             finally:
                 
-                CG.client_controller.CallAfterQtSafe( self, qt_done )
+                CG.client_controller.call_after_qt_safe( self, qt_done )
                 
             
         
@@ -3777,7 +3777,7 @@ class ReviewServiceIPFSSubPanel( ClientGUICommon.StaticBox ):
         
         ipfs_shares = CG.client_controller.read( 'service_directories', service.GetServiceKey() )
         
-        CG.client_controller.CallAfterQtSafe( self, qt_code, ipfs_shares )
+        CG.client_controller.call_after_qt_safe( self, qt_code, ipfs_shares )
         
     
 
@@ -3862,7 +3862,7 @@ class ReviewServiceRatingSubPanel( ClientGUICommon.StaticBox ):
         
         text = HydrusNumbers.ToHumanInt( num_files ) + ' files are rated'
         
-        CG.client_controller.CallAfterQtSafe( self, qt_code, text )
+        CG.client_controller.call_after_qt_safe( self, qt_code, text )
         
     
 
@@ -3894,7 +3894,7 @@ class ReviewServiceTagSubPanel( ClientGUICommon.StaticBox ):
     
     def _MigrateTags( self ):
         
-        tlw = CG.client_controller.GetMainTLW()
+        tlw = CG.client_controller.get_main_tlw()
         
         frame = ClientGUITopLevelWindowsPanels.FrameThatTakesScrollablePanel( tlw, 'migrate tags' )
         
@@ -3940,7 +3940,7 @@ class ReviewServiceTagSubPanel( ClientGUICommon.StaticBox ):
             text += ' - ' + HydrusNumbers.ToHumanInt( num_deleted_mappings ) + ' deleted mappings'
             
         
-        CG.client_controller.CallAfterQtSafe( self, qt_code, text )
+        CG.client_controller.call_after_qt_safe( self, qt_code, text )
         
     
 
@@ -4060,7 +4060,7 @@ class ReviewServiceTrashSubPanel( ClientGUICommon.StaticBox ):
         
         num_files = service_info[ HC.SERVICE_INFO_NUM_FILES ]
         
-        CG.client_controller.CallAfterQtSafe( self, qt_code, num_files )
+        CG.client_controller.call_after_qt_safe( self, qt_code, num_files )
         
     
 class ReviewServicesPanel( ClientGUIScrolledPanels.ReviewPanel ):

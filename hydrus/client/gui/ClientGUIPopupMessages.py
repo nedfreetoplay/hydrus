@@ -875,14 +875,14 @@ class PopupMessageManager( QW.QFrame ):
         
         job_status.SetStatusText( 'initialising popup message manager' + HC.UNICODE_ELLIPSIS )
         
-        self._update_job = CG.client_controller.CallRepeatingQtSafe( self, 0.25, 0.25, 'repeating popup message update', self.REPEATINGUpdate )
+        self._update_job = CG.client_controller.call_repeating_qt_safe( self, 0.25, 0.25, 'repeating popup message update', self.REPEATINGUpdate )
         
         self._summary_bar.dismissAll.connect( self.DismissAll )
         self._summary_bar.expandCollapse.connect( self.ExpandCollapse )
         
-        CG.client_controller.CallLaterQtSafe( self, 0.5, 'initialise message', self.AddMessage, job_status )
+        CG.client_controller.call_later_qt_safe( self, 0.5, 'initialise message', self.AddMessage, job_status )
         
-        CG.client_controller.CallLaterQtSafe( self, 1.0, 'delete initial message', job_status.FinishAndDismiss )
+        CG.client_controller.call_later_qt_safe( self, 1.0, 'delete initial message', job_status.FinishAndDismiss )
         
     
     def _CheckPending( self ):
@@ -928,7 +928,7 @@ class PopupMessageManager( QW.QFrame ):
             # for whatever reason, self._message_vbox.activate does not cause the vbox.sizeHint to be recalculated at this point. it just sits at the last value unless original was (0,0)?!?
             # so we'll do it callafter. it works
             
-            CG.client_controller.CallAfterQtSafe( self, self.MakeSureEverythingFits )
+            CG.client_controller.call_after_qt_safe( self, self.MakeSureEverythingFits )
             
         
     
@@ -1312,7 +1312,7 @@ class PopupMessageDialogPanel( QW.QWidget ):
         
         self._message_pubbed = False
         
-        self._update_job = CG.client_controller.CallRepeatingQtSafe( self, 0.25, 0.5, 'repeating popup dialog update', self.REPEATINGUpdate )
+        self._update_job = CG.client_controller.call_repeating_qt_safe( self, 0.25, 0.5, 'repeating popup dialog update', self.REPEATINGUpdate )
         
     
     def CleanBeforeDestroy( self ):

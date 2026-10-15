@@ -79,7 +79,7 @@ class Page( QW.QWidget ):
         
         super().__init__( parent )
         
-        self._page_key = CG.client_controller.AcquirePageKey()
+        self._page_key = CG.client_controller.acquire_page_key()
         
         self._page_manager = page_manager
         
@@ -204,7 +204,7 @@ class Page( QW.QWidget ):
                 raise HydrusExceptions.CancelledException()
                 
             
-            if CG.client_controller.PageClosedButNotDestroyed( self._page_key ):
+            if CG.client_controller.page_closed_but_not_destroyed( self._page_key ):
                 
                 raise HydrusExceptions.CancelledException()
                 
@@ -252,7 +252,7 @@ class Page( QW.QWidget ):
                     self._pre_initialisation_media_results = []
                     
                 
-                CG.client_controller.CallAfterQtSafe( self, self._sidebar_management_panel.Start )
+                CG.client_controller.call_after_qt_safe( self, self._sidebar_management_panel.Start )
                 
             else:
                 
@@ -469,7 +469,7 @@ class Page( QW.QWidget ):
             
             if CGC.core().MenuIsOpen():
                 
-                CG.client_controller.CallLaterQtSafe( self, 0.5, 'menu closed panel swap loop', clean_up_old_panel )
+                CG.client_controller.call_later_qt_safe( self, 0.5, 'menu closed panel swap loop', clean_up_old_panel )
                 
                 return
                 
@@ -554,7 +554,7 @@ class Page( QW.QWidget ):
         
         self._media_panel.CleanBeforeDestroy()
         
-        CG.client_controller.ReleasePageKey( self._page_key )
+        CG.client_controller.release_page_key( self._page_key )
         
     
     def EnterPredicates( self, predicates: list[ ClientSearchPredicate.Predicate ] ):
@@ -1018,7 +1018,7 @@ class Page( QW.QWidget ):
         
         if HC.options[ 'hide_preview' ]:
             
-            CG.client_controller.CallAfterQtSafe( self, QP.Unsplit, self._management_preview_split, self._preview_panel )
+            CG.client_controller.call_after_qt_safe( self, QP.Unsplit, self._management_preview_split, self._preview_panel )
             
         
     
@@ -1058,7 +1058,7 @@ class Page( QW.QWidget ):
             self._initialised = True
             
             # do this 'after' so on a long session setup, it all boots once session loaded
-            CG.client_controller.CallAfterQtSafe( self, self._sidebar_management_panel.Start )
+            CG.client_controller.call_after_qt_safe( self, self._sidebar_management_panel.Start )
             
         
     
@@ -1160,7 +1160,7 @@ def ShowReasonsAndPagesConfirmationDialog( win: QW.QWidget, reasons_and_pages, m
                 ClientGUIReviewWindowsQuick.OpenListButtons( win, 'Go To Page', choice_tuples )
                 
             
-            CG.client_controller.CallAfterQtSafe( win, spawn_this_guy )
+            CG.client_controller.call_after_qt_safe( win, spawn_this_guy )
             
         
         raise HydrusExceptions.VetoException()
@@ -1184,7 +1184,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
         
         self.setTabPosition( directions_for_notebook_tabs[ direction ] )
         
-        self._page_key = CG.client_controller.AcquirePageKey()
+        self._page_key = CG.client_controller.acquire_page_key()
         
         self._name = name
         
@@ -1362,7 +1362,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
     def _ClosePage( self, index, polite = True, delete_page = False ):
         
         CG.client_controller.reset_idle_timer()
-        CG.client_controller.ResetPageChangeTimer()
+        CG.client_controller.reset_page_change_timer()
         
         if index < 0 or index > self.count() - 1:
             
@@ -2567,7 +2567,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
             page.CleanBeforeDestroy()
             
         
-        CG.client_controller.ReleasePageKey( self._page_key )
+        CG.client_controller.release_page_key( self._page_key )
         
     
     def CloseCurrentPage( self, polite = True ):
@@ -3428,7 +3428,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
             
             self._CloseAllPages( polite = False, delete_pages = True )
             
-            CG.client_controller.CallLaterQtSafe( self, 1.0, 'append session', self.AppendGUISessionFreshest, name, load_in_a_page_of_pages = False )
+            CG.client_controller.call_later_qt_safe( self, 1.0, 'append session', self.AppendGUISessionFreshest, name, load_in_a_page_of_pages = False )
             
         else:
             
@@ -3613,7 +3613,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
         # the 'too many pages open' thing used to be here
         
         CG.client_controller.reset_idle_timer()
-        CG.client_controller.ResetPageChangeTimer()
+        CG.client_controller.reset_page_change_timer()
         
         if initial_hashes is None:
             
@@ -3674,10 +3674,10 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
             
             # this is here for now due to the pagechooser having a double-layer dialog on a booru choice, which messes up some focus inheritance
             
-            CG.client_controller.CallLaterQtSafe( self, 0.5, 'set page focus', page.SetSearchFocus )
+            CG.client_controller.call_later_qt_safe( self, 0.5, 'set page focus', page.SetSearchFocus )
             
         
-        CG.client_controller.CallLaterQtSafe( self, 0.0, 'rebuild media management layout', page.SetSplitterPositions )
+        CG.client_controller.call_later_qt_safe( self, 0.0, 'rebuild media management layout', page.SetSplitterPositions )
         
         return page
         
@@ -3857,7 +3857,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
             
         
         CG.client_controller.reset_idle_timer()
-        CG.client_controller.ResetPageChangeTimer()
+        CG.client_controller.reset_page_change_timer()
         
         page = PagesNotebook( self, name )
         

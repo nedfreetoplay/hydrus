@@ -2208,7 +2208,7 @@ class ServiceRepository( ServiceRestricted ):
                         
                         this_work_start_time = HydrusTime.GetNowPrecise()
                         
-                        if CG.client_controller.CurrentlyVeryIdle():
+                        if CG.client_controller.currently_very_idle():
                             
                             expected_work_period = HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_very_idle' ) )
                             rest_ratio = CG.client_controller.new_options.GetInteger( 'repository_processing_rest_percentage_very_idle' ) / 100
@@ -2358,7 +2358,7 @@ class ServiceRepository( ServiceRestricted ):
                         
                         this_work_start_time = HydrusTime.GetNowPrecise()
                         
-                        if CG.client_controller.CurrentlyVeryIdle():
+                        if CG.client_controller.currently_very_idle():
                             
                             expected_work_period = HydrusTime.SecondiseMSFloat( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_very_idle' ) )
                             rest_ratio = CG.client_controller.new_options.GetInteger( 'repository_processing_rest_percentage_very_idle' ) / 100

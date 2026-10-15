@@ -691,7 +691,7 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         self._bandwidths.Sort()
         
-        self._update_job = CG.client_controller.CallRepeatingQtSafe( self, 0.5, 5.0, 'repeating all bandwidth status update', self._Update )
+        self._update_job = CG.client_controller.call_repeating_qt_safe( self, 0.5, 5.0, 'repeating all bandwidth status update', self._Update )
         
         #
         
@@ -1097,9 +1097,9 @@ class ReviewNetworkContextBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         #
         
-        self._rules_job = CG.client_controller.CallRepeatingQtSafe( self, 0.0, 5.0, 'repeating bandwidth rules update', self._UpdateRules )
+        self._rules_job = CG.client_controller.call_repeating_qt_safe( self, 0.0, 5.0, 'repeating bandwidth rules update', self._UpdateRules )
         
-        self._update_job = CG.client_controller.CallRepeatingQtSafe( self, 0.0, 1.0, 'repeating bandwidth status update', self._Update )
+        self._update_job = CG.client_controller.call_repeating_qt_safe( self, 0.0, 1.0, 'repeating bandwidth status update', self._Update )
         
     
     def _EditRules( self ):
@@ -1710,7 +1710,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -2101,7 +2101,7 @@ class ReviewNetworkSessionPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             

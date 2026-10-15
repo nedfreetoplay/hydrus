@@ -67,7 +67,7 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
             if service_key == default_tag_service_key:
                 
                 # Py 3.11/PyQt6 6.5.0/two tabs/total tab characters > ~12/select second tab during init = first tab disappears bug
-                CG.client_controller.CallAfterQtSafe( self._tag_services, self._tag_services.setCurrentWidget, page )
+                CG.client_controller.call_after_qt_safe( self._tag_services, self._tag_services.setCurrentWidget, page )
                 
             
         
@@ -454,7 +454,7 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
             
             try:
                 
-                raw_text = CG.client_controller.GetClipboardText()
+                raw_text = CG.client_controller.get_clipboard_text()
                 
             except HydrusExceptions.DataMissing as e:
                 

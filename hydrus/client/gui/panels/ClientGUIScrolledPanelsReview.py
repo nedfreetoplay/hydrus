@@ -2143,7 +2143,7 @@ Vacuuming is an expensive operation. It creates one (temporary) copy of the data
             page_count = vacuum_dict[ 'page_count' ]
             freelist_count = vacuum_dict[ 'freelist_count' ]
             
-            HydrusDB.CheckCanVacuumIntoData( path, page_size, page_count, freelist_count )
+            HydrusDB.check_can_vacuum_into_data( path, page_size, page_count, freelist_count )
             
         except Exception as e:
             
@@ -2250,7 +2250,7 @@ Vacuuming is an expensive operation. It creates one (temporary) copy of the data
         
         from hydrus.core import HydrusDB
         
-        vacuum_time_estimate = HydrusDB.GetApproxVacuumIntoDuration( db_size )
+        vacuum_time_estimate = HydrusDB.get_approx_vacuum_into_duration( db_size )
         
         pretty_vacuum_time_estimate = '{} to {}'.format( HydrusTime.TimeDeltaToPrettyTimeDelta( vacuum_time_estimate / 20 ), HydrusTime.TimeDeltaToPrettyTimeDelta( vacuum_time_estimate ) )
         

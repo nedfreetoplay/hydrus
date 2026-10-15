@@ -52,7 +52,7 @@ class HydrusResourceClientAPIRestrictedManagePagesAddFiles( HydrusResourceClient
         
         try:
             
-            CG.client_controller.CallBlockingToQtTLW( do_it, page_key, media_results )
+            CG.client_controller.call_blocking_to_qt_tlw( do_it, page_key, media_results )
             
         except HydrusExceptions.DataMissing as e:
             
@@ -78,7 +78,7 @@ class HydrusResourceClientAPIRestrictedManagePagesFocusPage( HydrusResourceClien
         
         try:
             
-            CG.client_controller.CallBlockingToQtTLW( do_it, page_key )
+            CG.client_controller.call_blocking_to_qt_tlw( do_it, page_key )
             
         except HydrusExceptions.DataMissing as e:
             
@@ -99,7 +99,7 @@ class HydrusResourceClientAPIRestrictedManagePagesGetPages( HydrusResourceClient
             return CG.client_controller.gui.GetCurrentSessionPageAPIInfoDict()
             
         
-        page_info_dict = CG.client_controller.CallBlockingToQtTLW( do_it )
+        page_info_dict = CG.client_controller.call_blocking_to_qt_tlw( do_it )
         
         body_dict = { 'pages' : page_info_dict }
         
@@ -124,7 +124,7 @@ class HydrusResourceClientAPIRestrictedManagePagesGetPageInfo( HydrusResourceCli
         
         simple = request.parsed_request_args.GetValue( 'simple', bool, default_value = True )
         
-        page_info_dict = CG.client_controller.CallBlockingToQtTLW( do_it, page_key, simple )
+        page_info_dict = CG.client_controller.call_blocking_to_qt_tlw( do_it, page_key, simple )
         
         if page_info_dict is None:
             
@@ -154,7 +154,7 @@ class HydrusResourceClientAPIRestrictedManagePagesRefreshPage( HydrusResourceCli
         
         try:
             
-            CG.client_controller.CallBlockingToQtTLW( do_it, page_key )
+            CG.client_controller.call_blocking_to_qt_tlw( do_it, page_key )
             
         except HydrusExceptions.DataMissing as e:
             
@@ -176,7 +176,7 @@ class HydrusResourceClientAPIRestrictedManagePagesGetMediaViewers( HydrusResourc
             return CG.client_controller.gui.GetMediaViewersAPIInfo()
             
         
-        media_viewers_info = CG.client_controller.CallBlockingToQtTLW( do_it )
+        media_viewers_info = CG.client_controller.call_blocking_to_qt_tlw( do_it )
         
         body_dict = {
             'media_viewers': media_viewers_info
@@ -247,7 +247,7 @@ class HydrusResourceClientAPIRestrictedManagePagesNewPage( HydrusResourceClientA
         
         try:
             
-            ( page_key, returned_page_type, returned_page_name ) = CG.client_controller.CallBlockingToQtTLW( ClientGUINewPageAPI.MakeNewPageFromAPI, page_type, page_name, page_of_pages_key, focus_page, predicates, file_service_key, tag_service_key, hashes, service_key, paths, delete_after_success, file_sort_type, file_sort_asc, file_sort_namespaces, collect_namespaces, system_hash_locked, urls, url )
+            ( page_key, returned_page_type, returned_page_name ) = CG.client_controller.call_blocking_to_qt_tlw( ClientGUINewPageAPI.MakeNewPageFromAPI, page_type, page_name, page_of_pages_key, focus_page, predicates, file_service_key, tag_service_key, hashes, service_key, paths, delete_after_success, file_sort_type, file_sort_asc, file_sort_namespaces, collect_namespaces, system_hash_locked, urls, url )
             
         except HydrusExceptions.DataMissing as e:
             

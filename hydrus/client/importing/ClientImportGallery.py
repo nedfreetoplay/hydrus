@@ -239,7 +239,7 @@ class GalleryImport( HydrusSerialisable.SerialisableBase ):
             tag_import_options_legacy = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tag_import_options )
             note_import_options_legacy = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_note_import_options )
             
-            if CG.client_controller.IsBooted():
+            if CG.client_controller.is_booted():
                 
                 optional_parent_container = CG.client_controller.import_options_manager.GenerateFullImportOptionsContainer( ImportOptionsContainer.ImportOptionsContainer(), IOC.IMPORT_OPTIONS_CALLER_TYPE_POST_URLS )
                 
@@ -941,7 +941,7 @@ class GalleryImport( HydrusSerialisable.SerialisableBase ):
                     
                     self._WorkOnFiles()
                     
-                    CG.client_controller.WaitUntilViewFree()
+                    CG.client_controller.wait_until_view_free()
                     
                     self._SerialisableChangeMade()
                     
@@ -1012,7 +1012,7 @@ class GalleryImport( HydrusSerialisable.SerialisableBase ):
                     
                     time.sleep( 1 )
                     
-                    CG.client_controller.WaitUntilViewFree()
+                    CG.client_controller.wait_until_view_free()
                     
                     self._SerialisableChangeMade()
                     
@@ -1370,7 +1370,7 @@ class MultipleGalleryImport( HydrusSerialisable.SerialisableBase ):
             tag_import_options_legacy = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tag_import_options )
             note_import_options_legacy = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_note_import_options )
             
-            if CG.client_controller.IsBooted():
+            if CG.client_controller.is_booted():
                 
                 optional_parent_container = CG.client_controller.import_options_manager.GenerateFullImportOptionsContainer( ImportOptionsContainer.ImportOptionsContainer(), IOC.IMPORT_OPTIONS_CALLER_TYPE_POST_URLS )
                 

@@ -467,7 +467,7 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
             
             CG.client_controller.write_synchronous( 'update_server_services', admin_service_key, services, service_keys_to_access_keys, self._deletee_service_keys )
             
-            CG.client_controller.RefreshServices()
+            CG.client_controller.refresh_services()
             
         
     
