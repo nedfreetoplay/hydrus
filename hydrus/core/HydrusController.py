@@ -473,7 +473,7 @@ class HydrusController:
         self._fast_job_scheduler.ClearOutDead()
         self._slow_job_scheduler.ClearOutDead()
         
-        HydrusSubprocess.ReapDeadLongLivedExternalProcesses()
+        HydrusSubprocess.reap_dead_long_lived_external_processes()
     
     def maintain_memory_slow( self ):
         

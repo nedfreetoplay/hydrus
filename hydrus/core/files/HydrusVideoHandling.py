@@ -632,7 +632,7 @@ def VideoHasAudio( path, info_lines ) -> bool:
             # silent PCM data is just 00 bytes
             # every now and then, you'll get a couple ffs for some reason, but this is not legit audio data
             
-            for chunk_of_pcm_data in streamer.IterateChunks():
+            for chunk_of_pcm_data in streamer.iterate_chunks():
                 
                 # iterating over bytes gives you ints, recall
                 # this used to be 'if not 0 or 255', but I found some that had 1 too, so let's just change the tolerance to reduce false positives
@@ -723,7 +723,7 @@ class VideoRendererFFMPEG( object ):
         
         if self.process_reader is not None:
             
-            self.process_reader.CloseProcess()
+            self.process_reader.close_process()
             
             self.process_reader = None
             
@@ -833,7 +833,7 @@ class VideoRendererFFMPEG( object ):
                 
                 try:
                     
-                    frame_of_data = self.process_reader.ReadChunk()
+                    frame_of_data = self.process_reader.read_chunk()
                     
                 except HydrusExceptions.SubprocessTimedOut:
                     
@@ -860,7 +860,7 @@ class VideoRendererFFMPEG( object ):
             
             ( w, h ) = self._target_resolution
             
-            frame_of_data = self.process_reader.ReadChunk()
+            frame_of_data = self.process_reader.read_chunk()
             
             # we have selected the image track of a multi-track file like avifs. let's inspect and try again
             if len( frame_of_data ) != w * h * self.depth:

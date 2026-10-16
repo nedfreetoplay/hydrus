@@ -228,7 +228,7 @@ class ExecutableLocalProcessCall( ExecutableActualCall ):
         
         try:
             
-            ( stdout, stderr, returncode ) = HydrusSubprocess.RunSubprocess(
+            ( stdout, stderr, returncode ) = HydrusSubprocess.run_subprocess(
                 cmd,
                 timeout = timeout,
                 this_is_a_potentially_long_lived_external_guy = this_is_a_potentially_long_lived_external_guy,
@@ -244,7 +244,7 @@ class ExecutableLocalProcessCall( ExecutableActualCall ):
         # if 1 is ok (e.g. on like imagemagick diff apparently), we'll have to filter this
         if returncode != 0:
             
-            HydrusSubprocess.ReportBadReturnCode( cmd, returncode, stdout, stderr )
+            HydrusSubprocess.report_bad_return_code( cmd, returncode, stdout, stderr )
             
         
         # if this is a long-lived guy, no stdout/stderr processing
@@ -530,7 +530,7 @@ class ExecutableLocalProcessDefaultLaunchFile( ExecutableActualCall ):
             
             HydrusData.check_program_is_not_shutting_down()
             
-            HydrusSubprocess.RunSubprocess( cmd, this_is_a_potentially_long_lived_external_guy = not for_user_test )
+            HydrusSubprocess.run_subprocess( cmd, this_is_a_potentially_long_lived_external_guy = not for_user_test )
             
         
         return dict()

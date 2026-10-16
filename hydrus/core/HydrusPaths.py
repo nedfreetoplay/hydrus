@@ -845,7 +845,7 @@ def launch_directory(path):
             
             HydrusData.check_program_is_not_shutting_down()
             
-            HydrusSubprocess.RunSubprocess( cmd, this_is_a_potentially_long_lived_external_guy = True )
+            HydrusSubprocess.run_subprocess( cmd, this_is_a_potentially_long_lived_external_guy = True )
             
         
     
@@ -1471,7 +1471,7 @@ def open_file_location(path):
         
         HydrusData.check_program_is_not_shutting_down()
         
-        HydrusSubprocess.RunSubprocess( cmd, this_is_a_potentially_long_lived_external_guy = True )
+        HydrusSubprocess.run_subprocess( cmd, this_is_a_potentially_long_lived_external_guy = True )
         
     
     thread = threading.Thread( target = do_it )
