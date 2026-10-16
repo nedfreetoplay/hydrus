@@ -1648,7 +1648,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
                         cookies_text = f.read()
                         
                     
-                    ( os_file_handle, temp_path ) = HydrusTemp.GetTempPath( 'example_data' )
+                    ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path( 'example_data' )
                     
                     try:
                         
@@ -1662,7 +1662,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
                         
                     finally:
                         
-                        HydrusTemp.CleanUpTempPath( os_file_handle, temp_path )
+                        HydrusTemp.clean_up_temp_path( os_file_handle, temp_path )
                         
                     
                 except Exception as e2:

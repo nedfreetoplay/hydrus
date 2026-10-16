@@ -189,7 +189,7 @@ class Controller:
         
         self.db_dir = tempfile.mkdtemp()
         
-        self._hydrus_temp_dir = HydrusTemp.InitialiseHydrusTempDir()
+        self._hydrus_temp_dir = HydrusTemp.initialise_hydrus_temp_dir()
         
         global DB_DIR
         

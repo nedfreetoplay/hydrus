@@ -787,7 +787,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
         
         self.AddPrimaryURLs( ( file_url, ) )
         
-        ( os_file_handle, temp_path ) = HydrusTemp.GetTempPath( 'file_download' )
+        ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path( 'file_download' )
         
         try:
             
@@ -905,7 +905,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
             
         finally:
             
-            HydrusTemp.CleanUpTempPath( os_file_handle, temp_path )
+            HydrusTemp.clean_up_temp_path( os_file_handle, temp_path )
             
         
     
@@ -1257,7 +1257,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
             
             if CG.client_controller.new_options.GetBoolean( 'copy_import_files_to_temp_dir' ):
                 
-                ( os_file_handle, temp_path ) = HydrusTemp.GetTempPath( 'file_import' )
+                ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path( 'file_import' )
                 
                 try:
                     
@@ -1272,7 +1272,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                     
                 finally:
                     
-                    HydrusTemp.CleanUpTempPath( os_file_handle, temp_path )
+                    HydrusTemp.clean_up_temp_path( os_file_handle, temp_path )
                     
                 
             else:
@@ -1651,7 +1651,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                     
                     if len( parsed_posts ) == 0:
                         
-                        ( os_file_handle, temp_path ) = HydrusTemp.GetTempPath( 'empty_document_test' )
+                        ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path( 'empty_document_test' )
                         
                         it_was_a_real_file = False
                         
@@ -1677,7 +1677,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                             
                         finally:
                             
-                            HydrusTemp.CleanUpTempPath( os_file_handle, temp_path )
+                            HydrusTemp.clean_up_temp_path( os_file_handle, temp_path )
                             
                         
                         if not it_was_a_real_file:

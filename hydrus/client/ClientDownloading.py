@@ -211,7 +211,7 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
                         
                         if file_repository.IsFunctional():
                             
-                            ( os_file_handle, temp_path ) = HydrusTemp.GetTempPath( 'repo_file_import' )
+                            ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path( 'repo_file_import' )
                             
                             try:
                                 
@@ -245,7 +245,7 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
                                 
                             finally:
                                 
-                                HydrusTemp.CleanUpTempPath( os_file_handle, temp_path )
+                                HydrusTemp.clean_up_temp_path( os_file_handle, temp_path )
                                 
                             
                         

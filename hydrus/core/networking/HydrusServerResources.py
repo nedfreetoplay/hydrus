@@ -1188,7 +1188,7 @@ class HydrusResource( Resource ):
             
             ( os_file_handle, temp_path ) = request.temp_file_info
             
-            HydrusTemp.CleanUpTempPath( os_file_handle, temp_path )
+            HydrusTemp.clean_up_temp_path( os_file_handle, temp_path )
             
             del request.temp_file_info
             

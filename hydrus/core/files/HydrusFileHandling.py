@@ -172,7 +172,7 @@ def GenerateThumbnailNumPyAudio( path, target_resolution, mime, extra_descriptio
     
     thumbnail_numpy = None
     
-    ( os_file_handle, temp_path ) = HydrusTemp.GetTempPath( 'audio_image' )
+    ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path( 'audio_image' )
     
     try:
         
@@ -193,7 +193,7 @@ def GenerateThumbnailNumPyAudio( path, target_resolution, mime, extra_descriptio
         
     finally:
         
-        HydrusTemp.CleanUpTempPath( os_file_handle, temp_path )
+        HydrusTemp.clean_up_temp_path( os_file_handle, temp_path )
         
     
     return thumbnail_numpy
@@ -268,7 +268,7 @@ def GenerateThumbnailNumPyWeirdApplicationGubbins( path, target_resolution, mime
     
     if mime == HC.APPLICATION_CBZ or mime == HC.APPLICATION_EPUB:
         
-        ( os_file_handle, temp_path ) = HydrusTemp.GetTempPath( 'cover_page_thumb' )
+        ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path( 'cover_page_thumb' )
         
         try:
             
@@ -297,12 +297,12 @@ def GenerateThumbnailNumPyWeirdApplicationGubbins( path, target_resolution, mime
             
         finally:
             
-            HydrusTemp.CleanUpTempPath( os_file_handle, temp_path )
+            HydrusTemp.clean_up_temp_path( os_file_handle, temp_path )
             
         
     elif mime == HC.APPLICATION_CLIP:
         
-        ( os_file_handle, temp_path ) = HydrusTemp.GetTempPath( 'clip_thumb' )
+        ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path( 'clip_thumb' )
         
         try:
             
@@ -318,7 +318,7 @@ def GenerateThumbnailNumPyWeirdApplicationGubbins( path, target_resolution, mime
             
         finally:
             
-            HydrusTemp.CleanUpTempPath( os_file_handle, temp_path )
+            HydrusTemp.clean_up_temp_path( os_file_handle, temp_path )
             
         
     elif mime == HC.APPLICATION_KRITA:
@@ -362,7 +362,7 @@ def GenerateThumbnailNumPyWeirdApplicationGubbins( path, target_resolution, mime
         
     elif mime == HC.APPLICATION_PROCREATE:
         
-        ( os_file_handle, temp_path ) = HydrusTemp.GetTempPath( 'procreate_thumb' )
+        ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path( 'procreate_thumb' )
         
         try:
             
@@ -378,7 +378,7 @@ def GenerateThumbnailNumPyWeirdApplicationGubbins( path, target_resolution, mime
             
         finally:
             
-            HydrusTemp.CleanUpTempPath( os_file_handle, temp_path )
+            HydrusTemp.clean_up_temp_path( os_file_handle, temp_path )
             
         
     elif mime == HC.APPLICATION_PSD:
@@ -541,7 +541,7 @@ def GetFileInfo( path, mime = None, ok_to_look_for_hydrus_updates = False ):
     # keep this in the specific-first, general-last test order
     if mime == HC.APPLICATION_CBZ or mime == HC.APPLICATION_EPUB:
         
-        ( os_file_handle, temp_path ) = HydrusTemp.GetTempPath( 'coverpage_file' )
+        ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path( 'coverpage_file' )
         
         try:
             
@@ -557,7 +557,7 @@ def GetFileInfo( path, mime = None, ok_to_look_for_hydrus_updates = False ):
             
         finally:
             
-            HydrusTemp.CleanUpTempPath( os_file_handle, temp_path )
+            HydrusTemp.clean_up_temp_path( os_file_handle, temp_path )
             
         
     elif mime == HC.APPLICATION_CLIP:

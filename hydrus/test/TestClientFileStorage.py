@@ -185,7 +185,7 @@ class TestClientGranularisation( unittest.TestCase ):
     
     def test_2to3( self ):
         
-        test_dir = HydrusTemp.GetSubTempDir( 'test_granularisation_2to3' )
+        test_dir = HydrusTemp.get_sub_temp_dir( 'test_granularisation_2to3' )
         
         base_location = ClientFilesPhysical.FilesStorageBaseLocation( test_dir, 1 )
         
@@ -244,7 +244,7 @@ class TestClientGranularisation( unittest.TestCase ):
     
     def test_3to2( self ):
         
-        test_dir = HydrusTemp.GetSubTempDir( 'test_granularisation_3to2' )
+        test_dir = HydrusTemp.get_sub_temp_dir( 'test_granularisation_3to2' )
         
         base_location = ClientFilesPhysical.FilesStorageBaseLocation( test_dir, 1 )
         
@@ -303,7 +303,7 @@ class TestClientGranularisation( unittest.TestCase ):
     
     def test_cancel( self ):
         
-        test_dir = HydrusTemp.GetSubTempDir( 'test_granularisation_cancel' )
+        test_dir = HydrusTemp.get_sub_temp_dir( 'test_granularisation_cancel' )
         
         base_location = ClientFilesPhysical.FilesStorageBaseLocation( test_dir, 1 )
         
@@ -339,7 +339,7 @@ class TestClientGranularisation( unittest.TestCase ):
     
     def test_folder_creation_error( self ):
         
-        test_dir = HydrusTemp.GetSubTempDir( 'test_granularisation_cancel' )
+        test_dir = HydrusTemp.get_sub_temp_dir( 'test_granularisation_cancel' )
         
         base_location = ClientFilesPhysical.FilesStorageBaseLocation( test_dir, 1 )
         
@@ -375,7 +375,7 @@ class TestClientGranularisation( unittest.TestCase ):
     
     def test_2_detection( self ):
         
-        test_dir = HydrusTemp.GetSubTempDir( 'test_granularisation_2_detection' )
+        test_dir = HydrusTemp.get_sub_temp_dir( 'test_granularisation_2_detection' )
         
         base_location = ClientFilesPhysical.FilesStorageBaseLocation( test_dir, 1 )
         
@@ -396,7 +396,7 @@ class TestClientGranularisation( unittest.TestCase ):
     
     def test_3_detection( self ):
         
-        test_dir = HydrusTemp.GetSubTempDir( 'test_granularisation_3_detection' )
+        test_dir = HydrusTemp.get_sub_temp_dir( 'test_granularisation_3_detection' )
         
         base_location = ClientFilesPhysical.FilesStorageBaseLocation( test_dir, 1 )
         
@@ -417,7 +417,7 @@ class TestClientGranularisation( unittest.TestCase ):
     
     def test_mysterious_detection( self ):
         
-        test_dir = HydrusTemp.GetSubTempDir( 'test_granularisation_empty_detection' )
+        test_dir = HydrusTemp.get_sub_temp_dir( 'test_granularisation_empty_detection' )
         
         self.assertIs( ClientFilesPhysical.EstimateBaseLocationGranularity( test_dir ), None )
         
@@ -425,7 +425,7 @@ class TestClientGranularisation( unittest.TestCase ):
         
         #
         
-        test_dir = HydrusTemp.GetSubTempDir( 'test_granularisation_none_detection' )
+        test_dir = HydrusTemp.get_sub_temp_dir( 'test_granularisation_none_detection' )
         
         HydrusPaths.make_sure_directory_exists( os.path.join( test_dir, 'u wot mate' ) )
         

@@ -172,7 +172,7 @@ try:
         
         temp_dir = HydrusPaths.figure_out_temp_dir( result.temp_dir )
         
-        HydrusTemp.SetEnvTempDir( temp_dir )
+        HydrusTemp.set_env_temp_dir( temp_dir )
         
     
 except Exception as e:
