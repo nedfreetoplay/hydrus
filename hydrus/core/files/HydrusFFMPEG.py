@@ -189,7 +189,7 @@ def GetFFMPEGVersion():
     
     HydrusData.safe_print( message )
     
-    HydrusEnvironment.DumpEnv()
+    HydrusEnvironment.dump_env()
     
     global FFMPEG_NO_CONTENT_ERROR_PUBBED
     
@@ -244,7 +244,7 @@ def HandleFFMPEGNoContentAndGenerateException( path, stdout, stderr ):
         
         HydrusData.debug_print( message )
         
-        HydrusEnvironment.DumpEnv()
+        HydrusEnvironment.dump_env()
         
         FFMPEG_NO_CONTENT_ERROR_PUBBED = True
         

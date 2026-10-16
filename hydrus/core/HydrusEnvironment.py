@@ -2,12 +2,10 @@ import os
 
 from hydrus.core import HydrusData
 
-def DumpEnv( env = None ):
+def dump_env(env = None):
     
     if env is None:
-        
         env = os.environ.copy()
-        
     
     rows = []
     
@@ -22,13 +20,8 @@ def DumpEnv( env = None ):
             for sub_value in sub_values:
                 
                 rows.append( f'    {sub_value}' )
-                
             
         else:
-            
             rows.append( f'{key}: {value}' )
-            
-        
     
     HydrusData.ShowText( 'Full environment:\n' + '\n'.join( rows ) )
-    
