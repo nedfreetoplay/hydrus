@@ -4580,7 +4580,7 @@ class DB( HydrusDB.HydrusDB ):
             HydrusData.ShowText( 'A database exception looked like it could be a very serious \'database image is malformed\' error! Unless you know otherwise, please shut down the client immediately and check the \'Recovery->Help my db is broke\' document in the help.' )
             
         
-        if job.IsSynchronous():
+        if job.is_synchronous():
             
             db_traceback = 'Database ' + tb
             
@@ -4588,7 +4588,7 @@ class DB( HydrusDB.HydrusDB ):
             
             new_e = HydrusExceptions.DBException( e, first_line, db_traceback )
             
-            job.PutResult( new_e )
+            job.put_result( new_e )
             
         else:
             

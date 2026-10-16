@@ -897,7 +897,7 @@ class ParseFormulaHTML( ParseFormula ):
         
         serialisable_tag_rules = self._tag_rules.get_serialisable_tuple()
         
-        serialisable_string_processor = self._string_processor.GetSerialisableTuple()
+        serialisable_string_processor = self._string_processor.get_serialisable_tuple()
         
         return ( serialisable_tag_rules, self._content_to_fetch, self._attribute_to_fetch, self._name, serialisable_string_processor )
         

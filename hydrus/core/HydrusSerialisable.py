@@ -216,7 +216,7 @@ def create_from_serialisable_tuple(obj_tuple: tuple, raise_error_on_future_versi
         obj = SERIALISABLE_TYPES_TO_OBJECT_TYPES[ serialisable_type ]( name )
         
     
-    obj.InitialiseFromSerialisableInfo( version, serialisable_info, raise_error_on_future_version = raise_error_on_future_version )
+    obj.initialise_from_serialisable_info( version, serialisable_info, raise_error_on_future_version = raise_error_on_future_version )
     
     return obj
 

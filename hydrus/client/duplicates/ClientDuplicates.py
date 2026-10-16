@@ -131,7 +131,7 @@ class DuplicateContentMergeOptions( HydrusSerialisable.SerialisableBase ):
             self._rating_service_actions = [ ( service_key, action ) for ( service_key, action ) in self._rating_service_actions if services_manager.ServiceExists( service_key ) and services_manager.GetServiceType( service_key ) in HC.RATINGS_SERVICES ]
             
         
-        serialisable_tag_service_actions = [ ( service_key.hex(), action, tag_filter.GetSerialisableTuple() ) for ( service_key, action, tag_filter ) in self._tag_service_actions ]
+        serialisable_tag_service_actions = [ ( service_key.hex(), action, tag_filter.get_serialisable_tuple() ) for ( service_key, action, tag_filter ) in self._tag_service_actions ]
         serialisable_rating_service_actions = [ ( service_key.hex(), action ) for ( service_key, action ) in self._rating_service_actions ]
         
         serialisable_sync_note_import_options = self._sync_note_import_options.get_serialisable_tuple()

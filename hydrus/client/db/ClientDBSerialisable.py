@@ -696,7 +696,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
             
         else:
             
-            ( dump_type, version, serialisable_info ) = obj.GetSerialisableTuple()
+            ( dump_type, version, serialisable_info ) = obj.get_serialisable_tuple()
             
             if dump_type == HydrusSerialisable.SERIALISABLE_TYPE_NETWORK_SESSION_MANAGER:
                 

@@ -67,9 +67,9 @@ class PubSubEventCatcher(QC.QObject):
             
             if event.type() == PubSubEventType and isinstance( event, PubSubEvent ):
                 
-                if self._pubsub.WorkToDo():
+                if self._pubsub.work_to_do():
                     
-                    self._pubsub.Process()
+                    self._pubsub.process()
                     
                 
                 event.accept()
@@ -1769,10 +1769,8 @@ class Controller(HydrusController.HydrusController):
             self._closed_page_keys.discard( page_key )
     
     def report_last_session_loaded(self, gui_session):
-        
         if self._last_last_session_hash is None:
-            
-            self._last_last_session_hash = gui_session.GetSerialisedHash()
+            self._last_last_session_hash = gui_session.get_serialised_hash()
     
     def report_first_session_initialised(self):
         
@@ -2039,11 +2037,11 @@ class Controller(HydrusController.HydrusController):
     
     def save_gui_session(self, session):
         
-        name = session.GetName()
+        name = session.get_name()
         
         if name == CC.LAST_SESSION_SESSION_NAME:
             
-            session_hash = session.GetSerialisedHash()
+            session_hash = session.get_serialised_hash()
             
             # keep this in. we still don't want to overwrite backups if no changes have occurred
             if session_hash == self._last_last_session_hash:
