@@ -191,11 +191,11 @@ class Controller( HydrusController.HydrusController ):
         
         while not HG.model_shutdown:
             
-            if self._pubsub.WorkToDo():
+            if self._pubsub.work_to_do():
                 
                 try:
                     
-                    self._pubsub.Process()
+                    self._pubsub.process()
                     
                 except Exception as e:
                     
@@ -204,7 +204,7 @@ class Controller( HydrusController.HydrusController ):
                 
             else:
                 
-                self._pubsub.WaitOnPub()
+                self._pubsub.wait_on_pub()
                 
             
         

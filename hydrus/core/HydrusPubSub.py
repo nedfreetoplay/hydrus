@@ -8,7 +8,7 @@ from hydrus.core import HydrusProfiling
 
 class HydrusPubSub:
     
-    def __init__( self, valid_callable ):
+    def __init__(self, valid_callable):
         
         self._valid_callable = valid_callable
         
@@ -26,7 +26,7 @@ class HydrusPubSub:
         self._topics_to_objects = {}
         self._topics_to_method_names = {}
     
-    def _GetCallableTuples( self, topic ):
+    def _get_callable_tuples(self, topic):
         
         # this now does the obj as well so we have a strong direct ref to it throughout procesing
         
@@ -66,11 +66,11 @@ class HydrusPubSub:
         
         return callable_tuples
     
-    def CurrentlyIdle( self ):
+    def currently_idle(self):
         
         return self._i_am_idle.is_set()
     
-    def Process( self ):
+    def process(self):
         
         # only do one list of callables at a time
         # we don't want to map a topic to its callables until the previous topic's callables have been fully executed
@@ -99,7 +99,7 @@ class HydrusPubSub:
                     
                     # do all this _outside_ the lock, lol
                     
-                    callable_tuples = self._GetCallableTuples( topic )
+                    callable_tuples = self._get_callable_tuples( topic )
                     
                     # don't want to report the showtext we just send here!
                     not_a_report = topic != 'message'
@@ -150,7 +150,7 @@ class HydrusPubSub:
             
             self._i_am_idle.set()
     
-    def pub( self, topic, *args, **kwargs ):
+    def pub(self, topic, *args, **kwargs):
         
         if self._shutdown:
             
@@ -169,25 +169,25 @@ class HydrusPubSub:
         self._received_job_event.set()
         self._received_job_event.clear()
     
-    def pubimmediate( self, topic, *args, **kwargs ):
+    def pubimmediate(self, topic, *args, **kwargs):
         
         with self._lock:
             
-            callable_tuples = self._GetCallableTuples( topic )
+            callable_tuples = self._get_callable_tuples( topic )
             
         
         for ( obj, callable ) in callable_tuples:
             
             callable( *args, **kwargs )
     
-    def shutdown( self ):
+    def shutdown(self):
         
         self._shutdown = True
         
         self._received_job_event.set()
         self._i_am_idle.set()
     
-    def sub( self, object, method_name, topic ):
+    def sub(self, object, method_name, topic):
         
         with self._lock:
             
@@ -197,15 +197,15 @@ class HydrusPubSub:
             self._topics_to_objects[ topic ].add( object )
             self._topics_to_method_names[ topic ].add( method_name )
     
-    def WaitOnPub( self ):
+    def wait_on_pub(self):
         
         self._received_job_event.wait()
     
-    def WaitUntilFree( self ):
+    def wait_until_free(self):
         
         self._i_am_idle.wait()
     
-    def WorkToDo( self ):
+    def work_to_do(self):
         
         with self._lock:
             

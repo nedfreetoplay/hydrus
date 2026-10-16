@@ -283,7 +283,7 @@ class HydrusController:
         return True
     
     def currently_pub_subbing( self ) -> bool:
-        return not self._pubsub.CurrentlyIdle()
+        return not self._pubsub.currently_idle()
     
     def db_currently_doing_job( self ) -> bool:
         if self.db is None:
@@ -695,7 +695,7 @@ class HydrusController:
     
     def wait_until_model_free( self ) -> None:
         
-        self._pubsub.WaitUntilFree()
+        self._pubsub.wait_until_free()
         
         self.db.WaitUntilFree()
     
