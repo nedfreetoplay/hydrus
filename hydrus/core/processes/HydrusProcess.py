@@ -8,7 +8,7 @@ from hydrus.core import HydrusExceptions
 from hydrus.core import HydrusPSUtil
 from hydrus.core import HydrusText
 
-def GetSiblingProcessPorts( db_path, instance ):
+def get_sibling_process_ports(db_path, instance):
     
     path = os.path.join( db_path, instance + '_running' )
     
@@ -61,9 +61,8 @@ def GetSiblingProcessPorts( db_path, instance ):
         
     
     return None
-    
 
-def IsAlreadyRunning( db_path, instance ):
+def is_already_running(db_path, instance):
     
     if not HydrusPSUtil.PSUTIL_OK:
         
@@ -145,9 +144,8 @@ def IsAlreadyRunning( db_path, instance ):
         
     
     return False
-    
 
-def RecordRunningStart( db_path, instance ):
+def record_running_start(db_path, instance):
     
     if not HydrusPSUtil.PSUTIL_OK:
         
@@ -174,10 +172,8 @@ def RecordRunningStart( db_path, instance ):
     with open( path, 'w', encoding = 'utf-8' ) as f:
         
         f.write( record_string )
-        
-    
 
-def RestartProcess():
+def restart_process():
     
     time.sleep( 1 ) # time for ports to unmap
     
@@ -205,4 +201,3 @@ def RestartProcess():
         
     
     os.execv( exe, args )
-    

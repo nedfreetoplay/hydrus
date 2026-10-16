@@ -490,7 +490,7 @@ class HydrusController:
         
         self._i_own_running_file = True
         
-        HydrusProcess.RecordRunningStart( self.db_dir, self._name )
+        HydrusProcess.record_running_start( self.db_dir, self._name )
     
     def release_thread_slot( self, thread_type ):
         

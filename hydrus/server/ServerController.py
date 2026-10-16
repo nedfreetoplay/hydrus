@@ -26,7 +26,7 @@ from hydrus.server.networking import ServerServer
 
 def ProcessStartingAction( db_dir, action ):
     
-    already_running = HydrusProcess.IsAlreadyRunning( db_dir, 'server' )
+    already_running = HydrusProcess.is_already_running( db_dir, 'server' )
     
     if action == 'start':
         
@@ -89,7 +89,7 @@ def ShutdownSiblingInstance( db_dir ):
     
     try:
         
-        ports = HydrusProcess.GetSiblingProcessPorts( db_dir, 'server' )
+        ports = HydrusProcess.get_sibling_process_ports( db_dir, 'server' )
         
     except HydrusExceptions.CancelledException as e:
         
@@ -143,7 +143,7 @@ def ShutdownSiblingInstance( db_dir ):
             
             time_waited = 0
             
-            while HydrusProcess.IsAlreadyRunning( db_dir, 'server' ):
+            while HydrusProcess.is_already_running( db_dir, 'server' ):
                 
                 time.sleep( 1 )
                 

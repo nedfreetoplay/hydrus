@@ -310,6 +310,6 @@ def boot():
         
         from hydrus.core.processes import HydrusProcess
         
-        HydrusProcess.RestartProcess()
+        HydrusProcess.restart_process()
         
     

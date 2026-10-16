@@ -584,7 +584,7 @@ class Controller(HydrusController.HydrusController):
     
     def check_already_running(self):
         
-        while HydrusProcess.IsAlreadyRunning( self.db_dir, 'client' ):
+        while HydrusProcess.is_already_running( self.db_dir, 'client' ):
             
             self.frame_splash_status.SetText( 'client already running' )
             
@@ -608,7 +608,7 @@ class Controller(HydrusController.HydrusController):
             
             for i in range( 10, 0, -1 ):
                 
-                if not HydrusProcess.IsAlreadyRunning( self.db_dir, 'client' ):
+                if not HydrusProcess.is_already_running( self.db_dir, 'client' ):
                     
                     break
                     
