@@ -42,53 +42,47 @@ HASH_TYPE_SHA512 = 3 # 64 bytes long
 
 # And also feel free to contact me directly at hydrus_dev@proton.me if you need help.
 
-class HydrusRatingArchive( object ):
+class HydrusRatingArchive:
     
-    def __init__( self, path : str ) -> None:
+    def __init__(self, path : str) -> None:
         
         self._path = path
         
         if not os.path.exists( self._path ): create_db = True
         else: create_db = False
         
-        self._InitDBConnection()
+        self._init_db_connection()
         
-        if create_db: self._InitDB()
-        
+        if create_db: self._init_db()
     
-    def _InitDB( self ) -> None:
+    def _init_db(self) -> None:
         
         self._c.execute( 'CREATE TABLE hash_type ( hash_type INTEGER );', )
         
         self._c.execute( 'CREATE TABLE number_of_stars ( number_of_stars INTEGER );', )
         
         self._c.execute( 'CREATE TABLE ratings ( hash BLOB PRIMARY KEY, rating REAL );' )
-        
     
-    def _InitDBConnection( self ) -> None:
+    def _init_db_connection(self) -> None:
         
         self._db = sqlite3.connect( self._path, isolation_level = None, detect_types = sqlite3.PARSE_DECLTYPES )
         
         self._c = self._db.cursor()
-        
     
-    def BeginBigJob( self ) -> None:
+    def begin_big_job(self) -> None:
         
         self._c.execute( 'BEGIN IMMEDIATE;' )
-        
     
-    def CommitBigJob( self ) -> None:
+    def commit_big_job(self) -> None:
         
         self._c.execute( 'COMMIT;' )
         self._c.execute( 'VACUUM;' )
-        
     
-    def DeleteRating( self, hash ) -> None:
+    def delete_rating(self, hash) -> None:
         
         self._c.execute( 'DELETE FROM ratings WHERE hash = ?;', ( sqlite3.Binary( hash ), ) )
-        
     
-    def GetHashType( self ):
+    def get_hash_type(self):
         
         result = self._c.execute( 'SELECT hash_type FROM hash_type;' ).fetchone()
         
@@ -110,7 +104,7 @@ class HydrusRatingArchive( object ):
                 raise Exception( 'This archive has non-standard hashes. Something is wrong.' )
                 
             
-            self.SetHashType( hash_type )
+            self.set_hash_type( hash_type )
             
             return hash_type
             
@@ -119,10 +113,8 @@ class HydrusRatingArchive( object ):
             ( hash_type, ) = result
             
             return hash_type
-            
-        
     
-    def GetName( self ):
+    def get_name(self):
         
         filename = os.path.basename( self._path )
         
@@ -132,9 +124,8 @@ class HydrusRatingArchive( object ):
             
         
         return filename
-        
     
-    def GetNumberOfStars( self ) -> int:
+    def get_number_of_stars(self) -> int:
         
         result = self._c.execute( 'SELECT number_of_stars FROM number_of_stars;' ).fetchone()
         
@@ -147,10 +138,8 @@ class HydrusRatingArchive( object ):
             ( number_of_stars, ) = result
             
             return number_of_stars
-            
-        
     
-    def GetRating( self, hash ):
+    def get_rating(self, hash):
         
         result = self._c.execute( 'SELECT rating FROM ratings WHERE hash = ?;', ( sqlite3.Binary( hash ), ) ).fetchone()
         
@@ -163,10 +152,8 @@ class HydrusRatingArchive( object ):
             ( rating, ) = result
             
             return rating
-            
-        
     
-    def HasHash( self, hash ) -> bool:
+    def has_hash(self, hash) -> bool:
         
         result = self._c.execute( 'SELECT 1 FROM ratings WHERE hash = ?;', ( sqlite3.Binary( hash ), ) ).fetchone()
         
@@ -177,33 +164,25 @@ class HydrusRatingArchive( object ):
         else:
             
             return True
-            
-        
     
-    def IterateRatings( self ):
+    def iterate_ratings(self):
         
         for row in self._c.execute( 'SELECT hash, rating FROM ratings;' ):
             
             yield row
-            
-        
     
-    def SetHashType( self, hash_type ) -> None:
+    def set_hash_type(self, hash_type) -> None:
         
         self._c.execute( 'DELETE FROM hash_type;' )
         
         self._c.execute( 'INSERT INTO hash_type ( hash_type ) VALUES ( ? );', ( hash_type, ) )
-        
     
-    def SetNumberOfStars( self, number_of_stars : int ) -> None:
+    def set_number_of_stars(self, number_of_stars : int) -> None:
         
         self._c.execute( 'DELETE FROM number_of_stars;' )
         
         self._c.execute( 'INSERT INTO number_of_stars ( number_of_stars ) VALUES ( ? );', ( number_of_stars, ) )
-        
     
-    def SetRating( self, hash, rating ):
+    def set_rating(self, hash, rating):
         
         self._c.execute( 'REPLACE INTO ratings ( hash, rating ) VALUES ( ?, ? );', ( sqlite3.Binary( hash ), rating ) )
-        
-    
