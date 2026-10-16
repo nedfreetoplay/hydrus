@@ -151,7 +151,7 @@ class TestSingleFileMetadataRouter( unittest.TestCase ):
         os.unlink( expected_input_path_1 )
         os.unlink( expected_input_path_2 )
         
-        result = HydrusText.DeserialiseNewlinedTexts( text )
+        result = HydrusText.deserialise_newlined_texts( text )
         expected_result = string_processor.ProcessStrings( set( rows_1 ).union( rows_2 ) )
         
         self.assertTrue( len( result ) > 0 )
@@ -947,7 +947,7 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
         
         os.unlink( expected_output_path )
         
-        self.assertEqual( set( rows ), set( HydrusText.DeserialiseNewlinedTexts( text ) ) )
+        self.assertEqual( set( rows ), set( HydrusText.deserialise_newlined_texts( text ) ) )
         
         # with suffix
         
@@ -966,7 +966,7 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
         
         os.unlink( expected_output_path )
         
-        self.assertEqual( set( rows ), set( HydrusText.DeserialiseNewlinedTexts( text ) ) )
+        self.assertEqual( set( rows ), set( HydrusText.deserialise_newlined_texts( text ) ) )
         
         # diff separator
         
@@ -1004,7 +1004,7 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
         
         os.unlink( expected_output_path )
         
-        self.assertEqual( set( rows ), set( HydrusText.DeserialiseNewlinedTexts( text ) ) )
+        self.assertEqual( set( rows ), set( HydrusText.deserialise_newlined_texts( text ) ) )
         
     
     def test_media_json( self ):

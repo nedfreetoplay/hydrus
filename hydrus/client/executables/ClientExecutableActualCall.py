@@ -321,7 +321,7 @@ class ExecutableLocalProcessCall( ExecutableActualCall ):
             
             bad_strings = [ f'"{ClientExecutablePipelines.parameter_types_to_strs[ parameter_processing_rule.parameter_type]}"' for parameter_processing_rule in unused_parameters ]
             
-            summary = HydrusText.ConvertManyStringsToNiceInsertableHumanSummarySingleLine( bad_strings, 'parameters' )
+            summary = HydrusText.convert_many_strings_to_nice_insertable_human_summary_single_line( bad_strings, 'parameters' )
             
             raise HydrusExceptions.ExecutableException( f'Was set to ask for certain input parameters, but then could not find the associated replacement tokens in the parameter list. Missing parameters were: {summary}' )
             

@@ -120,7 +120,7 @@ class GalleryImport( HydrusSerialisable.SerialisableBase ):
     
     def _DelayWork( self, time_delta, reason ):
         
-        reason = HydrusText.GetFirstLine( reason )
+        reason = HydrusText.get_first_line( reason )
         
         self._no_work_until = HydrusTime.GetNow() + time_delta
         self._no_work_until_reason = reason
@@ -280,7 +280,7 @@ class GalleryImport( HydrusSerialisable.SerialisableBase ):
                 
                 with self._lock:
                     
-                    self._files_status = HydrusText.GetFirstLine( text )
+                    self._files_status = HydrusText.get_first_line( text )
                     
                 
             
@@ -361,7 +361,7 @@ class GalleryImport( HydrusSerialisable.SerialisableBase ):
             
             with self._lock:
                 
-                self._gallery_status = HydrusText.GetFirstLine( text )
+                self._gallery_status = HydrusText.get_first_line( text )
                 
             
         

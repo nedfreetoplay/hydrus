@@ -168,7 +168,7 @@ def GetIPTCDict( pil_image: PILImage.Image ) -> dict | None:
                 
                 # ok sometimes this guy is utf-8, but it can other things hooray!! the ( 1, 90 ), 'Coded Character Set' specifies it otherwise
                 # best practical solution is to try ur best
-                ( clean_value, likely_encoding ) = HydrusText.NonFailingUnicodeDecode( b, 'utf-8' )
+                ( clean_value, likely_encoding ) = HydrusText.non_failing_unicode_decode( b, 'utf-8' )
                 
             except Exception as e:
                 

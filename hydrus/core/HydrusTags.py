@@ -65,7 +65,7 @@ def sort_numeric_tags(tags):
     
     tags = list( tags )
     
-    tags.sort( key = HydrusText.HumanTextSortKey )
+    tags.sort( key = HydrusText.human_text_sort_key )
     
     return tags
 

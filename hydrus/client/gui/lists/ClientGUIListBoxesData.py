@@ -194,7 +194,7 @@ class ListBoxItemTextTag( ListBoxItem ):
         
         if isinstance( other, ListBoxItemTextTag ):
             
-            return HydrusText.HumanTextSortKey( self.GetCopyableTexts()[0] ) < HydrusText.HumanTextSortKey( other.GetCopyableTexts()[0] )
+            return HydrusText.human_text_sort_key( self.GetCopyableTexts()[0] ) < HydrusText.human_text_sort_key( other.GetCopyableTexts()[0] )
             
         
         return NotImplemented
@@ -357,7 +357,7 @@ class ListBoxItemTextTagWithCounts( ListBoxItemTextTag ):
         
         if isinstance( other, ListBoxItemTextTagWithCounts ):
             
-            return HydrusText.HumanTextSortKey( self.GetCopyableTexts( with_counts = False )[0] ) < HydrusText.HumanTextSortKey( other.GetCopyableTexts( with_counts = False )[0] )
+            return HydrusText.human_text_sort_key( self.GetCopyableTexts( with_counts = False )[0] ) < HydrusText.human_text_sort_key( other.GetCopyableTexts( with_counts = False )[0] )
             
         
         return NotImplemented
@@ -499,7 +499,7 @@ class ListBoxItemPredicate( ListBoxItem ):
         
         if isinstance( other, ListBoxItem ):
             
-            return HydrusText.HumanTextSortKey( self.GetCopyableTexts()[0] ) < HydrusText.HumanTextSortKey( other.GetCopyableTexts()[0] )
+            return HydrusText.human_text_sort_key( self.GetCopyableTexts()[0] ) < HydrusText.human_text_sort_key( other.GetCopyableTexts()[0] )
             
         
         return NotImplemented

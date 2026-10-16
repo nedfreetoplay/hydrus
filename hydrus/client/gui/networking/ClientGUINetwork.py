@@ -1745,7 +1745,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             domains = sorted( { domain for ( name, value, domain, path, expires ) in cookie_data_flat } )
             
-            message = f'About to import {HydrusNumbers.to_human_int(len(cookie_data_flat))} cookies for the domains {HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( domains )} Is that ok?'
+            message = f'About to import {HydrusNumbers.to_human_int(len(cookie_data_flat))} cookies for the domains {HydrusText.convert_many_strings_to_nice_insertable_human_summary( domains )} Is that ok?'
             
             result = ClientGUIDialogsQuick.GetYesNo( self, message = message )
             
@@ -2176,7 +2176,7 @@ class ReviewNetworkSessionPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             domains = sorted( { domain for ( name, value, domain, path, expires ) in cookie_data_flat } )
             
-            message = f'About to import {HydrusNumbers.to_human_int(len(cookie_data_flat))} cookies for the domains {HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( domains, no_trailing_whitespace = True )}. Is that ok?'
+            message = f'About to import {HydrusNumbers.to_human_int(len(cookie_data_flat))} cookies for the domains {HydrusText.convert_many_strings_to_nice_insertable_human_summary( domains, no_trailing_whitespace = True )}. Is that ok?'
             
             result = ClientGUIDialogsQuick.GetYesNo( self, message = message )
             

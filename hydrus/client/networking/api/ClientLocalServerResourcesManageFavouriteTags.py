@@ -69,7 +69,7 @@ class HydrusResourceClientAPIRestrictedManageFavouriteTagsSetFavouriteTags( Hydr
             favourite_tags.difference_update( remove_tags )
             
         
-        favourite_tags = sorted( favourite_tags, key = HydrusText.HumanTextSortKey )
+        favourite_tags = sorted( favourite_tags, key = HydrusText.human_text_sort_key )
         
         CG.client_controller.new_options.SetStringList( 'favourite_tags', favourite_tags )
         

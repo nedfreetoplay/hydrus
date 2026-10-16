@@ -423,7 +423,7 @@ class EditProcessCallExecutableAndParametersPanel( ClientGUIScrolledPanels.EditP
         if len( executable_parameter_templates ) > 0:
             
             message += ':'
-            message += HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( executable_parameter_templates, do_sort = False, no_trailing_whitespace = True )
+            message += HydrusText.convert_many_strings_to_nice_insertable_human_summary( executable_parameter_templates, do_sort = False, no_trailing_whitespace = True )
             
         else:
             

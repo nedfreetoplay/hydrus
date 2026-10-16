@@ -53,7 +53,7 @@ def GetExportableURLsString( gallery_seed_log: ClientImportGallerySeeds.GalleryS
     
 def GetURLsFromURLsString( urls_string ):
     
-    urls = HydrusText.DeserialiseNewlinedTexts( urls_string )
+    urls = HydrusText.deserialise_newlined_texts( urls_string )
     
     return urls
     
@@ -333,7 +333,7 @@ class EditGallerySeedLogPanel( ClientGUIScrolledPanels.EditPanel ):
         pretty_added = HydrusTime.TimestampToPrettyTimeDelta( added )
         pretty_modified = HydrusTime.TimestampToPrettyTimeDelta( modified )
         
-        pretty_note = HydrusText.GetFirstLine( note )
+        pretty_note = HydrusText.get_first_line( note )
         
         return ( pretty_gallery_seed_index, pretty_url, pretty_status, pretty_added, pretty_modified, pretty_note )
         

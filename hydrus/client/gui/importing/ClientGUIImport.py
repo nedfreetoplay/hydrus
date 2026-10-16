@@ -643,7 +643,7 @@ class FilenameTaggingOptionsPanel( QW.QWidget ):
             
             try:
                 
-                tags = HydrusText.DeserialiseNewlinedTexts( raw_text )
+                tags = HydrusText.deserialise_newlined_texts( raw_text )
                 
                 tags = HydrusTags.clean_tags( tags )
                 
@@ -1175,7 +1175,7 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 processed_strings = list( processed_strings )
                 
-                HydrusText.HumanTextSort( processed_strings )
+                HydrusText.human_text_sort( processed_strings )
                 
                 exporter = router.GetExporter()
                 
@@ -1193,11 +1193,11 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     if len( processed_strings ) == 1:
                         
-                        processed_strings = [ '1 note: ' + HydrusText.ElideText( HydrusText.GetFirstLineSummary( processed_strings[0] ), 64  ) ]
+                        processed_strings = [ '1 note: ' + HydrusText.elide_text( HydrusText.get_first_line_summary( processed_strings[0] ), 64  ) ]
                         
                     else:
                         
-                        summaries = [ HydrusText.ElideText( HydrusText.GetFirstLineSummary( s ), 32 ) for s in processed_strings ]
+                        summaries = [ HydrusText.elide_text( HydrusText.get_first_line_summary( s ), 32 ) for s in processed_strings ]
                         
                         processed_strings = [ f'{HydrusNumbers.to_human_int(len( processed_strings ))} notes: ' + ', '.join( summaries ) ]
                         
@@ -1206,11 +1206,11 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     if len( processed_strings ) == 1:
                         
-                        processed_strings = [ '1 URL: ' + HydrusText.ElideText( HydrusText.GetFirstLineSummary( processed_strings[0] ), 64  ) ]
+                        processed_strings = [ '1 URL: ' + HydrusText.elide_text( HydrusText.get_first_line_summary( processed_strings[0] ), 64  ) ]
                         
                     else:
                         
-                        summaries = [ HydrusText.ElideText( HydrusText.GetFirstLineSummary( s ), 32 ) for s in processed_strings ]
+                        summaries = [ HydrusText.elide_text( HydrusText.get_first_line_summary( s ), 32 ) for s in processed_strings ]
                         
                         processed_strings = [ f'{HydrusNumbers.to_human_int(len( processed_strings ))} URLs: ' + ', '.join( summaries ) ]
                         

@@ -687,7 +687,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                         
                         [ ( tag, count ) ] = tag_counts
                         
-                        text = '{} "{}" for {} files'.format( choice_text_prefix, HydrusText.ElideText( tag, 64 ), HydrusNumbers.to_human_int( count ) )
+                        text = '{} "{}" for {} files'.format( choice_text_prefix, HydrusText.elide_text( tag, 64 ), HydrusNumbers.to_human_int( count ) )
                         
                     else:
                         
@@ -1276,7 +1276,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                         
                         message = f'Are you sure you want to {verb} these tags:'
                         message += '\n' * 2
-                        message += '\n'.join( ( HydrusText.ElideText( tag, 64 ) for tag in tags ) )
+                        message += '\n'.join( ( HydrusText.elide_text( tag, 64 ) for tag in tags ) )
                         
                     else:
                         

@@ -1052,7 +1052,7 @@ class EditFileNotesPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolle
             current_page = typing.cast( QW.QPlainTextEdit, current_page )
             
             name = self._notebook.tabText( self._notebook.currentIndex() )
-            note_text = HydrusText.CleanNoteText( current_page.toPlainText() )
+            note_text = HydrusText.clean_note_text( current_page.toPlainText() )
             
             names_to_notes = { name : note_text }
             
@@ -1070,7 +1070,7 @@ class EditFileNotesPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolle
             
         else:
             
-            names_and_notes = sorted( names_to_notes.items(), key = lambda x : HydrusText.HumanTextSortKey( x[0] ) )
+            names_and_notes = sorted( names_to_notes.items(), key = lambda x : HydrusText.human_text_sort_key( x[0] ) )
             
             text = '\n\n\n\n'.join( ( name + '\n\n' + note_text for ( name, note_text ) in names_and_notes ) )
             
@@ -1096,7 +1096,7 @@ class EditFileNotesPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolle
         
         current_page = typing.cast( QW.QPlainTextEdit, current_page )
         
-        note_text = HydrusText.CleanNoteText( current_page.toPlainText() )
+        note_text = HydrusText.clean_note_text( current_page.toPlainText() )
         
         urls = re.findall(r'https?://[^\s<>"\']+', note_text )
         
@@ -1286,7 +1286,7 @@ class EditFileNotesPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolle
     
     def GetValue( self ) -> tuple[ dict[ str, str ], set[ str ] ]:
         
-        names_to_notes = { self._notebook.tabText( i ) : HydrusText.CleanNoteText( typing.cast( QW.QPlainTextEdit, self._notebook.widget( i ) ).toPlainText() ) for i in range( self._notebook.count() ) }
+        names_to_notes = { self._notebook.tabText( i ) : HydrusText.clean_note_text( typing.cast( QW.QPlainTextEdit, self._notebook.widget( i ) ).toPlainText() ) for i in range( self._notebook.count() ) }
         
         names_to_notes = { name : text for ( name, text ) in names_to_notes.items() if text != '' }
         
@@ -1925,7 +1925,7 @@ class EditURLsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPane
         
         try:
             
-            urls = HydrusText.DeserialiseNewlinedTexts( raw_text )
+            urls = HydrusText.deserialise_newlined_texts( raw_text )
             
             self._EnterURLs( urls, only_add = True )
             

@@ -128,7 +128,7 @@ def GetAllFilePaths( path: str, search_subdirectories: bool, clear_out_sidecars 
         jobs_to_process = next_jobs_to_process
         
     
-    HydrusText.HumanTextSort( file_paths )
+    HydrusText.human_text_sort( file_paths )
     
     PopulateComparableSidecarPrefixes( file_paths, comparable_sidecar_prefixes )
     

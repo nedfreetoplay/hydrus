@@ -1318,7 +1318,7 @@ class HistoryPanel( QW.QWidget ):
     def _CreatePageRow( self, history_index: int, page_key ):
         
         ( page_name, tooltip ) = self._model.GetPageNameAndTooltipFromPageKey( page_key )
-        page_name = HydrusText.ElideText( page_name, 100, elide_center = True )
+        page_name = HydrusText.elide_text( page_name, 100, elide_center = True )
         
         row = QW.QWidget( self._page_list )
         hbox = QW.QHBoxLayout( row )

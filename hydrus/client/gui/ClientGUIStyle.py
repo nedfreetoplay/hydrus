@@ -72,7 +72,7 @@ def GetAvailableStyles():
     
     # so eventually expand this to do QStylePlugin or whatever we are doing to add more QStyles
     
-    return sorted( QW.QStyleFactory.keys(), key = HydrusText.HumanTextSortKey )
+    return sorted( QW.QStyleFactory.keys(), key = HydrusText.human_text_sort_key )
     
 
 def GetAvailableStyleSheets():
@@ -91,7 +91,7 @@ def GetAvailableStyleSheets():
             
         
     
-    HydrusText.HumanTextSort( stylesheet_filenames )
+    HydrusText.human_text_sort( stylesheet_filenames )
     
     return stylesheet_filenames
     

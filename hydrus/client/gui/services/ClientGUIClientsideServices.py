@@ -1485,7 +1485,7 @@ class EditServiceStarRatingsSubPanel( ClientGUICommon.StaticBox ):
         
         if svg_ratings_are_ok:
             
-            for name in sorted( CC.global_icons().user_icons.keys(), key = HydrusText.HumanTextSortKey ):
+            for name in sorted( CC.global_icons().user_icons.keys(), key = HydrusText.human_text_sort_key ):
                 
                 self._rating_svg.addItem( name, name )
                 

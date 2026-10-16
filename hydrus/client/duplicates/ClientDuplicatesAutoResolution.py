@@ -1509,7 +1509,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
         
         rules = CG.client_controller.read( 'duplicates_auto_resolution_rules_with_counts' )
         
-        rules = sorted( rules, key = lambda r: HydrusText.HumanTextSortKey( r.GetName() ) )
+        rules = sorted( rules, key = lambda r: HydrusText.human_text_sort_key( r.GetName() ) )
         
         with self._lock:
             

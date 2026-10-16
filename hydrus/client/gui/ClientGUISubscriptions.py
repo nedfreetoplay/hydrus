@@ -1145,7 +1145,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            pasted_query_texts = HydrusText.DeserialiseNewlinedTexts( raw_text )
+            pasted_query_texts = HydrusText.deserialise_newlined_texts( raw_text )
             
         except Exception as e:
             
@@ -1184,13 +1184,13 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
         
         DEAD_query_headers = { query_header for query_header in self._query_headers.GetData() if query_header.GetQueryText().lower() in already_existing_query_header_texts and query_header.IsDead() }
         
-        DEAD_human_names = sorted( [ query_header.GetFullHumanName() for query_header in DEAD_query_headers ], key = HydrusText.HumanTextSortKey )
+        DEAD_human_names = sorted( [ query_header.GetFullHumanName() for query_header in DEAD_query_headers ], key = HydrusText.human_text_sort_key )
         
-        already_existing_human_names = sorted( already_existing_human_names, key = HydrusText.HumanTextSortKey )
+        already_existing_human_names = sorted( already_existing_human_names, key = HydrusText.human_text_sort_key )
         
         non_DEAD_already_existing_human_names = [ name for name in already_existing_human_names if name not in DEAD_human_names ]
         
-        new_query_texts = sorted( new_query_texts, key = HydrusText.HumanTextSortKey )
+        new_query_texts = sorted( new_query_texts, key = HydrusText.human_text_sort_key )
         
         if len( pasted_query_texts ) == 1:
             
@@ -1227,7 +1227,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 
             
-            yesno_message += HydrusText.ConvertManyStringsToNiceInsertableHumanSummary(new_query_texts, no_trailing_whitespace = True )
+            yesno_message += HydrusText.convert_many_strings_to_nice_insertable_human_summary(new_query_texts, no_trailing_whitespace = True )
             yesno_message += '\n\n'
             
         
@@ -1256,7 +1256,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 
             
-            yesno_message += HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( non_DEAD_already_existing_human_names, no_trailing_whitespace = True )
+            yesno_message += HydrusText.convert_many_strings_to_nice_insertable_human_summary( non_DEAD_already_existing_human_names, no_trailing_whitespace = True )
             yesno_message += '\n\n'
             
         
@@ -1285,7 +1285,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 
             
-            yesno_message += HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( DEAD_human_names, no_trailing_whitespace = True )
+            yesno_message += HydrusText.convert_many_strings_to_nice_insertable_human_summary( DEAD_human_names, no_trailing_whitespace = True )
             yesno_message += '\n\n'
             
         
@@ -3670,7 +3670,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
         elif action == 'half':
             
-            query_headers = sorted( subscription.GetQueryHeaders(), key = lambda q: HydrusText.HumanTextSortKey( q.GetQueryText() ) )
+            query_headers = sorted( subscription.GetQueryHeaders(), key = lambda q: HydrusText.human_text_sort_key( q.GetQueryText() ) )
             
             query_headers_to_extract = query_headers[ : len( query_headers ) // 2 ]
             

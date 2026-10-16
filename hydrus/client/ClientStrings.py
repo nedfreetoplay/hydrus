@@ -1268,7 +1268,7 @@ class StringSorter( StringProcessingStep ):
                 
                 if self._sort_type == CONTENT_PARSER_SORT_TYPE_HUMAN_SORT:
                     
-                    sort_convert = HydrusText.HumanTextSortKey
+                    sort_convert = HydrusText.human_text_sort_key
                     
                 
                 key = lambda k_s: sort_convert( data_convert( k_s ) )
@@ -1467,7 +1467,7 @@ class StringTagFilter( StringProcessingStep ):
         
         tags = self._tag_filter.filter( tags, apply_unnamespaced_rules_to_namespaced_tags = True )
         
-        tags = sorted( tags, key = HydrusText.HumanTextSortKey )
+        tags = sorted( tags, key = HydrusText.human_text_sort_key )
         
         return tags
         

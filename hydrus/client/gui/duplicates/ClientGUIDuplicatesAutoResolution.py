@@ -193,7 +193,7 @@ class EditDuplicatesAutoResolutionRulesPanel( ClientGUIScrolledPanels.EditPanel 
         
         ( name, rule_summary, pair_selector_summary, action_summary, search_status, pretty_operation_mode ) = self._ConvertRuleToDisplayTuple( duplicates_auto_resolution_rule )
         
-        sort_name = HydrusText.HumanTextSortKey( name )
+        sort_name = HydrusText.human_text_sort_key( name )
         
         return ( sort_name, rule_summary, pair_selector_summary, action_summary, search_status, pretty_operation_mode )
         
@@ -1574,7 +1574,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
         
         ( name, search_status, running_status ) = self._ConvertRuleToDisplayTuple( duplicates_auto_resolution_rule )
         
-        sort_name = HydrusText.HumanTextSortKey( name )
+        sort_name = HydrusText.human_text_sort_key( name )
         
         return ( sort_name, search_status, running_status )
         

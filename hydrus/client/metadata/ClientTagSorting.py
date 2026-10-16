@@ -131,7 +131,7 @@ def lexicographic_key( tag ):
     
     ( namespace, subtag ) = HydrusTags.split_tag( tag )
     
-    comparable_subtag = HydrusText.HumanTextSortKey( subtag )
+    comparable_subtag = HydrusText.human_text_sort_key( subtag )
     
     if namespace == '':
         
@@ -139,7 +139,7 @@ def lexicographic_key( tag ):
         
     else:
         
-        comparable_namespace = HydrusText.HumanTextSortKey( namespace )
+        comparable_namespace = HydrusText.human_text_sort_key( namespace )
         
         return ( comparable_namespace, comparable_subtag )
         
@@ -149,7 +149,7 @@ def subtag_lexicographic_key( tag ):
     
     ( namespace, subtag ) = HydrusTags.split_tag( tag )
     
-    comparable_subtag = HydrusText.HumanTextSortKey( subtag )
+    comparable_subtag = HydrusText.human_text_sort_key( subtag )
     
     return comparable_subtag
     
@@ -164,7 +164,7 @@ def namespace_az_key( tag ):
         
     else:
         
-        comparable_namespace = HydrusText.HumanTextSortKey( namespace )
+        comparable_namespace = HydrusText.human_text_sort_key( namespace )
         
         return ( 0, comparable_namespace )
         
@@ -201,7 +201,7 @@ def namespace_user_key_factory():
                 
             else:
                 
-                comparable_namespace = HydrusText.HumanTextSortKey( namespace )
+                comparable_namespace = HydrusText.human_text_sort_key( namespace )
                 
                 return ( any_namespace_index, comparable_namespace )
                 

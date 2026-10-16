@@ -170,7 +170,7 @@ class SpecificImportOptionsContainerButton( ClientGUICommon.ButtonWithMenuArrow 
         
         names_to_favourite_options_containers = CG.client_controller.import_options_manager.GetFavouriteImportOptionContainers()
         
-        names_in_order = sorted( names_to_favourite_options_containers.keys(), key = HydrusText.HumanTextSortKey )
+        names_in_order = sorted( names_to_favourite_options_containers.keys(), key = HydrusText.human_text_sort_key )
         
         #
         
@@ -277,7 +277,7 @@ class SpecificImportOptionsContainerButton( ClientGUICommon.ButtonWithMenuArrow 
         
         my_action = self.defaultAction()
         
-        my_action.setText( HydrusText.ElideText( label, 48 ) )
+        my_action.setText( HydrusText.elide_text( label, 48 ) )
         
         my_action.setToolTip( ClientGUIFunctions.WrapToolTip( tooltip ) )
         

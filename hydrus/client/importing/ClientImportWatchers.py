@@ -786,7 +786,7 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
             
             with self._lock:
                 
-                self._watcher_status = HydrusText.GetFirstLine( text )
+                self._watcher_status = HydrusText.get_first_line( text )
                 
             
         
@@ -794,7 +794,7 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
             
             with self._lock:
                 
-                self._subject = HydrusText.GetFirstLine( text )
+                self._subject = HydrusText.get_first_line( text )
                 
             
         
@@ -889,7 +889,7 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
     def _DelayWork( self, time_delta, reason ):
         
         self._no_work_until = HydrusTime.GetNow() + time_delta
-        self._no_work_until_reason = HydrusText.GetFirstLine( reason )
+        self._no_work_until_reason = HydrusText.get_first_line( reason )
         
     
     def _FileNetworkJobPresentationContextFactory( self, network_job ):
@@ -1178,7 +1178,7 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
             
             with self._lock:
                 
-                self._files_status = HydrusText.GetFirstLine( text )
+                self._files_status = HydrusText.get_first_line( text )
                 
             
         

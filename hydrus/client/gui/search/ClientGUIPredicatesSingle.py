@@ -1240,7 +1240,7 @@ class PanelPredicateSystemHash( PanelPredicateSystemSingle ):
                 
                 error_block = reason
                 error_block += '\n\n'
-                error_block += HydrusText.ConvertManyStringsToNiceInsertableHumanSummarySingleLine( list_of_lines, 'lines', do_sort = False )
+                error_block += HydrusText.convert_many_strings_to_nice_insertable_human_summary_single_line( list_of_lines, 'lines', do_sort = False )
                 
                 error_blocks.append( error_block )
                 
@@ -1334,7 +1334,7 @@ class PanelPredicateSystemHash( PanelPredicateSystemSingle ):
                     
                     error_block = reason
                     error_block += '\n'
-                    error_block += HydrusText.ConvertManyStringsToNiceInsertableHumanSummarySingleLine( list_of_lines, 'lines', do_sort = False )
+                    error_block += HydrusText.convert_many_strings_to_nice_insertable_human_summary_single_line( list_of_lines, 'lines', do_sort = False )
                     
                     error_blocks.append( error_block )
                     

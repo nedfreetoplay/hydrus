@@ -1,12 +1,11 @@
 import collections.abc
 
 try:
-    
     import chardet
     
     CHARDET_OK = True
     
-except Exception as e:
+except Exception:
     
     CHARDET_OK = False
     
@@ -55,7 +54,7 @@ HANGUL_FILLER_CHARACTER = '\u3164'
 
 HYDRUS_NOTE_NEWLINE = '\n'
 
-def CleanseImportText( text: str ):
+def cleanse_import_text(text: str):
     
     # the website has placed utf-16 characters here due to a failure to encode some emoji properly
     # we try to fix it
@@ -74,14 +73,12 @@ def CleanseImportText( text: str ):
         
     
     return text
-    
 
-def CleanseImportTexts( texts: collections.abc.Collection[ str ] ):
+def cleanse_import_texts(texts: collections.abc.Collection[str]):
     
-    return [ CleanseImportText( text ) for text in texts ]
-    
+    return [ cleanse_import_text( text ) for text in texts ]
 
-def CleanNoteText( t: str ):
+def clean_note_text(t: str):
     
     # trim leading and trailing whitespace
     
@@ -108,9 +105,8 @@ def CleanNoteText( t: str ):
         
     
     return t
-    
 
-def ConvertManyStringsToNiceInsertableHumanSummary( texts: collections.abc.Collection[ str ], do_sort: bool = True, no_trailing_whitespace = False ) -> str:
+def convert_many_strings_to_nice_insertable_human_summary(texts: collections.abc.Collection[str], do_sort: bool = True, no_trailing_whitespace = False) -> str:
     """
     The purpose of this guy is to convert your list of 20 subscription names or whatever to something you can present to the user without making a giganto tall dialog.
     """
@@ -118,7 +114,7 @@ def ConvertManyStringsToNiceInsertableHumanSummary( texts: collections.abc.Colle
     
     if do_sort:
         
-        HumanTextSort( texts_list )
+        human_text_sort( texts_list )
         
     
     if len( texts_list ) == 1:
@@ -200,11 +196,8 @@ def ConvertManyStringsToNiceInsertableHumanSummary( texts: collections.abc.Colle
         else:
             
             return f'\n\n{t}\n\n'
-            
-        
-    
 
-def ConvertManyStringsToNiceInsertableHumanSummarySingleLine( texts: collections.abc.Collection[ str ], collective_description_noun: str, do_sort: bool = True ) -> str:
+def convert_many_strings_to_nice_insertable_human_summary_single_line(texts: collections.abc.Collection[str], collective_description_noun: str, do_sort: bool = True) -> str:
     """
     The purpose of this guy is to convert your list of 20 subscription names or whatever to something you can present to the user without making a giganto tall dialog.
     Suitable for a menu!
@@ -218,7 +211,7 @@ def ConvertManyStringsToNiceInsertableHumanSummarySingleLine( texts: collections
     
     if do_sort:
         
-        HumanTextSort( texts_list )
+        human_text_sort( texts_list )
         
     
     LINE_NO_LONGER_THAN = 48
@@ -258,32 +251,26 @@ def ConvertManyStringsToNiceInsertableHumanSummarySingleLine( texts: collections
             else:
                 
                 return f'{HydrusNumbers.to_human_int( num_texts )} {collective_description_noun}'
-                
-            
-        
-    
 
-def HexFilter( text ):
+def hex_filter(text):
     
     text = text.lower()
     
     text = re.sub( '[^0123456789abcdef]', '', text )
     
     return text
-    
 
-def DeserialiseNewlinedTexts( text ):
+def deserialise_newlined_texts(text):
     
     texts = text.splitlines()
     
-    texts = [ StripIOInputLine( line ) for line in texts ]
+    texts = [ strip_io_input_line( line ) for line in texts ]
     
     texts = [ line for line in texts if line != '' ]
     
     return texts
-    
 
-def ElideText( text, max_length, elide_center = False ):
+def elide_text(text, max_length, elide_center = False):
     
     if len( text ) > max_length:
         
@@ -300,9 +287,8 @@ def ElideText( text, max_length, elide_center = False ):
         
     
     return text
-    
 
-def GetFirstLine( text: str | None ) -> str:
+def get_first_line(text: str | None) -> str:
     
     if text is None:
         
@@ -316,10 +302,8 @@ def GetFirstLine( text: str | None ) -> str:
     else:
         
         return ''
-        
-    
 
-def GetFirstLineSummary( text: str | None ) -> str:
+def get_first_line_summary(text: str | None) -> str:
     
     if text is None:
         
@@ -342,10 +326,8 @@ def GetFirstLineSummary( text: str | None ) -> str:
     else:
         
         return ''
-        
-    
 
-def GenerateHumanTextSortKey():
+def generate_human_text_sort_key():
     """
     Solves the 19, 20, 200, 21, 22 issue when sorting 'Page 21.jpg' type strings.
     Breaks the string into groups of text and int (i.e. ( ( "Page ", 0 ), ( '', 21 ), ( ".jpg", 0 ) ) ).
@@ -357,16 +339,14 @@ def GenerateHumanTextSortKey():
     split_alphanum = lambda t: tuple( ( convert( sub_t ) for sub_t in re.split( '([0-9]+)', t.casefold() ) ) )
     
     return split_alphanum
-    
 
-HumanTextSortKey = GenerateHumanTextSortKey()
+human_text_sort_key = generate_human_text_sort_key()
 
-def HumanTextSort( texts ):
+def human_text_sort(texts):
     
-    texts.sort( key = HumanTextSortKey ) 
-    
+    texts.sort( key = human_text_sort_key ) 
 
-def LooksLikeHTML( file_data: str | bytes ):
+def looks_like_html(file_data: str | bytes):
     # this will false-positive if it is json that contains html, ha ha
     
     if isinstance( file_data, bytes ):
@@ -388,7 +368,7 @@ def LooksLikeHTML( file_data: str | bytes ):
     
     return False
 
-def LooksLikeSVG( file_data ):
+def looks_like_svg(file_data):
     
     if isinstance( file_data, bytes ):
         
@@ -408,9 +388,8 @@ def LooksLikeSVG( file_data ):
         
     
     return False
-    
 
-def LooksLikeJSON( file_data: str | bytes ) -> bool:
+def looks_like_json(file_data: str | bytes) -> bool:
     
     try:
         
@@ -426,12 +405,10 @@ def LooksLikeJSON( file_data: str | bytes ) -> bool:
     except Exception as e:
         
         return False
-        
-    
 
 NULL_CHARACTER = '\x00'
 
-def ChardetDecode( data ):
+def chardet_decode(data):
     
     chardet_result = chardet.detect( data )
     
@@ -445,7 +422,7 @@ def ChardetDecode( data ):
     
     return ( chardet_text, chardet_encoding, chardet_confidence, chardet_error_count )
 
-def DefaultDecode( data ):
+def default_decode(data):
     
     default_encoding = 'windows-1252'
     
@@ -454,14 +431,13 @@ def DefaultDecode( data ):
     default_error_count = default_text.count( HC.UNICODE_REPLACEMENT_CHARACTER )
     
     return ( default_text, default_encoding, default_error_count )
-    
 
 # ISO is the official default I understand, absent an explicit declaration in http header or html document
 # win-1252 is often assigned as an unofficial default after a scan suggests more complicated characters than the ISO
 # I believe I have seen requests give both as default, but I am only super confident in the former
 DEFAULT_WEB_ENCODINGS = ( 'ISO-8859-1', 'Windows-1252' )
 
-def NonFailingUnicodeDecode( data, encoding, trust_the_encoding = False ):
+def non_failing_unicode_decode(data, encoding, trust_the_encoding = False):
     
     if trust_the_encoding:
         
@@ -513,7 +489,7 @@ def NonFailingUnicodeDecode( data, encoding, trust_the_encoding = False ):
             
             if CHARDET_OK:
                 
-                ( chardet_text, chardet_encoding, chardet_confidence, chardet_error_count ) = ChardetDecode( data )
+                ( chardet_text, chardet_encoding, chardet_confidence, chardet_error_count ) = chardet_decode( data )
                 
                 if chardet_error_count == 0:
                     
@@ -538,7 +514,7 @@ def NonFailingUnicodeDecode( data, encoding, trust_the_encoding = False ):
                 
                 try:
                     
-                    ( default_text, default_encoding, default_error_count ) = DefaultDecode( data )
+                    ( default_text, default_encoding, default_error_count ) = default_decode( data )
                     
                     text = default_text
                     encoding = default_encoding
@@ -572,9 +548,8 @@ def NonFailingUnicodeDecode( data, encoding, trust_the_encoding = False ):
         
     
     return ( text, encoding )
-    
 
-def RemoveNewlines( text: str ) -> str:
+def remove_new_lines(text: str) -> str:
     
     good_lines = [ l.strip() for l in text.splitlines() ]
     
@@ -584,9 +559,8 @@ def RemoveNewlines( text: str ) -> str:
     text = ''.join( good_lines )
     
     return text
-    
 
-def StripIOInputLine( t ):
+def strip_io_input_line(t):
     
     t = re_leading_byte_order_mark.sub( '', t )
     

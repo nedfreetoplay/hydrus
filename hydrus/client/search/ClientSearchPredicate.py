@@ -472,7 +472,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
             
             value = list( value )
             
-            value.sort( key = lambda p: HydrusText.HumanTextSortKey( p.ToString() ) )
+            value.sort( key = lambda p: HydrusText.human_text_sort_key( p.ToString() ) )
             
         
         if isinstance( value, ( list, set ) ):
@@ -745,7 +745,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                     
                     try:
                         
-                        self._value = tuple( sorted( self._value, key = lambda p: HydrusText.HumanTextSortKey( p.ToString() ) ) )
+                        self._value = tuple( sorted( self._value, key = lambda p: HydrusText.human_text_sort_key( p.ToString() ) ) )
                         
                     except Exception as e:
                         

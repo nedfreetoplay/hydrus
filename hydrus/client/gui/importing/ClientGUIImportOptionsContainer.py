@@ -274,7 +274,7 @@ class EditImportOptionsOverwritePanel( ClientGUIScrolledPanels.EditPanel ):
             label += ': default'
             
         
-        return HydrusText.ElideText( label.splitlines()[0], 256 )
+        return HydrusText.elide_text( label.splitlines()[0], 256 )
         
     
     def _GetValue( self ) -> ImportOptionsContainer.ImportOptionsContainer:
@@ -930,7 +930,7 @@ class ImportOptionsContainerFavouritesButton( ClientGUICommon.IconButton ):
         
         names_to_favourite_options_containers = self._import_options_container_manager.GetFavouriteImportOptionContainers()
         
-        names_in_order = sorted( names_to_favourite_options_containers.keys(), key = HydrusText.HumanTextSortKey )
+        names_in_order = sorted( names_to_favourite_options_containers.keys(), key = HydrusText.human_text_sort_key )
         
         menu = ClientGUIMenus.GenerateMenu( self )
         
@@ -1227,7 +1227,7 @@ class DefaultableImportOptionsPanel( ClientGUICommon.StaticBox ):
                 
             
         
-        return HydrusText.ElideText( label.splitlines()[0], 256 )
+        return HydrusText.elide_text( label.splitlines()[0], 256 )
         
     
     def GetValue( self ) -> IOC.ImportOptionsMetatype:

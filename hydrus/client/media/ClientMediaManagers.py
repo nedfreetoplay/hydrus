@@ -1887,7 +1887,7 @@ class TagsManager( object ):
             for desired_namespace in namespaces:
                 
                 # yes this is correct, we want _comparable_ tag slice
-                subtags = sorted( ( HydrusText.HumanTextSortKey( subtag ) for ( namespace, subtag ) in pairs if namespace == desired_namespace ) )
+                subtags = sorted( ( HydrusText.human_text_sort_key( subtag ) for ( namespace, subtag ) in pairs if namespace == desired_namespace ) )
                 
                 slice_tags.append( tuple( subtags ) )
                 

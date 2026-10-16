@@ -261,7 +261,7 @@ class NetworkJobControl( QW.QFrame ):
             
             ( status_text, current_speed, bytes_read, bytes_to_read ) = self._network_job.GetStatus()
             
-            self._left_text.setText( HydrusText.GetFirstLine( status_text ) )
+            self._left_text.setText( HydrusText.get_first_line( status_text ) )
             
             speed_text = ''
             
