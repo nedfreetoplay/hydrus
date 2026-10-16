@@ -368,7 +368,7 @@ def SubprocessCommunicate( cmd, process: subprocess.Popen, timeout: int ):
     
     def do_timeout_test():
         
-        if HydrusTime.TimeHasPassedFloat( time_started + timeout ):
+        if HydrusTime.time_has_passed_float( time_started + timeout ):
             
             ( stdout, stderr ) = TerminateAndReapProcess( process )
             
@@ -376,7 +376,7 @@ def SubprocessCommunicate( cmd, process: subprocess.Popen, timeout: int ):
             
         
     
-    time_started = HydrusTime.GetNowFloat()
+    time_started = HydrusTime.get_now_float()
     
     do_shutdown_test()
     

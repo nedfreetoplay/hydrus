@@ -739,7 +739,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         self._currently_in_media_load_error_state = False
         
         self._current_mpv_player_state = MPV_WIDGET_STATE_INITIALISING
-        self._initialisation_start_time = HydrusTime.GetNow()
+        self._initialisation_start_time = HydrusTime.get_now()
         self._cleanup_start_time = 0
         
         self._last_set_mute_state = False
@@ -969,7 +969,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
                 if self._media is not None and current_timestamp_s is not None and current_timestamp_s < 0.1:
                     
-                    current_second = HydrusTime.GetNow()
+                    current_second = HydrusTime.get_now()
                     
                     if current_second != self._current_second_of_seek_restarts:
                         
@@ -1210,7 +1210,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         INITIALISE_TOOK_TOO_LONG_PERIOD = 180
         
-        return self._current_mpv_player_state != MPV_WIDGET_STATE_INITIALISING or HydrusTime.TimeHasPassed( self._initialisation_start_time + INITIALISE_TOOK_TOO_LONG_PERIOD )
+        return self._current_mpv_player_state != MPV_WIDGET_STATE_INITIALISING or HydrusTime.time_has_passed( self._initialisation_start_time + INITIALISE_TOOK_TOO_LONG_PERIOD )
         
     
     def IsPaused( self ):
@@ -1329,7 +1329,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         TERMINATE_TOOK_TOO_LONG_PERIOD = 180
         
-        return self._current_mpv_player_state == MPV_WIDGET_STATE_READY_TO_DESTROY or HydrusTime.TimeHasPassed( self._cleanup_start_time + TERMINATE_TOOK_TOO_LONG_PERIOD )
+        return self._current_mpv_player_state == MPV_WIDGET_STATE_READY_TO_DESTROY or HydrusTime.time_has_passed( self._cleanup_start_time + TERMINATE_TOOK_TOO_LONG_PERIOD )
         
     
     def Seek( self, time_index_ms, precise = True ):
@@ -1349,7 +1349,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             return
             
         
-        time_index_s = HydrusTime.SecondiseMSFloat( time_index_ms )
+        time_index_s = HydrusTime.secondise_ms_float( time_index_ms )
         
         # TODO: could also say like 'if it is between current time +/-5ms to catch odd frame float rounding stuff, but this would need careful testing with previous/next frame navigation etc..
         # mostly this guy just catches the 0.0 start point
@@ -1562,7 +1562,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                             
                         
                     
-                    self._time_media_load_started = HydrusTime.GetNowFloat()
+                    self._time_media_load_started = HydrusTime.get_now_float()
                     
                     try:
                         
@@ -1612,7 +1612,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
     def StartCleanBeforeDestroy( self ):
         
         self._current_mpv_player_state = MPV_WIDGET_STATE_CLEANING_UP
-        self._cleanup_start_time = HydrusTime.GetNow()
+        self._cleanup_start_time = HydrusTime.get_now()
         
         mpv_mediator = self._mpv_mediator
         

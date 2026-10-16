@@ -290,7 +290,7 @@ class Page( QW.QWidget ):
         
         self._current_session_page_container = page_container
         self._current_session_page_container_hashes_hash = self._GetCurrentSessionPageHashesHash()
-        self._current_session_page_container_timestamp = HydrusTime.GetNow()
+        self._current_session_page_container_timestamp = HydrusTime.get_now()
         
     
     def _SetPrettyStatus( self, status: str, override = False ):
@@ -3536,7 +3536,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
         
         current_page = self.currentWidget()
         
-        i_have_done_a_recent_move = not HydrusTime.TimeHasPassed( self._time_of_last_move_selection_event + 3 )
+        i_have_done_a_recent_move = not HydrusTime.time_has_passed( self._time_of_last_move_selection_event + 3 )
         
         if isinstance( current_page, PagesNotebook ) and not i_have_done_a_recent_move:
             
@@ -3554,7 +3554,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
                 
                 self.setCurrentIndex( new_index )
                 
-                self._time_of_last_move_selection_event = HydrusTime.GetNow()
+                self._time_of_last_move_selection_event = HydrusTime.get_now()
                 
             
             return True
@@ -3572,7 +3572,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
         
         current_page = self.currentWidget()
         
-        i_have_done_a_recent_move = not HydrusTime.TimeHasPassed( self._time_of_last_move_selection_event + 3 )
+        i_have_done_a_recent_move = not HydrusTime.time_has_passed( self._time_of_last_move_selection_event + 3 )
         
         if isinstance( current_page, PagesNotebook ) and not i_have_done_a_recent_move:
             
@@ -3595,7 +3595,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
             
             self.setCurrentIndex( new_index )
             
-            self._time_of_last_move_selection_event = HydrusTime.GetNow()
+            self._time_of_last_move_selection_event = HydrusTime.get_now()
             
         
         return True

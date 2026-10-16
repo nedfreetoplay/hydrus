@@ -187,9 +187,9 @@ class FileSystemPredicates( object ):
                     
                     ( years, months, days, hours ) = age_value
                     
-                    dt = HydrusTime.CalendarDeltaToDateTime( years, months, days, hours )
+                    dt = HydrusTime.calendar_delta_to_datetime( years, months, days, hours )
                     
-                    time_pivot_ms = HydrusTime.DateTimeToTimestampMS( dt )
+                    time_pivot_ms = HydrusTime.datetime_to_timestamp_ms( dt )
                     
                     # this is backwards (less than means min timestamp) because we are talking about age, not timestamp
                     
@@ -207,13 +207,13 @@ class FileSystemPredicates( object ):
                         
                     elif operator == HC.UNICODE_APPROX_EQUAL:
                         
-                        rough_timedelta_gap = HydrusTime.CalendarDeltaToRoughDateTimeTimeDelta( years, months, days, hours ) * 0.15
+                        rough_timedelta_gap = HydrusTime.calendar_delta_to_rough_datetime_timedelta( years, months, days, hours ) * 0.15
                         
                         earliest_dt = dt - rough_timedelta_gap
                         latest_dt = dt + rough_timedelta_gap
                         
-                        earliest_time_pivot_ms = HydrusTime.DateTimeToTimestampMS( earliest_dt )
-                        latest_time_pivot_ms = HydrusTime.DateTimeToTimestampMS( latest_dt )
+                        earliest_time_pivot_ms = HydrusTime.datetime_to_timestamp_ms( earliest_dt )
+                        latest_time_pivot_ms = HydrusTime.datetime_to_timestamp_ms( latest_dt )
                         
                         self._SetTimestampPredicate( predicate_type, '>', earliest_time_pivot_ms )
                         self._SetTimestampPredicate( predicate_type, '<', latest_time_pivot_ms )
@@ -223,14 +223,14 @@ class FileSystemPredicates( object ):
                     
                     ( year, month, day, hour, minute ) = age_value
                     
-                    dt = HydrusTime.GetDateTime( year, month, day, hour, minute )
+                    dt = HydrusTime.get_datetime( year, month, day, hour, minute )
                     
-                    time_pivot_ms = HydrusTime.DateTimeToTimestampMS( dt )
+                    time_pivot_ms = HydrusTime.datetime_to_timestamp_ms( dt )
                     
-                    dt_day_of_start = HydrusTime.GetDateTime( year, month, day, 0, 0 )
+                    dt_day_of_start = HydrusTime.get_datetime( year, month, day, 0, 0 )
                     
-                    day_of_start_timestamp_ms = HydrusTime.DateTimeToTimestampMS( dt_day_of_start )
-                    day_of_end_timestamp_ms = HydrusTime.DateTimeToTimestampMS( ClientTime.CalendarDelta( dt_day_of_start, day_delta = 1 ) )
+                    day_of_start_timestamp_ms = HydrusTime.datetime_to_timestamp_ms( dt_day_of_start )
+                    day_of_end_timestamp_ms = HydrusTime.datetime_to_timestamp_ms( ClientTime.CalendarDelta( dt_day_of_start, day_delta = 1 ) )
                     
                     # the before/since semantic logic is:
                     # '<' 2022-05-05 means 'before that date'
@@ -251,8 +251,8 @@ class FileSystemPredicates( object ):
                         
                     elif operator == HC.UNICODE_APPROX_EQUAL:
                         
-                        previous_month_timestamp_ms = HydrusTime.DateTimeToTimestampMS( ClientTime.CalendarDelta( dt, month_delta = -1 ) )
-                        next_month_timestamp_ms = HydrusTime.DateTimeToTimestampMS( ClientTime.CalendarDelta( dt, month_delta = 1 ) )
+                        previous_month_timestamp_ms = HydrusTime.datetime_to_timestamp_ms( ClientTime.CalendarDelta( dt, month_delta = -1 ) )
+                        next_month_timestamp_ms = HydrusTime.datetime_to_timestamp_ms( ClientTime.CalendarDelta( dt, month_delta = 1 ) )
                         
                         self._SetTimestampPredicate( predicate_type, '>', previous_month_timestamp_ms )
                         self._SetTimestampPredicate( predicate_type, '<', next_month_timestamp_ms )

@@ -126,7 +126,7 @@ class NetworkContextStatus( HydrusSerialisable.SerialisableBase ):
         
         with self._lock:
             
-            dead_time = HydrusTime.GetNowMS() - HydrusTime.MillisecondiseS( time_delta_s )
+            dead_time = HydrusTime.get_now_ms() - HydrusTime.millisecondise_s( time_delta_s )
             
             for key in list( self._events_ms.keys() ):
                 
@@ -160,7 +160,7 @@ class NetworkContextStatus( HydrusSerialisable.SerialisableBase ):
             
             if event_type in self._events_ms:
                 
-                dead_time = HydrusTime.GetNowMS() - HydrusTime.MillisecondiseS( time_delta_s )
+                dead_time = HydrusTime.get_now_ms() - HydrusTime.millisecondise_s( time_delta_s )
                 
                 return len( [ 1 for event_ms in self._events_ms[ event_type ] if event_ms > dead_time ] )
                 
@@ -180,7 +180,7 @@ class NetworkContextStatus( HydrusSerialisable.SerialisableBase ):
                 self._events_ms[ event_type ] = []
                 
             
-            self._events_ms[ event_type ].append( HydrusTime.GetNowMS() )
+            self._events_ms[ event_type ].append( HydrusTime.get_now_ms() )
             
         
     

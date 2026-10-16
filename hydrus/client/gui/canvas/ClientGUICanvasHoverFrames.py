@@ -3060,12 +3060,12 @@ class CanvasHoverFrameTags( CanvasHoverFrame ):
         
         # on a new media from a scroll, we reset the times but _retain_ the direction. if the user wants to keep scrolling through all this, that's fine, we won't block them
         # if it looks like they hit page_up or whatever, we reset the situation
-        if HydrusTime.TimeHasPassedFloat( self._last_wheel_direction_event_time + 250 ):
+        if HydrusTime.time_has_passed_float( self._last_wheel_direction_event_time + 250 ):
             
             self._last_wheel_direction = 0
             
         
-        self._last_media_transition_time = HydrusTime.GetNowFloat()
+        self._last_media_transition_time = HydrusTime.get_now_float()
         
         super().SetMedia( media )
         
@@ -3102,7 +3102,7 @@ class CanvasHoverFrameTags( CanvasHoverFrame ):
             self._last_wheel_direction_event_time = max( self._tags.GetLastWheelEventThatScrolledTime(), self._last_wheel_direction_event_time )
             
             # if the user is looking at a scrollbar and hasn't just flicked to it...
-            if self._tags.verticalScrollBar().isVisible() and HydrusTime.TimeHasPassedFloat( self._last_media_transition_time + THIS_IS_INTENTIONAL_DELAY ):
+            if self._tags.verticalScrollBar().isVisible() and HydrusTime.time_has_passed_float( self._last_media_transition_time + THIS_IS_INTENTIONAL_DELAY ):
                 
                 if self._last_wheel_direction == 0:
                     
@@ -3111,7 +3111,7 @@ class CanvasHoverFrameTags( CanvasHoverFrame ):
                 
                 if self._last_wheel_direction == wheel_direction:
                     
-                    if not HydrusTime.TimeHasPassedFloat( self._last_wheel_direction_event_time + THIS_IS_INTENTIONAL_DELAY ):
+                    if not HydrusTime.time_has_passed_float( self._last_wheel_direction_event_time + THIS_IS_INTENTIONAL_DELAY ):
                         
                         # we are still in a scroll cascade from the taglist
                         
@@ -3126,7 +3126,7 @@ class CanvasHoverFrameTags( CanvasHoverFrame ):
                     
                 
             
-            self._last_wheel_direction_event_time = HydrusTime.GetNowFloat()
+            self._last_wheel_direction_event_time = HydrusTime.get_now_float()
             self._last_wheel_direction = wheel_direction
             
         

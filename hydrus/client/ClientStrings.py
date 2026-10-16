@@ -389,7 +389,7 @@ class StringConverter( StringProcessingStep ):
                             
                         
                     
-                    timestamp = HydrusTime.DateTimeToTimestamp( dt )
+                    timestamp = HydrusTime.datetime_to_timestamp( dt )
                     
                     s = str( timestamp )
                     
@@ -412,7 +412,7 @@ class StringConverter( StringProcessingStep ):
                         raise Exception( '"{}" was not an integer!'.format( s ) )
                         
                     
-                    dt = HydrusTime.TimestampToDateTime( timestamp, timezone )
+                    dt = HydrusTime.timestamp_to_datetime( timestamp, timezone )
                     
                     s = dt.strftime( phrase )
                     

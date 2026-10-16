@@ -196,7 +196,7 @@ class HydrusResourceSessionKey( HydrusResourceHydrusNetwork ):
         
         ( session_key, expires ) = SG.server_controller.server_session_manager.add_session( self._service_key, access_key )
         
-        now = HydrusTime.GetNow()
+        now = HydrusTime.get_now()
         
         max_age = expires - now
         
@@ -408,12 +408,12 @@ class HydrusResourceRestrictedOptionsModifyNullificationPeriod( HydrusResourceRe
         
         if nullification_period < HydrusNetwork.MIN_NULLIFICATION_PERIOD:
             
-            raise HydrusExceptions.BadRequestException( 'The anonymisation period was too low. It needs to be at least {}.'.format( HydrusTime.TimeDeltaToPrettyTimeDelta( HydrusNetwork.MIN_NULLIFICATION_PERIOD ) ) )
+            raise HydrusExceptions.BadRequestException( 'The anonymisation period was too low. It needs to be at least {}.'.format( HydrusTime.time_delta_to_pretty_timedelta( HydrusNetwork.MIN_NULLIFICATION_PERIOD ) ) )
             
         
         if nullification_period > HydrusNetwork.MAX_NULLIFICATION_PERIOD:
             
-            raise HydrusExceptions.BadRequestException( 'The anonymisation period was too high. It needs to be lower than {}.'.format( HydrusTime.TimeDeltaToPrettyTimeDelta( HydrusNetwork.MAX_NULLIFICATION_PERIOD ) ) )
+            raise HydrusExceptions.BadRequestException( 'The anonymisation period was too high. It needs to be lower than {}.'.format( HydrusTime.time_delta_to_pretty_timedelta( HydrusNetwork.MAX_NULLIFICATION_PERIOD ) ) )
             
         
         old_nullification_period = self._service.GetNullificationPeriod()
@@ -425,8 +425,8 @@ class HydrusResourceRestrictedOptionsModifyNullificationPeriod( HydrusResourceRe
             HydrusData.safe_print(
                 'Account {} changed the anonymisation period from "{}" to "{}".'.format(
                     request.hydrus_account.GetAccountKey().hex(),
-                    HydrusTime.TimeDeltaToPrettyTimeDelta( old_nullification_period ),
-                    HydrusTime.TimeDeltaToPrettyTimeDelta( nullification_period )
+                    HydrusTime.time_delta_to_pretty_timedelta( old_nullification_period ),
+                    HydrusTime.time_delta_to_pretty_timedelta( nullification_period )
                 )
             )
             
@@ -445,12 +445,12 @@ class HydrusResourceRestrictedOptionsModifyUpdatePeriod( HydrusResourceRestricte
         
         if update_period < HydrusNetwork.MIN_UPDATE_PERIOD:
             
-            raise HydrusExceptions.BadRequestException( 'The update period was too low. It needs to be at least {}.'.format( HydrusTime.TimeDeltaToPrettyTimeDelta( HydrusNetwork.MIN_UPDATE_PERIOD ) ) )
+            raise HydrusExceptions.BadRequestException( 'The update period was too low. It needs to be at least {}.'.format( HydrusTime.time_delta_to_pretty_timedelta( HydrusNetwork.MIN_UPDATE_PERIOD ) ) )
             
         
         if update_period > HydrusNetwork.MAX_UPDATE_PERIOD:
             
-            raise HydrusExceptions.BadRequestException( 'The update period was too high. It needs to be lower than {}.'.format( HydrusTime.TimeDeltaToPrettyTimeDelta( HydrusNetwork.MAX_UPDATE_PERIOD ) ) )
+            raise HydrusExceptions.BadRequestException( 'The update period was too high. It needs to be lower than {}.'.format( HydrusTime.time_delta_to_pretty_timedelta( HydrusNetwork.MAX_UPDATE_PERIOD ) ) )
             
         
         old_update_period = self._service.GetUpdatePeriod()
@@ -462,8 +462,8 @@ class HydrusResourceRestrictedOptionsModifyUpdatePeriod( HydrusResourceRestricte
             HydrusData.safe_print(
                 'Account {} changed the update period from "{}" to "{}".'.format(
                     request.hydrus_account.GetAccountKey().hex(),
-                    HydrusTime.TimeDeltaToPrettyTimeDelta( old_update_period ),
-                    HydrusTime.TimeDeltaToPrettyTimeDelta( update_period )
+                    HydrusTime.time_delta_to_pretty_timedelta( old_update_period ),
+                    HydrusTime.time_delta_to_pretty_timedelta( update_period )
                 )
             )
             

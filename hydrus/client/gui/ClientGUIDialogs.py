@@ -226,7 +226,7 @@ class DialogGenerateNewAccounts( Dialog ):
             
         else:
             
-            expires = HydrusTime.GetNow() + lifetime
+            expires = HydrusTime.get_now() + lifetime
             
         
         service = CG.client_controller.services_manager.GetService( self._service_key )

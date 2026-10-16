@@ -119,7 +119,7 @@ class HydrusController:
         
         if not self._doing_fast_exit:
             
-            started = HydrusTime.GetNow()
+            started = HydrusTime.get_now()
             
             while True in ( daemon_job.CurrentlyWorking() for daemon_job in self._daemon_jobs.values() ):
                 
@@ -127,7 +127,7 @@ class HydrusController:
                 
                 time.sleep( 0.1 )
                 
-                if HydrusTime.TimeHasPassed( started + 30 ):
+                if HydrusTime.time_has_passed( started + 30 ):
                     
                     break
                     
@@ -542,7 +542,7 @@ class HydrusController:
         
         if stop_time is not None:
             
-            if HydrusTime.TimeHasPassed( stop_time ):
+            if HydrusTime.time_has_passed( stop_time ):
                 
                 return True
                 
@@ -615,7 +615,7 @@ class HydrusController:
         
         with self._sleep_lock:
             
-            if HydrusTime.TimeHasPassedMS( self.get_timestamp_ms( 'last_sleep_check' ) + 60000 ): # it has been way too long since this method last fired, so we've prob been asleep
+            if HydrusTime.time_has_passed_ms( self.get_timestamp_ms( 'last_sleep_check' ) + 60000 ): # it has been way too long since this method last fired, so we've prob been asleep
                 
                 self._just_woke_from_sleep = True
                 
@@ -623,11 +623,11 @@ class HydrusController:
                 
                 wake_delay_period_ms = self._get_wake_delay_period_ms()
                 
-                self.set_timestamp_ms( 'now_awake', HydrusTime.GetNowMS() + wake_delay_period_ms ) # enough time for ethernet to get back online and all that
+                self.set_timestamp_ms( 'now_awake', HydrusTime.get_now_ms() + wake_delay_period_ms ) # enough time for ethernet to get back online and all that
                 
                 self._show_just_woke_to_user()
                 
-            elif self._just_woke_from_sleep and HydrusTime.TimeHasPassedMS( self.get_timestamp_ms( 'now_awake' ) ):
+            elif self._just_woke_from_sleep and HydrusTime.time_has_passed_ms( self.get_timestamp_ms( 'now_awake' ) ):
                 
                 self._just_woke_from_sleep = False
                 
@@ -638,7 +638,7 @@ class HydrusController:
         
         with self._sleep_lock:
             
-            self.set_timestamp_ms( 'last_sleep_check', HydrusTime.GetNowMS() - ( 3600 * 1000 ) )
+            self.set_timestamp_ms( 'last_sleep_check', HydrusTime.get_now_ms() - ( 3600 * 1000 ) )
             
         
         self.sleep_check()
@@ -691,7 +691,7 @@ class HydrusController:
         
         with self._timestamps_lock:
             
-            self._timestamps_ms[ name ] = HydrusTime.GetNowMS()
+            self._timestamps_ms[ name ] = HydrusTime.get_now_ms()
     
     def wait_until_model_free( self ) -> None:
         

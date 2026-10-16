@@ -211,7 +211,7 @@ class ReviewGranularityPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 self._UpdateGranularityLabel()
                 
-                message = f'{HydrusNumbers.to_human_int( num_files_moved )} files moved in {HydrusTime.TimeDeltaToPrettyTimeDelta( time_took_float )}.'
+                message = f'{HydrusNumbers.to_human_int( num_files_moved )} files moved in {HydrusTime.time_delta_to_pretty_timedelta( time_took_float )}.'
                 
                 if starting_granularity < ending_granularity:
                     
@@ -243,11 +243,11 @@ class ReviewGranularityPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             try:
                 
-                time_started_float = HydrusTime.GetNowFloat()
+                time_started_float = HydrusTime.get_now_float()
                 
                 ( new_prefixes_to_locations, num_files_moved, num_weird_dirs, num_weird_files ) = CG.client_controller.client_files_manager.Granularise( job_status, starting_granularity, ending_granularity )
                 
-                time_took_float = HydrusTime.GetNowFloat() - time_started_float
+                time_took_float = HydrusTime.get_now_float() - time_started_float
                 
                 CG.client_controller.call_after_qt_safe( self, qt_ok, time_took_float, num_files_moved, num_weird_dirs, num_weird_files )
                 
@@ -395,7 +395,7 @@ class ReviewGranularityPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         def qt_ok( time_took_float: float, num_files_moved, num_weird_dirs: int, num_weird_files: int ):
             
-            message = f'{HydrusNumbers.to_human_int( num_files_moved )} files moved in {HydrusTime.TimeDeltaToPrettyTimeDelta( time_took_float )}.'
+            message = f'{HydrusNumbers.to_human_int( num_files_moved )} files moved in {HydrusTime.time_delta_to_pretty_timedelta( time_took_float )}.'
             
             if num_weird_dirs == 0 and num_weird_files == 0:
                 
@@ -417,11 +417,11 @@ class ReviewGranularityPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             try:
                 
-                time_started_float = HydrusTime.GetNowFloat()
+                time_started_float = HydrusTime.get_now_float()
                 
                 ( new_prefixes_to_locations, num_files_moved, num_weird_dirs, num_weird_files ) = ClientFilesPhysical.RegranulariseFileStorage( [ base_location_path ], [ 'f', 't' ], starting_granularity, ending_granularity, job_status )
                 
-                time_took_float = HydrusTime.GetNowFloat() - time_started_float
+                time_took_float = HydrusTime.get_now_float() - time_started_float
                 
                 CG.client_controller.call_after_qt_safe( self, qt_ok, time_took_float, num_files_moved, num_weird_dirs, num_weird_files )
                 
@@ -1190,7 +1190,7 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                     
                 
             
-            stop_time = HydrusTime.GetNow() + result
+            stop_time = HydrusTime.get_now() + result
             
         
         job_status = ClientThreading.JobStatus( cancellable = True, stop_time = stop_time )

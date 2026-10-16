@@ -919,7 +919,7 @@ class PotentialDuplicatePairsFragmentarySearch( object ):
         
         with self._lock:
             
-            return HydrusTime.TimeHasPassed( self._search_space_initialised_time + POTENTIAL_PAIRS_REFRESH_TIMEOUT )
+            return HydrusTime.time_has_passed( self._search_space_initialised_time + POTENTIAL_PAIRS_REFRESH_TIMEOUT )
             
         
     
@@ -965,7 +965,7 @@ class PotentialDuplicatePairsFragmentarySearch( object ):
             
             self._search_space_initialised = True
             self._search_space_fetch_started = False
-            self._search_space_initialised_time = HydrusTime.GetNowFloat()
+            self._search_space_initialised_time = HydrusTime.get_now_float()
             
         
     

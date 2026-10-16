@@ -48,9 +48,9 @@ def check_can_vacuum_data(db_path, page_size, page_count, freelist_count, stop_t
         
         time_i_will_have_to_start = stop_time - approx_vacuum_duration
         
-        if HydrusTime.TimeHasPassed( time_i_will_have_to_start ):
+        if HydrusTime.time_has_passed( time_i_will_have_to_start ):
             
-            raise Exception( 'I believe you need about ' + HydrusTime.TimeDeltaToPrettyTimeDelta( approx_vacuum_duration ) + ' to vacuum, but there is not enough time allotted.' )
+            raise Exception( 'I believe you need about ' + HydrusTime.time_delta_to_pretty_timedelta( approx_vacuum_duration ) + ' to vacuum, but there is not enough time allotted.' )
             
         
     
@@ -84,9 +84,9 @@ def check_can_vacuum_into_data(db_path, page_size, page_count, freelist_count, s
         
         time_i_will_have_to_start = stop_time - approx_vacuum_duration
         
-        if HydrusTime.TimeHasPassed( time_i_will_have_to_start ):
+        if HydrusTime.time_has_passed( time_i_will_have_to_start ):
             
-            raise Exception( 'I believe you need about ' + HydrusTime.TimeDeltaToPrettyTimeDelta( approx_vacuum_duration ) + ' to vacuum, but there is not enough time allotted.' )
+            raise Exception( 'I believe you need about ' + HydrusTime.time_delta_to_pretty_timedelta( approx_vacuum_duration ) + ' to vacuum, but there is not enough time allotted.' )
             
         
     
@@ -197,7 +197,7 @@ def vacuum_db_into(db_path: str):
         raise Exception( f'Hey, I wanted to vacuum "{db_path}", but I see a "TRUNCATE" journal file even after I disconnected. I do not easily know, in TRUNCATE mode, if there are other programs connected to the database. Vacuuming under these conditions can cause malformation, so the job will now be abandoned. Please run the program in WAL journalling mode before trying again. If you have not specifically told hydrus to run in TRUNCATE mode, it probably fell back to this because WAL is not supported on your machine.' )
         
     
-    started = HydrusTime.GetNowPrecise()
+    started = HydrusTime.get_now_precise()
     
     ( deletee_path, vacuum_path ) = get_vacuum_paths( db_path )
     
@@ -285,11 +285,11 @@ def vacuum_db_into(db_path: str):
     
     vacuum_size = os.path.getsize( db_path )
     
-    time_took = HydrusTime.GetNowPrecise() - started
+    time_took = HydrusTime.get_now_precise() - started
     
     bytes_per_sec = vacuum_size / time_took
     
-    HydrusData.ShowText( f'Vacuumed {db_path} in {HydrusTime.TimeDeltaToPrettyTimeDelta( time_took )} ({HydrusData.ToHumanBytes(bytes_per_sec)}/s). It went from {HydrusData.ToHumanBytes( original_size )} to {HydrusData.ToHumanBytes( vacuum_size )}' )
+    HydrusData.ShowText( f'Vacuumed {db_path} in {HydrusTime.time_delta_to_pretty_timedelta( time_took )} ({HydrusData.ToHumanBytes(bytes_per_sec)}/s). It went from {HydrusData.ToHumanBytes( original_size )} to {HydrusData.ToHumanBytes( vacuum_size )}' )
 
 SHUTDOWN_SENTINEL = object()
 COMMIT_CHECK_TOKEN_SENTINEL = object()
@@ -850,7 +850,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
             self.publish_status_update()
             
             idle_at_job_start = self._controller.currently_idle()
-            time_job_started = HydrusTime.GetNowPrecise()
+            time_job_started = HydrusTime.get_now_precise()
             
             result = None
             
@@ -867,13 +867,13 @@ class HydrusDB( HydrusDBBase.DBBase ):
             
             if not idle_at_job_start or not idle_at_job_end:
                 
-                time_job_finished = HydrusTime.GetNowPrecise()
+                time_job_finished = HydrusTime.get_now_precise()
                 
                 time_job_took = time_job_finished - time_job_started
                 
                 if time_job_took > 15:
                     
-                    HydrusData.safe_print( f'The database job "{job.to_string()}" took {HydrusTime.TimeDeltaToPrettyTimeDelta( time_job_took )}.' )
+                    HydrusData.safe_print( f'The database job "{job.to_string()}" took {HydrusTime.time_delta_to_pretty_timedelta( time_job_took )}.' )
                     
                 
             

@@ -74,7 +74,7 @@ class SimpleDownloaderImport( HydrusSerialisable.SerialisableBase ):
         
         reason = HydrusText.get_first_line( reason )
         
-        self._no_work_until = HydrusTime.GetNow() + time_delta
+        self._no_work_until = HydrusTime.get_now() + time_delta
         self._no_work_until_reason = reason
         
     
@@ -151,7 +151,7 @@ class SimpleDownloaderImport( HydrusSerialisable.SerialisableBase ):
     
     def _SerialisableChangeMade( self ):
         
-        self._last_serialisable_change_timestamp = HydrusTime.GetNow()
+        self._last_serialisable_change_timestamp = HydrusTime.get_now()
         
     
     def _update_serialisable_info( self, version, old_serialisable_info ):
@@ -964,7 +964,7 @@ class URLsImport( HydrusSerialisable.SerialisableBase ):
         
         reason = HydrusText.get_first_line( reason )
         
-        self._no_work_until = HydrusTime.GetNow() + time_delta
+        self._no_work_until = HydrusTime.get_now() + time_delta
         self._no_work_until_reason = reason
         
     
@@ -1037,7 +1037,7 @@ class URLsImport( HydrusSerialisable.SerialisableBase ):
     
     def _SerialisableChangeMade( self ):
         
-        self._last_serialisable_change_timestamp = HydrusTime.GetNow()
+        self._last_serialisable_change_timestamp = HydrusTime.get_now()
         
     
     def _update_serialisable_info( self, version, old_serialisable_info ):

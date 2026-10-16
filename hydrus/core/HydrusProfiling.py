@@ -61,7 +61,7 @@ def flip_query_planner_mode():
     
     if not query_planner_mode:
         
-        now = HydrusTime.GetNow()
+        now = HydrusTime.get_now()
         
         query_planner_start_time = now
         query_planner_query_count = 0
@@ -165,16 +165,16 @@ def profile(summary, func, min_duration_ms = 20, show_summary = False):
         
         try:
             
-            started = HydrusTime.GetNowPrecise()
+            started = HydrusTime.get_now_precise()
             
             profile = cProfile.Profile()
             
             profile.runcall( func )
             
-            finished = HydrusTime.GetNowPrecise()
+            finished = HydrusTime.get_now_precise()
             
             time_took = finished - started
-            time_took_ms = HydrusTime.MillisecondiseS( time_took )
+            time_took_ms = HydrusTime.millisecondise_s( time_took )
             
             if time_took_ms > min_duration_ms:
                 
@@ -234,14 +234,14 @@ def profile(summary, func, min_duration_ms = 20, show_summary = False):
         
     else:
         
-        started = HydrusTime.GetNowPrecise()
+        started = HydrusTime.get_now_precise()
         
         func()
         
-        finished = HydrusTime.GetNowPrecise()
+        finished = HydrusTime.get_now_precise()
         
         time_took = finished - started
-        time_took_ms = HydrusTime.MillisecondiseS( time_took )
+        time_took_ms = HydrusTime.millisecondise_s( time_took )
         
         if time_took_ms > min_duration_ms:
             
@@ -258,7 +258,7 @@ def profile(summary, func, min_duration_ms = 20, show_summary = False):
                 
             
         
-        print_profile( f'EXCLUSIVE: {summary} took {HydrusTime.TimeDeltaToPrettyTimeDelta( time_took )}\n\n')
+        print_profile( f'EXCLUSIVE: {summary} took {HydrusTime.time_delta_to_pretty_timedelta( time_took )}\n\n')
 
 def start_profile_mode(name):
     
@@ -273,7 +273,7 @@ def start_profile_mode(name):
     profile_mode = True
     profile_mode_name = name
     
-    now = HydrusTime.GetNow()
+    now = HydrusTime.get_now()
     
     global profile_counter_lock
     

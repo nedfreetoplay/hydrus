@@ -77,7 +77,7 @@ class HydrusResourceClientAPIRestrictedAccountClientInfo( HydrusResourceClientAP
         body_dict = {}
         
         body_dict[ 'boot_id' ] = CG.client_controller.get_boot_id().hex()
-        body_dict[ 'boot_time' ] = HydrusTime.SecondiseMSFloat( CG.client_controller.get_timestamp_ms( 'boot' ) )
+        body_dict[ 'boot_time' ] = HydrusTime.secondise_ms_float( CG.client_controller.get_timestamp_ms( 'boot' ) )
         body_dict[ 'currently_idle' ] = CG.client_controller.currently_idle()
         
         body = ClientLocalServerCore.Dumps( body_dict, request.preferred_mime )

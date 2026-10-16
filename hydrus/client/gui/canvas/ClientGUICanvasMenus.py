@@ -30,13 +30,13 @@ def AppendSlideshowMenu( win: CAC.ApplicationCommandProcessorMixin, menu: QW.QMe
     
     if slideshow_is_running:
         
-        ClientGUIMenus.AppendMenuItem( slideshow_menu, 'stop' + ( '' if slideshow_duration is None else ( ' (' + HydrusTime.TimeDeltaToPrettyTimeDelta( slideshow_duration ) + ')' ) ), 'Stop the current slideshow.', win.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_PAUSE_PLAY_SLIDESHOW ) )
+        ClientGUIMenus.AppendMenuItem( slideshow_menu, 'stop' + ( '' if slideshow_duration is None else ( ' (' + HydrusTime.time_delta_to_pretty_timedelta( slideshow_duration ) + ')' ) ), 'Stop the current slideshow.', win.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_PAUSE_PLAY_SLIDESHOW ) )
         
     else:
         
         if slideshow_duration is not None:
             
-            ClientGUIMenus.AppendMenuItem( slideshow_menu, 'resume at ' + HydrusTime.TimeDeltaToPrettyTimeDelta( slideshow_duration ), 'Resume at the previous slideshow period.', win.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_PAUSE_PLAY_SLIDESHOW ) )
+            ClientGUIMenus.AppendMenuItem( slideshow_menu, 'resume at ' + HydrusTime.time_delta_to_pretty_timedelta( slideshow_duration ), 'Resume at the previous slideshow period.', win.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_PAUSE_PLAY_SLIDESHOW ) )
             
         
     
@@ -44,7 +44,7 @@ def AppendSlideshowMenu( win: CAC.ApplicationCommandProcessorMixin, menu: QW.QMe
     
     for slideshow_duration in slideshow_durations:
         
-        pretty_duration = HydrusTime.TimeDeltaToPrettyTimeDelta( slideshow_duration )
+        pretty_duration = HydrusTime.time_delta_to_pretty_timedelta( slideshow_duration )
         
         ClientGUIMenus.AppendMenuItem( slideshow_menu, pretty_duration, f'Start a slideshow that changes media every {pretty_duration}.', win.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_START_SLIDESHOW, slideshow_duration ) )
         

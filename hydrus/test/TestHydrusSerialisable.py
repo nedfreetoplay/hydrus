@@ -557,7 +557,7 @@ class TestSerialisables( unittest.TestCase ):
         periodic_file_limit = 50
         paused = False
         
-        no_work_until = HydrusTime.GetNow() - 86400 * 20
+        no_work_until = HydrusTime.get_now() - 86400 * 20
         
         sub.SetGUGKeyAndName( gug_key_and_name )
         sub.SetCheckerOptions( checker_options )

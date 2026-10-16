@@ -78,7 +78,7 @@ class HDDImport( HydrusSerialisable.SerialisableBase ):
                     
                     file_modified_time_ms = HydrusFileHandling.GetFileModifiedTimestampMS( path )
                     
-                    file_seed.source_time = HydrusTime.SecondiseMS( file_modified_time_ms )
+                    file_seed.source_time = HydrusTime.secondise_ms( file_modified_time_ms )
                     
                 except Exception as e:
                     
@@ -136,7 +136,7 @@ class HDDImport( HydrusSerialisable.SerialisableBase ):
     
     def _SerialisableChangeMade( self ):
         
-        self._last_serialisable_change_timestamp = HydrusTime.GetNow()
+        self._last_serialisable_change_timestamp = HydrusTime.get_now()
         
     
     def _update_serialisable_info( self, version, old_serialisable_info ):
@@ -718,7 +718,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
         
         self._file_seed_cache.AddFileSeeds( file_seeds )
         
-        self._last_checked = HydrusTime.GetNow()
+        self._last_checked = HydrusTime.get_now()
         self._check_now = False
         
     
@@ -760,7 +760,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
         
         did_work = False
         
-        time_to_save = HydrusTime.GetNow() + SAVE_PERIOD
+        time_to_save = HydrusTime.get_now() + SAVE_PERIOD
         
         num_files_imported = 0
         presentation_hashes = []
@@ -798,11 +798,11 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             
             did_work = True
             
-            if HydrusTime.TimeHasPassed( time_to_save ):
+            if HydrusTime.time_has_passed( time_to_save ):
                 
                 CG.client_controller.write_synchronous( 'serialisable', self )
                 
-                time_to_save = HydrusTime.GetNow() + SAVE_PERIOD
+                time_to_save = HydrusTime.get_now() + SAVE_PERIOD
                 
             
             job_status.SetStatusText( 'importing: ' + HydrusNumbers.value_range_to_pretty_string( num_files_imported, num_total ) )
@@ -1281,7 +1281,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             job_status.SetStatusTitle( 'import folder - ' + self._name )
             
             due_by_check_now = self._check_now
-            due_by_period = self._check_regularly and HydrusTime.TimeHasPassed( self._last_checked + self._period )
+            due_by_period = self._check_regularly and HydrusTime.time_has_passed( self._last_checked + self._period )
             
             if due_by_check_now or due_by_period:
                 
@@ -1352,7 +1352,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
         
         if self._check_now:
             
-            return HydrusTime.GetNow()
+            return HydrusTime.get_now()
             
         
         if self._check_regularly:
@@ -1514,7 +1514,7 @@ class ImportFoldersManager( ClientDaemons.ManagerWithMainLoop ):
                 
             else:
                 
-                self._import_folder_names_to_next_work_time_cache[ name ] = max( next_work_time, HydrusTime.GetNow() + 180 )
+                self._import_folder_names_to_next_work_time_cache[ name ] = max( next_work_time, HydrusTime.get_now() + 180 )
                 
             
         
@@ -1529,7 +1529,7 @@ class ImportFoldersManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 for name in import_folder_names:
                     
-                    self._import_folder_names_to_next_work_time_cache[ name ] = HydrusTime.GetNow()
+                    self._import_folder_names_to_next_work_time_cache[ name ] = HydrusTime.get_now()
                     
                 
                 self._import_folder_names_fetched = True
@@ -1540,7 +1540,7 @@ class ImportFoldersManager( ClientDaemons.ManagerWithMainLoop ):
             
             for ( name, time_due ) in self._import_folder_names_to_next_work_time_cache.items():
                 
-                if HydrusTime.TimeHasPassed( time_due ):
+                if HydrusTime.time_has_passed( time_due ):
                     
                     return name
                     
@@ -1569,7 +1569,7 @@ class ImportFoldersManager( ClientDaemons.ManagerWithMainLoop ):
         
         next_work_time = min( self._import_folder_names_to_next_work_time_cache.values() )
         
-        return max( HydrusTime.TimeUntil( next_work_time ), 1 )
+        return max( HydrusTime.time_until( next_work_time ), 1 )
         
     
     def GetName( self ) -> str:

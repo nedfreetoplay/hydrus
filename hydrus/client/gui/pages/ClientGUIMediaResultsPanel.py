@@ -273,7 +273,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
         
         def do_it( content_update_packages ):
             
-            display_time = HydrusTime.GetNow() + 3
+            display_time = HydrusTime.get_now() + 3
             message_pubbed = False
             
             job_status = ClientThreading.JobStatus() # not cancellable, this stuff isn't a nice mix
@@ -287,7 +287,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
                 
                 job_status.SetGauge( i, num_to_do )
                 
-                if not message_pubbed and HydrusTime.TimeHasPassed( display_time ):
+                if not message_pubbed and HydrusTime.time_has_passed( display_time ):
                     
                     CG.client_controller.pub( 'message', job_status )
                     
@@ -501,7 +501,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
         
         total_duration = sum( ( media.GetDurationMS() for media in media_source ) )
         
-        return HydrusTime.MillisecondsDurationToPrettyTime( total_duration )
+        return HydrusTime.milliseconds_duration_to_pretty_time( total_duration )
         
     
     def _GetPrettyTotalSize( self, only_selected = False ):

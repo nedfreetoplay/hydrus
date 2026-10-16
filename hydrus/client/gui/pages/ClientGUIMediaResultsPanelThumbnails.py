@@ -113,7 +113,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         self._thumbnail_layout: ClientGUIThumbnailLayouts.ThumbnailLayout = ClientGUIThumbnailLayouts.RegularGridLayout()
         
         self._currently_animating = False
-        self._last_animation_update_time_float = HydrusTime.GetNowFloat()
+        self._last_animation_update_time_float = HydrusTime.get_now_float()
         
         super().__init__( parent, page_key, page_manager, media_results )
         
@@ -1320,7 +1320,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                 # prefire deal here is mpv lags on initial click, which can cause a drag (and hence an immediate pause) event by accident when mouserelease isn't processed quick
                 # so now we'll say we can't start a drag unless we get a smooth ramp to our pixel delta threshold
                 clean_drag_started = self._drag_prefire_event_count >= 10
-                prob_not_an_accidental_click = HydrusTime.TimeHasPassedMS( self._drag_click_timestamp_ms + 100 )
+                prob_not_an_accidental_click = HydrusTime.time_has_passed_ms( self._drag_click_timestamp_ms + 100 )
                 
                 if clean_drag_started and prob_not_an_accidental_click:
                     
@@ -1398,7 +1398,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                 else:
                     
                     self._drag_init_coordinates = QG.QCursor.pos()
-                    self._drag_click_timestamp_ms = HydrusTime.GetNowMS()
+                    self._drag_click_timestamp_ms = HydrusTime.get_now_ms()
                     
                     # this specifically does not scroll to media, as for clicking (esp. double-clicking attempts), the scroll can be jarring
                     self._HitMedia( event_media, ctrl, shift )
@@ -1662,7 +1662,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
     
     def TIMERAnimationUpdate( self ):
         
-        if HydrusTime.GetNowFloat() - self._last_animation_update_time_float < FRAME_DURATION_60FPS:
+        if HydrusTime.get_now_float() - self._last_animation_update_time_float < FRAME_DURATION_60FPS:
             
             return
             
@@ -1684,7 +1684,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
             HydrusData.safe_print( f'animation update on {HydrusNumbers.value_range_to_pretty_string( num_animating, len(self._possibly_visible_thumbnails))} thumbs' )
             
         
-        self._last_animation_update_time_float = HydrusTime.GetNowFloat()
+        self._last_animation_update_time_float = HydrusTime.get_now_float()
         
         if num_animating == 0:
             
@@ -1796,7 +1796,7 @@ class Thumbnail( QW.QGraphicsItem ):
             return 1.0
             
         
-        passed = HydrusTime.GetNowFloat() - self._fade_in_started_time_float
+        passed = HydrusTime.get_now_float() - self._fade_in_started_time_float
         
         if passed >= self.FADE_DURATION_S:
             
@@ -2547,7 +2547,7 @@ class Thumbnail( QW.QGraphicsItem ):
         # Nevermind actually I'm not sure about that, the scene/view stuff does have a whole system for animations afterall,
         # so maybe we should take a harder look at that for future animations before rolling our own.
         
-        self._fade_in_started_time_float = HydrusTime.GetNowFloat()
+        self._fade_in_started_time_float = HydrusTime.get_now_float()
         
         self._cached_old_pixmap_for_fade = self._cached_pixmap
         self._cached_pixmap = None

@@ -427,7 +427,7 @@ class FilesStorageBaseLocation( object ):
     
     def PathExists( self, lazy_check_ok = False ):
         
-        if lazy_check_ok and not HydrusTime.TimeHasPassedFloat( self._last_successful_exists_time + 300 ):
+        if lazy_check_ok and not HydrusTime.time_has_passed_float( self._last_successful_exists_time + 300 ):
             
             return True
             
@@ -436,7 +436,7 @@ class FilesStorageBaseLocation( object ):
         
         if result:
             
-            self._last_successful_exists_time = HydrusTime.GetNowFloat()
+            self._last_successful_exists_time = HydrusTime.get_now_float()
             
         
         return result
@@ -645,7 +645,7 @@ class FilesStorageSubfolder( object ):
     
     def PathExists( self, lazy_check_ok = False ):
         
-        if lazy_check_ok and not HydrusTime.TimeHasPassedFloat( self._last_successful_exists_time + 300 ):
+        if lazy_check_ok and not HydrusTime.time_has_passed_float( self._last_successful_exists_time + 300 ):
             
             return True
             
@@ -654,7 +654,7 @@ class FilesStorageSubfolder( object ):
         
         if result:
             
-            self._last_successful_exists_time = HydrusTime.GetNowFloat()
+            self._last_successful_exists_time = HydrusTime.get_now_float()
             
         
         return result
@@ -662,6 +662,6 @@ class FilesStorageSubfolder( object ):
     
     def SetWeKnowItExistedAsOfNow( self, value: bool ):
         
-        self._last_successful_exists_time = HydrusTime.GetNowFloat()
+        self._last_successful_exists_time = HydrusTime.get_now_float()
         
     

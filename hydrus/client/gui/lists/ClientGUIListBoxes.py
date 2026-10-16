@@ -3157,7 +3157,7 @@ class ListBox( QW.QScrollArea ):
         if event.isAccepted():
             
             self._last_wheel_event_that_scrolled_direction = 1 if event.angleDelta().y() > 0 else -1
-            self._last_wheel_event_that_scrolled_time = HydrusTime.GetNowFloat()
+            self._last_wheel_event_that_scrolled_time = HydrusTime.get_now_float()
             
         
     

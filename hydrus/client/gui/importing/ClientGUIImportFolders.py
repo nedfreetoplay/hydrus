@@ -115,7 +115,7 @@ class EditImportFoldersPanel( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            pretty_check_period = HydrusTime.TimeDeltaToPrettyTimeDelta( check_period )
+            pretty_check_period = HydrusTime.time_delta_to_pretty_timedelta( check_period )
             
         
         display_tuple = ( name, path, pretty_paused, pretty_check_period )

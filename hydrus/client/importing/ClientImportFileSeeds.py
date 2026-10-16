@@ -200,7 +200,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
             self.Normalise() # this fixes the comparison file seed data and fails safely
             
         
-        self.created = HydrusTime.GetNow()
+        self.created = HydrusTime.get_now()
         self.modified = self.created
         self.source_time = None
         self.status = CC.STATUS_UNKNOWN
@@ -422,7 +422,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
     
     def _UpdateModified( self ):
         
-        self.modified = HydrusTime.GetNow()
+        self.modified = HydrusTime.get_now()
         
     
     def _update_serialisable_info( self, version, old_serialisable_info ):
@@ -1492,7 +1492,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
         
         if ClientTime.TimestampIsSensible( new_source_time ):
             
-            new_source_time = min( HydrusTime.GetNow() - 30, new_source_time )
+            new_source_time = min( HydrusTime.get_now() - 30, new_source_time )
             
             self.source_time = ClientTime.MergeModifiedTimes( self.source_time, new_source_time )
             
@@ -1530,7 +1530,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
             return False
             
         
-        was_just_imported = not HydrusTime.TimeHasPassed( self.modified + 5 )
+        was_just_imported = not HydrusTime.time_has_passed( self.modified + 5 )
         
         should_check_location = not was_just_imported
         
@@ -1930,7 +1930,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                 
                 if ClientTime.TimestampIsSensible( domain_modified_timestamp ):
                     
-                    timestamp_data = ClientTime.TimestampData.STATICDomainModifiedTime( domain, HydrusTime.MillisecondiseS( domain_modified_timestamp ) )
+                    timestamp_data = ClientTime.TimestampData.STATICDomainModifiedTime( domain, HydrusTime.millisecondise_s( domain_modified_timestamp ) )
                     
                     content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_TIMESTAMP, HC.CONTENT_UPDATE_ADD, ( ( hash, ), timestamp_data ) )
                     
@@ -1939,7 +1939,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                 
                 if self._cloudflare_last_modified_time is not None and ClientTime.TimestampIsSensible( self._cloudflare_last_modified_time ):
                     
-                    timestamp_data = ClientTime.TimestampData.STATICDomainModifiedTime( 'cloudflare.com', HydrusTime.MillisecondiseS( self._cloudflare_last_modified_time ) )
+                    timestamp_data = ClientTime.TimestampData.STATICDomainModifiedTime( 'cloudflare.com', HydrusTime.millisecondise_s( self._cloudflare_last_modified_time ) )
                     
                     content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_TIMESTAMP, HC.CONTENT_UPDATE_ADD, ( ( hash, ), timestamp_data ) )
                     
@@ -2037,7 +2037,7 @@ class FileSeedCacheStatus( HydrusSerialisable.SerialisableBase ):
     
     def __init__( self ):
         
-        self._generation_time = HydrusTime.GetNow()
+        self._generation_time = HydrusTime.get_now()
         self._statuses_to_counts = collections.Counter()
         self._latest_added_time = 0
         

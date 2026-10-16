@@ -45,7 +45,7 @@ class TrashMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         with self._lock:
             
             # any file delete, not just trashed. this is KISS and careful
-            if not HydrusTime.TimeHasPassedFloat( self._last_file_deleted_time + 60 ):
+            if not HydrusTime.time_has_passed_float( self._last_file_deleted_time + 60 ):
                 
                 able_to_work = False
                 
@@ -57,11 +57,11 @@ class TrashMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         if able_to_work:
             
-            start_time = HydrusTime.GetNowFloat()
+            start_time = HydrusTime.get_now_float()
             
             still_work_to_do = controller.write_synchronous( 'maintain_trash', expected_work_period )
             
-            actual_work_period = HydrusTime.GetNowFloat() - start_time
+            actual_work_period = HydrusTime.get_now_float() - start_time
             
             if still_work_to_do:
                 
@@ -107,7 +107,7 @@ class TrashMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         with self._lock:
             
-            self._last_file_deleted_time = HydrusTime.GetNowFloat()
+            self._last_file_deleted_time = HydrusTime.get_now_float()
             
         
     

@@ -142,7 +142,7 @@ class NetworkSessionManagerSessionContainer( HydrusSerialisable.SerialisableBase
             
         
         self.session = session
-        self.last_touched_time = HydrusTime.GetNow()
+        self.last_touched_time = HydrusTime.get_now()
         
         self.pool_is_cleared = True
         self.printed_connection_pool_error = False
@@ -271,7 +271,7 @@ class NetworkSessionManagerSessionContainer( HydrusSerialisable.SerialisableBase
             return
             
         
-        if not self.pool_is_cleared and HydrusTime.TimeHasPassed( self.last_touched_time + self.POOL_CONNECTION_TIMEOUT ):
+        if not self.pool_is_cleared and HydrusTime.time_has_passed( self.last_touched_time + self.POOL_CONNECTION_TIMEOUT ):
             
             try:
                 
@@ -288,7 +288,7 @@ class NetworkSessionManagerSessionContainer( HydrusSerialisable.SerialisableBase
                     
                 
                 self.pool_is_cleared = True
-                self.last_touched_time = HydrusTime.GetNow()
+                self.last_touched_time = HydrusTime.get_now()
                 
             except Exception as e:
                 
@@ -308,7 +308,7 @@ class NetworkSessionManagerSessionContainer( HydrusSerialisable.SerialisableBase
         # this is useful here as 'are we logged in' tracking
         ClearExpiredCookies( self.session )
         
-        self.last_touched_time = HydrusTime.GetNow()
+        self.last_touched_time = HydrusTime.get_now()
         self.pool_is_cleared = False
         
     

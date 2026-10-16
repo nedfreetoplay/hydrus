@@ -7,7 +7,7 @@ from hydrus.core import HydrusConstants as HC
 from hydrus.core import HydrusTime
 from hydrus.core.networking import HydrusNetworking
 
-now = HydrusTime.GetNow()
+now = HydrusTime.get_now()
 
 now_10 = now + 10
 
@@ -417,7 +417,7 @@ class TestBandwidthTracker( unittest.TestCase ):
         
         self.assertEqual( bandwidth_tracker.GetCurrentMonthSummary(), 'used 0B in 0 requests this month' )
         
-        now = HydrusTime.GetNow()
+        now = HydrusTime.get_now()
         
         with mock.patch.object( HydrusTime, 'GetNow', return_value = now ):
             

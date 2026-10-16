@@ -156,13 +156,13 @@ class App(QW.QApplication):
             
             if CG.client_controller.program_is_shutting_down():
                 
-                screw_it_time = HydrusTime.GetNow() + 15
+                screw_it_time = HydrusTime.get_now() + 15
                 
                 while not CG.client_controller.program_is_shutdown():
                     
                     time.sleep( 0.25 )
                     
-                    if HydrusTime.TimeHasPassed( screw_it_time ):
+                    if HydrusTime.time_has_passed( screw_it_time ):
                         
                         return
                         
@@ -261,7 +261,7 @@ class Controller(HydrusController.HydrusController):
     
     def _get_wake_delay_period_ms(self):
         
-        return HydrusTime.MillisecondiseS( self.new_options.GetInteger( 'wake_delay_period' ) )
+        return HydrusTime.millisecondise_s( self.new_options.GetInteger( 'wake_delay_period' ) )
     
     def _publish_shutdown_subtext(self, text):
         
@@ -317,7 +317,7 @@ class Controller(HydrusController.HydrusController):
                     wake_time_ms = self.get_timestamp_ms( 'now_awake' )
                     
                 
-                if HydrusTime.TimeHasPassedMS( wake_time_ms ):
+                if HydrusTime.time_has_passed_ms( wake_time_ms ):
                     
                     job_status.FinishAndDismiss()
                     
@@ -325,9 +325,9 @@ class Controller(HydrusController.HydrusController):
                     
                 else:
                     
-                    wake_time = HydrusTime.SecondiseMS( wake_time_ms )
+                    wake_time = HydrusTime.secondise_ms( wake_time_ms )
                     
-                    job_status.SetStatusText( 'enabling I/O {}'.format( HydrusTime.TimestampToPrettyTimeDelta( wake_time, just_now_threshold = 0 ) ) )
+                    job_status.SetStatusText( 'enabling I/O {}'.format( HydrusTime.timestamp_to_pretty_time_delta( wake_time, just_now_threshold = 0 ) ) )
                     
                 
                 time.sleep( 0.5 )
@@ -351,7 +351,7 @@ class Controller(HydrusController.HydrusController):
         
         if not self._doing_fast_exit:
             
-            started = HydrusTime.GetNow()
+            started = HydrusTime.get_now()
             
             while False in ( manager.IsShutdown() for manager in self._managers_with_mainloops ):
                 
@@ -359,7 +359,7 @@ class Controller(HydrusController.HydrusController):
                 
                 time.sleep( 0.1 )
                 
-                if HydrusTime.TimeHasPassed( started + 30 ):
+                if HydrusTime.time_has_passed( started + 30 ):
                     
                     break
     
@@ -722,7 +722,7 @@ class Controller(HydrusController.HydrusController):
             return True
             
         
-        if not HydrusTime.TimeHasPassedMS( self.get_boot_timestamp_ms() + ( 120 * 1000 ) ):
+        if not HydrusTime.time_has_passed_ms( self.get_boot_timestamp_ms() + ( 120 * 1000 ) ):
             
             if HG.idle_report_mode:
                 
@@ -738,45 +738,45 @@ class Controller(HydrusController.HydrusController):
             
             currently_idle = True
             
-            idle_period_ms = HydrusTime.MillisecondiseS( self.options[ 'idle_period' ] )
+            idle_period_ms = HydrusTime.millisecondise_s( self.options[ 'idle_period' ] )
             
             if idle_period_ms is not None:
                 
-                if not HydrusTime.TimeHasPassedMS( self.get_timestamp_ms( 'last_user_action' ) + idle_period_ms ):
+                if not HydrusTime.time_has_passed_ms( self.get_timestamp_ms( 'last_user_action' ) + idle_period_ms ):
                     
                     if HG.idle_report_mode:
                         
-                        HydrusData.ShowText( f'IDLE MODE - Blocked: Last user action was {HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( self.get_timestamp_ms( "last_user_action" ) ) )}.' )
+                        HydrusData.ShowText( f'IDLE MODE - Blocked: Last user action was {HydrusTime.timestamp_to_pretty_time_delta( HydrusTime.secondise_ms( self.get_timestamp_ms( "last_user_action" ) ) )}.' )
                         
                     
                     currently_idle = False
                     
                 
             
-            idle_mouse_period_ms = HydrusTime.MillisecondiseS( self.options[ 'idle_mouse_period' ] )
+            idle_mouse_period_ms = HydrusTime.millisecondise_s( self.options[ 'idle_mouse_period' ] )
             
             if idle_mouse_period_ms is not None:
                 
-                if not HydrusTime.TimeHasPassedMS( self.get_timestamp_ms( 'last_mouse_action' ) + idle_mouse_period_ms ):
+                if not HydrusTime.time_has_passed_ms( self.get_timestamp_ms( 'last_mouse_action' ) + idle_mouse_period_ms ):
                     
                     if HG.idle_report_mode:
                         
-                        HydrusData.ShowText( f'IDLE MODE - Blocked: Last mouse move was {HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( self.get_timestamp_ms( "last_mouse_action" ) ) )}.' )
+                        HydrusData.ShowText( f'IDLE MODE - Blocked: Last mouse move was {HydrusTime.timestamp_to_pretty_time_delta( HydrusTime.secondise_ms( self.get_timestamp_ms( "last_mouse_action" ) ) )}.' )
                         
                     
                     currently_idle = False
                     
                 
             
-            idle_mode_client_api_timeout_ms = HydrusTime.MillisecondiseS( self.new_options.GetNoneableInteger( 'idle_mode_client_api_timeout' ) )
+            idle_mode_client_api_timeout_ms = HydrusTime.millisecondise_s( self.new_options.GetNoneableInteger( 'idle_mode_client_api_timeout' ) )
             
             if idle_mode_client_api_timeout_ms is not None:
                 
-                if not HydrusTime.TimeHasPassedMS( self.get_timestamp_ms( 'last_client_api_action' ) + idle_mode_client_api_timeout_ms ):
+                if not HydrusTime.time_has_passed_ms( self.get_timestamp_ms( 'last_client_api_action' ) + idle_mode_client_api_timeout_ms ):
                     
                     if HG.idle_report_mode:
                         
-                        HydrusData.ShowText( f'IDLE MODE - Blocked: Last Client API action was {HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( self.get_timestamp_ms( "last_client_api_action" ) ) )}.' )
+                        HydrusData.ShowText( f'IDLE MODE - Blocked: Last Client API action was {HydrusTime.timestamp_to_pretty_time_delta( HydrusTime.secondise_ms( self.get_timestamp_ms( "last_client_api_action" ) ) )}.' )
                         
                     
                     currently_idle = False
@@ -805,7 +805,7 @@ class Controller(HydrusController.HydrusController):
                 HydrusData.ShowText( f'IDLE MODE - Turning ON' )
                 
             
-            self._idle_started = HydrusTime.GetNow()
+            self._idle_started = HydrusTime.get_now()
             
             self.pub( 'wake_daemons' )
             
@@ -832,7 +832,7 @@ class Controller(HydrusController.HydrusController):
             return False
             
         
-        if self._idle_started is not None and HydrusTime.TimeHasPassed( self._idle_started + 3600 ):
+        if self._idle_started is not None and HydrusTime.time_has_passed( self._idle_started + 3600 ):
             
             return True
             
@@ -843,7 +843,7 @@ class Controller(HydrusController.HydrusController):
         
         self.frame_splash_status.SetSubtext( 'db' )
         
-        stop_time = HydrusTime.GetNow() + ( self.options[ 'idle_shutdown_max_minutes' ] * 60 )
+        stop_time = HydrusTime.get_now() + ( self.options[ 'idle_shutdown_max_minutes' ] * 60 )
         
         self.maintain_db( maintenance_mode = HC.MAINTENANCE_SHUTDOWN, stop_time = stop_time )
         
@@ -853,7 +853,7 @@ class Controller(HydrusController.HydrusController):
             
             for service in services:
                 
-                if HydrusTime.TimeHasPassed( stop_time ):
+                if HydrusTime.time_has_passed( stop_time ):
                     
                     return
                     
@@ -1698,7 +1698,7 @@ class Controller(HydrusController.HydrusController):
         
         HydrusController.HydrusController.maintain_memory_slow( self )
         
-        if HydrusTime.TimeHasPassedMS( self.get_timestamp_ms( 'last_page_change' ) + 30 * 60000 ):
+        if HydrusTime.time_has_passed_ms( self.get_timestamp_ms( 'last_page_change' ) + 30 * 60000 ):
             
             self.pub( 'delete_old_closed_pages' )
             
@@ -2398,7 +2398,7 @@ class Controller(HydrusController.HydrusController):
             
         else:
             
-            if HydrusTime.TimeHasPassedMS( self.get_timestamp_ms( 'last_cpu_check' ) + 60000 ):
+            if HydrusTime.time_has_passed_ms( self.get_timestamp_ms( 'last_cpu_check' ) + 60000 ):
                 
                 if HydrusPSUtil.PSUTIL_OK:
                     
@@ -2566,7 +2566,7 @@ class Controller(HydrusController.HydrusController):
                 
                 while not image_renderer.IsReady():
                     
-                    if HydrusTime.TimeHasPassed( start_time + 15 ):
+                    if HydrusTime.time_has_passed( start_time + 15 ):
                         
                         HydrusData.ShowText( 'The image did not render in fifteen seconds, so the attempt to copy it to the clipboard was abandoned.' )
                         

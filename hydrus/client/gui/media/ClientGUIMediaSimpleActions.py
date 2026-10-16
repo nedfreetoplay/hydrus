@@ -33,7 +33,7 @@ def CommitContentUpdatePackagesAsync( title: str, content_update_packages: list[
         
         job_status.SetStatusTitle( title )
         
-        start_time = HydrusTime.GetNowFloat()
+        start_time = HydrusTime.get_now_float()
         
         num_to_do = len( content_update_packages )
         
@@ -51,7 +51,7 @@ def CommitContentUpdatePackagesAsync( title: str, content_update_packages: list[
                 
                 cumulative_weight += content_update_package.GetWeight()
                 
-                if ( HydrusTime.TimeHasPassedFloat( start_time + 1 ) or cumulative_weight > 1000 ):
+                if ( HydrusTime.time_has_passed_float( start_time + 1 ) or cumulative_weight > 1000 ):
                     
                     have_pubbed_job = True
                     

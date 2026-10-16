@@ -386,7 +386,7 @@ class PairComparatorRelativeFileInfo( PairComparator ):
         
         if we_time_pred or we_duration_pred:
             
-            absolute_number_renderer = lambda t: HydrusTime.TimeDeltaToPrettyTimeDelta( t / 1000 )
+            absolute_number_renderer = lambda t: HydrusTime.time_delta_to_pretty_timedelta( t / 1000 )
             
             delta_string = absolute_number_renderer( self._delta )
             

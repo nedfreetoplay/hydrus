@@ -71,7 +71,7 @@ class HydrusSessionManagerServer:
             
             session_key = HydrusData.generate_key()
             
-            now = HydrusTime.GetNow()
+            now = HydrusTime.get_now()
             
             expires = now + HYDRUS_SESSION_LIFETIME
             
@@ -91,7 +91,7 @@ class HydrusSessionManagerServer:
                 
                 ( account_key, expires ) = session_keys_to_sessions[ session_key ]
                 
-                if HydrusTime.TimeHasPassed( expires ):
+                if HydrusTime.time_has_passed( expires ):
                     
                     del session_keys_to_sessions[ session_key ]
                     

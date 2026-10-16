@@ -305,7 +305,7 @@ def THREADUploadPending( service_key ):
         
         while result is not None:
             
-            time_started_this_loop = HydrusTime.GetNowPrecise()
+            time_started_this_loop = HydrusTime.get_now_precise()
             
             nums_pending = CG.client_controller.read( 'nums_pending' )
             
@@ -357,7 +357,7 @@ def THREADUploadPending( service_key ):
                         
                         file_info_manager = media_result.GetFileInfoManager()
                         
-                        timestamp_ms = HydrusTime.GetNowMS()
+                        timestamp_ms = HydrusTime.get_now_ms()
                         
                         content_update_row = ( file_info_manager, timestamp_ms )
                         
@@ -424,7 +424,7 @@ def THREADUploadPending( service_key ):
             
             CG.client_controller.wait_until_view_free()
             
-            total_time_this_loop_took = HydrusTime.GetNowPrecise() - time_started_this_loop
+            total_time_this_loop_took = HydrusTime.get_now_precise() - time_started_this_loop
             
             if total_time_this_loop_took > 1.5:
                 
@@ -818,7 +818,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
                 
             else:
                 
-                stop_time = HydrusTime.GetNow() + 120
+                stop_time = HydrusTime.get_now() + 120
                 
                 CG.client_controller.write_synchronous( 'analyze', maintenance_mode = HC.MAINTENANCE_FORCED, stop_time = stop_time )
                 
@@ -955,7 +955,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             self._controller.write( 'backup', path )
             
-            CG.client_controller.new_options.SetNoneableInteger( 'last_backup_time', HydrusTime.GetNow() )
+            CG.client_controller.new_options.SetNoneableInteger( 'last_backup_time', HydrusTime.get_now() )
             
             self._did_a_backup_this_session = True
             
@@ -967,7 +967,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         def do_it( service ):
             
-            started = HydrusTime.GetNow()
+            started = HydrusTime.get_now()
             
             service.Request( HC.POST, 'backup' )
             
@@ -989,9 +989,9 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
                 result_bytes = service.Request( HC.GET, 'busy' )
                 
             
-            it_took = HydrusTime.GetNow() - started
+            it_took = HydrusTime.get_now() - started
             
-            HydrusData.ShowText( 'Server backup done in ' + HydrusTime.TimeDeltaToPrettyTimeDelta( it_took ) + '!' )
+            HydrusData.ShowText( 'Server backup done in ' + HydrusTime.time_delta_to_pretty_timedelta( it_took ) + '!' )
             
         
         message = 'This will tell the server to lock and copy its database files. It will probably take a few minutes to complete, during which time it will not be able to serve any requests.'
@@ -1338,7 +1338,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
                     break
                     
                 
-                job_status.SetStatusText( 'Will auto-dismiss in ' + HydrusTime.TimeDeltaToPrettyTimeDelta( 10 - i ) + '.' )
+                job_status.SetStatusText( 'Will auto-dismiss in ' + HydrusTime.time_delta_to_pretty_timedelta( 10 - i ) + '.' )
                 job_status.SetGauge( i, 10 )
                 
                 time.sleep( 1 )
@@ -1624,13 +1624,13 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         location = ClientFilesPhysical.FilesStorageBaseLocation( path, 1, None )
         
-        time_started = HydrusTime.GetNowFloat()
+        time_started = HydrusTime.get_now_float()
         
         try:
             
             result = ClientDBFilesPhysicalStorage.TryToGetPresumptiveSubfolderPathsBeneathLocation( location, current_granularity )
             
-            HydrusData.ShowText( f'It found {HydrusNumbers.to_human_int(len( result ))} subfolders and took {HydrusTime.TimeDeltaToPrettyTimeDelta( HydrusTime.GetNowFloat() - time_started)}' )
+            HydrusData.ShowText( f'It found {HydrusNumbers.to_human_int(len( result ))} subfolders and took {HydrusTime.time_delta_to_pretty_timedelta( HydrusTime.get_now_float() - time_started)}' )
             
         except HydrusExceptions.CancelledException as e:
             
@@ -1835,8 +1835,8 @@ QMenuBar::item { padding: 2px 8px; margin: 0px; }'''
         ip = response[ 'ip' ]
         timestamp = response[ 'timestamp' ]
         
-        utc_time = HydrusTime.TimestampToPrettyTime( timestamp, in_utc = True )
-        local_time = HydrusTime.TimestampToPrettyTime( timestamp )
+        utc_time = HydrusTime.timestamp_to_pretty_time( timestamp, in_utc = True )
+        local_time = HydrusTime.timestamp_to_pretty_time( timestamp )
         
         text = 'File Hash: ' + hash.hex()
         text += '\n'
@@ -2557,13 +2557,13 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             if last_backup_time is not None:
                 
-                if not HydrusTime.TimeHasPassed( last_backup_time + 1800 ):
+                if not HydrusTime.time_has_passed( last_backup_time + 1800 ):
                     
                     message += ' (did one recently)'
                     
                 else:
                     
-                    message += ' (last {})'.format( HydrusTime.TimestampToPrettyTimeDelta( last_backup_time ) )
+                    message += ' (last {})'.format( HydrusTime.timestamp_to_pretty_time_delta( last_backup_time ) )
                     
                 
             
@@ -2755,7 +2755,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                         
                         for timestamp_ms in timestamps_ms:
                             
-                            ClientGUIMenus.AppendMenuItem( submenu, HydrusTime.TimestampToPrettyTime( HydrusTime.SecondiseMS( timestamp_ms ) ), 'Append this backup session to whatever pages are already open.', self._notebook.AppendGUISessionBackup, name, timestamp_ms )
+                            ClientGUIMenus.AppendMenuItem( submenu, HydrusTime.timestamp_to_pretty_time( HydrusTime.secondise_ms( timestamp_ms ) ), 'Append this backup session to whatever pages are already open.', self._notebook.AppendGUISessionBackup, name, timestamp_ms )
                             
                         
                         ClientGUIMenus.AppendMenu( append_backup, submenu, name )
@@ -4791,7 +4791,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
                 if nullification_period > HydrusNetwork.MAX_NULLIFICATION_PERIOD:
                     
-                    ClientGUIDialogsMessage.ShowWarning( self, 'Sorry, the value you entered was too high. The max is {}.'.format( HydrusTime.TimeDeltaToPrettyTimeDelta( HydrusNetwork.MAX_NULLIFICATION_PERIOD ) ) )
+                    ClientGUIDialogsMessage.ShowWarning( self, 'Sorry, the value you entered was too high. The max is {}.'.format( HydrusTime.time_delta_to_pretty_timedelta( HydrusNetwork.MAX_NULLIFICATION_PERIOD ) ) )
                     
                     return
                     
@@ -4916,7 +4916,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
                 if update_period > HydrusNetwork.MAX_UPDATE_PERIOD:
                     
-                    ClientGUIDialogsMessage.ShowWarning( self, 'Sorry, the value you entered was too high. The max is {}.'.format( HydrusTime.TimeDeltaToPrettyTimeDelta( HydrusNetwork.MAX_UPDATE_PERIOD ) ) )
+                    ClientGUIDialogsMessage.ShowWarning( self, 'Sorry, the value you entered was too high. The max is {}.'.format( HydrusTime.time_delta_to_pretty_timedelta( HydrusNetwork.MAX_UPDATE_PERIOD ) ) )
                     
                     return
                     
@@ -5881,13 +5881,13 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         def do_it( service ):
             
-            started = HydrusTime.GetNow()
+            started = HydrusTime.get_now()
             
             service.Request( HC.POST, 'restart_services' )
             
             HydrusData.ShowText( 'Server service restart started!' )
             
-            time_started = HydrusTime.GetNowMS()
+            time_started = HydrusTime.get_now_ms()
             
             working_now = False
             
@@ -5911,7 +5911,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                     pass
                     
                 
-                if HydrusTime.TimeHasPassedMS( time_started + ( 60 * 1000 ) ):
+                if HydrusTime.time_has_passed_ms( time_started + ( 60 * 1000 ) ):
                     
                     HydrusData.ShowText( 'It has been a minute and the server is not back up. Abandoning check--something is super delayed/not working!' )
                     
@@ -6695,7 +6695,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         def do_it( service ):
             
-            started = HydrusTime.GetNow()
+            started = HydrusTime.get_now()
             
             service.Request( HC.POST, 'maintenance_regen_service_info' )
             
@@ -6717,9 +6717,9 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 result_bytes = service.Request( HC.GET, 'busy' )
                 
             
-            it_took = HydrusTime.GetNow() - started
+            it_took = HydrusTime.get_now() - started
             
-            HydrusData.ShowText( 'Server maintenance done in ' + HydrusTime.TimeDeltaToPrettyTimeDelta( it_took ) + '!' )
+            HydrusData.ShowText( 'Server maintenance done in ' + HydrusTime.time_delta_to_pretty_timedelta( it_took ) + '!' )
             
         
         message = 'This will tell the server to recalculate the cached numbers for number of files, mappings, actionable petitions and so on. It may take a little while to complete, during which time it will not be able to serve any requests.'
@@ -7514,7 +7514,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         def do_it( service ):
             
-            started = HydrusTime.GetNow()
+            started = HydrusTime.get_now()
             
             service.Request( HC.POST, 'vacuum' )
             
@@ -7534,9 +7534,9 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                 result_bytes = service.Request( HC.GET, 'busy' )
                 
             
-            it_took = HydrusTime.GetNow() - started
+            it_took = HydrusTime.get_now() - started
             
-            HydrusData.ShowText( 'Server vacuum done in ' + HydrusTime.TimeDeltaToPrettyTimeDelta( it_took ) + '!' )
+            HydrusData.ShowText( 'Server vacuum done in ' + HydrusTime.time_delta_to_pretty_timedelta( it_took ) + '!' )
             
         
         message = 'This will tell the server to lock and vacuum its database files. It may take some time to complete, during which time it will not be able to serve any requests.'
@@ -7712,7 +7712,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         new_closed_pages = []
         
-        now = HydrusTime.GetNow()
+        now = HydrusTime.get_now()
         
         timeout = 60 * 60
         
@@ -8344,7 +8344,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             self._clipboard_watcher_destination_page_watcher = None
             
         
-        close_time = HydrusTime.GetNow()
+        close_time = HydrusTime.get_now()
         
         self._closed_pages.append( ( close_time, page ) )
         
@@ -8843,9 +8843,9 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         boot_time_ms = self._controller.get_boot_timestamp_ms()
         
-        time_since_boot_ms = max( 1000, HydrusTime.GetNowMS() - boot_time_ms )
+        time_since_boot_ms = max( 1000, HydrusTime.get_now_ms() - boot_time_ms )
         
-        usage_since_boot = global_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, HydrusTime.SecondiseMS( time_since_boot_ms ) )
+        usage_since_boot = global_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, HydrusTime.secondise_ms( time_since_boot_ms ) )
         
         bandwidth_status = HydrusData.ToHumanBytes( usage_since_boot )
         
@@ -9316,7 +9316,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                 
                 shutdown_work_period = self._controller.new_options.GetInteger( 'shutdown_work_period' )
                 
-                shutdown_work_due = HydrusTime.TimeHasPassed( last_shutdown_work_time + shutdown_work_period )
+                shutdown_work_due = HydrusTime.time_has_passed( last_shutdown_work_time + shutdown_work_period )
                 
                 if shutdown_work_due:
                     
@@ -9328,7 +9328,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                         
                         idle_shutdown_max_minutes = self._controller.options[ 'idle_shutdown_max_minutes' ]
                         
-                        time_to_stop = HydrusTime.GetNow() + ( idle_shutdown_max_minutes * 60 )
+                        time_to_stop = HydrusTime.get_now() + ( idle_shutdown_max_minutes * 60 )
                         
                         work_to_do = self._controller.get_idle_shutdown_work_due( time_to_stop )
                         

@@ -128,7 +128,7 @@ class GallerySeed( HydrusSerialisable.SerialisableBase ):
         self._external_filterable_tags = set()
         self._external_additional_service_keys_to_tags = ClientTags.ServiceKeysToTags()
         
-        self.created = HydrusTime.GetNow()
+        self.created = HydrusTime.get_now()
         self.modified = self.created
         self.status = CC.STATUS_UNKNOWN
         self.note = ''
@@ -221,7 +221,7 @@ class GallerySeed( HydrusSerialisable.SerialisableBase ):
     
     def _UpdateModified( self ):
         
-        self.modified = HydrusTime.GetNow()
+        self.modified = HydrusTime.get_now()
         
     
     def _update_serialisable_info( self, version, old_serialisable_info ):
