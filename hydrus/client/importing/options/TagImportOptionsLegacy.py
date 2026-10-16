@@ -40,23 +40,23 @@ class TagImportOptionsLegacy( HydrusSerialisable.SerialisableBase ):
         self._is_default = is_default
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_tag_filtering_import_options = self._tag_filtering_import_options.GetSerialisableTuple()
-        serialisable_tag_import_options = self._tag_import_options.GetSerialisableTuple()
+        serialisable_tag_filtering_import_options = self._tag_filtering_import_options.get_serialisable_tuple()
+        serialisable_tag_import_options = self._tag_import_options.get_serialisable_tuple()
         
         return ( self._fetch_tags_even_if_url_recognised_and_file_already_in_db, self._fetch_tags_even_if_hash_recognised_and_file_already_in_db, serialisable_tag_filtering_import_options, serialisable_tag_import_options, self._is_default )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( self._fetch_tags_even_if_url_recognised_and_file_already_in_db, self._fetch_tags_even_if_hash_recognised_and_file_already_in_db, serialisable_tag_filtering_import_options, serialisable_tag_import_options, self._is_default ) = serialisable_info
         
-        self._tag_filtering_import_options = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tag_filtering_import_options )
-        self._tag_import_options = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tag_import_options )
+        self._tag_filtering_import_options = HydrusSerialisable.create_from_serialisable_tuple( serialisable_tag_filtering_import_options )
+        self._tag_import_options = HydrusSerialisable.create_from_serialisable_tuple( serialisable_tag_import_options )
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -86,7 +86,7 @@ class TagImportOptionsLegacy( HydrusSerialisable.SerialisableBase ):
             
             tag_blacklist = HydrusTags.TagFilter()
             
-            serialisable_tag_blacklist = tag_blacklist.GetSerialisableTuple()
+            serialisable_tag_blacklist = tag_blacklist.get_serialisable_tuple()
             
             new_serialisable_info = ( fetch_tags_even_if_url_recognised_and_file_already_in_db, serialisable_tag_blacklist, safe_service_keys_to_namespaces, safe_service_keys_to_additional_tags )
             
@@ -183,15 +183,15 @@ class TagImportOptionsLegacy( HydrusSerialisable.SerialisableBase ):
             
             ( fetch_tags_even_if_url_recognised_and_file_already_in_db, fetch_tags_even_if_hash_recognised_and_file_already_in_db, serialisable_tag_blacklist, tag_whitelist, serialisable_service_keys_to_service_tag_import_options, is_default ) = old_serialisable_info
             
-            tag_blacklist = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tag_blacklist )
+            tag_blacklist = HydrusSerialisable.create_from_serialisable_tuple( serialisable_tag_blacklist )
             
-            service_keys_to_service_tag_import_options = { bytes.fromhex( encoded_service_key ) : HydrusSerialisable.CreateFromSerialisableTuple( serialisable_service_tag_import_options ) for ( encoded_service_key, serialisable_service_tag_import_options ) in serialisable_service_keys_to_service_tag_import_options }
+            service_keys_to_service_tag_import_options = { bytes.fromhex( encoded_service_key ) : HydrusSerialisable.create_from_serialisable_tuple( serialisable_service_tag_import_options ) for ( encoded_service_key, serialisable_service_tag_import_options ) in serialisable_service_keys_to_service_tag_import_options }
             
             tag_filtering_import_options = TagFilteringImportOptions.TagFilteringImportOptions( tag_blacklist = tag_blacklist, tag_whitelist = tag_whitelist )
             tag_import_options = TagImportOptions.TagImportOptions( service_keys_to_service_tag_import_options = service_keys_to_service_tag_import_options )
             
-            serialisable_tag_filtering_import_options = tag_filtering_import_options.GetSerialisableTuple()
-            serialisable_tag_import_options = tag_import_options.GetSerialisableTuple()
+            serialisable_tag_filtering_import_options = tag_filtering_import_options.get_serialisable_tuple()
+            serialisable_tag_import_options = tag_import_options.get_serialisable_tuple()
             
             new_serialisable_info = ( fetch_tags_even_if_url_recognised_and_file_already_in_db, fetch_tags_even_if_hash_recognised_and_file_already_in_db, serialisable_tag_filtering_import_options, serialisable_tag_import_options, is_default )
             

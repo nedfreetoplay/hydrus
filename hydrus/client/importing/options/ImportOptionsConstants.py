@@ -123,12 +123,12 @@ class ImportOptionsMetatype( HydrusSerialisable.SerialisableBase ):
     
     IMPORT_OPTIONS_TYPE = -1
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         raise NotImplementedError()
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         raise NotImplementedError()
         

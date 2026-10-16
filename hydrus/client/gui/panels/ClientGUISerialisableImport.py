@@ -244,7 +244,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
             
             try:
                 
-                obj_list = HydrusSerialisable.CreateFromString( payload_text, raise_error_on_future_version = True )
+                obj_list = HydrusSerialisable.create_from_string( payload_text, raise_error_on_future_version = True )
                 
             except HydrusExceptions.SerialisationException as e:
                 
@@ -527,10 +527,10 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         
         # final ask
         
-        new_gugs.sort( key = lambda o: o.GetName() )
-        new_url_classes.sort( key = lambda o: o.GetName() )
-        new_parsers.sort( key = lambda o: o.GetName() )
-        new_login_scripts.sort( key = lambda o: o.GetName() )
+        new_gugs.sort( key = lambda o: o.get_name() )
+        new_url_classes.sort( key = lambda o: o.get_name() )
+        new_parsers.sort( key = lambda o: o.get_name() )
+        new_login_scripts.sort( key = lambda o: o.get_name() )
         new_domain_metadatas.sort( key = lambda o: o.GetDomain() )
         
         if len( new_domain_metadatas ) > 0:
@@ -732,7 +732,7 @@ class ReviewWhatIsThisObject( ClientGUIScrolledPanels.ReviewPanel ):
             
             try:
                 
-                obj = HydrusSerialisable.CreateFromString( payload_text, raise_error_on_future_version = True )
+                obj = HydrusSerialisable.create_from_string( payload_text, raise_error_on_future_version = True )
                 
                 if not isinstance( obj, HydrusSerialisable.SerialisableBase ):
                     
@@ -743,7 +743,7 @@ class ReviewWhatIsThisObject( ClientGUIScrolledPanels.ReviewPanel ):
                     obj = typing.cast( HydrusSerialisable.SerialisableBase, obj )
                     
                     # TODO: let's make a HydrusSerialisable 'DescribeYourself' or similar and have lists and dicts talk about their contents
-                    result_text = f'Object Type: {obj.GetSerialisableDescription()}'
+                    result_text = f'Object Type: {obj.get_serialisable_description()}'
                     result_text += '\n'
                     result_text += f'JSON: {HydrusData.ToHumanBytes( len( payload_text ) )}'
                     

@@ -29,10 +29,10 @@ class ClientExecutableCallable( HydrusSerialisable.SerialisableBaseNamed ):
         self._actual_call = actual_call
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         serialisable_callable_key = self._callable_key.hex()
-        serialisable_actual_call = self._actual_call.GetSerialisableTuple()
+        serialisable_actual_call = self._actual_call.get_serialisable_tuple()
         
         return (
             serialisable_callable_key,
@@ -41,7 +41,7 @@ class ClientExecutableCallable( HydrusSerialisable.SerialisableBaseNamed ):
         )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         (
             serialisable_callable_key,
@@ -50,7 +50,7 @@ class ClientExecutableCallable( HydrusSerialisable.SerialisableBaseNamed ):
         ) = serialisable_info
         
         self._callable_key = bytes.fromhex( serialisable_callable_key )
-        self._actual_call = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_actual_call )
+        self._actual_call = HydrusSerialisable.create_from_serialisable_tuple( serialisable_actual_call )
         
     
     def Call( self, input_params ):

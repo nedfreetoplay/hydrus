@@ -256,7 +256,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def __init__( self, parent: QW.QWidget, subscription: ClientImportSubscriptions.Subscription, names_to_edited_query_log_containers: typing.Mapping[ str, ClientImportSubscriptionQuery.SubscriptionQueryLogContainer ], original_existing_query_log_container_names: set[ str ] ):
         
-        subscription = subscription.Duplicate()
+        subscription = subscription.duplicate()
         
         super().__init__( parent )
         
@@ -285,7 +285,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
         
         #
         
-        name = subscription.GetName()
+        name = subscription.get_name()
         gug_key_and_name = subscription.GetGUGKeyAndName()
         query_headers = subscription.GetQueryHeaders()
         checker_options = subscription.GetCheckerOptions()
@@ -563,7 +563,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 self._query_headers.AddData( query_header, select_sort_and_scroll = True )
                 
-                self._names_to_edited_query_log_containers[ query_log_container.GetName() ] = query_log_container
+                self._names_to_edited_query_log_containers[ query_log_container.get_name() ] = query_log_container
                 
             
         
@@ -693,7 +693,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            estimate = query_header.GetBandwidthWaitingEstimate( CG.client_controller.network_engine.bandwidth_manager, self._original_subscription.GetName() )
+            estimate = query_header.GetBandwidthWaitingEstimate( CG.client_controller.network_engine.bandwidth_manager, self._original_subscription.get_name() )
             
             if estimate == 0:
                 
@@ -740,7 +740,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            estimate = query_header.GetBandwidthWaitingEstimate( CG.client_controller.network_engine.bandwidth_manager, self._original_subscription.GetName() )
+            estimate = query_header.GetBandwidthWaitingEstimate( CG.client_controller.network_engine.bandwidth_manager, self._original_subscription.get_name() )
             
             if estimate == 0:
                 
@@ -1590,8 +1590,8 @@ class EditSubscriptionQueryPanel( ClientGUIScrolledPanels.EditPanel ):
         self._original_query_header = query_header
         self._original_query_log_container = query_log_container
         
-        query_header = query_header.Duplicate()
-        query_log_container = query_log_container.Duplicate()
+        query_header = query_header.duplicate()
+        query_log_container = query_log_container.duplicate()
         
         name_panel = ClientGUICommon.StaticBox( self, 'query and name' )
         
@@ -1768,7 +1768,7 @@ class EditSubscriptionQueryPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _GetValue( self ) -> tuple[ ClientImportSubscriptionQuery.SubscriptionQueryHeader, ClientImportSubscriptionQuery.SubscriptionQueryLogContainer ]:
         
-        query_header = self._original_query_header.Duplicate()
+        query_header = self._original_query_header.duplicate()
         
         query_header.SetQueryText( self._query_text.text() )
         
@@ -1782,7 +1782,7 @@ class EditSubscriptionQueryPanel( ClientGUIScrolledPanels.EditPanel ):
         
         query_header.SetFileSeedCacheCompactionNumber( self._file_seed_cache_compaction_number.value() )
         
-        query_log_container = self._original_query_log_container.Duplicate()
+        query_log_container = self._original_query_log_container.duplicate()
         
         query_log_container.SetFileSeedCache( self._file_seed_cache )
         query_log_container.SetGallerySeedLog( self._gallery_seed_log )
@@ -1806,7 +1806,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def __init__( self, parent: QW.QWidget, subscriptions: collections.abc.Collection[ ClientImportSubscriptions.Subscription ] ):
         
-        subscriptions = [ subscription.Duplicate() for subscription in subscriptions ]
+        subscriptions = [ subscription.duplicate() for subscription in subscriptions ]
         
         super().__init__( parent )
         
@@ -1979,7 +1979,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
             if there_were_missing_query_log_containers:
                 
-                message = 'When importing this subscription, "{}", there was missing log data! I will still let you add it, but some of its queries are incomplete. If you are ok with this, ok and then immediately re-open the manage subscriptions dialog to reinitialise the missing data back to zero (and clear any orphaned data that came with this). If you are not ok with this, cancel out now or cancel out of the whole manage subs dialog.'.format( subscription.GetName() )
+                message = 'When importing this subscription, "{}", there was missing log data! I will still let you add it, but some of its queries are incomplete. If you are ok with this, ok and then immediately re-open the manage subscriptions dialog to reinitialise the missing data back to zero (and clear any orphaned data that came with this). If you are not ok with this, cancel out now or cancel out of the whole manage subs dialog.'.format( subscription.get_name() )
                 
                 result = ClientGUIDialogsQuick.GetYesNo( self, message, title = 'missing query log data!', yes_label = 'import it anyway', no_label = 'back out now' )
                 
@@ -1998,7 +1998,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             subscription = unknown_subscription
             
         
-        subscription.SetNonDupeName( self._GetExistingNames(), do_casefold = True )
+        subscription.set_non_dupe_name( self._GetExistingNames(), do_casefold = True )
         
         self._subscriptions.AddData( subscription, select_sort_and_scroll = True )
         
@@ -2116,7 +2116,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _ConvertSubscriptionToDisplayTuple( self, subscription: ClientImportSubscriptions.Subscription ):
         
-        name = subscription.GetName()
+        name = subscription.get_name()
         gug_key_and_name = subscription.GetGUGKeyAndName()
         query_headers = subscription.GetQueryHeaders()
         paused = subscription.IsPaused()
@@ -2276,7 +2276,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _ConvertSubscriptionToSortTuple( self, subscription: ClientImportSubscriptions.Subscription ):
         
-        name = subscription.GetName()
+        name = subscription.get_name()
         gug_key_and_name = subscription.GetGUGKeyAndName()
         query_headers = subscription.GetQueryHeaders()
         paused = subscription.IsPaused()
@@ -2531,7 +2531,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             subscription_container.query_log_containers = HydrusSerialisable.SerialisableList( query_log_containers )
             
             # duplicate important here to make sure we aren't linked with existing objects on a dupe call
-            to_export.append( subscription_container.Duplicate() )
+            to_export.append( subscription_container.duplicate() )
             
         
         if len( to_export ) == 0:
@@ -2642,7 +2642,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
             else:
                 
-                edited_import_options_container = pasted_import_options_container.Duplicate()
+                edited_import_options_container = pasted_import_options_container.duplicate()
                 
             
             subscription.SetImportOptionsContainer( edited_import_options_container )
@@ -3301,9 +3301,9 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 ( edited_subscription, self._names_to_edited_query_log_containers ) = panel.GetValue()
                 
-                if edited_subscription.GetName() != subscription.GetName():
+                if edited_subscription.get_name() != subscription.GetName():
                     
-                    edited_subscription.SetNonDupeName( self._GetExistingNames(), do_casefold = True )
+                    edited_subscription.set_non_dupe_name( self._GetExistingNames(), do_casefold = True )
                     
                 
                 self._subscriptions.ReplaceData( subscription, edited_subscription, sort_and_scroll = True )
@@ -3331,7 +3331,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         edited_query_log_containers = list( self._names_to_edited_query_log_containers.values() )
         
-        edited_query_log_containers = [ query_log_container for query_log_container in edited_query_log_containers if query_log_container.GetName() in required_query_log_container_names ]
+        edited_query_log_containers = [ query_log_container for query_log_container in edited_query_log_containers if query_log_container.get_name() in required_query_log_container_names ]
         
         deletee_query_log_container_names = self._original_existing_query_log_container_names.difference( required_query_log_container_names )
         

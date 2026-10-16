@@ -736,7 +736,7 @@ class Page( QW.QWidget ):
         
         # this is the only place this is generated. this will be its key/name/id from now on
         # we won't regen the hash for identifier since it could change due to object updates etc...
-        page_data_hash = page_data.GetSerialisedHash()
+        page_data_hash = page_data.get_serialised_hash()
         
         page_container = ClientGUISession.GUISessionContainerPageSingle( name, page_data_hash )
         
@@ -3317,7 +3317,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
     
     def InsertSessionNotebook( self, forced_insertion_index: int, session: ClientGUISession.GUISessionContainer, notebook_page_container: ClientGUISession.GUISessionContainerPageNotebook, select_first_page: bool, session_is_clean = True ):
         
-        name = notebook_page_container.GetName()
+        name = notebook_page_container.get_name()
         
         page = self.NewPagesNotebook( name, forced_insertion_index = forced_insertion_index, give_it_a_blank_page = False, select_page = select_first_page )
         
@@ -3371,7 +3371,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.ShowText( 'The page with name "{}" and hash "{}" failed to load because its data was missing!'.format( page_container.GetName(), page_data_hash.hex() ) )
+            HydrusData.ShowText( 'The page with name "{}" and hash "{}" failed to load because its data was missing!'.format( page_container.get_name(), page_data_hash.hex() ) )
             
             return None
             

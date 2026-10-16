@@ -44,7 +44,7 @@ class TestSerialisables( unittest.TestCase ):
         self.assertEqual( serialisable_type, obj.SERIALISABLE_TYPE )
         self.assertEqual( version, obj.SERIALISABLE_VERSION )
         
-        dupe_obj = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tuple )
+        dupe_obj = HydrusSerialisable.create_from_serialisable_tuple( serialisable_tuple )
         
         self.assertIsNot( obj, dupe_obj )
         
@@ -52,11 +52,11 @@ class TestSerialisables( unittest.TestCase ):
         
         #
         
-        json_string = obj.DumpToString()
+        json_string = obj.dump_to_string()
         
         self.assertIsInstance( json_string, str )
         
-        dupe_obj = HydrusSerialisable.CreateFromString( json_string )
+        dupe_obj = HydrusSerialisable.create_from_string( json_string )
         
         self.assertIsNot( obj, dupe_obj )
         
@@ -64,11 +64,11 @@ class TestSerialisables( unittest.TestCase ):
         
         #
         
-        network_bytes = obj.DumpToNetworkBytes()
+        network_bytes = obj.dump_to_network_bytes()
         
         self.assertIsInstance( network_bytes, bytes )
         
-        dupe_obj = HydrusSerialisable.CreateFromNetworkBytes( network_bytes )
+        dupe_obj = HydrusSerialisable.create_from_network_bytes( network_bytes )
         
         self.assertIsNot( obj, dupe_obj )
         
@@ -581,7 +581,7 @@ class TestSerialisables( unittest.TestCase ):
         sub.SetQueryHeaders( query_headers )
         
         self.assertEqual( sub.GetGUGKeyAndName(), gug_key_and_name )
-        self.assertEqual( sub.GetImportOptionsContainer().DumpToString(), import_options_container.DumpToString() )
+        self.assertEqual( sub.GetImportOptionsContainer().dump_to_string(), import_options_container.dump_to_string() )
         self.assertEqual( sub.GetQueryHeaders(), query_headers )
         
         self.assertEqual( sub._paused, False )

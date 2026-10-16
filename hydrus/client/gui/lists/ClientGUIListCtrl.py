@@ -1365,7 +1365,7 @@ class BetterListCtrlTreeView( QW.QTreeView ):
         
         current_names = { o.GetName() for o in self.GetData() if o is not obj }
 
-        HydrusSerialisable.SetNonDupeName( obj, current_names, do_casefold = do_casefold )
+        HydrusSerialisable.set_non_dupe_name( obj, current_names, do_casefold = do_casefold )
         
     
     def ShowDeleteSelectedDialog( self ):
@@ -1536,7 +1536,7 @@ class BetterListCtrlPanel( QW.QWidget ):
         
         if dupe_data is not None:
             
-            dupe_data = dupe_data.Duplicate()
+            dupe_data = dupe_data.duplicate()
             
             self._ImportObject( dupe_data )
             
@@ -1550,7 +1550,7 @@ class BetterListCtrlPanel( QW.QWidget ):
         
         if export_object is not None:
             
-            json = export_object.DumpToString()
+            json = export_object.dump_to_string()
             
             CG.client_controller.pub( 'clipboard', 'text', json )
             
@@ -1562,7 +1562,7 @@ class BetterListCtrlPanel( QW.QWidget ):
         
         if export_object is not None:
             
-            json = export_object.DumpToString()
+            json = export_object.dump_to_string()
             
             with ClientGUIDialogsFiles.FileDialog( self, 'select where to save the json file', default_filename = 'export.json', wildcard = 'JSON (*.json)', acceptMode = QW.QFileDialog.AcceptMode.AcceptSave, fileMode = QW.QFileDialog.FileMode.AnyFile ) as f_dlg:
                 
@@ -1701,7 +1701,7 @@ class BetterListCtrlPanel( QW.QWidget ):
                 
                 payload = ClientSerialisable.LoadFromQtImage( qt_image )
                 
-                obj = HydrusSerialisable.CreateFromNetworkBytes( payload, raise_error_on_future_version = True )
+                obj = HydrusSerialisable.create_from_network_bytes( payload, raise_error_on_future_version = True )
                 
             except HydrusExceptions.SerialisationException as e:
                 
@@ -1733,7 +1733,7 @@ class BetterListCtrlPanel( QW.QWidget ):
             
             try:
                 
-                obj = HydrusSerialisable.CreateFromString( raw_text, raise_error_on_future_version = True )
+                obj = HydrusSerialisable.create_from_string( raw_text, raise_error_on_future_version = True )
                 
             except Exception as e:
                 
@@ -1867,7 +1867,7 @@ class BetterListCtrlPanel( QW.QWidget ):
             
             try:
                 
-                obj = HydrusSerialisable.CreateFromString( payload, raise_error_on_future_version = True )
+                obj = HydrusSerialisable.create_from_string( payload, raise_error_on_future_version = True )
                 
                 self._ImportObject( obj )
                 
@@ -1922,7 +1922,7 @@ class BetterListCtrlPanel( QW.QWidget ):
             
             try:
                 
-                obj = HydrusSerialisable.CreateFromNetworkBytes( payload, raise_error_on_future_version = True )
+                obj = HydrusSerialisable.create_from_network_bytes( payload, raise_error_on_future_version = True )
                 
                 self._ImportObject( obj )
                 

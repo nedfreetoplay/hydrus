@@ -1330,7 +1330,7 @@ class EditClientExecutableCallablePanel( ClientGUIScrolledPanels.EditPanel ):
     
     def SetValue( self, call: ClientExecutableCallables.ClientExecutableCallable ):
         
-        self._name.setText( call.GetName() )
+        self._name.setText( call.get_name() )
         self._pipeline_type.SetValue( call.GetPipelineType() )
         
         self._UpdatePipelineType()
@@ -1454,7 +1454,7 @@ class ExternalProgramsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def _AddCallableFullyFormed( self, call: ClientExecutableCallables.ClientExecutableCallable ):
         
-        HydrusSerialisable.SetNonDupeName( call, self._GetExistingNames() )
+        HydrusSerialisable.set_non_dupe_name( call, self._GetExistingNames() )
         
         call.GenerateNewCallableKey()
         
@@ -1469,7 +1469,7 @@ class ExternalProgramsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
         except Exception as e:
             
-            message = f'Hey, a call you are trying to import, "{call.GetName()}", seems to be a bit weird. Are you sure you want to import it? The problem is:\n\n{e}'
+            message = f'Hey, a call you are trying to import, "{call.get_name()}", seems to be a bit weird. Are you sure you want to import it? The problem is:\n\n{e}'
             
             result = ClientGUIDialogsQuick.GetYesNo( self, message )
             
@@ -1484,7 +1484,7 @@ class ExternalProgramsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def _ConvertCallableToDisplayTuple( self, call: ClientExecutableCallables.ClientExecutableCallable ):
         
-        name = call.GetName()
+        name = call.get_name()
         pipeline_type = call.GetPipelineType()
         desc = call.GetCall().GetCommandDescription()
         
@@ -1517,11 +1517,11 @@ class ExternalProgramsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             if dlg.exec() == QW.QDialog.DialogCode.Accepted:
                 
                 existing_names = self._GetExistingNames()
-                existing_names.discard( call.GetName() )
+                existing_names.discard( call.get_name() )
                 
                 edited_call = panel.GetValue()
                 
-                HydrusSerialisable.SetNonDupeName( edited_call, existing_names )
+                HydrusSerialisable.set_non_dupe_name( edited_call, existing_names )
                 
                 self._external_calls.ReplaceData( call, edited_call, sort_and_scroll = True )
                 

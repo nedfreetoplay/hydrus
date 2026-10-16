@@ -202,7 +202,7 @@ class EditNodes( QW.QWidget ):
         
         if export_object is not None:
             
-            json = export_object.DumpToString()
+            json = export_object.dump_to_string()
             
             CG.client_controller.pub( 'clipboard', 'text', json )
             
@@ -289,7 +289,7 @@ class EditNodes( QW.QWidget ):
         
         try:
             
-            obj = HydrusSerialisable.CreateFromString( raw_text )
+            obj = HydrusSerialisable.create_from_string( raw_text )
             
             self._ImportObject( obj )
             
@@ -1081,7 +1081,7 @@ class ManageParsingScriptsPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         with ClientGUITopLevelWindowsPanels.DialogEdit( self, dlg_title, frame_key = 'deeply_nested_dialog' ) as dlg:
             
-            original_name = script.GetName()
+            original_name = script.get_name()
             
             panel = panel_class( dlg, script )
             
@@ -1091,7 +1091,7 @@ class ManageParsingScriptsPanel( ClientGUIScrolledPanels.ManagePanel ):
                 
                 edited_script = panel.GetValue()
                 
-                if edited_script.GetName() != original_name:
+                if edited_script.get_name() != original_name:
                     
                     self._scripts.SetNonDupeName( edited_script )
                     
@@ -1107,7 +1107,7 @@ class ManageParsingScriptsPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         if export_object is not None:
             
-            json = export_object.DumpToString()
+            json = export_object.dump_to_string()
             
             CG.client_controller.pub( 'clipboard', 'text', json )
             
@@ -1147,7 +1147,7 @@ class ManageParsingScriptsPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         try:
             
-            obj = HydrusSerialisable.CreateFromString( raw_text )
+            obj = HydrusSerialisable.create_from_string( raw_text )
             
             self._ImportObject( obj )
             
@@ -1180,7 +1180,7 @@ class ManageParsingScriptsPanel( ClientGUIScrolledPanels.ManagePanel ):
                 
                 try:
                     
-                    obj = HydrusSerialisable.CreateFromNetworkBytes( payload )
+                    obj = HydrusSerialisable.create_from_network_bytes( payload )
                     
                     self._ImportObject( obj )
                     

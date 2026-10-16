@@ -119,7 +119,7 @@ class ClientDBFilesDuplicatesFileSearch( ClientDBModule.ClientDBModule ):
         
         potential_duplicates_search_context = potential_duplicate_pairs_fragmentary_search.GetPotentialDuplicatesSearchContext()
         
-        potential_duplicates_search_context = potential_duplicates_search_context.Duplicate()
+        potential_duplicates_search_context = potential_duplicates_search_context.duplicate()
         
         potential_duplicates_search_context.OptimiseForSearch()
         

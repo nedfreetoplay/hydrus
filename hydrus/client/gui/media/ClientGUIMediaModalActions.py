@@ -343,7 +343,7 @@ def DoOpenKnownURLFromShortcut( win: QW.QWidget, media ):
                 
             else:
                 
-                label = url_class.GetName() + ': ' + url
+                label = url_class.get_name() + ': ' + url
                 
                 matched_labels_and_urls.append( ( label, url ) )
                 

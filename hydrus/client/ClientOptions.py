@@ -129,9 +129,9 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_info = self._dictionary.GetSerialisableTuple()
+        serialisable_info = self._dictionary.get_serialisable_tuple()
         
         return serialisable_info
         
@@ -983,9 +983,9 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         self._dictionary[ 'default_export_files_metadata_routers' ] = HydrusSerialisable.SerialisableList()
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
-        loaded_dictionary = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_info )
+        loaded_dictionary = HydrusSerialisable.create_from_serialisable_tuple( serialisable_info )
         
         for ( key, value ) in loaded_dictionary.items():
             
@@ -1000,11 +1000,11 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
-            loaded_dictionary = HydrusSerialisable.CreateFromSerialisableTuple( old_serialisable_info )
+            loaded_dictionary = HydrusSerialisable.create_from_serialisable_tuple( old_serialisable_info )
             
             if 'media_view' in loaded_dictionary:
                 
@@ -1085,7 +1085,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                 return p
                 
             
-            loaded_dictionary = HydrusSerialisable.CreateFromSerialisableTuple( old_serialisable_info )
+            loaded_dictionary = HydrusSerialisable.create_from_serialisable_tuple( old_serialisable_info )
             
             if 'client_files_locations_ideal_weights' in loaded_dictionary:
                 
@@ -1118,7 +1118,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         
         if version == 3:
             
-            loaded_dictionary = HydrusSerialisable.CreateFromSerialisableTuple( old_serialisable_info )
+            loaded_dictionary = HydrusSerialisable.create_from_serialisable_tuple( old_serialisable_info )
             
             if 'media_view' in loaded_dictionary:
                 
@@ -1153,7 +1153,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
             serialisable_dictionary = old_serialisable_info
             
-            loaded_dictionary = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_dictionary )
+            loaded_dictionary = HydrusSerialisable.create_from_serialisable_tuple( serialisable_dictionary )
             
             if 'key_list' in loaded_dictionary and 'default_neighbouring_txt_tag_service_keys' in loaded_dictionary[ 'key_list' ]:
                 
@@ -1185,7 +1185,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
             serialisable_dictionary = old_serialisable_info
             
-            loaded_dictionary = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_dictionary )
+            loaded_dictionary = HydrusSerialisable.create_from_serialisable_tuple( serialisable_dictionary )
             
             if 'default_tag_sort' in loaded_dictionary:
                 
@@ -1208,7 +1208,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         
         if version == 6:
             
-            loaded_dictionary = HydrusSerialisable.CreateFromSerialisableTuple( old_serialisable_info )
+            loaded_dictionary = HydrusSerialisable.create_from_serialisable_tuple( old_serialisable_info )
             
             if 'media_view' in loaded_dictionary:
                 
@@ -1235,7 +1235,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         
         if version == 7:
             
-            loaded_dictionary = HydrusSerialisable.CreateFromSerialisableTuple( old_serialisable_info )
+            loaded_dictionary = HydrusSerialisable.create_from_serialisable_tuple( old_serialisable_info )
             
             # web browser conversion
             

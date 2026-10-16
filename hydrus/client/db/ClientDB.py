@@ -1739,7 +1739,7 @@ class DB( HydrusDB.HydrusDB ):
                         
                     else:
                         
-                        deleted_file_search_context = file_search_context.Duplicate()
+                        deleted_file_search_context = file_search_context.duplicate()
                         deleted_file_search_context.SetLocationContext( deleted_location_context )
                         
                         hash_ids = self.modules_files_query.GetHashIdsFromQuery(
@@ -2069,7 +2069,7 @@ class DB( HydrusDB.HydrusDB ):
                         
                     else:
                         
-                        deleted_file_search_context = file_search_context.Duplicate()
+                        deleted_file_search_context = file_search_context.duplicate()
                         deleted_file_search_context.SetLocationContext( deleted_location_context )
                         
                         hash_ids = self.modules_files_query.GetHashIdsFromQuery(
@@ -3851,7 +3851,7 @@ class DB( HydrusDB.HydrusDB ):
         
         try:
             
-            HydrusSerialisable.CreateFromNetworkBytes( update_network_bytes )
+            HydrusSerialisable.create_from_network_bytes( update_network_bytes )
             
         except Exception as e:
             
@@ -7532,7 +7532,7 @@ class DB( HydrusDB.HydrusDB ):
                         
                         self.modules_serialisable.SetJSONDump( rule )
                         
-                        HydrusData.safe_print( '"B is better" rule that I just flipped to "A is better" and paused: ' + rule.GetName() )
+                        HydrusData.safe_print( '"B is better" rule that I just flipped to "A is better" and paused: ' + rule.get_name() )
                         
                         we_did_it = True
                         
@@ -8588,11 +8588,11 @@ class DB( HydrusDB.HydrusDB ):
                 
                 new_callables = list( executable_manager.GetCallables() )
                 
-                existing_names = { c.GetName() for c in new_callables }
+                existing_names = { c.get_name() for c in new_callables }
                 
                 for call in calls_to_add:
                     
-                    HydrusSerialisable.SetNonDupeName( call, existing_names )
+                    HydrusSerialisable.set_non_dupe_name( call, existing_names )
                     
                     existing_names.add( call.GetName() )
                     

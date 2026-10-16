@@ -25,13 +25,13 @@ class TestSettings( unittest.TestCase ):
         
         network_context_settings.SetSetting( CNC.NETWORK_CONTEXT_SETTING_NETWORK_INFRASTRUCTURE_PROBLEMS_HALT_VELOCITY, [ 2, None ] )
         
-        self.assertEqual( network_context_settings.Duplicate().GetSettingOrRaise( CNC.NETWORK_CONTEXT_SETTING_NETWORK_INFRASTRUCTURE_PROBLEMS_HALT_VELOCITY ), [ 2, None ] )
+        self.assertEqual( network_context_settings.duplicate().GetSettingOrRaise( CNC.NETWORK_CONTEXT_SETTING_NETWORK_INFRASTRUCTURE_PROBLEMS_HALT_VELOCITY ), [ 2, None ] )
         
         #
         
         network_context_settings.SetSetting( CNC.NETWORK_CONTEXT_SETTING_CURL_CFFI_NAME, 'muh_browser' )
         
-        self.assertEqual( network_context_settings.Duplicate().GetSettingOrRaise( CNC.NETWORK_CONTEXT_SETTING_CURL_CFFI_NAME ), 'muh_browser' )
+        self.assertEqual( network_context_settings.duplicate().GetSettingOrRaise( CNC.NETWORK_CONTEXT_SETTING_CURL_CFFI_NAME ), 'muh_browser' )
         
     
 

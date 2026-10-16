@@ -289,7 +289,7 @@ class LocationSearchContextButton( ClientGUICommon.BetterButton ):
     
     def SetValue( self, location_context: ClientLocation.LocationContext, force_label = False ):
         
-        location_context = location_context.Duplicate()
+        location_context = location_context.duplicate()
         
         location_context.FixMissingServices( CG.client_controller.services_manager.FilterValidServiceKeys )
         

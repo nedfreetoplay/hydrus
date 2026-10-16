@@ -36,18 +36,18 @@ class TagFilteringImportOptions( IOC.ImportOptionsMetatype ):
         self._tag_whitelist = tag_whitelist
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_tag_blacklist = self._tag_blacklist.GetSerialisableTuple()
+        serialisable_tag_blacklist = self._tag_blacklist.get_serialisable_tuple()
         
         return ( serialisable_tag_blacklist, self._tag_whitelist )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( serialisable_tag_blacklist, self._tag_whitelist ) = serialisable_info
         
-        self._tag_blacklist = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tag_blacklist )
+        self._tag_blacklist = HydrusSerialisable.create_from_serialisable_tuple( serialisable_tag_blacklist )
         
     
     def AllowsEverything( self ):

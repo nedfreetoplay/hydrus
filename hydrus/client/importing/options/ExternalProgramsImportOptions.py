@@ -21,18 +21,18 @@ class ExternalProgramsImportOptionsSingleEntry( HydrusSerialisable.SerialisableB
         self._do_it_on_already_in = False
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_id_and_name = self._id_and_name.GetSerialisableTuple()
+        serialisable_id_and_name = self._id_and_name.get_serialisable_tuple()
         
         return ( serialisable_id_and_name, self._do_it_on_new, self._do_it_on_already_in )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( serialisable_id_and_name, self._do_it_on_new, self._do_it_on_already_in ) = serialisable_info
         
-        self._id_and_name = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_id_and_name )
+        self._id_and_name = HydrusSerialisable.create_from_serialisable_tuple( serialisable_id_and_name )
         
     
     def DoItOnAlreadyIn( self ) -> bool:
@@ -121,18 +121,18 @@ class ExternalProgramsImportOptions( IOC.ImportOptionsMetatype ):
         self._entries: HydrusSerialisable.SerialisableList[ ExternalProgramsImportOptionsSingleEntry ] = HydrusSerialisable.SerialisableList()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_entries = self._entries.GetSerialisableTuple()
+        serialisable_entries = self._entries.get_serialisable_tuple()
         
         return serialisable_entries
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         serialisable_entries = serialisable_info
         
-        self._entries = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_entries )
+        self._entries = HydrusSerialisable.create_from_serialisable_tuple( serialisable_entries )
         
     
     def GetEntries( self ) -> list[ ExternalProgramsImportOptionsSingleEntry ]:

@@ -873,7 +873,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             credentials = service.GetCredentials()
             
-            if credentials.GetSerialisableTuple() == ptr_credentials.GetSerialisableTuple():
+            if credentials.get_serialisable_tuple() == ptr_credentials.get_serialisable_tuple():
                 
                 have_it_already = True
                 
@@ -949,7 +949,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             self._controller.save_gui_session( session )
             
-            session.SetName( CC.EXIT_SESSION_SESSION_NAME )
+            session.set_name( CC.EXIT_SESSION_SESSION_NAME )
             
             self._controller.save_gui_session( session )
             
@@ -2164,7 +2164,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                         
                         try:
                             
-                            update = HydrusSerialisable.CreateFromNetworkBytes( update_network_bytes )
+                            update = HydrusSerialisable.create_from_network_bytes( update_network_bytes )
                             
                         except Exception as e:
                             
@@ -2294,7 +2294,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             locations_import_options = full_import_options_container.GetLocationImportOptions()
             
-            locations_import_options = locations_import_options.Duplicate()
+            locations_import_options = locations_import_options.duplicate()
             
             locations_import_options.SetDestinationLocationContext( destination_location_context )
             
@@ -4426,7 +4426,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                     
                     for import_folder in import_folders:
                         
-                        good_names.add( import_folder.GetName() )
+                        good_names.add( import_folder.get_name() )
                         
                         self._controller.write( 'serialisable', import_folder )
                         
@@ -4571,7 +4571,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
     def _ManageOptions( self ):
         
         original_options = dict( HC.options )
-        original_new_options = CG.client_controller.new_options.Duplicate()
+        original_new_options = CG.client_controller.new_options.duplicate()
         
         #
         
@@ -4590,7 +4590,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         #
         
         # we do this to convert tuples to lists, to match the earlier duped-up guy
-        test_new_options = CG.client_controller.new_options.Duplicate()
+        test_new_options = CG.client_controller.new_options.duplicate()
         
         curl_cffi_changes = original_new_options.GetNoneableString( 'curl_cffi_definition' ) != test_new_options.GetNoneableString( 'curl_cffi_definition' )
         
@@ -8731,7 +8731,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         prefetch_import_options = full_import_options_container.GetPrefetchImportOptions()
         
-        prefetch_import_options = prefetch_import_options.Duplicate()
+        prefetch_import_options = prefetch_import_options.duplicate()
         
         prefetch_import_options.SetShouldFetchMetadataEvenIfURLKnownAndFileAlreadyInDB( True )
         prefetch_import_options.SetShouldFetchMetadataEvenIfHashKnownAndFileAlreadyInDB( True )
@@ -9008,7 +9008,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             self._controller.report_first_session_initialised()
             
         
-        if gui_session.GetName() == CC.LAST_SESSION_SESSION_NAME:
+        if gui_session.get_name() == CC.LAST_SESSION_SESSION_NAME:
             
             self._controller.report_last_session_loaded( gui_session )
             
@@ -9154,7 +9154,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                 
                 self._controller.save_gui_session( session )
                 
-                session.SetName( CC.EXIT_SESSION_SESSION_NAME )
+                session.set_name( CC.EXIT_SESSION_SESSION_NAME )
                 
                 self._controller.save_gui_session( session )
                 

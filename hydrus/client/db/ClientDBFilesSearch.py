@@ -2523,7 +2523,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                     
                     # blue eyes
                     
-                    or_search_context = file_search_context.Duplicate()
+                    or_search_context = file_search_context.duplicate()
                     
                     or_search_context.SetPredicates( [ or_subpredicate ] )
                     

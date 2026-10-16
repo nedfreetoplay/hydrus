@@ -23,20 +23,20 @@ class NetworkContextSettings( HydrusSerialisable.SerialisableBase ):
         self._custom_headers = HydrusSerialisable.SerialisableDictionary()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_settings = self._settings.GetSerialisableTuple()
-        serialisable_custom_headers = self._custom_headers.GetSerialisableTuple()
+        serialisable_settings = self._settings.get_serialisable_tuple()
+        serialisable_custom_headers = self._custom_headers.get_serialisable_tuple()
         
         return ( serialisable_settings, serialisable_custom_headers )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( serialisable_settings, serialisable_custom_headers ) = serialisable_info
         
-        self._settings = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_settings )
-        self._custom_headers = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_custom_headers )
+        self._settings = HydrusSerialisable.create_from_serialisable_tuple( serialisable_settings )
+        self._custom_headers = HydrusSerialisable.create_from_serialisable_tuple( serialisable_custom_headers )
         
     
     def ClearSetting( self, setting_type ):
@@ -108,18 +108,18 @@ class NetworkContextStatus( HydrusSerialisable.SerialisableBase ):
         self._events_ms = HydrusSerialisable.SerialisableDictionary()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_events_ms = self._events_ms.GetSerialisableTuple()
+        serialisable_events_ms = self._events_ms.get_serialisable_tuple()
         
         return serialisable_events_ms
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         serialisable_events_ms = serialisable_info
         
-        self._events_ms = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_events_ms )
+        self._events_ms = HydrusSerialisable.create_from_serialisable_tuple( serialisable_events_ms )
         
     
     def CleanseOldRecords( self, time_delta_s: float ):
@@ -204,22 +204,22 @@ class NetworkContextRecord( HydrusSerialisable.SerialisableBase ):
         self.settings = NetworkContextSettings()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_network_context = self.network_context.GetSerialisableTuple()
-        serialisable_status = self.status.GetSerialisableTuple()
-        serialisable_settings = self.settings.GetSerialisableTuple()
+        serialisable_network_context = self.network_context.get_serialisable_tuple()
+        serialisable_status = self.status.get_serialisable_tuple()
+        serialisable_settings = self.settings.get_serialisable_tuple()
         
         return ( serialisable_network_context, serialisable_status, serialisable_settings )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( serialisable_network_context, serialisable_status, serialisable_settings ) = serialisable_info
         
-        self.network_context = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_network_context )
-        self.status = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_status )
-        self.settings = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_settings )
+        self.network_context = HydrusSerialisable.create_from_serialisable_tuple( serialisable_network_context )
+        self.status = HydrusSerialisable.create_from_serialisable_tuple( serialisable_status )
+        self.settings = HydrusSerialisable.create_from_serialisable_tuple( serialisable_settings )
         
     
     def IsStub( self ):

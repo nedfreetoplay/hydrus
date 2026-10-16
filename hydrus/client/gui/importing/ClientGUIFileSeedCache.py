@@ -84,7 +84,7 @@ def ExportFileSeedsToClipboard( file_seeds: collections.abc.Collection[ ClientIm
     
     file_seeds_serialisable = HydrusSerialisable.SerialisableList( file_seeds )
     
-    payload = file_seeds_serialisable.DumpToString()
+    payload = file_seeds_serialisable.dump_to_string()
     
     CG.client_controller.pub( 'clipboard', 'text', payload )
     

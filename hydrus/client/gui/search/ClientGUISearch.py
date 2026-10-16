@@ -1209,7 +1209,7 @@ class TagContextButton( ClientGUICommon.BetterButton ):
                 ClientGUIMenus.AppendSeparator( menu )
                 
             
-            new_tag_context = self._tag_context.Duplicate()
+            new_tag_context = self._tag_context.duplicate()
             
             new_tag_context.service_key = service.GetServiceKey()
             
@@ -1228,7 +1228,7 @@ class TagContextButton( ClientGUICommon.BetterButton ):
     
     def SetDisplayTagServiceKey( self, service_key: bytes ):
         
-        duplicate_tag_context = self._tag_context.Duplicate()
+        duplicate_tag_context = self._tag_context.duplicate()
         
         duplicate_tag_context.display_service_key = service_key
         
@@ -1237,7 +1237,7 @@ class TagContextButton( ClientGUICommon.BetterButton ):
     
     def SetIncludeCurrent( self, value: bool ):
         
-        duplicate_tag_context = self._tag_context.Duplicate()
+        duplicate_tag_context = self._tag_context.duplicate()
         
         duplicate_tag_context.include_current_tags = value
         
@@ -1246,7 +1246,7 @@ class TagContextButton( ClientGUICommon.BetterButton ):
     
     def SetIncludePending( self, value: bool ):
         
-        duplicate_tag_context = self._tag_context.Duplicate()
+        duplicate_tag_context = self._tag_context.duplicate()
         
         duplicate_tag_context.include_pending_tags = value
         
@@ -1255,7 +1255,7 @@ class TagContextButton( ClientGUICommon.BetterButton ):
     
     def SetTagServiceKey( self, service_key: bytes ):
         
-        tag_context = self._tag_context.Duplicate()
+        tag_context = self._tag_context.duplicate()
         
         tag_context.service_key = service_key
         
@@ -1264,7 +1264,7 @@ class TagContextButton( ClientGUICommon.BetterButton ):
     
     def SetValue( self, tag_context: ClientSearchTagContext.TagContext ):
         
-        tag_context = tag_context.Duplicate()
+        tag_context = tag_context.duplicate()
         
         tag_context.FixMissingServices( CG.client_controller.services_manager.FilterValidServiceKeys )
         

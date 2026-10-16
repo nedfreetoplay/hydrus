@@ -161,10 +161,10 @@ class GallerySeed( HydrusSerialisable.SerialisableBase ):
         return self.__hash__() != other.__hash__()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         serialisable_external_filterable_tags = list( self._external_filterable_tags )
-        serialisable_external_additional_service_keys_to_tags = self._external_additional_service_keys_to_tags.GetSerialisableTuple()
+        serialisable_external_additional_service_keys_to_tags = self._external_additional_service_keys_to_tags.get_serialisable_tuple()
         
         return (
             self.url,
@@ -200,7 +200,7 @@ class GallerySeed( HydrusSerialisable.SerialisableBase ):
         gallery_seed.AddExternalAdditionalServiceKeysToTags( self._external_additional_service_keys_to_tags )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         (
             self.url,
@@ -216,7 +216,7 @@ class GallerySeed( HydrusSerialisable.SerialisableBase ):
             ) = serialisable_info
         
         self._external_filterable_tags = set( serialisable_external_filterable_tags )
-        self._external_additional_service_keys_to_tags = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_external_additional_service_keys_to_tags )
+        self._external_additional_service_keys_to_tags = HydrusSerialisable.create_from_serialisable_tuple( serialisable_external_additional_service_keys_to_tags )
         
     
     def _UpdateModified( self ):
@@ -224,7 +224,7 @@ class GallerySeed( HydrusSerialisable.SerialisableBase ):
         self.modified = HydrusTime.GetNow()
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -232,7 +232,7 @@ class GallerySeed( HydrusSerialisable.SerialisableBase ):
             
             external_additional_service_keys_to_tags = ClientTags.ServiceKeysToTags()
             
-            serialisable_external_additional_service_keys_to_tags = external_additional_service_keys_to_tags.GetSerialisableTuple()
+            serialisable_external_additional_service_keys_to_tags = external_additional_service_keys_to_tags.get_serialisable_tuple()
             
             new_serialisable_info = ( url, can_generate_more_pages, serialisable_external_additional_service_keys_to_tags, created, modified, status, note, referral_url )
             
@@ -857,14 +857,14 @@ class GallerySeedLog( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         if not isinstance( self._gallery_seeds, HydrusSerialisable.SerialisableList ):
             
             self._gallery_seeds = HydrusSerialisable.SerialisableList( self._gallery_seeds )
             
         
-        return self._gallery_seeds.GetSerialisableTuple()
+        return self._gallery_seeds.get_serialisable_tuple()
         
     
     def _GetStatusesToCounts( self ):
@@ -879,11 +879,11 @@ class GallerySeedLog( HydrusSerialisable.SerialisableBase ):
         return statuses_to_counts
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         with self._lock:
             
-            self._gallery_seeds = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_info )
+            self._gallery_seeds = HydrusSerialisable.create_from_serialisable_tuple( serialisable_info )
             
             self._gallery_seeds_to_indices = { gallery_seed : index for ( index, gallery_seed ) in enumerate( self._gallery_seeds ) }
             

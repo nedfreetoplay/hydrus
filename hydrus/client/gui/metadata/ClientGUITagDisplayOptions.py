@@ -266,7 +266,7 @@ class EditTagDisplayManagerPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def GetValue( self ):
         
-        tag_display_manager = self._original_tag_display_manager.Duplicate()
+        tag_display_manager = self._original_tag_display_manager.duplicate()
         
         tag_display_manager.ClearTagDisplayOptions()
         

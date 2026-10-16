@@ -47,14 +47,14 @@ class SpecificImportOptionsContainerButton( ClientGUICommon.ButtonWithMenuArrow 
             return
             
         
-        json_string = import_options.DumpToString()
+        json_string = import_options.dump_to_string()
         
         CG.client_controller.pub( 'clipboard', 'text', json_string )
         
     
     def _CopyImportOptions( self ):
         
-        json_string = self._import_options_container.DumpToString()
+        json_string = self._import_options_container.dump_to_string()
         
         CG.client_controller.pub( 'clipboard', 'text', json_string )
         
@@ -116,7 +116,7 @@ class SpecificImportOptionsContainerButton( ClientGUICommon.ButtonWithMenuArrow 
         
         try:
             
-            pasted_import_options_container = HydrusSerialisable.CreateFromString( raw_text )
+            pasted_import_options_container = HydrusSerialisable.create_from_string( raw_text )
             
             if not isinstance( pasted_import_options_container, ImportOptionsContainer.ImportOptionsContainer ):
                 
@@ -235,7 +235,7 @@ class SpecificImportOptionsContainerButton( ClientGUICommon.ButtonWithMenuArrow 
     
     def _SetValue( self, import_options_container: ImportOptionsContainer.ImportOptionsContainer ):
         
-        something_actually_changed = import_options_container.DumpToString() != self._import_options_container.DumpToString()
+        something_actually_changed = import_options_container.dump_to_string() != self._import_options_container.dump_to_string()
         
         self._import_options_container = import_options_container
         

@@ -652,7 +652,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
         return self.ToString()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         # TODO: I recently moved to the data_dict here so the simple type could have serialisables in its 'simple_data', let's move the content command type to this too
         # I don't _think_ this was an overcomplicated mistake, but it is a little ugly atm
@@ -675,7 +675,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
             data_dict[ 'simple_action' ] = simple_action
             data_dict[ 'simple_data' ] = simple_data
             
-            serialisable_data = data_dict.GetSerialisableTuple()
+            serialisable_data = data_dict.get_serialisable_tuple()
             
         elif self._command_type == APPLICATION_COMMAND_TYPE_CONTENT:
             
@@ -698,7 +698,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
             data_dict[ 'content_type' ] = content_type
             data_dict[ 'action' ] = action
             
-            serialisable_data = data_dict.GetSerialisableTuple()
+            serialisable_data = data_dict.get_serialisable_tuple()
             
         else:
             
@@ -708,13 +708,13 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
         return ( self._command_type, serialisable_data )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( self._command_type, serialisable_data ) = serialisable_info
         
         if self._command_type == APPLICATION_COMMAND_TYPE_SIMPLE:
             
-            data_dict = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_data )
+            data_dict = HydrusSerialisable.create_from_serialisable_tuple( serialisable_data )
             
             simple_action = data_dict[ 'simple_action' ]
             simple_data = data_dict[ 'simple_data' ]
@@ -746,7 +746,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
             
         elif self._command_type == APPLICATION_COMMAND_TYPE_INTERACTIVE_CONTENT:
             
-            data_dict = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_data )
+            data_dict = HydrusSerialisable.create_from_serialisable_tuple( serialisable_data )
             
             service_key = bytes.fromhex( data_dict[ 'service_key' ] )
             content_type = data_dict[ 'content_type' ]
@@ -756,7 +756,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -827,7 +827,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
                 data_dict[ 'simple_action' ] = simple_action
                 data_dict[ 'simple_data' ] = simple_data
                 
-                serialisable_data = data_dict.GetSerialisableTuple()
+                serialisable_data = data_dict.get_serialisable_tuple()
                 
             
             new_serialisable_info = ( command_type, serialisable_data )
@@ -841,7 +841,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
             
             if command_type == APPLICATION_COMMAND_TYPE_SIMPLE:
                 
-                data_dict = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_data )
+                data_dict = HydrusSerialisable.create_from_serialisable_tuple( serialisable_data )
                 
                 simple_action = data_dict[ 'simple_action' ]
                 
@@ -884,7 +884,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
             
             if command_type == APPLICATION_COMMAND_TYPE_SIMPLE:
                 
-                data_dict = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_data )
+                data_dict = HydrusSerialisable.create_from_serialisable_tuple( serialisable_data )
                 
                 simple_action = data_dict[ 'simple_action' ]
                 

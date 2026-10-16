@@ -421,7 +421,7 @@ def AddKnownURLsViewCopyMenu( win: QW.QWidget, command_processor: CAC.Applicatio
                 
             else:
                 
-                label = url_class.GetName() + ': ' + ClientNetworkingFunctions.ConvertURLToHumanString( url )
+                label = url_class.get_name() + ': ' + ClientNetworkingFunctions.ConvertURLToHumanString( url )
                 
                 focus_matched_labels_and_urls.append( ( label, url ) )
                 

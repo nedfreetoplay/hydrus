@@ -318,10 +318,10 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         serialisable_external_filterable_tags = list( self._external_filterable_tags )
-        serialisable_external_additional_service_keys_to_tags = self._external_additional_service_keys_to_tags.GetSerialisableTuple()
+        serialisable_external_additional_service_keys_to_tags = self._external_additional_service_keys_to_tags.get_serialisable_tuple()
         
         serialisable_primary_urls = list( self._primary_urls )
         serialisable_source_urls = list( self._source_urls )
@@ -380,7 +380,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
         file_seed.SetSourceTimeIfSensible( self.source_time )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         (
             self.file_seed_type,
@@ -403,7 +403,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
         ) = serialisable_info
         
         self._external_filterable_tags = set( serialisable_external_filterable_tags )
-        self._external_additional_service_keys_to_tags = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_external_additional_service_keys_to_tags )
+        self._external_additional_service_keys_to_tags = HydrusSerialisable.create_from_serialisable_tuple( serialisable_external_additional_service_keys_to_tags )
         
         # fixing a problem when updating to v8 of this object, originally I accidentally reset this to None for local path guys
         if file_seed_data_for_comparison is None:
@@ -425,7 +425,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
         self.modified = HydrusTime.GetNow()
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -444,7 +444,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
             
             external_additional_service_keys_to_tags = ClientTags.ServiceKeysToTags()
             
-            serialisable_external_additional_service_keys_to_tags = external_additional_service_keys_to_tags.GetSerialisableTuple()
+            serialisable_external_additional_service_keys_to_tags = external_additional_service_keys_to_tags.get_serialisable_tuple()
             
             new_serialisable_info = ( file_seed_type, file_seed_data, created, modified, source_time, status, note, referral_url, serialisable_external_additional_service_keys_to_tags, serialisable_urls, serialisable_tags, serialisable_hashes )
             
@@ -2042,14 +2042,14 @@ class FileSeedCacheStatus( HydrusSerialisable.SerialisableBase ):
         self._latest_added_time = 0
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         serialisable_statuses_to_counts = list( self._statuses_to_counts.items() )
         
         return ( self._generation_time, serialisable_statuses_to_counts, self._latest_added_time )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( self._generation_time, serialisable_statuses_to_counts, self._latest_added_time ) = serialisable_info
         
@@ -2620,14 +2620,14 @@ class FileSeedCache( HydrusSerialisable.SerialisableBase ):
         return potentially_compactible_file_seeds
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         if not isinstance( self._file_seeds, HydrusSerialisable.SerialisableList ):
             
             self._file_seeds = HydrusSerialisable.SerialisableList( self._file_seeds )
             
         
-        return self._file_seeds.GetSerialisableTuple()
+        return self._file_seeds.get_serialisable_tuple()
         
     
     def _GetSourceTimestampForVelocityCalculations( self, file_seed: FileSeed ):
@@ -2713,11 +2713,11 @@ class FileSeedCache( HydrusSerialisable.SerialisableBase ):
         return has_file_seed
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         with self._lock:
             
-            self._file_seeds = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_info )
+            self._file_seeds = HydrusSerialisable.create_from_serialisable_tuple( serialisable_info )
             
         
     
@@ -2750,7 +2750,7 @@ class FileSeedCache( HydrusSerialisable.SerialisableBase ):
         self._status_dirty = True
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -2873,7 +2873,7 @@ class FileSeedCache( HydrusSerialisable.SerialisableBase ):
                 file_seeds.append( file_seed )
                 
             
-            new_serialisable_info = file_seeds.GetSerialisableTuple()
+            new_serialisable_info = file_seeds.get_serialisable_tuple()
             
             return ( 8, new_serialisable_info )
             

@@ -67,7 +67,7 @@ class PNGExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
         elif isinstance( self._payload_obj, HydrusSerialisable.SerialisableBaseNamed ):
             
-            name = self._payload_obj.GetName()
+            name = self._payload_obj.get_name()
             
         else:
             

@@ -411,7 +411,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
         
         existing_rule.SetPaused( not existing_rule.IsPaused() )
         
-        self.modules_serialisable.DeleteJSONDumpNamed( HydrusSerialisable.SERIALISABLE_TYPE_DUPLICATES_AUTO_RESOLUTION_RULE, dump_name = existing_rule.GetName() )
+        self.modules_serialisable.DeleteJSONDumpNamed( HydrusSerialisable.SERIALISABLE_TYPE_DUPLICATES_AUTO_RESOLUTION_RULE, dump_name = existing_rule.get_name() )
         self.modules_serialisable.SetJSONDump( rule )
         
         self._cursor_transaction_wrapper.pub_after_job( 'duplicates_auto_resolution_rules_properties_have_changed' )
@@ -645,7 +645,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
                     
                     self._UpdateRuleCount( rule_id, ClientDuplicatesAutoResolution.DUPLICATE_STATUS_NOT_SEARCHED, num_added )
                     
-                    HydrusData.safe_print( f'During auto-resolution potential pair-sync, added {HydrusNumbers.to_human_int( num_added )} pairs for rule {resolution_rule.GetName()}, ({rule_id}).' )
+                    HydrusData.safe_print( f'During auto-resolution potential pair-sync, added {HydrusNumbers.to_human_int( num_added )} pairs for rule {resolution_rule.get_name()}, ({rule_id}).' )
                     
                     all_were_good = False
                     
@@ -668,7 +668,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
                         
                         self._UpdateRuleCount( rule_id, status, - num_deleted )
                         
-                        HydrusData.safe_print( f'During auto-resolution potential pair-sync, deleted {HydrusNumbers.to_human_int( num_deleted )} pairs for rule {resolution_rule.GetName()} ({rule_id}), status {status} ({ClientDuplicatesAutoResolution.duplicate_status_str_lookup[ status ]}).' )
+                        HydrusData.safe_print( f'During auto-resolution potential pair-sync, deleted {HydrusNumbers.to_human_int( num_deleted )} pairs for rule {resolution_rule.get_name()} ({rule_id}), status {status} ({ClientDuplicatesAutoResolution.duplicate_status_str_lookup[ status ]}).' )
                         
                         all_were_good = False
                         
@@ -716,7 +716,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
         
         if len( orphaned_on_object_side ) > 0:
             
-            orphaned_object_names = { self._rule_ids_to_rules[ rule_id ].GetName() for rule_id in orphaned_on_object_side }
+            orphaned_object_names = { self._rule_ids_to_rules[ rule_id ].get_name() for rule_id in orphaned_on_object_side }
             
             for name in orphaned_object_names:
                 
@@ -773,7 +773,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
         
         for ( num_done, ( rule_id, rule ) ) in enumerate( self._rule_ids_to_rules.items() ):
             
-            job_status.SetStatusText( f'{HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do )}: {rule.GetName()}' )
+            job_status.SetStatusText( f'{HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do )}: {rule.get_name()}' )
             job_status.SetGauge( num_done, num_to_do )
             
             ( num_deleted, num_added ) = self._ResyncToLocationContext( rule_id, rule.GetLocationContext() )
@@ -782,7 +782,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
                 
                 we_had_fixes = True
                 
-                HydrusData.ShowText( f'During file domain resync, auto-resolution rule "{rule.GetName()}" lost {HydrusNumbers.to_human_int(num_deleted)} pairs and added {HydrusNumbers.to_human_int(num_added)} rows!' )
+                HydrusData.ShowText( f'During file domain resync, auto-resolution rule "{rule.get_name()}" lost {HydrusNumbers.to_human_int(num_deleted)} pairs and added {HydrusNumbers.to_human_int(num_added)} rows!' )
                 
             
         
@@ -1094,7 +1094,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
             
             existing_rule = self._rule_ids_to_rules[ rule_id ]
             
-            self.modules_serialisable.DeleteJSONDumpNamed( HydrusSerialisable.SERIALISABLE_TYPE_DUPLICATES_AUTO_RESOLUTION_RULE, dump_name = existing_rule.GetName() )
+            self.modules_serialisable.DeleteJSONDumpNamed( HydrusSerialisable.SERIALISABLE_TYPE_DUPLICATES_AUTO_RESOLUTION_RULE, dump_name = existing_rule.get_name() )
             
         
         for rule_id in rule_ids_to_delete:
@@ -1117,7 +1117,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
             
             del self._rule_ids_to_rules[ rule_id ]
             
-            self.modules_serialisable.DeleteJSONDumpNamed( HydrusSerialisable.SERIALISABLE_TYPE_DUPLICATES_AUTO_RESOLUTION_RULE, dump_name = existing_rule.GetName() )
+            self.modules_serialisable.DeleteJSONDumpNamed( HydrusSerialisable.SERIALISABLE_TYPE_DUPLICATES_AUTO_RESOLUTION_RULE, dump_name = existing_rule.get_name() )
             
         
         #
@@ -1204,7 +1204,7 @@ class ClientDBFilesDuplicatesAutoResolutionStorage( ClientDBModule.ClientDBModul
                     
                     self._ResyncToLocationContext( rule_id, rule.GetLocationContext() )
                     
-                    existing_potential_search_context_duplicate = existing_rule.GetPotentialDuplicatesSearchContext().Duplicate()
+                    existing_potential_search_context_duplicate = existing_rule.GetPotentialDuplicatesSearchContext().duplicate()
                     
                     existing_potential_search_context_duplicate.GetFileSearchContext1().SetLocationContext( rule.GetLocationContext() )
                     existing_potential_search_context_duplicate.GetFileSearchContext2().SetLocationContext( rule.GetLocationContext() )

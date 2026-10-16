@@ -144,7 +144,7 @@ class EditDuplicatesAutoResolutionRulesPanel( ClientGUIScrolledPanels.EditPanel 
                 
                 duplicates_auto_resolution_rule = panel.GetValue()
                 
-                duplicates_auto_resolution_rule.SetNonDupeName( self._GetExistingNames(), do_casefold = True )
+                duplicates_auto_resolution_rule.set_non_dupe_name( self._GetExistingNames(), do_casefold = True )
                 
                 self._duplicates_auto_resolution_rules.AddData( duplicates_auto_resolution_rule, select_sort_and_scroll = True )
                 
@@ -155,7 +155,7 @@ class EditDuplicatesAutoResolutionRulesPanel( ClientGUIScrolledPanels.EditPanel 
         
         suggested_rules = ClientDuplicatesAutoResolution.GetDefaultRuleSuggestions()
         
-        choice_tuples = [ ( rule.GetName(), rule ) for rule in suggested_rules ]
+        choice_tuples = [ ( rule.get_name(), rule ) for rule in suggested_rules ]
         
         try:
             
@@ -171,7 +171,7 @@ class EditDuplicatesAutoResolutionRulesPanel( ClientGUIScrolledPanels.EditPanel 
     
     def _ConvertRuleToDisplayTuple( self, duplicates_auto_resolution_rule: ClientDuplicatesAutoResolution.DuplicatesAutoResolutionRule ):
         
-        name = duplicates_auto_resolution_rule.GetName()
+        name = duplicates_auto_resolution_rule.get_name()
         rule_summary = duplicates_auto_resolution_rule.GetRuleSummary()
         pair_selector_summary = duplicates_auto_resolution_rule.GetPairSelectorSummary()
         action_summary = duplicates_auto_resolution_rule.GetActionSummary()
@@ -217,13 +217,13 @@ class EditDuplicatesAutoResolutionRulesPanel( ClientGUIScrolledPanels.EditPanel 
                 
                 edited_duplicates_auto_resolution_rule = panel.GetValue()
                 
-                if edited_duplicates_auto_resolution_rule.GetName() != duplicates_auto_resolution_rule.GetName():
+                if edited_duplicates_auto_resolution_rule.get_name() != duplicates_auto_resolution_rule.get_name():
                     
                     existing_names = self._GetExistingNames()
                     
-                    existing_names.discard( duplicates_auto_resolution_rule.GetName() )
+                    existing_names.discard( duplicates_auto_resolution_rule.get_name() )
                     
-                    edited_duplicates_auto_resolution_rule.SetNonDupeName( existing_names, do_casefold = True )
+                    edited_duplicates_auto_resolution_rule.set_non_dupe_name( existing_names, do_casefold = True )
                     
                 
                 self._duplicates_auto_resolution_rules.ReplaceData( duplicates_auto_resolution_rule, edited_duplicates_auto_resolution_rule, sort_and_scroll = True )
@@ -238,7 +238,7 @@ class EditDuplicatesAutoResolutionRulesPanel( ClientGUIScrolledPanels.EditPanel 
     
     def _ImportRule( self, duplicates_auto_resolution_rule: ClientDuplicatesAutoResolution.DuplicatesAutoResolutionRule ):
         
-        duplicates_auto_resolution_rule.SetNonDupeName( self._GetExistingNames(), do_casefold = True )
+        duplicates_auto_resolution_rule.set_non_dupe_name( self._GetExistingNames(), do_casefold = True )
         
         # this is already sorted for the "add suggested" rules, but isn't for duplicate/clipboard/png import. we'll do it anyway to be safe and cover all situations
         duplicates_auto_resolution_rule.SetId( ClientDuplicatesAutoResolution.NEW_RULE_SESSION_ID )
@@ -317,7 +317,7 @@ class EditDuplicatesAutoResolutionRulePanel( ClientGUIScrolledPanels.EditPanel )
         
         #
         
-        self._name.setText( self._duplicates_auto_resolution_rule.GetName() )
+        self._name.setText( self._duplicates_auto_resolution_rule.get_name() )
         self._paused.setChecked( self._duplicates_auto_resolution_rule.IsPaused() )
         self._operation_mode.SetValue( self._duplicates_auto_resolution_rule.GetOperationMode() )
         self._max_pending_pairs.SetValue( self._duplicates_auto_resolution_rule.GetMaxPendingPairs() )
@@ -1561,7 +1561,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
     
     def _ConvertRuleToDisplayTuple( self, duplicates_auto_resolution_rule: ClientDuplicatesAutoResolution.DuplicatesAutoResolutionRule ):
         
-        name = duplicates_auto_resolution_rule.GetName()
+        name = duplicates_auto_resolution_rule.get_name()
         
         search_status = duplicates_auto_resolution_rule.GetSearchSummary()
         

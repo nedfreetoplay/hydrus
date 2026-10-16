@@ -35,18 +35,18 @@ class ExecutableManager( HydrusSerialisable.SerialisableBase ):
         self._callable_ids_and_names_to_callables: dict[ HydrusSerialisable.IdAndName, ClientExecutableCallables.ClientExecutableCallable ] = {}
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_callables = self._callables.GetSerialisableTuple()
+        serialisable_callables = self._callables.get_serialisable_tuple()
         
         return serialisable_callables
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         serialisable_callables = serialisable_info
         
-        self._callables = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_callables )
+        self._callables = HydrusSerialisable.create_from_serialisable_tuple( serialisable_callables )
         
         self._RegenCache()
         
@@ -86,7 +86,7 @@ class ExecutableManager( HydrusSerialisable.SerialisableBase ):
         
         with self._lock:
             
-            calls = sorted( [ call for call in self._callables if call.GetPipelineType() == pipeline_type ], key = lambda c: c.GetName() )
+            calls = sorted( [ call for call in self._callables if call.GetPipelineType() == pipeline_type ], key = lambda c: c.get_name() )
             
             ids_and_names = [ call.GetIdAndName() for call in calls ]
             
@@ -138,7 +138,7 @@ class ExecutableManager( HydrusSerialisable.SerialisableBase ):
                     raise NotImplementedError( 'Unknown pipeline type!' )
                     
                 
-                HydrusSerialisable.SetNonDupeName( call, { c.GetName() for c in self._callables } )
+                HydrusSerialisable.set_non_dupe_name( call, { c.get_name() for c in self._callables } )
                 
                 self._callables.append( call )
                 

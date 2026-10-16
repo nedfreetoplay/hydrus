@@ -196,9 +196,9 @@ class NetworkSessionManagerSessionContainer( HydrusSerialisable.SerialisableBase
         return session
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_network_context = self.network_context.GetSerialisableTuple()
+        serialisable_network_context = self.network_context.get_serialisable_tuple()
         
         cookies = GetRequestsSessionCookieJar( self.session )
         
@@ -207,11 +207,11 @@ class NetworkSessionManagerSessionContainer( HydrusSerialisable.SerialisableBase
         return ( serialisable_network_context, pickled_cookies_hex )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( serialisable_network_context, pickled_cookies_hex ) = serialisable_info
         
-        self.network_context = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_network_context )
+        self.network_context = HydrusSerialisable.create_from_serialisable_tuple( serialisable_network_context )
         
         self.session = self._CreateEmptySession()
         
@@ -239,7 +239,7 @@ class NetworkSessionManagerSessionContainer( HydrusSerialisable.SerialisableBase
             
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -363,7 +363,7 @@ class NetworkSessionManager( HydrusSerialisable.SerialisableBase ):
         CG.client_controller.sub( self, 'MaintainConnectionPools', 'memory_maintenance_pulse' )
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         return sorted( self._session_container_names )
         
@@ -400,7 +400,7 @@ class NetworkSessionManager( HydrusSerialisable.SerialisableBase ):
         return network_context
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         self._session_container_names = set( serialisable_info )
         
@@ -461,7 +461,7 @@ class NetworkSessionManager( HydrusSerialisable.SerialisableBase ):
                 
                 del self._network_contexts_to_session_containers[ network_context ]
                 
-                session_container_name = session_container.GetName()
+                session_container_name = session_container.get_name()
                 
                 if session_container_name in self._session_container_names_to_session_containers:
                     
@@ -616,7 +616,7 @@ class NetworkSessionManager( HydrusSerialisable.SerialisableBase ):
             
             for session_container in session_containers:
                 
-                session_container_name = session_container.GetName()
+                session_container_name = session_container.get_name()
                 
                 self._session_container_names_to_session_containers[ session_container_name ] = session_container
                 self._network_contexts_to_session_containers[ session_container.network_context ] = session_container
@@ -639,7 +639,7 @@ class NetworkSessionManager( HydrusSerialisable.SerialisableBase ):
             
             if network_context in self._network_contexts_to_session_containers:
                 
-                self._dirty_session_container_names.add( self._network_contexts_to_session_containers[ network_context ].GetName() )
+                self._dirty_session_container_names.add( self._network_contexts_to_session_containers[ network_context ].get_name() )
                 
             
         

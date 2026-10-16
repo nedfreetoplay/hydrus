@@ -156,7 +156,7 @@ class ClientDBFilesDuplicatesAutoResolutionSearch( ClientDBModule.ClientDBModule
             
             self.modules_files_duplicates_auto_resolution_storage.FlipPausePlay( rule )
             
-            HydrusData.ShowText( f'The auto-resolution rule "{rule.GetName()}" was called to do resolution work, but no work is actually pending. I am assuming there is a miscount or orphaned pair and am starting some maintenance. The rule has been paused for safety; unpause it and see what happens. If it carries on working with no more problems, you are great.' )
+            HydrusData.ShowText( f'The auto-resolution rule "{rule.get_name()}" was called to do resolution work, but no work is actually pending. I am assuming there is a miscount or orphaned pair and am starting some maintenance. The rule has been paused for safety; unpause it and see what happens. If it carries on working with no more problems, you are great.' )
             
             self.modules_files_duplicates_auto_resolution_storage.MaintenanceFixOrphanPotentialPairs()
             
@@ -201,7 +201,7 @@ class ClientDBFilesDuplicatesAutoResolutionSearch( ClientDBModule.ClientDBModule
             
             self.modules_files_duplicates_auto_resolution_storage.FlipPausePlay( rule )
             
-            HydrusData.ShowText( f'The auto-resolution rule "{rule.GetName()}" was called to do search work, but no work is actually pending. I am assuming there is a miscount or orphaned pair and am starting some maintenance. The rule has been paused for safety; unpause it and see what happens. If it carries on working with no more problems, you are great.' )
+            HydrusData.ShowText( f'The auto-resolution rule "{rule.get_name()}" was called to do search work, but no work is actually pending. I am assuming there is a miscount or orphaned pair and am starting some maintenance. The rule has been paused for safety; unpause it and see what happens. If it carries on working with no more problems, you are great.' )
             
             self.modules_files_duplicates_auto_resolution_storage.MaintenanceFixOrphanPotentialPairs()
             

@@ -37,18 +37,18 @@ class GUISessionContainer( HydrusSerialisable.SerialisableBaseNamed ):
         self._skipped_unchanged_page_hashes = skipped_unchanged_page_hashes
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_top_notebook = self._top_notebook_container.GetSerialisableTuple()
+        serialisable_top_notebook = self._top_notebook_container.get_serialisable_tuple()
         
         return serialisable_top_notebook
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         serialisable_top_notebook = serialisable_info
         
-        self._top_notebook_container = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_top_notebook )
+        self._top_notebook_container = HydrusSerialisable.create_from_serialisable_tuple( serialisable_top_notebook )
         
     
     def GetHashesToPageData( self ):
@@ -106,12 +106,12 @@ HydrusSerialisable.SERIALISABLE_TYPES_TO_OBJECT_TYPES[ HydrusSerialisable.SERIAL
 
 class GUISessionContainerPage( HydrusSerialisable.SerialisableBaseNamed ):
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         raise NotImplementedError()
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         raise NotImplementedError()
         
@@ -139,18 +139,18 @@ class GUISessionContainerPageNotebook( GUISessionContainerPage ):
         self._page_containers = HydrusSerialisable.SerialisableList( page_containers )
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_info = self._page_containers.GetSerialisableTuple()
+        serialisable_info = self._page_containers.get_serialisable_tuple()
         
         return serialisable_info
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         serialisable_pages = serialisable_info
         
-        self._page_containers = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_pages )
+        self._page_containers = HydrusSerialisable.create_from_serialisable_tuple( serialisable_pages )
         
     
     def GetPageDataHashes( self ) -> set:
@@ -183,12 +183,12 @@ class GUISessionContainerPageSingle( GUISessionContainerPage ):
         self._page_data_hash = page_data_hash
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         return self._page_data_hash.hex()
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         page_data_hash_hex = serialisable_info
         
@@ -229,7 +229,7 @@ class GUISessionPageData( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         serialisable_page_manager = self._page_manager.GetSerialisableTuple()
         serialisable_hashes = [ hash.hex() for hash in self._hashes ]
@@ -237,11 +237,11 @@ class GUISessionPageData( HydrusSerialisable.SerialisableBase ):
         return ( serialisable_page_manager, serialisable_hashes )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( serialisable_page_manager, serialisable_hashes ) = serialisable_info
         
-        self._page_manager = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_page_manager )
+        self._page_manager = HydrusSerialisable.create_from_serialisable_tuple( serialisable_page_manager )
         self._hashes = [ bytes.fromhex( hash_hex ) for hash_hex in serialisable_hashes ]
         
     

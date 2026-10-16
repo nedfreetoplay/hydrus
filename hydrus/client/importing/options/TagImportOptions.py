@@ -92,23 +92,23 @@ class ServiceTagImportOptions( HydrusSerialisable.SerialisableBase ):
         self._additional_tags_overwrite_deleted = additional_tags_overwrite_deleted
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_get_tags_filter = self._get_tags_filter.GetSerialisableTuple()
-        serialisable_only_add_existing_tags_filter = self._only_add_existing_tags_filter.GetSerialisableTuple()
+        serialisable_get_tags_filter = self._get_tags_filter.get_serialisable_tuple()
+        serialisable_only_add_existing_tags_filter = self._only_add_existing_tags_filter.get_serialisable_tuple()
         
         return ( self._get_tags, serialisable_get_tags_filter, list( self._additional_tags ), self._to_new_files, self._to_already_in_inbox, self._to_already_in_archive, self._only_add_existing_tags, serialisable_only_add_existing_tags_filter, self._get_tags_overwrite_deleted, self._additional_tags_overwrite_deleted )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( self._get_tags, serialisable_get_tags_filter, self._additional_tags, self._to_new_files, self._to_already_in_inbox, self._to_already_in_archive, self._only_add_existing_tags, serialisable_only_add_existing_tags_filter, self._get_tags_overwrite_deleted, self._additional_tags_overwrite_deleted ) = serialisable_info
         
-        self._get_tags_filter = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_get_tags_filter )
-        self._only_add_existing_tags_filter = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_only_add_existing_tags_filter )
+        self._get_tags_filter = HydrusSerialisable.create_from_serialisable_tuple( serialisable_get_tags_filter )
+        self._only_add_existing_tags_filter = HydrusSerialisable.create_from_serialisable_tuple( serialisable_only_add_existing_tags_filter )
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -117,8 +117,8 @@ class ServiceTagImportOptions( HydrusSerialisable.SerialisableBase ):
             get_tags_filter = HydrusTags.TagFilter()
             only_add_existing_tags_filter = HydrusTags.TagFilter()
             
-            serialisable_get_tags_filter = get_tags_filter.GetSerialisableTuple()
-            serialisable_only_add_existing_tags_filter = only_add_existing_tags_filter.GetSerialisableTuple()
+            serialisable_get_tags_filter = get_tags_filter.get_serialisable_tuple()
+            serialisable_only_add_existing_tags_filter = only_add_existing_tags_filter.get_serialisable_tuple()
             
             new_serialisable_info = ( get_tags, serialisable_get_tags_filter, namespaces, additional_tags, to_new_files, to_already_in_inbox, to_already_in_archive, only_add_existing_tags, serialisable_only_add_existing_tags_filter )
             
@@ -152,7 +152,7 @@ class ServiceTagImportOptions( HydrusSerialisable.SerialisableBase ):
                     get_tags_filter.SetRule( namespace + ':', HC.FILTER_WHITELIST )
                     
                 
-                serialisable_get_tags_filter = get_tags_filter.GetSerialisableTuple()
+                serialisable_get_tags_filter = get_tags_filter.get_serialisable_tuple()
                 
             
             new_serialisable_info = ( get_tags, serialisable_get_tags_filter, additional_tags, to_new_files, to_already_in_inbox, to_already_in_archive, only_add_existing_tags, serialisable_only_add_existing_tags_filter )
@@ -285,7 +285,7 @@ class TagImportOptions( IOC.ImportOptionsMetatype ):
         self._service_keys_to_service_tag_import_options = service_keys_to_service_tag_import_options
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         if CG.client_controller.is_booted():
             
@@ -306,11 +306,11 @@ class TagImportOptions( IOC.ImportOptionsMetatype ):
         return serialisable_service_keys_to_service_tag_import_options
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         serialisable_service_keys_to_service_tag_import_options = serialisable_info
         
-        self._service_keys_to_service_tag_import_options = { bytes.fromhex( encoded_service_key ) : HydrusSerialisable.CreateFromSerialisableTuple( serialisable_service_tag_import_options ) for ( encoded_service_key, serialisable_service_tag_import_options ) in serialisable_service_keys_to_service_tag_import_options }
+        self._service_keys_to_service_tag_import_options = { bytes.fromhex( encoded_service_key ) : HydrusSerialisable.create_from_serialisable_tuple( serialisable_service_tag_import_options ) for ( encoded_service_key, serialisable_service_tag_import_options ) in serialisable_service_keys_to_service_tag_import_options }
         
     
     def CanAddTags( self ):

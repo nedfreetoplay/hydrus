@@ -38,7 +38,7 @@ class ORPredicateControl( QW.QWidget ):
             
         else:
             
-            empty_file_search_context = empty_file_search_context.Duplicate()
+            empty_file_search_context = empty_file_search_context.duplicate()
             
             empty_file_search_context.SetPredicates( predicates )
             

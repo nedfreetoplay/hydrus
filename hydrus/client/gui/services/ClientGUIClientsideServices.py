@@ -120,7 +120,7 @@ class ManageClientServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
                 
                 new_service = panel.GetValue()
                 
-                HydrusSerialisable.SetNonDupeName( new_service, self._GetExistingNames(), do_casefold = True )
+                HydrusSerialisable.set_non_dupe_name( new_service, self._GetExistingNames(), do_casefold = True )
                 
                 self._listctrl.AddData( new_service, select_sort_and_scroll = True )
                 
@@ -291,7 +291,7 @@ class ManageClientServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
                 
                 existing_names.discard( service.GetName() )
                 
-                HydrusSerialisable.SetNonDupeName( edited_service, existing_names, do_casefold = True )
+                HydrusSerialisable.set_non_dupe_name( edited_service, existing_names, do_casefold = True )
                 
                 self._listctrl.ReplaceData( service, edited_service, sort_and_scroll = True )
                 

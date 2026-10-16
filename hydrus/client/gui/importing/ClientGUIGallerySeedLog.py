@@ -163,7 +163,7 @@ def ExportGallerySeedsToClipboard( gallery_seeds: collections.abc.Collection[ Cl
     
     gallery_seeds_serialisable = HydrusSerialisable.SerialisableList( gallery_seeds )
     
-    payload = gallery_seeds_serialisable.DumpToString()
+    payload = gallery_seeds_serialisable.dump_to_string()
     
     CG.client_controller.pub( 'clipboard', 'text', payload )
     

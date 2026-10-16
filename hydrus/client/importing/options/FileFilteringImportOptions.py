@@ -32,9 +32,9 @@ class FileFilteringImportOptions( IOC.ImportOptionsMetatype ):
         self._max_resolution = None
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_filetype_filter_predicate = self._filetype_filter_predicate.GetSerialisableTuple()
+        serialisable_filetype_filter_predicate = self._filetype_filter_predicate.get_serialisable_tuple()
         
         return ( 
             self._exclude_deleted,
@@ -48,7 +48,7 @@ class FileFilteringImportOptions( IOC.ImportOptionsMetatype ):
         )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( 
             self._exclude_deleted,
@@ -61,7 +61,7 @@ class FileFilteringImportOptions( IOC.ImportOptionsMetatype ):
             self._max_resolution,
         ) = serialisable_info
         
-        self._filetype_filter_predicate = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_filetype_filter_predicate )
+        self._filetype_filter_predicate = HydrusSerialisable.create_from_serialisable_tuple( serialisable_filetype_filter_predicate )
         
     
     def AllowsDecompressionBombs( self ):

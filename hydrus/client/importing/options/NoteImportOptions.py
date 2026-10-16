@@ -41,7 +41,7 @@ class NoteImportOptions( IOC.ImportOptionsMetatype ):
         self._names_to_name_overrides = dict()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         name_whitelist = list( self._name_whitelist )
         names_and_name_overrides = list( self._names_to_name_overrides.items() )
@@ -49,7 +49,7 @@ class NoteImportOptions( IOC.ImportOptionsMetatype ):
         return ( self._get_notes, self._extend_existing_note_if_possible, self._conflict_resolution, name_whitelist, self._all_name_override, names_and_name_overrides )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( self._get_notes, self._extend_existing_note_if_possible, self._conflict_resolution, name_whitelist, self._all_name_override, names_and_name_overrides ) = serialisable_info
         

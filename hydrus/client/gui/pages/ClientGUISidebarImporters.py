@@ -1164,7 +1164,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
                     
                     if import_options_container_string is None:
                         
-                        import_options_container_string = import_options_container.DumpToString()
+                        import_options_container_string = import_options_container.dump_to_string()
                         
                     
                     # not the same object, let's see if they have the same value
@@ -2239,7 +2239,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                     
                     if checker_options_string is None:
                         
-                        checker_options_string = checker_options.DumpToString()
+                        checker_options_string = checker_options.dump_to_string()
                         
                     
                     # not the same object, let's see if they have the same value
@@ -2257,7 +2257,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                     
                     if import_options_container_string is None:
                         
-                        import_options_container_string = import_options_container.DumpToString()
+                        import_options_container_string = import_options_container.dump_to_string()
                         
                     
                     # not the same object, let's see if they have the same value
