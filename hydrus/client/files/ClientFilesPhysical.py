@@ -227,7 +227,7 @@ def RegranulariseFileStorage( base_location_paths: list[ str ], prefix_types: li
                     
                 
             
-            for ( num_renames_done, num_renames_to_do, chunk_of_rename_jobs ) in HydrusLists.SplitListIntoChunksRich( all_rename_jobs, 100 ):
+            for ( num_renames_done, num_renames_to_do, chunk_of_rename_jobs ) in HydrusLists.split_list_into_chunks_rich( all_rename_jobs, 100 ):
                 
                 job_status.SetStatusText( f'File {HydrusNumbers.ValueRangeToPrettyString( num_renames_done, num_renames_to_do )}', level = 2 )
                 job_status.SetGauge( num_renames_done, num_renames_to_do, level = 2 )

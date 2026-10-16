@@ -415,7 +415,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 text = template.format( file_desc, deletee_service.GetName() )
                 
-                content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, chunk_of_hashes ) for chunk_of_hashes in HydrusLists.SplitListIntoChunks( hashes, 16 ) ]
+                content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, chunk_of_hashes ) for chunk_of_hashes in HydrusLists.split_list_into_chunks( hashes, 16 ) ]
                 
                 content_update_packages = [ ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( deletee_file_service_key, content_update ) for content_update in content_updates ]
                 
@@ -434,7 +434,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     h = [ m.GetHash() for m in self._media if m.GetLocationsManager().IsInCombinedLocalFileDomains() ]
                     
-                    content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, chunk_of_hashes ) for chunk_of_hashes in HydrusLists.SplitListIntoChunks( h, 16 ) ]
+                    content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, chunk_of_hashes ) for chunk_of_hashes in HydrusLists.split_list_into_chunks( h, 16 ) ]
                     
                     content_update_packages = [ ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( deletee_file_service_key, content_update ) for content_update in content_updates ]
                     
@@ -510,7 +510,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 text = 'Permanently delete {}?'.format( suffix )
                 
-                content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, chunk_of_hashes ) for chunk_of_hashes in HydrusLists.SplitListIntoChunks( hashes, 16 ) ]
+                content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_DELETE, chunk_of_hashes ) for chunk_of_hashes in HydrusLists.split_list_into_chunks( hashes, 16 ) ]
                 
                 content_update_packages = [ ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_update ) for content_update in content_updates ]
                 
@@ -547,7 +547,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
                     text = 'Permanently delete these ' + HydrusNumbers.ToHumanInt( num_to_delete ) + ' files and do not save a deletion record?'
                     
                 
-                chunks_of_hashes = list( HydrusLists.SplitListIntoChunks( hashes, 16 ) ) # iterator, so list it to use it more than once, jej
+                chunks_of_hashes = list( HydrusLists.split_list_into_chunks( hashes, 16 ) ) # iterator, so list it to use it more than once, jej
                 
                 content_update_packages = []
                 
@@ -1144,7 +1144,7 @@ class EditFileNotesPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolle
             
             for item in names_and_notes:
                 
-                if not HydrusLists.IsAListLikeCollection( item ):
+                if not HydrusLists.is_a_list_like_collection( item ):
                     
                     continue
                     
@@ -1874,7 +1874,7 @@ class EditURLsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPane
             normalised_urls.extend( weird_urls )
             
         
-        normalised_urls = HydrusLists.DedupeList( normalised_urls )
+        normalised_urls = HydrusLists.dedupe_list( normalised_urls )
         
         for normalised_url in normalised_urls:
             

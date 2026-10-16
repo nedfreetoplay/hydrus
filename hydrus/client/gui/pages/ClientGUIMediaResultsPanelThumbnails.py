@@ -656,7 +656,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         selection_has_archive = True in ( media.HasArchive() and media.GetLocationsManager().IsLocal() for media in self._selected_media )
         selection_has_deletion_record = True in ( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY in locations_manager.GetDeleted() for locations_manager in selected_locations_managers )
         
-        all_file_domains = HydrusLists.MassUnion( locations_manager.GetCurrent() for locations_manager in all_locations_managers )
+        all_file_domains = HydrusLists.mass_union( locations_manager.GetCurrent() for locations_manager in all_locations_managers )
         all_specific_file_domains = all_file_domains.difference( { CC.COMBINED_FILE_SERVICE_KEY, CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY } )
         
         some_downloading = True in ( locations_manager.IsDownloading() for locations_manager in selected_locations_managers )
@@ -755,15 +755,15 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         groups_of_petitioned_remote_service_keys = [ locations_manager.GetPetitioned().intersection( remote_service_keys ) for locations_manager in selected_locations_managers ]
         groups_of_deleted_remote_service_keys = [ locations_manager.GetDeleted().intersection( remote_service_keys ) for locations_manager in selected_locations_managers ]
         
-        current_remote_service_keys = HydrusLists.MassUnion( groups_of_current_remote_service_keys )
-        pending_remote_service_keys = HydrusLists.MassUnion( groups_of_pending_remote_service_keys )
-        petitioned_remote_service_keys = HydrusLists.MassUnion( groups_of_petitioned_remote_service_keys )
-        deleted_remote_service_keys = HydrusLists.MassUnion( groups_of_deleted_remote_service_keys )
+        current_remote_service_keys = HydrusLists.mass_union( groups_of_current_remote_service_keys )
+        pending_remote_service_keys = HydrusLists.mass_union( groups_of_pending_remote_service_keys )
+        petitioned_remote_service_keys = HydrusLists.mass_union( groups_of_petitioned_remote_service_keys )
+        deleted_remote_service_keys = HydrusLists.mass_union( groups_of_deleted_remote_service_keys )
         
-        common_current_remote_service_keys = HydrusLists.IntelligentMassIntersect( groups_of_current_remote_service_keys )
-        common_pending_remote_service_keys = HydrusLists.IntelligentMassIntersect( groups_of_pending_remote_service_keys )
-        common_petitioned_remote_service_keys = HydrusLists.IntelligentMassIntersect( groups_of_petitioned_remote_service_keys )
-        common_deleted_remote_service_keys = HydrusLists.IntelligentMassIntersect( groups_of_deleted_remote_service_keys )
+        common_current_remote_service_keys = HydrusLists.intelligent_mass_intersect( groups_of_current_remote_service_keys )
+        common_pending_remote_service_keys = HydrusLists.intelligent_mass_intersect( groups_of_pending_remote_service_keys )
+        common_petitioned_remote_service_keys = HydrusLists.intelligent_mass_intersect( groups_of_petitioned_remote_service_keys )
+        common_deleted_remote_service_keys = HydrusLists.intelligent_mass_intersect( groups_of_deleted_remote_service_keys )
         
         disparate_current_remote_service_keys = current_remote_service_keys - common_current_remote_service_keys
         disparate_pending_remote_service_keys = pending_remote_service_keys - common_pending_remote_service_keys

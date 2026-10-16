@@ -50,7 +50,7 @@ def WrapInGrid( parent, rows, expand_text = False, expand_single_widgets = False
     
     for row in rows:
         
-        if HydrusLists.IsAListLikeCollection( row ) and len( row ) == 2:
+        if HydrusLists.is_a_list_like_collection( row ) and len( row ) == 2:
             
             ( text, control ) = row
             
@@ -146,7 +146,7 @@ def WrapInTable( parent, rows, spacing = 2, expand_text = False, expand_single_w
     
     for row in rows:
         
-        if HydrusLists.IsAListLikeCollection( row ):
+        if HydrusLists.is_a_list_like_collection( row ):
             
             columns = max( columns, len( row ) )
             
@@ -159,7 +159,7 @@ def WrapInTable( parent, rows, spacing = 2, expand_text = False, expand_single_w
     
     for row in rows:
         
-        if HydrusLists.IsAListLikeCollection( row ):
+        if HydrusLists.is_a_list_like_collection( row ):
             
             padded_row = list( row ) + [ '' ] * ( columns - len( row ) )
             

@@ -423,7 +423,7 @@ def GetSoftwareSourceFromPilInfo( pil_image: PILImage.Image ) -> str | None:
         
     else:
         
-        components = HydrusLists.DedupeList( components )
+        components = HydrusLists.dedupe_list( components )
         
         return ' / '.join( [ str( c ) for c in components ] )
         

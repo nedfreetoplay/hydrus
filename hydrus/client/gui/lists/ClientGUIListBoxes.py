@@ -1817,7 +1817,7 @@ class ListBox( QW.QScrollArea ):
             terms = self._selected_terms
             
         
-        texts = HydrusLists.MassExtend( [ term.GetCopyableTexts() for term in terms ] )
+        texts = HydrusLists.mass_extend( [ term.GetCopyableTexts() for term in terms ] )
         
         if len( texts ) > 0:
             
@@ -1894,7 +1894,7 @@ class ListBox( QW.QScrollArea ):
             terms = self._ordered_terms
             
         
-        copyable_tag_strings = HydrusLists.MassExtend( [ term.GetCopyableTexts( with_counts = with_counts, include_parents = include_parents, collapse_ors = collapse_ors ) for term in terms ] )
+        copyable_tag_strings = HydrusLists.mass_extend( [ term.GetCopyableTexts( with_counts = with_counts, include_parents = include_parents, collapse_ors = collapse_ors ) for term in terms ] )
         
         if only_subtags:
             
@@ -1913,7 +1913,7 @@ class ListBox( QW.QScrollArea ):
         
         if switch_to_underscores or not with_counts:
             
-            copyable_tag_strings = HydrusLists.DedupeList( copyable_tag_strings )
+            copyable_tag_strings = HydrusLists.dedupe_list( copyable_tag_strings )
             
         
         return copyable_tag_strings
@@ -4008,7 +4008,7 @@ class ListBoxTags( ListBox ):
                             ClientGUIMenus.AppendMenuItem( edit_menu, 'add {} to current search'.format( predicates_selection_string ), 'Add the selected predicates to the current search.', self._ProcessMenuPredicateEvent, 'add_predicates' )
                             
                         
-                        some_selected_in_current = HydrusLists.SetsIntersect( predicates, current_predicates )
+                        some_selected_in_current = HydrusLists.sets_intersect( predicates, current_predicates )
                         
                         if some_selected_in_current:
                             
@@ -4643,7 +4643,7 @@ class ListBoxTagsDisplayCapable( ListBoxTags ):
             
             terms_to_info = { term : None for term in to_lookup }
             
-            for ( num_done, num_to_do, batch_to_lookup ) in HydrusLists.SplitListIntoChunksRich( to_lookup, 500 ):
+            for ( num_done, num_to_do, batch_to_lookup ) in HydrusLists.split_list_into_chunks_rich( to_lookup, 500 ):
                 
                 tags_to_terms = { term.GetTag() : term for term in batch_to_lookup }
                 

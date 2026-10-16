@@ -2456,7 +2456,7 @@ class FileSeedCache( HydrusSerialisable.SerialisableBase ):
                 # woah, we have some dupes! maybe url classes changed and renormalisation happened, maybe hydev fixed some bad dupe file paths or something
                 # let's correct ourselves now we have the chance; this guy simply cannot handle dupes atm
                 
-                self._file_seeds = HydrusSerialisable.SerialisableList( HydrusLists.DedupeList( self._file_seeds ) )
+                self._file_seeds = HydrusSerialisable.SerialisableList( HydrusLists.dedupe_list( self._file_seeds ) )
                 
                 self._file_seeds_to_indices = { file_seed : index for ( index, file_seed ) in enumerate( self._file_seeds ) }
                 
@@ -3308,7 +3308,7 @@ class FileSeedCache( HydrusSerialisable.SerialisableBase ):
     
     def InsertFileSeeds( self, index: int, file_seeds: collections.abc.Collection[ FileSeed ] ):
         
-        file_seeds = HydrusLists.DedupeList( file_seeds )
+        file_seeds = HydrusLists.dedupe_list( file_seeds )
         
         with self._lock:
             
