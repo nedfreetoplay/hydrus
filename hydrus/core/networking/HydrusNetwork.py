@@ -1220,7 +1220,7 @@ class ClientToServerUpdate( HydrusSerialisable.SerialisableBase ):
                     
                     ( tag, hashes ) = content.GetContentData()
                     
-                    if not tag_filter.TagOK( tag ):
+                    if not tag_filter.tag_ok( tag ):
                         
                         continue
                         

@@ -1066,7 +1066,7 @@ class TestTagFilteringImportOptions( unittest.TestCase ):
         
         blacklist = default_tag_filtering_import_options.GetTagBlacklist()
         
-        self.assertEqual( blacklist.Filter( some_tags ), some_tags )
+        self.assertEqual( blacklist.filter( some_tags ), some_tags )
         
         whitelist = default_tag_filtering_import_options.GetTagWhitelist()
         
@@ -1077,7 +1077,7 @@ class TestTagFilteringImportOptions( unittest.TestCase ):
         
         tag_blacklist = HydrusTags.TagFilter()
         
-        tag_blacklist.SetRule( 'series:', HC.FILTER_BLACKLIST )
+        tag_blacklist.set_rule( 'series:', HC.FILTER_BLACKLIST )
         
         tag_filtering_import_options = TagFilteringImportOptions.TagFilteringImportOptions( tag_blacklist = tag_blacklist )
         
@@ -1163,7 +1163,7 @@ class TestTagImportOptions( unittest.TestCase ):
         
         get_tags_filter = HydrusTags.TagFilter()
         
-        get_tags_filter.SetRule( 'series:', HC.FILTER_BLACKLIST )
+        get_tags_filter.set_rule( 'series:', HC.FILTER_BLACKLIST )
         
         service_keys_to_service_tag_import_options = { example_service_key : TagImportOptions.ServiceTagImportOptions( get_tags = True, get_tags_filter = get_tags_filter ) }
         
@@ -1381,7 +1381,7 @@ class TestServiceTagImportOptions( unittest.TestCase ):
         
         only_namespaced = HydrusTags.TagFilter()
         
-        only_namespaced.SetRule( '', HC.FILTER_BLACKLIST )
+        only_namespaced.set_rule( '', HC.FILTER_BLACKLIST )
         
         service_tag_import_options = TagImportOptions.ServiceTagImportOptions( get_tags = True, get_tags_filter = only_namespaced )
         
@@ -1391,9 +1391,9 @@ class TestServiceTagImportOptions( unittest.TestCase ):
         
         only_sbh = HydrusTags.TagFilter()
         
-        only_sbh.SetRule( '', HC.FILTER_BLACKLIST )
-        only_sbh.SetRule( ':', HC.FILTER_BLACKLIST )
-        only_sbh.SetRule( 'character:space bounty hunter', HC.FILTER_WHITELIST )
+        only_sbh.set_rule( '', HC.FILTER_BLACKLIST )
+        only_sbh.set_rule( ':', HC.FILTER_BLACKLIST )
+        only_sbh.set_rule( 'character:space bounty hunter', HC.FILTER_WHITELIST )
         
         service_tag_import_options = TagImportOptions.ServiceTagImportOptions( get_tags = True, get_tags_filter = only_sbh )
         
@@ -1527,7 +1527,7 @@ class TestServiceTagImportOptions( unittest.TestCase ):
         
         only_unnamespaced = HydrusTags.TagFilter()
         
-        only_unnamespaced.SetRule( ':', HC.FILTER_BLACKLIST )
+        only_unnamespaced.set_rule( ':', HC.FILTER_BLACKLIST )
         
         TG.test_controller.set_read( 'filter_existing_tags', existing_tags )
         

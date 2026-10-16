@@ -213,7 +213,7 @@ class FilenameTaggingOptions( HydrusSerialisable.SerialisableBase ):
         
         #
         
-        tags = HydrusTags.CleanTags( tags )
+        tags = HydrusTags.clean_tags( tags )
         
         tags = CG.client_controller.tag_display_manager.FilterTags( ClientTags.TAG_DISPLAY_STORAGE, service_key, tags )
         

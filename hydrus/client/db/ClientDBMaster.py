@@ -535,7 +535,7 @@ class ClientDBMasterTags( ClientDBModule.ClientDBModule ):
                     
                 
             
-            uncached_tag_ids_to_tags = { tag_id : HydrusTags.CombineTag( namespace, subtag ) for ( tag_id, namespace, subtag ) in rows }
+            uncached_tag_ids_to_tags = { tag_id : HydrusTags.combine_tag( namespace, subtag ) for ( tag_id, namespace, subtag ) in rows }
             
             if len( uncached_tag_ids_to_tags ) < len( uncached_tag_ids ):
                 
@@ -545,7 +545,7 @@ class ClientDBMasterTags( ClientDBModule.ClientDBModule ):
                         
                         tag = 'unknown tag:' + HydrusData.generate_key().hex()
                         
-                        ( namespace, subtag ) = HydrusTags.SplitTag( tag )
+                        ( namespace, subtag ) = HydrusTags.split_tag( tag )
                         
                         namespace_id = self.GetNamespaceId( namespace )
                         subtag_id = self.GetSubtagId( subtag )
@@ -625,11 +625,11 @@ class ClientDBMasterTags( ClientDBModule.ClientDBModule ):
     
     def GetTagId( self, tag ) -> int:
         
-        clean_tag = HydrusTags.CleanTag( tag )
+        clean_tag = HydrusTags.clean_tag( tag )
         
         try:
             
-            HydrusTags.CheckTagNotEmpty( clean_tag )
+            HydrusTags.check_tag_not_empty( clean_tag )
             
         except HydrusExceptions.TagSizeException:
             
@@ -638,7 +638,7 @@ class ClientDBMasterTags( ClientDBModule.ClientDBModule ):
             raise HydrusExceptions.TagSizeException( '"{}" tag seems not valid--when cleaned, it ends up with zero size!'.format( tag ) )
             
         
-        ( namespace, subtag ) = HydrusTags.SplitTag( clean_tag )
+        ( namespace, subtag ) = HydrusTags.split_tag( clean_tag )
         
         namespace_id = self.GetNamespaceId( namespace )
         subtag_id = self.GetSubtagId( subtag )
@@ -702,7 +702,7 @@ class ClientDBMasterTags( ClientDBModule.ClientDBModule ):
         
         try:
             
-            HydrusTags.CheckTagNotEmpty( subtag )
+            HydrusTags.check_tag_not_empty( subtag )
             
         except HydrusExceptions.TagSizeException:
             
@@ -725,7 +725,7 @@ class ClientDBMasterTags( ClientDBModule.ClientDBModule ):
         
         try:
             
-            tag = HydrusTags.CleanTag( tag )
+            tag = HydrusTags.clean_tag( tag )
             
         except Exception as e:
             
@@ -734,14 +734,14 @@ class ClientDBMasterTags( ClientDBModule.ClientDBModule ):
         
         try:
             
-            HydrusTags.CheckTagNotEmpty( tag )
+            HydrusTags.check_tag_not_empty( tag )
             
         except HydrusExceptions.TagSizeException:
             
             return False
             
         
-        ( namespace, subtag ) = HydrusTags.SplitTag( tag )
+        ( namespace, subtag ) = HydrusTags.split_tag( tag )
         
         if self.NamespaceExists( namespace ):
             

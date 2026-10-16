@@ -242,7 +242,7 @@ def CheckTags( tags: collections.abc.Collection[ str ] ):
         
         try:
             
-            clean_tag = HydrusTags.CleanTag( tag )
+            clean_tag = HydrusTags.clean_tag( tag )
             
         except Exception as e:
             
@@ -1133,8 +1133,8 @@ def ConvertTagListToPredicates( request, tag_list, do_permission_check = True, e
     dirty_negated_tags = negated_tags
     dirty_tags = tags
     
-    negated_tags = HydrusTags.CleanTags( dirty_negated_tags )
-    tags = HydrusTags.CleanTags( dirty_tags )
+    negated_tags = HydrusTags.clean_tags( dirty_negated_tags )
+    tags = HydrusTags.clean_tags( dirty_tags )
     
     if error_on_invalid_tag:
         
@@ -1151,9 +1151,9 @@ def ConvertTagListToPredicates( request, tag_list, do_permission_check = True, e
                     
                     try:
                         
-                        clean_t = HydrusTags.CleanTag( dirty_t )
+                        clean_t = HydrusTags.clean_tag( dirty_t )
                         
-                        HydrusTags.CheckTagNotEmpty( clean_t )
+                        HydrusTags.check_tag_not_empty( clean_t )
                         
                     except Exception as e:
                         
@@ -1231,7 +1231,7 @@ def ConvertTagListToPredicates( request, tag_list, do_permission_check = True, e
     
     for ( inclusive, tag ) in search_tags:
         
-        ( namespace, subtag ) = HydrusTags.SplitTag( tag )
+        ( namespace, subtag ) = HydrusTags.split_tag( tag )
         
         if '*' in tag:
             

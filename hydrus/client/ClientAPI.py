@@ -362,14 +362,14 @@ class APIPermissions( HydrusSerialisable.SerialisableBaseNamed ):
         
         with self._lock:
             
-            if self._permits_everything or self._search_tag_filter.AllowsEverything():
+            if self._permits_everything or self._search_tag_filter.allows_everything():
                 
                 return
                 
             
             if len( tags ) > 0:
                 
-                filtered_tags = self._search_tag_filter.Filter( tags )
+                filtered_tags = self._search_tag_filter.filter( tags )
                 
                 if len( filtered_tags ) > 0:
                     
@@ -377,7 +377,7 @@ class APIPermissions( HydrusSerialisable.SerialisableBaseNamed ):
                     
                 
             
-            raise HydrusExceptions.InsufficientCredentialsException( 'You do not have permission to do this search. Your tag search permissions are: {}'.format( self._search_tag_filter.ToPermittedString() ) )
+            raise HydrusExceptions.InsufficientCredentialsException( 'You do not have permission to do this search. Your tag search permissions are: {}'.format( self._search_tag_filter.to_permitted_string() ) )
             
         
     
@@ -390,7 +390,7 @@ class APIPermissions( HydrusSerialisable.SerialisableBaseNamed ):
                 return
                 
             
-            if not ( self._HasPermission( CLIENT_API_PERMISSION_SEARCH_FILES ) and self._search_tag_filter.AllowsEverything() ):
+            if not ( self._HasPermission( CLIENT_API_PERMISSION_SEARCH_FILES ) and self._search_tag_filter.allows_everything() ):
                 
                 raise HydrusExceptions.InsufficientCredentialsException( 'You do not have permission to see all files, so you cannot do this.' )
                 
@@ -409,7 +409,7 @@ class APIPermissions( HydrusSerialisable.SerialisableBaseNamed ):
         
         with self._lock:
             
-            if self._permits_everything or self._search_tag_filter.AllowsEverything():
+            if self._permits_everything or self._search_tag_filter.allows_everything():
                 
                 return
                 
@@ -437,12 +437,12 @@ class APIPermissions( HydrusSerialisable.SerialisableBaseNamed ):
         
         with self._lock:
             
-            if self._permits_everything or self._search_tag_filter.AllowsEverything():
+            if self._permits_everything or self._search_tag_filter.allows_everything():
                 
                 return predicates
                 
             
-            return [ predicate for predicate in predicates if self._search_tag_filter.TagOK( predicate.GetValue() ) ]
+            return [ predicate for predicate in predicates if self._search_tag_filter.tag_ok( predicate.GetValue() ) ]
             
         
     
@@ -475,7 +475,7 @@ class APIPermissions( HydrusSerialisable.SerialisableBaseNamed ):
             
             if self._HasPermission( CLIENT_API_PERMISSION_SEARCH_FILES ):
                 
-                p_strings.append( 'Can search: {}'.format( self._search_tag_filter.ToPermittedString() ) )
+                p_strings.append( 'Can search: {}'.format( self._search_tag_filter.to_permitted_string() ) )
                 
             
             return ''.join( p_strings )
@@ -544,7 +544,7 @@ class APIPermissions( HydrusSerialisable.SerialisableBaseNamed ):
         
         with self._lock:
             
-            if self._search_tag_filter.AllowsEverything():
+            if self._search_tag_filter.allows_everything():
                 
                 return
                 

@@ -408,7 +408,7 @@ class TagSuggestionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         ( tag_slice, weight ) = tag_slice_and_weight
         
-        pretty_tag_slice = HydrusTags.ConvertTagSliceToPrettyString( tag_slice )
+        pretty_tag_slice = HydrusTags.convert_tag_slice_to_pretty_string( tag_slice )
         
         pretty_weight = HydrusNumbers.to_human_int( weight ) + '%'
         
@@ -421,7 +421,7 @@ class TagSuggestionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         ( tag_slice, weight ) = tag_slice_and_weight
         
-        pretty_tag_slice = HydrusTags.ConvertTagSliceToPrettyString( tag_slice )
+        pretty_tag_slice = HydrusTags.convert_tag_slice_to_pretty_string( tag_slice )
         sort_tag_slice = pretty_tag_slice
         
         sort_tuple = ( sort_tag_slice, weight )

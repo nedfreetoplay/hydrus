@@ -1246,42 +1246,42 @@ class DB( HydrusDB.HydrusDB ):
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( 'diaper', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( 'gore', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( 'guro', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( 'scat', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( 'vore', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( 'diaper', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( 'gore', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( 'guro', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( 'scat', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( 'vore', HC.FILTER_BLACKLIST )
         
         names_to_tag_filters[ 'example blacklist' ] = tag_filter
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( '', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( ':', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( 'series:', HC.FILTER_WHITELIST )
-        tag_filter.SetRule( 'creator:', HC.FILTER_WHITELIST )
-        tag_filter.SetRule( 'studio:', HC.FILTER_WHITELIST )
-        tag_filter.SetRule( 'character:', HC.FILTER_WHITELIST )
+        tag_filter.set_rule( '', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( ':', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( 'series:', HC.FILTER_WHITELIST )
+        tag_filter.set_rule( 'creator:', HC.FILTER_WHITELIST )
+        tag_filter.set_rule( 'studio:', HC.FILTER_WHITELIST )
+        tag_filter.set_rule( 'character:', HC.FILTER_WHITELIST )
         
         names_to_tag_filters[ 'basic namespaces only' ] = tag_filter
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( ':', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( 'series:', HC.FILTER_WHITELIST )
-        tag_filter.SetRule( 'creator:', HC.FILTER_WHITELIST )
-        tag_filter.SetRule( 'studio:', HC.FILTER_WHITELIST )
-        tag_filter.SetRule( 'character:', HC.FILTER_WHITELIST )
+        tag_filter.set_rule( ':', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( 'series:', HC.FILTER_WHITELIST )
+        tag_filter.set_rule( 'creator:', HC.FILTER_WHITELIST )
+        tag_filter.set_rule( 'studio:', HC.FILTER_WHITELIST )
+        tag_filter.set_rule( 'character:', HC.FILTER_WHITELIST )
         
         names_to_tag_filters[ 'basic booru tags only' ] = tag_filter
         
         tag_filter = HydrusTags.TagFilter()
         
-        tag_filter.SetRule( 'title:', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( 'filename:', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( 'source:', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( 'booru:', HC.FILTER_BLACKLIST )
-        tag_filter.SetRule( 'url:', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( 'title:', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( 'filename:', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( 'source:', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( 'booru:', HC.FILTER_BLACKLIST )
+        tag_filter.set_rule( 'url:', HC.FILTER_BLACKLIST )
         
         names_to_tag_filters[ 'exclude long/spammy namespaces' ] = tag_filter
         
@@ -2672,7 +2672,7 @@ class DB( HydrusDB.HydrusDB ):
         
         def do_clean_tag_check( read_tag: str ):
             
-            clean_tag = HydrusTags.CleanTag( read_tag )
+            clean_tag = HydrusTags.clean_tag( read_tag )
             
             if clean_tag != read_tag:
                 
@@ -3075,7 +3075,7 @@ class DB( HydrusDB.HydrusDB ):
                 return 1.0
                 
             
-            ( n, s ) = HydrusTags.SplitTag( tag )
+            ( n, s ) = HydrusTags.split_tag( tag )
             
             if n in d:
                 
@@ -4817,7 +4817,7 @@ class DB( HydrusDB.HydrusDB ):
             
             self._execute_many( f'INSERT INTO {database_temp_job_name} ( hash_id ) VALUES ( ? );', ( ( hash_id, ) for hash_id in hash_ids ) )
             
-        elif not tag_filter.AllowsEverything():
+        elif not tag_filter.allows_everything():
             
             # no hashes but a tag filter
             
@@ -4898,7 +4898,7 @@ class DB( HydrusDB.HydrusDB ):
             
             if location_context.IsAllKnownFiles():
                 
-                if tag_filter.AllowsEverything():
+                if tag_filter.allows_everything():
                     
                     # if our tag service is the biggest, and if it basically accounts for all the hashes we know about, it is much faster to just use the hashes table
                     
@@ -6422,9 +6422,9 @@ class DB( HydrusDB.HydrusDB ):
                 
                 try:
                     
-                    cleaned_tag = HydrusTags.CleanTag( tag )
+                    cleaned_tag = HydrusTags.clean_tag( tag )
                     
-                    HydrusTags.CheckTagNotEmpty( cleaned_tag )
+                    HydrusTags.check_tag_not_empty( cleaned_tag )
                     
                 except Exception as e:
                     
@@ -6476,7 +6476,7 @@ class DB( HydrusDB.HydrusDB ):
             
             cleaned_tag = potential_new_cleaned_tag
             
-            ( namespace, subtag ) = HydrusTags.SplitTag( cleaned_tag )
+            ( namespace, subtag ) = HydrusTags.split_tag( cleaned_tag )
             
             namespace_id = self.modules_tags.GetNamespaceId( namespace )
             subtag_id = self.modules_tags.GetSubtagId( subtag )

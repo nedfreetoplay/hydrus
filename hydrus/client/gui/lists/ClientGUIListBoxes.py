@@ -1898,7 +1898,7 @@ class ListBox( QW.QScrollArea ):
         
         if only_subtags:
             
-            copyable_tag_strings = [ HydrusTags.SplitTag( tag_string )[1] for tag_string in copyable_tag_strings ]
+            copyable_tag_strings = [ HydrusTags.split_tag( tag_string )[1] for tag_string in copyable_tag_strings ]
             
         
         if '' in copyable_tag_strings:
@@ -2026,7 +2026,7 @@ class ListBox( QW.QScrollArea ):
         
         if False not in [ predicate.GetType() == ClientSearchPredicate.PREDICATE_TYPE_TAG for predicate in predicates ]:
             
-            namespaces = { HydrusTags.SplitTag( predicate.GetValue() )[0] for predicate in predicates }
+            namespaces = { HydrusTags.split_tag( predicate.GetValue() )[0] for predicate in predicates }
             
             if len( namespaces ) == 1:
                 
@@ -3374,7 +3374,7 @@ class ListBoxTags( ListBox ):
                 
             elif command == 'hide_namespace':
                 
-                namespaces = { namespace for ( namespace, subtag ) in ( HydrusTags.SplitTag( tag ) for tag in tags ) }
+                namespaces = { namespace for ( namespace, subtag ) in ( HydrusTags.split_tag( tag ) for tag in tags ) }
                 nice_namespaces = [ ClientTags.RenderNamespaceForUser( namespace ) for namespace in namespaces ]
                 
                 message = f'Hide{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( nice_namespaces )}tags from here?'
@@ -4093,7 +4093,7 @@ class ListBoxTags( ListBox ):
                 
                 select_menu = ClientGUIMenus.GenerateMenu( menu )
                 
-                tags_sorted_to_show_on_menu = HydrusTags.SortNumericTags( selected_actual_tags )
+                tags_sorted_to_show_on_menu = HydrusTags.sort_numeric_tags( selected_actual_tags )
                 
                 tags_sorted_to_show_on_menu_string = ', '.join( tags_sorted_to_show_on_menu )
                 
@@ -4143,7 +4143,7 @@ class ListBoxTags( ListBox ):
                 
                 for selected_actual_tag in selected_actual_tags:
                     
-                    ( namespace, subtag ) = HydrusTags.SplitTag( selected_actual_tag )
+                    ( namespace, subtag ) = HydrusTags.split_tag( selected_actual_tag )
                     
                     namespaces.add( namespace )
                     
@@ -4249,7 +4249,7 @@ class ListBoxTags( ListBox ):
                             
                             tag_filter = tag_repo.GetTagFilter()
                             
-                            tags_currently_ok = { tag for tag in selected_actual_tags if tag_filter.TagOK( tag ) }
+                            tags_currently_ok = { tag for tag in selected_actual_tags if tag_filter.tag_ok( tag ) }
                             tags_currently_not_ok = { tag for tag in selected_actual_tags if tag not in tags_currently_ok }
                             
                             if len( tags_currently_ok ) > 0:

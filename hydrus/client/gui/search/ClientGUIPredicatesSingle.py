@@ -3343,9 +3343,9 @@ class PanelPredicateSystemTagAdvanced( PanelPredicateSystemSingle ):
         
         try:
             
-            tag = HydrusTags.CleanTag( tag )
+            tag = HydrusTags.clean_tag( tag )
             
-            HydrusTags.CheckTagNotEmpty( tag )
+            HydrusTags.check_tag_not_empty( tag )
             
         except Exception as e:
             

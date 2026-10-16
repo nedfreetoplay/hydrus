@@ -796,7 +796,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                             
                             potentially_dirty_tag = tag
                             
-                            tag = HydrusTags.CleanTag( potentially_dirty_tag )
+                            tag = HydrusTags.clean_tag( potentially_dirty_tag )
                             
                             if tag != potentially_dirty_tag:
                                 

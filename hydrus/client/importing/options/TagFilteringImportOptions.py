@@ -52,7 +52,7 @@ class TagFilteringImportOptions( IOC.ImportOptionsMetatype ):
     
     def AllowsEverything( self ):
         
-        return self._tag_blacklist.AllowsEverything() and len( self._tag_whitelist ) == 0
+        return self._tag_blacklist.allows_everything() and len( self._tag_whitelist ) == 0
         
     
     def CheckTagsVeto( self, tags: collections.abc.Collection[ str ], sibling_tags: collections.abc.Collection[ str ] ):
@@ -63,13 +63,13 @@ class TagFilteringImportOptions( IOC.ImportOptionsMetatype ):
         
         for test_tags in ( tags_set, sibling_tags_set ):
             
-            ok_tags = self._tag_blacklist.Filter( test_tags, apply_unnamespaced_rules_to_namespaced_tags = True )
+            ok_tags = self._tag_blacklist.filter( test_tags, apply_unnamespaced_rules_to_namespaced_tags = True )
             
             if len( ok_tags ) < len( test_tags ):
                 
                 bad_tags = test_tags.difference( ok_tags )
                 
-                bad_tags = HydrusTags.SortNumericTags( bad_tags )
+                bad_tags = HydrusTags.sort_numeric_tags( bad_tags )
                 
                 raise HydrusExceptions.VetoException( ', '.join( bad_tags ) + ' is blacklisted!' )
                 
@@ -81,7 +81,7 @@ class TagFilteringImportOptions( IOC.ImportOptionsMetatype ):
             
             for tag in list( all_tags ):
                 
-                ( namespace, subtag ) = HydrusTags.SplitTag( tag )
+                ( namespace, subtag ) = HydrusTags.split_tag( tag )
                 
                 all_tags.add( subtag )
                 
@@ -103,9 +103,9 @@ class TagFilteringImportOptions( IOC.ImportOptionsMetatype ):
         
         if show_downloader_options:
             
-            if not self._tag_blacklist.AllowsEverything():
+            if not self._tag_blacklist.allows_everything():
                 
-                statements.append( self._tag_blacklist.ToBlacklistString() )
+                statements.append( self._tag_blacklist.to_blacklist_string() )
                 
             
             if len( self._tag_whitelist ) > 0:

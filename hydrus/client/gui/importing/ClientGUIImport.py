@@ -219,7 +219,7 @@ class FilenameTaggingOptionsPanel( QW.QWidget ):
         tags.update( self._simple_panel.GetTags( index, path ) )
         tags.update( self._advanced_panel.GetTags( index, path ) )
         
-        tags = HydrusTags.CleanTags( tags )
+        tags = HydrusTags.clean_tags( tags )
         
         tags = CG.client_controller.tag_display_manager.FilterTags( ClientTags.TAG_DISPLAY_STORAGE, self._service_key, tags )
         
@@ -645,7 +645,7 @@ class FilenameTaggingOptionsPanel( QW.QWidget ):
                 
                 tags = HydrusText.DeserialiseNewlinedTexts( raw_text )
                 
-                tags = HydrusTags.CleanTags( tags )
+                tags = HydrusTags.clean_tags( tags )
                 
                 return tags
                 
@@ -1183,7 +1183,7 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     service_name = CG.client_controller.services_manager.GetNameSafe( exporter.GetServiceKey() )
                     
-                    clean_tags = list( HydrusTags.CleanTags( processed_strings ) )
+                    clean_tags = list( HydrusTags.clean_tags( processed_strings ) )
                     
                     ClientTagSorting.SortTags( ClientTagSorting.TagSort.STATICGetTextASCDefault(), clean_tags )
                     
