@@ -89,7 +89,7 @@ class MediaPlaybackPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         mpv_panel = ClientGUICommon.StaticBox( self, 'mpv' )
         
-        self._mpv_conf_path = ClientGUIPathWidgets.FilePickerCtrl( mpv_panel, starting_directory = HydrusStaticDir.GetStaticPath( 'mpv-conf' ) )
+        self._mpv_conf_path = ClientGUIPathWidgets.FilePickerCtrl( mpv_panel, starting_directory = HydrusStaticDir.get_static_path( 'mpv-conf' ) )
         
         self._mpv_preferred_audio_device = ClientGUICommon.NoneableTextCtrl( mpv_panel, '', none_phrase = 'use default' )
         self._mpv_preferred_audio_device.setToolTip( ClientGUIFunctions.WrapToolTip( 'Write in the audio device id exactly as mpv understands it. Hit the button to see live examples. Use "null" for "no audio device at all". Will update all new existing mpv players immediately on dialog ok.' ) )

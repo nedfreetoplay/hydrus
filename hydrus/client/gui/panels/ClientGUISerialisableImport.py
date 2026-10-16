@@ -175,7 +175,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         
         st.setWordWrap( True )
         
-        lain_path = HydrusStaticDir.GetStaticPath( 'lain.jpg' )
+        lain_path = HydrusStaticDir.get_static_path( 'lain.jpg' )
         
         lain_qt_pixmap = ClientRendering.GenerateHydrusBitmap( lain_path, HC.IMAGE_JPEG ).GetQtPixmap()
         
@@ -679,7 +679,7 @@ class ReviewWhatIsThisObject( ClientGUIScrolledPanels.ReviewPanel ):
         self._paste_button = ClientGUICommon.IconButton( self, CC.global_icons().paste, self._Paste )
         self._paste_button.setToolTip( ClientGUIFunctions.WrapToolTip( 'Paste paths/bitmaps/JSON from clipboard!' ) )
         
-        question_mark_path = HydrusStaticDir.GetStaticPath( 'question_mark_on_head.jpg' )
+        question_mark_path = HydrusStaticDir.get_static_path( 'question_mark_on_head.jpg' )
         
         question_mark_qt_pixmap = ClientRendering.GenerateHydrusBitmap( question_mark_path, HC.IMAGE_JPEG ).GetQtPixmap()
         

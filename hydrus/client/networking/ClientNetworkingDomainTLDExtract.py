@@ -11,7 +11,7 @@ TLDEXTRACT_MODULE_NOT_FOUND = False
 TLDEXTRACT_IMPORT_ERROR = 'tldextract seems fine!'
 
 # came from https://publicsuffix.org/list/public_suffix_list.dat
-SUFFIX_LIST_PATH = HydrusStaticDir.GetStaticPath( 'public_suffix_list.dat' )
+SUFFIX_LIST_PATH = HydrusStaticDir.get_static_path( 'public_suffix_list.dat' )
 
 try:
     

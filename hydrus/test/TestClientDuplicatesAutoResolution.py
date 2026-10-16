@@ -83,7 +83,7 @@ class TestComparatorOneFileHardcoded( unittest.TestCase ):
     
     def _do_file_import( self, name ):
         
-        path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', name ) )
+        path = HydrusStaticDir.get_static_path( os.path.join( 'testing', name ) )
         
         full_import_options_container = ImportOptionsManager.ImportOptionsManager.STATICGetDefaultInitialisedManager().GetDefaultImportOptionsContainerForCallerType( IOC.IMPORT_OPTIONS_CALLER_TYPE_GLOBAL )
         
@@ -665,7 +665,7 @@ class TestComparatorHardcoded( unittest.TestCase ):
     
     def _do_file_import( self, name ):
         
-        path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', name ) )
+        path = HydrusStaticDir.get_static_path( os.path.join( 'testing', name ) )
         
         full_import_options_container = ImportOptionsManager.ImportOptionsManager.STATICGetDefaultInitialisedManager().GetDefaultImportOptionsContainerForCallerType( IOC.IMPORT_OPTIONS_CALLER_TYPE_GLOBAL )
         
@@ -903,7 +903,7 @@ class TestComparatorVisualDuplicates( unittest.TestCase ):
     
     def _do_file_import( self, name ):
         
-        path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', name ) )
+        path = HydrusStaticDir.get_static_path( os.path.join( 'testing', name ) )
         
         full_import_options_container = ImportOptionsManager.ImportOptionsManager.STATICGetDefaultInitialisedManager().GetDefaultImportOptionsContainerForCallerType( IOC.IMPORT_OPTIONS_CALLER_TYPE_GLOBAL )
         

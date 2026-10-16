@@ -1061,7 +1061,7 @@ class Controller(HydrusController.HydrusController):
         return clipboard_text
     
     def get_default_mpv_conf_path(self):
-        return HydrusStaticDir.GetStaticPath( os.path.join( 'mpv-conf', 'default_mpv.conf' ) )
+        return HydrusStaticDir.get_static_path( os.path.join( 'mpv-conf', 'default_mpv.conf' ) )
     
     def get_idle_shutdown_work_due(self, time_to_stop):
         

@@ -1214,7 +1214,7 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
         self._mr_bones_text.setWordWrap( True )
         self._mr_bones_text.setAlignment( QC.Qt.AlignmentFlag.AlignCenter )
         
-        boned_path = HydrusStaticDir.GetStaticPath( 'boned.jpg' )
+        boned_path = HydrusStaticDir.get_static_path( 'boned.jpg' )
         
         boned_qt_pixmap = ClientRendering.GenerateHydrusBitmap( boned_path, HC.IMAGE_JPEG ).GetQtPixmap()
         

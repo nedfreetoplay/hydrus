@@ -37,7 +37,7 @@ class FrameSplashPanel( QW.QWidget ):
         self._drag_last_pos = None
         self._initial_position = self.parentWidget().pos()
         
-        splash_image_path = HydrusStaticDir.GetStaticIconPath( 'hydrus_splash' )
+        splash_image_path = HydrusStaticDir.get_static_icon_path( 'hydrus_splash' )
         
         if splash_image_path.endswith( '.svg' ):
             

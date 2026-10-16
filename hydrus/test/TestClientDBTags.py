@@ -792,7 +792,7 @@ class TestClientDBTags( unittest.TestCase ):
                 
                 TG.test_controller.set_read( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
                 
-                path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', filename ) )
+                path = HydrusStaticDir.get_static_path( os.path.join( 'testing', filename ) )
                 
                 file_import_job = ClientImportFiles.FileImportJob( path, full_import_options_container )
                 
@@ -1103,7 +1103,7 @@ class TestClientDBTags( unittest.TestCase ):
         
         TG.test_controller.set_read( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
         
-        path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', 'muh_jpg.jpg' ) )
+        path = HydrusStaticDir.get_static_path( os.path.join( 'testing', 'muh_jpg.jpg' ) )
         
         full_import_options_container = ImportOptionsManager.ImportOptionsManager.STATICGetDefaultInitialisedManager().GetDefaultImportOptionsContainerForCallerType( IOC.IMPORT_OPTIONS_CALLER_TYPE_GLOBAL )
         
@@ -1203,7 +1203,7 @@ class TestClientDBTags( unittest.TestCase ):
         
         TG.test_controller.set_read( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
         
-        path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', 'muh_jpg.jpg' ) )
+        path = HydrusStaticDir.get_static_path( os.path.join( 'testing', 'muh_jpg.jpg' ) )
         
         full_import_options_container = ImportOptionsManager.ImportOptionsManager.STATICGetDefaultInitialisedManager().GetDefaultImportOptionsContainerForCallerType( IOC.IMPORT_OPTIONS_CALLER_TYPE_GLOBAL )
         
@@ -1304,7 +1304,7 @@ class TestClientDBTags( unittest.TestCase ):
         
         TG.test_controller.set_read( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
         
-        path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', 'muh_jpg.jpg' ) )
+        path = HydrusStaticDir.get_static_path( os.path.join( 'testing', 'muh_jpg.jpg' ) )
         
         full_import_options_container = ImportOptionsManager.ImportOptionsManager.STATICGetDefaultInitialisedManager().GetDefaultImportOptionsContainerForCallerType( IOC.IMPORT_OPTIONS_CALLER_TYPE_GLOBAL )
         
@@ -1407,7 +1407,7 @@ class TestClientDBTags( unittest.TestCase ):
         
         TG.test_controller.set_read( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
         
-        path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', 'muh_jpg.jpg' ) )
+        path = HydrusStaticDir.get_static_path( os.path.join( 'testing', 'muh_jpg.jpg' ) )
         
         full_import_options_container = ImportOptionsManager.ImportOptionsManager.STATICGetDefaultInitialisedManager().GetDefaultImportOptionsContainerForCallerType( IOC.IMPORT_OPTIONS_CALLER_TYPE_GLOBAL )
         
@@ -1509,7 +1509,7 @@ class TestClientDBTags( unittest.TestCase ):
         
         TG.test_controller.set_read( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
         
-        path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', 'muh_jpg.jpg' ) )
+        path = HydrusStaticDir.get_static_path( os.path.join( 'testing', 'muh_jpg.jpg' ) )
         
         full_import_options_container = ImportOptionsManager.ImportOptionsManager.STATICGetDefaultInitialisedManager().GetDefaultImportOptionsContainerForCallerType( IOC.IMPORT_OPTIONS_CALLER_TYPE_GLOBAL )
         
@@ -2637,7 +2637,7 @@ class TestClientDBTags( unittest.TestCase ):
                     
                     TG.test_controller.set_read( 'hash_status', ClientImportFiles.FileImportStatus.STATICGetUnknownStatus() )
                     
-                    path = HydrusStaticDir.GetStaticPath( os.path.join( 'testing', filename ) )
+                    path = HydrusStaticDir.get_static_path( os.path.join( 'testing', filename ) )
                     
                     file_import_job = ClientImportFiles.FileImportJob( path, full_import_options_container )
                     

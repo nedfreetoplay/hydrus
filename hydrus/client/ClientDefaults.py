@@ -647,7 +647,7 @@ def GetDefaultShortcuts():
 
 def GetDefaultSimpleDownloaderFormulae():
     
-    paths = HydrusStaticDir.ListStaticDirFilePaths( os.path.join( 'default', 'simple_downloader_formulae' ) )
+    paths = HydrusStaticDir.List_static_dir_file_paths( os.path.join( 'default', 'simple_downloader_formulae' ) )
     
     from hydrus.client.parsing import ClientParsing
     
@@ -656,7 +656,7 @@ def GetDefaultSimpleDownloaderFormulae():
 
 def GetDefaultURLClasses():
     
-    paths = HydrusStaticDir.ListStaticDirFilePaths( os.path.join( 'default', 'url_classes' ) )
+    paths = HydrusStaticDir.List_static_dir_file_paths( os.path.join( 'default', 'url_classes' ) )
     
     from hydrus.client.networking import ClientNetworkingURLClass
     
