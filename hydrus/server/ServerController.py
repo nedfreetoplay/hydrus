@@ -226,7 +226,7 @@ class Controller( HydrusController.HydrusController ):
                 
                 if os.path.exists( path ):
                     
-                    HydrusPaths.RecyclePath( path )
+                    HydrusPaths.recycle_path( path )
                     
                     num_files_deleted += 1
                     
@@ -238,7 +238,7 @@ class Controller( HydrusController.HydrusController ):
                 
                 if os.path.exists( path ):
                     
-                    HydrusPaths.RecyclePath( path )
+                    HydrusPaths.recycle_path( path )
                     
                     num_thumbnails_deleted += 1
                     

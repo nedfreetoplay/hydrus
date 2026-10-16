@@ -3102,7 +3102,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
                                 
                                 dest_path = os.path.join( dest_dir, update_hash.hex() )
                                 
-                                HydrusPaths.MirrorFile( update_path, dest_path )
+                                HydrusPaths.mirror_file( update_path, dest_path )
                                 
                             except HydrusExceptions.FileMissingException:
                                 

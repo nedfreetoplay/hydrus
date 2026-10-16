@@ -590,7 +590,7 @@ class HydrusController:
             
             try:
                 
-                HydrusPaths.DeletePath( self._hydrus_temp_dir )
+                HydrusPaths.delete_path( self._hydrus_temp_dir )
                 
             except Exception as e:
                 

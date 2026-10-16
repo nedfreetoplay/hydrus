@@ -218,7 +218,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
             
             client_files_default = os.path.join( self._db_dir, 'client_files' )
             
-            HydrusPaths.MakeSureDirectoryExists( client_files_default )
+            HydrusPaths.make_sure_directory_exists( client_files_default )
             
             location_id = self.GetLocationId( client_files_default )
             
@@ -287,7 +287,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         
         ( portable_location, ) = result
         
-        absolute_location = HydrusPaths.ConvertPortablePathToAbsPath( portable_location )
+        absolute_location = HydrusPaths.convert_portable_path_to_abs_path( portable_location )
         
         return absolute_location
         
@@ -298,7 +298,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         # TODO: we may need to have some clever alternate call or bool here that says 'hey I need you to check every possible conjugation of this location', which will read all locations and absolute normalise them somehow
         # this would be just to catch the wrong slashes coming in (C:\ vs C:/) and so on, although we don't want this to be normal behaviour perhaps, certainly at least if it can write back any 'corrections' 
         
-        portable_location = HydrusPaths.ConvertAbsPathToPortablePath( absolute_location )
+        portable_location = HydrusPaths.convert_abs_path_to_portable_path( absolute_location )
         
         result = self._execute( 'SELECT location_id FROM current_client_files_locations WHERE location = ?;', ( portable_location, ) ).fetchone()
         
@@ -395,7 +395,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         
         default_client_files_path = os.path.join( self._db_dir, 'client_files' )
         
-        HydrusPaths.MakeSureDirectoryExists( default_client_files_path )
+        HydrusPaths.make_sure_directory_exists( default_client_files_path )
         
         location_id = self.GetLocationId( default_client_files_path )
         
@@ -466,13 +466,13 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
             
             if os.path.exists( source_dir ):
                 
-                HydrusPaths.MergeTree( source_dir, dest_dir )
+                HydrusPaths.merge_tree( source_dir, dest_dir )
                 
             else:
                 
                 if not os.path.exists( dest_dir ):
                     
-                    HydrusPaths.MakeSureDirectoryExists( dest_dir )
+                    HydrusPaths.make_sure_directory_exists( dest_dir )
                     
                 
             
@@ -491,7 +491,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
                     
                     try:
                         
-                        HydrusPaths.DeletePath( subdir )
+                        HydrusPaths.delete_path( subdir )
                         
                     except Exception as e:
                         

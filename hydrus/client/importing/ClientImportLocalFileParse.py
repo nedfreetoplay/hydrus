@@ -113,7 +113,7 @@ class LocalFileParse( object ):
             
             self.result = RESULT_SIDECAR
             
-        elif not HydrusPaths.PathIsFree( path ):
+        elif not HydrusPaths.path_is_free( path ):
             
             HydrusData.safe_print( 'File currently in use: ' + path )
             

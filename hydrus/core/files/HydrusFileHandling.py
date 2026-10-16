@@ -459,7 +459,7 @@ def GetExtraHashesFromPath( path ):
     
     with open( path, 'rb' ) as f:
         
-        for block in HydrusPaths.ReadFileLikeAsBlocks( f ):
+        for block in HydrusPaths.read_file_like_as_blocks( f ):
             
             h_md5.update( block )
             h_sha1.update( block )
@@ -748,7 +748,7 @@ def GetHashFromPath( path ):
     
     with open( path, 'rb' ) as f:
         
-        for block in HydrusPaths.ReadFileLikeAsBlocks( f ):
+        for block in HydrusPaths.read_file_like_as_blocks( f ):
             
             h.update( block )
             

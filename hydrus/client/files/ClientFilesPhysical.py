@@ -99,7 +99,7 @@ def RegranulariseFileStorage( base_location_paths: list[ str ], prefix_types: li
     # there is one canonical destination for each ending prefix, which means going from 3 to 2 may mean moving and merging some things
     ending_prefixes_to_ending_subfolders = dict()
     
-    base_location_paths_to_device_ids = { base_location_path : HydrusPaths.GetDeviceId( base_location_path ) for base_location_path in base_location_paths }
+    base_location_paths_to_device_ids = { base_location_path : HydrusPaths.get_device_id( base_location_path ) for base_location_path in base_location_paths }
     
     base_location_paths_to_granular_folder_prefixes_deleted = collections.defaultdict( list )
     
@@ -264,7 +264,7 @@ def RegranulariseFileStorage( base_location_paths: list[ str ], prefix_types: li
                 base_location_paths_to_granular_folder_prefixes_deleted[ source_subfolder.base_location.path ].append( source_subfolder.prefix )
                 
                 # not recycle
-                HydrusPaths.DeletePath( source_subfolder.path )
+                HydrusPaths.delete_path( source_subfolder.path )
                 
             
         
@@ -298,12 +298,12 @@ class FilesStorageBaseLocation( object ):
         self.creation_path = path
         
         # it may seem silly to wash these like this, but it is nice and certain about slashes and so on, which we like
-        path = HydrusPaths.ConvertPortablePathToAbsPath( path )
-        portable_path = HydrusPaths.ConvertAbsPathToPortablePath( path )
+        path = HydrusPaths.convert_portable_path_to_abs_path( path )
+        portable_path = HydrusPaths.convert_abs_path_to_portable_path( path )
         
         try:
             
-            real_path = HydrusPaths.ConvertAbsPathToRealPath( path )
+            real_path = HydrusPaths.convert_abs_path_to_real_path( path )
             
         except Exception as e:
             
@@ -407,7 +407,7 @@ class FilesStorageBaseLocation( object ):
     
     def MakeSureExists( self ):
         
-        HydrusPaths.MakeSureDirectoryExists( self.path )
+        HydrusPaths.make_sure_directory_exists( self.path )
         
     
     def NeedsToRemoveSubfolders( self, current_num_bytes: int ):
@@ -432,7 +432,7 @@ class FilesStorageBaseLocation( object ):
             return True
             
         
-        result = HydrusPaths.PathExistsAndIsDir( self.path )
+        result = HydrusPaths.path_exists_and_is_dir( self.path )
         
         if result:
             
@@ -640,7 +640,7 @@ class FilesStorageSubfolder( object ):
     
     def MakeSureExists( self ):
         
-        HydrusPaths.MakeSureDirectoryExists( self.path )
+        HydrusPaths.make_sure_directory_exists( self.path )
         
     
     def PathExists( self, lazy_check_ok = False ):
@@ -650,7 +650,7 @@ class FilesStorageSubfolder( object ):
             return True
             
         
-        result = HydrusPaths.PathExistsAndIsDir( self.path )
+        result = HydrusPaths.path_exists_and_is_dir( self.path )
         
         if result:
             

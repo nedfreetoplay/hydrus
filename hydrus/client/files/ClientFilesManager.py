@@ -85,7 +85,7 @@ class ClientFilesManager( object ):
         
         try:
             
-            HydrusPaths.MirrorFile( source_path, dest_path )
+            HydrusPaths.mirror_file( source_path, dest_path )
             
         except Exception as e:
             
@@ -100,7 +100,7 @@ class ClientFilesManager( object ):
             raise Exception( message ) from e
             
         
-        HydrusPaths.TryToGiveFileNicePermissionBits( dest_path )
+        HydrusPaths.try_to_give_File_nice_permission_bits( dest_path )
         
     
     def _AddThumbnailFromBytes( self, hash, thumbnail_bytes, silent = False ):
@@ -114,7 +114,7 @@ class ClientFilesManager( object ):
         
         try:
             
-            HydrusPaths.TryToGiveFileNicePermissionBits( dest_path )
+            HydrusPaths.try_to_give_File_nice_permission_bits( dest_path )
             
             with open( dest_path, 'wb' ) as f:
                 
@@ -240,24 +240,24 @@ class ClientFilesManager( object ):
             HydrusData.ShowText( 'Changing file ext: ' + str( ( old_path, new_path ) ) )
             
         
-        if HydrusPaths.PathIsFree( old_path ):
+        if HydrusPaths.path_is_free( old_path ):
             
             try:
                 
-                HydrusPaths.MergeFile( old_path, new_path )
+                HydrusPaths.merge_file( old_path, new_path )
                 
                 needed_to_copy_file = False
                 
             except Exception as e:
                 
-                HydrusPaths.MirrorFile( old_path, new_path )
+                HydrusPaths.mirror_file( old_path, new_path )
                 
                 needed_to_copy_file = True
                 
             
         else:
             
-            HydrusPaths.MirrorFile( old_path, new_path )
+            HydrusPaths.mirror_file( old_path, new_path )
             
             needed_to_copy_file = True
             
@@ -283,7 +283,7 @@ class ClientFilesManager( object ):
                     
                     try:
                         
-                        HydrusPaths.MakeSureDirectoryExists( dir_to_test )
+                        HydrusPaths.make_sure_directory_exists( dir_to_test )
                         
                     except Exception as e:
                         
@@ -473,7 +473,7 @@ class ClientFilesManager( object ):
             
             if HydrusTime.TimeHasPassed( time_fetched + check_period ):
                 
-                free_space = HydrusPaths.GetFreeSpace( base_location.path )
+                free_space = HydrusPaths.get_free_space( base_location.path )
                 
                 if free_space is None:
                     
@@ -485,7 +485,7 @@ class ClientFilesManager( object ):
             
         else:
             
-            free_space = HydrusPaths.GetFreeSpace( base_location.path )
+            free_space = HydrusPaths.get_free_space( base_location.path )
             
             if free_space is None:
                 
@@ -900,7 +900,7 @@ class ClientFilesManager( object ):
         
         if os.path.exists( dest_path ):
             
-            HydrusPaths.TryToGiveFileNicePermissionBits( dest_path )
+            HydrusPaths.try_to_give_File_nice_permission_bits( dest_path )
             
         
         with open( dest_path, 'wb' ) as f:
@@ -908,7 +908,7 @@ class ClientFilesManager( object ):
             f.write( file_bytes )
             
         
-        HydrusPaths.TryToGiveFileNicePermissionBits( dest_path )
+        HydrusPaths.try_to_give_File_nice_permission_bits( dest_path )
         
     
     def AddFile( self, hash, mime, source_path, thumbnail_bytes = None ):
@@ -966,7 +966,7 @@ class ClientFilesManager( object ):
             
             thumbnails_move_location = os.path.join( move_location, 'thumbnails' )
             
-            HydrusPaths.MakeSureDirectoryExists( thumbnails_move_location )
+            HydrusPaths.make_sure_directory_exists( thumbnails_move_location )
             
         
         with self._master_locations_rwlock.read:
@@ -1054,13 +1054,13 @@ class ClientFilesManager( object ):
                                         dest = os.path.join( thumbnails_move_location, filename )
                                         
                                     
-                                    dest = HydrusPaths.AppendPathUntilNoConflicts( dest )
+                                    dest = HydrusPaths.append_path_until_no_conflicts( dest )
                                     
                                     HydrusData.safe_print( 'Moving the orphan ' + path + ' to ' + dest )
                                     
                                     try:
                                         
-                                        HydrusPaths.MergeFile( path, dest )
+                                        HydrusPaths.merge_file( path, dest )
                                         
                                     except Exception as e:
                                         
@@ -1207,7 +1207,7 @@ class ClientFilesManager( object ):
                     
                     if os.path.exists( incorrect_path ):
                         
-                        delete_ok = HydrusPaths.DeletePath( incorrect_path )
+                        delete_ok = HydrusPaths.delete_path( incorrect_path )
                         
                         if not delete_ok and random.randint( 1, 52 ) != 52:
                             

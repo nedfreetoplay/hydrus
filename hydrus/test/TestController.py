@@ -200,9 +200,9 @@ class Controller:
         
         client_files_default = os.path.join( self.db_dir, 'client_files' )
         
-        HydrusPaths.MakeSureDirectoryExists( self._server_files_dir )
-        HydrusPaths.MakeSureDirectoryExists( self._updates_dir )
-        HydrusPaths.MakeSureDirectoryExists( client_files_default )
+        HydrusPaths.make_sure_directory_exists( self._server_files_dir )
+        HydrusPaths.make_sure_directory_exists( self._updates_dir )
+        HydrusPaths.make_sure_directory_exists( client_files_default )
         
         HG.controller = self
         CG.client_controller = self
@@ -990,7 +990,7 @@ class Controller:
         
         time.sleep( 2 )
         
-        HydrusPaths.DeletePath( self.db_dir )
+        HydrusPaths.delete_path( self.db_dir )
     
     def wait_until_model_free(self):
         return

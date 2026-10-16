@@ -321,7 +321,7 @@ class DB( HydrusDB.HydrusDB ):
             
             job_status.SetStatusText( 'closing db' )
             
-            HydrusPaths.MakeSureDirectoryExists( path )
+            HydrusPaths.make_sure_directory_exists( path )
             
             for filename in self._db_filenames.values():
                 
@@ -335,7 +335,7 @@ class DB( HydrusDB.HydrusDB ):
                 source = os.path.join( self._db_dir, filename )
                 dest = os.path.join( path, filename )
                 
-                HydrusPaths.MirrorFile( source, dest )
+                HydrusPaths.mirror_file( source, dest )
                 
             
             additional_filenames = self._get_possible_additional_db_filenames()
@@ -347,7 +347,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 if os.path.exists( source ):
                     
-                    HydrusPaths.MirrorFile( source, dest )
+                    HydrusPaths.mirror_file( source, dest )
                     
                 
             
@@ -365,7 +365,7 @@ class DB( HydrusDB.HydrusDB ):
             
             if os.path.exists( client_files_default ):
                 
-                HydrusPaths.MirrorTree( client_files_default, os.path.join( path, 'client_files' ), text_update_hook = text_update_hook, is_cancelled_hook = is_cancelled_hook )
+                HydrusPaths.mirror_tree( client_files_default, os.path.join( path, 'client_files' ), text_update_hook = text_update_hook, is_cancelled_hook = is_cancelled_hook )
                 
             
         finally:
@@ -7897,7 +7897,7 @@ class DB( HydrusDB.HydrusDB ):
                     
                     try:
                         
-                        portable_location = HydrusPaths.ConvertAbsPathToPortablePath( absolute_location )
+                        portable_location = HydrusPaths.convert_abs_path_to_portable_path( absolute_location )
                         
                         result = self._execute( 'SELECT location_id FROM current_client_files_locations WHERE location = ?;', ( portable_location, ) ).fetchone()
                         
@@ -8932,14 +8932,14 @@ class DB( HydrusDB.HydrusDB ):
             
             if os.path.exists( source ):
                 
-                HydrusPaths.MirrorFile( source, dest )
+                HydrusPaths.mirror_file( source, dest )
                 
             else:
                 
                 # if the current database (and thus software) is newer and has a spare client.wew.db file, we get a confusing conflict on restart that tries to create a fresh wew file
                 # it is useless without the other stuff we are overwriting anyway, so delete it
                 
-                HydrusPaths.DeletePath( dest )
+                HydrusPaths.delete_path( dest )
                 
             
         
@@ -8952,7 +8952,7 @@ class DB( HydrusDB.HydrusDB ):
             
             if os.path.exists( source ):
                 
-                HydrusPaths.MirrorFile( source, dest )
+                HydrusPaths.mirror_file( source, dest )
                 
             
         
@@ -8963,7 +8963,7 @@ class DB( HydrusDB.HydrusDB ):
         
         if os.path.exists( client_files_source ):
             
-            HydrusPaths.MirrorTree( client_files_source, client_files_default )
+            HydrusPaths.mirror_tree( client_files_source, client_files_default )
             
         
     

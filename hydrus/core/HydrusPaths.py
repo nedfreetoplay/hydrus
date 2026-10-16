@@ -20,11 +20,9 @@ from hydrus.core.processes import HydrusSubprocess
 from hydrus.core.processes import HydrusThreading
 
 if not HC.PLATFORM_WINDOWS:
-    
     import fcntl
-    
 
-def oserror_is_device_access_trouble( e: OSError ):
+def oserror_is_device_access_trouble(e: OSError):
     """
     Is this "OSError [Errno 112] Host is down" or one of its friends.
     This stuff is _not_ FileNotFoundError, for good reason, but some logic for 'can we see this directory?' may want to lump it in.
@@ -40,32 +38,27 @@ def oserror_is_device_access_trouble( e: OSError ):
         errno.ENODEV,
         -2144272384, # locked bitlocker drive
     )
-    
 
-def stat_is_file( path_stat: os.stat_result ):
+def stat_is_file(path_stat: os.stat_result):
     
     return stat.S_ISREG( path_stat.st_mode )
-    
 
-def stat_is_symlink( path_stat: os.stat_result ):
+def stat_is_symlink(path_stat: os.stat_result):
     
     return stat.S_ISLNK( path_stat.st_mode )
-    
 
-def stat_is_dir( path_stat: os.stat_result ):
+def stat_is_dir(path_stat: os.stat_result):
     
     return stat.S_ISDIR( path_stat.st_mode )
-    
 
-def stat_is_samefile( source_stat: os.stat_result, dest_stat: os.stat_result ):
+def stat_is_samefile(source_stat: os.stat_result, dest_stat: os.stat_result):
     """
     This guy replicates os.path.samefile but with the stat calls ready aforehand.
     """
     
     return source_stat.st_dev == dest_stat.st_dev and source_stat.st_ino == dest_stat.st_ino
-    
 
-def AppendPathUntilNoConflicts( path ):
+def append_path_until_no_conflicts(path):
     
     ( path_absent_ext, ext ) = os.path.splitext( path )
     
@@ -81,9 +74,8 @@ def AppendPathUntilNoConflicts( path ):
         
     
     return good_path_absent_ext + ext
-    
 
-def ConvertAbsPathToPortablePath( abs_path, base_dir_override = None ):
+def convert_abs_path_to_portable_path(abs_path, base_dir_override = None):
     
     try:
         
@@ -114,14 +106,12 @@ def ConvertAbsPathToPortablePath( abs_path, base_dir_override = None ):
         
     
     return portable_path
-    
 
-def ConvertAbsPathToRealPath( abs_path ):
+def convert_abs_path_to_real_path(abs_path):
     
     return os.path.realpath( abs_path, strict = False )
-    
 
-def ConvertPortablePathToAbsPath( portable_path, base_dir_override = None ):
+def convert_portable_path_to_abs_path(portable_path, base_dir_override = None):
     
     portable_path = os.path.normpath( portable_path ) # collapses .. stuff and converts / to \\ for windows only
     
@@ -150,14 +140,12 @@ def ConvertPortablePathToAbsPath( portable_path, base_dir_override = None ):
         
     
     return abs_path
-    
 
-def CopyFileLikeToFileLike( f_source, f_dest ):
+def CopyFileLikeToFileLike(f_source, f_dest):
     
-    for block in ReadFileLikeAsBlocks( f_source ): f_dest.write( block )
-    
+    for block in read_file_like_as_blocks( f_source ): f_dest.write( block )
 
-def DeletePath( path ) -> bool:
+def delete_path(path) -> bool:
     
     if HG.file_report_mode:
         
@@ -209,7 +197,7 @@ def DeletePath( path ) -> bool:
         if HC.PLATFORM_WINDOWS:
             
             # this can be needed on a Windows device
-            TryToMakeFileWriteable( path, path_stat )
+            try_to_make_file_writeable( path, path_stat )
             
         
         try:
@@ -242,9 +230,8 @@ def DeletePath( path ) -> bool:
         
     
     return True
-    
 
-def DestStatHasSameSizeAndDateAsSource( source_stat: os.stat_result, dest_stat: os.stat_result ):
+def Dest_stat_has_same_size_and_date_as_source(source_stat: os.stat_result, dest_stat: os.stat_result):
     
     # this is a critical section of code so we moved it to just consider previously fetched stats. all the 'does dest exist?' stuff is implied by what you need to call this guy, hooray
     
@@ -252,18 +239,17 @@ def DestStatHasSameSizeAndDateAsSource( source_stat: os.stat_result, dest_stat: 
     same_modified_time = int( source_stat.st_mtime ) == int( dest_stat.st_mtime )
     
     return same_size and same_modified_time
-    
 
-def DirectoryIsWriteable( path ):
+def directory_is_writeable(path):
     
-    if not PotentialPathDeviceIsConnected( path ):
+    if not potential_path_device_is_connected( path ):
         
         raise Exception( f'Cannot figure out if "{path}" is writeable-to because its device does not seem to be mounted!' )
         
     
     try:
         
-        MakeSureDirectoryExists( path )
+        make_sure_directory_exists( path )
         
     except ( PermissionError, OSError ) as e:
         
@@ -303,9 +289,8 @@ def DirectoryIsWriteable( path ):
         
     
     return True
-    
 
-def ElideSubdirsSafely( destination_directory: str, subdirs_elidable: str, path_character_limit: int | None, dirname_character_limit: int | None, force_ntfs_rules: bool ):
+def elide_subdirs_safely(destination_directory: str, subdirs_elidable: str, path_character_limit: int | None, dirname_character_limit: int | None, force_ntfs_rules: bool):
     
     if subdirs_elidable == '':
         
@@ -418,7 +403,7 @@ def ElideSubdirsSafely( destination_directory: str, subdirs_elidable: str, path_
     
     for dirname in dirnames:
         
-        dirname = SanitizeFilename( dirname, force_ntfs_rules )
+        dirname = sanitize_filename( dirname, force_ntfs_rules )
         
         if dirname == '':
             
@@ -443,7 +428,7 @@ def ElideSubdirsSafely( destination_directory: str, subdirs_elidable: str, path_
             
             dirname = dirname[:-1]
             
-            dirname = SanitizeFilename( dirname, force_ntfs_rules )
+            dirname = sanitize_filename( dirname, force_ntfs_rules )
             
         
         dirname = dirname.strip()
@@ -457,9 +442,16 @@ def ElideSubdirsSafely( destination_directory: str, subdirs_elidable: str, path_
         
     
     return os.path.join( *dirnames_elided )
-    
 
-def ElideFilenameSafely( destination_directory: str, subdirs_elidable: str, base_filename: str, ext_suffix: str, path_character_limit: int | None, dirname_character_limit: int | None, filename_character_limit: int, force_ntfs_rules: bool ):
+def elide_filename_safely(destination_directory: str,
+                          subdirs_elidable: str,
+                          base_filename: str,
+                          ext_suffix: str,
+                          path_character_limit: int | None,
+                          dirname_character_limit: int | None,
+                          filename_character_limit: int,
+                          force_ntfs_rules: bool
+):
     
     # I could prefetch the GetFileSystemType of the dest directory here and test that precisely instead of PLATFORM...
     # but tbh that opens a Pandora's Box of 'NTFS mount on Linux', and sticking our finger in that sort of thing is Not A Good Idea. let the user handle that if and when it fails
@@ -475,7 +467,7 @@ def ElideFilenameSafely( destination_directory: str, subdirs_elidable: str, base
     
     if len( subdirs_elidable ) > 0:
         
-        subdirs_elided = ElideSubdirsSafely( destination_directory, subdirs_elidable, path_character_limit, dirname_character_limit, force_ntfs_rules )
+        subdirs_elided = elide_subdirs_safely( destination_directory, subdirs_elidable, path_character_limit, dirname_character_limit, force_ntfs_rules )
         
         destination_directory = os.path.join( destination_directory, subdirs_elided )
         
@@ -582,13 +574,13 @@ def ElideFilenameSafely( destination_directory: str, subdirs_elidable: str, base
             
         
     
-    base_filename = SanitizeFilename( base_filename, force_ntfs_rules )
+    base_filename = sanitize_filename( base_filename, force_ntfs_rules )
     
     while the_test( base_filename ):
         
         base_filename = base_filename[:-1]
         
-        base_filename = SanitizeFilename( base_filename, force_ntfs_rules )
+        base_filename = sanitize_filename( base_filename, force_ntfs_rules )
         
     
     base_filename = base_filename.strip()
@@ -599,9 +591,8 @@ def ElideFilenameSafely( destination_directory: str, subdirs_elidable: str, base
         
     
     return ( subdirs_elided, base_filename )
-    
 
-def FigureOutDBDir( arg_db_dir: str ):
+def figure_out_db_dir(arg_db_dir: str):
     
     switching_to_userpath_is_ok = False
     
@@ -629,10 +620,10 @@ def FigureOutDBDir( arg_db_dir: str ):
         
         db_dir = os.path.expanduser( db_dir )
         
-        db_dir = ConvertPortablePathToAbsPath( db_dir, base_dir_override = HC.BASE_DIR )
+        db_dir = convert_portable_path_to_abs_path( db_dir, base_dir_override = HC.BASE_DIR )
         
     
-    if not DirectoryIsWriteable( db_dir ):
+    if not directory_is_writeable( db_dir ):
         
         if switching_to_userpath_is_ok:
             
@@ -642,7 +633,7 @@ def FigureOutDBDir( arg_db_dir: str ):
                 
             else:
                 
-                if not DirectoryIsWriteable( HC.USERPATH_DB_DIR ):
+                if not directory_is_writeable( HC.USERPATH_DB_DIR ):
                     
                     raise Exception( f'Neither the default db path "{db_dir}", nor the userpath fallback "{HC.USERPATH_DB_DIR}", were writeable-to!' )
                     
@@ -661,33 +652,28 @@ def FigureOutDBDir( arg_db_dir: str ):
         
     
     return db_dir
-    
 
-def FigureOutTempDir( temp_dir: str ) -> str:
+def figure_out_temp_dir(temp_dir: str) -> str:
     
     original_temp_dir = temp_dir
     
     temp_dir = os.path.expanduser( temp_dir )
     
-    temp_dir = ConvertPortablePathToAbsPath( temp_dir, base_dir_override = HC.BASE_DIR )
+    temp_dir = convert_portable_path_to_abs_path( temp_dir, base_dir_override = HC.BASE_DIR )
     
-    if DirectoryIsWriteable( temp_dir ):
+    if directory_is_writeable( temp_dir ):
         
         return str( temp_dir )
         
     else:
         
         raise Exception( f'The chosen temp dir path "{original_temp_dir}", which resolved to "{temp_dir}", did not appear to be writeable-to!' )
-        
-    
 
-def FileisWriteable( path: str ):
-    
+def file_is_writeable( path: str ) -> bool:
     # this is a sophisticated multi-plat method and cannot be replaced with a simple stat_result test
     return os.access( path, os.W_OK )
-    
 
-def FilterFreePaths( paths ):
+def filter_free_paths(paths):
     
     free_paths = []
     
@@ -695,16 +681,15 @@ def FilterFreePaths( paths ):
         
         HydrusThreading.CheckIfThreadShuttingDown()
         
-        if PathIsFree( path ):
+        if path_is_free( path ):
             
             free_paths.append( path )
             
         
     
     return free_paths
-    
 
-def FilterOlderModifiedFiles( paths: collections.abc.Collection[ str ], grace_period: int ) -> list[ str ]:
+def Filter_older_modified_files(paths: collections.abc.Collection[str], grace_period: int) -> list[str]:
     
     only_older_than = HydrusTime.GetNow() - grace_period
     
@@ -726,9 +711,8 @@ def FilterOlderModifiedFiles( paths: collections.abc.Collection[ str ], grace_pe
         
     
     return good_paths
-    
 
-def GetAllSubDirsNonRecursive( path ):
+def get_all_sub_dirs_non_recursive(path):
     
     with os.scandir( path ) as scan:
         
@@ -736,20 +720,18 @@ def GetAllSubDirsNonRecursive( path ):
         
     
     return subdir_paths
-    
 
 # in truth this is 'sdiskpart', a namedtuple dynamic object def tucked inside psutil let's go
 # this just teaches the linter what we are basically doing here
-class FakeDiskPart( typing.Protocol ):
+class FakeDiskPart(typing.Protocol):
     
     device: str
     mountpoint: str
     fstype: str
     opts: str
-    
 
-@functools.lru_cache( maxsize = 128 )
-def GetPartitionInfo( path ) -> FakeDiskPart | None:
+@functools.lru_cache(maxsize = 128)
+def get_partition_info(path) -> FakeDiskPart | None:
     
     if not HydrusPSUtil.PSUTIL_OK:
         
@@ -786,18 +768,16 @@ def GetPartitionInfo( path ) -> FakeDiskPart | None:
         
     
     return None
-    
 
-def GetDeviceId( path: str ):
+def get_device_id(path: str):
     
     result = os.stat( path )
     
     return result.st_dev
-    
 
-def GetFileSystemType( path: str ) -> str | None:
+def get_file_system_type(path: str) -> str | None:
     
-    partition_info = GetPartitionInfo( path )
+    partition_info = get_partition_info( path )
     
     if partition_info is None:
         
@@ -807,10 +787,8 @@ def GetFileSystemType( path: str ) -> str | None:
         
         # noinspection PyUnresolvedReferences
         return partition_info.fstype
-        
-    
 
-def GetFreeSpace( path ) -> int | None:
+def get_free_space(path) -> int | None:
     
     if not HydrusPSUtil.PSUTIL_OK:
         
@@ -826,10 +804,8 @@ def GetFreeSpace( path ) -> int | None:
     except Exception as e:
         
         return None
-        
-    
 
-def GetTotalSpace( path ) -> int | None:
+def get_total_space(path) -> int | None:
     
     if not HydrusPSUtil.PSUTIL_OK:
         
@@ -839,9 +815,8 @@ def GetTotalSpace( path ) -> int | None:
     disk_usage = HydrusPSUtil.psutil.disk_usage( path )
     
     return disk_usage.total
-    
 
-def LaunchDirectory( path ):
+def launch_directory(path):
     
     def do_it():
         
@@ -879,9 +854,8 @@ def LaunchDirectory( path ):
     thread.daemon = True
     
     thread.start()
-    
 
-def MakeSureDirectoryExists( path ):
+def make_sure_directory_exists(path):
     
     try:
         
@@ -922,11 +896,8 @@ def MakeSureDirectoryExists( path ):
         else:
             
             raise
-            
-        
-    
 
-def FileModifiedTimeIsOk( mtime: int | float ):
+def file_modified_time_is_ok(mtime: int | float):
     
     if HC.PLATFORM_WINDOWS:
         
@@ -947,9 +918,8 @@ def FileModifiedTimeIsOk( mtime: int | float ):
         
     
     return True
-    
 
-def retry_blocking_io_call( func, *args, **kwargs ):
+def retry_blocking_io_call(func, *args, **kwargs):
     
     NUM_ATTEMPTS = 5
     delay = 1.0
@@ -971,14 +941,10 @@ def retry_blocking_io_call( func, *args, **kwargs ):
             else:
                 
                 raise
-                
-            
-        
-    
 
 DO_NOT_DO_CHMOD_MODE = False
 
-def CopyTimes( source, dest ):
+def copy_times(source, dest):
     
     try:
         
@@ -991,14 +957,12 @@ def CopyTimes( source, dest ):
     except Exception as e:
         
         return False
-        
-    
 
-def safe_copy2( source_path, dest_path ):
+def safe_copy2(source_path, dest_path):
     
     mtime = os.path.getmtime( source_path )
     
-    try_to_copy_modified_time = FileModifiedTimeIsOk( mtime )
+    try_to_copy_modified_time = file_modified_time_is_ok( mtime )
     
     if DO_NOT_DO_CHMOD_MODE:
         
@@ -1006,7 +970,7 @@ def safe_copy2( source_path, dest_path ):
         
         if try_to_copy_modified_time:
             
-            retry_blocking_io_call( CopyTimes, source_path, dest_path )
+            retry_blocking_io_call( copy_times, source_path, dest_path )
             
         
     else:
@@ -1029,23 +993,18 @@ def safe_copy2( source_path, dest_path ):
         if not try_to_copy_modified_time:
             
             retry_blocking_io_call( shutil.copy, source_path, dest_path )
-            
-        
-    
 
-def safe_copystat( source_path, dest_path ):
+def safe_copystat(source_path, dest_path):
     
     if DO_NOT_DO_CHMOD_MODE:
         
-        retry_blocking_io_call( CopyTimes, source_path, dest_path )
+        retry_blocking_io_call( copy_times, source_path, dest_path )
         
     else:
         
         retry_blocking_io_call( shutil.copystat, source_path, dest_path )
-        
-    
 
-def permission_recovering_shutil_move( source, dest ):
+def permission_recovering_shutil_move(source, dest):
     
     try:
         
@@ -1057,13 +1016,11 @@ def permission_recovering_shutil_move( source, dest ):
         # sometimes we can simply update the bits and things are fine, so let's try that now
         HydrusData.safe_print( f'While trying to move "{source}" to "{dest}", we had a permission issue. Trying to set nicer permission bits now.' )
         
-        TryToGiveFileNicePermissionBits( source )
+        try_to_give_File_nice_permission_bits( source )
         
         shutil.move( source, dest, copy_function = safe_copy2 )
-        
-    
 
-def MergeFile( source, dest ) -> bool:
+def merge_file(source, dest) -> bool:
     """
     Moves a file unless it already exists with same size and modified date, in which case it simply deletes the source.
     
@@ -1122,9 +1079,9 @@ def MergeFile( source, dest ) -> bool:
             raise Exception( f'Woah, "{source}" and "{dest}" are the same file!' )
             
         
-        if DestStatHasSameSizeAndDateAsSource( source_stat, dest_stat ):
+        if Dest_stat_has_same_size_and_date_as_source( source_stat, dest_stat ):
             
-            DeletePath( source )
+            delete_path( source )
             
             return False
             
@@ -1132,7 +1089,7 @@ def MergeFile( source, dest ) -> bool:
         if HC.PLATFORM_WINDOWS:
             
             # this can be needed on a Windows device
-            TryToMakeFileWriteable( dest, dest_stat )
+            try_to_make_file_writeable( dest, dest_stat )
             
         
     
@@ -1140,9 +1097,8 @@ def MergeFile( source, dest ) -> bool:
     retry_blocking_io_call( permission_recovering_shutil_move, source, dest )
     
     return True
-    
 
-def MergeTree( source: str, dest: str, text_update_hook = None ):
+def merge_tree(source: str, dest: str, text_update_hook = None):
     """
     Moves everything in the source to the dest using fast MergeFile tech.
     """
@@ -1223,7 +1179,7 @@ def MergeTree( source: str, dest: str, text_update_hook = None ):
                 source_path = os.path.join( root, dirname )
                 dest_path = os.path.join( dest_root, dirname )
                 
-                MakeSureDirectoryExists( dest_path )
+                make_sure_directory_exists( dest_path )
                 
                 safe_copystat( source_path, dest_path )
                 
@@ -1238,7 +1194,7 @@ def MergeTree( source: str, dest: str, text_update_hook = None ):
                 try:
                     
                     # not Merge; we only want to delete from source once we know everything worked out
-                    MirrorFile( source_path, dest_path )
+                    mirror_file( source_path, dest_path )
                     
                 except Exception as e:
                     
@@ -1247,7 +1203,7 @@ def MergeTree( source: str, dest: str, text_update_hook = None ):
                 
             
         
-        DeletePath( source )
+        delete_path( source )
         
     else:
         
@@ -1263,13 +1219,9 @@ def MergeTree( source: str, dest: str, text_update_hook = None ):
             # so, if it seems this has happened, let's just try a walking mergetree, which should be able to deal with these readonlies on a file-by-file basis
             if os.path.exists( dest ):
                 
-                MergeTree( source, dest, text_update_hook = text_update_hook )
-                
-            
-        
-    
+                merge_tree( source, dest, text_update_hook = text_update_hook )
 
-def MirrorFile( source, dest ) -> bool:
+def mirror_file(source, dest) -> bool:
     """
     Copies a file unless it already exists with same date and size.
     
@@ -1327,7 +1279,7 @@ def MirrorFile( source, dest ) -> bool:
             return False
             
         
-        if DestStatHasSameSizeAndDateAsSource( source_stat, dest_stat ):
+        if Dest_stat_has_same_size_and_date_as_source( source_stat, dest_stat ):
             
             return False
             
@@ -1335,7 +1287,7 @@ def MirrorFile( source, dest ) -> bool:
         if HC.PLATFORM_WINDOWS:
             
             # this can be needed on a Windows device
-            TryToMakeFileWriteable( dest, dest_stat )
+            try_to_make_file_writeable( dest, dest_stat )
             
         
     
@@ -1367,9 +1319,8 @@ def MirrorFile( source, dest ) -> bool:
         
     
     return True
-    
 
-def MirrorTree( source: str, dest: str, text_update_hook = None, is_cancelled_hook = None ):
+def mirror_tree(source: str, dest: str, text_update_hook = None, is_cancelled_hook = None):
     """
     Makes the destination directory look exactly like the source using fast MirrorFile tech.
     It deletes surplus stuff in the dest!
@@ -1429,7 +1380,7 @@ def MirrorTree( source: str, dest: str, text_update_hook = None, is_cancelled_ho
     
     pauser = HydrusThreading.BigJobPauser()
     
-    MakeSureDirectoryExists( dest )
+    make_sure_directory_exists( dest )
     
     deletee_paths = set()
     
@@ -1459,7 +1410,7 @@ def MirrorTree( source: str, dest: str, text_update_hook = None, is_cancelled_ho
             
             surplus_dest_paths.discard( dest_path )
             
-            MakeSureDirectoryExists( dest_path )
+            make_sure_directory_exists( dest_path )
             
             safe_copystat( source_path, dest_path )
             
@@ -1476,7 +1427,7 @@ def MirrorTree( source: str, dest: str, text_update_hook = None, is_cancelled_ho
             
             try:
                 
-                MirrorFile( source_path, dest_path )
+                mirror_file( source_path, dest_path )
                 
             except Exception as e:
                 
@@ -1491,11 +1442,9 @@ def MirrorTree( source: str, dest: str, text_update_hook = None, is_cancelled_ho
         
         pauser.Pause()
         
-        DeletePath( deletee_path )
-        
-    
+        delete_path( deletee_path )
 
-def OpenFileLocation( path ):
+def open_file_location(path):
     
     def do_it():
         
@@ -1530,9 +1479,8 @@ def OpenFileLocation( path ):
     thread.daemon = True
     
     thread.start()
-    
 
-def PathExistsAndIsDir( path: str ):
+def path_exists_and_is_dir(path: str):
     
     try:
         
@@ -1555,11 +1503,10 @@ def PathExistsAndIsDir( path: str ):
         
     
     return stat_is_dir( path_stat )
-    
 
 DO_FLOCK_ALREADY_IN_USE_TEST_IN_POSIX = True
 
-def PathIsFree( path ):
+def path_is_free(path):
     
     if HC.PLATFORM_WINDOWS:
         
@@ -1652,11 +1599,8 @@ def PathIsFree( path ):
             HydrusData.safe_print( 'Could not open the file: ' + path )
             
             return False
-            
-        
-    
 
-def PotentialPathDeviceIsConnected( path: str ):
+def potential_path_device_is_connected(path: str):
     
     try:
         
@@ -1677,9 +1621,8 @@ def PotentialPathDeviceIsConnected( path: str ):
     
     # we tried hitting the potential path and nothing _about access_ went crazy, so mite b cool
     return True
-    
 
-def ReadFileLikeAsBlocks( f ) -> collections.abc.Iterator[ bytes ]:
+def read_file_like_as_blocks(f) -> collections.abc.Iterator[bytes]:
     
     next_block = f.read( HC.READ_BLOCK_SIZE )
     
@@ -1688,10 +1631,8 @@ def ReadFileLikeAsBlocks( f ) -> collections.abc.Iterator[ bytes ]:
         yield next_block
         
         next_block = f.read( HC.READ_BLOCK_SIZE )
-        
-    
 
-def RecyclePath( path ):
+def recycle_path(path):
     
     if HG.file_report_mode:
         
@@ -1716,7 +1657,7 @@ def RecyclePath( path ):
     if HC.PLATFORM_WINDOWS:
         
         # this can be needed on a Windows device
-        TryToMakeFileWriteable( path, path_stat_nofollow )
+        try_to_make_file_writeable( path, path_stat_nofollow )
         
     
     for i in range( MAX_NUM_ATTEMPTS ):
@@ -1755,18 +1696,16 @@ def RecyclePath( path ):
             
             HydrusData.safe_print( 'I will fully delete it instead.' )
             
-            DeletePath( path )
+            delete_path( path )
             
         
         break
-        
-    
 
 NTFS_disallowed_names_case_insensitive = { 'con', 'prn', 'aux', 'nul' }
 NTFS_disallowed_names_case_insensitive.update( ( f'com{x}' for x in range( 1, 10 ) ) )
 NTFS_disallowed_names_case_insensitive.update( ( f'lpt{x}' for x in range( 1, 10 ) ) )
 
-def SanitizeFilename( filename: str, force_ntfs_rules: bool ) -> str:
+def sanitize_filename(filename: str, force_ntfs_rules: bool) -> str:
     
     if HC.PLATFORM_WINDOWS or force_ntfs_rules:
         
@@ -1805,19 +1744,15 @@ def SanitizeFilename( filename: str, force_ntfs_rules: bool ) -> str:
         
     
     return clean_filename
-    
 
 try:
-    
     PROCESS_UMASK = os.umask( 0o022 )
     os.umask( PROCESS_UMASK )
     
-except Exception as e:
-    
+except Exception:
     PROCESS_UMASK = 0o022
-    
 
-def TryToGiveFileNicePermissionBits( path ):
+def try_to_give_File_nice_permission_bits(path):
     
     if DO_NOT_DO_CHMOD_MODE:
         
@@ -1855,17 +1790,15 @@ def TryToGiveFileNicePermissionBits( path ):
     except Exception as e:
         
         HydrusData.safe_print( f'Wanted to add read and write permission to "{path}", but had an error: {e}' )
-        
-    
 
-def TryToMakeFileWriteable( path: str, path_stat: os.stat_result ):
+def try_to_make_file_writeable(path: str, path_stat: os.stat_result):
     
     if DO_NOT_DO_CHMOD_MODE:
         
         return
         
     
-    if FileisWriteable( path ):
+    if file_is_writeable( path ):
         
         return
         
@@ -1893,5 +1826,3 @@ def TryToMakeFileWriteable( path: str, path_stat: os.stat_result ):
     except Exception as e:
         
         HydrusData.safe_print( 'Wanted to add user write permission to "{}", but had an error: {}'.format( path, str( e ) ) )
-        
-    

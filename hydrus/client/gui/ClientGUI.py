@@ -918,7 +918,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             ClientGUIDialogsMessage.ShowInformation( self, 'The backup path does not exist--creating it now.' )
             
-            HydrusPaths.MakeSureDirectoryExists( path )
+            HydrusPaths.make_sure_directory_exists( path )
             
         
         client_db_path = os.path.join( path, 'client.db' )
@@ -5018,7 +5018,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                     
                     sub_dir = os.path.join( self._controller.get_db_dir(), 'orphaned_query_log_containers' )
                     
-                    HydrusPaths.MakeSureDirectoryExists( sub_dir )
+                    HydrusPaths.make_sure_directory_exists( sub_dir )
                     
                     for surplus_query_log_container_name in surplus_query_log_container_names:
                         
@@ -5329,7 +5329,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
     
     def _OpenDBFolder( self ):
         
-        HydrusPaths.LaunchDirectory( self._controller.get_db_dir() )
+        HydrusPaths.launch_directory( self._controller.get_db_dir() )
         
     
     def _OpenExportFolder( self ):
@@ -5342,7 +5342,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
         else:
             
-            HydrusPaths.LaunchDirectory( export_path )
+            HydrusPaths.launch_directory( export_path )
             
         
     
@@ -5353,7 +5353,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
     
     def _OpenInstallFolder( self ):
         
-        HydrusPaths.LaunchDirectory( HC.BASE_DIR )
+        HydrusPaths.launch_directory( HC.BASE_DIR )
         
     
     def _PausePlaySync( self, sync_type ):

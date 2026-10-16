@@ -343,20 +343,20 @@ class HydrusDB( HydrusDBBase.DBBase ):
         
         if os.path.exists( durable_temp_db_path ):
             
-            HydrusPaths.DeletePath( durable_temp_db_path )
+            HydrusPaths.delete_path( durable_temp_db_path )
             
             wal_lad = durable_temp_db_path + '-wal'
             
             if os.path.exists( wal_lad ):
                 
-                HydrusPaths.DeletePath( wal_lad )
+                HydrusPaths.delete_path( wal_lad )
                 
             
             shm_lad = durable_temp_db_path + '-shm'
             
             if os.path.exists( shm_lad ):
                 
-                HydrusPaths.DeletePath( shm_lad )
+                HydrusPaths.delete_path( shm_lad )
                 
             
             HydrusData.safe_print( 'Found and deleted the durable temporary database on boot. The last exit was probably not clean.' )
@@ -502,7 +502,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
             
             db_path = os.path.join( self._db_dir, filename )
             
-            if os.path.exists( db_path ) and not HydrusPaths.FileisWriteable( db_path ):
+            if os.path.exists( db_path ) and not HydrusPaths.file_is_writeable( db_path ):
                 
                 raise HydrusExceptions.DBAccessException( '"{}" seems to be read-only!'.format( db_path ) )
                 
@@ -724,7 +724,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
         
         try:
             
-            if os.path.exists( db_path ) and not HydrusPaths.FileisWriteable( db_path ):
+            if os.path.exists( db_path ) and not HydrusPaths.file_is_writeable( db_path ):
                 
                 raise HydrusExceptions.DBAccessException( '"{}" seems to be read-only!'.format( db_path ) )
                 
@@ -988,7 +988,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                 
                 dest_path = os.path.join( self._db_dir, 'sqlite3.exe' )
                 
-                HydrusPaths.MirrorFile( sqlite_exe_path, dest_path )
+                HydrusPaths.mirror_file( sqlite_exe_path, dest_path )
                 
             
         elif HC.PLATFORM_LINUX:
@@ -999,7 +999,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                 
                 dest_path = os.path.join( self._db_dir, 'sqlite3' )
                 
-                HydrusPaths.MirrorFile( sqlite_exe_path, dest_path )
+                HydrusPaths.mirror_file( sqlite_exe_path, dest_path )
     
     def _write(self, action, *args, **kwargs):
         
@@ -1057,7 +1057,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
         
         space_wanted = max( space_wanted, 64 * 1048576 )
         
-        free_space = HydrusPaths.GetFreeSpace( self._db_dir )
+        free_space = HydrusPaths.get_free_space( self._db_dir )
         
         return ( space_wanted, free_space )
     
@@ -1221,7 +1221,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
         
         temp_path = os.path.join( self._db_dir, self._durable_temp_db_filename )
         
-        HydrusPaths.DeletePath( temp_path )
+        HydrusPaths.delete_path( temp_path )
         
         self._loop_finished = True
         

@@ -41,11 +41,11 @@ class TestHydrusPaths( unittest.TestCase ):
                 
                 name_normal = 'a' * 20
                 
-                self.assertEqual( HydrusPaths.ElideFilenameSafely( directory_prefix, '', name_normal, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_normal ) )
+                self.assertEqual( HydrusPaths.elide_filename_safely( directory_prefix, '', name_normal, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_normal ) )
                 
                 name_normal = a_hiragana * 20
                 
-                self.assertEqual( HydrusPaths.ElideFilenameSafely( directory_prefix, '', name_normal, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_normal ) )
+                self.assertEqual( HydrusPaths.elide_filename_safely( directory_prefix, '', name_normal, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_normal ) )
                 
             
             #
@@ -63,11 +63,11 @@ class TestHydrusPaths( unittest.TestCase ):
                 
                 name_normal = 'a' * 20
                 
-                self.assertEqual( HydrusPaths.ElideFilenameSafely( directory_prefix, '', name_normal, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_normal ) )
+                self.assertEqual( HydrusPaths.elide_filename_safely( directory_prefix, '', name_normal, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_normal ) )
                 
                 name_normal = a_hiragana * 20
                 
-                self.assertEqual( HydrusPaths.ElideFilenameSafely( directory_prefix, '', name_normal, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_normal ) )
+                self.assertEqual( HydrusPaths.elide_filename_safely( directory_prefix, '', name_normal, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_normal ) )
                 
             
         finally:
@@ -106,12 +106,12 @@ class TestHydrusPaths( unittest.TestCase ):
                 name_too_long = 'a' * 245
                 name_shortened = 'a' * ( filename_character_limit - len( ext ) )
                 
-                self.assertEqual( HydrusPaths.ElideFilenameSafely( directory_prefix, '', name_too_long, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_shortened ) )
+                self.assertEqual( HydrusPaths.elide_filename_safely( directory_prefix, '', name_too_long, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_shortened ) )
                 
                 name_too_long = a_hiragana * 245
                 name_shortened = a_hiragana * ( filename_character_limit - len( ext ) )
                 
-                self.assertEqual( HydrusPaths.ElideFilenameSafely( directory_prefix, '', name_too_long, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_shortened ) )
+                self.assertEqual( HydrusPaths.elide_filename_safely( directory_prefix, '', name_too_long, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_shortened ) )
                 
             
             #
@@ -130,7 +130,7 @@ class TestHydrusPaths( unittest.TestCase ):
                 name_too_long = 'a' * 245
                 name_shortened = 'a' * ( filename_character_limit - len( ext ) )
                 
-                self.assertEqual( HydrusPaths.ElideFilenameSafely( directory_prefix, '', name_too_long, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_shortened ) )
+                self.assertEqual( HydrusPaths.elide_filename_safely( directory_prefix, '', name_too_long, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_shortened ) )
                 
                 name_too_long = a_hiragana * 245
                 
@@ -143,7 +143,7 @@ class TestHydrusPaths( unittest.TestCase ):
                     name_shortened += a_hiragana
                     
                 
-                self.assertEqual( HydrusPaths.ElideFilenameSafely( directory_prefix, '', name_too_long, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_shortened ) )
+                self.assertEqual( HydrusPaths.elide_filename_safely( directory_prefix, '', name_too_long, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_shortened ) )
                 
             
         finally:
@@ -182,12 +182,12 @@ class TestHydrusPaths( unittest.TestCase ):
                 name_too_long = 'a' * 245
                 name_shortened = 'a' * ( MAGIC_WINDOWS_TOTAL_PATH_LIMIT - len( directory_prefix ) - 1 - len( ext ) )
                 
-                self.assertEqual( HydrusPaths.ElideFilenameSafely( directory_prefix, '', name_too_long, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_shortened ) )
+                self.assertEqual( HydrusPaths.elide_filename_safely( directory_prefix, '', name_too_long, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_shortened ) )
                 
                 name_too_long = a_hiragana * 245
                 name_shortened = a_hiragana * ( MAGIC_WINDOWS_TOTAL_PATH_LIMIT - len( directory_prefix ) - 1 - len( ext ) )
                 
-                self.assertEqual( HydrusPaths.ElideFilenameSafely( directory_prefix, '', name_too_long, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_shortened ) )
+                self.assertEqual( HydrusPaths.elide_filename_safely( directory_prefix, '', name_too_long, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_shortened ) )
                 
             
             #
@@ -208,7 +208,7 @@ class TestHydrusPaths( unittest.TestCase ):
                 name_too_long = 'a' * 245
                 name_shortened = 'a' * ( MAGIC_LINUX_TOTAL_PATH_LIMIT - len( directory_prefix ) - 1 - len( ext ) )
                 
-                self.assertEqual( HydrusPaths.ElideFilenameSafely( directory_prefix, '', name_too_long, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_shortened ) )
+                self.assertEqual( HydrusPaths.elide_filename_safely( directory_prefix, '', name_too_long, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_shortened ) )
                 
                 name_too_long = a_hiragana * 245
                 name_shortened = ''
@@ -220,7 +220,7 @@ class TestHydrusPaths( unittest.TestCase ):
                     name_shortened += a_hiragana
                     
                 
-                self.assertEqual( HydrusPaths.ElideFilenameSafely( directory_prefix, '', name_too_long, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_shortened ) )
+                self.assertEqual( HydrusPaths.elide_filename_safely( directory_prefix, '', name_too_long, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_shortened ) )
                 
             
         finally:
@@ -259,12 +259,12 @@ class TestHydrusPaths( unittest.TestCase ):
                 name_too_long = 'a' * 245
                 name_shortened = 'a' * ( filename_character_limit - len( ext ) )
                 
-                self.assertEqual( HydrusPaths.ElideFilenameSafely( directory_prefix, '', name_too_long, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_shortened ) )
+                self.assertEqual( HydrusPaths.elide_filename_safely( directory_prefix, '', name_too_long, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_shortened ) )
                 
                 name_too_long = a_hiragana * 245
                 name_shortened = a_hiragana * ( filename_character_limit - len( ext ) )
                 
-                self.assertEqual( HydrusPaths.ElideFilenameSafely( directory_prefix, '', name_too_long, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_shortened ) )
+                self.assertEqual( HydrusPaths.elide_filename_safely( directory_prefix, '', name_too_long, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_shortened ) )
                 
             
             #
@@ -285,7 +285,7 @@ class TestHydrusPaths( unittest.TestCase ):
                 name_too_long = 'a' * 245
                 name_shortened = 'a' * ( filename_character_limit - len( ext.encode( 'utf-8' ) ) )
                 
-                self.assertEqual( HydrusPaths.ElideFilenameSafely( directory_prefix, '', name_too_long, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_shortened ) )
+                self.assertEqual( HydrusPaths.elide_filename_safely( directory_prefix, '', name_too_long, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_shortened ) )
                 
                 name_too_long = a_hiragana * 245
                 name_shortened = ''
@@ -297,7 +297,7 @@ class TestHydrusPaths( unittest.TestCase ):
                     name_shortened += a_hiragana
                     
                 
-                self.assertEqual( HydrusPaths.ElideFilenameSafely( directory_prefix, '', name_too_long, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_shortened ) )
+                self.assertEqual( HydrusPaths.elide_filename_safely( directory_prefix, '', name_too_long, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( '', name_shortened ) )
                 
             
         finally:
@@ -337,13 +337,13 @@ class TestHydrusPaths( unittest.TestCase ):
                 subdirs_elidable = 'a' * 20 + '\\' + 'a' * 20
                 subdirs_elided = 'a' * 8 + '\\' + 'a' * 8
                 
-                self.assertEqual( HydrusPaths.ElideFilenameSafely( directory_prefix, subdirs_elidable, normal_name, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( subdirs_elided, normal_name ) )
+                self.assertEqual( HydrusPaths.elide_filename_safely( directory_prefix, subdirs_elidable, normal_name, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( subdirs_elided, normal_name ) )
                 
                 normal_name = a_hiragana * 10
                 subdirs_elidable = a_hiragana * 20 + '\\' + a_hiragana * 20
                 subdirs_elided = a_hiragana * 8 + '\\' + a_hiragana * 8
                 
-                self.assertEqual( HydrusPaths.ElideFilenameSafely( directory_prefix, subdirs_elidable, normal_name, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( subdirs_elided, normal_name ) )
+                self.assertEqual( HydrusPaths.elide_filename_safely( directory_prefix, subdirs_elidable, normal_name, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( subdirs_elided, normal_name ) )
                 
             
             #
@@ -363,13 +363,13 @@ class TestHydrusPaths( unittest.TestCase ):
                 subdirs_elidable = 'a' * 20 + '/' + 'a' * 20
                 subdirs_elided = 'a' * 8 + '/' + 'a' * 8
                 
-                self.assertEqual( HydrusPaths.ElideFilenameSafely( directory_prefix, subdirs_elidable, normal_name, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( subdirs_elided, normal_name ) )
+                self.assertEqual( HydrusPaths.elide_filename_safely( directory_prefix, subdirs_elidable, normal_name, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( subdirs_elided, normal_name ) )
                 
                 normal_name = a_hiragana * 10
                 subdirs_elidable = a_hiragana * 20 + '/' + a_hiragana * 20
                 subdirs_elided = a_hiragana * 2 + '/' + a_hiragana * 2
                 
-                self.assertEqual( HydrusPaths.ElideFilenameSafely( directory_prefix, subdirs_elidable, normal_name, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( subdirs_elided, normal_name ) )
+                self.assertEqual( HydrusPaths.elide_filename_safely( directory_prefix, subdirs_elidable, normal_name, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( subdirs_elided, normal_name ) )
                 
             
         finally:
@@ -410,14 +410,14 @@ class TestHydrusPaths( unittest.TestCase ):
                 subdirs_elided = 'a' * 8 + '\\' + 'a' * 8
                 name_shortened = normal_name[ : path_character_limit - len( subdirs_elided ) - 2 - len( directory_prefix ) - len( ext ) - 10 ]
                 
-                self.assertEqual( HydrusPaths.ElideFilenameSafely( directory_prefix, subdirs_elidable, normal_name, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( subdirs_elided, name_shortened ) )
+                self.assertEqual( HydrusPaths.elide_filename_safely( directory_prefix, subdirs_elidable, normal_name, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( subdirs_elided, name_shortened ) )
                 
                 normal_name = a_hiragana * 10
                 subdirs_elidable = a_hiragana * 20 + '\\' + a_hiragana * 20
                 subdirs_elided = a_hiragana * 8 + '\\' + a_hiragana * 8
                 name_shortened = normal_name[ : path_character_limit - len( subdirs_elided ) - 2 - len( directory_prefix ) - len( ext ) - 10 ]
                 
-                self.assertEqual( HydrusPaths.ElideFilenameSafely( directory_prefix, subdirs_elidable, normal_name, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( subdirs_elided, name_shortened ) )
+                self.assertEqual( HydrusPaths.elide_filename_safely( directory_prefix, subdirs_elidable, normal_name, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( subdirs_elided, name_shortened ) )
                 
             
             #
@@ -438,14 +438,14 @@ class TestHydrusPaths( unittest.TestCase ):
                 subdirs_elided = 'a' * 8 + '/' + 'a' * 8
                 name_shortened = normal_name[ : path_character_limit - len( subdirs_elided ) - 2 - len( directory_prefix ) - len( ext ) - 10 ]
                 
-                self.assertEqual( HydrusPaths.ElideFilenameSafely( directory_prefix, subdirs_elidable, normal_name, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( subdirs_elided, name_shortened ) )
+                self.assertEqual( HydrusPaths.elide_filename_safely( directory_prefix, subdirs_elidable, normal_name, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( subdirs_elided, name_shortened ) )
                 
                 normal_name = a_hiragana * 10
                 subdirs_elidable = a_hiragana * 20 + '/' + a_hiragana * 20
                 subdirs_elided = a_hiragana * 2 + '/' + a_hiragana * 2
                 name_shortened = a_hiragana * 10 # this number was handed to me by a fairy
                 
-                self.assertEqual( HydrusPaths.ElideFilenameSafely( directory_prefix, subdirs_elidable, normal_name, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( subdirs_elided, name_shortened ) )
+                self.assertEqual( HydrusPaths.elide_filename_safely( directory_prefix, subdirs_elidable, normal_name, ext, path_character_limit, dirname_character_limit, filename_character_limit, force_ntfs_rules ), ( subdirs_elided, name_shortened ) )
                 
             
         finally:
@@ -480,7 +480,7 @@ class TestHydrusPaths( unittest.TestCase ):
                 ext = '.png'
                 
                 self.assertEqual(
-                    HydrusPaths.ElideFilenameSafely(
+                    HydrusPaths.elide_filename_safely(
                         directory_prefix,
                         'd ',
                         ' file ',
@@ -494,7 +494,7 @@ class TestHydrusPaths( unittest.TestCase ):
                 )
                 
                 self.assertEqual(
-                    HydrusPaths.ElideFilenameSafely(
+                    HydrusPaths.elide_filename_safely(
                         directory_prefix,
                         'd' + ' ' * 512 + 'd',
                         'file ',
@@ -524,7 +524,7 @@ class TestHydrusPaths( unittest.TestCase ):
                 ext = '.png'
                 
                 self.assertEqual(
-                    HydrusPaths.ElideFilenameSafely(
+                    HydrusPaths.elide_filename_safely(
                         directory_prefix,
                         'd ',
                         ' file ',
@@ -538,7 +538,7 @@ class TestHydrusPaths( unittest.TestCase ):
                 )
                 
                 self.assertEqual(
-                    HydrusPaths.ElideFilenameSafely(
+                    HydrusPaths.elide_filename_safely(
                         directory_prefix,
                         'd' + ' ' * 2048 + 'd',
                         'file ',
@@ -584,7 +584,7 @@ class TestHydrusPaths( unittest.TestCase ):
                 ext = '.png'
                 
                 self.assertEqual(
-                    HydrusPaths.ElideFilenameSafely(
+                    HydrusPaths.elide_filename_safely(
                         directory_prefix,
                         'con\\aux',
                         'com1',
@@ -598,7 +598,7 @@ class TestHydrusPaths( unittest.TestCase ):
                 )
                 
                 self.assertEqual(
-                    HydrusPaths.ElideFilenameSafely(
+                    HydrusPaths.elide_filename_safely(
                         directory_prefix,
                         'test. . \\test2. . ',
                         'hello . .',

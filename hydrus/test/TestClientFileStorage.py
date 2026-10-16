@@ -195,7 +195,7 @@ class TestClientGranularisation( unittest.TestCase ):
                 
                 subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
                 
-                HydrusPaths.MakeSureDirectoryExists( subfolder.path )
+                HydrusPaths.make_sure_directory_exists( subfolder.path )
                 
                 if prefix == 'f83':
                     
@@ -204,7 +204,7 @@ class TestClientGranularisation( unittest.TestCase ):
                         f.write( b'I am a file' )
                         
                     
-                    HydrusPaths.MakeSureDirectoryExists( os.path.join( subfolder.path, 'weird dir' ) )
+                    HydrusPaths.make_sure_directory_exists( os.path.join( subfolder.path, 'weird dir' ) )
                     
                     with open( subfolder.GetFilePath( 'hello' ), 'wb' ) as f:
                         
@@ -239,7 +239,7 @@ class TestClientGranularisation( unittest.TestCase ):
         
         self.assertEqual( num_done, 2 * ( 16 ** 3 ) )
         
-        HydrusPaths.DeletePath( test_dir )
+        HydrusPaths.delete_path( test_dir )
         
     
     def test_3to2( self ):
@@ -254,7 +254,7 @@ class TestClientGranularisation( unittest.TestCase ):
                 
                 subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
                 
-                HydrusPaths.MakeSureDirectoryExists( subfolder.path )
+                HydrusPaths.make_sure_directory_exists( subfolder.path )
                 
                 if prefix == 'f83a':
                     
@@ -298,7 +298,7 @@ class TestClientGranularisation( unittest.TestCase ):
         
         self.assertEqual( num_done, 2 * ( 16 ** 2 ) )
         
-        HydrusPaths.DeletePath( test_dir )
+        HydrusPaths.delete_path( test_dir )
         
     
     def test_cancel( self ):
@@ -313,7 +313,7 @@ class TestClientGranularisation( unittest.TestCase ):
                 
                 subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
                 
-                HydrusPaths.MakeSureDirectoryExists( subfolder.path )
+                HydrusPaths.make_sure_directory_exists( subfolder.path )
                 
                 if prefix == 'f83':
                     
@@ -334,7 +334,7 @@ class TestClientGranularisation( unittest.TestCase ):
             ClientFilesPhysical.RegranulariseFileStorage( [ base_location.path ], [ 'f' ], 2, 3, job_status )
             
         
-        HydrusPaths.DeletePath( test_dir )
+        HydrusPaths.delete_path( test_dir )
         
     
     def test_folder_creation_error( self ):
@@ -349,7 +349,7 @@ class TestClientGranularisation( unittest.TestCase ):
                 
                 subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
                 
-                HydrusPaths.MakeSureDirectoryExists( subfolder.path )
+                HydrusPaths.make_sure_directory_exists( subfolder.path )
                 
                 if prefix == 'f83':
                     
@@ -370,7 +370,7 @@ class TestClientGranularisation( unittest.TestCase ):
             ClientFilesPhysical.RegranulariseFileStorage( [ base_location.path ], [ 'f' ], 2, 3, job_status )
             
         
-        HydrusPaths.DeletePath( test_dir )
+        HydrusPaths.delete_path( test_dir )
         
     
     def test_2_detection( self ):
@@ -385,13 +385,13 @@ class TestClientGranularisation( unittest.TestCase ):
                 
                 subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
                 
-                HydrusPaths.MakeSureDirectoryExists( subfolder.path )
+                HydrusPaths.make_sure_directory_exists( subfolder.path )
                 
             
         
         self.assertEqual( ClientFilesPhysical.EstimateBaseLocationGranularity( test_dir ), 2 )
         
-        HydrusPaths.DeletePath( test_dir )
+        HydrusPaths.delete_path( test_dir )
         
     
     def test_3_detection( self ):
@@ -406,13 +406,13 @@ class TestClientGranularisation( unittest.TestCase ):
                 
                 subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
                 
-                HydrusPaths.MakeSureDirectoryExists( subfolder.path )
+                HydrusPaths.make_sure_directory_exists( subfolder.path )
                 
             
         
         self.assertEqual( ClientFilesPhysical.EstimateBaseLocationGranularity( test_dir ), 3 )
         
-        HydrusPaths.DeletePath( test_dir )
+        HydrusPaths.delete_path( test_dir )
         
     
     def test_mysterious_detection( self ):
@@ -421,16 +421,16 @@ class TestClientGranularisation( unittest.TestCase ):
         
         self.assertIs( ClientFilesPhysical.EstimateBaseLocationGranularity( test_dir ), None )
         
-        HydrusPaths.DeletePath( test_dir )
+        HydrusPaths.delete_path( test_dir )
         
         #
         
         test_dir = HydrusTemp.GetSubTempDir( 'test_granularisation_none_detection' )
         
-        HydrusPaths.MakeSureDirectoryExists( os.path.join( test_dir, 'u wot mate' ) )
+        HydrusPaths.make_sure_directory_exists( os.path.join( test_dir, 'u wot mate' ) )
         
         self.assertIs( ClientFilesPhysical.EstimateBaseLocationGranularity( test_dir ), None )
         
-        HydrusPaths.DeletePath( test_dir )
+        HydrusPaths.delete_path( test_dir )
         
     
