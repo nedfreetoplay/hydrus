@@ -10,7 +10,6 @@ from hydrus.core import HydrusConstants as HC
 from hydrus.core import HydrusData
 from hydrus.core import HydrusEncryption
 from hydrus.core import HydrusExceptions
-from hydrus.core import HydrusExit
 from hydrus.core import HydrusGlobals as HG
 from hydrus.core import HydrusPaths
 from hydrus.core import HydrusProfiling
@@ -947,14 +946,14 @@ class HydrusDB( HydrusDBBase.DBBase ):
         
         for module in self._modules:
             
-            module.Repair( version, self._cursor_transaction_wrapper )
+            module.repair( version, self._cursor_transaction_wrapper )
             
         
         if HG.controller.last_shutdown_was_bad():
             
             for module in self._modules:
                 
-                module.DoLastShutdownWasBadWork()
+                module.do_last_shutdown_was_bad_work()
     
     def _report_overupdated_db(self, version):
         
