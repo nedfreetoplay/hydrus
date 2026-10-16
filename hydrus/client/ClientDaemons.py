@@ -25,7 +25,7 @@ def DAEMONCheckExportFolders():
                 
                 export_folder = controller.read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER, name )
                 
-                if controller.new_options.GetBoolean( 'pause_export_folders_sync' ) or HydrusThreading.IsThreadShuttingDown():
+                if controller.new_options.GetBoolean( 'pause_export_folders_sync' ) or HydrusThreading.is_thread_shutting_down():
                     
                     break
                     
@@ -82,7 +82,7 @@ class ManagerWithMainLoop( object ):
     
     def _CheckShutdown( self ):
         
-        if HydrusThreading.IsThreadShuttingDown() or self._shutdown or self._serious_error_encountered:
+        if HydrusThreading.is_thread_shutting_down() or self._shutdown or self._serious_error_encountered:
             
             raise HydrusExceptions.ShutdownException()
             

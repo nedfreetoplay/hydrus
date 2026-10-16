@@ -526,7 +526,7 @@ class Controller:
     
     def call_to_thread(self, callable, *args, **kwargs):
         
-        call_to_thread = self._thread_worker_pool.GetCallToThread()
+        call_to_thread = self._thread_worker_pool.get_call_to_thread()
         
         call_to_thread.put( callable, *args, **kwargs )
     
@@ -541,7 +541,7 @@ class Controller:
         
         job = HydrusThreading.SingleJob( self, self._job_scheduler, initial_delay, call )
         
-        self._job_scheduler.AddJob( job )
+        self._job_scheduler.add_job( job )
         
         return job
     
@@ -553,7 +553,7 @@ class Controller:
         
         job = ClientThreading.QtAwareJob( self, self._job_scheduler, window, initial_delay, call )
         
-        self._job_scheduler.AddJob( job )
+        self._job_scheduler.add_job( job )
         
         return job
     
@@ -563,7 +563,7 @@ class Controller:
         
         job = HydrusThreading.RepeatingJob( self, self._job_scheduler, initial_delay, period, call )
         
-        self._job_scheduler.AddJob( job )
+        self._job_scheduler.add_job( job )
         
         return job
     
@@ -573,7 +573,7 @@ class Controller:
         
         job = ClientThreading.QtAwareRepeatingJob(self, self._job_scheduler, window, initial_delay, period, call)
         
-        self._job_scheduler.AddJob( job )
+        self._job_scheduler.add_job( job )
         
         return job
     
@@ -984,7 +984,7 @@ class Controller:
             
             if self._twisted_thread is not None:
                 
-                HydrusThreading.ShutdownThread( self._twisted_thread )
+                HydrusThreading.shutdown_thread( self._twisted_thread )
                 
             
         

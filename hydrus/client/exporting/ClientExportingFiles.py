@@ -603,7 +603,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                 return
                 
             
-            if CG.client_controller.new_options.GetBoolean( 'pause_export_folders_sync' ) or HydrusThreading.IsThreadShuttingDown():
+            if CG.client_controller.new_options.GetBoolean( 'pause_export_folders_sync' ) or HydrusThreading.is_thread_shutting_down():
                 
                 return
                 
@@ -646,7 +646,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                 return
                 
             
-            if CG.client_controller.new_options.GetBoolean( 'pause_export_folders_sync' ) or HydrusThreading.IsThreadShuttingDown():
+            if CG.client_controller.new_options.GetBoolean( 'pause_export_folders_sync' ) or HydrusThreading.is_thread_shutting_down():
                 
                 return
                 

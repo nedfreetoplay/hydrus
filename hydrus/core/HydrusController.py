@@ -215,7 +215,7 @@ class HydrusController:
         
         job = HydrusThreading.SingleJob( self, job_scheduler, initial_delay, call )
         
-        job_scheduler.AddJob( job )
+        job_scheduler.add_job( job )
         
         return job
     
@@ -227,7 +227,7 @@ class HydrusController:
         
         job = HydrusThreading.RepeatingJob( self, job_scheduler, initial_delay, period, call )
         
-        job_scheduler.AddJob( job )
+        job_scheduler.add_job( job )
         
         return job
     
@@ -250,7 +250,7 @@ class HydrusController:
             HydrusData.ShowText( tuple( what_to_report ) )
             
         
-        call_to_thread = self._thread_worker_pool.GetCallToThread()
+        call_to_thread = self._thread_worker_pool.get_call_to_thread()
         
         call_to_thread.put( callable, *args, **kwargs )
     
@@ -268,7 +268,7 @@ class HydrusController:
             
             HydrusData.ShowText(tuple(what_to_report))
         
-        call_to_thread = self._thread_worker_pool.GetCallToThreadLongRunning()
+        call_to_thread = self._thread_worker_pool.get_call_to_thread_long_running()
         
         call_to_thread.put(callable, *args, **kwargs)
     
@@ -293,12 +293,12 @@ class HydrusController:
     
     def debug_show_scheduled_jobs( self ):
         
-        summary = self._fast_job_scheduler.GetPrettyJobSummary()
+        summary = self._fast_job_scheduler.get_pretty_job_summary()
         
         HydrusData.ShowText( 'fast scheduler:' )
         HydrusData.ShowText( summary )
         
-        summary = self._slow_job_scheduler.GetPrettyJobSummary()
+        summary = self._slow_job_scheduler.get_pretty_job_summary()
         
         HydrusData.ShowText( 'slow scheduler:' )
         HydrusData.ShowText( summary )
@@ -352,7 +352,7 @@ class HydrusController:
             scheduler = self._slow_job_scheduler
             
         
-        return scheduler.GetJobs()
+        return scheduler.get_jobs()
     
     def get_manager( self, name ):
         
@@ -364,13 +364,13 @@ class HydrusController:
     
     def get_thread_pool_busy_status( self ):
         
-        return self._thread_worker_pool.GetThreadPoolBusyStatus()
+        return self._thread_worker_pool.get_thread_pool_busy_status()
     
     def get_threads_snapshot( self ):
         
         threads = []
 
-        ( call_to_threads, long_running_call_to_threads ) = self._thread_worker_pool.GetThreadsSnapshot()
+        ( call_to_threads, long_running_call_to_threads ) = self._thread_worker_pool.get_threads_snapshot()
         
         threads.extend( call_to_threads )
         threads.extend( long_running_call_to_threads )
@@ -432,8 +432,8 @@ class HydrusController:
         
         job = self.call_repeating( 60.0, 300.0, self.maintain_db, maintenance_mode = HC.MAINTENANCE_IDLE )
         
-        job.WakeOnPubSub( 'wake_idle_workers' )
-        job.ShouldDelayOnWakeup( True )
+        job.wake_on_pub_sub( 'wake_idle_workers' )
+        job.should_delay_on_wakeup( True )
         
         self._daemon_jobs[ 'maintain_db' ] = job
         
@@ -470,8 +470,8 @@ class HydrusController:
         
         self.pub( 'memory_maintenance_pulse' )
         
-        self._fast_job_scheduler.ClearOutDead()
-        self._slow_job_scheduler.ClearOutDead()
+        self._fast_job_scheduler.clear_out_dead()
+        self._slow_job_scheduler.clear_out_dead()
         
         HydrusSubprocess.reap_dead_long_lived_external_processes()
     
@@ -479,7 +479,7 @@ class HydrusController:
         
         HydrusTemp.clean_up_old_temp_paths()
         
-        self._thread_worker_pool.MaintainCallToThreads()
+        self._thread_worker_pool.maintain_call_to_threads()
     
     def read( self, action, *args, **kwargs ):
         return self._read( action, *args, **kwargs )
@@ -676,7 +676,7 @@ class HydrusController:
             
             if self._twisted_thread is not None:
                 
-                HydrusThreading.ShutdownThread( self._twisted_thread )
+                HydrusThreading.shutdown_thread( self._twisted_thread )
                 
             
             if HG.shutdown_report_mode:

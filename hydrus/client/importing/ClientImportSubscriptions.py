@@ -2120,7 +2120,7 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
             wait_time = self._GetMainLoopWaitTime()
             
         
-        self._big_pauser.Pause()
+        self._big_pauser.pause()
         
         self._wake_from_work_sleep_event.wait( wait_time )
         

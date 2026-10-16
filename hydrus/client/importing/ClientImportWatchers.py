@@ -642,7 +642,7 @@ class MultipleWatcherImport( HydrusSerialisable.SerialisableBase ):
             
             if ClientImportControl.PageImporterShouldStopWorking( self._page_key ):
                 
-                self._watchers_repeating_job.Cancel()
+                self._watchers_repeating_job.cancel()
                 
                 return
                 
@@ -1531,21 +1531,21 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
                 checker_go = HydrusTime.time_has_passed( self._next_check_time ) and not self._checking_paused
                 files_go = files_work_to_do and not self._files_paused
                 
-                if checker_go and not self._checker_working_lock.locked() and self._checker_repeating_job is not None and self._checker_repeating_job.WaitingOnWorkSlot():
+                if checker_go and not self._checker_working_lock.locked() and self._checker_repeating_job is not None and self._checker_repeating_job.waiting_on_work_slot():
                     
                     self._watcher_status = 'waiting for a work slot'
                     
                 
-                if files_go and not self._files_working_lock.locked() and self._files_repeating_job is not None and self._files_repeating_job.WaitingOnWorkSlot():
+                if files_go and not self._files_working_lock.locked() and self._files_repeating_job is not None and self._files_repeating_job.waiting_on_work_slot():
                     
                     self._files_status = 'waiting for a work slot'
                     
                 
-                currently_working = self._files_repeating_job is not None and self._files_repeating_job.CurrentlyWorking()
+                currently_working = self._files_repeating_job is not None and self._files_repeating_job.currently_working()
                 
                 files_status = ClientImportControl.GenerateLiveStatusText( self._files_status, self._files_paused, currently_working, self._no_work_until, self._no_work_until_reason )
                 
-                currently_working = self._checker_repeating_job is not None and self._checker_repeating_job.CurrentlyWorking()
+                currently_working = self._checker_repeating_job is not None and self._checker_repeating_job.currently_working()
                 
                 watcher_status = ClientImportControl.GenerateLiveStatusText( self._watcher_status, self._checking_paused, currently_working, self._no_work_until, self._no_work_until_reason )
                 
@@ -1785,8 +1785,8 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
             self._files_repeating_job = CG.client_controller.call_repeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnFiles )
             self._checker_repeating_job = CG.client_controller.call_repeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnChecker )
             
-            self._files_repeating_job.SetThreadSlotType( 'watcher_files' )
-            self._checker_repeating_job.SetThreadSlotType( 'watcher_check' )
+            self._files_repeating_job.set_thread_slot_type( 'watcher_files' )
+            self._checker_repeating_job.set_thread_slot_type( 'watcher_check' )
             
             self._have_started = True
             
@@ -1802,7 +1802,7 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
                 
             except HydrusExceptions.VetoException:
                 
-                self._files_repeating_job.Cancel()
+                self._files_repeating_job.cancel()
                 
                 raise
                 
@@ -1887,7 +1887,7 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
                 
             except HydrusExceptions.VetoException:
                 
-                self._checker_repeating_job.Cancel()
+                self._checker_repeating_job.cancel()
                 
                 raise
                 

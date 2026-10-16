@@ -98,7 +98,7 @@ def DoMoveOrDuplicateLocalFiles( dest_service_key: bytes, action: int, media_res
             CG.client_controller.write_synchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( source_service_key, content_updates ) )
             
         
-        pauser.Pause()
+        pauser.pause()
         
     
     job_status.FinishAndDismiss()

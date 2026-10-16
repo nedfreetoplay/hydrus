@@ -844,7 +844,7 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 self._controller.network_engine.bandwidth_manager.DeleteHistory( selected_network_contexts )
                 
-                self._update_job.Wake()
+                self._update_job.wake()
                 
             
         
@@ -885,7 +885,7 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
     
     def _NotifyShowThoseWithBandwidthRulesClicked( self ):
         
-        self._update_job.Wake()
+        self._update_job.wake()
         
     
     def _NotifyTimeDeltaChanged( self ):
@@ -907,7 +907,7 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         self._controller.new_options.SetNoneableInteger( 'last_review_bandwidth_search_distance', last_review_bandwidth_search_distance )
         
-        self._update_job.Wake()
+        self._update_job.wake()
         
     
     def _ResetDefaultBandwidthRules( self ):
@@ -1118,7 +1118,7 @@ class ReviewNetworkContextBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 self._controller.network_engine.bandwidth_manager.SetRules( self._network_context, self._bandwidth_rules )
                 
-                self._rules_job.Wake()
+                self._rules_job.wake()
                 
             
         
@@ -1237,7 +1237,7 @@ class ReviewNetworkContextBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             self._bandwidth_rules = self._controller.network_engine.bandwidth_manager.GetRules( self._network_context )
             
-            self._rules_job.Wake()
+            self._rules_job.wake()
             
         
     

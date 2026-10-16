@@ -1060,7 +1060,7 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
             
             if self._schedule_refresh_file_list_job is not None:
                 
-                self._schedule_refresh_file_list_job.Cancel()
+                self._schedule_refresh_file_list_job.cancel()
                 
                 self._schedule_refresh_file_list_job = None
                 
@@ -1260,7 +1260,7 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
             
             if self._schedule_refresh_file_list_job is not None:
                 
-                self._schedule_refresh_file_list_job.Cancel()
+                self._schedule_refresh_file_list_job.cancel()
                 
                 self._schedule_refresh_file_list_job = None
                 
@@ -1362,7 +1362,7 @@ class EditFilenameTaggingOptionPanel( ClientGUIScrolledPanels.EditPanel ):
         
         if self._schedule_refresh_tags_job is not None:
             
-            self._schedule_refresh_tags_job.Cancel()
+            self._schedule_refresh_tags_job.cancel()
             
             self._schedule_refresh_tags_job = None
             

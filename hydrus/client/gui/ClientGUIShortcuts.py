@@ -1786,7 +1786,7 @@ class ShortcutsHandler( QC.QObject ):
                         if event.type() == QC.QEvent.Type.MouseButtonRelease and self._activating_wait_job is not None:
                             
                             # first completed click in the time window sets us active instantly
-                            self._activating_wait_job.Cancel()
+                            self._activating_wait_job.cancel()
                             
                             self._parent_currently_activated = True
                             
@@ -1905,7 +1905,7 @@ class ShortcutsHandler( QC.QObject ):
         
         if self._activating_wait_job is not None:
             
-            self._activating_wait_job.Cancel()
+            self._activating_wait_job.cancel()
             
         
         self._parent_currently_activated = False

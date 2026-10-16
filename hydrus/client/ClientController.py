@@ -532,7 +532,7 @@ class Controller(HydrusController.HydrusController):
         
         if job_scheduler is not None:
             
-            job_scheduler.AddJob( job )
+            job_scheduler.add_job( job )
             
         
         return job
@@ -551,7 +551,7 @@ class Controller(HydrusController.HydrusController):
         
         if job_scheduler is not None:
             
-            job_scheduler.AddJob( job )
+            job_scheduler.add_job( job )
             
         
         return job
@@ -1775,19 +1775,19 @@ class Controller(HydrusController.HydrusController):
     def report_first_session_initialised(self):
         
         job = self.call_repeating( 5.0, 3600.0, self.synchronise_accounts )
-        job.ShouldDelayOnWakeup( True )
-        job.WakeOnPubSub( 'notify_account_sync_due' )
-        job.WakeOnPubSub( 'notify_network_traffic_unpaused' )
+        job.should_delay_on_wakeup( True )
+        job.wake_on_pub_sub( 'notify_account_sync_due' )
+        job.wake_on_pub_sub( 'notify_network_traffic_unpaused' )
         self._daemon_jobs[ 'synchronise_accounts' ] = job
         
         from hydrus.core.networking import HydrusNetwork
         
         job = self.call_repeating( 5.0, HydrusNetwork.UPDATE_CHECKING_PERIOD, self.synchronise_repositories )
-        job.ShouldDelayOnWakeup( True )
-        job.WakeOnPubSub( 'notify_restart_repo_sync' )
-        job.WakeOnPubSub( 'notify_new_permissions' )
-        job.WakeOnPubSub( 'wake_idle_workers' )
-        job.WakeOnPubSub( 'notify_network_traffic_unpaused' )
+        job.should_delay_on_wakeup( True )
+        job.wake_on_pub_sub( 'notify_restart_repo_sync' )
+        job.wake_on_pub_sub( 'notify_new_permissions' )
+        job.wake_on_pub_sub( 'wake_idle_workers' )
+        job.wake_on_pub_sub( 'notify_network_traffic_unpaused' )
         self._daemon_jobs[ 'synchronise_repositories' ] = job
         '''
         job = self.CallRepeating( 5.0, 180.0, ClientDaemons.DAEMONCheckImportFolders )
@@ -1797,25 +1797,25 @@ class Controller(HydrusController.HydrusController):
         self._daemon_jobs[ 'import_folders' ] = job
         '''
         job = self.call_repeating( 5.0, 180.0, ClientDaemons.DAEMONCheckExportFolders )
-        job.WakeOnPubSub( 'notify_restart_export_folders_daemon' )
-        job.WakeOnPubSub( 'notify_new_export_folders' )
-        job.ShouldDelayOnWakeup( True )
+        job.wake_on_pub_sub( 'notify_restart_export_folders_daemon' )
+        job.wake_on_pub_sub( 'notify_new_export_folders' )
+        job.should_delay_on_wakeup( True )
         self._daemon_jobs[ 'export_folders' ] = job
         
         job = self.call_repeating( 0.0, 30.0, self.save_dirty_objects_important )
-        job.WakeOnPubSub( 'important_dirt_to_clean' )
+        job.wake_on_pub_sub( 'important_dirt_to_clean' )
         self._daemon_jobs[ 'save_dirty_objects_important' ] = job
         
         job = self.call_repeating( 0.0, 300.0, self.save_dirty_objects_infrequent )
         self._daemon_jobs[ 'save_dirty_objects_infrequent' ] = job
         
         job = self.call_repeating( 30.0, 86400.0, self.client_files_manager.DoDeferredPhysicalDeletes )
-        job.WakeOnPubSub( 'notify_new_physical_file_deletes' )
+        job.wake_on_pub_sub( 'notify_new_physical_file_deletes' )
         self._daemon_jobs[ 'deferred_physical_deletes' ] = job
         
         job = self.call_repeating( 30.0, 600.0, self.maintain_hashed_serialisables )
-        job.WakeOnPubSub( 'maintain_hashed_serialisables' )
-        job.ShouldDelayOnWakeup( True )
+        job.wake_on_pub_sub( 'maintain_hashed_serialisables' )
+        job.should_delay_on_wakeup( True )
         self._daemon_jobs[ 'maintain_hashed_serialisables' ] = job
         
         self.files_maintenance_manager.Start()
@@ -2343,7 +2343,7 @@ class Controller(HydrusController.HydrusController):
         
         for service in services:
             
-            if HydrusThreading.IsThreadShuttingDown():
+            if HydrusThreading.is_thread_shutting_down():
                 
                 return
                 
@@ -2366,7 +2366,7 @@ class Controller(HydrusController.HydrusController):
             
             for service in services:
                 
-                if HydrusThreading.IsThreadShuttingDown():
+                if HydrusThreading.is_thread_shutting_down():
                     
                     return
                     

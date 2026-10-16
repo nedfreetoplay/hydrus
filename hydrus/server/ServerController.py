@@ -248,7 +248,7 @@ class Controller( HydrusController.HydrusController ):
             
             ( file_hash, thumbnail_hash ) = self.read( 'deferred_physical_delete' )
             
-            pauser.Pause()
+            pauser.pause()
             
         
         if num_files_deleted > 0 or num_thumbnails_deleted > 0:
@@ -315,7 +315,7 @@ class Controller( HydrusController.HydrusController ):
         #
         
         job = self.call_repeating( 5.0, HydrusNetwork.UPDATE_CHECKING_PERIOD, self.SyncRepositories )
-        job.WakeOnPubSub( 'notify_new_repo_sync' )
+        job.wake_on_pub_sub( 'notify_new_repo_sync' )
         
         self._daemon_jobs[ 'sync_repositories' ] = job
         
@@ -324,12 +324,12 @@ class Controller( HydrusController.HydrusController ):
         self._daemon_jobs[ 'save_dirty_objects' ] = job
         
         job = self.call_repeating( 30.0, 86400.0, self.DoDeferredPhysicalDeletes )
-        job.WakeOnPubSub( 'notify_new_physical_file_deletes' )
+        job.wake_on_pub_sub( 'notify_new_physical_file_deletes' )
         
         self._daemon_jobs[ 'deferred_physical_deletes' ] = job
         
         job = self.call_repeating( 120.0, 3600.0 * 4, self.NullifyHistory )
-        job.WakeOnPubSub( 'notify_new_nullification' )
+        job.wake_on_pub_sub( 'notify_new_nullification' )
         
         self._daemon_jobs[ 'nullify_history' ] = job
         

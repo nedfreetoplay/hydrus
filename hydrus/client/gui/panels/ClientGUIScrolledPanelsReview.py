@@ -1778,11 +1778,11 @@ class JobSchedulerPanel( QW.QWidget ):
     def _ConvertDataToDisplayTuple( self, job: HydrusThreading.SchedulableJob ):
         
         job_type = job.PRETTY_CLASS_NAME
-        job_call = job.GetPrettyJob()
+        job_call = job.get_pretty_job()
         
         pretty_job_type = job_type
         pretty_job_call = job_call
-        pretty_due = job.GetDueString()
+        pretty_due = job.get_due_string()
         
         display_tuple = ( pretty_job_type, pretty_job_call, pretty_due )
         
@@ -1792,8 +1792,8 @@ class JobSchedulerPanel( QW.QWidget ):
     def _ConvertDataToSortTuple( self, job: HydrusThreading.SchedulableJob ):
         
         job_type = job.PRETTY_CLASS_NAME
-        job_call = job.GetPrettyJob()
-        due = job.GetNextWorkTime()
+        job_call = job.get_pretty_job()
+        due = job.get_next_work_time()
         
         sort_tuple = ( job_type, job_call, due )
         

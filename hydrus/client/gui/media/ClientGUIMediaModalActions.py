@@ -1259,7 +1259,7 @@ def set_files_forced_filetypes( single_medias: list[ ClientMediaSingle.MediaSing
             CG.client_controller.write_synchronous( 'file_maintenance_add_jobs_hashes', hashes_we_needed_to_dupe, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_DELETE_NEIGHBOUR_DUPES, HydrusTime.get_now() + 3600 )
             
         
-        pauser.Pause()
+        pauser.pause()
         
     
     job_status.FinishAndDismiss()

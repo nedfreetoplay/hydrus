@@ -367,7 +367,7 @@ class HDDImport( HydrusSerialisable.SerialisableBase ):
         
         with self._lock:
             
-            currently_working = self._files_repeating_job is not None and self._files_repeating_job.CurrentlyWorking()
+            currently_working = self._files_repeating_job is not None and self._files_repeating_job.currently_working()
             
             text = ClientImportControl.GenerateLiveStatusText( self._files_status, self._paused, currently_working, 0, '' )
             
@@ -434,7 +434,7 @@ class HDDImport( HydrusSerialisable.SerialisableBase ):
         
         self._files_repeating_job = CG.client_controller.call_repeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnFiles )
         
-        self._files_repeating_job.SetThreadSlotType( 'misc' )
+        self._files_repeating_job.set_thread_slot_type( 'misc' )
         
     
     def CheckCanDoFileWork( self ):
@@ -447,7 +447,7 @@ class HDDImport( HydrusSerialisable.SerialisableBase ):
                 
             except HydrusExceptions.VetoException:
                 
-                self._files_repeating_job.Cancel()
+                self._files_repeating_job.cancel()
                 
                 raise
                 
@@ -783,7 +783,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             file_seed = self._file_seed_cache.GetNextFileSeed( CC.STATUS_UNKNOWN )
             
             p1 = CG.client_controller.new_options.GetBoolean( 'pause_import_folders_sync' ) or self._paused
-            p2 = HydrusThreading.IsThreadShuttingDown()
+            p2 = HydrusThreading.is_thread_shutting_down()
             p3 = job_status.IsCancelled()
             
             if file_seed is None or p1 or p2 or p3:
@@ -902,7 +902,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 self._ActionSeed( file_seed )
                 
-                pauser.Pause()
+                pauser.pause()
                 
             
         

@@ -1892,7 +1892,7 @@ class NetworkJob( object ):
         
         with self._lock:
             
-            if HG.started_shutdown or HydrusThreading.IsThreadShuttingDown():
+            if HG.started_shutdown or HydrusThreading.is_thread_shutting_down():
                 
                 raise HydrusExceptions.ShutdownException()
                 

@@ -1017,7 +1017,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             for ( media_result, job_types ) in media_results_to_job_types.items():
                 
-                big_pauser.Pause()
+                big_pauser.pause()
                 
                 hash = media_result.GetHash()
                 

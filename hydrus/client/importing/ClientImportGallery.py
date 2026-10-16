@@ -682,21 +682,21 @@ class GalleryImport( HydrusSerialisable.SerialisableBase ):
             gallery_go = gallery_work_to_do and not self._gallery_paused
             files_go = files_work_to_do and not self._files_paused
             
-            if gallery_go and not self._gallery_working_lock.locked() and self._gallery_repeating_job is not None and self._gallery_repeating_job.WaitingOnWorkSlot():
+            if gallery_go and not self._gallery_working_lock.locked() and self._gallery_repeating_job is not None and self._gallery_repeating_job.waiting_on_work_slot():
                 
                 self._gallery_status = 'waiting for a work slot'
                 
             
-            if files_go and not self._files_working_lock.locked() and self._files_repeating_job is not None and self._files_repeating_job.WaitingOnWorkSlot():
+            if files_go and not self._files_working_lock.locked() and self._files_repeating_job is not None and self._files_repeating_job.waiting_on_work_slot():
                 
                 self._files_status = 'waiting for a work slot'
                 
             
-            currently_working = self._gallery_repeating_job is not None and self._gallery_repeating_job.CurrentlyWorking()
+            currently_working = self._gallery_repeating_job is not None and self._gallery_repeating_job.currently_working()
             
             gallery_text = ClientImportControl.GenerateLiveStatusText( self._gallery_status, self._gallery_paused, currently_working, self._no_work_until, self._no_work_until_reason )
             
-            currently_working = self._files_repeating_job is not None and self._files_repeating_job.CurrentlyWorking()
+            currently_working = self._files_repeating_job is not None and self._files_repeating_job.currently_working()
             
             file_text = ClientImportControl.GenerateLiveStatusText( self._files_status, self._files_paused, currently_working, self._no_work_until, self._no_work_until_reason )
             
@@ -868,8 +868,8 @@ class GalleryImport( HydrusSerialisable.SerialisableBase ):
             self._files_repeating_job = CG.client_controller.call_repeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnFiles )
             self._gallery_repeating_job = CG.client_controller.call_repeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnGallery )
             
-            self._files_repeating_job.SetThreadSlotType( 'gallery_files' )
-            self._gallery_repeating_job.SetThreadSlotType( 'gallery_search' )
+            self._files_repeating_job.set_thread_slot_type( 'gallery_files' )
+            self._gallery_repeating_job.set_thread_slot_type( 'gallery_search' )
             
             self._have_started = True
             
@@ -885,7 +885,7 @@ class GalleryImport( HydrusSerialisable.SerialisableBase ):
                 
             except HydrusExceptions.VetoException:
                 
-                self._files_repeating_job.Cancel()
+                self._files_repeating_job.cancel()
                 
                 raise
                 
@@ -970,7 +970,7 @@ class GalleryImport( HydrusSerialisable.SerialisableBase ):
                 
             except HydrusExceptions.VetoException:
                 
-                self._gallery_repeating_job.Cancel()
+                self._gallery_repeating_job.cancel()
                 
                 raise
                 
@@ -1957,7 +1957,7 @@ class MultipleGalleryImport( HydrusSerialisable.SerialisableBase ):
             
             if ClientImportControl.PageImporterShouldStopWorking( self._page_key ):
                 
-                self._importers_repeating_job.Cancel()
+                self._importers_repeating_job.cancel()
                 
                 return
                 

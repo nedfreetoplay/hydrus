@@ -986,7 +986,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                     break
                     
                 
-                pauser.Pause()
+                pauser.pause()
                 
             
             if not job_status.IsCancelled() and delete_afterwards:

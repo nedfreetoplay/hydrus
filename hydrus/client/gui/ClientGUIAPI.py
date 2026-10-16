@@ -53,7 +53,7 @@ class CaptureAPIAccessPermissionsRequestPanel( ClientGUIScrolledPanels.ReviewPan
             ClientGUIDialogsMessage.ShowInformation( self, 'Got request!' )
             
             ClientAPI.last_api_permissions_request = None
-            self._repeating_job.Cancel()
+            self._repeating_job.cancel()
             
             parent = self.parentWidget()
             

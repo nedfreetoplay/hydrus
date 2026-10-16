@@ -600,11 +600,11 @@ class SimpleDownloaderImport( HydrusSerialisable.SerialisableBase ):
         
         with self._lock:
             
-            currently_working = self._gallery_repeating_job is not None and self._gallery_repeating_job.CurrentlyWorking()
+            currently_working = self._gallery_repeating_job is not None and self._gallery_repeating_job.currently_working()
             
             gallery_text = ClientImportControl.GenerateLiveStatusText( self._gallery_status, self._gallery_paused, currently_working, self._no_work_until, self._no_work_until_reason )
             
-            currently_working = self._files_repeating_job is not None and self._files_repeating_job.CurrentlyWorking()
+            currently_working = self._files_repeating_job is not None and self._files_repeating_job.currently_working()
             
             file_text = ClientImportControl.GenerateLiveStatusText( self._files_status, self._files_paused, currently_working, self._no_work_until, self._no_work_until_reason )
             
@@ -743,8 +743,8 @@ class SimpleDownloaderImport( HydrusSerialisable.SerialisableBase ):
             self._files_repeating_job = CG.client_controller.call_repeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnFiles )
             self._gallery_repeating_job = CG.client_controller.call_repeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnGallery )
             
-            self._files_repeating_job.SetThreadSlotType( 'misc' )
-            self._gallery_repeating_job.SetThreadSlotType( 'misc' )
+            self._files_repeating_job.set_thread_slot_type( 'misc' )
+            self._gallery_repeating_job.set_thread_slot_type( 'misc' )
             
             self._have_started = True
             
@@ -760,7 +760,7 @@ class SimpleDownloaderImport( HydrusSerialisable.SerialisableBase ):
                 
             except HydrusExceptions.VetoException:
                 
-                self._files_repeating_job.Cancel()
+                self._files_repeating_job.cancel()
                 
                 raise
                 
@@ -842,7 +842,7 @@ class SimpleDownloaderImport( HydrusSerialisable.SerialisableBase ):
                 
             except HydrusExceptions.VetoException:
                 
-                self._gallery_repeating_job.Cancel()
+                self._gallery_repeating_job.cancel()
                 
                 raise
                 
@@ -1442,8 +1442,8 @@ class URLsImport( HydrusSerialisable.SerialisableBase ):
             self._files_repeating_job = CG.client_controller.call_repeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnFiles )
             self._gallery_repeating_job = CG.client_controller.call_repeating( ClientImporting.GetRepeatingJobInitialDelay(), ClientImporting.REPEATING_JOB_TYPICAL_PERIOD, self.REPEATINGWorkOnGallery )
             
-            self._files_repeating_job.SetThreadSlotType( 'misc' )
-            self._gallery_repeating_job.SetThreadSlotType( 'misc' )
+            self._files_repeating_job.set_thread_slot_type( 'misc' )
+            self._gallery_repeating_job.set_thread_slot_type( 'misc' )
             
             self._have_started = True
             
@@ -1459,7 +1459,7 @@ class URLsImport( HydrusSerialisable.SerialisableBase ):
                 
             except HydrusExceptions.VetoException:
                 
-                self._files_repeating_job.Cancel()
+                self._files_repeating_job.cancel()
                 
                 raise
                 
@@ -1541,7 +1541,7 @@ class URLsImport( HydrusSerialisable.SerialisableBase ):
                 
             except HydrusExceptions.VetoException:
                 
-                self._gallery_repeating_job.Cancel()
+                self._gallery_repeating_job.cancel()
                 
                 raise
                 

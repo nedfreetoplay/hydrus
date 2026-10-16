@@ -113,7 +113,7 @@ def run_auto_yes_no_gubbins( dlg: QW.QDialog, time_to_fire, original_title, acti
         
         job = CG.client_controller.call_later_qt_safe( dlg, 0.0, 'dialog auto yes/no title set', qt_set_title )
         
-        if job.IsDead(): # window closed
+        if job.is_dead(): # window closed
             
             return
             

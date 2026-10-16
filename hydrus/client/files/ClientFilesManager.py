@@ -868,7 +868,7 @@ class ClientFilesManager( object ):
             
             while CG.client_controller.just_woke_from_sleep():
                 
-                HydrusThreading.CheckIfThreadShuttingDown()
+                HydrusThreading.check_if_thread_shutting_down()
                 
                 time.sleep( 1.0 )
                 

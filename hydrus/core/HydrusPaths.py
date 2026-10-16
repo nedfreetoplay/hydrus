@@ -679,7 +679,7 @@ def filter_free_paths(paths):
     
     for path in paths:
         
-        HydrusThreading.CheckIfThreadShuttingDown()
+        HydrusThreading.check_if_thread_shutting_down()
         
         if path_is_free( path ):
             
@@ -1174,7 +1174,7 @@ def merge_tree(source: str, dest: str, text_update_hook = None):
             
             for dirname in dirnames:
                 
-                pauser.Pause()
+                pauser.pause()
                 
                 source_path = os.path.join( root, dirname )
                 dest_path = os.path.join( dest_root, dirname )
@@ -1186,7 +1186,7 @@ def merge_tree(source: str, dest: str, text_update_hook = None):
             
             for filename in filenames:
                 
-                pauser.Pause()
+                pauser.pause()
                 
                 source_path = os.path.join( root, filename )
                 dest_path = os.path.join( dest_root, filename )
@@ -1403,7 +1403,7 @@ def mirror_tree(source: str, dest: str, text_update_hook = None, is_cancelled_ho
         
         for dirname in dirnames:
             
-            pauser.Pause()
+            pauser.pause()
             
             source_path = os.path.join( root, dirname )
             dest_path = os.path.join( dest_root, dirname )
@@ -1417,7 +1417,7 @@ def mirror_tree(source: str, dest: str, text_update_hook = None, is_cancelled_ho
         
         for filename in filenames:
             
-            pauser.Pause()
+            pauser.pause()
             
             source_path = os.path.join( root, filename )
             
@@ -1440,7 +1440,7 @@ def mirror_tree(source: str, dest: str, text_update_hook = None, is_cancelled_ho
     
     for deletee_path in deletee_paths:
         
-        pauser.Pause()
+        pauser.pause()
         
         delete_path( deletee_path )
 

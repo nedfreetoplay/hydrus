@@ -1111,7 +1111,7 @@ class ThumbnailCache( object ):
         
         # TODO: Wangle this guy to a ManagerWithMainLoop
         
-        while not ( HydrusThreading.IsThreadShuttingDown() or self._shutdown ):
+        while not ( HydrusThreading.is_thread_shutting_down() or self._shutdown ):
             
             time.sleep( 0.00001 )
             

@@ -542,7 +542,7 @@ class TagPairActionContext( object ):
             
             while not self.IsReady():
                 
-                if HydrusThreading.IsThreadShuttingDown():
+                if HydrusThreading.is_thread_shutting_down():
                     
                     return
                     
@@ -717,7 +717,7 @@ class TagPairActionContext( object ):
             
             while not self.IsReady():
                 
-                if HydrusThreading.IsThreadShuttingDown():
+                if HydrusThreading.is_thread_shutting_down():
                     
                     return set()
                     

@@ -842,7 +842,7 @@ def GetVisualData( media_result: ClientMediaResult.MediaResult ) -> ClientVisual
         
         while not image_renderer.IsReady():
             
-            if HydrusThreading.IsThreadShuttingDown():
+            if HydrusThreading.is_thread_shutting_down():
                 
                 raise HydrusExceptions.ShutdownException( 'Seems like program is shutting down!' )
                 
@@ -881,7 +881,7 @@ def GetVisualDataTiled( media_result: ClientMediaResult.MediaResult ) -> ClientV
         
         while not image_renderer.IsReady():
             
-            if HydrusThreading.IsThreadShuttingDown():
+            if HydrusThreading.is_thread_shutting_down():
                 
                 raise HydrusExceptions.ShutdownException( 'Seems like program is shutting down!' )
                 

@@ -1022,7 +1022,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             if self._clipboard_watcher_destination_page_watcher is not None:
                 
-                self._clipboard_watcher_repeating_job.Cancel()
+                self._clipboard_watcher_repeating_job.cancel()
                 
                 self._clipboard_watcher_repeating_job = None
                 
@@ -8895,7 +8895,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
             HydrusData.ShowText( 'Could not access the clipboard: {}'.format( e ) )
             
-            self._clipboard_watcher_repeating_job.Cancel()
+            self._clipboard_watcher_repeating_job.cancel()
             
             self._clipboard_watcher_repeating_job = None
             
@@ -8993,7 +8993,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         if len( self._ui_update_windows ) == 0:
             
-            self._ui_update_repeating_job.Cancel()
+            self._ui_update_repeating_job.cancel()
             
             self._ui_update_repeating_job = None
             

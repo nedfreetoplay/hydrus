@@ -287,7 +287,7 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
                     job_status.SetStatusText( HydrusNumbers.to_human_int( self._total_successful_hashes_in_this_run ) + ' files downloaded' )
                     
                 
-                job_status_pub_job.Cancel()
+                job_status_pub_job.cancel()
                 
                 job_status.FinishAndDismiss( 1 )
                 

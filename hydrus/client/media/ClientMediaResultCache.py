@@ -143,7 +143,7 @@ class MediaResultCache( object ):
             
             for ( num_done, num_to_do, group_of_hash_ids ) in HydrusLists.split_list_into_chunks_rich( hash_ids, 256 ):
                 
-                if HydrusThreading.IsThreadShuttingDown():
+                if HydrusThreading.is_thread_shutting_down():
                     
                     return
                     

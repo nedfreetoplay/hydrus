@@ -74,11 +74,11 @@ class JobStatus( object ):
     
     def _CheckCancelTests( self ):
         
-        if self._cancel_tests_regular_checker.Due():
+        if self._cancel_tests_regular_checker.due():
             
             if not self._done_event.is_set():
                 
-                if self._cancel_on_shutdown and HydrusThreading.IsThreadShuttingDown():
+                if self._cancel_on_shutdown and HydrusThreading.is_thread_shutting_down():
                     
                     self.Cancel()
                     
@@ -159,7 +159,7 @@ class JobStatus( object ):
                 
             
         
-        self._ui_update_pauser.Pause()
+        self._ui_update_pauser.pause()
         
     
     def Finish( self ):
@@ -417,7 +417,7 @@ class JobStatus( object ):
         
         with self._variable_lock: self._variables[ name ] = value
         
-        self._ui_update_pauser.Pause()
+        self._ui_update_pauser.pause()
         
     
     def TimeRunning( self ):
@@ -478,7 +478,7 @@ class JobStatus( object ):
     
     def WaitIfNeeded( self ):
         
-        self._yield_pauser.Pause()
+        self._yield_pauser.pause()
         
         i_paused = False
         should_quit = False
@@ -675,7 +675,7 @@ class QtAwareJob( HydrusThreading.SingleJob ):
         self._window = window
         
     
-    def _BootWorker( self ):
+    def _Boot_worker( self ):
         
         def qt_code():
             
@@ -684,7 +684,7 @@ class QtAwareJob( HydrusThreading.SingleJob ):
                 return
                 
             
-            self.Work()
+            self.work()
             
         
         # yo if you change this, alter how profile_mode (ui) works
@@ -696,7 +696,7 @@ class QtAwareJob( HydrusThreading.SingleJob ):
         return self._window is None or not QP.isValid( self._window )
         
     
-    def IsCancelled( self ):
+    def is_cancelled( self ):
         
         my_window_dead = self._MyWindowDead()
         
@@ -705,10 +705,10 @@ class QtAwareJob( HydrusThreading.SingleJob ):
             self._is_cancelled.set()
             
         
-        return HydrusThreading.SingleJob.IsCancelled( self )
+        return HydrusThreading.SingleJob.is_cancelled( self )
         
     
-    def IsDead( self ):
+    def is_dead( self ):
         
         return self._MyWindowDead()
         
@@ -734,10 +734,10 @@ class QtAwareRepeatingJob( HydrusThreading.RepeatingJob ):
             return
             
         
-        self.Work()
+        self.work()
         
     
-    def _BootWorker( self ):
+    def _Boot_worker( self ):
         
         # yo if you change this, alter how profile_mode (ui) works
         CG.client_controller.call_after_qt_safe( self._window, self._QTWork )
@@ -748,7 +748,7 @@ class QtAwareRepeatingJob( HydrusThreading.RepeatingJob ):
         return self._window is None or not QP.isValid( self._window )
         
     
-    def IsCancelled( self ):
+    def is_cancelled( self ):
         
         my_window_dead = self._MyWindowDead()
         
@@ -757,10 +757,10 @@ class QtAwareRepeatingJob( HydrusThreading.RepeatingJob ):
             self._is_cancelled.set()
             
         
-        return HydrusThreading.SingleJob.IsCancelled( self )
+        return HydrusThreading.SingleJob.is_cancelled( self )
         
     
-    def IsDead( self ):
+    def is_dead( self ):
         
         return self._MyWindowDead()
         

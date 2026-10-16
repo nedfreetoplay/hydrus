@@ -1024,7 +1024,7 @@ class PopupMessageManager( QW.QFrame ):
             
             ClientGUIDialogsMessage.ShowCritical( gui_frame, 'Popup Message Manager failure!', text )
             
-            self._update_job.Cancel()
+            self._update_job.cancel()
             
             self.CleanBeforeDestroy()
             
@@ -1066,7 +1066,7 @@ class PopupMessageManager( QW.QFrame ):
         
         if HG.started_shutdown:
             
-            self._update_job.Cancel()
+            self._update_job.cancel()
             
             self.CleanBeforeDestroy()
             
@@ -1276,7 +1276,7 @@ class PopupMessageManager( QW.QFrame ):
             
         except Exception as e:
             
-            self._update_job.Cancel()
+            self._update_job.cancel()
             
             raise
             
@@ -1474,7 +1474,7 @@ class PopupMessageDialogPanel( QW.QWidget ):
             
         except Exception as e:
             
-            self._update_job.Cancel()
+            self._update_job.cancel()
             
             raise
             
