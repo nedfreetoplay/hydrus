@@ -270,7 +270,7 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
             
             block_of_hash_ids = set( block_of_hash_ids )
             
-            text = 'syncing local hashes {}'.format( HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do ) )
+            text = 'syncing local hashes {}'.format( HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do ) )
             
             CG.client_controller.frame_splash_status.SetSubtext( text )
             job_status.SetStatusText( text )
@@ -324,7 +324,7 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
             
             HydrusData.safe_print( f'Deleted excess desynced local hash_ids: {bad_hash_ids_text}' )
             
-            status_text_info.append( f'{HydrusNumbers.ToHumanInt( len( all_excess_hash_ids ) ) } excess hash records' )
+            status_text_info.append( f'{HydrusNumbers.to_human_int( len( all_excess_hash_ids ) ) } excess hash records' )
             
         
         if len( all_missing_hash_ids ) > 0:
@@ -333,7 +333,7 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
             
             HydrusData.safe_print( f'Added missing desynced local hash_ids: {bad_hash_ids_text}' )
             
-            status_text_info.append( f'{HydrusNumbers.ToHumanInt( len( all_missing_hash_ids ) ) } missing hash records' )
+            status_text_info.append( f'{HydrusNumbers.to_human_int( len( all_missing_hash_ids ) ) } missing hash records' )
             
         
         if len( all_incorrect_hash_ids ) > 0:
@@ -342,7 +342,7 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
             
             HydrusData.safe_print( f'Fixed incorrect desynced local hash_ids: {bad_hash_ids_text}' )
             
-            status_text_info.append( f'{HydrusNumbers.ToHumanInt( len( all_incorrect_hash_ids ) ) } incorrect hash records' )
+            status_text_info.append( f'{HydrusNumbers.to_human_int( len( all_incorrect_hash_ids ) ) } incorrect hash records' )
             
         
         if len( status_text_info ) > 0:

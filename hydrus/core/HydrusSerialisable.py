@@ -607,7 +607,7 @@ class SerialisableDictionary( SerialisableBase, dict[ K, V ] ):
             gubbins_counter[ f'{key_str}: {value_str}' ] += 1
             
         
-        gubbins_strings = [ f'{HydrusNumbers.ToHumanInt( count )}: {desc_str}' for ( desc_str, count ) in gubbins_counter.items() ]
+        gubbins_strings = [ f'{HydrusNumbers.to_human_int( count )}: {desc_str}' for ( desc_str, count ) in gubbins_counter.items() ]
         
         result += '\n'.join( gubbins_strings )
         
@@ -742,7 +742,7 @@ class SerialisableBytesDictionary( SerialisableBase, dict[ int | bytes, V_bytes 
             gubbins_counter[ f'{key_str}: {value_str}' ] += 1
             
         
-        gubbins_strings = [ f'{HydrusNumbers.ToHumanInt( count )}: {desc_str}' for ( desc_str, count ) in gubbins_counter.items() ]
+        gubbins_strings = [ f'{HydrusNumbers.to_human_int( count )}: {desc_str}' for ( desc_str, count ) in gubbins_counter.items() ]
         
         result += '\n'.join( gubbins_strings )
         
@@ -877,7 +877,7 @@ class SerialisableList( SerialisableBase, list[ T ] ):
             gubbins_counter[ item_str ] += 1
             
         
-        gubbins_strings = [ f'{HydrusNumbers.ToHumanInt( count )}: {desc_str}' for ( desc_str, count ) in gubbins_counter.items() ]
+        gubbins_strings = [ f'{HydrusNumbers.to_human_int( count )}: {desc_str}' for ( desc_str, count ) in gubbins_counter.items() ]
         
         result += '\n'.join( gubbins_strings )
         

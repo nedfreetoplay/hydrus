@@ -1731,7 +1731,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
                 
             else:
                 
-                return f'reset search on {HydrusNumbers.ToHumanInt( len( rules ) )} selected rules'
+                return f'reset search on {HydrusNumbers.to_human_int( len( rules ) )} selected rules'
                 
             
         
@@ -1747,7 +1747,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
                 
             else:
                 
-                return f'reset test on {HydrusNumbers.ToHumanInt( len( rules ) )} selected rules'
+                return f'reset test on {HydrusNumbers.to_human_int( len( rules ) )} selected rules'
                 
             
         
@@ -1765,7 +1765,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
                 
             else:
                 
-                return f'reset all denied pairs on {HydrusNumbers.ToHumanInt( len( rules ) )} selected rules'
+                return f'reset all denied pairs on {HydrusNumbers.to_human_int( len( rules ) )} selected rules'
                 
             
         
@@ -1850,7 +1850,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
                 
             
         
-        text = f'This will command the database to repeal all user-denied decisions for these {HydrusNumbers.ToHumanInt(len(rules))} rules.\n\nDo this only if the rules have tens of thousands of denied pairs and you do not want to undo them manually in the "review actions" window.'
+        text = f'This will command the database to repeal all user-denied decisions for these {HydrusNumbers.to_human_int(len(rules))} rules.\n\nDo this only if the rules have tens of thousands of denied pairs and you do not want to undo them manually in the "review actions" window.'
         
         result = ClientGUIDialogsQuick.GetYesNo( self, text )
         
@@ -1874,7 +1874,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
                 
             
         
-        text = f'This will command the database to re-search these {HydrusNumbers.ToHumanInt(len(rules))} rules. It will not undo any user-denied decisions. There is no point to running this unless you suspect a miscount or other sync bug.'
+        text = f'This will command the database to re-search these {HydrusNumbers.to_human_int(len(rules))} rules. It will not undo any user-denied decisions. There is no point to running this unless you suspect a miscount or other sync bug.'
         
         result = ClientGUIDialogsQuick.GetYesNo( self, text )
         
@@ -1898,7 +1898,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
                 
             
         
-        text = f'This will command the database to re-test the pending/fails for these {HydrusNumbers.ToHumanInt(len(rules))} rules. It will not undo any user-denied decisions. There is no point to running this unless you suspect a miscount or other sync bug.'
+        text = f'This will command the database to re-test the pending/fails for these {HydrusNumbers.to_human_int(len(rules))} rules. It will not undo any user-denied decisions. There is no point to running this unless you suspect a miscount or other sync bug.'
         
         result = ClientGUIDialogsQuick.GetYesNo( self, text )
         

@@ -282,7 +282,7 @@ class ImportOptionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         if len( selected ) > 1:
             
-            message = f'Clear all custom import options for {HydrusNumbers.ToHumanInt( len( selected ) )} url class entries?'
+            message = f'Clear all custom import options for {HydrusNumbers.to_human_int( len( selected ) )} url class entries?'
             
         else:
             
@@ -465,7 +465,7 @@ class ImportOptionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
         else:
             
-            message = f'Delete the {HydrusNumbers.ToHumanInt(len( selected_rows ))} selected favourites/profiles?'
+            message = f'Delete the {HydrusNumbers.to_human_int(len( selected_rows ))} selected favourites/profiles?'
             
         
         result = ClientGUIDialogsQuick.GetYesNo( self, message )

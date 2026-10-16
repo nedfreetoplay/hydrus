@@ -2853,7 +2853,7 @@ class AutoCompleteDropdownTagsRead( AutocompleteDropdownTagsFileSearchContextORC
                 
                 self._BroadcastChoices( predicates, shift_down )
                 
-                self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.ToHumanInt(len(predicates))} search predicates!' )
+                self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.to_human_int(len(predicates))} search predicates!' )
                 
             
         except Exception as e:
@@ -3170,7 +3170,7 @@ class ListBoxTagsActiveSearchPredicates( ClientGUIListBoxes.ListBoxTagsPredicate
                 
             else:
                 
-                desc = '{} search terms'.format( HydrusNumbers.ToHumanInt( len( editable_and_invertible_predicates ) ) )
+                desc = '{} search terms'.format( HydrusNumbers.to_human_int( len( editable_and_invertible_predicates ) ) )
                 
             
             label = 'edit {}'.format( desc )
@@ -3578,7 +3578,7 @@ class AutoCompleteDropdownTagsWrite( AutoCompleteDropdownTags ):
             
             self.tagsPasted.emit( list( tags ) )
             
-            self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.ToHumanInt(len(tags))} tags!' )
+            self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.to_human_int(len(tags))} tags!' )
             
         except Exception as e:
             

@@ -326,7 +326,7 @@ class ServiceSpecifier( HydrusSerialisable.SerialisableBase ):
                 
             else:
                 
-                name = f'{HydrusNumbers.ToHumanInt(len(self._service_keys))} services'
+                name = f'{HydrusNumbers.to_human_int(len(self._service_keys))} services'
                 
             
             return name
@@ -713,7 +713,7 @@ class ServiceLocalRatingIncDec( ServiceLocalRating ):
             
         elif isinstance( rating, int ):
             
-            return HydrusNumbers.ToHumanInt( rating )
+            return HydrusNumbers.to_human_int( rating )
             
         
         return 'unknown'
@@ -723,7 +723,7 @@ class ServiceLocalRatingIncDec( ServiceLocalRating ):
         
         if rating_state == ClientRatings.SET:
             
-            return HydrusNumbers.ToHumanInt( rating )
+            return HydrusNumbers.to_human_int( rating )
             
         elif rating_state == ClientRatings.MIXED:
             
@@ -865,7 +865,7 @@ class ServiceLocalRatingNumerical( ServiceLocalRatingStars ):
             rating_value = self.ConvertRatingToStars( rating )
             rating_range = self._num_stars
             
-            return HydrusNumbers.ValueRangeToPrettyString( rating_value, rating_range )
+            return HydrusNumbers.value_range_to_pretty_string( rating_value, rating_range )
             
         
         return 'unknown'
@@ -1828,9 +1828,9 @@ class ServiceRepository( ServiceRestricted ):
         
         it_took = HydrusTime.GetNowPrecise() - precise_timestamp
         
-        rows_s = HydrusNumbers.ToHumanInt( int( total_rows / it_took ) )
+        rows_s = HydrusNumbers.to_human_int( int( total_rows / it_took ) )
         
-        summary = '{} processed {} {} at {} rows/s'.format( self._name, HydrusNumbers.ToHumanInt( total_rows ), row_name, rows_s )
+        summary = '{} processed {} {} at {} rows/s'.format( self._name, HydrusNumbers.to_human_int( total_rows ), row_name, rows_s )
         
         HydrusData.safe_print( summary )
         
@@ -1839,9 +1839,9 @@ class ServiceRepository( ServiceRestricted ):
         
         it_took = HydrusTime.GetNowPrecise() - precise_timestamp
         
-        rows_s = HydrusNumbers.ToHumanInt( int( rows_done_in_last_packet / it_took ) )
+        rows_s = HydrusNumbers.to_human_int( int( rows_done_in_last_packet / it_took ) )
         
-        popup_message = '{} {}: processing at {} rows/s'.format( row_name, HydrusNumbers.ValueRangeToPrettyString( rows_done, total_rows ), rows_s )
+        popup_message = '{} {}: processing at {} rows/s'.format( row_name, HydrusNumbers.value_range_to_pretty_string( rows_done, total_rows ), rows_s )
         
         CG.client_controller.frame_splash_status.SetText( popup_message, print_to_log = False )
         job_status.SetStatusText( popup_message, 2 )
@@ -1953,7 +1953,7 @@ class ServiceRepository( ServiceRestricted ):
                 
                 for ( i, update_hash ) in enumerate( update_hashes ):
                     
-                    status = HydrusNumbers.ValueRangeToPrettyString( i, len( update_hashes ) )
+                    status = HydrusNumbers.value_range_to_pretty_string( i, len( update_hashes ) )
                     
                     CG.client_controller.frame_splash_status.SetText( status, print_to_log = False )
                     job_status.SetStatusText( status )
@@ -2151,7 +2151,7 @@ class ServiceRepository( ServiceRestricted ):
                 
                 for ( definition_hash, content_types ) in definition_hashes_and_content_types:
                     
-                    progress_string = HydrusNumbers.ValueRangeToPrettyString( num_updates_done, num_updates_to_do )
+                    progress_string = HydrusNumbers.value_range_to_pretty_string( num_updates_done, num_updates_to_do )
                     
                     splash_title = '{} sync: processing updates: {}'.format( self._name, progress_string )
                     
@@ -2280,7 +2280,7 @@ class ServiceRepository( ServiceRestricted ):
                 
                 for ( content_hash, content_types ) in content_hashes_and_content_types:
                     
-                    progress_string = HydrusNumbers.ValueRangeToPrettyString( num_updates_done, num_updates_to_do )
+                    progress_string = HydrusNumbers.value_range_to_pretty_string( num_updates_done, num_updates_to_do )
                     
                     splash_title = '{} sync: processing updates: {}'.format( self._name, progress_string )
                     
@@ -2899,7 +2899,7 @@ class ServiceRepository( ServiceRestricted ):
                 
                 for ( i, thumbnail_hash ) in enumerate( thumbnail_hashes ):
                     
-                    status = HydrusNumbers.ValueRangeToPrettyString( i, num_to_do )
+                    status = HydrusNumbers.value_range_to_pretty_string( i, num_to_do )
                     
                     CG.client_controller.frame_splash_status.SetText( status, print_to_log = False )
                     job_status.SetStatusText( status )
@@ -3159,7 +3159,7 @@ class ServiceIPFS( ServiceRemote ):
                     return
                     
                 
-                job_status.SetStatusText( 'ensuring files are pinned: ' + HydrusNumbers.ValueRangeToPrettyString( i, len( hashes ) ) )
+                job_status.SetStatusText( 'ensuring files are pinned: ' + HydrusNumbers.value_range_to_pretty_string( i, len( hashes ) ) )
                 job_status.SetGauge( i, len( hashes ) )
                 
                 media_result = CG.client_controller.read( 'media_result', hash )

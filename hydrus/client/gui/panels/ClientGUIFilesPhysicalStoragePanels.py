@@ -211,7 +211,7 @@ class ReviewGranularityPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 self._UpdateGranularityLabel()
                 
-                message = f'{HydrusNumbers.ToHumanInt( num_files_moved )} files moved in {HydrusTime.TimeDeltaToPrettyTimeDelta( time_took_float )}.'
+                message = f'{HydrusNumbers.to_human_int( num_files_moved )} files moved in {HydrusTime.TimeDeltaToPrettyTimeDelta( time_took_float )}.'
                 
                 if starting_granularity < ending_granularity:
                     
@@ -228,7 +228,7 @@ class ReviewGranularityPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 if num_weird_dirs > 0 or num_weird_files > 0:
                     
                     message += '\n\n'
-                    message += f'By the way, you had {HydrusNumbers.ToHumanInt( num_weird_dirs )} weird directories and {HydrusNumbers.ToHumanInt( num_weird_files )} weird files in your storage. They were not touched, but everything has been logged, so check out your log and see what that old cruft is. It is probably something like OS-level thumbnail metadata; not a big deal.'
+                    message += f'By the way, you had {HydrusNumbers.to_human_int( num_weird_dirs )} weird directories and {HydrusNumbers.to_human_int( num_weird_files )} weird files in your storage. They were not touched, but everything has been logged, so check out your log and see what that old cruft is. It is probably something like OS-level thumbnail metadata; not a big deal.'
                     
                 
                 ClientGUIDialogsMessage.ShowInformation( self, message )
@@ -395,7 +395,7 @@ class ReviewGranularityPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         def qt_ok( time_took_float: float, num_files_moved, num_weird_dirs: int, num_weird_files: int ):
             
-            message = f'{HydrusNumbers.ToHumanInt( num_files_moved )} files moved in {HydrusTime.TimeDeltaToPrettyTimeDelta( time_took_float )}.'
+            message = f'{HydrusNumbers.to_human_int( num_files_moved )} files moved in {HydrusTime.TimeDeltaToPrettyTimeDelta( time_took_float )}.'
             
             if num_weird_dirs == 0 and num_weird_files == 0:
                 
@@ -407,7 +407,7 @@ class ReviewGranularityPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 message += '\n\n'
                 message += f'Things went great. Your folder has been granularised to level {ending_granularity}.'
                 message += '\n\n'
-                message += f'By the way, you had {HydrusNumbers.ToHumanInt( num_weird_dirs )} weird directories and {HydrusNumbers.ToHumanInt( num_weird_files )} weird files in your storage. They were not touched, but everything has been logged, so check out your log and see what that old cruft is. It is probably something like OS-level thumbnail metadata; not a big deal.'
+                message += f'By the way, you had {HydrusNumbers.to_human_int( num_weird_dirs )} weird directories and {HydrusNumbers.to_human_int( num_weird_files )} weird files in your storage. They were not touched, but everything has been logged, so check out your log and see what that old cruft is. It is probably something like OS-level thumbnail metadata; not a big deal.'
                 
             
             ClientGUIDialogsMessage.ShowInformation( self, message )
@@ -831,7 +831,7 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
         fp = locations_to_file_weights[ base_location ]
         tp = locations_to_thumb_weights[ base_location ]
         
-        p = lambda some_f: HydrusNumbers.FloatToPercentage( some_f, sf = 2 )
+        p = lambda some_f: HydrusNumbers.float_to_percentage( some_f, sf = 2 )
         
         current_bytes = fp * f_space + tp * t_space_max
         

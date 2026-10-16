@@ -51,7 +51,7 @@ def DoAliveOrDeadCheck( win: QW.QWidget, subscriptions: collections.abc.Collecti
     
     if 0 < num_paused_subs:
         
-        message = f'Of the {HydrusNumbers.ToHumanInt(len(subscriptions))} selected subscriptions, {HydrusNumbers.ToHumanInt(num_paused_subs)} are paused. Do you want to unpause these paused subs and check their queries?'
+        message = f'Of the {HydrusNumbers.to_human_int(len(subscriptions))} selected subscriptions, {HydrusNumbers.to_human_int(num_paused_subs)} are paused. Do you want to unpause these paused subs and check their queries?'
         
         if num_paused_subs == len( subscriptions ):
             
@@ -99,7 +99,7 @@ def DoAliveOrDeadCheck( win: QW.QWidget, subscriptions: collections.abc.Collecti
     
     if 0 < num_dead:
         
-        message = f'Of the {HydrusNumbers.ToHumanInt(len(query_headers))} selected queries, {HydrusNumbers.ToHumanInt(num_dead)} are DEAD. Do you want to check these?'
+        message = f'Of the {HydrusNumbers.to_human_int(len(query_headers))} selected queries, {HydrusNumbers.to_human_int(num_dead)} are DEAD. Do you want to check these?'
         
         if num_dead == len( query_headers ):
             
@@ -112,8 +112,8 @@ def DoAliveOrDeadCheck( win: QW.QWidget, subscriptions: collections.abc.Collecti
             
             choice_tuples = [
                 ( f'yes, check all of them', ( True, True ), 'Resuscitate the DEAD queries and check everything.' ),
-                ( f'check the {HydrusNumbers.ToHumanInt(len(query_headers)-num_dead)} ALIVE', ( True, False ), 'Check the ALIVE queries.' ),
-                ( f'resurrect and check the {HydrusNumbers.ToHumanInt(num_dead)} DEAD', ( False, True ), 'Resuscitate the DEAD queries and check them.' )
+                ( f'check the {HydrusNumbers.to_human_int(len(query_headers)-num_dead)} ALIVE', ( True, False ), 'Check the ALIVE queries.' ),
+                ( f'resurrect and check the {HydrusNumbers.to_human_int(num_dead)} DEAD', ( False, True ), 'Resuscitate the DEAD queries and check them.' )
             ]
             
         
@@ -143,7 +143,7 @@ def DoAliveOrDeadCheck( win: QW.QWidget, subscriptions: collections.abc.Collecti
     
     if 0 < num_paused_queries:
         
-        message = f'Of the {HydrusNumbers.ToHumanInt(len(query_headers))} selected queries, {HydrusNumbers.ToHumanInt(num_paused_queries)} are paused. Do you want to unpause and check them?'
+        message = f'Of the {HydrusNumbers.to_human_int(len(query_headers))} selected queries, {HydrusNumbers.to_human_int(num_paused_queries)} are paused. Do you want to unpause and check them?'
         
         if num_paused_queries == len( query_headers ):
             
@@ -993,7 +993,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
             
             if num_archived + num_deleted > 0:
                 
-                percent = HydrusNumbers.FloatToPercentage( num_archived / ( num_archived + num_deleted ) )
+                percent = HydrusNumbers.float_to_percentage( num_archived / ( num_archived + num_deleted ) )
                 
             else:
                 
@@ -1049,11 +1049,11 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
         
         for ( name, num_inbox, num_archived, num_deleted ) in data:
             
-            data_string = '{}: inbox {} | archive {} | deleted {}'.format( name, HydrusNumbers.ToHumanInt( num_inbox ), HydrusNumbers.ToHumanInt( num_archived ), HydrusNumbers.ToHumanInt( num_deleted ) )
+            data_string = '{}: inbox {} | archive {} | deleted {}'.format( name, HydrusNumbers.to_human_int( num_inbox ), HydrusNumbers.to_human_int( num_archived ), HydrusNumbers.to_human_int( num_deleted ) )
             
             if num_archived + num_deleted > 0:
                 
-                data_string += ' | good {}'.format( HydrusNumbers.FloatToPercentage( num_archived / ( num_archived + num_deleted ) ) )
+                data_string += ' | good {}'.format( HydrusNumbers.float_to_percentage( num_archived / ( num_archived + num_deleted ) ) )
                 
             
             data_strings.append( data_string )
@@ -1198,7 +1198,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            yesno_message = f'I pulled {HydrusNumbers.ToHumanInt( len( pasted_query_texts ) )} texts from the clipboard.'
+            yesno_message = f'I pulled {HydrusNumbers.to_human_int( len( pasted_query_texts ) )} texts from the clipboard.'
             yesno_message += '\n\n'
             
         
@@ -2194,16 +2194,16 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            status_components = [ HydrusNumbers.ToHumanInt( num_ok ) + ' working' ]
+            status_components = [ HydrusNumbers.to_human_int( num_ok ) + ' working' ]
             
             if num_paused > 0:
                 
-                status_components.append( HydrusNumbers.ToHumanInt( num_paused ) + ' paused' )
+                status_components.append( HydrusNumbers.to_human_int( num_paused ) + ' paused' )
                 
             
             if num_dead > 0:
                 
-                status_components.append( HydrusNumbers.ToHumanInt( num_dead ) + ' dead' )
+                status_components.append( HydrusNumbers.to_human_int( num_dead ) + ' dead' )
                 
             
             pretty_status = ', '.join( status_components )
@@ -2477,7 +2477,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
             if len( missing_query_headers ) > 25:
                 
-                message = 'Exporting or duplicating the current selection means reading query data for {} queries from the database. This may take just a couple of seconds, or, for hundreds of thousands of cached URLs, it could be a couple of minutes (and a whack of memory). Do not panic, it will get there in the end. Do you want to do the export?'.format( HydrusNumbers.ToHumanInt( len( missing_query_headers ) ) )
+                message = 'Exporting or duplicating the current selection means reading query data for {} queries from the database. This may take just a couple of seconds, or, for hundreds of thousands of cached URLs, it could be a couple of minutes (and a whack of memory). Do not panic, it will get there in the end. Do you want to do the export?'.format( HydrusNumbers.to_human_int( len( missing_query_headers ) ) )
                 
                 result = ClientGUIDialogsQuick.GetYesNo( self, message )
                 
@@ -3055,7 +3055,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
             for ( gug_name, query_texts ) in gug_names_to_dupe_query_texts.items():
                 
-                label = '{} ({} duplicates)'.format( gug_name, HydrusNumbers.ToHumanInt( len( query_texts ) ) )
+                label = '{} ({} duplicates)'.format( gug_name, HydrusNumbers.to_human_int( len( query_texts ) ) )
                 
                 tooltip = ', '.join( sorted( query_texts ) )
                 
@@ -3105,7 +3105,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            message = 'There are {} duplicate query texts for the downloader "{}". Would you like to dedupe them all, or select which to do?'.format( HydrusNumbers.ToHumanInt( len( potential_dupe_query_texts ) ), gug_name )
+            message = 'There are {} duplicate query texts for the downloader "{}". Would you like to dedupe them all, or select which to do?'.format( HydrusNumbers.to_human_int( len( potential_dupe_query_texts ) ), gug_name )
             
             yes_tuples = []
             
@@ -3190,7 +3190,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                         
                     else:
                         
-                        label = '{} (has {} duplicate queries)'.format( subscription.GetName(), HydrusNumbers.ValueRangeToPrettyString( len( dupe_query_texts_it_can_do ), len( query_texts_we_want_to_dedupe_now ) ) )
+                        label = '{} (has {} duplicate queries)'.format( subscription.GetName(), HydrusNumbers.value_range_to_pretty_string( len( dupe_query_texts_it_can_do ), len( query_texts_we_want_to_dedupe_now ) ) )
                         
                     
                     choice_tuples.append( ( label, subscription, ', '.join( sorted( dupe_query_texts_it_can_do ) ) ) )
@@ -3255,7 +3255,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 if len( query_texts_we_want_to_dedupe_now ) > 0:
                     
-                    message = 'Dedupe was done. There are still {} queries that can be deduped between other subscriptions. Want to do them now?'.format( HydrusNumbers.ToHumanInt( len( query_texts_we_want_to_dedupe_now ) ) )
+                    message = 'Dedupe was done. There are still {} queries that can be deduped between other subscriptions. Want to do them now?'.format( HydrusNumbers.to_human_int( len( query_texts_we_want_to_dedupe_now ) ) )
                     
                     result = ClientGUIDialogsQuick.GetYesNo( self, message )
                     
@@ -3438,7 +3438,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 merged_and_discardable_subs.extend( eaten_subs )
                 
-                message = f'{primary_sub_name} was able to merge {HydrusNumbers.ToHumanInt( len( eaten_subs ) )} other subscriptions. If you wish to change its name, do so here.'
+                message = f'{primary_sub_name} was able to merge {HydrusNumbers.to_human_int( len( eaten_subs ) )} other subscriptions. If you wish to change its name, do so here.'
                 
                 name = primary_sub_name
                 

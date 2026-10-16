@@ -68,7 +68,7 @@ class TextAndPasteCtrl( QW.QWidget ):
                 
                 self._add_callable( texts )
                 
-                self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.ToHumanInt(len(texts))} texts!' )
+                self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.to_human_int(len(texts))} texts!' )
                 
             
         except Exception as e:

@@ -319,7 +319,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
             
             if num_misc_objects > 0:
                 
-                ClientGUIDialogsMessage.ShowWarning( self, 'I found '+HydrusNumbers.ToHumanInt(num_misc_objects)+' misc objects in that png, but nothing downloader related.' )
+                ClientGUIDialogsMessage.ShowWarning( self, 'I found '+HydrusNumbers.to_human_int(num_misc_objects)+' misc objects in that png, but nothing downloader related.' )
                 
             
             return
@@ -493,7 +493,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         
         if len( new_gugs ) + len( new_url_classes ) + len( new_parsers ) + len( new_domain_metadatas ) + len( new_login_scripts ) == 0:
             
-            ClientGUIDialogsMessage.ShowInformation( self, f'All {HydrusNumbers.ToHumanInt( total_num_dupes )} downloader objects in that package appeared to already be in the client, so nothing need be added.' )
+            ClientGUIDialogsMessage.ShowInformation( self, f'All {HydrusNumbers.to_human_int( total_num_dupes )} downloader objects in that package appeared to already be in the client, so nothing need be added.' )
             
             return
             
@@ -542,7 +542,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
             if len( new_domain_metadatas ) > TOO_MANY_DM:
                 
                 message += '\n' * 2
-                message += 'There are more than ' + HydrusNumbers.ToHumanInt( TOO_MANY_DM ) + ' domain metadata objects. So I do not give you dozens of preview windows, I will only show you these first ' + HydrusNumbers.ToHumanInt( TOO_MANY_DM ) + '.'
+                message += 'There are more than ' + HydrusNumbers.to_human_int( TOO_MANY_DM ) + ' domain metadata objects. So I do not give you dozens of preview windows, I will only show you these first ' + HydrusNumbers.to_human_int( TOO_MANY_DM ) + '.'
                 
             
             new_domain_metadatas_to_show = new_domain_metadatas[:TOO_MANY_DM]
@@ -566,7 +566,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         if len( all_to_add ) > 20:
             
             message += '\n'
-            message += '(and ' + HydrusNumbers.ToHumanInt( len( all_to_add ) - 20 ) + ' others)'
+            message += '(and ' + HydrusNumbers.to_human_int( len( all_to_add ) - 20 ) + ' others)'
             
         
         message += '\n' * 2
@@ -600,11 +600,11 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         num_new_gugs = len( new_gugs )
         num_aux = len( new_url_classes ) + len( new_parsers ) + len( new_login_scripts ) + len( new_domain_metadatas )
         
-        final_message = 'Successfully added ' + HydrusNumbers.ToHumanInt( num_new_gugs ) + ' new downloaders and ' + HydrusNumbers.ToHumanInt( num_aux ) + ' auxiliary objects.'
+        final_message = 'Successfully added ' + HydrusNumbers.to_human_int( num_new_gugs ) + ' new downloaders and ' + HydrusNumbers.to_human_int( num_aux ) + ' auxiliary objects.'
         
         if total_num_dupes > 0:
             
-            final_message += ' ' + HydrusNumbers.ToHumanInt( total_num_dupes ) + ' duplicate objects were not added (but some additional metadata may have been merged).'
+            final_message += ' ' + HydrusNumbers.to_human_int( total_num_dupes ) + ' duplicate objects were not added (but some additional metadata may have been merged).'
             
         
         ClientGUIDialogsMessage.ShowInformation( self, final_message )
@@ -646,7 +646,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         
         self._ImportPayloads( payloads )
         
-        self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.ToHumanInt(len(payloads))} items!' )
+        self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.to_human_int(len(payloads))} items!' )
         
     
     def EventLainClick( self, event ):
@@ -756,7 +756,7 @@ class ReviewWhatIsThisObject( ClientGUIScrolledPanels.ReviewPanel ):
                 
             
         
-        ending_description_text = f'{HydrusNumbers.ToHumanInt(len( result_texts ))} items\n\n' + '\n\n'.join( result_texts )
+        ending_description_text = f'{HydrusNumbers.to_human_int(len( result_texts ))} items\n\n' + '\n\n'.join( result_texts )
         
         self._description.setText( ending_description_text )
         self._json_content.setText( '\n\n'.join( json_texts ) )
@@ -777,7 +777,7 @@ class ReviewWhatIsThisObject( ClientGUIScrolledPanels.ReviewPanel ):
         
         self._ImportPayloads( payloads )
         
-        self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.ToHumanInt(len(payloads))} items!' )
+        self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.to_human_int(len(payloads))} items!' )
         
     
     def EventImageClick( self, event ):

@@ -744,7 +744,7 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
             search_usage_data = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, search_delta )
             
         
-        pretty_search_usage = HydrusData.ToHumanBytes( search_usage_data ) + ' in ' + HydrusNumbers.ToHumanInt( search_usage_requests ) + ' requests'
+        pretty_search_usage = HydrusData.ToHumanBytes( search_usage_data ) + ' in ' + HydrusNumbers.to_human_int( search_usage_requests ) + ' requests'
         
         pretty_network_context = network_context.ToString()
         pretty_context_type = CC.network_context_type_string_lookup[ network_context.context_type ]
@@ -758,8 +758,8 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
             pretty_current_usage = HydrusData.ToHumanBytes( current_usage ) + '/s'
             
         
-        pretty_day_usage = HydrusData.ToHumanBytes( day_usage_data ) + ' in ' + HydrusNumbers.ToHumanInt( day_usage_requests ) + ' requests'
-        pretty_month_usage = HydrusData.ToHumanBytes( month_usage_data ) + ' in ' + HydrusNumbers.ToHumanInt( month_usage_requests ) + ' requests'
+        pretty_day_usage = HydrusData.ToHumanBytes( day_usage_data ) + ' in ' + HydrusNumbers.to_human_int( day_usage_requests ) + ' requests'
+        pretty_month_usage = HydrusData.ToHumanBytes( month_usage_data ) + ' in ' + HydrusNumbers.to_human_int( month_usage_requests ) + ' requests'
         
         if network_context == ClientNetworkingContexts.GLOBAL_NETWORK_CONTEXT:
             
@@ -1136,7 +1136,7 @@ class ReviewNetworkContextBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         search_usage_requests = self._bandwidth_tracker.GetAllUsage( HC.BANDWIDTH_TYPE_REQUESTS )
         search_usage_data = self._bandwidth_tracker.GetAllUsage( HC.BANDWIDTH_TYPE_DATA )
         
-        all_time_pretty_search_usage = f'All time usage: {HydrusData.ToHumanBytes( search_usage_data )} in {HydrusNumbers.ToHumanInt( search_usage_requests )} requests'
+        all_time_pretty_search_usage = f'All time usage: {HydrusData.ToHumanBytes( search_usage_data )} in {HydrusNumbers.to_human_int( search_usage_requests )} requests'
         
         self._all_time_usage.setText( all_time_pretty_search_usage )
         
@@ -1153,7 +1153,7 @@ class ReviewNetworkContextBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
         elif bandwidth_type == HC.BANDWIDTH_TYPE_REQUESTS:
             
-            converter = HydrusNumbers.ToHumanInt
+            converter = HydrusNumbers.to_human_int
             
         
         pretty_time_delta_usage = ': ' + converter( time_delta_usage )
@@ -1507,7 +1507,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         cookies = ClientNetworkingSessions.GetRequestsSessionCookieJar( session )
         
         number_of_cookies = len( cookies )
-        pretty_number_of_cookies = HydrusNumbers.ToHumanInt( number_of_cookies )
+        pretty_number_of_cookies = HydrusNumbers.to_human_int( number_of_cookies )
         
         expires_numbers = [ c.expires for c in cookies if c.expires is not None ]
         
@@ -1701,7 +1701,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
             
         
-        ClientGUIDialogsMessage.ShowInformation( self, f'Added {HydrusNumbers.ToHumanInt(num_added)} cookies!' )
+        ClientGUIDialogsMessage.ShowInformation( self, f'Added {HydrusNumbers.to_human_int(num_added)} cookies!' )
         
         self._Update()
         
@@ -1745,7 +1745,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             domains = sorted( { domain for ( name, value, domain, path, expires ) in cookie_data_flat } )
             
-            message = f'About to import {HydrusNumbers.ToHumanInt(len(cookie_data_flat))} cookies for the domains {HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( domains )} Is that ok?'
+            message = f'About to import {HydrusNumbers.to_human_int(len(cookie_data_flat))} cookies for the domains {HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( domains )} Is that ok?'
             
             result = ClientGUIDialogsQuick.GetYesNo( self, message = message )
             
@@ -1772,7 +1772,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 num_added += 1
                 
             
-            ClientGUIDialogsMessage.ShowInformation( self, f'Added {HydrusNumbers.ToHumanInt(num_added)} cookies!' )
+            ClientGUIDialogsMessage.ShowInformation( self, f'Added {HydrusNumbers.to_human_int(num_added)} cookies!' )
             
             self._Update()
             
@@ -2092,7 +2092,7 @@ class ReviewNetworkSessionPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
             
         
-        ClientGUIDialogsMessage.ShowInformation( self, f'Added {HydrusNumbers.ToHumanInt(num_added)} cookies!' )
+        ClientGUIDialogsMessage.ShowInformation( self, f'Added {HydrusNumbers.to_human_int(num_added)} cookies!' )
         
         self._Update()
         
@@ -2138,7 +2138,7 @@ class ReviewNetworkSessionPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             if len( cookie_data_flat ) != len( cookie_data_flat_domain_filtered ):
                 
-                text = f'Of the {HydrusNumbers.ToHumanInt(len(cookie_data_flat))} cookies in your clipboard, {HydrusNumbers.ToHumanInt(len( cookie_data_flat_domain_filtered ))} match this domain. What do you want to import?'
+                text = f'Of the {HydrusNumbers.to_human_int(len(cookie_data_flat))} cookies in your clipboard, {HydrusNumbers.to_human_int(len( cookie_data_flat_domain_filtered ))} match this domain. What do you want to import?'
                 
                 if len( cookie_data_flat_domain_filtered ) == 0:
                     
@@ -2176,7 +2176,7 @@ class ReviewNetworkSessionPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             domains = sorted( { domain for ( name, value, domain, path, expires ) in cookie_data_flat } )
             
-            message = f'About to import {HydrusNumbers.ToHumanInt(len(cookie_data_flat))} cookies for the domains {HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( domains, no_trailing_whitespace = True )}. Is that ok?'
+            message = f'About to import {HydrusNumbers.to_human_int(len(cookie_data_flat))} cookies for the domains {HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( domains, no_trailing_whitespace = True )}. Is that ok?'
             
             result = ClientGUIDialogsQuick.GetYesNo( self, message = message )
             
@@ -2199,7 +2199,7 @@ class ReviewNetworkSessionPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 num_added += 1
                 
             
-            ClientGUIDialogsMessage.ShowInformation( self, f'Added {HydrusNumbers.ToHumanInt(num_added)} cookies!' )
+            ClientGUIDialogsMessage.ShowInformation( self, f'Added {HydrusNumbers.to_human_int(num_added)} cookies!' )
             
             self._Update()
             

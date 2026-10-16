@@ -586,7 +586,7 @@ class ThreadWorkerPool( object ):
                     self._thread_pool_busy_status_text = 'busy'
                     
                 
-                self._thread_pool_busy_status_tooltip = f'There were {HydrusNumbers.ToHumanInt( num_threads )} threads doing jobs at last check.'
+                self._thread_pool_busy_status_tooltip = f'There were {HydrusNumbers.to_human_int( num_threads )} threads doing jobs at last check.'
                 
                 self._thread_pool_busy_status_text_last_check_time = HydrusTime.GetNow()
                 
@@ -806,7 +806,7 @@ class JobScheduler( threading.Thread ):
         
         with self._waiting_lock:
             
-            return HydrusNumbers.ToHumanInt( len( self._waiting ) ) + ' jobs'
+            return HydrusNumbers.to_human_int( len( self._waiting ) ) + ' jobs'
             
         
     
@@ -826,7 +826,7 @@ class JobScheduler( threading.Thread ):
             
             job_lines = [ repr( job ) for job in self._waiting ]
             
-            lines = [ HydrusNumbers.ToHumanInt( num_jobs ) + ' jobs:' ] + job_lines
+            lines = [ HydrusNumbers.to_human_int( num_jobs ) + ' jobs:' ] + job_lines
             
             text = '\n'.join( lines )
             

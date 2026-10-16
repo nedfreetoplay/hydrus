@@ -401,7 +401,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 else:
                     
-                    file_desc = '{} files'.format( HydrusNumbers.ToHumanInt( num_to_delete ) )
+                    file_desc = '{} files'.format( HydrusNumbers.to_human_int( num_to_delete ) )
                     
                 
                 if self._num_actionable_local_file_service_domains == 1:
@@ -457,7 +457,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
                         
                     else:
                         
-                        file_desc = '{} files'.format( HydrusNumbers.ToHumanInt( num_to_delete ) )
+                        file_desc = '{} files'.format( HydrusNumbers.to_human_int( num_to_delete ) )
                         
                     
                     if deletee_service.HasPermission( HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_MODERATE ):
@@ -505,7 +505,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 else:
                     
-                    suffix = '{} {}files'.format( HydrusNumbers.ToHumanInt( num_to_delete ), suffix )
+                    suffix = '{} {}files'.format( HydrusNumbers.to_human_int( num_to_delete ), suffix )
                     
                 
                 text = 'Permanently delete {}?'.format( suffix )
@@ -544,7 +544,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 else:
                     
-                    text = 'Permanently delete these ' + HydrusNumbers.ToHumanInt( num_to_delete ) + ' files and do not save a deletion record?'
+                    text = 'Permanently delete these ' + HydrusNumbers.to_human_int( num_to_delete ) + ' files and do not save a deletion record?'
                     
                 
                 chunks_of_hashes = list( HydrusLists.split_list_into_chunks( hashes, 16 ) ) # iterator, so list it to use it more than once, jej
@@ -804,7 +804,7 @@ class EditFilesForcedFiletypePanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 count = original_mimes_count[ mime ]
                 
-                original_filetype_statements.append( f'{HydrusNumbers.ToHumanInt(count)} {HC.mime_string_lookup[ mime ]}')
+                original_filetype_statements.append( f'{HydrusNumbers.to_human_int(count)} {HC.mime_string_lookup[ mime ]}')
                 
             
         
@@ -824,7 +824,7 @@ class EditFilesForcedFiletypePanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     count = forced_mimes_count[ mime ]
                     
-                    forced_filetype_statements.append( f'{HydrusNumbers.ToHumanInt(count)} {HC.mime_string_lookup[ mime ]}')
+                    forced_filetype_statements.append( f'{HydrusNumbers.to_human_int(count)} {HC.mime_string_lookup[ mime ]}')
                     
                 
             
@@ -836,7 +836,7 @@ class EditFilesForcedFiletypePanel( ClientGUIScrolledPanels.EditPanel ):
                 
             else:
                 
-                forced_filetype_summary = f'{HydrusNumbers.ToHumanInt(total_forced_mimes_count)} are currently being forced, to: {forced_filetype_summary}.'
+                forced_filetype_summary = f'{HydrusNumbers.to_human_int(total_forced_mimes_count)} are currently being forced, to: {forced_filetype_summary}.'
                 
             
         
@@ -846,7 +846,7 @@ class EditFilesForcedFiletypePanel( ClientGUIScrolledPanels.EditPanel ):
         text += '\n\n'
         text += 'This will override what hydrus thinks the filetype is for all of these files. Files will be renamed to receive their new file extensions. The original filetype is not forgotten, and this can be undone.'
         text += '\n\n'
-        text += f'Of the {HydrusNumbers.ToHumanInt( total_file_count )} files, there are {original_filetype_summary}. {forced_filetype_summary}'
+        text += f'Of the {HydrusNumbers.to_human_int( total_file_count )} files, there are {original_filetype_summary}. {forced_filetype_summary}'
         
         st = ClientGUICommon.BetterStaticText( self, text )
         st.setWordWrap( True )
@@ -1081,7 +1081,7 @@ class EditFileNotesPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolle
             
             CG.client_controller.pub( 'clipboard', 'text', text )
             
-            self._copy_button.ShowMicroNotification( f'Copied {HydrusNumbers.ToHumanInt( len( names_to_notes ) ) } {note_type_desc}notes!' )
+            self._copy_button.ShowMicroNotification( f'Copied {HydrusNumbers.to_human_int( len( names_to_notes ) ) } {note_type_desc}notes!' )
             
         
     
@@ -1107,7 +1107,7 @@ class EditFileNotesPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolle
             CG.client_controller.pub( 'clipboard', 'text', urls_text )
             
         
-        self._copy_urls_button.ShowMicroNotification( f'Copied {HydrusNumbers.ToHumanInt( len( urls ) )} URLs!' )
+        self._copy_urls_button.ShowMicroNotification( f'Copied {HydrusNumbers.to_human_int( len( urls ) )} URLs!' )
         
     
     def _CurrentNoteChanged( self ):
@@ -1210,7 +1210,7 @@ class EditFileNotesPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolle
                 
             
         
-        self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.ToHumanInt(len(new_names_to_notes))} new notes!' )
+        self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.to_human_int(len(new_names_to_notes))} new notes!' )
         
     
     def _DeleteNote( self ):
@@ -1832,7 +1832,7 @@ class EditURLsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPane
         
         CG.client_controller.pub( 'clipboard', 'text', text )
         
-        self._copy_button.ShowMicroNotification( f'Copied {HydrusNumbers.ToHumanInt(len(urls))} URLs!' )
+        self._copy_button.ShowMicroNotification( f'Copied {HydrusNumbers.to_human_int(len(urls))} URLs!' )
         
     
     def _EnterURLs( self, urls, only_add = False ):
@@ -1929,7 +1929,7 @@ class EditURLsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPane
             
             self._EnterURLs( urls, only_add = True )
             
-            self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.ToHumanInt(len(urls))} URLs!' )
+            self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.to_human_int(len(urls))} URLs!' )
             
         except Exception as e:
             

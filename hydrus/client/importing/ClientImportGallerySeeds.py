@@ -62,29 +62,29 @@ def GenerateGallerySeedLogStatus( statuses_to_counts ):
     
     if num_successful > 0:
         
-        s = HydrusNumbers.ToHumanInt( num_successful ) + ' successful'
+        s = HydrusNumbers.to_human_int( num_successful ) + ' successful'
         
         status_strings.append( s )
         
     
     if num_ignored > 0:
         
-        status_strings.append( HydrusNumbers.ToHumanInt( num_ignored ) + ' ignored' )
+        status_strings.append( HydrusNumbers.to_human_int( num_ignored ) + ' ignored' )
         
     
     if num_failed > 0:
         
-        status_strings.append( HydrusNumbers.ToHumanInt( num_failed ) + ' failed' )
+        status_strings.append( HydrusNumbers.to_human_int( num_failed ) + ' failed' )
         
     
     if num_skipped > 0:
         
-        status_strings.append( HydrusNumbers.ToHumanInt( num_skipped ) + ' skipped' )
+        status_strings.append( HydrusNumbers.to_human_int( num_skipped ) + ' skipped' )
         
     
     if num_unknown > 0:
         
-        status_strings.append( HydrusNumbers.ToHumanInt( num_unknown ) + ' pending' )
+        status_strings.append( HydrusNumbers.to_human_int( num_unknown ) + ' pending' )
         
     
     status = ', '.join( status_strings )

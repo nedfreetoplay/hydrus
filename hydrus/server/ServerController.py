@@ -253,7 +253,7 @@ class Controller( HydrusController.HydrusController ):
         
         if num_files_deleted > 0 or num_thumbnails_deleted > 0:
             
-            HydrusData.safe_print( 'Physically deleted {} files and {} thumbnails from file storage.'.format( HydrusNumbers.ToHumanInt( num_files_deleted ), HydrusNumbers.ToHumanInt( num_files_deleted ) ) )
+            HydrusData.safe_print( 'Physically deleted {} files and {} thumbnails from file storage.'.format( HydrusNumbers.to_human_int( num_files_deleted ), HydrusNumbers.to_human_int( num_files_deleted ) ) )
             
         
     

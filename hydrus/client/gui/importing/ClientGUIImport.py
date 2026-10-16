@@ -1005,7 +1005,7 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
             
             tags = self._GetTags( index, path )
             
-            pretty_index = HydrusNumbers.ToHumanInt( index + 1 )
+            pretty_index = HydrusNumbers.to_human_int( index + 1 )
             
             pretty_tags = ', '.join( tags )
             
@@ -1129,7 +1129,7 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
             
             strings = self._GetPrettyStrings( path )
             
-            pretty_index = HydrusNumbers.ToHumanInt( index + 1 )
+            pretty_index = HydrusNumbers.to_human_int( index + 1 )
             
             pretty_path = path
             pretty_strings = ' | '.join( strings )
@@ -1199,7 +1199,7 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
                         
                         summaries = [ HydrusText.ElideText( HydrusText.GetFirstLineSummary( s ), 32 ) for s in processed_strings ]
                         
-                        processed_strings = [ f'{HydrusNumbers.ToHumanInt(len( processed_strings ))} notes: ' + ', '.join( summaries ) ]
+                        processed_strings = [ f'{HydrusNumbers.to_human_int(len( processed_strings ))} notes: ' + ', '.join( summaries ) ]
                         
                     
                 elif isinstance( exporter, ClientMetadataMigrationExporters.SingleFileMetadataExporterMediaURLs ):
@@ -1212,7 +1212,7 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
                         
                         summaries = [ HydrusText.ElideText( HydrusText.GetFirstLineSummary( s ), 32 ) for s in processed_strings ]
                         
-                        processed_strings = [ f'{HydrusNumbers.ToHumanInt(len( processed_strings ))} URLs: ' + ', '.join( summaries ) ]
+                        processed_strings = [ f'{HydrusNumbers.to_human_int(len( processed_strings ))} URLs: ' + ', '.join( summaries ) ]
                         
                     
                 elif isinstance( exporter, ClientMetadataMigrationExporters.SingleFileMetadataExporterMediaTimestamps ):
@@ -1236,7 +1236,7 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
                         
                     else:
                         
-                        processed_strings = [ f'{pretty_timestamp_data_stub}: {HydrusNumbers.ToHumanInt( len( processed_strings ))} times?' ]
+                        processed_strings = [ f'{pretty_timestamp_data_stub}: {HydrusNumbers.to_human_int( len( processed_strings ))} times?' ]
                         
                     
                 

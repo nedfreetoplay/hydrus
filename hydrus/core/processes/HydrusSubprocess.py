@@ -248,7 +248,7 @@ def ReportTimeoutError( cmd, timeout, stdout, stderr ):
         stderr_text = stderr[:256]
         
     
-    message = f'A call to another executable took too long (over {HydrusNumbers.ToHumanInt(timeout)} seconds) to finish! The call was: {cmd}'
+    message = f'A call to another executable took too long (over {HydrusNumbers.to_human_int(timeout)} seconds) to finish! The call was: {cmd}'
     message += '\n\n'
     message += '========== stdout ==========\n'
     message += repr( stdout_text ) + '\n'

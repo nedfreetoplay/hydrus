@@ -39,7 +39,7 @@ def CommitContentUpdatePackagesAsync( title: str, content_update_packages: list[
         
         for ( num_done, content_update_package ) in enumerate( content_update_packages ):
             
-            job_status.SetStatusText( HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do ) )
+            job_status.SetStatusText( HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do ) )
             job_status.SetGauge( num_done, num_to_do )
             
             if job_status.IsCancelled():

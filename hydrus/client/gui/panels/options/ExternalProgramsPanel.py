@@ -418,7 +418,7 @@ class EditProcessCallExecutableAndParametersPanel( ClientGUIScrolledPanels.EditP
         executable_path = items[0]
         executable_parameter_templates = items[1:]
         
-        message = f'I took your paste and got a command "{executable_path}" and {HydrusNumbers.ToHumanInt(len(executable_parameter_templates))} parameters'
+        message = f'I took your paste and got a command "{executable_path}" and {HydrusNumbers.to_human_int(len(executable_parameter_templates))} parameters'
         
         if len( executable_parameter_templates ) > 0:
             

@@ -71,7 +71,7 @@ class GUISessionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         rows.append( ( 'If \'last session\' above, autosave it how often (minutes)?', self._last_session_save_period_minutes ) )
         rows.append( ( 'If \'last session\' above, only autosave during idle time?', self._only_save_last_session_during_idle ) )
         rows.append( ( 'Number of session backups to keep: ', self._number_of_gui_session_backups ) )
-        rows.append( ( f'Show warning popup if session size exceeds {HydrusNumbers.ToHumanInt( 10000000 )}: ', self._show_session_size_warnings ) )
+        rows.append( ( f'Show warning popup if session size exceeds {HydrusNumbers.to_human_int( 10000000 )}: ', self._show_session_size_warnings ) )
         
         sessions_gridbox = ClientGUICommon.WrapInGrid( self._sessions_panel, rows )
         

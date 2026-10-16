@@ -52,7 +52,7 @@ def SendSingleFile( executable_manager: ClientExecutableManager.ExecutableManage
 
 def SendMultipleFiles( executable_manager: ClientExecutableManager.ExecutableManager, id_and_name: HydrusSerialisable.IdAndName, media_results: list[ ClientMediaResult.MediaResult ] ):
     
-    files_desc = f'{HydrusNumbers.ToHumanInt( len( media_results ))} files'
+    files_desc = f'{HydrusNumbers.to_human_int( len( media_results ))} files'
     
     try:
         

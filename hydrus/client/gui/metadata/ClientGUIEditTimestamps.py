@@ -399,7 +399,7 @@ class EditFileTimestampsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUISc
         
         CG.client_controller.pub( 'clipboard', 'text', text )
         
-        self._copy_button.ShowMicroNotification( f'Copied {HydrusNumbers.ToHumanInt(len( list_of_timestamp_data))} encoded time objects!' )
+        self._copy_button.ShowMicroNotification( f'Copied {HydrusNumbers.to_human_int(len( list_of_timestamp_data))} encoded time objects!' )
         
     
     def _AddDomainModifiedTimestamp( self ):
@@ -773,7 +773,7 @@ class EditFileTimestampsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUISc
         
         self._SetValueTimestampDatas( list_of_timestamp_data, from_user = True )
         
-        self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.ToHumanInt(len(list_of_timestamp_data))} encoded times!' )
+        self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.to_human_int(len(list_of_timestamp_data))} encoded times!' )
         
     
     def _SetValueTimestampDatas( self, list_of_timestamp_data: collections.abc.Collection[ ClientTime.TimestampData ], from_user = True ):

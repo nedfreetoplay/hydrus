@@ -1111,7 +1111,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
             
             if num_notes > 0:
                 
-                notes_str = '{} ({})'.format( notes_str, HydrusNumbers.ToHumanInt( num_notes ) )
+                notes_str = '{} ({})'.format( notes_str, HydrusNumbers.to_human_int( num_notes ) )
                 
             
             ClientGUIMenus.AppendMenuItem( manage_menu, notes_str, 'Manage notes for the focused file.', self._ManageNotes )
@@ -1681,7 +1681,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         
         if HG.thumbnail_graphics_view_report_mode:
             
-            HydrusData.safe_print( f'animation update on {HydrusNumbers.ValueRangeToPrettyString( num_animating, len(self._possibly_visible_thumbnails))} thumbs' )
+            HydrusData.safe_print( f'animation update on {HydrusNumbers.value_range_to_pretty_string( num_animating, len(self._possibly_visible_thumbnails))} thumbs' )
             
         
         self._last_animation_update_time_float = HydrusTime.GetNowFloat()
@@ -2283,7 +2283,7 @@ class Thumbnail( QW.QGraphicsItem ):
             
             icon = CC.global_pixmaps().collection
             
-            num_files_str = HydrusNumbers.ToHumanInt( media.GetNumFiles() )
+            num_files_str = HydrusNumbers.to_human_int( media.GetNumFiles() )
             
             ( text_size, num_files_str ) = ClientGUIFunctions.GetTextSizeFromPainter( painter, num_files_str )
             

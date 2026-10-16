@@ -555,7 +555,7 @@ class ThumbnailPairList( QW.QTableView ):
                 
             else:
                 
-                label = f'show {HydrusNumbers.ToHumanInt(num_selected)} rows in a new page'
+                label = f'show {HydrusNumbers.to_human_int(num_selected)} rows in a new page'
                 
             
             ClientGUIMenus.AppendMenuItem( menu, label, 'Open a new page and show these pairs, even if deleted', self._ShowSelectedPairsInNewPage )

@@ -308,7 +308,7 @@ class TestPanel( QW.QWidget ):
                 
                 if len( example_data_to_show ) > self.MAX_CHARS_IN_PREVIEW:
                     
-                    description += f'\nThe data was more than {HydrusNumbers.ToHumanInt(self.MAX_CHARS_IN_PREVIEW)} characters. Clipping what is shown.'
+                    description += f'\nThe data was more than {HydrusNumbers.to_human_int(self.MAX_CHARS_IN_PREVIEW)} characters. Clipping what is shown.'
                     
                     preview = example_data_to_show[:self.MAX_CHARS_IN_PREVIEW]
                     
@@ -333,7 +333,7 @@ class TestPanel( QW.QWidget ):
                     
                     if len( example_data ) > self.MAX_CHARS_IN_PREVIEW:
                         
-                        description += f'\nThe data was more than {HydrusNumbers.ToHumanInt(self.MAX_CHARS_IN_PREVIEW)} characters. Clipping what is shown.'
+                        description += f'\nThe data was more than {HydrusNumbers.to_human_int(self.MAX_CHARS_IN_PREVIEW)} characters. Clipping what is shown.'
                         
                         preview = f'{example_data[:self.MAX_CHARS_IN_PREVIEW]}'
                         
@@ -556,7 +556,7 @@ class TestPanelPageParser( TestPanel ):
                     
                     if len( post_conversion_example_data ) > self.MAX_CHARS_IN_PREVIEW:
                         
-                        description += f'\nThe data was more than {HydrusNumbers.ToHumanInt(self.MAX_CHARS_IN_PREVIEW)} characters. Clipping what is shown.'
+                        description += f'\nThe data was more than {HydrusNumbers.to_human_int(self.MAX_CHARS_IN_PREVIEW)} characters. Clipping what is shown.'
                         
                         preview = post_conversion_example_data[:self.MAX_CHARS_IN_PREVIEW]
                         
@@ -691,7 +691,7 @@ class TestPanelPageParserSubsidiary( TestPanelPageParser ):
                     preview = 'PREVIEW:' + '\n' + str( preview[:self.MAX_CHARS_IN_PREVIEW] )
                     
                 
-                description = HydrusNumbers.ToHumanInt( len( separation_example_data ) ) + ' subsidiary posts parsed'
+                description = HydrusNumbers.to_human_int( len( separation_example_data ) ) + ' subsidiary posts parsed'
                 
             except Exception as e:
                 

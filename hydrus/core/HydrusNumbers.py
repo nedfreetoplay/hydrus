@@ -1,4 +1,4 @@
-def FloatToPercentage( f, sf = 1 ):
+def float_to_percentage(f, sf = 1):
     
     percent = f * 100
     
@@ -10,38 +10,32 @@ def FloatToPercentage( f, sf = 1 ):
         
         # this actually works!
         return f'{percent:.{sf}f}%'
-        
-    
 
-def IndexToPrettyOrdinalString( index: int ):
+def index_to_pretty_ordinal_string(index: int):
     
     if index >= 0:
         
-        return IntToPrettyOrdinalString( index + 1 )
+        return int_to_pretty_ordinal_string( index + 1 )
         
     else:
         
-        return IntToPrettyOrdinalString( index )
-        
-    
+        return int_to_pretty_ordinal_string( index )
 
-def IntToPixels( i ):
+def int_to_pixels(i):
     
     if i == 1: return 'pixels'
     elif i == 1000: return 'kilopixels'
     elif i == 1000000: return 'megapixels'
     else: return 'megapixels'
-    
 
-def IntToUnit( unit ):
+def int_to_unit(unit):
     
     if unit == 1: return 'B'
     elif unit == 1024: return 'KB'
     elif unit == 1048576: return 'MB'
     elif unit == 1073741824: return 'GB'
-    
 
-def IntToPrettyOrdinalString( num: int ):
+def int_to_pretty_ordinal_string(num: int):
     
     if num == 0:
         
@@ -76,7 +70,7 @@ def IntToPrettyOrdinalString( num: int ):
             
         
     
-    s = '{}{}'.format( ToHumanInt( abs( num ) ), ordinal )
+    s = '{}{}'.format( to_human_int( abs( num ) ), ordinal )
     
     if num < 0:
         
@@ -91,16 +85,14 @@ def IntToPrettyOrdinalString( num: int ):
         
     
     return s
-    
 
-def PixelsToInt( unit ):
+def pixels_to_int(unit):
     
     if unit == 'pixels': return 1
     elif unit == 'kilopixels': return 1000
     elif unit == 'megapixels': return 1000000
-    
 
-def BaseToHumanInt( num ):
+def base_to_human_int(num):
     
     try:
         
@@ -117,25 +109,22 @@ def BaseToHumanInt( num ):
     text = '{:,}'.format( num )
     
     return text
-    
 
-ToHumanInt = BaseToHumanInt
+to_human_int = base_to_human_int
 
-def UnitToInt( unit ):
+def unit_to_int(unit):
     
     if unit == 'B': return 1
     elif unit == 'KB': return 1024
     elif unit == 'MB': return 1024 ** 2
     elif unit == 'GB': return 1024 ** 3
     elif unit == 'TB': return 1024 ** 4
-    
 
-def ValueRangeToPrettyString( value, range ):
+def value_range_to_pretty_string(value, range):
     
     if value is not None and range is not None:
         
         value = min( value, range )
         
     
-    return ToHumanInt( value ) + '/' + ToHumanInt( range )
-    
+    return to_human_int( value ) + '/' + to_human_int( range )

@@ -318,7 +318,7 @@ def THREADUploadPending( service_key ):
             
             num_done = num_to_do - remaining_num_pending
             
-            job_status.SetStatusText( 'uploading to ' + service_name + ': ' + HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do ) )
+            job_status.SetStatusText( 'uploading to ' + service_name + ': ' + HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do ) )
             job_status.SetGauge( num_done, num_to_do )
             
             while job_status.IsPaused() or job_status.IsCancelled():
@@ -1174,7 +1174,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
                     
                 else:
                     
-                    message = '{} orphans cleared!'.format( HydrusNumbers.ToHumanInt( num_done ) )
+                    message = '{} orphans cleared!'.format( HydrusNumbers.to_human_int( num_done ) )
                     
                 
                 HydrusData.ShowText( message )
@@ -1312,7 +1312,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
     
     def _DebugIsolateMPVWindows( self ):
         
-        HydrusData.ShowText( f'Isolated {HydrusNumbers.ToHumanInt( len( self._persistent_mpv_widgets ) )} MPV widgets.' )
+        HydrusData.ShowText( f'Isolated {HydrusNumbers.to_human_int( len( self._persistent_mpv_widgets ) )} MPV widgets.' )
         
         self._isolated_mpv_widgets.extend( self._persistent_mpv_widgets )
         
@@ -1630,7 +1630,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             result = ClientDBFilesPhysicalStorage.TryToGetPresumptiveSubfolderPathsBeneathLocation( location, current_granularity )
             
-            HydrusData.ShowText( f'It found {HydrusNumbers.ToHumanInt(len( result ))} subfolders and took {HydrusTime.TimeDeltaToPrettyTimeDelta( HydrusTime.GetNowFloat() - time_started)}' )
+            HydrusData.ShowText( f'It found {HydrusNumbers.to_human_int(len( result ))} subfolders and took {HydrusTime.TimeDeltaToPrettyTimeDelta( HydrusTime.GetNowFloat() - time_started)}' )
             
         except HydrusExceptions.CancelledException as e:
             
@@ -1916,7 +1916,7 @@ QMenuBar::item { padding: 2px 8px; margin: 0px; }'''
                 
                 if num_missing_legacy > 0:
                     
-                    message += f'\n\n--{HydrusNumbers.ToHumanInt( num_missing_legacy )} Missing Legacy Times--'
+                    message += f'\n\n--{HydrusNumbers.to_human_int( num_missing_legacy )} Missing Legacy Times--'
                     message += '\n\nThese are files that were archived before hydrus started tracking archive time (2022-02). If you select to fill these in, hydrus will insert a synthetic time that is import time + 20% of the time to 2022-02 or any file deletion time.'
                     
                     yes_tuples.append( ( 'do legacy times', [ 'legacy' ] ) )
@@ -1924,7 +1924,7 @@ QMenuBar::item { padding: 2px 8px; margin: 0px; }'''
                 
                 if num_missing_import > 0:
                     
-                    message += f'\n\n--{HydrusNumbers.ToHumanInt( num_missing_import )} Missing Import Times--'
+                    message += f'\n\n--{HydrusNumbers.to_human_int( num_missing_import )} Missing Import Times--'
                     message += '\n\nThese are most likely files that were imported with "automatically archive", which for some period until 2024-12 were not recording archive times due to a bug. It may include a few other instances of missing archived files (e.g. you manually deleted one). If you select to fill these in, hydrus will insert a synthetic time that is the same as the import time.'
                     
                     yes_tuples.append( ( 'do import times', [ 'import' ] ) )
@@ -2081,7 +2081,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         CG.client_controller.pub( 'clipboard', 'text', text )
         
-        HydrusData.ShowText( f'{HydrusNumbers.ToHumanInt(len(tables_and_columns))} table and column pairs sent to clipboard.' )
+        HydrusData.ShowText( f'{HydrusNumbers.to_human_int(len(tables_and_columns))} table and column pairs sent to clipboard.' )
         
     
     def _HowBonedAmI( self ):
@@ -2196,7 +2196,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                         
                     finally:
                         
-                        job_status.SetStatusText( HydrusNumbers.ValueRangeToPrettyString( i, num_to_do ) )
+                        job_status.SetStatusText( HydrusNumbers.value_range_to_pretty_string( i, num_to_do ) )
                         job_status.SetGauge( i, num_to_do )
                         
                     
@@ -2207,7 +2207,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                     
                 else:
                     
-                    job_status.SetStatusText( 'Done with ' + HydrusNumbers.ToHumanInt( num_errors ) + ' errors (written to the log).' )
+                    job_status.SetStatusText( 'Done with ' + HydrusNumbers.to_human_int( num_errors ) + ' errors (written to the log).' )
                     
                 
             finally:
@@ -2963,12 +2963,12 @@ ATTACH "client.mappings.db" as external_mappings;'''
                         
                         if num_pending > 0:
                             
-                            submessages.append( '{} {}'.format( HydrusNumbers.ToHumanInt( num_pending ), pending_phrase ) )
+                            submessages.append( '{} {}'.format( HydrusNumbers.to_human_int( num_pending ), pending_phrase ) )
                             
                         
                         if num_petitioned > 0:
                             
-                            submessages.append( '{} {}'.format( HydrusNumbers.ToHumanInt( num_petitioned ), petitioned_phrase ) )
+                            submessages.append( '{} {}'.format( HydrusNumbers.to_human_int( num_petitioned ), petitioned_phrase ) )
                             
                         
                         stuff_to_go_label = ', '.join( submessages )
@@ -2996,7 +2996,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 total_num_pending += num_pending + num_petitioned
                 
             
-            ClientGUIMenus.SetMenuTitle( self._menubar_pending_submenu, 'pending ({})'.format( HydrusNumbers.ToHumanInt( total_num_pending ) ) )
+            ClientGUIMenus.SetMenuTitle( self._menubar_pending_submenu, 'pending ({})'.format( HydrusNumbers.to_human_int( total_num_pending ) ) )
             
             self._menubar_pending_submenu.menuAction().setEnabled( total_num_pending > 0 )
             
@@ -4966,7 +4966,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             if len( missing_query_log_container_names ) > 0:
                 
-                text = '{} subscription queries had missing database data! This is a serious error!'.format( HydrusNumbers.ToHumanInt( len( missing_query_log_container_names ) ) )
+                text = '{} subscription queries had missing database data! This is a serious error!'.format( HydrusNumbers.to_human_int( len( missing_query_log_container_names ) ) )
                 text += '\n' * 2
                 text += 'If you continue, the client will now create and save empty file/search logs for those queries, essentially resetting them, but if you know you need to exit and fix your database in a different way, cancel out now.'
                 text += '\n' * 2
@@ -5006,7 +5006,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             if len( surplus_query_log_container_names ) > 0:
                 
-                text = 'When loading subscription data, the client discovered surplus orphaned subscription data for {} queries! This data is harmless and no longer used. The situation is however unusual, and probably due to an unusual deletion routine or a bug.'.format( HydrusNumbers.ToHumanInt( len( surplus_query_log_container_names ) ) )
+                text = 'When loading subscription data, the client discovered surplus orphaned subscription data for {} queries! This data is harmless and no longer used. The situation is however unusual, and probably due to an unusual deletion routine or a bug.'.format( HydrusNumbers.to_human_int( len( surplus_query_log_container_names ) ) )
                 text += '\n' * 2
                 text += 'If you continue, this surplus data will backed up to your database directory and then safely deleted from the database itself, but if you recently did manual database editing and know you need to exit and fix your database in a different way, cancel out now.'
                 text += '\n' * 2
@@ -6978,15 +6978,15 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         message += '\n' * 2
         message += 'Try to keep the total below 10 million! It is also generally better to spread it around--have five download pages each of 500k weight rather than one page with 2.5M.'
         message += '\n' * 2
-        message += 'Your {} open pages\' total is: {}'.format( total_active_page_count, HydrusNumbers.ToHumanInt( total_active_num_hashes_weight + total_active_num_seeds_weight ) )
+        message += 'Your {} open pages\' total is: {}'.format( total_active_page_count, HydrusNumbers.to_human_int( total_active_num_hashes_weight + total_active_num_seeds_weight ) )
         message += '\n' * 2
-        message += 'Specifically, your file weight is {} and URL weight is {}.'.format( HydrusNumbers.ToHumanInt( total_active_num_hashes_weight ), HydrusNumbers.ToHumanInt( total_active_num_seeds_weight ) )
+        message += 'Specifically, your file weight is {} and URL weight is {}.'.format( HydrusNumbers.to_human_int( total_active_num_hashes_weight ), HydrusNumbers.to_human_int( total_active_num_seeds_weight ) )
         message += '\n' * 2
         message += 'For extra info, your {} closed pages (in the undo list) have total weight {}, being file weight {} and URL weight {}.'.format(
             total_closed_page_count,
-            HydrusNumbers.ToHumanInt( total_closed_num_hashes_weight + total_closed_num_seeds_weight ),
-            HydrusNumbers.ToHumanInt( total_closed_num_hashes_weight ),
-            HydrusNumbers.ToHumanInt( total_closed_num_seeds_weight )
+            HydrusNumbers.to_human_int( total_closed_num_hashes_weight + total_closed_num_seeds_weight ),
+            HydrusNumbers.to_human_int( total_closed_num_hashes_weight ),
+            HydrusNumbers.to_human_int( total_closed_num_seeds_weight )
         )
         
         ClientGUIDialogsMessage.ShowInformation( self, message )
@@ -7376,12 +7376,12 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                 
                 self._have_shown_session_size_warning = True
                 
-                HydrusData.ShowText( 'Your session weight is {}, which is pretty big! To keep your UI lag-free, please try to close some pages or clear some finished downloaders!'.format( HydrusNumbers.ToHumanInt( total_active_weight ) ) )
+                HydrusData.ShowText( 'Your session weight is {}, which is pretty big! To keep your UI lag-free, please try to close some pages or clear some finished downloaders!'.format( HydrusNumbers.to_human_int( total_active_weight ) ) )
                 
             
-            ClientGUIMenus.SetMenuItemLabel( self._menubar_pages_page_count, '{} pages open'.format( HydrusNumbers.ToHumanInt( total_active_page_count ) ) )
+            ClientGUIMenus.SetMenuItemLabel( self._menubar_pages_page_count, '{} pages open'.format( HydrusNumbers.to_human_int( total_active_page_count ) ) )
             
-            ClientGUIMenus.SetMenuItemLabel( self._menubar_pages_session_weight, 'total session weight: {}'.format( HydrusNumbers.ToHumanInt( total_active_weight ) ) )
+            ClientGUIMenus.SetMenuItemLabel( self._menubar_pages_session_weight, 'total session weight: {}'.format( HydrusNumbers.to_human_int( total_active_weight ) ) )
             
             self._pages_count_dirty = False
             
@@ -7597,7 +7597,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
     
     def AskToDeleteAllClosedPages( self ):
         
-        message = 'Clear the {} closed pages?'.format( HydrusNumbers.ToHumanInt( len( self._closed_pages ) ) )
+        message = 'Clear the {} closed pages?'.format( HydrusNumbers.to_human_int( len( self._closed_pages ) ) )
         
         result = ClientGUIDialogsQuick.GetYesNo( self, message )
         
@@ -9334,7 +9334,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                         
                         if len( work_to_do ) > 0:
                             
-                            text = 'Is now a good time for the client to do up to ' + HydrusNumbers.ToHumanInt( idle_shutdown_max_minutes ) + ' minutes\' maintenance work? (Will auto-no in 15 seconds)'
+                            text = 'Is now a good time for the client to do up to ' + HydrusNumbers.to_human_int( idle_shutdown_max_minutes ) + ' minutes\' maintenance work? (Will auto-no in 15 seconds)'
                             text += '\n' * 2
                             
                             if CG.client_controller.is_first_start():

@@ -165,7 +165,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
                 
                 if len( hashes ) > 1:
                     
-                    message = 'Archive ' + HydrusNumbers.ToHumanInt( len( hashes ) ) + ' files?'
+                    message = 'Archive ' + HydrusNumbers.to_human_int( len( hashes ) ) + ' files?'
                     
                     result = ClientGUIDialogsQuick.GetYesNo( self, message )
                     
@@ -464,7 +464,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
                     
                 else:
                     
-                    inbox_phrase = '{} in inbox and {} archived'.format( HydrusNumbers.ToHumanInt( num_inbox ), HydrusNumbers.ToHumanInt( num_selected - num_inbox ) )
+                    inbox_phrase = '{} in inbox and {} archived'.format( HydrusNumbers.to_human_int( num_inbox ), HydrusNumbers.to_human_int( num_selected - num_inbox ) )
                     
                 
                 pretty_total_size = self._GetPrettyTotalSize( only_selected = True )
@@ -612,7 +612,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
                     
                     collections_suffix = 's' if num_collections > 1 else ''
                     
-                    return 'file{} in {} collection{}'.format( suffix, HydrusNumbers.ToHumanInt( num_collections ), collections_suffix )
+                    return 'file{} in {} collection{}'.format( suffix, HydrusNumbers.to_human_int( num_collections ), collections_suffix )
                     
                 else:
                     
@@ -832,7 +832,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
                 
                 if len( hashes ) > 1:
                     
-                    message = 'Send {} files to inbox?'.format( HydrusNumbers.ToHumanInt( len( hashes ) ) )
+                    message = 'Send {} files to inbox?'.format( HydrusNumbers.to_human_int( len( hashes ) ) )
                     
                     result = ClientGUIDialogsQuick.GetYesNo( self, message )
                     
@@ -983,7 +983,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
             
             num_files = self._GetNumSelected()
             
-            title = 'manage tags for ' + HydrusNumbers.ToHumanInt( num_files ) + ' files'
+            title = 'manage tags for ' + HydrusNumbers.to_human_int( num_files ) + ' files'
             frame_key = 'manage_tags_dialog'
             
             with ClientGUITopLevelWindowsPanels.DialogManage( self, title, frame_key ) as dlg:
@@ -1124,7 +1124,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
                     
                 else:
                     
-                    message = 'Enter a reason for these {} files to be removed from {}.'.format( HydrusNumbers.ToHumanInt( len( hashes ) ), remote_service.GetName() )
+                    message = 'Enter a reason for these {} files to be removed from {}.'.format( HydrusNumbers.to_human_int( len( hashes ) ), remote_service.GetName() )
                     
                 
                 try:
@@ -1231,17 +1231,17 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
             
             if job_type == ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_METADATA:
                 
-                message = 'This will reparse the {} selected files\' metadata.'.format( HydrusNumbers.ToHumanInt( num_files ) )
+                message = 'This will reparse the {} selected files\' metadata.'.format( HydrusNumbers.to_human_int( num_files ) )
                 message += '\n' * 2
                 message += 'If the files were imported before some more recent improvement in the parsing code (such as EXIF rotation or bad video resolution or duration or frame count calculation), this will update them.'
                 
             elif job_type == ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FORCE_THUMBNAIL:
                 
-                message = 'This will force-regenerate the {} selected files\' thumbnails.'.format( HydrusNumbers.ToHumanInt( num_files ) )
+                message = 'This will force-regenerate the {} selected files\' thumbnails.'.format( HydrusNumbers.to_human_int( num_files ) )
                 
             elif job_type == ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_REFIT_THUMBNAIL:
                 
-                message = 'This will regenerate the {} selected files\' thumbnails, but only if they are the wrong size.'.format( HydrusNumbers.ToHumanInt( num_files ) )
+                message = 'This will regenerate the {} selected files\' thumbnails, but only if they are the wrong size.'.format( HydrusNumbers.to_human_int( num_files ) )
                 
             else:
                 
@@ -1253,7 +1253,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
             if num_files > 50:
                 
                 message += '\n' * 2
-                message += 'You have selected {} files, so this job may take some time. You can run it all now or schedule it to the overall file maintenance queue for later spread-out processing.'.format( HydrusNumbers.ToHumanInt( num_files ) )
+                message += 'You have selected {} files, so this job may take some time. You can run it all now or schedule it to the overall file maintenance queue for later spread-out processing.'.format( HydrusNumbers.to_human_int( num_files ) )
                 
                 yes_tuples = []
                 
@@ -1532,7 +1532,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
                 flat_media = ClientMediaList.FlattenMedia( media_group )
                 
             
-            num_files_str = HydrusNumbers.ToHumanInt( len( flat_media ) )
+            num_files_str = HydrusNumbers.to_human_int( len( flat_media ) )
             
             if len( flat_media ) < 2:
                 
@@ -1556,7 +1556,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
             
             media_result_pairs = [ ( media_a.GetMediaResult(), media_b.GetMediaResult() ) for ( media_a, media_b ) in media_pairs ]
             
-            num_files_str = HydrusNumbers.ToHumanInt( len( self._GetSelectedFlatMedia() ) )
+            num_files_str = HydrusNumbers.to_human_int( len( self._GetSelectedFlatMedia() ) )
             
         
         if len( media_result_pairs ) == 0:
@@ -1571,7 +1571,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
             
             if len( media_result_pairs ) > 1 and duplicate_type in ( HC.DUPLICATE_FALSE_POSITIVE, HC.DUPLICATE_ALTERNATE ):
                 
-                media_result_pairs_str = HydrusNumbers.ToHumanInt( len( media_result_pairs ) )
+                media_result_pairs_str = HydrusNumbers.to_human_int( len( media_result_pairs ) )
                 
                 message = 'Are you sure you want to {} for the {} selected files? The relationship will be applied between every pair combination in the file selection ({} pairs).'.format( yes_no_text, num_files_str, media_result_pairs_str )
                 
@@ -1774,7 +1774,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
             
             media_pairs = [ ( better_media, worse_media ) for worse_media in worse_flat_media ]
             
-            message = 'Are you sure you want to set the focused file as better than the {} other files in the selection?'.format( HydrusNumbers.ToHumanInt( len( worse_flat_media ) ) )
+            message = 'Are you sure you want to set the focused file as better than the {} other files in the selection?'.format( HydrusNumbers.to_human_int( len( worse_flat_media ) ) )
             
             result = ClientGUIDialogsQuick.GetYesNo( self, message )
             

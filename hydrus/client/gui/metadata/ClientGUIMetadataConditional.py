@@ -370,7 +370,7 @@ class AutoCompleteDropdownMetadataConditional( ClientGUIACDropdown.AutocompleteD
                 
                 self._BroadcastChoices( predicates, shift_down )
                 
-                self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.ToHumanInt(len(predicates))} predicates!' )
+                self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.to_human_int(len(predicates))} predicates!' )
                 
             
         except Exception as e:

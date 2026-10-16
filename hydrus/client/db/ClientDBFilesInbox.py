@@ -156,13 +156,13 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
             
             if job_status is not None:
                 
-                job_status.SetStatusText( f'missing import archive timestamps: {HydrusNumbers.ToHumanInt(num_fixed)} fixed' )
+                job_status.SetStatusText( f'missing import archive timestamps: {HydrusNumbers.to_human_int(num_fixed)} fixed' )
                 
             
         
         if num_fixed > 0:
             
-            HydrusData.ShowText( f'{HydrusNumbers.ToHumanInt( num_fixed )} missing import archive times fixed!' )
+            HydrusData.ShowText( f'{HydrusNumbers.to_human_int( num_fixed )} missing import archive times fixed!' )
             
         
         if job_status is not None:
@@ -213,13 +213,13 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
             
             if job_status is not None:
                 
-                job_status.SetStatusText( f'missing legacy archive timestamps: {HydrusNumbers.ToHumanInt(num_fixed)} fixed' )
+                job_status.SetStatusText( f'missing legacy archive timestamps: {HydrusNumbers.to_human_int(num_fixed)} fixed' )
                 
             
         
         if num_fixed > 0:
             
-            HydrusData.ShowText( f'{HydrusNumbers.ToHumanInt( num_fixed )} missing legacy archive times fixed!' )
+            HydrusData.ShowText( f'{HydrusNumbers.to_human_int( num_fixed )} missing legacy archive times fixed!' )
             
         
         if job_status is not None:
@@ -244,7 +244,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
             
             for ( num_done, num_to_do, batch_of_hash_ids ) in HydrusLists.split_list_into_chunks_rich( current_archived_hash_ids, BLOCK_SIZE ):
                 
-                message = f'Searching current files: {HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do )}'
+                message = f'Searching current files: {HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do )}'
                 
                 CG.client_controller.frame_splash_status.SetSubtext( message )
                 
@@ -291,7 +291,7 @@ class ClientDBFilesInbox( ClientDBModule.ClientDBModule ):
             
             for ( num_done, num_to_do, batch_of_hash_ids ) in HydrusLists.split_list_into_chunks_rich( deleted_hash_ids, BLOCK_SIZE ):
                 
-                message = f'Searching deleted files: {HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do )}'
+                message = f'Searching deleted files: {HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do )}'
                 
                 CG.client_controller.frame_splash_status.SetSubtext( message )
                 

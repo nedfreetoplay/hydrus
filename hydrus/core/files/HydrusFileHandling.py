@@ -220,7 +220,7 @@ def GenerateThumbnailNumPyUsingFFMPEGVideoRenderer( path, target_resolution, mim
         
     except Exception as e:
         
-        message = 'Problem generating thumbnail for "{}" at frame {} ({})--FFMPEG could not render it.'.format( path, desired_thumb_frame_index, HydrusNumbers.FloatToPercentage( percentage_in / 100.0 ) )
+        message = 'Problem generating thumbnail for "{}" at frame {} ({})--FFMPEG could not render it.'.format( path, desired_thumb_frame_index, HydrusNumbers.float_to_percentage( percentage_in / 100.0 ) )
         
         PrintMoreThumbErrorInfo( e, message, extra_description = extra_description )
         
