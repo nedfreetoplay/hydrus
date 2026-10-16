@@ -109,7 +109,7 @@ class HydrusPubSub:
                         HydrusData.ShowText( ( topic, args, kwargs, callable_tuples ) )
                         
                     
-                    if HydrusProfiling.IsProfileMode( 'ui' ) and not_a_report:
+                    if HydrusProfiling.is_profile_mode( 'ui' ) and not_a_report:
                         
                         summary = 'Profiling pubsub: {}'.format( topic )
                         
@@ -117,7 +117,7 @@ class HydrusPubSub:
                             
                             try:
                                 
-                                HydrusProfiling.Profile( summary, HydrusData.Call( callable, *args, **kwargs ), min_duration_ms = HG.pubsub_profile_min_job_time_ms )
+                                HydrusProfiling.profile( summary, HydrusData.Call( callable, *args, **kwargs ), min_duration_ms = HG.pubsub_profile_min_job_time_ms )
                                 
                             except HydrusExceptions.ShutdownException:
                                 
