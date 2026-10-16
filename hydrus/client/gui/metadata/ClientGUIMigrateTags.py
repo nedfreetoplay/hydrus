@@ -585,7 +585,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
                         
                         try:
                             
-                            hash_type = hta.GetHashType()
+                            hash_type = hta.get_hash_type()
                             
                             self._dest_archive_hash_type_override = hash_type
                             
@@ -604,7 +604,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
                             
                             hta = HydrusTagArchive.HydrusTagPairArchive( path )
                             
-                            pair_type = hta.GetPairType()
+                            pair_type = hta.get_pair_type()
                             
                         except Exception as e:
                             
@@ -662,7 +662,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
                         
                         hta = HydrusTagArchive.HydrusTagArchive( path )
                         
-                        hash_type = hta.GetHashType()
+                        hash_type = hta.get_hash_type()
                         
                     except Exception as e:
                         
@@ -681,7 +681,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
                         
                         hta = HydrusTagArchive.HydrusTagPairArchive( path )
                         
-                        pair_type = hta.GetPairType()
+                        pair_type = hta.get_pair_type()
                         
                     except Exception as e:
                         
