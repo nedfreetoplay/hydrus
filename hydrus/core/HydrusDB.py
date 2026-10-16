@@ -16,6 +16,13 @@ from hydrus.core import HydrusPaths
 from hydrus.core import HydrusProfiling
 from hydrus.core import HydrusTime
 
+def critical_initiate_immediate_program_halt():
+    
+    # обратите внимание, что sys.exit лишь вызывает исключение, поэтому, чтобы добиться нужного результата, приходится прибегнуть к более радикальным мерам
+    
+    # noinspection PyUnresolvedReferences
+    os._exit( 1 )
+
 def check_can_vacuum(db_path, stop_time = None):
     
     db = sqlite3.connect( db_path, isolation_level = None, detect_types = sqlite3.PARSE_DECLTYPES )
@@ -257,7 +264,7 @@ def vacuum_db_into(db_path: str):
             
             HG.controller.blocking_safe_show_critical_message( 'CRITICAL VACUUM ERROR', message )
             
-            HydrusExit.CRITICALInitiateImmediateProgramHalt()
+            critical_initiate_immediate_program_halt()
             
         
         message = f'The vacuum failed, but I have successfully rolled back to where you started. While attempting to vacuum "{db_path}", I could not rename "{vacuum_path}" to "{db_path}"! This was a very bad situation, but I have recovered by renaming the original, to-be-deleted "{deletee_path}" back to "{db_path}".'
@@ -591,7 +598,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
             
             self._controller.blocking_safe_show_critical_message( 'recovering from failed vacuum!', message )
             
-            HydrusExit.CRITICALInitiateImmediateProgramHalt()
+            critical_initiate_immediate_program_halt()
             
         
         none_of_the_database_files_exist = len( missing_db_paths ) == len( all_db_paths )
@@ -634,7 +641,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                         
                         HG.controller.blocking_safe_show_critical_message( 'REPAIR FAILURE', message )
                         
-                        HydrusExit.CRITICALInitiateImmediateProgramHalt()
+                        critical_initiate_immediate_program_halt()
                         
                     
                     self._init_db()
