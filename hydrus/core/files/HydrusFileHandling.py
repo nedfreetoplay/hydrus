@@ -208,7 +208,7 @@ def generate_thumbnail_numpy_using_ffmpeg_video_renderer(path, target_resolution
             
         finally:
             
-            renderer.Stop()
+            renderer.stop()
             
         
     except Exception as e:
@@ -234,7 +234,7 @@ def generate_thumbnail_numpy_using_ffmpeg_video_renderer(path, target_resolution
                 
             finally:
                 
-                renderer.Stop()
+                renderer.stop()
                 
             
         except Exception as e:
@@ -675,7 +675,7 @@ def get_file_info(path, mime = None, ok_to_look_for_hydrus_updates = False):
         
     elif mime in HC.VIDEO or mime in HC.HEIF_TYPE_SEQUENCES or mime in ( HC.IMAGE_AVIF_SEQUENCE, HC.ANIMATION_JXL ):
         
-        ( ( width, height ), duration_ms, num_frames, has_audio ) = HydrusVideoHandling.GetFFMPEGVideoProperties( path )
+        ( ( width, height ), duration_ms, num_frames, has_audio ) = HydrusVideoHandling.get_ffmpeg_video_properties( path )
         
     elif mime in HC.VIEWABLE_ANIMATIONS:
         
@@ -689,7 +689,7 @@ def get_file_info(path, mime = None, ok_to_look_for_hydrus_updates = False):
         
         ffmpeg_lines = HydrusFFMPEG.get_ffmpeg_info_lines( path )
         
-        ( file_duration_in_s, stream_duration_in_s ) = HydrusVideoHandling.ParseFFMPEGDuration( ffmpeg_lines )
+        ( file_duration_in_s, stream_duration_in_s ) = HydrusVideoHandling.parse_ffmpeg_duration( ffmpeg_lines )
         
         if file_duration_in_s is None:
             
@@ -943,7 +943,7 @@ def get_mime(path, ok_to_look_for_hydrus_updates = False):
             elif mime == HC.UNDETERMINED_JXL:
                 
                 # disabled animated jxl for now--ffmpeg getting in an infinite loop!
-                if HydrusVideoHandling.FileIsAnimated( path ):
+                if HydrusVideoHandling.file_is_animated( path ):
                     
                     return HC.ANIMATION_JXL
                     
@@ -1032,7 +1032,7 @@ def get_mime_from_ffmpeg(path):
     
     lines = HydrusFFMPEG.get_ffmpeg_info_lines( path )
     
-    ( has_video, video_format, video_stream_mapping ) = HydrusVideoHandling.ParseFFMPEGVideoFormat( lines )
+    ( has_video, video_format, video_stream_mapping ) = HydrusVideoHandling.parse_ffmpeg_video_format( lines )
     ( has_audio, audio_format, audio_stream_mapping, image_stream_mapping ) = HydrusAudioHandling.parse_ffmpeg_audio( lines )
     
     if not ( has_video or has_audio ):
@@ -1045,7 +1045,7 @@ def get_mime_from_ffmpeg(path):
         # TODO: I think rework this guy
         # it is odd that we have nicer per-stream parsing above, with video_format and audio_format, and then use this weird thing to do most of the mime logic
         # maybe it makes sense, since we care about the _file_ container more than the streams, but let's have a look anyway
-        mime_text = HydrusVideoHandling.ParseFFMPEGMimeText( lines )
+        mime_text = HydrusVideoHandling.parse_ffmpeg_mime_text( lines )
         
     except HydrusExceptions.UnsupportedFileException:
         
@@ -1115,7 +1115,7 @@ def get_mime_from_ffmpeg(path):
         
     elif 'mp4' in mime_text:
         
-        container = HydrusVideoHandling.ParseFFMPEGMetadataContainer( lines )
+        container = HydrusVideoHandling.parse_ffmpeg_metadata_container( lines )
         
         if container == 'M4A':
             
@@ -1163,7 +1163,7 @@ def get_mime_from_ffmpeg(path):
         
     elif 'rm' in mime_text:
         
-        if HydrusVideoHandling.ParseFFMPEGHasVideo( lines ):
+        if HydrusVideoHandling.parse_ffmpeg_has_video( lines ):
             
             return HC.VIDEO_REALMEDIA
             
@@ -1174,7 +1174,7 @@ def get_mime_from_ffmpeg(path):
         
     elif mime_text == 'asf':
         
-        if HydrusVideoHandling.ParseFFMPEGHasVideo( lines ):
+        if HydrusVideoHandling.parse_ffmpeg_has_video( lines ):
             
             return HC.VIDEO_WMV
             
