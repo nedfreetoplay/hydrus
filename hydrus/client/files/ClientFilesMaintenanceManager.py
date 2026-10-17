@@ -773,7 +773,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             thumbnail_mime = HydrusFileHandling.get_thumbnail_mime( thumbnail_path )
             
-            numpy_image = HydrusImageHandling.GenerateNumPyImage( thumbnail_path, thumbnail_mime )
+            numpy_image = HydrusImageHandling.generate_numpy_image( thumbnail_path, thumbnail_mime )
             
             return HydrusBlurhash.get_blur_hash_from_numpy( numpy_image )
             
@@ -966,7 +966,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             try:
                 
-                pixel_hash = HydrusImageHandling.GetImagePixelHash( path, mime )
+                pixel_hash = HydrusImageHandling.get_image_pixel_hash( path, mime )
                 
             except Exception as e:
                 

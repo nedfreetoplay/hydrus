@@ -89,13 +89,13 @@ def generate_default_thumbnail(mime: int, target_resolution: tuple[int, int]):
     
     thumb_path = mimes_to_default_thumbnail_paths[ mime ]
     
-    return HydrusImageHandling.GenerateDefaultThumbnailNumPyFromPath( thumb_path, target_resolution )
+    return HydrusImageHandling.generate_default_thumbnail_numpy_from_path( thumb_path, target_resolution )
 
 def generate_thumbnail_bytes(path, target_resolution, mime, duration_ms, num_frames, percentage_in = 35):
     
     thumbnail_numpy = generate_thumbnail_numpy( path, target_resolution, mime, duration_ms, num_frames, percentage_in = percentage_in )
 
-    return HydrusImageHandling.GenerateThumbnailBytesFromNumPy( thumbnail_numpy )
+    return HydrusImageHandling.generate_thumbnail_bytes_from_numpy( thumbnail_numpy )
 
 def print_more_thumb_error_info(e: Exception, message, extra_description: str | None = None):
     
@@ -118,7 +118,7 @@ def generate_thumbnail_numpy(path, target_resolution, mime, duration_ms, num_fra
         
         try:
             
-            thumbnail_numpy = HydrusImageHandling.GenerateThumbnailNumPyFromStaticImagePath( path, target_resolution, mime )
+            thumbnail_numpy = HydrusImageHandling.generate_thumbnail_numpy_from_static_image_path( path, target_resolution, mime )
             
         except Exception as e:
             
@@ -176,7 +176,7 @@ def generate_thumbnail_numpy_audio(path, target_resolution, mime, extra_descript
             
             image_mime = get_mime( temp_path )
             
-            thumbnail_numpy = HydrusImageHandling.GenerateThumbnailNumPyFromStaticImagePath( temp_path, target_resolution, image_mime )
+            thumbnail_numpy = HydrusImageHandling.generate_thumbnail_numpy_from_static_image_path( temp_path, target_resolution, image_mime )
             
         
     except Exception as e:
@@ -249,7 +249,7 @@ def generate_thumbnail_numpy_using_ffmpeg_video_renderer(path, target_resolution
     
     if thumbnail_numpy is not None:
         
-        thumbnail_numpy =  HydrusImageHandling.ResizeNumPyImage( thumbnail_numpy, target_resolution ) # just in case ffmpeg doesn't deliver right
+        thumbnail_numpy =  HydrusImageHandling.resize_numpy_image( thumbnail_numpy, target_resolution ) # just in case ffmpeg doesn't deliver right
         
     
     return thumbnail_numpy
@@ -278,7 +278,7 @@ def generate_thumbnail_numpy_weird_application_gubbins(path, target_resolution, 
                 
             else:
                 
-                thumbnail_numpy = HydrusImageHandling.GenerateThumbnailNumPyFromStaticImagePath( temp_path, target_resolution, cover_mime )
+                thumbnail_numpy = HydrusImageHandling.generate_thumbnail_numpy_from_static_image_path( temp_path, target_resolution, cover_mime )
                 
             
         except Exception as e:
@@ -300,7 +300,7 @@ def generate_thumbnail_numpy_weird_application_gubbins(path, target_resolution, 
             
             HydrusClipHandling.extract_db_png_to_path( path, temp_path )
             
-            thumbnail_numpy = HydrusImageHandling.GenerateThumbnailNumPyFromStaticImagePath( temp_path, target_resolution, HC.IMAGE_PNG )
+            thumbnail_numpy = HydrusImageHandling.generate_thumbnail_numpy_from_static_image_path( temp_path, target_resolution, HC.IMAGE_PNG )
             
         except Exception as e:
             
@@ -360,7 +360,7 @@ def generate_thumbnail_numpy_weird_application_gubbins(path, target_resolution, 
             
             HydrusProcreateHandling.extract_zipped_thumbnail_to_path( path, temp_path )
             
-            thumbnail_numpy = HydrusImageHandling.GenerateThumbnailNumPyFromStaticImagePath( temp_path, target_resolution, HC.IMAGE_PNG )
+            thumbnail_numpy = HydrusImageHandling.generate_thumbnail_numpy_from_static_image_path( temp_path, target_resolution, HC.IMAGE_PNG )
             
         except Exception as e:
             
@@ -539,7 +539,7 @@ def get_file_info(path, mime = None, ok_to_look_for_hydrus_updates = False):
             
             cover_mime = get_mime( temp_path )
             
-            ( width, height ) = HydrusImageHandling.GetImageResolution( temp_path, cover_mime )
+            ( width, height ) = HydrusImageHandling.get_image_resolution( temp_path, cover_mime )
             
         except Exception as e:
             
@@ -683,7 +683,7 @@ def get_file_info(path, mime = None, ok_to_look_for_hydrus_updates = False):
         
     elif mime in HC.IMAGES:
         
-        ( width, height ) = HydrusImageHandling.GetImageResolution( path, mime )
+        ( width, height ) = HydrusImageHandling.get_image_resolution( path, mime )
         
     elif mime in HC.AUDIO:
         

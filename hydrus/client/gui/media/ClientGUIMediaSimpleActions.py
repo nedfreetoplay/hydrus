@@ -158,7 +158,7 @@ def CopyMediaBitmap( media: ClientMediaSingle.MediaSingle, bitmap_type: int ):
                 
                 if bitmap_type == CAC.BITMAP_TYPE_SOURCE_LOOKUPS and ( width > 1024 or height > 1024 ):
                     
-                    target_resolution = HydrusImageHandling.GetThumbnailResolution( media.GetResolution(), ( 1024, 1024 ), HydrusImageHandling.THUMBNAIL_SCALE_TO_FIT, 100 )
+                    target_resolution = HydrusImageHandling.get_thumbnail_resolution( media.GetResolution(), ( 1024, 1024 ), HydrusImageHandling.THUMBNAIL_SCALE_TO_FIT, 100 )
                     
                     CG.client_controller.pub( 'clipboard', 'bmp', ( media, target_resolution ) )
                     

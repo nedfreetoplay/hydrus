@@ -67,7 +67,7 @@ def generate_thumbnail_numpy_from_office_path(path: str, target_resolution: tupl
         raise HydrusExceptions.NoThumbnailFileException( 'No thumbnail.jpeg file!' )
         
     
-    pil_image = HydrusImageHandling.GeneratePILImage( zip_path_file_obj )
+    pil_image = HydrusImageHandling.generate_pil_image( zip_path_file_obj )
     
     try:
         
@@ -80,7 +80,7 @@ def generate_thumbnail_numpy_from_office_path(path: str, target_resolution: tupl
     
     try:
         
-        numpy_image = HydrusImageHandling.GenerateNumPyImageFromPILImage( thumbnail_pil_image )
+        numpy_image = HydrusImageHandling.generate_numpy_image_from_pil_image( thumbnail_pil_image )
         
     finally:
         
