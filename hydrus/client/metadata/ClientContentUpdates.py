@@ -11,7 +11,7 @@ def ConvertClientToServerUpdateToContentUpdates( client_to_server_update: Hydrus
     
     content_updates = []
     
-    for ( action, content, reason ) in client_to_server_update.IterateAllActionsAndContentsAndReasons():
+    for ( action, content, reason ) in client_to_server_update.iterate_all_actions_and_contents_and_reasons():
         
         content_type = content.GetContentType()
         

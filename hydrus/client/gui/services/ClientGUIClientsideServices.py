@@ -541,7 +541,7 @@ class EditServiceRemoteSubPanel( ClientGUICommon.StaticBox ):
         
         def do_it():
             
-            full_host = credentials.GetPortedAddress()
+            full_host = credentials.get_ported_address()
             
             url = scheme + full_host + '/' + request
             
@@ -730,7 +730,7 @@ class EditServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
         
         def work_callable():
             
-            full_host = credentials.GetPortedAddress()
+            full_host = credentials.get_ported_address()
             
             url = 'https://{}/auto_create_account_types'.format( full_host )
             
@@ -818,11 +818,11 @@ class EditServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
         
         def work_callable():
             
-            full_host = credentials.GetPortedAddress()
+            full_host = credentials.get_ported_address()
             
             # get a registration token
             
-            url = 'https://{}/auto_create_registration_key?account_type_key={}'.format( full_host, account_type.GetAccountTypeKey().hex() )
+            url = 'https://{}/auto_create_registration_key?account_type_key={}'.format( full_host, account_type.get_account_type_key().hex() )
             
             network_job = ClientNetworkingJobs.NetworkJobHydrus( CC.TEST_SERVICE_KEY, 'GET', url )
             
@@ -868,7 +868,7 @@ class EditServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
         
         def work_callable():
             
-            full_host = credentials.GetPortedAddress()
+            full_host = credentials.get_ported_address()
             
             url = 'https://{}/access_key?registration_key={}'.format( full_host, registration_key.hex() )
             
@@ -921,8 +921,8 @@ class EditServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
             
         else:
             
-            unavailable_account_types = [ account_type for account_type in account_types if not account_type.CanAutoCreateAccountNow() ]
-            available_account_types = [ account_type for account_type in account_types if account_type.CanAutoCreateAccountNow() ]
+            unavailable_account_types = [ account_type for account_type in account_types if not account_type.can_auto_create_account_now() ]
+            available_account_types = [ account_type for account_type in account_types if account_type.can_auto_create_account_now() ]
             
             unavailable_text = ''
             
@@ -932,11 +932,11 @@ class EditServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
                 
                 for account_type in unavailable_account_types:
                     
-                    ( num_accounts, time_delta ) = account_type.GetAutoCreateAccountVelocity()
+                    ( num_accounts, time_delta ) = account_type.get_auto_create_account_velocity()
                     
-                    history = account_type.GetAutoCreateAccountHistory()
+                    history = account_type.get_auto_create_account_history()
                     
-                    text = '{} - {}'.format( account_type.GetTitle(), history.GetWaitingEstimate( HC.BANDWIDTH_TYPE_REQUESTS, time_delta, num_accounts ) )
+                    text = '{} - {}'.format( account_type.get_title(), history.GetWaitingEstimate( HC.BANDWIDTH_TYPE_REQUESTS, time_delta, num_accounts ) )
                     
                     unavailable_texts.append( text )
                     
@@ -951,7 +951,7 @@ class EditServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
                 
                 account_type = available_account_types[ 0 ]
                 
-                message = 'This server offers auto-creation of a "{}" account type. Is this ok?'.format( account_type.GetTitle() )
+                message = 'This server offers auto-creation of a "{}" account type. Is this ok?'.format( account_type.get_title() )
                 message += unavailable_text
                 
                 result = ClientGUIDialogsQuick.GetYesNo( self, message, title = 'One account type available' )
@@ -966,7 +966,7 @@ class EditServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
                 message = 'Please select which account type you would like to create.'
                 message += unavailable_text
                 
-                choice_tuples = [ ( account_type.GetTitle(), account_type, ', '.join( account_type.GetPermissionStrings() ) ) for account_type in available_account_types ]
+                choice_tuples = [ ( account_type.get_title(), account_type, ', '.join( account_type.get_permission_strings() ) ) for account_type in available_account_types ]
                 
                 try:
                     
@@ -1061,7 +1061,7 @@ class EditServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
         
         if len( access_key ) > 0:
             
-            credentials.SetAccessKey( access_key )
+            credentials.set_access_key( access_key )
             
         
         return credentials
@@ -1075,9 +1075,9 @@ class EditServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
         
         if credentials != self._original_credentials:
             
-            account = HydrusNetwork.Account.GenerateUnknownAccount()
+            account = HydrusNetwork.Account.generate_unknown_account()
             
-            dictionary_part[ 'account' ] = HydrusNetwork.Account.GenerateSerialisableTupleFromAccount( account )
+            dictionary_part[ 'account' ] = HydrusNetwork.Account.generate_serialisable_tuple_from_account( account )
             
             network_context = ClientNetworkingContexts.NetworkContext( CC.NETWORK_CONTEXT_HYDRUS, self._service_key )
             

@@ -2736,7 +2736,7 @@ class DB( HydrusDB.HydrusDB ):
                             
                             content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( tag, hashes ) )
                             
-                            client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content )
+                            client_to_server_update.add_content( HC.CONTENT_UPDATE_PEND, content )
                             
                         
                     
@@ -2778,7 +2778,7 @@ class DB( HydrusDB.HydrusDB ):
                             
                             content = HydrusNetwork.Content( HC.CONTENT_TYPE_MAPPINGS, ( tag, hashes ) )
                             
-                            client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason )
+                            client_to_server_update.add_content( HC.CONTENT_UPDATE_PETITION, content, reason )
                             
                         
                     
@@ -2803,7 +2803,7 @@ class DB( HydrusDB.HydrusDB ):
                             
                             content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_PARENTS, ( child_tag, parent_tag ) )
                             
-                            client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason )
+                            client_to_server_update.add_content( HC.CONTENT_UPDATE_PEND, content, reason )
                             
                         
                         petitioned = self._execute( f'SELECT child_tag_id, parent_tag_id, reason_id FROM {statuses_to_storage_table_names[ HC.CONTENT_STATUS_PETITIONED ]} ORDER BY reason_id LIMIT ?;', ( ideal_weight, ) ).fetchall()
@@ -2820,7 +2820,7 @@ class DB( HydrusDB.HydrusDB ):
                             
                             content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_PARENTS, ( child_tag, parent_tag ) )
                             
-                            client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason )
+                            client_to_server_update.add_content( HC.CONTENT_UPDATE_PETITION, content, reason )
                             
                         
                     
@@ -2845,7 +2845,7 @@ class DB( HydrusDB.HydrusDB ):
                             
                             content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_SIBLINGS, ( bad_tag, good_tag ) )
                             
-                            client_to_server_update.AddContent( HC.CONTENT_UPDATE_PEND, content, reason )
+                            client_to_server_update.add_content( HC.CONTENT_UPDATE_PEND, content, reason )
                             
                         
                         petitioned = self._execute( f'SELECT bad_tag_id, good_tag_id, reason_id FROM {statuses_to_storage_table_names[ HC.CONTENT_STATUS_PETITIONED ]} ORDER BY reason_id LIMIT ?;', ( ideal_weight, ) ).fetchall()
@@ -2862,7 +2862,7 @@ class DB( HydrusDB.HydrusDB ):
                             
                             content = HydrusNetwork.Content( HC.CONTENT_TYPE_TAG_SIBLINGS, ( bad_tag, good_tag ) )
                             
-                            client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason )
+                            client_to_server_update.add_content( HC.CONTENT_UPDATE_PETITION, content, reason )
                             
                         
                     
@@ -2897,13 +2897,13 @@ class DB( HydrusDB.HydrusDB ):
                             
                             content = HydrusNetwork.Content( HC.CONTENT_TYPE_FILES, hashes )
                             
-                            client_to_server_update.AddContent( HC.CONTENT_UPDATE_PETITION, content, reason )
+                            client_to_server_update.add_content( HC.CONTENT_UPDATE_PETITION, content, reason )
                             
                         
                     
                 
             
-            if client_to_server_update.HasContent():
+            if client_to_server_update.has_content():
                 
                 return client_to_server_update
                 
@@ -8705,9 +8705,9 @@ class DB( HydrusDB.HydrusDB ):
                     
                     credentials = service.GetCredentials()
                     
-                    credentials.SetAddress( host, port )
+                    credentials.set_address( host, port )
                     
-                    credentials.SetAccessKey( access_key )
+                    credentials.set_access_key( access_key )
                     
                     service.SetCredentials( credentials )
                     

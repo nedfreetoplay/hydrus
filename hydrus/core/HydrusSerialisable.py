@@ -177,7 +177,8 @@ SERIALISABLE_TYPE_EXECUTABLE_CALL_LOCAL_PROCESS_DEFAULT_LAUNCH_URL = 161
 SERIALISABLE_TYPE_EXTERNAL_PROGRAMS_IMPORT_OPTIONS = 162
 SERIALISABLE_TYPE_EXTERNAL_PROGRAMS_IMPORT_OPTIONS_SINGLE_ENTRY = 163
 
-SERIALISABLE_TYPES_TO_OBJECT_TYPES = {}
+# Надо будет сделать тип HydrusSerialisable.SerialisableBase, но для этого нужно импортировать скрипт с этим типом.
+SERIALISABLE_TYPES_TO_OBJECT_TYPES: dict[int, typing.Any] = {}
 
 def create_from_network_bytes(network_bytes: bytes, raise_error_on_future_version = False) -> typing.Any:
     

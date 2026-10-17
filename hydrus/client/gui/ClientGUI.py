@@ -6571,13 +6571,13 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             service_key = HydrusData.generate_key()
             
-            tag_service = HydrusNetwork.GenerateService( service_key, HC.TAG_REPOSITORY, 'tag service', HC.DEFAULT_SERVICE_PORT )
+            tag_service = HydrusNetwork.generate_service( service_key, HC.TAG_REPOSITORY, 'tag service', HC.DEFAULT_SERVICE_PORT )
             
             serverside_services.append( tag_service )
             
             service_key = HydrusData.generate_key()
             
-            file_service = HydrusNetwork.GenerateService( service_key, HC.FILE_REPOSITORY, 'file service', HC.DEFAULT_SERVICE_PORT + 1 )
+            file_service = HydrusNetwork.generate_service( service_key, HC.FILE_REPOSITORY, 'file service', HC.DEFAULT_SERVICE_PORT + 1 )
             
             serverside_services.append( file_service )
             

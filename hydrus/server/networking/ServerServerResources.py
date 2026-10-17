@@ -1298,10 +1298,10 @@ class HydrusResourceRestrictedUpdate( HydrusResourceRestricted ):
         
         if isinstance( self._service, HydrusNetwork.ServerServiceRepositoryTag ):
             
-            client_to_server_update.ApplyTagFilterToPendingMappings( self._service.GetTagFilter() )
+            client_to_server_update.ApplyTagFilterToPendingMappings( self._service.get_tag_filter() )
             
         
-        timestamp = self._service.GetMetadata().GetNextUpdateBegin() + 1
+        timestamp = self._service.get_metadata().GetNextUpdateBegin() + 1
         
         SG.server_controller.write_synchronous( 'update', self._service_key, request.hydrus_account, client_to_server_update, timestamp )
         

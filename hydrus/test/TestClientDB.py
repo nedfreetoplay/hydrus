@@ -1970,7 +1970,7 @@ class TestClientDB( unittest.TestCase ):
         
         service = ClientServices.GenerateService( service_key, HC.TAG_REPOSITORY, 'new tag repo' )
         
-        service._account._account_type = HydrusNetwork.AccountType.GenerateAdminAccountType( HC.TAG_REPOSITORY )
+        service._account._account_type = HydrusNetwork.AccountType.generate_admin_account_type( HC.TAG_REPOSITORY )
         
         services.append( service )
         
