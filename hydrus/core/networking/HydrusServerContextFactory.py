@@ -2,7 +2,7 @@ from hydrus.core import HydrusGlobals as HG
 
 from OpenSSL import crypto
 
-def load_certs_ordered( pem_bytes: bytes ) -> list[ crypto.X509 ]:
+def load_certs_ordered(pem_bytes: bytes) -> list[crypto.X509]:
     """
     Parse all PEM certs and return them ordered as [leaf, intermediates...].
     Works even if the input PEMs are in arbitrary order.
@@ -76,9 +76,8 @@ def load_certs_ordered( pem_bytes: bytes ) -> list[ crypto.X509 ]:
         
     
     return ordered
-    
 
-def GenerateSSLContextFactory( ssl_cert_path, ssl_key_path ):
+def generate_ssl_context_factory(ssl_cert_path, ssl_key_path):
     
     if HG.twisted_is_broke:
         
@@ -120,4 +119,3 @@ def GenerateSSLContextFactory( ssl_cert_path, ssl_key_path ):
     
     context_factory = twisted.internet.ssl.DefaultOpenSSLContextFactory( ssl_key_path, ssl_cert_path, sslmethod )
     '''
-    

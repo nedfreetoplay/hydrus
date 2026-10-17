@@ -2112,7 +2112,7 @@ class Controller(HydrusController.HydrusController):
                             
                             ( ssl_cert_path, ssl_key_path ) = self.db.get_ssl_paths()
                             
-                            context_factory = HydrusServerContextFactory.GenerateSSLContextFactory( ssl_cert_path, ssl_key_path )
+                            context_factory = HydrusServerContextFactory.generate_ssl_context_factory( ssl_cert_path, ssl_key_path )
                             
                         
                         ipv6_port = None
