@@ -12,7 +12,7 @@ from hydrus.client.networking.api import ClientLocalServerResources
 
 class HydrusResourceClientAPIPermissionsRequest( ClientLocalServerResources.HydrusResourceClientAPI ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         if not ClientAPI.api_request_dialog_open:
             
@@ -47,7 +47,7 @@ class HydrusResourceClientAPIPermissionsRequest( ClientLocalServerResources.Hydr
 
 class HydrusResourceClientAPIVersion( ClientLocalServerResources.HydrusResourceClientAPI ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         body_dict = {}
         
@@ -72,7 +72,7 @@ class HydrusResourceClientAPIRestrictedAccount( ClientLocalServerResources.Hydru
 
 class HydrusResourceClientAPIRestrictedAccountClientInfo( HydrusResourceClientAPIRestrictedAccount ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         body_dict = {}
         
@@ -90,7 +90,7 @@ class HydrusResourceClientAPIRestrictedAccountClientInfo( HydrusResourceClientAP
 
 class HydrusResourceClientAPIRestrictedAccountSessionKey( HydrusResourceClientAPIRestrictedAccount ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         new_session_key = CG.client_controller.client_api_manager.GenerateSessionKey( request.client_api_permissions.GetAccessKey() )
         
@@ -108,7 +108,7 @@ class HydrusResourceClientAPIRestrictedAccountSessionKey( HydrusResourceClientAP
 
 class HydrusResourceClientAPIRestrictedAccountVerify( HydrusResourceClientAPIRestrictedAccount ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         api_permissions = request.client_api_permissions
         
@@ -157,7 +157,7 @@ class HydrusResourceClientAPIRestrictedGetService( ClientLocalServerResources.Hy
         )
         
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         allowed_service_types = {
             HC.LOCAL_TAG,
@@ -245,7 +245,7 @@ class HydrusResourceClientAPIRestrictedGetServices( ClientLocalServerResources.H
         )
         
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         jobs = [
             ( ( HC.LOCAL_TAG, ), 'local_tags' ),
@@ -311,7 +311,7 @@ class HydrusResourceClientAPIRestrictedGetServiceRatingSVG( ClientLocalServerRes
         )
         
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         allowed_service_types = {
             HC.LOCAL_RATING_LIKE,

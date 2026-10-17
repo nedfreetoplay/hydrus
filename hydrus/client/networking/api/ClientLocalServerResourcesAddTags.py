@@ -35,7 +35,7 @@ class HydrusResourceClientAPIRestrictedAddTags( ClientLocalServerResources.Hydru
 
 class HydrusResourceClientAPIRestrictedAddTagsAddTags( HydrusResourceClientAPIRestrictedAddTags ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         hashes = set( ClientLocalServerCore.ParseHashes( request ) )
         
@@ -299,7 +299,7 @@ class HydrusResourceClientAPIRestrictedAddTagsSearchTags( HydrusResourceClientAP
         return matches
         
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         search = request.parsed_request_args.get_value( 'search', str )
         
@@ -339,7 +339,7 @@ class HydrusResourceClientAPIRestrictedAddTagsSearchTags( HydrusResourceClientAP
 
 class HydrusResourceClientAPIRestrictedAddTagsGetTagSiblingsParents( HydrusResourceClientAPIRestrictedAddTags ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         tags = request.parsed_request_args.get_value( 'tags', list, expected_list_type = str )
         
@@ -384,7 +384,7 @@ class HydrusResourceClientAPIRestrictedAddTagsGetTagSiblingsParents( HydrusResou
 
 class HydrusResourceClientAPIRestrictedAddTagsCleanTags( HydrusResourceClientAPIRestrictedAddTags ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         tags = request.parsed_request_args.get_value( 'tags', list, expected_list_type = str )
         

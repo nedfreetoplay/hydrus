@@ -35,7 +35,7 @@ class HydrusResourceClientAPIRestrictedGetFiles( ClientLocalServerResources.Hydr
 
 class HydrusResourceClientAPIRestrictedGetFilesSearchFiles( HydrusResourceClientAPIRestrictedGetFiles ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         location_context = ClientLocalServerCore.ParseLocationContext( request, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
         
@@ -159,7 +159,7 @@ def ParseAndFetchMediaResult( request: HydrusServerRequest.HydrusRequest ) -> Cl
 
 class HydrusResourceClientAPIRestrictedGetFilesGetFile( HydrusResourceClientAPIRestrictedGetFiles ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         media_result = ParseAndFetchMediaResult( request )
         
@@ -195,7 +195,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetFile( HydrusResourceClientAPIR
 
 class HydrusResourceClientAPIRestrictedGetFilesGetRenderedFile( HydrusResourceClientAPIRestrictedGetFiles ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         
         
@@ -346,7 +346,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetRenderedFile( HydrusResourceCl
     
 class HydrusResourceClientAPIRestrictedGetFilesFileHashes( HydrusResourceClientAPIRestrictedGetFiles ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         supported_hash_types = ( 'sha256', 'md5', 'sha1', 'sha512' )
         
@@ -405,7 +405,7 @@ class HydrusResourceClientAPIRestrictedGetFilesFileHashes( HydrusResourceClientA
 
 class HydrusResourceClientAPIRestrictedGetFilesFileMetadata( HydrusResourceClientAPIRestrictedGetFiles ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         only_return_identifiers = request.parsed_request_args.get_value( 'only_return_identifiers', bool, default_value = False )
         only_return_basic_information = request.parsed_request_args.get_value( 'only_return_basic_information', bool, default_value = False )
@@ -528,7 +528,7 @@ class HydrusResourceClientAPIRestrictedGetFilesFileMetadata( HydrusResourceClien
 
 class HydrusResourceClientAPIRestrictedGetFilesGetThumbnail( HydrusResourceClientAPIRestrictedGetFiles ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         media_result = ParseAndFetchMediaResult( request )
         
@@ -576,7 +576,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetLocalPath( HydrusResourceClien
 
 class HydrusResourceClientAPIRestrictedGetFilesGetLocalFileStorageLocations( HydrusResourceClientAPIRestrictedGetFilesGetLocalPath ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         all_subfolders = CG.client_controller.client_files_manager.GetAllSubfolders()
         
@@ -611,7 +611,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetLocalFileStorageLocations( Hyd
 
 class HydrusResourceClientAPIRestrictedGetFilesGetFilePath( HydrusResourceClientAPIRestrictedGetFilesGetLocalPath ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         media_result = ParseAndFetchMediaResult( request )
         
@@ -655,7 +655,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetFilePath( HydrusResourceClient
 
 class HydrusResourceClientAPIRestrictedGetFilesGetThumbnailPath( HydrusResourceClientAPIRestrictedGetFilesGetLocalPath ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         include_thumbnail_filetype = request.parsed_request_args.get_value( 'include_thumbnail_filetype', bool, default_value = False )
         

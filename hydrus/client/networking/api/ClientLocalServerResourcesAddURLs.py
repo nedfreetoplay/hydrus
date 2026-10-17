@@ -26,7 +26,7 @@ class HydrusResourceClientAPIRestrictedAddURLs( ClientLocalServerResources.Hydru
 
 class HydrusResourceClientAPIRestrictedAddURLsAssociateURL( HydrusResourceClientAPIRestrictedAddURLs ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         normalise_urls = request.parsed_request_args.get_value( 'normalise_urls', bool, default_value = True )
         
@@ -117,7 +117,7 @@ class HydrusResourceClientAPIRestrictedAddURLsAssociateURL( HydrusResourceClient
 
 class HydrusResourceClientAPIRestrictedAddURLsGetURLFiles( HydrusResourceClientAPIRestrictedAddURLs ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         url = request.parsed_request_args.get_value( 'url', str )
         
@@ -173,7 +173,7 @@ class HydrusResourceClientAPIRestrictedAddURLsGetURLFiles( HydrusResourceClientA
         if we_only_saw_successful:
             
             # not likely to change much, so no worries about reducing overhead here
-            response_context.SetMaxAge( 30 )
+            response_context.set_max_age( 30 )
             
         
         return response_context
@@ -182,7 +182,7 @@ class HydrusResourceClientAPIRestrictedAddURLsGetURLFiles( HydrusResourceClientA
 
 class HydrusResourceClientAPIRestrictedAddURLsGetURLInfo( HydrusResourceClientAPIRestrictedAddURLs ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         url = request.parsed_request_args.get_value( 'url', str )
         
@@ -231,7 +231,7 @@ class HydrusResourceClientAPIRestrictedAddURLsGetURLInfo( HydrusResourceClientAP
 
 class HydrusResourceClientAPIRestrictedAddURLsImportURL( HydrusResourceClientAPIRestrictedAddURLs ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         url = request.parsed_request_args.get_value( 'url', str )
         

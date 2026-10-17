@@ -22,7 +22,7 @@ class HydrusResourceClientAPIRestrictedEditTimes( ClientLocalServerResources.Hyd
 
 class HydrusResourceClientAPIRestrictedEditTimesSetTime( HydrusResourceClientAPIRestrictedEditTimes ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         hashes = ClientLocalServerCore.ParseHashes( request )
         

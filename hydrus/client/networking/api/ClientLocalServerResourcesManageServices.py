@@ -23,7 +23,7 @@ class HydrusResourceClientAPIRestrictedManageServicesPendingContentJobs( HydrusR
 
 class HydrusResourceClientAPIRestrictedManageServicesPendingCounts( HydrusResourceClientAPIRestrictedManageServicesPendingContentJobs ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         info_type_to_str_lookup = {
             HC.SERVICE_INFO_NUM_PENDING_MAPPINGS : 'pending_tag_mappings',
@@ -54,7 +54,7 @@ class HydrusResourceClientAPIRestrictedManageServicesPendingCounts( HydrusResour
 
 class HydrusResourceClientAPIRestrictedManageServicesCommitPending( HydrusResourceClientAPIRestrictedManageServicesPendingContentJobs ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         service_key = request.parsed_request_args.get_value( 'service_key', bytes )
         
@@ -89,7 +89,7 @@ class HydrusResourceClientAPIRestrictedManageServicesCommitPending( HydrusResour
 
 class HydrusResourceClientAPIRestrictedManageServicesForgetPending( HydrusResourceClientAPIRestrictedManageServicesPendingContentJobs ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         service_key = request.parsed_request_args.get_value( 'service_key', bytes )
         

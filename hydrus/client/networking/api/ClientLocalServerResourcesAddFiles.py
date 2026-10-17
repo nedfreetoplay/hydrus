@@ -36,7 +36,7 @@ class HydrusResourceClientAPIRestrictedAddFiles( ClientLocalServerResources.Hydr
 
 class HydrusResourceClientAPIRestrictedAddFilesAddFile( HydrusResourceClientAPIRestrictedAddFiles ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         path = None
         delete_after_successful_import = False
@@ -125,7 +125,7 @@ class HydrusResourceClientAPIRestrictedAddFilesAddFile( HydrusResourceClientAPIR
 
 class HydrusResourceClientAPIRestrictedAddFilesArchiveFiles( HydrusResourceClientAPIRestrictedAddFiles ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         hashes = set( ClientLocalServerCore.ParseHashes( request ) )
         
@@ -144,7 +144,7 @@ class HydrusResourceClientAPIRestrictedAddFilesArchiveFiles( HydrusResourceClien
 
 class HydrusResourceClientAPIRestrictedAddFilesClearDeletedFileRecord( HydrusResourceClientAPIRestrictedAddFiles ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         hashes = set( ClientLocalServerCore.ParseHashes( request ) )
         
@@ -168,7 +168,7 @@ class HydrusResourceClientAPIRestrictedAddFilesClearDeletedFileRecord( HydrusRes
 
 class HydrusResourceClientAPIRestrictedAddFilesDeleteFiles( HydrusResourceClientAPIRestrictedAddFiles ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         location_context = ClientLocalServerCore.ParseLocationContext( request, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ), deleted_allowed = False )
         
@@ -218,7 +218,7 @@ class HydrusResourceClientAPIRestrictedAddFilesDeleteFiles( HydrusResourceClient
 
 class HydrusResourceClientAPIRestrictedAddFilesMigrateFiles( HydrusResourceClientAPIRestrictedAddFiles ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         hashes = set( ClientLocalServerCore.ParseHashes( request ) )
         
@@ -252,7 +252,7 @@ class HydrusResourceClientAPIRestrictedAddFilesMigrateFiles( HydrusResourceClien
 
 class HydrusResourceClientAPIRestrictedAddFilesUnarchiveFiles( HydrusResourceClientAPIRestrictedAddFiles ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         hashes = set( ClientLocalServerCore.ParseHashes( request ) )
         
@@ -270,7 +270,7 @@ class HydrusResourceClientAPIRestrictedAddFilesUnarchiveFiles( HydrusResourceCli
 
 class HydrusResourceClientAPIRestrictedAddFilesUndeleteFiles( HydrusResourceClientAPIRestrictedAddFiles ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         location_context = ClientLocalServerCore.ParseLocationContext( request, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
         
@@ -302,7 +302,7 @@ class HydrusResourceClientAPIRestrictedAddFilesUndeleteFiles( HydrusResourceClie
 
 class HydrusResourceClientAPIRestrictedAddFilesGenerateHashes( HydrusResourceClientAPIRestrictedAddFiles ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         if not hasattr( request, 'temp_file_info' ):
             

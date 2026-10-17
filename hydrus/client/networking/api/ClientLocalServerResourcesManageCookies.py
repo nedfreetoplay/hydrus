@@ -24,7 +24,7 @@ class HydrusResourceClientAPIRestrictedManageCookies( ClientLocalServerResources
 
 class HydrusResourceClientAPIRestrictedManageCookiesGetCookies( HydrusResourceClientAPIRestrictedManageCookies ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         domain = request.parsed_request_args.get_value( 'domain', str )
         
@@ -64,7 +64,7 @@ class HydrusResourceClientAPIRestrictedManageCookiesGetCookies( HydrusResourceCl
 
 class HydrusResourceClientAPIRestrictedManageCookiesSetCookies( HydrusResourceClientAPIRestrictedManageCookies ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         cookie_rows = request.parsed_request_args.get_value( 'cookies', list )
         
@@ -150,7 +150,7 @@ class HydrusResourceClientAPIRestrictedManageCookiesSetCookies( HydrusResourceCl
 
 class HydrusResourceClientAPIRestrictedManageCookiesSetUserAgent( HydrusResourceClientAPIRestrictedManageCookies ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         warnings.warn(
             'Hey, the "set_user_agent" command is deprecated, but a Client API script you are using it just called it! It would be better to use the newer "set_headers" command!',
@@ -220,7 +220,7 @@ def RenderNetworkContextToJSONObject( network_context: ClientNetworkingContexts.
 
 class HydrusResourceClientAPIRestrictedManageCookiesGetHeaders( HydrusResourceClientAPIRestrictedManageCookies ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         network_context = GenerateNetworkContextFromRequest( request )
         
@@ -255,7 +255,7 @@ class HydrusResourceClientAPIRestrictedManageCookiesGetHeaders( HydrusResourceCl
 
 class HydrusResourceClientAPIRestrictedManageCookiesSetHeaders( HydrusResourceClientAPIRestrictedManageCookies ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         network_context = GenerateNetworkContextFromRequest( request )
         http_header_objects = request.parsed_request_args.get_value( 'headers', dict )

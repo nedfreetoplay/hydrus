@@ -89,7 +89,7 @@ class HydrusResourceClientAPIRestrictedManagePopups( ClientLocalServerResources.
 
 class HydrusResourceClientAPIRestrictedManagePopupsAddPopup( HydrusResourceClientAPIRestrictedManagePopups ):
     
-    def _threadDoPOSTJob(self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job(self, request: HydrusServerRequest.HydrusRequest ):
         
         pausable = request.parsed_request_args.get_value( 'is_pausable', bool, default_value = False )
         cancellable = request.parsed_request_args.get_value( 'is_cancellable', bool, default_value = False )
@@ -135,7 +135,7 @@ def GetJobStatusFromRequest( request: HydrusServerRequest.HydrusRequest ) -> Cli
 
 class HydrusResourceClientAPIRestrictedManagePopupsCallUserCallable( HydrusResourceClientAPIRestrictedManagePopups ):
     
-    def _threadDoPOSTJob(self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job(self, request: HydrusServerRequest.HydrusRequest ):
         
         job_status = GetJobStatusFromRequest( request )
         
@@ -156,7 +156,7 @@ class HydrusResourceClientAPIRestrictedManagePopupsCallUserCallable( HydrusResou
 
 class HydrusResourceClientAPIRestrictedManagePopupsCancelPopup( HydrusResourceClientAPIRestrictedManagePopups ):
     
-    def _threadDoPOSTJob(self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job(self, request: HydrusServerRequest.HydrusRequest ):
         
         job_status = GetJobStatusFromRequest( request )
         
@@ -173,7 +173,7 @@ class HydrusResourceClientAPIRestrictedManagePopupsCancelPopup( HydrusResourceCl
 
 class HydrusResourceClientAPIRestrictedManagePopupsDismissPopup( HydrusResourceClientAPIRestrictedManagePopups ):
     
-    def _threadDoPOSTJob(self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job(self, request: HydrusServerRequest.HydrusRequest ):
         
         job_status = GetJobStatusFromRequest( request )
         
@@ -190,7 +190,7 @@ class HydrusResourceClientAPIRestrictedManagePopupsDismissPopup( HydrusResourceC
 
 class HydrusResourceClientAPIRestrictedManagePopupsFinishPopup( HydrusResourceClientAPIRestrictedManagePopups ):
     
-    def _threadDoPOSTJob(self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job(self, request: HydrusServerRequest.HydrusRequest ):
         
         job_status = GetJobStatusFromRequest( request )
         
@@ -204,7 +204,7 @@ class HydrusResourceClientAPIRestrictedManagePopupsFinishPopup( HydrusResourceCl
 
 class HydrusResourceClientAPIRestrictedManagePopupsFinishAndDismissPopup( HydrusResourceClientAPIRestrictedManagePopups ):
     
-    def _threadDoPOSTJob(self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job(self, request: HydrusServerRequest.HydrusRequest ):
         
         job_status = GetJobStatusFromRequest( request )
         
@@ -220,7 +220,7 @@ class HydrusResourceClientAPIRestrictedManagePopupsFinishAndDismissPopup( Hydrus
 
 class HydrusResourceClientAPIRestrictedManagePopupsGetPopups( HydrusResourceClientAPIRestrictedManagePopups ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         job_status_queue: ClientGUIPopupMessages.JobStatusPopupQueue = CG.client_controller.job_status_popup_queue        
         
@@ -342,7 +342,7 @@ def HandlePopupUpdate( job_status: ClientThreading.JobStatus, request: HydrusSer
 
 class HydrusResourceClientAPIRestrictedManagePopupsUpdatePopup( HydrusResourceClientAPIRestrictedManagePopups ):
     
-    def _threadDoPOSTJob(self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job(self, request: HydrusServerRequest.HydrusRequest ):
         
         job_status = GetJobStatusFromRequest( request )
         

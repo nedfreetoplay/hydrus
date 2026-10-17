@@ -26,7 +26,7 @@ class HydrusResourceClientAPIRestrictedManageDatabase( ClientLocalServerResource
 
 class HydrusResourceClientAPIRestrictedManageDatabaseForceCommit( HydrusResourceClientAPIRestrictedManageDatabase ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         CG.client_controller.db.force_a_commit()
         
@@ -40,7 +40,7 @@ class HydrusResourceClientAPIRestrictedManageDatabaseLockOff( HydrusResourceClie
     
     BLOCKED_WHEN_BUSY = False
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         try:
             
@@ -61,7 +61,7 @@ class HydrusResourceClientAPIRestrictedManageDatabaseLockOff( HydrusResourceClie
 
 class HydrusResourceClientAPIRestrictedManageDatabaseLockOn( HydrusResourceClientAPIRestrictedManageDatabase ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         locked = HG.client_busy.acquire( False ) # pylint: disable=E1111
         
@@ -92,7 +92,7 @@ class HydrusResourceClientAPIRestrictedManageDatabaseLockOn( HydrusResourceClien
 
 class HydrusResourceClientAPIRestrictedManageDatabaseMrBones( HydrusResourceClientAPIRestrictedManageDatabase ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         location_context = ClientLocalServerCore.ParseLocationContext( request, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
         
@@ -127,7 +127,7 @@ class HydrusResourceClientAPIRestrictedManageDatabaseMrBones( HydrusResourceClie
 
 class HydrusResourceClientAPIRestrictedManageDatabaseGetClientOptions( HydrusResourceClientAPIRestrictedManageDatabase ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         from hydrus.client import ClientDefaults
         

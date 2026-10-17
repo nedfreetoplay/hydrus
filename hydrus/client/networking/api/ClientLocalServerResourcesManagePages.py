@@ -18,7 +18,7 @@ class HydrusResourceClientAPIRestrictedManagePages( ClientLocalServerResources.H
 
 class HydrusResourceClientAPIRestrictedManagePagesAddFiles( HydrusResourceClientAPIRestrictedManagePages ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         def do_it( page_key, media_results ):
             
@@ -67,7 +67,7 @@ class HydrusResourceClientAPIRestrictedManagePagesAddFiles( HydrusResourceClient
 
 class HydrusResourceClientAPIRestrictedManagePagesFocusPage( HydrusResourceClientAPIRestrictedManagePages ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         def do_it( page_key ):
             
@@ -92,7 +92,7 @@ class HydrusResourceClientAPIRestrictedManagePagesFocusPage( HydrusResourceClien
     
 class HydrusResourceClientAPIRestrictedManagePagesGetPages( HydrusResourceClientAPIRestrictedManagePages ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         def do_it():
             
@@ -113,7 +113,7 @@ class HydrusResourceClientAPIRestrictedManagePagesGetPages( HydrusResourceClient
 
 class HydrusResourceClientAPIRestrictedManagePagesGetPageInfo( HydrusResourceClientAPIRestrictedManagePages ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         def do_it( page_key, simple ):
             
@@ -143,7 +143,7 @@ class HydrusResourceClientAPIRestrictedManagePagesGetPageInfo( HydrusResourceCli
 
 class HydrusResourceClientAPIRestrictedManagePagesRefreshPage( HydrusResourceClientAPIRestrictedManagePages ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         def do_it( page_key ):
             
@@ -169,7 +169,7 @@ class HydrusResourceClientAPIRestrictedManagePagesRefreshPage( HydrusResourceCli
 
 class HydrusResourceClientAPIRestrictedManagePagesGetMediaViewers( HydrusResourceClientAPIRestrictedManagePages ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         def do_it():
             
@@ -192,7 +192,7 @@ class HydrusResourceClientAPIRestrictedManagePagesGetMediaViewers( HydrusResourc
 
 class HydrusResourceClientAPIRestrictedManagePagesNewPage( HydrusResourceClientAPIRestrictedManagePages ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         page_type = request.parsed_request_args.get_value( 'page_type', int )
         page_name = request.parsed_request_args.get_value_or_none( 'page_name', str )

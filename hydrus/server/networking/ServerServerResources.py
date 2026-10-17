@@ -38,7 +38,7 @@ class HydrusResourceHydrusNetwork( HydrusServerResources.HydrusResource ):
     
     BLOCKED_WHEN_BUSY = True
     
-    def _callbackParseGETArgs( self, request: HydrusServerRequest.HydrusRequest ):
+    def _callback_parse_get_args( self, request: HydrusServerRequest.HydrusRequest ):
         
         parsed_request_args = HydrusNetworkVariableHandling.parse_hydrus_network_get_args( request.args )
         
@@ -47,7 +47,7 @@ class HydrusResourceHydrusNetwork( HydrusServerResources.HydrusResource ):
         return request
         
     
-    def _callbackParsePOSTArgs( self, request: HydrusServerRequest.HydrusRequest ):
+    def _callback_parse_post_args( self, request: HydrusServerRequest.HydrusRequest ):
         
         request.content.seek( 0 )
         
@@ -96,12 +96,12 @@ class HydrusResourceHydrusNetwork( HydrusServerResources.HydrusResource ):
                         
                     
                 
-                decompression_bombs_ok = self._DecompressionBombsOK( request )
+                decompression_bombs_ok = self._decompression_bombs_ok( request )
                 
                 parsed_request_args = HydrusNetworkVariableHandling.parse_file_arguments( temp_path, decompression_bombs_ok )
                 
             
-            self._reportDataUsed( request, total_bytes_read )
+            self._report_data_used( request, total_bytes_read )
             
         
         request.parsed_request_args = parsed_request_args
@@ -109,7 +109,7 @@ class HydrusResourceHydrusNetwork( HydrusServerResources.HydrusResource ):
         return request
         
     
-    def _checkService( self, request: HydrusServerRequest.HydrusRequest ):
+    def _check_service( self, request: HydrusServerRequest.HydrusRequest ):
         
         if self.BLOCKED_WHEN_BUSY and HG.server_busy.locked():
             
@@ -121,7 +121,7 @@ class HydrusResourceHydrusNetwork( HydrusServerResources.HydrusResource ):
     
 class HydrusResourceAccessKey( HydrusResourceHydrusNetwork ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         registration_key = request.parsed_request_args[ 'registration_key' ]
         
@@ -136,9 +136,9 @@ class HydrusResourceAccessKey( HydrusResourceHydrusNetwork ):
     
 class HydrusResourceAccessKeyVerification( HydrusResourceHydrusNetwork ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
-        access_key = self._parseHydrusNetworkAccessKey( request )
+        access_key = self._parse_hydrus_network_access_key( request )
         
         verified = SG.server_controller.read( 'verify_access_key', self._service_key, access_key )
         
@@ -151,7 +151,7 @@ class HydrusResourceAccessKeyVerification( HydrusResourceHydrusNetwork ):
     
 class HydrusResourceAutoCreateAccountTypes( HydrusResourceHydrusNetwork ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         account_types = SG.server_controller.read( 'auto_create_account_types', self._service_key )
         
@@ -164,7 +164,7 @@ class HydrusResourceAutoCreateAccountTypes( HydrusResourceHydrusNetwork ):
     
 class HydrusResourceRestrictedAutoCreateRegistrationKey( HydrusResourceHydrusNetwork ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         account_type_key = request.parsed_request_args[ 'account_type_key' ]
         
@@ -179,7 +179,7 @@ class HydrusResourceRestrictedAutoCreateRegistrationKey( HydrusResourceHydrusNet
     
 class HydrusResourceShutdown( HydrusResourceHydrusNetwork ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         SG.server_controller.shutdown_from_server()
         
@@ -190,9 +190,9 @@ class HydrusResourceShutdown( HydrusResourceHydrusNetwork ):
     
 class HydrusResourceSessionKey( HydrusResourceHydrusNetwork ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
-        access_key = self._parseHydrusNetworkAccessKey( request )
+        access_key = self._parse_hydrus_network_access_key( request )
         
         ( session_key, expires ) = SG.server_controller.server_session_manager.add_session( self._service_key, access_key )
         
@@ -209,9 +209,9 @@ class HydrusResourceSessionKey( HydrusResourceHydrusNetwork ):
     
 class HydrusResourceRestricted( HydrusResourceHydrusNetwork ):
     
-    def _callbackCheckAccountRestrictions( self, request: HydrusServerRequest.HydrusRequest ):
+    def _callback_check_account_restrictions( self, request: HydrusServerRequest.HydrusRequest ):
         
-        HydrusResourceHydrusNetwork._callbackCheckAccountRestrictions( self, request )
+        HydrusResourceHydrusNetwork._callback_check_account_restrictions( self, request )
         
         self._checkAccount( request )
         
@@ -220,7 +220,7 @@ class HydrusResourceRestricted( HydrusResourceHydrusNetwork ):
         return request
         
     
-    def _callbackEstablishAccountFromHeader( self, request: HydrusServerRequest.HydrusRequest ):
+    def _callback_establish_account_from_header( self, request: HydrusServerRequest.HydrusRequest ):
         
         session_key = None
         
@@ -252,7 +252,7 @@ class HydrusResourceRestricted( HydrusResourceHydrusNetwork ):
         
         if session_key is None:
             
-            access_key = self._parseHydrusNetworkAccessKey( request, key_required = False )
+            access_key = self._parse_hydrus_network_access_key( request, key_required = False )
             
             if access_key is None:
                 
@@ -298,9 +298,9 @@ class HydrusResourceRestricted( HydrusResourceHydrusNetwork ):
             
         
     
-    def _reportDataUsed( self, request, num_bytes ):
+    def _report_data_used( self, request, num_bytes ):
         
-        HydrusResourceHydrusNetwork._reportDataUsed( self, request, num_bytes )
+        HydrusResourceHydrusNetwork._report_data_used( self, request, num_bytes )
         
         account = request.hydrus_account
         
@@ -310,9 +310,9 @@ class HydrusResourceRestricted( HydrusResourceHydrusNetwork ):
             
         
     
-    def _reportRequestUsed( self, request: HydrusServerRequest.HydrusRequest ):
+    def _report_request_used( self, request: HydrusServerRequest.HydrusRequest ):
         
-        HydrusResourceHydrusNetwork._reportRequestUsed( self, request )
+        HydrusResourceHydrusNetwork._report_request_used( self, request )
         
         account = request.hydrus_account
         
@@ -338,7 +338,7 @@ class HydrusResourceRestrictedAccount( HydrusResourceRestricted ):
         pass
         
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         account = request.hydrus_account
         
@@ -365,7 +365,7 @@ class HydrusResourceRestrictedOptions( HydrusResourceRestricted ):
         pass
         
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         # originally I feched and dumped the serialisabledict here straight from the service
         # buuuut, of course if I update the tag filter object version, we can't just spit that out to the network and expect old clients to be ok
@@ -402,7 +402,7 @@ class HydrusResourceRestrictedOptionsModify( HydrusResourceRestricted ):
 
 class HydrusResourceRestrictedOptionsModifyNullificationPeriod( HydrusResourceRestrictedOptionsModify ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         nullification_period = request.parsed_request_args[ 'nullification_period' ]
         
@@ -439,7 +439,7 @@ class HydrusResourceRestrictedOptionsModifyNullificationPeriod( HydrusResourceRe
 
 class HydrusResourceRestrictedOptionsModifyUpdatePeriod( HydrusResourceRestrictedOptionsModify ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         update_period = request.parsed_request_args[ 'update_period' ]
         
@@ -483,7 +483,7 @@ class HydrusResourceRestrictedAccountModify( HydrusResourceRestricted ):
     
 class HydrusResourceRestrictedAccountInfo( HydrusResourceRestrictedAccountModify ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         subject_account_key = request.parsed_request_args[ 'subject_account_key' ]
         
@@ -500,7 +500,7 @@ class HydrusResourceRestrictedAccountInfo( HydrusResourceRestrictedAccountModify
     
 class HydrusResourceRestrictedAccountKeyFromContent( HydrusResourceRestrictedAccountModify ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         subject_content = request.parsed_request_args[ 'subject_content' ]
         
@@ -515,7 +515,7 @@ class HydrusResourceRestrictedAccountKeyFromContent( HydrusResourceRestrictedAcc
     
 class HydrusResourceRestrictedAccountModifyAccountType( HydrusResourceRestrictedAccountModify ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         subject_account_key = request.parsed_request_args[ 'subject_account_key' ]
         
@@ -535,7 +535,7 @@ class HydrusResourceRestrictedAccountModifyAccountType( HydrusResourceRestricted
     
 class HydrusResourceRestrictedAccountModifyBan( HydrusResourceRestrictedAccountModify ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         subject_account_key = request.parsed_request_args[ 'subject_account_key' ]
         
@@ -578,7 +578,7 @@ class HydrusResourceRestrictedAccountModifyBan( HydrusResourceRestrictedAccountM
 
 class HydrusResourceRestrictedAccountModifyDeleteAllContent( HydrusResourceRestrictedAccountModify ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         subject_account_key = request.parsed_request_args[ 'subject_account_key' ]
         
@@ -593,7 +593,7 @@ class HydrusResourceRestrictedAccountModifyDeleteAllContent( HydrusResourceRestr
     
 class HydrusResourceRestrictedAccountModifyExpires( HydrusResourceRestrictedAccountModify ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         if 'subject_account_key' in request.parsed_request_args:
             
@@ -630,7 +630,7 @@ class HydrusResourceRestrictedAccountModifyExpires( HydrusResourceRestrictedAcco
     
 class HydrusResourceRestrictedAccountModifySetMessage( HydrusResourceRestrictedAccountModify ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         if 'subject_account_key' in request.parsed_request_args:
             
@@ -662,7 +662,7 @@ class HydrusResourceRestrictedAccountModifySetMessage( HydrusResourceRestrictedA
     
 class HydrusResourceRestrictedAccountModifyUnban( HydrusResourceRestrictedAccountModify ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         if 'subject_account_key' in request.parsed_request_args:
             
@@ -682,7 +682,7 @@ class HydrusResourceRestrictedAccountModifyUnban( HydrusResourceRestrictedAccoun
     
 class HydrusResourceRestrictedAccountOtherAccount( HydrusResourceRestrictedAccountModify ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         subject_account_key = None
         
@@ -734,7 +734,7 @@ class HydrusResourceRestrictedAccountOtherAccount( HydrusResourceRestrictedAccou
     
 class HydrusResourceRestrictedIP( HydrusResourceRestrictedAccountModify ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         hash = request.parsed_request_args[ 'hash' ]
         
@@ -749,7 +749,7 @@ class HydrusResourceRestrictedIP( HydrusResourceRestrictedAccountModify ):
     
 class HydrusResourceRestrictedAllAccounts( HydrusResourceRestrictedAccountModify ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         accounts = SG.server_controller.read( 'all_accounts', self._service_key, request.hydrus_account )
         
@@ -774,7 +774,7 @@ class HydrusResourceRestrictedAccountTypes( HydrusResourceRestricted ):
             
         
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         account_types = SG.server_controller.read( 'account_types', self._service_key, request.hydrus_account )
         
@@ -785,7 +785,7 @@ class HydrusResourceRestrictedAccountTypes( HydrusResourceRestricted ):
         return response_context
         
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         account_types = request.parsed_request_args[ 'account_types' ]
         deletee_account_type_keys_to_new_account_type_keys = request.parsed_request_args[ 'deletee_account_type_keys_to_new_account_type_keys' ]
@@ -806,7 +806,7 @@ class HydrusResourceRestrictedBackup( HydrusResourceRestricted ):
         request.hydrus_account.CheckPermission( HC.CONTENT_TYPE_SERVICES, HC.PERMISSION_ACTION_MODERATE )
         
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         SG.server_controller.write( 'backup' )
         
@@ -822,7 +822,7 @@ class HydrusResourceRestrictedLockOn( HydrusResourceRestricted ):
         request.hydrus_account.CheckPermission( HC.CONTENT_TYPE_SERVICES, HC.PERMISSION_ACTION_MODERATE )
         
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         locked = HG.server_busy.acquire( False ) # pylint: disable=E1111
         
@@ -859,7 +859,7 @@ class HydrusResourceRestrictedLockOff( HydrusResourceRestricted ):
         request.hydrus_account.CheckPermission( HC.CONTENT_TYPE_SERVICES, HC.PERMISSION_ACTION_MODERATE )
         
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         try:
             
@@ -884,7 +884,7 @@ class HydrusResourceRestrictedMaintenanceRegenServiceInfo( HydrusResourceRestric
         request.hydrus_account.CheckPermission( HC.CONTENT_TYPE_OPTIONS, HC.PERMISSION_ACTION_MODERATE )
         
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         SG.server_controller.write_synchronous( 'maintenance_regen_service_info', self._service_key )
         
@@ -902,7 +902,7 @@ class HydrusResourceRestrictedNumPetitions( HydrusResourceRestricted ):
         request.hydrus_account.CheckAtLeastOnePermission( [ ( content_type, HC.PERMISSION_ACTION_MODERATE ) for content_type in HC.SERVICE_TYPES_TO_CONTENT_TYPES[ self._service.GetServiceType() ] ] )
         
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         subject_account_key = request.parsed_request_args.get_value_or_none( 'subject_account_key', bytes )
         
@@ -925,7 +925,7 @@ class HydrusResourceRestrictedPetition( HydrusResourceRestricted ):
         request.hydrus_account.CheckPermission( content_type, HC.PERMISSION_ACTION_MODERATE )
         
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         content_type = request.parsed_request_args[ 'content_type' ]
         status = request.parsed_request_args[ 'status' ]
@@ -977,7 +977,7 @@ class HydrusResourceRestrictedPetitionsSummary( HydrusResourceRestricted ):
         request.hydrus_account.CheckPermission( content_type, HC.PERMISSION_ACTION_MODERATE )
         
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         content_type = request.parsed_request_args.get_value( 'content_type', int )
         status = request.parsed_request_args.get_value( 'status', int )
@@ -1003,7 +1003,7 @@ class HydrusResourceRestrictedRegistrationKeys( HydrusResourceRestricted ):
         request.hydrus_account.CheckPermission( HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_CREATE )
         
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         num = request.parsed_request_args[ 'num' ]
         account_type_key = request.parsed_request_args[ 'account_type_key' ]
@@ -1038,7 +1038,7 @@ class HydrusResourceRestrictedRepositoryFile( HydrusResourceRestricted ):
             
         
     
-    def _DecompressionBombsOK( self, request: HydrusServerRequest.HydrusRequest ):
+    def _decompression_bombs_ok( self, request: HydrusServerRequest.HydrusRequest ):
         
         if request.hydrus_account is None:
             
@@ -1050,7 +1050,7 @@ class HydrusResourceRestrictedRepositoryFile( HydrusResourceRestricted ):
             
         
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         self._checkBandwidth( request )
         
@@ -1072,7 +1072,7 @@ class HydrusResourceRestrictedRepositoryFile( HydrusResourceRestricted ):
         return response_context
         
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         file_dict = request.parsed_request_args
         
@@ -1099,7 +1099,7 @@ class HydrusResourceRestrictedRepositoryThumbnail( HydrusResourceRestricted ):
         pass
         
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         self._checkBandwidth( request )
         
@@ -1135,7 +1135,7 @@ class HydrusResourceRestrictedServiceInfo( HydrusResourceRestricted ):
         pass
         
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         service_info = SG.server_controller.read( 'service_info', self._service_key )
         
@@ -1153,7 +1153,7 @@ class HydrusResourceRestrictedServices( HydrusResourceRestricted ):
         request.hydrus_account.CheckPermission( HC.CONTENT_TYPE_SERVICES, HC.PERMISSION_ACTION_MODERATE )
         
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         services = SG.server_controller.read( 'services_from_account', request.hydrus_account )
         
@@ -1164,7 +1164,7 @@ class HydrusResourceRestrictedServices( HydrusResourceRestricted ):
         return response_context
         
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         services = request.parsed_request_args[ 'services' ]
         
@@ -1220,7 +1220,7 @@ class HydrusResourceRestrictedTagFilter( HydrusResourceRestricted ):
             
         
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         tag_filter = self._service.GetTagFilter()
         
@@ -1231,7 +1231,7 @@ class HydrusResourceRestrictedTagFilter( HydrusResourceRestricted ):
         return response_context
         
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         tag_filter = request.parsed_request_args[ 'tag_filter' ]
         
@@ -1272,7 +1272,7 @@ class HydrusResourceRestrictedUpdate( HydrusResourceRestricted ):
             
         
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         self._checkBandwidth( request )
         
@@ -1292,7 +1292,7 @@ class HydrusResourceRestrictedUpdate( HydrusResourceRestricted ):
         return response_context
         
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         client_to_server_update = request.parsed_request_args[ 'client_to_server_update' ]
         
@@ -1318,7 +1318,7 @@ class HydrusResourceRestrictedImmediateUpdate( HydrusResourceRestricted ):
         request.hydrus_account.CheckAtLeastOnePermission( [ ( content_type, HC.PERMISSION_ACTION_MODERATE ) for content_type in HC.SERVICE_TYPES_TO_CONTENT_TYPES[ self._service.GetServiceType() ] ] )
         
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         updates = SG.server_controller.read( 'immediate_update', self._service_key, request.hydrus_account )
         
@@ -1339,7 +1339,7 @@ class HydrusResourceRestrictedMetadataUpdate( HydrusResourceRestricted ):
         pass # everyone with a functional account can get metadata slices
         
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         since = request.parsed_request_args[ 'since' ]
         
@@ -1360,7 +1360,7 @@ class HydrusResourceRestrictedRestartServices( HydrusResourceRestricted ):
         request.hydrus_account.CheckPermission( HC.CONTENT_TYPE_SERVICES, HC.PERMISSION_ACTION_MODERATE )
         
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         SG.server_controller.call_later( 1.0, SG.server_controller.RestartServices )
         
@@ -1377,7 +1377,7 @@ class HydrusResourceRestrictedVacuum( HydrusResourceRestricted ):
         request.hydrus_account.CheckPermission( HC.CONTENT_TYPE_SERVICES, HC.PERMISSION_ACTION_MODERATE )
         
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         SG.server_controller.write( 'vacuum' )
         

@@ -25,7 +25,7 @@ class HydrusResourceClientAPIRestrictedManageFileRelationships( ClientLocalServe
 
 class HydrusResourceClientAPIRestrictedManageFileRelationshipsGetRelationships( HydrusResourceClientAPIRestrictedManageFileRelationships ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         location_context = ClientLocalServerCore.ParseLocationContext( request, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
         
@@ -46,7 +46,7 @@ class HydrusResourceClientAPIRestrictedManageFileRelationshipsGetRelationships( 
 
 class HydrusResourceClientAPIRestrictedManageFileRelationshipsGetPotentialsCount( HydrusResourceClientAPIRestrictedManageFileRelationships ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         potential_duplicates_search_context = ClientLocalServerCore.ParsePotentialDuplicatesSearchContext( request )
         
@@ -64,7 +64,7 @@ class HydrusResourceClientAPIRestrictedManageFileRelationshipsGetPotentialsCount
 
 class HydrusResourceClientAPIRestrictedManageFileRelationshipsGetPotentialPairs( HydrusResourceClientAPIRestrictedManageFileRelationships ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         potential_duplicates_search_context = ClientLocalServerCore.ParsePotentialDuplicatesSearchContext( request )
         
@@ -136,7 +136,7 @@ class HydrusResourceClientAPIRestrictedManageFileRelationshipsGetPotentialPairs(
 
 class HydrusResourceClientAPIRestrictedManageFileRelationshipsGetRandomPotentials( HydrusResourceClientAPIRestrictedManageFileRelationships ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         potential_duplicates_search_context = ClientLocalServerCore.ParsePotentialDuplicatesSearchContext( request )
         
@@ -154,7 +154,7 @@ class HydrusResourceClientAPIRestrictedManageFileRelationshipsGetRandomPotential
 
 class HydrusResourceClientAPIRestrictedManageFileRelationshipsRemovePotentials( HydrusResourceClientAPIRestrictedManageFileRelationships ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         hashes = ClientLocalServerCore.ParseHashes( request )
         
@@ -168,7 +168,7 @@ class HydrusResourceClientAPIRestrictedManageFileRelationshipsRemovePotentials( 
 
 class HydrusResourceClientAPIRestrictedManageFileRelationshipsSetKings( HydrusResourceClientAPIRestrictedManageFileRelationships ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         hashes = ClientLocalServerCore.ParseHashes( request )
         
@@ -185,7 +185,7 @@ class HydrusResourceClientAPIRestrictedManageFileRelationshipsSetKings( HydrusRe
 
 class HydrusResourceClientAPIRestrictedManageFileRelationshipsSetRelationships( HydrusResourceClientAPIRestrictedManageFileRelationships ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         database_write_rows = []
         

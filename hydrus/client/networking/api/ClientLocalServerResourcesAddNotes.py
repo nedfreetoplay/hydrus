@@ -20,7 +20,7 @@ class HydrusResourceClientAPIRestrictedAddNotes( ClientLocalServerResources.Hydr
 
 class HydrusResourceClientAPIRestrictedAddNotesSetNotes( HydrusResourceClientAPIRestrictedAddNotes ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         hashes = set( ClientLocalServerCore.ParseHashes( request ) )
         
@@ -86,7 +86,7 @@ class HydrusResourceClientAPIRestrictedAddNotesSetNotes( HydrusResourceClientAPI
 
 class HydrusResourceClientAPIRestrictedAddNotesDeleteNotes( HydrusResourceClientAPIRestrictedAddNotes ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         hashes = set( ClientLocalServerCore.ParseHashes( request ) )
         

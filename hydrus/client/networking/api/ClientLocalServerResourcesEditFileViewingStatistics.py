@@ -22,7 +22,7 @@ class HydrusResourceClientAPIRestrictedEditFileViewingStatistics( ClientLocalSer
 
 class HydrusResourceClientAPIRestrictedEditFileViewingStatisticsIncrementFileViewingStatistics( HydrusResourceClientAPIRestrictedEditFileViewingStatistics ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         if not CG.client_controller.new_options.GetBoolean( 'file_viewing_statistics_active' ):
             
@@ -88,7 +88,7 @@ class HydrusResourceClientAPIRestrictedEditFileViewingStatisticsIncrementFileVie
 
 class HydrusResourceClientAPIRestrictedEditFileViewingStatisticsSetFileViewingStatistics( HydrusResourceClientAPIRestrictedEditFileViewingStatistics ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         if not CG.client_controller.new_options.GetBoolean( 'file_viewing_statistics_active' ):
             
