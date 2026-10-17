@@ -128,7 +128,7 @@ def PSDHasICCProfile( path: str ):
 def GeneratePILImageFromPSD( path ):
     
     # could faff around with getting raw bytes and reshaping, but let's KISS for now
-    png_bytes = HydrusFFMPEGRendering.RenderImageToPNGBytes( path )
+    png_bytes = HydrusFFMPEGRendering.render_image_to_png_bytes( path )
     
     if len( png_bytes ) == 0:
         

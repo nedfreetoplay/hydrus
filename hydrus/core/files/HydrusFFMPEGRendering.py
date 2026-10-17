@@ -5,7 +5,7 @@ from hydrus.core.processes import HydrusSubprocess
 from hydrus.core.files import HydrusFFMPEG
 from hydrus.core.files import HydrusFFMPEGParsing
 
-def RenderAnyAttachedStillImageToPath( file_path, output_path ):
+def render_any_attached_still_image_to_path(file_path, output_path):
     
     lines = HydrusFFMPEG.get_ffmpeg_info_lines( file_path )
     
@@ -56,9 +56,8 @@ def RenderAnyAttachedStillImageToPath( file_path, output_path ):
         
     
     return True
-    
 
-def RenderImageToImagePath( path, temp_image_path ):
+def render_image_to_image_path(path, temp_image_path):
     
     ffmpeg_path = HydrusFFMPEG.get_current_ffmpeg_path()
     
@@ -87,10 +86,8 @@ def RenderImageToImagePath( path, temp_image_path ):
     except FileNotFoundError as e:
         
         raise HydrusFFMPEG.handle_ffmpeg_file_not_found_and_generate_exception( e, path )
-        
-    
 
-def RenderImageToRawRGBABytes( path ):
+def render_image_to_raw_rgba_bytes(path):
     
     ffmpeg_path = HydrusFFMPEG.get_current_ffmpeg_path()
     
@@ -114,9 +111,8 @@ def RenderImageToRawRGBABytes( path ):
         
     
     return stdout
-    
 
-def RenderImageToPNGBytes( path ):
+def render_image_to_png_bytes(path):
     
     ffmpeg_path = HydrusFFMPEG.get_current_ffmpeg_path()
     
@@ -138,4 +134,3 @@ def RenderImageToPNGBytes( path ):
         
     
     return stdout
-    

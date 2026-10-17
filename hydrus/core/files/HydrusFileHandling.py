@@ -176,7 +176,7 @@ def GenerateThumbnailNumPyAudio( path, target_resolution, mime, extra_descriptio
     
     try:
         
-        there_was_one = HydrusFFMPEGRendering.RenderAnyAttachedStillImageToPath( path, temp_path )
+        there_was_one = HydrusFFMPEGRendering.render_any_attached_still_image_to_path( path, temp_path )
         
         if there_was_one:
             
