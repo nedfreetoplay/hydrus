@@ -2,7 +2,7 @@ from hydrus.external import hexagonitswfheader
 
 # to all out there who write libraries:
 # hexagonit.swfheader is a perfect library. it is how you are supposed to do it.
-def GetFlashProperties( path ):
+def get_flash_properties(path):
     
     with open( path, 'rb' ) as f:
         
@@ -24,5 +24,3 @@ def GetFlashProperties( path ):
         duration_ms = int( ( num_frames / fps ) * 1000 )
         
         return ( ( width, height ), duration_ms, num_frames )
-        
-    
