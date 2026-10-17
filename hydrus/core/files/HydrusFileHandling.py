@@ -358,7 +358,7 @@ def generate_thumbnail_numpy_weird_application_gubbins(path, target_resolution, 
         
         try:
             
-            HydrusProcreateHandling.ExtractZippedThumbnailToPath( path, temp_path )
+            HydrusProcreateHandling.extract_zipped_thumbnail_to_path( path, temp_path )
             
             thumbnail_numpy = HydrusImageHandling.GenerateThumbnailNumPyFromStaticImagePath( temp_path, target_resolution, HC.IMAGE_PNG )
             
@@ -591,7 +591,7 @@ def get_file_info(path, mime = None, ok_to_look_for_hydrus_updates = False):
         
         try:
             
-            ( width, height ) = HydrusProcreateHandling.GetProcreateResolution( path )
+            ( width, height ) = HydrusProcreateHandling.get_procreate_resolution( path )
             
         except Exception as e:
             
@@ -897,7 +897,7 @@ def get_mime(path, ok_to_look_for_hydrus_updates = False):
                     return microsoft_mime
                     
                 
-                if HydrusProcreateHandling.ZipLooksLikeProcreate( path ):
+                if HydrusProcreateHandling.zip_looks_like_procreate( path ):
                     
                     return HC.APPLICATION_PROCREATE
                     
