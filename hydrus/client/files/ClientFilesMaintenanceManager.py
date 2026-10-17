@@ -494,7 +494,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             try:
                 
-                raw_pil_image = HydrusImageOpening.RawOpenPILImage( path )
+                raw_pil_image = HydrusImageOpening.raw_open_pil_image( path )
                 
                 try:
                     
@@ -536,7 +536,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             try:
                 
-                raw_pil_image = HydrusImageOpening.RawOpenPILImage( path )
+                raw_pil_image = HydrusImageOpening.raw_open_pil_image( path )
                 
                 try:
                     
@@ -578,7 +578,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             try:
                 
-                raw_pil_image = HydrusImageOpening.RawOpenPILImage( path )
+                raw_pil_image = HydrusImageOpening.raw_open_pil_image( path )
                 
                 try:
                     
@@ -646,7 +646,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             try:
                 
-                raw_pil_image = HydrusImageOpening.RawOpenPILImage( path )
+                raw_pil_image = HydrusImageOpening.raw_open_pil_image( path )
                 
                 try:
                     
@@ -700,7 +700,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 try:
                     
-                    raw_pil_image = HydrusImageOpening.RawOpenPILImage( path )
+                    raw_pil_image = HydrusImageOpening.raw_open_pil_image( path )
                     
                     try:
                         

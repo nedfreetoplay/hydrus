@@ -1351,7 +1351,7 @@ def ShowFileEmbeddedMetadata( win: QW.QWidget, media_result: ClientMediaResult.M
                 
                 try:
                     
-                    raw_pil_image = HydrusImageOpening.RawOpenPILImage( path )
+                    raw_pil_image = HydrusImageOpening.raw_open_pil_image( path )
                     
                     try:
                         

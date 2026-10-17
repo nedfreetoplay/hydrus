@@ -195,7 +195,7 @@ def HasHumanReadableEmbeddedMetadata( path, mime, human_file_description = None,
             
             if possible_raw_pil_image is None:
                 
-                pil_image = HydrusImageOpening.RawOpenPILImage( path, human_file_description = human_file_description )
+                pil_image = HydrusImageOpening.raw_open_pil_image( path, human_file_description = human_file_description )
                 
             else:
                 

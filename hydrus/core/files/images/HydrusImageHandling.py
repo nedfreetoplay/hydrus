@@ -310,7 +310,7 @@ def generate_numpy_image(path, mime, force_pil = False, human_file_description =
     
     if not force_pil:
         
-        raw_pil_image = HydrusImageOpening.RawOpenPILImage( path, human_file_description = human_file_description )
+        raw_pil_image = HydrusImageOpening.raw_open_pil_image( path, human_file_description = human_file_description )
         
         try:
             
@@ -429,7 +429,7 @@ def generate_numpy_image_from_pil_image(pil_image: PILImage.Image, strip_useless
 
 def generate_pil_image(path: str | typing.BinaryIO, dequantize = True, human_file_description = None) -> PILImage.Image:
     
-    original_pil_image = HydrusImageOpening.RawOpenPILImage( path, human_file_description = human_file_description )
+    original_pil_image = HydrusImageOpening.raw_open_pil_image( path, human_file_description = human_file_description )
     
     rotated_pil_image = None
     
@@ -817,7 +817,7 @@ def is_decompression_bomb(path, human_file_description = None) -> bool:
     
     try:
         
-        raw_pil_image = HydrusImageOpening.RawOpenPILImage( path, human_file_description = human_file_description )
+        raw_pil_image = HydrusImageOpening.raw_open_pil_image( path, human_file_description = human_file_description )
         
         raw_pil_image.close()
         

@@ -415,7 +415,7 @@ class FileImportJob( object ):
                 
                 if raw_pil_image is None:
                     
-                    raw_pil_image = HydrusImageOpening.RawOpenPILImage( self._temp_path, human_file_description = self._human_file_description )
+                    raw_pil_image = HydrusImageOpening.raw_open_pil_image( self._temp_path, human_file_description = self._human_file_description )
                     
                 
                 has_exif = HydrusImageMetadata.has_exif( raw_pil_image )
@@ -434,7 +434,7 @@ class FileImportJob( object ):
                 
                 if raw_pil_image is None:
                     
-                    raw_pil_image = HydrusImageOpening.RawOpenPILImage( self._temp_path, human_file_description = self._human_file_description )
+                    raw_pil_image = HydrusImageOpening.raw_open_pil_image( self._temp_path, human_file_description = self._human_file_description )
                     
                 
                 has_xmp = ClientImageMetadata.HasXMP( raw_pil_image )
@@ -453,7 +453,7 @@ class FileImportJob( object ):
                 
                 if raw_pil_image is None:
                     
-                    raw_pil_image = HydrusImageOpening.RawOpenPILImage( self._temp_path, human_file_description = self._human_file_description )
+                    raw_pil_image = HydrusImageOpening.raw_open_pil_image( self._temp_path, human_file_description = self._human_file_description )
                     
                 
                 has_iptc = ClientImageMetadata.HasIPTC( raw_pil_image )
@@ -472,7 +472,7 @@ class FileImportJob( object ):
                 
                 if raw_pil_image is None:
                     
-                    raw_pil_image = HydrusImageOpening.RawOpenPILImage( self._temp_path, human_file_description = self._human_file_description )
+                    raw_pil_image = HydrusImageOpening.raw_open_pil_image( self._temp_path, human_file_description = self._human_file_description )
                     
                 
                 has_software_source = HydrusImageMetadata.has_software_source( raw_pil_image )
@@ -513,7 +513,7 @@ class FileImportJob( object ):
                     
                     if raw_pil_image is None:
                         
-                        raw_pil_image = HydrusImageOpening.RawOpenPILImage( self._temp_path, human_file_description = self._human_file_description )
+                        raw_pil_image = HydrusImageOpening.raw_open_pil_image( self._temp_path, human_file_description = self._human_file_description )
                         
                     
                     has_icc_profile = HydrusImageMetadata.has_icc_profile( raw_pil_image )

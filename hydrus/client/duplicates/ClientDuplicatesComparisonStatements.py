@@ -646,7 +646,7 @@ def populate_jpeg_quality_storage( jpeg_hash ):
         
         try:
             
-            raw_pil_image = HydrusImageOpening.RawOpenPILImage( path )
+            raw_pil_image = HydrusImageOpening.raw_open_pil_image( path )
             
             try:
                 
