@@ -3406,7 +3406,7 @@ class EmbedButton( QW.QWidget ):
                 
                 thumbnail_path = CG.client_controller.client_files_manager.GetThumbnailPath( display_media_result )
                 
-                thumbnail_mime = HydrusFileHandling.GetThumbnailMime( thumbnail_path )
+                thumbnail_mime = HydrusFileHandling.get_thumbnail_mime( thumbnail_path )
                 
                 self._thumbnail_qt_pixmap = ClientRendering.GenerateHydrusBitmap( thumbnail_path, thumbnail_mime ).GetQtPixmap()
                 

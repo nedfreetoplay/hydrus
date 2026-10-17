@@ -95,7 +95,7 @@ def IngestPaths( paths ):
     
     for path in paths:
         
-        if HydrusFileHandling.GetIsPNGRealQuick( path ):
+        if HydrusFileHandling.get_is_png_real_quick( path ):
             
             try:
                 

@@ -154,7 +154,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         if not file_is_missing and job_type in ( ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_REMOVE_RECORD, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_TRY_URL, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_TRY_URL_ELSE_REMOVE_RECORD, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_INTEGRITY_DATA_SILENT_DELETE ):
             
-            actual_hash = HydrusFileHandling.GetHashFromPath( path )
+            actual_hash = HydrusFileHandling.get_hash_from_path( path )
             
             if hash != actual_hash:
                 
@@ -771,7 +771,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         try:
             
-            thumbnail_mime = HydrusFileHandling.GetThumbnailMime( thumbnail_path )
+            thumbnail_mime = HydrusFileHandling.get_thumbnail_mime( thumbnail_path )
             
             numpy_image = HydrusImageHandling.GenerateNumPyImage( thumbnail_path, thumbnail_mime )
             
@@ -792,7 +792,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             path = self._controller.client_files_manager.GetFilePath( hash, original_mime )
             
-            ( size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) = HydrusFileHandling.GetFileInfo( path, ok_to_look_for_hydrus_updates = True )
+            ( size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) = HydrusFileHandling.get_file_info( path, ok_to_look_for_hydrus_updates = True )
             
             additional_data = ( size, mime, width, height, duration_ms, num_frames, has_audio, num_words )
             
@@ -839,7 +839,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             path = self._controller.client_files_manager.GetFilePath( hash, mime )
             
-            file_modified_timestamp_ms = HydrusFileHandling.GetFileModifiedTimestampMS( path )
+            file_modified_timestamp_ms = HydrusFileHandling.get_file_modified_timestamp_ms( path )
             
             additional_data = file_modified_timestamp_ms
             
@@ -865,7 +865,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             path = self._controller.client_files_manager.GetFilePath( hash, mime )
             
-            ( md5, sha1, sha512 ) = HydrusFileHandling.GetExtraHashesFromPath( path )
+            ( md5, sha1, sha512 ) = HydrusFileHandling.get_extra_hashes_from_path( path )
             
             additional_data = ( md5, sha1, sha512 )
             

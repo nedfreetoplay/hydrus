@@ -35,7 +35,7 @@ from hydrus.core.networking import HydrusNetwork
 
 mimes_to_default_thumbnail_paths = collections.defaultdict( lambda: HydrusStaticDir.get_static_path( 'hydrus.png' ) )
 
-def InitialiseMimesToDefaultThumbnailPaths():
+def initialise_mimes_to_default_thumbnail_paths():
     
     for mime in HC.AUDIO:
         
@@ -84,23 +84,20 @@ def InitialiseMimesToDefaultThumbnailPaths():
     mimes_to_default_thumbnail_paths[ HC.APPLICATION_PROCREATE ] = HydrusStaticDir.get_static_path( 'procreate.png' )
     mimes_to_default_thumbnail_paths[ HC.APPLICATION_RTF ] = HydrusStaticDir.get_static_path( 'rtf.png' )
     mimes_to_default_thumbnail_paths[ HC.IMAGE_SVG ] = HydrusStaticDir.get_static_path( 'svg.png' )
-    
 
-def GenerateDefaultThumbnail( mime: int, target_resolution: tuple[ int, int ] ):
+def generate_default_thumbnail(mime: int, target_resolution: tuple[int, int]):
     
     thumb_path = mimes_to_default_thumbnail_paths[ mime ]
     
     return HydrusImageHandling.GenerateDefaultThumbnailNumPyFromPath( thumb_path, target_resolution )
-    
 
-def GenerateThumbnailBytes( path, target_resolution, mime, duration_ms, num_frames, percentage_in = 35 ):
+def generate_thumbnail_bytes(path, target_resolution, mime, duration_ms, num_frames, percentage_in = 35):
     
-    thumbnail_numpy = GenerateThumbnailNumPy( path, target_resolution, mime, duration_ms, num_frames, percentage_in = percentage_in )
+    thumbnail_numpy = generate_thumbnail_numpy( path, target_resolution, mime, duration_ms, num_frames, percentage_in = percentage_in )
 
     return HydrusImageHandling.GenerateThumbnailBytesFromNumPy( thumbnail_numpy )
-    
 
-def PrintMoreThumbErrorInfo( e: Exception, message, extra_description: str | None = None ):
+def print_more_thumb_error_info(e: Exception, message, extra_description: str | None = None):
     
     if not isinstance( e, HydrusExceptions.NoThumbnailFileException ):
         
@@ -112,10 +109,8 @@ def PrintMoreThumbErrorInfo( e: Exception, message, extra_description: str | Non
             
         
         HydrusData.print_exception( e )
-        
-    
 
-def GenerateThumbnailNumPy( path, target_resolution, mime, duration_ms, num_frames, percentage_in = 35, extra_description = None ):
+def generate_thumbnail_numpy(path, target_resolution, mime, duration_ms, num_frames, percentage_in = 35, extra_description = None):
     
     thumbnail_numpy = None
     
@@ -127,9 +122,9 @@ def GenerateThumbnailNumPy( path, target_resolution, mime, duration_ms, num_fram
             
         except Exception as e:
             
-            PrintMoreThumbErrorInfo( e, f'Problem generating thumbnail for "{path}".', extra_description = extra_description )
+            print_more_thumb_error_info( e, f'Problem generating thumbnail for "{path}".', extra_description = extra_description )
             
-            thumbnail_numpy = GenerateDefaultThumbnail( mime, target_resolution )
+            thumbnail_numpy = generate_default_thumbnail( mime, target_resolution )
             
         
     elif mime == HC.ANIMATION_UGOIRA:
@@ -142,33 +137,32 @@ def GenerateThumbnailNumPy( path, target_resolution, mime, duration_ms, num_fram
             
         except Exception as e:
             
-            PrintMoreThumbErrorInfo( e, f'Problem generating thumbnail for "{path}".', extra_description = extra_description )
+            print_more_thumb_error_info( e, f'Problem generating thumbnail for "{path}".', extra_description = extra_description )
             
-            thumbnail_numpy = GenerateDefaultThumbnail( mime, target_resolution )
+            thumbnail_numpy = generate_default_thumbnail( mime, target_resolution )
             
         
     elif mime in HC.VIDEO or mime in HC.ANIMATIONS:
         
-        thumbnail_numpy = GenerateThumbnailNumPyUsingFFMPEGVideoRenderer( path, target_resolution, mime, duration_ms, num_frames, percentage_in = percentage_in, extra_description = extra_description )
+        thumbnail_numpy = generate_thumbnail_numpy_using_ffmpeg_video_renderer( path, target_resolution, mime, duration_ms, num_frames, percentage_in = percentage_in, extra_description = extra_description )
         
     elif mime in HC.AUDIO:
         
-        thumbnail_numpy = GenerateThumbnailNumPyAudio( path, target_resolution, mime, extra_description = extra_description )
+        thumbnail_numpy = generate_thumbnail_numpy_audio( path, target_resolution, mime, extra_description = extra_description )
         
     elif mime in HC.IMAGE_PROJECT_FILES or mime in HC.APPLICATIONS or mime in HC.ARCHIVES:
         
-        thumbnail_numpy = GenerateThumbnailNumPyWeirdApplicationGubbins( path, target_resolution, mime, extra_description = extra_description )
+        thumbnail_numpy = generate_thumbnail_numpy_weird_application_gubbins( path, target_resolution, mime, extra_description = extra_description )
         
     
     if thumbnail_numpy is None:
         
-        return GenerateDefaultThumbnail( mime, target_resolution )
+        return generate_default_thumbnail( mime, target_resolution )
         
     
     return thumbnail_numpy
-    
 
-def GenerateThumbnailNumPyAudio( path, target_resolution, mime, extra_description = None ):
+def generate_thumbnail_numpy_audio(path, target_resolution, mime, extra_description = None):
     
     thumbnail_numpy = None
     
@@ -180,16 +174,16 @@ def GenerateThumbnailNumPyAudio( path, target_resolution, mime, extra_descriptio
         
         if there_was_one:
             
-            image_mime = GetMime( temp_path )
+            image_mime = get_mime( temp_path )
             
             thumbnail_numpy = HydrusImageHandling.GenerateThumbnailNumPyFromStaticImagePath( temp_path, target_resolution, image_mime )
             
         
     except Exception as e:
         
-        PrintMoreThumbErrorInfo( e, f'Problem generating thumbnail for "{path}".', extra_description = extra_description )
+        print_more_thumb_error_info( e, f'Problem generating thumbnail for "{path}".', extra_description = extra_description )
         
-        thumbnail_numpy = GenerateDefaultThumbnail( mime, target_resolution )
+        thumbnail_numpy = generate_default_thumbnail( mime, target_resolution )
         
     finally:
         
@@ -197,9 +191,8 @@ def GenerateThumbnailNumPyAudio( path, target_resolution, mime, extra_descriptio
         
     
     return thumbnail_numpy
-    
 
-def GenerateThumbnailNumPyUsingFFMPEGVideoRenderer( path, target_resolution, mime, duration_ms, num_frames, percentage_in = 35, extra_description = None ):
+def generate_thumbnail_numpy_using_ffmpeg_video_renderer(path, target_resolution, mime, duration_ms, num_frames, percentage_in = 35, extra_description = None):
     
     thumbnail_numpy = None
     
@@ -222,7 +215,7 @@ def GenerateThumbnailNumPyUsingFFMPEGVideoRenderer( path, target_resolution, mim
         
         message = 'Problem generating thumbnail for "{}" at frame {} ({})--FFMPEG could not render it.'.format( path, desired_thumb_frame_index, HydrusNumbers.float_to_percentage( percentage_in / 100.0 ) )
         
-        PrintMoreThumbErrorInfo( e, message, extra_description = extra_description )
+        print_more_thumb_error_info( e, message, extra_description = extra_description )
         
         thumbnail_numpy = None
         
@@ -248,7 +241,7 @@ def GenerateThumbnailNumPyUsingFFMPEGVideoRenderer( path, target_resolution, mim
             
             message = 'Problem generating thumbnail for "{}" at first frame--FFMPEG could not render it.'.format( path )
             
-            PrintMoreThumbErrorInfo( e, message, extra_description = extra_description )
+            print_more_thumb_error_info( e, message, extra_description = extra_description )
             
             thumbnail_numpy = None
             
@@ -260,9 +253,8 @@ def GenerateThumbnailNumPyUsingFFMPEGVideoRenderer( path, target_resolution, mim
         
     
     return thumbnail_numpy
-    
 
-def GenerateThumbnailNumPyWeirdApplicationGubbins( path, target_resolution, mime, extra_description = None ):
+def generate_thumbnail_numpy_weird_application_gubbins(path, target_resolution, mime, extra_description = None):
     
     thumbnail_numpy = None
     
@@ -274,7 +266,7 @@ def GenerateThumbnailNumPyWeirdApplicationGubbins( path, target_resolution, mime
             
             HydrusArchiveHandling.extract_cover_page( path, temp_path, mime )
             
-            cover_mime = GetMime( temp_path )
+            cover_mime = get_mime( temp_path )
             
             if cover_mime == HC.TEXT_HTML:
                 
@@ -291,9 +283,9 @@ def GenerateThumbnailNumPyWeirdApplicationGubbins( path, target_resolution, mime
             
         except Exception as e:
             
-            PrintMoreThumbErrorInfo( e, f'Problem generating thumbnail for "{path}".', extra_description = extra_description )
+            print_more_thumb_error_info( e, f'Problem generating thumbnail for "{path}".', extra_description = extra_description )
             
-            thumbnail_numpy = GenerateDefaultThumbnail( mime, target_resolution )
+            thumbnail_numpy = generate_default_thumbnail( mime, target_resolution )
             
         finally:
             
@@ -312,9 +304,9 @@ def GenerateThumbnailNumPyWeirdApplicationGubbins( path, target_resolution, mime
             
         except Exception as e:
             
-            PrintMoreThumbErrorInfo( e, f'Problem generating thumbnail for "{path}".', extra_description = extra_description )
+            print_more_thumb_error_info( e, f'Problem generating thumbnail for "{path}".', extra_description = extra_description )
             
-            thumbnail_numpy = GenerateDefaultThumbnail( mime, target_resolution )
+            thumbnail_numpy = generate_default_thumbnail( mime, target_resolution )
             
         finally:
             
@@ -329,9 +321,9 @@ def GenerateThumbnailNumPyWeirdApplicationGubbins( path, target_resolution, mime
             
         except Exception as e:
             
-            PrintMoreThumbErrorInfo( e, f'Problem generating thumbnail for "{path}".', extra_description = extra_description )
+            print_more_thumb_error_info( e, f'Problem generating thumbnail for "{path}".', extra_description = extra_description )
             
-            thumbnail_numpy = GenerateDefaultThumbnail( mime, target_resolution )
+            thumbnail_numpy = generate_default_thumbnail( mime, target_resolution )
             
         
     elif mime == HC.IMAGE_OPENRASTER:
@@ -342,9 +334,9 @@ def GenerateThumbnailNumPyWeirdApplicationGubbins( path, target_resolution, mime
             
         except Exception as e:
             
-            PrintMoreThumbErrorInfo( e, f'Problem generating thumbnail for "{path}".', extra_description = extra_description )
+            print_more_thumb_error_info( e, f'Problem generating thumbnail for "{path}".', extra_description = extra_description )
             
-            thumbnail_numpy = GenerateDefaultThumbnail( mime, target_resolution )
+            thumbnail_numpy = generate_default_thumbnail( mime, target_resolution )
             
         
     elif mime == HC.APPLICATION_PAINT_DOT_NET:
@@ -355,9 +347,9 @@ def GenerateThumbnailNumPyWeirdApplicationGubbins( path, target_resolution, mime
             
         except Exception as e:
             
-            PrintMoreThumbErrorInfo( e, f'Problem generating thumbnail for "{path}".', extra_description = extra_description )
+            print_more_thumb_error_info( e, f'Problem generating thumbnail for "{path}".', extra_description = extra_description )
             
-            thumbnail_numpy = GenerateDefaultThumbnail( mime, target_resolution )
+            thumbnail_numpy = generate_default_thumbnail( mime, target_resolution )
             
         
     elif mime == HC.APPLICATION_PROCREATE:
@@ -372,9 +364,9 @@ def GenerateThumbnailNumPyWeirdApplicationGubbins( path, target_resolution, mime
             
         except Exception as e:
             
-            PrintMoreThumbErrorInfo( e, f'Problem generating thumbnail for "{path}".', extra_description = extra_description )
+            print_more_thumb_error_info( e, f'Problem generating thumbnail for "{path}".', extra_description = extra_description )
             
-            thumbnail_numpy = GenerateDefaultThumbnail( mime, target_resolution )
+            thumbnail_numpy = generate_default_thumbnail( mime, target_resolution )
             
         finally:
             
@@ -389,9 +381,9 @@ def GenerateThumbnailNumPyWeirdApplicationGubbins( path, target_resolution, mime
             
         except Exception as e:
             
-            PrintMoreThumbErrorInfo( e, f'Problem generating thumbnail for "{path}".', extra_description = extra_description )
+            print_more_thumb_error_info( e, f'Problem generating thumbnail for "{path}".', extra_description = extra_description )
             
-            thumbnail_numpy = GenerateDefaultThumbnail( mime, target_resolution )
+            thumbnail_numpy = generate_default_thumbnail( mime, target_resolution )
             
         
     elif mime == HC.IMAGE_SVG: 
@@ -402,9 +394,9 @@ def GenerateThumbnailNumPyWeirdApplicationGubbins( path, target_resolution, mime
             
         except Exception as e:
             
-            PrintMoreThumbErrorInfo( e, f'Problem generating thumbnail for "{path}".', extra_description = extra_description )
+            print_more_thumb_error_info( e, f'Problem generating thumbnail for "{path}".', extra_description = extra_description )
             
-            thumbnail_numpy = GenerateDefaultThumbnail( mime, target_resolution )
+            thumbnail_numpy = generate_default_thumbnail( mime, target_resolution )
             
         
     elif mime == HC.APPLICATION_PDF:
@@ -415,9 +407,9 @@ def GenerateThumbnailNumPyWeirdApplicationGubbins( path, target_resolution, mime
             
         except Exception as e:
             
-            PrintMoreThumbErrorInfo( e, f'Problem generating thumbnail for "{path}".', extra_description = extra_description )
+            print_more_thumb_error_info( e, f'Problem generating thumbnail for "{path}".', extra_description = extra_description )
             
-            thumbnail_numpy = GenerateDefaultThumbnail( mime, target_resolution )
+            thumbnail_numpy = generate_default_thumbnail( mime, target_resolution )
             
         
     elif mime == HC.APPLICATION_PPTX:
@@ -428,30 +420,29 @@ def GenerateThumbnailNumPyWeirdApplicationGubbins( path, target_resolution, mime
             
         except HydrusExceptions.NoThumbnailFileException:
             
-            thumbnail_numpy = GenerateDefaultThumbnail( mime, target_resolution )
+            thumbnail_numpy = generate_default_thumbnail( mime, target_resolution )
             
         except Exception as e:
             
-            PrintMoreThumbErrorInfo( e, f'Problem generating thumbnail for "{path}".', extra_description = extra_description )
+            print_more_thumb_error_info( e, f'Problem generating thumbnail for "{path}".', extra_description = extra_description )
             
-            thumbnail_numpy = GenerateDefaultThumbnail( mime, target_resolution )
+            thumbnail_numpy = generate_default_thumbnail( mime, target_resolution )
             
         
     elif mime == HC.APPLICATION_FLASH:
         
         # leaving this in place for now, rather than saying 'flash has no thumbs now', to keep legacy flash thumbs alive
-        thumbnail_numpy = GenerateDefaultThumbnail( mime, target_resolution )
+        thumbnail_numpy = generate_default_thumbnail( mime, target_resolution )
         
     
     if thumbnail_numpy is None:
         
-        thumbnail_numpy = GenerateDefaultThumbnail( mime, target_resolution )
+        thumbnail_numpy = generate_default_thumbnail( mime, target_resolution )
         
     
     return thumbnail_numpy
-    
 
-def GetExtraHashesFromPath( path ):
+def get_extra_hashes_from_path(path):
     
     h_md5 = hashlib.md5()
     h_sha1 = hashlib.sha1()
@@ -472,9 +463,8 @@ def GetExtraHashesFromPath( path ):
     sha512 = h_sha512.digest()
     
     return ( md5, sha1, sha512 )
-    
 
-def GetFileInfo( path, mime = None, ok_to_look_for_hydrus_updates = False ):
+def get_file_info(path, mime = None, ok_to_look_for_hydrus_updates = False):
     
     size = os.path.getsize( path )
     
@@ -485,7 +475,7 @@ def GetFileInfo( path, mime = None, ok_to_look_for_hydrus_updates = False ):
     
     if mime is None:
         
-        mime = GetMime( path, ok_to_look_for_hydrus_updates = ok_to_look_for_hydrus_updates )
+        mime = get_mime( path, ok_to_look_for_hydrus_updates = ok_to_look_for_hydrus_updates )
         
     
     if mime not in HC.ALLOWED_MIMES:
@@ -547,7 +537,7 @@ def GetFileInfo( path, mime = None, ok_to_look_for_hydrus_updates = False ):
             
             HydrusArchiveHandling.extract_cover_page( path, temp_path, mime )
             
-            cover_mime = GetMime( temp_path )
+            cover_mime = get_mime( temp_path )
             
             ( width, height ) = HydrusImageHandling.GetImageResolution( temp_path, cover_mime )
             
@@ -735,14 +725,12 @@ def GetFileInfo( path, mime = None, ok_to_look_for_hydrus_updates = False ):
         
     
     return ( size, mime, width, height, duration_ms, num_frames, has_audio, num_words )
-    
 
-def GetFileModifiedTimestampMS( path ) -> int:
+def get_file_modified_timestamp_ms(path) -> int:
     
     return HydrusTime.millisecondise_s( os.path.getmtime( path ) )
-    
 
-def GetHashFromPath( path ):
+def get_hash_from_path(path):
     
     h = hashlib.sha256()
     
@@ -755,7 +743,6 @@ def GetHashFromPath( path ):
         
     
     return h.digest()
-    
 
 # TODO: replace this with a FileTypeChecker class or something that tucks all this messy data away more neatly
 # do this the next time you visit this place
@@ -807,7 +794,7 @@ headers_and_mime = [
     ( ( ( [0], [b'\xD0\xCF\x11\xE0\xA1\xB1\x1A\xE1'] ), ), HC.UNDETERMINED_OLE )
 ]
 
-def passes_offsets_and_headers_pair( offsets, headers, first_bytes_of_file ) -> bool:
+def passes_offsets_and_headers_pair(offsets, headers, first_bytes_of_file) -> bool:
     # TODO: rewrite this garbage
     
     for offset in offsets:
@@ -822,9 +809,8 @@ def passes_offsets_and_headers_pair( offsets, headers, first_bytes_of_file ) -> 
         
     
     return False
-    
 
-def passes_offsets_and_headers( offsets_and_headers, first_bytes_of_file ) -> bool:
+def passes_offsets_and_headers(offsets_and_headers, first_bytes_of_file) -> bool:
     
     # ok we need to match every pair here
     for ( offsets, headers ) in offsets_and_headers:
@@ -836,11 +822,10 @@ def passes_offsets_and_headers( offsets_and_headers, first_bytes_of_file ) -> bo
         
     
     return True
-    
 
 ALLOW_COMIC_BOOK_ARCHIVE_INSPECTION = True
 
-def GetMime( path, ok_to_look_for_hydrus_updates = False ):
+def get_mime(path, ok_to_look_for_hydrus_updates = False):
     
     size = os.path.getsize( path )
     
@@ -931,7 +916,7 @@ def GetMime( path, ok_to_look_for_hydrus_updates = False ):
                 
             elif mime in ( HC.UNDETERMINED_WM, HC.UNDETERMINED_MP4 ):
                 
-                return GetMimeFromFFMPEG( path )
+                return get_mime_from_ffmpeg( path )
                 
             elif mime == HC.UNDETERMINED_PNG:
                 
@@ -1023,7 +1008,7 @@ def GetMime( path, ok_to_look_for_hydrus_updates = False ):
         
         try:
             
-            mime = GetMimeFromFFMPEG( path )
+            mime = get_mime_from_ffmpeg( path )
             
             if mime != HC.APPLICATION_UNKNOWN:
                 
@@ -1042,9 +1027,8 @@ def GetMime( path, ok_to_look_for_hydrus_updates = False ):
         
     
     return HC.APPLICATION_UNKNOWN
-    
 
-def GetMimeFromFFMPEG( path ):
+def get_mime_from_ffmpeg(path):
     
     lines = HydrusFFMPEG.get_ffmpeg_info_lines( path )
     
@@ -1209,11 +1193,10 @@ def GetMimeFromFFMPEG( path ):
         
     
     return HC.APPLICATION_UNKNOWN
-    
 
 headers_and_mime_png = [ ( offsets_and_headers, mime ) for ( offsets_and_headers, mime ) in headers_and_mime if mime in ( HC.UNDETERMINED_PNG, ) ]
 
-def GetIsPNGRealQuick( path ):
+def get_is_png_real_quick(path):
     
     with open( path, 'rb' ) as f:
         
@@ -1229,11 +1212,10 @@ def GetIsPNGRealQuick( path ):
         
     
     return False
-    
 
 headers_and_mime_thumbnails = [ ( offsets_and_headers, mime ) for ( offsets_and_headers, mime ) in headers_and_mime if mime in ( HC.IMAGE_JPEG, HC.UNDETERMINED_PNG ) ]
 
-def GetThumbnailMime( path ):
+def get_thumbnail_mime(path):
     
     with open( path, 'rb' ) as f:
         
@@ -1253,5 +1235,4 @@ def GetThumbnailMime( path ):
             
         
     
-    return GetMime( path )
-    
+    return get_mime( path )

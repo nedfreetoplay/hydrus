@@ -413,7 +413,7 @@ class HydrusController:
         
         from hydrus.core.files import HydrusFileHandling
         
-        HydrusFileHandling.InitialiseMimesToDefaultThumbnailPaths()
+        HydrusFileHandling.initialise_mimes_to_default_thumbnail_paths()
         
         self._fast_job_scheduler = HydrusThreading.JobScheduler( self )
         self._slow_job_scheduler = HydrusThreading.JobScheduler( self )

@@ -410,7 +410,7 @@ class ClientFilesManager( object ):
         
         try:
             
-            thumbnail_bytes = HydrusFileHandling.GenerateThumbnailBytes( file_path, target_resolution, mime, duration_ms, num_frames, percentage_in = percentage_in )
+            thumbnail_bytes = HydrusFileHandling.generate_thumbnail_bytes( file_path, target_resolution, mime, duration_ms, num_frames, percentage_in = percentage_in )
             
         except Exception as e:
             
@@ -1577,7 +1577,7 @@ class ClientFilesManager( object ):
                 raise Exception()
                 
             
-            thumbnail_mime = HydrusFileHandling.GetThumbnailMime( path )
+            thumbnail_mime = HydrusFileHandling.get_thumbnail_mime( path )
             
             numpy_image = HydrusImageHandling.GenerateNumPyImage( path, thumbnail_mime )
             
