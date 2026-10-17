@@ -464,7 +464,7 @@ class ThreadWorkerPool:
             
             for call_to_thread in self._call_to_threads:
                 
-                if not call_to_thread.CurrentlyWorking():
+                if not call_to_thread.currently_working():
                     
                     return call_to_thread
                     
@@ -505,7 +505,7 @@ class ThreadWorkerPool:
             
             for call_to_thread in self._long_running_call_to_threads:
                 
-                if not call_to_thread.CurrentlyWorking():
+                if not call_to_thread.currently_working():
                     
                     return call_to_thread
                     
@@ -525,7 +525,7 @@ class ThreadWorkerPool:
             
             with self._lock:
                 
-                num_threads = sum( ( 1 for t in self._call_to_threads if t.CurrentlyWorking() ) )
+                num_threads = sum( ( 1 for t in self._call_to_threads if t.currently_working() ) )
                 
                 if num_threads <= 3:
                     
@@ -563,7 +563,7 @@ class ThreadWorkerPool:
             
             def filter_call_to_threads( t ):
                 
-                if t.CurrentlyWorking():
+                if t.currently_working():
                     
                     return True
                     
@@ -618,7 +618,7 @@ class JobScheduler(threading.Thread):
         
         with self._waiting_lock:
             
-            self._waiting = [ job for job in self._waiting if not job.IsCancelled() ]
+            self._waiting = [ job for job in self._waiting if not job.is_cancelled() ]
     
     def _get_loop_wait_time(self):
         
@@ -632,7 +632,7 @@ class JobScheduler(threading.Thread):
             next_job = self._waiting[0]
             
         
-        time_delta_until_due = next_job.GetTimeDeltaUntilDue()
+        time_delta_until_due = next_job.get_timeDelta_until_due()
         
         return min( 1.0, time_delta_until_due )
     
@@ -648,7 +648,7 @@ class JobScheduler(threading.Thread):
             next_job = self._waiting[0]
             
         
-        if next_job.IsDue():
+        if next_job.is_due():
             
             return False
             
@@ -684,7 +684,7 @@ class JobScheduler(threading.Thread):
                 
                 next_job = self._waiting[0]
                 
-                if not next_job.IsDue():
+                if not next_job.is_due():
                     
                     # front is not due, so nor is the rest of the list
                     break
@@ -693,15 +693,15 @@ class JobScheduler(threading.Thread):
                 next_job = self._waiting.pop( 0 )
                 
             
-            if next_job.IsCancelled():
+            if next_job.is_cancelled():
                 
                 continue
                 
             
-            if next_job.SlotOK():
+            if next_job.slot_ok():
                 
                 # important this happens outside of the waiting lock lmao!
-                next_job.StartWork()
+                next_job.start_work()
                 
                 jobs_started += 1
                 

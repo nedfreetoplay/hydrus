@@ -114,14 +114,14 @@ class HydrusController:
         
         for job in self._daemon_jobs.values():
             
-            job.Cancel()
+            job.cancel()
             
         
         if not self._doing_fast_exit:
             
             started = HydrusTime.get_now()
             
-            while True in ( daemon_job.CurrentlyWorking() for daemon_job in self._daemon_jobs.values() ):
+            while True in ( daemon_job.currently_working() for daemon_job in self._daemon_jobs.values() ):
                 
                 self._report_shutdown_daemons_status()
                 
@@ -697,7 +697,7 @@ class HydrusController:
         
         self._pubsub.wait_until_free()
         
-        self.db.WaitUntilFree()
+        self.db.wait_until_free()
     
     def wake_daemon( self, name ):
         
