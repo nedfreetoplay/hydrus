@@ -343,7 +343,7 @@ def generate_thumbnail_numpy_weird_application_gubbins(path, target_resolution, 
         
         try:
             
-            thumbnail_numpy = HydrusPaintNETHandling.GenerateThumbnailNumPyFromPaintNET( path, target_resolution )
+            thumbnail_numpy = HydrusPaintNETHandling.generate_thumbnail_numpy_from_paint_net( path, target_resolution )
             
         except Exception as e:
             
@@ -580,7 +580,7 @@ def get_file_info(path, mime = None, ok_to_look_for_hydrus_updates = False):
         
         try:
             
-            ( width, height ) = HydrusPaintNETHandling.GetPaintNETResolution( path )
+            ( width, height ) = HydrusPaintNETHandling.get_paint_net_resolution( path )
             
         except HydrusExceptions.NoResolutionFileException:
             

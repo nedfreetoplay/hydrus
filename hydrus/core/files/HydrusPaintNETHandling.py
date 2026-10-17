@@ -10,9 +10,9 @@ from hydrus.core.files.images import HydrusImageHandling
 
 import xml.etree.ElementTree as ET
 
-def GenerateThumbnailNumPyFromPaintNET( path: str, target_resolution: tuple[ int, int ] ) -> numpy.ndarray:
+def generate_thumbnail_numpy_from_paint_net(path: str, target_resolution: tuple[int, int]) -> numpy.ndarray:
     
-    pil_image = ThumbnailPILImageFromPaintNET( path )
+    pil_image = thumbnail_pil_image_from_paint_net( path )
     
     try:
         
@@ -34,23 +34,20 @@ def GenerateThumbnailNumPyFromPaintNET( path: str, target_resolution: tuple[ int
         
     
     return numpy_image
-    
 
-def GetPaintNETResolution( path: str ):
+def get_paint_net_resolution(path: str):
     
     try:
         
-        xml_header = GetPaintNETXMLHeader( path )
+        xml_header = get_paint_net_xml_header( path )
         
-        return GetPaintNETResolutionFromXMLHeader( xml_header )
+        return get_paint_net_resolution_from_xml_header( xml_header )
         
     except Exception as e:
         
         raise HydrusExceptions.NoThumbnailFileException( f'Could not read resolution bytes from this Paint.NET!' )
-        
-    
 
-def GetPaintNETResolutionFromXMLHeader( xml_header: str ):
+def get_paint_net_resolution_from_xml_header(xml_header: str):
     
     try:
         
@@ -65,9 +62,8 @@ def GetPaintNETResolutionFromXMLHeader( xml_header: str ):
         
     
     return ( width, height )
-    
 
-def GetPaintNETXMLHeader( path:str ):
+def get_paint_net_xml_header(path:str):
     
     with open( path, 'rb' ) as f:
         
@@ -86,13 +82,12 @@ def GetPaintNETXMLHeader( path:str ):
         
     
     return xml_header
-    
 
-def ThumbnailPILImageFromPaintNET( path: str ):
+def thumbnail_pil_image_from_paint_net(path: str):
     
     try:
         
-        xml_header = GetPaintNETXMLHeader( path )
+        xml_header = get_paint_net_xml_header( path )
         
         root = ET.fromstring( xml_header )
         
@@ -114,4 +109,3 @@ def ThumbnailPILImageFromPaintNET( path: str ):
         
     
     return HydrusImageHandling.GeneratePILImage( BytesIO( png_bytes ), human_file_description = f'Preview image inside Paint.NET "{path}"' )
-    
