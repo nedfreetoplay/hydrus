@@ -140,7 +140,7 @@ class UgoiraRenderer(object):
         
         self._frame_data = HydrusUgoiraHandling.GetFramePathsUgoira( path )
         
-        self._zip = HydrusArchiveHandling.GetZipAsPath( path )
+        self._zip = HydrusArchiveHandling.get_zip_as_path( path )
         
     
     def set_position( self, index ):
@@ -187,7 +187,7 @@ def ConvertUgoiraToBytesForAPI( media: ClientMediaResult.MediaResult, format: in
     
     frame_paths = HydrusUgoiraHandling.GetFramePathsUgoira( path )
     
-    zip = HydrusArchiveHandling.GetZipAsPath( path )
+    zip = HydrusArchiveHandling.get_zip_as_path( path )
     
     frames = []
     

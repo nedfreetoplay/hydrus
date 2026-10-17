@@ -14,7 +14,7 @@ def MergedPILImageFromOra( path: str ):
     
     try:
         
-        zip_path_file_obj = HydrusArchiveHandling.GetZipAsPath( path, ORA_FILE_MERGED ).open( 'rb' )
+        zip_path_file_obj = HydrusArchiveHandling.get_zip_as_path( path, ORA_FILE_MERGED ).open( 'rb' )
         
         return HydrusImageHandling.GeneratePILImage( zip_path_file_obj )
         
@@ -28,7 +28,7 @@ def ThumbnailPILImageFromOra( path: str ):
     
     try:
         
-        zip_path_file_obj = HydrusArchiveHandling.GetZipAsPath( path, ORA_FILE_THUMB ).open( 'rb' )
+        zip_path_file_obj = HydrusArchiveHandling.get_zip_as_path( path, ORA_FILE_THUMB ).open( 'rb' )
         
         return HydrusImageHandling.GeneratePILImage( zip_path_file_obj )
         
@@ -76,7 +76,7 @@ def GetOraProperties( path: str ):
     
     try:
         
-        data_file = HydrusArchiveHandling.GetZipAsPath( path, DOCUMENT_INFO_FILE ).open( 'rb' )
+        data_file = HydrusArchiveHandling.get_zip_as_path( path, DOCUMENT_INFO_FILE ).open( 'rb' )
         
         tree = ET.parse( data_file )
         
