@@ -395,9 +395,9 @@ def generate_numpy_image(path, mime, force_pil = False, human_file_description =
             
         else:
             
-            numpy_image = HydrusImageNormalisation.DequantizeFreshlyLoadedNumPyImage( numpy_image )
+            numpy_image = HydrusImageNormalisation.dequantize_freshly_loaded_numpy_image( numpy_image )
             
-            numpy_image = HydrusImageNormalisation.StripOutAnyUselessAlphaChannel( numpy_image )
+            numpy_image = HydrusImageNormalisation.strip_out_any_useless_alpha_channel( numpy_image )
             
         
     
@@ -422,7 +422,7 @@ def generate_numpy_image_from_pil_image(pil_image: PILImage.Image, strip_useless
     
     if strip_useless_alpha:
         
-        numpy_image = HydrusImageNormalisation.StripOutAnyUselessAlphaChannel( numpy_image )
+        numpy_image = HydrusImageNormalisation.strip_out_any_useless_alpha_channel( numpy_image )
         
     
     return numpy_image
@@ -435,7 +435,7 @@ def generate_pil_image(path: str | typing.BinaryIO, dequantize = True, human_fil
     
     try:
         
-        rotated_pil_image = HydrusImageNormalisation.RotateEXIFPILImage( original_pil_image )
+        rotated_pil_image = HydrusImageNormalisation.rotate_exif_pil_image( original_pil_image )
         
         if dequantize:
             
@@ -456,13 +456,13 @@ def generate_pil_image(path: str | typing.BinaryIO, dequantize = True, human_fil
                     rotated_pil_image.close()
                     
                 
-                numpy_image = HydrusImageNormalisation.NormaliseNumPyImageToUInt8( numpy_image )
+                numpy_image = HydrusImageNormalisation.normalise_numpy_image_to_uint8( numpy_image )
                 
                 rotated_pil_image = generate_pil_image_from_numpy_image( numpy_image )
                 
             
             # note this destroys animated gifs atm, it collapses down to one frame
-            dequantised_rotated_pil_image = HydrusImageNormalisation.DequantizePILImage( rotated_pil_image )
+            dequantised_rotated_pil_image = HydrusImageNormalisation.dequantize_pil_image( rotated_pil_image )
             
             # must be 'is not'. '!=' breaks on a closed guy
             if rotated_pil_image is not dequantised_rotated_pil_image:
