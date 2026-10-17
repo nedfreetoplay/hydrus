@@ -2,18 +2,17 @@ import re
 
 from hydrus.core import HydrusExceptions
 
-def GetAudioStreamLines( lines: list[ str ] ):
+def get_audio_stream_lines(lines: list[str]):
     
     # the ^\sStream is to exclude the 'title' line, when it exists, includes the string 'Audio: ', ha ha
     # Stream #0:0: Audio: mp3 (mp3float), 44100 Hz, stereo, fltp, 192 kb/s
     audio_lines = [ line for line in lines if line.startswith( 'Stream ' ) and 'Audio: ' in line ]
     
     return audio_lines
-    
 
-def GetImageStreamLines( lines: list[ str ] ):
+def get_image_stream_lines(lines: list[str]):
     
-    video_lines = GetVideoStreamLines( lines )
+    video_lines = get_video_stream_lines( lines )
     
     def looks_like_image_stream( line ):
         
@@ -29,9 +28,8 @@ def GetImageStreamLines( lines: list[ str ] ):
     image_lines = [ line for line in video_lines if looks_like_image_stream( line ) or looks_like_attached_pic( line ) ]
     
     return image_lines
-    
 
-def GetVideoStreamLines( lines: list[ str ] ):
+def get_video_stream_lines(lines: list[str]):
     """
     This returns single-frame pngs and stuff!
     """
@@ -42,9 +40,8 @@ def GetVideoStreamLines( lines: list[ str ] ):
     audio_lines = [ line for line in lines if line.startswith( 'Stream ' ) and 'Video: ' in line ]
     
     return audio_lines
-    
 
-def ParseStreamMappingFromStreamLine( line: str ):
+def parse_stream_mapping_from_stream_line(line: str):
     
     try:
         
@@ -67,4 +64,3 @@ def ParseStreamMappingFromStreamLine( line: str ):
         
     
     raise HydrusExceptions.DataMissing( 'No stream mapping found!' )
-    

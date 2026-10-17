@@ -9,7 +9,7 @@ def RenderAnyAttachedStillImageToPath( file_path, output_path ):
     
     lines = HydrusFFMPEG.get_ffmpeg_info_lines( file_path )
     
-    image_lines = HydrusFFMPEGParsing.GetImageStreamLines( lines )
+    image_lines = HydrusFFMPEGParsing.get_image_stream_lines( lines )
     
     image_stream_mapping = None
     
@@ -19,7 +19,7 @@ def RenderAnyAttachedStillImageToPath( file_path, output_path ):
         
         try:
             
-            image_stream_mapping = HydrusFFMPEGParsing.ParseStreamMappingFromStreamLine( image_line )
+            image_stream_mapping = HydrusFFMPEGParsing.parse_stream_mapping_from_stream_line( image_line )
             
         except Exception as e:
             

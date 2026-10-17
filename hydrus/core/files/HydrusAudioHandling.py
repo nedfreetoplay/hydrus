@@ -4,7 +4,7 @@ from hydrus.core.files import HydrusFFMPEGParsing
 
 def parse_ffmpeg_audio(lines):
     
-    audio_lines = HydrusFFMPEGParsing.GetAudioStreamLines( lines )
+    audio_lines = HydrusFFMPEGParsing.get_audio_stream_lines( lines )
     
     audio_found = len( audio_lines ) > 0
     audio_format = 'unknown'
@@ -40,14 +40,14 @@ def parse_ffmpeg_audio(lines):
         
         try:
             
-            audio_stream_mapping = HydrusFFMPEGParsing.ParseStreamMappingFromStreamLine( audio_line )
+            audio_stream_mapping = HydrusFFMPEGParsing.parse_stream_mapping_from_stream_line( audio_line )
             
         except Exception as e:
             
             pass # default to 0:0
             
         
-        image_lines = HydrusFFMPEGParsing.GetImageStreamLines( lines )
+        image_lines = HydrusFFMPEGParsing.get_image_stream_lines( lines )
         
         if len( image_lines ) > 0:
             
@@ -55,7 +55,7 @@ def parse_ffmpeg_audio(lines):
             
             try:
                 
-                image_stream_mapping = HydrusFFMPEGParsing.ParseStreamMappingFromStreamLine( image_line )
+                image_stream_mapping = HydrusFFMPEGParsing.parse_stream_mapping_from_stream_line( image_line )
                 
             except Exception as e:
                 

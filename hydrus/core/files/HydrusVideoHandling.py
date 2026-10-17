@@ -446,7 +446,7 @@ def ParseFFMPEGVideoFormat( lines ):
     
     try:
         
-        stream_mapping = HydrusFFMPEGParsing.ParseStreamMappingFromStreamLine( line )
+        stream_mapping = HydrusFFMPEGParsing.parse_stream_mapping_from_stream_line( line )
         
     except Exception as e:
         
@@ -458,7 +458,7 @@ def ParseFFMPEGVideoFormat( lines ):
 
 def ParseFFMPEGVideoLine( lines, png_ok = False ) -> str:
     
-    pure_video_lines = HydrusFFMPEGParsing.GetVideoStreamLines( lines )
+    pure_video_lines = HydrusFFMPEGParsing.get_video_stream_lines( lines )
     
     if png_ok:
         
