@@ -19,11 +19,11 @@ class HydrusResourceClientAPIPermissionsRequest( ClientLocalServerResources.Hydr
             raise HydrusExceptions.ConflictException( 'The permission registration dialog is not open. Please open it under _services->review_ in the hydrus client.' )
             
         
-        name = request.parsed_request_args.GetValue( 'name', str )
+        name = request.parsed_request_args.get_value( 'name', str )
         
-        permits_everything = request.parsed_request_args.GetValue( 'permits_everything', bool, default_value = False )
+        permits_everything = request.parsed_request_args.get_value( 'permits_everything', bool, default_value = False )
         
-        basic_permissions = request.parsed_request_args.GetValue( 'basic_permissions', list, expected_list_type = int, default_value = [] )
+        basic_permissions = request.parsed_request_args.get_value( 'basic_permissions', list, expected_list_type = int, default_value = [] )
         
         basic_permissions = [ int( value ) for value in basic_permissions ]
         
@@ -177,11 +177,11 @@ class HydrusResourceClientAPIRestrictedGetService( ClientLocalServerResources.Hy
         
         if 'service_key' in request.parsed_request_args:
             
-            service_key = request.parsed_request_args.GetValue( 'service_key', bytes )
+            service_key = request.parsed_request_args.get_value( 'service_key', bytes )
             
         elif 'service_name' in request.parsed_request_args:
             
-            service_name = request.parsed_request_args.GetValue( 'service_name', str )
+            service_name = request.parsed_request_args.get_value( 'service_name', str )
             
             try:
                 
@@ -320,11 +320,11 @@ class HydrusResourceClientAPIRestrictedGetServiceRatingSVG( ClientLocalServerRes
         
         if 'service_key' in request.parsed_request_args:
             
-            service_key = request.parsed_request_args.GetValue( 'service_key', bytes )
+            service_key = request.parsed_request_args.get_value( 'service_key', bytes )
             
         elif 'service_name' in request.parsed_request_args:
             
-            service_name = request.parsed_request_args.GetValue( 'service_name', str )
+            service_name = request.parsed_request_args.get_value( 'service_name', str )
             
             try:
                 

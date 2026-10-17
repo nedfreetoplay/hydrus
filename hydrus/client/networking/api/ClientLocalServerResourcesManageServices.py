@@ -56,7 +56,7 @@ class HydrusResourceClientAPIRestrictedManageServicesCommitPending( HydrusResour
     
     def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        service_key = request.parsed_request_args.GetValue( 'service_key', bytes )
+        service_key = request.parsed_request_args.get_value( 'service_key', bytes )
         
         ClientLocalServerCore.CheckUploadableService( service_key )
         
@@ -91,7 +91,7 @@ class HydrusResourceClientAPIRestrictedManageServicesForgetPending( HydrusResour
     
     def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        service_key = request.parsed_request_args.GetValue( 'service_key', bytes )
+        service_key = request.parsed_request_args.get_value( 'service_key', bytes )
         
         ClientLocalServerCore.CheckUploadableService( service_key )
         

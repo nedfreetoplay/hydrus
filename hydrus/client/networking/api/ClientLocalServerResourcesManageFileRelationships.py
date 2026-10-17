@@ -68,12 +68,12 @@ class HydrusResourceClientAPIRestrictedManageFileRelationshipsGetPotentialPairs(
         
         potential_duplicates_search_context = ClientLocalServerCore.ParsePotentialDuplicatesSearchContext( request )
         
-        max_num_pairs = request.parsed_request_args.GetValue( 'max_num_pairs', int, default_value = CG.client_controller.new_options.GetInteger( 'duplicate_filter_max_batch_size' ) )
+        max_num_pairs = request.parsed_request_args.get_value( 'max_num_pairs', int, default_value = CG.client_controller.new_options.GetInteger( 'duplicate_filter_max_batch_size' ) )
         
-        duplicate_pair_sort_type = request.parsed_request_args.GetValue( 'duplicate_pair_sort_type', int, default_value = ClientDuplicates.DUPE_PAIR_SORT_MAX_FILESIZE )
-        duplicate_pair_sort_asc = request.parsed_request_args.GetValue( 'duplicate_pair_sort_asc', bool, default_value = False )
+        duplicate_pair_sort_type = request.parsed_request_args.get_value( 'duplicate_pair_sort_type', int, default_value = ClientDuplicates.DUPE_PAIR_SORT_MAX_FILESIZE )
+        duplicate_pair_sort_asc = request.parsed_request_args.get_value( 'duplicate_pair_sort_asc', bool, default_value = False )
         
-        group_mode = request.parsed_request_args.GetValue( 'group_mode', bool, default_value = False )
+        group_mode = request.parsed_request_args.get_value( 'group_mode', bool, default_value = False )
         
         if group_mode:
             
@@ -193,16 +193,16 @@ class HydrusResourceClientAPIRestrictedManageFileRelationshipsSetRelationships( 
         
         # TODO: now I rewangled this to remove the pair_rows parameter, let's get an object or dict bouncing around so we aren't handling a mega-tuple
         
-        raw_relationship_dicts = request.parsed_request_args.GetValue( 'relationships', list, expected_list_type = dict, default_value = [] )
+        raw_relationship_dicts = request.parsed_request_args.get_value( 'relationships', list, expected_list_type = dict, default_value = [] )
         
         for raw_relationship_dict in raw_relationship_dicts:
             
-            duplicate_type = HydrusNetworkVariableHandling.GetValueFromDict( raw_relationship_dict, 'relationship', int )
-            hash_a_hex = HydrusNetworkVariableHandling.GetValueFromDict( raw_relationship_dict, 'hash_a', str )
-            hash_b_hex = HydrusNetworkVariableHandling.GetValueFromDict( raw_relationship_dict, 'hash_b', str )
-            do_default_content_merge = HydrusNetworkVariableHandling.GetValueFromDict( raw_relationship_dict, 'do_default_content_merge', bool )
-            delete_a = HydrusNetworkVariableHandling.GetValueFromDict( raw_relationship_dict, 'delete_a', bool, default_value = False )
-            delete_b = HydrusNetworkVariableHandling.GetValueFromDict( raw_relationship_dict, 'delete_b', bool, default_value = False )
+            duplicate_type = HydrusNetworkVariableHandling.get_value_from_dict( raw_relationship_dict, 'relationship', int )
+            hash_a_hex = HydrusNetworkVariableHandling.get_value_from_dict( raw_relationship_dict, 'hash_a', str )
+            hash_b_hex = HydrusNetworkVariableHandling.get_value_from_dict( raw_relationship_dict, 'hash_b', str )
+            do_default_content_merge = HydrusNetworkVariableHandling.get_value_from_dict( raw_relationship_dict, 'do_default_content_merge', bool )
+            delete_a = HydrusNetworkVariableHandling.get_value_from_dict( raw_relationship_dict, 'delete_a', bool, default_value = False )
+            delete_b = HydrusNetworkVariableHandling.get_value_from_dict( raw_relationship_dict, 'delete_b', bool, default_value = False )
             
             raw_rows.append( ( duplicate_type, hash_a_hex, hash_b_hex, do_default_content_merge, delete_a, delete_b ) )
             
@@ -223,12 +223,12 @@ class HydrusResourceClientAPIRestrictedManageFileRelationshipsSetRelationships( 
             
             ( duplicate_type, hash_a_hex, hash_b_hex, do_default_content_merge, delete_a, delete_b ) = row
             
-            HydrusNetworkVariableHandling.TestVariableType( 'relationship', duplicate_type, int, allowed_values = allowed_duplicate_types )
-            HydrusNetworkVariableHandling.TestVariableType( 'hash_a', hash_a_hex, str )
-            HydrusNetworkVariableHandling.TestVariableType( 'hash_b', hash_b_hex, str )
-            HydrusNetworkVariableHandling.TestVariableType( 'do_default_content_merge', do_default_content_merge, bool )
-            HydrusNetworkVariableHandling.TestVariableType( 'delete_a', delete_a, bool )
-            HydrusNetworkVariableHandling.TestVariableType( 'delete_b', delete_b, bool )
+            HydrusNetworkVariableHandling.test_variable_type( 'relationship', duplicate_type, int, allowed_values = allowed_duplicate_types )
+            HydrusNetworkVariableHandling.test_variable_type( 'hash_a', hash_a_hex, str )
+            HydrusNetworkVariableHandling.test_variable_type( 'hash_b', hash_b_hex, str )
+            HydrusNetworkVariableHandling.test_variable_type( 'do_default_content_merge', do_default_content_merge, bool )
+            HydrusNetworkVariableHandling.test_variable_type( 'delete_a', delete_a, bool )
+            HydrusNetworkVariableHandling.test_variable_type( 'delete_b', delete_b, bool )
             
             try:
                 

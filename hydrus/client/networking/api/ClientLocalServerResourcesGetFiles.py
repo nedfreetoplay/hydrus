@@ -46,8 +46,8 @@ class HydrusResourceClientAPIRestrictedGetFilesSearchFiles( HydrusResourceClient
             raise HydrusExceptions.BadRequestException( 'Sorry, search for all known tags over all known files is not supported!' )
             
         
-        include_current_tags = request.parsed_request_args.GetValue( 'include_current_tags', bool, default_value = True )
-        include_pending_tags = request.parsed_request_args.GetValue( 'include_pending_tags', bool, default_value = True )
+        include_current_tags = request.parsed_request_args.get_value( 'include_current_tags', bool, default_value = True )
+        include_pending_tags = request.parsed_request_args.get_value( 'include_pending_tags', bool, default_value = True )
         
         tag_context = ClientSearchTagContext.TagContext( service_key = tag_service_key, include_current_tags = include_current_tags, include_pending_tags = include_pending_tags )
         predicates = ClientLocalServerCore.ParseClientAPISearchPredicates( request )
@@ -75,7 +75,7 @@ class HydrusResourceClientAPIRestrictedGetFilesSearchFiles( HydrusResourceClient
                 raise HydrusExceptions.BadRequestException( 'Sorry, did not understand that sort type!' )
                 
             
-            file_sort_asc = request.parsed_request_args.GetValue( 'file_sort_asc', bool, default_value = True )
+            file_sort_asc = request.parsed_request_args.get_value( 'file_sort_asc', bool, default_value = True )
             
             sort_order = CC.SORT_ASC if file_sort_asc else CC.SORT_DESC
             
@@ -84,12 +84,12 @@ class HydrusResourceClientAPIRestrictedGetFilesSearchFiles( HydrusResourceClient
             
             if 'return_hashes' in request.parsed_request_args:
                 
-                return_hashes = request.parsed_request_args.GetValue( 'return_hashes', bool )
+                return_hashes = request.parsed_request_args.get_value( 'return_hashes', bool )
                 
             
             if 'return_file_ids' in request.parsed_request_args:
                 
-                return_file_ids = request.parsed_request_args.GetValue( 'return_file_ids', bool )
+                return_file_ids = request.parsed_request_args.get_value( 'return_file_ids', bool )
                 
             
             job_status = ClientThreading.JobStatus( cancellable = True )
@@ -130,7 +130,7 @@ def ParseAndFetchMediaResult( request: HydrusServerRequest.HydrusRequest ) -> Cl
         
         if 'file_id' in request.parsed_request_args:
             
-            file_id = request.parsed_request_args.GetValue( 'file_id', int )
+            file_id = request.parsed_request_args.get_value( 'file_id', int )
             
             request.client_api_permissions.CheckPermissionToSeeFiles( ( file_id, ) )
             
@@ -140,7 +140,7 @@ def ParseAndFetchMediaResult( request: HydrusServerRequest.HydrusRequest ) -> Cl
             
             request.client_api_permissions.CheckCanSeeAllFiles()
             
-            hash = request.parsed_request_args.GetValue( 'hash', bytes )
+            hash = request.parsed_request_args.get_value( 'hash', bytes )
             
             media_result = CG.client_controller.read( 'media_result', hash )
             
@@ -185,7 +185,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetFile( HydrusResourceClientAPIR
             raise HydrusExceptions.NotFoundException( 'That file seems to be missing!' )
             
         
-        is_attachment = request.parsed_request_args.GetValue( 'download', bool, default_value = False )
+        is_attachment = request.parsed_request_args.get_value( 'download', bool, default_value = False )
         
         response_context = HydrusServerResources.ResponseContext( 200, mime = mime, path = path, is_attachment = is_attachment )
         
@@ -205,7 +205,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetRenderedFile( HydrusResourceCl
             
             if 'file_id' in request.parsed_request_args:
                 
-                file_id = request.parsed_request_args.GetValue( 'file_id', int )
+                file_id = request.parsed_request_args.get_value( 'file_id', int )
                 
                 request.client_api_permissions.CheckPermissionToSeeFiles( ( file_id, ) )
                 
@@ -215,7 +215,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetRenderedFile( HydrusResourceCl
                 
                 request.client_api_permissions.CheckCanSeeAllFiles()
                 
-                hash = request.parsed_request_args.GetValue( 'hash', bytes )
+                hash = request.parsed_request_args.get_value( 'hash', bytes )
                 
                 media_result = CG.client_controller.read( 'media_result', hash )
                 
@@ -233,7 +233,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetRenderedFile( HydrusResourceCl
             
             if 'render_format' in request.parsed_request_args:
                 
-                format = request.parsed_request_args.GetValue( 'render_format', int )
+                format = request.parsed_request_args.get_value( 'render_format', int )
                 
                 if not format in [ HC.IMAGE_PNG, HC.IMAGE_JPEG, HC.IMAGE_WEBP ]:
                     
@@ -261,8 +261,8 @@ class HydrusResourceClientAPIRestrictedGetFilesGetRenderedFile( HydrusResourceCl
             
             if 'width' in request.parsed_request_args and 'height' in request.parsed_request_args:
                 
-                width = request.parsed_request_args.GetValue( 'width', int )
-                height = request.parsed_request_args.GetValue( 'height', int )
+                width = request.parsed_request_args.get_value( 'width', int )
+                height = request.parsed_request_args.get_value( 'height', int )
                 
                 if width < 1:
                     
@@ -279,7 +279,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetRenderedFile( HydrusResourceCl
             
             if 'render_quality' in request.parsed_request_args:
                 
-                quality = request.parsed_request_args.GetValue( 'render_quality', int )
+                quality = request.parsed_request_args.get_value( 'render_quality', int )
                 
             else:
                 
@@ -300,7 +300,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetRenderedFile( HydrusResourceCl
             
             if 'render_format' in request.parsed_request_args:
                 
-                format = request.parsed_request_args.GetValue( 'render_format', int )
+                format = request.parsed_request_args.get_value( 'render_format', int )
                 
                 if not format in [ HC.ANIMATION_APNG, HC.ANIMATION_WEBP ]:
                     
@@ -313,7 +313,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetRenderedFile( HydrusResourceCl
             
             if 'render_quality' in request.parsed_request_args:
                 
-                quality = request.parsed_request_args.GetValue( 'render_quality', int )
+                quality = request.parsed_request_args.get_value( 'render_quality', int )
                 
             else:
                 
@@ -337,7 +337,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetRenderedFile( HydrusResourceCl
             raise HydrusExceptions.BadRequestException('Requested file is not an image!')
             
         
-        is_attachment = request.parsed_request_args.GetValue( 'download', bool, default_value = False )
+        is_attachment = request.parsed_request_args.get_value( 'download', bool, default_value = False )
 
         response_context = HydrusServerResources.ResponseContext( 200, mime = format, body = body, is_attachment = is_attachment, max_age = max_age )
         
@@ -350,14 +350,14 @@ class HydrusResourceClientAPIRestrictedGetFilesFileHashes( HydrusResourceClientA
         
         supported_hash_types = ( 'sha256', 'md5', 'sha1', 'sha512' )
         
-        source_hash_type = request.parsed_request_args.GetValue( 'source_hash_type', str, default_value = 'sha256' )
+        source_hash_type = request.parsed_request_args.get_value( 'source_hash_type', str, default_value = 'sha256' )
         
         if source_hash_type not in supported_hash_types:
             
             raise HydrusExceptions.BadRequestException( 'I do not support that hash type!' )
             
         
-        desired_hash_type = request.parsed_request_args.GetValue( 'desired_hash_type', str )
+        desired_hash_type = request.parsed_request_args.get_value( 'desired_hash_type', str )
         
         if desired_hash_type not in supported_hash_types:
             
@@ -368,14 +368,14 @@ class HydrusResourceClientAPIRestrictedGetFilesFileHashes( HydrusResourceClientA
         
         if 'hash' in request.parsed_request_args:
             
-            request_hash = request.parsed_request_args.GetValue( 'hash', bytes )
+            request_hash = request.parsed_request_args.get_value( 'hash', bytes )
             
             source_hashes.add( request_hash )
             
         
         if 'hashes' in request.parsed_request_args:
             
-            request_hashes = request.parsed_request_args.GetValue( 'hashes', list, expected_list_type = bytes )
+            request_hashes = request.parsed_request_args.get_value( 'hashes', list, expected_list_type = bytes )
             
             source_hashes.update( request_hashes )
             
@@ -407,15 +407,15 @@ class HydrusResourceClientAPIRestrictedGetFilesFileMetadata( HydrusResourceClien
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        only_return_identifiers = request.parsed_request_args.GetValue( 'only_return_identifiers', bool, default_value = False )
-        only_return_basic_information = request.parsed_request_args.GetValue( 'only_return_basic_information', bool, default_value = False )
-        hide_service_keys_tags = request.parsed_request_args.GetValue( 'hide_service_keys_tags', bool, default_value = True )
-        detailed_url_information = request.parsed_request_args.GetValue( 'detailed_url_information', bool, default_value = False )
-        include_notes = request.parsed_request_args.GetValue( 'include_notes', bool, default_value = False )
-        include_milliseconds = request.parsed_request_args.GetValue( 'include_milliseconds', bool, default_value = False )
-        include_services_object = request.parsed_request_args.GetValue( 'include_services_object', bool, default_value = True )
-        create_new_file_ids = request.parsed_request_args.GetValue( 'create_new_file_ids', bool, default_value = False )
-        include_blurhash = request.parsed_request_args.GetValue( 'include_blurhash', bool, default_value = False )
+        only_return_identifiers = request.parsed_request_args.get_value( 'only_return_identifiers', bool, default_value = False )
+        only_return_basic_information = request.parsed_request_args.get_value( 'only_return_basic_information', bool, default_value = False )
+        hide_service_keys_tags = request.parsed_request_args.get_value( 'hide_service_keys_tags', bool, default_value = True )
+        detailed_url_information = request.parsed_request_args.get_value( 'detailed_url_information', bool, default_value = False )
+        include_notes = request.parsed_request_args.get_value( 'include_notes', bool, default_value = False )
+        include_milliseconds = request.parsed_request_args.get_value( 'include_milliseconds', bool, default_value = False )
+        include_services_object = request.parsed_request_args.get_value( 'include_services_object', bool, default_value = True )
+        create_new_file_ids = request.parsed_request_args.get_value( 'create_new_file_ids', bool, default_value = False )
+        include_blurhash = request.parsed_request_args.get_value( 'include_blurhash', bool, default_value = False )
         
         hashes = ClientLocalServerCore.ParseHashes( request )
         
@@ -657,7 +657,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetThumbnailPath( HydrusResourceC
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        include_thumbnail_filetype = request.parsed_request_args.GetValue( 'include_thumbnail_filetype', bool, default_value = False )
+        include_thumbnail_filetype = request.parsed_request_args.get_value( 'include_thumbnail_filetype', bool, default_value = False )
         
         media_result = ParseAndFetchMediaResult( request )
         

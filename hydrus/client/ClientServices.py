@@ -1365,7 +1365,7 @@ class ServiceRestricted( ServiceRemote ):
             
             if method == HC.GET:
                 
-                query = HydrusNetworkVariableHandling.DumpToGETQuery( request_args )
+                query = HydrusNetworkVariableHandling.dump_to_get_query( request_args )
                 
                 body = ''
                 
@@ -1383,7 +1383,7 @@ class ServiceRestricted( ServiceRemote ):
                     
                     content_type = HC.APPLICATION_JSON
                     
-                    body = HydrusNetworkVariableHandling.DumpHydrusArgsToNetworkBytes( request_args )
+                    body = HydrusNetworkVariableHandling.dump_hydrus_args_to_network_bytes( request_args )
                     
                 
             
@@ -1441,7 +1441,7 @@ class ServiceRestricted( ServiceRemote ):
             
             if content_type is not None and content_type.startswith( 'application/json' ):
                 
-                parsed_args = HydrusNetworkVariableHandling.ParseNetworkBytesToParsedHydrusArgs( network_bytes )
+                parsed_args = HydrusNetworkVariableHandling.parse_network_bytes_to_parsed_hydrus_args( network_bytes )
                 
                 if command == 'account' and 'account' in parsed_args:
                     

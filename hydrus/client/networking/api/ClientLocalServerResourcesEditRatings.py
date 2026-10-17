@@ -22,7 +22,7 @@ class HydrusResourceClientAPIRestrictedEditRatingsSetRating( HydrusResourceClien
     
     def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        rating_service_key = request.parsed_request_args.GetValue( 'rating_service_key', bytes )
+        rating_service_key = request.parsed_request_args.get_value( 'rating_service_key', bytes )
         
         applicable_hashes = set( ClientLocalServerCore.ParseHashes( request ) )
         

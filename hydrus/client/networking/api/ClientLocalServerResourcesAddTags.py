@@ -41,14 +41,14 @@ class HydrusResourceClientAPIRestrictedAddTagsAddTags( HydrusResourceClientAPIRe
         
         #
         
-        override_previously_deleted_mappings = request.parsed_request_args.GetValue( 'override_previously_deleted_mappings', bool, default_value = True )
-        create_new_deleted_mappings = request.parsed_request_args.GetValue( 'create_new_deleted_mappings', bool, default_value = True )
+        override_previously_deleted_mappings = request.parsed_request_args.get_value( 'override_previously_deleted_mappings', bool, default_value = True )
+        create_new_deleted_mappings = request.parsed_request_args.get_value( 'create_new_deleted_mappings', bool, default_value = True )
         
         service_keys_to_actions_to_tags = None
         
         if 'service_keys_to_tags' in request.parsed_request_args:
             
-            service_keys_to_tags = request.parsed_request_args.GetValue( 'service_keys_to_tags', dict )
+            service_keys_to_tags = request.parsed_request_args.get_value( 'service_keys_to_tags', dict )
             
             service_keys_to_actions_to_tags = {}
             
@@ -56,7 +56,7 @@ class HydrusResourceClientAPIRestrictedAddTagsAddTags( HydrusResourceClientAPIRe
                 
                 service = ClientLocalServerCore.CheckTagService( service_key )
                 
-                HydrusNetworkVariableHandling.TestVariableType( 'tags in service_keys_to_tags', tags, list, expected_list_type = str )
+                HydrusNetworkVariableHandling.test_variable_type( 'tags in service_keys_to_tags', tags, list, expected_list_type = str )
                 
                 tags = HydrusTags.clean_tags( tags )
                 
@@ -82,7 +82,7 @@ class HydrusResourceClientAPIRestrictedAddTagsAddTags( HydrusResourceClientAPIRe
         
         if 'service_keys_to_actions_to_tags' in request.parsed_request_args:
             
-            parsed_service_keys_to_actions_to_tags = request.parsed_request_args.GetValue( 'service_keys_to_actions_to_tags', dict )
+            parsed_service_keys_to_actions_to_tags = request.parsed_request_args.get_value( 'service_keys_to_actions_to_tags', dict )
             
             service_keys_to_actions_to_tags = {}
             
@@ -90,13 +90,13 @@ class HydrusResourceClientAPIRestrictedAddTagsAddTags( HydrusResourceClientAPIRe
                 
                 service = ClientLocalServerCore.CheckTagService( service_key )
                 
-                HydrusNetworkVariableHandling.TestVariableType( 'actions_to_tags', parsed_actions_to_tags, dict )
+                HydrusNetworkVariableHandling.test_variable_type( 'actions_to_tags', parsed_actions_to_tags, dict )
                 
                 actions_to_tags = {}
                 
                 for ( parsed_content_action, tags ) in parsed_actions_to_tags.items():
                     
-                    HydrusNetworkVariableHandling.TestVariableType( 'parsed_content_action', parsed_content_action, str )
+                    HydrusNetworkVariableHandling.test_variable_type( 'parsed_content_action', parsed_content_action, str )
                     
                     try:
                         
@@ -122,7 +122,7 @@ class HydrusResourceClientAPIRestrictedAddTagsAddTags( HydrusResourceClientAPIRe
                             
                         
                     
-                    HydrusNetworkVariableHandling.TestVariableType( 'tags in actions_to_tags', tags, list ) # do not test for str here, it can be reason tuples!
+                    HydrusNetworkVariableHandling.test_variable_type( 'tags in actions_to_tags', tags, list ) # do not test for str here, it can be reason tuples!
                     
                     actions_to_tags[ content_action ] = tags
                     
@@ -301,9 +301,9 @@ class HydrusResourceClientAPIRestrictedAddTagsSearchTags( HydrusResourceClientAP
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        search = request.parsed_request_args.GetValue( 'search', str )
+        search = request.parsed_request_args.get_value( 'search', str )
         
-        tag_display_type_str = request.parsed_request_args.GetValue( 'tag_display_type', str, default_value = 'storage' )
+        tag_display_type_str = request.parsed_request_args.get_value( 'tag_display_type', str, default_value = 'storage' )
         
         tag_display_type = ClientTags.TAG_DISPLAY_STORAGE if tag_display_type_str == 'storage' else ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL
         
@@ -341,7 +341,7 @@ class HydrusResourceClientAPIRestrictedAddTagsGetTagSiblingsParents( HydrusResou
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        tags = request.parsed_request_args.GetValue( 'tags', list, expected_list_type = str )
+        tags = request.parsed_request_args.get_value( 'tags', list, expected_list_type = str )
         
         ClientLocalServerCore.CheckTags( tags )
         
@@ -386,7 +386,7 @@ class HydrusResourceClientAPIRestrictedAddTagsCleanTags( HydrusResourceClientAPI
     
     def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
         
-        tags = request.parsed_request_args.GetValue( 'tags', list, expected_list_type = str )
+        tags = request.parsed_request_args.get_value( 'tags', list, expected_list_type = str )
         
         tags = list( HydrusTags.clean_tags( tags ) )
         

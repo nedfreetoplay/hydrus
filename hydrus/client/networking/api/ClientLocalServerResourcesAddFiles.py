@@ -45,7 +45,7 @@ class HydrusResourceClientAPIRestrictedAddFilesAddFile( HydrusResourceClientAPIR
             
             # ok the caller has not sent us a file in the POST content, we have a 'path'
             
-            path = request.parsed_request_args.GetValue( 'path', str )
+            path = request.parsed_request_args.get_value( 'path', str )
             
             if not os.path.exists( path ):
                 
@@ -57,7 +57,7 @@ class HydrusResourceClientAPIRestrictedAddFilesAddFile( HydrusResourceClientAPIR
                 raise HydrusExceptions.BadRequestException( 'Path "{}" is not a file!'.format( path ) )
                 
             
-            delete_after_successful_import = request.parsed_request_args.GetValue( 'delete_after_successful_import', bool, default_value = False )
+            delete_after_successful_import = request.parsed_request_args.get_value( 'delete_after_successful_import', bool, default_value = False )
             
             ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path( 'client_api_import' )
             
@@ -174,7 +174,7 @@ class HydrusResourceClientAPIRestrictedAddFilesDeleteFiles( HydrusResourceClient
         
         if 'reason' in request.parsed_request_args:
             
-            reason = request.parsed_request_args.GetValue( 'reason', str )
+            reason = request.parsed_request_args.get_value( 'reason', str )
             
         else:
             
@@ -306,7 +306,7 @@ class HydrusResourceClientAPIRestrictedAddFilesGenerateHashes( HydrusResourceCli
         
         if not hasattr( request, 'temp_file_info' ):
             
-            path = request.parsed_request_args.GetValue( 'path', str )
+            path = request.parsed_request_args.get_value( 'path', str )
             
             if not os.path.exists( path ):
                 
