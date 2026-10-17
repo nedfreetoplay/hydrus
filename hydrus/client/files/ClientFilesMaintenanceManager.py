@@ -690,7 +690,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 try:
                     
-                    has_icc_profile = HydrusPSDHandling.PSDHasICCProfile( path )
+                    has_icc_profile = HydrusPSDHandling.psd_has_icc_profile( path )
                     
                 except Exception as e:
                     

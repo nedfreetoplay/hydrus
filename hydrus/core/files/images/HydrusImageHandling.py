@@ -263,7 +263,7 @@ def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = 
             HydrusData.ShowText( 'Loading PSD' )
             
         
-        pil_image = HydrusPSDHandling.GeneratePILImageFromPSD( path )
+        pil_image = HydrusPSDHandling.generate_pil_image_from_psd( path )
         
         try:
             
