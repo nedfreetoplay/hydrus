@@ -1416,7 +1416,7 @@ class TestClientDB( unittest.TestCase ):
         
         base_location = ClientFilesPhysical.FilesStorageBaseLocation( client_files_default, 1 )
         
-        for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( 'f', HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ):
+        for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( 'f', HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ):
             
             subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
             
@@ -1424,7 +1424,7 @@ class TestClientDB( unittest.TestCase ):
             self.assertTrue( subfolder.PathExists() )
             
         
-        for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( 't', HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ):
+        for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( 't', HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ):
             
             subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
             

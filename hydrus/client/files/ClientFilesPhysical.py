@@ -123,8 +123,8 @@ def RegranulariseFileStorage( base_location_paths: list[ str ], prefix_types: li
         
         for prefix_type in prefix_types:
             
-            starting_prefixes_potential.update( HydrusFilesPhysicalStorage.IteratePrefixes( prefix_type, starting_prefix_length ) )
-            ending_prefixes_potential.update( HydrusFilesPhysicalStorage.IteratePrefixes( prefix_type, ending_prefix_length ) )
+            starting_prefixes_potential.update( HydrusFilesPhysicalStorage.iterate_prefixes( prefix_type, starting_prefix_length ) )
+            ending_prefixes_potential.update( HydrusFilesPhysicalStorage.iterate_prefixes( prefix_type, ending_prefix_length ) )
             
         
         source_subfolders_we_are_doing: list[ FilesStorageSubfolder ] = []

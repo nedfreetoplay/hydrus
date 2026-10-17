@@ -203,8 +203,8 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         
         all_prefixes = { subfolder.prefix for subfolder in subfolders }
         
-        missing_prefixes_f = HydrusFilesPhysicalStorage.GetMissingPrefixes( 'f', all_prefixes, current_granularity )
-        missing_prefixes_t = HydrusFilesPhysicalStorage.GetMissingPrefixes( 't', all_prefixes, current_granularity )
+        missing_prefixes_f = HydrusFilesPhysicalStorage.get_missing_prefixes( 'f', all_prefixes, current_granularity )
+        missing_prefixes_t = HydrusFilesPhysicalStorage.get_missing_prefixes( 't', all_prefixes, current_granularity )
         
         if len( missing_prefixes_f ) > 0 or len( missing_prefixes_t ) > 0:
             
@@ -399,12 +399,12 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         
         location_id = self.GetLocationId( default_client_files_path )
         
-        for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( 'f', current_storage_granularity ):
+        for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( 'f', current_storage_granularity ):
             
             self._execute( 'INSERT INTO client_files_subfolders ( prefix, location_id ) VALUES ( ?, ? );', ( prefix, location_id ) )
             
         
-        for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( 't', current_storage_granularity ):
+        for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( 't', current_storage_granularity ):
             
             self._execute( 'INSERT INTO client_files_subfolders ( prefix, location_id ) VALUES ( ?, ? );', ( prefix, location_id ) )
             

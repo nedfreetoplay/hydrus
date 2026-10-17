@@ -13,8 +13,8 @@ from hydrus.test import TestGlobals as TG
 
 def get_good_prefixes():
     
-    good_prefixes = list( HydrusFilesPhysicalStorage.IteratePrefixes( 'f', HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ) )
-    good_prefixes.extend( HydrusFilesPhysicalStorage.IteratePrefixes( 't', HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ) )
+    good_prefixes = list( HydrusFilesPhysicalStorage.iterate_prefixes( 'f', HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ) )
+    good_prefixes.extend( HydrusFilesPhysicalStorage.iterate_prefixes( 't', HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ) )
     
     return good_prefixes
     
@@ -125,8 +125,8 @@ class TestClientFileStorage( unittest.TestCase ):
         
         good_prefixes = get_good_prefixes()
         
-        self.assertEqual( HydrusFilesPhysicalStorage.GetMissingPrefixes( 'f', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ), [] )
-        self.assertEqual( HydrusFilesPhysicalStorage.GetMissingPrefixes( 't', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ), [] )
+        self.assertEqual( HydrusFilesPhysicalStorage.get_missing_prefixes( 'f', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ), [] )
+        self.assertEqual( HydrusFilesPhysicalStorage.get_missing_prefixes( 't', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ), [] )
         
         #
         
@@ -140,14 +140,14 @@ class TestClientFileStorage( unittest.TestCase ):
             good_prefixes.remove( prefix )
             
         
-        self.assertEqual( HydrusFilesPhysicalStorage.GetMissingPrefixes( 'f', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ), f1_series )
+        self.assertEqual( HydrusFilesPhysicalStorage.get_missing_prefixes( 'f', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ), f1_series )
         
         #
         
         # same deal but missing everything
         good_prefixes = [ prefix for prefix in get_good_prefixes() if prefix.startswith( 'f' ) ]
         
-        self.assertEqual( HydrusFilesPhysicalStorage.GetMissingPrefixes( 'f', [], HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ), good_prefixes )
+        self.assertEqual( HydrusFilesPhysicalStorage.get_missing_prefixes( 'f', [], HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ), good_prefixes )
         
         #
         
@@ -155,27 +155,27 @@ class TestClientFileStorage( unittest.TestCase ):
         
         good_prefixes.remove( 'f53' )
         
-        self.assertEqual( HydrusFilesPhysicalStorage.GetMissingPrefixes( 'f', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ), [ 'f53' ] )
-        self.assertEqual( HydrusFilesPhysicalStorage.GetMissingPrefixes( 't', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ), [] )
+        self.assertEqual( HydrusFilesPhysicalStorage.get_missing_prefixes( 'f', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ), [ 'f53' ] )
+        self.assertEqual( HydrusFilesPhysicalStorage.get_missing_prefixes( 't', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ), [] )
         
         #
         
         good_prefixes = get_good_prefixes()
         
-        HydrusFilesPhysicalStorage.CheckFullPrefixCoverage( 'f', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH )
-        HydrusFilesPhysicalStorage.CheckFullPrefixCoverage( 't', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH )
+        HydrusFilesPhysicalStorage.check_full_prefix_coverage( 'f', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH )
+        HydrusFilesPhysicalStorage.check_full_prefix_coverage( 't', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH )
         
         good_prefixes.remove( 'f00' )
         good_prefixes.remove( 't06' )
         
         with self.assertRaises( HydrusExceptions.DataMissing ):
             
-            HydrusFilesPhysicalStorage.CheckFullPrefixCoverage( 'f', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH )
+            HydrusFilesPhysicalStorage.check_full_prefix_coverage( 'f', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH )
             
         
         with self.assertRaises( HydrusExceptions.DataMissing ):
             
-            HydrusFilesPhysicalStorage.CheckFullPrefixCoverage( 't', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH )
+            HydrusFilesPhysicalStorage.check_full_prefix_coverage( 't', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH )
             
         
         
@@ -191,7 +191,7 @@ class TestClientGranularisation( unittest.TestCase ):
         
         for prefix_type in [ 'f', 't' ]:
             
-            for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( prefix_type, 2 ):
+            for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( prefix_type, 2 ):
                 
                 subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
                 
@@ -226,7 +226,7 @@ class TestClientGranularisation( unittest.TestCase ):
         
         for prefix_type in [ 'f', 't' ]:
             
-            for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( prefix_type, 3 ):
+            for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( prefix_type, 3 ):
                 
                 subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
                 
@@ -250,7 +250,7 @@ class TestClientGranularisation( unittest.TestCase ):
         
         for prefix_type in [ 'f', 't' ]:
             
-            for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( prefix_type, 3 ):
+            for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( prefix_type, 3 ):
                 
                 subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
                 
@@ -278,14 +278,14 @@ class TestClientGranularisation( unittest.TestCase ):
         
         for prefix_type in [ 'f', 't' ]:
             
-            for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( prefix_type, 3 ):
+            for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( prefix_type, 3 ):
                 
                 subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
                 
                 self.assertFalse( subfolder.PathExists() )
                 
             
-            for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( prefix_type, 2 ):
+            for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( prefix_type, 2 ):
                 
                 subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
                 
@@ -309,7 +309,7 @@ class TestClientGranularisation( unittest.TestCase ):
         
         for prefix_type in [ 'f' ]:
             
-            for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( prefix_type, 2 ):
+            for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( prefix_type, 2 ):
                 
                 subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
                 
@@ -345,7 +345,7 @@ class TestClientGranularisation( unittest.TestCase ):
         
         for prefix_type in [ 'f' ]:
             
-            for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( prefix_type, 2 ):
+            for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( prefix_type, 2 ):
                 
                 subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
                 
@@ -381,7 +381,7 @@ class TestClientGranularisation( unittest.TestCase ):
         
         for prefix_type in [ 'f', 't' ]:
             
-            for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( prefix_type, 2 ):
+            for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( prefix_type, 2 ):
                 
                 subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
                 
@@ -402,7 +402,7 @@ class TestClientGranularisation( unittest.TestCase ):
         
         for prefix_type in [ 'f' ]:
             
-            for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( prefix_type, 3 ):
+            for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( prefix_type, 3 ):
                 
                 subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
                 

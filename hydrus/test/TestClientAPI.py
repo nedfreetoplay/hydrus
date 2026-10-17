@@ -8997,7 +8997,7 @@ class TestClientAPI( unittest.TestCase ):
         self.assertEqual( locations[0][ 'ideal_weight' ], 1 )
         self.assertEqual( locations[0][ 'max_num_bytes' ], None )
         self.assertEqual( locations[0][ 'path' ], os.path.join( TG.test_controller.db_dir, 'client_files' ) )
-        self.assertEqual( set( locations[0][ 'prefixes' ] ), set( HydrusFilesPhysicalStorage.IteratePrefixes( 'f', HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ) ).union( HydrusFilesPhysicalStorage.IteratePrefixes( 't', HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ) ) )
+        self.assertEqual( set( locations[0][ 'prefixes' ] ), set( HydrusFilesPhysicalStorage.iterate_prefixes( 'f', HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ) ).union( HydrusFilesPhysicalStorage.iterate_prefixes( 't', HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ) ) )
         
     
     def _test_permission_failures( self, connection, set_up_permissions ):

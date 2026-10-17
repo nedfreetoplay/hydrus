@@ -387,7 +387,7 @@ class DB( HydrusDB.HydrusDB ):
         
         HydrusPaths.make_sure_directory_exists( self._files_dir )
         
-        for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( '', 2 ):
+        for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( '', 2 ):
             
             new_dir = os.path.join( self._files_dir, prefix )
             
