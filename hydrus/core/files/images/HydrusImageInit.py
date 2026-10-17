@@ -1,29 +1,25 @@
 from PIL import Image as PILImage
 import warnings
 
-if not hasattr( PILImage, 'DecompressionBombError' ):
+if not hasattr(PILImage, 'DecompressionBombError'):
     
     # super old versions don't have this, so let's just make a stub, wew
     
     class DBEStub( Warning ):
         
         pass
-        
     
     PILImage.DecompressionBombError = DBEStub
-    
 
-if not hasattr( PILImage, 'DecompressionBombWarning' ):
+if not hasattr(PILImage, 'DecompressionBombWarning'):
     
     # super old versions don't have this, so let's just make a stub, wew
     
-    class DBWStub( Warning ):
+    class DBWStub(Warning):
         
         pass
-        
     
     PILImage.DecompressionBombWarning = DBWStub
-    
 
 warnings.simplefilter( 'ignore', PILImage.DecompressionBombWarning )
 warnings.simplefilter( 'ignore', PILImage.DecompressionBombError )
