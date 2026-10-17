@@ -303,7 +303,7 @@ def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = 
             HydrusData.ShowText( 'Loading ORA' )
             
         
-        pil_image = HydrusORAHandling.MergedPILImageFromOra( path )
+        pil_image = HydrusORAHandling.merged_pil_image_from_ora( path )
         
         try:
             

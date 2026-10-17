@@ -330,7 +330,7 @@ def generate_thumbnail_numpy_weird_application_gubbins(path, target_resolution, 
         
         try:
             
-            thumbnail_numpy = HydrusORAHandling.GenerateThumbnailNumPyFromOraPath( path, target_resolution )
+            thumbnail_numpy = HydrusORAHandling.generate_thumbnail_numpy_from_ora_path( path, target_resolution )
             
         except Exception as e:
             
@@ -569,7 +569,7 @@ def get_file_info(path, mime = None, ok_to_look_for_hydrus_updates = False):
         
         try:
             
-            ( width, height ) = HydrusORAHandling.GetOraProperties( path )
+            ( width, height ) = HydrusORAHandling.get_ora_properties( path )
             
         except HydrusExceptions.NoResolutionFileException:
             

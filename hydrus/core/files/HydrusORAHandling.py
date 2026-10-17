@@ -10,7 +10,7 @@ import xml.etree.ElementTree as ET
 ORA_FILE_THUMB = "Thumbnails/thumbnail.png"
 ORA_FILE_MERGED = "mergedimage.png"
 
-def MergedPILImageFromOra( path: str ):
+def merged_pil_image_from_ora(path: str):
     
     try:
         
@@ -21,10 +21,8 @@ def MergedPILImageFromOra( path: str ):
     except FileNotFoundError:
         
         raise HydrusExceptions.NoRenderFileException( f'Could not read {ORA_FILE_MERGED} from this ora file' )
-        
-    
 
-def ThumbnailPILImageFromOra( path: str ):
+def thumbnail_pil_image_from_ora(path: str):
     
     try:
         
@@ -35,18 +33,16 @@ def ThumbnailPILImageFromOra( path: str ):
     except FileNotFoundError:
         
         raise HydrusExceptions.NoThumbnailFileException( f'Could not read {ORA_FILE_THUMB} from this ora file' )
-        
-    
 
-def GenerateThumbnailNumPyFromOraPath( path: str, target_resolution: tuple[ int, int ] ) -> numpy.ndarray:
+def generate_thumbnail_numpy_from_ora_path(path: str, target_resolution: tuple[int, int]) -> numpy.ndarray:
     
     try:
         
-        pil_image = MergedPILImageFromOra( path )
+        pil_image = merged_pil_image_from_ora( path )
         
     except Exception as e:
         
-        pil_image = ThumbnailPILImageFromOra( path )
+        pil_image = thumbnail_pil_image_from_ora( path )
         
     
     try:
@@ -68,9 +64,8 @@ def GenerateThumbnailNumPyFromOraPath( path: str, target_resolution: tuple[ int,
         
     
     return numpy_image
-    
 
-def GetOraProperties( path: str ):
+def get_ora_properties(path: str):
     
     DOCUMENT_INFO_FILE = "stack.xml"
     
@@ -91,5 +86,3 @@ def GetOraProperties( path: str ):
     except Exception as e:
         
         raise HydrusExceptions.NoResolutionFileException( f'This ora file had no {DOCUMENT_INFO_FILE} or it contains no resolution!' )
-        
-    
