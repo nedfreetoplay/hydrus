@@ -4952,7 +4952,7 @@ class DB( HydrusDB.HydrusDB ):
             
             for ( account_type_id, service_id, account_type_key, title, dictionary_string ) in old_data:
                 
-                account_type = HydrusNetworkLegacy.ConvertToNewAccountType( account_type_key, title, dictionary_string )
+                account_type = HydrusNetworkLegacy.convert_to_new_account_type( account_type_key, title, dictionary_string )
                 
                 dump = account_type.dump_to_string()
                 

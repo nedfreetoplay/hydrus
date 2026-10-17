@@ -554,7 +554,7 @@ class Account:
             
             from hydrus.core.networking import HydrusNetworkLegacy
             
-            account_type = HydrusNetworkLegacy.ConvertToNewAccountType( account_type_key, title, account_type_dictionary_string )
+            account_type = HydrusNetworkLegacy.convert_to_new_account_type( account_type_key, title, account_type_dictionary_string )
             
         else:
             
