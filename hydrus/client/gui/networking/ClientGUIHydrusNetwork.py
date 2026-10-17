@@ -171,7 +171,7 @@ class EditAccountTypePanel( ClientGUIScrolledPanels.EditPanel ):
             text = 'Auto-creation disabled. '
             
         
-        num_created = self._auto_create_history.GetUsage( HC.BANDWIDTH_TYPE_DATA, time_delta )
+        num_created = self._auto_create_history.get_usage( HC.BANDWIDTH_TYPE_DATA, time_delta )
         
         text += '{} auto-created in the past {}.'.format( HydrusNumbers.to_human_int( num_created ), HydrusTime.time_delta_to_pretty_timedelta( time_delta ) )
         

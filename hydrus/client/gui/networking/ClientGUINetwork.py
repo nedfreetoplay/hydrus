@@ -723,25 +723,25 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         has_rules = not self._controller.network_engine.bandwidth_manager.UsesDefaultRules( network_context )
         
-        current_usage = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, 1, for_user = True )
+        current_usage = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_DATA, 1, for_user = True )
         
-        day_usage_requests = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_REQUESTS, 86400 )
-        day_usage_data = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, 86400 )
+        day_usage_requests = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_REQUESTS, 86400 )
+        day_usage_data = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_DATA, 86400 )
         
-        month_usage_requests = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_REQUESTS, None )
-        month_usage_data = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, None )
+        month_usage_requests = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_REQUESTS, None )
+        month_usage_data = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_DATA, None )
         
         if self._history_time_delta_none.isChecked():
             
-            search_usage_requests = bandwidth_tracker.GetAllUsage( HC.BANDWIDTH_TYPE_REQUESTS )
-            search_usage_data = bandwidth_tracker.GetAllUsage( HC.BANDWIDTH_TYPE_DATA )
+            search_usage_requests = bandwidth_tracker.get_all_usage( HC.BANDWIDTH_TYPE_REQUESTS )
+            search_usage_data = bandwidth_tracker.get_all_usage( HC.BANDWIDTH_TYPE_DATA )
             
         else:
             
             search_delta = self._history_time_delta_threshold.GetValue()
             
-            search_usage_requests = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_REQUESTS, search_delta )
-            search_usage_data = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, search_delta )
+            search_usage_requests = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_REQUESTS, search_delta )
+            search_usage_data = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_DATA, search_delta )
             
         
         pretty_search_usage = HydrusData.ToHumanBytes( search_usage_data ) + ' in ' + HydrusNumbers.to_human_int( search_usage_requests ) + ' requests'
@@ -798,29 +798,29 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         sortable_network_context = network_context.GetSortable()
         sortable_context_type = CC.network_context_type_string_lookup[ network_context.context_type ]
-        current_usage = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, 1, for_user = True )
+        current_usage = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_DATA, 1, for_user = True )
         
-        day_usage_requests = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_REQUESTS, 86400 )
-        day_usage_data = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, 86400 )
+        day_usage_requests = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_REQUESTS, 86400 )
+        day_usage_data = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_DATA, 86400 )
         
         day_usage = ( day_usage_data, day_usage_requests )
         
-        month_usage_requests = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_REQUESTS, None )
-        month_usage_data = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, None )
+        month_usage_requests = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_REQUESTS, None )
+        month_usage_data = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_DATA, None )
         
         month_usage = ( month_usage_data, month_usage_requests )
         
         if self._history_time_delta_none.isChecked():
             
-            search_usage_requests = bandwidth_tracker.GetAllUsage( HC.BANDWIDTH_TYPE_REQUESTS )
-            search_usage_data = bandwidth_tracker.GetAllUsage( HC.BANDWIDTH_TYPE_DATA )
+            search_usage_requests = bandwidth_tracker.get_all_usage( HC.BANDWIDTH_TYPE_REQUESTS )
+            search_usage_data = bandwidth_tracker.get_all_usage( HC.BANDWIDTH_TYPE_DATA )
             
         else:
             
             search_delta = self._history_time_delta_threshold.GetValue()
             
-            search_usage_requests = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_REQUESTS, search_delta )
-            search_usage_data = bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, search_delta )
+            search_usage_requests = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_REQUESTS, search_delta )
+            search_usage_data = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_DATA, search_delta )
             
         
         search_usage = ( search_usage_data, search_usage_requests )
@@ -1035,7 +1035,7 @@ class ReviewNetworkContextBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         self._time_delta_usage_bandwidth_type.SetValue( HC.BANDWIDTH_TYPE_DATA )
         
-        monthly_usage = self._bandwidth_tracker.GetMonthlyDataUsage()
+        monthly_usage = self._bandwidth_tracker.get_monthly_data_usage()
         
         if len( monthly_usage ) > 0:
             
@@ -1125,7 +1125,7 @@ class ReviewNetworkContextBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
     
     def _Update( self ):
         
-        current_usage = self._bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, 1, for_user = True )
+        current_usage = self._bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_DATA, 1, for_user = True )
         
         pretty_current_usage = 'Current usage: ' + HydrusData.ToHumanBytes( current_usage ) + '/s'
         
@@ -1133,8 +1133,8 @@ class ReviewNetworkContextBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         #
         
-        search_usage_requests = self._bandwidth_tracker.GetAllUsage( HC.BANDWIDTH_TYPE_REQUESTS )
-        search_usage_data = self._bandwidth_tracker.GetAllUsage( HC.BANDWIDTH_TYPE_DATA )
+        search_usage_requests = self._bandwidth_tracker.get_all_usage( HC.BANDWIDTH_TYPE_REQUESTS )
+        search_usage_data = self._bandwidth_tracker.get_all_usage( HC.BANDWIDTH_TYPE_DATA )
         
         all_time_pretty_search_usage = f'All time usage: {HydrusData.ToHumanBytes( search_usage_data )} in {HydrusNumbers.to_human_int( search_usage_requests )} requests'
         
@@ -1145,7 +1145,7 @@ class ReviewNetworkContextBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         bandwidth_type = self._time_delta_usage_bandwidth_type.GetValue()
         time_delta = self._time_delta_usage_time_delta.GetValue()
         
-        time_delta_usage = self._bandwidth_tracker.GetUsage( bandwidth_type, time_delta )
+        time_delta_usage = self._bandwidth_tracker.get_usage( bandwidth_type, time_delta )
         
         if bandwidth_type == HC.BANDWIDTH_TYPE_DATA:
             
@@ -1197,7 +1197,7 @@ class ReviewNetworkContextBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
             
         
-        rule_rows = self._bandwidth_rules.GetBandwidthStringsAndGaugeTuples( self._bandwidth_tracker, threshold = 0 )
+        rule_rows = self._bandwidth_rules.get_bandwidth_strings_and_gauge_tuples( self._bandwidth_tracker, threshold = 0 )
         
         if rule_rows != self._last_fetched_rule_rows:
             

@@ -8845,11 +8845,11 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         time_since_boot_ms = max( 1000, HydrusTime.get_now_ms() - boot_time_ms )
         
-        usage_since_boot = global_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, HydrusTime.secondise_ms( time_since_boot_ms ) )
+        usage_since_boot = global_tracker.get_usage( HC.BANDWIDTH_TYPE_DATA, HydrusTime.secondise_ms( time_since_boot_ms ) )
         
         bandwidth_status = HydrusData.ToHumanBytes( usage_since_boot )
         
-        current_usage = global_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, 1, for_user = True )
+        current_usage = global_tracker.get_usage( HC.BANDWIDTH_TYPE_DATA, 1, for_user = True )
         
         if current_usage > 0:
             

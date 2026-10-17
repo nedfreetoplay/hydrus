@@ -678,7 +678,7 @@ class NetworkJob( object ):
     
     def _ReportDataUsed( self, num_bytes ):
         
-        self._bandwidth_tracker.ReportDataUsed( num_bytes )
+        self._bandwidth_tracker.report_data_used( num_bytes )
         
         self.engine.bandwidth_manager.ReportDataUsed( self._network_contexts, num_bytes )
         
@@ -1232,7 +1232,7 @@ class NetworkJob( object ):
         
         with self._lock:
             
-            return ( self._status_text, self._bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, 1 ), self._num_bytes_read, self._num_bytes_to_read )
+            return ( self._status_text, self._bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_DATA, 1 ), self._num_bytes_read, self._num_bytes_to_read )
             
         
     
@@ -1240,7 +1240,7 @@ class NetworkJob( object ):
         
         with self._lock:
             
-            return self._bandwidth_tracker.GetUsage( HC.BANDWIDTH_TYPE_DATA, None )
+            return self._bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_DATA, None )
             
         
     
@@ -1812,7 +1812,7 @@ class NetworkJob( object ):
                 
                 if result:
                     
-                    self._bandwidth_tracker.ReportRequestUsed()
+                    self._bandwidth_tracker.report_request_used()
                     
                 else:
                     
@@ -1877,7 +1877,7 @@ class NetworkJob( object ):
                 
             else:
                 
-                self._bandwidth_tracker.ReportRequestUsed()
+                self._bandwidth_tracker.report_request_used()
                 
                 self.engine.bandwidth_manager.ReportRequestUsed( self._network_contexts )
                 

@@ -303,7 +303,7 @@ class Controller( HydrusController.HydrusController ):
         
         port = self._admin_service.GetPort()
         
-        if HydrusNetworking.LocalPortInUse( port ):
+        if HydrusNetworking.local_port_in_use( port ):
             
             HydrusData.safe_print( 'Something is already bound to port ' + str( port ) + ', so your administration service cannot be started. Please quit the server and retry once the port is clear.' )
             
@@ -498,7 +498,7 @@ class Controller( HydrusController.HydrusController ):
                         
                         self._service_keys_to_connected_ports[ service_key ] = ( ipv4_port, ipv6_port )
                         
-                        if HydrusNetworking.LocalPortInUse( port ):
+                        if HydrusNetworking.local_port_in_use( port ):
                             
                             HydrusData.safe_print( 'Running "{}" on port {}.'.format( name, port ) )
                             
@@ -571,7 +571,7 @@ class Controller( HydrusController.HydrusController ):
             
             port = service.GetPort()
             
-            if port not in my_ports and HydrusNetworking.LocalPortInUse( port ):
+            if port not in my_ports and HydrusNetworking.local_port_in_use( port ):
                 
                 raise HydrusExceptions.ServerException( 'Something was already bound to port ' + str( port ) )
                 

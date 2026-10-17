@@ -96,7 +96,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 return False
                 
             
-            return self._idle_work_rules.CanStartRequest( self._work_tracker )
+            return self._idle_work_rules.can_start_request( self._work_tracker )
             
         else:
             
@@ -105,7 +105,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 return False
                 
             
-            return self._active_work_rules.CanStartRequest( self._work_tracker )
+            return self._active_work_rules.can_start_request( self._work_tracker )
             
         
     
@@ -990,14 +990,14 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         self._idle_work_rules = HydrusNetworking.BandwidthRules()
         
-        self._idle_work_rules.AddRule( HC.BANDWIDTH_TYPE_REQUESTS, file_maintenance_idle_throttle_time_delta, file_maintenance_idle_throttle_files * ClientFilesMaintenance.NORMALISED_BIG_JOB_WEIGHT )
+        self._idle_work_rules.add_rule( HC.BANDWIDTH_TYPE_REQUESTS, file_maintenance_idle_throttle_time_delta, file_maintenance_idle_throttle_files * ClientFilesMaintenance.NORMALISED_BIG_JOB_WEIGHT )
         
         file_maintenance_active_throttle_files = self._controller.new_options.GetInteger( 'file_maintenance_active_throttle_files' )
         file_maintenance_active_throttle_time_delta = self._controller.new_options.GetInteger( 'file_maintenance_active_throttle_time_delta' )
         
         self._active_work_rules = HydrusNetworking.BandwidthRules()
         
-        self._active_work_rules.AddRule( HC.BANDWIDTH_TYPE_REQUESTS, file_maintenance_active_throttle_time_delta, file_maintenance_active_throttle_files * ClientFilesMaintenance.NORMALISED_BIG_JOB_WEIGHT )
+        self._active_work_rules.add_rule( HC.BANDWIDTH_TYPE_REQUESTS, file_maintenance_active_throttle_time_delta, file_maintenance_active_throttle_files * ClientFilesMaintenance.NORMALISED_BIG_JOB_WEIGHT )
         
     
     def _RunJob( self, media_results_to_job_types, job_status, job_done_hook = None ):
@@ -1211,7 +1211,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                         
                     finally:
                         
-                        self._work_tracker.ReportRequestUsed( num_requests = ClientFilesMaintenance.regen_file_enum_to_job_weight_lookup[ job_type ] )
+                        self._work_tracker.report_request_used( num_requests = ClientFilesMaintenance.regen_file_enum_to_job_weight_lookup[ job_type ] )
                         
                         if clear_job:
                             

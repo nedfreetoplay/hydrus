@@ -322,7 +322,7 @@ class Account:
         
         with self._lock:
             
-            return self._bandwidth_tracker.GetCurrentMonthSummary()
+            return self._bandwidth_tracker.get_current_month_summary()
     
     def get_bandwidth_strings_and_gauge_tuples(self):
         
@@ -475,7 +475,7 @@ class Account:
         
         with self._lock:
             
-            self._bandwidth_tracker.ReportDataUsed( num_bytes )
+            self._bandwidth_tracker.report_data_used( num_bytes )
             
             self._set_dirty()
     
@@ -483,7 +483,7 @@ class Account:
         
         with self._lock:
             
-            self._bandwidth_tracker.ReportRequestUsed()
+            self._bandwidth_tracker.report_request_used()
             
             self._set_dirty()
     
@@ -850,7 +850,7 @@ class AccountType(HydrusSerialisable.SerialisableBase):
     
     def bandwidth_ok(self, bandwidth_tracker):
         
-        return self._bandwidth_rules.CanStartRequest( bandwidth_tracker )
+        return self._bandwidth_rules.can_start_request( bandwidth_tracker )
     
     def can_auto_create_account_now(self):
         
@@ -861,7 +861,7 @@ class AccountType(HydrusSerialisable.SerialisableBase):
         
         ( num_accounts_per_time_delta, time_delta ) = self._auto_creation_velocity
         
-        num_created = self._auto_creation_history.GetUsage( HC.BANDWIDTH_TYPE_DATA, time_delta )
+        num_created = self._auto_creation_history.get_usage( HC.BANDWIDTH_TYPE_DATA, time_delta )
         
         return num_created < num_accounts_per_time_delta
     
@@ -879,7 +879,7 @@ class AccountType(HydrusSerialisable.SerialisableBase):
     
     def get_bandwidth_strings_and_gauge_tuples(self, bandwidth_tracker):
         
-        return self._bandwidth_rules.GetBandwidthStringsAndGaugeTuples( bandwidth_tracker )
+        return self._bandwidth_rules.get_bandwidth_strings_and_gauge_tuples( bandwidth_tracker )
     
     def get_account_type_key(self):
         
@@ -947,7 +947,7 @@ class AccountType(HydrusSerialisable.SerialisableBase):
     
     def report_auto_create_account(self):
         
-        self._auto_creation_history.ReportRequestUsed()
+        self._auto_creation_history.report_request_used()
     
     def set_to_null_account(self):
         
@@ -1028,7 +1028,7 @@ class AccountType(HydrusSerialisable.SerialisableBase):
         permissions = {}
         
         bandwidth_rules = HydrusNetworking.BandwidthRules()
-        bandwidth_rules.AddRule( HC.BANDWIDTH_TYPE_REQUESTS, None, 0 )
+        bandwidth_rules.add_rule( HC.BANDWIDTH_TYPE_REQUESTS, None, 0 )
         
         unknown_account_type = AccountType.generate_new_account_type( title, permissions, bandwidth_rules )
         

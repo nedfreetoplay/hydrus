@@ -98,7 +98,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
             
             bandwidth_tracker = self._GetTracker( network_context )
             
-            if not bandwidth_rules.CanStartRequest( bandwidth_tracker ):
+            if not bandwidth_rules.can_start_request( bandwidth_tracker ):
                 
                 return False
                 
@@ -188,7 +188,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
             bandwidth_tracker.ReportDataUsed( num_bytes )
             
         
-        self._my_bandwidth_tracker.ReportDataUsed( num_bytes )
+        self._my_bandwidth_tracker.report_data_used( num_bytes )
         
     
     def _ReportRequestUsed( self, network_contexts ):
@@ -200,7 +200,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
             bandwidth_tracker.ReportRequestUsed()
             
         
-        self._my_bandwidth_tracker.ReportRequestUsed()
+        self._my_bandwidth_tracker.report_request_used()
         
     
     def _SetDirty( self ):
@@ -256,7 +256,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
                 
                 bandwidth_tracker = self._GetTracker( network_context )
                 
-                if not bandwidth_rules.CanContinueDownload( bandwidth_tracker ):
+                if not bandwidth_rules.can_continue_download( bandwidth_tracker ):
                     
                     return False
                     
@@ -276,7 +276,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
                 
                 bandwidth_tracker = self._GetTracker( network_context )
                 
-                if not bandwidth_rules.CanDoWork( bandwidth_tracker, expected_requests = expected_requests, expected_bytes = expected_bytes, threshold = threshold ):
+                if not bandwidth_rules.can_do_work( bandwidth_tracker, expected_requests = expected_requests, expected_bytes = expected_bytes, threshold = threshold ):
                     
                     return False
                     
@@ -357,7 +357,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
             
             bandwidth_tracker = self._GetTracker( network_context )
             
-            return bandwidth_rules.GetBandwidthStringsAndGaugeTuples( bandwidth_tracker )
+            return bandwidth_rules.get_bandwidth_strings_and_gauge_tuples( bandwidth_tracker )
             
         
     
@@ -491,7 +491,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
                 
                 bandwidth_tracker = self._GetTracker( network_context )
                 
-                estimates.append( ( bandwidth_rules.GetWaitingEstimate( bandwidth_tracker ), network_context ) )
+                estimates.append( ( bandwidth_rules.get_waiting_estimate( bandwidth_tracker ), network_context ) )
                 
             
             estimates.sort( key = lambda pair: -pair[0] ) # biggest first

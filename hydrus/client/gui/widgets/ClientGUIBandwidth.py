@@ -169,7 +169,7 @@ class BandwidthRulesCtrl( ClientGUICommon.StaticBox ):
             
             ( bandwidth_type, time_delta, max_allowed ) = rule
             
-            bandwidth_rules.AddRule( bandwidth_type, time_delta, max_allowed )
+            bandwidth_rules.add_rule( bandwidth_type, time_delta, max_allowed )
             
         
         return bandwidth_rules

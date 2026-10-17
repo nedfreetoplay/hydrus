@@ -936,7 +936,7 @@ class EditServiceRestrictedSubPanel( ClientGUICommon.StaticBox ):
                     
                     history = account_type.get_auto_create_account_history()
                     
-                    text = '{} - {}'.format( account_type.get_title(), history.GetWaitingEstimate( HC.BANDWIDTH_TYPE_REQUESTS, time_delta, num_accounts ) )
+                    text = '{} - {}'.format( account_type.get_title(), history.get_waiting_estimate( HC.BANDWIDTH_TYPE_REQUESTS, time_delta, num_accounts ) )
                     
                     unavailable_texts.append( text )
                     

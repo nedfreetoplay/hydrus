@@ -2232,7 +2232,7 @@ class DomainMetadataPackage( HydrusSerialisable.SerialisableBase ):
             
             m = 'Bandwidth rules: '
             m += '\n'
-            m += '\n'.join( [ HydrusNetworking.ConvertBandwidthRuleToString( rule ) for rule in self._bandwidth_rules.GetRules() ] )
+            m += '\n'.join( [ HydrusNetworking.convert_bandwidth_rule_to_string( rule ) for rule in self._bandwidth_rules.GetRules() ] )
             
             components.append( m )
             
