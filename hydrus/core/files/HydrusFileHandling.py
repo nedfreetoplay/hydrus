@@ -403,7 +403,7 @@ def generate_thumbnail_numpy_weird_application_gubbins(path, target_resolution, 
         
         try:
             
-            thumbnail_numpy = HydrusPDFHandling.GenerateThumbnailNumPyFromPDFPath( path, target_resolution )
+            thumbnail_numpy = HydrusPDFHandling.base_generate_thumbnail_numpy_from_pdf_path( path, target_resolution )
             
         except Exception as e:
             
@@ -613,7 +613,7 @@ def get_file_info(path, mime = None, ok_to_look_for_hydrus_updates = False):
         
         try:
             
-            ( num_words, ( width, height ) ) = HydrusPDFHandling.GetPDFInfo( path )
+            ( num_words, ( width, height ) ) = HydrusPDFHandling.base_get_pdf_info( path )
             
         except HydrusExceptions.LimitedSupportFileException:
             
