@@ -9,7 +9,7 @@ from hydrus.core import HydrusExceptions
 from hydrus.core.files.images import HydrusImageHandling
 from hydrus.core.files.images import HydrusImageOpening
 
-def GetAnimationProperties( path, mime ):
+def get_animation_properties(path, mime):
     
     pil_image = HydrusImageHandling.GeneratePILImage( path )
     
@@ -27,27 +27,26 @@ def GetAnimationProperties( path, mime ):
     
     if mime == HC.ANIMATION_APNG:
         
-        ( duration_ms, num_frames ) = GetAPNGDurationMSAndNumFrames( path )
+        ( duration_ms, num_frames ) = get_apng_duration_ms_and_num_frames( path )
         
     elif mime == HC.ANIMATION_WEBP:
         
-        ( frame_durations_ms, times_to_play ) = GetWebPFrameDurationsMS( path )
+        ( frame_durations_ms, times_to_play ) = get_webp_frame_durations_ms( path )
         
         duration_ms = sum( frame_durations_ms )
         num_frames = len( frame_durations_ms )
         
     else:
         
-        ( frame_durations_ms, times_to_play ) = GetFrameDurationsMSPILAnimation( path )
+        ( frame_durations_ms, times_to_play ) = get_frame_durations_ms_pil_animation( path )
         
         duration_ms = sum( frame_durations_ms )
         num_frames = len( frame_durations_ms )
         
     
     return ( ( width, height ), duration_ms, num_frames )
-    
 
-def GetAPNGChunks( file_header_bytes: bytes ) ->list:
+def get_apng_chunks(file_header_bytes: bytes) -> list:
     
     # https://wiki.mozilla.org/APNG_Specification
     # a chunk is:
@@ -113,16 +112,15 @@ def GetAPNGChunks( file_header_bytes: bytes ) ->list:
     '''
     
     return chunks
-    
 
-def GetAPNGACTLChunkData( file_header_bytes: bytes ) -> bytes | None:
+def get_apng_actl_chunk_data(file_header_bytes: bytes) -> bytes | None:
     
     # the acTL chunk can be in different places, but it has to be near the top
     # although it is almost always in fixed position (I think byte 29), we have seen both pHYs and sRGB chunks appear before it
     # so to be proper we need to parse chunks and find the right one
     apng_actl_chunk_header = b'acTL'
     
-    chunks = GetAPNGChunks( file_header_bytes )
+    chunks = get_apng_chunks( file_header_bytes )
     
     chunks = dict( chunks )
     
@@ -133,14 +131,12 @@ def GetAPNGACTLChunkData( file_header_bytes: bytes ) -> bytes | None:
     else:
         
         return None
-        
-    
 
-def GetAPNGDurationMS( apng_bytes: bytes ) -> float:
+def get_apng_duration_ms(apng_bytes: bytes) -> float:
     
     frame_control_chunk_name = b'fcTL'
     
-    chunks = GetAPNGChunks( apng_bytes )
+    chunks = get_apng_chunks( apng_bytes )
     
     total_duration_s = 0
     
@@ -177,42 +173,39 @@ def GetAPNGDurationMS( apng_bytes: bytes ) -> float:
         
     
     return duration_ms
-    
 
-def GetAPNGNumFrames( apng_actl_bytes: bytes ) -> int:
+def get_apng_num_frames(apng_actl_bytes: bytes) -> int:
     
     ( num_frames, ) = struct.unpack( '>I', apng_actl_bytes[ : 4 ] )
     
     return num_frames
-    
 
-def GetAPNGDurationMSAndNumFrames( path ):
+def get_apng_duration_ms_and_num_frames(path):
     
     with open( path, 'rb' ) as f:
         
         file_header_bytes = f.read( 256 )
         
     
-    apng_actl_bytes = GetAPNGACTLChunkData( file_header_bytes )
+    apng_actl_bytes = get_apng_actl_chunk_data( file_header_bytes )
     
     if apng_actl_bytes is None:
         
         raise HydrusExceptions.DamagedOrUnusualFileException( 'This APNG had an unusual file header!' )
         
     
-    num_frames = GetAPNGNumFrames( apng_actl_bytes )
+    num_frames = get_apng_num_frames( apng_actl_bytes )
     
     with open( path, 'rb' ) as f:
         
         file_bytes = f.read()
         
     
-    duration_ms = GetAPNGDurationMS( file_bytes )
+    duration_ms = get_apng_duration_ms( file_bytes )
     
     return ( duration_ms, num_frames )
-    
 
-def GetFrameDurationsMSPILAnimation( path, human_file_description = None ):
+def get_frame_durations_ms_pil_animation(path, human_file_description = None):
     
     pil_image = HydrusImageOpening.RawOpenPILImage( path, human_file_description = human_file_description )
     
@@ -220,7 +213,7 @@ def GetFrameDurationsMSPILAnimation( path, human_file_description = None ):
     
     try:
         
-        times_to_play = GetTimesToPlayPILAnimationFromPIL( pil_image )
+        times_to_play = get_times_to_play_pil_animation_from_pil( pil_image )
         
         assumed_num_frames = -1
         
@@ -315,16 +308,15 @@ def GetFrameDurationsMSPILAnimation( path, human_file_description = None ):
         
     
     return ( frame_durations_ms, times_to_play )
-    
 
-def GetTimesToPlayAPNG( path: str ) -> int:
+def get_times_to_play_apng(path: str) -> int:
     
     with open( path, 'rb' ) as f:
         
         file_header_bytes = f.read( 256 )
         
     
-    apng_actl_bytes = GetAPNGACTLChunkData( file_header_bytes )
+    apng_actl_bytes = get_apng_actl_chunk_data( file_header_bytes )
     
     if apng_actl_bytes is None:
         
@@ -334,9 +326,8 @@ def GetTimesToPlayAPNG( path: str ) -> int:
     ( num_plays, ) = struct.unpack( '>I', apng_actl_bytes[ 4 : 8 ] )
     
     return num_plays
-    
 
-def GetTimesToPlayPILAnimation( path, human_file_description = None ) -> int:
+def get_times_to_play_pil_animation(path, human_file_description = None) -> int:
     
     try:
         
@@ -349,15 +340,13 @@ def GetTimesToPlayPILAnimation( path, human_file_description = None ) -> int:
     
     try:
         
-        return GetTimesToPlayPILAnimationFromPIL( pil_image )
+        return get_times_to_play_pil_animation_from_pil( pil_image )
         
     finally:
         
         pil_image.close()
-        
-    
 
-def GetTimesToPlayPILAnimationFromPIL( pil_image: PILImage.Image ) -> int:
+def get_times_to_play_pil_animation_from_pil(pil_image: PILImage.Image) -> int:
     
     if 'loop' in pil_image.info:
         
@@ -369,9 +358,8 @@ def GetTimesToPlayPILAnimationFromPIL( pil_image: PILImage.Image ) -> int:
         
     
     return times_to_play
-    
 
-def GetWebPChunks( file_bytes ):
+def get_webp_chunks(file_bytes):
     
     chunks = []
     
@@ -408,16 +396,15 @@ def GetWebPChunks( file_bytes ):
         
     
     return chunks
-    
 
-def GetWebPFrameDurationsMS( path ):
+def get_webp_frame_durations_ms(path):
     
     with open( path, 'rb' ) as f:
         
         file_bytes = f.read()
         
     
-    webp_chunks = GetWebPChunks( file_bytes )
+    webp_chunks = get_webp_chunks( file_bytes )
     
     fallback_frame_duration_ms = 83 # (83ms -- 1000 / 12) Set a 12 fps default when duration is missing or too funky to extract. most stuff looks ok at this.
     
@@ -471,9 +458,8 @@ def GetWebPFrameDurationsMS( path ):
         
     
     return ( frame_durations_ms, times_to_play )
-    
 
-def PILAnimationHasDuration( path ):
+def pil_animation_has_duration(path):
     
     try:
         
@@ -498,12 +484,10 @@ def PILAnimationHasDuration( path ):
     except Exception as e:
         
         return False
-        
-    
 
-def IsPNGAnimated( file_header_bytes ):
+def is_png_animated(file_header_bytes):
     
-    apng_actl_bytes = GetAPNGACTLChunkData( file_header_bytes )
+    apng_actl_bytes = get_apng_actl_chunk_data( file_header_bytes )
     
     if apng_actl_bytes is not None:
         
@@ -512,7 +496,7 @@ def IsPNGAnimated( file_header_bytes ):
         # acTL chunk in an animated png is 4 bytes of num frames, then 4 bytes of num times to loop
         # https://wiki.mozilla.org/APNG_Specification#.60acTL.60:_The_Animation_Control_Chunk
         
-        num_frames = GetAPNGNumFrames( apng_actl_bytes )
+        num_frames = get_apng_num_frames( apng_actl_bytes )
         
         if num_frames > 1:
             
@@ -521,4 +505,3 @@ def IsPNGAnimated( file_header_bytes ):
         
     
     return False
-    

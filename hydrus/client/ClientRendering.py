@@ -937,13 +937,13 @@ class RasterContainerVideo( RasterContainer ):
         if self._media.GetMime() == HC.ANIMATION_APNG:
             
             self._frame_durations_ms = [] # we only support constant framerate for apng, I think the spec support variable though if PIL ever supports that
-            self._times_to_play_animation = HydrusAnimationHandling.GetTimesToPlayAPNG( self._path )
+            self._times_to_play_animation = HydrusAnimationHandling.get_times_to_play_apng( self._path )
             
         elif self._media.GetMime() == HC.ANIMATION_WEBP:
             
             try:
                 
-                ( self._frame_durations_ms, self._times_to_play_animation ) = HydrusAnimationHandling.GetWebPFrameDurationsMS( self._path )
+                ( self._frame_durations_ms, self._times_to_play_animation ) = HydrusAnimationHandling.get_webp_frame_durations_ms( self._path )
                 
             except Exception as e:
                 
@@ -959,7 +959,7 @@ class RasterContainerVideo( RasterContainer ):
             
             try:
                 
-                ( self._frame_durations_ms, self._times_to_play_animation ) = HydrusAnimationHandling.GetFrameDurationsMSPILAnimation( self._path )
+                ( self._frame_durations_ms, self._times_to_play_animation ) = HydrusAnimationHandling.get_frame_durations_ms_pil_animation( self._path )
                 
             except Exception as e:
                 
