@@ -21,7 +21,6 @@ def make_chad_tag_arbitrary_to_D50( src_white_xy ):
         
     
     return tag
-    
 
 def make_chad_tag_D50():
     
@@ -39,7 +38,6 @@ def make_chad_tag_D50():
         
     
     return tag
-    
 
 def make_chad_tag_D65_to_D50():
     
@@ -56,7 +54,6 @@ def make_chad_tag_D65_to_D50():
         
     
     return tag
-    
 
 def make_chad_tag_identity() -> bytes:
     # 'sf32' identity 3x3 matrix, row-major, big-endian float32
@@ -67,7 +64,6 @@ def make_chad_tag_identity() -> bytes:
             tag += struct.pack(">f", float(v))
     tag += b"\x00" * ((4 - (len(tag) % 4)) % 4)
     return tag
-    
 
 def make_chad_tag_src_to_D50(src_white_xy: tuple[float, float]) -> bytes:
     # 'sf32' 3x3 matrix, row-major, big-endian float32
@@ -78,7 +74,6 @@ def make_chad_tag_src_to_D50(src_white_xy: tuple[float, float]) -> bytes:
             tag += struct.pack(">f", float(v))
     tag += b"\x00" * ((4 - (len(tag) % 4)) % 4)
     return tag
-    
 
 def make_curv_gamma_tag(gamma: float) -> bytes:
     # 'curv' curveType (ICC v2 classic)
@@ -97,7 +92,6 @@ def make_curv_gamma_tag(gamma: float) -> bytes:
     # Pad to 4-byte boundary (count=1 leaves us 2 bytes short)
     tag += b"\x00" * ((4 - (len(tag) % 4)) % 4)
     return tag
-    
 
 def make_para_curve_tag( gamma: float ):
     
@@ -119,13 +113,11 @@ def make_para_curve_tag( gamma: float ):
         
     
     return tag
-    
 
 def make_wtpt_tag_D65():
     
     # D50 white point in XYZ
     return pack_xyz_tag( 0.95047, 1.0, 1.08883 )
-    
 
 def make_xyz_matrix_tags(m: numpy.ndarray) -> tuple[bytes, bytes, bytes]:
     # ICC expects columns are the XYZ values for R, G, B primaries
@@ -133,7 +125,6 @@ def make_xyz_matrix_tags(m: numpy.ndarray) -> tuple[bytes, bytes, bytes]:
     g = pack_xyz_tag(*m[:, 1])
     b = pack_xyz_tag(*m[:, 2])
     return r, g, b
-    
 
 def make_desc_tag(text: str) -> bytes:
     # v2 'desc' textDescriptionType (not v4 mluc)
@@ -142,7 +133,6 @@ def make_desc_tag(text: str) -> bytes:
     tag = b"desc" + b"\x00\x00\x00\x00" + struct.pack(">I", len(s)) + s
     tag += b"\x00" * ((4 - (len(tag) % 4)) % 4)
     return tag
-    
 
 def make_text_tag(text: str) -> bytes:
     # v2 'text' type: 'text' + 4 reserved + ASCII bytes (often NUL-terminated, but not required)
@@ -150,7 +140,6 @@ def make_text_tag(text: str) -> bytes:
     tag = b"text" + b"\x00\x00\x00\x00" + s
     tag += b"\x00" * ((4 - (len(tag) % 4)) % 4)
     return tag
-    
 
 def make_para_curve_tag_gamma(gamma: float) -> bytes:
     # 'para' parametricCurveType
@@ -165,12 +154,10 @@ def make_para_curve_tag_gamma(gamma: float) -> bytes:
     )
     tag += b"\x00" * ((4 - (len(tag) % 4)) % 4)
     return tag
-    
 
 def make_wtpt_tag_D50() -> bytes:
     # D50 in XYZ (ICC PCS illuminant / media white)
     return pack_xyz_tag(0.9642, 1.0, 0.8249)
-    
 
 def pack_xyz_tag(x: float, y: float, z: float) -> bytes:
     # Tag type 'XYZ ' + 4 reserved + three s15Fixed16 XYZ numbers
@@ -184,4 +171,3 @@ def pack_xyz_tag(x: float, y: float, z: float) -> bytes:
             MathSlop.float_to_s15Fixed16(z),
         )
     )
-    
