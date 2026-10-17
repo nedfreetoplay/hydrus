@@ -4,7 +4,6 @@ def adapt_rgb_to_xyz_matrix_to_D50(m_rgb_to_xyz: numpy.ndarray, src_white_xy: tu
     """Given an RGB→XYZ matrix referenced to src_white_xy (typically D65), adapt its XYZ basis to D50."""
     A = generate_bradford_adaptation_matrix(src_white_xy, (0.34567, 0.35850))
     return A @ m_rgb_to_xyz
-    
 
 def adapt_white_point( XYZ_src_white, XYZ_dst_white ):
     
@@ -24,7 +23,6 @@ def adapt_white_point( XYZ_src_white, XYZ_dst_white ):
     adapt = M_inv @ numpy.diag(scale) @ M
     
     return adapt
-    
 
 def chromaticities_to_rgb_to_xyz( white, red, green, blue ):
     
@@ -41,12 +39,10 @@ def chromaticities_to_rgb_to_xyz( white, red, green, blue ):
     
     # Scale each column
     return M * S
-    
 
 def float_to_s15Fixed16(val: float) -> int:
     # s15Fixed16Number: signed 32-bit, 16.16 fixed point
     return int(round(val * 65536.0))
-    
 
 def generate_bradford_adaptation_matrix(src_xy: tuple[float, float], dst_xy: tuple[float, float] = (0.34567, 0.35850)) -> numpy.ndarray:
     """Bradford chromatic adaptation matrix from src white xy to dst white xy (default D50)."""
@@ -73,7 +69,6 @@ def generate_bradford_adaptation_matrix(src_xy: tuple[float, float], dst_xy: tup
     
     # Adaptation matrix in XYZ space
     return M_inv @ scale @ M
-    
 
 def srgb_encode(c):
     
@@ -84,9 +79,7 @@ def srgb_encode(c):
         12.92 * c,
         (1 + a) * numpy.power(c, 1/2.4) - a
     )
-    
 
 def xy_to_xyz(x: float, y: float) -> numpy.ndarray:
     
     return numpy.array([x / y, 1.0, (1.0 - x - y) / y], dtype=float)
-    
