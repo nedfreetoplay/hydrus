@@ -697,7 +697,7 @@ def GetFileInfo( path, mime = None, ok_to_look_for_hydrus_updates = False ):
         
     elif mime in HC.AUDIO:
         
-        ffmpeg_lines = HydrusFFMPEG.GetFFMPEGInfoLines( path )
+        ffmpeg_lines = HydrusFFMPEG.get_ffmpeg_info_lines( path )
         
         ( file_duration_in_s, stream_duration_in_s ) = HydrusVideoHandling.ParseFFMPEGDuration( ffmpeg_lines )
         
@@ -1046,7 +1046,7 @@ def GetMime( path, ok_to_look_for_hydrus_updates = False ):
 
 def GetMimeFromFFMPEG( path ):
     
-    lines = HydrusFFMPEG.GetFFMPEGInfoLines( path )
+    lines = HydrusFFMPEG.get_ffmpeg_info_lines( path )
     
     ( has_video, video_format, video_stream_mapping ) = HydrusVideoHandling.ParseFFMPEGVideoFormat( lines )
     ( has_audio, audio_format, audio_stream_mapping, image_stream_mapping ) = HydrusAudioHandling.parse_ffmpeg_audio( lines )

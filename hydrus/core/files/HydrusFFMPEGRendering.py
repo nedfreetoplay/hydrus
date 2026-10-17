@@ -7,7 +7,7 @@ from hydrus.core.files import HydrusFFMPEGParsing
 
 def RenderAnyAttachedStillImageToPath( file_path, output_path ):
     
-    lines = HydrusFFMPEG.GetFFMPEGInfoLines( file_path )
+    lines = HydrusFFMPEG.get_ffmpeg_info_lines( file_path )
     
     image_lines = HydrusFFMPEGParsing.GetImageStreamLines( lines )
     
@@ -32,7 +32,7 @@ def RenderAnyAttachedStillImageToPath( file_path, output_path ):
         return False
         
     
-    ffmpeg_path = HydrusFFMPEG.GetCurrentFFMPEGPath()
+    ffmpeg_path = HydrusFFMPEG.get_current_ffmpeg_path()
     
     # no dimensions here, so called is responsible for reshaping numpy array or whatever
     
@@ -52,7 +52,7 @@ def RenderAnyAttachedStillImageToPath( file_path, output_path ):
         
     except FileNotFoundError as e:
         
-        raise HydrusFFMPEG.HandleFFMPEGFileNotFoundAndGenerateException( e, file_path )
+        raise HydrusFFMPEG.handle_ffmpeg_file_not_found_and_generate_exception( e, file_path )
         
     
     return True
@@ -60,7 +60,7 @@ def RenderAnyAttachedStillImageToPath( file_path, output_path ):
 
 def RenderImageToImagePath( path, temp_image_path ):
     
-    ffmpeg_path = HydrusFFMPEG.GetCurrentFFMPEGPath()
+    ffmpeg_path = HydrusFFMPEG.get_current_ffmpeg_path()
     
     # -y to overwrite the temp path
     
@@ -86,13 +86,13 @@ def RenderImageToImagePath( path, temp_image_path ):
         
     except FileNotFoundError as e:
         
-        raise HydrusFFMPEG.HandleFFMPEGFileNotFoundAndGenerateException( e, path )
+        raise HydrusFFMPEG.handle_ffmpeg_file_not_found_and_generate_exception( e, path )
         
     
 
 def RenderImageToRawRGBABytes( path ):
     
-    ffmpeg_path = HydrusFFMPEG.GetCurrentFFMPEGPath()
+    ffmpeg_path = HydrusFFMPEG.get_current_ffmpeg_path()
     
     # no dimensions here, so called is responsible for reshaping numpy array or whatever
     
@@ -110,7 +110,7 @@ def RenderImageToRawRGBABytes( path ):
         
     except FileNotFoundError as e:
         
-        raise HydrusFFMPEG.HandleFFMPEGFileNotFoundAndGenerateException( e, path )
+        raise HydrusFFMPEG.handle_ffmpeg_file_not_found_and_generate_exception( e, path )
         
     
     return stdout
@@ -118,7 +118,7 @@ def RenderImageToRawRGBABytes( path ):
 
 def RenderImageToPNGBytes( path ):
     
-    ffmpeg_path = HydrusFFMPEG.GetCurrentFFMPEGPath()
+    ffmpeg_path = HydrusFFMPEG.get_current_ffmpeg_path()
     
     cmd = [ ffmpeg_path, "-xerror", '-i', path, '-f', 'image2pipe', '-vcodec', 'png', '-' ]
     
@@ -134,7 +134,7 @@ def RenderImageToPNGBytes( path ):
         
     except FileNotFoundError as e:
         
-        raise HydrusFFMPEG.HandleFFMPEGFileNotFoundAndGenerateException( e, path )
+        raise HydrusFFMPEG.handle_ffmpeg_file_not_found_and_generate_exception( e, path )
         
     
     return stdout

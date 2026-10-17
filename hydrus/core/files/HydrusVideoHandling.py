@@ -35,7 +35,7 @@ def FileIsAnimated( path ):
 
 def GetFFMPEGVideoProperties( path, force_count_frames_manually = False ):
     
-    ffmpeg_lines = HydrusFFMPEG.GetFFMPEGInfoLines( path )
+    ffmpeg_lines = HydrusFFMPEG.get_ffmpeg_info_lines( path )
     
     ( has_video, video_format, video_stream_mapping ) = ParseFFMPEGVideoFormat( ffmpeg_lines )
     
@@ -90,7 +90,7 @@ def GetFFMPEGVideoProperties( path, force_count_frames_manually = False ):
     
     if force_count_frames_manually:
         
-        count_frames_manually_lines = HydrusFFMPEG.GetFFMPEGInfoLines( path, video_stream_mapping_to_count_frames_manually = video_stream_mapping )
+        count_frames_manually_lines = HydrusFFMPEG.get_ffmpeg_info_lines( path, video_stream_mapping_to_count_frames_manually = video_stream_mapping )
         
         num_frames = ParseFFMPEGNumFramesManually( count_frames_manually_lines )
         
@@ -130,7 +130,7 @@ def GetFFMPEGVideoProperties( path, force_count_frames_manually = False ):
 
 def HasVideoStream( path ) -> bool:
     
-    lines = HydrusFFMPEG.GetFFMPEGInfoLines( path )
+    lines = HydrusFFMPEG.get_ffmpeg_info_lines( path )
     
     return ParseFFMPEGHasVideo( lines )
     
@@ -600,7 +600,7 @@ def ParseFFMPEGVideoResolution( lines, png_ok = False ) -> tuple[ int, int ]:
 
 def VideoHasAudio( path, info_lines ) -> bool:
     
-    ffmpeg_path = HydrusFFMPEG.GetCurrentFFMPEGPath()
+    ffmpeg_path = HydrusFFMPEG.get_current_ffmpeg_path()
     
     ( audio_found, audio_format, audio_stream_mapping, image_stream_mapping ) = HydrusAudioHandling.parse_ffmpeg_audio( info_lines )
     
@@ -645,7 +645,7 @@ def VideoHasAudio( path, info_lines ) -> bool:
         
     except FileNotFoundError as e:
         
-        raise HydrusFFMPEG.HandleFFMPEGFileNotFoundAndGenerateException( e, path )
+        raise HydrusFFMPEG.handle_ffmpeg_file_not_found_and_generate_exception( e, path )
         
     
     return False
@@ -760,7 +760,7 @@ class VideoRendererFFMPEG( object ):
         
         ( w, h ) = self._target_resolution
         
-        ffmpeg_path = HydrusFFMPEG.GetCurrentFFMPEGPath()
+        ffmpeg_path = HydrusFFMPEG.get_current_ffmpeg_path()
         
         cmd = [ ffmpeg_path ]
         
@@ -812,7 +812,7 @@ class VideoRendererFFMPEG( object ):
             
         except FileNotFoundError as e:
             
-            raise HydrusFFMPEG.HandleFFMPEGFileNotFoundAndGenerateException( e, self._path )
+            raise HydrusFFMPEG.handle_ffmpeg_file_not_found_and_generate_exception( e, self._path )
             
         
         if skip_frames > 0:
@@ -869,7 +869,7 @@ class VideoRendererFFMPEG( object ):
                     
                     self._have_selected_an_explicit_video_stream_mapping = True
                     
-                    ffmpeg_lines = HydrusFFMPEG.GetFFMPEGInfoLines( self._path )
+                    ffmpeg_lines = HydrusFFMPEG.get_ffmpeg_info_lines( self._path )
                     
                     ( has_video, video_format, video_stream_mapping ) = ParseFFMPEGVideoFormat( ffmpeg_lines )
                     
