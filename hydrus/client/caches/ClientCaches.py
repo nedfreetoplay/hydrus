@@ -503,7 +503,7 @@ class ThumbnailCache( object ):
                     
                     ( expected_width, expected_height ) = HydrusImageHandling.GetThumbnailResolution( ( media_width, media_height ), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
                     
-                    numpy_image = HydrusBlurhash.GetNumpyFromBlurhash( blurhash, expected_width, expected_height )
+                    numpy_image = HydrusBlurhash.get_numpy_from_blur_hash( blurhash, expected_width, expected_height )
                     
                     return numpy_image
                     
