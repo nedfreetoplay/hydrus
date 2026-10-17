@@ -498,7 +498,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 try:
                     
-                    has_exif = HydrusImageMetadata.HasEXIF( raw_pil_image )
+                    has_exif = HydrusImageMetadata.has_exif( raw_pil_image )
                     
                 finally:
                     
@@ -650,7 +650,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 try:
                     
-                    has_software_source = HydrusImageMetadata.HasSoftwareSource( raw_pil_image )
+                    has_software_source = HydrusImageMetadata.has_software_source( raw_pil_image )
                     
                 finally:
                     
@@ -704,7 +704,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     
                     try:
                         
-                        has_icc_profile = HydrusImageMetadata.HasICCProfile( raw_pil_image )
+                        has_icc_profile = HydrusImageMetadata.has_icc_profile( raw_pil_image )
                         
                     finally:
                         

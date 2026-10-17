@@ -650,9 +650,9 @@ def populate_jpeg_quality_storage( jpeg_hash ):
             
             try:
                 
-                subsampling = HydrusImageMetadata.GetJpegSubsamplingRaw( raw_pil_image )
+                subsampling = HydrusImageMetadata.get_jpeg_subsampling_raw( raw_pil_image )
                 
-                quality_result = HydrusImageMetadata.GetJPEGQuantizationQualityEstimate( raw_pil_image )
+                quality_result = HydrusImageMetadata.get_jpeg_quantization_quality_estimate( raw_pil_image )
                 
                 progressive = 'progression' in raw_pil_image.info
                 

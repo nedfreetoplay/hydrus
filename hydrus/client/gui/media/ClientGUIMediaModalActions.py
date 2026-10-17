@@ -1361,7 +1361,7 @@ def ShowFileEmbeddedMetadata( win: QW.QWidget, media_result: ClientMediaResult.M
                         
                         if exif_looking_good:
                             
-                            exif_dict = HydrusImageMetadata.GetEXIFDict( raw_pil_image )
+                            exif_dict = HydrusImageMetadata.get_exif_dict( raw_pil_image )
                             
                         
                         if xmp_looking_good:
@@ -1376,12 +1376,12 @@ def ShowFileEmbeddedMetadata( win: QW.QWidget, media_result: ClientMediaResult.M
                         
                         if human_readable_looking_good:
                             
-                            file_text = HydrusImageMetadata.GetEmbeddedFileText( raw_pil_image )
+                            file_text = HydrusImageMetadata.get_embedded_file_text( raw_pil_image )
                             
                         
                         if software_source_looking_good:
                             
-                            software_source = HydrusImageMetadata.GetSoftwareSourceFromPilInfo( raw_pil_image )
+                            software_source = HydrusImageMetadata.get_software_source_from_pil_info( raw_pil_image )
                             
                             if software_source is not None:
                                 
@@ -1391,13 +1391,13 @@ def ShowFileEmbeddedMetadata( win: QW.QWidget, media_result: ClientMediaResult.M
                         
                         if mime == HC.IMAGE_JPEG:
                             
-                            extra_rows.append( ( 'subsampling', HydrusImageMetadata.subsampling_str_lookup[ HydrusImageMetadata.GetJpegSubsamplingRaw( raw_pil_image ) ] ) )
+                            extra_rows.append( ( 'subsampling', HydrusImageMetadata.subsampling_str_lookup[ HydrusImageMetadata.get_jpeg_subsampling_raw( raw_pil_image ) ] ) )
                             
                             extra_rows.append( ( 'progressive', 'yes' if 'progression' in raw_pil_image.info else 'no' ) )
                             
                         else:
                             
-                            result = HydrusImageMetadata.GetChromaSubsamplingFromPilInfo( raw_pil_image )
+                            result = HydrusImageMetadata.get_chroma_subsampling_from_pil_info( raw_pil_image )
                             
                             if result != HydrusImageMetadata.SUBSAMPLING_UNKNOWN:
                                 
