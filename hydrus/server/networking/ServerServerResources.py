@@ -764,11 +764,11 @@ class HydrusResourceRestrictedAccountTypes( HydrusResourceRestricted ):
     
     def _checkAccountPermissions( self, request: HydrusServerRequest.HydrusRequest ):
         
-        if request.IsGET():
+        if request.is_get():
             
             request.hydrus_account.CheckPermission( HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_CREATE )
             
-        elif request.IsPOST():
+        elif request.is_post():
             
             request.hydrus_account.CheckPermission( HC.CONTENT_TYPE_ACCOUNT_TYPES, HC.PERMISSION_ACTION_MODERATE )
             
@@ -1032,7 +1032,7 @@ class HydrusResourceRestrictedRepositoryFile( HydrusResourceRestricted ):
         
         # everyone with a functional account can read files
         
-        if request.IsPOST():
+        if request.is_post():
             
             request.hydrus_account.CheckPermission( HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_CREATE )
             
@@ -1194,7 +1194,7 @@ class HydrusResourceRestrictedTagFilter( HydrusResourceRestricted ):
     
     def _checkAccount( self, request: HydrusServerRequest.HydrusRequest ):
         
-        if request.IsPOST():
+        if request.is_post():
             
             return HydrusResourceRestricted._checkAccount( self, request )
             
@@ -1208,7 +1208,7 @@ class HydrusResourceRestrictedTagFilter( HydrusResourceRestricted ):
     
     def _checkAccountPermissions( self, request: HydrusServerRequest.HydrusRequest ):
         
-        if request.IsPOST():
+        if request.is_post():
             
             request.hydrus_account.CheckPermission( HC.CONTENT_TYPE_OPTIONS, HC.PERMISSION_ACTION_MODERATE )
             
@@ -1264,7 +1264,7 @@ class HydrusResourceRestrictedUpdate( HydrusResourceRestricted ):
         
         # everyone with a functional account can read updates
         
-        if request.IsPOST():
+        if request.is_post():
             
             # further permissions checked in the db
             
