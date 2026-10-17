@@ -602,7 +602,7 @@ def VideoHasAudio( path, info_lines ) -> bool:
     
     ffmpeg_path = HydrusFFMPEG.GetCurrentFFMPEGPath()
     
-    ( audio_found, audio_format, audio_stream_mapping, image_stream_mapping ) = HydrusAudioHandling.ParseFFMPEGAudio( info_lines )
+    ( audio_found, audio_format, audio_stream_mapping, image_stream_mapping ) = HydrusAudioHandling.parse_ffmpeg_audio( info_lines )
     
     if not audio_found:
         

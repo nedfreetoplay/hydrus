@@ -2,7 +2,7 @@ import re
 
 from hydrus.core.files import HydrusFFMPEGParsing
 
-def ParseFFMPEGAudio( lines ):
+def parse_ffmpeg_audio(lines):
     
     audio_lines = HydrusFFMPEGParsing.GetAudioStreamLines( lines )
     
@@ -65,4 +65,3 @@ def ParseFFMPEGAudio( lines ):
         
     
     return ( audio_found, audio_format, audio_stream_mapping, image_stream_mapping )
-    

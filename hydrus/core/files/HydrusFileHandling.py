@@ -1049,7 +1049,7 @@ def GetMimeFromFFMPEG( path ):
     lines = HydrusFFMPEG.GetFFMPEGInfoLines( path )
     
     ( has_video, video_format, video_stream_mapping ) = HydrusVideoHandling.ParseFFMPEGVideoFormat( lines )
-    ( has_audio, audio_format, audio_stream_mapping, image_stream_mapping ) = HydrusAudioHandling.ParseFFMPEGAudio( lines )
+    ( has_audio, audio_format, audio_stream_mapping, image_stream_mapping ) = HydrusAudioHandling.parse_ffmpeg_audio( lines )
     
     if not ( has_video or has_audio ):
         
