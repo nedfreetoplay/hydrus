@@ -2,15 +2,12 @@ from hydrus.core import HydrusConstants as HC
 from hydrus.core import HydrusExceptions
 
 try:
-    
     import olefile
-
+    
     OLEFILE_OK = True
     
-except Exception as e:
-    
+except Exception:
     OLEFILE_OK = False
-    
 
 #                       :::!~!!!!!:.
 #                   .xUHWH!! !!?M88WHX:.
@@ -65,7 +62,6 @@ except Exception as e:
 # https://wikileaks.org/ciav7p1/cms/page_13762814.html
 # https://raw.githubusercontent.com/decalage2/oletools/master/oletools/common/clsid.py
 
-
 # These need to be uppercase
 GUID_MIMES = {
     '00020900-0000-0000-C000-000000000046': HC.APPLICATION_DOC, # Word 6.0-7.0 Document (Word.Document.6)
@@ -83,10 +79,9 @@ GUID_MIMES = {
 
 # GUID_MIMES =  {k.upper(): v for k, v in GUID_MIMES.items()}
 
-
 OLE_HEADER = b'\xD0\xCF\x11\xE0\xA1\xB1\x1A\xE1'
     
-def isOleFile(path: str):
+def is_ole_file(path: str):
     
     if OLEFILE_OK:
         
@@ -99,13 +94,10 @@ def isOleFile(path: str):
             file_bytes = f.read(8)
             
             return file_bytes[ :8 ] == OLE_HEADER
-            
-        
-    
 
-def MimeFromOLEFile(path: str):
+def mime_From_ole_file(path: str):
     
-    if not isOleFile( path ):
+    if not is_ole_file( path ):
         
         return HC.APPLICATION_UNKNOWN
         
@@ -150,13 +142,11 @@ def MimeFromOLEFile(path: str):
     except Exception as e:
         
         return HC.UNDETERMINED_OLE
-        
-    
 
-def OfficeOLEDocumentWordCount( path: str ):
+def office_ole_document_word_count(path: str):
     
     # Not all legacy office files are OLE
-    if not isOleFile( path ):
+    if not is_ole_file( path ):
         
         raise HydrusExceptions.LimitedSupportFileException('File is not OLE!')
         
@@ -180,4 +170,3 @@ def OfficeOLEDocumentWordCount( path: str ):
         
     
     return num_words
-    

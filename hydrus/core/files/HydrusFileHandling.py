@@ -646,7 +646,7 @@ def get_file_info(path, mime = None, ok_to_look_for_hydrus_updates = False):
         
         try:
             
-            num_words = HydrusOLEHandling.OfficeOLEDocumentWordCount( path )
+            num_words = HydrusOLEHandling.office_ole_document_word_count( path )
             
         except HydrusExceptions.LimitedSupportFileException:
             
@@ -965,7 +965,7 @@ def get_mime(path, ok_to_look_for_hydrus_updates = False):
                 
             if mime == HC.UNDETERMINED_OLE:
                 
-                return HydrusOLEHandling.MimeFromOLEFile( path )
+                return HydrusOLEHandling.mime_From_ole_file( path )
                 
             else:
                 
