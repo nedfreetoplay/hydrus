@@ -11,7 +11,7 @@ def GetAllHashes( file_type ):
     
 def GetExpectedFilePath( hash ):
     
-    files_dir = SG.server_controller.GetFilesDir()
+    files_dir = SG.server_controller.get_files_dir()
     
     hash_encoded = hash.hex()
     
@@ -23,7 +23,7 @@ def GetExpectedFilePath( hash ):
     
 def GetExpectedThumbnailPath( hash ):
     
-    files_dir = SG.server_controller.GetFilesDir()
+    files_dir = SG.server_controller.get_files_dir()
     
     hash_encoded = hash.hex()
     
@@ -57,7 +57,7 @@ def GetThumbnailPath( hash ):
     
 def IterateAllPaths( file_type ):
     
-    files_dir = SG.server_controller.GetFilesDir()
+    files_dir = SG.server_controller.get_files_dir()
     
     for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( '', 2 ):
         

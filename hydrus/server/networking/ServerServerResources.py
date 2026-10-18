@@ -292,7 +292,7 @@ class HydrusResourceRestricted( HydrusResourceHydrusNetwork ):
             raise HydrusExceptions.BandwidthException( 'This service has run out of bandwidth. Please try again later.' )
             
         
-        if not SG.server_controller.ServerBandwidthOK():
+        if not SG.server_controller.server_bandwidth_ok():
             
             raise HydrusExceptions.BandwidthException( 'This server has run out of bandwidth. Please try again later.' )
             
@@ -1177,7 +1177,7 @@ class HydrusResourceRestrictedServices( HydrusResourceRestricted ):
         
         with HG.dirty_object_lock:
             
-            SG.server_controller.SetServices( services )
+            SG.server_controller.set_services( services )
             
             service_keys_to_access_keys = SG.server_controller.write_synchronous( 'services', request.hydrus_account, services )
             
@@ -1362,7 +1362,7 @@ class HydrusResourceRestrictedRestartServices( HydrusResourceRestricted ):
     
     def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
-        SG.server_controller.call_later( 1.0, SG.server_controller.RestartServices )
+        SG.server_controller.call_later( 1.0, SG.server_controller.restart_services )
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
