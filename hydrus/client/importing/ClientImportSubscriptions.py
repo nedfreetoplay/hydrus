@@ -584,7 +584,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                                                 
                                             except Exception as e:
                                                 
-                                                HydrusData.show_text( 'While trying to compare subscription seed url classes, encountered this error:' )
+                                                HydrusData.safe_print( 'While trying to compare subscription seed url classes, encountered this error:' )
                                                 HydrusData.print_exception( e, do_wait = False )
                                                 
                                             
@@ -596,7 +596,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                                                 
                                             else:
                                                 
-                                                HydrusData.show_text( f'The query "{query_name}" for subscription "{self._name}" found {file_limit_for_this_sync} new URLs without running into any it had seen before. I do not think this needs a gap downloader because the url class appears to have changed.' )
+                                                HydrusData.safe_print( f'The query "{query_name}" for subscription "{self._name}" found {file_limit_for_this_sync} new URLs without running into any it had seen before. I do not think this needs a gap downloader because the url class appears to have changed.' )
                                                 
                                                 stop_reason = 'hit periodic file limit after url class appeared to change. sub may spend some extra time catching up'
                                                 
@@ -1750,7 +1750,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                 
             except HydrusExceptions.ShutdownException:
                 
-                HydrusData.show_text( f'Exiting subscription "{self._name}" due to program shutdown.' )
+                HydrusData.safe_print( f'Exiting subscription "{self._name}" due to program shutdown.' )
                 
                 return
                 
@@ -1799,9 +1799,9 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 delay = CG.client_controller.new_options.GetInteger( 'subscription_network_error_delay' )
                 
-                HydrusData.show_text( f'The subscription "{self._name}" encountered an exception when trying to sync:' )
+                HydrusData.safe_print( f'The subscription "{self._name}" encountered an exception when trying to sync:' )
                 
-                HydrusData.show_text( e )
+                HydrusData.safe_print( e )
                 
                 job_status.SetStatusText( 'Encountered a network error, will retry again later' )
                 
@@ -1811,7 +1811,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                 
             except HydrusExceptions.ShutdownException:
                 
-                HydrusData.show_text( f'Exiting subscription "{self._name}" due to program shutdown.' )
+                HydrusData.safe_print( f'Exiting subscription "{self._name}" due to program shutdown.' )
                 
             except Exception as e:
                 

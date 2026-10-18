@@ -32,7 +32,7 @@ def ProcessStartingAction( db_dir, action ):
         
         if already_running:
             
-            HydrusData.show_text( 'The server is already running. Would you like to [s]top it, [r]estart it here, or e[x]it?' )
+            HydrusData.safe_print( 'The server is already running. Would you like to [s]top it, [r]estart it here, or e[x]it?' )
             
             answer = input()
             
@@ -76,7 +76,7 @@ def ProcessStartingAction( db_dir, action ):
             
         else:
             
-            HydrusData.show_text( 'Did not find an already running instance of the server--changing boot command from \'restart\' to \'start\'.' )
+            HydrusData.safe_print( 'Did not find an already running instance of the server--changing boot command from \'restart\' to \'start\'.' )
             
             return 'start'
             
@@ -93,7 +93,7 @@ def ShutdownSiblingInstance( db_dir ):
         
     except HydrusExceptions.CancelledException as e:
         
-        HydrusData.show_text( e )
+        HydrusData.safe_print( e )
         
         ports = None
         
@@ -128,7 +128,7 @@ def ShutdownSiblingInstance( db_dir ):
             
             port_found = True
             
-            HydrusData.show_text( 'Sending shut down instruction' + HC.UNICODE_ELLIPSIS )
+            HydrusData.safe_print( 'Sending shut down instruction' + HC.UNICODE_ELLIPSIS )
             
             r = session.post( 'https://127.0.0.1:' + str( port ) + '/shutdown' )
             
@@ -164,7 +164,7 @@ def ShutdownSiblingInstance( db_dir ):
         raise HydrusExceptions.ShutdownException( 'The existing server did not have an administration service!' )
         
     
-    HydrusData.show_text( 'The existing server is shut down!' )
+    HydrusData.safe_print( 'The existing server is shut down!' )
     
 
 class Controller( HydrusController.HydrusController ):
@@ -253,7 +253,7 @@ class Controller( HydrusController.HydrusController ):
         
         if num_files_deleted > 0 or num_thumbnails_deleted > 0:
             
-            HydrusData.show_text( 'Physically deleted {} files and {} thumbnails from file storage.'.format( HydrusNumbers.to_human_int( num_files_deleted ), HydrusNumbers.to_human_int( num_files_deleted ) ) )
+            HydrusData.safe_print( 'Physically deleted {} files and {} thumbnails from file storage.'.format( HydrusNumbers.to_human_int( num_files_deleted ), HydrusNumbers.to_human_int( num_files_deleted ) ) )
             
         
     
@@ -263,11 +263,11 @@ class Controller( HydrusController.HydrusController ):
         
         self.SaveDirtyObjects()
         
-        HydrusData.show_text( 'Shutting down daemons' + HC.UNICODE_ELLIPSIS )
+        HydrusData.safe_print( 'Shutting down daemons' + HC.UNICODE_ELLIPSIS )
         
         self.shutdown_view()
         
-        HydrusData.show_text( 'Shutting down db' + HC.UNICODE_ELLIPSIS )
+        HydrusData.safe_print( 'Shutting down db' + HC.UNICODE_ELLIPSIS )
         
         self.shutdown_model()
         
@@ -305,7 +305,7 @@ class Controller( HydrusController.HydrusController ):
         
         if HydrusNetworking.local_port_in_use( port ):
             
-            HydrusData.show_text( 'Something is already bound to port ' + str( port ) + ', so your administration service cannot be started. Please quit the server and retry once the port is clear.' )
+            HydrusData.safe_print( 'Something is already bound to port ' + str( port ) + ', so your administration service cannot be started. Please quit the server and retry once the port is clear.' )
             
         else:
             
@@ -375,15 +375,15 @@ class Controller( HydrusController.HydrusController ):
         
         self.record_running_start()
         
-        HydrusData.show_text( 'Initialising db' + HC.UNICODE_ELLIPSIS )
+        HydrusData.safe_print( 'Initialising db' + HC.UNICODE_ELLIPSIS )
         
         self.init_model()
         
-        HydrusData.show_text( 'Initialising workers' + HC.UNICODE_ELLIPSIS )
+        HydrusData.safe_print( 'Initialising workers' + HC.UNICODE_ELLIPSIS )
         
         self.init_view()
         
-        HydrusData.show_text( 'Server is running. Press Ctrl+C to quit.' )
+        HydrusData.safe_print( 'Server is running. Press Ctrl+C to quit.' )
         
         try:
             
@@ -394,10 +394,10 @@ class Controller( HydrusController.HydrusController ):
             
         except KeyboardInterrupt:
             
-            HydrusData.show_text( 'Received a keyboard interrupt' + HC.UNICODE_ELLIPSIS )
+            HydrusData.safe_print( 'Received a keyboard interrupt' + HC.UNICODE_ELLIPSIS )
             
         
-        HydrusData.show_text( 'Shutting down controller' + HC.UNICODE_ELLIPSIS )
+        HydrusData.safe_print( 'Shutting down controller' + HC.UNICODE_ELLIPSIS )
         
         self.Exit()
         
@@ -433,7 +433,7 @@ class Controller( HydrusController.HydrusController ):
             
             def StartServices( *args, **kwargs ):
                 
-                HydrusData.show_text( 'Starting services' + HC.UNICODE_ELLIPSIS )
+                HydrusData.safe_print( 'Starting services' + HC.UNICODE_ELLIPSIS )
                 
                 for service in services:
                     
@@ -477,9 +477,9 @@ class Controller( HydrusController.HydrusController ):
                             
                         except Exception as e:
                             
-                            HydrusData.show_text( 'Could not bind to IPv6:' )
+                            HydrusData.safe_print( 'Could not bind to IPv6:' )
                             
-                            HydrusData.show_text( str( e ) )
+                            HydrusData.safe_print( str( e ) )
                             
                         
                         ipv4_port = None
@@ -500,7 +500,7 @@ class Controller( HydrusController.HydrusController ):
                         
                         if HydrusNetworking.local_port_in_use( port ):
                             
-                            HydrusData.show_text( 'Running "{}" on port {}.'.format( name, port ) )
+                            HydrusData.safe_print( 'Running "{}" on port {}.'.format( name, port ) )
                             
                         else:
                             
@@ -509,16 +509,16 @@ class Controller( HydrusController.HydrusController ):
                         
                     except Exception as e:
                         
-                        HydrusData.show_text( traceback.format_exc() )
+                        HydrusData.safe_print( traceback.format_exc() )
                         
                     
                 
-                HydrusData.show_text( 'Services started' )
+                HydrusData.safe_print( 'Services started' )
                 
             
             if len( self._service_keys_to_connected_ports ) > 0:
                 
-                HydrusData.show_text( 'Stopping services' + HC.UNICODE_ELLIPSIS )
+                HydrusData.safe_print( 'Stopping services' + HC.UNICODE_ELLIPSIS )
                 
                 deferreds = []
                 
@@ -594,7 +594,7 @@ class Controller( HydrusController.HydrusController ):
             
         except Exception as e:
             
-            HydrusData.show_text( 'Twisted failed to shut down cleanly:' )
+            HydrusData.safe_print( 'Twisted failed to shut down cleanly:' )
             HydrusData.print_exception( e, do_wait = False )
             
         
@@ -603,7 +603,7 @@ class Controller( HydrusController.HydrusController ):
     
     def shutdown_from_server( self ):
         
-        HydrusData.show_text( 'Received a server shut down request' + HC.UNICODE_ELLIPSIS )
+        HydrusData.safe_print( 'Received a server shut down request' + HC.UNICODE_ELLIPSIS )
         
         self._shutdown = True
         

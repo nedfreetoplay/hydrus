@@ -410,7 +410,7 @@ class THREADCallToThread(DAEMON):
                     
                 except Exception as e:
                     
-                    HydrusData.show_text( traceback.format_exc() )
+                    HydrusData.safe_print( traceback.format_exc() )
                     
                     HydrusData.ShowException( e )
                     
@@ -825,7 +825,7 @@ class JobScheduler(threading.Thread):
                 
             except Exception as e:
                 
-                HydrusData.show_text( traceback.format_exc() )
+                HydrusData.safe_print( traceback.format_exc() )
                 
                 HydrusData.ShowException( e )
                 

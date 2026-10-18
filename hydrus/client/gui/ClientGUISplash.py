@@ -202,7 +202,7 @@ class FrameSplashStatus( object ):
         
         if self._updater is not None and print_to_log and len( text ) > 0:
             
-            HydrusData.show_text( text )
+            HydrusData.safe_print( text )
             
         
         with self._lock:
@@ -218,7 +218,7 @@ class FrameSplashStatus( object ):
         
         if HG.boot_debug and self._updater is not None and len( text ) > 0:
             
-            HydrusData.show_text( text )
+            HydrusData.safe_print( text )
             
         
         with self._lock:

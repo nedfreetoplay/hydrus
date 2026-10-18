@@ -101,11 +101,11 @@ def print_more_thumb_error_info(e: Exception, message, extra_description: str | 
     
     if not isinstance( e, HydrusExceptions.NoThumbnailFileException ):
         
-        HydrusData.show_text( message )
+        HydrusData.safe_print( message )
         
         if extra_description is not None:
             
-            HydrusData.show_text( f'Extra info: {extra_description}' )
+            HydrusData.safe_print( f'Extra info: {extra_description}' )
             
         
         HydrusData.print_exception( e )
@@ -665,7 +665,7 @@ def get_file_info(path, mime = None, ok_to_look_for_hydrus_updates = False):
             
         except Exception as e:
             
-            HydrusData.show_text( 'Problem calculating resolution for "{}":'.format( path ) )
+            HydrusData.safe_print( 'Problem calculating resolution for "{}":'.format( path ) )
             HydrusData.print_exception( e )
             
         
@@ -1021,7 +1021,7 @@ def get_mime(path, ok_to_look_for_hydrus_updates = False):
             
         except Exception as e:
             
-            HydrusData.show_text( 'FFMPEG had trouble with: ' + path )
+            HydrusData.safe_print( 'FFMPEG had trouble with: ' + path )
             HydrusData.print_exception( e, do_wait = False )
             
         

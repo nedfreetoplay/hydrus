@@ -929,11 +929,11 @@ class LoginProcessDomain( LoginProcess ):
         
         CG.client_controller.pub( 'message', job_status )
         
-        HydrusData.show_text( 'Starting login for ' + login_domain )
+        HydrusData.safe_print( 'Starting login for ' + login_domain )
         
         result = self.login_script.Start( self.engine, self.network_context, self.credentials, job_status = job_status )
         
-        HydrusData.show_text( 'Finished login for ' + self.network_context.context_data + '. Result was: ' + result )
+        HydrusData.safe_print( 'Finished login for ' + self.network_context.context_data + '. Result was: ' + result )
         
         job_status.SetStatusText( result )
         
@@ -999,7 +999,7 @@ class LoginScriptHydrus( object ):
             
             if self._IsLoggedIn( engine, network_context ):
                 
-                HydrusData.show_text( 'Successfully logged into ' + service.GetName() + '.' )
+                HydrusData.safe_print( 'Successfully logged into ' + service.GetName() + '.' )
                 
             elif service.IsFunctional():
                 

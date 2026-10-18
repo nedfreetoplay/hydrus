@@ -358,7 +358,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                 HydrusPaths.delete_path( shm_lad )
                 
             
-            HydrusData.show_text( 'Found and deleted the durable temporary database on boot. The last exit was probably not clean.' )
+            HydrusData.safe_print( 'Found and deleted the durable temporary database on boot. The last exit was probably not clean.' )
             
         
         self._init_external_databases()
@@ -465,7 +465,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                     
                 except Exception as rollback_e:
                     
-                    HydrusData.show_text( 'When the update failed, attempting to rollback the database failed.' )
+                    HydrusData.safe_print( 'When the update failed, attempting to rollback the database failed.' )
                     
                     HydrusData.print_exception( rollback_e )
                     
@@ -873,7 +873,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                 
                 if time_job_took > 15:
                     
-                    HydrusData.show_text( f'The database job "{job.to_string()}" took {HydrusTime.time_delta_to_pretty_timedelta( time_job_took )}.' )
+                    HydrusData.safe_print( f'The database job "{job.to_string()}" took {HydrusTime.time_delta_to_pretty_timedelta( time_job_took )}.' )
                     
                 
             
@@ -905,7 +905,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                 
             except Exception as rollback_e:
                 
-                HydrusData.show_text( 'When the transaction failed, attempting to rollback the database failed. Please restart the client as soon as is convenient.' )
+                HydrusData.safe_print( 'When the transaction failed, attempting to rollback the database failed. Please restart the client as soon as is convenient.' )
                 
                 self._close_db_connection()
                 
@@ -1073,7 +1073,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
             
         elif not ( cert_here or key_here ):
             
-            HydrusData.show_text( 'Generating new cert/key files.' )
+            HydrusData.safe_print( 'Generating new cert/key files.' )
             
             if not HydrusEncryption.CRYPTO_OK:
                 

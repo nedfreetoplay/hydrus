@@ -625,7 +625,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
             
         except Exception as e:
             
-            HydrusData.show_text( 'Hey, I was trying to set up a GUG (downloader) but the GUG store was messed up. Here is the error:' )
+            HydrusData.safe_print( 'Hey, I was trying to set up a GUG (downloader) but the GUG store was messed up. Here is the error:' )
             
             HydrusData.print_exception( e, do_wait = False )
             

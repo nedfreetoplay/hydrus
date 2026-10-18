@@ -215,7 +215,7 @@ class ClientFilesManager( object ):
             summary_message += '\n' * 2
             summary_message += 'Assuming you did this on purpose, or hydrus recently inserted stub values after database corruption, Hydrus is ready to update its internal knowledge to reflect these new mappings as soon as this dialog closes. If you know these proposed fixes are incorrect, terminate the program now.'
             
-            HydrusData.show_text( summary_message )
+            HydrusData.safe_print( summary_message )
             
             self._controller.blocking_safe_show_critical_message( 'About to auto-heal client file folders.', summary_message )
             
@@ -1056,7 +1056,7 @@ class ClientFilesManager( object ):
                                     
                                     dest = HydrusPaths.append_path_until_no_conflicts( dest )
                                     
-                                    HydrusData.show_text( 'Moving the orphan ' + path + ' to ' + dest )
+                                    HydrusData.safe_print( 'Moving the orphan ' + path + ' to ' + dest )
                                     
                                     try:
                                         
@@ -1121,7 +1121,7 @@ class ClientFilesManager( object ):
                             return
                             
                         
-                        HydrusData.show_text( 'Deleting the orphan ' + path )
+                        HydrusData.safe_print( 'Deleting the orphan ' + path )
                         
                         status = 'deleting orphan files: ' + HydrusNumbers.value_range_to_pretty_string( i + 1, len( orphan_paths ) )
                         
@@ -1148,7 +1148,7 @@ class ClientFilesManager( object ):
                             return
                             
                         
-                        HydrusData.show_text( 'Deleting the orphan ' + path )
+                        HydrusData.safe_print( 'Deleting the orphan ' + path )
                         
                         status = 'deleting orphan thumbnails: ' + HydrusNumbers.value_range_to_pretty_string( i + 1, len( orphan_thumbnails ) )
                         
@@ -1170,7 +1170,7 @@ class ClientFilesManager( object ):
             
             job_status.SetStatusText( final_text )
             
-            HydrusData.show_text( job_status.ToString() )
+            HydrusData.safe_print( job_status.ToString() )
             
             job_status.finish()
             
@@ -1277,7 +1277,7 @@ class ClientFilesManager( object ):
                             
                         except HydrusExceptions.FileMissingException:
                             
-                            HydrusData.show_text( 'Wanted to physically delete the "{}" file, with expected mime "{}", but it was not found!'.format( file_hash.hex(), HC.mime_string_lookup[ expected_mime ] ) )
+                            HydrusData.safe_print( 'Wanted to physically delete the "{}" file, with expected mime "{}", but it was not found!'.format( file_hash.hex(), HC.mime_string_lookup[ expected_mime ] ) )
                             
                         
                     
@@ -1314,7 +1314,7 @@ class ClientFilesManager( object ):
             
             self._controller.pub( 'notify_new_physical_file_delete_numbers' )
             
-            HydrusData.show_text( 'Physically deleted {} files and {} thumbnails from file storage.'.format( HydrusNumbers.to_human_int( num_files_deleted ), HydrusNumbers.to_human_int( num_files_deleted ) ) )
+            HydrusData.safe_print( 'Physically deleted {} files and {} thumbnails from file storage.'.format( HydrusNumbers.to_human_int( num_files_deleted ), HydrusNumbers.to_human_int( num_files_deleted ) ) )
             
         
     
@@ -1484,7 +1484,7 @@ class ClientFilesManager( object ):
                     
                     text = f'Moving "{source_subfolder}" to "{dest_subfolder}".'
                     
-                    HydrusData.show_text( text )
+                    HydrusData.safe_print( text )
                     
                     job_status.SetStatusText( text )
                     
@@ -1638,11 +1638,11 @@ class ClientFilesManager( object ):
                         
                         os.utime( path, ( existing_access_time, modified_timestamp ) )
                         
-                        HydrusData.show_text( 'Successfully changed modified time of "{}" from {} to {}.'.format( path, HydrusTime.timestamp_to_pretty_time( int( existing_modified_time ) ), HydrusTime.timestamp_to_pretty_time( int( modified_timestamp ) ) ))
+                        HydrusData.safe_print( 'Successfully changed modified time of "{}" from {} to {}.'.format( path, HydrusTime.timestamp_to_pretty_time( int( existing_modified_time ) ), HydrusTime.timestamp_to_pretty_time( int( modified_timestamp ) ) ))
                         
                     except PermissionError:
                         
-                        HydrusData.show_text( 'Tried to set modified time of {} to file "{}", but did not have permission!'.format( HydrusTime.timestamp_to_pretty_time( int( modified_timestamp ) ), path ) )
+                        HydrusData.safe_print( 'Tried to set modified time of {} to file "{}", but did not have permission!'.format( HydrusTime.timestamp_to_pretty_time( int( modified_timestamp ) ), path ) )
                         
                     
                 

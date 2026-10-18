@@ -2508,7 +2508,7 @@ class ContentParser( HydrusSerialisable.SerialisableBase ):
                 
             except Exception as e:
                 
-                HydrusData.show_text( f'Could not unescape parsed title text: {parsing_context}' )
+                HydrusData.safe_print( f'Could not unescape parsed title text: {parsing_context}' )
                 
             
         

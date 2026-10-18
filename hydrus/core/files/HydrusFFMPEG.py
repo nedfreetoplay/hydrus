@@ -179,7 +179,7 @@ def getffmpeg_version():
     message += '\n' * 2
     message += 'STDERR Response: {}'.format( stderr )
     
-    HydrusData.show_text( message )
+    HydrusData.safe_print( message )
     
     HydrusEnvironment.dump_env()
     

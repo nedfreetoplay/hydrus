@@ -103,7 +103,7 @@ def convert_value_range_to_bytes( value, range ):
 
 def debug_print( debug_info ):
     
-    show_text( debug_info )
+    safe_print( debug_info )
     
     sys.stdout.flush()
     sys.stderr.flush()
@@ -264,12 +264,15 @@ def merge_key_to_list_dicts( key_to_list_dicts ):
     
     return result
 
-def show_text(text: object):
+def safe_print(text: object):
     try:
         print(str(text))
         
     except Exception:
         print(repr(text))
+
+# Нам нужно вызвать оригинальную функцию, но если мы вызовем safe_print, то войдем в рекурсию.
+show_text = safe_print
 
 def convert_exception_tuple_to_nice_trace( etype, value, tb ):
     if etype is None:

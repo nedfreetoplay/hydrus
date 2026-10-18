@@ -387,7 +387,7 @@ def terminate_and_reap_process( process: subprocess.Popen ):
         
     except PermissionError as e:
         
-        HydrusData.show_text( f'I tried to terminate the process {process} but got {e}!' )
+        HydrusData.safe_print( f'I tried to terminate the process {process} but got {e}!' )
         
     
     try:
@@ -402,7 +402,7 @@ def terminate_and_reap_process( process: subprocess.Popen ):
             
         except PermissionError as e:
             
-            HydrusData.show_text( f'I tried to kill the process {process} after post-terminate communicate timed out but got {e}!' )
+            HydrusData.safe_print( f'I tried to kill the process {process} after post-terminate communicate timed out but got {e}!' )
             
         
         try:
@@ -485,7 +485,7 @@ class SubprocessContext:
                     
                 except ValueError: # probably got terminated at an inconvenient time
                     
-                    HydrusData.show_text( f'Probably not a big deal, but the Subprocess Command "{self._cmd}" closed its stdout early. If this keeps happening, please let hydev know!' )
+                    HydrusData.safe_print( f'Probably not a big deal, but the Subprocess Command "{self._cmd}" closed its stdout early. If this keeps happening, please let hydev know!' )
                     
                     return
                     

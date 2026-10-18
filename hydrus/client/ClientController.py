@@ -92,7 +92,7 @@ def message_handler(msg_type, context, text):
     if msg_type not in ( QC.QtMsgType.QtDebugMsg, QC.QtMsgType.QtInfoMsg ):
         
         # Set a breakpoint here to be able to see where the warnings originate from.
-        HydrusData.show_text( text )
+        HydrusData.safe_print( text )
 
 
 class App(QW.QApplication):
@@ -125,7 +125,7 @@ class App(QW.QApplication):
                 
             except Exception as e:
                 
-                HydrusData.show_text( f'Hey, while trying to determine if you have {desktop_name}.desktop file in your Applications dir, I ran into an error, which follows. This is not a huge deal, but hydev would like to see it.' )
+                HydrusData.safe_print( f'Hey, while trying to determine if you have {desktop_name}.desktop file in your Applications dir, I ran into an error, which follows. This is not a huge deal, but hydev would like to see it.' )
                 
                 HydrusData.print_exception( e )
                 
@@ -692,9 +692,9 @@ class Controller(HydrusController.HydrusController):
             
         except Exception as e:
             
-            HydrusData.show_text( 'There was an error trying to start the splash screen!' )
+            HydrusData.safe_print( 'There was an error trying to start the splash screen!' )
             
-            HydrusData.show_text( traceback.format_exc() )
+            HydrusData.safe_print( traceback.format_exc() )
             
             raise
     
@@ -1569,7 +1569,7 @@ class Controller(HydrusController.HydrusController):
                     
                 except Exception as e:
                     
-                    HydrusData.show_text( 'Could not load Qt style: {}'.format( repr( e ) ) )
+                    HydrusData.safe_print( 'Could not load Qt style: {}'.format( repr( e ) ) )
                     
                 
             
@@ -1587,7 +1587,7 @@ class Controller(HydrusController.HydrusController):
                     
                 except Exception as e:
                     
-                    HydrusData.show_text( 'Could not load Qt stylesheet: {}'.format( repr( e ) ) )
+                    HydrusData.safe_print( 'Could not load Qt stylesheet: {}'.format( repr( e ) ) )
                     
                 
             
@@ -1903,7 +1903,7 @@ class Controller(HydrusController.HydrusController):
         
         self.main_qt_thread = self.app.thread()
         
-        HydrusData.show_text( 'booting controller' + HC.UNICODE_ELLIPSIS )
+        HydrusData.safe_print( 'booting controller' + HC.UNICODE_ELLIPSIS )
         
         self.frame_splash_status = ClientGUISplash.FrameSplashStatus()
         
@@ -2062,7 +2062,7 @@ class Controller(HydrusController.HydrusController):
             
             def StartServices( *args, **kwargs ):
                 
-                HydrusData.show_text( 'starting services' + HC.UNICODE_ELLIPSIS )
+                HydrusData.safe_print( 'starting services' + HC.UNICODE_ELLIPSIS )
                 
                 for service in services:
                     
@@ -2130,9 +2130,9 @@ class Controller(HydrusController.HydrusController):
                             
                         except Exception as e:
                             
-                            HydrusData.show_text( 'Could not bind to IPv6:' )
+                            HydrusData.safe_print( 'Could not bind to IPv6:' )
                             
-                            HydrusData.show_text( str( e ) )
+                            HydrusData.safe_print( str( e ) )
                             
                         
                         ipv4_port = None
@@ -2160,7 +2160,7 @@ class Controller(HydrusController.HydrusController):
                         
                         if HydrusNetworking.local_port_in_use( port ):
                             
-                            HydrusData.show_text( 'Running "{}" on port {}.'.format( name, port ) )
+                            HydrusData.safe_print( 'Running "{}" on port {}.'.format( name, port ) )
                             
                         else:
                             
@@ -2174,12 +2174,12 @@ class Controller(HydrusController.HydrusController):
                         
                     
                 
-                HydrusData.show_text( 'services started' )
+                HydrusData.safe_print( 'services started' )
                 
             
             if len( self._service_keys_to_connected_ports ) > 0:
                 
-                HydrusData.show_text( 'stopping services' + HC.UNICODE_ELLIPSIS )
+                HydrusData.safe_print( 'stopping services' + HC.UNICODE_ELLIPSIS )
                 
                 deferreds = []
                 
@@ -2226,7 +2226,7 @@ class Controller(HydrusController.HydrusController):
             
             HydrusData.show_text( 'Twisted failed to import, so could not start the local client api! Specific error has been printed to log. Please contact hydrus dev!' )
             
-            HydrusData.show_text( HG.twisted_is_broke_exception )
+            HydrusData.safe_print( HG.twisted_is_broke_exception )
             
         else:
             
@@ -2314,7 +2314,7 @@ class Controller(HydrusController.HydrusController):
                 
             except Exception as e:
                 
-                HydrusData.show_text( 'Twisted failed to shut down cleanly:' )
+                HydrusData.safe_print( 'Twisted failed to shut down cleanly:' )
                 HydrusData.print_exception( e, do_wait = False )
                 
             
@@ -2449,7 +2449,7 @@ class Controller(HydrusController.HydrusController):
             
         except ( HydrusExceptions.DBCredentialsException, HydrusExceptions.ShutdownException ) as e:
             
-            HydrusData.show_text( e )
+            HydrusData.safe_print( e )
             
             self.clean_running_file()
             

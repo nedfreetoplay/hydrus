@@ -1256,7 +1256,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                     
                 except Exception as e:
                     
-                    HydrusData.show_text( 'Problem updating options web browser launch path:' )
+                    HydrusData.safe_print( 'Problem updating options web browser launch path:' )
                     HydrusData.print_exception( e, do_wait = False )
                     
                     web_browser_launch_paths = HydrusSerialisable.SerialisableList( [ None ] )
@@ -1352,7 +1352,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                     
                 except Exception as e:
                     
-                    HydrusData.show_text( 'Problem updating options open externally launch paths:' )
+                    HydrusData.safe_print( 'Problem updating options open externally launch paths:' )
                     HydrusData.print_exception( e, do_wait = False )
                     
                     open_externally_launch_paths = HydrusSerialisable.SerialisableDictionary( { HC.GENERAL_FILE : HydrusSerialisable.SerialisableList( [ None ] ) } )
@@ -1644,7 +1644,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                 
             else:
                 
-                HydrusData.show_text( f'Could not find {frame_key} in the frame locations options!' )
+                HydrusData.safe_print( f'Could not find {frame_key} in the frame locations options!' )
                 
                 return ( False, False, None, None, ( -1, -1 ), 'topleft', False, False )
                 

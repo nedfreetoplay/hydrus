@@ -330,7 +330,7 @@ def THREADUploadPending( service_key ):
                     job_status.DeleteGauge()
                     job_status.SetStatusText( 'cancelled' )
                     
-                    HydrusData.show_text( job_status.ToString() )
+                    HydrusData.safe_print( job_status.ToString() )
                     
                     job_status.FinishAndDismiss( 5 )
                     
@@ -471,7 +471,7 @@ def THREADUploadPending( service_key ):
         
         CG.client_controller.pub( 'notify_pending_upload_finished', service_key )
         
-        HydrusData.show_text( job_status.ToString() )
+        HydrusData.safe_print( job_status.ToString() )
         
         if len( content_types_to_request ) == 0:
             
@@ -1789,7 +1789,7 @@ QMenuBar::item { padding: 2px 8px; margin: 0px; }'''
             
         except Exception as e:
             
-            HydrusData.show_text( 'I tried to do the menubar style hack, but got this exception (please let hydev know):' )
+            HydrusData.safe_print( 'I tried to do the menubar style hack, but got this exception (please let hydev know):' )
             HydrusData.print_exception( e, do_wait = False)
             
         
@@ -1844,7 +1844,7 @@ QMenuBar::item { padding: 2px 8px; margin: 0px; }'''
         text += 'Upload Time (UTC): ' + utc_time
         text += 'Upload Time (Your time): ' + local_time
         
-        HydrusData.show_text( text )
+        HydrusData.safe_print( text )
         
         ClientGUIDialogsMessage.ShowInformation( self, text + '\n' * 2 + 'This has been written to the log.' )
         
@@ -2170,7 +2170,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                             
                             num_errors += 1
                             
-                            HydrusData.show_text( update_path + ' did not load correctly!' )
+                            HydrusData.safe_print( update_path + ' did not load correctly!' )
                             
                             continue
                             
@@ -2187,7 +2187,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                             
                             num_errors += 1
                             
-                            HydrusData.show_text( update_path + ' was not an update!' )
+                            HydrusData.safe_print( update_path + ' was not an update!' )
                             
                             continue
                             
@@ -6507,7 +6507,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
             except ( HydrusExceptions.QtDeadWindowException, HydrusExceptions.ShutdownException ):
                 
-                HydrusData.show_text( 'Test could not finish because of a shutdown, looks like.' )
+                HydrusData.safe_print( 'Test could not finish because of a shutdown, looks like.' )
                 
             
         

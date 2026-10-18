@@ -893,7 +893,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                     
                 elif file_seed.status == CC.STATUS_ERROR:
                     
-                    HydrusData.show_text( f'Import folder "{self._name}" failed to import: "{path}"' )
+                    HydrusData.safe_print( f'Import folder "{self._name}" failed to import: "{path}"' )
                     
                 
                 i += 1
@@ -908,7 +908,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
         
         if num_files_imported > 0:
             
-            HydrusData.show_text( 'Import folder ' + self._name + ' imported ' + HydrusNumbers.to_human_int( num_files_imported ) + ' files.' )
+            HydrusData.safe_print( 'Import folder ' + self._name + ' imported ' + HydrusNumbers.to_human_int( num_files_imported ) + ' files.' )
             
             if len( presentation_hashes ) > 0:
                 
@@ -1070,7 +1070,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                 
             except Exception as e:
                 
-                HydrusData.show_text( 'Failed to update import folder with new metadata routers.' )
+                HydrusData.safe_print( 'Failed to update import folder with new metadata routers.' )
                 
                 HydrusData.print_exception( e )
                 

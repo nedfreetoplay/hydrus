@@ -214,7 +214,7 @@ def report_speed_to_log( precise_timestamp, num_rows, row_name ):
     
     summary = 'processed ' + HydrusNumbers.to_human_int( num_rows ) + ' ' + row_name + ' at ' + rows_s + ' rows/s'
     
-    HydrusData.show_text( summary )
+    HydrusData.safe_print( summary )
     
 
 class DB( HydrusDB.HydrusDB ):
@@ -5467,13 +5467,13 @@ class DB( HydrusDB.HydrusDB ):
                             
                             self._execute( 'INSERT OR IGNORE INTO hashes ( hash_id, hash ) VALUES ( ?, ? );', ( definition_id, sqlite3.Binary( hash ) ) )
                             
-                            HydrusData.show_text( '{} {} had no master definition, but I was able to recover from the local cache'.format( definition_column_name, definition_id ) )
+                            HydrusData.safe_print( '{} {} had no master definition, but I was able to recover from the local cache'.format( definition_column_name, definition_id ) )
                             
                             num_recovered += 1
                             
                         else:
                             
-                            HydrusData.show_text( '{} {} had no master definition, it has been purged from the database!'.format( definition_column_name, definition_id ) )
+                            HydrusData.safe_print( '{} {} had no master definition, it has been purged from the database!'.format( definition_column_name, definition_id ) )
                             
                             for ( table_name, column_name ) in all_tables_and_columns:
                                 
@@ -6495,11 +6495,11 @@ class DB( HydrusDB.HydrusDB ):
             
             try:
                 
-                HydrusData.show_text( f'Invalid tag fixing: tag_id {tag_id}: "{tag}" replaced with "{cleaned_tag}"' )
+                HydrusData.safe_print( f'Invalid tag fixing: tag_id {tag_id}: "{tag}" replaced with "{cleaned_tag}"' )
                 
             except Exception as e:
                 
-                HydrusData.show_text( f'Invalid tag fixing: tag_id {tag_id}: Could not even print the bad tag to the log! It is now known as "{cleaned_tag}"' )
+                HydrusData.safe_print( f'Invalid tag fixing: tag_id {tag_id}: Could not even print the bad tag to the log! It is now known as "{cleaned_tag}"' )
                 
             
         
@@ -6518,7 +6518,7 @@ class DB( HydrusDB.HydrusDB ):
                     self._cursor_transaction_wrapper.pub_after_job( 'notify_force_refresh_tags_data' )
                     
                 
-                HydrusData.show_text( message )
+                HydrusData.safe_print( message )
                 
                 job_status.SetStatusText( message )
                 
@@ -7070,8 +7070,8 @@ class DB( HydrusDB.HydrusDB ):
             
         except Exception as e:
             
-            HydrusData.show_text( 'Failed options save dump:' )
-            HydrusData.show_text( options )
+            HydrusData.safe_print( 'Failed options save dump:' )
+            HydrusData.safe_print( options )
             
             raise
             
@@ -7532,7 +7532,7 @@ class DB( HydrusDB.HydrusDB ):
                         
                         self.modules_serialisable.SetJSONDump( rule )
                         
-                        HydrusData.show_text( '"B is better" rule that I just flipped to "A is better" and paused: ' + rule.get_name() )
+                        HydrusData.safe_print( '"B is better" rule that I just flipped to "A is better" and paused: ' + rule.get_name() )
                         
                         we_did_it = True
                         
@@ -7928,7 +7928,7 @@ class DB( HydrusDB.HydrusDB ):
                         
                         if HG.non_interactive_update:
                             
-                            HydrusData.show_text( message )
+                            HydrusData.safe_print( message )
                             
                         else:
                             
@@ -8147,7 +8147,7 @@ class DB( HydrusDB.HydrusDB ):
                 
             except Exception as e:
                 
-                HydrusData.show_text( 'Problem doing the import options migration! Please forward this error to hydev and roll back to v670:' )
+                HydrusData.safe_print( 'Problem doing the import options migration! Please forward this error to hydev and roll back to v670:' )
                 HydrusData.print_exception( e, do_wait = False )
                 
                 raise Exception( f'The import options migration had a problem! Please check your logfile for the full error and send it to hydev, and then roll back to v670! Error summary:\n\n{e}' )
@@ -8440,7 +8440,7 @@ class DB( HydrusDB.HydrusDB ):
                         # these are files that are delisted currently and unexpectedly, including a bug of previously deleted files that were re-imported
                         delisted_hash_ids = self._sts( self._execute( f'SELECT hash_id FROM {temp_hash_ids_table_name_for_phashes} WHERE NOT EXISTS ( SELECT 1 FROM shape_search_cache WHERE hash_id = {temp_hash_ids_table_name_for_phashes}.hash_id );' ) )
                         
-                        HydrusData.show_text( f'Found {HydrusNumbers.to_human_int(len(delisted_hash_ids))} files that might be in duplicate file pair search but are not.' )
+                        HydrusData.safe_print( f'Found {HydrusNumbers.to_human_int(len(delisted_hash_ids))} files that might be in duplicate file pair search but are not.' )
                         
                         self.modules_files_maintenance_queue.AddJobs( delisted_hash_ids, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_CHECK_POTENTIAL_DUPLICATE_PAIR_SEARCH_MEMBERSHIP )
                         
@@ -8448,7 +8448,7 @@ class DB( HydrusDB.HydrusDB ):
                         # also includes non-renderable PSDs; no worries
                         blank_hash_ids = self._sts( self._execute( f'SELECT hash_id FROM {temp_hash_ids_table_name_for_phashes} WHERE NOT EXISTS ( SELECT 1 FROM shape_perceptual_hash_map WHERE hash_id = {temp_hash_ids_table_name_for_phashes}.hash_id );' ) )
                         
-                        HydrusData.show_text( f'Found {HydrusNumbers.to_human_int(len(blank_hash_ids))} files that should have phashes but did not (probably blank squares).' )
+                        HydrusData.safe_print( f'Found {HydrusNumbers.to_human_int(len(blank_hash_ids))} files that should have phashes but did not (probably blank squares).' )
                         
                         self.modules_files_maintenance_queue.AddJobs( blank_hash_ids, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_PERCEPTUAL_HASHES )
                         
@@ -8517,7 +8517,7 @@ class DB( HydrusDB.HydrusDB ):
                             
                         except Exception as e:
                             
-                            HydrusData.show_text( f'Could not convert the web browser launch path "{path}"' )
+                            HydrusData.safe_print( f'Could not convert the web browser launch path "{path}"' )
                             HydrusData.print_exception( e )
                             
                             continue
@@ -8567,7 +8567,7 @@ class DB( HydrusDB.HydrusDB ):
                                 
                             except Exception as e:
                                 
-                                HydrusData.show_text( f'Could not convert the open-externally file launch path "{path}"' )
+                                HydrusData.safe_print( f'Could not convert the open-externally file launch path "{path}"' )
                                 HydrusData.print_exception( e )
                                 
                                 continue
@@ -8804,7 +8804,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 if not self._have_printed_a_cannot_vacuum_message:
                     
-                    HydrusData.show_text( 'Cannot vacuum "{}": {}'.format( db_path, e ) )
+                    HydrusData.safe_print( 'Cannot vacuum "{}": {}'.format( db_path, e ) )
                     
                     self._have_printed_a_cannot_vacuum_message = True
                     
@@ -8863,7 +8863,7 @@ class DB( HydrusDB.HydrusDB ):
                     
                 except Exception as e:
                     
-                    HydrusData.show_text( 'vacuum failed:' )
+                    HydrusData.safe_print( 'vacuum failed:' )
                     
                     HydrusData.ShowException( e )
                     

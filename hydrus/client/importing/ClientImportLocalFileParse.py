@@ -99,13 +99,13 @@ class LocalFileParse( object ):
         
         if not self.Exists():
             
-            HydrusData.show_text( f'Missing file: {path}' )
+            HydrusData.safe_print( f'Missing file: {path}' )
             
             self.result = RESULT_MISSING
             
         elif self.IsDir():
             
-            HydrusData.show_text( f'A directory somehow got into the file parsing pipeline: {path}')
+            HydrusData.safe_print( f'A directory somehow got into the file parsing pipeline: {path}')
             
             self.result = RESULT_DIRECTORY
             
@@ -115,7 +115,7 @@ class LocalFileParse( object ):
             
         elif not HydrusPaths.path_is_free( path ):
             
-            HydrusData.show_text( 'File currently in use: ' + path )
+            HydrusData.safe_print( 'File currently in use: ' + path )
             
             self.result = RESULT_OCCUPIED
             
@@ -125,13 +125,13 @@ class LocalFileParse( object ):
             
             if self.size == 0:
                 
-                HydrusData.show_text( 'Empty file: ' + path )
+                HydrusData.safe_print( 'Empty file: ' + path )
                 
                 self.result = RESULT_EMPTY
                 
             elif path.endswith( os.path.sep + 'Thumbs.db' ) or path.endswith( os.path.sep + 'thumbs.db' ):
                 
-                HydrusData.show_text( 'In import parse, skipping Thumbs.db: ' + path )
+                HydrusData.safe_print( 'In import parse, skipping Thumbs.db: ' + path )
                 
                 self.result = RESULT_UNIMPORTABLE
                 
@@ -145,7 +145,7 @@ class LocalFileParse( object ):
                     
                 except Exception as e:
                     
-                    HydrusData.show_text( 'Problem parsing mime for: ' + path )
+                    HydrusData.safe_print( 'Problem parsing mime for: ' + path )
                     HydrusData.print_exception( e )
                     
                     mime = HC.APPLICATION_UNKNOWN
@@ -159,7 +159,7 @@ class LocalFileParse( object ):
                     
                 else:
                     
-                    HydrusData.show_text( 'During file import scan, unparsable file: ' + path )
+                    HydrusData.safe_print( 'During file import scan, unparsable file: ' + path )
                     
                     self.result = RESULT_UNIMPORTABLE
                     

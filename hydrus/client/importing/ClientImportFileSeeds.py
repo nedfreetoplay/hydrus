@@ -160,7 +160,7 @@ def FileURLMappingHasUntrustworthyNeighbours( hash: bytes, lookup_urls: collecti
             # oh no, the file these lookup urls refer to has a different known url in the same domain+url_class
             # it is likely that an edit on this site points to the original elsewhere
             
-            HydrusData.show_text( f'INFO: When a URL status lookup suggested {hash.hex()}, I discovered that that file\'s existing URL "{file_url}" had the same URL Class as one of the lookup URLs, which were{HydrusText.convert_many_strings_to_nice_insertable_human_summary(lookup_urls)}. This made the lookup untrustworthy (probably evidence of a previous bad booru source reference, or merged URLs during duplicate processing).' )
+            HydrusData.safe_print( f'INFO: When a URL status lookup suggested {hash.hex()}, I discovered that that file\'s existing URL "{file_url}" had the same URL Class as one of the lookup URLs, which were{HydrusText.convert_many_strings_to_nice_insertable_human_summary(lookup_urls)}. This made the lookup untrustworthy (probably evidence of a previous bad booru source reference, or merged URLs during duplicate processing).' )
             
             return True
             

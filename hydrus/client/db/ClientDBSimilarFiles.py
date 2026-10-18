@@ -903,31 +903,31 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
                 
                 HydrusData.show_text( message )
                 
-                HydrusData.show_text( 'The bad nodes:' )
+                HydrusData.safe_print( 'The bad nodes:' )
                 
                 for ( phash_id, phash ) in bad_nodes:
                     
                     if isinstance( phash, bytes ):
                         
-                        HydrusData.show_text( f'phash_id: {phash_id}, presumably incorrect-length phash: "{phash.hex()}"' )
+                        HydrusData.safe_print( f'phash_id: {phash_id}, presumably incorrect-length phash: "{phash.hex()}"' )
                         
                     else:
                         
-                        HydrusData.show_text( f'phash_id: {phash_id}, presumably corrupt phash: "{phash}"' )
+                        HydrusData.safe_print( f'phash_id: {phash_id}, presumably corrupt phash: "{phash}"' )
                         
                     
                 
-                HydrusData.show_text( 'The affected hashes:' )
+                HydrusData.safe_print( 'The affected hashes:' )
                 
                 try:
                     
                     hash_ids_to_hashes = self.modules_hashes.GetHashIdsToHashes( hash_ids = affected_hash_ids )
                     
-                    HydrusData.show_text( '\n'.join( ( hash.hex() for hash in hash_ids_to_hashes.values() ) ) )
+                    HydrusData.safe_print( '\n'.join( ( hash.hex() for hash in hash_ids_to_hashes.values() ) ) )
                     
                 except Exception as e:
                     
-                    HydrusData.show_text( 'Could not print affected hashes (might be your regular hashes are busted too)' )
+                    HydrusData.safe_print( 'Could not print affected hashes (might be your regular hashes are busted too)' )
                     
                 
             

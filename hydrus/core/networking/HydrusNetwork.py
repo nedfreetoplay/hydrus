@@ -2691,7 +2691,7 @@ class ServerServiceRepository(ServerServiceRestricted):
                 
                 if self._metadata.UpdateIsEmpty( self._next_nullification_update_index ):
                     
-                    HydrusData.show_text( 'Account history for "{}" update {} was empty, so nothing to anonymise.'.format( self._name, self._next_nullification_update_index ) )
+                    HydrusData.safe_print( 'Account history for "{}" update {} was empty, so nothing to anonymise.'.format( self._name, self._next_nullification_update_index ) )
                     
                     self._next_nullification_update_index += 1
                     
@@ -2712,7 +2712,7 @@ class ServerServiceRepository(ServerServiceRestricted):
             
             try:
                 
-                HydrusData.show_text( 'Nullifying account history for "{}" update {}.'.format( self._name, self._next_nullification_update_index ) )
+                HydrusData.safe_print( 'Nullifying account history for "{}" update {}.'.format( self._name, self._next_nullification_update_index ) )
                 
                 update_started = HydrusTime.get_now_float()
                 
@@ -2722,7 +2722,7 @@ class ServerServiceRepository(ServerServiceRestricted):
                 
                 with self._lock:
                     
-                    HydrusData.show_text( 'Account history for "{}" update {} was anonymised in {}.'.format( self._name, self._next_nullification_update_index, HydrusTime.time_delta_to_pretty_timedelta( update_took ) ) )
+                    HydrusData.safe_print( 'Account history for "{}" update {} was anonymised in {}.'.format( self._name, self._next_nullification_update_index, HydrusTime.time_delta_to_pretty_timedelta( update_took ) ) )
                     
                     self._next_nullification_update_index += 1
                     

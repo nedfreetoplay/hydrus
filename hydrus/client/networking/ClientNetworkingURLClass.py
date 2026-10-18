@@ -282,7 +282,7 @@ class URLDomainMask( HydrusSerialisable.SerialisableBase ):
             
             last_ditch = repr( ( self._raw_domains, self._domain_regexes, self.match_subdomains ) )
             
-            HydrusData.show_text( f'Problem hashing a Domain Mask! The details are: {last_ditch}' )
+            HydrusData.safe_print( f'Problem hashing a Domain Mask! The details are: {last_ditch}' )
             
             return last_ditch.__hash__()
             

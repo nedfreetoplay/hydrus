@@ -32,7 +32,7 @@ def print_current_memory_use(classes_to_track = None):
     
     check_pympler_ok()
     
-    HydrusData.show_text( '---printing memory use to log---' )
+    HydrusData.safe_print( '---printing memory use to log---' )
     
     all_objects = muppy.get_objects()
     
@@ -47,7 +47,7 @@ def print_current_memory_use(classes_to_track = None):
         return
         
     
-    HydrusData.show_text( '----printing class use to log---' )
+    HydrusData.safe_print( '----printing class use to log---' )
     
     ct = classtracker.ClassTracker()
     
@@ -76,7 +76,7 @@ def print_snapshot_diff():
         take_memory_use_snapshot()
         
     
-    HydrusData.show_text( '---printing memory diff to log--' )
+    HydrusData.safe_print( '---printing memory diff to log--' )
     
     # noinspection PyUnresolvedReferences
     diff = CURRENT_TRACKER.diff()

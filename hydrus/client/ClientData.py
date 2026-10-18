@@ -31,7 +31,7 @@ def CatchExceptionClient( etype, value, tb ):
     
     text = job_status.ToString()
     
-    HydrusData.show_text( 'Uncaught exception:' )
+    HydrusData.safe_print( 'Uncaught exception:' )
     
     HydrusData.debug_print( text )
     
@@ -163,7 +163,7 @@ def ShowTextClient( text ):
     
     text = job_status.ToString()
     
-    HydrusData.show_text( text )
+    HydrusData.safe_print( text )
     
     CG.client_controller.pub( 'message', job_status )
     

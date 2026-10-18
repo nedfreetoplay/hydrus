@@ -264,7 +264,7 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
             
             self._render_failed = True
             
-            HydrusData.show_text( 'Problem rendering image at "{}"! Error follows:'.format( self._path ) )
+            HydrusData.safe_print( 'Problem rendering image at "{}"! Error follows:'.format( self._path ) )
             
             HydrusData.print_exception( e, do_wait = False )
             
@@ -428,7 +428,7 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
                 
             except Exception as e:
                 
-                HydrusData.show_text( 'Failed to load the ICC Profile for {} into a Qt Colourspace!'.format( self._path ) )
+                HydrusData.safe_print( 'Failed to load the ICC Profile for {} into a Qt Colourspace!'.format( self._path ) )
                 
                 self._icc_profile_bytes = None
                 
@@ -479,7 +479,7 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
                 
             
         
-        HydrusData.show_text( 'Failed to produce a tile! Info is: {}, {}, {}, {}'.format( self._hash.hex(), ( my_width, my_height ), clip_rect, target_resolution ) )
+        HydrusData.safe_print( 'Failed to produce a tile! Info is: {}, {}, {}, {}'.format( self._hash.hex(), ( my_width, my_height ), clip_rect, target_resolution ) )
         
         pixmap = QG.QPixmap( target_resolution )
         

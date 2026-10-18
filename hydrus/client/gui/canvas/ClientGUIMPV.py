@@ -1760,7 +1760,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
         else:
             
-            HydrusData.show_text( 'Was unable to load mpv.conf--has the MPV API changed?' )
+            HydrusData.safe_print( 'Was unable to load mpv.conf--has the MPV API changed?' )
             
         
     

@@ -50,7 +50,7 @@ if not PIL_HAS_HEIF:
         
     except Exception as e:
         
-        HydrusData.show_text( 'Could not register HEIF Opener with plugin library.' )
+        HydrusData.safe_print( 'Could not register HEIF Opener with plugin library.' )
 
 HEIF_OK = PIL_HAS_HEIF or HEIF_PLUGIN_OK
 
@@ -90,17 +90,17 @@ if not PIL_HAS_AVIF:
                     
                     AVIF_BACKUP_PLUGIN_OK = True
                     
-                    HydrusData.show_text( 'AVIF Opener registered with legacy library.' )
+                    HydrusData.safe_print( 'AVIF Opener registered with legacy library.' )
                     
                 except Exception as e:
                     
-                    HydrusData.show_text( 'Could not register AVIF Opener with main or legacy library.' )
+                    HydrusData.safe_print( 'Could not register AVIF Opener with main or legacy library.' )
                     
                 
             
         except Exception as e:
             
-            HydrusData.show_text( 'Could not register AVIF Opener with main or legacy plugin library.' )
+            HydrusData.safe_print( 'Could not register AVIF Opener with main or legacy plugin library.' )
 
 AVIF_OK = PIL_HAS_AVIF or AVIF_PLUGIN_OK or AVIF_BACKUP_PLUGIN_OK
 
@@ -163,11 +163,11 @@ def set_enable_load_truncated_images( value: bool ):
             
             import PIL
             
-            HydrusData.show_text( f'Could not set the PIL image trunctation value to {value}--perhaps this version of PIL ({PIL.__version__})does not support it?' )
+            HydrusData.safe_print( f'Could not set the PIL image trunctation value to {value}--perhaps this version of PIL ({PIL.__version__})does not support it?' )
             
         except Exception as e:
             
-            HydrusData.show_text( f'Could not set the PIL image trunctation value to {value}, and could not determine the PIL version! Something is busted!' )
+            HydrusData.safe_print( f'Could not set the PIL image trunctation value to {value}, and could not determine the PIL version! Something is busted!' )
             
         
         return False
