@@ -216,7 +216,7 @@ class DialogGenerateNewAccounts( Dialog ):
         
         account_type = self._account_types.GetValue()
         
-        account_type_key = account_type.GetAccountTypeKey()
+        account_type_key = account_type.get_account_type_key()
         
         lifetime = self._lifetime.GetValue()
         

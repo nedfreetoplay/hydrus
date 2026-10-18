@@ -467,7 +467,7 @@ class TestServer( unittest.TestCase ):
         
         response = service.Request( HC.GET, 'account_types' )
         
-        self.assertEqual( response[ 'account_types' ][0].GetAccountTypeKey(), account_types[0].get_account_type_key() )
+        self.assertEqual( response[ 'account_types' ][0].get_account_type_key(), account_types[0].get_account_type_key() )
         
         empty_account_type = HydrusNetwork.AccountType.generate_new_account_type( 'empty account', {}, HydrusNetworking.BandwidthRules() )
         
@@ -481,7 +481,7 @@ class TestServer( unittest.TestCase ):
         
         ( written_service_key, written_account, written_account_types, written_deletee_account_type_keys_to_new_account_type_keys ) = args
         
-        self.assertEqual( { wat.GetAccountTypeKey() for wat in written_account_types }, { at.get_account_type_key() for at in account_types } )
+        self.assertEqual( { wat.get_account_type_key() for wat in written_account_types }, { at.get_account_type_key() for at in account_types } )
         self.assertEqual( written_deletee_account_type_keys_to_new_account_type_keys, {} )
         
         # registration_keys

@@ -1622,11 +1622,11 @@ class DB( HydrusDB.HydrusDB ):
         
         service_id = self._GetServiceId( service_key )
         
-        current_account_type_keys_to_account_types = { account_type.GetAccountTypeKey() : account_type for account_type in current_account_types }
+        current_account_type_keys_to_account_types = { account_type.get_account_type_key() : account_type for account_type in current_account_types }
         
         current_account_type_keys = set( current_account_type_keys_to_account_types.keys() )
         
-        future_account_type_keys_to_account_types = { account_type.GetAccountTypeKey() : account_type for account_type in account_types }
+        future_account_type_keys_to_account_types = { account_type.get_account_type_key() : account_type for account_type in account_types }
         
         future_account_type_keys = set( future_account_type_keys_to_account_types.keys() )
         
@@ -1655,7 +1655,7 @@ class DB( HydrusDB.HydrusDB ):
         
         for account_type in account_types:
             
-            account_type_key = account_type.GetAccountTypeKey()
+            account_type_key = account_type.get_account_type_key()
             
             if account_type_key not in current_account_type_keys:
                 
@@ -1778,7 +1778,7 @@ class DB( HydrusDB.HydrusDB ):
             
             self._service_ids_to_account_type_ids[ service_id ].add( account_type_id )
             self._account_type_ids_to_account_types[ account_type_id ] = account_type
-            self._service_ids_to_account_type_keys_to_account_type_ids[ service_id ][ account_type.GetAccountTypeKey() ] = account_type_id
+            self._service_ids_to_account_type_keys_to_account_type_ids[ service_id ][ account_type.get_account_type_key() ] = account_type_id
             
             if account_type.IsNullAccount():
                 

@@ -65,7 +65,7 @@ class TestServerDB( unittest.TestCase ):
         edited_account_types = self._read( 'account_types', self._tag_service_key, self._tag_service_account )
         
         self.assertEqual(
-            { at.GetAccountTypeKey() for at in edited_account_types },
+            { at.get_account_type_key() for at in edited_account_types },
             { at.get_account_type_key() for at in ( self._tag_service_admin_account_type, self._null_account_type, self._regular_user_account_type, self._deletee_user_account_type ) }
         )
         
@@ -81,7 +81,7 @@ class TestServerDB( unittest.TestCase ):
         
         for account in accounts:
             
-            self.assertEqual( account.GetAccountType().GetAccountTypeKey(), self._deletee_user_account_type.get_account_type_key() )
+            self.assertEqual( account.GetAccountType().get_account_type_key(), self._deletee_user_account_type.get_account_type_key() )
             
         
         #
@@ -98,12 +98,12 @@ class TestServerDB( unittest.TestCase ):
         
         for account in accounts:
             
-            self.assertEqual( account.GetAccountType().GetAccountTypeKey(), self._regular_user_account_type.get_account_type_key() )
+            self.assertEqual( account.GetAccountType().get_account_type_key(), self._regular_user_account_type.get_account_type_key() )
             
         
         #
         
-        r_keys = self._read( 'registration_keys', self._tag_service_key, self._tag_service_account, 1, self._tag_service_admin_account_type.GetAccountTypeKey(), HydrusTime.get_now() + 86400 * 365 )
+        r_keys = self._read( 'registration_keys', self._tag_service_key, self._tag_service_account, 1, self._tag_service_admin_account_type.get_account_type_key(), HydrusTime.get_now() + 86400 * 365 )
         
         access_keys = [ self._read( 'access_key', self._tag_service_key, r_key ) for r_key in r_keys ]
         
@@ -113,7 +113,7 @@ class TestServerDB( unittest.TestCase ):
         
         for account in accounts:
             
-            self.assertEqual( account.GetAccountType().GetAccountTypeKey(), self._tag_service_admin_account_type.GetAccountTypeKey() )
+            self.assertEqual( account.GetAccountType().get_account_type_key(), self._tag_service_admin_account_type.get_account_type_key() )
             
         
         self._tag_service_regular_delete_all_content_account = accounts[0]
@@ -342,19 +342,19 @@ class TestServerDB( unittest.TestCase ):
         
         account = self._read( 'account', self._tag_service_key, regular_account_key )
         
-        self.assertEqual( account.GetAccountType().GetAccountTypeKey(), self._regular_user_account_type.get_account_type_key() )
+        self.assertEqual( account.GetAccountType().get_account_type_key(), self._regular_user_account_type.get_account_type_key() )
         
-        self._write( 'modify_account_account_type', self._tag_service_key, self._tag_service_account, regular_account_key, self._tag_service_admin_account_type.GetAccountTypeKey() )
+        self._write( 'modify_account_account_type', self._tag_service_key, self._tag_service_account, regular_account_key, self._tag_service_admin_account_type.get_account_type_key() )
         
         account = self._read( 'account', self._tag_service_key, regular_account_key )
         
-        self.assertEqual( account.GetAccountType().GetAccountTypeKey(), self._tag_service_admin_account_type.GetAccountTypeKey() )
+        self.assertEqual( account.GetAccountType().get_account_type_key(), self._tag_service_admin_account_type.get_account_type_key() )
         
         self._write( 'modify_account_account_type', self._tag_service_key, self._tag_service_account, regular_account_key, self._regular_user_account_type.get_account_type_key() )
         
         account = self._read( 'account', self._tag_service_key, regular_account_key )
         
-        self.assertEqual( account.GetAccountType().GetAccountTypeKey(), self._regular_user_account_type.get_account_type_key() )
+        self.assertEqual( account.GetAccountType().get_account_type_key(), self._regular_user_account_type.get_account_type_key() )
         
         #
         

@@ -330,8 +330,8 @@ class EditAccountTypesPanel( ClientGUIScrolledPanels.EditPanel ):
                     ( new_account_type, ) = account_types_can_move_to
                     
                 
-                deletee_account_type_key = deletee_account_type.GetAccountTypeKey()
-                new_account_type_key = new_account_type.GetAccountTypeKey()
+                deletee_account_type_key = deletee_account_type.get_account_type_key()
+                new_account_type_key = new_account_type.get_account_type_key()
                 
                 self._deletee_account_type_keys_to_new_account_type_keys[ deletee_account_type_key ] = new_account_type_key
                 
@@ -1115,7 +1115,7 @@ class ModifyAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             return
             
         
-        account_type_key = account_type.GetAccountTypeKey()
+        account_type_key = account_type.get_account_type_key()
         
         def work_callable():
             
