@@ -56,7 +56,7 @@ class MenuTemplateItem( object ):
             except Exception as e:
                 
                 HydrusData.show_text( 'Problem with a menu visible call! Please send the following error to hydev!' )
-                HydrusData.ShowException( e, do_wait = False )
+                HydrusData.show_exception( e, do_wait = False )
                 
                 return True
                 

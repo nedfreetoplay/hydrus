@@ -271,7 +271,7 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             self._hashes_still_to_download_in_this_run = 0
             

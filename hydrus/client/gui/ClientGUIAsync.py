@@ -25,7 +25,7 @@ class AsyncQtJob( object ):
     
     def _DefaultErrback( self, etype, value, tb ):
         
-        HydrusData.ShowExceptionTuple( etype, value, tb )
+        HydrusData.show_exception_tuple( etype, value, tb )
         
         message = 'An error occured in a background task. If you have UI waiting on an update, the dialog/panel may need to be closed and re-opened.'
         message += '\n' * 2
@@ -116,7 +116,7 @@ class AsyncQtJob( object ):
             except Exception as e_reporting:
                 
                 HydrusData.show_text( 'Trying to show an async error using a custom errback caused a problem:' )
-                HydrusData.ShowException( e_reporting )
+                HydrusData.show_exception( e_reporting )
                 
             
         
@@ -135,10 +135,10 @@ class AsyncQtJob( object ):
             except Exception as e_last_chance:
                 
                 HydrusData.show_text( 'Trying to show an async error using the default errback caused a problem:' )
-                HydrusData.ShowException( e_last_chance )
+                HydrusData.show_exception( e_last_chance )
                 
                 HydrusData.show_text( 'Here is the actual error we wanted to show:' )
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
                 we_have_reported_ok = True
                 

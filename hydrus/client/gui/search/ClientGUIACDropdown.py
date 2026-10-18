@@ -1436,7 +1436,7 @@ class AutoCompleteDropdown( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             return True
             
@@ -1771,7 +1771,7 @@ class ChildrenTab( ListBoxTagsPredicatesAC ):
                 self._children_need_updating = False
                 
                 HydrusData.show_text( 'Trying to load some child tags failed, please send this to hydev:' )
-                HydrusData.ShowExceptionTuple( etype, value, tb, do_wait = False )
+                HydrusData.show_exception_tuple( etype, value, tb, do_wait = False )
                 
             
             job = ClientGUIAsync.AsyncQtJob( self, work_callable, publish_callable, errback_callable = errback_callable )

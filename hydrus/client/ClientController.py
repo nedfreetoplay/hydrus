@@ -79,7 +79,7 @@ class PubSubEventCatcher(QC.QObject):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             return True
             
@@ -2170,7 +2170,7 @@ class Controller(HydrusController.HydrusController):
                     except Exception as e:
                         
                         HydrusData.show_text( 'Could not start "{}":'.format( name ) )
-                        HydrusData.ShowException( e )
+                        HydrusData.show_exception( e )
                         
                     
                 

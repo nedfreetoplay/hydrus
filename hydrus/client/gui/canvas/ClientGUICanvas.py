@@ -363,7 +363,7 @@ class LayoutEventSilencer( QC.QObject ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             return True
             
@@ -1763,7 +1763,7 @@ class MediaContainerDragClickReportingFilter( QC.QObject ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             return True
             

@@ -1342,7 +1342,7 @@ def ShowFileEmbeddedMetadata( win: QW.QWidget, media_result: ClientMediaResult.M
                 except HydrusExceptions.LimitedSupportFileException as e:
                     
                     HydrusData.show_text( f'Hey, when preparing the "show metadata" frame for PDF "{hash.hex()}", I tried to load it for metadata but it failed. The error follows:' )
-                    HydrusData.ShowException( e, do_wait = False )
+                    HydrusData.show_exception( e, do_wait = False )
                     
                 
             elif looking_good_for_something:
@@ -1548,7 +1548,7 @@ def ShowFileEmbeddedMetadata( win: QW.QWidget, media_result: ClientMediaResult.M
                 except Exception as e:
                     
                     HydrusData.show_text( f'Hey, when preparing the "show metadata" frame for file "{hash.hex()}", I tried to load it in PIL but it failed. The error follows, please let hydev know:' )
-                    HydrusData.ShowException( e, do_wait = False )
+                    HydrusData.show_exception( e, do_wait = False )
                     
                 
             

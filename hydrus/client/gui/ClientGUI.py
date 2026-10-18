@@ -779,7 +779,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             HydrusData.show_text( 'Hey, while trying to check some MPV stuff on boot, I encountered an error. Please let hydev know.' )
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
         
     
@@ -1581,7 +1581,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
         except Exception as e:
             
-            HydrusData.ShowException( e, do_wait = False )
+            HydrusData.show_exception( e, do_wait = False )
             
         
         #
@@ -4222,7 +4222,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         def errback_callable( etype, value, tb ):
             
             HydrusData.show_text( 'Sorry, unable to load account types:' )
-            HydrusData.ShowExceptionTuple( etype, value, tb, do_wait = False )
+            HydrusData.show_exception_tuple( etype, value, tb, do_wait = False )
             
         
         job = ClientGUIAsync.AsyncQtJob( self, work_callable, publish_callable, errback_callable = errback_callable )
@@ -4645,7 +4645,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
             except Exception as e:
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
             
             self._DoMenuBarStyleHack()
@@ -4666,7 +4666,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
             except Exception as e:
                 
-                HydrusData.ShowException( 'Could not apply stylesheet:' + str( e ) )
+                HydrusData.show_exception( 'Could not apply stylesheet:' + str( e ) )
                 
             
         
@@ -6009,7 +6009,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         def errback_callable( etype, value, tb ):
             
             HydrusData.show_text( 'Sorry, unable to load accounts:' )
-            HydrusData.ShowExceptionTuple( etype, value, tb, do_wait = False )
+            HydrusData.show_exception_tuple( etype, value, tb, do_wait = False )
             
         
         job = ClientGUIAsync.AsyncQtJob( self, work_callable, publish_callable, errback_callable = errback_callable )
@@ -7824,7 +7824,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
         
         super().changeEvent( event )
@@ -8188,7 +8188,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
         
     
@@ -8200,7 +8200,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
         
     
@@ -8987,7 +8987,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                 
                 self._ui_update_windows.discard( window )
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
             
         

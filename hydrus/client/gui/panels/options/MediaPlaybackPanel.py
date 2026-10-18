@@ -698,7 +698,7 @@ class MediaPlaybackPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             except Exception as e:
                 
                 HydrusData.show_text( 'Could not set the mpv conf path "{}" to "{}"! Error follows!'.format( mpv_conf_path, dest_mpv_conf_path ) )
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
             
         

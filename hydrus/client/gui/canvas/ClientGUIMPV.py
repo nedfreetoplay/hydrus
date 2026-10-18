@@ -1031,7 +1031,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             return True
             
@@ -1570,7 +1570,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                         
                     except Exception as e:
                         
-                        HydrusData.ShowException( e )
+                        HydrusData.show_exception( e )
                         
                     
                     self._player.volume = ClientGUIMediaVolume.GetCorrectCurrentVolume( self._canvas_type )
@@ -1591,7 +1591,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                     else:
                         
                         HydrusData.show_text( 'Unknown MPV File Load Error:' )
-                        HydrusData.ShowExceptionTuple( etype, value, tb, do_wait = False )
+                        HydrusData.show_exception_tuple( etype, value, tb, do_wait = False )
                         
                     
                     self.SetMedia( None )
@@ -1633,7 +1633,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         def errback_callable( etype, value, tb ):
             
             HydrusData.show_text( 'Unable to terminate mpv instance:' )
-            HydrusData.ShowExceptionTuple( etype, value, tb, do_wait = False )
+            HydrusData.show_exception_tuple( etype, value, tb, do_wait = False )
             
             self._current_mpv_player_state = MPV_WIDGET_STATE_READY_TO_DESTROY
             
@@ -1755,7 +1755,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
                 HydrusData.show_text( 'MPV could not load its configuration file! This was probably due to an invalid parameter value inside the conf. The error follows:' )
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
             
         else:

@@ -41,7 +41,7 @@ class StylePanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
         
         self._qt_stylesheet_name.addItem( 'use default', None )
@@ -55,7 +55,7 @@ class StylePanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
         
         #

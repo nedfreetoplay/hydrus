@@ -93,7 +93,7 @@ class ClientFilesManager( object ):
             
             HydrusData.show_text( message )
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             self._HandleCriticalDriveError()
             
@@ -778,7 +778,7 @@ class ClientFilesManager( object ):
             
             HydrusData.show_text( 'Hey while calculating a potential rebalance job for the file migration system, I encountered this error. Please forward to hydev! Anonymising paths is fine, I just need to see the code.' )
             
-            HydrusData.ShowException( e, do_wait = False )
+            HydrusData.show_exception( e, do_wait = False )
             
             return None
             
@@ -1066,7 +1066,7 @@ class ClientFilesManager( object ):
                                         
                                         HydrusData.show_text( f'Had trouble moving orphan from {path} to {dest}! Abandoning job!' )
                                         
-                                        HydrusData.ShowException( e, do_wait = False )
+                                        HydrusData.show_exception( e, do_wait = False )
                                         
                                         job_status.Cancel()
                                         

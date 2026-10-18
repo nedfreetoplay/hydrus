@@ -772,7 +772,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                     
                     HydrusData.show_text( f'Failed to run "{id_and_name.name}" on file with hash "{hash.hex()}"! All importers--subscriptions, import folders, and paged file import queues--have been paused. Once the issue is clear, restart the client and resume your imports under the file and network menus!' )
                     
-                    HydrusData.ShowException( e )
+                    HydrusData.show_exception( e )
                     
                     CG.client_controller.pub( 'notify_refresh_network_menu' )
                     CG.client_controller.pub( 'notify_new_import_folders' )

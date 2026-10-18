@@ -165,7 +165,7 @@ def DumpToPNG( width, payload_bytes, title, payload_description, text, path ):
         
     except Exception as e:
         
-        HydrusData.ShowException( e )
+        HydrusData.show_exception( e )
         
         raise Exception( 'Could not save the png!' ) from e
         
@@ -280,7 +280,7 @@ def LoadFromPNG( path ):
                 
             except Exception as e:
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
                 raise Exception( '"{}" did not appear to be a valid image!'.format( path ) ) from e
                 

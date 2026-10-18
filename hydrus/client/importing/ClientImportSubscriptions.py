@@ -1757,7 +1757,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
             except Exception as e:
                 
                 HydrusData.show_text( f'The subscription "{self._name}" encountered an exception when trying to sync:' )
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
                 self._paused = True
                 
@@ -1816,7 +1816,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
             except Exception as e:
                 
                 HydrusData.show_text( f'The subscription "{self._name}" encountered an exception when trying to sync:' )
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
                 delay = CG.client_controller.new_options.GetInteger( 'subscription_other_error_delay' )
                 

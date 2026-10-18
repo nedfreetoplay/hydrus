@@ -496,7 +496,7 @@ The formula should attempt to parse full or relative urls. If the url is relativ
                 
             except Exception as e:
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
                 message = 'Could not parse!'
                 
@@ -768,7 +768,7 @@ And pass that html to a number of 'parsing children' that will each look through
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             message = 'Could not fetch data!'
             message += '\n' * 2
@@ -807,7 +807,7 @@ And pass that html to a number of 'parsing children' that will each look through
                 
             except Exception as e:
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
                 message = 'Could not parse!'
                 

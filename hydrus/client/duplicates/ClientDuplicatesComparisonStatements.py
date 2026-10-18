@@ -821,7 +821,7 @@ def GetDuplicateComparisonStatementsSlow( shown_media_result: ClientMediaResult.
                     
                     HydrusData.show_text( 'The "A and B are visual duplicates" test threw an error! You should have more info in your log. Please let hydev know the details.' )
                     
-                    HydrusData.ShowException( e, do_wait = False )
+                    HydrusData.show_exception( e, do_wait = False )
                     
                 
             

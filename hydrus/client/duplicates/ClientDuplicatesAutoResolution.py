@@ -344,7 +344,7 @@ class DuplicatesAutoResolutionRule( HydrusSerialisable.SerialisableBaseNamed ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e, do_wait = False )
+            HydrusData.show_exception( e, do_wait = False )
             
             components.append( 'Could not summarise the duplicate merge! Please tell hydrus dev.' )
             

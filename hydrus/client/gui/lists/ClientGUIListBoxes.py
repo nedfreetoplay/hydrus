@@ -364,7 +364,7 @@ class BetterQListWidget( QW.QListWidget ):
                 
                 HydrusData.show_text( 'Could not copy some text from a list!' )
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
             
         else:
@@ -2891,7 +2891,7 @@ class ListBox( QW.QScrollArea ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             return True
             
@@ -3491,7 +3491,7 @@ class ListBoxTags( ListBox ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             return True
             

@@ -280,7 +280,7 @@ def vacuum_db_into(db_path: str):
     except Exception as e:
         
         HydrusData.show_text( f'Hey, the vacuum of "{db_path}" went ok, but I could not delete the leftover file "{deletee_path}"! Does hydrus not have delete permission on your db folder? In any case, please delete this file yourself.' )
-        HydrusData.ShowException( e )
+        HydrusData.show_exception( e )
         
     
     vacuum_size = os.path.getsize( db_path )

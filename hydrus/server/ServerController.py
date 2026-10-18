@@ -199,7 +199,7 @@ class Controller( HydrusController.HydrusController ):
                     
                 except Exception as e:
                     
-                    HydrusData.ShowException( e, do_wait = True )
+                    HydrusData.show_exception( e, do_wait = True )
                     
                 
             else:

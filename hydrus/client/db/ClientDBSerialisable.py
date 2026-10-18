@@ -557,7 +557,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 
             except Exception as e:
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 HydrusData.safe_print( obj )
                 HydrusData.safe_print( serialisable_info )
                 
@@ -628,7 +628,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 
             except Exception as e:
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 HydrusData.safe_print( obj )
                 HydrusData.safe_print( serialisable_info )
                 
@@ -757,7 +757,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 
             except Exception as e:
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 HydrusData.safe_print( obj )
                 HydrusData.safe_print( serialisable_info )
                 

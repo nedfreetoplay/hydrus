@@ -400,7 +400,7 @@ class HydrusListItemModel( QC.QAbstractItemModel ):
             datas_sorted = list( self._data_to_indices.keys() )
             
             HydrusData.show_text( 'A multi-column list failed to sort! Please send hydrus dev the traceback!' )
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
         
         self._indices_to_data = { index : data for ( index, data ) in enumerate( datas_sorted ) }
@@ -1148,7 +1148,7 @@ class BetterListCtrlTreeView( QW.QTreeView ):
                 
             except Exception as e:
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
             
         
@@ -1408,7 +1408,7 @@ class BetterListCtrlTreeView( QW.QTreeView ):
             
             HydrusData.show_text( 'An attempt to sort a multi-column list failed! Error follows:' )
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
         
     
@@ -2173,7 +2173,7 @@ class BetterListCtrlPanel( QW.QWidget ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
         
     

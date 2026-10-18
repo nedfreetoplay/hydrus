@@ -471,7 +471,7 @@ class SerialisableDictionary(SerialisableBase, dict[K, V]):
                 if not have_shown_load_error:
                     
                     HydrusData.show_text( 'An object in a dictionary could not load. It has been discarded from the dictionary. More may also have failed to load, but to stop error spam, they will go silently. Your client may be running on code versions behind its database. Depending on the severity of this error, you may need to rollback to a previous backup. If you have no backup, you may want to kill your hydrus process now to stop the cleansed dictionary ever being saved back to the db.' )
-                    HydrusData.ShowException( e )
+                    HydrusData.show_exception( e )
                     
                     have_shown_load_error = True
                     
@@ -735,7 +735,7 @@ class SerialisableList(SerialisableBase, list[T]):
                 if not have_shown_load_error:
                     
                     HydrusData.show_text( 'An object in a list could not load. It has been discarded from the list. More may also have failed to load, but to stop error spam, they will go silently. Your client may be running on code versions behind its database. Depending on the severity of this error, you may need to rollback to a previous backup. If you have no backup, you may want to kill your hydrus process now to stop the cleansed list ever being saved back to the db.' )
-                    HydrusData.ShowException( e )
+                    HydrusData.show_exception( e )
                     
                     have_shown_load_error = True
                     

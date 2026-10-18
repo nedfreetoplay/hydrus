@@ -4592,7 +4592,7 @@ class DB( HydrusDB.HydrusDB ):
             
         else:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
         
     
@@ -8865,7 +8865,7 @@ class DB( HydrusDB.HydrusDB ):
                     
                     HydrusData.safe_print( 'vacuum failed:' )
                     
-                    HydrusData.ShowException( e )
+                    HydrusData.show_exception( e )
                     
                     text = 'An attempt to vacuum the database failed.'
                     text += '\n' * 2

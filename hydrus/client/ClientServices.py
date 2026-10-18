@@ -2032,7 +2032,7 @@ class ServiceRepository( ServiceRestricted ):
                         
                         HydrusData.show_text( message )
                         
-                        HydrusData.ShowException( e )
+                        HydrusData.show_exception( e )
                         
                         return
                         
@@ -2076,7 +2076,7 @@ class ServiceRepository( ServiceRestricted ):
                         
                         HydrusData.show_text( message )
                         
-                        HydrusData.ShowException( e )
+                        HydrusData.show_exception( e )
                         
                         return
                         
@@ -2429,7 +2429,7 @@ class ServiceRepository( ServiceRestricted ):
             
             HydrusData.show_text( message )
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             with self._lock:
                 
@@ -2843,7 +2843,7 @@ class ServiceRepository( ServiceRestricted ):
                 
                 HydrusData.show_text( 'The service "{}" encountered an error while trying to sync! The error was "{}". It will not do any work for a little while. If the fix is not obvious, please elevate this to hydrus dev.'.format( self._name, str( e ) ) )
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
             finally:
                 
@@ -3246,7 +3246,7 @@ class ServiceIPFS( ServiceRemote ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             job_status.SetErrorException( e )
             

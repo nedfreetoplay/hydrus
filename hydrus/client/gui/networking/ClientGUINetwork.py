@@ -1667,7 +1667,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
                     
                 except Exception as e2:
                     
-                    HydrusData.ShowException( e2 )
+                    HydrusData.show_exception( e2 )
                     
                     ClientGUIDialogsMessage.ShowCritical( self, 'Problem loading!', 'It looks like that cookies.txt failed to load due to an encoding issue. I tried to recover from the situation but could not!' )
                     
@@ -1676,7 +1676,7 @@ class ReviewNetworkSessionsPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
             except Exception as e:
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Problem loading!', 'It looks like that cookies.txt failed to load. Unfortunately, not all formats are supported.' )
                 
@@ -2069,7 +2069,7 @@ class ReviewNetworkSessionPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
             except Exception as e:
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Problem loading!', 'It looks like that cookies.txt failed to load. Unfortunately, not all formats are supported.' )
                 

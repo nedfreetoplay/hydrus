@@ -145,7 +145,7 @@ def getffmpeg_version():
         
     except Exception as e:
         
-        HydrusData.ShowException( e )
+        HydrusData.show_exception( e )
         
         return 'unable to execute ffmpeg at path "{}"'.format( ffmpeg_path )
         

@@ -340,9 +340,8 @@ def print_exception_tuple( etype, value, tb, do_wait = True ):
     
     return message
 
-# DELETE: Надо изменить эту хрень. Пускай лучше все вызывают оригинальную функцию.
-ShowException = print_exception
-ShowExceptionTuple = print_exception_tuple
+show_exception = print_exception
+show_exception_tuple = print_exception_tuple
 
 def base_to_human_bytes( size, sig_figs = 3 ):
     

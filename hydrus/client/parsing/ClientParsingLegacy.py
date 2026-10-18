@@ -490,7 +490,7 @@ class ParseRootFileLookup( HydrusSerialisable.SerialisableBaseNamed ):
             
             job_status.SetVariable( 'script_status', 'Network error!' )
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             raise
             

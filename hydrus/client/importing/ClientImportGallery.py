@@ -952,7 +952,7 @@ class GalleryImport( HydrusSerialisable.SerialisableBase ):
                         self._files_status = 'stopping work: {}'.format( str( e ) )
                         
                     
-                    HydrusData.ShowException( e )
+                    HydrusData.show_exception( e )
                     
                     return
                     
@@ -1023,7 +1023,7 @@ class GalleryImport( HydrusSerialisable.SerialisableBase ):
                         self._gallery_status = 'stopping work: {}'.format( str( e ) )
                         
                     
-                    HydrusData.ShowException( e )
+                    HydrusData.show_exception( e )
                     
                     return
                     

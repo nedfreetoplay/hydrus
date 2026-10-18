@@ -781,7 +781,7 @@ class FileLookupScriptTagsPanel( QW.QWidget ):
             
             ClientGUIDialogsMessage.ShowWarning( self, message )
             
-            HydrusData.ShowExceptionTuple( etype, value, tb, do_wait = False )
+            HydrusData.show_exception_tuple( etype, value, tb, do_wait = False )
             
         
         def ui_restoration_callable():

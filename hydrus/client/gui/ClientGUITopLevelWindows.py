@@ -938,7 +938,7 @@ class MaximiseRestoreCatcher( QC.QObject ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e, do_wait = False )
+            HydrusData.show_exception( e, do_wait = False )
             
         
         return False

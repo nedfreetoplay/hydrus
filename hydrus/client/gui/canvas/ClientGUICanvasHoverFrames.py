@@ -574,7 +574,7 @@ class CanvasHoverFrame( QW.QFrame ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             return True
             
@@ -1687,7 +1687,7 @@ class InboxIconClickFilter( QC.QObject ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             return True
             
@@ -2139,7 +2139,7 @@ class NotePanel( QW.QWidget ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             return True
             

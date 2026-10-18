@@ -167,7 +167,7 @@ class TestPanel( QW.QWidget ):
                 
                 example_data = 'fetch failed:' + '\n' * 2 + str( e )
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
             
             CG.client_controller.call_after_qt_safe( self, qt_code, example_data, example_bytes )

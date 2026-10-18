@@ -2427,7 +2427,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
         except Exception as e:
             
             HydrusData.show_text( 'While trying to load session "{}" (ts {}), this error happened:'.format( name, timestamp_ms ) )
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             return
             
@@ -2462,7 +2462,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
         except Exception as e:
             
             HydrusData.show_text( 'While trying to load session "{}", this error happened:'.format( name ) )
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             return
             
@@ -2716,7 +2716,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             return True
             
@@ -3352,7 +3352,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
                 
             except Exception as e:
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
             
             forced_insertion_index += 1

@@ -1799,7 +1799,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
                     except Exception as e:
                         
                         HydrusData.show_text( 'Failed to fetch a petition!' )
-                        HydrusData.ShowException( e )
+                        HydrusData.show_exception( e )
                         
                         CG.client_controller.call_blocking_to_qt_fire_and_forget_no_response( self, qt_petition_fetch_failed, fetch_petition_header )
                         
@@ -1876,7 +1876,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
                     except Exception as e:
                         
                         HydrusData.show_text( 'Failed to upload a petition!' )
-                        HydrusData.ShowException( e )
+                        HydrusData.show_exception( e )
                         
                         CG.client_controller.call_blocking_to_qt_fire_and_forget_no_response( self, qt_petition_clear_failed, outgoing_petition )
                         

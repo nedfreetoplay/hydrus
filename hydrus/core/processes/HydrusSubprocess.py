@@ -270,7 +270,7 @@ def run_subprocess_raw_call(cmd, start_new_session, bufsize, stdin_pipe, stdout_
     except Exception as e:
         
         HydrusData.show_text( f'Had a problem with an external program! Error will follow; command was: {cmd}' )
-        HydrusData.ShowException( e )
+        HydrusData.show_exception( e )
         
         raise
 

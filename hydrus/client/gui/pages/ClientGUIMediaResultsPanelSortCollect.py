@@ -296,7 +296,7 @@ class CollectComboCtrl( QW.QComboBox ):
             
             HydrusData.show_text( 'Failed to set a collect-by value!' )
 
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
         
 
@@ -481,7 +481,7 @@ class MediaCollectControl( QW.QWidget ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             return True
             

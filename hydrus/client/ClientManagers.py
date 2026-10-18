@@ -249,7 +249,7 @@ class BitmapManager( object ):
                 
                 HydrusData.show_text( 'Loading a bmp caused an error!' )
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
                 return None
                 

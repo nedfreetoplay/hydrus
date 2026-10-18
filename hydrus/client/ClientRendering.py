@@ -1058,7 +1058,7 @@ class RasterContainerVideo( RasterContainer ):
                     
                 except Exception as e:
                     
-                    HydrusData.ShowException( e )
+                    HydrusData.show_exception( e )
                     
                     return
                     

@@ -935,7 +935,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             
             HydrusData.show_text( message )
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             self._last_error = str( e )
             

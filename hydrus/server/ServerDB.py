@@ -5093,7 +5093,7 @@ class DB( HydrusDB.HydrusDB ):
                             
                             HydrusData.safe_print( 'vacuum failed:' )
                             
-                            HydrusData.ShowException( e )
+                            HydrusData.show_exception( e )
                             
                             return
                             

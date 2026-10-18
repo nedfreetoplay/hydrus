@@ -870,7 +870,7 @@ class NetworkJob( object ):
             else:
                 
                 HydrusData.show_text( 'Network error should follow:' )
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 HydrusData.show_text( error )
                 
             

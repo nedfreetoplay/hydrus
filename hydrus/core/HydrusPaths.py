@@ -184,7 +184,7 @@ def delete_path(path) -> bool:
             else:
                 
                 HydrusData.show_text( 'Trying to delete ' + path + ' caused the following error:' )
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
             
             return False
@@ -222,7 +222,7 @@ def delete_path(path) -> bool:
             else:
                 
                 HydrusData.show_text( 'Trying to delete ' + path + ' caused the following error:' )
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
             
             return False

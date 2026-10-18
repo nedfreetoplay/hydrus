@@ -359,7 +359,7 @@ class PopupMessage( PopupWindow ):
             def errback_callable( etype, value, tb ):
                 
                 HydrusData.show_text( 'Sorry, unable to show those files:' )
-                HydrusData.ShowExceptionTuple( etype, value, tb, do_wait = False )
+                HydrusData.show_exception_tuple( etype, value, tb, do_wait = False )
                 
             
             def ui_restoration_callable():
@@ -862,13 +862,13 @@ class PopupMessageManager( QW.QFrame ):
         CG.client_controller.sub( self, 'AddMessage', 'message' )
         
         self._old_excepthook = sys.excepthook
-        self._old_show_exception = HydrusData.ShowException
-        self._old_show_exception_tuple = HydrusData.ShowExceptionTuple
+        self._old_show_exception = HydrusData.show_exception
+        self._old_show_exception_tuple = HydrusData.show_exception_tuple
         self._old_show_text = HydrusData.show_text
         
         sys.excepthook = ClientData.CatchExceptionClient
-        HydrusData.ShowException = ClientData.ShowExceptionClient
-        HydrusData.ShowExceptionTuple = ClientData.ShowExceptionTupleClient
+        HydrusData.show_exception = ClientData.ShowExceptionClient
+        HydrusData.show_exception_tuple = ClientData.ShowExceptionTupleClient
         HydrusData.show_text = ClientData.ShowTextClient
         
         job_status = ClientThreading.JobStatus()
@@ -1146,8 +1146,8 @@ class PopupMessageManager( QW.QFrame ):
         
         sys.excepthook = self._old_excepthook
         
-        HydrusData.ShowException = self._old_show_exception
-        HydrusData.ShowExceptionTuple = self._old_show_exception_tuple
+        HydrusData.show_exception = self._old_show_exception
+        HydrusData.show_exception_tuple = self._old_show_exception_tuple
         HydrusData.show_text = self._old_show_text
         
     
@@ -1245,7 +1245,7 @@ class PopupMessageManager( QW.QFrame ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             return True
             

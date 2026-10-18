@@ -1384,7 +1384,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 if test_result_callable is not None:
                     
-                    HydrusData.ShowException( e )
+                    HydrusData.show_exception( e )
                     
                 
                 message = str( e )
@@ -1397,7 +1397,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 if test_result_callable is not None:
                     
-                    HydrusData.ShowException( e )
+                    HydrusData.show_exception( e )
                     
                 
                 if isinstance( e, HydrusExceptions.InsufficientCredentialsException ):
@@ -1421,7 +1421,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 if test_result_callable is not None:
                     
-                    HydrusData.ShowException( e )
+                    HydrusData.show_exception( e )
                     
                 
                 message = str( e )
@@ -1442,7 +1442,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
             
             if test_result_callable is not None:
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
             
             message = str( e )

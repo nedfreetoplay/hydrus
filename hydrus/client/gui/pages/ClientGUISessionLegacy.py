@@ -24,7 +24,7 @@ class GUISessionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
             
             HydrusData.show_text( page_tuple )
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
         
         def GetSerialisablePageTuple( page_tuple ):
@@ -94,7 +94,7 @@ class GUISessionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
             
             HydrusData.show_text( serialisable_page_tuple )
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
         
         def GetPageTuple( serialisable_page_tuple ):

@@ -1869,7 +1869,7 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
                         self._files_status = 'stopping work: {}'.format( str( e ) )
                         
                     
-                    HydrusData.ShowException( e )
+                    HydrusData.show_exception( e )
                     
                     return
                     
@@ -1973,7 +1973,7 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
                     self._watcher_status = 'stopping work: {}'.format( str( e ) )
                     
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
                 return
                 

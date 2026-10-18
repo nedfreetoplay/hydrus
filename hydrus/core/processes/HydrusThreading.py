@@ -287,7 +287,7 @@ class DAEMONWorker(DAEMON):
                     
                     HydrusData.show_text( 'Daemon ' + self._name + ' encountered an exception:' )
                     
-                    HydrusData.ShowException( e )
+                    HydrusData.show_exception( e )
                     
                 
                 self._do_await( self._period )
@@ -412,7 +412,7 @@ class THREADCallToThread(DAEMON):
                     
                     HydrusData.safe_print( traceback.format_exc() )
                     
-                    HydrusData.ShowException( e )
+                    HydrusData.show_exception( e )
                     
                 finally:
                     
@@ -827,7 +827,7 @@ class JobScheduler(threading.Thread):
                 
                 HydrusData.safe_print( traceback.format_exc() )
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
             
             time.sleep( 0.00001 )

@@ -1933,7 +1933,7 @@ class Thumbnail( QW.QGraphicsItem ):
                 
             
             HydrusData.show_text( f'Failed to render thumbnail for file {hash_hex}!' )
-            HydrusData.ShowException( e, do_wait = False )
+            HydrusData.show_exception( e, do_wait = False )
             
             thumbnail_hydrus_bmp = CG.client_controller.thumbnails_cache.GetHydrusSpecialThumbnail( content_size )
             
