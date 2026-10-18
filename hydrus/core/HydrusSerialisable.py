@@ -297,7 +297,7 @@ class SerialisableBase:
     
     def get_serialised_hash(self):
         
-        # as a note, this should not be relied on in future--the serialised string could change due to object updates, or in rare cases, because the contained objects are still hot
+        # Стоит учесть, что в будущем на это полагаться не следует: сериализованная строка может измениться из-за обновлений объектов или — в редких случаях — из-за того, что содержащиеся в ней объекты всё еще находятся в активном состоянии («горячие» объекты).
         return hashlib.sha256( bytes( self.dump_to_string(), 'utf-8' ) ).digest()
     
     def get_serialisable_tuple(self):
