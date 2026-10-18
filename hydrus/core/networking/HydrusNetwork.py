@@ -696,7 +696,7 @@ class AccountIdentifier(HydrusSerialisable.SerialisableBase):
             
         elif self._type == self.TYPE_CONTENT:
             
-            serialisable_data = self._data.GetSerialisableTuple()
+            serialisable_data = self._data.get_serialisable_tuple()
             
         
         return ( self._type, serialisable_data )
@@ -1056,7 +1056,7 @@ class ClientToServerUpdate(HydrusSerialisable.SerialisableBase):
         
         for ( action, contents_and_reasons ) in list(self._actions_to_contents_and_reasons.items()):
             
-            serialisable_contents_and_reasons = [ ( content.GetSerialisableTuple(), reason ) for ( content, reason ) in contents_and_reasons ]
+            serialisable_contents_and_reasons = [ ( content.get_serialisable_tuple(), reason ) for ( content, reason ) in contents_and_reasons ]
             
             serialisable_info.append( ( action, serialisable_contents_and_reasons ) )
             
@@ -2123,7 +2123,7 @@ class Petition(HydrusSerialisable.SerialisableBase):
     def _get_serialisable_info(self):
         
         serialisable_petitioner_account = Account.generate_serialisable_tuple_from_account( self._petitioner_account )
-        serialisable_petition_header = self._petition_header.GetSerialisableTuple()
+        serialisable_petition_header = self._petition_header.get_serialisable_tuple()
         serialisable_actions_and_contents = [ ( action, contents.get_serialisable_tuple() ) for ( action, contents ) in self._actions_and_contents ]
         
         return ( serialisable_petitioner_account, serialisable_petition_header, serialisable_actions_and_contents )

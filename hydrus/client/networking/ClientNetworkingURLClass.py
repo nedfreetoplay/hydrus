@@ -775,7 +775,7 @@ class URLClass( HydrusSerialisable.SerialisableBaseNamed ):
         
         serialisable_url_domain_mask = self._url_domain_mask.get_serialisable_tuple()
         serialisable_url_class_key = self._url_class_key.hex()
-        serialisable_path_components = [ ( string_match.GetSerialisableTuple(), default ) for ( string_match, default ) in self._path_components ]
+        serialisable_path_components = [ ( string_match.get_serialisable_tuple(), default ) for ( string_match, default ) in self._path_components ]
         serialisable_parameters = self._parameters.get_serialisable_tuple()
         serialisable_single_value_parameters_string_match = self._single_value_parameters_string_match.get_serialisable_tuple()
         serialisable_header_overrides = list( self._header_overrides.items() )
@@ -958,8 +958,8 @@ class URLClass( HydrusSerialisable.SerialisableBaseNamed ):
             path_components = [ ( value, None ) for value in path_components ]
             parameters = { key : ( value, None ) for ( key, value ) in list(parameters.items()) }
             
-            serialisable_path_components = [ ( string_match.GetSerialisableTuple(), default ) for ( string_match, default ) in path_components ]
-            serialisable_parameters = [ ( key, ( string_match.GetSerialisableTuple(), default ) ) for ( key, ( string_match, default ) ) in list(parameters.items()) ]
+            serialisable_path_components = [ ( string_match.get_serialisable_tuple(), default ) for ( string_match, default ) in path_components ]
+            serialisable_parameters = [ ( key, ( string_match.get_serialisable_tuple(), default ) ) for ( key, ( string_match, default ) ) in list(parameters.items()) ]
             
             new_serialisable_info = ( serialisable_url_class_key, url_type, preferred_scheme, netloc, match_subdomains, keep_matched_subdomains, serialisable_path_components, serialisable_parameters, serialisable_api_lookup_converter, can_produce_multiple_files, should_be_associated_with_files, gallery_index_type, gallery_index_identifier, gallery_index_delta, example_url )
             
@@ -1209,7 +1209,7 @@ class URLClass( HydrusSerialisable.SerialisableBaseNamed ):
                 new_path_components.append( ( string_match, default ) )
                 
             
-            serialisable_path_components = [ ( string_match.GetSerialisableTuple(), default ) for ( string_match, default ) in new_path_components ]
+            serialisable_path_components = [ ( string_match.get_serialisable_tuple(), default ) for ( string_match, default ) in new_path_components ]
             
             new_serialisable_info = (
                 serialisable_url_class_key,

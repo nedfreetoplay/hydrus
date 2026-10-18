@@ -91,7 +91,7 @@ class SingleFileMetadataImporterMediaNotes( SingleFileMetadataImporterMedia, Hyd
     
     def _get_serialisable_info( self ):
         
-        serialisable_string_processor = self._string_processor.GetSerialisableTuple()
+        serialisable_string_processor = self._string_processor.get_serialisable_tuple()
         
         return serialisable_string_processor
         
@@ -170,7 +170,7 @@ class SingleFileMetadataImporterMediaTags( SingleFileMetadataImporterMedia, Hydr
     
     def _get_serialisable_info( self ):
         
-        serialisable_string_processor = self._string_processor.GetSerialisableTuple()
+        serialisable_string_processor = self._string_processor.get_serialisable_tuple()
         serialisable_service_key = self._service_key.hex()
         
         return ( serialisable_string_processor, serialisable_service_key, self._tag_display_type )
@@ -302,7 +302,7 @@ class SingleFileMetadataImporterMediaTimestamps( SingleFileMetadataImporterMedia
     
     def _get_serialisable_info( self ):
         
-        serialisable_string_processor = self._string_processor.GetSerialisableTuple()
+        serialisable_string_processor = self._string_processor.get_serialisable_tuple()
         serialisable_timestamp_data_stub = self._timestamp_data_stub.get_serialisable_tuple()
         
         return ( serialisable_string_processor, serialisable_timestamp_data_stub )
@@ -389,7 +389,7 @@ class SingleFileMetadataImporterMediaURLs( SingleFileMetadataImporterMedia, Hydr
     
     def _get_serialisable_info( self ):
         
-        serialisable_string_processor = self._string_processor.GetSerialisableTuple()
+        serialisable_string_processor = self._string_processor.get_serialisable_tuple()
         
         return serialisable_string_processor
         
@@ -536,8 +536,8 @@ class SingleFileMetadataImporterJSON( SingleFileMetadataImporterSidecar, HydrusS
     
     def _get_serialisable_info( self ):
         
-        serialisable_string_processor = self._string_processor.GetSerialisableTuple()
-        serialisable_filename_string_converter = self._filename_string_converter.GetSerialisableTuple()
+        serialisable_string_processor = self._string_processor.get_serialisable_tuple()
+        serialisable_filename_string_converter = self._filename_string_converter.get_serialisable_tuple()
         serialisable_json_parsing_formula = self._json_parsing_formula.get_serialisable_tuple()
         
         return ( serialisable_string_processor, self._remove_actual_filename_ext, self._suffix, serialisable_filename_string_converter, serialisable_json_parsing_formula )
@@ -686,8 +686,8 @@ class SingleFileMetadataImporterTXT( SingleFileMetadataImporterSidecar, HydrusSe
     
     def _get_serialisable_info( self ):
         
-        serialisable_string_processor = self._string_processor.GetSerialisableTuple()
-        serialisable_filename_string_converter = self._filename_string_converter.GetSerialisableTuple()
+        serialisable_string_processor = self._string_processor.get_serialisable_tuple()
+        serialisable_filename_string_converter = self._filename_string_converter.get_serialisable_tuple()
         
         return ( serialisable_string_processor, self._remove_actual_filename_ext, self._suffix, serialisable_filename_string_converter, self._separator )
         

@@ -870,7 +870,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
                     data_dict[ 'simple_data' ] = hamming_distance
                     
                 
-                serialisable_data = data_dict.GetSerialisableTuple()
+                serialisable_data = data_dict.get_serialisable_tuple()
                 
             
             new_serialisable_info = ( command_type, serialisable_data )
@@ -939,7 +939,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
                     data_dict[ 'simple_data' ] = FILE_COMMAND_TARGET_SELECTED_FILES
                     
                 
-                serialisable_data = data_dict.GetSerialisableTuple()
+                serialisable_data = data_dict.get_serialisable_tuple()
                 
             
             new_serialisable_info = ( command_type, serialisable_data )

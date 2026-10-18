@@ -231,7 +231,7 @@ class GUISessionPageData( HydrusSerialisable.SerialisableBase ):
     
     def _get_serialisable_info( self ):
         
-        serialisable_page_manager = self._page_manager.GetSerialisableTuple()
+        serialisable_page_manager = self._page_manager.get_serialisable_tuple()
         serialisable_hashes = [ hash.hex() for hash in self._hashes ]
         
         return ( serialisable_page_manager, serialisable_hashes )

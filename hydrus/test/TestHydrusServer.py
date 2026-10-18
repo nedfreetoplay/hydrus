@@ -300,13 +300,13 @@ class TestServer( unittest.TestCase ):
         
         response = service.Request( HC.GET, 'petition', { 'content_type' : HC.CONTENT_TYPE_FILES, 'status' : HC.CONTENT_UPDATE_PETITION } )
         
-        self.assertEqual( response[ 'petition' ].GetSerialisableTuple(), petition.get_serialisable_tuple() )
+        self.assertEqual( response[ 'petition' ].get_serialisable_tuple(), petition.get_serialisable_tuple() )
         
         TG.test_controller.set_read( 'petition', petition )
         
         response = service.Request( HC.GET, 'petition', { 'content_type' : HC.CONTENT_TYPE_FILES, 'status' : HC.CONTENT_UPDATE_PETITION, 'account_key' : petitioner_account.get_account_key(), reason : reason } )
         
-        self.assertEqual( response[ 'petition' ].GetSerialisableTuple(), petition.get_serialisable_tuple() )
+        self.assertEqual( response[ 'petition' ].get_serialisable_tuple(), petition.get_serialisable_tuple() )
         
         # definitions
         
@@ -389,7 +389,7 @@ class TestServer( unittest.TestCase ):
         
         response = service.Request( HC.GET, 'metadata_slice', { 'since' : 0 } )
         
-        self.assertEqual( response[ 'metadata_slice' ].GetSerialisableTuple(), metadata.get_serialisable_tuple() )
+        self.assertEqual( response[ 'metadata_slice' ].get_serialisable_tuple(), metadata.get_serialisable_tuple() )
         
         # post content
         

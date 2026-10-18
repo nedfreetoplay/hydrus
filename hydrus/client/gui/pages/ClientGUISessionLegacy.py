@@ -55,7 +55,7 @@ class GUISessionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 ( page_manager, hashes ) = page_data
                 
-                serialisable_page_manager = page_manager.GetSerialisableTuple()
+                serialisable_page_manager = page_manager.get_serialisable_tuple()
                 
                 serialisable_hashes = [ hash.hex() for hash in hashes ]
                 
@@ -164,7 +164,7 @@ class GUISessionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 page_manager.SetPageName( page_name )
                 
-                serialisable_page_manager = page_manager.GetSerialisableTuple()
+                serialisable_page_manager = page_manager.get_serialisable_tuple()
                 
                 new_serialisable_info.append( ( serialisable_page_manager, serialisable_hashes ) )
                 

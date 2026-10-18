@@ -186,7 +186,7 @@ class DuplicateContentMergeOptions( HydrusSerialisable.SerialisableBase ):
                 rating_service_actions.append( ( service_key, action ) )
                 
             
-            serialisable_tag_service_actions = [ ( service_key.hex(), action, tag_filter.GetSerialisableTuple() ) for ( service_key, action, tag_filter ) in tag_service_actions ]
+            serialisable_tag_service_actions = [ ( service_key.hex(), action, tag_filter.get_serialisable_tuple() ) for ( service_key, action, tag_filter ) in tag_service_actions ]
             serialisable_rating_service_actions = [ ( service_key.hex(), action ) for ( service_key, action ) in rating_service_actions ]
             
             sync_archive = delete_second_file
@@ -296,7 +296,7 @@ class DuplicateContentMergeOptions( HydrusSerialisable.SerialisableBase ):
             
             new_sync_note_import_options = sync_note_import_options.GetNoteImportOptions() # shucking the new out of the legacy
             
-            serialisable_sync_note_import_options = new_sync_note_import_options.GetSerialisableTuple()
+            serialisable_sync_note_import_options = new_sync_note_import_options.get_serialisable_tuple()
             
             new_serialisable_info = (
                 serialisable_tag_service_actions,

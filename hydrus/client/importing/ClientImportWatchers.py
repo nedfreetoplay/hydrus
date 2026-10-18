@@ -129,7 +129,7 @@ class MultipleWatcherImport( HydrusSerialisable.SerialisableBase ):
         
         serialisable_watchers = self._watchers.get_serialisable_tuple()
         
-        serialisable_checker_options = self._checker_options.GetSerialisableTuple()
+        serialisable_checker_options = self._checker_options.get_serialisable_tuple()
         serialisable_import_options_container = self._import_options_container.get_serialisable_tuple()
         
         return ( serialisable_watchers, self._highlighted_watcher_url, serialisable_checker_options, serialisable_import_options_container )

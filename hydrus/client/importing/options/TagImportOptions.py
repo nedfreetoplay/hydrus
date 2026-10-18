@@ -301,7 +301,7 @@ class TagImportOptions( IOC.ImportOptionsMetatype ):
                 
             
         
-        serialisable_service_keys_to_service_tag_import_options = [ ( service_key.hex(), service_tag_import_options.GetSerialisableTuple() ) for ( service_key, service_tag_import_options ) in self._service_keys_to_service_tag_import_options.items() if test_func( service_key ) ]
+        serialisable_service_keys_to_service_tag_import_options = [ ( service_key.hex(), service_tag_import_options.get_serialisable_tuple() ) for ( service_key, service_tag_import_options ) in self._service_keys_to_service_tag_import_options.items() if test_func( service_key ) ]
         
         return serialisable_service_keys_to_service_tag_import_options
         

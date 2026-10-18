@@ -574,8 +574,8 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
                 ( logical_operator, service_specifier_primary, service_specifier_secondary, rated ) = self._value
                 
-                serialisable_service_specifier_primary = service_specifier_primary.GetSerialisableTuple()
-                serialisable_service_specifier_secondary = service_specifier_secondary.GetSerialisableTuple()
+                serialisable_service_specifier_primary = service_specifier_primary.get_serialisable_tuple()
+                serialisable_service_specifier_secondary = service_specifier_secondary.get_serialisable_tuple()
                 
                 serialisable_value = ( logical_operator, serialisable_service_specifier_primary, serialisable_service_specifier_secondary, rated )
                 
@@ -601,7 +601,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                 
                 if rule_type in ( 'url_match', 'url_class' ):
                     
-                    serialisable_rule = rule.GetSerialisableTuple()
+                    serialisable_rule = rule.get_serialisable_tuple()
                     
                 else:
                     

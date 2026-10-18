@@ -1301,7 +1301,7 @@ class MultipleGalleryImport( HydrusSerialisable.SerialisableBase ):
                     
                 
             
-            serialisable_gallery_imports = gallery_imports.GetSerialisableTuple()
+            serialisable_gallery_imports = gallery_imports.get_serialisable_tuple()
             
             new_serialisable_info = ( serialisable_gug_key_and_name, serialisable_highlighted_gallery_import_key, file_limit, serialisable_file_import_options, serialisable_tag_import_options, serialisable_gallery_imports )
             

@@ -101,7 +101,7 @@ class SimpleDownloaderImport( HydrusSerialisable.SerialisableBase ):
     
     def _get_serialisable_info( self ):
         
-        serialisable_pending_jobs = [ ( url, simple_downloader_formula.GetSerialisableTuple() ) for ( url, simple_downloader_formula ) in self._pending_jobs ]
+        serialisable_pending_jobs = [ ( url, simple_downloader_formula.get_serialisable_tuple() ) for ( url, simple_downloader_formula ) in self._pending_jobs ]
         
         serialisable_gallery_seed_log = self._gallery_seed_log.get_serialisable_tuple()
         serialisable_file_seed_cache = self._file_seed_cache.get_serialisable_tuple()

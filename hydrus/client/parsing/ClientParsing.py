@@ -483,7 +483,7 @@ class ParseFormulaZipper( ParseFormula ):
     def _get_serialisable_info( self ):
         
         serialisable_formulae = HydrusSerialisable.SerialisableList( self._formulae ).get_serialisable_tuple()
-        serialisable_string_processor = self._string_processor.GetSerialisableTuple()
+        serialisable_string_processor = self._string_processor.get_serialisable_tuple()
         
         return ( serialisable_formulae, self._sub_phrase, self._name, serialisable_string_processor )
         
@@ -663,7 +663,7 @@ class ParseFormulaContextVariable( ParseFormula ):
     
     def _get_serialisable_info( self ):
         
-        serialisable_string_processor = self._string_processor.GetSerialisableTuple()
+        serialisable_string_processor = self._string_processor.get_serialisable_tuple()
         
         return ( self._variable_name, self._name, serialisable_string_processor )
         
@@ -1685,7 +1685,7 @@ class ParseFormulaJSON( ParseFormula ):
     def _get_serialisable_info( self ):
         
         serialisable_parse_rules = [ ( parse_rule_type, parse_rule.get_serialisable_tuple() ) if parse_rule_type in ( JSON_PARSE_RULE_TYPE_DICT_KEY, JSON_PARSE_RULE_TYPE_TEST_STRING_ITEMS ) else ( parse_rule_type, parse_rule ) for ( parse_rule_type, parse_rule ) in self._parse_rules ]
-        serialisable_string_processor = self._string_processor.GetSerialisableTuple()
+        serialisable_string_processor = self._string_processor.get_serialisable_tuple()
         
         return ( serialisable_parse_rules, self._content_to_fetch, self._name, serialisable_string_processor )
         
@@ -1751,7 +1751,7 @@ class ParseFormulaJSON( ParseFormula ):
                     
                 
             
-            serialisable_parse_rules = [ ( parse_rule_type, parse_rule.GetSerialisableTuple() ) if parse_rule_type == JSON_PARSE_RULE_TYPE_DICT_KEY else ( parse_rule_type, parse_rule ) for ( parse_rule_type, parse_rule ) in new_parse_rules ]
+            serialisable_parse_rules = [ ( parse_rule_type, parse_rule.get_serialisable_tuple() ) if parse_rule_type == JSON_PARSE_RULE_TYPE_DICT_KEY else ( parse_rule_type, parse_rule ) for ( parse_rule_type, parse_rule ) in new_parse_rules ]
             
             new_serialisable_info = ( serialisable_parse_rules, content_to_fetch, serialisable_string_match, serialisable_string_converter )
             
@@ -1883,7 +1883,7 @@ class ParseFormulaNested( ParseFormula ):
         
         serialisable_main_formula = self._main_formula.get_serialisable_tuple()
         serialisable_sub_formula = self._sub_formula.get_serialisable_tuple()
-        serialisable_string_processor = self._string_processor.GetSerialisableTuple()
+        serialisable_string_processor = self._string_processor.get_serialisable_tuple()
         
         return ( serialisable_main_formula, serialisable_sub_formula, self._name, serialisable_string_processor )
         
@@ -1994,7 +1994,7 @@ class ParseFormulaStatic( ParseFormula ):
     
     def _get_serialisable_info( self ):
         
-        serialisable_string_processor = self._string_processor.GetSerialisableTuple()
+        serialisable_string_processor = self._string_processor.get_serialisable_tuple()
         
         return ( self._static_text, self._num_to_do, self._name, serialisable_string_processor )
         
@@ -2142,7 +2142,7 @@ class ContentParser( HydrusSerialisable.SerialisableBase ):
             
             ( veto_if_matches_found, string_match ) = self._additional_info
             
-            serialisable_additional_info = ( veto_if_matches_found, string_match.GetSerialisableTuple() )
+            serialisable_additional_info = ( veto_if_matches_found, string_match.get_serialisable_tuple() )
             
         else:
             
@@ -2301,7 +2301,7 @@ class ContentParser( HydrusSerialisable.SerialisableBase ):
                 
                 string_processor.SetProcessingSteps( processing_steps )
                 
-                serialisable_formula = formula.GetSerialisableTuple()
+                serialisable_formula = formula.get_serialisable_tuple()
                 
             
             new_serialisable_info = ( name, content_type, serialisable_formula, additional_info )

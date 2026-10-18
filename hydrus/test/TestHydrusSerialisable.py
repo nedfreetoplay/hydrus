@@ -28,7 +28,7 @@ class TestSerialisables( unittest.TestCase ):
     
     def _dump_and_load_and_test( self, obj, test_func ):
         
-        serialisable_tuple = obj.GetSerialisableTuple()
+        serialisable_tuple = obj.get_serialisable_tuple()
         
         self.assertIsInstance( serialisable_tuple, tuple )
         
@@ -165,7 +165,7 @@ class TestSerialisables( unittest.TestCase ):
             self.assertEqual( obj.GetSyncArchiveAction(), dupe_obj.GetSyncArchiveAction() )
             self.assertEqual( obj.GetSyncURLsAction(), dupe_obj.GetSyncURLsAction() )
             self.assertEqual( obj.GetSyncNotesAction(), dupe_obj.GetSyncNotesAction() )
-            self.assertEqual( obj.GetSyncNoteImportOptions().GetSerialisableTuple(), dupe_obj.GetSyncNoteImportOptions().GetSerialisableTuple() )
+            self.assertEqual( obj.GetSyncNoteImportOptions().get_serialisable_tuple(), dupe_obj.GetSyncNoteImportOptions().get_serialisable_tuple() )
             
         
         duplicate_content_merge_options_delete_and_move = ClientDuplicates.DuplicateContentMergeOptions()
@@ -531,7 +531,7 @@ class TestSerialisables( unittest.TestCase ):
             self.assertEqual( obj._periodic_file_limit, dupe_obj._periodic_file_limit )
             self.assertEqual( obj._paused, dupe_obj._paused )
             
-            self.assertEqual( obj._import_options_container.GetSerialisableTuple(), dupe_obj._import_options_container.GetSerialisableTuple() )
+            self.assertEqual( obj._import_options_container.get_serialisable_tuple(), dupe_obj._import_options_container.get_serialisable_tuple() )
             
             self.assertEqual( obj._no_work_until, dupe_obj._no_work_until )
             

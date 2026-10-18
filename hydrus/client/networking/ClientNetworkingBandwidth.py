@@ -120,7 +120,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
     def _get_serialisable_info( self ):
         
         all_tracker_container_names = sorted( self._tracker_container_names )
-        all_serialisable_rules = [ ( network_context.GetSerialisableTuple(), rules.get_serialisable_tuple() ) for ( network_context, rules ) in list(self._network_contexts_to_bandwidth_rules.items()) ]
+        all_serialisable_rules = [ ( network_context.get_serialisable_tuple(), rules.get_serialisable_tuple() ) for ( network_context, rules ) in list(self._network_contexts_to_bandwidth_rules.items()) ]
         
         return ( all_tracker_container_names, all_serialisable_rules )
         
@@ -214,7 +214,7 @@ class NetworkBandwidthManager( HydrusSerialisable.SerialisableBase ):
             
             if network_context in self._network_contexts_to_bandwidth_rules:
                 
-                if self._network_contexts_to_bandwidth_rules[ network_context ].get_serialisable_tuple() == bandwidth_rules.GetSerialisableTuple():
+                if self._network_contexts_to_bandwidth_rules[ network_context ].get_serialisable_tuple() == bandwidth_rules.get_serialisable_tuple():
                     
                     return True
                     

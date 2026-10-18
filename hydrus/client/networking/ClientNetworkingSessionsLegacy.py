@@ -22,7 +22,7 @@ class NetworkSessionManagerLegacy( HydrusSerialisable.SerialisableBase ):
     
     def _get_serialisable_info( self ):
         
-        serialisable_network_contexts_to_sessions = [ ( network_context.GetSerialisableTuple(), pickle.dumps( session ).hex() ) for ( network_context, session ) in list(self._network_contexts_to_sessions.items()) ]
+        serialisable_network_contexts_to_sessions = [ ( network_context.get_serialisable_tuple(), pickle.dumps( session ).hex() ) for ( network_context, session ) in list(self._network_contexts_to_sessions.items()) ]
         
         return serialisable_network_contexts_to_sessions
         

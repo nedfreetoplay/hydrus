@@ -549,7 +549,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 continue
                 
             
-            ( dump_type, version, serialisable_info ) = obj.GetSerialisableTuple()
+            ( dump_type, version, serialisable_info ) = obj.get_serialisable_tuple()
             
             try:
                 

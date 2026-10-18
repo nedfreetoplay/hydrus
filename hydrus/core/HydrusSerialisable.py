@@ -228,8 +228,7 @@ def get_noneable_serialisable_tuple(obj_or_none):
         return None
         
     else:
-        
-        return obj_or_none.GetSerialisableTuple()
+        return obj.get_serialisable_tuple()
 
 def set_non_dupe_name(obj, disallowed_names, do_casefold = False):
     

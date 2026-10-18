@@ -208,18 +208,18 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
         
         serialisable_file_post_default_tag_import_options = self._file_post_default_tag_import_options.get_serialisable_tuple()
         serialisable_watchable_default_tag_import_options = self._watchable_default_tag_import_options.get_serialisable_tuple()
-        serialisable_url_class_keys_to_default_tag_import_options = [ ( url_class_key.hex(), tag_import_options.GetSerialisableTuple() ) for ( url_class_key, tag_import_options ) in self._url_class_keys_to_default_tag_import_options.items() ]
+        serialisable_url_class_keys_to_default_tag_import_options = [ ( url_class_key.hex(), tag_import_options.get_serialisable_tuple() ) for ( url_class_key, tag_import_options ) in self._url_class_keys_to_default_tag_import_options.items() ]
         
         serialisable_default_tag_import_options_tuple = ( serialisable_file_post_default_tag_import_options, serialisable_watchable_default_tag_import_options, serialisable_url_class_keys_to_default_tag_import_options )
         
         serialisable_file_post_default_note_import_options = self._file_post_default_note_import_options.get_serialisable_tuple()
         serialisable_watchable_default_note_import_options = self._watchable_default_note_import_options.get_serialisable_tuple()
-        serialisable_url_class_keys_to_default_note_import_options = [ ( url_class_key.hex(), note_import_options.GetSerialisableTuple() ) for ( url_class_key, note_import_options ) in self._url_class_keys_to_default_note_import_options.items() ]
+        serialisable_url_class_keys_to_default_note_import_options = [ ( url_class_key.hex(), note_import_options.get_serialisable_tuple() ) for ( url_class_key, note_import_options ) in self._url_class_keys_to_default_note_import_options.items() ]
         
         serialisable_default_note_import_options_tuple = ( serialisable_file_post_default_note_import_options, serialisable_watchable_default_note_import_options, serialisable_url_class_keys_to_default_note_import_options )
         
         serialisable_parsers = self._parsers.get_serialisable_tuple()
-        serialisable_network_contexts_to_custom_header_dicts = [ ( network_context.GetSerialisableTuple(), list( custom_header_dict.items() ) ) for ( network_context, custom_header_dict ) in self._network_contexts_to_custom_header_dicts.items() ]
+        serialisable_network_contexts_to_custom_header_dicts = [ ( network_context.get_serialisable_tuple(), list( custom_header_dict.items() ) ) for ( network_context, custom_header_dict ) in self._network_contexts_to_custom_header_dicts.items() ]
         
         return ( serialisable_gugs, serialisable_gug_keys_to_display, serialisable_url_classes, serialisable_url_class_keys_to_display, serialisable_url_class_keys_to_parser_keys, serialisable_default_tag_import_options_tuple, serialisable_default_note_import_options_tuple, serialisable_parsers, serialisable_network_contexts_to_custom_header_dicts )
         
@@ -469,7 +469,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
                     
                 
             
-            serialisable_url_classes = url_classes.GetSerialisableTuple() # added random key this week, so save these changes back again!
+            serialisable_url_classes = url_classes.get_serialisable_tuple() # added random key this week, so save these changes back again!
             
             serialisable_url_class_keys_to_display = [ url_class_key.hex() for url_class_key in url_class_keys_to_display ]
             
@@ -493,7 +493,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             serialisable_file_post_default_tag_import_options = file_post_default_tag_import_options.get_serialisable_tuple()
             serialisable_watchable_default_tag_import_options = watchable_default_tag_import_options.get_serialisable_tuple()
-            serialisable_url_class_keys_to_default_tag_import_options = [ ( url_class_key.hex(), tag_import_options.GetSerialisableTuple() ) for ( url_class_key, tag_import_options ) in url_class_keys_to_default_tag_import_options.items() ]
+            serialisable_url_class_keys_to_default_tag_import_options = [ ( url_class_key.hex(), tag_import_options.get_serialisable_tuple() ) for ( url_class_key, tag_import_options ) in url_class_keys_to_default_tag_import_options.items() ]
             
             serialisable_default_tag_import_options_tuple = ( serialisable_file_post_default_tag_import_options, serialisable_watchable_default_tag_import_options, serialisable_url_class_keys_to_default_tag_import_options )
             
@@ -543,7 +543,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             serialisable_file_post_default_note_import_options = file_post_default_note_import_options.get_serialisable_tuple()
             serialisable_watchable_default_note_import_options = watchable_default_note_import_options.get_serialisable_tuple()
-            serialisable_url_class_keys_to_default_note_import_options = [ ( url_class_key.hex(), note_import_options.GetSerialisableTuple() ) for ( url_class_key, note_import_options ) in url_class_keys_to_default_note_import_options.items() ]
+            serialisable_url_class_keys_to_default_note_import_options = [ ( url_class_key.hex(), note_import_options.get_serialisable_tuple() ) for ( url_class_key, note_import_options ) in url_class_keys_to_default_note_import_options.items() ]
             
             serialisable_default_note_import_options_tuple = ( serialisable_file_post_default_note_import_options, serialisable_watchable_default_note_import_options, serialisable_url_class_keys_to_default_note_import_options )
             
@@ -2199,7 +2199,7 @@ class DomainMetadataPackage( HydrusSerialisable.SerialisableBase ):
             
         else:
             
-            serialisable_bandwidth_rules = self._bandwidth_rules.GetSerialisableTuple()
+            serialisable_bandwidth_rules = self._bandwidth_rules.get_serialisable_tuple()
             
         
         return ( self._domain, self._headers_list, serialisable_bandwidth_rules )

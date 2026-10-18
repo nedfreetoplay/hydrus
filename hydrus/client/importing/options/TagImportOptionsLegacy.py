@@ -150,7 +150,7 @@ class TagImportOptionsLegacy( HydrusSerialisable.SerialisableBase ):
                 service_keys_to_service_tag_import_options[ service_key ] = service_tag_import_options
                 
             
-            serialisable_service_keys_to_service_tag_import_options = [ ( service_key.hex(), service_tag_import_options.GetSerialisableTuple() ) for ( service_key, service_tag_import_options ) in list(service_keys_to_service_tag_import_options.items()) ]
+            serialisable_service_keys_to_service_tag_import_options = [ ( service_key.hex(), service_tag_import_options.get_serialisable_tuple() ) for ( service_key, service_tag_import_options ) in list(service_keys_to_service_tag_import_options.items()) ]
             
             new_serialisable_info = ( fetch_tags_even_if_url_recognised_and_file_already_in_db, fetch_tags_even_if_hash_recognised_and_file_already_in_db, serialisable_tag_blacklist, serialisable_service_keys_to_service_tag_import_options )
             

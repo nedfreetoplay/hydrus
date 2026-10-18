@@ -128,7 +128,7 @@ class SingleFileMetadataRouter( HydrusSerialisable.SerialisableBase ):
             
             string_processor.SetProcessingSteps( string_processing_steps )
             
-            serialisable_string_processor = string_processor.GetSerialisableTuple()
+            serialisable_string_processor = string_processor.get_serialisable_tuple()
             
             new_serialisable_info = ( serialisable_importers, serialisable_string_processor, serialisable_exporter )
             

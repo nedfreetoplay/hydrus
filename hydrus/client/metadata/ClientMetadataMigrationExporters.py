@@ -480,7 +480,7 @@ class SingleFileMetadataExporterJSON( SingleFileMetadataExporterSidecar, HydrusS
     
     def _get_serialisable_info( self ):
         
-        serialisable_filename_string_converter = self._filename_string_converter.GetSerialisableTuple()
+        serialisable_filename_string_converter = self._filename_string_converter.get_serialisable_tuple()
         
         return ( self._remove_actual_filename_ext, self._suffix, serialisable_filename_string_converter, self._nested_object_names )
         
@@ -638,7 +638,7 @@ class SingleFileMetadataExporterTXT( SingleFileMetadataExporterSidecar, HydrusSe
     
     def _get_serialisable_info( self ):
         
-        serialisable_filename_string_converter = self._filename_string_converter.GetSerialisableTuple()
+        serialisable_filename_string_converter = self._filename_string_converter.get_serialisable_tuple()
         
         return ( self._remove_actual_filename_ext, self._suffix, serialisable_filename_string_converter, self._separator )
         

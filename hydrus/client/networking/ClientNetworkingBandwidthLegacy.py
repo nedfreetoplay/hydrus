@@ -25,8 +25,8 @@ class NetworkBandwidthManagerLegacy( HydrusSerialisable.SerialisableBase ):
     def _get_serialisable_info( self ):
         
         # note this discards ephemeral network contexts, which have temporary identifiers that are generally invisible to the user
-        all_serialisable_trackers = [ ( network_context.GetSerialisableTuple(), tracker.get_serialisable_tuple() ) for ( network_context, tracker ) in list(self._network_contexts_to_bandwidth_trackers.items()) if not network_context.IsEphemeral() ]
-        all_serialisable_rules = [ ( network_context.GetSerialisableTuple(), rules.get_serialisable_tuple() ) for ( network_context, rules ) in list(self._network_contexts_to_bandwidth_rules.items()) ]
+        all_serialisable_trackers = [ ( network_context.get_serialisable_tuple(), tracker.get_serialisable_tuple() ) for ( network_context, tracker ) in list(self._network_contexts_to_bandwidth_trackers.items()) if not network_context.IsEphemeral() ]
+        all_serialisable_rules = [ ( network_context.get_serialisable_tuple(), rules.get_serialisable_tuple() ) for ( network_context, rules ) in list(self._network_contexts_to_bandwidth_rules.items()) ]
         
         return ( all_serialisable_trackers, all_serialisable_rules )
         

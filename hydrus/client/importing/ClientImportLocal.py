@@ -159,7 +159,7 @@ class HDDImport( HydrusSerialisable.SerialisableBase ):
                     
                 
             
-            serialisable_file_seed_cache = file_seed_cache.GetSerialisableTuple()
+            serialisable_file_seed_cache = file_seed_cache.get_serialisable_tuple()
             
             new_serialisable_info = ( serialisable_file_seed_cache, serialisable_options, delete_after_success, paused )
             
@@ -726,7 +726,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
         
         serialisable_import_options_container = self._import_options_container.get_serialisable_tuple()
         serialisable_metadata_routers = self._metadata_routers.get_serialisable_tuple()
-        serialisable_tag_service_keys_to_filename_tagging_options = [ ( service_key.hex(), filename_tagging_options.GetSerialisableTuple() ) for ( service_key, filename_tagging_options ) in list(self._tag_service_keys_to_filename_tagging_options.items()) ]
+        serialisable_tag_service_keys_to_filename_tagging_options = [ ( service_key.hex(), filename_tagging_options.get_serialisable_tuple() ) for ( service_key, filename_tagging_options ) in list(self._tag_service_keys_to_filename_tagging_options.items()) ]
         serialisable_file_seed_cache = self._file_seed_cache.get_serialisable_tuple()
         
         # json turns int dict keys to strings
@@ -1008,7 +1008,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                 tag_service_keys_to_filename_tagging_options[ service_key ] = filename_tagging_options
                 
             
-            serialisable_tag_service_keys_to_filename_tagging_options = [ ( service_key.hex(), filename_tagging_options.GetSerialisableTuple() ) for ( service_key, filename_tagging_options ) in list(tag_service_keys_to_filename_tagging_options.items()) ]
+            serialisable_tag_service_keys_to_filename_tagging_options = [ ( service_key.hex(), filename_tagging_options.get_serialisable_tuple() ) for ( service_key, filename_tagging_options ) in list(tag_service_keys_to_filename_tagging_options.items()) ]
             
             new_serialisable_info = ( path, mimes, serialisable_file_import_options, serialisable_tag_import_options, serialisable_tag_service_keys_to_filename_tagging_options, action_pairs, action_location_pairs, period, open_popup, serialisable_file_seed_cache, last_checked, paused, check_now )
             
@@ -1037,7 +1037,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             
             file_import_options.GetFileFilteringImportOptions().SetAllowedSpecificFiletypes( mimes )
             
-            serialisable_file_import_options = file_import_options.GetSerialisableTuple()
+            serialisable_file_import_options = file_import_options.get_serialisable_tuple()
             
             new_serialisable_info = ( path, serialisable_file_import_options, serialisable_tag_import_options, serialisable_tag_service_keys_to_filename_tagging_options, action_pairs, action_location_pairs, period, check_regularly, serialisable_file_seed_cache, last_checked, paused, check_now, show_working_popup, publish_files_to_popup_button, publish_files_to_page )
             

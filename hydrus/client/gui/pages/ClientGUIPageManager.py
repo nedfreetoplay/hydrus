@@ -970,7 +970,7 @@ class PageManager( HydrusSerialisable.SerialisableBase ):
                         return
                         
                     
-                    if value.get_serialisable_tuple() == existing_value.GetSerialisableTuple():
+                    if value.get_serialisable_tuple() == existing_value.get_serialisable_tuple():
                         
                         return
                         

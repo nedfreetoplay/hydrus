@@ -79,7 +79,7 @@ class ParseNodeContentLink( HydrusSerialisable.SerialisableBase ):
     def _get_serialisable_info( self ):
         
         serialisable_formula = self._formula.get_serialisable_tuple()
-        serialisable_children = [ child.GetSerialisableTuple() for child in self._children ]
+        serialisable_children = [ child.get_serialisable_tuple() for child in self._children ]
         
         return ( self._name, serialisable_formula, serialisable_children )
         
@@ -284,8 +284,8 @@ class ParseRootFileLookup( HydrusSerialisable.SerialisableBaseNamed ):
     
     def _get_serialisable_info( self ):
         
-        serialisable_children = [ child.GetSerialisableTuple() for child in self._children ]
-        serialisable_file_identifier_string_converter = self._file_identifier_string_converter.GetSerialisableTuple()
+        serialisable_children = [ child.get_serialisable_tuple() for child in self._children ]
+        serialisable_file_identifier_string_converter = self._file_identifier_string_converter.get_serialisable_tuple()
         
         return ( self._url, self._query_type, self._file_identifier_type, serialisable_file_identifier_string_converter, self._file_identifier_arg_name, self._static_args, serialisable_children )
         

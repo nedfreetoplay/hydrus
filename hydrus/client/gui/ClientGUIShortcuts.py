@@ -1479,7 +1479,7 @@ class ShortcutSet( HydrusSerialisable.SerialisableBaseNamed ):
     
     def _get_serialisable_info( self ):
         
-        return [ ( shortcut.GetSerialisableTuple(), command.GetSerialisableTuple() ) for ( shortcut, command ) in list(self._shortcuts_to_commands.items()) ]
+        return [ ( shortcut.get_serialisable_tuple(), command.get_serialisable_tuple() ) for ( shortcut, command ) in list(self._shortcuts_to_commands.items()) ]
         
     
     def _initialise_from_serialisable_info( self, serialisable_info ):
@@ -1553,7 +1553,7 @@ class ShortcutSet( HydrusSerialisable.SerialisableBaseNamed ):
                 shortcuts_to_commands[ shortcut ] = command
                 
             
-            new_serialisable_info = ( ( shortcut.GetSerialisableTuple(), command.GetSerialisableTuple() ) for ( shortcut, command ) in list(shortcuts_to_commands.items()) )
+            new_serialisable_info = ( ( shortcut.get_serialisable_tuple(), command.get_serialisable_tuple() ) for ( shortcut, command ) in list(shortcuts_to_commands.items()) )
             
             return ( 2, new_serialisable_info )
             

@@ -30,7 +30,7 @@ class FavouriteSearchManager( HydrusSerialisable.SerialisableBase ):
             
             ( folder, name, file_search_context, synchronised, media_sort, media_collect ) = row
             
-            serialisable_file_search_context = file_search_context.GetSerialisableTuple()
+            serialisable_file_search_context = file_search_context.get_serialisable_tuple()
             
             if media_sort is None:
                 
@@ -38,7 +38,7 @@ class FavouriteSearchManager( HydrusSerialisable.SerialisableBase ):
                 
             else:
                 
-                serialisable_media_sort = media_sort.GetSerialisableTuple()
+                serialisable_media_sort = media_sort.get_serialisable_tuple()
                 
             
             if media_collect is None:
@@ -47,7 +47,7 @@ class FavouriteSearchManager( HydrusSerialisable.SerialisableBase ):
                 
             else:
                 
-                serialisable_media_collect = media_collect.GetSerialisableTuple()
+                serialisable_media_collect = media_collect.get_serialisable_tuple()
                 
             
             serialisable_row = ( folder, name, serialisable_file_search_context, synchronised, serialisable_media_sort, serialisable_media_collect )

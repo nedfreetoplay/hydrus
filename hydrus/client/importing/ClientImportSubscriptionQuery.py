@@ -357,7 +357,7 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
             
             tag_import_options = tag_import_options_legacy.GetTagImportOptions()
             
-            serialisable_tag_import_options = tag_import_options.GetSerialisableTuple()
+            serialisable_tag_import_options = tag_import_options.get_serialisable_tuple()
             
             new_serialisable_info = (
                 query_log_container_name,

@@ -1029,7 +1029,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                     
                 
             
-            new_serialisable_info = loaded_dictionary.GetSerialisableTuple()
+            new_serialisable_info = loaded_dictionary.get_serialisable_tuple()
             
             return ( 2, new_serialisable_info )
             
@@ -1111,7 +1111,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                 loaded_dictionary[ 'client_files_locations_full_size_thumbnail_override' ] = update_portable_path( loaded_dictionary[ 'client_files_locations_full_size_thumbnail_override' ] )
                 
             
-            new_serialisable_info = loaded_dictionary.GetSerialisableTuple()
+            new_serialisable_info = loaded_dictionary.get_serialisable_tuple()
             
             return ( 3, new_serialisable_info )
             
@@ -1144,7 +1144,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                     
                 
             
-            new_serialisable_info = loaded_dictionary.GetSerialisableTuple()
+            new_serialisable_info = loaded_dictionary.get_serialisable_tuple()
             
             return ( 4, new_serialisable_info )
             
@@ -1176,7 +1176,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                 del loaded_dictionary[ 'key_list' ][ 'default_neighbouring_txt_tag_service_keys' ]
                 
             
-            new_serialisable_info = loaded_dictionary.GetSerialisableTuple()
+            new_serialisable_info = loaded_dictionary.get_serialisable_tuple()
             
             return ( 5, new_serialisable_info )
             
@@ -1201,7 +1201,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                 del loaded_dictionary[ 'default_tag_sort' ]
                 
             
-            new_serialisable_info = loaded_dictionary.GetSerialisableTuple()
+            new_serialisable_info = loaded_dictionary.get_serialisable_tuple()
             
             return ( 6, new_serialisable_info )
             
@@ -1228,7 +1228,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                     
                 
             
-            new_serialisable_info = loaded_dictionary.GetSerialisableTuple()
+            new_serialisable_info = loaded_dictionary.get_serialisable_tuple()
             
             return ( 7, new_serialisable_info )
             
@@ -1363,7 +1363,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
             #
             
-            new_serialisable_info = loaded_dictionary.GetSerialisableTuple()
+            new_serialisable_info = loaded_dictionary.get_serialisable_tuple()
             
             return ( 8, new_serialisable_info )
             
