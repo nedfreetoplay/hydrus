@@ -13,7 +13,7 @@ now_10 = now + 10
 
 now_20 = now + 20
 
-with mock.patch.object( HydrusTime, 'GetNow', return_value = now ):
+with mock.patch.object( HydrusTime, 'get_now', return_value = now ):
     
     HIGH_USAGE = HydrusNetworking.BandwidthTracker()
     

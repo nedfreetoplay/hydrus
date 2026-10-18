@@ -1950,7 +1950,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
             
             self._url_classes.extend( url_classes )
             
-            self._url_classes.sort( key = lambda u: u.GetName() )
+            self._url_classes.sort( key = lambda u: u.get_name() )
             
             #
             
