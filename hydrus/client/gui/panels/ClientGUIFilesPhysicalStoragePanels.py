@@ -796,7 +796,7 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 message = 'There was a problem finding the free space for "{path}"! Perhaps this location does not exist?'
                 
-                HydrusData.safe_print( message )
+                HydrusData.show_text( message )
                 
                 HydrusData.print_exception( e )
                 
@@ -963,7 +963,7 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 message = 'There was a problem finding the free space for "{path}"! Perhaps this location does not exist?'
                 
-                HydrusData.safe_print( message )
+                HydrusData.show_text( message )
                 
                 HydrusData.print_exception( e )
                 

@@ -819,7 +819,7 @@ def GetDuplicateComparisonStatementsSlow( shown_media_result: ClientMediaResult.
                     
                     HAVE_SHOWN_VISUAL_DUPLICATES_ERROR = True
                     
-                    HydrusData.ShowText( 'The "A and B are visual duplicates" test threw an error! You should have more info in your log. Please let hydev know the details.' )
+                    HydrusData.show_text( 'The "A and B are visual duplicates" test threw an error! You should have more info in your log. Please let hydev know the details.' )
                     
                     HydrusData.ShowException( e, do_wait = False )
                     
@@ -858,7 +858,7 @@ def GetVisualData( media_result: ClientMediaResult.MediaResult ) -> ClientVisual
             
         except Exception as e:
             
-            HydrusData.safe_print( f'Hey, the media with hash {hash.hex()} failed to generate visual data! Hydev would be interested in seeing this file!' )
+            HydrusData.show_text( f'Hey, the media with hash {hash.hex()} failed to generate visual data! Hydev would be interested in seeing this file!' )
             
             raise
             
@@ -897,7 +897,7 @@ def GetVisualDataTiled( media_result: ClientMediaResult.MediaResult ) -> ClientV
             
         except Exception as e:
             
-            HydrusData.safe_print( f'Hey, the media with hash {hash.hex()} failed to generate tiled visual data! Hydev would be interested in seeing this file!' )
+            HydrusData.show_text( f'Hey, the media with hash {hash.hex()} failed to generate tiled visual data! Hydev would be interested in seeing this file!' )
             
             raise
             

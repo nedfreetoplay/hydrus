@@ -298,7 +298,7 @@ class SerialisableBase:
                 
                 message = 'An object of type {} was created in a client/server that uses an updated version of that object! We support versions up to {}, but the object was version {}. For now, we will try to continue work, but things may break. If you know why this has occured, please correct it. If you do not, please let hydrus dev know.'.format( self.SERIALISABLE_NAME, self.SERIALISABLE_VERSION, original_version )
                 
-                HydrusData.ShowText( message )
+                HydrusData.show_text( message )
                 
             
         
@@ -470,7 +470,7 @@ class SerialisableDictionary(SerialisableBase, dict[K, V]):
                 
                 if not have_shown_load_error:
                     
-                    HydrusData.ShowText( 'An object in a dictionary could not load. It has been discarded from the dictionary. More may also have failed to load, but to stop error spam, they will go silently. Your client may be running on code versions behind its database. Depending on the severity of this error, you may need to rollback to a previous backup. If you have no backup, you may want to kill your hydrus process now to stop the cleansed dictionary ever being saved back to the db.' )
+                    HydrusData.show_text( 'An object in a dictionary could not load. It has been discarded from the dictionary. More may also have failed to load, but to stop error spam, they will go silently. Your client may be running on code versions behind its database. Depending on the severity of this error, you may need to rollback to a previous backup. If you have no backup, you may want to kill your hydrus process now to stop the cleansed dictionary ever being saved back to the db.' )
                     HydrusData.ShowException( e )
                     
                     have_shown_load_error = True
@@ -734,7 +734,7 @@ class SerialisableList(SerialisableBase, list[T]):
                 
                 if not have_shown_load_error:
                     
-                    HydrusData.ShowText( 'An object in a list could not load. It has been discarded from the list. More may also have failed to load, but to stop error spam, they will go silently. Your client may be running on code versions behind its database. Depending on the severity of this error, you may need to rollback to a previous backup. If you have no backup, you may want to kill your hydrus process now to stop the cleansed list ever being saved back to the db.' )
+                    HydrusData.show_text( 'An object in a list could not load. It has been discarded from the list. More may also have failed to load, but to stop error spam, they will go silently. Your client may be running on code versions behind its database. Depending on the severity of this error, you may need to rollback to a previous backup. If you have no backup, you may want to kill your hydrus process now to stop the cleansed list ever being saved back to the db.' )
                     HydrusData.ShowException( e )
                     
                     have_shown_load_error = True

@@ -220,7 +220,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                 
                 if HG.thumbnail_graphics_view_report_mode:
                     
-                    HydrusData.safe_print( f'fade thumbs - fade in {m.GetHash().hex()}' )
+                    HydrusData.show_text( f'fade thumbs - fade in {m.GetHash().hex()}' )
                     
                 
                 if not self._currently_animating:
@@ -236,7 +236,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                 
                 if HG.thumbnail_graphics_view_report_mode:
                     
-                    HydrusData.safe_print( f'fade thumbs - immediate update {m.GetHash().hex()}' )
+                    HydrusData.show_text( f'fade thumbs - immediate update {m.GetHash().hex()}' )
                     
                 
                 thumb.Invalidate()
@@ -370,7 +370,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         
         if HG.thumbnail_graphics_view_report_mode:
             
-            HydrusData.safe_print( f'visible rect changed with rect {rect}' )
+            HydrusData.show_text( f'visible rect changed with rect {rect}' )
             
         
         new_possibly_visible_thumbnails: set[ Thumbnail ] = set( self.scene().items( rect, QC.Qt.ItemSelectionMode.IntersectsItemBoundingRect ) )
@@ -1579,7 +1579,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         
         if HG.thumbnail_graphics_view_report_mode:
             
-            HydrusData.safe_print( f'update scene - redraw all thumbs' )
+            HydrusData.show_text( f'update scene - redraw all thumbs' )
             
         
         self.scene().update()
@@ -1654,7 +1654,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         
         if HG.thumbnail_graphics_view_report_mode:
             
-            HydrusData.safe_print( f'update scene - thumbs reset' )
+            HydrusData.show_text( f'update scene - thumbs reset' )
             
         
         self.scene().update()
@@ -1681,7 +1681,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         
         if HG.thumbnail_graphics_view_report_mode:
             
-            HydrusData.safe_print( f'animation update on {HydrusNumbers.value_range_to_pretty_string( num_animating, len(self._possibly_visible_thumbnails))} thumbs' )
+            HydrusData.show_text( f'animation update on {HydrusNumbers.value_range_to_pretty_string( num_animating, len(self._possibly_visible_thumbnails))} thumbs' )
             
         
         self._last_animation_update_time_float = HydrusTime.get_now_float()
@@ -1932,7 +1932,7 @@ class Thumbnail( QW.QGraphicsItem ):
                 hash_hex = display_media_result.GetHash().hex()
                 
             
-            HydrusData.ShowText( f'Failed to render thumbnail for file {hash_hex}!' )
+            HydrusData.show_text( f'Failed to render thumbnail for file {hash_hex}!' )
             HydrusData.ShowException( e, do_wait = False )
             
             thumbnail_hydrus_bmp = CG.client_controller.thumbnails_cache.GetHydrusSpecialThumbnail( content_size )
@@ -2446,7 +2446,7 @@ class Thumbnail( QW.QGraphicsItem ):
             
             if HG.thumbnail_graphics_view_report_mode:
                 
-                HydrusData.safe_print( f'painting a thumb: {self.boundingRect()} / {option.exposedRect}' )
+                HydrusData.show_text( f'painting a thumb: {self.boundingRect()} / {option.exposedRect}' )
                 
             
             thumbnails_cache = CG.client_controller.thumbnails_cache

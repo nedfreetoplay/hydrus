@@ -1672,13 +1672,13 @@ class MediaContainer( QW.QWidget ):
             
             self._show_action = CC.MEDIA_VIEWER_ACTION_SHOW_OPEN_EXTERNALLY_BUTTON
             
-            HydrusData.ShowText( 'MPV is not available!' )
+            HydrusData.show_text( 'MPV is not available!' )
             
         elif self._show_action == CC.MEDIA_VIEWER_ACTION_SHOW_WITH_QTMEDIAPLAYER and not ClientGUIQtMediaPlayer.QT_MULTIMEDIA_IS_AVAILABLE:
             
             self._show_action = CC.MEDIA_VIEWER_ACTION_SHOW_OPEN_EXTERNALLY_BUTTON
             
-            HydrusData.ShowText( 'QtMediaPlayer is not available!' )
+            HydrusData.show_text( 'QtMediaPlayer is not available!' )
             
         
         if self._show_action in ( CC.MEDIA_VIEWER_ACTION_DO_NOT_SHOW_ON_ACTIVATION_OPEN_EXTERNALLY, CC.MEDIA_VIEWER_ACTION_DO_NOT_SHOW ):
@@ -3594,7 +3594,7 @@ class StaticImage( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
             if HG.canvas_tile_outline_mode:
                 
-                HydrusData.ShowText( '{} from zoom {} and nice number {}'.format( tile_dimension, self._zoom, nice_number ) )
+                HydrusData.show_text( '{} from zoom {} and nice number {}'.format( tile_dimension, self._zoom, nice_number ) )
                 
             
         

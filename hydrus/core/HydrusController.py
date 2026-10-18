@@ -108,7 +108,7 @@ class HydrusController:
     
     def _show_just_woke_to_user(self) -> None:
         
-        HydrusData.safe_print('Just woke from sleep.')
+        HydrusData.show_text('Just woke from sleep.')
     
     def _shutdown_daemons(self):
         
@@ -247,7 +247,7 @@ class HydrusController:
                 what_to_report.append( kwargs )
                 
             
-            HydrusData.ShowText( tuple( what_to_report ) )
+            HydrusData.show_text( tuple( what_to_report ) )
             
         
         call_to_thread = self._thread_worker_pool.get_call_to_thread()
@@ -266,7 +266,7 @@ class HydrusController:
             if len(kwargs) > 0:
                 what_to_report.append( kwargs )
             
-            HydrusData.ShowText(tuple(what_to_report))
+            HydrusData.show_text(tuple(what_to_report))
         
         call_to_thread = self._thread_worker_pool.get_call_to_thread_long_running()
         
@@ -295,13 +295,13 @@ class HydrusController:
         
         summary = self._fast_job_scheduler.get_pretty_job_summary()
         
-        HydrusData.ShowText( 'fast scheduler:' )
-        HydrusData.ShowText( summary )
+        HydrusData.show_text( 'fast scheduler:' )
+        HydrusData.show_text( summary )
         
         summary = self._slow_job_scheduler.get_pretty_job_summary()
         
-        HydrusData.ShowText( 'slow scheduler:' )
-        HydrusData.ShowText( summary )
+        HydrusData.show_text( 'slow scheduler:' )
+        HydrusData.show_text( summary )
     
     def doing_fast_exit( self ) -> bool:
         
@@ -408,7 +408,7 @@ class HydrusController:
             
         except Exception as e:
             
-            HydrusData.safe_print( 'Failed to initialise temp folder.' )
+            HydrusData.show_text( 'Failed to initialise temp folder.' )
             
         
         from hydrus.core.files import HydrusFileHandling
@@ -594,7 +594,7 @@ class HydrusController:
                 
             except Exception as e:
                 
-                HydrusData.safe_print( 'While shutting down, could not delete the temp dir "{self._hydrus_temp_dir}"! Error follows:' )
+                HydrusData.show_text( 'While shutting down, could not delete the temp dir "{self._hydrus_temp_dir}"! Error follows:' )
                 HydrusData.print_exception( e, do_wait = False )
                 
             
@@ -681,7 +681,7 @@ class HydrusController:
             
             if HG.shutdown_report_mode:
                 
-                HydrusData.safe_print( 'Just sent twisted shutdown call.' )
+                HydrusData.show_text( 'Just sent twisted shutdown call.' )
     
     def system_busy( self ):
         

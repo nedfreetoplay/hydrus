@@ -44,7 +44,7 @@ def GetSidecarPath( actual_file_path: str, remove_actual_filename_ext: bool, suf
             
         except HydrusExceptions.StringConvertException:
             
-            HydrusData.safe_print( 'Failed to convert the sidecar path "{}"!'.format( path ) )
+            HydrusData.show_text( 'Failed to convert the sidecar path "{}"!'.format( path ) )
             
         
     

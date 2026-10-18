@@ -226,7 +226,7 @@ class Controller:
         
         def show_text( text ): pass
         
-        HydrusData.ShowText = show_text
+        HydrusData.show_text = show_text
         
         self._name_read_responses = {}
         

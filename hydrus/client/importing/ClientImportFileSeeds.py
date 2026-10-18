@@ -160,7 +160,7 @@ def FileURLMappingHasUntrustworthyNeighbours( hash: bytes, lookup_urls: collecti
             # oh no, the file these lookup urls refer to has a different known url in the same domain+url_class
             # it is likely that an edit on this site points to the original elsewhere
             
-            HydrusData.safe_print( f'INFO: When a URL status lookup suggested {hash.hex()}, I discovered that that file\'s existing URL "{file_url}" had the same URL Class as one of the lookup URLs, which were{HydrusText.convert_many_strings_to_nice_insertable_human_summary(lookup_urls)}. This made the lookup untrustworthy (probably evidence of a previous bad booru source reference, or merged URLs during duplicate processing).' )
+            HydrusData.show_text( f'INFO: When a URL status lookup suggested {hash.hex()}, I discovered that that file\'s existing URL "{file_url}" had the same URL Class as one of the lookup URLs, which were{HydrusText.convert_many_strings_to_nice_insertable_human_summary(lookup_urls)}. This made the lookup untrustworthy (probably evidence of a previous bad booru source reference, or merged URLs during duplicate processing).' )
             
             return True
             
@@ -770,7 +770,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                     CG.client_controller.new_options.SetBoolean( 'pause_subs_sync', True )
                     CG.client_controller.new_options.SetBoolean( 'pause_all_file_queues', True )
                     
-                    HydrusData.ShowText( f'Failed to run "{id_and_name.name}" on file with hash "{hash.hex()}"! All importers--subscriptions, import folders, and paged file import queues--have been paused. Once the issue is clear, restart the client and resume your imports under the file and network menus!' )
+                    HydrusData.show_text( f'Failed to run "{id_and_name.name}" on file with hash "{hash.hex()}"! All importers--subscriptions, import folders, and paged file import queues--have been paused. Once the issue is clear, restart the client and resume your imports under the file and network menus!' )
                     
                     HydrusData.ShowException( e )
                     

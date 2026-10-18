@@ -115,7 +115,7 @@ class AsyncQtJob( object ):
                 
             except Exception as e_reporting:
                 
-                HydrusData.ShowText( 'Trying to show an async error using a custom errback caused a problem:' )
+                HydrusData.show_text( 'Trying to show an async error using a custom errback caused a problem:' )
                 HydrusData.ShowException( e_reporting )
                 
             
@@ -134,10 +134,10 @@ class AsyncQtJob( object ):
                 
             except Exception as e_last_chance:
                 
-                HydrusData.ShowText( 'Trying to show an async error using the default errback caused a problem:' )
+                HydrusData.show_text( 'Trying to show an async error using the default errback caused a problem:' )
                 HydrusData.ShowException( e_last_chance )
                 
-                HydrusData.ShowText( 'Here is the actual error we wanted to show:' )
+                HydrusData.show_text( 'Here is the actual error we wanted to show:' )
                 HydrusData.ShowException( e )
                 
                 we_have_reported_ok = True

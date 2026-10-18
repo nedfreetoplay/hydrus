@@ -279,7 +279,7 @@ def vacuum_db_into(db_path: str):
         
     except Exception as e:
         
-        HydrusData.ShowText( f'Hey, the vacuum of "{db_path}" went ok, but I could not delete the leftover file "{deletee_path}"! Does hydrus not have delete permission on your db folder? In any case, please delete this file yourself.' )
+        HydrusData.show_text( f'Hey, the vacuum of "{db_path}" went ok, but I could not delete the leftover file "{deletee_path}"! Does hydrus not have delete permission on your db folder? In any case, please delete this file yourself.' )
         HydrusData.ShowException( e )
         
     
@@ -289,7 +289,7 @@ def vacuum_db_into(db_path: str):
     
     bytes_per_sec = vacuum_size / time_took
     
-    HydrusData.ShowText( f'Vacuumed {db_path} in {HydrusTime.time_delta_to_pretty_timedelta( time_took )} ({HydrusData.ToHumanBytes(bytes_per_sec)}/s). It went from {HydrusData.ToHumanBytes( original_size )} to {HydrusData.ToHumanBytes( vacuum_size )}' )
+    HydrusData.show_text( f'Vacuumed {db_path} in {HydrusTime.time_delta_to_pretty_timedelta( time_took )} ({HydrusData.ToHumanBytes(bytes_per_sec)}/s). It went from {HydrusData.ToHumanBytes( original_size )} to {HydrusData.ToHumanBytes( vacuum_size )}' )
 
 SHUTDOWN_SENTINEL = object()
 COMMIT_CHECK_TOKEN_SENTINEL = object()
@@ -358,7 +358,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                 HydrusPaths.delete_path( shm_lad )
                 
             
-            HydrusData.safe_print( 'Found and deleted the durable temporary database on boot. The last exit was probably not clean.' )
+            HydrusData.show_text( 'Found and deleted the durable temporary database on boot. The last exit was probably not clean.' )
             
         
         self._init_external_databases()
@@ -465,7 +465,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                     
                 except Exception as rollback_e:
                     
-                    HydrusData.safe_print( 'When the update failed, attempting to rollback the database failed.' )
+                    HydrusData.show_text( 'When the update failed, attempting to rollback the database failed.' )
                     
                     HydrusData.print_exception( rollback_e )
                     
@@ -873,7 +873,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                 
                 if time_job_took > 15:
                     
-                    HydrusData.safe_print( f'The database job "{job.to_string()}" took {HydrusTime.time_delta_to_pretty_timedelta( time_job_took )}.' )
+                    HydrusData.show_text( f'The database job "{job.to_string()}" took {HydrusTime.time_delta_to_pretty_timedelta( time_job_took )}.' )
                     
                 
             
@@ -905,7 +905,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                 
             except Exception as rollback_e:
                 
-                HydrusData.safe_print( 'When the transaction failed, attempting to rollback the database failed. Please restart the client as soon as is convenient.' )
+                HydrusData.show_text( 'When the transaction failed, attempting to rollback the database failed. Please restart the client as soon as is convenient.' )
                 
                 self._close_db_connection()
                 
@@ -1073,7 +1073,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
             
         elif not ( cert_here or key_here ):
             
-            HydrusData.safe_print( 'Generating new cert/key files.' )
+            HydrusData.show_text( 'Generating new cert/key files.' )
             
             if not HydrusEncryption.CRYPTO_OK:
                 
@@ -1164,7 +1164,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
                     
                     summary = 'Running db job: ' + job.to_string()
                     
-                    HydrusData.ShowText( summary )
+                    HydrusData.show_text( summary )
                     
                 
                 if HydrusProfiling.is_profile_mode( 'db' ):

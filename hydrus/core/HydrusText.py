@@ -68,7 +68,7 @@ def cleanse_import_text(text: str):
             
             import HydrusData
             
-            HydrusData.safe_print( f'Could not cleanse surrogates from this: {text}' )
+            HydrusData.show_text( f'Could not cleanse surrogates from this: {text}' )
             
         
     

@@ -103,7 +103,7 @@ def convert_value_range_to_bytes( value, range ):
 
 def debug_print( debug_info ):
     
-    safe_print( debug_info )
+    show_text( debug_info )
     
     sys.stdout.flush()
     sys.stderr.flush()
@@ -264,15 +264,12 @@ def merge_key_to_list_dicts( key_to_list_dicts ):
     
     return result
 
-def safe_print(text: object):
+def show_text(text: object):
     try:
         print(str(text))
         
     except Exception:
         print(repr(text))
-
-# DELETE: Надо изменить эту хрень. Пускай лучше все вызывают оригинальную функцию.
-ShowText = safe_print
 
 def convert_exception_tuple_to_nice_trace( etype, value, tb ):
     if etype is None:

@@ -187,7 +187,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                     
                 except Exception as e:
                     
-                    HydrusData.safe_print( 'Problem with duplicate update signal:' )
+                    HydrusData.show_text( 'Problem with duplicate update signal:' )
                     HydrusData.print_exception( e, do_wait = False )
                     
             
@@ -199,7 +199,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                     
                 except Exception as e:
                     
-                    HydrusData.safe_print( 'Problem with duplicate update signal:' )
+                    HydrusData.show_text( 'Problem with duplicate update signal:' )
                     HydrusData.print_exception( e, do_wait = False )
                     
                 
@@ -369,7 +369,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                     
                 except Exception as e:
                     
-                    HydrusData.safe_print( 'Problem with duplicate update signal:' )
+                    HydrusData.show_text( 'Problem with duplicate update signal:' )
                     HydrusData.print_exception( e, do_wait = False )
                     
                 
@@ -382,7 +382,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                     
                 except Exception as e:
                     
-                    HydrusData.safe_print( 'Problem with duplicate update signal:' )
+                    HydrusData.show_text( 'Problem with duplicate update signal:' )
                     HydrusData.print_exception( e, do_wait = False )
                     
                 
@@ -429,7 +429,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                         
                     except Exception as e:
                         
-                        HydrusData.safe_print( 'Problem with duplicate update signal:' )
+                        HydrusData.show_text( 'Problem with duplicate update signal:' )
                         HydrusData.print_exception( e, do_wait = False )
                         
                     

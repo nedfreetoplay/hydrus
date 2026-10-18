@@ -1321,7 +1321,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
                             
                         except HydrusExceptions.NotFoundException:
                             
-                            HydrusData.ShowText( 'That account id was not found!' )
+                            HydrusData.show_text( 'That account id was not found!' )
                             
                             CG.client_controller.call_after_qt_safe( self, qt_draw, [] )
                             
@@ -1798,7 +1798,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
                         
                     except Exception as e:
                         
-                        HydrusData.ShowText( 'Failed to fetch a petition!' )
+                        HydrusData.show_text( 'Failed to fetch a petition!' )
                         HydrusData.ShowException( e )
                         
                         CG.client_controller.call_blocking_to_qt_fire_and_forget_no_response( self, qt_petition_fetch_failed, fetch_petition_header )
@@ -1875,7 +1875,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
                         
                     except Exception as e:
                         
-                        HydrusData.ShowText( 'Failed to upload a petition!' )
+                        HydrusData.show_text( 'Failed to upload a petition!' )
                         HydrusData.ShowException( e )
                         
                         CG.client_controller.call_blocking_to_qt_fire_and_forget_no_response( self, qt_petition_clear_failed, outgoing_petition )

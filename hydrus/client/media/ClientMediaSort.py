@@ -702,11 +702,11 @@ class MediaSort( HydrusSerialisable.SerialisableBase ):
             
             if HG.file_sort_report_mode:
                 
-                HydrusData.ShowText( f'Sort occurred according to {self.ToString()}' )
+                HydrusData.show_text( f'Sort occurred according to {self.ToString()}' )
                 
                 for mr in media_results_list:
                     
-                    HydrusData.ShowText( ( mr.GetHash().hex(), sort_key( mr ) ) )
+                    HydrusData.show_text( ( mr.GetHash().hex(), sort_key( mr ) ) )
                     
                 
             

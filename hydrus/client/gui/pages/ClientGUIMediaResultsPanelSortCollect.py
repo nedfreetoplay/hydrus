@@ -102,7 +102,7 @@ class CollectComboCtrl( QW.QComboBox ):
                 
                 HydrusData.debug_print( 'Bad namespaces: {}'.format( namespaces ) )
                 
-                HydrusData.ShowText( 'Hey, your namespace-based sorts are likely damaged. Details have been written to the log, please let hydev know!' )
+                HydrusData.show_text( 'Hey, your namespace-based sorts are likely damaged. Details have been written to the log, please let hydev know!' )
                 
             
         
@@ -294,7 +294,7 @@ class CollectComboCtrl( QW.QComboBox ):
             
         except Exception as e:
             
-            HydrusData.ShowText( 'Failed to set a collect-by value!' )
+            HydrusData.show_text( 'Failed to set a collect-by value!' )
 
             HydrusData.ShowException( e )
             

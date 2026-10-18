@@ -92,7 +92,7 @@ def message_handler(msg_type, context, text):
     if msg_type not in ( QC.QtMsgType.QtDebugMsg, QC.QtMsgType.QtInfoMsg ):
         
         # Set a breakpoint here to be able to see where the warnings originate from.
-        HydrusData.safe_print( text )
+        HydrusData.show_text( text )
 
 
 class App(QW.QApplication):
@@ -125,7 +125,7 @@ class App(QW.QApplication):
                 
             except Exception as e:
                 
-                HydrusData.safe_print( f'Hey, while trying to determine if you have {desktop_name}.desktop file in your Applications dir, I ran into an error, which follows. This is not a huge deal, but hydev would like to see it.' )
+                HydrusData.show_text( f'Hey, while trying to determine if you have {desktop_name}.desktop file in your Applications dir, I ran into an error, which follows. This is not a huge deal, but hydev would like to see it.' )
                 
                 HydrusData.print_exception( e )
                 
@@ -692,9 +692,9 @@ class Controller(HydrusController.HydrusController):
             
         except Exception as e:
             
-            HydrusData.safe_print( 'There was an error trying to start the splash screen!' )
+            HydrusData.show_text( 'There was an error trying to start the splash screen!' )
             
-            HydrusData.safe_print( traceback.format_exc() )
+            HydrusData.show_text( traceback.format_exc() )
             
             raise
     
@@ -704,7 +704,7 @@ class Controller(HydrusController.HydrusController):
             
             if HG.idle_report_mode:
                 
-                HydrusData.ShowText( 'IDLE MODE - Blocked: Program shutting down.' )
+                HydrusData.show_text( 'IDLE MODE - Blocked: Program shutting down.' )
                 
             
             return False
@@ -714,7 +714,7 @@ class Controller(HydrusController.HydrusController):
             
             if HG.idle_report_mode:
                 
-                HydrusData.ShowText( 'IDLE MODE - Forced via debug menu' )
+                HydrusData.show_text( 'IDLE MODE - Forced via debug menu' )
                 
             
             self._idle_started = 0
@@ -726,7 +726,7 @@ class Controller(HydrusController.HydrusController):
             
             if HG.idle_report_mode:
                 
-                HydrusData.ShowText( 'IDLE MODE - Blocked: Program has not been on for 120s yet.' )
+                HydrusData.show_text( 'IDLE MODE - Blocked: Program has not been on for 120s yet.' )
                 
             
             return False
@@ -746,7 +746,7 @@ class Controller(HydrusController.HydrusController):
                     
                     if HG.idle_report_mode:
                         
-                        HydrusData.ShowText( f'IDLE MODE - Blocked: Last user action was {HydrusTime.timestamp_to_pretty_time_delta( HydrusTime.secondise_ms( self.get_timestamp_ms( "last_user_action" ) ) )}.' )
+                        HydrusData.show_text( f'IDLE MODE - Blocked: Last user action was {HydrusTime.timestamp_to_pretty_time_delta( HydrusTime.secondise_ms( self.get_timestamp_ms( "last_user_action" ) ) )}.' )
                         
                     
                     currently_idle = False
@@ -761,7 +761,7 @@ class Controller(HydrusController.HydrusController):
                     
                     if HG.idle_report_mode:
                         
-                        HydrusData.ShowText( f'IDLE MODE - Blocked: Last mouse move was {HydrusTime.timestamp_to_pretty_time_delta( HydrusTime.secondise_ms( self.get_timestamp_ms( "last_mouse_action" ) ) )}.' )
+                        HydrusData.show_text( f'IDLE MODE - Blocked: Last mouse move was {HydrusTime.timestamp_to_pretty_time_delta( HydrusTime.secondise_ms( self.get_timestamp_ms( "last_mouse_action" ) ) )}.' )
                         
                     
                     currently_idle = False
@@ -776,7 +776,7 @@ class Controller(HydrusController.HydrusController):
                     
                     if HG.idle_report_mode:
                         
-                        HydrusData.ShowText( f'IDLE MODE - Blocked: Last Client API action was {HydrusTime.timestamp_to_pretty_time_delta( HydrusTime.secondise_ms( self.get_timestamp_ms( "last_client_api_action" ) ) )}.' )
+                        HydrusData.show_text( f'IDLE MODE - Blocked: Last Client API action was {HydrusTime.timestamp_to_pretty_time_delta( HydrusTime.secondise_ms( self.get_timestamp_ms( "last_client_api_action" ) ) )}.' )
                         
                     
                     currently_idle = False
@@ -787,7 +787,7 @@ class Controller(HydrusController.HydrusController):
             
             if HG.idle_report_mode:
                 
-                HydrusData.ShowText( 'IDLE MODE - Blocked: Options have disabled normal idle work.' )
+                HydrusData.show_text( 'IDLE MODE - Blocked: Options have disabled normal idle work.' )
                 
             
             currently_idle = False
@@ -802,7 +802,7 @@ class Controller(HydrusController.HydrusController):
             
             if HG.idle_report_mode:
                 
-                HydrusData.ShowText( f'IDLE MODE - Turning ON' )
+                HydrusData.show_text( f'IDLE MODE - Turning ON' )
                 
             
             self._idle_started = HydrusTime.get_now()
@@ -814,7 +814,7 @@ class Controller(HydrusController.HydrusController):
             
             if HG.idle_report_mode:
                 
-                HydrusData.ShowText( f'IDLE MODE - Turning OFF' )
+                HydrusData.show_text( f'IDLE MODE - Turning OFF' )
                 
             
         
@@ -1569,7 +1569,7 @@ class Controller(HydrusController.HydrusController):
                     
                 except Exception as e:
                     
-                    HydrusData.safe_print( 'Could not load Qt style: {}'.format( repr( e ) ) )
+                    HydrusData.show_text( 'Could not load Qt style: {}'.format( repr( e ) ) )
                     
                 
             
@@ -1587,7 +1587,7 @@ class Controller(HydrusController.HydrusController):
                     
                 except Exception as e:
                     
-                    HydrusData.safe_print( 'Could not load Qt stylesheet: {}'.format( repr( e ) ) )
+                    HydrusData.show_text( 'Could not load Qt stylesheet: {}'.format( repr( e ) ) )
                     
                 
             
@@ -1641,7 +1641,7 @@ class Controller(HydrusController.HydrusController):
             message += '\n' * 2
             message += 'To dismiss popup messages like this, right-click them.'
             
-            HydrusData.ShowText( message )
+            HydrusData.show_text( message )
             
             if HC.WE_SWITCHED_TO_USERPATH:
                 
@@ -1649,18 +1649,18 @@ class Controller(HydrusController.HydrusController):
                 message += '\n' * 2
                 message += 'If that is fine with you, no problem. But if you were expecting to load an existing database and the above "first start" popup is a surprise, then your old db path is probably read-only. Fix that and try again. If it helps, hit up help->about to see the directories hydrus is currently using.'
                 
-                HydrusData.ShowText( message )
+                HydrusData.show_text( message )
                 
             
         
         if self.db.is_db_updated():
             
-            HydrusData.ShowText( 'The client has updated to version {}!'.format( HC.SOFTWARE_VERSION ) )
+            HydrusData.show_text( 'The client has updated to version {}!'.format( HC.SOFTWARE_VERSION ) )
             
         
         for message in self.db.GetInitialMessages():
             
-            HydrusData.ShowText( message )
+            HydrusData.show_text( message )
     
     def is_booted(self):
         
@@ -1903,7 +1903,7 @@ class Controller(HydrusController.HydrusController):
         
         self.main_qt_thread = self.app.thread()
         
-        HydrusData.safe_print( 'booting controller' + HC.UNICODE_ELLIPSIS )
+        HydrusData.show_text( 'booting controller' + HC.UNICODE_ELLIPSIS )
         
         self.frame_splash_status = ClientGUISplash.FrameSplashStatus()
         
@@ -2062,7 +2062,7 @@ class Controller(HydrusController.HydrusController):
             
             def StartServices( *args, **kwargs ):
                 
-                HydrusData.safe_print( 'starting services' + HC.UNICODE_ELLIPSIS )
+                HydrusData.show_text( 'starting services' + HC.UNICODE_ELLIPSIS )
                 
                 for service in services:
                     
@@ -2130,9 +2130,9 @@ class Controller(HydrusController.HydrusController):
                             
                         except Exception as e:
                             
-                            HydrusData.safe_print( 'Could not bind to IPv6:' )
+                            HydrusData.show_text( 'Could not bind to IPv6:' )
                             
-                            HydrusData.safe_print( str( e ) )
+                            HydrusData.show_text( str( e ) )
                             
                         
                         ipv4_port = None
@@ -2160,26 +2160,26 @@ class Controller(HydrusController.HydrusController):
                         
                         if HydrusNetworking.local_port_in_use( port ):
                             
-                            HydrusData.safe_print( 'Running "{}" on port {}.'.format( name, port ) )
+                            HydrusData.show_text( 'Running "{}" on port {}.'.format( name, port ) )
                             
                         else:
                             
-                            HydrusData.ShowText( 'Tried to bind port {} for "{}" but it failed.'.format( port, name ) )
+                            HydrusData.show_text( 'Tried to bind port {} for "{}" but it failed.'.format( port, name ) )
                             
                         
                     except Exception as e:
                         
-                        HydrusData.ShowText( 'Could not start "{}":'.format( name ) )
+                        HydrusData.show_text( 'Could not start "{}":'.format( name ) )
                         HydrusData.ShowException( e )
                         
                     
                 
-                HydrusData.safe_print( 'services started' )
+                HydrusData.show_text( 'services started' )
                 
             
             if len( self._service_keys_to_connected_ports ) > 0:
                 
-                HydrusData.safe_print( 'stopping services' + HC.UNICODE_ELLIPSIS )
+                HydrusData.show_text( 'stopping services' + HC.UNICODE_ELLIPSIS )
                 
                 deferreds = []
                 
@@ -2224,9 +2224,9 @@ class Controller(HydrusController.HydrusController):
         
         if HG.twisted_is_broke:
             
-            HydrusData.ShowText( 'Twisted failed to import, so could not start the local client api! Specific error has been printed to log. Please contact hydrus dev!' )
+            HydrusData.show_text( 'Twisted failed to import, so could not start the local client api! Specific error has been printed to log. Please contact hydrus dev!' )
             
-            HydrusData.safe_print( HG.twisted_is_broke_exception )
+            HydrusData.show_text( HG.twisted_is_broke_exception )
             
         else:
             
@@ -2314,7 +2314,7 @@ class Controller(HydrusController.HydrusController):
                 
             except Exception as e:
                 
-                HydrusData.safe_print( 'Twisted failed to shut down cleanly:' )
+                HydrusData.show_text( 'Twisted failed to shut down cleanly:' )
                 HydrusData.print_exception( e, do_wait = False )
                 
             
@@ -2449,7 +2449,7 @@ class Controller(HydrusController.HydrusController):
             
         except ( HydrusExceptions.DBCredentialsException, HydrusExceptions.ShutdownException ) as e:
             
-            HydrusData.safe_print( e )
+            HydrusData.show_text( e )
             
             self.clean_running_file()
             
@@ -2568,7 +2568,7 @@ class Controller(HydrusController.HydrusController):
                     
                     if HydrusTime.time_has_passed( start_time + 15 ):
                         
-                        HydrusData.ShowText( 'The image did not render in fifteen seconds, so the attempt to copy it to the clipboard was abandoned.' )
+                        HydrusData.show_text( 'The image did not render in fifteen seconds, so the attempt to copy it to the clipboard was abandoned.' )
                         
                         return
                         

@@ -439,7 +439,7 @@ class ImportOptionsManager( HydrusSerialisable.SerialisableBase ):
                     
                 except Exception as e:
                     
-                    HydrusData.ShowText( 'Your "global" import options container was missing!' )
+                    HydrusData.show_text( 'Your "global" import options container was missing!' )
                     
                     global_import_options_container = ImportOptionsContainer.ImportOptionsContainer()
                     
@@ -463,7 +463,7 @@ class ImportOptionsManager( HydrusSerialisable.SerialisableBase ):
                     self._import_options_caller_types_to_default_import_options_containers[ IOC.IMPORT_OPTIONS_CALLER_TYPE_GLOBAL ] = global_import_options_container
                     
                 
-                HydrusData.ShowText( 'Hey, it looks like something went wrong with the import options system. Your "global" options container was missing entirely or missing entries. I have repopulated the missing data with defaults and saved it back. You may have encountered database damage. If you do not know what is going on, please tell hydev about it.' )
+                HydrusData.show_text( 'Hey, it looks like something went wrong with the import options system. Your "global" options container was missing entirely or missing entries. I have repopulated the missing data with defaults and saved it back. You may have encountered database damage. If you do not know what is going on, please tell hydev about it.' )
                 
                 import_options_container_result = self._GenerateFullImportOptionsContainer( caller_import_options_container_slice, import_options_caller_type, url_class_keys_in_preference_order )
                 

@@ -112,7 +112,7 @@ class ClientDBMasterHashes( ClientDBModule.ClientDBModule ):
                             
                             if not pubbed_error:
                                 
-                                HydrusData.ShowText( 'A file identifier was missing! This is a serious error that means your client database had an orphan file id! You have very likely encountered database corruption, perhaps recently, or perhaps years ago, please check the "Recovery->Help I had a file identifier missing error" document in the help. Additional info has been written to the log.' )
+                                HydrusData.show_text( 'A file identifier was missing! This is a serious error that means your client database had an orphan file id! You have very likely encountered database corruption, perhaps recently, or perhaps years ago, please check the "Recovery->Help I had a file identifier missing error" document in the help. Additional info has been written to the log.' )
                                 
                                 pubbed_error = True
                                 
@@ -125,7 +125,7 @@ class ClientDBMasterHashes( ClientDBModule.ClientDBModule ):
                             
                             if not pubbed_error:
                                 
-                                HydrusData.ShowText( 'A file identifier was missing! This is a serious error that means your client database had an orphan file id! Luckily, I was able to find a duplicate record in another location and fill in the missing record. You have, however, very likely encountered database corruption, perhaps recently, or perhaps years ago, please check the \'Recovery->Help my db is broke\' document in the help as background reading. Additional info has been written to the log.' )
+                                HydrusData.show_text( 'A file identifier was missing! This is a serious error that means your client database had an orphan file id! Luckily, I was able to find a duplicate record in another location and fill in the missing record. You have, however, very likely encountered database corruption, perhaps recently, or perhaps years ago, please check the \'Recovery->Help my db is broke\' document in the help as background reading. Additional info has been written to the log.' )
                                 
                                 pubbed_error = True
                                 

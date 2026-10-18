@@ -75,7 +75,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
                         message += '\n' * 2
                         message += 'To stop spam, this message will only show one time per program boot. The error may happen again, silently.'
                         
-                        HydrusData.ShowText( message )
+                        HydrusData.show_text( message )
                         
                         self._reported_on_a_broken_branch = True
                         
@@ -572,7 +572,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
                 
                 self._execute( 'DELETE FROM shape_maintenance_branch_regen;' )
                 
-                HydrusData.ShowText( 'Your similar files search tree seemed to be damaged. Please regenerate it under the _database_ menu!' )
+                HydrusData.show_text( 'Your similar files search tree seemed to be damaged. Please regenerate it under the _database_ menu!' )
                 
                 return
                 
@@ -816,7 +816,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
                 
             except Exception as e:
                 
-                HydrusData.ShowText( 'It looks like similar files maintenance had trouble regenerating a branch of the search tree! You should try _database->regenerate->similar files search tree_, and if that still produces errors, let hydev know.' )
+                HydrusData.show_text( 'It looks like similar files maintenance had trouble regenerating a branch of the search tree! You should try _database->regenerate->similar files search tree_, and if that still produces errors, let hydev know.' )
                 
                 raise
                 
@@ -901,33 +901,33 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
                 message += '\n'
                 message += 'More details have been written to log, including the file list for affected hashes. You may wish to manually schedule a "similar files regen" job for all the affected file hashes. You should also check the \'Recovery->Help my db is broke\' document in the help, since there are no clean ways these bad nodes got into your database.'
                 
-                HydrusData.ShowText( message )
+                HydrusData.show_text( message )
                 
-                HydrusData.safe_print( 'The bad nodes:' )
+                HydrusData.show_text( 'The bad nodes:' )
                 
                 for ( phash_id, phash ) in bad_nodes:
                     
                     if isinstance( phash, bytes ):
                         
-                        HydrusData.safe_print( f'phash_id: {phash_id}, presumably incorrect-length phash: "{phash.hex()}"' )
+                        HydrusData.show_text( f'phash_id: {phash_id}, presumably incorrect-length phash: "{phash.hex()}"' )
                         
                     else:
                         
-                        HydrusData.safe_print( f'phash_id: {phash_id}, presumably corrupt phash: "{phash}"' )
+                        HydrusData.show_text( f'phash_id: {phash_id}, presumably corrupt phash: "{phash}"' )
                         
                     
                 
-                HydrusData.safe_print( 'The affected hashes:' )
+                HydrusData.show_text( 'The affected hashes:' )
                 
                 try:
                     
                     hash_ids_to_hashes = self.modules_hashes.GetHashIdsToHashes( hash_ids = affected_hash_ids )
                     
-                    HydrusData.safe_print( '\n'.join( ( hash.hex() for hash in hash_ids_to_hashes.values() ) ) )
+                    HydrusData.show_text( '\n'.join( ( hash.hex() for hash in hash_ids_to_hashes.values() ) ) )
                     
                 except Exception as e:
                     
-                    HydrusData.safe_print( 'Could not print affected hashes (might be your regular hashes are busted too)' )
+                    HydrusData.show_text( 'Could not print affected hashes (might be your regular hashes are busted too)' )
                     
                 
             
@@ -1156,7 +1156,7 @@ class ClientDBSimilarFiles( ClientDBModule.ClientDBModule ):
             
             if HG.db_report_mode:
                 
-                HydrusData.ShowText( 'Similar file search touched {} nodes over {} cycles.'.format( HydrusNumbers.to_human_int( total_nodes_searched ), HydrusNumbers.to_human_int( num_cycles ) ) )
+                HydrusData.show_text( 'Similar file search touched {} nodes over {} cycles.'.format( HydrusNumbers.to_human_int( total_nodes_searched ), HydrusNumbers.to_human_int( num_cycles ) ) )
                 
             
             # so, now we have perceptual_hash_ids and distances. let's map that to actual files.

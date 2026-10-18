@@ -54,4 +54,4 @@ class HydrusRequestLogging(HydrusRequest):
         
         message = str( host.port ) + ' ' + str( self.method, 'utf-8' ) + ' ' + str( self.path, 'utf-8' ) + ' ' + status_text + ' in ' + HydrusTime.time_delta_to_pretty_timedelta( HydrusTime.get_now_precise() - self.start_time )
         
-        HydrusData.safe_print( message )
+        HydrusData.show_text( message )

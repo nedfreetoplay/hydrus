@@ -377,7 +377,7 @@ class FileDropTarget( QC.QObject ):
                         # but I need to figure out a way to reproduce this on my own. Chrome is supposed to do it on image DnD, but didn't for me
                         if url.startswith( 'data:' ) or len( url ) > 8 * 1024:
                             
-                            HydrusData.ShowText( 'This drag and drop was in the unsupported \'Data URL\' format. hydev would like to know more about this so he can fix it.' )
+                            HydrusData.show_text( 'This drag and drop was in the unsupported \'Data URL\' format. hydev would like to know more about this so he can fix it.' )
                             
                             continue
                             

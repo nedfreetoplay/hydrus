@@ -223,7 +223,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
                 
             except HydrusExceptions.DataMissing:
                 
-                HydrusData.ShowText( 'A query was run for a file service that does not exist! If you just removed a service, you might want to try checking the search and/or restarting the client.' )
+                HydrusData.show_text( 'A query was run for a file service that does not exist! If you just removed a service, you might want to try checking the search and/or restarting the client.' )
                 
                 continue
                 
@@ -243,7 +243,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
                 
             except HydrusExceptions.DataMissing:
                 
-                HydrusData.ShowText( 'A query was run for a tag service that does not exist! If you just removed a service, you might want to try checking the search and/or restarting the client.' )
+                HydrusData.show_text( 'A query was run for a tag service that does not exist! If you just removed a service, you might want to try checking the search and/or restarting the client.' )
                 
                 search_tag_service_ids = []
                 

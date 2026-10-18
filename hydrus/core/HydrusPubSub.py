@@ -106,7 +106,7 @@ class HydrusPubSub:
                     
                     if HG.pubsub_report_mode and not_a_report:
                         
-                        HydrusData.ShowText( ( topic, args, kwargs, callable_tuples ) )
+                        HydrusData.show_text( ( topic, args, kwargs, callable_tuples ) )
                         
                     
                     if HydrusProfiling.is_profile_mode( 'ui' ) and not_a_report:

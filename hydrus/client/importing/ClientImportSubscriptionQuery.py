@@ -121,7 +121,7 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
         
         if HG.subscription_report_mode:
             
-            HydrusData.ShowText( 'Query "{}" domain test. Domain ok: {}'.format( self._GetHumanName(), domain_ok ) )
+            HydrusData.show_text( 'Query "{}" domain test. Domain ok: {}'.format( self._GetHumanName(), domain_ok ) )
             
         
         return domain_ok
@@ -417,7 +417,7 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
         
         if HG.subscription_report_mode:
             
-            HydrusData.ShowText( 'Query "' + self._GetHumanName() + '" bandwidth/domain test. Bandwidth ok: {}'.format( bandwidth_ok ) )
+            HydrusData.show_text( 'Query "' + self._GetHumanName() + '" bandwidth/domain test. Bandwidth ok: {}'.format( bandwidth_ok ) )
             
         
         return bandwidth_ok
@@ -466,7 +466,7 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
         
         if HG.subscription_report_mode:
             
-            HydrusData.ShowText( 'Query "{}" pre-work file login test. Login ok: {}. {}'.format( self._GetHumanName(), str( result ), reason ) )
+            HydrusData.show_text( 'Query "{}" pre-work file login test. Login ok: {}. {}'.format( self._GetHumanName(), str( result ), reason ) )
             
         
         return ( result, reason )
@@ -516,7 +516,7 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
         
         if HG.subscription_report_mode:
             
-            HydrusData.ShowText( 'Query "{}" pre-work sync login test. Login ok: {}. {}'.format( self._GetHumanName(), str( result ), reason ) )
+            HydrusData.show_text( 'Query "{}" pre-work sync login test. Login ok: {}. {}'.format( self._GetHumanName(), str( result ), reason ) )
             
         
         return ( result, reason )
@@ -709,7 +709,7 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
         
         if HG.subscription_report_mode:
             
-            HydrusData.ShowText( 'Query "{}" HasFileWorkToDo test. Result is {}.'.format( self._query_text, result ) )
+            HydrusData.show_text( 'Query "{}" HasFileWorkToDo test. Result is {}.'.format( self._query_text, result ) )
             
         
         return result
@@ -767,7 +767,7 @@ class SubscriptionQueryHeader( HydrusSerialisable.SerialisableBase ):
         
         if HG.subscription_report_mode:
             
-            HydrusData.ShowText( 'Query "' + self._query_text + '" IsSyncDue test. Paused/dead/container status is {}/{}/{}, check time due is {}, and check_now is {}.'.format( self._paused, self.IsDead(), self.IsLogContainerOK(), HydrusTime.time_has_passed( self._next_check_time ), self._check_now ) )
+            HydrusData.show_text( 'Query "' + self._query_text + '" IsSyncDue test. Paused/dead/container status is {}/{}/{}, check time due is {}, and check_now is {}.'.format( self._paused, self.IsDead(), self.IsLogContainerOK(), HydrusTime.time_has_passed( self._next_check_time ), self._check_now ) )
             
         
         if self.IsDead():

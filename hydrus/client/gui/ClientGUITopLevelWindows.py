@@ -481,7 +481,7 @@ def SetInitialTLWSizeAndPosition( tlw: QW.QWidget, frame_key ):
     
     if we_care_about_off_screen_messages and position_message is not None:
         
-        HydrusData.ShowText( position_message )
+        HydrusData.show_text( position_message )
         
     
     if safe_position is not None:
@@ -681,7 +681,7 @@ class NewDialog( QP.Dialog ):
             
         except Exception as e:
             
-            HydrusData.ShowText( 'This dialog seems to have been unable to close for some reason. I am printing the stack to the log. The dialog may have already closed, or may attempt to close now. Please inform hydrus dev of this situation. I recommend you restart the client if you can. If the UI is locked, you will have to kill it via task manager.' )
+            HydrusData.show_text( 'This dialog seems to have been unable to close for some reason. I am printing the stack to the log. The dialog may have already closed, or may attempt to close now. Please inform hydrus dev of this situation. I recommend you restart the client if you can. If the UI is locked, you will have to kill it via task manager.' )
             
             HydrusData.print_exception( e )
             
@@ -695,7 +695,7 @@ class NewDialog( QP.Dialog ):
                 
             except Exception as e:
                 
-                HydrusData.ShowText( 'The dialog would not close on command.' )
+                HydrusData.show_text( 'The dialog would not close on command.' )
                 
             
             try:
@@ -704,7 +704,7 @@ class NewDialog( QP.Dialog ):
                 
             except Exception as e:
                 
-                HydrusData.ShowText( 'The dialog would not destroy on command.' )
+                HydrusData.show_text( 'The dialog would not destroy on command.' )
                 
             
         

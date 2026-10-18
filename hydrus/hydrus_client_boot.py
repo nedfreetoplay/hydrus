@@ -237,7 +237,7 @@ except Exception as e:
         message = 'Could not start up Qt to show the error visually!'
         
         try:
-            HydrusData.safe_print(message)
+            HydrusData.show_text(message)
             
         except Exception:
             print( message )
@@ -252,7 +252,7 @@ def boot():
         
         try:
             
-            HydrusData.safe_print( 'hydrus client started' )
+            HydrusData.show_text( 'hydrus client started' )
             
             from hydrus.client import ClientController
             
@@ -262,11 +262,11 @@ def boot():
             
         except Exception:
             
-            HydrusData.safe_print('hydrus client failed')
+            HydrusData.show_text('hydrus client failed')
             
             import traceback
             
-            HydrusData.safe_print(traceback.format_exc())
+            HydrusData.show_text(traceback.format_exc())
             
         finally:
             
@@ -300,7 +300,7 @@ def boot():
                     
                 
             
-            HydrusData.safe_print( 'hydrus client shut down' )
+            HydrusData.show_text( 'hydrus client shut down' )
             
         
     

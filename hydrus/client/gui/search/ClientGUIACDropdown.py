@@ -1770,7 +1770,7 @@ class ChildrenTab( ListBoxTagsPredicatesAC ):
                 
                 self._children_need_updating = False
                 
-                HydrusData.ShowText( 'Trying to load some child tags failed, please send this to hydev:' )
+                HydrusData.show_text( 'Trying to load some child tags failed, please send this to hydev:' )
                 HydrusData.ShowExceptionTuple( etype, value, tb, do_wait = False )
                 
             

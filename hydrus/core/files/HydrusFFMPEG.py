@@ -172,14 +172,14 @@ def getffmpeg_version():
     
     message = 'FFMPEG was recently contacted to fetch version information. While FFMPEG could be found, the response could not be understood. Significant debug information has been printed to the log, which hydrus_dev would be interested in.'
     
-    HydrusData.ShowText( message )
+    HydrusData.show_text( message )
     
     message += '\n' * 2
     message += 'STDOUT Response: {}'.format( stdout )
     message += '\n' * 2
     message += 'STDERR Response: {}'.format( stderr )
     
-    HydrusData.safe_print( message )
+    HydrusData.show_text( message )
     
     HydrusEnvironment.dump_env()
     
@@ -210,7 +210,7 @@ def handle_ffmpeg_file_not_found_and_generate_exception(e, path):
         message += '\n' * 2
         message += 'You can check your current FFMPEG status through help->about.'
         
-        HydrusData.ShowText( message )
+        HydrusData.show_text( message )
         
         FFMPEG_MISSING_ERROR_PUBBED = True
         
@@ -225,7 +225,7 @@ def handle_ffmpeg_no_content_and_generate_exception(path, stdout, stderr):
         
         message = f'FFMPEG, which hydrus uses to parse and render some media, and here was trying to look at "{path}", did not return any data on a recent file metadata check! More debug info has been written to the log.'
         
-        HydrusData.ShowText( message )
+        HydrusData.show_text( message )
         
         message += '\n' * 2
         message += 'STDOUT Response: {}'.format( stdout )

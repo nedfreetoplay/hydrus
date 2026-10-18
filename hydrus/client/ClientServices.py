@@ -1591,7 +1591,7 @@ class ServiceRestricted( ServiceRemote ):
                         m += '\n' * 2
                         m += message
                         
-                        HydrusData.ShowText( m )
+                        HydrusData.show_text( m )
                         
                     
                     if force:
@@ -1640,7 +1640,7 @@ class ServiceRestricted( ServiceRemote ):
                                             
                                             message = 'The tag filter for "{}" just changed! Changes are:{}{}'.format( self._name, '\n' * 2, summary )
                                             
-                                            HydrusData.ShowText( message )
+                                            HydrusData.show_text( message )
                                             
                                         except Exception as e:
                                             
@@ -1661,9 +1661,9 @@ class ServiceRestricted( ServiceRemote ):
                 
             except ( HydrusExceptions.CancelledException, HydrusExceptions.NetworkException ) as e:
                 
-                HydrusData.safe_print( 'Failed to refresh account for {}:'.format( name ) )
+                HydrusData.show_text( 'Failed to refresh account for {}:'.format( name ) )
                 
-                HydrusData.safe_print( e )
+                HydrusData.show_text( e )
                 
                 if force:
                     
@@ -1676,9 +1676,9 @@ class ServiceRestricted( ServiceRemote ):
                 
             except Exception:
                 
-                HydrusData.safe_print( 'Failed to refresh account for {}:'.format( name ) )
+                HydrusData.show_text( 'Failed to refresh account for {}:'.format( name ) )
                 
-                HydrusData.safe_print( traceback.format_exc() )
+                HydrusData.show_text( traceback.format_exc() )
                 
                 if force:
                     
@@ -1832,7 +1832,7 @@ class ServiceRepository( ServiceRestricted ):
         
         summary = '{} processed {} {} at {} rows/s'.format( self._name, HydrusNumbers.to_human_int( total_rows ), row_name, rows_s )
         
-        HydrusData.safe_print( summary )
+        HydrusData.show_text( summary )
         
     
     def _ReportOngoingRowSpeed( self, job_status, rows_done, total_rows, precise_timestamp, rows_done_in_last_packet, row_name ):
@@ -1892,9 +1892,9 @@ class ServiceRepository( ServiceRestricted ):
                 
             except HydrusExceptions.NetworkException as e:
                 
-                HydrusData.safe_print( 'Attempting to download metadata for ' + name + ' resulted in a network error:' )
+                HydrusData.show_text( 'Attempting to download metadata for ' + name + ' resulted in a network error:' )
                 
-                HydrusData.safe_print( e )
+                HydrusData.show_text( e )
                 
                 return
                 
@@ -1993,9 +1993,9 @@ class ServiceRepository( ServiceRestricted ):
                         
                         self._DelayFutureRequests( str( e ) )
                         
-                        HydrusData.safe_print( 'Attempting to download an update for ' + name + ' resulted in a network error:' )
+                        HydrusData.show_text( 'Attempting to download an update for ' + name + ' resulted in a network error:' )
                         
-                        HydrusData.safe_print( e )
+                        HydrusData.show_text( e )
                         
                         return
                         
@@ -2030,7 +2030,7 @@ class ServiceRepository( ServiceRestricted ):
                         message += '\n' * 2
                         message += 'The repository has been paused for now. Please look into what could be wrong and report this to the hydrus dev.'
                         
-                        HydrusData.ShowText( message )
+                        HydrusData.show_text( message )
                         
                         HydrusData.ShowException( e )
                         
@@ -2056,7 +2056,7 @@ class ServiceRepository( ServiceRestricted ):
                         message += '\n' * 2
                         message += 'The repository has been paused for now. Please look into what could be wrong and report this to the hydrus dev.'
                         
-                        HydrusData.ShowText( message )
+                        HydrusData.show_text( message )
                         
                         return
                         
@@ -2074,7 +2074,7 @@ class ServiceRepository( ServiceRestricted ):
                         
                         message = 'While downloading updates for the ' + self._name + ' repository, one failed to import! The error follows:'
                         
-                        HydrusData.ShowText( message )
+                        HydrusData.show_text( message )
                         
                         HydrusData.ShowException( e )
                         
@@ -2131,7 +2131,7 @@ class ServiceRepository( ServiceRestricted ):
                 content_hashes_and_content_types = self._metadata.sort_content_hashes_and_content_types( content_hashes_and_content_types )
                 
             
-            HydrusData.safe_print( title )
+            HydrusData.show_text( title )
             
             num_updates_done = 0
             num_updates_to_do = len( definition_hashes_and_content_types ) + len( content_hashes_and_content_types )
@@ -2427,7 +2427,7 @@ class ServiceRepository( ServiceRestricted ):
             
             message = 'Failed to process updates for the {} repository! The error follows:'.format( self._name )
             
-            HydrusData.ShowText( message )
+            HydrusData.show_text( message )
             
             HydrusData.ShowException( e )
             
@@ -2841,7 +2841,7 @@ class ServiceRepository( ServiceRestricted ):
                     self._DelayFutureRequests( str( e ) )
                     
                 
-                HydrusData.ShowText( 'The service "{}" encountered an error while trying to sync! The error was "{}". It will not do any work for a little while. If the fix is not obvious, please elevate this to hydrus dev.'.format( self._name, str( e ) ) )
+                HydrusData.show_text( 'The service "{}" encountered an error while trying to sync! The error was "{}". It will not do any work for a little while. If the fix is not obvious, please elevate this to hydrus dev.'.format( self._name, str( e ) ) )
                 
                 HydrusData.ShowException( e )
                 
@@ -2944,9 +2944,9 @@ class ServiceRepository( ServiceRestricted ):
                         
                     except HydrusExceptions.NetworkException as e:
                         
-                        HydrusData.safe_print( 'Attempting to download a thumbnail for ' + name + ' resulted in a network error:' )
+                        HydrusData.show_text( 'Attempting to download a thumbnail for ' + name + ' resulted in a network error:' )
                         
-                        HydrusData.safe_print( e )
+                        HydrusData.show_text( e )
                         
                         return
                         
@@ -3296,8 +3296,8 @@ class ServiceIPFS( ServiceRemote ):
             
             message = 'IPFS was unable to pin--returned no hash!'
             
-            HydrusData.safe_print( message )
-            HydrusData.safe_print( parsing_text )
+            HydrusData.show_text( message )
+            HydrusData.show_text( parsing_text )
             
             raise HydrusExceptions.DataMissing( message )
             
@@ -3310,8 +3310,8 @@ class ServiceIPFS( ServiceRemote ):
             
             message = 'IPFS was unable to pin--returned empty multihash!'
             
-            HydrusData.safe_print( message )
-            HydrusData.safe_print( parsing_text )
+            HydrusData.show_text( message )
+            HydrusData.show_text( parsing_text )
             
             raise HydrusExceptions.DataMissing( message )
             

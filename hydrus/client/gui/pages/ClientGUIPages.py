@@ -2426,7 +2426,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
             
         except Exception as e:
             
-            HydrusData.ShowText( 'While trying to load session "{}" (ts {}), this error happened:'.format( name, timestamp_ms ) )
+            HydrusData.show_text( 'While trying to load session "{}" (ts {}), this error happened:'.format( name, timestamp_ms ) )
             HydrusData.ShowException( e )
             
             return
@@ -2461,7 +2461,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
             
         except Exception as e:
             
-            HydrusData.ShowText( 'While trying to load session "{}", this error happened:'.format( name ) )
+            HydrusData.show_text( 'While trying to load session "{}", this error happened:'.format( name ) )
             HydrusData.ShowException( e )
             
             return
@@ -3371,7 +3371,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.ShowText( 'The page with name "{}" and hash "{}" failed to load because its data was missing!'.format( page_container.get_name(), page_data_hash.hex() ) )
+            HydrusData.show_text( 'The page with name "{}" and hash "{}" failed to load because its data was missing!'.format( page_container.get_name(), page_data_hash.hex() ) )
             
             return None
             

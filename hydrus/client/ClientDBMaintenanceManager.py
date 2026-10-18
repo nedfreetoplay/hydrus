@@ -151,7 +151,7 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 message += '\n' * 2
                 message += str( e )
                 
-                HydrusData.ShowText( message )
+                HydrusData.show_text( message )
                 
             finally:
                 

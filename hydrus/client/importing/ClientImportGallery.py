@@ -1669,7 +1669,7 @@ class MultipleGalleryImport( HydrusSerialisable.SerialisableBase ):
             
             if gug is None:
                 
-                HydrusData.ShowText( 'Could not find a Gallery URL Generator (Downloader) for "{}"!'.format( self._gug_key_and_name[1] ) )
+                HydrusData.show_text( 'Could not find a Gallery URL Generator (Downloader) for "{}"!'.format( self._gug_key_and_name[1] ) )
                 
                 return None
                 
@@ -1678,7 +1678,7 @@ class MultipleGalleryImport( HydrusSerialisable.SerialisableBase ):
             
             if len( initial_search_urls ) == 0:
                 
-                HydrusData.ShowText( 'The Gallery URL Generator (Downloader) "{}" did not produce any URLs!'.format( self._gug_key_and_name[1] ) )
+                HydrusData.show_text( 'The Gallery URL Generator (Downloader) "{}" did not produce any URLs!'.format( self._gug_key_and_name[1] ) )
                 
                 return None
                 
@@ -1716,7 +1716,7 @@ class MultipleGalleryImport( HydrusSerialisable.SerialisableBase ):
             
             if not self._IsGUGSet():
                 
-                HydrusData.ShowText( 'This page does not have a downloader set!' )
+                HydrusData.show_text( 'This page does not have a downloader set!' )
                 
                 return created_importers
                 
@@ -1725,7 +1725,7 @@ class MultipleGalleryImport( HydrusSerialisable.SerialisableBase ):
             
             if gug is None:
                 
-                HydrusData.ShowText( 'Could not find a Gallery URL Generator (Downloader) for "{}"!'.format( self._gug_key_and_name[1] ) )
+                HydrusData.show_text( 'Could not find a Gallery URL Generator (Downloader) for "{}"!'.format( self._gug_key_and_name[1] ) )
                 
                 return created_importers
                 
@@ -1742,7 +1742,7 @@ class MultipleGalleryImport( HydrusSerialisable.SerialisableBase ):
                 
                 if len( initial_search_urls ) == 0:
                     
-                    HydrusData.ShowText( 'The Gallery URL Generator "{}" did not produce any URLs!'.format( source_name ) )
+                    HydrusData.show_text( 'The Gallery URL Generator "{}" did not produce any URLs!'.format( source_name ) )
                     
                     return created_importers
                     

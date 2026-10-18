@@ -362,7 +362,7 @@ class BetterQListWidget( QW.QListWidget ):
                 
             except Exception as e:
                 
-                HydrusData.ShowText( 'Could not copy some text from a list!' )
+                HydrusData.show_text( 'Could not copy some text from a list!' )
                 
                 HydrusData.ShowException( e )
                 
@@ -2665,7 +2665,7 @@ class ListBox( QW.QScrollArea ):
         
         if HG.gui_report_mode:
             
-            HydrusData.ShowText( f'Setting a virtual size on {self}. Num terms: {len( self._ordered_terms)}, Text height: {text_height}, Total Positional Rows: {self._total_positional_rows}, My Height: {my_size.height()}, Ideal Height: {ideal_virtual_size.height()}' )
+            HydrusData.show_text( f'Setting a virtual size on {self}. Num terms: {len( self._ordered_terms)}, Text height: {text_height}, Total Positional Rows: {self._total_positional_rows}, My Height: {my_size.height()}, Ideal Height: {ideal_virtual_size.height()}' )
             
         
         if ideal_virtual_size != my_size:

@@ -66,7 +66,7 @@ def is_already_running(db_path, instance):
     
     if not HydrusPSUtil.PSUTIL_OK:
         
-        HydrusData.safe_print( 'psutil is not available, so cannot do the "already running?" check!' )
+        HydrusData.show_text( 'psutil is not available, so cannot do the "already running?" check!' )
         
         return False
         
@@ -130,13 +130,13 @@ def is_already_running(db_path, instance):
             
         except UnicodeDecodeError:
             
-            HydrusData.safe_print( 'The already-running file was incomprehensible!' )
+            HydrusData.show_text( 'The already-running file was incomprehensible!' )
             
             return False
             
         except Exception as e:
             
-            HydrusData.safe_print( 'Problem loading the already-running file:' )
+            HydrusData.show_text( 'Problem loading the already-running file:' )
             HydrusData.print_exception( e )
             
             return False

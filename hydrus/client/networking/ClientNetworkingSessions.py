@@ -159,13 +159,13 @@ class NetworkSessionManagerSessionContainer( HydrusSerialisable.SerialisableBase
             
             if CG.client_controller.is_booted():
                 
-                HydrusData.ShowText( 'You are set up to use the curl_cffi test, but it is not available! Pausing all network traffic and resetting the setting! Fix the situation and restart the client.' )
+                HydrusData.show_text( 'You are set up to use the curl_cffi test, but it is not available! Pausing all network traffic and resetting the setting! Fix the situation and restart the client.' )
                 
                 CG.client_controller.network_engine.PauseNewJobs()
                 
             else:
                 
-                HydrusData.ShowText( 'You are set up to use the curl_cffi test, but it is not available! Resetting the setting! Fix the situation and restart the client.' )
+                HydrusData.show_text( 'You are set up to use the curl_cffi test, but it is not available! Resetting the setting! Fix the situation and restart the client.' )
                 
             
             curl_cffi_definition = None
@@ -235,7 +235,7 @@ class NetworkSessionManagerSessionContainer( HydrusSerialisable.SerialisableBase
             
         except Exception as e:
             
-            HydrusData.safe_print( "Could not load and set cookies for session {}".format( self.network_context ) )
+            HydrusData.show_text( "Could not load and set cookies for session {}".format( self.network_context ) )
             
         
     
@@ -296,7 +296,7 @@ class NetworkSessionManagerSessionContainer( HydrusSerialisable.SerialisableBase
                     
                     self.printed_connection_pool_error = True
                     
-                    HydrusData.safe_print( 'There was a problem clearing the connection pool. The full error should follow. To stop spam, this message will only show one time per program boot. The error may happen again, silently.' )
+                    HydrusData.show_text( 'There was a problem clearing the connection pool. The full error should follow. To stop spam, this message will only show one time per program boot. The error may happen again, silently.' )
                     HydrusData.print_exception( e, do_wait = False )
                     
                 

@@ -20,9 +20,9 @@ class GUISessionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
         
         def handle_e( page_tuple, e ):
             
-            HydrusData.ShowText( 'Attempting to save a page to the session failed! Its data tuple and error follows! Please close it or see if you can clear any potentially invalid data from it!' )
+            HydrusData.show_text( 'Attempting to save a page to the session failed! Its data tuple and error follows! Please close it or see if you can clear any potentially invalid data from it!' )
             
-            HydrusData.ShowText( page_tuple )
+            HydrusData.show_text( page_tuple )
             
             HydrusData.ShowException( e )
             
@@ -90,9 +90,9 @@ class GUISessionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
         
         def handle_e( serialisable_page_tuple, e ):
             
-            HydrusData.ShowText( 'A page failed to load! Its serialised data and error follows!' )
+            HydrusData.show_text( 'A page failed to load! Its serialised data and error follows!' )
             
-            HydrusData.ShowText( serialisable_page_tuple )
+            HydrusData.show_text( serialisable_page_tuple )
             
             HydrusData.ShowException( e )
             

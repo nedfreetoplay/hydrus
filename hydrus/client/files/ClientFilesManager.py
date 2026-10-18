@@ -65,7 +65,7 @@ class ClientFilesManager( object ):
         
         if HG.file_report_mode or HG.file_import_report_mode:
             
-            HydrusData.ShowText( 'Adding file to client file structure: from {} to {}'.format( source_path, dest_path ) )
+            HydrusData.show_text( 'Adding file to client file structure: from {} to {}'.format( source_path, dest_path ) )
             
         
         file_size = os.path.getsize( source_path )
@@ -76,7 +76,7 @@ class ClientFilesManager( object ):
             
             message = 'The disk for path "{}" is almost full and cannot take the file "{}", which is {}! Shut the client down now and fix this!'.format( dest_path, hash.hex(), HydrusData.ToHumanBytes( file_size ) )
             
-            HydrusData.ShowText( message )
+            HydrusData.show_text( message )
             
             self._HandleCriticalDriveError()
             
@@ -91,7 +91,7 @@ class ClientFilesManager( object ):
             
             message = f'Copying the file from "{source_path}" to "{dest_path}" failed! Details should be shown and other import queues should be paused. You should shut the client down now and fix this!'
             
-            HydrusData.ShowText( message )
+            HydrusData.show_text( message )
             
             HydrusData.ShowException( e )
             
@@ -109,7 +109,7 @@ class ClientFilesManager( object ):
         
         if HG.file_report_mode:
             
-            HydrusData.ShowText( 'Adding thumbnail: ' + str( ( len( thumbnail_bytes ), dest_path ) ) )
+            HydrusData.show_text( 'Adding thumbnail: ' + str( ( len( thumbnail_bytes ), dest_path ) ) )
             
         
         try:
@@ -215,7 +215,7 @@ class ClientFilesManager( object ):
             summary_message += '\n' * 2
             summary_message += 'Assuming you did this on purpose, or hydrus recently inserted stub values after database corruption, Hydrus is ready to update its internal knowledge to reflect these new mappings as soon as this dialog closes. If you know these proposed fixes are incorrect, terminate the program now.'
             
-            HydrusData.safe_print( summary_message )
+            HydrusData.show_text( summary_message )
             
             self._controller.blocking_safe_show_critical_message( 'About to auto-heal client file folders.', summary_message )
             
@@ -237,7 +237,7 @@ class ClientFilesManager( object ):
         
         if HG.file_report_mode:
             
-            HydrusData.ShowText( 'Changing file ext: ' + str( ( old_path, new_path ) ) )
+            HydrusData.show_text( 'Changing file ext: ' + str( ( old_path, new_path ) ) )
             
         
         if HydrusPaths.path_is_free( old_path ):
@@ -776,7 +776,7 @@ class ClientFilesManager( object ):
             
         except Exception as e:
             
-            HydrusData.ShowText( 'Hey while calculating a potential rebalance job for the file migration system, I encountered this error. Please forward to hydev! Anonymising paths is fine, I just need to see the code.' )
+            HydrusData.show_text( 'Hey while calculating a potential rebalance job for the file migration system, I encountered this error. Please forward to hydev! Anonymising paths is fine, I just need to see the code.' )
             
             HydrusData.ShowException( e, do_wait = False )
             
@@ -805,7 +805,7 @@ class ClientFilesManager( object ):
         self._controller.new_options.SetBoolean( 'pause_subs_sync', True )
         self._controller.new_options.SetBoolean( 'pause_all_file_queues', True )
         
-        HydrusData.ShowText( 'A critical drive error has occurred. All importers--subscriptions, import folders, and paged file import queues--have been paused. Once the issue is clear, restart the client and resume your imports under the file and network menus!' )
+        HydrusData.show_text( 'A critical drive error has occurred. All importers--subscriptions, import folders, and paged file import queues--have been paused. Once the issue is clear, restart the client and resume your imports under the file and network menus!' )
         
         self._controller.pub( 'notify_refresh_network_menu' )
         self._controller.pub( 'notify_new_import_folders' )
@@ -895,7 +895,7 @@ class ClientFilesManager( object ):
         
         if HG.file_report_mode:
             
-            HydrusData.ShowText( 'Adding file from string: ' + str( ( len( file_bytes ), dest_path ) ) )
+            HydrusData.show_text( 'Adding file from string: ' + str( ( len( file_bytes ), dest_path ) ) )
             
         
         if os.path.exists( dest_path ):
@@ -1056,7 +1056,7 @@ class ClientFilesManager( object ):
                                     
                                     dest = HydrusPaths.append_path_until_no_conflicts( dest )
                                     
-                                    HydrusData.safe_print( 'Moving the orphan ' + path + ' to ' + dest )
+                                    HydrusData.show_text( 'Moving the orphan ' + path + ' to ' + dest )
                                     
                                     try:
                                         
@@ -1064,7 +1064,7 @@ class ClientFilesManager( object ):
                                         
                                     except Exception as e:
                                         
-                                        HydrusData.ShowText( f'Had trouble moving orphan from {path} to {dest}! Abandoning job!' )
+                                        HydrusData.show_text( f'Had trouble moving orphan from {path} to {dest}! Abandoning job!' )
                                         
                                         HydrusData.ShowException( e, do_wait = False )
                                         
@@ -1121,7 +1121,7 @@ class ClientFilesManager( object ):
                             return
                             
                         
-                        HydrusData.safe_print( 'Deleting the orphan ' + path )
+                        HydrusData.show_text( 'Deleting the orphan ' + path )
                         
                         status = 'deleting orphan files: ' + HydrusNumbers.value_range_to_pretty_string( i + 1, len( orphan_paths ) )
                         
@@ -1148,7 +1148,7 @@ class ClientFilesManager( object ):
                             return
                             
                         
-                        HydrusData.safe_print( 'Deleting the orphan ' + path )
+                        HydrusData.show_text( 'Deleting the orphan ' + path )
                         
                         status = 'deleting orphan thumbnails: ' + HydrusNumbers.value_range_to_pretty_string( i + 1, len( orphan_thumbnails ) )
                         
@@ -1170,7 +1170,7 @@ class ClientFilesManager( object ):
             
             job_status.SetStatusText( final_text )
             
-            HydrusData.safe_print( job_status.ToString() )
+            HydrusData.show_text( job_status.ToString() )
             
             job_status.Finish()
             
@@ -1277,7 +1277,7 @@ class ClientFilesManager( object ):
                             
                         except HydrusExceptions.FileMissingException:
                             
-                            HydrusData.safe_print( 'Wanted to physically delete the "{}" file, with expected mime "{}", but it was not found!'.format( file_hash.hex(), HC.mime_string_lookup[ expected_mime ] ) )
+                            HydrusData.show_text( 'Wanted to physically delete the "{}" file, with expected mime "{}", but it was not found!'.format( file_hash.hex(), HC.mime_string_lookup[ expected_mime ] ) )
                             
                         
                     
@@ -1314,7 +1314,7 @@ class ClientFilesManager( object ):
             
             self._controller.pub( 'notify_new_physical_file_delete_numbers' )
             
-            HydrusData.safe_print( 'Physically deleted {} files and {} thumbnails from file storage.'.format( HydrusNumbers.to_human_int( num_files_deleted ), HydrusNumbers.to_human_int( num_files_deleted ) ) )
+            HydrusData.show_text( 'Physically deleted {} files and {} thumbnails from file storage.'.format( HydrusNumbers.to_human_int( num_files_deleted ), HydrusNumbers.to_human_int( num_files_deleted ) ) )
             
         
     
@@ -1344,7 +1344,7 @@ class ClientFilesManager( object ):
             
             if HG.file_report_mode:
                 
-                HydrusData.ShowText( 'File path request: ' + str( ( hash, mime ) ) )
+                HydrusData.show_text( 'File path request: ' + str( ( hash, mime ) ) )
                 
             
             with self._GetPrefixRWLock( hash, 'f' ).read:
@@ -1401,7 +1401,7 @@ class ClientFilesManager( object ):
         
         if HG.file_report_mode:
             
-            HydrusData.ShowText( 'Thumbnail path request: ' + str( ( hash, mime ) ) )
+            HydrusData.show_text( 'Thumbnail path request: ' + str( ( hash, mime ) ) )
             
         
         with self._master_locations_rwlock.read:
@@ -1440,7 +1440,7 @@ class ClientFilesManager( object ):
         
         if HG.file_report_mode:
             
-            HydrusData.ShowText( 'File path test: ' + path )
+            HydrusData.show_text( 'File path test: ' + path )
             
         
         return os.path.exists( path )
@@ -1452,7 +1452,7 @@ class ClientFilesManager( object ):
         
         if HG.file_report_mode:
             
-            HydrusData.ShowText( 'Thumbnail path test: ' + path )
+            HydrusData.show_text( 'Thumbnail path test: ' + path )
             
         
         return os.path.exists( path )
@@ -1464,7 +1464,7 @@ class ClientFilesManager( object ):
             
             if self._bad_error_occurred:
                 
-                HydrusData.ShowText( 'A serious file error has previously occurred during this session, so further file moving will not be reattempted. Please restart the client before trying again.' )
+                HydrusData.show_text( 'A serious file error has previously occurred during this session, so further file moving will not be reattempted. Please restart the client before trying again.' )
                 
                 return
                 
@@ -1484,7 +1484,7 @@ class ClientFilesManager( object ):
                     
                     text = f'Moving "{source_subfolder}" to "{dest_subfolder}".'
                     
-                    HydrusData.safe_print( text )
+                    HydrusData.show_text( text )
                     
                     job_status.SetStatusText( text )
                     
@@ -1638,11 +1638,11 @@ class ClientFilesManager( object ):
                         
                         os.utime( path, ( existing_access_time, modified_timestamp ) )
                         
-                        HydrusData.safe_print( 'Successfully changed modified time of "{}" from {} to {}.'.format( path, HydrusTime.timestamp_to_pretty_time( int( existing_modified_time ) ), HydrusTime.timestamp_to_pretty_time( int( modified_timestamp ) ) ))
+                        HydrusData.show_text( 'Successfully changed modified time of "{}" from {} to {}.'.format( path, HydrusTime.timestamp_to_pretty_time( int( existing_modified_time ) ), HydrusTime.timestamp_to_pretty_time( int( modified_timestamp ) ) ))
                         
                     except PermissionError:
                         
-                        HydrusData.safe_print( 'Tried to set modified time of {} to file "{}", but did not have permission!'.format( HydrusTime.timestamp_to_pretty_time( int( modified_timestamp ) ), path ) )
+                        HydrusData.show_text( 'Tried to set modified time of {} to file "{}", but did not have permission!'.format( HydrusTime.timestamp_to_pretty_time( int( modified_timestamp ) ), path ) )
                         
                     
                 

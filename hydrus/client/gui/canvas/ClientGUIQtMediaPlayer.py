@@ -343,7 +343,7 @@ class QtMediaPlayer( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
             except Exception as e:
                 
-                HydrusData.safe_print( f'Qt was not happy about me setting the audio device "{self._my_audio_output}" to QMediaPlayer. Base error was "{str(e)}". Please tell hydev.' )
+                HydrusData.show_text( f'Qt was not happy about me setting the audio device "{self._my_audio_output}" to QMediaPlayer. Base error was "{str(e)}". Please tell hydev.' )
                 
             
         

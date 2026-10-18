@@ -561,7 +561,7 @@ class NetworkLoginManager( HydrusSerialisable.SerialisableBase ):
             
             self._domains_to_login_info[ login_domain ] = ( login_script_key_and_name, credentials, login_access_type, login_access_text, active, validity, validity_error_text, no_work_until, no_work_until_reason )
             
-            HydrusData.ShowText( 'The login for "' + login_domain + '" failed! It will not be reattempted until the problem is fixed. The failure reason was:' + '\n' * 2 + validity_error_text )
+            HydrusData.show_text( 'The login for "' + login_domain + '" failed! It will not be reattempted until the problem is fixed. The failure reason was:' + '\n' * 2 + validity_error_text )
             
             self._SetDirty()
             
@@ -929,11 +929,11 @@ class LoginProcessDomain( LoginProcess ):
         
         CG.client_controller.pub( 'message', job_status )
         
-        HydrusData.safe_print( 'Starting login for ' + login_domain )
+        HydrusData.show_text( 'Starting login for ' + login_domain )
         
         result = self.login_script.Start( self.engine, self.network_context, self.credentials, job_status = job_status )
         
-        HydrusData.safe_print( 'Finished login for ' + self.network_context.context_data + '. Result was: ' + result )
+        HydrusData.show_text( 'Finished login for ' + self.network_context.context_data + '. Result was: ' + result )
         
         job_status.SetStatusText( result )
         
@@ -999,7 +999,7 @@ class LoginScriptHydrus( object ):
             
             if self._IsLoggedIn( engine, network_context ):
                 
-                HydrusData.safe_print( 'Successfully logged into ' + service.GetName() + '.' )
+                HydrusData.show_text( 'Successfully logged into ' + service.GetName() + '.' )
                 
             elif service.IsFunctional():
                 

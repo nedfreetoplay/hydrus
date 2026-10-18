@@ -264,7 +264,7 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
             
             self._render_failed = True
             
-            HydrusData.safe_print( 'Problem rendering image at "{}"! Error follows:'.format( self._path ) )
+            HydrusData.show_text( 'Problem rendering image at "{}"! Error follows:'.format( self._path ) )
             
             HydrusData.print_exception( e, do_wait = False )
             
@@ -311,7 +311,7 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
                     m += '\n' * 2
                     m += 'You may see some black squares in the image. A metadata regeneration has been scheduled, so with luck it will fix itself soon. If the file is still broken, hydev would like to see it!'
                     
-                    HydrusData.ShowText( m )
+                    HydrusData.show_text( m )
                     
                     CG.client_controller.write( 'file_maintenance_add_jobs_hashes', { self._hash }, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_METADATA )
                     
@@ -428,7 +428,7 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
                 
             except Exception as e:
                 
-                HydrusData.safe_print( 'Failed to load the ICC Profile for {} into a Qt Colourspace!'.format( self._path ) )
+                HydrusData.show_text( 'Failed to load the ICC Profile for {} into a Qt Colourspace!'.format( self._path ) )
                 
                 self._icc_profile_bytes = None
                 
@@ -479,7 +479,7 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
                 
             
         
-        HydrusData.safe_print( 'Failed to produce a tile! Info is: {}, {}, {}, {}'.format( self._hash.hex(), ( my_width, my_height ), clip_rect, target_resolution ) )
+        HydrusData.show_text( 'Failed to produce a tile! Info is: {}, {}, {}, {}'.format( self._hash.hex(), ( my_width, my_height ), clip_rect, target_resolution ) )
         
         pixmap = QG.QPixmap( target_resolution )
         
@@ -622,7 +622,7 @@ class RasterContainerVideo( RasterContainer ):
             message += '\n' * 2
             message += 'You may wish to try regenerating its metadata through the advanced mode right-click menu.'
             
-            HydrusData.ShowText( message )
+            HydrusData.show_text( message )
             
             duration_ms = 1000
             
@@ -633,7 +633,7 @@ class RasterContainerVideo( RasterContainer ):
             message += '\n' * 2
             message += 'You may wish to try regenerating its metadata through the advanced mode right-click menu.'
             
-            HydrusData.ShowText( message )
+            HydrusData.show_text( message )
             
             num_frames_in_video = 1
             

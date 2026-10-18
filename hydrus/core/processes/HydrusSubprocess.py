@@ -161,7 +161,7 @@ def get_subprocess_kw_args(hide_terminal = True, text = False, shell = False):
         
         message = 'KWargs are: {}'.format( sbp_kwargs )
         
-        HydrusData.ShowText( message )
+        HydrusData.show_text( message )
         
     
     return sbp_kwargs
@@ -261,15 +261,15 @@ def run_subprocess_raw_call(cmd, start_new_session, bufsize, stdin_pipe, stdout_
         
     except FileNotFoundError:
         
-        HydrusData.ShowText( f'Got a file not found on this external program call: {cmd}')
-        HydrusData.ShowText( f'If the error is not obvious, you might want to talk to hydev about it. Maybe your env PATH is unusual. Your env will follow, and here were the sbp kwargs used in the subprocess call: {sbp_kwargs}')
+        HydrusData.show_text( f'Got a file not found on this external program call: {cmd}')
+        HydrusData.show_text( f'If the error is not obvious, you might want to talk to hydev about it. Maybe your env PATH is unusual. Your env will follow, and here were the sbp kwargs used in the subprocess call: {sbp_kwargs}')
         HydrusEnvironment.dump_env()
         
         raise
         
     except Exception as e:
         
-        HydrusData.ShowText( f'Had a problem with an external program! Error will follow; command was: {cmd}' )
+        HydrusData.show_text( f'Had a problem with an external program! Error will follow; command was: {cmd}' )
         HydrusData.ShowException( e )
         
         raise
@@ -317,17 +317,17 @@ def run_subprocess(
         
         if stdout is None and stderr is None:
             
-            HydrusData.ShowText( 'No stdout or stderr came back.' )
+            HydrusData.show_text( 'No stdout or stderr came back.' )
             
         
         if stdout is not None:
             
-            HydrusData.ShowText( 'stdout: ' + repr( stdout ) )
+            HydrusData.show_text( 'stdout: ' + repr( stdout ) )
             
         
         if stderr is not None:
             
-            HydrusData.ShowText( 'stderr: ' + repr( stderr ) )
+            HydrusData.show_text( 'stderr: ' + repr( stderr ) )
             
         
     
@@ -387,7 +387,7 @@ def terminate_and_reap_process( process: subprocess.Popen ):
         
     except PermissionError as e:
         
-        HydrusData.safe_print( f'I tried to terminate the process {process} but got {e}!' )
+        HydrusData.show_text( f'I tried to terminate the process {process} but got {e}!' )
         
     
     try:
@@ -402,7 +402,7 @@ def terminate_and_reap_process( process: subprocess.Popen ):
             
         except PermissionError as e:
             
-            HydrusData.safe_print( f'I tried to kill the process {process} after post-terminate communicate timed out but got {e}!' )
+            HydrusData.show_text( f'I tried to kill the process {process} after post-terminate communicate timed out but got {e}!' )
             
         
         try:
@@ -485,7 +485,7 @@ class SubprocessContext:
                     
                 except ValueError: # probably got terminated at an inconvenient time
                     
-                    HydrusData.safe_print( f'Probably not a big deal, but the Subprocess Command "{self._cmd}" closed its stdout early. If this keeps happening, please let hydev know!' )
+                    HydrusData.show_text( f'Probably not a big deal, but the Subprocess Command "{self._cmd}" closed its stdout early. If this keeps happening, please let hydev know!' )
                     
                     return
                     

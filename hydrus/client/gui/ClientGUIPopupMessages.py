@@ -358,7 +358,7 @@ class PopupMessage( PopupWindow ):
             
             def errback_callable( etype, value, tb ):
                 
-                HydrusData.ShowText( 'Sorry, unable to show those files:' )
+                HydrusData.show_text( 'Sorry, unable to show those files:' )
                 HydrusData.ShowExceptionTuple( etype, value, tb, do_wait = False )
                 
             
@@ -864,12 +864,12 @@ class PopupMessageManager( QW.QFrame ):
         self._old_excepthook = sys.excepthook
         self._old_show_exception = HydrusData.ShowException
         self._old_show_exception_tuple = HydrusData.ShowExceptionTuple
-        self._old_show_text = HydrusData.ShowText
+        self._old_show_text = HydrusData.show_text
         
         sys.excepthook = ClientData.CatchExceptionClient
         HydrusData.ShowException = ClientData.ShowExceptionClient
         HydrusData.ShowExceptionTuple = ClientData.ShowExceptionTupleClient
-        HydrusData.ShowText = ClientData.ShowTextClient
+        HydrusData.show_text = ClientData.ShowTextClient
         
         job_status = ClientThreading.JobStatus()
         
@@ -1018,9 +1018,9 @@ class PopupMessageManager( QW.QFrame ):
             
             text = 'The popup message manager experienced a fatal error and will now stop working! Please restart the client as soon as possible! If this keeps happening, please email the details and your client.log to the hydrus developer.'
             
-            HydrusData.safe_print( text )
+            HydrusData.show_text( text )
             
-            HydrusData.safe_print( traceback.format_exc() )
+            HydrusData.show_text( traceback.format_exc() )
             
             ClientGUIDialogsMessage.ShowCritical( gui_frame, 'Popup Message Manager failure!', text )
             
@@ -1113,7 +1113,7 @@ class PopupMessageManager( QW.QFrame ):
             
         except Exception as e:
             
-            HydrusData.safe_print( traceback.format_exc() )
+            HydrusData.show_text( traceback.format_exc() )
             
         
     
@@ -1148,7 +1148,7 @@ class PopupMessageManager( QW.QFrame ):
         
         HydrusData.ShowException = self._old_show_exception
         HydrusData.ShowExceptionTuple = self._old_show_exception_tuple
-        HydrusData.ShowText = self._old_show_text
+        HydrusData.show_text = self._old_show_text
         
     
     def _RemovePopupWindow( self, window: PopupMessage ):

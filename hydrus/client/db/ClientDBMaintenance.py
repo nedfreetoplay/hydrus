@@ -31,7 +31,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
         
         self._execute( 'DELETE FROM deferred_delete_tables WHERE name = ?;', ( deletee_table_name, ) )
         
-        HydrusData.safe_print( f'Deferred delete table {deletee_table_name} successfully dropped.' )
+        HydrusData.show_text( f'Deferred delete table {deletee_table_name} successfully dropped.' )
         
     
     def _GetDeferredDeleteTableName( self ) -> tuple[ str | None, int | None ]:
@@ -278,7 +278,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
                     
                     if time_took > 1:
                         
-                        HydrusData.safe_print( 'Analyzed ' + name + ' in ' + HydrusTime.time_delta_to_pretty_timedelta( time_took ) )
+                        HydrusData.show_text( 'Analyzed ' + name + ' in ' + HydrusTime.time_delta_to_pretty_timedelta( time_took ) )
                         
                     
                     p1 = CG.client_controller.should_stop_this_work( maintenance_mode, stop_time = stop_time )
@@ -294,7 +294,7 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
                 
                 job_status.SetStatusText( 'done!' )
                 
-                HydrusData.safe_print( job_status.ToString() )
+                HydrusData.show_text( job_status.ToString() )
                 
             finally:
                 
@@ -360,12 +360,12 @@ class ClientDBMaintenance( ClientDBModule.ClientDBModule ):
         
         if len( all_surplus_table_names ) == 0:
             
-            HydrusData.ShowText( 'No orphan tables!' )
+            HydrusData.show_text( 'No orphan tables!' )
             
         
         for table_name in all_surplus_table_names:
             
-            HydrusData.ShowText( f'Cleared orphan table "{table_name}"' )
+            HydrusData.show_text( f'Cleared orphan table "{table_name}"' )
             
             self.DeferredDropTable( table_name )
             
