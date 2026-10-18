@@ -213,7 +213,7 @@ class Controller(HydrusController.HydrusController):
             
             if file_hash is not None:
                 
-                path = ServerFiles.GetExpectedFilePath( file_hash )
+                path = ServerFiles.get_expected_file_path( file_hash )
                 
                 if os.path.exists( path ):
                     
@@ -225,7 +225,7 @@ class Controller(HydrusController.HydrusController):
             
             if thumbnail_hash is not None:
                 
-                path = ServerFiles.GetExpectedThumbnailPath( thumbnail_hash )
+                path = ServerFiles.get_expected_thumbnail_path( thumbnail_hash )
                 
                 if os.path.exists( path ):
                     

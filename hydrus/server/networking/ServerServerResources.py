@@ -1065,7 +1065,7 @@ class HydrusResourceRestrictedRepositoryFile( HydrusResourceRestricted ):
             raise HydrusExceptions.NotFoundException( 'File not found on this service!' )
             
         
-        path = ServerFiles.GetFilePath( hash )
+        path = ServerFiles.get_file_path( hash )
         
         response_context = HydrusServerResources.ResponseContext( 200, mime = mime, path = path )
         
@@ -1119,7 +1119,7 @@ class HydrusResourceRestrictedRepositoryThumbnail( HydrusResourceRestricted ):
             raise HydrusExceptions.NotFoundException( 'That mime should not have a thumbnail!' )
             
         
-        path = ServerFiles.GetThumbnailPath( hash )
+        path = ServerFiles.get_thumbnail_path( hash )
         
         response_context = HydrusServerResources.ResponseContext( 200, mime = HC.APPLICATION_OCTET_STREAM, path = path )
         
@@ -1285,7 +1285,7 @@ class HydrusResourceRestrictedUpdate( HydrusResourceRestricted ):
             raise HydrusExceptions.NotFoundException( 'This update hash does not exist on this service!' )
             
         
-        path = ServerFiles.GetFilePath( update_hash )
+        path = ServerFiles.get_file_path( update_hash )
         
         response_context = HydrusServerResources.ResponseContext( 200, mime = HC.APPLICATION_OCTET_STREAM, path = path )
         

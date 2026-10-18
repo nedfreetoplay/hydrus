@@ -146,7 +146,7 @@ class DB(HydrusDB.HydrusDB):
             self._execute( 'INSERT OR IGNORE INTO files_info ( master_hash_id, size, mime, width, height, duration, num_frames, num_words ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? );', ( master_hash_id, size, mime, width, height, duration_ms, num_frames, num_words ) )
             
         
-        dest_path = ServerFiles.GetExpectedFilePath( hash )
+        dest_path = ServerFiles.get_expected_file_path( hash )
         
         if not os.path.exists( dest_path ):
             
@@ -157,7 +157,7 @@ class DB(HydrusDB.HydrusDB):
         
         if 'thumbnail' in file_dict:
             
-            thumbnail_dest_path = ServerFiles.GetExpectedThumbnailPath( hash )
+            thumbnail_dest_path = ServerFiles.get_expected_thumbnail_path( hash )
             
             if not os.path.exists( thumbnail_dest_path ):
                 
@@ -2015,7 +2015,7 @@ class DB(HydrusDB.HydrusDB):
                 
                 update_hash = hashlib.sha256( update_bytes ).digest()
                 
-                dest_path = ServerFiles.GetExpectedFilePath( update_hash )
+                dest_path = ServerFiles.get_expected_file_path( update_hash )
                 
                 with open( dest_path, 'wb' ) as f:
                     
