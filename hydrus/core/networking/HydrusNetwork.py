@@ -2817,7 +2817,7 @@ class ServerServiceRepository(ServerServiceRestricted):
                     
                     with self._lock:
                         
-                        self._metadata.AppendUpdate( update_hashes, begin, end, next_update_due )
+                        self._metadata.append_update( update_hashes, begin, end, next_update_due )
                         
                         update_due = self._metadata.UpdateDue()
                         
