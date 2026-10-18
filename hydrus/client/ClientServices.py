@@ -3256,7 +3256,7 @@ class ServiceIPFS( ServiceRemote ):
             
             job_status.DeleteGauge()
             
-            job_status.Finish()
+            job_status.finish()
             
         
     

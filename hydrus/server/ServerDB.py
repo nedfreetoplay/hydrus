@@ -2096,7 +2096,7 @@ class DB( HydrusDB.HydrusDB ):
             
             for update in updates:
                 
-                num_rows = update.GetNumRows()
+                num_rows = update.get_num_rows()
                 
                 if isinstance( update, HydrusNetwork.DefinitionsUpdate ):
                     

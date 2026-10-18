@@ -1172,7 +1172,7 @@ class ClientFilesManager( object ):
             
             HydrusData.show_text( job_status.ToString() )
             
-            job_status.Finish()
+            job_status.finish()
             
         
     

@@ -374,7 +374,7 @@ class DB( HydrusDB.HydrusDB ):
             
             job_status.SetStatusText( 'backup complete!' )
             
-            job_status.Finish()
+            job_status.finish()
             
         
     
@@ -1126,7 +1126,7 @@ class DB( HydrusDB.HydrusDB ):
             
             job_status.SetStatusText( 'done!' )
             
-            job_status.Finish()
+            job_status.finish()
             
         
     
@@ -5516,7 +5516,7 @@ class DB( HydrusDB.HydrusDB ):
             
         finally:
             
-            job_status.Finish()
+            job_status.finish()
             
         
     
@@ -6523,7 +6523,7 @@ class DB( HydrusDB.HydrusDB ):
                 job_status.SetStatusText( message )
                 
             
-            job_status.Finish()
+            job_status.finish()
             
         
         return bad_tag_count
@@ -6598,7 +6598,7 @@ class DB( HydrusDB.HydrusDB ):
             
             job_status.SetStatusText( 'Done! Rows recovered: {}'.format( HydrusNumbers.to_human_int( num_rows_recovered ) ) )
             
-            job_status.Finish()
+            job_status.finish()
             
         
     
@@ -6778,7 +6778,7 @@ class DB( HydrusDB.HydrusDB ):
             
         finally:
             
-            job_status.Finish()
+            job_status.finish()
             
         
     
@@ -6935,7 +6935,7 @@ class DB( HydrusDB.HydrusDB ):
             
         finally:
             
-            job_status.Finish()
+            job_status.finish()
             
         
     

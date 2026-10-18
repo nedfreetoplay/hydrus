@@ -72,7 +72,7 @@ def ManageServiceOptionsTagFilter(
                 
                 job_status.SetExceptionTuple( etype, value, tb )
                 
-                job_status.Finish()
+                job_status.finish()
                 
             
             job = ClientGUIAsync.AsyncQtJob( win, work_callable, publish_callable, errback_callable = errback_callable )

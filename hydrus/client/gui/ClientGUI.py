@@ -1952,7 +1952,7 @@ QMenuBar::item { padding: 2px 8px; margin: 0px; }'''
                 
                 job_status.SetStatusText( 'No missing archive times found!' )
                 
-                job_status.Finish()
+                job_status.finish()
                 
             
         
@@ -1976,7 +1976,7 @@ QMenuBar::item { padding: 2px 8px; margin: 0px; }'''
                 
             
             job_status.SetStatusText( 'Done!' )
-            job_status.Finish()
+            job_status.finish()
             
         
         message = 'There are a couple of ways your client may be missing archive times for your files. This will scan for missing times and then present you with the results and a choice on what to do.'
@@ -2214,7 +2214,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
                 job_status.DeleteGauge()
                 
-                job_status.Finish()
+                job_status.finish()
                 
             
         
@@ -4823,7 +4823,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                     
                     job_status.SetExceptionTuple( etype, value, tb )
                     
-                    job_status.Finish()
+                    job_status.finish()
                     
                 
                 job = ClientGUIAsync.AsyncQtJob( self, work_callable, publish_callable, errback_callable = errback_callable )
@@ -4880,7 +4880,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                     
                     job_status.SetExceptionTuple( etype, value, tb )
                     
-                    job_status.Finish()
+                    job_status.finish()
                     
                 
                 job = ClientGUIAsync.AsyncQtJob( self, work_callable, publish_callable, errback_callable = errback_callable )
@@ -4950,7 +4950,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                     
                     job_status.SetExceptionTuple( etype, value, tb )
                     
-                    job_status.Finish()
+                    job_status.finish()
                     
                 
                 job = ClientGUIAsync.AsyncQtJob( self, work_callable, publish_callable, errback_callable = errback_callable )

@@ -778,7 +778,7 @@ And pass that html to a number of 'parsing children' that will each look through
             
         finally:
             
-            job_status.Finish()
+            job_status.finish()
             
         
     
@@ -815,7 +815,7 @@ And pass that html to a number of 'parsing children' that will each look through
                 
             finally:
                 
-                job_status.Finish()
+                job_status.finish()
                 
             
         

@@ -88,7 +88,7 @@ def PublishPresentationHashes( publishing_label: str, hashes: list[ bytes ], pub
         job_status.SetVariable( 'attached_files_mergable', True )
         job_status.SetFiles( list( hashes ), publishing_label )
         
-        job_status.Finish() # important to later make it auto-dismiss on all files disappearing
+        job_status.finish() # important to later make it auto-dismiss on all files disappearing
         
         CG.client_controller.pub( 'message', job_status )
         
@@ -161,7 +161,7 @@ def THREADDownloadURL( job_status, url, url_string ):
         
     finally:
         
-        job_status.Finish()
+        job_status.finish()
         
     
 
@@ -297,7 +297,7 @@ def THREADDownloadURLs( job_status: ClientThreading.JobStatus, urls, title ):
     
     job_status.DeleteGauge()
     
-    job_status.Finish()
+    job_status.finish()
     
 def UpdateFileSeedCacheWithFileSeeds( file_seed_cache, file_seeds, max_new_urls_allowed = None ):
     

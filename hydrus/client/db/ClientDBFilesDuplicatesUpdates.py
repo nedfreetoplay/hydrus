@@ -921,7 +921,7 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
             
             job_status.DeleteGauge()
             
-            job_status.Finish()
+            job_status.finish()
             
         
     

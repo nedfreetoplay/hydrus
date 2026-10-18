@@ -1829,7 +1829,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
             
             if job_status.GetFiles() is not None:
                 
-                job_status.Finish()
+                job_status.finish()
                 
             else:
                 

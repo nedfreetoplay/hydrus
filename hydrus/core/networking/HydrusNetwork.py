@@ -2949,7 +2949,7 @@ class UpdateBuilder:
     
     def add_row(self, row, row_weight = 1):
         
-        self._current_update.AddRow( row )
+        self._current_update.add_row( row )
         self._current_num_rows += row_weight
         
         if self._current_num_rows > self._max_rows:
@@ -2961,7 +2961,7 @@ class UpdateBuilder:
     
     def finish(self):
         
-        if self._current_update.GetNumRows() > 0:
+        if self._current_update.get_num_rows() > 0:
             
             self._updates.append( self._current_update )
             

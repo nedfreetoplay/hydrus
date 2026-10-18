@@ -449,7 +449,7 @@ class Controller:
                 
             finally:
                 
-                job_status.Finish()
+                job_status.finish()
                 
             
         

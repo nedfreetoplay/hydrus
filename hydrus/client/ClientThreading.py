@@ -121,7 +121,7 @@ class JobStatus( object ):
         
         self._cancelled = True
         
-        self.Finish()
+        self.finish()
         
     
     def DeleteFiles( self ):
@@ -162,7 +162,7 @@ class JobStatus( object ):
         self._ui_update_pauser.pause()
         
     
-    def Finish( self ):
+    def finish( self ):
         
         self._job_finish_time = HydrusTime.get_now_float()
         
@@ -176,7 +176,7 @@ class JobStatus( object ):
     
     def FinishAndDismiss( self, seconds = None ):
         
-        self.Finish()
+        self.finish()
         
         if seconds is None:
             

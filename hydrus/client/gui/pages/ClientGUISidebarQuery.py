@@ -119,7 +119,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
         
         self._query_job_status = ClientThreading.JobStatus( cancellable = True )
         
-        self._query_job_status.Finish()
+        self._query_job_status.finish()
         
         self._search_panel = ClientGUICommon.StaticBox( self, 'search', start_expanded = True, can_expand = True )
         
@@ -626,7 +626,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
         
         def qt_code():
             
-            query_job_status.Finish()
+            query_job_status.finish()
             
             self.ShowFinishedQuery( query_job_status, media_results )
             

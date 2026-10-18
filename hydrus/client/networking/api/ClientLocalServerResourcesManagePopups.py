@@ -194,7 +194,7 @@ class HydrusResourceClientAPIRestrictedManagePopupsFinishPopup( HydrusResourceCl
         
         job_status = GetJobStatusFromRequest( request )
         
-        job_status.Finish()
+        job_status.finish()
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         

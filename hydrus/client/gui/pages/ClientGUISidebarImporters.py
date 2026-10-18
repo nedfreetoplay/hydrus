@@ -248,7 +248,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
         
         self._loading_highlight_job_status = ClientThreading.JobStatus( cancellable = True )
         
-        self._loading_highlight_job_status.Finish()
+        self._loading_highlight_job_status.finish()
         
         #
         
@@ -1326,7 +1326,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
         
         self._loading_highlight_job_status = ClientThreading.JobStatus( cancellable = True )
         
-        self._loading_highlight_job_status.Finish()
+        self._loading_highlight_job_status.finish()
         
         checker_options = self._multiple_watcher_import.GetCheckerOptions()
         import_options_container = self._multiple_watcher_import.GetImportOptionsContainer()

@@ -556,7 +556,7 @@ class ParseRootFileLookup( HydrusSerialisable.SerialisableBaseNamed ):
             
         finally:
             
-            job_status.Finish()
+            job_status.finish()
             
         
     

@@ -1899,7 +1899,7 @@ class ReviewServicePanel( QW.QWidget ):
             
             content_update_package = service.Request( HC.GET, 'immediate_content_update_package' )
             
-            c_u_p_num_rows = content_update_package.GetNumRows()
+            c_u_p_num_rows = content_update_package.get_num_rows()
             c_u_p_total_weight_processed = 0
             
             update_speed_string = ''
@@ -1940,7 +1940,7 @@ class ReviewServicePanel( QW.QWidget ):
             
             job_status.SetStatusText( 'done! ' + HydrusNumbers.to_human_int( c_u_p_num_rows ) + ' rows added.' )
             
-            job_status.Finish()
+            job_status.finish()
             
         
         CG.client_controller.call_to_thread( do_it )
@@ -3121,7 +3121,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
                         
                         job_status.DeleteGauge()
                         
-                        job_status.Finish()
+                        job_status.finish()
                         
                     
                 

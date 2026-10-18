@@ -354,7 +354,7 @@ class ClientDBCacheLocalHashes( ClientDBModule.ClientDBModule ):
             job_status.SetStatusText( 'Done with no errors found!' )
             
         
-        job_status.Finish()
+        job_status.finish()
         
     
     def SyncHashes( self, hashes: collections.abc.Collection[ bytes ] ):

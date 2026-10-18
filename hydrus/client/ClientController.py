@@ -435,7 +435,7 @@ class Controller(HydrusController.HydrusController):
                 
             finally:
                 
-                job_status.Finish()
+                job_status.finish()
                 
             
         
