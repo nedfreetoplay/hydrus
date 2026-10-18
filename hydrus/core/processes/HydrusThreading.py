@@ -726,7 +726,7 @@ class JobScheduler(threading.Thread):
         
         with self._waiting_lock:
             
-            self._waiting = [ job for job in self._waiting if not job.IsDead() ]
+            self._waiting = [ job for job in self._waiting if not job.is_dead() ]
     
     def get_name(self) -> str:
         
