@@ -128,7 +128,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
             
             service = self.modules_services.GetService( service_id )
             
-            service_type = service.GetServiceType()
+            service_type = service.get_service_type()
             
             valid_rows = [ ( hash_id, timestamp_ms ) for ( hash_id, timestamp_ms ) in rows if hash_id in new_hash_ids ]
             
@@ -277,7 +277,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
         
         service = self.modules_services.GetService( service_id )
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         existing_hash_ids_to_timestamps_ms = self.modules_files_storage.GetCurrentHashIdsToTimestampsMS( service_id, hash_ids )
         
@@ -479,7 +479,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
             
             service = self.modules_services.GetService( service_id )
             
-            service_type = service.GetServiceType()
+            service_type = service.get_service_type()
             
             ultimate_mappings_ids = []
             ultimate_deleted_mappings_ids = []

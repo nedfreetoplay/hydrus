@@ -21,7 +21,7 @@ from hydrus.core.networking import HydrusServerRequest
 def get_server_summary_texts(service):
     
     name = service.GetName()
-    service_type = service.GetServiceType()
+    service_type = service.get_service_type()
     
     allows_non_local_connections = service.AllowsNonLocalConnections()
     

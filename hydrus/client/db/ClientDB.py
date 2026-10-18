@@ -443,7 +443,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 service = self.modules_services.GetService( applicable_service_id )
                 
-                if service.GetServiceType() == HC.TAG_REPOSITORY:
+                if service.get_service_type() == HC.TAG_REPOSITORY:
                     
                     if self.modules_repositories.HasLotsOfOutstandingLocalProcessing( applicable_service_id, ( content_type, ) ):
                         
@@ -1353,7 +1353,7 @@ class DB( HydrusDB.HydrusDB ):
         
         service = self.modules_services.GetService( service_id )
         
-        if service.GetServiceType() == HC.TAG_REPOSITORY:
+        if service.get_service_type() == HC.TAG_REPOSITORY:
             
             ( current_mappings_table_name, deleted_mappings_table_name, pending_mappings_table_name, petitioned_mappings_table_name ) = ClientDBMappingsStorage.GenerateMappingsTableNames( service_id )
             
@@ -1366,7 +1366,7 @@ class DB( HydrusDB.HydrusDB ):
             self.modules_tag_siblings.DeletePending( service_id )
             self.modules_tag_parents.DeletePending( service_id )
             
-        elif service.GetServiceType() in ( HC.FILE_REPOSITORY, HC.IPFS ):
+        elif service.get_service_type() in ( HC.FILE_REPOSITORY, HC.IPFS ):
             
             self.modules_files_storage.DeletePending( service_id )
             
@@ -1383,7 +1383,7 @@ class DB( HydrusDB.HydrusDB ):
         service = self.modules_services.GetService( service_id )
         
         service_key = service.GetServiceKey()
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         # for a long time, much of this was done with foreign keys, which had to be turned on especially for this operation
         # however, this seemed to cause some immense temp drive space bloat when dropping the mapping tables, as there seems to be a trigger/foreign reference check for every row to be deleted
@@ -2426,7 +2426,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 service_id = self.modules_services.GetServiceId( tag_service_key )
                 
-                service_type = self.modules_services.GetServiceType( service_id )
+                service_type = self.modules_services.get_service_type( service_id )
                 
                 info_type = HC.SERVICE_INFO_NUM_FILE_HASHES
                 
@@ -2462,7 +2462,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 service_id = self.modules_services.GetServiceId( file_service_key )
                 
-                service_type = self.modules_services.GetServiceType( service_id )
+                service_type = self.modules_services.get_service_type( service_id )
                 
                 if service_type not in HC.REAL_FILE_SERVICES:
                     
@@ -2622,7 +2622,7 @@ class DB( HydrusDB.HydrusDB ):
         for service in services:
             
             service_key = service.GetServiceKey()
-            service_type = service.GetServiceType()
+            service_type = service.get_service_type()
             
             service_id = self.modules_services.GetServiceId( service_key )
             
@@ -2690,7 +2690,7 @@ class DB( HydrusDB.HydrusDB ):
         
         service = self.modules_services.GetService( service_id )
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         if service_type in HC.REPOSITORIES:
             
@@ -3418,7 +3418,7 @@ class DB( HydrusDB.HydrusDB ):
         
         service = self.modules_services.GetService( service_id )
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         if service_type in ( HC.HYDRUS_LOCAL_FILE_STORAGE, HC.COMBINED_LOCAL_FILE_DOMAINS, HC.LOCAL_FILE_DOMAIN, HC.LOCAL_FILE_UPDATE_DOMAIN, HC.FILE_REPOSITORY ):
             
@@ -6788,7 +6788,7 @@ class DB( HydrusDB.HydrusDB ):
         
         service = self.modules_services.GetService( service_id )
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         prefix = 'resetting content'
         
@@ -8696,7 +8696,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 if service_key in service_keys_to_access_keys:
                     
-                    service_type = serverside_service.GetServiceType()
+                    service_type = serverside_service.get_service_type()
                     name = serverside_service.GetName()
                     
                     service = ClientServices.GenerateService( service_key, service_type, name )
@@ -8752,7 +8752,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 service_id = self.modules_services.GetServiceId( service_key )
                 
-                if self.modules_services.GetServiceType( service_id ) in HC.ALL_TAG_SERVICES:
+                if self.modules_services.get_service_type( service_id ) in HC.ALL_TAG_SERVICES:
                     
                     we_deleted_tag_service = True
                     

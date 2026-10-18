@@ -1493,7 +1493,7 @@ class RatingsManager( object ):
             return None
             
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         if service_key in self._service_keys_to_ratings:
             

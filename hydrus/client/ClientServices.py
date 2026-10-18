@@ -253,7 +253,7 @@ class ServiceSpecifier( HydrusSerialisable.SerialisableBase ):
         return self._service_keys
         
     
-    def GetServiceTypes( self ):
+    def get_service_types( self ):
         
         return self._service_types
         
@@ -436,7 +436,7 @@ class Service( object ):
             
         
     
-    def GetServiceType( self ) -> int:
+    def get_service_type( self ) -> int:
         
         with self._lock:
             
@@ -3419,7 +3419,7 @@ class ServicesManager( object ):
         
         with self._lock:
             
-            filtered_service_keys = [ service_key for service_key in service_keys if service_key in self._keys_to_services and self._keys_to_services[ service_key ].GetServiceType() in desired_types ]
+            filtered_service_keys = [ service_key for service_key in service_keys if service_key in self._keys_to_services and self._keys_to_services[ service_key ].get_service_type() in desired_types ]
             
             return filtered_service_keys
             
@@ -3446,7 +3446,7 @@ class ServicesManager( object ):
         
         with self._lock:
             
-            return [ service for service in self._services_sorted if service.GetServiceType() == HC.LOCAL_FILE_DOMAIN ]
+            return [ service for service in self._services_sorted if service.get_service_type() == HC.LOCAL_FILE_DOMAIN ]
             
         
     
@@ -3476,7 +3476,7 @@ class ServicesManager( object ):
         
         with self._lock:
             
-            return { service_key for ( service_key, service ) in self._keys_to_services.items() if service.GetServiceType() in HC.REMOTE_FILE_SERVICES }
+            return { service_key for ( service_key, service ) in self._keys_to_services.items() if service.get_service_type() in HC.REMOTE_FILE_SERVICES }
             
         
     
@@ -3496,11 +3496,11 @@ class ServicesManager( object ):
             
         
     
-    def GetServiceType( self, service_key: bytes ) -> int:
+    def get_service_type( self, service_key: bytes ) -> int:
         
         with self._lock:
             
-            return self._GetService( service_key ).GetServiceType()
+            return self._GetService( service_key ).get_service_type()
             
         
     
@@ -3510,7 +3510,7 @@ class ServicesManager( object ):
             
             for service in self._services_sorted:
                 
-                if service.GetServiceType() in allowed_types and service.GetName() == service_name:
+                if service.get_service_type() in allowed_types and service.GetName() == service_name:
                     
                     return service.GetServiceKey()
                     
@@ -3518,7 +3518,7 @@ class ServicesManager( object ):
             
             for service in self._services_sorted:
                 
-                if service.GetServiceType() in allowed_types and service.GetName().lower() == service_name.lower():
+                if service.get_service_type() in allowed_types and service.GetName().lower() == service_name.lower():
                     
                     return service.GetServiceKey()
                     
@@ -3532,7 +3532,7 @@ class ServicesManager( object ):
         
         with self._lock:
             
-            filtered_service_keys = [ service.GetServiceKey() for service in self._services_sorted if service.GetServiceType() in desired_types ]
+            filtered_service_keys = [ service.GetServiceKey() for service in self._services_sorted if service.get_service_type() in desired_types ]
             
             return filtered_service_keys
             
@@ -3546,7 +3546,7 @@ class ServicesManager( object ):
             
             for desired_type in desired_types:
                 
-                services.extend( [ service for service in self._services_sorted if service.GetServiceType() == desired_type ] )
+                services.extend( [ service for service in self._services_sorted if service.get_service_type() == desired_type ] )
                 
             
             if randomised:

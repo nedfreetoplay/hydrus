@@ -91,7 +91,7 @@ class ClientDBRatings( ClientDBModule.ClientDBModule ):
     
     def SetRating( self, service_id, hash_ids, rating ):
         
-        service_type = self.modules_services.GetServiceType( service_id )
+        service_type = self.modules_services.get_service_type( service_id )
         
         if service_type in HC.STAR_RATINGS_SERVICES:
             

@@ -62,7 +62,7 @@ def ShouldShowRatingInThumbnail( media: ClientMedia.Media, service_key: bytes ) 
             
         else:
             
-            service_type = service.GetServiceType()
+            service_type = service.get_service_type()
             
             if service_type == HC.LOCAL_RATING_LIKE:
                 
@@ -682,15 +682,15 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         
         services = services_manager.GetServices()
         
-        file_repositories: list[ ClientServices.ServiceRepository ] = [ service for service in services if service.GetServiceType() == HC.FILE_REPOSITORY ]
+        file_repositories: list[ ClientServices.ServiceRepository ] = [ service for service in services if service.get_service_type() == HC.FILE_REPOSITORY ]
         
-        ipfs_services = [ service for service in services if service.GetServiceType() == HC.IPFS ]
+        ipfs_services = [ service for service in services if service.get_service_type() == HC.IPFS ]
         
-        local_ratings_services = [ service for service in services if service.GetServiceType() in HC.RATINGS_SERVICES ]
+        local_ratings_services = [ service for service in services if service.get_service_type() in HC.RATINGS_SERVICES ]
         
         i_can_post_ratings = len( local_ratings_services ) > 0
         
-        local_media_file_service_keys = { service.GetServiceKey() for service in services if service.GetServiceType() == HC.LOCAL_FILE_DOMAIN }
+        local_media_file_service_keys = { service.GetServiceKey() for service in services if service.get_service_type() == HC.LOCAL_FILE_DOMAIN }
         
         file_repository_service_keys = { repository.GetServiceKey() for repository in file_repositories }
         upload_permission_file_service_keys = { repository.GetServiceKey() for repository in file_repositories if repository.HasPermission( HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_CREATE ) }
@@ -2336,7 +2336,7 @@ class Thumbnail( QW.QGraphicsItem ):
         
         #
         
-        service_types = [ services_manager.GetService( service_key ).GetServiceType() for service_key in current_to_display ]
+        service_types = [ services_manager.GetService( service_key ).get_service_type() for service_key in current_to_display ]
         
         if HC.FILE_REPOSITORY in service_types:
             
@@ -2350,7 +2350,7 @@ class Thumbnail( QW.QGraphicsItem ):
         
         #
         
-        service_types = [ services_manager.GetService( service_key ).GetServiceType() for service_key in pending ]
+        service_types = [ services_manager.GetService( service_key ).get_service_type() for service_key in pending ]
         
         if HC.FILE_REPOSITORY in service_types:
             
@@ -2364,7 +2364,7 @@ class Thumbnail( QW.QGraphicsItem ):
         
         #
         
-        service_types = [ services_manager.GetService( service_key ).GetServiceType() for service_key in petitioned ]
+        service_types = [ services_manager.GetService( service_key ).get_service_type() for service_key in petitioned ]
         
         if HC.FILE_REPOSITORY in service_types:
             

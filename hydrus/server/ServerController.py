@@ -290,7 +290,7 @@ class Controller( HydrusController.HydrusController ):
         
         self._services = self.read( 'services' )
         
-        [ self._admin_service ] = [ service for service in self._services if service.GetServiceType() == HC.SERVER_ADMIN ]
+        [ self._admin_service ] = [ service for service in self._services if service.get_service_type() == HC.SERVER_ADMIN ]
         
         self.server_session_manager = HydrusSessions.HydrusSessionManagerServer()
         
@@ -348,7 +348,7 @@ class Controller( HydrusController.HydrusController ):
     
     def NullifyHistory( self ):
         
-        repositories = [ service for service in self._services if service.GetServiceType() in HC.REPOSITORIES ]
+        repositories = [ service for service in self._services if service.get_service_type() in HC.REPOSITORIES ]
         
         for service in repositories:
             
@@ -438,7 +438,7 @@ class Controller( HydrusController.HydrusController ):
                 for service in services:
                     
                     service_key = service.GetServiceKey()
-                    service_type = service.GetServiceType()
+                    service_type = service.get_service_type()
                     
                     name = service.GetName()
                     
@@ -581,7 +581,7 @@ class Controller( HydrusController.HydrusController ):
         
         self._services = services
         
-        [ self._admin_service ] = [ service for service in self._services if service.GetServiceType() == HC.SERVER_ADMIN ]
+        [ self._admin_service ] = [ service for service in self._services if service.get_service_type() == HC.SERVER_ADMIN ]
         
         self.RestartServices()
         
@@ -610,7 +610,7 @@ class Controller( HydrusController.HydrusController ):
     
     def SyncRepositories( self ):
         
-        repositories = [ service for service in self._services if service.GetServiceType() in HC.REPOSITORIES ]
+        repositories = [ service for service in self._services if service.get_service_type() in HC.REPOSITORIES ]
         
         for service in repositories:
             

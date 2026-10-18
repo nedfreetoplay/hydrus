@@ -209,7 +209,7 @@ def CheckFileService( file_service_key: bytes ):
         raise HydrusExceptions.BadRequestException( 'Could not find the file service "{}"!'.format( file_service_key.hex() ) )
         
     
-    if service.GetServiceType() not in HC.ALL_FILE_SERVICES:
+    if service.get_service_type() not in HC.ALL_FILE_SERVICES:
         
         raise HydrusExceptions.BadRequestException( 'Sorry, the service key "{}" did not give a file service!'.format( file_service_key.hex() ) )
         
@@ -228,7 +228,7 @@ def CheckTagService( tag_service_key: bytes ):
         raise HydrusExceptions.BadRequestException( 'Could not find the tag service "{}"!'.format( tag_service_key.hex() ) )
         
     
-    if service.GetServiceType() not in HC.ALL_TAG_SERVICES:
+    if service.get_service_type() not in HC.ALL_TAG_SERVICES:
         
         raise HydrusExceptions.BadRequestException( 'Sorry, the service key "{}" did not give a tag service!'.format( tag_service_key.hex() ) )
         
@@ -267,7 +267,7 @@ def CheckUploadableService( service_key: bytes ):
         raise HydrusExceptions.BadRequestException( 'Could not find the service "{}"!'.format( service_key.hex() ) )
         
     
-    if service.GetServiceType() not in ( HC.IPFS, HC.FILE_REPOSITORY, HC.TAG_REPOSITORY ):
+    if service.get_service_type() not in ( HC.IPFS, HC.FILE_REPOSITORY, HC.TAG_REPOSITORY ):
         
         raise HydrusExceptions.BadRequestException( f'Sorry, the service key "{service_key.hex()}" was not for an uploadable service!' )
         
@@ -299,20 +299,20 @@ def GetServicesDict():
         
         service_dict = {
             'name' : service.GetName(),
-            'type' : service.GetServiceType(),
-            'type_pretty' : HC.service_string_lookup[ service.GetServiceType() ]
+            'type' : service.get_service_type(),
+            'type_pretty' : HC.service_string_lookup[ service.get_service_type() ]
         }
         
         rating_colour_jobs = []
         
-        if service.GetServiceType() in HC.RATINGS_SERVICES:
+        if service.get_service_type() in HC.RATINGS_SERVICES:
             
             service = typing.cast( ClientServices.ServiceLocalRating, service )
             
             service_dict[ 'show_in_thumbnail' ] = service.GetShowInThumbnail()
             service_dict[ 'show_in_thumbnail_even_when_null' ] = service.GetShowInThumbnailEvenWhenNull()
             
-            if service.GetServiceType() in HC.STAR_RATINGS_SERVICES:
+            if service.get_service_type() in HC.STAR_RATINGS_SERVICES:
                 
                 service = typing.cast( ClientServices.ServiceLocalRatingStars, service )
                 
@@ -337,7 +337,7 @@ def GetServicesDict():
                 ]
                 
             
-            if service.GetServiceType() == HC.LOCAL_RATING_INCDEC:
+            if service.get_service_type() == HC.LOCAL_RATING_INCDEC:
                 
                 rating_colour_jobs = [
                     ( 'like', ClientRatings.LIKE ),
@@ -365,7 +365,7 @@ def GetServicesDict():
                 service_dict[ 'colours' ] = colours_dict
                 
             
-            if service.GetServiceType() == HC.LOCAL_RATING_NUMERICAL:
+            if service.get_service_type() == HC.LOCAL_RATING_NUMERICAL:
                 
                 service = typing.cast( ClientServices.ServiceLocalRatingNumerical, service )
                 
@@ -411,20 +411,20 @@ def GetServicesList() -> list[ dict ]:
         service_dict = {
             'name' : service.GetName(),
             'service_key' : service.GetServiceKey().hex(),
-            'type' : service.GetServiceType(),
-            'type_pretty' : HC.service_string_lookup[ service.GetServiceType() ]
+            'type' : service.get_service_type(),
+            'type_pretty' : HC.service_string_lookup[ service.get_service_type() ]
         }
         
         rating_colour_jobs = []
         
-        if service.GetServiceType() in HC.RATINGS_SERVICES:
+        if service.get_service_type() in HC.RATINGS_SERVICES:
             
             service = typing.cast( ClientServices.ServiceLocalRating, service )
             
             service_dict[ 'show_in_thumbnail' ] = service.GetShowInThumbnail()
             service_dict[ 'show_in_thumbnail_even_when_null' ] = service.GetShowInThumbnailEvenWhenNull()
             
-            if service.GetServiceType() in HC.STAR_RATINGS_SERVICES:
+            if service.get_service_type() in HC.STAR_RATINGS_SERVICES:
                 
                 service = typing.cast( ClientServices.ServiceLocalRatingStars, service )
                 
@@ -449,7 +449,7 @@ def GetServicesList() -> list[ dict ]:
                 ]
                 
             
-            if service.GetServiceType() == HC.LOCAL_RATING_INCDEC:
+            if service.get_service_type() == HC.LOCAL_RATING_INCDEC:
                 
                 rating_colour_jobs = [
                     ( 'like', ClientRatings.LIKE ),
@@ -477,7 +477,7 @@ def GetServicesList() -> list[ dict ]:
                 service_dict[ 'colours' ] = colours_dict
                 
             
-            if service.GetServiceType() == HC.LOCAL_RATING_NUMERICAL:
+            if service.get_service_type() == HC.LOCAL_RATING_NUMERICAL:
                 
                 service = typing.cast( ClientServices.ServiceLocalRatingNumerical, service )
                 
@@ -949,7 +949,7 @@ def ParseLocalFileDomainLocationContext( request: HydrusServerRequest.HydrusRequ
             
             service = CG.client_controller.services_manager.GetService( service_key )
             
-            if service.GetServiceType() not in ( HC.LOCAL_FILE_DOMAIN, ):
+            if service.get_service_type() not in ( HC.LOCAL_FILE_DOMAIN, ):
                 
                 raise HydrusExceptions.BadRequestException( 'Sorry, any custom file domain here must only declare local file domains.' )
                 

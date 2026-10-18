@@ -281,7 +281,7 @@ class ClientDBMappingsCacheSpecificStorage( ClientDBModule.ClientDBModule ):
     
     def AddMappings( self, tag_service_id, tag_id, hash_ids, filtered_hashes_generator: FilteredHashesGenerator ):
         
-        is_local = self.modules_services.GetServiceType( tag_service_id ) == HC.LOCAL_TAG
+        is_local = self.modules_services.get_service_type( tag_service_id ) == HC.LOCAL_TAG
         
         for ( file_service_id, filtered_hash_ids ) in filtered_hashes_generator.IterateHashes( hash_ids ):
             

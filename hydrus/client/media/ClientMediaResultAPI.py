@@ -58,7 +58,7 @@ def PopulateMetadataAPIDict( metadata_list: list[ dict ], hashes: list[ bytes ],
     
     rating_service_keys = services_manager.GetServiceKeys( HC.RATINGS_SERVICES )
     tag_service_keys = services_manager.GetServiceKeys( HC.ALL_TAG_SERVICES )
-    service_keys_to_types = { service.GetServiceKey() : service.GetServiceType() for service in services_manager.GetServices() }
+    service_keys_to_types = { service.GetServiceKey() : service.get_service_type() for service in services_manager.GetServices() }
     service_keys_to_names = services_manager.GetServiceKeysToNames()
     
     ipfs_service_keys = services_manager.GetServiceKeys( ( HC.IPFS, ) )

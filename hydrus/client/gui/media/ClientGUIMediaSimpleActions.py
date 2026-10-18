@@ -238,7 +238,7 @@ def CopyServiceFilenamesToClipboard( service_key: bytes, medias: collections.abc
     
     service = CG.client_controller.services_manager.GetService( service_key )
     
-    if service.GetServiceType() == HC.IPFS:
+    if service.get_service_type() == HC.IPFS:
         
         prefix = service.GetMultihashPrefix()
         

@@ -162,7 +162,7 @@ class ManageTagSiblings( ClientGUIScrolledPanels.ManagePanel ):
             
             self._service = CG.client_controller.services_manager.GetService( self._service_key )
             
-            self._i_am_local_tag_service = self._service.GetServiceType() == HC.LOCAL_TAG
+            self._i_am_local_tag_service = self._service.get_service_type() == HC.LOCAL_TAG
             
             self._sibling_action_context = ClientGUITagActions.SiblingActionContext( self._service_key )
             

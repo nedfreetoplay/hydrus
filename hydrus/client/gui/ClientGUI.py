@@ -176,7 +176,7 @@ def THREADUploadPending( service_key ):
         service = CG.client_controller.services_manager.GetService( service_key )
         
         service_name = service.GetName()
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         if service_type in HC.REPOSITORIES:
             
@@ -2806,7 +2806,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             services = self._controller.services_manager.GetServices()
             
-            local_file_services = [ service for service in services if service.GetServiceType() == HC.LOCAL_FILE_DOMAIN ]
+            local_file_services = [ service for service in services if service.get_service_type() == HC.LOCAL_FILE_DOMAIN ]
             
             for service in local_file_services:
                 
@@ -2819,9 +2819,9 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             ClientGUIMenus.AppendMenuItem( self._menubar_pages_search_submenu, 'new "trash" page', 'Open a new search tab for your recently deleted files.', self._notebook.NewPageQuery, location_context, on_deepest_notebook = True )
             
-            repositories: list[ ClientServices.ServiceRepository ] = [ service for service in services if service.GetServiceType() in HC.REPOSITORIES ]
+            repositories: list[ ClientServices.ServiceRepository ] = [ service for service in services if service.get_service_type() in HC.REPOSITORIES ]
             
-            file_repositories = [ service for service in repositories if service.GetServiceType() == HC.FILE_REPOSITORY ]
+            file_repositories = [ service for service in repositories if service.get_service_type() == HC.FILE_REPOSITORY ]
             
             for service in file_repositories:
                 
@@ -2924,7 +2924,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                     
                     service = self._controller.services_manager.GetService( service_key )
                     
-                    service_type = service.GetServiceType()
+                    service_type = service.get_service_type()
                     name = service.GetName()
                     
                     pending_phrase = ''
@@ -3044,7 +3044,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                     
                     service_key = service.GetServiceKey()
                     
-                    service_type = service.GetServiceType()
+                    service_type = service.get_service_type()
                     
                     can_create_accounts = service.HasPermission( HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_CREATE )
                     can_overrule_accounts = service.HasPermission( HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_MODERATE )
@@ -4238,7 +4238,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         with ClientGUITopLevelWindowsPanels.DialogEdit( self, title ) as dlg:
             
-            panel = ClientGUIHydrusNetwork.EditAccountTypesPanel( dlg, admin_service.GetServiceType(), account_types )
+            panel = ClientGUIHydrusNetwork.EditAccountTypesPanel( dlg, admin_service.get_service_type(), account_types )
             
             dlg.SetPanel( panel )
             

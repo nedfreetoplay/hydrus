@@ -295,7 +295,7 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
             continue
             
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         if service_type == HC.IPFS:
             

@@ -366,7 +366,7 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
                 self.ClearDeferredPhysicalDeleteIds( file_hash_id = hash_id, thumbnail_hash_id = hash_id )
                 
             
-        elif self.modules_services.GetService( service_id ).GetServiceType() in ( HC.FILE_REPOSITORY, HC.IPFS ):
+        elif self.modules_services.GetService( service_id ).get_service_type() in ( HC.FILE_REPOSITORY, HC.IPFS ):
             
             # it may be the case the files were just uploaded after being deleted
             self.DeferFilesDeleteIfNowOrphan( [ hash_id for ( hash_id, timestamp_ms ) in insert_rows ] )
@@ -512,7 +512,7 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
         
         ( current_files_table_name, deleted_files_table_name, pending_files_table_name, petitioned_files_table_name ) = GenerateFilesTableNames( service_id )
         
-        if self.modules_services.GetService( service_id ).GetServiceType() == HC.FILE_REPOSITORY:
+        if self.modules_services.GetService( service_id ).get_service_type() == HC.FILE_REPOSITORY:
             
             for ( block_of_hash_ids, num_done, num_to_do ) in HydrusDB.read_large_id_query_in_separate_chunks( self._c, 'SELECT hash_id FROM {};'.format( pending_files_table_name ), 1024 ):
                 
@@ -528,7 +528,7 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
         
         ( current_files_table_name, deleted_files_table_name, pending_files_table_name, petitioned_files_table_name ) = GenerateFilesTableNames( service_id )
         
-        if self.modules_services.GetService( service_id ).GetServiceType() == HC.FILE_REPOSITORY:
+        if self.modules_services.GetService( service_id ).get_service_type() == HC.FILE_REPOSITORY:
             
             for ( block_of_hash_ids, num_done, num_to_do ) in HydrusDB.read_large_id_query_in_separate_chunks( self._c, 'SELECT hash_id FROM {};'.format( pending_files_table_name ), 1024 ):
                 
@@ -1348,7 +1348,7 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
         
         pending_changed = self._get_row_count() > 0
         
-        if self.modules_services.GetService( service_id ).GetServiceType() == HC.HYDRUS_LOCAL_FILE_STORAGE:
+        if self.modules_services.GetService( service_id ).get_service_type() == HC.HYDRUS_LOCAL_FILE_STORAGE:
             
             self.DeferFilesDeleteIfNowOrphan( hash_ids )
             

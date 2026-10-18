@@ -252,7 +252,7 @@ class MigrationDestinationTagService( MigrationDestination ):
         
         service = self._controller.services_manager.GetService( tag_service_key )
         
-        self._tag_service_type = service.GetServiceType()
+        self._tag_service_type = service.get_service_type()
         self._content_action = content_action
         
     

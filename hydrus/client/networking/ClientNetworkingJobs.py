@@ -2064,7 +2064,7 @@ class NetworkJobHydrus( NetworkJob ):
         
         service = self.engine.controller.services_manager.GetService( self._service_key )
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         if service_type in HC.RESTRICTED_SERVICES:
             
@@ -2087,7 +2087,7 @@ class NetworkJobHydrus( NetworkJob ):
             raise HydrusExceptions.CancelledException( 'Service no longer exists!' )
             
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         if service_type in HC.RESTRICTED_SERVICES:
             

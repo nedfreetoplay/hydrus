@@ -204,7 +204,7 @@ class ClientDBRepositories( ClientDBModule.ClientDBModule ):
         
         if len( hash_ids ) > 0:
             
-            service_type = self.modules_services.GetService( service_id ).GetServiceType()
+            service_type = self.modules_services.GetService( service_id ).get_service_type()
             
             with self._make_temporary_integer_table( hash_ids, 'hash_id' ) as temp_hash_ids_table_name:
                 

@@ -26,7 +26,7 @@ class HydrusService(Site):
         
         self.hydrus_favicon = FileResource( HydrusStaticDir.get_static_path( 'hydrus.ico' ), defaultType = 'image/x-icon' )
         
-        service_type = self._service.GetServiceType()
+        service_type = self._service.get_service_type()
         
         if service_type == HC.CLIENT_API_SERVICE:
             

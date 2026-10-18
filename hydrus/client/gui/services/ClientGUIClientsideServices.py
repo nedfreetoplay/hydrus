@@ -129,7 +129,7 @@ class ManageClientServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
     
     def _ConvertServiceToDisplayTuple( self, service ):
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         name = service.GetName()
         
         deletable = service_type in HC.ADDREMOVABLE_SERVICES
@@ -168,7 +168,7 @@ class ManageClientServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
     
     def _ConvertServiceToSortTuple( self, service ):
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         name = service.GetName()
         
         deletable = service_type in HC.ADDREMOVABLE_SERVICES
@@ -210,12 +210,12 @@ class ManageClientServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         selected_services = self._listctrl.GetData( only_selected = True )
         
-        deletable_services = [ service for service in selected_services if service.GetServiceType() in HC.ADDREMOVABLE_SERVICES ]
+        deletable_services = [ service for service in selected_services if service.get_service_type() in HC.ADDREMOVABLE_SERVICES ]
         
         for service_type in HC.MUST_HAVE_AT_LEAST_ONE_SERVICES:
             
-            num_in_all = len( [ service for service in all_services if service.GetServiceType() == service_type ] )
-            num_in_deletable = len( [ service for service in deletable_services if service.GetServiceType() == service_type ] )
+            num_in_all = len( [ service for service in all_services if service.get_service_type() == service_type ] )
+            num_in_deletable = len( [ service for service in deletable_services if service.get_service_type() == service_type ] )
             
             if num_in_deletable == num_in_all:
                 
@@ -231,7 +231,7 @@ class ManageClientServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
             
             for service in deletable_services:
                 
-                if service.GetServiceType() == service_type and service in self._original_services:
+                if service.get_service_type() == service_type and service in self._original_services:
                     
                     service_info = CG.client_controller.read( 'service_info', service.GetServiceKey() )
                     
@@ -316,7 +316,7 @@ class ManageClientServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
         deletee_services = [ service for service in self._original_services if service.GetServiceKey() not in new_service_keys ]
         
         deletee_service_names = [ service.GetName() for service in deletee_services ]
-        tag_service_in_deletes = True in ( service.GetServiceType() in HC.REAL_TAG_SERVICES for service in deletee_services )
+        tag_service_in_deletes = True in ( service.get_service_type() in HC.REAL_TAG_SERVICES for service in deletee_services )
         
         if len( deletee_service_names ) > 0:
             
@@ -1750,7 +1750,7 @@ class ReviewServicePanel( QW.QWidget ):
         
         self._refresh_button = ClientGUICommon.IconButton( self, CC.global_icons().refresh, self._RefreshButton )
         
-        service_type = self._service.GetServiceType()
+        service_type = self._service.get_service_type()
         
         subpanels = []
         
@@ -1978,7 +1978,7 @@ class ReviewServiceSubPanel( ClientGUICommon.StaticBox ):
     def _Refresh( self ):
         
         name = self._service.GetName()
-        service_type = self._service.GetServiceType()
+        service_type = self._service.get_service_type()
         
         label = name + ' - ' + HC.service_string_lookup[ service_type ]
         label += '\n\n'
@@ -2451,7 +2451,7 @@ class ReviewServiceFileSubPanel( ClientGUICommon.StaticBox ):
         
         text = HydrusNumbers.to_human_int( num_files ) + ' files, totalling ' + HydrusData.ToHumanBytes( total_size )
         
-        if service.GetServiceType() in ( HC.LOCAL_FILE_DOMAIN, HC.COMBINED_LOCAL_FILE_DOMAINS, HC.HYDRUS_LOCAL_FILE_STORAGE, HC.FILE_REPOSITORY ):
+        if service.get_service_type() in ( HC.LOCAL_FILE_DOMAIN, HC.COMBINED_LOCAL_FILE_DOMAINS, HC.HYDRUS_LOCAL_FILE_STORAGE, HC.FILE_REPOSITORY ):
             
             num_deleted_files = service_info[ HC.SERVICE_INFO_NUM_DELETED_FILES ]
             
@@ -2609,7 +2609,7 @@ class ReviewServiceHydrusAccountSubPanel( ClientGUICommon.StaticBox ):
         
         #
         
-        if not self._service.GetServiceType() == HC.TAG_REPOSITORY:
+        if not self._service.get_service_type() == HC.TAG_REPOSITORY:
             
             self._tag_filter_button.hide()
             
@@ -2767,7 +2767,7 @@ class ReviewServiceHydrusAccountSubPanel( ClientGUICommon.StaticBox ):
         
         self._permissions_button.SetMenuItems( menu_template_items )
         
-        if self._service.GetServiceType() == HC.TAG_REPOSITORY:
+        if self._service.get_service_type() == HC.TAG_REPOSITORY:
             
             try:
                 
@@ -2928,7 +2928,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
         
         #
         
-        content_types = tuple( HC.SERVICE_TYPES_TO_CONTENT_TYPES[ self._service.GetServiceType() ] )
+        content_types = tuple( HC.SERVICE_TYPES_TO_CONTENT_TYPES[ self._service.get_service_type() ] )
         
         self._content_types_to_gauges_and_buttons = {}
         
@@ -3159,7 +3159,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
         
         def publish_callable( service_info_dict ):
             
-            if self._service.GetServiceType() == HC.TAG_REPOSITORY:
+            if self._service.get_service_type() == HC.TAG_REPOSITORY:
                 
                 service_info_types = HC.TAG_REPOSITORY_SERVICE_INFO_TYPES
                 
@@ -3933,7 +3933,7 @@ class ReviewServiceTagSubPanel( ClientGUICommon.StaticBox ):
         
         text = HydrusNumbers.to_human_int( num_mappings ) + ' total mappings involving ' + HydrusNumbers.to_human_int( num_tags ) + ' different tags on ' + HydrusNumbers.to_human_int( num_files ) + ' different files'
         
-        if service.GetServiceType() == HC.TAG_REPOSITORY:
+        if service.get_service_type() == HC.TAG_REPOSITORY:
             
             num_deleted_mappings = service_info[ HC.SERVICE_INFO_NUM_DELETED_MAPPINGS ]
             
@@ -4136,7 +4136,7 @@ class ReviewServicesPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         for service in services:
             
-            service_type = service.GetServiceType()
+            service_type = service.get_service_type()
             
             if service_type in HC.LOCAL_SERVICES: parent_notebook = self._local_notebook
             else: parent_notebook = self._remote_notebook

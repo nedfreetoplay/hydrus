@@ -39,7 +39,7 @@ class EditServiceSpecifierPanel( ClientGUIScrolledPanels.EditPanel ):
             
             if len( allowed_service_types ) > 1:
                 
-                name = HC.service_string_lookup_short[ service.GetServiceType() ] + ': ' + name
+                name = HC.service_string_lookup_short[ service.get_service_type() ] + ': ' + name
                 
             
             self._service_keys_radiobox.Append( name, service.GetServiceKey() )

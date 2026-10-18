@@ -349,7 +349,7 @@ class ContentUpdatePackage( object ):
                 continue
                 
             
-            if service.GetServiceType() == HC.LOCAL_TAG:
+            if service.get_service_type() == HC.LOCAL_TAG:
                 
                 action = HC.CONTENT_UPDATE_ADD
                 

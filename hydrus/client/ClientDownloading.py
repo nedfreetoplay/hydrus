@@ -205,7 +205,7 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 try:
                     
-                    if service.GetServiceType() == HC.FILE_REPOSITORY:
+                    if service.get_service_type() == HC.FILE_REPOSITORY:
                         
                         file_repository = service
                         

@@ -1840,7 +1840,7 @@ class CanvasPanel( Canvas ):
             
             locations_manager = self._current_media.GetLocationsManager()
             
-            local_ratings_services = [ service for service in services if service.GetServiceType() in HC.RATINGS_SERVICES ]
+            local_ratings_services = [ service for service in services if service.get_service_type() in HC.RATINGS_SERVICES ]
             
             i_can_post_ratings = len( local_ratings_services ) > 0
             
@@ -4644,7 +4644,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
             
             services = CG.client_controller.services_manager.GetServices()
             
-            local_ratings_services = [ service for service in services if service.GetServiceType() in HC.RATINGS_SERVICES ]
+            local_ratings_services = [ service for service in services if service.get_service_type() in HC.RATINGS_SERVICES ]
             
             i_can_post_ratings = len( local_ratings_services ) > 0
             

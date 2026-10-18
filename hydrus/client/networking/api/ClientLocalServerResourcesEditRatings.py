@@ -40,7 +40,7 @@ class HydrusResourceClientAPIRestrictedEditRatingsSetRating( HydrusResourceClien
         
         rating_service = CG.client_controller.services_manager.GetService( rating_service_key )
         
-        rating_service_type = rating_service.GetServiceType()
+        rating_service_type = rating_service.get_service_type()
         
         none_ok = True
         

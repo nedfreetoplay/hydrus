@@ -63,7 +63,7 @@ def ApplyContentApplicationCommandToMedia( win: QW.QWidget, command: CAC.Applica
         return
         
     
-    service_type = service.GetServiceType()
+    service_type = service.get_service_type()
     
     if service_type == HC.LOCAL_FILE_DOMAIN:
         
@@ -539,7 +539,7 @@ def GetContentApplicationCommandFromInteractiveContentCommand( win: QW.QWidget, 
         return command
         
     
-    service_type = service.GetServiceType()
+    service_type = service.get_service_type()
     service_name = CG.client_controller.services_manager.GetNameSafe( service_key )
     suggestions_user_opt = CG.client_controller.new_options.GetNoneableInteger( 'num_recent_tags_in_quick_dialog' )
     

@@ -1114,7 +1114,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
             
             remote_service = CG.client_controller.services_manager.GetService( remote_service_key )
             
-            service_type = remote_service.GetServiceType()
+            service_type = remote_service.get_service_type()
             
             if service_type == HC.FILE_REPOSITORY:
                 

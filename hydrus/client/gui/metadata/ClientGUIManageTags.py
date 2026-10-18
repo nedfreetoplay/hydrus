@@ -388,7 +388,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             
             self._service = CG.client_controller.services_manager.GetService( self._tag_service_key )
             
-            self._i_am_local_tag_service = self._service.GetServiceType() == HC.LOCAL_TAG
+            self._i_am_local_tag_service = self._service.get_service_type() == HC.LOCAL_TAG
             
             tags_panel = QW.QWidget( self )
             

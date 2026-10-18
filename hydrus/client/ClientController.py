@@ -2067,7 +2067,7 @@ class Controller(HydrusController.HydrusController):
                 for service in services:
                     
                     service_key = service.GetServiceKey()
-                    service_type = service.GetServiceType()
+                    service_type = service.get_service_type()
                     
                     name = service.GetName()
                     

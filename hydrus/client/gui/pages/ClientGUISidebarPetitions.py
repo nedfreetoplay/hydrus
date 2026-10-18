@@ -204,7 +204,7 @@ class SidebarPetitions( ClientGUISidebarCore.Sidebar ):
         self._service = CG.client_controller.services_manager.GetService( self._petition_service_key )
         self._can_ban = self._service.HasPermission( HC.CONTENT_TYPE_ACCOUNTS, HC.PERMISSION_ACTION_MODERATE )
         
-        service_type = self._service.GetServiceType()
+        service_type = self._service.get_service_type()
         
         self._petition_types_to_count = collections.Counter()
         self._current_petition = None

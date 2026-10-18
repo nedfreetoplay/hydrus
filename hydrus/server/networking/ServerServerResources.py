@@ -372,7 +372,7 @@ class HydrusResourceRestrictedOptions( HydrusResourceRestricted ):
         # so now this is just 'get the primitives' request, and it comes back as a straight up JSON dict
         # anything serialisable can be its own request and can have separate deserialisation error handling
         
-        if self._service.GetServiceType() in HC.REPOSITORIES:
+        if self._service.get_service_type() in HC.REPOSITORIES:
             
             service_options = {
                 'update_period' : self._service.GetUpdatePeriod(),
@@ -899,7 +899,7 @@ class HydrusResourceRestrictedNumPetitions( HydrusResourceRestricted ):
         
         # further permissions checked in the db
         
-        request.hydrus_account.CheckAtLeastOnePermission( [ ( content_type, HC.PERMISSION_ACTION_MODERATE ) for content_type in HC.SERVICE_TYPES_TO_CONTENT_TYPES[ self._service.GetServiceType() ] ] )
+        request.hydrus_account.CheckAtLeastOnePermission( [ ( content_type, HC.PERMISSION_ACTION_MODERATE ) for content_type in HC.SERVICE_TYPES_TO_CONTENT_TYPES[ self._service.get_service_type() ] ] )
         
     
     def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
@@ -1268,7 +1268,7 @@ class HydrusResourceRestrictedUpdate( HydrusResourceRestricted ):
             
             # further permissions checked in the db
             
-            request.hydrus_account.CheckAtLeastOnePermission( [ ( content_type, HC.PERMISSION_ACTION_PETITION ) for content_type in HC.SERVICE_TYPES_TO_CONTENT_TYPES[ self._service.GetServiceType() ] ] )
+            request.hydrus_account.CheckAtLeastOnePermission( [ ( content_type, HC.PERMISSION_ACTION_PETITION ) for content_type in HC.SERVICE_TYPES_TO_CONTENT_TYPES[ self._service.get_service_type() ] ] )
             
         
     
@@ -1315,7 +1315,7 @@ class HydrusResourceRestrictedImmediateUpdate( HydrusResourceRestricted ):
     
     def _checkAccountPermissions( self, request: HydrusServerRequest.HydrusRequest ):
         
-        request.hydrus_account.CheckAtLeastOnePermission( [ ( content_type, HC.PERMISSION_ACTION_MODERATE ) for content_type in HC.SERVICE_TYPES_TO_CONTENT_TYPES[ self._service.GetServiceType() ] ] )
+        request.hydrus_account.CheckAtLeastOnePermission( [ ( content_type, HC.PERMISSION_ACTION_MODERATE ) for content_type in HC.SERVICE_TYPES_TO_CONTENT_TYPES[ self._service.get_service_type() ] ] )
         
     
     def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):

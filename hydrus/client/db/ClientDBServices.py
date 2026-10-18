@@ -201,7 +201,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
     
     def FileServiceIsCoveredByHydrusLocalFileStorage( self, service_id ) -> bool:
         
-        service_type = self.GetService( service_id ).GetServiceType()
+        service_type = self.GetService( service_id ).get_service_type()
         
         return service_type in HC.FILE_SERVICES_COVERED_BY_HYDRUS_LOCAL_FILE_STORAGE
         
@@ -271,7 +271,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
     
     def GetServices( self, limited_types = HC.ALL_SERVICES ):
         
-        return [ service for service in self._service_ids_to_services.values() if service.GetServiceType() in limited_types ]
+        return [ service for service in self._service_ids_to_services.values() if service.get_service_type() in limited_types ]
         
     
     def GetServiceId( self, service_key: bytes ) -> int:
@@ -286,7 +286,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
     
     def GetServiceIds( self, service_types ) -> set[ int ]:
         
-        return { service_id for ( service_id, service ) in self._service_ids_to_services.items() if service.GetServiceType() in service_types }
+        return { service_id for ( service_id, service ) in self._service_ids_to_services.items() if service.get_service_type() in service_types }
         
     
     def GetServiceIdsToServiceKeys( self ) -> dict[ int, bytes ]:
@@ -304,11 +304,11 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
         return set( self._service_keys_to_service_ids.keys() )
         
     
-    def GetServiceType( self, service_id ) -> ClientServices.Service:
+    def get_service_type( self, service_id ) -> ClientServices.Service:
         
         if service_id in self._service_ids_to_services:
             
-            return self._service_ids_to_services[ service_id ].GetServiceType()
+            return self._service_ids_to_services[ service_id ].get_service_type()
             
         
         raise HydrusExceptions.DataMissing( 'Service id error in database: id "{}" does not exist!'.format( service_id ) )
@@ -333,7 +333,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
         
         for service_id in service_ids:
             
-            service_types_to_service_ids[ self._service_ids_to_services[ service_id ].GetServiceType() ].append( service_id )
+            service_types_to_service_ids[ self._service_ids_to_services[ service_id ].get_service_type() ].append( service_id )
             
         
         return service_types_to_service_ids

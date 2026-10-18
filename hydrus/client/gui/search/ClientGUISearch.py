@@ -426,7 +426,7 @@ class EditPredicatesPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     service = CG.client_controller.services_manager.GetService( s_k )
                     
-                    return ( order_of_panels.index( service.GetServiceType() ), service.GetName() )
+                    return ( order_of_panels.index( service.get_service_type() ), service.GetName() )
                     
                 except HydrusExceptions.DataMissing:
                     
@@ -451,7 +451,7 @@ class EditPredicatesPanel( ClientGUIScrolledPanels.EditPanel ):
                     continue
                     
                 
-                type = service.GetServiceType()
+                type = service.get_service_type()
                 
                 if type == HC.LOCAL_RATING_LIKE:
                     
@@ -850,7 +850,7 @@ class FleshOutPredicatePanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     for rating_service in rating_services:
                         
-                        if rating_service.GetServiceType() == service_type_in_order:
+                        if rating_service.get_service_type() == service_type_in_order:
                             
                             if service_type_in_order == HC.LOCAL_RATING_LIKE:
                                 
@@ -1204,7 +1204,7 @@ class TagContextButton( ClientGUICommon.BetterButton ):
         
         for service in services:
             
-            if last_seen_service_type is not None and last_seen_service_type != service.GetServiceType():
+            if last_seen_service_type is not None and last_seen_service_type != service.get_service_type():
                 
                 ClientGUIMenus.AppendSeparator( menu )
                 
@@ -1215,7 +1215,7 @@ class TagContextButton( ClientGUICommon.BetterButton ):
             
             ClientGUIMenus.AppendMenuCheckItem( menu, service.GetName(), 'Change the current tag domain to {}.'.format( service.GetName() ), new_tag_context == self._tag_context, self.SetValue, new_tag_context )
             
-            last_seen_service_type = service.GetServiceType()
+            last_seen_service_type = service.get_service_type()
             
         
         CGC.core().PopupMenu( self, menu )

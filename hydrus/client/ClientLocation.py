@@ -102,7 +102,7 @@ def SortFileServiceKeysNicely( list_of_service_keys ):
 
 def ValidLocalDomainsFilter( service_keys ):
     
-    return [ service_key for service_key in service_keys if CG.client_controller.services_manager.ServiceExists( service_key ) and CG.client_controller.services_manager.GetServiceType( service_key ) == HC.LOCAL_FILE_DOMAIN ]
+    return [ service_key for service_key in service_keys if CG.client_controller.services_manager.ServiceExists( service_key ) and CG.client_controller.services_manager.get_service_type( service_key ) == HC.LOCAL_FILE_DOMAIN ]
     
 class LocationContext( HydrusSerialisable.SerialisableBase ):
     
@@ -175,22 +175,22 @@ class LocationContext( HydrusSerialisable.SerialisableBase ):
         
         if CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY in self.current_service_keys:
             
-            self.current_service_keys = frozenset( ( service_key for service_key in self.current_service_keys if services_manager.GetServiceType( service_key ) not in HC.FILE_SERVICES_COVERED_BY_HYDRUS_LOCAL_FILE_STORAGE ) )
+            self.current_service_keys = frozenset( ( service_key for service_key in self.current_service_keys if services_manager.get_service_type( service_key ) not in HC.FILE_SERVICES_COVERED_BY_HYDRUS_LOCAL_FILE_STORAGE ) )
             
         
         if CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY in self.deleted_service_keys:
             
-            self.deleted_service_keys = frozenset( ( service_key for service_key in self.deleted_service_keys if services_manager.GetServiceType( service_key ) not in HC.FILE_SERVICES_COVERED_BY_HYDRUS_LOCAL_FILE_STORAGE ) )
+            self.deleted_service_keys = frozenset( ( service_key for service_key in self.deleted_service_keys if services_manager.get_service_type( service_key ) not in HC.FILE_SERVICES_COVERED_BY_HYDRUS_LOCAL_FILE_STORAGE ) )
             
         
         if CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY in self.current_service_keys:
             
-            self.current_service_keys = frozenset( ( service_key for service_key in self.current_service_keys if services_manager.GetServiceType( service_key ) not in HC.FILE_SERVICES_COVERED_BY_COMBINED_LOCAL_FILE_DOMAINS ) )
+            self.current_service_keys = frozenset( ( service_key for service_key in self.current_service_keys if services_manager.get_service_type( service_key ) not in HC.FILE_SERVICES_COVERED_BY_COMBINED_LOCAL_FILE_DOMAINS ) )
             
         
         if CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY in self.deleted_service_keys:
             
-            self.deleted_service_keys = frozenset( ( service_key for service_key in self.deleted_service_keys if services_manager.GetServiceType( service_key ) not in HC.FILE_SERVICES_COVERED_BY_COMBINED_LOCAL_FILE_DOMAINS ) )
+            self.deleted_service_keys = frozenset( ( service_key for service_key in self.deleted_service_keys if services_manager.get_service_type( service_key ) not in HC.FILE_SERVICES_COVERED_BY_COMBINED_LOCAL_FILE_DOMAINS ) )
             
         
     

@@ -2698,7 +2698,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
                         
                         name = service.GetName()
                         
-                        if service.GetServiceType() == HC.LOCAL_RATING_INCDEC:
+                        if service.get_service_type() == HC.LOCAL_RATING_INCDEC:
                             
                             if operator == '>' and value == 0:
                                 

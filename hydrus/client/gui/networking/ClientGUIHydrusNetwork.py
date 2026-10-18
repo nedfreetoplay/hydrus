@@ -1238,7 +1238,7 @@ class ModifyAccountsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         message = 'Are you absolutely sure you want to delete all uploads for {} accounts? This will delete everything the user(s) have uploaded since the anonymisation date.'.format( HydrusNumbers.to_human_int( len( subject_account_keys ) ) )
         
-        if self._service.GetServiceType() == HC.TAG_REPOSITORY:
+        if self._service.get_service_type() == HC.TAG_REPOSITORY:
             
             message += '\n' * 2
             message += 'Note that if the user never had permission to add siblings and parents on their own (i.e. they could only ever _petition_ to add them), then their petitioned siblings and parents will not be deleted (janitor accounts take ownership of siblings and parents when they approve them).'

@@ -390,7 +390,7 @@ class MediaCollectControl( QW.QWidget ):
         
         for service in services:
             
-            if last_seen_service_type is not None and last_seen_service_type != service.GetServiceType():
+            if last_seen_service_type is not None and last_seen_service_type != service.get_service_type():
                 
                 submenu_template_items.append( ClientGUIMenuButton.MenuTemplateItemSeparator() )
                 
@@ -406,7 +406,7 @@ class MediaCollectControl( QW.QWidget ):
             
             submenu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCheck( service.GetName(), 'Filter the namespaces by this tag domain.', check_manager ) )
             
-            last_seen_service_type = service.GetServiceType()
+            last_seen_service_type = service.get_service_type()
             
         
         menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemSubmenu( 'tag service', submenu_template_items ) )
@@ -861,7 +861,7 @@ class MediaSortControl( QW.QWidget ):
             
             for service in services:
                 
-                if last_seen_service_type is not None and last_seen_service_type != service.GetServiceType():
+                if last_seen_service_type is not None and last_seen_service_type != service.get_service_type():
                     
                     submenu_template_items.append( ClientGUIMenuButton.MenuTemplateItemSeparator() )
                     
@@ -877,7 +877,7 @@ class MediaSortControl( QW.QWidget ):
                 
                 submenu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCheck( service.GetName(), 'Filter the namespaces by this tag domain.', check_manager ) )
                 
-                last_seen_service_type = service.GetServiceType()
+                last_seen_service_type = service.get_service_type()
                 
             
             menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemSubmenu( 'tag service', submenu_template_items ) )

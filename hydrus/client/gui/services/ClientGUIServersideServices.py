@@ -291,7 +291,7 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         port = service.GetPort()
         name = service.GetName()
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         pretty_port = str( port )
         pretty_name = name
@@ -304,7 +304,7 @@ class ManageServerServicesPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         port = service.GetPort()
         name = service.GetName()
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         return ( port, name, service_type )
         

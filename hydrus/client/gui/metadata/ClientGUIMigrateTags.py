@@ -748,7 +748,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             destination_service = CG.client_controller.services_manager.GetService( destination )
             
-            destination_service_type = destination_service.GetServiceType()
+            destination_service_type = destination_service.get_service_type()
             
             if destination_service_type == HC.LOCAL_TAG:
                 
@@ -860,7 +860,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             source_service = CG.client_controller.services_manager.GetService( source )
             
-            source_service_type = source_service.GetServiceType()
+            source_service_type = source_service.get_service_type()
             
             self._migration_source_content_status_filter.addItem( 'current', ( HC.CONTENT_STATUS_CURRENT, ) )
             

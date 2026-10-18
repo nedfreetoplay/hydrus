@@ -65,7 +65,7 @@ class HydrusResourceClientAPIRestrictedAddTagsAddTags( HydrusResourceClientAPIRe
                     continue
                     
                 
-                if service.GetServiceType() == HC.LOCAL_TAG:
+                if service.get_service_type() == HC.LOCAL_TAG:
                     
                     content_action = HC.CONTENT_UPDATE_ADD
                     
@@ -107,7 +107,7 @@ class HydrusResourceClientAPIRestrictedAddTagsAddTags( HydrusResourceClientAPIRe
                         raise HydrusExceptions.BadRequestException( 'Sorry, got an action, "{}", that was not an integer!'.format( parsed_content_action ) )
                         
                     
-                    if service.GetServiceType() == HC.LOCAL_TAG:
+                    if service.get_service_type() == HC.LOCAL_TAG:
                         
                         if content_action not in ( HC.CONTENT_UPDATE_ADD, HC.CONTENT_UPDATE_DELETE ):
                             

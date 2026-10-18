@@ -48,7 +48,7 @@ class EditMultipleLocationContextPanel( ClientGUIScrolledPanels.EditPanel ):
                 name = service.GetName()
                 service_key = service.GetServiceKey()
                 
-                if service.GetServiceType() in HC.FILE_SERVICES_WITH_NO_DELETE_RECORD:
+                if service.get_service_type() in HC.FILE_SERVICES_WITH_NO_DELETE_RECORD:
                     
                     continue
                     
@@ -157,14 +157,14 @@ class LocationSearchContextButton( ClientGUICommon.BetterButton ):
         
         for service in services:
             
-            if last_seen_service_type is not None and last_seen_service_type != service.GetServiceType():
+            if last_seen_service_type is not None and last_seen_service_type != service.get_service_type():
                 
                 ClientGUIMenus.AppendSeparator( menu )
                 
             
             location_context = ClientLocation.LocationContext.STATICCreateSimple( service.GetServiceKey() )
             
-            if service.GetServiceType() == HC.COMBINED_FILE and self._is_paired_with_tag_domain:
+            if service.get_service_type() == HC.COMBINED_FILE and self._is_paired_with_tag_domain:
                 
                 name = 'all known files with tags'
                 
@@ -189,9 +189,9 @@ class LocationSearchContextButton( ClientGUICommon.BetterButton ):
                 we_have_checked_something = True
                 
             
-            last_seen_service_type = service.GetServiceType()
+            last_seen_service_type = service.get_service_type()
             
-            if service.GetServiceType() == HC.LOCAL_FILE_TRASH_DOMAIN:
+            if service.get_service_type() == HC.LOCAL_FILE_TRASH_DOMAIN:
                 
                 ClientGUIMenus.AppendSeparator( menu )
                 

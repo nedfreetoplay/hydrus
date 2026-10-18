@@ -8007,7 +8007,7 @@ class TestClientAPI( unittest.TestCase ):
             tags_dict = {}
             
             tag_service_keys = services_manager.GetServiceKeys( HC.ALL_TAG_SERVICES )
-            service_keys_to_types = { service.GetServiceKey() : service.GetServiceType() for service in services_manager.GetServices() }
+            service_keys_to_types = { service.GetServiceKey() : service.get_service_type() for service in services_manager.GetServices() }
             service_keys_to_names = services_manager.GetServiceKeysToNames()
             
             for tag_service_key in tag_service_keys:

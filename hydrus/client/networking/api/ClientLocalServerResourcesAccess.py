@@ -206,7 +206,7 @@ class HydrusResourceClientAPIRestrictedGetService( ClientLocalServerResources.Hy
             raise HydrusExceptions.NotFoundException( 'Sorry, did not find a service with key "{}"!'.format( service_key.hex() ) )
             
         
-        if service.GetServiceType() not in allowed_service_types:
+        if service.get_service_type() not in allowed_service_types:
             
             raise HydrusExceptions.BadRequestException( 'Sorry, for now, you cannot ask about this service!' )
             
@@ -214,8 +214,8 @@ class HydrusResourceClientAPIRestrictedGetService( ClientLocalServerResources.Hy
         body_dict = {
             'service' : {
                 'name' : service.GetName(),
-                'type' : service.GetServiceType(),
-                'type_pretty' : HC.service_string_lookup[ service.GetServiceType() ],
+                'type' : service.get_service_type(),
+                'type_pretty' : HC.service_string_lookup[ service.get_service_type() ],
                 'service_key' : service.GetServiceKey().hex()
             }
         }
@@ -272,8 +272,8 @@ class HydrusResourceClientAPIRestrictedGetServices( ClientLocalServerResources.H
                 
                 service_dict = {
                     'name' : service.GetName(),
-                    'type' : service.GetServiceType(),
-                    'type_pretty' : HC.service_string_lookup[ service.GetServiceType() ],
+                    'type' : service.get_service_type(),
+                    'type_pretty' : HC.service_string_lookup[ service.get_service_type() ],
                     'service_key' : service.GetServiceKey().hex()
                 }
                 
@@ -349,7 +349,7 @@ class HydrusResourceClientAPIRestrictedGetServiceRatingSVG( ClientLocalServerRes
             raise HydrusExceptions.NotFoundException( 'Sorry, did not find a service with key "{}"!'.format( service_key.hex() ) )
             
         
-        if service.GetServiceType() not in allowed_service_types:
+        if service.get_service_type() not in allowed_service_types:
             
             raise HydrusExceptions.BadRequestException( 'This type of service cannot have a SVG associated with it!' )
             

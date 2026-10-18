@@ -389,7 +389,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
             
             deletee_service = CG.client_controller.services_manager.GetService( deletee_file_service_key )
             
-            deletee_service_type = deletee_service.GetServiceType()
+            deletee_service_type = deletee_service.get_service_type()
             
             if deletee_service_type == HC.LOCAL_FILE_DOMAIN:
                 

@@ -38,7 +38,7 @@ class MediaResult( object ):
             return
             
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         if service_type in HC.REAL_TAG_SERVICES:
             
@@ -276,7 +276,7 @@ class MediaResult( object ):
             return
             
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         if service_type in HC.REAL_TAG_SERVICES:
             

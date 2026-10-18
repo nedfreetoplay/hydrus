@@ -28,7 +28,7 @@ class TagPairActionContext( object ):
         
         self._service = CG.client_controller.services_manager.GetService( self._service_key )
         
-        self._i_am_local_tag_service = self._service.GetServiceType() == HC.LOCAL_TAG
+        self._i_am_local_tag_service = self._service.get_service_type() == HC.LOCAL_TAG
         
         self._original_statuses_to_pairs = collections.defaultdict( set )
         self._current_statuses_to_pairs = collections.defaultdict( set )

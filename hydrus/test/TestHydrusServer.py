@@ -459,7 +459,7 @@ class TestServer( unittest.TestCase ):
         
         # account_types
         
-        account_types = [ HydrusNetwork.AccountType.generate_admin_account_type( service.GetServiceType() ) ]
+        account_types = [ HydrusNetwork.AccountType.generate_admin_account_type( service.get_service_type() ) ]
         
         TG.test_controller.set_read( 'account_types', account_types )
         
