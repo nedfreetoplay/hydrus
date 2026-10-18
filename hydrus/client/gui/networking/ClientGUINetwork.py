@@ -744,7 +744,7 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
             search_usage_data = bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_DATA, search_delta )
             
         
-        pretty_search_usage = HydrusData.ToHumanBytes( search_usage_data ) + ' in ' + HydrusNumbers.to_human_int( search_usage_requests ) + ' requests'
+        pretty_search_usage = HydrusData.to_human_bytes( search_usage_data ) + ' in ' + HydrusNumbers.to_human_int( search_usage_requests ) + ' requests'
         
         pretty_network_context = network_context.ToString()
         pretty_context_type = CC.network_context_type_string_lookup[ network_context.context_type ]
@@ -755,11 +755,11 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
         else:
             
-            pretty_current_usage = HydrusData.ToHumanBytes( current_usage ) + '/s'
+            pretty_current_usage = HydrusData.to_human_bytes( current_usage ) + '/s'
             
         
-        pretty_day_usage = HydrusData.ToHumanBytes( day_usage_data ) + ' in ' + HydrusNumbers.to_human_int( day_usage_requests ) + ' requests'
-        pretty_month_usage = HydrusData.ToHumanBytes( month_usage_data ) + ' in ' + HydrusNumbers.to_human_int( month_usage_requests ) + ' requests'
+        pretty_day_usage = HydrusData.to_human_bytes( day_usage_data ) + ' in ' + HydrusNumbers.to_human_int( day_usage_requests ) + ' requests'
+        pretty_month_usage = HydrusData.to_human_bytes( month_usage_data ) + ' in ' + HydrusNumbers.to_human_int( month_usage_requests ) + ' requests'
         
         if network_context == ClientNetworkingContexts.GLOBAL_NETWORK_CONTEXT:
             
@@ -1127,7 +1127,7 @@ class ReviewNetworkContextBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         current_usage = self._bandwidth_tracker.get_usage( HC.BANDWIDTH_TYPE_DATA, 1, for_user = True )
         
-        pretty_current_usage = 'Current usage: ' + HydrusData.ToHumanBytes( current_usage ) + '/s'
+        pretty_current_usage = 'Current usage: ' + HydrusData.to_human_bytes( current_usage ) + '/s'
         
         self._current_usage_st.setText( pretty_current_usage )
         
@@ -1136,7 +1136,7 @@ class ReviewNetworkContextBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         search_usage_requests = self._bandwidth_tracker.get_all_usage( HC.BANDWIDTH_TYPE_REQUESTS )
         search_usage_data = self._bandwidth_tracker.get_all_usage( HC.BANDWIDTH_TYPE_DATA )
         
-        all_time_pretty_search_usage = f'All time usage: {HydrusData.ToHumanBytes( search_usage_data )} in {HydrusNumbers.to_human_int( search_usage_requests )} requests'
+        all_time_pretty_search_usage = f'All time usage: {HydrusData.to_human_bytes( search_usage_data )} in {HydrusNumbers.to_human_int( search_usage_requests )} requests'
         
         self._all_time_usage.setText( all_time_pretty_search_usage )
         
@@ -1149,7 +1149,7 @@ class ReviewNetworkContextBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         if bandwidth_type == HC.BANDWIDTH_TYPE_DATA:
             
-            converter = HydrusData.ToHumanBytes
+            converter = HydrusData.to_human_bytes
             
         elif bandwidth_type == HC.BANDWIDTH_TYPE_REQUESTS:
             
@@ -1303,7 +1303,7 @@ class ReviewNetworkJobs( ClientGUIScrolledPanels.ReviewPanel ):
         pretty_position = ClientNetworking.job_status_str_lookup[ position ]
         pretty_url = url
         pretty_status = status
-        pretty_current_speed = HydrusData.ToHumanBytes( current_speed ) + '/s'
+        pretty_current_speed = HydrusData.to_human_bytes( current_speed ) + '/s'
         pretty_progress = HydrusData.convert_value_range_to_bytes( num_bytes_read, num_bytes_to_read )
         
         display_tuple = ( pretty_position, pretty_url, pretty_status, pretty_current_speed, pretty_progress )

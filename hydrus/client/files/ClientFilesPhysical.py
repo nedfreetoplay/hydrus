@@ -353,7 +353,7 @@ class FilesStorageBaseLocation( object ):
             
         else:
             
-            return f'{pretty_path} ({self.ideal_weight}, {HydrusData.ToHumanBytes( self.max_num_bytes )})'
+            return f'{pretty_path} ({self.ideal_weight}, {HydrusData.to_human_bytes( self.max_num_bytes )})'
             
         
     

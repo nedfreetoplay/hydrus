@@ -289,7 +289,7 @@ def vacuum_db_into(db_path: str):
     
     bytes_per_sec = vacuum_size / time_took
     
-    HydrusData.show_text( f'Vacuumed {db_path} in {HydrusTime.time_delta_to_pretty_timedelta( time_took )} ({HydrusData.ToHumanBytes(bytes_per_sec)}/s). It went from {HydrusData.ToHumanBytes( original_size )} to {HydrusData.ToHumanBytes( vacuum_size )}' )
+    HydrusData.show_text( f'Vacuumed {db_path} in {HydrusTime.time_delta_to_pretty_timedelta( time_took )} ({HydrusData.to_human_bytes(bytes_per_sec)}/s). It went from {HydrusData.to_human_bytes( original_size )} to {HydrusData.to_human_bytes( vacuum_size )}' )
 
 SHUTDOWN_SENTINEL = object()
 COMMIT_CHECK_TOKEN_SENTINEL = object()
@@ -394,7 +394,7 @@ class HydrusDB( HydrusDBBase.DBBase ):
         
         if free_space is not None and free_space < space_wanted:
             
-            raise HydrusExceptions.DBAccessException( 'Sorry, it looks like the database drive partition has less than {} free space. It needs this for database transactions, so please free up some space.'.format( HydrusData.ToHumanBytes( space_wanted ) ) )
+            raise HydrusExceptions.DBAccessException( 'Sorry, it looks like the database drive partition has less than {} free space. It needs this for database transactions, so please free up some space.'.format( HydrusData.to_human_bytes( space_wanted ) ) )
             
         
         self._init_db()

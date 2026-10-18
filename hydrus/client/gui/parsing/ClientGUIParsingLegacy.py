@@ -763,7 +763,7 @@ And pass that html to a number of 'parsing children' that will each look through
                 
             except UnicodeDecodeError:
                 
-                self._example_data.setPlainText( 'The fetched data, which had length ' + HydrusData.ToHumanBytes( len( parsing_text ) ) + ', did not appear to be displayable text.' )
+                self._example_data.setPlainText( 'The fetched data, which had length ' + HydrusData.to_human_bytes( len( parsing_text ) ) + ', did not appear to be displayable text.' )
                 
             
         except Exception as e:

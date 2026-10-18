@@ -1231,7 +1231,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             content = network_job.GetContentBytes()
             
-            text = 'Request complete. Length of response is ' + HydrusData.ToHumanBytes( len( content ) ) + '.'
+            text = 'Request complete. Length of response is ' + HydrusData.to_human_bytes( len( content ) ) + '.'
             
             yes_tuples = []
             
@@ -8847,13 +8847,13 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         usage_since_boot = global_tracker.get_usage( HC.BANDWIDTH_TYPE_DATA, HydrusTime.secondise_ms( time_since_boot_ms ) )
         
-        bandwidth_status = HydrusData.ToHumanBytes( usage_since_boot )
+        bandwidth_status = HydrusData.to_human_bytes( usage_since_boot )
         
         current_usage = global_tracker.get_usage( HC.BANDWIDTH_TYPE_DATA, 1, for_user = True )
         
         if current_usage > 0:
             
-            bandwidth_status += ' (' + HydrusData.ToHumanBytes( current_usage ) + '/s)'
+            bandwidth_status += ' (' + HydrusData.to_human_bytes( current_usage ) + '/s)'
             
         
         if self._controller.new_options.GetBoolean( 'pause_subs_sync' ):
@@ -9239,7 +9239,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
             if free_space is not None and free_space < space_needed:
                 
-                text = f'You currently have very little free space ({HydrusData.ToHumanBytes( free_space )}) on your hydrus database drive partition. I think you should really have at least {HydrusData.ToHumanBytes( space_needed )} in order to save your exit data correctly. I recommend you free up disk space NOW.'
+                text = f'You currently have very little free space ({HydrusData.to_human_bytes( free_space )}) on your hydrus database drive partition. I think you should really have at least {HydrusData.to_human_bytes( space_needed )} in order to save your exit data correctly. I recommend you free up disk space NOW.'
                 
                 result = ClientGUIDialogsQuick.GetYesNo( self, text, yes_label = 'try exiting now', no_label = 'back out' )
                 

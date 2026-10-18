@@ -228,7 +228,7 @@ def GetPayloadDescriptionAndBytes( payload_obj ):
     
     ( payload_bytes, payload_length ) = GetPayloadBytesAndLength( payload_obj )
     
-    payload_description = GetPayloadTypeString( payload_obj ) + ' - ' + HydrusData.ToHumanBytes( payload_length )
+    payload_description = GetPayloadTypeString( payload_obj ) + ' - ' + HydrusData.to_human_bytes( payload_length )
     
     return ( payload_description, payload_bytes )
     

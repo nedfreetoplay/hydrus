@@ -790,7 +790,7 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
             try:
                 
                 free_space = HydrusPaths.get_free_space( path )
-                pretty_free_space = HydrusData.ToHumanBytes( free_space )
+                pretty_free_space = HydrusData.to_human_bytes( free_space )
                 
             except Exception as e:
                 
@@ -854,7 +854,7 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 usages = [ p( fp ) + ' everything' ]
                 
             
-            pretty_current_usage = HydrusData.ToHumanBytes( current_bytes ) + ' - ' + ','.join( usages )
+            pretty_current_usage = HydrusData.to_human_bytes( current_bytes ) + ' - ' + ','.join( usages )
             
         else:
             
@@ -887,7 +887,7 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
         else:
             
-            pretty_max_num_bytes = HydrusData.ToHumanBytes( base_location.max_num_bytes )
+            pretty_max_num_bytes = HydrusData.to_human_bytes( base_location.max_num_bytes )
             
         
         ideal_fp = self._media_base_locations_to_ideal_usage.get( base_location, 0.0 )
@@ -931,7 +931,7 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 usages = [ p( ideal_fp ) + ' everything' ]
                 
             
-            pretty_ideal_usage = HydrusData.ToHumanBytes( ideal_bytes ) + ' - ' + ','.join( usages )
+            pretty_ideal_usage = HydrusData.to_human_bytes( ideal_bytes ) + ' - ' + ','.join( usages )
             
         else:
             
@@ -1380,13 +1380,13 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         approx_total_db_size = self._controller.db.get_approx_total_file_size()
         
-        self._current_db_path_st.setText( 'database (about '+HydrusData.ToHumanBytes(approx_total_db_size)+'): '+self._controller.get_db_dir() )
+        self._current_db_path_st.setText( 'database (about '+HydrusData.to_human_bytes(approx_total_db_size)+'): '+self._controller.get_db_dir() )
         self._current_install_path_st.setText( 'install: ' + HC.BASE_DIR )
         
         approx_total_client_files = self._hydrus_local_file_storage_total_size
         ( approx_total_thumbnails_min, approx_total_thumbnails_max ) = self._GetThumbnailSizeEstimates()
         
-        label = 'media is {}, thumbnails are estimated at {}-{}'.format( HydrusData.ToHumanBytes( approx_total_client_files ), HydrusData.ToHumanBytes( approx_total_thumbnails_min ), HydrusData.ToHumanBytes( approx_total_thumbnails_max ) )
+        label = 'media is {}, thumbnails are estimated at {}-{}'.format( HydrusData.to_human_bytes( approx_total_client_files ), HydrusData.to_human_bytes( approx_total_thumbnails_min ), HydrusData.to_human_bytes( approx_total_thumbnails_max ) )
         
         self._current_media_paths_st.setText( label )
         self._current_media_paths_st.setToolTip( ClientGUIFunctions.WrapToolTip( 'Precise thumbnail sizes are not tracked, so this is an estimate based on your current thumbnail dimensions.' ) )

@@ -80,17 +80,17 @@ class FileFilteringImportOptions( IOC.ImportOptionsMetatype ):
         
         if self._min_size is not None and size < self._min_size:
             
-            raise HydrusExceptions.FileImportRulesException( 'File was ' + HydrusData.ToHumanBytes( size ) + ' but the lower limit in the File Filtering Import Options is ' + HydrusData.ToHumanBytes( self._min_size ) + '.' )
+            raise HydrusExceptions.FileImportRulesException( 'File was ' + HydrusData.to_human_bytes( size ) + ' but the lower limit in the File Filtering Import Options is ' + HydrusData.to_human_bytes( self._min_size ) + '.' )
             
         
         if self._max_size is not None and size > self._max_size:
             
-            raise HydrusExceptions.FileImportRulesException( 'File was ' + HydrusData.ToHumanBytes( size ) + ' but the upper limit in the File Filtering Import Options is ' + HydrusData.ToHumanBytes( self._max_size ) + '.' )
+            raise HydrusExceptions.FileImportRulesException( 'File was ' + HydrusData.to_human_bytes( size ) + ' but the upper limit in the File Filtering Import Options is ' + HydrusData.to_human_bytes( self._max_size ) + '.' )
             
         
         if mime == HC.ANIMATION_GIF and self._max_gif_size is not None and size > self._max_gif_size:
             
-            raise HydrusExceptions.FileImportRulesException( 'File was ' + HydrusData.ToHumanBytes( size ) + ' but the upper limit for gifs in the File Filtering Import Options is ' + HydrusData.ToHumanBytes( self._max_gif_size ) + '.' )
+            raise HydrusExceptions.FileImportRulesException( 'File was ' + HydrusData.to_human_bytes( size ) + ' but the upper limit for gifs in the File Filtering Import Options is ' + HydrusData.to_human_bytes( self._max_gif_size ) + '.' )
             
         
         if self._min_resolution is not None:
@@ -159,20 +159,20 @@ class FileFilteringImportOptions( IOC.ImportOptionsMetatype ):
             # this should always be animation_gif, but let's allow for future confusion
             if possible_mime in ( HC.ANIMATION_GIF, HC.IMAGE_GIF, HC.UNDETERMINED_GIF ) and self._max_gif_size is not None and num_bytes > self._max_gif_size:
                 
-                raise HydrusExceptions.FileImportRulesException( error_prefix + HydrusData.ToHumanBytes( num_bytes ) + ' but the upper limit for gifs is ' + HydrusData.ToHumanBytes( self._max_gif_size ) + '.' )
+                raise HydrusExceptions.FileImportRulesException( error_prefix + HydrusData.to_human_bytes( num_bytes ) + ' but the upper limit for gifs is ' + HydrusData.to_human_bytes( self._max_gif_size ) + '.' )
                 
             
         
         if self._max_size is not None and num_bytes > self._max_size:
             
-            raise HydrusExceptions.FileImportRulesException( error_prefix + HydrusData.ToHumanBytes( num_bytes ) + ' but the upper limit is ' + HydrusData.ToHumanBytes( self._max_size ) + '.' )
+            raise HydrusExceptions.FileImportRulesException( error_prefix + HydrusData.to_human_bytes( num_bytes ) + ' but the upper limit is ' + HydrusData.to_human_bytes( self._max_size ) + '.' )
             
         
         if is_complete_file_size:
             
             if self._min_size is not None and num_bytes < self._min_size:
                 
-                raise HydrusExceptions.FileImportRulesException( error_prefix + HydrusData.ToHumanBytes( num_bytes ) + ' but the lower limit is ' + HydrusData.ToHumanBytes( self._min_size ) + '.' )
+                raise HydrusExceptions.FileImportRulesException( error_prefix + HydrusData.to_human_bytes( num_bytes ) + ' but the lower limit is ' + HydrusData.to_human_bytes( self._min_size ) + '.' )
                 
             
         
@@ -230,17 +230,17 @@ class FileFilteringImportOptions( IOC.ImportOptionsMetatype ):
         
         if self._min_size is not None:
             
-            statements.append( 'excludes < ' + HydrusData.ToHumanBytes( self._min_size ) )
+            statements.append( 'excludes < ' + HydrusData.to_human_bytes( self._min_size ) )
             
         
         if self._max_size is not None:
             
-            statements.append( 'excludes > ' + HydrusData.ToHumanBytes( self._max_size ) )
+            statements.append( 'excludes > ' + HydrusData.to_human_bytes( self._max_size ) )
             
         
         if self._max_gif_size is not None:
             
-            statements.append( 'excludes gifs > ' + HydrusData.ToHumanBytes( self._max_gif_size ) )
+            statements.append( 'excludes gifs > ' + HydrusData.to_human_bytes( self._max_gif_size ) )
             
         
         if self._min_resolution is not None:

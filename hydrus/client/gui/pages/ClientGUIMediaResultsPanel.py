@@ -527,18 +527,18 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
                 
             else:
                 
-                return HydrusData.ToHumanBytes( 0 )
+                return HydrusData.to_human_bytes( 0 )
                 
             
         else:
             
             if unknown_size:
                 
-                return HydrusData.ToHumanBytes( total_size ) + ' + some unknown size'
+                return HydrusData.to_human_bytes( total_size ) + ' + some unknown size'
                 
             else:
                 
-                return HydrusData.ToHumanBytes( total_size )
+                return HydrusData.to_human_bytes( total_size )
                 
             
         

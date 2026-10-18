@@ -2449,7 +2449,7 @@ class ReviewServiceFileSubPanel( ClientGUICommon.StaticBox ):
         num_files = service_info[ HC.SERVICE_INFO_NUM_FILES ]
         total_size = service_info[ HC.SERVICE_INFO_TOTAL_SIZE ]
         
-        text = HydrusNumbers.to_human_int( num_files ) + ' files, totalling ' + HydrusData.ToHumanBytes( total_size )
+        text = HydrusNumbers.to_human_int( num_files ) + ' files, totalling ' + HydrusData.to_human_bytes( total_size )
         
         if service.get_service_type() in ( HC.LOCAL_FILE_DOMAIN, HC.COMBINED_LOCAL_FILE_DOMAINS, HC.HYDRUS_LOCAL_FILE_STORAGE, HC.FILE_REPOSITORY ):
             
@@ -3605,7 +3605,7 @@ class ReviewServiceIPFSSubPanel( ClientGUICommon.StaticBox ):
         
         pretty_multihash = multihash
         pretty_num_files = HydrusNumbers.to_human_int( num_files )
-        pretty_total_size = HydrusData.ToHumanBytes( total_size )
+        pretty_total_size = HydrusData.to_human_bytes( total_size )
         pretty_note = note
         
         display_tuple = ( pretty_multihash, pretty_num_files, pretty_total_size, pretty_note )

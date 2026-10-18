@@ -105,7 +105,7 @@ def render_key_value(indent_depth, key, value, keys_to_put_at_the_top = None) ->
         
     elif isinstance( value, bytes ):
         
-        raw_value = f'{HydrusData.ToHumanBytes(len(value))} of data'
+        raw_value = f'{HydrusData.to_human_bytes(len(value))} of data'
         
         value_string = ( indent * ( indent_depth + 1 ) ) + raw_value
         

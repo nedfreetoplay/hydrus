@@ -273,12 +273,12 @@ class NetworkJobControl( QW.QFrame ):
                     
                 else:
                     
-                    speed_text += HydrusData.ToHumanBytes( bytes_read )
+                    speed_text += HydrusData.to_human_bytes( bytes_read )
                     
                 
                 if current_speed != bytes_to_read: # if it is a real quick download, just say its size
                     
-                    speed_text += ' ' + HydrusData.ToHumanBytes( current_speed ) + '/s'
+                    speed_text += ' ' + HydrusData.to_human_bytes( current_speed ) + '/s'
                     
                 
             

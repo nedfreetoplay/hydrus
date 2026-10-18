@@ -166,7 +166,7 @@ def GetDuplicateComparisonStatementsFast( shown_media_result: ClientMediaResult.
                 score = 0
                 
             
-            statement = '{} {} {}{}'.format( HydrusData.ToHumanBytes( s_size ), operator, HydrusData.ToHumanBytes( c_size ), percentage_different_string )
+            statement = '{} {} {}{}'.format( HydrusData.to_human_bytes( s_size ), operator, HydrusData.to_human_bytes( c_size ), percentage_different_string )
             
             statements_and_scores[ 'filesize' ]  = ( statement, score )
             

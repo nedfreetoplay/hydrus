@@ -600,14 +600,14 @@ class NetworkJob( object ):
                     
                     if self._num_bytes_to_read is not None and self._num_bytes_read > self._num_bytes_to_read:
                         
-                        raise HydrusExceptions.NetworkException( 'Too much data: Was expecting {}, but the server continued responding!'.format( HydrusData.ToHumanBytes( self._num_bytes_to_read ) ) )
+                        raise HydrusExceptions.NetworkException( 'Too much data: Was expecting {}, but the server continued responding!'.format( HydrusData.to_human_bytes( self._num_bytes_to_read ) ) )
                         
                     
                     if self._num_bytes_expected_in_this_range_chunk is not None:
                         
                         if self._num_bytes_read_in_this_response > self._num_bytes_expected_in_this_range_chunk:
                             
-                            raise HydrusExceptions.NetworkException( 'Too much data: Was expecting {} in this range chunk, but the server continued responding!'.format( HydrusData.ToHumanBytes( self._num_bytes_expected_in_this_range_chunk ) ) )
+                            raise HydrusExceptions.NetworkException( 'Too much data: Was expecting {} in this range chunk, but the server continued responding!'.format( HydrusData.to_human_bytes( self._num_bytes_expected_in_this_range_chunk ) ) )
                             
                         
                     
@@ -646,7 +646,7 @@ class NetworkJob( object ):
                                 # ok this situation is actually ok(?)
                                 # turns out at least one decent server does this regularly, says 'here's 0-22MB' and gives you 128KB instead
                                 
-                                HydrusData.safe_print( 'Not enough data for URL {}: Was expecting {} in this range chunk, but the server only delivered {}!'.format( self._url, HydrusData.ToHumanBytes( self._num_bytes_expected_in_this_range_chunk ), HydrusData.ToHumanBytes( self._num_bytes_read_in_this_response ) ) )
+                                HydrusData.safe_print( 'Not enough data for URL {}: Was expecting {} in this range chunk, but the server only delivered {}!'.format( self._url, HydrusData.to_human_bytes( self._num_bytes_expected_in_this_range_chunk ), HydrusData.to_human_bytes( self._num_bytes_read_in_this_response ) ) )
                                 
                             
                         

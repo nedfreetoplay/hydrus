@@ -288,7 +288,7 @@ class TestPanel( QW.QWidget ):
             
             if good_type_found:
                 
-                description = HydrusData.ToHumanBytes( len( example_data ) ) + ' total, ' + parse_phrase
+                description = HydrusData.to_human_bytes( len( example_data ) ) + ' total, ' + parse_phrase
                 
                 example_data_to_show = example_data
                 
@@ -552,7 +552,7 @@ class TestPanelPageParser( TestPanel ):
                         parse_phrase = 'looks like JSON'
                         
                     
-                    description = HydrusData.ToHumanBytes( len( post_conversion_example_data ) ) + ' total, ' + parse_phrase
+                    description = HydrusData.to_human_bytes( len( post_conversion_example_data ) ) + ' total, ' + parse_phrase
                     
                     if len( post_conversion_example_data ) > self.MAX_CHARS_IN_PREVIEW:
                         

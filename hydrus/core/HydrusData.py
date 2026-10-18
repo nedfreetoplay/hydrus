@@ -99,7 +99,7 @@ status_to_prefix = {
 
 def convert_value_range_to_bytes( value, range ):
     
-    return ToHumanBytes( value ) + '/' + ToHumanBytes( range )
+    return to_human_bytes( value ) + '/' + to_human_bytes( range )
 
 def debug_print( debug_info ):
     
@@ -458,7 +458,7 @@ def base_to_human_bytes( size, sig_figs = 3 ):
     return '{} {}B'.format( d, suffix )
 
 # DELETE: Надо изменить эту хрень. Пускай лучше все вызывают оригинальную функцию.
-ToHumanBytes = base_to_human_bytes
+to_human_bytes = base_to_human_bytes
 
 class HydrusYAMLBase( yaml.YAMLObject ):
     yaml_loader = yaml.SafeLoader

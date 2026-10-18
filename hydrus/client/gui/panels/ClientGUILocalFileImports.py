@@ -210,7 +210,7 @@ class ReviewLocalFileImports( ClientGUIScrolledPanels.ReviewPanel ):
             
         else:
             
-            pretty_size = HydrusData.ToHumanBytes( local_file_parse.size )
+            pretty_size = HydrusData.to_human_bytes( local_file_parse.size )
             
         
         pretty_mime = local_file_parse.GetPrettyMime()

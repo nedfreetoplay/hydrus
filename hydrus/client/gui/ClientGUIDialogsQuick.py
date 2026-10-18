@@ -242,11 +242,11 @@ def PresentClipboardParseError( win: QW.QWidget, content: str, expected_content_
     
     if len( content ) > MAX_CONTENT_SIZE:
         
-        log_message += '\nFirst {} of content received (total was {}):\n'.format( HydrusData.ToHumanBytes( MAX_CONTENT_SIZE ), HydrusData.ToHumanBytes( len( content ) ) ) + content[:MAX_CONTENT_SIZE]
+        log_message += '\nFirst {} of content received (total was {}):\n'.format( HydrusData.to_human_bytes( MAX_CONTENT_SIZE ), HydrusData.to_human_bytes( len( content ) ) ) + content[:MAX_CONTENT_SIZE]
         
     else:
         
-        log_message += '\nContent received ({}):\n'.format( HydrusData.ToHumanBytes( len( content ) ) ) + content[:MAX_CONTENT_SIZE]
+        log_message += '\nContent received ({}):\n'.format( HydrusData.to_human_bytes( len( content ) ) ) + content[:MAX_CONTENT_SIZE]
         
     
     HydrusData.debug_print( log_message )

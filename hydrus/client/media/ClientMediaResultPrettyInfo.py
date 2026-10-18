@@ -62,7 +62,7 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
     
     ( hash_id, hash, size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) = file_info_manager.ToTuple()
     
-    info_string = f'{HydrusData.ToHumanBytes( size )} {HC.mime_string_lookup[ mime ]}'
+    info_string = f'{HydrusData.to_human_bytes( size )} {HC.mime_string_lookup[ mime ]}'
     
     if width is not None and height is not None:
         
@@ -130,7 +130,7 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
             
             approx_b_per_second = file_info_manager.size / ( bitrate_duration_ms / 1000 )
             
-            pretty_info_lines.append( ClientMediaResultPrettyInfoObjects.PrettyMediaResultInfoLine( f'approx bitrate: {HydrusData.ToHumanBytes(approx_b_per_second)}/s', False ) )
+            pretty_info_lines.append( ClientMediaResultPrettyInfoObjects.PrettyMediaResultInfoLine( f'approx bitrate: {HydrusData.to_human_bytes(approx_b_per_second)}/s', False ) )
             
         
     

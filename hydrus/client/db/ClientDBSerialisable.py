@@ -581,7 +581,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 
                 try:
                     
-                    HydrusData.safe_print( 'Dump had length {}!'.format( HydrusData.ToHumanBytes( len( dump_buffer ) ) ) )
+                    HydrusData.safe_print( 'Dump had length {}!'.format( HydrusData.to_human_bytes( len( dump_buffer ) ) ) )
                     
                 except Exception as e:
                     
@@ -684,7 +684,7 @@ class ClientDBSerialisable( ClientDBModule.ClientDBModule ):
                 
                 try:
                     
-                    HydrusData.safe_print( 'Dump had length {}!'.format( HydrusData.ToHumanBytes( len( dump_buffer ) ) ) )
+                    HydrusData.safe_print( 'Dump had length {}!'.format( HydrusData.to_human_bytes( len( dump_buffer ) ) ) )
                     
                 except Exception as e:
                     

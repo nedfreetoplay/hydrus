@@ -74,7 +74,7 @@ class ClientFilesManager( object ):
         
         if dest_free_space < 100 * 1048576 or dest_free_space < file_size:
             
-            message = 'The disk for path "{}" is almost full and cannot take the file "{}", which is {}! Shut the client down now and fix this!'.format( dest_path, hash.hex(), HydrusData.ToHumanBytes( file_size ) )
+            message = 'The disk for path "{}" is almost full and cannot take the file "{}", which is {}! Shut the client down now and fix this!'.format( dest_path, hash.hex(), HydrusData.to_human_bytes( file_size ) )
             
             HydrusData.show_text( message )
             

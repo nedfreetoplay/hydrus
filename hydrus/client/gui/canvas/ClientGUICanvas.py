@@ -1853,7 +1853,7 @@ class CanvasPanel( Canvas ):
             ClientGUIMediaMenus.AddFileViewingStatsMenu( info_menu, (self._current_media,) )
             
             filetype_summary = ClientMedia.GetMediasFiletypeSummaryString( [ self._current_media ] )
-            size_summary = HydrusData.ToHumanBytes( self._current_media.GetSize() )
+            size_summary = HydrusData.to_human_bytes( self._current_media.GetSize() )
             
             info_summary = f'{filetype_summary}, {size_summary}'
             
@@ -4665,7 +4665,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
             ClientGUIMediaMenus.AddFileViewingStatsMenu( info_menu, ( self._current_media, ) )
             
             filetype_summary = ClientMedia.GetMediasFiletypeSummaryString( [ self._current_media ] )
-            size_summary = HydrusData.ToHumanBytes( self._current_media.GetSize() )
+            size_summary = HydrusData.to_human_bytes( self._current_media.GetSize() )
             
             info_summary = f'{filetype_summary}, {size_summary}'
             

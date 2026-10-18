@@ -745,7 +745,7 @@ class ReviewWhatIsThisObject( ClientGUIScrolledPanels.ReviewPanel ):
                     # TODO: let's make a HydrusSerialisable 'DescribeYourself' or similar and have lists and dicts talk about their contents
                     result_text = f'Object Type: {obj.get_serialisable_description()}'
                     result_text += '\n'
-                    result_text += f'JSON: {HydrusData.ToHumanBytes( len( payload_text ) )}'
+                    result_text += f'JSON: {HydrusData.to_human_bytes( len( payload_text ) )}'
                     
                 
                 result_texts.append( result_text )
