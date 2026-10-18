@@ -184,7 +184,7 @@ def report_content_speed_to_job_status( job_status, rows_done, total_rows, preci
     
     rows_s = HydrusNumbers.to_human_int( int( num_rows / it_took ) )
     
-    popup_message = 'content row ' + HydrusNumbers.value_range_to_pretty_string( rows_done, total_rows ) + ': processing ' + row_name + ' at ' + rows_s + ' rows/s'
+    popup_message = 'content row ' + HydrusNumbers.value_range_to_pretty_string( rows_done, total_rows ) + ': processing ' + row_name + ' at ' + rows_s + HC.ROWS_S_TEXT
     
     CG.client_controller.frame_splash_status.SetText( popup_message, print_to_log = False )
     job_status.SetStatusText( popup_message, 2 )
@@ -195,7 +195,7 @@ def report_speed_to_job_status( job_status, precise_timestamp, num_rows, row_nam
     
     rows_s = HydrusNumbers.to_human_int( int( num_rows / it_took ) )
     
-    popup_message = 'processing ' + row_name + ' at ' + rows_s + ' rows/s'
+    popup_message = 'processing ' + row_name + ' at ' + rows_s + HC.ROWS_S_TEXT
     
     CG.client_controller.frame_splash_status.SetText( popup_message, print_to_log = False )
     job_status.SetStatusText( popup_message, 2 )
@@ -212,7 +212,7 @@ def report_speed_to_log( precise_timestamp, num_rows, row_name ):
     
     rows_s = HydrusNumbers.to_human_int( int( num_rows / it_took ) )
     
-    summary = 'processed ' + HydrusNumbers.to_human_int( num_rows ) + ' ' + row_name + ' at ' + rows_s + ' rows/s'
+    summary = 'processed ' + HydrusNumbers.to_human_int( num_rows ) + ' ' + row_name + ' at ' + rows_s + HC.ROWS_S_TEXT
     
     HydrusData.safe_print( summary )
     
