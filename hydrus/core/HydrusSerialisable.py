@@ -180,143 +180,107 @@ SERIALISABLE_TYPE_EXTERNAL_PROGRAMS_IMPORT_OPTIONS_SINGLE_ENTRY = 163
 #endregion SERIALISABLE_TYPE_*
 
 # Надо будет сделать тип HydrusSerialisable.SerialisableBase, но для этого нужно импортировать скрипт с этим типом.
-SERIALISABLE_TYPES_TO_OBJECT_TYPES: dict[int, typing.Any] = {}
+SERIALISABLE_TYPES_TO_OBJECT_TYPES: dict[int, type[SerialisableBase]] = {}
 
-def create_from_network_bytes(network_bytes: bytes, raise_error_on_future_version = False) -> typing.Any:
-    
+def create_from_network_bytes(network_bytes: bytes, raise_error_on_future_version: bool = False) -> SerialisableBase:
     obj_string = HydrusCompression.decompress_bytes_to_string( network_bytes )
     
     return create_from_string( obj_string, raise_error_on_future_version = raise_error_on_future_version )
 
-def create_from_noneable_serialisable_tuple(obj_tuple_or_none, raise_error_on_future_version = False) -> typing.Any:
-    
+SerialisableTuple = typing.Union[
+    typing.Tuple[int, int, typing.Any],          # (serialisable_type, version, serialisable_info)
+    typing.Tuple[int, str, int, typing.Any]      # (serialisable_type, name, version, serialisable_info)
+]
+
+def create_from_noneable_serialisable_tuple(obj_tuple_or_none: SerialisableTuple | None, raise_error_on_future_version: bool = False) -> SerialisableBase | None:
     if obj_tuple_or_none is None:
-        
         return None
-        
     else:
-        
         return create_from_serialisable_tuple( obj_tuple_or_none, raise_error_on_future_version = raise_error_on_future_version )
 
-def create_from_string(obj_string: str, raise_error_on_future_version = False) -> typing.Any:
-    
+def create_from_string(obj_string: str, raise_error_on_future_version: bool = False) -> SerialisableBase:
     obj_tuple = json.loads( obj_string )
     
     return create_from_serialisable_tuple( obj_tuple, raise_error_on_future_version = raise_error_on_future_version )
 
-def create_from_serialisable_tuple(obj_tuple: tuple, raise_error_on_future_version = False) -> typing.Any:
+
+def create_from_serialisable_tuple(obj_tuple: SerialisableTuple, raise_error_on_future_version: bool = False) -> SerialisableBase:
     
-    if len( obj_tuple ) == 3:
-        
+    if len(obj_tuple) == 3:
         ( serialisable_type, version, serialisable_info ) = obj_tuple
         
-        obj = SERIALISABLE_TYPES_TO_OBJECT_TYPES[ serialisable_type ]()
-        
+        obj = SERIALISABLE_TYPES_TO_OBJECT_TYPES[serialisable_type]()
     else:
-        
         ( serialisable_type, name, version, serialisable_info ) = obj_tuple
         
-        obj = SERIALISABLE_TYPES_TO_OBJECT_TYPES[ serialisable_type ]( name )
-        
+        obj = SERIALISABLE_TYPES_TO_OBJECT_TYPES[serialisable_type]( name )
     
     obj.initialise_from_serialisable_info( version, serialisable_info, raise_error_on_future_version = raise_error_on_future_version )
     
     return obj
 
-def get_noneable_serialisable_tuple(obj_or_none):
-    
-    if obj_or_none is None:
-        
+def get_noneable_serialisable_tuple(obj : SerialisableBase | None):
+    if obj is None:
         return None
-        
     else:
         return obj.get_serialisable_tuple()
 
-def set_non_dupe_name(obj, disallowed_names, do_casefold = False):
+def set_non_dupe_name(obj: SerialisableBaseNamed, disallowed_names, do_casefold = False):
     
-    non_dupe_name = HydrusData.get_non_dupe_name( obj.GetName(), disallowed_names, do_casefold = do_casefold )
+    non_dupe_name = HydrusData.get_non_dupe_name(obj.get_name(), disallowed_names, do_casefold = do_casefold)
     
-    obj.SetName( non_dupe_name )
-
-def object_version_is_from_the_future(obj_tuple):
-    
-    if len( obj_tuple ) == 3:
-        
-        ( serialisable_type, version, serialisable_info ) = obj_tuple
-        
-    else:
-        
-        ( serialisable_type, name, version, serialisable_info ) = obj_tuple
-        
-    
-    return SERIALISABLE_TYPES_TO_OBJECT_TYPES[ serialisable_type ].SERIALISABLE_VERSION > version
+    obj.set_name(non_dupe_name)
 
 SerialisableBaseSubclass = typing.TypeVar('SerialisableBaseSubclass', bound = 'SerialisableBase')
 
 
 class SerialisableBase:
     
-    SERIALISABLE_TYPE = SERIALISABLE_TYPE_BASE
-    SERIALISABLE_NAME = 'Base Serialisable Object'
-    SERIALISABLE_VERSION = 1
+    SERIALISABLE_TYPE: int = SERIALISABLE_TYPE_BASE
+    SERIALISABLE_NAME: str = 'Base Serialisable Object'
+    SERIALISABLE_VERSION: int = 1
     
     # don't make an __eq__ here without more testing and research, it messes a bunch of things up in sets and hashing and stuff
     
-    def _get_serialisable_info(self):
-        
+    def _get_serialisable_info(self) -> tuple[str, str]:
         raise NotImplementedError()
     
     def _initialise_from_serialisable_info(self, serialisable_info):
-        
         raise NotImplementedError()
     
     def _update_serialisable_info(self, version, old_serialisable_info):
-        
         return old_serialisable_info
     
     def dump_to_network_bytes(self):
-        
-        obj_string = self.dump_to_string()
-        
-        return HydrusCompression.compress_string_to_bytes( obj_string )
+        return HydrusCompression.compress_string_to_bytes( self.dump_to_string() )
     
     def dump_to_string(self):
-        
-        obj_tuple = self.get_serialisable_tuple()
-        
-        return json.dumps( obj_tuple )
+        return json.dumps( self.get_serialisable_tuple() )
     
     # this magically tells type checkers that this delivers whatever 'self' type is, subclasses whatever
     def duplicate(self: SerialisableBaseSubclass) -> SerialisableBaseSubclass:
-        
         return create_from_string( self.dump_to_string() )
     
-    def get_serialisable_description(self):
-        
+    def get_serialisable_description(self) -> str:
         return f'{self.SERIALISABLE_NAME} ({self.SERIALISABLE_TYPE})'
     
-    def get_serialised_hash(self):
+    def get_serialised_hash(self) -> bytes:
         
         # Стоит учесть, что в будущем на это полагаться не следует: сериализованная строка может измениться из-за обновлений объектов или — в редких случаях — из-за того, что содержащиеся в ней объекты всё еще находятся в активном состоянии («горячие» объекты).
         return hashlib.sha256( bytes( self.dump_to_string(), 'utf-8' ) ).digest()
     
-    def get_serialisable_tuple(self):
+    def get_serialisable_tuple(self) -> tuple[int, int, tuple[str, str]]:
         
         if hasattr( self, '_lock' ):
-            
             with getattr( self, '_lock' ):
-                
                 serialisable_info = self._get_serialisable_info()
-                
-            
+        
         else:
-            
             serialisable_info = self._get_serialisable_info()
-            
         
         return ( self.SERIALISABLE_TYPE, self.SERIALISABLE_VERSION, serialisable_info )
     
-    def initialise_from_serialisable_info(self, original_version, serialisable_info, raise_error_on_future_version = False):
+    def initialise_from_serialisable_info(self, original_version, serialisable_info, raise_error_on_future_version: bool = False):
         
         object_is_newer = original_version > self.SERIALISABLE_VERSION
         
@@ -418,7 +382,7 @@ class SerialisableBaseNamed(SerialisableBase):
         
         self._name = name
     
-    def _get_serialisable_info(self):
+    def _get_serialisable_info(self) -> tuple[str, str]:
         
         raise NotImplementedError()
     
@@ -426,7 +390,7 @@ class SerialisableBaseNamed(SerialisableBase):
         
         raise NotImplementedError()
     
-    def get_serialisable_description(self):
+    def get_serialisable_description(self) -> str:
         
         return f'{self.SERIALISABLE_NAME} ({self.SERIALISABLE_TYPE}) "{self._name}"'
     
@@ -434,9 +398,11 @@ class SerialisableBaseNamed(SerialisableBase):
         
         return ( self.SERIALISABLE_TYPE, self._name, self.SERIALISABLE_VERSION, self._get_serialisable_info() )
     
-    def get_name(self): return self._name
+    def get_name(self):
+        return self._name
     
-    def set_name(self, name): self._name = name
+    def set_name(self, name):
+        self._name = name
     
     def set_non_dupe_name(self, disallowed_names, do_casefold = False):
         
@@ -547,7 +513,7 @@ class SerialisableDictionary(SerialisableBase, dict[K, V]):
             
             return ( 2, new_serialisable_info )
     
-    def get_serialisable_description(self):
+    def get_serialisable_description(self) -> str:
         
         result = f'{self.SERIALISABLE_NAME} ({self.SERIALISABLE_TYPE})'
         result += '\n'
@@ -676,7 +642,7 @@ class SerialisableBytesDictionary(SerialisableBase, dict[int | bytes, V_bytes]):
             
             self[ key ] = value
     
-    def get_serialisable_description(self):
+    def get_serialisable_description(self) -> str:
         
         result = f'{self.SERIALISABLE_NAME} ({self.SERIALISABLE_TYPE})'
         result += '\n'
@@ -814,7 +780,7 @@ class SerialisableList(SerialisableBase, list[T]):
             
             return ( 3, new_serialisable_info )
     
-    def get_serialisable_description(self):
+    def get_serialisable_description(self) -> str:
         
         result = f'{self.SERIALISABLE_NAME} ({self.SERIALISABLE_TYPE})'
         result += '\n'
@@ -866,12 +832,9 @@ class IdAndName(SerialisableBase):
         self.object_id: bytes = object_id
         self.name: str = name
     
-    def __eq__(self, other):
-        
+    def __eq__(self, other: typing.Any) -> bool:
         if isinstance( other, IdAndName ):
-            
             return self.__hash__() == other.__hash__()
-            
         
         return NotImplemented
     
@@ -883,7 +846,7 @@ class IdAndName(SerialisableBase):
         
         return f'"{self.name}" (id {self.object_id.hex()})'
     
-    def _get_serialisable_info(self):
+    def _get_serialisable_info(self) -> tuple[str, str]:
         
         id_serialisable = self.object_id.hex()
         
