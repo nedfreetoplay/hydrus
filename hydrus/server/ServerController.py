@@ -264,7 +264,7 @@ class Controller(HydrusController.HydrusController):
     
     def get_files_dir(self):
         
-        return self.db.GetFilesDir()
+        return self.db.get_files_dir()
     
     def get_services(self):
         
