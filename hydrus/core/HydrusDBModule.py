@@ -131,7 +131,7 @@ class HydrusDBModule(HydrusDBBase.DBBase):
         
         pass
     
-    def create_unitial_indices(self):
+    def create_initial_indices(self):
         
         index_generation_dict = self._get_initial_index_generation_dict()
         
