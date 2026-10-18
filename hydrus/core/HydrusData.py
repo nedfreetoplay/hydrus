@@ -271,7 +271,7 @@ def safe_print(text: object):
     except Exception:
         print(repr(text))
 
-# Нам нужно вызвать оригинальную функцию, но если мы вызовем safe_print, то войдем в рекурсию.
+# Не трогать! Нам нужна ссылка на оригинальную функцию для обхода рекурсии.
 show_text = safe_print
 
 def convert_exception_tuple_to_nice_trace( etype, value, tb ):
@@ -340,6 +340,7 @@ def print_exception_tuple( etype, value, tb, do_wait = True ):
     
     return message
 
+# Не трогать! Нам нужна ссылка на оригинальную функцию для обхода рекурсии.
 show_exception = print_exception
 show_exception_tuple = print_exception_tuple
 
@@ -457,7 +458,7 @@ def base_to_human_bytes( size, sig_figs = 3 ):
     
     return '{} {}B'.format( d, suffix )
 
-# DELETE: Надо изменить эту хрень. Пускай лучше все вызывают оригинальную функцию.
+# Не трогать! Нам нужна ссылка на оригинальную функцию для обхода рекурсии.
 to_human_bytes = base_to_human_bytes
 
 class HydrusYAMLBase( yaml.YAMLObject ):
