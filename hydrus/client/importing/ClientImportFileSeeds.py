@@ -127,7 +127,7 @@ def FileURLMappingHasUntrustworthyNeighbours( hash: bytes, lookup_urls: collecti
     lookup_url_domains = { ClientNetworkingFunctions.ConvertURLIntoDomain( lookup_url ) for lookup_url in lookup_urls } 
     lookup_url_classes = { CG.client_controller.network_engine.domain_manager.GetURLClass( lookup_url ) for lookup_url in lookup_urls }
     
-    media_result = CG.client_controller.Read( 'media_result', hash )
+    media_result = CG.client_controller.read( 'media_result', hash )
     
     existing_file_urls = media_result.GetLocationsManager().GetURLs()
     
@@ -160,7 +160,7 @@ def FileURLMappingHasUntrustworthyNeighbours( hash: bytes, lookup_urls: collecti
             # oh no, the file these lookup urls refer to has a different known url in the same domain+url_class
             # it is likely that an edit on this site points to the original elsewhere
             
-            HydrusData.Print( f'INFO: When a URL status lookup suggested {hash.hex()}, I discovered that that file\'s existing URL "{file_url}" had the same URL Class as one of the lookup URLs, which were{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary(lookup_urls)}. This made the lookup untrustworthy (probably evidence of a previous bad booru source reference, or merged URLs during duplicate processing).' )
+            HydrusData.safe_print( f'INFO: When a URL status lookup suggested {hash.hex()}, I discovered that that file\'s existing URL "{file_url}" had the same URL Class as one of the lookup URLs, which were{HydrusText.convert_many_strings_to_nice_insertable_human_summary(lookup_urls)}. This made the lookup untrustworthy (probably evidence of a previous bad booru source reference, or merged URLs during duplicate processing).' )
             
             return True
             
@@ -200,7 +200,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
             self.Normalise() # this fixes the comparison file seed data and fails safely
             
         
-        self.created = HydrusTime.GetNow()
+        self.created = HydrusTime.get_now()
         self.modified = self.created
         self.source_time = None
         self.status = CC.STATUS_UNKNOWN
@@ -310,7 +310,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
         
         if len( tags ) > 0:
             
-            tags_to_siblings = CG.client_controller.Read( 'tag_siblings_lookup', CC.COMBINED_TAG_SERVICE_KEY, tags )
+            tags_to_siblings = CG.client_controller.read( 'tag_siblings_lookup', CC.COMBINED_TAG_SERVICE_KEY, tags )
             
             all_chain_tags = set( itertools.chain.from_iterable( tags_to_siblings.values() ) )
             
@@ -318,10 +318,10 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         serialisable_external_filterable_tags = list( self._external_filterable_tags )
-        serialisable_external_additional_service_keys_to_tags = self._external_additional_service_keys_to_tags.GetSerialisableTuple()
+        serialisable_external_additional_service_keys_to_tags = self._external_additional_service_keys_to_tags.get_serialisable_tuple()
         
         serialisable_primary_urls = list( self._primary_urls )
         serialisable_source_urls = list( self._source_urls )
@@ -380,7 +380,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
         file_seed.SetSourceTimeIfSensible( self.source_time )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         (
             self.file_seed_type,
@@ -403,7 +403,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
         ) = serialisable_info
         
         self._external_filterable_tags = set( serialisable_external_filterable_tags )
-        self._external_additional_service_keys_to_tags = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_external_additional_service_keys_to_tags )
+        self._external_additional_service_keys_to_tags = HydrusSerialisable.create_from_serialisable_tuple( serialisable_external_additional_service_keys_to_tags )
         
         # fixing a problem when updating to v8 of this object, originally I accidentally reset this to None for local path guys
         if file_seed_data_for_comparison is None:
@@ -422,10 +422,10 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
     
     def _UpdateModified( self ):
         
-        self.modified = HydrusTime.GetNow()
+        self.modified = HydrusTime.get_now()
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -444,7 +444,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
             
             external_additional_service_keys_to_tags = ClientTags.ServiceKeysToTags()
             
-            serialisable_external_additional_service_keys_to_tags = external_additional_service_keys_to_tags.GetSerialisableTuple()
+            serialisable_external_additional_service_keys_to_tags = external_additional_service_keys_to_tags.get_serialisable_tuple()
             
             new_serialisable_info = ( file_seed_type, file_seed_data, created, modified, source_time, status, note, referral_url, serialisable_external_additional_service_keys_to_tags, serialisable_urls, serialisable_tags, serialisable_hashes )
             
@@ -706,7 +706,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
     
     def AddTags( self, tags ):
         
-        tags = HydrusTags.CleanTags( tags )
+        tags = HydrusTags.clean_tags( tags )
         
         self._tags.update( tags )
         
@@ -754,7 +754,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                 return
                 
             
-            media_result = CG.client_controller.Read( 'media_result', hash )
+            media_result = CG.client_controller.read( 'media_result', hash )
             
             for entry in entries_to_do:
                 
@@ -770,9 +770,9 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                     CG.client_controller.new_options.SetBoolean( 'pause_subs_sync', True )
                     CG.client_controller.new_options.SetBoolean( 'pause_all_file_queues', True )
                     
-                    HydrusData.ShowText( f'Failed to run "{id_and_name.name}" on file with hash "{hash.hex()}"! All importers--subscriptions, import folders, and paged file import queues--have been paused. Once the issue is clear, restart the client and resume your imports under the file and network menus!' )
+                    HydrusData.show_text( f'Failed to run "{id_and_name.name}" on file with hash "{hash.hex()}"! All importers--subscriptions, import folders, and paged file import queues--have been paused. Once the issue is clear, restart the client and resume your imports under the file and network menus!' )
                     
-                    HydrusData.ShowException( e )
+                    HydrusData.show_exception( e )
                     
                     CG.client_controller.pub( 'notify_refresh_network_menu' )
                     CG.client_controller.pub( 'notify_new_import_folders' )
@@ -787,7 +787,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
         
         self.AddPrimaryURLs( ( file_url, ) )
         
-        ( os_file_handle, temp_path ) = HydrusTemp.GetTempPath( 'file_download' )
+        ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path( 'file_download' )
         
         try:
             
@@ -905,7 +905,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
             
         finally:
             
-            HydrusTemp.CleanUpTempPath( os_file_handle, temp_path )
+            HydrusTemp.clean_up_temp_path( os_file_handle, temp_path )
             
         
     
@@ -1010,7 +1010,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
         
         for ( hash_type, found_hash ) in jobs:
             
-            file_import_status = CG.client_controller.Read( 'hash_status', hash_type, found_hash, prefix = '{} hash recognised'.format( hash_type ) )
+            file_import_status = CG.client_controller.read( 'hash_status', hash_type, found_hash, prefix = '{} hash recognised'.format( hash_type ) )
             
             # there's some subtle gubbins going on here
             # an sha256 'haven't seen this before' result will not set the hash here and so will not count as a match
@@ -1099,7 +1099,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                 continue
                 
             
-            results = CG.client_controller.Read( 'url_statuses', lookup_url )
+            results = CG.client_controller.read( 'url_statuses', lookup_url )
             
             # I was tempted to write a duplicate-merge system here that would discount lesser quality dupes, but what metadata to assign is a tricky question!!
             # better solved with an ongoing duplicate content sync than retroactive metadata refetch gubbins
@@ -1257,7 +1257,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
             
             if CG.client_controller.new_options.GetBoolean( 'copy_import_files_to_temp_dir' ):
                 
-                ( os_file_handle, temp_path ) = HydrusTemp.GetTempPath( 'file_import' )
+                ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path( 'file_import' )
                 
                 try:
                     
@@ -1266,13 +1266,13 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                         status_hook( 'copying file to temp location' )
                         
                     
-                    HydrusPaths.MirrorFile( path, temp_path )
+                    HydrusPaths.mirror_file( path, temp_path )
                     
                     self.Import( temp_path, full_import_options_container, status_hook = status_hook )
                     
                 finally:
                     
-                    HydrusTemp.CleanUpTempPath( os_file_handle, temp_path )
+                    HydrusTemp.clean_up_temp_path( os_file_handle, temp_path )
                     
                 
             else:
@@ -1413,7 +1413,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
             
             hash = file_import_status.hash
             
-            media_result = CG.client_controller.Read( 'media_result', hash )
+            media_result = CG.client_controller.read( 'media_result', hash )
             
             from hydrus.client.media import ClientMediaManagers
             
@@ -1452,7 +1452,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
         
         if hash is not None:
             
-            media_result = CG.client_controller.Read( 'media_result', hash )
+            media_result = CG.client_controller.read( 'media_result', hash )
             
             # TODO: rewangle this to a GUI-level overseer that'll do Qt signals or whatever. page_key is probably unavoidable
             CG.client_controller.pub( 'add_media_results', page_key, ( media_result, ) )
@@ -1492,7 +1492,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
         
         if ClientTime.TimestampIsSensible( new_source_time ):
             
-            new_source_time = min( HydrusTime.GetNow() - 30, new_source_time )
+            new_source_time = min( HydrusTime.get_now() - 30, new_source_time )
             
             self.source_time = ClientTime.MergeModifiedTimes( self.source_time, new_source_time )
             
@@ -1502,7 +1502,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
         
         if exception is not None:
             
-            first_line = HydrusText.GetFirstLine( repr( exception ) )
+            first_line = HydrusText.get_first_line( repr( exception ) )
             
             note = f'{first_line}{HC.UNICODE_ELLIPSIS} (Copy note to see full error)'
             note += '\n'
@@ -1530,7 +1530,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
             return False
             
         
-        was_just_imported = not HydrusTime.TimeHasPassed( self.modified + 5 )
+        was_just_imported = not HydrusTime.time_has_passed( self.modified + 5 )
         
         should_check_location = not was_just_imported
         
@@ -1651,7 +1651,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                     
                     if len( parsed_posts ) == 0:
                         
-                        ( os_file_handle, temp_path ) = HydrusTemp.GetTempPath( 'empty_document_test' )
+                        ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path( 'empty_document_test' )
                         
                         it_was_a_real_file = False
                         
@@ -1659,7 +1659,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                             
                             network_job.WriteContentBytesToPath( temp_path )
                             
-                            mime = HydrusFileHandling.GetMime( temp_path )
+                            mime = HydrusFileHandling.get_mime( temp_path )
                             
                             if mime in HC.ALLOWED_MIMES:
                                 
@@ -1677,7 +1677,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                             
                         finally:
                             
-                            HydrusTemp.CleanUpTempPath( os_file_handle, temp_path )
+                            HydrusTemp.clean_up_temp_path( os_file_handle, temp_path )
                             
                         
                         if not it_was_a_real_file:
@@ -1770,7 +1770,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                             num_urls_added = file_seed_cache.InsertFileSeeds( insertion_index, child_file_seeds )
                             
                             status = CC.STATUS_SUCCESSFUL_AND_CHILD_FILES
-                            note = f'Found {HydrusNumbers.ToHumanInt( num_urls_added )} new URLs.'
+                            note = f'Found {HydrusNumbers.to_human_int( num_urls_added )} new URLs.'
                             
                             self.SetStatus( status, note = note )
                             
@@ -1930,7 +1930,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                 
                 if ClientTime.TimestampIsSensible( domain_modified_timestamp ):
                     
-                    timestamp_data = ClientTime.TimestampData.STATICDomainModifiedTime( domain, HydrusTime.MillisecondiseS( domain_modified_timestamp ) )
+                    timestamp_data = ClientTime.TimestampData.STATICDomainModifiedTime( domain, HydrusTime.millisecondise_s( domain_modified_timestamp ) )
                     
                     content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_TIMESTAMP, HC.CONTENT_UPDATE_ADD, ( ( hash, ), timestamp_data ) )
                     
@@ -1939,7 +1939,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                 
                 if self._cloudflare_last_modified_time is not None and ClientTime.TimestampIsSensible( self._cloudflare_last_modified_time ):
                     
-                    timestamp_data = ClientTime.TimestampData.STATICDomainModifiedTime( 'cloudflare.com', HydrusTime.MillisecondiseS( self._cloudflare_last_modified_time ) )
+                    timestamp_data = ClientTime.TimestampData.STATICDomainModifiedTime( 'cloudflare.com', HydrusTime.millisecondise_s( self._cloudflare_last_modified_time ) )
                     
                     content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_TIMESTAMP, HC.CONTENT_UPDATE_ADD, ( ( hash, ), timestamp_data ) )
                     
@@ -1962,7 +1962,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
             
             if media_result is None:
                 
-                media_result = CG.client_controller.Read( 'media_result', hash )
+                media_result = CG.client_controller.read( 'media_result', hash )
                 
             
             extra_content_update_package = location_import_options.GetAlreadyInDBPostImportContentUpdatePackage( media_result )
@@ -1988,7 +1988,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
             
             if media_result is None:
                 
-                media_result = CG.client_controller.Read( 'media_result', hash )
+                media_result = CG.client_controller.read( 'media_result', hash )
                 
             
             for ( service_key, content_updates ) in tag_import_options.GetContentUpdatePackage( self.status, media_result, set( self._tags ), external_filterable_tags = self._external_filterable_tags, external_additional_service_keys_to_tags = self._external_additional_service_keys_to_tags ).IterateContentUpdates():
@@ -2003,7 +2003,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
             
             if media_result is None:
                 
-                media_result = CG.client_controller.Read( 'media_result', hash )
+                media_result = CG.client_controller.read( 'media_result', hash )
                 
             
             names_and_notes = sorted( self._names_and_notes_dict.items() )
@@ -2020,7 +2020,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
         
         if content_update_package.HasContent():
             
-            CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+            CG.client_controller.write_synchronous( 'content_updates', content_update_package )
             
         
         return did_work
@@ -2037,19 +2037,19 @@ class FileSeedCacheStatus( HydrusSerialisable.SerialisableBase ):
     
     def __init__( self ):
         
-        self._generation_time = HydrusTime.GetNow()
+        self._generation_time = HydrusTime.get_now()
         self._statuses_to_counts = collections.Counter()
         self._latest_added_time = 0
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         serialisable_statuses_to_counts = list( self._statuses_to_counts.items() )
         
         return ( self._generation_time, serialisable_statuses_to_counts, self._latest_added_time )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( self._generation_time, serialisable_statuses_to_counts, self._latest_added_time ) = serialisable_info
         
@@ -2104,42 +2104,42 @@ class FileSeedCacheStatus( HydrusSerialisable.SerialisableBase ):
                 
                 if num_unknown > 0:
                     
-                    status_text += HydrusNumbers.ValueRangeToPrettyString( total_processed, total )
+                    status_text += HydrusNumbers.value_range_to_pretty_string( total_processed, total )
                     
                 else:
                     
-                    status_text += HydrusNumbers.ToHumanInt( total_processed )
+                    status_text += HydrusNumbers.to_human_int( total_processed )
                     
                 
                 show_new_on_file_seed_short_summary = CG.client_controller.new_options.GetBoolean( 'show_new_on_file_seed_short_summary' )
                 
                 if show_new_on_file_seed_short_summary and num_successful_and_new:
                     
-                    status_text += ' - {}N'.format( HydrusNumbers.ToHumanInt( num_successful_and_new ) )
+                    status_text += ' - {}N'.format( HydrusNumbers.to_human_int( num_successful_and_new ) )
                     
                 
                 simple_status_strings = []
                 
                 if num_ignored > 0:
                     
-                    simple_status_strings.append( '{}Ign'.format( HydrusNumbers.ToHumanInt( num_ignored ) ) )
+                    simple_status_strings.append( '{}Ign'.format( HydrusNumbers.to_human_int( num_ignored ) ) )
                     
                 
                 show_deleted_on_file_seed_short_summary = CG.client_controller.new_options.GetBoolean( 'show_deleted_on_file_seed_short_summary' )
                 
                 if show_deleted_on_file_seed_short_summary and num_deleted > 0:
                     
-                    simple_status_strings.append( '{}D'.format( HydrusNumbers.ToHumanInt( num_deleted ) ) )
+                    simple_status_strings.append( '{}D'.format( HydrusNumbers.to_human_int( num_deleted ) ) )
                     
                 
                 if num_failed > 0:
                     
-                    simple_status_strings.append( '{}F'.format( HydrusNumbers.ToHumanInt( num_failed ) ) )
+                    simple_status_strings.append( '{}F'.format( HydrusNumbers.to_human_int( num_failed ) ) )
                     
                 
                 if num_skipped > 0:
                     
-                    simple_status_strings.append( '{}S'.format( HydrusNumbers.ToHumanInt( num_skipped ) ) )
+                    simple_status_strings.append( '{}S'.format( HydrusNumbers.to_human_int( num_skipped ) ) )
                     
                 
                 if len( simple_status_strings ) > 0:
@@ -2156,13 +2156,13 @@ class FileSeedCacheStatus( HydrusSerialisable.SerialisableBase ):
             
             if num_successful > 0:
                 
-                s = '{} successful'.format( HydrusNumbers.ToHumanInt( num_successful ) )
+                s = '{} successful'.format( HydrusNumbers.to_human_int( num_successful ) )
                 
                 if num_successful_and_new > 0:
                     
                     if num_successful_but_redundant > 0:
                         
-                        s += ' ({} already in db)'.format( HydrusNumbers.ToHumanInt( num_successful_but_redundant ) )
+                        s += ' ({} already in db)'.format( HydrusNumbers.to_human_int( num_successful_but_redundant ) )
                         
                     
                 else:
@@ -2175,22 +2175,22 @@ class FileSeedCacheStatus( HydrusSerialisable.SerialisableBase ):
             
             if num_ignored > 0:
                 
-                status_strings.append( '{} ignored'.format( HydrusNumbers.ToHumanInt( num_ignored ) ) )
+                status_strings.append( '{} ignored'.format( HydrusNumbers.to_human_int( num_ignored ) ) )
                 
             
             if num_deleted > 0:
                 
-                status_strings.append( '{} previously deleted'.format( HydrusNumbers.ToHumanInt( num_deleted ) ) )
+                status_strings.append( '{} previously deleted'.format( HydrusNumbers.to_human_int( num_deleted ) ) )
                 
             
             if num_failed > 0:
                 
-                status_strings.append( '{} failed'.format( HydrusNumbers.ToHumanInt( num_failed ) ) )
+                status_strings.append( '{} failed'.format( HydrusNumbers.to_human_int( num_failed ) ) )
                 
             
             if num_skipped > 0:
                 
-                status_strings.append( '{} skipped'.format( HydrusNumbers.ToHumanInt( num_skipped ) ) )
+                status_strings.append( '{} skipped'.format( HydrusNumbers.to_human_int( num_skipped ) ) )
                 
             
             status_text = ', '.join( status_strings )
@@ -2317,7 +2317,7 @@ class FileSeedCache( HydrusSerialisable.SerialisableBase ):
         self._file_seeds_to_observed_statuses = {}
         self._statuses_to_file_seeds = collections.defaultdict( set )
         
-        self._file_seed_cache_key = HydrusData.GenerateKey()
+        self._file_seed_cache_key = HydrusData.generate_key()
         
         self._status_cache = FileSeedCacheStatus()
         
@@ -2456,7 +2456,7 @@ class FileSeedCache( HydrusSerialisable.SerialisableBase ):
                 # woah, we have some dupes! maybe url classes changed and renormalisation happened, maybe hydev fixed some bad dupe file paths or something
                 # let's correct ourselves now we have the chance; this guy simply cannot handle dupes atm
                 
-                self._file_seeds = HydrusSerialisable.SerialisableList( HydrusLists.DedupeList( self._file_seeds ) )
+                self._file_seeds = HydrusSerialisable.SerialisableList( HydrusLists.dedupe_list( self._file_seeds ) )
                 
                 self._file_seeds_to_indices = { file_seed : index for ( index, file_seed ) in enumerate( self._file_seeds ) }
                 
@@ -2620,14 +2620,14 @@ class FileSeedCache( HydrusSerialisable.SerialisableBase ):
         return potentially_compactible_file_seeds
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         if not isinstance( self._file_seeds, HydrusSerialisable.SerialisableList ):
             
             self._file_seeds = HydrusSerialisable.SerialisableList( self._file_seeds )
             
         
-        return self._file_seeds.GetSerialisableTuple()
+        return self._file_seeds.get_serialisable_tuple()
         
     
     def _GetSourceTimestampForVelocityCalculations( self, file_seed: FileSeed ):
@@ -2713,11 +2713,11 @@ class FileSeedCache( HydrusSerialisable.SerialisableBase ):
         return has_file_seed
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         with self._lock:
             
-            self._file_seeds = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_info )
+            self._file_seeds = HydrusSerialisable.create_from_serialisable_tuple( serialisable_info )
             
         
     
@@ -2750,7 +2750,7 @@ class FileSeedCache( HydrusSerialisable.SerialisableBase ):
         self._status_dirty = True
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -2873,7 +2873,7 @@ class FileSeedCache( HydrusSerialisable.SerialisableBase ):
                 file_seeds.append( file_seed )
                 
             
-            new_serialisable_info = file_seeds.GetSerialisableTuple()
+            new_serialisable_info = file_seeds.get_serialisable_tuple()
             
             return ( 8, new_serialisable_info )
             
@@ -3308,7 +3308,7 @@ class FileSeedCache( HydrusSerialisable.SerialisableBase ):
     
     def InsertFileSeeds( self, index: int, file_seeds: collections.abc.Collection[ FileSeed ] ):
         
-        file_seeds = HydrusLists.DedupeList( file_seeds )
+        file_seeds = HydrusLists.dedupe_list( file_seeds )
         
         with self._lock:
             

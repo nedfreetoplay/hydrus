@@ -728,7 +728,7 @@ def GenerateImageVisualDataNumPy( numpy_image: numpy.ndarray ) -> VisualData:
     
     resolution = ( width, height )
     
-    numpy_image_rgb = HydrusImageNormalisation.StripOutAnyAlphaChannel( numpy_image )
+    numpy_image_rgb = HydrusImageNormalisation.strip_out_any_alpha_channel( numpy_image )
     
     alpha_hist = None
     
@@ -736,7 +736,7 @@ def GenerateImageVisualDataNumPy( numpy_image: numpy.ndarray ) -> VisualData:
     
     if has_alpha:
         
-        alpha_channel = HydrusImageColours.GetNumPyAlphaChannel( numpy_image )
+        alpha_channel = HydrusImageColours.get_numpy_alpha_channel( numpy_image )
         
         if JPEG_ARTIFACT_BLUR_FOR_PROCESSING:
             
@@ -794,7 +794,7 @@ def GenerateImageVisualDataTiledNumPy( numpy_image: numpy.ndarray ) -> VisualDat
     
     resolution = ( width, height )
     
-    numpy_image_rgb = HydrusImageNormalisation.StripOutAnyAlphaChannel( numpy_image )
+    numpy_image_rgb = HydrusImageNormalisation.strip_out_any_alpha_channel( numpy_image )
     
     had_alpha = numpy_image.shape != numpy_image_rgb.shape
     
@@ -805,7 +805,7 @@ def GenerateImageVisualDataTiledNumPy( numpy_image: numpy.ndarray ) -> VisualDat
     
     # RGB edge-map
     
-    scale_resolution = HydrusImageHandling.GetThumbnailResolution( resolution, EDGE_MAP_PERCEPTUAL_RESOLUTION, HydrusImageHandling.THUMBNAIL_SCALE_TO_FIT, 100 )
+    scale_resolution = HydrusImageHandling.get_thumbnail_resolution( resolution, EDGE_MAP_PERCEPTUAL_RESOLUTION, HydrusImageHandling.THUMBNAIL_SCALE_TO_FIT, 100 )
     
     # We do not want to scale to 2048x2048 or whatever; we want to keep the ratio for the edge stuff because: the Gaussian stuff is circles and we don't want to warp the image dimensions!
     edge_map_numpy_image_rgb = do_cv2_resize( numpy_image_rgb, scale_resolution )

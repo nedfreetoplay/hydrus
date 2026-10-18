@@ -36,7 +36,7 @@ class HydrusResourceClientAPIRestrictedAddFiles( ClientLocalServerResources.Hydr
 
 class HydrusResourceClientAPIRestrictedAddFilesAddFile( HydrusResourceClientAPIRestrictedAddFiles ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         path = None
         delete_after_successful_import = False
@@ -45,7 +45,7 @@ class HydrusResourceClientAPIRestrictedAddFilesAddFile( HydrusResourceClientAPIR
             
             # ok the caller has not sent us a file in the POST content, we have a 'path'
             
-            path = request.parsed_request_args.GetValue( 'path', str )
+            path = request.parsed_request_args.get_value( 'path', str )
             
             if not os.path.exists( path ):
                 
@@ -57,13 +57,13 @@ class HydrusResourceClientAPIRestrictedAddFilesAddFile( HydrusResourceClientAPIR
                 raise HydrusExceptions.BadRequestException( 'Path "{}" is not a file!'.format( path ) )
                 
             
-            delete_after_successful_import = request.parsed_request_args.GetValue( 'delete_after_successful_import', bool, default_value = False )
+            delete_after_successful_import = request.parsed_request_args.get_value( 'delete_after_successful_import', bool, default_value = False )
             
-            ( os_file_handle, temp_path ) = HydrusTemp.GetTempPath( 'client_api_import' )
+            ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path( 'client_api_import' )
             
             request.temp_file_info = ( os_file_handle, temp_path )
             
-            HydrusPaths.MirrorFile( path, temp_path )
+            HydrusPaths.mirror_file( path, temp_path )
             
         
         ( os_file_handle, temp_path ) = request.temp_file_info
@@ -95,7 +95,7 @@ class HydrusResourceClientAPIRestrictedAddFilesAddFile( HydrusResourceClientAPIR
                 
             else:
                 
-                note = HydrusText.GetFirstLine( repr( e ) )
+                note = HydrusText.get_first_line( repr( e ) )
                 
             
             file_import_status = ClientImportFiles.FileImportStatus( CC.STATUS_ERROR, file_import_job.GetHash(), note = note )
@@ -112,7 +112,7 @@ class HydrusResourceClientAPIRestrictedAddFilesAddFile( HydrusResourceClientAPIR
             
         
         body_dict[ 'status' ] = file_import_status.status
-        body_dict[ 'hash' ] = HydrusData.BytesToNoneOrHex( file_import_status.hash )
+        body_dict[ 'hash' ] = HydrusData.bytes_to_none_or_hex( file_import_status.hash )
         body_dict[ 'note' ] = file_import_status.note
         
         body = ClientLocalServerCore.Dumps( body_dict, request.preferred_mime )
@@ -125,7 +125,7 @@ class HydrusResourceClientAPIRestrictedAddFilesAddFile( HydrusResourceClientAPIR
 
 class HydrusResourceClientAPIRestrictedAddFilesArchiveFiles( HydrusResourceClientAPIRestrictedAddFiles ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         hashes = set( ClientLocalServerCore.ParseHashes( request ) )
         
@@ -133,7 +133,7 @@ class HydrusResourceClientAPIRestrictedAddFilesArchiveFiles( HydrusResourceClien
         
         content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_update )
         
-        CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+        CG.client_controller.write_synchronous( 'content_updates', content_update_package )
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
@@ -144,11 +144,11 @@ class HydrusResourceClientAPIRestrictedAddFilesArchiveFiles( HydrusResourceClien
 
 class HydrusResourceClientAPIRestrictedAddFilesClearDeletedFileRecord( HydrusResourceClientAPIRestrictedAddFiles ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         hashes = set( ClientLocalServerCore.ParseHashes( request ) )
         
-        media_results = CG.client_controller.Read( 'media_results', hashes )
+        media_results = CG.client_controller.read( 'media_results', hashes )
         
         media_results = [ media_result for media_result in media_results if CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY in media_result.GetLocationsManager().GetDeleted() ]
         
@@ -158,7 +158,7 @@ class HydrusResourceClientAPIRestrictedAddFilesClearDeletedFileRecord( HydrusRes
         
         content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_update )
         
-        CG.client_controller.Write( 'content_updates', content_update_package )
+        CG.client_controller.write( 'content_updates', content_update_package )
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
@@ -168,13 +168,13 @@ class HydrusResourceClientAPIRestrictedAddFilesClearDeletedFileRecord( HydrusRes
 
 class HydrusResourceClientAPIRestrictedAddFilesDeleteFiles( HydrusResourceClientAPIRestrictedAddFiles ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         location_context = ClientLocalServerCore.ParseLocationContext( request, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ), deleted_allowed = False )
         
         if 'reason' in request.parsed_request_args:
             
-            reason = request.parsed_request_args.GetValue( 'reason', str )
+            reason = request.parsed_request_args.get_value( 'reason', str )
             
         else:
             
@@ -187,7 +187,7 @@ class HydrusResourceClientAPIRestrictedAddFilesDeleteFiles( HydrusResourceClient
         
         if CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY in location_context.current_service_keys:
             
-            media_results = CG.client_controller.Read( 'media_results', hashes )
+            media_results = CG.client_controller.read( 'media_results', hashes )
             
             undeletable_media_results = [ m for m in media_results if m.IsPhysicalDeleteLocked() ]
             
@@ -207,7 +207,7 @@ class HydrusResourceClientAPIRestrictedAddFilesDeleteFiles( HydrusResourceClient
             
             content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( service_key, content_update )
             
-            CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+            CG.client_controller.write_synchronous( 'content_updates', content_update_package )
             
         
         response_context = HydrusServerResources.ResponseContext( 200 )
@@ -218,7 +218,7 @@ class HydrusResourceClientAPIRestrictedAddFilesDeleteFiles( HydrusResourceClient
 
 class HydrusResourceClientAPIRestrictedAddFilesMigrateFiles( HydrusResourceClientAPIRestrictedAddFiles ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         hashes = set( ClientLocalServerCore.ParseHashes( request ) )
         
@@ -229,7 +229,7 @@ class HydrusResourceClientAPIRestrictedAddFilesMigrateFiles( HydrusResourceClien
             raise HydrusExceptions.BadRequestException( 'Sorry, you need to set a destination for the migration!' )
             
         
-        media_results = CG.client_controller.Read( 'media_results', hashes )
+        media_results = CG.client_controller.read( 'media_results', hashes )
         
         for media_result in media_results:
             
@@ -241,7 +241,7 @@ class HydrusResourceClientAPIRestrictedAddFilesMigrateFiles( HydrusResourceClien
         
         for service_key in location_context.current_service_keys:
             
-            CG.client_controller.CallToThread( ClientFileMigration.DoMoveOrDuplicateLocalFiles, service_key, HC.CONTENT_UPDATE_ADD, media_results )
+            CG.client_controller.call_to_thread( ClientFileMigration.DoMoveOrDuplicateLocalFiles, service_key, HC.CONTENT_UPDATE_ADD, media_results )
             
         
         response_context = HydrusServerResources.ResponseContext( 200 )
@@ -252,7 +252,7 @@ class HydrusResourceClientAPIRestrictedAddFilesMigrateFiles( HydrusResourceClien
 
 class HydrusResourceClientAPIRestrictedAddFilesUnarchiveFiles( HydrusResourceClientAPIRestrictedAddFiles ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         hashes = set( ClientLocalServerCore.ParseHashes( request ) )
         
@@ -260,7 +260,7 @@ class HydrusResourceClientAPIRestrictedAddFilesUnarchiveFiles( HydrusResourceCli
         
         content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_update )
         
-        CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+        CG.client_controller.write_synchronous( 'content_updates', content_update_package )
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         
@@ -270,7 +270,7 @@ class HydrusResourceClientAPIRestrictedAddFilesUnarchiveFiles( HydrusResourceCli
 
 class HydrusResourceClientAPIRestrictedAddFilesUndeleteFiles( HydrusResourceClientAPIRestrictedAddFiles ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         location_context = ClientLocalServerCore.ParseLocationContext( request, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
         
@@ -278,7 +278,7 @@ class HydrusResourceClientAPIRestrictedAddFilesUndeleteFiles( HydrusResourceClie
         
         location_context.LimitToServiceTypes( CG.client_controller.services_manager.GetServiceType, ( HC.LOCAL_FILE_DOMAIN, HC.COMBINED_LOCAL_FILE_DOMAINS ) )
         
-        media_results = CG.client_controller.Read( 'media_results', hashes )
+        media_results = CG.client_controller.read( 'media_results', hashes )
         
         # this is the only scan I have to do. all the stuff like 'can I undelete from here' and 'what does an undelete to combined local media mean' is all sorted at the db level no worries
         media_results = [ media_result for media_result in media_results if CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY in media_result.GetLocationsManager().GetCurrent() ]
@@ -291,7 +291,7 @@ class HydrusResourceClientAPIRestrictedAddFilesUndeleteFiles( HydrusResourceClie
             
             content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( service_key, content_update )
             
-            CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+            CG.client_controller.write_synchronous( 'content_updates', content_update_package )
             
         
         response_context = HydrusServerResources.ResponseContext( 200 )
@@ -302,11 +302,11 @@ class HydrusResourceClientAPIRestrictedAddFilesUndeleteFiles( HydrusResourceClie
 
 class HydrusResourceClientAPIRestrictedAddFilesGenerateHashes( HydrusResourceClientAPIRestrictedAddFiles ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         if not hasattr( request, 'temp_file_info' ):
             
-            path = request.parsed_request_args.GetValue( 'path', str )
+            path = request.parsed_request_args.get_value( 'path', str )
             
             if not os.path.exists( path ):
                 
@@ -318,26 +318,26 @@ class HydrusResourceClientAPIRestrictedAddFilesGenerateHashes( HydrusResourceCli
                 raise HydrusExceptions.BadRequestException( 'Path "{}" is not a file!'.format( path ) )
                 
             
-            ( os_file_handle, temp_path ) = HydrusTemp.GetTempPath( 'client_api_hashing' )
+            ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path( 'client_api_hashing' )
             
             request.temp_file_info = ( os_file_handle, temp_path )
             
-            HydrusPaths.MirrorFile( path, temp_path )
+            HydrusPaths.mirror_file( path, temp_path )
             
         
         ( os_file_handle, temp_path ) = request.temp_file_info
         
-        mime = HydrusFileHandling.GetMime( temp_path )
+        mime = HydrusFileHandling.get_mime( temp_path )
         
         body_dict = {}
         
-        sha256_hash = HydrusFileHandling.GetHashFromPath( temp_path )
+        sha256_hash = HydrusFileHandling.get_hash_from_path( temp_path )
         
         body_dict[ 'hash' ] = sha256_hash.hex()
         
         if mime in HC.FILES_THAT_HAVE_PERCEPTUAL_HASH or mime in HC.FILES_THAT_CAN_HAVE_PIXEL_HASH:
             
-            numpy_image = HydrusImageHandling.GenerateNumPyImage( temp_path, mime )
+            numpy_image = HydrusImageHandling.generate_numpy_image( temp_path, mime )
             
             if mime in HC.FILES_THAT_HAVE_PERCEPTUAL_HASH:
                 
@@ -348,7 +348,7 @@ class HydrusResourceClientAPIRestrictedAddFilesGenerateHashes( HydrusResourceCli
             
             if mime in HC.FILES_THAT_CAN_HAVE_PIXEL_HASH:
                 
-                pixel_hash = HydrusImageHandling.GetImagePixelHashNumPy( numpy_image )
+                pixel_hash = HydrusImageHandling.get_image_pixel_hash_numpy( numpy_image )
                 
                 body_dict[ 'pixel_hash' ] = pixel_hash.hex()
                 

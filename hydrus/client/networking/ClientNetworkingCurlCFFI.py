@@ -90,7 +90,7 @@ def GetBrowserNames() -> list[ str ]:
     
     from hydrus.core import HydrusText
     
-    browser_names = sorted( typing.get_args( curl_cffi.requests.impersonate.BrowserTypeLiteral ), key = HydrusText.HumanTextSortKey )
+    browser_names = sorted( typing.get_args( curl_cffi.requests.impersonate.BrowserTypeLiteral ), key = HydrusText.human_text_sort_key )
     
     return browser_names
     

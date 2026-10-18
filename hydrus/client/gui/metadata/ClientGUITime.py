@@ -42,7 +42,7 @@ def QDateTimeToPrettyString( dt: QC.QDateTime | None, include_milliseconds = Fal
             phrase = 'yyyy-MM-dd hh:mm:ss'
             
         
-        return f'{dt.toString( phrase )} ({HydrusTime.TimestampToPrettyTimeDelta( dt.toSecsSinceEpoch(), force_no_iso = True )})'
+        return f'{dt.toString( phrase )} ({HydrusTime.timestamp_to_pretty_time_delta( dt.toSecsSinceEpoch(), force_no_iso = True )})'
         
     
 
@@ -547,7 +547,7 @@ class DateTimeWidgetValueRange( object ):
             
         elif self._set_count > 1:
             
-            s += f'{HydrusNumbers.ToHumanInt( self._set_count )} files set'
+            s += f'{HydrusNumbers.to_human_int( self._set_count )} files set'
             
             if self._min_value == self._max_value:
                 
@@ -567,7 +567,7 @@ class DateTimeWidgetValueRange( object ):
                 
             else:
                 
-                none_prefix = f'{HydrusNumbers.ToHumanInt(self._null_count)} files'
+                none_prefix = f'{HydrusNumbers.to_human_int(self._null_count)} files'
                 
             
             if s != '':
@@ -580,7 +580,7 @@ class DateTimeWidgetValueRange( object ):
         
         if self._step_ms != 0:
             
-            s += f', with step {HydrusTime.TimeDeltaToPrettyTimeDelta( HydrusTime.SecondiseMSFloat( self._step_ms ) )}'
+            s += f', with step {HydrusTime.time_delta_to_pretty_timedelta( HydrusTime.secondise_ms_float( self._step_ms ) )}'
             
         
         return s
@@ -597,7 +597,7 @@ def CopyDateTimeValueRangeToClipboard( datetime_value_range: DateTimeWidgetValue
         
     else:
         
-        timestamp = HydrusTime.SecondiseMSFloat( best_qt_datetime.toMSecsSinceEpoch() )
+        timestamp = HydrusTime.secondise_ms_float( best_qt_datetime.toMSecsSinceEpoch() )
         
     
     text = json.dumps( timestamp )
@@ -609,11 +609,11 @@ def GetQtDateTimeFromClipboard( win: QW.QWidget ):
     
     try:
         
-        raw_text = CG.client_controller.GetClipboardText()
+        raw_text = CG.client_controller.get_clipboard_text()
         
     except HydrusExceptions.DataMissing as e:
         
-        HydrusData.PrintException( e )
+        HydrusData.print_exception( e )
         
         ClientGUIDialogsMessage.ShowCritical( win, 'Problem pasting!', str(e) )
         
@@ -687,7 +687,7 @@ def GetQtDateTimeFromClipboard( win: QW.QWidget ):
             
         else:
             
-            timestamp_ms = HydrusTime.MillisecondiseS( timestamp )
+            timestamp_ms = HydrusTime.millisecondise_s( timestamp )
             
             qt_datetime = QC.QDateTime.fromMSecsSinceEpoch( timestamp_ms, QC.QTimeZone.systemTimeZone() )
             
@@ -925,7 +925,7 @@ class DateTimesCtrl( QW.QWidget ):
         
         self._date.setSelectedDate( qt_now.date() )
         self._time.setTime( qt_now.time() )
-        self._step.SetValue( HydrusTime.SecondiseMSFloat( datetime_value_range.GetStepMS() ) )
+        self._step.SetValue( HydrusTime.secondise_ms_float( datetime_value_range.GetStepMS() ) )
         
         vbox = QP.VBoxLayout()
         
@@ -1120,7 +1120,7 @@ class DateTimesCtrl( QW.QWidget ):
             self._time.setTime( value_to_set_visually.time() )
             
         
-        self._step.SetValue( HydrusTime.SecondiseMSFloat( datetime_value_range.GetStepMS() ) )
+        self._step.SetValue( HydrusTime.secondise_ms_float( datetime_value_range.GetStepMS() ) )
         
         self._NoneClicked()
         
@@ -1162,7 +1162,7 @@ class TimeDeltaButton( QW.QPushButton ):
             
         else:
             
-            text = HydrusTime.TimeDeltaToPrettyTimeDelta( value )
+            text = HydrusTime.time_delta_to_pretty_timedelta( value )
             
         
         self.setText( text )
@@ -1424,7 +1424,7 @@ class TimeDeltaWidget( QW.QWidget ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             return True
             
@@ -1470,7 +1470,7 @@ class TimeDeltaWidget( QW.QWidget ):
         
         if self._show_milliseconds:
             
-            value += HydrusTime.SecondiseMSFloat( self._milliseconds.value() )
+            value += HydrusTime.secondise_ms_float( self._milliseconds.value() )
             
         
         return value
@@ -1864,22 +1864,22 @@ class NumberTestWidgetDuration( ClientGUINumberTest.NumberTestWidget ):
     
     def _GetAbsoluteValue( self ):
         
-        return HydrusTime.MillisecondiseS( self._absolute_plus_or_minus.GetValue() )
+        return HydrusTime.millisecondise_s( self._absolute_plus_or_minus.GetValue() )
         
     
     def _SetAbsoluteValue( self, value_ms ):
         
-        return self._absolute_plus_or_minus.SetValue( HydrusTime.SecondiseMSFloat( value_ms ) )
+        return self._absolute_plus_or_minus.SetValue( HydrusTime.secondise_ms_float( value_ms ) )
         
     
     def _GetSubValue( self ) -> int:
         
-        return HydrusTime.MillisecondiseS( self._value.GetValue() )
+        return HydrusTime.millisecondise_s( self._value.GetValue() )
         
     
     def _SetSubValue( self, value_ms ):
         
-        return self._value.SetValue( HydrusTime.SecondiseMSFloat( value_ms ) )
+        return self._value.SetValue( HydrusTime.secondise_ms_float( value_ms ) )
         
     
 
@@ -1963,22 +1963,22 @@ class NumberTestWidgetTimestamp( ClientGUINumberTest.NumberTestWidget ):
     
     def _GetAbsoluteValue( self ):
         
-        return HydrusTime.MillisecondiseS( self._absolute_plus_or_minus.GetValue() )
+        return HydrusTime.millisecondise_s( self._absolute_plus_or_minus.GetValue() )
         
     
     def _SetAbsoluteValue( self, value_ms ):
         
-        return self._absolute_plus_or_minus.SetValue( HydrusTime.SecondiseMSFloat( value_ms ) )
+        return self._absolute_plus_or_minus.SetValue( HydrusTime.secondise_ms_float( value_ms ) )
         
     
     def _GetSubValue( self ) -> int:
         
-        return HydrusTime.MillisecondiseS( self._value.GetValue() )
+        return HydrusTime.millisecondise_s( self._value.GetValue() )
         
     
     def _SetSubValue( self, value_ms ):
         
-        return self._value.SetValue( HydrusTime.SecondiseMSFloat( value_ms ) )
+        return self._value.SetValue( HydrusTime.secondise_ms_float( value_ms ) )
         
     
 

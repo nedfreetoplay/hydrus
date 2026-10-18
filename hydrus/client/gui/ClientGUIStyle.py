@@ -72,7 +72,7 @@ def GetAvailableStyles():
     
     # so eventually expand this to do QStylePlugin or whatever we are doing to add more QStyles
     
-    return sorted( QW.QStyleFactory.keys(), key = HydrusText.HumanTextSortKey )
+    return sorted( QW.QStyleFactory.keys(), key = HydrusText.human_text_sort_key )
     
 
 def GetAvailableStyleSheets():
@@ -81,7 +81,7 @@ def GetAvailableStyleSheets():
     
     extensions = [ '.qss', '.css' ]
     
-    for path in HydrusStaticDir.ListStaticDirFilePaths( 'qss' ):
+    for path in HydrusStaticDir.List_static_dir_file_paths( 'qss' ):
         
         ( d, filename ) = os.path.split( path )
         
@@ -91,7 +91,7 @@ def GetAvailableStyleSheets():
             
         
     
-    HydrusText.HumanTextSort( stylesheet_filenames )
+    HydrusText.human_text_sort( stylesheet_filenames )
     
     return stylesheet_filenames
     
@@ -102,15 +102,15 @@ def InitialiseDefaults():
     
     try:
         
-        with open( HydrusStaticDir.GetStaticPath( os.path.join( 'qss', 'default_hydrus.qss' ) ), 'r', encoding = 'utf-8' ) as f:
+        with open( HydrusStaticDir.get_static_path( os.path.join( 'qss', 'default_hydrus.qss' ) ), 'r', encoding = 'utf-8' ) as f:
             
             DEFAULT_HYDRUS_STYLESHEET = f.read()
             
         
     except Exception as e:
         
-        HydrusData.Print( 'Failed to load default hydrus qss:' )
-        HydrusData.PrintException( e )
+        HydrusData.safe_print( 'Failed to load default hydrus qss:' )
+        HydrusData.print_exception( e )
         
         DEFAULT_HYDRUS_STYLESHEET = ''
         
@@ -213,7 +213,7 @@ def SetStyleSheet( stylesheet, name, prepend_hydrus = True ):
 
 def SetStyleSheetFromPath( filename ):
     
-    path = HydrusStaticDir.GetStaticPath( os.path.join( 'qss', filename ) )
+    path = HydrusStaticDir.get_static_path( os.path.join( 'qss', filename ) )
     
     if not os.path.exists( path ):
         

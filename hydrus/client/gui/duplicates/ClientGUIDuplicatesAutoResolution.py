@@ -144,7 +144,7 @@ class EditDuplicatesAutoResolutionRulesPanel( ClientGUIScrolledPanels.EditPanel 
                 
                 duplicates_auto_resolution_rule = panel.GetValue()
                 
-                duplicates_auto_resolution_rule.SetNonDupeName( self._GetExistingNames(), do_casefold = True )
+                duplicates_auto_resolution_rule.set_non_dupe_name( self._GetExistingNames(), do_casefold = True )
                 
                 self._duplicates_auto_resolution_rules.AddData( duplicates_auto_resolution_rule, select_sort_and_scroll = True )
                 
@@ -155,7 +155,7 @@ class EditDuplicatesAutoResolutionRulesPanel( ClientGUIScrolledPanels.EditPanel 
         
         suggested_rules = ClientDuplicatesAutoResolution.GetDefaultRuleSuggestions()
         
-        choice_tuples = [ ( rule.GetName(), rule ) for rule in suggested_rules ]
+        choice_tuples = [ ( rule.get_name(), rule ) for rule in suggested_rules ]
         
         try:
             
@@ -171,7 +171,7 @@ class EditDuplicatesAutoResolutionRulesPanel( ClientGUIScrolledPanels.EditPanel 
     
     def _ConvertRuleToDisplayTuple( self, duplicates_auto_resolution_rule: ClientDuplicatesAutoResolution.DuplicatesAutoResolutionRule ):
         
-        name = duplicates_auto_resolution_rule.GetName()
+        name = duplicates_auto_resolution_rule.get_name()
         rule_summary = duplicates_auto_resolution_rule.GetRuleSummary()
         pair_selector_summary = duplicates_auto_resolution_rule.GetPairSelectorSummary()
         action_summary = duplicates_auto_resolution_rule.GetActionSummary()
@@ -193,7 +193,7 @@ class EditDuplicatesAutoResolutionRulesPanel( ClientGUIScrolledPanels.EditPanel 
         
         ( name, rule_summary, pair_selector_summary, action_summary, search_status, pretty_operation_mode ) = self._ConvertRuleToDisplayTuple( duplicates_auto_resolution_rule )
         
-        sort_name = HydrusText.HumanTextSortKey( name )
+        sort_name = HydrusText.human_text_sort_key( name )
         
         return ( sort_name, rule_summary, pair_selector_summary, action_summary, search_status, pretty_operation_mode )
         
@@ -217,13 +217,13 @@ class EditDuplicatesAutoResolutionRulesPanel( ClientGUIScrolledPanels.EditPanel 
                 
                 edited_duplicates_auto_resolution_rule = panel.GetValue()
                 
-                if edited_duplicates_auto_resolution_rule.GetName() != duplicates_auto_resolution_rule.GetName():
+                if edited_duplicates_auto_resolution_rule.get_name() != duplicates_auto_resolution_rule.get_name():
                     
                     existing_names = self._GetExistingNames()
                     
-                    existing_names.discard( duplicates_auto_resolution_rule.GetName() )
+                    existing_names.discard( duplicates_auto_resolution_rule.get_name() )
                     
-                    edited_duplicates_auto_resolution_rule.SetNonDupeName( existing_names, do_casefold = True )
+                    edited_duplicates_auto_resolution_rule.set_non_dupe_name( existing_names, do_casefold = True )
                     
                 
                 self._duplicates_auto_resolution_rules.ReplaceData( duplicates_auto_resolution_rule, edited_duplicates_auto_resolution_rule, sort_and_scroll = True )
@@ -238,7 +238,7 @@ class EditDuplicatesAutoResolutionRulesPanel( ClientGUIScrolledPanels.EditPanel 
     
     def _ImportRule( self, duplicates_auto_resolution_rule: ClientDuplicatesAutoResolution.DuplicatesAutoResolutionRule ):
         
-        duplicates_auto_resolution_rule.SetNonDupeName( self._GetExistingNames(), do_casefold = True )
+        duplicates_auto_resolution_rule.set_non_dupe_name( self._GetExistingNames(), do_casefold = True )
         
         # this is already sorted for the "add suggested" rules, but isn't for duplicate/clipboard/png import. we'll do it anyway to be safe and cover all situations
         duplicates_auto_resolution_rule.SetId( ClientDuplicatesAutoResolution.NEW_RULE_SESSION_ID )
@@ -317,7 +317,7 @@ class EditDuplicatesAutoResolutionRulePanel( ClientGUIScrolledPanels.EditPanel )
         
         #
         
-        self._name.setText( self._duplicates_auto_resolution_rule.GetName() )
+        self._name.setText( self._duplicates_auto_resolution_rule.get_name() )
         self._paused.setChecked( self._duplicates_auto_resolution_rule.IsPaused() )
         self._operation_mode.SetValue( self._duplicates_auto_resolution_rule.GetOperationMode() )
         self._max_pending_pairs.SetValue( self._duplicates_auto_resolution_rule.GetMaxPendingPairs() )
@@ -705,7 +705,7 @@ class EditPairComparatorOneFileMetadataConditionalPanel( ClientGUIScrolledPanels
         
         self.widget().setLayout( vbox )
         
-        CG.client_controller.CallAfterQtSafe( self, ClientGUIFunctions.SetFocusLater, self._metadata_conditional )
+        CG.client_controller.call_after_qt_safe( self, ClientGUIFunctions.SetFocusLater, self._metadata_conditional )
         
     
     def GetValue( self ):
@@ -1226,14 +1226,14 @@ class EditPairComparatorRelativeFileInfoPanel( ClientGUIScrolledPanels.EditPanel
             
             self._time_number_test.SetValue( pair_comparator.GetNumberTest() )
             
-            self._time_delta.SetValue( HydrusTime.SecondiseMS( pair_comparator.GetDelta() ) )
+            self._time_delta.SetValue( HydrusTime.secondise_ms( pair_comparator.GetDelta() ) )
             
         elif we_duration_pred:
             
             self._duration_number_test.SetValue( pair_comparator.GetNumberTest() )
             
             self._duration_multiplier.setValue( pair_comparator.GetMultiplier() )
-            self._duration_delta.SetValue( HydrusTime.SecondiseMS( pair_comparator.GetDelta() ) )
+            self._duration_delta.SetValue( HydrusTime.secondise_ms( pair_comparator.GetDelta() ) )
             
         elif we_fuzzy_pred:
             
@@ -1326,14 +1326,14 @@ class EditPairComparatorRelativeFileInfoPanel( ClientGUIScrolledPanels.EditPanel
             
             number_test = self._time_number_test.GetValue()
             
-            delta = HydrusTime.MillisecondiseS( self._time_delta.GetValue() )
+            delta = HydrusTime.millisecondise_s( self._time_delta.GetValue() )
             
         elif we_duration_pred:
             
             number_test = self._duration_number_test.GetValue()
             
             multiplier = self._duration_multiplier.value()
-            delta = HydrusTime.MillisecondiseS( self._duration_delta.GetValue() )
+            delta = HydrusTime.millisecondise_s( self._duration_delta.GetValue() )
             
         elif we_fuzzy_pred:
             
@@ -1561,7 +1561,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
     
     def _ConvertRuleToDisplayTuple( self, duplicates_auto_resolution_rule: ClientDuplicatesAutoResolution.DuplicatesAutoResolutionRule ):
         
-        name = duplicates_auto_resolution_rule.GetName()
+        name = duplicates_auto_resolution_rule.get_name()
         
         search_status = duplicates_auto_resolution_rule.GetSearchSummary()
         
@@ -1574,7 +1574,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
         
         ( name, search_status, running_status ) = self._ConvertRuleToDisplayTuple( duplicates_auto_resolution_rule )
         
-        sort_name = HydrusText.HumanTextSortKey( name )
+        sort_name = HydrusText.human_text_sort_key( name )
         
         return ( sort_name, search_status, running_status )
         
@@ -1591,7 +1591,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            CG.client_controller.Write( 'duplicates_auto_resolution_maintenance_fix_orphan_rules' )
+            CG.client_controller.write( 'duplicates_auto_resolution_maintenance_fix_orphan_rules' )
             
         
     
@@ -1603,7 +1603,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            CG.client_controller.Write( 'duplicates_auto_resolution_maintenance_fix_orphan_potential_pairs' )
+            CG.client_controller.write( 'duplicates_auto_resolution_maintenance_fix_orphan_potential_pairs' )
             
         
     
@@ -1661,7 +1661,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
                     
                     rules = CG.client_controller.duplicates_auto_resolution_manager.GetRules()
                     
-                    CG.client_controller.CallBlockingToQtFireAndForgetNoResponse( self, do_it_qt, rules )
+                    CG.client_controller.call_blocking_to_qt_fire_and_forget_no_response( self, do_it_qt, rules )
                     
                 finally:
                     
@@ -1672,7 +1672,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
                 
             
         
-        CG.client_controller.CallToThread( do_it )
+        CG.client_controller.call_to_thread( do_it )
         
     
     def _FlipBoolean( self, name ):
@@ -1731,7 +1731,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
                 
             else:
                 
-                return f'reset search on {HydrusNumbers.ToHumanInt( len( rules ) )} selected rules'
+                return f'reset search on {HydrusNumbers.to_human_int( len( rules ) )} selected rules'
                 
             
         
@@ -1747,7 +1747,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
                 
             else:
                 
-                return f'reset test on {HydrusNumbers.ToHumanInt( len( rules ) )} selected rules'
+                return f'reset test on {HydrusNumbers.to_human_int( len( rules ) )} selected rules'
                 
             
         
@@ -1765,7 +1765,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
                 
             else:
                 
-                return f'reset all denied pairs on {HydrusNumbers.ToHumanInt( len( rules ) )} selected rules'
+                return f'reset all denied pairs on {HydrusNumbers.to_human_int( len( rules ) )} selected rules'
                 
             
         
@@ -1795,7 +1795,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
         
         def work_callable( args ):
             
-            rules = CG.client_controller.Read( 'duplicates_auto_resolution_rules_with_counts' )
+            rules = CG.client_controller.read( 'duplicates_auto_resolution_rules_with_counts' )
             
             return rules
             
@@ -1832,7 +1832,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            CG.client_controller.Write( 'duplicates_auto_resolution_maintenance_regen_numbers' )
+            CG.client_controller.write( 'duplicates_auto_resolution_maintenance_regen_numbers' )
             
         
     
@@ -1850,7 +1850,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
                 
             
         
-        text = f'This will command the database to repeal all user-denied decisions for these {HydrusNumbers.ToHumanInt(len(rules))} rules.\n\nDo this only if the rules have tens of thousands of denied pairs and you do not want to undo them manually in the "review actions" window.'
+        text = f'This will command the database to repeal all user-denied decisions for these {HydrusNumbers.to_human_int(len(rules))} rules.\n\nDo this only if the rules have tens of thousands of denied pairs and you do not want to undo them manually in the "review actions" window.'
         
         result = ClientGUIDialogsQuick.GetYesNo( self, text )
         
@@ -1874,7 +1874,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
                 
             
         
-        text = f'This will command the database to re-search these {HydrusNumbers.ToHumanInt(len(rules))} rules. It will not undo any user-denied decisions. There is no point to running this unless you suspect a miscount or other sync bug.'
+        text = f'This will command the database to re-search these {HydrusNumbers.to_human_int(len(rules))} rules. It will not undo any user-denied decisions. There is no point to running this unless you suspect a miscount or other sync bug.'
         
         result = ClientGUIDialogsQuick.GetYesNo( self, text )
         
@@ -1898,7 +1898,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
                 
             
         
-        text = f'This will command the database to re-test the pending/fails for these {HydrusNumbers.ToHumanInt(len(rules))} rules. It will not undo any user-denied decisions. There is no point to running this unless you suspect a miscount or other sync bug.'
+        text = f'This will command the database to re-test the pending/fails for these {HydrusNumbers.to_human_int(len(rules))} rules. It will not undo any user-denied decisions. There is no point to running this unless you suspect a miscount or other sync bug.'
         
         result = ClientGUIDialogsQuick.GetYesNo( self, text )
         
@@ -1916,7 +1916,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            CG.client_controller.Write( 'duplicates_auto_resolution_maintenance_resync_rules_to_location_contexts' )
+            CG.client_controller.write( 'duplicates_auto_resolution_maintenance_resync_rules_to_location_contexts' )
             
         
     

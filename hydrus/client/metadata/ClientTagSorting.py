@@ -59,12 +59,12 @@ class TagSort( HydrusSerialisable.SerialisableBase ):
         self.group_by = group_by
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         return ( self.sort_type, self.sort_order, self.use_siblings, self.group_by )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( self.sort_type, self.sort_order, self.use_siblings, self.group_by ) = serialisable_info
         
@@ -129,9 +129,9 @@ HydrusSerialisable.SERIALISABLE_TYPES_TO_OBJECT_TYPES[ HydrusSerialisable.SERIAL
 
 def lexicographic_key( tag ):
     
-    ( namespace, subtag ) = HydrusTags.SplitTag( tag )
+    ( namespace, subtag ) = HydrusTags.split_tag( tag )
     
-    comparable_subtag = HydrusText.HumanTextSortKey( subtag )
+    comparable_subtag = HydrusText.human_text_sort_key( subtag )
     
     if namespace == '':
         
@@ -139,7 +139,7 @@ def lexicographic_key( tag ):
         
     else:
         
-        comparable_namespace = HydrusText.HumanTextSortKey( namespace )
+        comparable_namespace = HydrusText.human_text_sort_key( namespace )
         
         return ( comparable_namespace, comparable_subtag )
         
@@ -147,16 +147,16 @@ def lexicographic_key( tag ):
 
 def subtag_lexicographic_key( tag ):
     
-    ( namespace, subtag ) = HydrusTags.SplitTag( tag )
+    ( namespace, subtag ) = HydrusTags.split_tag( tag )
     
-    comparable_subtag = HydrusText.HumanTextSortKey( subtag )
+    comparable_subtag = HydrusText.human_text_sort_key( subtag )
     
     return comparable_subtag
     
 
 def namespace_az_key( tag ):
     
-    ( namespace, subtag ) = HydrusTags.SplitTag( tag )
+    ( namespace, subtag ) = HydrusTags.split_tag( tag )
     
     if namespace == '':
         
@@ -164,7 +164,7 @@ def namespace_az_key( tag ):
         
     else:
         
-        comparable_namespace = HydrusText.HumanTextSortKey( namespace )
+        comparable_namespace = HydrusText.human_text_sort_key( namespace )
         
         return ( 0, comparable_namespace )
         
@@ -185,7 +185,7 @@ def namespace_user_key_factory():
     
     def namespace_user_key( tag ):
         
-        ( namespace, subtag ) = HydrusTags.SplitTag( tag )
+        ( namespace, subtag ) = HydrusTags.split_tag( tag )
         
         if namespace in namespace_list_fast:
             
@@ -201,7 +201,7 @@ def namespace_user_key_factory():
                 
             else:
                 
-                comparable_namespace = HydrusText.HumanTextSortKey( namespace )
+                comparable_namespace = HydrusText.human_text_sort_key( namespace )
                 
                 return ( any_namespace_index, comparable_namespace )
                 

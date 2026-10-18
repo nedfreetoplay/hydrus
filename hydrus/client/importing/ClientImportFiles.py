@@ -110,7 +110,7 @@ class FileImportJob( object ):
         
         if HG.file_import_report_mode:
             
-            HydrusData.ShowText( f'File import job created:\nSource: {human_file_description}\nRaw import path: {temp_path}.' )
+            HydrusData.show_text( f'File import job created:\nSource: {human_file_description}\nRaw import path: {temp_path}.' )
             
         
         self._temp_path = temp_path
@@ -143,7 +143,7 @@ class FileImportJob( object ):
         
         if HG.file_import_report_mode:
             
-            HydrusData.ShowText( 'File import job testing if good to import for file import options' )
+            HydrusData.show_text( 'File import job testing if good to import for file import options' )
             
         
         ( size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) = self._file_info
@@ -155,7 +155,7 @@ class FileImportJob( object ):
         
         if HG.file_import_report_mode:
             
-            HydrusData.ShowText( 'File import job starting work.' )
+            HydrusData.show_text( 'File import job starting work.' )
             
         
         self.GeneratePreImportHashAndStatus( status_hook = status_hook )
@@ -201,7 +201,7 @@ class FileImportJob( object ):
                 
                 self._import_options_container.GetLocationImportOptions().CheckReadyToImport()
                 
-                self._post_import_file_status = CG.client_controller.WriteSynchronous( 'import_file', self )
+                self._post_import_file_status = CG.client_controller.write_synchronous( 'import_file', self )
                 
             
         else:
@@ -211,7 +211,7 @@ class FileImportJob( object ):
         
         if HG.file_import_report_mode:
             
-            HydrusData.ShowText( 'File import job is done, now publishing content updates' )
+            HydrusData.show_text( 'File import job is done, now publishing content updates' )
             
         
         self.WriteContentUpdates()
@@ -226,11 +226,11 @@ class FileImportJob( object ):
             status_hook( 'calculating hash' )
             
         
-        hash = HydrusFileHandling.GetHashFromPath( self._temp_path )
+        hash = HydrusFileHandling.get_hash_from_path( self._temp_path )
         
         if HG.file_import_report_mode:
             
-            HydrusData.ShowText( 'File import job hash: {}'.format( hash.hex() ) )
+            HydrusData.show_text( 'File import job hash: {}'.format( hash.hex() ) )
             
         
         if status_hook is not None:
@@ -238,7 +238,7 @@ class FileImportJob( object ):
             status_hook( 'checking for file status' )
             
         
-        self._pre_import_file_status = CG.client_controller.Read( 'hash_status', 'sha256', hash, prefix = 'file recognised' )
+        self._pre_import_file_status = CG.client_controller.read( 'hash_status', 'sha256', hash, prefix = 'file recognised' )
         
         if self._pre_import_file_status.hash is None:
             
@@ -267,7 +267,7 @@ class FileImportJob( object ):
         
         if HG.file_import_report_mode:
             
-            HydrusData.ShowText( 'File import job pre-import status: {}'.format( self._pre_import_file_status.ToString() ) )
+            HydrusData.show_text( 'File import job pre-import status: {}'.format( self._pre_import_file_status.ToString() ) )
             
         
     
@@ -280,7 +280,7 @@ class FileImportJob( object ):
                 status_hook( 'generating filetype' )
                 
             
-            mime = HydrusFileHandling.GetMime( self._temp_path )
+            mime = HydrusFileHandling.get_mime( self._temp_path )
             
             self._pre_import_file_status.mime = mime
             
@@ -291,7 +291,7 @@ class FileImportJob( object ):
         
         if HG.file_import_report_mode:
             
-            HydrusData.ShowText( 'File import job mime: {}'.format( HC.mime_string_lookup[ mime ] ) )
+            HydrusData.show_text( 'File import job mime: {}'.format( HC.mime_string_lookup[ mime ] ) )
             
         
         new_options = CG.client_controller.new_options
@@ -300,14 +300,14 @@ class FileImportJob( object ):
             
             if HG.file_import_report_mode:
                 
-                HydrusData.ShowText( 'File import job testing for decompression bomb' )
+                HydrusData.show_text( 'File import job testing for decompression bomb' )
                 
             
-            if HydrusImageHandling.IsDecompressionBomb( self._temp_path ):
+            if HydrusImageHandling.is_decompression_bomb( self._temp_path ):
                 
                 if HG.file_import_report_mode:
                     
-                    HydrusData.ShowText( 'File import job: it was a decompression bomb' )
+                    HydrusData.show_text( 'File import job: it was a decompression bomb' )
                     
                 
                 raise HydrusExceptions.DecompressionBombException( 'Image seems to be a Decompression Bomb!' )
@@ -319,13 +319,13 @@ class FileImportJob( object ):
             status_hook( 'generating file metadata' )
             
         
-        self._file_info = HydrusFileHandling.GetFileInfo( self._temp_path, mime = mime )
+        self._file_info = HydrusFileHandling.get_file_info( self._temp_path, mime = mime )
         
         ( size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) = self._file_info
         
         if HG.file_import_report_mode:
             
-            HydrusData.ShowText( 'File import job file info: {}'.format( self._file_info ) )
+            HydrusData.show_text( 'File import job file info: {}'.format( self._file_info ) )
             
         
         if mime in HC.MIMES_WITH_THUMBNAILS:
@@ -337,27 +337,27 @@ class FileImportJob( object ):
             
             if HG.file_import_report_mode:
                 
-                HydrusData.ShowText( 'File import job generating thumbnail' )
+                HydrusData.show_text( 'File import job generating thumbnail' )
                 
             
             bounding_dimensions = CG.client_controller.options[ 'thumbnail_dimensions' ]
             thumbnail_scale_type = new_options.GetInteger( 'thumbnail_scale_type' )
             thumbnail_dpr_percent = new_options.GetInteger( 'thumbnail_dpr_percent' )
             
-            target_resolution = HydrusImageHandling.GetThumbnailResolution( ( width, height ), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
+            target_resolution = HydrusImageHandling.get_thumbnail_resolution( ( width, height ), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
             
             percentage_in = new_options.GetInteger( 'video_thumbnail_percentage_in' )
             
             extra_description = f'File with hash "{self.GetHash().hex()}".'
             
-            thumbnail_numpy = HydrusFileHandling.GenerateThumbnailNumPy( self._temp_path, target_resolution, mime, duration_ms, num_frames, percentage_in = percentage_in, extra_description = extra_description )
+            thumbnail_numpy = HydrusFileHandling.generate_thumbnail_numpy( self._temp_path, target_resolution, mime, duration_ms, num_frames, percentage_in = percentage_in, extra_description = extra_description )
             
             # this guy handles almost all his own exceptions now, so no need for clever catching. if it fails, we are prob talking an I/O failure, which is not a 'thumbnail failed' error
-            self._thumbnail_bytes = HydrusImageHandling.GenerateThumbnailBytesFromNumPy( thumbnail_numpy )
+            self._thumbnail_bytes = HydrusImageHandling.generate_thumbnail_bytes_from_numpy( thumbnail_numpy )
             
             try:
                 
-                self._blurhash = HydrusBlurhash.GetBlurhashFromNumPy( thumbnail_numpy )
+                self._blurhash = HydrusBlurhash.get_blur_hash_from_numpy( thumbnail_numpy )
                 
             except Exception as e:
                 
@@ -374,20 +374,20 @@ class FileImportJob( object ):
             
             if HG.file_import_report_mode:
                 
-                HydrusData.ShowText( 'File import job generating perceptual_hashes' )
+                HydrusData.show_text( 'File import job generating perceptual_hashes' )
                 
             
             self._perceptual_hashes = ClientImagePerceptualHashes.GenerateShapePerceptualHashes( self._temp_path, mime )
             
             if HG.file_import_report_mode:
                 
-                HydrusData.ShowText( 'File import job generated {} perceptual_hashes: {}'.format( len( self._perceptual_hashes ), [ perceptual_hash.hex() for perceptual_hash in self._perceptual_hashes ] ) )
+                HydrusData.show_text( 'File import job generated {} perceptual_hashes: {}'.format( len( self._perceptual_hashes ), [ perceptual_hash.hex() for perceptual_hash in self._perceptual_hashes ] ) )
                 
             
         
         if HG.file_import_report_mode:
             
-            HydrusData.ShowText( 'File import job generating other hashes' )
+            HydrusData.show_text( 'File import job generating other hashes' )
             
         
         if status_hook is not None:
@@ -395,7 +395,7 @@ class FileImportJob( object ):
             status_hook( 'generating additional hashes' )
             
         
-        self._extra_hashes = HydrusFileHandling.GetExtraHashesFromPath( self._temp_path )
+        self._extra_hashes = HydrusFileHandling.get_extra_hashes_from_path( self._temp_path )
         
         #
         
@@ -415,10 +415,10 @@ class FileImportJob( object ):
                 
                 if raw_pil_image is None:
                     
-                    raw_pil_image = HydrusImageOpening.RawOpenPILImage( self._temp_path, human_file_description = self._human_file_description )
+                    raw_pil_image = HydrusImageOpening.raw_open_pil_image( self._temp_path, human_file_description = self._human_file_description )
                     
                 
-                has_exif = HydrusImageMetadata.HasEXIF( raw_pil_image )
+                has_exif = HydrusImageMetadata.has_exif( raw_pil_image )
                 
             except Exception as e:
                 
@@ -434,7 +434,7 @@ class FileImportJob( object ):
                 
                 if raw_pil_image is None:
                     
-                    raw_pil_image = HydrusImageOpening.RawOpenPILImage( self._temp_path, human_file_description = self._human_file_description )
+                    raw_pil_image = HydrusImageOpening.raw_open_pil_image( self._temp_path, human_file_description = self._human_file_description )
                     
                 
                 has_xmp = ClientImageMetadata.HasXMP( raw_pil_image )
@@ -453,7 +453,7 @@ class FileImportJob( object ):
                 
                 if raw_pil_image is None:
                     
-                    raw_pil_image = HydrusImageOpening.RawOpenPILImage( self._temp_path, human_file_description = self._human_file_description )
+                    raw_pil_image = HydrusImageOpening.raw_open_pil_image( self._temp_path, human_file_description = self._human_file_description )
                     
                 
                 has_iptc = ClientImageMetadata.HasIPTC( raw_pil_image )
@@ -472,10 +472,10 @@ class FileImportJob( object ):
                 
                 if raw_pil_image is None:
                     
-                    raw_pil_image = HydrusImageOpening.RawOpenPILImage( self._temp_path, human_file_description = self._human_file_description )
+                    raw_pil_image = HydrusImageOpening.raw_open_pil_image( self._temp_path, human_file_description = self._human_file_description )
                     
                 
-                has_software_source = HydrusImageMetadata.HasSoftwareSource( raw_pil_image )
+                has_software_source = HydrusImageMetadata.has_software_source( raw_pil_image )
                 
             except Exception as e:
                 
@@ -507,16 +507,16 @@ class FileImportJob( object ):
                 
                 if mime == HC.APPLICATION_PSD:
                     
-                    has_icc_profile = HydrusPSDHandling.PSDHasICCProfile( self._temp_path )
+                    has_icc_profile = HydrusPSDHandling.psd_has_icc_profile( self._temp_path )
                     
                 else:
                     
                     if raw_pil_image is None:
                         
-                        raw_pil_image = HydrusImageOpening.RawOpenPILImage( self._temp_path, human_file_description = self._human_file_description )
+                        raw_pil_image = HydrusImageOpening.raw_open_pil_image( self._temp_path, human_file_description = self._human_file_description )
                         
                     
-                    has_icc_profile = HydrusImageMetadata.HasICCProfile( raw_pil_image )
+                    has_icc_profile = HydrusImageMetadata.has_icc_profile( raw_pil_image )
                     
                 
             except Exception as e:
@@ -538,7 +538,7 @@ class FileImportJob( object ):
             
             try:
                 
-                self._pixel_hash = HydrusImageHandling.GetImagePixelHash( self._temp_path, mime )
+                self._pixel_hash = HydrusImageHandling.get_image_pixel_hash( self._temp_path, mime )
                 
             except Exception as e:
                 
@@ -546,7 +546,7 @@ class FileImportJob( object ):
                 
             
         
-        self._file_modified_timestamp_ms = HydrusFileHandling.GetFileModifiedTimestampMS( self._temp_path )
+        self._file_modified_timestamp_ms = HydrusFileHandling.get_file_modified_timestamp_ms( self._temp_path )
         
     
     def GetExtraHashes( self ):
@@ -638,7 +638,7 @@ class FileImportJob( object ):
             return
             
         
-        media_result = CG.client_controller.Read( 'media_result', hash )
+        media_result = CG.client_controller.read( 'media_result', hash )
         
         from hydrus.client.media import ClientMediaManagers
         
@@ -660,13 +660,13 @@ class FileImportJob( object ):
         
         if self._post_import_file_status.AlreadyInDB():
             
-            media_result = CG.client_controller.Read( 'media_result', self._post_import_file_status.hash )
+            media_result = CG.client_controller.read( 'media_result', self._post_import_file_status.hash )
             
             content_update_package = self._import_options_container.GetLocationImportOptions().GetAlreadyInDBPostImportContentUpdatePackage( media_result )
             
             if content_update_package.HasContent():
                 
-                CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+                CG.client_controller.write_synchronous( 'content_updates', content_update_package )
                 
             
         

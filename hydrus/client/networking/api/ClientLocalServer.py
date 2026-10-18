@@ -38,9 +38,9 @@ class HydrusClientService( HydrusServer.HydrusService ):
 
 class HydrusServiceClientAPI( HydrusClientService ):
     
-    def _InitRoot( self ):
+    def _init_root( self ):
         
-        root = HydrusClientService._InitRoot( self )
+        root = HydrusClientService._init_root( self )
         
         root.putChild( b'api_version', ClientLocalServerResourcesAccess.HydrusResourceClientAPIVersion( self._service, self._client_requests_domain ) )
         root.putChild( b'client_info', ClientLocalServerResourcesAccess.HydrusResourceClientAPIRestrictedAccountClientInfo( self._service, self._client_requests_domain ) )

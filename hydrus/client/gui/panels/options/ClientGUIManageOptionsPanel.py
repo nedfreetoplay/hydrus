@@ -62,7 +62,7 @@ class ManageOptionsPanel( ClientGUIScrolledPanels.ManagePanel ):
         self._original_options = dict( HC.options )
         
         self._new_options = CG.client_controller.new_options
-        self._original_new_options = self._new_options.Duplicate()
+        self._original_new_options = self._new_options.duplicate()
         
         all_shortcuts = ClientGUIShortcuts.shortcuts_manager().GetShortcutSets()
         
@@ -259,13 +259,13 @@ class ManageOptionsPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         try:
             
-            CG.client_controller.WriteSynchronous( 'save_options', HC.options )
+            CG.client_controller.write_synchronous( 'save_options', HC.options )
             
-            CG.client_controller.WriteSynchronous( 'serialisable', self._new_options )
+            CG.client_controller.write_synchronous( 'serialisable', self._new_options )
             
         except Exception as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem saving options!', str( e ) )
             

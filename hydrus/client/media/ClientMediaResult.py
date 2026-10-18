@@ -38,7 +38,7 @@ class MediaResult( object ):
             return
             
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         if service_type in HC.REAL_TAG_SERVICES:
             
@@ -65,7 +65,7 @@ class MediaResult( object ):
     
     def GetDurationS( self ):
         
-        return HydrusTime.SecondiseMSFloat( self._file_info_manager.duration_ms )
+        return HydrusTime.secondise_ms_float( self._file_info_manager.duration_ms )
         
     
     def GetDurationMS( self ):
@@ -276,7 +276,7 @@ class MediaResult( object ):
             return
             
         
-        service_type = service.GetServiceType()
+        service_type = service.get_service_type()
         
         if service_type in HC.REAL_TAG_SERVICES:
             

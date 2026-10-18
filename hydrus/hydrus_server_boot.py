@@ -26,9 +26,9 @@ try:
     
     from hydrus.core import HydrusBoot
     
-    HydrusBoot.AddBaseDirToEnvPath()
+    HydrusBoot.add_base_dir_to_env_path()
     
-    HydrusBoot.DoPreImportEnvWork()
+    HydrusBoot.do_pre_import_env_work()
     
     from hydrus.core import HydrusConstants as HC
     
@@ -68,7 +68,7 @@ try:
     
     HG.server_action = result.action
     
-    db_dir = HydrusPaths.FigureOutDBDir( result.db_dir )
+    db_dir = HydrusPaths.figure_out_db_dir( result.db_dir )
     
     HG.db_journal_mode = result.db_journal_mode
     
@@ -128,14 +128,14 @@ try:
         
         from hydrus.core import HydrusProfiling
         
-        HydrusProfiling.StartProfileMode( 'db' )
+        HydrusProfiling.start_profile_mode( 'db' )
         
     
     if result.temp_dir is not None:
         
-        temp_dir = HydrusPaths.FigureOutTempDir( result.temp_dir )
+        temp_dir = HydrusPaths.figure_out_temp_dir( result.temp_dir )
         
-        HydrusTemp.SetEnvTempDir( temp_dir )
+        HydrusTemp.set_env_temp_dir( temp_dir )
         
     
 except Exception as e:
@@ -182,7 +182,7 @@ def boot():
         
     except HydrusExceptions.ShutdownException as e:
         
-        HydrusData.Print( e )
+        HydrusData.safe_print( e )
         
         HG.server_action = 'exit'
         
@@ -205,7 +205,7 @@ def boot():
             
             if HG.server_action in ( 'start', 'restart' ):
                 
-                HydrusData.Print( 'Initialising controller' + HC.UNICODE_ELLIPSIS )
+                HydrusData.safe_print( 'Initialising controller' + HC.UNICODE_ELLIPSIS )
                 
                 controller = ServerController.Controller( db_dir, logger )
                 
@@ -216,7 +216,7 @@ def boot():
             
             error = str( e )
             
-            HydrusData.Print( error )
+            HydrusData.safe_print( error )
             
         except Exception as e:
             
@@ -224,9 +224,9 @@ def boot():
             
             error = traceback.format_exc()
             
-            HydrusData.Print( 'Hydrus server failed' )
+            HydrusData.safe_print( 'Hydrus server failed' )
             
-            HydrusData.Print( error )
+            HydrusData.safe_print( error )
             
         finally:
             
@@ -239,7 +239,7 @@ def boot():
                 controller.pubimmediate( 'wake_daemons' )
                 
             
-            HydrusData.Print( 'hydrus server shut down' )
+            HydrusData.safe_print( 'hydrus server shut down' )
             
         
     

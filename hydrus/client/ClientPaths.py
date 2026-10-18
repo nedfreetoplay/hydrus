@@ -23,8 +23,8 @@ if HC.PLATFORM_WINDOWS:
         
     except Exception as e:
         
-        HydrusData.Print( 'Could not import ClientWindowsIntegration--maybe you need PyWin32 in your venv?' )
-        HydrusData.PrintException( e, do_wait = False )
+        HydrusData.safe_print( 'Could not import ClientWindowsIntegration--maybe you need PyWin32 in your venv?' )
+        HydrusData.print_exception( e, do_wait = False )
         
     
 
@@ -36,11 +36,11 @@ def DeletePath( path, always_delete_fully = False ):
     
     if delete_to_recycle_bin and not always_delete_fully:
         
-        HydrusPaths.RecyclePath( path )
+        HydrusPaths.recycle_path( path )
         
     else:
         
-        HydrusPaths.DeletePath( path )
+        HydrusPaths.delete_path( path )
         
     
 
@@ -72,7 +72,7 @@ def OpenFileLocation( path: str ):
         
     else:
         
-        HydrusPaths.OpenFileLocation( path )
+        HydrusPaths.open_file_location( path )
         
     
 
@@ -86,7 +86,7 @@ def OpenFileLocations( paths: collections.abc.Sequence[str] ):
         
         for path in paths:
         
-            HydrusPaths.OpenFileLocation( path )
+            HydrusPaths.open_file_location( path )
             
     
 

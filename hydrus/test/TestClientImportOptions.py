@@ -208,12 +208,12 @@ class TestCheckerOptions( unittest.TestCase ):
         self.assertTrue( static_checker_options.IsDead( bare_file_seed_cache, last_check_time ) )
         
         # normal situation
-        last_check_time = HydrusTime.GetNow() - 5
+        last_check_time = HydrusTime.get_now() - 5
         
         self.assertEqual( static_checker_options.GetNextCheckTime( new_thread_file_seed_cache, last_check_time ), last_check_time + 3600 )
         
         # after a long pause
-        last_check_time = HydrusTime.GetNow() - 100000
+        last_check_time = HydrusTime.get_now() - 100000
         
         self.assertEqual( static_checker_options.GetNextCheckTime( new_thread_file_seed_cache, last_check_time ), last_check_time + 3600 * ( 100000 // 3600 ) )
         
@@ -235,19 +235,19 @@ class TestExternalProgramsImportOptions( unittest.TestCase ):
         
         entry_1 = ExternalProgramsImportOptions.ExternalProgramsImportOptionsSingleEntry()
         
-        entry_1.SetIdAndName( HydrusSerialisable.IdAndName( object_id = HydrusData.GenerateKey(), name = 'test external call 1' ) )
+        entry_1.SetIdAndName( HydrusSerialisable.IdAndName( object_id = HydrusData.generate_key(), name = 'test external call 1' ) )
         entry_1.SetDoItOnNew( True )
         entry_1.SetDoItOnAlreadyIn( False )
         
         entry_2 = ExternalProgramsImportOptions.ExternalProgramsImportOptionsSingleEntry()
         
-        entry_2.SetIdAndName( HydrusSerialisable.IdAndName( object_id = HydrusData.GenerateKey(), name = 'test external call 2' ) )
+        entry_2.SetIdAndName( HydrusSerialisable.IdAndName( object_id = HydrusData.generate_key(), name = 'test external call 2' ) )
         entry_2.SetDoItOnNew( True )
         entry_2.SetDoItOnAlreadyIn( True )
         
         entry_3 = ExternalProgramsImportOptions.ExternalProgramsImportOptionsSingleEntry()
         
-        entry_3.SetIdAndName( HydrusSerialisable.IdAndName( object_id = HydrusData.GenerateKey(), name = 'test external call 3' ) )
+        entry_3.SetIdAndName( HydrusSerialisable.IdAndName( object_id = HydrusData.generate_key(), name = 'test external call 3' ) )
         entry_3.SetDoItOnNew( False )
         entry_3.SetDoItOnAlreadyIn( False )
         
@@ -558,7 +558,7 @@ class TestNoteImportOptions( unittest.TestCase ):
     
     def test_basics( self ):
         
-        example_hash = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
         existing_names_to_notes = { 'notes' : 'here is a note' }
         
         media_result = GetNotesMediaResult( example_hash, existing_names_to_notes )
@@ -728,14 +728,14 @@ class TestPresentationImportOptions( unittest.TestCase ):
     
     def test_presentation_import_options( self ):
         
-        new_and_inboxed_hash = HydrusData.GenerateKey()
-        new_and_archived_hash = HydrusData.GenerateKey()
-        already_in_and_inboxed_hash = HydrusData.GenerateKey()
-        already_in_and_archived_hash = HydrusData.GenerateKey()
-        new_and_inboxed_but_trashed_hash = HydrusData.GenerateKey()
-        skipped_hash = HydrusData.GenerateKey()
-        deleted_hash = HydrusData.GenerateKey()
-        failed_hash = HydrusData.GenerateKey()
+        new_and_inboxed_hash = HydrusData.generate_key()
+        new_and_archived_hash = HydrusData.generate_key()
+        already_in_and_inboxed_hash = HydrusData.generate_key()
+        already_in_and_archived_hash = HydrusData.generate_key()
+        new_and_inboxed_but_trashed_hash = HydrusData.generate_key()
+        skipped_hash = HydrusData.generate_key()
+        deleted_hash = HydrusData.generate_key()
+        failed_hash = HydrusData.generate_key()
         
         hashes_and_statuses = [
             ( new_and_inboxed_hash, CC.STATUS_SUCCESSFUL_AND_NEW ),
@@ -750,8 +750,8 @@ class TestPresentationImportOptions( unittest.TestCase ):
         
         # all good
         
-        TG.test_controller.ClearReads( 'inbox_hashes' )
-        TG.test_controller.ClearReads( 'file_query_ids' )
+        TG.test_controller.clear_reads( 'inbox_hashes' )
+        TG.test_controller.clear_reads( 'file_query_ids' )
         
         presentation_import_options = PresentationImportOptions.PresentationImportOptions()
         
@@ -774,12 +774,12 @@ class TestPresentationImportOptions( unittest.TestCase ):
             already_in_and_archived_hash
         ]
         
-        TG.test_controller.SetRead( 'inbox_hashes', 'not used' )
-        TG.test_controller.SetRead( 'filter_hashes', expected_result )
+        TG.test_controller.set_read( 'inbox_hashes', 'not used' )
+        TG.test_controller.set_read( 'filter_hashes', expected_result )
         
         result = presentation_import_options.GetPresentedHashes( hashes_and_statuses )
         
-        [ ( args, kwargs ) ] = TG.test_controller.GetRead( 'filter_hashes' )
+        [ ( args, kwargs ) ] = TG.test_controller.get_read( 'filter_hashes' )
         
         self.assertEqual( args, ( ClientLocation.LocationContext( current_service_keys = ( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, ) ), pre_filter_expected_result ) )
         
@@ -787,8 +787,8 @@ class TestPresentationImportOptions( unittest.TestCase ):
         
         # all good and trash too
         
-        TG.test_controller.ClearReads( 'inbox_hashes' )
-        TG.test_controller.ClearReads( 'file_query_ids' )
+        TG.test_controller.clear_reads( 'inbox_hashes' )
+        TG.test_controller.clear_reads( 'file_query_ids' )
         
         presentation_import_options = PresentationImportOptions.PresentationImportOptions()
         
@@ -812,12 +812,12 @@ class TestPresentationImportOptions( unittest.TestCase ):
             new_and_inboxed_but_trashed_hash
         ]
         
-        TG.test_controller.SetRead( 'inbox_hashes', 'not used' )
-        TG.test_controller.SetRead( 'filter_hashes', expected_result )
+        TG.test_controller.set_read( 'inbox_hashes', 'not used' )
+        TG.test_controller.set_read( 'filter_hashes', expected_result )
         
         result = presentation_import_options.GetPresentedHashes( hashes_and_statuses )
         
-        [ ( args, kwargs ) ] = TG.test_controller.GetRead( 'filter_hashes' )
+        [ ( args, kwargs ) ] = TG.test_controller.get_read( 'filter_hashes' )
         
         self.assertEqual( args, ( ClientLocation.LocationContext( current_service_keys = ( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ) ), pre_filter_expected_result ) )
         
@@ -825,8 +825,8 @@ class TestPresentationImportOptions( unittest.TestCase ):
         
         # silent
         
-        TG.test_controller.ClearReads( 'inbox_hashes' )
-        TG.test_controller.ClearReads( 'file_query_ids' )
+        TG.test_controller.clear_reads( 'inbox_hashes' )
+        TG.test_controller.clear_reads( 'file_query_ids' )
         
         presentation_import_options = PresentationImportOptions.PresentationImportOptions()
         
@@ -836,8 +836,8 @@ class TestPresentationImportOptions( unittest.TestCase ):
         
         expected_result = []
         
-        TG.test_controller.SetRead( 'inbox_hashes', 'not used' )
-        TG.test_controller.SetRead( 'filter_hashes', 'not used' )
+        TG.test_controller.set_read( 'inbox_hashes', 'not used' )
+        TG.test_controller.set_read( 'filter_hashes', 'not used' )
         
         result = presentation_import_options.GetPresentedHashes( hashes_and_statuses )
         
@@ -845,8 +845,8 @@ class TestPresentationImportOptions( unittest.TestCase ):
         
         # new files only
         
-        TG.test_controller.ClearReads( 'inbox_hashes' )
-        TG.test_controller.ClearReads( 'file_query_ids' )
+        TG.test_controller.clear_reads( 'inbox_hashes' )
+        TG.test_controller.clear_reads( 'file_query_ids' )
         
         presentation_import_options = PresentationImportOptions.PresentationImportOptions()
         
@@ -865,12 +865,12 @@ class TestPresentationImportOptions( unittest.TestCase ):
             new_and_archived_hash
         ]
         
-        TG.test_controller.SetRead( 'inbox_hashes', 'not used' )
-        TG.test_controller.SetRead( 'filter_hashes', expected_result )
+        TG.test_controller.set_read( 'inbox_hashes', 'not used' )
+        TG.test_controller.set_read( 'filter_hashes', expected_result )
         
         result = presentation_import_options.GetPresentedHashes( hashes_and_statuses )
         
-        [ ( args, kwargs ) ] = TG.test_controller.GetRead( 'filter_hashes' )
+        [ ( args, kwargs ) ] = TG.test_controller.get_read( 'filter_hashes' )
         
         self.assertEqual( args, ( ClientLocation.LocationContext( current_service_keys = ( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, ) ), pre_filter_expected_result ) )
         
@@ -878,8 +878,8 @@ class TestPresentationImportOptions( unittest.TestCase ):
         
         # inbox only
         
-        TG.test_controller.ClearReads( 'inbox_hashes' )
-        TG.test_controller.ClearReads( 'file_query_ids' )
+        TG.test_controller.clear_reads( 'inbox_hashes' )
+        TG.test_controller.clear_reads( 'file_query_ids' )
         
         presentation_import_options = PresentationImportOptions.PresentationImportOptions()
         
@@ -912,16 +912,16 @@ class TestPresentationImportOptions( unittest.TestCase ):
             already_in_and_inboxed_hash
         ]
         
-        TG.test_controller.SetRead( 'inbox_hashes', inbox_filter_answer )
-        TG.test_controller.SetRead( 'filter_hashes', expected_result )
+        TG.test_controller.set_read( 'inbox_hashes', inbox_filter_answer )
+        TG.test_controller.set_read( 'filter_hashes', expected_result )
         
         result = presentation_import_options.GetPresentedHashes( hashes_and_statuses )
         
-        [ ( args, kwargs ) ] = TG.test_controller.GetRead( 'inbox_hashes' )
+        [ ( args, kwargs ) ] = TG.test_controller.get_read( 'inbox_hashes' )
         
         self.assertEqual( args, ( pre_inbox_filter_expected_result, ) )
         
-        [ ( args, kwargs ) ] = TG.test_controller.GetRead( 'filter_hashes' )
+        [ ( args, kwargs ) ] = TG.test_controller.get_read( 'filter_hashes' )
         
         self.assertEqual( args, ( ClientLocation.LocationContext( current_service_keys = ( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, ) ), pre_filter_expected_result ) )
         
@@ -929,8 +929,8 @@ class TestPresentationImportOptions( unittest.TestCase ):
         
         # new only
         
-        TG.test_controller.ClearReads( 'inbox_hashes' )
-        TG.test_controller.ClearReads( 'file_query_ids' )
+        TG.test_controller.clear_reads( 'inbox_hashes' )
+        TG.test_controller.clear_reads( 'file_query_ids' )
         
         presentation_import_options = PresentationImportOptions.PresentationImportOptions()
         
@@ -949,12 +949,12 @@ class TestPresentationImportOptions( unittest.TestCase ):
             new_and_archived_hash
         ]
         
-        TG.test_controller.SetRead( 'inbox_hashes', 'not used' )
-        TG.test_controller.SetRead( 'filter_hashes', expected_result )
+        TG.test_controller.set_read( 'inbox_hashes', 'not used' )
+        TG.test_controller.set_read( 'filter_hashes', expected_result )
         
         result = presentation_import_options.GetPresentedHashes( hashes_and_statuses )
         
-        [ ( args, kwargs ) ] = TG.test_controller.GetRead( 'filter_hashes' )
+        [ ( args, kwargs ) ] = TG.test_controller.get_read( 'filter_hashes' )
         
         self.assertEqual( args, ( ClientLocation.LocationContext( current_service_keys = ( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, ) ), pre_filter_expected_result ) )
         
@@ -962,8 +962,8 @@ class TestPresentationImportOptions( unittest.TestCase ):
         
         # new and inbox only
         
-        TG.test_controller.ClearReads( 'inbox_hashes' )
-        TG.test_controller.ClearReads( 'file_query_ids' )
+        TG.test_controller.clear_reads( 'inbox_hashes' )
+        TG.test_controller.clear_reads( 'file_query_ids' )
         
         presentation_import_options = PresentationImportOptions.PresentationImportOptions()
         
@@ -991,16 +991,16 @@ class TestPresentationImportOptions( unittest.TestCase ):
             new_and_inboxed_hash
         ]
         
-        TG.test_controller.SetRead( 'inbox_hashes', inbox_filter_answer )
-        TG.test_controller.SetRead( 'filter_hashes', expected_result )
+        TG.test_controller.set_read( 'inbox_hashes', inbox_filter_answer )
+        TG.test_controller.set_read( 'filter_hashes', expected_result )
         
         result = presentation_import_options.GetPresentedHashes( hashes_and_statuses )
         
-        [ ( args, kwargs ) ] = TG.test_controller.GetRead( 'inbox_hashes' )
+        [ ( args, kwargs ) ] = TG.test_controller.get_read( 'inbox_hashes' )
         
         self.assertEqual( args, ( pre_inbox_filter_expected_result, ) )
         
-        [ ( args, kwargs ) ] = TG.test_controller.GetRead( 'filter_hashes' )
+        [ ( args, kwargs ) ] = TG.test_controller.get_read( 'filter_hashes' )
         
         self.assertEqual( args, ( ClientLocation.LocationContext( current_service_keys = ( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, ) ), pre_filter_expected_result ) )
         
@@ -1008,8 +1008,8 @@ class TestPresentationImportOptions( unittest.TestCase ):
         
         # new or inbox only
         
-        TG.test_controller.ClearReads( 'inbox_hashes' )
-        TG.test_controller.ClearReads( 'file_query_ids' )
+        TG.test_controller.clear_reads( 'inbox_hashes' )
+        TG.test_controller.clear_reads( 'file_query_ids' )
         
         presentation_import_options = PresentationImportOptions.PresentationImportOptions()
         
@@ -1039,16 +1039,16 @@ class TestPresentationImportOptions( unittest.TestCase ):
             already_in_and_inboxed_hash,
         ]
         
-        TG.test_controller.SetRead( 'inbox_hashes', inbox_filter_answer )
-        TG.test_controller.SetRead( 'filter_hashes', expected_result )
+        TG.test_controller.set_read( 'inbox_hashes', inbox_filter_answer )
+        TG.test_controller.set_read( 'filter_hashes', expected_result )
         
         result = presentation_import_options.GetPresentedHashes( hashes_and_statuses )
         
-        [ ( args, kwargs ) ] = TG.test_controller.GetRead( 'inbox_hashes' )
+        [ ( args, kwargs ) ] = TG.test_controller.get_read( 'inbox_hashes' )
         
         self.assertEqual( args, ( pre_inbox_filter_expected_result, ) )
         
-        [ ( args, kwargs ) ] = TG.test_controller.GetRead( 'filter_hashes' )
+        [ ( args, kwargs ) ] = TG.test_controller.get_read( 'filter_hashes' )
         
         self.assertEqual( args, ( ClientLocation.LocationContext( current_service_keys = ( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY, ) ), pre_filter_expected_result ) )
         
@@ -1066,7 +1066,7 @@ class TestTagFilteringImportOptions( unittest.TestCase ):
         
         blacklist = default_tag_filtering_import_options.GetTagBlacklist()
         
-        self.assertEqual( blacklist.Filter( some_tags ), some_tags )
+        self.assertEqual( blacklist.filter( some_tags ), some_tags )
         
         whitelist = default_tag_filtering_import_options.GetTagWhitelist()
         
@@ -1077,7 +1077,7 @@ class TestTagFilteringImportOptions( unittest.TestCase ):
         
         tag_blacklist = HydrusTags.TagFilter()
         
-        tag_blacklist.SetRule( 'series:', HC.FILTER_BLACKLIST )
+        tag_blacklist.set_rule( 'series:', HC.FILTER_BLACKLIST )
         
         tag_filtering_import_options = TagFilteringImportOptions.TagFilteringImportOptions( tag_blacklist = tag_blacklist )
         
@@ -1117,7 +1117,7 @@ class TestTagImportOptions( unittest.TestCase ):
     def test_basics( self ):
         
         some_tags = { 'bodysuit', 'character:space bounty hunter', 'series:bountyvania' }
-        example_hash = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
         example_service_key = TG.test_controller.example_tag_repo_service_key
         
         media_result = GetTagsMediaResult( example_hash, True, example_service_key, set() )
@@ -1132,7 +1132,7 @@ class TestTagImportOptions( unittest.TestCase ):
     def test_external_tags( self ):
         
         some_tags = set()
-        example_hash = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
         example_service_key = TG.test_controller.example_tag_repo_service_key
         
         external_filterable_tags = { 'bodysuit', 'character:space bounty hunter', 'series:bountyvania' }
@@ -1163,7 +1163,7 @@ class TestTagImportOptions( unittest.TestCase ):
         
         get_tags_filter = HydrusTags.TagFilter()
         
-        get_tags_filter.SetRule( 'series:', HC.FILTER_BLACKLIST )
+        get_tags_filter.set_rule( 'series:', HC.FILTER_BLACKLIST )
         
         service_keys_to_service_tag_import_options = { example_service_key : TagImportOptions.ServiceTagImportOptions( get_tags = True, get_tags_filter = get_tags_filter ) }
         
@@ -1186,7 +1186,7 @@ class TestTagImportOptions( unittest.TestCase ):
     def test_services( self ):
         
         some_tags = { 'bodysuit', 'character:space bounty hunter', 'series:bountyvania' }
-        example_hash = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
         example_service_key_1 = CC.DEFAULT_LOCAL_TAG_SERVICE_KEY
         example_service_key_2 = TG.test_controller.example_tag_repo_service_key
         
@@ -1217,7 +1217,7 @@ class TestTagImportOptions( unittest.TestCase ):
     def test_overwrite_deleted_filterable( self ):
         
         some_tags = { 'bodysuit', 'character:space bounty hunter', 'series:bountyvania' }
-        example_hash = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
         example_service_key = TG.test_controller.example_tag_repo_service_key
         
         media_result = GetTagsMediaResult( example_hash, True, example_service_key, { 'bodysuit', 'series:bountyvania' } )
@@ -1264,7 +1264,7 @@ class TestTagImportOptions( unittest.TestCase ):
     def test_overwrite_deleted_additional( self ):
         
         some_tags = { 'bodysuit', 'character:space bounty hunter', 'series:bountyvania' }
-        example_hash = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
         example_service_key = TG.test_controller.example_tag_repo_service_key
         
         media_result = GetTagsMediaResult( example_hash, True, example_service_key, { 'bodysuit', 'series:bountyvania' } )
@@ -1313,7 +1313,7 @@ class TestTagImportOptionsLegacy( unittest.TestCase ):
     
     def test_basics( self ):
         
-        example_hash = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
         example_service_key = TG.test_controller.example_tag_repo_service_key
         
         #
@@ -1344,8 +1344,8 @@ class TestServiceTagImportOptions( unittest.TestCase ):
     def test_basics( self ):
         
         some_tags = { 'bodysuit', 'character:space bounty hunter', 'series:bountyvania' }
-        example_hash = HydrusData.GenerateKey()
-        example_service_key = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
+        example_service_key = HydrusData.generate_key()
         
         media_result = GetTagsMediaResult( example_hash, True, example_service_key, set() )
         
@@ -1366,8 +1366,8 @@ class TestServiceTagImportOptions( unittest.TestCase ):
     def test_get_tags_filtering( self ):
         
         some_tags = { 'bodysuit', 'character:space bounty hunter', 'series:bountyvania' }
-        example_hash = HydrusData.GenerateKey()
-        example_service_key = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
+        example_service_key = HydrusData.generate_key()
         
         media_result = GetTagsMediaResult( example_hash, True, example_service_key, set() )
         
@@ -1381,7 +1381,7 @@ class TestServiceTagImportOptions( unittest.TestCase ):
         
         only_namespaced = HydrusTags.TagFilter()
         
-        only_namespaced.SetRule( '', HC.FILTER_BLACKLIST )
+        only_namespaced.set_rule( '', HC.FILTER_BLACKLIST )
         
         service_tag_import_options = TagImportOptions.ServiceTagImportOptions( get_tags = True, get_tags_filter = only_namespaced )
         
@@ -1391,9 +1391,9 @@ class TestServiceTagImportOptions( unittest.TestCase ):
         
         only_sbh = HydrusTags.TagFilter()
         
-        only_sbh.SetRule( '', HC.FILTER_BLACKLIST )
-        only_sbh.SetRule( ':', HC.FILTER_BLACKLIST )
-        only_sbh.SetRule( 'character:space bounty hunter', HC.FILTER_WHITELIST )
+        only_sbh.set_rule( '', HC.FILTER_BLACKLIST )
+        only_sbh.set_rule( ':', HC.FILTER_BLACKLIST )
+        only_sbh.set_rule( 'character:space bounty hunter', HC.FILTER_WHITELIST )
         
         service_tag_import_options = TagImportOptions.ServiceTagImportOptions( get_tags = True, get_tags_filter = only_sbh )
         
@@ -1403,8 +1403,8 @@ class TestServiceTagImportOptions( unittest.TestCase ):
     def test_additional( self ):
         
         some_tags = { 'bodysuit', 'character:space bounty hunter', 'series:bountyvania' }
-        example_hash = HydrusData.GenerateKey()
-        example_service_key = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
+        example_service_key = HydrusData.generate_key()
         
         media_result = GetTagsMediaResult( example_hash, True, example_service_key, set() )
         
@@ -1418,8 +1418,8 @@ class TestServiceTagImportOptions( unittest.TestCase ):
     def test_overwrite_deleted_get_tags_filtering( self ):
         
         some_tags = { 'bodysuit', 'character:space bounty hunter', 'series:bountyvania' }
-        example_hash = HydrusData.GenerateKey()
-        example_service_key = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
+        example_service_key = HydrusData.generate_key()
         
         media_result = GetTagsMediaResult( example_hash, True, example_service_key, { 'bodysuit', 'series:bountyvania' } )
         
@@ -1445,8 +1445,8 @@ class TestServiceTagImportOptions( unittest.TestCase ):
     def test_overwrite_deleted_additional( self ):
         
         some_tags = set()
-        example_hash = HydrusData.GenerateKey()
-        example_service_key = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
+        example_service_key = HydrusData.generate_key()
         
         media_result = GetTagsMediaResult( example_hash, True, example_service_key, { 'bodysuit', 'series:bountyvania' } )
         
@@ -1472,8 +1472,8 @@ class TestServiceTagImportOptions( unittest.TestCase ):
     def test_application( self ):
         
         some_tags = { 'bodysuit', 'character:space bounty hunter', 'series:bountyvania' }
-        example_hash = HydrusData.GenerateKey()
-        example_service_key = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
+        example_service_key = HydrusData.generate_key()
         
         inbox_media_result = GetTagsMediaResult( example_hash, True, example_service_key, set() )
         archive_media_result = GetTagsMediaResult( example_hash, False, example_service_key, set() )
@@ -1507,14 +1507,14 @@ class TestServiceTagImportOptions( unittest.TestCase ):
         
         some_tags = { 'bodysuit', 'character:space bounty hunter', 'series:bountyvania' }
         existing_tags = { 'character:space bounty hunter', 'series:bountyvania' }
-        example_hash = HydrusData.GenerateKey()
-        example_service_key = HydrusData.GenerateKey()
+        example_hash = HydrusData.generate_key()
+        example_service_key = HydrusData.generate_key()
         
         media_result = GetTagsMediaResult( example_hash, True, example_service_key, set() )
         
         #
         
-        TG.test_controller.SetRead( 'filter_existing_tags', existing_tags )
+        TG.test_controller.set_read( 'filter_existing_tags', existing_tags )
         
         service_tag_import_options = TagImportOptions.ServiceTagImportOptions( get_tags = True, only_add_existing_tags = True )
         
@@ -1527,9 +1527,9 @@ class TestServiceTagImportOptions( unittest.TestCase ):
         
         only_unnamespaced = HydrusTags.TagFilter()
         
-        only_unnamespaced.SetRule( ':', HC.FILTER_BLACKLIST )
+        only_unnamespaced.set_rule( ':', HC.FILTER_BLACKLIST )
         
-        TG.test_controller.SetRead( 'filter_existing_tags', existing_tags )
+        TG.test_controller.set_read( 'filter_existing_tags', existing_tags )
         
         service_tag_import_options = TagImportOptions.ServiceTagImportOptions( get_tags = True, only_add_existing_tags = True, only_add_existing_tags_filter = only_unnamespaced )
         

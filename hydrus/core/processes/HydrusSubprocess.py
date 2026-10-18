@@ -12,11 +12,11 @@ from hydrus.core import HydrusGlobals as HG
 from hydrus.core import HydrusNumbers
 from hydrus.core import HydrusTime
 
-def GetSubprocessEnv():
+def get_subprocess_env():
     
     if HG.subprocess_report_mode:
         
-        HydrusEnvironment.DumpEnv()
+        HydrusEnvironment.dump_env()
         
     
     env = os.environ.copy()
@@ -54,7 +54,7 @@ def GetSubprocessEnv():
             
         
         remove_if_hydrus_base_dir = [ 'QT_PLUGIN_PATH', 'QML2_IMPORT_PATH', 'SSL_CERT_FILE' ]
-        hydrus_base_dir = HG.controller.GetDBDir()
+        hydrus_base_dir = HG.controller.get_db_dir()
         
         for key in remove_if_hydrus_base_dir:
             
@@ -116,9 +116,8 @@ def GetSubprocessEnv():
         
     
     return env
-    
 
-def GetSubprocessHideTerminalStartupInfo():
+def get_subprocess_hide_terminal_startup_info():
     
     if HC.PLATFORM_WINDOWS:
         
@@ -134,13 +133,12 @@ def GetSubprocessHideTerminalStartupInfo():
         
     
     return startupinfo
-    
 
-def GetSubprocessKWArgs( hide_terminal = True, text = False, shell = False ):
+def get_subprocess_kw_args(hide_terminal = True, text = False, shell = False):
     
     sbp_kwargs = {}
     
-    sbp_kwargs[ 'env' ] = GetSubprocessEnv()
+    sbp_kwargs[ 'env' ] = get_subprocess_env()
     
     if text:
         
@@ -156,23 +154,22 @@ def GetSubprocessKWArgs( hide_terminal = True, text = False, shell = False ):
     
     if hide_terminal:
         
-        sbp_kwargs[ 'startupinfo' ] = GetSubprocessHideTerminalStartupInfo()
+        sbp_kwargs[ 'startupinfo' ] = get_subprocess_hide_terminal_startup_info()
         
     
     if HG.subprocess_report_mode:
         
         message = 'KWargs are: {}'.format( sbp_kwargs )
         
-        HydrusData.ShowText( message )
+        HydrusData.show_text( message )
         
     
     return sbp_kwargs
-    
 
 long_lived_external_processes_lock = threading.Lock()
 long_lived_external_processes = set()
 
-def ReapDeadLongLivedExternalProcesses():
+def reap_dead_long_lived_external_processes():
     
     with long_lived_external_processes_lock:
         
@@ -184,20 +181,14 @@ def ReapDeadLongLivedExternalProcesses():
                 
                 # this process is dead and reaped, all good to lose it now
                 long_lived_external_processes.discard( process )
-                
-            
-        
-    
 
-def RegisterLongLivedExternalProcess( process: subprocess.Popen ):
+def register_long_lived_external_process(process: subprocess.Popen):
     
     with long_lived_external_processes_lock:
         
         long_lived_external_processes.add( process )
-        
-    
 
-def ReportBadReturnCode( cmd, returncode, stdout, stderr ):
+def report_bad_return_code(cmd, returncode, stdout, stderr):
     
     if stdout is None:
         
@@ -226,9 +217,8 @@ def ReportBadReturnCode( cmd, returncode, stdout, stderr ):
     message += '============================\n'
     
     raise HydrusExceptions.BadReturnCodeException( message )
-    
 
-def ReportTimeoutError( cmd, timeout, stdout, stderr ):
+def report_timeout_error(cmd, timeout, stdout, stderr):
     
     if stdout is None:
         
@@ -248,7 +238,7 @@ def ReportTimeoutError( cmd, timeout, stdout, stderr ):
         stderr_text = stderr[:256]
         
     
-    message = f'A call to another executable took too long (over {HydrusNumbers.ToHumanInt(timeout)} seconds) to finish! The call was: {cmd}'
+    message = f'A call to another executable took too long (over {HydrusNumbers.to_human_int(timeout)} seconds) to finish! The call was: {cmd}'
     message += '\n\n'
     message += '========== stdout ==========\n'
     message += repr( stdout_text ) + '\n'
@@ -257,14 +247,13 @@ def ReportTimeoutError( cmd, timeout, stdout, stderr ):
     message += '============================\n'
     
     raise HydrusExceptions.SubprocessTimedOut( message )
-    
 
-def RunSubprocessRawCall( cmd, start_new_session, bufsize, stdin_pipe, stdout_pipe, stderr_pipe, hide_terminal: bool, text: bool, shell: bool ):
+def run_subprocess_raw_call(cmd, start_new_session, bufsize, stdin_pipe, stdout_pipe, stderr_pipe, hide_terminal: bool, text: bool, shell: bool):
     
     # just a reminder, the "shell" arg says "hey throw this _string_ cmd at a shell for parsing". it is not excellent, broadly speaking, but--
     # --it allows for simple commands to be run without breaking into [ exe_name, '-p', '/path/to/blah' ]
     
-    sbp_kwargs = GetSubprocessKWArgs( hide_terminal = hide_terminal, text = text, shell = shell )
+    sbp_kwargs = get_subprocess_kw_args( hide_terminal = hide_terminal, text = text, shell = shell )
     
     try:
         
@@ -272,22 +261,20 @@ def RunSubprocessRawCall( cmd, start_new_session, bufsize, stdin_pipe, stdout_pi
         
     except FileNotFoundError:
         
-        HydrusData.ShowText( f'Got a file not found on this external program call: {cmd}')
-        HydrusData.ShowText( f'If the error is not obvious, you might want to talk to hydev about it. Maybe your env PATH is unusual. Your env will follow, and here were the sbp kwargs used in the subprocess call: {sbp_kwargs}')
-        HydrusEnvironment.DumpEnv()
+        HydrusData.show_text( f'Got a file not found on this external program call: {cmd}')
+        HydrusData.show_text( f'If the error is not obvious, you might want to talk to hydev about it. Maybe your env PATH is unusual. Your env will follow, and here were the sbp kwargs used in the subprocess call: {sbp_kwargs}')
+        HydrusEnvironment.dump_env()
         
         raise
         
     except Exception as e:
         
-        HydrusData.ShowText( f'Had a problem with an external program! Error will follow; command was: {cmd}' )
-        HydrusData.ShowException( e )
+        HydrusData.show_text( f'Had a problem with an external program! Error will follow; command was: {cmd}' )
+        HydrusData.show_exception( e )
         
         raise
-        
-    
 
-def RunSubprocess(
+def run_subprocess(
     cmd,
     timeout: int = 15,
     bufsize: int = 65536,
@@ -315,39 +302,38 @@ def RunSubprocess(
         stderr_pipe = subprocess.PIPE
         
     
-    process = RunSubprocessRawCall( cmd, start_new_session, bufsize, stdin_pipe, stdout_pipe, stderr_pipe, hide_terminal, text, shell )
+    process = run_subprocess_raw_call( cmd, start_new_session, bufsize, stdin_pipe, stdout_pipe, stderr_pipe, hide_terminal, text, shell )
     
     if this_is_a_potentially_long_lived_external_guy:
         
-        RegisterLongLivedExternalProcess( process )
+        register_long_lived_external_process( process )
         
         return ( None, None, 0 )
         
     
-    ( stdout, stderr ) = SubprocessCommunicate( cmd, process, timeout )
+    ( stdout, stderr ) = subprocess_communicate( cmd, process, timeout )
     
     if HG.subprocess_report_mode:
         
         if stdout is None and stderr is None:
             
-            HydrusData.ShowText( 'No stdout or stderr came back.' )
+            HydrusData.show_text( 'No stdout or stderr came back.' )
             
         
         if stdout is not None:
             
-            HydrusData.ShowText( 'stdout: ' + repr( stdout ) )
+            HydrusData.show_text( 'stdout: ' + repr( stdout ) )
             
         
         if stderr is not None:
             
-            HydrusData.ShowText( 'stderr: ' + repr( stderr ) )
+            HydrusData.show_text( 'stderr: ' + repr( stderr ) )
             
         
     
     return ( stdout, stderr, process.returncode )
-    
 
-def SubprocessCommunicate( cmd, process: subprocess.Popen, timeout: int ):
+def subprocess_communicate(cmd, process: subprocess.Popen, timeout: int):
     
     def do_shutdown_test():
         
@@ -368,15 +354,15 @@ def SubprocessCommunicate( cmd, process: subprocess.Popen, timeout: int ):
     
     def do_timeout_test():
         
-        if HydrusTime.TimeHasPassedFloat( time_started + timeout ):
+        if HydrusTime.time_has_passed_float( time_started + timeout ):
             
-            ( stdout, stderr ) = TerminateAndReapProcess( process )
+            ( stdout, stderr ) = terminate_and_reap_process( process )
             
-            ReportTimeoutError( cmd, timeout, stdout, stderr )
+            report_timeout_error( cmd, timeout, stdout, stderr )
             
         
     
-    time_started = HydrusTime.GetNowFloat()
+    time_started = HydrusTime.get_now_float()
     
     do_shutdown_test()
     
@@ -390,11 +376,8 @@ def SubprocessCommunicate( cmd, process: subprocess.Popen, timeout: int ):
             
             do_timeout_test()
             do_shutdown_test()
-            
-        
-    
 
-def TerminateAndReapProcess( process: subprocess.Popen ):
+def terminate_and_reap_process( process: subprocess.Popen ):
     
     # you have to do the communicate after the kill calls or otherwise you get zombies
     
@@ -404,7 +387,7 @@ def TerminateAndReapProcess( process: subprocess.Popen ):
         
     except PermissionError as e:
         
-        HydrusData.Print( f'I tried to terminate the process {process} but got {e}!' )
+        HydrusData.safe_print( f'I tried to terminate the process {process} but got {e}!' )
         
     
     try:
@@ -419,7 +402,7 @@ def TerminateAndReapProcess( process: subprocess.Popen ):
             
         except PermissionError as e:
             
-            HydrusData.Print( f'I tried to kill the process {process} after post-terminate communicate timed out but got {e}!' )
+            HydrusData.safe_print( f'I tried to kill the process {process} after post-terminate communicate timed out but got {e}!' )
             
         
         try:
@@ -433,12 +416,12 @@ def TerminateAndReapProcess( process: subprocess.Popen ):
         
     
     return ( stdout, stderr )
-    
+
 
 # TODO: expand this to handle stderr better
-class SubprocessContext( object ):
+class SubprocessContext:
     
-    def __init__( self, cmd, timeout: int = 15, bufsize: int = 65536, hide_terminal = True, text = True, shell = False ):
+    def __init__(self, cmd, timeout: int = 15, bufsize: int = 65536, hide_terminal = True, text = True, shell = False):
         
         self.finished = False
         
@@ -458,12 +441,11 @@ class SubprocessContext( object ):
         self._timeout = timeout
         self._bufsize = bufsize
         
-        self.process = RunSubprocessRawCall( cmd, start_new_session, bufsize, stdin_pipe, stdout_pipe, stderr_pipe, hide_terminal, text, shell )
+        self.process = run_subprocess_raw_call( cmd, start_new_session, bufsize, stdin_pipe, stdout_pipe, stderr_pipe, hide_terminal, text, shell )
         
-        HG.controller.CallToThread( self._THREADReader )
-        
+        HG.controller.call_to_thread( self._thread_reader )
     
-    def _THREADReader( self ):
+    def _thread_reader(self):
         
         try:
             
@@ -471,7 +453,7 @@ class SubprocessContext( object ):
                 
                 try:
                     
-                    HydrusData.CheckProgramIsNotShuttingDown()
+                    HydrusData.check_program_is_not_shutting_down()
                     
                 except HydrusExceptions.ShutdownException:
                     
@@ -503,7 +485,7 @@ class SubprocessContext( object ):
                     
                 except ValueError: # probably got terminated at an inconvenient time
                     
-                    HydrusData.Print( f'Probably not a big deal, but the Subprocess Command "{self._cmd}" closed its stdout early. If this keeps happening, please let hydev know!' )
+                    HydrusData.safe_print( f'Probably not a big deal, but the Subprocess Command "{self._cmd}" closed its stdout early. If this keeps happening, please let hydev know!' )
                     
                     return
                     
@@ -519,38 +501,31 @@ class SubprocessContext( object ):
         finally:
             
             self._chunk_queue.put( self.SENTINEL )
-            
-        
     
-    def __enter__( self ):
+    def __enter__(self):
         
         return self
-        
     
-    def __exit__( self, exc_type, exc_val, exc_tb ):
+    def __exit__(self, exc_type, exc_val, exc_tb):
         
-        self.CloseProcess()
-        
+        self.close_process()
     
-    def CloseProcess( self ):
+    def close_process(self):
         
         self.process.poll()
         
         if self.process.returncode is None:
             
-            TerminateAndReapProcess( self.process )
-            
-        
+            terminate_and_reap_process( self.process )
     
-    def GetReturnCode( self ):
+    def get_return_code(self):
         
         return self.process.returncode
-        
-    
 
-class SubprocessContextReader( SubprocessContext ):
+
+class SubprocessContextReader(SubprocessContext):
     
-    def ReadChunk( self ):
+    def read_chunk(self):
         
         try:
             
@@ -560,9 +535,9 @@ class SubprocessContextReader( SubprocessContext ):
             
         except queue.Empty:
             
-            ( stdout, stderr ) = TerminateAndReapProcess( self.process )
+            ( stdout, stderr ) = terminate_and_reap_process( self.process )
             
-            ReportTimeoutError( self._cmd, self._timeout, stdout, stderr )
+            report_timeout_error( self._cmd, self._timeout, stdout, stderr )
             
         
         if chunk == self.SENTINEL:
@@ -572,13 +547,11 @@ class SubprocessContextReader( SubprocessContext ):
         else:
             
             return chunk
-            
-        
-    
 
-class SubprocessContextStreamer( SubprocessContext ):
+
+class SubprocessContextStreamer(SubprocessContext):
     
-    def IterateChunks( self ):
+    def iterate_chunks( self ):
         
         while True:
             
@@ -590,9 +563,9 @@ class SubprocessContextStreamer( SubprocessContext ):
                 
             except queue.Empty:
                 
-                ( stdout, stderr ) = TerminateAndReapProcess( self.process )
+                ( stdout, stderr ) = terminate_and_reap_process( self.process )
                 
-                ReportTimeoutError( self._cmd, self._timeout, stdout, stderr )
+                report_timeout_error( self._cmd, self._timeout, stdout, stderr )
                 
             
             if chunk == self.SENTINEL:
@@ -602,7 +575,3 @@ class SubprocessContextStreamer( SubprocessContext ):
             else:
                 
                 yield chunk
-                
-            
-        
-    

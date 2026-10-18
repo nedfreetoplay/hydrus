@@ -12,7 +12,7 @@ def SetImportOptionsFromLegacy( import_options_container: ImportOptionsContainer
         
         parent_import_options = optional_parent_container.GetImportOptions( import_options_type )
         
-        if parent_import_options is not None and potential_import_options.DumpToString() == parent_import_options.DumpToString():
+        if parent_import_options is not None and potential_import_options.dump_to_string() == parent_import_options.dump_to_string():
             
             return
             
@@ -40,7 +40,7 @@ def ConvertLegacyOptionsToContainer(
             
         else:
             
-            prefetch_import_options = default_empty_prefetch_import_options.Duplicate()
+            prefetch_import_options = default_empty_prefetch_import_options.duplicate()
             
         
         should_fetch_urls_blah = tag_import_options_legacy.ShouldFetchTagsEvenIfURLKnownAndFileAlreadyInDB()
@@ -52,7 +52,7 @@ def ConvertLegacyOptionsToContainer(
         do_it = True
         
         # just an additional check to stop prefetch spam
-        if optional_parent_container is None and prefetch_import_options.DumpToString() == default_empty_prefetch_import_options.DumpToString():
+        if optional_parent_container is None and prefetch_import_options.dump_to_string() == default_empty_prefetch_import_options.dump_to_string():
             
             # ok nothing changed and there's no parent to say that's actually desirable here, so let's not add it
             do_it = False
@@ -126,7 +126,7 @@ def GenerateImportOptionsManagerFromOldSystem(
     
     quiet_import_options_container = ConvertLegacyOptionsToContainer( file_import_options_legacy = quiet_file_import_options, optional_parent_container = global_import_options_container )
     
-    quiet_import_options_container_sans_presentation = quiet_import_options_container.Duplicate()
+    quiet_import_options_container_sans_presentation = quiet_import_options_container.duplicate()
     quiet_import_options_container_sans_presentation.DeleteImportOptions( IOC.IMPORT_OPTIONS_TYPE_PRESENTATION )
     
     import_options_manager.SetDefaultImportOptionsContainerForCallerType( IOC.IMPORT_OPTIONS_CALLER_TYPE_GLOBAL, global_import_options_container )

@@ -10,9 +10,9 @@ from hydrus.core import HydrusConstants as HC
 # Update: MPV playback causes crashes with this on because of pre-emption of internal dll exception gubbins, hooray
 import faulthandler
 
-class HydrusLogger( object ):
+class HydrusLogger:
     
-    def __init__( self, db_dir, prefix ):
+    def __init__(self, db_dir, prefix):
         
         self._db_dir = db_dir
         self._prefix = prefix
@@ -27,26 +27,24 @@ class HydrusLogger( object ):
         
         self._previous_sys_stdout = None
         self._previous_sys_stderr = None
-        
     
-    def __enter__( self ):
+    def __enter__(self):
         
         self._previous_sys_stdout = sys.stdout
         self._previous_sys_stderr = sys.stderr
         
         self._problem_with_previous_stdout = False
         
-        self._OpenLog()
+        self._open_log()
         
         sys.stdout = self
         sys.stderr = self
         
         return self
-        
     
-    def __exit__( self, exc_type, exc_val, exc_tb ):
+    def __exit__(self, exc_type, exc_val, exc_tb):
         
-        self._CloseLog()
+        self._close_log()
         
         sys.stdout = self._previous_sys_stdout
         sys.stderr = self._previous_sys_stderr
@@ -57,9 +55,8 @@ class HydrusLogger( object ):
         self._log_closed = True
         
         return False
-        
     
-    def _CloseLog( self ) -> None:
+    def _close_log(self) -> None:
         
         if self._currently_crash_reporting:
             
@@ -67,9 +64,8 @@ class HydrusLogger( object ):
             
         
         self._log_file.close()
-        
     
-    def _GetLogPath( self ) -> str:
+    def _get_log_path(self) -> str:
         
         current_time_struct = time.localtime()
         
@@ -80,11 +76,10 @@ class HydrusLogger( object ):
         log_path = os.path.join( self._db_dir, log_filename )
         
         return log_path
-        
     
-    def _OpenLog( self ) -> None:
+    def _open_log(self) -> None:
         
-        self._log_path = self._GetLogPath()
+        self._log_path = self._get_log_path()
         
         is_new_file = not os.path.exists( self._log_path )
         
@@ -100,22 +95,18 @@ class HydrusLogger( object ):
             self._log_file.write( HC.UNICODE_BYTE_ORDER_MARK ) # Byte Order Mark, BOM, to help reader software interpret this as utf-8
             
             self._log_file.write( 'THIS LOG FILE MAY CONTAIN PRIVATE INFORMATION! DO NOT SHARE IT CASUALLY!\n\n' )
-            
-        
     
-    def _SwitchToANewLogFileIfDue( self ) -> None:
+    def _switch_to_a_new_log_file_if_due(self) -> None:
         
-        correct_log_path = self._GetLogPath()
+        correct_log_path = self._get_log_path()
         
         if correct_log_path != self._log_path:
             
-            self._CloseLog()
+            self._close_log()
             
-            self._OpenLog()
-            
-        
+            self._open_log()
     
-    def FlipCrashReporting( self ):
+    def flip_crash_reporting(self):
         
         if self._currently_crash_reporting:
             
@@ -127,9 +118,8 @@ class HydrusLogger( object ):
             
         
         self._currently_crash_reporting = not self._currently_crash_reporting
-        
     
-    def flush( self ) -> None:
+    def flush(self) -> None:
         
         if self._log_closed:
             
@@ -152,21 +142,17 @@ class HydrusLogger( object ):
             
             self._log_file.flush()
             
-            self._SwitchToANewLogFileIfDue()
-            
-        
+            self._switch_to_a_new_log_file_if_due()
     
-    def isatty( self ) -> bool:
+    def isatty(self) -> bool:
         
         return False
-        
     
-    def CurrentlyCrashReporting( self ):
+    def currently_crash_reporting(self):
         
         return self._currently_crash_reporting
-        
     
-    def write( self, value ) -> None:
+    def write(self, value) -> None:
         
         if self._log_closed:
             
@@ -199,6 +185,3 @@ class HydrusLogger( object ):
                 
             
             self._log_file.write( message )
-            
-        
-    

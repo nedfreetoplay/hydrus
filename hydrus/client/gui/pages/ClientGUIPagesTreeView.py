@@ -73,7 +73,7 @@ class TabBar( QW.QTabBar ):
             
             self._last_clicked_global_pos = event.globalPosition().toPoint()
             
-            self._last_clicked_timestamp_ms = HydrusTime.GetNowMS()
+            self._last_clicked_timestamp_ms = HydrusTime.get_now_ms()
             
         
         QW.QTabBar.mousePressEvent( self, event )
@@ -376,7 +376,7 @@ class TabWidgetWithDnD( QW.QTabWidget ):
         # I used to do manhattanlength stuff, but tbh this works better
         # delta_pos = e.globalPosition().toPoint() - clicked_global_pos
         
-        if not HydrusTime.TimeHasPassedMS( clicked_timestamp_ms + 100 ):
+        if not HydrusTime.time_has_passed_ms( clicked_timestamp_ms + 100 ):
             
             # don't start a drag until decent movement
             
@@ -407,7 +407,7 @@ class TabWidgetWithDnD( QW.QTabWidget ):
         
         self._my_current_drag_object.setDragCursor( cursor.pixmap(), QC.Qt.DropAction.MoveAction )
         
-        CG.client_controller.CallLaterQtSafe( self, 0.1, 'checking DnD is ok', self._CheckDnDIsOK, self._my_current_drag_object )
+        CG.client_controller.call_later_qt_safe( self, 0.1, 'checking DnD is ok', self._CheckDnDIsOK, self._my_current_drag_object )
         
         self._my_current_drag_object.exec_( QC.Qt.DropAction.MoveAction )
         
@@ -652,7 +652,7 @@ class TabWidgetWithDnD( QW.QTabWidget ):
                     page_key = source_notebook.GetPageKey()
                     
                 
-                CG.client_controller.CallAfterQtSafe( self, CG.client_controller.gui.ShowPage, page_key )
+                CG.client_controller.call_after_qt_safe( self, CG.client_controller.gui.ShowPage, page_key )
                 
             
         
@@ -1318,7 +1318,7 @@ class HistoryPanel( QW.QWidget ):
     def _CreatePageRow( self, history_index: int, page_key ):
         
         ( page_name, tooltip ) = self._model.GetPageNameAndTooltipFromPageKey( page_key )
-        page_name = HydrusText.ElideText( page_name, 100, elide_center = True )
+        page_name = HydrusText.elide_text( page_name, 100, elide_center = True )
         
         row = QW.QWidget( self._page_list )
         hbox = QW.QHBoxLayout( row )

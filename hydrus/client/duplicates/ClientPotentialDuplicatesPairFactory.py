@@ -186,7 +186,7 @@ class PotentialDuplicatePairFactoryDB( PotentialDuplicatePairFactory ):
         
         location_context = self._potential_duplicate_pairs_fragmentary_search.GetLocationContext()
         
-        potential_duplicate_id_pairs_and_distances: ClientPotentialDuplicatesSearchContext.PotentialDuplicateIdPairsAndDistances = CG.client_controller.Read( 'potential_duplicate_id_pairs_and_distances', location_context )
+        potential_duplicate_id_pairs_and_distances: ClientPotentialDuplicatesSearchContext.PotentialDuplicateIdPairsAndDistances = CG.client_controller.read( 'potential_duplicate_id_pairs_and_distances', location_context )
         
         self._potential_duplicate_pairs_fragmentary_search.SetSearchSpace( potential_duplicate_id_pairs_and_distances )
         
@@ -282,11 +282,11 @@ class PotentialDuplicatePairFactoryDBGroupMode( PotentialDuplicatePairFactoryDB 
             
             # ok let's find a group if poss
             
-            start_time = HydrusTime.GetNowPrecise()
+            start_time = HydrusTime.get_now_precise()
             
-            probing_potential_duplicate_media_result_pairs_and_distances = CG.client_controller.Read( 'potential_duplicate_id_pairs_and_distances_fragmentary', self._potential_duplicate_pairs_fragmentary_search )
+            probing_potential_duplicate_media_result_pairs_and_distances = CG.client_controller.read( 'potential_duplicate_id_pairs_and_distances_fragmentary', self._potential_duplicate_pairs_fragmentary_search )
             
-            actual_work_period = HydrusTime.GetNowPrecise() - start_time
+            actual_work_period = HydrusTime.get_now_precise() - start_time
             
             self._potential_duplicate_pairs_fragmentary_search.NotifyWorkTimeForAutothrottle( actual_work_period, 0.5 )
             
@@ -308,7 +308,7 @@ class PotentialDuplicatePairFactoryDBGroupMode( PotentialDuplicatePairFactoryDB 
             
             group_fragmentary_search = self._potential_duplicate_pairs_fragmentary_search.SpawnMediaIdFilteredSearch( self._group_media_ids )
             
-            self._fetched_media_result_pairs_and_distances: ClientPotentialDuplicatesSearchContext.PotentialDuplicateMediaResultPairsAndDistances = CG.client_controller.Read( 'potential_duplicate_media_result_pairs_and_distances', group_fragmentary_search )
+            self._fetched_media_result_pairs_and_distances: ClientPotentialDuplicatesSearchContext.PotentialDuplicateMediaResultPairsAndDistances = CG.client_controller.read( 'potential_duplicate_media_result_pairs_and_distances', group_fragmentary_search )
             
             if len( self._fetched_media_result_pairs_and_distances ) == 0:
                 
@@ -334,7 +334,7 @@ class PotentialDuplicatePairFactoryDBGroupMode( PotentialDuplicatePairFactoryDB 
                 value = self._potential_duplicate_pairs_fragmentary_search.NumPairsSearched()
                 range = self._potential_duplicate_pairs_fragmentary_search.NumPairsInSearchSpace()
                 
-                loading_text = f'Searching for group; {HydrusNumbers.ValueRangeToPrettyString(value, range)} pairs searched{HC.UNICODE_ELLIPSIS}'
+                loading_text = f'Searching for group; {HydrusNumbers.value_range_to_pretty_string(value, range)} pairs searched{HC.UNICODE_ELLIPSIS}'
                 
             else:
                 
@@ -374,11 +374,11 @@ class PotentialDuplicatePairFactoryDBMixed( PotentialDuplicatePairFactoryDB ):
     
     def DoSearchWork( self, *args ) -> bool:
         
-        start_time = HydrusTime.GetNowPrecise()
+        start_time = HydrusTime.get_now_precise()
         
-        potential_duplicate_media_result_pairs_and_distances = CG.client_controller.Read( 'potential_duplicate_media_result_pairs_and_distances_fragmentary', self._potential_duplicate_pairs_fragmentary_search, no_more_than = self._no_more_than )
+        potential_duplicate_media_result_pairs_and_distances = CG.client_controller.read( 'potential_duplicate_media_result_pairs_and_distances_fragmentary', self._potential_duplicate_pairs_fragmentary_search, no_more_than = self._no_more_than )
         
-        actual_work_period = HydrusTime.GetNowPrecise() - start_time
+        actual_work_period = HydrusTime.get_now_precise() - start_time
         
         self._potential_duplicate_pairs_fragmentary_search.NotifyWorkTimeForAutothrottle( actual_work_period, 0.5 )
         
@@ -406,7 +406,7 @@ class PotentialDuplicatePairFactoryDBMixed( PotentialDuplicatePairFactoryDB ):
             value = self._potential_duplicate_pairs_fragmentary_search.NumPairsSearched()
             range = self._potential_duplicate_pairs_fragmentary_search.NumPairsInSearchSpace()
             
-            loading_text = f'{HydrusNumbers.ValueRangeToPrettyString(value, range)} pairs searched; {HydrusNumbers.ToHumanInt( len( self._fetched_media_result_pairs_and_distances ) )} matched{HC.UNICODE_ELLIPSIS}'
+            loading_text = f'{HydrusNumbers.value_range_to_pretty_string(value, range)} pairs searched; {HydrusNumbers.to_human_int( len( self._fetched_media_result_pairs_and_distances ) )} matched{HC.UNICODE_ELLIPSIS}'
             
         
         return loading_text

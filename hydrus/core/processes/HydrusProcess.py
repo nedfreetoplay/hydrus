@@ -8,7 +8,7 @@ from hydrus.core import HydrusExceptions
 from hydrus.core import HydrusPSUtil
 from hydrus.core import HydrusText
 
-def GetSiblingProcessPorts( db_path, instance ):
+def get_sibling_process_ports(db_path, instance):
     
     path = os.path.join( db_path, instance + '_running' )
     
@@ -20,7 +20,7 @@ def GetSiblingProcessPorts( db_path, instance ):
             
             try:
                 
-                ( pid, create_time ) = HydrusText.DeserialiseNewlinedTexts( file_text )
+                ( pid, create_time ) = HydrusText.deserialise_newlined_texts( file_text )
                 
                 pid = int( pid )
                 
@@ -61,13 +61,12 @@ def GetSiblingProcessPorts( db_path, instance ):
         
     
     return None
-    
 
-def IsAlreadyRunning( db_path, instance ):
+def is_already_running(db_path, instance):
     
     if not HydrusPSUtil.PSUTIL_OK:
         
-        HydrusData.Print( 'psutil is not available, so cannot do the "already running?" check!' )
+        HydrusData.safe_print( 'psutil is not available, so cannot do the "already running?" check!' )
         
         return False
         
@@ -84,7 +83,7 @@ def IsAlreadyRunning( db_path, instance ):
                 
                 try:
                     
-                    ( pid, create_time ) = HydrusText.DeserialiseNewlinedTexts( file_text )
+                    ( pid, create_time ) = HydrusText.deserialise_newlined_texts( file_text )
                     
                     pid = int( pid )
                     create_time = float( create_time )
@@ -131,23 +130,22 @@ def IsAlreadyRunning( db_path, instance ):
             
         except UnicodeDecodeError:
             
-            HydrusData.Print( 'The already-running file was incomprehensible!' )
+            HydrusData.safe_print( 'The already-running file was incomprehensible!' )
             
             return False
             
         except Exception as e:
             
-            HydrusData.Print( 'Problem loading the already-running file:' )
-            HydrusData.PrintException( e )
+            HydrusData.safe_print( 'Problem loading the already-running file:' )
+            HydrusData.print_exception( e )
             
             return False
             
         
     
     return False
-    
 
-def RecordRunningStart( db_path, instance ):
+def record_running_start(db_path, instance):
     
     if not HydrusPSUtil.PSUTIL_OK:
         
@@ -174,10 +172,8 @@ def RecordRunningStart( db_path, instance ):
     with open( path, 'w', encoding = 'utf-8' ) as f:
         
         f.write( record_string )
-        
-    
 
-def RestartProcess():
+def restart_process():
     
     time.sleep( 1 ) # time for ports to unmap
     
@@ -205,4 +201,3 @@ def RestartProcess():
         
     
     os.execv( exe, args )
-    

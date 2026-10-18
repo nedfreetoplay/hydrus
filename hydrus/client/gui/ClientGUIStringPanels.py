@@ -235,7 +235,7 @@ class SingleStringConversionTestPanel( QW.QWidget ):
                     
                 
             
-            tab_label = '{} ({})'.format( processing_steps[i].ToString( simple = True ), HydrusNumbers.ToHumanInt( len( results ) ) )
+            tab_label = '{} ({})'.format( processing_steps[i].ToString( simple = True ), HydrusNumbers.to_human_int( len( results ) ) )
             
             self._example_results.addTab( results_list, tab_label )
             
@@ -465,7 +465,7 @@ class EditStringConverterPanel( ClientGUIScrolledPanels.EditPanel ):
         
         ( number, conversion_type, data ) = conversion
         
-        pretty_number = HydrusNumbers.ToHumanInt( number )
+        pretty_number = HydrusNumbers.to_human_int( number )
         pretty_conversion = ClientStrings.StringConverter.ConversionToString( ( conversion_type, data ) )
         
         string_converter = self._GetValue()
@@ -2077,7 +2077,7 @@ class EditStringTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
         
         message = 'This works the same as any tag filter elsewhere in the program. Note that it converts your texts to valid hydrus tags, so everything is coming out lowercase with trimmed whitespace, and invalid tags will never pass.'
         
-        tag_filter = string_tag_filter.GetTagFilter()
+        tag_filter = string_tag_filter.get_tag_filter()
         
         self._tag_filter_button = ClientGUITagFilter.TagFilterButton( self, message, tag_filter )
         

@@ -69,9 +69,9 @@ class TestDBDialogs( unittest.TestCase ):
                 
                 dlg.SetPanel( panel )
                 
-                TG.test_controller.CallLaterQtSafe( dlg, 4, 'test job', OKChildDialog, panel )
+                TG.test_controller.call_later_qt_safe( dlg, 4, 'test job', OKChildDialog, panel )
                 
-                TG.test_controller.CallLaterQtSafe( dlg, 6, 'test job', HitCancelButton, dlg )
+                TG.test_controller.call_later_qt_safe( dlg, 6, 'test job', HitCancelButton, dlg )
                 
                 result = dlg.exec()
                 
@@ -79,7 +79,7 @@ class TestDBDialogs( unittest.TestCase ):
                 
             
         
-        TG.test_controller.CallBlockingToQtTLW( qt_code )
+        TG.test_controller.call_blocking_to_qt_tlw( qt_code )
         
     
 class TestNonDBDialogs( unittest.TestCase ):
@@ -90,7 +90,7 @@ class TestNonDBDialogs( unittest.TestCase ):
             
             with ClientGUIDialogs.DialogChooseNewServiceMethod( None ) as dlg:
                 
-                TG.test_controller.CallLaterQtSafe( dlg, 1, 'test job', HitButton, dlg._register )
+                TG.test_controller.call_later_qt_safe( dlg, 1, 'test job', HitButton, dlg._register )
                 
                 result = dlg.exec()
                 
@@ -103,7 +103,7 @@ class TestNonDBDialogs( unittest.TestCase ):
             
             with ClientGUIDialogs.DialogChooseNewServiceMethod( None ) as dlg:
                 
-                TG.test_controller.CallLaterQtSafe( dlg, 1, 'test job', HitButton, dlg._setup )
+                TG.test_controller.call_later_qt_safe( dlg, 1, 'test job', HitButton, dlg._setup )
                 
                 result = dlg.exec()
                 
@@ -116,7 +116,7 @@ class TestNonDBDialogs( unittest.TestCase ):
             
             with ClientGUIDialogs.DialogChooseNewServiceMethod( None ) as dlg:
                 
-                TG.test_controller.CallLaterQtSafe( dlg, 1, 'test job', HitCancelButton, dlg )
+                TG.test_controller.call_later_qt_safe( dlg, 1, 'test job', HitCancelButton, dlg )
                 
                 result = dlg.exec()
                 
@@ -124,6 +124,6 @@ class TestNonDBDialogs( unittest.TestCase ):
                 
             
         
-        TG.test_controller.CallBlockingToQtTLW( qt_code )
+        TG.test_controller.call_blocking_to_qt_tlw( qt_code )
         
     

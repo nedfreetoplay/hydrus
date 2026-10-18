@@ -273,7 +273,7 @@ def CalculateMediaContainerSize( media, device_pixel_ratio: float, zoom, show_ac
         #thumbnail_dpr_percent = CG.client_controller.new_options.GetInteger( 'thumbnail_dpr_percent' )
         thumbnail_dpr_percent = 100
         
-        ( thumb_width, thumb_height ) = HydrusImageHandling.GetThumbnailResolution( media.GetResolution(), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
+        ( thumb_width, thumb_height ) = HydrusImageHandling.get_thumbnail_resolution( media.GetResolution(), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
         
         height = height + min( OPEN_EXTERNALLY_MAX_THUMBNAIL_SIZE[1], thumb_height )
         
@@ -398,7 +398,7 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         self._current_frame_index = 0
         self._current_frame_drawn = False
         self._current_timestamp_ms = None
-        self._next_frame_due_at = HydrusTime.GetNowPrecise()
+        self._next_frame_due_at = HydrusTime.get_now_precise()
         self._slow_frame_score = 1.0
         
         self._paused = True
@@ -524,13 +524,13 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         self._current_frame_drawn = True
         
-        next_frame_duration_s = HydrusTime.SecondiseMSFloat( self._video_container.GetDurationMS( self._current_frame_index ) )
+        next_frame_duration_s = HydrusTime.secondise_ms_float( self._video_container.GetDurationMS( self._current_frame_index ) )
         
         next_frame_ideally_due = self._next_frame_due_at + next_frame_duration_s
         
-        if HydrusTime.TimeHasPassedPrecise( next_frame_ideally_due ):
+        if HydrusTime.time_has_passed_precise( next_frame_ideally_due ):
             
-            self._next_frame_due_at = HydrusTime.GetNowPrecise() + next_frame_duration_s
+            self._next_frame_due_at = HydrusTime.get_now_precise() + next_frame_duration_s
             
         else:
             
@@ -601,7 +601,7 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 self._current_frame_index = frame_index
                 self._current_timestamp_ms = None
                 
-                self._next_frame_due_at = HydrusTime.GetNowPrecise()
+                self._next_frame_due_at = HydrusTime.get_now_precise()
                 
                 self._video_container.GetReadyForFrame( self._current_frame_index )
                 
@@ -793,7 +793,7 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         self._current_frame_index = int( ( self._num_frames - 1 ) * HC.options[ 'animation_start_position' ] )
         self._current_frame_drawn = False
         self._current_timestamp_ms = None
-        self._next_frame_due_at = HydrusTime.GetNowPrecise()
+        self._next_frame_due_at = HydrusTime.get_now_precise()
         self._slow_frame_score = 1.0
         
         self._paused = start_paused
@@ -864,7 +864,7 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
                 if self._current_frame_drawn:
                     
-                    if not self._paused and HydrusTime.TimeHasPassedPrecise( self._next_frame_due_at ):
+                    if not self._paused and HydrusTime.time_has_passed_precise( self._next_frame_due_at ):
                         
                         num_frames = self._media.GetNumFrames()
                         
@@ -1132,12 +1132,12 @@ class AnimationBar( QW.QWidget ):
                 
                 if num_frames_are_useful:
                     
-                    progress_strings.append( HydrusNumbers.ValueRangeToPrettyString( current_frame_index + 1, self._num_frames ) )
+                    progress_strings.append( HydrusNumbers.value_range_to_pretty_string( current_frame_index + 1, self._num_frames ) )
                     
                 
                 if current_timestamp_ms is not None:
                     
-                    progress_strings.append( HydrusTime.ValueRangeToScanbarTimestampsMS( current_timestamp_ms, self._duration_ms ) )
+                    progress_strings.append( HydrusTime.value_range_to_scanbar_timestamps_ms( current_timestamp_ms, self._duration_ms ) )
                     
                 
                 s = ' - '.join( progress_strings )
@@ -1672,13 +1672,13 @@ class MediaContainer( QW.QWidget ):
             
             self._show_action = CC.MEDIA_VIEWER_ACTION_SHOW_OPEN_EXTERNALLY_BUTTON
             
-            HydrusData.ShowText( 'MPV is not available!' )
+            HydrusData.show_text( 'MPV is not available!' )
             
         elif self._show_action == CC.MEDIA_VIEWER_ACTION_SHOW_WITH_QTMEDIAPLAYER and not ClientGUIQtMediaPlayer.QT_MULTIMEDIA_IS_AVAILABLE:
             
             self._show_action = CC.MEDIA_VIEWER_ACTION_SHOW_OPEN_EXTERNALLY_BUTTON
             
-            HydrusData.ShowText( 'QtMediaPlayer is not available!' )
+            HydrusData.show_text( 'QtMediaPlayer is not available!' )
             
         
         if self._show_action in ( CC.MEDIA_VIEWER_ACTION_DO_NOT_SHOW_ON_ACTIVATION_OPEN_EXTERNALLY, CC.MEDIA_VIEWER_ACTION_DO_NOT_SHOW ):
@@ -3406,7 +3406,7 @@ class EmbedButton( QW.QWidget ):
                 
                 thumbnail_path = CG.client_controller.client_files_manager.GetThumbnailPath( display_media_result )
                 
-                thumbnail_mime = HydrusFileHandling.GetThumbnailMime( thumbnail_path )
+                thumbnail_mime = HydrusFileHandling.get_thumbnail_mime( thumbnail_path )
                 
                 self._thumbnail_qt_pixmap = ClientRendering.GenerateHydrusBitmap( thumbnail_path, thumbnail_mime ).GetQtPixmap()
                 
@@ -3575,7 +3575,7 @@ class StaticImage( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
             ideal_tile_dimension = CG.client_controller.new_options.GetInteger( 'ideal_tile_dimension' )
             
-            nice_number = HydrusData.GetNicelyDivisibleNumberForZoom( self._zoom / self.devicePixelRatio(), ideal_tile_dimension )
+            nice_number = HydrusData.get_nicely_divisible_number_for_zoom( self._zoom / self.devicePixelRatio(), ideal_tile_dimension )
             
             if nice_number == -1:
                 
@@ -3594,7 +3594,7 @@ class StaticImage( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
             if HG.canvas_tile_outline_mode:
                 
-                HydrusData.ShowText( '{} from zoom {} and nice number {}'.format( tile_dimension, self._zoom, nice_number ) )
+                HydrusData.show_text( '{} from zoom {} and nice number {}'.format( tile_dimension, self._zoom, nice_number ) )
                 
             
         

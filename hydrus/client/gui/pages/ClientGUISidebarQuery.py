@@ -83,7 +83,7 @@ class SystemHashLockPanel( ClientGUICommon.StaticBox ):
     
     def _UpdateLabel( self ):
         
-        self._unlock_button.setText( f'Locked at {HydrusNumbers.ToHumanInt( self._num_files )} files.' )
+        self._unlock_button.setText( f'Locked at {HydrusNumbers.to_human_int( self._num_files )} files.' )
         
     
     def GetSyncsNew( self ):
@@ -119,7 +119,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
         
         self._query_job_status = ClientThreading.JobStatus( cancellable = True )
         
-        self._query_job_status.Finish()
+        self._query_job_status.finish()
         
         self._search_panel = ClientGUICommon.StaticBox( self, 'search', start_expanded = True, can_expand = True )
         
@@ -237,7 +237,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
     
     def _RefreshQuery( self ):
         
-        CG.client_controller.ResetIdleTimer()
+        CG.client_controller.reset_idle_timer()
         
         if self._page_manager.GetVariable( 'system_hash_locked' ):
             
@@ -265,7 +265,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
             
             sort_by = self._media_sort_widget.GetSort()
             
-            CG.client_controller.CallToThread( self.THREADDoQuery, self._page_manager, self._page_key, self._query_job_status, file_search_context, sort_by )
+            CG.client_controller.call_to_thread( self.THREADDoQuery, self._page_manager, self._page_key, self._query_job_status, file_search_context, sort_by )
             
             panel = ClientGUIMediaResultsPanelLoading.MediaResultsPanelLoading( self._page, self._page_key, self._page_manager )
             
@@ -308,7 +308,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
             
             WAIT_PERIOD = 3.0
             
-            search_is_lagging = HydrusTime.TimeHasPassedFloat( self._query_job_status.GetCreationTime() + WAIT_PERIOD )
+            search_is_lagging = HydrusTime.time_has_passed_float( self._query_job_status.GetCreationTime() + WAIT_PERIOD )
             
             self._tag_autocomplete.ShowCancelSearchButton( search_is_lagging )
             
@@ -354,7 +354,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
     
     def _UpdateSystemLockFiles( self, hashes ):
         
-        file_search_context = self._tag_autocomplete.GetFileSearchContext().Duplicate()
+        file_search_context = self._tag_autocomplete.GetFileSearchContext().duplicate()
         
         predicate = ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_HASH, ( tuple( hashes ), 'sha256' ) )
         
@@ -476,7 +476,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
             
             existing_lock_hashes = self._GetExistingLockHashes()
             
-            updated_hashes = HydrusLists.DedupeList( existing_lock_hashes + hashes )
+            updated_hashes = HydrusLists.dedupe_list( existing_lock_hashes + hashes )
             
             self._UpdateSystemLockFiles( updated_hashes )
             
@@ -547,7 +547,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
             self.last_seen_predicates = file_search_context.GetPredicates()
             
         
-        self._page_manager.SetVariable( 'file_search_context', file_search_context.Duplicate() )
+        self._page_manager.SetVariable( 'file_search_context', file_search_context.duplicate() )
         
         self.locationChanged.emit( file_search_context.GetLocationContext() )
         self.tagContextChanged.emit( file_search_context.GetTagContext() )
@@ -611,7 +611,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
         
         if len( self.last_seen_predicates ) > 0 and not file_search_context.IsComplete():
             
-            CG.client_controller.CallAfterQtSafe( self, self.RefreshQuery )
+            CG.client_controller.call_after_qt_safe( self, self.RefreshQuery )
             
         
     
@@ -626,7 +626,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
         
         def qt_code():
             
-            query_job_status.Finish()
+            query_job_status.finish()
             
             self.ShowFinishedQuery( query_job_status, media_results )
             
@@ -635,7 +635,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
         
         CG.client_controller.file_viewing_stats_manager.Flush()
         
-        query_hash_ids = CG.client_controller.Read( 'file_query_ids', file_search_context, job_status = query_job_status, limit_sort_by = sort_by )
+        query_hash_ids = CG.client_controller.read( 'file_query_ids', file_search_context, job_status = query_job_status, limit_sort_by = sort_by )
         
         if query_job_status.IsCancelled():
             
@@ -649,29 +649,29 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
         
         media_results = []
         
-        for ( num_done, num_to_do, sub_query_hash_ids ) in HydrusLists.SplitListIntoChunksRich( query_hash_ids, QUERY_CHUNK_SIZE ):
+        for ( num_done, num_to_do, sub_query_hash_ids ) in HydrusLists.split_list_into_chunks_rich( query_hash_ids, QUERY_CHUNK_SIZE ):
             
             if query_job_status.IsCancelled():
                 
                 return
                 
             
-            more_media_results = CG.client_controller.Read( 'media_results_from_ids', sub_query_hash_ids )
+            more_media_results = CG.client_controller.read( 'media_results_from_ids', sub_query_hash_ids )
             
             media_results.extend( more_media_results )
             
             CG.client_controller.pub( 'set_num_query_results', page_key, num_done, num_to_do )
             
-            CG.client_controller.WaitUntilViewFree()
+            CG.client_controller.wait_until_view_free()
             
         
         file_search_context.SetComplete()
         
-        page_manager.SetVariable( 'file_search_context', file_search_context.Duplicate() )
+        page_manager.SetVariable( 'file_search_context', file_search_context.duplicate() )
         
         page_manager.SetDirty()
         
-        CG.client_controller.CallAfterQtSafe( self, qt_code )
+        CG.client_controller.call_after_qt_safe( self, qt_code )
         
     
     def REPEATINGPageUpdate( self ):

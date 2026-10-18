@@ -63,7 +63,7 @@ def ApplyContentApplicationCommandToMedia( win: QW.QWidget, command: CAC.Applica
         return
         
     
-    service_type = service.GetServiceType()
+    service_type = service.get_service_type()
     
     if service_type == HC.LOCAL_FILE_DOMAIN:
         
@@ -132,14 +132,14 @@ def ApplyContentApplicationCommandToMedia( win: QW.QWidget, command: CAC.Applica
             
             job_status.SetStatusTitle( f'setting {command.ToString()}' )
             
-            start_time = HydrusTime.GetNowFloat()
+            start_time = HydrusTime.get_now_float()
             have_pubbed_message = False
             
             num_to_do = len( content_updates )
             
             for ( i, content_update ) in enumerate( content_updates ):
                 
-                if not have_pubbed_message and HydrusTime.TimeHasPassedFloat( start_time + 3 ):
+                if not have_pubbed_message and HydrusTime.time_has_passed_float( start_time + 3 ):
                     
                     CG.client_controller.pub( 'message', job_status )
                     
@@ -148,13 +148,13 @@ def ApplyContentApplicationCommandToMedia( win: QW.QWidget, command: CAC.Applica
                 
                 job_status.SetGauge( i, num_to_do )
                 
-                CG.client_controller.WriteSynchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( service_key, content_update ) )
+                CG.client_controller.write_synchronous( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( service_key, content_update ) )
                 
             
             job_status.FinishAndDismiss()
             
         
-        CG.client_controller.CallToThread( do_it )
+        CG.client_controller.call_to_thread( do_it )
         
     
     return
@@ -169,11 +169,11 @@ def ClearDeleteRecord( win, media ):
         return
         
     
-    result = ClientGUIDialogsQuick.GetYesNo( win, 'Clear the deletion record for {} previously deleted files?.'.format( HydrusNumbers.ToHumanInt( len( clearable_media ) ) ) )
+    result = ClientGUIDialogsQuick.GetYesNo( win, 'Clear the deletion record for {} previously deleted files?.'.format( HydrusNumbers.to_human_int( len( clearable_media ) ) ) )
     
     if result == QW.QDialog.DialogCode.Accepted:
         
-        for chunk_of_media in HydrusLists.SplitIteratorIntoChunks( clearable_media, 64 ):
+        for chunk_of_media in HydrusLists.split_iterator_into_chunks( clearable_media, 64 ):
             
             clearee_hashes = [ m.GetHash() for m in chunk_of_media ]
             
@@ -181,7 +181,7 @@ def ClearDeleteRecord( win, media ):
             
             content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_update )
             
-            CG.client_controller.Write( 'content_updates', content_update_package )
+            CG.client_controller.write( 'content_updates', content_update_package )
             
         
     
@@ -226,7 +226,7 @@ def CopyHashesToClipboard( win: QW.QWidget, hash_type: str, medias: collections.
         num_hashes = len( sha256_hashes )
         num_remote_medias = len( [ media for media in flat_media if not media.GetLocationsManager().IsLocal()] )
         
-        source_to_desired = CG.client_controller.Read( 'file_hashes', sha256_hashes, 'sha256', hash_type )
+        source_to_desired = CG.client_controller.read( 'file_hashes', sha256_hashes, 'sha256', hash_type )
         
         desired_hashes = [ source_to_desired[ source_hash ] for source_hash in sha256_hashes if source_hash in source_to_desired ]
         
@@ -240,12 +240,12 @@ def CopyHashesToClipboard( win: QW.QWidget, hash_type: str, medias: collections.
                 
             else:
                 
-                message = 'Unfortunately, {} of the {} hashes could not be found.'.format( HydrusNumbers.ToHumanInt( num_missing ), hash_type )
+                message = 'Unfortunately, {} of the {} hashes could not be found.'.format( HydrusNumbers.to_human_int( num_missing ), hash_type )
                 
             
             if num_remote_medias > 0:
                 
-                message += ' {} of the files you wanted are not currently in this client. If they have never visited this client, the lookup is impossible.'.format( HydrusNumbers.ToHumanInt( num_remote_medias ) )
+                message += ' {} of the files you wanted are not currently in this client. If they have never visited this client, the lookup is impossible.'.format( HydrusNumbers.to_human_int( num_remote_medias ) )
                 
             
             if num_remote_medias < num_missing:
@@ -279,7 +279,7 @@ def CopyHashesToClipboard( win: QW.QWidget, hash_type: str, medias: collections.
         
         job_status = ClientThreading.JobStatus()
         
-        job_status.SetStatusText( '{} {} hashes copied'.format( HydrusNumbers.ToHumanInt( len( desired_hashes ) ), hash_type ) )
+        job_status.SetStatusText( '{} {} hashes copied'.format( HydrusNumbers.to_human_int( len( desired_hashes ) ), hash_type ) )
         
         CG.client_controller.pub( 'message', job_status )
         
@@ -300,7 +300,7 @@ def DoClearFileViewingStats( win: QW.QWidget, flat_medias: collections.abc.Colle
         
     else:
         
-        insert = 'these {} files'.format( HydrusNumbers.ToHumanInt( len( flat_medias ) ) )
+        insert = 'these {} files'.format( HydrusNumbers.to_human_int( len( flat_medias ) ) )
         
     
     message = 'Clear the file viewing count/duration and \'last viewed time\' for {}?'.format( insert )
@@ -313,7 +313,7 @@ def DoClearFileViewingStats( win: QW.QWidget, flat_medias: collections.abc.Colle
         
         content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILE_VIEWING_STATS, HC.CONTENT_UPDATE_DELETE, hashes )
         
-        CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_update ) )
+        CG.client_controller.write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, content_update ) )
         
     
 
@@ -343,7 +343,7 @@ def DoOpenKnownURLFromShortcut( win: QW.QWidget, media ):
                 
             else:
                 
-                label = url_class.GetName() + ': ' + url
+                label = url_class.get_name() + ': ' + url
                 
                 matched_labels_and_urls.append( ( label, url ) )
                 
@@ -428,7 +428,7 @@ def EditFileNotes( win: QW.QWidget, media: ClientMediaSingle.MediaSingle, name_t
             
             content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.LOCAL_NOTES_SERVICE_KEY, content_updates )
             
-            CG.client_controller.Write( 'content_updates', content_update_package )
+            CG.client_controller.write( 'content_updates', content_update_package )
             
         
     
@@ -449,7 +449,7 @@ def EditFileTimestamps( win: QW.QWidget, ordered_medias: list[ ClientMediaSingle
             
             if content_update_package.HasContent():
                 
-                CG.client_controller.Write( 'content_updates', content_update_package )
+                CG.client_controller.write( 'content_updates', content_update_package )
                 
                 result = panel.GetFileModifiedUpdateData()
                 
@@ -467,17 +467,17 @@ def EditFileTimestamps( win: QW.QWidget, ordered_medias: list[ ClientMediaSingle
                         
                         job_status.SetStatusTitle( 'setting file modified dates' )
                         
-                        time_started = HydrusTime.GetNow()
+                        time_started = HydrusTime.get_now()
                         showed_popup = False
                         
                         num_to_do = len( medias_to_alter_modified_dates )
                         
                         for ( i, m ) in enumerate( medias_to_alter_modified_dates ):
                             
-                            job_status.SetStatusText( HydrusNumbers.ValueRangeToPrettyString( i, num_to_do ) )
+                            job_status.SetStatusText( HydrusNumbers.value_range_to_pretty_string( i, num_to_do ) )
                             job_status.SetGauge( i, num_to_do )
                             
-                            if not showed_popup and HydrusTime.TimeHasPassed( time_started + 3 ):
+                            if not showed_popup and HydrusTime.time_has_passed( time_started + 3 ):
                                 
                                 CG.client_controller.pub( 'message', job_status )
                                 
@@ -497,7 +497,7 @@ def EditFileTimestamps( win: QW.QWidget, ordered_medias: list[ ClientMediaSingle
                         job_status.FinishAndDismiss()
                         
                     
-                    CG.client_controller.CallToThread( do_it )
+                    CG.client_controller.call_to_thread( do_it )
                     
                 
             
@@ -539,7 +539,7 @@ def GetContentApplicationCommandFromInteractiveContentCommand( win: QW.QWidget, 
         return command
         
     
-    service_type = service.GetServiceType()
+    service_type = service.get_service_type()
     service_name = CG.client_controller.services_manager.GetNameSafe( service_key )
     suggestions_user_opt = CG.client_controller.new_options.GetNoneableInteger( 'num_recent_tags_in_quick_dialog' )
     
@@ -547,7 +547,7 @@ def GetContentApplicationCommandFromInteractiveContentCommand( win: QW.QWidget, 
         
         try:
             
-            recent_tags = None if suggestions_user_opt is None else CG.client_controller.Read( 'recent_tags', service_key )
+            recent_tags = None if suggestions_user_opt is None else CG.client_controller.read( 'recent_tags', service_key )
             last_tag = ''
             
             if recent_tags is not None:
@@ -569,7 +569,7 @@ def GetContentApplicationCommandFromInteractiveContentCommand( win: QW.QWidget, 
             return command
             
         
-        CG.client_controller.Write( 'push_recent_tags', service_key, list( ( value, ) ) )
+        CG.client_controller.write( 'push_recent_tags', service_key, list( ( value, ) ) )
         
     elif service_type in HC.RATINGS_SERVICES:
         
@@ -662,7 +662,7 @@ def GetContentUpdatesForAppliedContentApplicationCommandRatingsSetFlip( service_
         
     else:
         
-        rows = [ ( thing_to_set, block_of_hashes ) for block_of_hashes in HydrusLists.SplitListIntoChunks( list( hashes ), BLOCK_SIZE ) ]
+        rows = [ ( thing_to_set, block_of_hashes ) for block_of_hashes in HydrusLists.split_list_into_chunks( list( hashes ), BLOCK_SIZE ) ]
         
     
     content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_RATINGS, HC.CONTENT_UPDATE_ADD, row ) for row in rows ]
@@ -708,7 +708,7 @@ def GetContentUpdatesForAppliedContentApplicationCommandRatingsIncDec( service_k
             
         else:
             
-            rows = [ ( rating, block_of_hashes ) for block_of_hashes in HydrusLists.SplitListIntoChunks( list( hashes ), BLOCK_SIZE ) ]
+            rows = [ ( rating, block_of_hashes ) for block_of_hashes in HydrusLists.split_list_into_chunks( list( hashes ), BLOCK_SIZE ) ]
             
         
         content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_RATINGS, HC.CONTENT_UPDATE_ADD, row ) for row in rows ]
@@ -771,7 +771,7 @@ def GetContentUpdatesForAppliedContentApplicationCommandRatingsNumericalIncDec( 
             
         else:
             
-            rows = [ ( rating, block_of_hashes ) for block_of_hashes in HydrusLists.SplitListIntoChunks( list( hashes ), BLOCK_SIZE ) ]
+            rows = [ ( rating, block_of_hashes ) for block_of_hashes in HydrusLists.split_list_into_chunks( list( hashes ), BLOCK_SIZE ) ]
             
         
         content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_RATINGS, HC.CONTENT_UPDATE_ADD, row ) for row in rows ]
@@ -895,7 +895,7 @@ def GetContentUpdatesForAppliedContentApplicationCommandTags( win: QW.QWidget, s
         
     else:
         
-        rows = [ ( tag, block_of_hashes ) for block_of_hashes in HydrusLists.SplitListIntoChunks( list( hashes ), BLOCK_SIZE ) ]
+        rows = [ ( tag, block_of_hashes ) for block_of_hashes in HydrusLists.split_list_into_chunks( list( hashes ), BLOCK_SIZE ) ]
         
     
     content_updates = [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_MAPPINGS, content_update_action, row, reason = reason ) for row in rows ]
@@ -930,7 +930,7 @@ def MoveOrDuplicateLocalFiles( win: QW.QWidget, dest_service_key: bytes, action:
     ( local_duplicable_to_file_service_keys, local_moveable_from_and_to_file_service_keys, local_mergable_from_and_to_file_service_keys ) = ClientGUIMediaSimpleActions.GetLocalFileActionServiceKeys( applicable_media )
     
     do_yes_no = CG.client_controller.new_options.GetBoolean( 'confirm_multiple_local_file_services_copy' )
-    yes_no_text = 'Add {} files to {}?'.format( HydrusNumbers.ToHumanInt( len( applicable_media ) ), dest_service_name )
+    yes_no_text = 'Add {} files to {}?'.format( HydrusNumbers.to_human_int( len( applicable_media ) ), dest_service_name )
     
     if action in ( HC.CONTENT_UPDATE_MOVE, HC.CONTENT_UPDATE_MOVE_MERGE ):
         
@@ -1029,11 +1029,11 @@ def MoveOrDuplicateLocalFiles( win: QW.QWidget, dest_service_key: bytes, action:
         
         if action == HC.CONTENT_UPDATE_MOVE:
             
-            yes_no_text = 'Move {} files from {} to {}?'.format( HydrusNumbers.ToHumanInt( len( applicable_media ) ), source_service_name, dest_service_name )
+            yes_no_text = 'Move {} files from {} to {}?'.format( HydrusNumbers.to_human_int( len( applicable_media ) ), source_service_name, dest_service_name )
             
         elif action == HC.CONTENT_UPDATE_MOVE_MERGE:
             
-            yes_no_text = 'Move-merge {} files from {} to {}?'.format( HydrusNumbers.ToHumanInt( len( applicable_media ) ), source_service_name, dest_service_name )
+            yes_no_text = 'Move-merge {} files from {} to {}?'.format( HydrusNumbers.to_human_int( len( applicable_media ) ), source_service_name, dest_service_name )
             
         else:
             
@@ -1058,7 +1058,7 @@ def MoveOrDuplicateLocalFiles( win: QW.QWidget, dest_service_key: bytes, action:
     
     applicable_media_results = [ m.GetMediaResult() for m in applicable_media if m.GetLocationsManager().IsInCombinedLocalFileDomains() ]
     
-    CG.client_controller.CallToThread( ClientFileMigration.DoMoveOrDuplicateLocalFiles, dest_service_key, action, applicable_media_results, source_service_key )
+    CG.client_controller.call_to_thread( ClientFileMigration.DoMoveOrDuplicateLocalFiles, dest_service_key, action, applicable_media_results, source_service_key )
     
 
 def OpenURLs( win: QW.QWidget, urls, executable_id_and_name: HydrusSerialisable.IdAndName ):
@@ -1110,7 +1110,7 @@ def OpenURLs( win: QW.QWidget, urls, executable_id_and_name: HydrusSerialisable.
                         return
                         
                     
-                    job_status.SetStatusText( HydrusNumbers.ValueRangeToPrettyString( i, num_urls ) )
+                    job_status.SetStatusText( HydrusNumbers.value_range_to_pretty_string( i, num_urls ) )
                     job_status.SetGauge( i, num_urls )
                     
                 
@@ -1128,7 +1128,7 @@ def OpenURLs( win: QW.QWidget, urls, executable_id_and_name: HydrusSerialisable.
             
         
     
-    CG.client_controller.CallToThread( do_it, urls )
+    CG.client_controller.call_to_thread( do_it, urls )
     
 
 def OpenMediaURLs( win: QW.QWidget, medias, executable_id_and_name ):
@@ -1218,19 +1218,19 @@ def set_files_forced_filetypes( single_medias: list[ ClientMediaSingle.MediaSing
         CG.client_controller.pub( 'message', job_status )
         
     
-    for ( num_done, num_to_do, block_of_media ) in HydrusLists.SplitListIntoChunksRich( single_medias, BLOCK_SIZE ):
+    for ( num_done, num_to_do, block_of_media ) in HydrusLists.split_list_into_chunks_rich( single_medias, BLOCK_SIZE ):
         
         if job_status.IsCancelled():
             
             break
             
         
-        job_status.SetStatusText( HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do ) )
+        job_status.SetStatusText( HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do ) )
         job_status.SetGauge( num_done, num_to_do )
         
         hashes = { media.GetHash() for media in block_of_media }
         
-        CG.client_controller.WriteSynchronous( 'force_filetype', hashes, forced_mime )
+        CG.client_controller.write_synchronous( 'force_filetype', hashes, forced_mime )
         
         hashes_we_needed_to_dupe = set()
         
@@ -1256,10 +1256,10 @@ def set_files_forced_filetypes( single_medias: list[ ClientMediaSingle.MediaSing
         
         if len( hashes_we_needed_to_dupe ) > 0:
             
-            CG.client_controller.WriteSynchronous( 'file_maintenance_add_jobs_hashes', hashes_we_needed_to_dupe, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_DELETE_NEIGHBOUR_DUPES, HydrusTime.GetNow() + 3600 )
+            CG.client_controller.write_synchronous( 'file_maintenance_add_jobs_hashes', hashes_we_needed_to_dupe, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_DELETE_NEIGHBOUR_DUPES, HydrusTime.get_now() + 3600 )
             
         
-        pauser.Pause()
+        pauser.pause()
         
     
     job_status.FinishAndDismiss()
@@ -1287,7 +1287,7 @@ def SetFilesForcedFiletypes( win: QW.QWidget, medias: collections.abc.Collection
             
             forced_mime = panel.GetValue()
             
-            CG.client_controller.CallToThread( set_files_forced_filetypes, single_medias, forced_mime )
+            CG.client_controller.call_to_thread( set_files_forced_filetypes, single_medias, forced_mime )
             
         
     
@@ -1341,8 +1341,8 @@ def ShowFileEmbeddedMetadata( win: QW.QWidget, media_result: ClientMediaResult.M
                     
                 except HydrusExceptions.LimitedSupportFileException as e:
                     
-                    HydrusData.ShowText( f'Hey, when preparing the "show metadata" frame for PDF "{hash.hex()}", I tried to load it for metadata but it failed. The error follows:' )
-                    HydrusData.ShowException( e, do_wait = False )
+                    HydrusData.show_text( f'Hey, when preparing the "show metadata" frame for PDF "{hash.hex()}", I tried to load it for metadata but it failed. The error follows:' )
+                    HydrusData.show_exception( e, do_wait = False )
                     
                 
             elif looking_good_for_something:
@@ -1351,7 +1351,7 @@ def ShowFileEmbeddedMetadata( win: QW.QWidget, media_result: ClientMediaResult.M
                 
                 try:
                     
-                    raw_pil_image = HydrusImageOpening.RawOpenPILImage( path )
+                    raw_pil_image = HydrusImageOpening.raw_open_pil_image( path )
                     
                     try:
                         
@@ -1361,7 +1361,7 @@ def ShowFileEmbeddedMetadata( win: QW.QWidget, media_result: ClientMediaResult.M
                         
                         if exif_looking_good:
                             
-                            exif_dict = HydrusImageMetadata.GetEXIFDict( raw_pil_image )
+                            exif_dict = HydrusImageMetadata.get_exif_dict( raw_pil_image )
                             
                         
                         if xmp_looking_good:
@@ -1376,12 +1376,12 @@ def ShowFileEmbeddedMetadata( win: QW.QWidget, media_result: ClientMediaResult.M
                         
                         if human_readable_looking_good:
                             
-                            file_text = HydrusImageMetadata.GetEmbeddedFileText( raw_pil_image )
+                            file_text = HydrusImageMetadata.get_embedded_file_text( raw_pil_image )
                             
                         
                         if software_source_looking_good:
                             
-                            software_source = HydrusImageMetadata.GetSoftwareSourceFromPilInfo( raw_pil_image )
+                            software_source = HydrusImageMetadata.get_software_source_from_pil_info( raw_pil_image )
                             
                             if software_source is not None:
                                 
@@ -1391,13 +1391,13 @@ def ShowFileEmbeddedMetadata( win: QW.QWidget, media_result: ClientMediaResult.M
                         
                         if mime == HC.IMAGE_JPEG:
                             
-                            extra_rows.append( ( 'subsampling', HydrusImageMetadata.subsampling_str_lookup[ HydrusImageMetadata.GetJpegSubsamplingRaw( raw_pil_image ) ] ) )
+                            extra_rows.append( ( 'subsampling', HydrusImageMetadata.subsampling_str_lookup[ HydrusImageMetadata.get_jpeg_subsampling_raw( raw_pil_image ) ] ) )
                             
                             extra_rows.append( ( 'progressive', 'yes' if 'progression' in raw_pil_image.info else 'no' ) )
                             
                         else:
                             
-                            result = HydrusImageMetadata.GetChromaSubsamplingFromPilInfo( raw_pil_image )
+                            result = HydrusImageMetadata.get_chroma_subsampling_from_pil_info( raw_pil_image )
                             
                             if result != HydrusImageMetadata.SUBSAMPLING_UNKNOWN:
                                 
@@ -1547,8 +1547,8 @@ def ShowFileEmbeddedMetadata( win: QW.QWidget, media_result: ClientMediaResult.M
                     
                 except Exception as e:
                     
-                    HydrusData.ShowText( f'Hey, when preparing the "show metadata" frame for file "{hash.hex()}", I tried to load it in PIL but it failed. The error follows, please let hydev know:' )
-                    HydrusData.ShowException( e, do_wait = False )
+                    HydrusData.show_text( f'Hey, when preparing the "show metadata" frame for file "{hash.hex()}", I tried to load it in PIL but it failed. The error follows, please let hydev know:' )
+                    HydrusData.show_exception( e, do_wait = False )
                     
                 
             
@@ -1585,7 +1585,7 @@ def UndeleteMedia( win, media ):
         return
         
     
-    media_deleted_service_keys = HydrusLists.MassUnion( ( m.GetLocationsManager().GetDeleted() for m in undeletable_media ) )
+    media_deleted_service_keys = HydrusLists.mass_union( ( m.GetLocationsManager().GetDeleted() for m in undeletable_media ) )
     
     local_file_services = CG.client_controller.services_manager.GetServices( ( HC.LOCAL_FILE_DOMAIN, ) )
     
@@ -1643,7 +1643,7 @@ def UndeleteMedia( win, media ):
         
         if do_it:
             
-            for chunk_of_media in HydrusLists.SplitIteratorIntoChunks( undeletable_media, 64 ):
+            for chunk_of_media in HydrusLists.split_iterator_into_chunks( undeletable_media, 64 ):
                 
                 service_key = undelete_service.GetServiceKey()
                 
@@ -1653,7 +1653,7 @@ def UndeleteMedia( win, media ):
                 
                 content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( service_key, content_update )
                 
-                CG.client_controller.Write( 'content_updates', content_update_package )
+                CG.client_controller.write( 'content_updates', content_update_package )
                 
             
         

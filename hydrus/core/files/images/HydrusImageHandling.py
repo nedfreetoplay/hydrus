@@ -22,7 +22,6 @@ with warnings.catch_warnings():
     warnings.simplefilter( 'ignore', UserWarning )
     
     PIL_HAS_HEIF = PILFeatures.check( 'heif' )
-    
 
 HEIF_PLUGIN_OK = False
 
@@ -51,9 +50,7 @@ if not PIL_HAS_HEIF:
         
     except Exception as e:
         
-        HydrusData.Print( 'Could not register HEIF Opener with plugin library.' )
-        
-    
+        HydrusData.safe_print( 'Could not register HEIF Opener with plugin library.' )
 
 HEIF_OK = PIL_HAS_HEIF or HEIF_PLUGIN_OK
 
@@ -63,7 +60,6 @@ with warnings.catch_warnings():
     
     # should be true as of PIL 11.3
     PIL_HAS_AVIF = PILFeatures.check( 'avif' )
-    
 
 AVIF_PLUGIN_OK = False
 AVIF_BACKUP_PLUGIN_OK = False
@@ -94,20 +90,17 @@ if not PIL_HAS_AVIF:
                     
                     AVIF_BACKUP_PLUGIN_OK = True
                     
-                    HydrusData.Print( 'AVIF Opener registered with legacy library.' )
+                    HydrusData.safe_print( 'AVIF Opener registered with legacy library.' )
                     
                 except Exception as e:
                     
-                    HydrusData.Print( 'Could not register AVIF Opener with main or legacy library.' )
+                    HydrusData.safe_print( 'Could not register AVIF Opener with main or legacy library.' )
                     
                 
             
         except Exception as e:
             
-            HydrusData.Print( 'Could not register AVIF Opener with main or legacy plugin library.' )
-            
-        
-    
+            HydrusData.safe_print( 'Could not register AVIF Opener with main or legacy plugin library.' )
 
 AVIF_OK = PIL_HAS_AVIF or AVIF_PLUGIN_OK or AVIF_BACKUP_PLUGIN_OK
 
@@ -116,7 +109,6 @@ with warnings.catch_warnings():
     warnings.simplefilter( 'ignore', UserWarning )
     
     PIL_HAS_JXL = PILFeatures.check( 'jpegxl' )
-    
 
 JXL_PLUGIN_OK = False
 
@@ -135,8 +127,6 @@ if not PIL_HAS_JXL:
         import traceback
         
         JXL_ERROR_TEXT = traceback.format_exc()
-        
-    
 
 JXL_OK = PIL_HAS_JXL or JXL_PLUGIN_OK
 
@@ -152,7 +142,7 @@ from hydrus.core.files.images import HydrusImageMetadata
 from hydrus.core.files.images import HydrusImageNormalisation
 from hydrus.core.files.images import HydrusImageOpening
 
-def SetEnableLoadTruncatedImages( value: bool ):
+def set_enable_load_truncated_images( value: bool ):
     
     if hasattr( PILImageFile, 'LOAD_TRUNCATED_IMAGES' ):
         
@@ -173,16 +163,14 @@ def SetEnableLoadTruncatedImages( value: bool ):
             
             import PIL
             
-            HydrusData.Print( f'Could not set the PIL image trunctation value to {value}--perhaps this version of PIL ({PIL.__version__})does not support it?' )
+            HydrusData.safe_print( f'Could not set the PIL image trunctation value to {value}--perhaps this version of PIL ({PIL.__version__})does not support it?' )
             
         except Exception as e:
             
-            HydrusData.Print( f'Could not set the PIL image trunctation value to {value}, and could not determine the PIL version! Something is busted!' )
+            HydrusData.safe_print( f'Could not set the PIL image trunctation value to {value}, and could not determine the PIL version! Something is busted!' )
             
         
         return False
-        
-    
 
 OLD_PIL_MAX_IMAGE_PIXELS = PILImage.MAX_IMAGE_PIXELS
 PILImage.MAX_IMAGE_PIXELS = None # this turns off decomp check entirely, wew
@@ -199,7 +187,7 @@ CV_PNG_THUMBNAIL_ENCODE_PARAMS = [ cv2.IMWRITE_PNG_COMPRESSION, 9 ]
 
 PIL_ONLY_MIMETYPES = { HC.ANIMATION_GIF, HC.IMAGE_ICON, HC.IMAGE_WEBP, HC.IMAGE_QOI, HC.IMAGE_BMP, HC.ANIMATION_WEBP, HC.IMAGE_JXL, HC.IMAGE_AVIF }.union( HC.PIL_HEIF_MIMES )
 
-def MakeClipRectFit( image_resolution, clip_rect ):
+def make_clip_rect_fit(image_resolution, clip_rect):
     
     ( im_width, im_height ) = image_resolution
     ( x, y, clip_width, clip_height ) = clip_rect
@@ -221,8 +209,8 @@ def MakeClipRectFit( image_resolution, clip_rect ):
         
     
     return ( x, y, clip_width, clip_height )
-    
-def ClipNumPyImage( numpy_image: numpy.ndarray, clip_rect ):
+
+def clip_numpy_image(numpy_image: numpy.ndarray, clip_rect):
     
     if len( numpy_image.shape ) == 3:
         
@@ -233,41 +221,39 @@ def ClipNumPyImage( numpy_image: numpy.ndarray, clip_rect ):
         ( im_height, im_width ) = numpy_image.shape
         
     
-    ( x, y, clip_width, clip_height ) = MakeClipRectFit( ( im_width, im_height ), clip_rect )
+    ( x, y, clip_width, clip_height ) = make_clip_rect_fit( ( im_width, im_height ), clip_rect )
     
     return numpy_image[ y : y + clip_height, x : x + clip_width ]
-    
 
-def ClipPILImage( pil_image: PILImage.Image, clip_rect ):
+def clip_pil_image(pil_image: PILImage.Image, clip_rect):
     
-    ( x, y, clip_width, clip_height ) = MakeClipRectFit( pil_image.size, clip_rect )
+    ( x, y, clip_width, clip_height ) = make_clip_rect_fit( pil_image.size, clip_rect )
     
     return pil_image.crop( box = ( x, y, x + clip_width, y + clip_height ) )
-    
 
 FORCE_PIL_ALWAYS = True
 
-def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = None ) -> numpy.ndarray:
+def generate_numpy_image(path, mime, force_pil = False, human_file_description = None) -> numpy.ndarray:
     
     force_pil = force_pil or FORCE_PIL_ALWAYS
     
     if HG.media_load_report_mode:
         
-        HydrusData.ShowText( 'Loading media: ' + path )
+        HydrusData.show_text( 'Loading media: ' + path )
         
     
     if mime == HC.APPLICATION_PSD:
         
         if HG.media_load_report_mode:
             
-            HydrusData.ShowText( 'Loading PSD' )
+            HydrusData.show_text( 'Loading PSD' )
             
         
-        pil_image = HydrusPSDHandling.GeneratePILImageFromPSD( path )
+        pil_image = HydrusPSDHandling.generate_pil_image_from_psd( path )
         
         try:
             
-            return GenerateNumPyImageFromPILImage( pil_image )
+            return generate_numpy_image_from_pil_image( pil_image )
             
         finally:
             
@@ -279,14 +265,14 @@ def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = 
         
         if HG.media_load_report_mode:
             
-            HydrusData.ShowText( 'Loading KRA' )
+            HydrusData.show_text( 'Loading KRA' )
             
         
-        pil_image = HydrusKritaHandling.MergedPILImageFromKra( path )
+        pil_image = HydrusKritaHandling.merged_pil_image_from_kra( path )
         
         try:
             
-            numpy_image = GenerateNumPyImageFromPILImage( pil_image )
+            numpy_image = generate_numpy_image_from_pil_image( pil_image )
             
         finally:
             
@@ -300,14 +286,14 @@ def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = 
         
         if HG.media_load_report_mode:
             
-            HydrusData.ShowText( 'Loading ORA' )
+            HydrusData.show_text( 'Loading ORA' )
             
         
-        pil_image = HydrusORAHandling.MergedPILImageFromOra( path )
+        pil_image = HydrusORAHandling.merged_pil_image_from_ora( path )
         
         try:
             
-            numpy_image = GenerateNumPyImageFromPILImage( pil_image )
+            numpy_image = generate_numpy_image_from_pil_image( pil_image )
             
         finally:
             
@@ -324,7 +310,7 @@ def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = 
     
     if not force_pil:
         
-        raw_pil_image = HydrusImageOpening.RawOpenPILImage( path, human_file_description = human_file_description )
+        raw_pil_image = HydrusImageOpening.raw_open_pil_image( path, human_file_description = human_file_description )
         
         try:
             
@@ -333,11 +319,11 @@ def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = 
                 force_pil = True
                 
             
-            if HydrusImageMetadata.HasICCProfile( raw_pil_image ):
+            if HydrusImageMetadata.has_icc_profile( raw_pil_image ):
                 
                 if HG.media_load_report_mode:
                     
-                    HydrusData.ShowText( 'Image has ICC, so switching to PIL' )
+                    HydrusData.show_text( 'Image has ICC, so switching to PIL' )
                     
                 
                 force_pil = True
@@ -353,14 +339,14 @@ def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = 
         
         if HG.media_load_report_mode:
             
-            HydrusData.ShowText( 'Loading with PIL' )
+            HydrusData.show_text( 'Loading with PIL' )
             
         
-        pil_image = GeneratePILImage( path )
+        pil_image = generate_pil_image( path )
         
         try:
             
-            numpy_image = GenerateNumPyImageFromPILImage( pil_image )
+            numpy_image = generate_numpy_image_from_pil_image( pil_image )
             
         finally:
             
@@ -371,7 +357,7 @@ def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = 
         
         if HG.media_load_report_mode:
             
-            HydrusData.ShowText( 'Loading with OpenCV' )
+            HydrusData.show_text( 'Loading with OpenCV' )
             
         
         if mime in ( HC.IMAGE_JPEG, HC.IMAGE_TIFF ):
@@ -393,14 +379,14 @@ def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = 
             
             if HG.media_load_report_mode:
                 
-                HydrusData.ShowText( 'OpenCV Failed, loading with PIL' )
+                HydrusData.show_text( 'OpenCV Failed, loading with PIL' )
                 
             
-            pil_image = GeneratePILImage( path )
+            pil_image = generate_pil_image( path )
             
             try:
                 
-                numpy_image = GenerateNumPyImageFromPILImage( pil_image )
+                numpy_image = generate_numpy_image_from_pil_image( pil_image )
                 
             finally:
                 
@@ -409,16 +395,15 @@ def GenerateNumPyImage( path, mime, force_pil = False, human_file_description = 
             
         else:
             
-            numpy_image = HydrusImageNormalisation.DequantizeFreshlyLoadedNumPyImage( numpy_image )
+            numpy_image = HydrusImageNormalisation.dequantize_freshly_loaded_numpy_image( numpy_image )
             
-            numpy_image = HydrusImageNormalisation.StripOutAnyUselessAlphaChannel( numpy_image )
+            numpy_image = HydrusImageNormalisation.strip_out_any_useless_alpha_channel( numpy_image )
             
         
     
     return numpy_image
-    
 
-def GenerateNumPyImageFromPILImage( pil_image: PILImage.Image, strip_useless_alpha = True ) -> numpy.ndarray:
+def generate_numpy_image_from_pil_image(pil_image: PILImage.Image, strip_useless_alpha = True) -> numpy.ndarray:
     
     try:
         
@@ -437,21 +422,20 @@ def GenerateNumPyImageFromPILImage( pil_image: PILImage.Image, strip_useless_alp
     
     if strip_useless_alpha:
         
-        numpy_image = HydrusImageNormalisation.StripOutAnyUselessAlphaChannel( numpy_image )
+        numpy_image = HydrusImageNormalisation.strip_out_any_useless_alpha_channel( numpy_image )
         
     
     return numpy_image
-    
 
-def GeneratePILImage( path: str | typing.BinaryIO, dequantize = True, human_file_description = None ) -> PILImage.Image:
+def generate_pil_image(path: str | typing.BinaryIO, dequantize = True, human_file_description = None) -> PILImage.Image:
     
-    original_pil_image = HydrusImageOpening.RawOpenPILImage( path, human_file_description = human_file_description )
+    original_pil_image = HydrusImageOpening.raw_open_pil_image( path, human_file_description = human_file_description )
     
     rotated_pil_image = None
     
     try:
         
-        rotated_pil_image = HydrusImageNormalisation.RotateEXIFPILImage( original_pil_image )
+        rotated_pil_image = HydrusImageNormalisation.rotate_exif_pil_image( original_pil_image )
         
         if dequantize:
             
@@ -465,20 +449,20 @@ def GeneratePILImage( path: str | typing.BinaryIO, dequantize = True, human_file
                 
                 try:
                     
-                    numpy_image = GenerateNumPyImageFromPILImage( rotated_pil_image )
+                    numpy_image = generate_numpy_image_from_pil_image( rotated_pil_image )
                     
                 finally:
                     
                     rotated_pil_image.close()
                     
                 
-                numpy_image = HydrusImageNormalisation.NormaliseNumPyImageToUInt8( numpy_image )
+                numpy_image = HydrusImageNormalisation.normalise_numpy_image_to_uint8( numpy_image )
                 
-                rotated_pil_image = GeneratePILImageFromNumPyImage( numpy_image )
+                rotated_pil_image = generate_pil_image_from_numpy_image( numpy_image )
                 
             
             # note this destroys animated gifs atm, it collapses down to one frame
-            dequantised_rotated_pil_image = HydrusImageNormalisation.DequantizePILImage( rotated_pil_image )
+            dequantised_rotated_pil_image = HydrusImageNormalisation.dequantize_pil_image( rotated_pil_image )
             
             # must be 'is not'. '!=' breaks on a closed guy
             if rotated_pil_image is not dequantised_rotated_pil_image:
@@ -503,11 +487,8 @@ def GeneratePILImage( path: str | typing.BinaryIO, dequantize = True, human_file
         if rotated_pil_image is None or original_pil_image is not rotated_pil_image:
             
             original_pil_image.close()
-            
-        
-    
 
-def GeneratePILImageFromNumPyImage( numpy_image: numpy.ndarray ) -> PILImage.Image:
+def generate_pil_image_from_numpy_image(numpy_image: numpy.ndarray) -> PILImage.Image:
     
     if len( numpy_image.shape ) == 2:
         
@@ -544,9 +525,8 @@ def GeneratePILImageFromNumPyImage( numpy_image: numpy.ndarray ) -> PILImage.Ima
     pil_image = PILImage.frombytes( format, ( w, h ), numpy_image.data.tobytes() )
     
     return pil_image
-    
 
-def GenerateFileBytesNumPy( numpy_image, ext: str = '.png', params: list[ int ] | None = None ) -> bytes:
+def generate_file_bytes_numpy(numpy_image, ext: str = '.png', params: list[int] | None = None) -> bytes:
     
     if params is None:
         
@@ -583,10 +563,8 @@ def GenerateFileBytesNumPy( numpy_image, ext: str = '.png', params: list[ int ] 
     else:
         
         raise HydrusExceptions.CantRenderWithCVException( 'Image failed to encode!' )
-        
-    
 
-def GenerateFileBytesForRenderAPI( numpy_image, format: int, quality: int ):
+def generate_file_bytes_for_render_api(numpy_image, format: int, quality: int):
     
     ext = HC.mime_ext_lookup[format]
     
@@ -605,19 +583,17 @@ def GenerateFileBytesForRenderAPI( numpy_image, format: int, quality: int ):
         params = [ cv2.IMWRITE_WEBP_QUALITY, quality ]
         
     
-    return GenerateFileBytesNumPy( numpy_image, ext, params )
-    
+    return generate_file_bytes_numpy( numpy_image, ext, params )
 
-def GenerateThumbnailNumPyFromStaticImagePath( path, target_resolution, mime ):
+def generate_thumbnail_numpy_from_static_image_path(path, target_resolution, mime):
     
-    numpy_image = GenerateNumPyImage( path, mime )
+    numpy_image = generate_numpy_image( path, mime )
     
-    thumbnail_numpy_image = ResizeNumPyImage( numpy_image, target_resolution )
+    thumbnail_numpy_image = resize_numpy_image( numpy_image, target_resolution )
     
     return thumbnail_numpy_image
-    
 
-def GenerateThumbnailBytesFromNumPy( numpy_image ) -> bytes:
+def generate_thumbnail_bytes_from_numpy(numpy_image) -> bytes:
     
     if len( numpy_image.shape ) == 2:
         
@@ -641,14 +617,13 @@ def GenerateThumbnailBytesFromNumPy( numpy_image ) -> bytes:
         params = CV_JPEG_THUMBNAIL_ENCODE_PARAMS
         
     
-    return GenerateFileBytesNumPy(numpy_image, ext, params)
-    
+    return generate_file_bytes_numpy(numpy_image, ext, params)
 
-def GenerateThumbnailBytesFromPIL( pil_image: PILImage.Image ) -> bytes:
+def generate_thumbnail_bytes_from_pil(pil_image: PILImage.Image) -> bytes:
     
     f = io.BytesIO()
     
-    if HydrusImageColours.PILImageHasTransparency( pil_image ):
+    if HydrusImageColours.pil_image_has_transparency( pil_image ):
         
         pil_image.save( f, 'PNG' )
         
@@ -664,17 +639,14 @@ def GenerateThumbnailBytesFromPIL( pil_image: PILImage.Image ) -> bytes:
     f.close()
     
     return thumbnail_bytes
-    
 
+def get_image_pixel_hash(path, mime) -> bytes:
+    
+    numpy_image = generate_numpy_image( path, mime )
+    
+    return get_image_pixel_hash_numpy( numpy_image )
 
-def GetImagePixelHash( path, mime ) -> bytes:
-    
-    numpy_image = GenerateNumPyImage( path, mime )
-    
-    return GetImagePixelHashNumPy( numpy_image )
-    
-
-def GetImagePixelHashNumPy( numpy_image ):
+def get_image_pixel_hash_numpy(numpy_image):
     
     # Yo, this does not take dimensions into account! flat colour images of differing dimensions but same num_pixels have the same hash!
     # same for some carefully designed checkerboard patterns etc..
@@ -682,14 +654,13 @@ def GetImagePixelHashNumPy( numpy_image ):
     # don't do a 'newline at end of every line', since there may be other strange collisions. do 'encode big int width/height at start of pixel hash'
     # is there anything else we want to encode?
     return hashlib.sha256( numpy_image.data.tobytes() ).digest()
-    
 
-def GetImageResolution( path, mime ):
+def get_image_resolution(path, mime):
     
     # PIL first here, rather than numpy, as it loads image headers real quick
     try:
         
-        pil_image = GeneratePILImage( path, dequantize = False )
+        pil_image = generate_pil_image( path, dequantize = False )
         
         try:
             
@@ -703,7 +674,7 @@ def GetImageResolution( path, mime ):
     except HydrusExceptions.DamagedOrUnusualFileException:
         
         # desperate situation
-        numpy_image = GenerateNumPyImage( path, mime )
+        numpy_image = generate_numpy_image( path, mime )
         
         if len( numpy_image.shape ) == 3:
             
@@ -719,14 +690,12 @@ def GetImageResolution( path, mime ):
     height = max( height, 1 )
     
     return ( width, height )
-    
 
-def GetResolutionNumPy( numpy_image ):
+def get_resolution_numpy(numpy_image):
     
     ( image_height, image_width, depth ) = numpy_image.shape
     
     return ( image_width, image_height )
-    
 
 THUMBNAIL_SCALE_DOWN_ONLY = 0
 THUMBNAIL_SCALE_TO_FIT = 1
@@ -738,7 +707,7 @@ thumbnail_scale_str_lookup = {
     THUMBNAIL_SCALE_TO_FILL : 'scale to fill'
 }
 
-def GetThumbnailResolution( image_resolution: tuple[ int, int ], bounding_dimensions: tuple[ int, int ], thumbnail_scale_type: int, thumbnail_dpr_percent: int ) -> tuple[ int, int ]:
+def get_thumbnail_resolution(image_resolution: tuple[int, int], bounding_dimensions: tuple[int, int], thumbnail_scale_type: int, thumbnail_dpr_percent: int) -> tuple[int, int]:
     
     ( im_width, im_height ) = image_resolution
     ( bounding_width, bounding_height ) = bounding_dimensions
@@ -835,9 +804,8 @@ def GetThumbnailResolution( image_resolution: tuple[ int, int ], bounding_dimens
     thumbnail_height = max( thumbnail_height, 1 )
     
     return ( thumbnail_width, thumbnail_height )
-    
 
-def IsDecompressionBomb( path, human_file_description = None ) -> bool:
+def is_decompression_bomb(path, human_file_description = None) -> bool:
     
     # there are two errors here, the 'Warning' and the 'Error', which atm is just a test vs a test x 2 for number of pixels
     # 256MB bmp by default, ( 1024 ** 3 ) // 4 // 3
@@ -849,7 +817,7 @@ def IsDecompressionBomb( path, human_file_description = None ) -> bool:
     
     try:
         
-        raw_pil_image = HydrusImageOpening.RawOpenPILImage( path, human_file_description = human_file_description )
+        raw_pil_image = HydrusImageOpening.raw_open_pil_image( path, human_file_description = human_file_description )
         
         raw_pil_image.close()
         
@@ -870,12 +838,11 @@ def IsDecompressionBomb( path, human_file_description = None ) -> bool:
         
     
     return False
-    
 
-def ResizeNumPyImage( numpy_image: numpy.ndarray, target_resolution, forced_interpolation = None ) -> numpy.ndarray:
+def resize_numpy_image(numpy_image: numpy.ndarray, target_resolution, forced_interpolation = None) -> numpy.ndarray:
     
     ( target_width, target_height ) = target_resolution
-    ( image_width, image_height ) = GetResolutionNumPy( numpy_image )
+    ( image_width, image_height ) = get_resolution_numpy( numpy_image )
     
     if target_width == image_width and target_height == target_width:
         
@@ -896,11 +863,10 @@ def ResizeNumPyImage( numpy_image: numpy.ndarray, target_resolution, forced_inte
         
     
     return cv2.resize( numpy_image, ( target_width, target_height ), interpolation = interpolation )
-    
 
-def GenerateDefaultThumbnailNumPyFromPath( path: str, target_resolution: tuple[ int, int ] ):
+def generate_default_thumbnail_numpy_from_path(path: str, target_resolution: tuple[int, int]):
     
-    thumb_image = GeneratePILImage( path )
+    thumb_image = generate_pil_image( path )
     
     try:
         
@@ -908,7 +874,7 @@ def GenerateDefaultThumbnailNumPyFromPath( path: str, target_resolution: tuple[ 
         
         try:
             
-            result = GenerateNumPyImageFromPILImage( pil_image, strip_useless_alpha = False )
+            result = generate_numpy_image_from_pil_image( pil_image, strip_useless_alpha = False )
             
         finally:
             
@@ -921,4 +887,3 @@ def GenerateDefaultThumbnailNumPyFromPath( path: str, target_resolution: tuple[ 
         
     
     return result
-    

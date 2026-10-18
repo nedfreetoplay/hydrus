@@ -62,7 +62,7 @@ class TestSingleFileMetadataRouter( unittest.TestCase ):
         
         #
         
-        hash = HydrusData.GenerateKey()
+        hash = HydrusData.generate_key()
         size = 40960
         mime = HC.IMAGE_JPEG
         width = 640
@@ -151,7 +151,7 @@ class TestSingleFileMetadataRouter( unittest.TestCase ):
         os.unlink( expected_input_path_1 )
         os.unlink( expected_input_path_2 )
         
-        result = HydrusText.DeserialiseNewlinedTexts( text )
+        result = HydrusText.deserialise_newlined_texts( text )
         expected_result = string_processor.ProcessStrings( set( rows_1 ).union( rows_2 ) )
         
         self.assertTrue( len( result ) > 0 )
@@ -199,7 +199,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         #
         
-        hash = HydrusData.GenerateKey()
+        hash = HydrusData.generate_key()
         size = 40960
         mime = HC.IMAGE_JPEG
         width = 640
@@ -290,7 +290,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         # simple
         
-        hash = HydrusData.GenerateKey()
+        hash = HydrusData.generate_key()
         
         media_result = HF.GetFakeMediaResult( hash )
         
@@ -327,7 +327,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         # simple
         
-        hash = HydrusData.GenerateKey()
+        hash = HydrusData.generate_key()
         size = 40960
         mime = HC.IMAGE_JPEG
         width = 640
@@ -389,14 +389,14 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
     
     def test_media_timestamps( self ):
         
-        archived_timestamp_ms = HydrusTime.GetNowMS() - 3600000
-        file_modified_timestamp_ms = HydrusTime.GetNowMS() - 2400000
-        site_dot_com_modified_timestamp_ms = HydrusTime.GetNowMS() - 2500000
+        archived_timestamp_ms = HydrusTime.get_now_ms() - 3600000
+        file_modified_timestamp_ms = HydrusTime.get_now_ms() - 2400000
+        site_dot_com_modified_timestamp_ms = HydrusTime.get_now_ms() - 2500000
         timestamp_data_stub = ClientTime.TimestampData.STATICSimpleStub( HC.TIMESTAMP_TYPE_ARCHIVED )
         
         # simple
         
-        hash = HydrusData.GenerateKey()
+        hash = HydrusData.generate_key()
         size = 40960
         mime = HC.IMAGE_JPEG
         width = 640
@@ -441,7 +441,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         result = importer.Import( media_result )
         
-        self.assertEqual( set( result ), { str( HydrusTime.SecondiseMS( archived_timestamp_ms ) ) } )
+        self.assertEqual( set( result ), { str( HydrusTime.secondise_ms( archived_timestamp_ms ) ) } )
         
         # no timestamp on inbox
         
@@ -467,8 +467,8 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         result = importer.Import( media_result )
         
         self.assertTrue( len( result ) > 0 )
-        self.assertNotEqual( set( result ), { str( HydrusTime.SecondiseMS( archived_timestamp_ms ) ) } )
-        self.assertEqual( set( result ), set( string_processor.ProcessStrings( { str( HydrusTime.SecondiseMS( archived_timestamp_ms ) ) } ) ) )
+        self.assertNotEqual( set( result ), { str( HydrusTime.secondise_ms( archived_timestamp_ms ) ) } )
+        self.assertEqual( set( result ), set( string_processor.ProcessStrings( { str( HydrusTime.secondise_ms( archived_timestamp_ms ) ) } ) ) )
         
         # test modified date/aggregate
         
@@ -479,7 +479,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         result = importer.Import( media_result )
         
-        self.assertEqual( set( result ), { str( HydrusTime.SecondiseMS( file_modified_timestamp_ms ) ) } )
+        self.assertEqual( set( result ), { str( HydrusTime.secondise_ms( file_modified_timestamp_ms ) ) } )
         
         #
         
@@ -490,7 +490,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         result = importer.Import( media_result )
         
-        self.assertEqual( set( result ), { str( HydrusTime.SecondiseMS( site_dot_com_modified_timestamp_ms ) ) } )
+        self.assertEqual( set( result ), { str( HydrusTime.secondise_ms( site_dot_com_modified_timestamp_ms ) ) } )
         
         #
         
@@ -501,7 +501,7 @@ class TestSingleFileMetadataImporters( unittest.TestCase ):
         
         result = importer.Import( media_result )
         
-        self.assertEqual( set( result ), { str( HydrusTime.SecondiseMS( min( site_dot_com_modified_timestamp_ms, file_modified_timestamp_ms ) ) ) } )
+        self.assertEqual( set( result ), { str( HydrusTime.secondise_ms( min( site_dot_com_modified_timestamp_ms, file_modified_timestamp_ms ) ) ) } )
         
     
     def test_media_txt( self ):
@@ -735,13 +735,13 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
         
         exporter = ClientMetadataMigrationExporters.SingleFileMetadataExporterMediaTags( service_key )
         
-        TG.test_controller.ClearWrites( 'content_updates' )
+        TG.test_controller.clear_writes( 'content_updates' )
         
         exporter.Export( hash, [] )
         
         with self.assertRaises( Exception ):
             
-            [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.GetWrite( 'content_updates' )
+            [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.get_write( 'content_updates' )
             
         
         # simple local
@@ -750,7 +750,7 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
         
         exporter = ClientMetadataMigrationExporters.SingleFileMetadataExporterMediaTags( service_key )
         
-        TG.test_controller.ClearWrites( 'content_updates' )
+        TG.test_controller.clear_writes( 'content_updates' )
         
         exporter.Export( hash, rows )
         
@@ -758,7 +758,7 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
         
         expected_content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( service_key, [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_ADD, ( tag, hashes ) ) for tag in rows ] )
         
-        [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.GetWrite( 'content_updates' )
+        [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.get_write( 'content_updates' )
         
         HF.compare_content_update_packages( self, content_update_package, expected_content_update_package )
         
@@ -768,7 +768,7 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
         
         exporter = ClientMetadataMigrationExporters.SingleFileMetadataExporterMediaTags( service_key )
         
-        TG.test_controller.ClearWrites( 'content_updates' )
+        TG.test_controller.clear_writes( 'content_updates' )
         
         exporter.Export( hash, rows )
         
@@ -776,7 +776,7 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
         
         expected_content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( service_key, [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_PEND, ( tag, hashes ) ) for tag in rows ] )
         
-        [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.GetWrite( 'content_updates' )
+        [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.get_write( 'content_updates' )
         
         HF.compare_content_update_packages( self, content_update_package, expected_content_update_package )
         
@@ -790,22 +790,22 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
         
         exporter = ClientMetadataMigrationExporters.SingleFileMetadataExporterMediaNotes()
         
-        TG.test_controller.ClearWrites( 'content_updates' )
+        TG.test_controller.clear_writes( 'content_updates' )
         
         exporter.Export( hash, [] )
         
         with self.assertRaises( Exception ):
             
-            [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.GetWrite( 'content_updates' )
+            [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.get_write( 'content_updates' )
             
         
         # simple
         
         exporter = ClientMetadataMigrationExporters.SingleFileMetadataExporterMediaNotes()
         
-        TG.test_controller.SetRead( 'media_result', HF.GetFakeMediaResult( hash ) )
+        TG.test_controller.set_read( 'media_result', HF.GetFakeMediaResult( hash ) )
         
-        TG.test_controller.ClearWrites( 'content_updates' )
+        TG.test_controller.clear_writes( 'content_updates' )
         
         exporter.Export( hash, notes )
         
@@ -813,7 +813,7 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
         
         expected_content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.LOCAL_NOTES_SERVICE_KEY, content_updates )
         
-        [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.GetWrite( 'content_updates' )
+        [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.get_write( 'content_updates' )
         
         HF.compare_content_update_packages( self, content_update_package, expected_content_update_package )
         
@@ -824,9 +824,9 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
         
         exporter = ClientMetadataMigrationExporters.SingleFileMetadataExporterMediaNotes( forced_name = forced_name )
         
-        TG.test_controller.SetRead( 'media_result', HF.GetFakeMediaResult( hash ) )
+        TG.test_controller.set_read( 'media_result', HF.GetFakeMediaResult( hash ) )
         
-        TG.test_controller.ClearWrites( 'content_updates' )
+        TG.test_controller.clear_writes( 'content_updates' )
         
         exporter.Export( hash, notes )
         
@@ -834,7 +834,7 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
         
         expected_content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.LOCAL_NOTES_SERVICE_KEY, content_updates )
         
-        [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.GetWrite( 'content_updates' )
+        [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.get_write( 'content_updates' )
         
         HF.compare_content_update_packages( self, content_update_package, expected_content_update_package )
         
@@ -848,26 +848,26 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
         
         exporter = ClientMetadataMigrationExporters.SingleFileMetadataExporterMediaURLs()
         
-        TG.test_controller.ClearWrites( 'content_updates' )
+        TG.test_controller.clear_writes( 'content_updates' )
         
         exporter.Export( hash, [] )
         
         with self.assertRaises( Exception ):
             
-            [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.GetWrite( 'content_updates' )
+            [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.get_write( 'content_updates' )
             
         
         # simple
         
         exporter = ClientMetadataMigrationExporters.SingleFileMetadataExporterMediaURLs()
         
-        TG.test_controller.ClearWrites( 'content_updates' )
+        TG.test_controller.clear_writes( 'content_updates' )
         
         exporter.Export( hash, urls )
         
         expected_content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_URLS, HC.CONTENT_UPDATE_ADD, ( urls, { hash } ) ) ] )
         
-        [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.GetWrite( 'content_updates' )
+        [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.get_write( 'content_updates' )
         
         HF.compare_content_update_packages( self, content_update_package, expected_content_update_package )
         
@@ -875,7 +875,7 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
     def test_media_timestamps( self ):
         
         hash = os.urandom( 32 )
-        timestamp = HydrusTime.GetNow() - 3600
+        timestamp = HydrusTime.get_now() - 3600
         
         rows = [ str( timestamp ) ]
         
@@ -887,13 +887,13 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
         
         exporter.SetTimestampDataStub( timestamp_data_stub )
         
-        TG.test_controller.ClearWrites( 'content_updates' )
+        TG.test_controller.clear_writes( 'content_updates' )
         
         exporter.Export( hash, [] )
         
         with self.assertRaises( Exception ):
             
-            [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.GetWrite( 'content_updates' )
+            [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.get_write( 'content_updates' )
             
         
         # simple
@@ -902,7 +902,7 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
         
         exporter.SetTimestampDataStub( timestamp_data_stub )
         
-        TG.test_controller.ClearWrites( 'content_updates' )
+        TG.test_controller.clear_writes( 'content_updates' )
         
         exporter.Export( hash, rows )
         
@@ -910,7 +910,7 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
         
         expected_content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdates( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, [ ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_TIMESTAMP, HC.CONTENT_UPDATE_SET, ( ( hash, ), expected_timestamp_data_result ) ) ] )
         
-        [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.GetWrite( 'content_updates' )
+        [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.get_write( 'content_updates' )
         
         HF.compare_content_update_packages( self, content_update_package, expected_content_update_package )
         
@@ -947,7 +947,7 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
         
         os.unlink( expected_output_path )
         
-        self.assertEqual( set( rows ), set( HydrusText.DeserialiseNewlinedTexts( text ) ) )
+        self.assertEqual( set( rows ), set( HydrusText.deserialise_newlined_texts( text ) ) )
         
         # with suffix
         
@@ -966,7 +966,7 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
         
         os.unlink( expected_output_path )
         
-        self.assertEqual( set( rows ), set( HydrusText.DeserialiseNewlinedTexts( text ) ) )
+        self.assertEqual( set( rows ), set( HydrusText.deserialise_newlined_texts( text ) ) )
         
         # diff separator
         
@@ -1004,7 +1004,7 @@ class TestSingleFileMetadataExporters( unittest.TestCase ):
         
         os.unlink( expected_output_path )
         
-        self.assertEqual( set( rows ), set( HydrusText.DeserialiseNewlinedTexts( text ) ) )
+        self.assertEqual( set( rows ), set( HydrusText.deserialise_newlined_texts( text ) ) )
         
     
     def test_media_json( self ):

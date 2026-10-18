@@ -38,11 +38,11 @@ def GetPasteObject( win: QW.QWidget ) -> ImportOptionsContainer.ImportOptionsCon
     
     try:
         
-        raw_text = CG.client_controller.GetClipboardText()
+        raw_text = CG.client_controller.get_clipboard_text()
         
     except HydrusExceptions.DataMissing as e:
         
-        HydrusData.PrintException( e )
+        HydrusData.print_exception( e )
         
         ClientGUIDialogsMessage.ShowCritical( win, 'Problem pasting!', str(e) )
         
@@ -51,7 +51,7 @@ def GetPasteObject( win: QW.QWidget ) -> ImportOptionsContainer.ImportOptionsCon
     
     try:
         
-        pasted_import_options_container = HydrusSerialisable.CreateFromString( raw_text )
+        pasted_import_options_container = HydrusSerialisable.create_from_string( raw_text )
         
         if not isinstance( pasted_import_options_container, ImportOptionsContainer.ImportOptionsContainer ):
             
@@ -112,8 +112,8 @@ class EditImportOptionsOverwritePanel( ClientGUIScrolledPanels.EditPanel ):
     def __init__( self, parent: QW.QWidget, import_options_caller_type: int, import_options_types_to_show: list[ int ], current_import_options_container: ImportOptionsContainer.ImportOptionsContainer, pasted_import_options_container: ImportOptionsContainer.ImportOptionsContainer ):
         
         self._import_options_caller_type = import_options_caller_type
-        self._current_import_options_container = current_import_options_container.Duplicate()
-        self._pasted_import_options_container = pasted_import_options_container.Duplicate()
+        self._current_import_options_container = current_import_options_container.duplicate()
+        self._pasted_import_options_container = pasted_import_options_container.duplicate()
         
         super().__init__( parent )
         
@@ -247,7 +247,7 @@ class EditImportOptionsOverwritePanel( ClientGUIScrolledPanels.EditPanel ):
             
             if pasted_import_options is not None and current_import_options is not None:
                 
-                if current_import_options.DumpToString() == pasted_import_options.DumpToString():
+                if current_import_options.dump_to_string() == pasted_import_options.dump_to_string():
                     
                     return 'no changes'
                     
@@ -274,7 +274,7 @@ class EditImportOptionsOverwritePanel( ClientGUIScrolledPanels.EditPanel ):
             label += ': default'
             
         
-        return HydrusText.ElideText( label.splitlines()[0], 256 )
+        return HydrusText.elide_text( label.splitlines()[0], 256 )
         
     
     def _GetValue( self ) -> ImportOptionsContainer.ImportOptionsContainer:
@@ -372,7 +372,7 @@ class EditImportOptionsContainerPanel( ClientGUIScrolledPanels.EditPanel ):
         
         super().__init__( parent )
         
-        import_options_container = import_options_container.Duplicate()
+        import_options_container = import_options_container.duplicate()
         
         self._import_options_container_manager = import_options_container_manager
         self._import_options_caller_type = import_options_caller_type
@@ -421,7 +421,7 @@ class EditImportOptionsContainerPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 try:
                     
-                    name = CG.client_controller.network_engine.domain_manager.GetURLClassFromKey( url_class_key ).GetName()
+                    name = CG.client_controller.network_engine.domain_manager.GetURLClassFromKey( url_class_key ).get_name()
                     
                 except Exception as e:
                     
@@ -549,7 +549,7 @@ class EditImportOptionsContainerPanel( ClientGUIScrolledPanels.EditPanel ):
         
         import_options_container = self.GetValue()
         
-        payload = import_options_container.DumpToString()
+        payload = import_options_container.dump_to_string()
         
         CG.client_controller.pub( 'clipboard', 'text', payload )
         
@@ -642,7 +642,7 @@ class EditImportOptionsContainerPanel( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            final_import_options_container = self.GetValue().Duplicate()
+            final_import_options_container = self.GetValue().duplicate()
             
             if paste_type == PASTE_MERGE:
                 
@@ -845,7 +845,7 @@ class ImportOptionsContainerFavouritesButton( ClientGUICommon.IconButton ):
     
     def _Copy( self, import_options_container: ImportOptionsContainer.ImportOptionsContainer ):
         
-        payload = import_options_container.DumpToString()
+        payload = import_options_container.dump_to_string()
         
         CG.client_controller.pub( 'clipboard', 'text', payload )
         
@@ -930,7 +930,7 @@ class ImportOptionsContainerFavouritesButton( ClientGUICommon.IconButton ):
         
         names_to_favourite_options_containers = self._import_options_container_manager.GetFavouriteImportOptionContainers()
         
-        names_in_order = sorted( names_to_favourite_options_containers.keys(), key = HydrusText.HumanTextSortKey )
+        names_in_order = sorted( names_to_favourite_options_containers.keys(), key = HydrusText.human_text_sort_key )
         
         menu = ClientGUIMenus.GenerateMenu( self )
         
@@ -1146,7 +1146,7 @@ class DefaultableImportOptionsPanel( ClientGUICommon.StaticBox ):
         
         import_options_container.SetImportOptions( import_options )
         
-        payload = import_options_container.DumpToString()
+        payload = import_options_container.dump_to_string()
         
         CG.client_controller.pub( 'clipboard', 'text', payload )
         
@@ -1227,7 +1227,7 @@ class DefaultableImportOptionsPanel( ClientGUICommon.StaticBox ):
                 
             
         
-        return HydrusText.ElideText( label.splitlines()[0], 256 )
+        return HydrusText.elide_text( label.splitlines()[0], 256 )
         
     
     def GetValue( self ) -> IOC.ImportOptionsMetatype:

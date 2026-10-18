@@ -23,7 +23,7 @@ class HydrusResourceClientAPIRestrictedManageServicesPendingContentJobs( HydrusR
 
 class HydrusResourceClientAPIRestrictedManageServicesPendingCounts( HydrusResourceClientAPIRestrictedManageServicesPendingContentJobs ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         info_type_to_str_lookup = {
             HC.SERVICE_INFO_NUM_PENDING_MAPPINGS : 'pending_tag_mappings',
@@ -36,7 +36,7 @@ class HydrusResourceClientAPIRestrictedManageServicesPendingCounts( HydrusResour
             HC.SERVICE_INFO_NUM_PETITIONED_FILES : 'petitioned_files',
         }
         
-        service_keys_to_info_types_to_counts = CG.client_controller.Read( 'nums_pending' )
+        service_keys_to_info_types_to_counts = CG.client_controller.read( 'nums_pending' )
         
         body_dict = {
             'pending_counts' : { service_key.hex() : { info_type_to_str_lookup[ info_type ] : count for ( info_type, count ) in info_types_to_counts.items() } for ( service_key, info_types_to_counts ) in service_keys_to_info_types_to_counts.items() },
@@ -54,9 +54,9 @@ class HydrusResourceClientAPIRestrictedManageServicesPendingCounts( HydrusResour
 
 class HydrusResourceClientAPIRestrictedManageServicesCommitPending( HydrusResourceClientAPIRestrictedManageServicesPendingContentJobs ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
-        service_key = request.parsed_request_args.GetValue( 'service_key', bytes )
+        service_key = request.parsed_request_args.get_value( 'service_key', bytes )
         
         ClientLocalServerCore.CheckUploadableService( service_key )
         
@@ -75,7 +75,7 @@ class HydrusResourceClientAPIRestrictedManageServicesCommitPending( HydrusResour
                 
             
         
-        CG.client_controller.CallBlockingToQtTLW( do_it )
+        CG.client_controller.call_blocking_to_qt_tlw( do_it )
         
         body_dict = {}
         
@@ -89,13 +89,13 @@ class HydrusResourceClientAPIRestrictedManageServicesCommitPending( HydrusResour
 
 class HydrusResourceClientAPIRestrictedManageServicesForgetPending( HydrusResourceClientAPIRestrictedManageServicesPendingContentJobs ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
-        service_key = request.parsed_request_args.GetValue( 'service_key', bytes )
+        service_key = request.parsed_request_args.get_value( 'service_key', bytes )
         
         ClientLocalServerCore.CheckUploadableService( service_key )
         
-        CG.client_controller.WriteSynchronous( 'delete_pending', service_key )
+        CG.client_controller.write_synchronous( 'delete_pending', service_key )
         
         body_dict = {}
         

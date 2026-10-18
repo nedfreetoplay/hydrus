@@ -115,7 +115,7 @@ def IsComplexWildcard( search_text ):
 
 def SearchTextIsFetchAll( search_text: str ):
     
-    ( namespace, subtag ) = HydrusTags.SplitTag( search_text )
+    ( namespace, subtag ) = HydrusTags.split_tag( search_text )
     
     if namespace in ( '', '*' ) and subtag == '*':
         
@@ -127,7 +127,7 @@ def SearchTextIsFetchAll( search_text: str ):
 
 def SearchTextIsNamespaceBareFetchAll( search_text: str ):
     
-    ( namespace, subtag ) = HydrusTags.SplitTag( search_text )
+    ( namespace, subtag ) = HydrusTags.split_tag( search_text )
     
     if namespace not in ( '', '*' ) and subtag == '':
         
@@ -139,7 +139,7 @@ def SearchTextIsNamespaceBareFetchAll( search_text: str ):
 
 def SearchTextIsNamespaceFetchAll( search_text: str ):
     
-    ( namespace, subtag ) = HydrusTags.SplitTag( search_text )
+    ( namespace, subtag ) = HydrusTags.split_tag( search_text )
     
     if namespace not in ( '', '*' ) and subtag == '*':
         
@@ -151,7 +151,7 @@ def SearchTextIsNamespaceFetchAll( search_text: str ):
 
 def SubtagIsEmpty( search_text: str ):
     
-    ( namespace, subtag ) = HydrusTags.SplitTag( search_text )
+    ( namespace, subtag ) = HydrusTags.split_tag( search_text )
     
     return subtag == ''
     
@@ -166,7 +166,7 @@ class ParsedAutocompleteText( object ):
         
         self.inclusive = not self.raw_input.startswith( '-' )
         
-        self.raw_content = HydrusTags.CleanTag( self.raw_input )
+        self.raw_content = HydrusTags.clean_tag( self.raw_input )
         
     
     def __eq__( self, other ):
@@ -207,7 +207,7 @@ class ParsedAutocompleteText( object ):
             
             if ':' not in text:
                 
-                ( namespace, subtag ) = HydrusTags.SplitTag( text )
+                ( namespace, subtag ) = HydrusTags.split_tag( text )
                 
                 if namespace == '':
                     
@@ -223,7 +223,7 @@ class ParsedAutocompleteText( object ):
         
         if always_autocompleting:
             
-            ( namespace, subtag ) = HydrusTags.SplitTag( text )
+            ( namespace, subtag ) = HydrusTags.split_tag( text )
             
             should_have_it = len( namespace ) > 0 or len( subtag ) > 0
             
@@ -270,7 +270,7 @@ class ParsedAutocompleteText( object ):
                 
                 search_text = self._GetSearchText( False )
                 
-                ( namespace, subtag ) = HydrusTags.SplitTag( search_text )
+                ( namespace, subtag ) = HydrusTags.split_tag( search_text )
                 
                 predicate = ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_NAMESPACE, namespace, self.inclusive )
                 
@@ -295,7 +295,7 @@ class ParsedAutocompleteText( object ):
                     search_texts.append( self._GetSearchText( False, allow_auto_wildcard_conversion = allow_unnamespaced_search_gives_any_namespace_wildcards, force_do_not_collapse = True ) )
                     
                 
-                search_texts = HydrusLists.DedupeList( search_texts )
+                search_texts = HydrusLists.dedupe_list( search_texts )
                 
                 predicates.extend( ( ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_WILDCARD, search_text, self.inclusive ) for search_text in search_texts ) )
                 
@@ -503,7 +503,7 @@ class PredicateResultsCacheTag( PredicateResultsCache ):
         
         self._strict_search_text = strict_search_text
         
-        ( self._strict_search_text_namespace, self._strict_search_text_subtag ) = HydrusTags.SplitTag( self._strict_search_text )
+        ( self._strict_search_text_namespace, self._strict_search_text_subtag ) = HydrusTags.split_tag( self._strict_search_text )
         
         self._exact_match = exact_match
         
@@ -527,7 +527,7 @@ class PredicateResultsCacheTag( PredicateResultsCache ):
             
             tag_autocomplete_options = parsed_autocomplete_text.GetTagAutocompleteOptions()
             
-            ( strict_search_text_namespace, strict_search_text_subtag ) = HydrusTags.SplitTag( strict_search_text )
+            ( strict_search_text_namespace, strict_search_text_subtag ) = HydrusTags.split_tag( strict_search_text )
             
             #
             

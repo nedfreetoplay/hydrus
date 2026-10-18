@@ -33,13 +33,13 @@ def CommitContentUpdatePackagesAsync( title: str, content_update_packages: list[
         
         job_status.SetStatusTitle( title )
         
-        start_time = HydrusTime.GetNowFloat()
+        start_time = HydrusTime.get_now_float()
         
         num_to_do = len( content_update_packages )
         
         for ( num_done, content_update_package ) in enumerate( content_update_packages ):
             
-            job_status.SetStatusText( HydrusNumbers.ValueRangeToPrettyString( num_done, num_to_do ) )
+            job_status.SetStatusText( HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do ) )
             job_status.SetGauge( num_done, num_to_do )
             
             if job_status.IsCancelled():
@@ -51,7 +51,7 @@ def CommitContentUpdatePackagesAsync( title: str, content_update_packages: list[
                 
                 cumulative_weight += content_update_package.GetWeight()
                 
-                if ( HydrusTime.TimeHasPassedFloat( start_time + 1 ) or cumulative_weight > 1000 ):
+                if ( HydrusTime.time_has_passed_float( start_time + 1 ) or cumulative_weight > 1000 ):
                     
                     have_pubbed_job = True
                     
@@ -59,13 +59,13 @@ def CommitContentUpdatePackagesAsync( title: str, content_update_packages: list[
                     
                 
             
-            CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+            CG.client_controller.write_synchronous( 'content_updates', content_update_package )
             
         
         job_status.FinishAndDismiss()
         
     
-    CG.client_controller.CallToThread( do_it )
+    CG.client_controller.call_to_thread( do_it )
     
 
 def GetLocalMediaPaths( medias: collections.abc.Collection[ ClientMedia.Media ] ):
@@ -158,7 +158,7 @@ def CopyMediaBitmap( media: ClientMediaSingle.MediaSingle, bitmap_type: int ):
                 
                 if bitmap_type == CAC.BITMAP_TYPE_SOURCE_LOOKUPS and ( width > 1024 or height > 1024 ):
                     
-                    target_resolution = HydrusImageHandling.GetThumbnailResolution( media.GetResolution(), ( 1024, 1024 ), HydrusImageHandling.THUMBNAIL_SCALE_TO_FIT, 100 )
+                    target_resolution = HydrusImageHandling.get_thumbnail_resolution( media.GetResolution(), ( 1024, 1024 ), HydrusImageHandling.THUMBNAIL_SCALE_TO_FIT, 100 )
                     
                     CG.client_controller.pub( 'clipboard', 'bmp', ( media, target_resolution ) )
                     
@@ -229,7 +229,7 @@ def CopyServiceFilenamesToClipboard( service_key: bytes, medias: collections.abc
     
     if len( flat_media ) == 0:
         
-        HydrusData.ShowText( 'Could not find any files with the requested service!' )
+        HydrusData.show_text( 'Could not find any files with the requested service!' )
         
         return
         
@@ -238,7 +238,7 @@ def CopyServiceFilenamesToClipboard( service_key: bytes, medias: collections.abc
     
     service = CG.client_controller.services_manager.GetService( service_key )
     
-    if service.GetServiceType() == HC.IPFS:
+    if service.get_service_type() == HC.IPFS:
         
         prefix = service.GetMultihashPrefix()
         
@@ -257,7 +257,7 @@ def CopyServiceFilenamesToClipboard( service_key: bytes, medias: collections.abc
         
     else:
         
-        HydrusData.ShowText( 'Could not find any service filenames for that selection!' )
+        HydrusData.show_text( 'Could not find any service filenames for that selection!' )
         
     
 
@@ -375,7 +375,7 @@ def ShowDuplicatesInNewPage( location_context: ClientLocation.LocationContext, h
     
     # TODO: this can be replaced by a call to the MediaResult when it holds these hashes
     # don't forget to return itself in position 0!
-    hashes = CG.client_controller.Read( 'file_duplicate_hashes', location_context, hash, duplicate_type )
+    hashes = CG.client_controller.read( 'file_duplicate_hashes', location_context, hash, duplicate_type )
     
     if hashes is not None and len( hashes ) > 1:
         
@@ -385,17 +385,17 @@ def ShowDuplicatesInNewPage( location_context: ClientLocation.LocationContext, h
         
         location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY )
         
-        hashes = CG.client_controller.Read( 'file_duplicate_hashes', location_context, hash, duplicate_type )
+        hashes = CG.client_controller.read( 'file_duplicate_hashes', location_context, hash, duplicate_type )
         
         if hashes is not None and len( hashes ) > 1:
             
-            HydrusData.ShowText( 'Could not find the members of this group in this location, so searched all known files and found more.' )
+            HydrusData.show_text( 'Could not find the members of this group in this location, so searched all known files and found more.' )
             
             CG.client_controller.pub( 'new_page_query', location_context, initial_hashes = hashes )
             
         else:
             
-            HydrusData.ShowText( 'Sorry, could not find the members of this group either at the given location or in all known files. There may be a problem here, so let hydev know.' )
+            HydrusData.show_text( 'Sorry, could not find the members of this group either at the given location or in all known files. There may be a problem here, so let hydev know.' )
             
         
     
@@ -467,9 +467,9 @@ def UndeleteFiles( hashes ):
     
     local_file_service_keys = CG.client_controller.services_manager.GetServiceKeys( ( HC.LOCAL_FILE_DOMAIN, ) )
     
-    for chunk_of_hashes in HydrusLists.SplitIteratorIntoChunks( hashes, 64 ):
+    for chunk_of_hashes in HydrusLists.split_iterator_into_chunks( hashes, 64 ):
         
-        media_results = CG.client_controller.Read( 'media_results', chunk_of_hashes )
+        media_results = CG.client_controller.read( 'media_results', chunk_of_hashes )
         
         service_keys_to_hashes = collections.defaultdict( list )
         
@@ -496,7 +496,7 @@ def UndeleteFiles( hashes ):
             
             content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( service_key, content_update )
             
-            CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+            CG.client_controller.write_synchronous( 'content_updates', content_update_package )
             
         
     

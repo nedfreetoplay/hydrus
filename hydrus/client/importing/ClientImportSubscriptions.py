@@ -40,7 +40,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
         
         if gug_key_and_name is None:
             
-            gug_key_and_name = ( HydrusData.GenerateKey(), '' )
+            gug_key_and_name = ( HydrusData.generate_key(), '' )
             
         
         self._gug_key_and_name = gug_key_and_name
@@ -99,7 +99,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
             message += '\n'
             message += 'No delays: {}'.format( self._NoDelays() )
             
-            HydrusData.ShowText( message )
+            HydrusData.show_text( message )
             
         
         return p1 and p2 and p3
@@ -111,14 +111,14 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
         
         self._paused = True
         
-        HydrusData.ShowText( 'The subscription "{}"\'s "{}" query was missing database data! This could be a serious error! Please go to _manage subscriptions_ to reset the data, and you may want to contact hydrus dev. The sub has paused!'.format( self._name, query_header.GetHumanName() ) )
+        HydrusData.show_text( 'The subscription "{}"\'s "{}" query was missing database data! This could be a serious error! Please go to _manage subscriptions_ to reset the data, and you may want to contact hydrus dev. The sub has paused!'.format( self._name, query_header.GetHumanName() ) )
         
     
     def _DelayWork( self, time_delta, reason ):
         
-        reason = HydrusText.GetFirstLine( reason )
+        reason = HydrusText.get_first_line( reason )
         
-        self._no_work_until = HydrusTime.GetNow() + time_delta
+        self._no_work_until = HydrusTime.get_now() + time_delta
         self._no_work_until_reason = reason
         
     
@@ -162,14 +162,14 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
         return query_headers
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         ( gug_key, gug_name ) = self._gug_key_and_name
         
         serialisable_gug_key_and_name = ( gug_key.hex(), gug_name )
-        serialisable_query_headers = [ query_header.GetSerialisableTuple() for query_header in self._query_headers ]
-        serialisable_checker_options = self._checker_options.GetSerialisableTuple()
-        serialisable_import_options_container = self._import_options_container.GetSerialisableTuple()
+        serialisable_query_headers = [ query_header.get_serialisable_tuple() for query_header in self._query_headers ]
+        serialisable_checker_options = self._checker_options.get_serialisable_tuple()
+        serialisable_import_options_container = self._import_options_container.get_serialisable_tuple()
         
         return (
             serialisable_gug_key_and_name,
@@ -190,7 +190,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
         )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         (
             serialisable_gug_key_and_name,
@@ -213,14 +213,14 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
         ( serialisable_gug_key, gug_name ) = serialisable_gug_key_and_name
         
         self._gug_key_and_name = ( bytes.fromhex( serialisable_gug_key ), gug_name )
-        self._query_headers = [ HydrusSerialisable.CreateFromSerialisableTuple( serialisable_query ) for serialisable_query in serialisable_query_headers ]
-        self._checker_options = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_checker_options )
-        self._import_options_container = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_import_options_container )
+        self._query_headers = [ HydrusSerialisable.create_from_serialisable_tuple( serialisable_query ) for serialisable_query in serialisable_query_headers ]
+        self._checker_options = HydrusSerialisable.create_from_serialisable_tuple( serialisable_checker_options )
+        self._import_options_container = HydrusSerialisable.create_from_serialisable_tuple( serialisable_import_options_container )
         
     
     def _NoDelays( self ):
         
-        return HydrusTime.TimeHasPassed( self._no_work_until )
+        return HydrusTime.time_has_passed( self._no_work_until )
         
     
     def _ShowHitPeriodicFileLimitMessage( self, query_name: int, query_text: int, file_limit: int ):
@@ -231,9 +231,9 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
         message += '\n\n'
         message += 'If you get many of these messages, one for every subscription query for the site, and the gap downloaders find no new files, then the site has changed URL format in a subtle way and the subscription checker was unable to recognise it (in which case, if the subscription appears to be working, you can ignore any more of these messages).'
         
-        call = HydrusData.Call( CG.client_controller.pub, 'make_new_subscription_gap_downloader', self._gug_key_and_name, query_text, self._import_options_container.Duplicate(), file_limit * 5 )
+        call = HydrusData.Call( CG.client_controller.pub, 'make_new_subscription_gap_downloader', self._gug_key_and_name, query_text, self._import_options_container.duplicate(), file_limit * 5 )
         
-        call.SetLabel( 'start a new downloader for this to fill in the gap!' )
+        call.set_label( 'start a new downloader for this to fill in the gap!' )
         
         job_status = ClientThreading.JobStatus()
         
@@ -253,7 +253,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
             
             self._paused = True
             
-            HydrusData.ShowText( 'The subscription "{}" could not find a Gallery URL Generator for "{}"! The sub has paused!'.format( self._name, self._gug_key_and_name[1] ) )
+            HydrusData.show_text( 'The subscription "{}" could not find a Gallery URL Generator for "{}"! The sub has paused!'.format( self._name, self._gug_key_and_name[1] ) )
             
             return
             
@@ -270,7 +270,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
             message += '\n' * 2
             message += str( e )
             
-            HydrusData.ShowText( message )
+            HydrusData.show_text( message )
             
             return
             
@@ -285,7 +285,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
         
         for ( i, query_header ) in enumerate( query_headers ):
             
-            status_prefix = f'synchronising ({HydrusNumbers.ValueRangeToPrettyString( i, num_queries )})'
+            status_prefix = f'synchronising ({HydrusNumbers.value_range_to_pretty_string( i, num_queries )})'
             
             query_name = query_header.GetHumanName()
             
@@ -298,7 +298,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
             
             try:
                 
-                query_log_container = CG.client_controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_header.GetQueryLogContainerName() )
+                query_log_container = CG.client_controller.read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_header.GetQueryLogContainerName() )
                 
             except HydrusExceptions.DBException as e:
                 
@@ -324,7 +324,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                 
             finally:
                 
-                CG.client_controller.WriteSynchronous( 'serialisable', query_log_container )
+                CG.client_controller.write_synchronous( 'serialisable', query_log_container )
                 
             
         
@@ -342,7 +342,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
         
         if HG.subscription_report_mode:
             
-            HydrusData.ShowText( 'Subscription "{}" checking if any sync work due: {}'.format( self._name, result ) )
+            HydrusData.show_text( 'Subscription "{}" checking if any sync work due: {}'.format( self._name, result ) )
             
         
         return result
@@ -399,7 +399,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
             
             self._paused = True
             
-            HydrusData.ShowText( 'The subscription "' + self._name + '"\'s Gallery URL Generator, "' + self._gug_key_and_name[1] + '" did not generate any URLs! The sub has paused!' )
+            HydrusData.show_text( 'The subscription "' + self._name + '"\'s Gallery URL Generator, "' + self._gug_key_and_name[1] + '" did not generate any URLs! The sub has paused!' )
             
             raise HydrusExceptions.CancelledException( 'Bad GUG.' )
             
@@ -427,7 +427,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                             message += '\n' * 2
                             message += 'The subscription has paused. Please see if you can fix the problem and then unpause. If the login script stopped because of missing cookies or similar, it may be broken. Please check out Hydrus Companion for a better login solution.'
                             
-                            HydrusData.ShowText( message )
+                            HydrusData.show_text( message )
                             
                             self._DelayWork( 300, login_reason )
                             
@@ -458,7 +458,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 def status_hook( text ):
                     
-                    job_status.SetStatusText( status_prefix + ': ' + HydrusText.GetFirstLine( text ) )
+                    job_status.SetStatusText( status_prefix + ': ' + HydrusText.get_first_line( text ) )
                     
                 
                 def title_hook( text ):
@@ -584,8 +584,8 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                                                 
                                             except Exception as e:
                                                 
-                                                HydrusData.Print( 'While trying to compare subscription seed url classes, encountered this error:' )
-                                                HydrusData.PrintException( e, do_wait = False )
+                                                HydrusData.safe_print( 'While trying to compare subscription seed url classes, encountered this error:' )
+                                                HydrusData.print_exception( e, do_wait = False )
                                                 
                                             
                                             if do_periodic_message:
@@ -596,7 +596,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                                                 
                                             else:
                                                 
-                                                HydrusData.Print( f'The query "{query_name}" for subscription "{self._name}" found {file_limit_for_this_sync} new URLs without running into any it had seen before. I do not think this needs a gap downloader because the url class appears to have changed.' )
+                                                HydrusData.safe_print( f'The query "{query_name}" for subscription "{self._name}" found {file_limit_for_this_sync} new URLs without running into any it had seen before. I do not think this needs a gap downloader because the url class appears to have changed.' )
                                                 
                                                 stop_reason = 'hit periodic file limit after url class appeared to change. sub may spend some extra time catching up'
                                                 
@@ -638,7 +638,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                             # If the sub has seen basically everything it started with, we are by definition caught up and should stop immediately!s
                             if num_already_in_urls_we_have_seen_so_far >= most_of_our_stuff:
                                 
-                                stop_reason = f'saw {HydrusNumbers.ToHumanInt(num_already_in_urls_we_have_seen_so_far)} already-seen files, which is so much of what I already knew about that I am assuming I caught up'
+                                stop_reason = f'saw {HydrusNumbers.to_human_int(num_already_in_urls_we_have_seen_so_far)} already-seen files, which is so much of what I already knew about that I am assuming I caught up'
                                 
                                 can_search_for_more_files = False
                                 
@@ -656,7 +656,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                             # this gallery page has caught up to before, so it should not spawn any more gallery pages
                             
                             can_search_for_more_files = False
-                            stop_reason = 'saw {} contiguous previously seen urls at end of page, so assuming we caught up'.format( HydrusNumbers.ToHumanInt( current_contiguous_num_urls_already_in_file_seed_cache_in_this_call ) )
+                            stop_reason = 'saw {} contiguous previously seen urls at end of page, so assuming we caught up'.format( HydrusNumbers.to_human_int( current_contiguous_num_urls_already_in_file_seed_cache_in_this_call ) )
                             
                         
                         if num_urls_added_in_this_call == 0:
@@ -680,7 +680,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                     continue
                     
                 
-                job_status.SetStatusText( status_prefix + ': found ' + HydrusNumbers.ToHumanInt( total_new_urls_for_this_sync ) + ' new urls, checking next page' )
+                job_status.SetStatusText( status_prefix + ': found ' + HydrusNumbers.to_human_int( total_new_urls_for_this_sync ) + ' new urls, checking next page' )
                 
                 try:
                     
@@ -705,7 +705,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                 # we don't want to hit any other urls of this type this sync
                 if not can_search_for_more_files:
                     
-                    special_stop_reason = f'previous {gallery_seed_url_class.GetName()} URL said: {stop_reason}'
+                    special_stop_reason = f'previous {gallery_seed_url_class.get_name()} URL said: {stop_reason}'
                     
                     if gallery_seed_url_class is not None:
                         
@@ -755,11 +755,11 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 if len( file_seeds_to_add_in_this_sync_ordered ) == 0:
                     
-                    HydrusData.ShowText( 'The query "{}" for subscription "{}" did not find any files on its first sync! Could the query text have a typo, like a missing underscore?'.format( query_name, self._name ) )
+                    HydrusData.show_text( 'The query "{}" for subscription "{}" did not find any files on its first sync! Could the query text have a typo, like a missing underscore?'.format( query_name, self._name ) )
                     
                 else:
                     
-                    HydrusData.ShowText( 'The query "{}" for subscription "{}" performed its first sync ok, but the query seems to be already dead! Hydrus will get all the outstanding files, but it will not check for new ones in future. If you know this query has not had any uploads in a long time and just wanted to catch up on what was already there, then no worries.'.format( query_name, self._name ) )
+                    HydrusData.show_text( 'The query "{}" for subscription "{}" performed its first sync ok, but the query seems to be already dead! Hydrus will get all the outstanding files, but it will not check for new ones in future. If you know this query has not had any uploads in a long time and just wanted to catch up on what was already there, then no worries.'.format( query_name, self._name ) )
                     
                 
             else:
@@ -768,7 +768,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 ( death_files_found, death_time_delta ) = death_file_velocity
                 
-                HydrusData.ShowText( 'The query "{}" for subscription "{}" found fewer than {} files in the last {}, so it appears to be dead!'.format( query_name, self._name, HydrusNumbers.ToHumanInt( death_files_found ), HydrusTime.TimeDeltaToPrettyTimeDelta( death_time_delta, no_bigger_than_days = True ) ) )
+                HydrusData.show_text( 'The query "{}" for subscription "{}" found fewer than {} files in the last {}, so it appears to be dead!'.format( query_name, self._name, HydrusNumbers.to_human_int( death_files_found ), HydrusTime.time_delta_to_pretty_timedelta( death_time_delta, no_bigger_than_days = True ) ) )
                 
             
         else:
@@ -777,7 +777,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 if not query_header.FileBandwidthOK( CG.client_controller.network_engine.bandwidth_manager, self._name ) and not self._have_made_an_initial_sync_bandwidth_notification:
                     
-                    HydrusData.ShowText( 'FYI: The query "{}" for subscription "{}" performed its initial sync ok, but its downloader is short on bandwidth right now, so no files will be downloaded yet. The subscription will catch up in future as bandwidth becomes available. You can review the estimated time until bandwidth is available under the manage subscriptions dialog. If more queries are performing initial syncs in this run, they may be the same.'.format( query_name, self._name ) )
+                    HydrusData.show_text( 'FYI: The query "{}" for subscription "{}" performed its initial sync ok, but its downloader is short on bandwidth right now, so no files will be downloaded yet. The subscription will catch up in future as bandwidth becomes available. You can review the estimated time until bandwidth is available under the manage subscriptions dialog. If more queries are performing initial syncs in this run, they may be the same.'.format( query_name, self._name ) )
                     
                     self._have_made_an_initial_sync_bandwidth_notification = True
                     
@@ -791,7 +791,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
         
         if HG.subscription_report_mode:
             
-            HydrusData.ShowText( 'Subscription "{}" checking if any log containers need to be resynced: {}'.format( self._name, result ) )
+            HydrusData.show_text( 'Subscription "{}" checking if any log containers need to be resynced: {}'.format( self._name, result ) )
             
         
         return result
@@ -805,7 +805,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
             
             try:
                 
-                query_log_container = CG.client_controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_header.GetQueryLogContainerName() )
+                query_log_container = CG.client_controller.read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_header.GetQueryLogContainerName() )
                 
             except HydrusExceptions.DBException as e:
                 
@@ -827,7 +827,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
             
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -897,7 +897,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
             note_import_options = NoteImportOptionsLegacy.NoteImportOptionsLegacy()
             note_import_options.SetIsDefault( True )
             
-            serialisable_note_import_options = note_import_options.GetSerialisableTuple()
+            serialisable_note_import_options = note_import_options.get_serialisable_tuple()
             
             new_serialisable_info = (
                 serialisable_gug_key_and_name,
@@ -944,11 +944,11 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                 merge_query_publish_events
             ) = old_serialisable_info
             
-            file_import_options_legacy = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_file_import_options )
-            tag_import_options_legacy = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_tag_import_options )
-            note_import_options_legacy = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_note_import_options )
+            file_import_options_legacy = HydrusSerialisable.create_from_serialisable_tuple( serialisable_file_import_options )
+            tag_import_options_legacy = HydrusSerialisable.create_from_serialisable_tuple( serialisable_tag_import_options )
+            note_import_options_legacy = HydrusSerialisable.create_from_serialisable_tuple( serialisable_note_import_options )
             
-            if CG.client_controller.IsBooted():
+            if CG.client_controller.is_booted():
                 
                 optional_parent_container = CG.client_controller.import_options_manager.GenerateFullImportOptionsContainer( ImportOptionsContainer.ImportOptionsContainer(), IOC.IMPORT_OPTIONS_CALLER_TYPE_SUBSCRIPTION )
                 
@@ -964,7 +964,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                 optional_parent_container = optional_parent_container
             )
             
-            serialisable_import_options_container = import_options_container.GetSerialisableTuple()
+            serialisable_import_options_container = import_options_container.get_serialisable_tuple()
             
             
             new_serialisable_info = (
@@ -1003,7 +1003,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
             
             query_name = query_header.GetHumanName()
             
-            text_1 = f'syncing files ({HydrusNumbers.ValueRangeToPrettyString( i, num_queries )})'
+            text_1 = f'syncing files ({HydrusNumbers.value_range_to_pretty_string( i, num_queries )})'
             query_summary_name = self._name
             
             if query_name != self._name:
@@ -1017,7 +1017,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
             
             try:
                 
-                query_log_container = CG.client_controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_header.GetQueryLogContainerName() )
+                query_log_container = CG.client_controller.read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_QUERY_LOG_CONTAINER, query_header.GetQueryLogContainerName() )
                 
             except HydrusExceptions.DBException as e:
                 
@@ -1043,7 +1043,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                 
             finally:
                 
-                CG.client_controller.WriteSynchronous( 'serialisable', query_log_container )
+                CG.client_controller.write_synchronous( 'serialisable', query_log_container )
                 
             
         
@@ -1067,7 +1067,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 if HG.subscription_report_mode:
                     
-                    HydrusData.ShowText( 'Subscription "{}" checking if any file work due: True, bandwidth ok: {}, domain ok: {}'.format( self._name, bandwidth_ok, domain_ok ) )
+                    HydrusData.show_text( 'Subscription "{}" checking if any file work due: True, bandwidth ok: {}, domain ok: {}'.format( self._name, bandwidth_ok, domain_ok ) )
                     
                 
                 if bandwidth_ok and domain_ok:
@@ -1084,7 +1084,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
         
         if HG.subscription_report_mode:
             
-            HydrusData.ShowText( 'Subscription "{}" checking if any file work due: False'.format( self._name ) )
+            HydrusData.show_text( 'Subscription "{}" checking if any file work due: False'.format( self._name ) )
             
         
         return False
@@ -1127,7 +1127,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                     
                     if HG.subscription_report_mode:
                         
-                        HydrusData.ShowText( 'Query "' + query_name + '" can do no more file work due to running out of unknown urls.' )
+                        HydrusData.show_text( 'Query "' + query_name + '" can do no more file work due to running out of unknown urls.' )
                         
                     
                     break # not a cancel, a simple break to stop
@@ -1173,7 +1173,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                             message += '\n' * 2
                             message += 'The subscription has paused. Please see if you can fix the problem and then unpause. If the login script stopped because of missing cookies or similar, it may be broken. Please check out Hydrus Companion for a better login solution.'
                             
-                            HydrusData.ShowText( message )
+                            HydrusData.show_text( message )
                             
                             self._DelayWork( 300, login_reason )
                             
@@ -1195,13 +1195,13 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                     human_num_urls = num_urls - starting_num_done
                     human_num_done = num_done - starting_num_done
                     
-                    x_out_of_y = 'files ' + HydrusNumbers.ValueRangeToPrettyString( human_num_done, human_num_urls ) + ': '
+                    x_out_of_y = 'files ' + HydrusNumbers.value_range_to_pretty_string( human_num_done, human_num_urls ) + ': '
                     
                     job_status.SetGauge( human_num_done, human_num_urls, level = 2 )
                     
                     def status_hook( text ):
                         
-                        job_status.SetStatusText( x_out_of_y + HydrusText.GetFirstLine( text ), 2 )
+                        job_status.SetStatusText( x_out_of_y + HydrusText.get_first_line( text ), 2 )
                         
                     
                     full_import_options_container = CG.client_controller.import_options_manager.GenerateFullImportOptionsContainer( self._import_options_container, IOC.IMPORT_OPTIONS_CALLER_TYPE_SUBSCRIPTION, urls = file_seed.GetURLsForOptionsLookup() )
@@ -1216,7 +1216,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                             
                             hash = file_seed.GetHash()
                             
-                            media_result = CG.client_controller.Read( 'media_result', hash )
+                            media_result = CG.client_controller.read( 'media_result', hash )
                             
                             downloaded_tags = []
                             
@@ -1224,7 +1224,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                             
                             if content_update_package.HasContent():
                                 
-                                CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+                                CG.client_controller.write_synchronous( 'content_updates', content_update_package )
                                 
                             
                         
@@ -1307,7 +1307,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 time.sleep( ClientImporting.DID_SUBSTANTIAL_FILE_WORK_MINIMUM_SLEEP_TIME )
                 
-                CG.client_controller.WaitUntilViewFree()
+                CG.client_controller.wait_until_view_free()
                 
             
         finally:
@@ -1350,7 +1350,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
     
     def CanScrubDelay( self ):
         
-        return not HydrusTime.TimeHasPassed( self._no_work_until )
+        return not HydrusTime.time_has_passed( self._no_work_until )
         
     
     def CheckNow( self ):
@@ -1463,7 +1463,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
         
         best_next_work_time = min( next_work_times )
         
-        if not HydrusTime.TimeHasPassed( self._no_work_until ):
+        if not HydrusTime.time_has_passed( self._no_work_until ):
             
             best_next_work_time = max( ( best_next_work_time, self._no_work_until ) )
             
@@ -1621,7 +1621,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
         
         self._query_headers = []
         
-        base_sub = self.Duplicate()
+        base_sub = self.duplicate()
         
         self._query_headers = my_query_headers
         
@@ -1634,11 +1634,11 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                 continue
                 
             
-            subscription = base_sub.Duplicate()
+            subscription = base_sub.duplicate()
             
             subscription.SetQueryHeaders( [ query_header ] )
             
-            subscription.SetName( base_name + ': ' + query_header.GetHumanName() )
+            subscription.set_name( base_name + ': ' + query_header.GetHumanName() )
             
             subscriptions.append( subscription )
             
@@ -1650,7 +1650,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
     
     def SetCheckerOptions( self, checker_options: CheckerImportOptions.CheckerOptions, names_to_query_log_containers = None ):
         
-        changes_made = self._checker_options.GetSerialisableTuple() != checker_options.GetSerialisableTuple()
+        changes_made = self._checker_options.get_serialisable_tuple() != checker_options.get_serialisable_tuple()
         
         self._checker_options = checker_options
         
@@ -1679,7 +1679,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
     
     def SetImportOptionsContainer( self, import_options_container: ImportOptionsContainer.ImportOptionsContainer ):
         
-        self._import_options_container = import_options_container.Duplicate()
+        self._import_options_container = import_options_container.duplicate()
         
     
     def SetFileLimits( self, initial_file_limit, periodic_file_limit ):
@@ -1692,7 +1692,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
         
         if gug_key_and_name is None:
             
-            gug_key_and_name = ( HydrusData.GenerateKey(), '' )
+            gug_key_and_name = ( HydrusData.generate_key(), '' )
             
         
         self._gug_key_and_name = gug_key_and_name
@@ -1750,14 +1750,14 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                 
             except HydrusExceptions.ShutdownException:
                 
-                HydrusData.Print( f'Exiting subscription "{self._name}" due to program shutdown.' )
+                HydrusData.safe_print( f'Exiting subscription "{self._name}" due to program shutdown.' )
                 
                 return
                 
             except Exception as e:
                 
-                HydrusData.ShowText( f'The subscription "{self._name}" encountered an exception when trying to sync:' )
-                HydrusData.ShowException( e )
+                HydrusData.show_text( f'The subscription "{self._name}" encountered an exception when trying to sync:' )
+                HydrusData.show_exception( e )
                 
                 self._paused = True
                 
@@ -1799,9 +1799,9 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 delay = CG.client_controller.new_options.GetInteger( 'subscription_network_error_delay' )
                 
-                HydrusData.Print( f'The subscription "{self._name}" encountered an exception when trying to sync:' )
+                HydrusData.safe_print( f'The subscription "{self._name}" encountered an exception when trying to sync:' )
                 
-                HydrusData.Print( e )
+                HydrusData.safe_print( e )
                 
                 job_status.SetStatusText( 'Encountered a network error, will retry again later' )
                 
@@ -1811,12 +1811,12 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                 
             except HydrusExceptions.ShutdownException:
                 
-                HydrusData.Print( f'Exiting subscription "{self._name}" due to program shutdown.' )
+                HydrusData.safe_print( f'Exiting subscription "{self._name}" due to program shutdown.' )
                 
             except Exception as e:
                 
-                HydrusData.ShowText( f'The subscription "{self._name}" encountered an exception when trying to sync:' )
-                HydrusData.ShowException( e )
+                HydrusData.show_text( f'The subscription "{self._name}" encountered an exception when trying to sync:' )
+                HydrusData.show_exception( e )
                 
                 delay = CG.client_controller.new_options.GetInteger( 'subscription_other_error_delay' )
                 
@@ -1829,7 +1829,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
             
             if job_status.GetFiles() is not None:
                 
-                job_status.Finish()
+                job_status.finish()
                 
             else:
                 
@@ -1869,20 +1869,20 @@ class SubscriptionContainer( HydrusSerialisable.SerialisableBase ):
         self.query_log_containers = HydrusSerialisable.SerialisableList()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_subscription = self.subscription.GetSerialisableTuple()
-        serialisable_query_log_containers = self.query_log_containers.GetSerialisableTuple()
+        serialisable_subscription = self.subscription.get_serialisable_tuple()
+        serialisable_query_log_containers = self.query_log_containers.get_serialisable_tuple()
         
         return ( serialisable_subscription, serialisable_query_log_containers )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( serialisable_subscription, serialisable_query_log_containers ) = serialisable_info
         
-        self.subscription = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_subscription )
-        self.query_log_containers = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_query_log_containers )
+        self.subscription = HydrusSerialisable.create_from_serialisable_tuple( serialisable_subscription )
+        self.query_log_containers = HydrusSerialisable.create_from_serialisable_tuple( serialisable_query_log_containers )
         
     
 HydrusSerialisable.SERIALISABLE_TYPES_TO_OBJECT_TYPES[ HydrusSerialisable.SERIALISABLE_TYPE_SUBSCRIPTION_CONTAINER ] = SubscriptionContainer
@@ -1900,12 +1900,12 @@ class SubscriptionJob( object ):
         
         if HG.subscription_report_mode:
             
-            HydrusData.ShowText( 'Subscription "{}" about to start.'.format( self._subscription.GetName() ) )
+            HydrusData.show_text( 'Subscription "{}" about to start.'.format( self._subscription.get_name() ) )
             
         
         self._subscription.Sync()
         
-        self._controller.WriteSynchronous( 'serialisable', self._subscription )
+        self._controller.write_synchronous( 'serialisable', self._subscription )
         
     
     def IsDone( self ):
@@ -1932,7 +1932,7 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
         
         super().__init__( controller, 10 )
         
-        self._names_to_subscriptions = { subscription.GetName() : subscription for subscription in subscriptions }
+        self._names_to_subscriptions = { subscription.get_name() : subscription for subscription in subscriptions }
         self._names_to_running_subscription_info = {}
         self._names_that_cannot_run = set()
         self._names_to_next_work_time = {}
@@ -2008,7 +2008,7 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
         # just a couple of seconds for calculation and human breathing room
         SUB_WORK_DELAY_BUFFER = 3
         
-        names_not_due = { name for ( name, next_work_time ) in self._names_to_next_work_time.items() if not HydrusTime.TimeHasPassed( next_work_time + SUB_WORK_DELAY_BUFFER ) }
+        names_not_due = { name for ( name, next_work_time ) in self._names_to_next_work_time.items() if not HydrusTime.time_has_passed( next_work_time + SUB_WORK_DELAY_BUFFER ) }
         
         possible_names.difference_update( names_not_due )
         
@@ -2025,14 +2025,14 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
             
         else:
             
-            HydrusText.HumanTextSort( possible_names )
+            HydrusText.human_text_sort( possible_names )
             
             subscription_name = possible_names.pop( 0 )
             
         
         if HG.subscription_report_mode:
             
-            HydrusData.ShowText( 'Subscription manager selected "{}" to start.'.format( subscription_name ) )
+            HydrusData.show_text( 'Subscription manager selected "{}" to start.'.format( subscription_name ) )
             
         
         return self._names_to_subscriptions[ subscription_name ]
@@ -2040,7 +2040,7 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _UpdateSubscriptionInfo( self, subscription: Subscription, just_finished_work = False ):
         
-        name = subscription.GetName()
+        name = subscription.get_name()
         
         if name in self._names_that_cannot_run:
             
@@ -2077,7 +2077,7 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
                     # this sets min resolution of a single sub repeat cycle
                     BUFFER_TIME = 120
                     
-                    next_work_time = max( next_work_time, HydrusTime.GetNow() + BUFFER_TIME )
+                    next_work_time = max( next_work_time, HydrusTime.get_now() + BUFFER_TIME )
                     
                 
                 self._names_to_next_work_time[ name ] = next_work_time
@@ -2110,9 +2110,9 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
                 
                 job = SubscriptionJob( self._controller, subscription )
                 
-                CG.client_controller.CallToThread( job.Work )
+                CG.client_controller.call_to_thread( job.Work )
                 
-                self._names_to_running_subscription_info[ subscription.GetName() ] = ( job, subscription )
+                self._names_to_running_subscription_info[ subscription.get_name() ] = ( job, subscription )
                 
             
             self._ClearFinishedSubscriptions()
@@ -2120,7 +2120,7 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
             wait_time = self._GetMainLoopWaitTime()
             
         
-        self._big_pauser.Pause()
+        self._big_pauser.pause()
         
         self._wake_from_work_sleep_event.wait( wait_time )
         
@@ -2202,15 +2202,15 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
             
             next_times = sorted( self._names_to_next_work_time.items(), key = lambda n_nwt_tuple: n_nwt_tuple[1] )
             
-            message = '{} subs: {}'.format( HydrusNumbers.ToHumanInt( len( self._names_to_subscriptions ) ), ', '.join( sub_names ) )
+            message = '{} subs: {}'.format( HydrusNumbers.to_human_int( len( self._names_to_subscriptions ) ), ', '.join( sub_names ) )
             message += '\n' * 2
-            message += '{} running: {}'.format( HydrusNumbers.ToHumanInt( len( self._names_to_running_subscription_info ) ), ', '.join( running ) )
+            message += '{} running: {}'.format( HydrusNumbers.to_human_int( len( self._names_to_running_subscription_info ) ), ', '.join( running ) )
             message += '\n' * 2
-            message += '{} not runnable: {}'.format( HydrusNumbers.ToHumanInt( len( self._names_that_cannot_run ) ), ', '.join( cannot_run ) )
+            message += '{} not runnable: {}'.format( HydrusNumbers.to_human_int( len( self._names_that_cannot_run ) ), ', '.join( cannot_run ) )
             message += '\n' * 2
-            message += '{} next times: {}'.format( HydrusNumbers.ToHumanInt( len( self._names_to_next_work_time ) ), ', '.join( ( '{}: {}'.format( name, HydrusTime.TimestampToPrettyTimeDelta( next_work_time ) ) for ( name, next_work_time ) in next_times ) ) )
+            message += '{} next times: {}'.format( HydrusNumbers.to_human_int( len( self._names_to_next_work_time ) ), ', '.join( ( '{}: {}'.format( name, HydrusTime.timestamp_to_pretty_time_delta( next_work_time ) ) for ( name, next_work_time ) in next_times ) ) )
             
-            HydrusData.ShowText( message )
+            HydrusData.show_text( message )
             
         
     

@@ -647,7 +647,7 @@ def GetDefaultShortcuts():
 
 def GetDefaultSimpleDownloaderFormulae():
     
-    paths = HydrusStaticDir.ListStaticDirFilePaths( os.path.join( 'default', 'simple_downloader_formulae' ) )
+    paths = HydrusStaticDir.List_static_dir_file_paths( os.path.join( 'default', 'simple_downloader_formulae' ) )
     
     from hydrus.client.parsing import ClientParsing
     
@@ -656,7 +656,7 @@ def GetDefaultSimpleDownloaderFormulae():
 
 def GetDefaultURLClasses():
     
-    paths = HydrusStaticDir.ListStaticDirFilePaths( os.path.join( 'default', 'url_classes' ) )
+    paths = HydrusStaticDir.List_static_dir_file_paths( os.path.join( 'default', 'url_classes' ) )
     
     from hydrus.client.networking import ClientNetworkingURLClass
     
@@ -675,7 +675,7 @@ def GetDefaultObjectsFromPNGs( paths: list[ str ], allowed_object_types ):
             
             payload = ClientSerialisable.LoadFromPNG( path )
             
-            obj = HydrusSerialisable.CreateFromNetworkBytes( payload )
+            obj = HydrusSerialisable.create_from_network_bytes( payload )
             
             if isinstance( obj, HydrusSerialisable.SerialisableList ):
                 
@@ -696,7 +696,7 @@ def GetDefaultObjectsFromPNGs( paths: list[ str ], allowed_object_types ):
             
         except Exception as e:
             
-            HydrusData.Print( 'Object at location "{}" failed to load: {}'.format( path, repr( e ) ) )
+            HydrusData.safe_print( 'Object at location "{}" failed to load: {}'.format( path, repr( e ) ) )
             
         
     
@@ -715,9 +715,9 @@ def SetDefaultBandwidthManagerRules( bandwidth_manager ):
     
     rules = HydrusNetworking.BandwidthRules()
     
-    rules.AddRule( HC.BANDWIDTH_TYPE_REQUESTS, 1, 5 ) # stop accidental spam
+    rules.add_rule( HC.BANDWIDTH_TYPE_REQUESTS, 1, 5 ) # stop accidental spam
     
-    rules.AddRule( HC.BANDWIDTH_TYPE_DATA, 86400, 16 * GB ) # check your inbox lad
+    rules.add_rule( HC.BANDWIDTH_TYPE_DATA, 86400, 16 * GB ) # check your inbox lad
     
     bandwidth_manager.SetRules( ClientNetworkingContexts.GLOBAL_NETWORK_CONTEXT, rules )
     
@@ -725,9 +725,9 @@ def SetDefaultBandwidthManagerRules( bandwidth_manager ):
     
     rules = HydrusNetworking.BandwidthRules()
     
-    rules.AddRule( HC.BANDWIDTH_TYPE_REQUESTS, 1, 1 ) # don't ever hammer a domain
+    rules.add_rule( HC.BANDWIDTH_TYPE_REQUESTS, 1, 1 ) # don't ever hammer a domain
     
-    rules.AddRule( HC.BANDWIDTH_TYPE_DATA, 86400, 8 * GB ) # don't go nuts on a site in a single day
+    rules.add_rule( HC.BANDWIDTH_TYPE_DATA, 86400, 8 * GB ) # don't go nuts on a site in a single day
     
     bandwidth_manager.SetRules( ClientNetworkingContexts.NetworkContext( CC.NETWORK_CONTEXT_DOMAIN ), rules )
     
@@ -735,7 +735,7 @@ def SetDefaultBandwidthManagerRules( bandwidth_manager ):
     
     rules = HydrusNetworking.BandwidthRules()
     
-    rules.AddRule( HC.BANDWIDTH_TYPE_DATA, 86400, 2 * GB ) # don't sync a giant db in one day, but we can push it more
+    rules.add_rule( HC.BANDWIDTH_TYPE_DATA, 86400, 2 * GB ) # don't sync a giant db in one day, but we can push it more
     
     bandwidth_manager.SetRules( ClientNetworkingContexts.NetworkContext( CC.NETWORK_CONTEXT_HYDRUS ), rules )
     
@@ -743,7 +743,7 @@ def SetDefaultBandwidthManagerRules( bandwidth_manager ):
     
     rules = HydrusNetworking.BandwidthRules()
     
-    rules.AddRule( HC.BANDWIDTH_TYPE_DATA, 300, 1024 * MB ) # just a careful stopgap
+    rules.add_rule( HC.BANDWIDTH_TYPE_DATA, 300, 1024 * MB ) # just a careful stopgap
     
     bandwidth_manager.SetRules( ClientNetworkingContexts.NetworkContext( CC.NETWORK_CONTEXT_DOWNLOADER_PAGE ), rules )
     
@@ -752,9 +752,9 @@ def SetDefaultBandwidthManagerRules( bandwidth_manager ):
     rules = HydrusNetworking.BandwidthRules()
     
     # most gallery downloaders need two rqs per file (page and file), remember
-    rules.AddRule( HC.BANDWIDTH_TYPE_REQUESTS, 86400, 1000 ) # catch up on a swell of many new things in chunks every day
+    rules.add_rule( HC.BANDWIDTH_TYPE_REQUESTS, 86400, 1000 ) # catch up on a swell of many new things in chunks every day
     
-    rules.AddRule( HC.BANDWIDTH_TYPE_DATA, 86400, 1024 * MB ) # catch up on a stonking bump in chunks every day
+    rules.add_rule( HC.BANDWIDTH_TYPE_DATA, 86400, 1024 * MB ) # catch up on a stonking bump in chunks every day
     
     bandwidth_manager.SetRules( ClientNetworkingContexts.NetworkContext( CC.NETWORK_CONTEXT_SUBSCRIPTION ), rules )
     

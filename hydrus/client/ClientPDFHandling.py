@@ -109,10 +109,10 @@ def GenerateThumbnailNumPyFromPDFPath( path: str, target_resolution: tuple[int, 
             
         
     
-    return CG.client_controller.CallBlockingToQtTLW( qt_code )
+    return CG.client_controller.call_blocking_to_qt_tlw( qt_code )
     
 
-HydrusPDFHandling.GenerateThumbnailNumPyFromPDFPath = GenerateThumbnailNumPyFromPDFPath
+HydrusPDFHandling.base_generate_thumbnail_numpy_from_pdf_path = GenerateThumbnailNumPyFromPDFPath
 
 PDF_ASSUMED_DPI = 300
 
@@ -151,7 +151,7 @@ def GetHumanReadableEmbeddedMetadata( path ) -> str | None:
         return '\n'.join( result_components )
         
     
-    result = CG.client_controller.CallBlockingToQtTLW( qt_code )
+    result = CG.client_controller.call_blocking_to_qt_tlw( qt_code )
     
     if result == '':
         
@@ -224,7 +224,7 @@ def GetPDFInfo( path: str ):
         return ( num_words, ( width, height ) )
         
     
-    return CG.client_controller.CallBlockingToQtTLW( qt_code )
+    return CG.client_controller.call_blocking_to_qt_tlw( qt_code )
     
 
 def GetPDFModifiedTimestampMS( path ):
@@ -251,7 +251,7 @@ def GetPDFModifiedTimestampMS( path ):
         return modified_timestamp_ms
         
     
-    return CG.client_controller.CallBlockingToQtTLW( qt_code )
+    return CG.client_controller.call_blocking_to_qt_tlw( qt_code )
     
 
 def GetPDFResolutionFromDocument( document ):
@@ -266,4 +266,4 @@ def GetPDFResolutionFromDocument( document ):
     return ( round( width ), round( height ) )
     
 
-HydrusPDFHandling.GetPDFInfo = GetPDFInfo
+HydrusPDFHandling.base_get_pdf_info = GetPDFInfo

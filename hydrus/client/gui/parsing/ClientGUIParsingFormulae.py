@@ -351,7 +351,7 @@ class EditFormulaPanel( ClientGUIScrolledPanels.EditPanel ):
         
         if export_object is not None:
             
-            json = export_object.DumpToString()
+            json = export_object.dump_to_string()
             
             CG.client_controller.pub( 'clipboard', 'text', json )
             
@@ -378,11 +378,11 @@ class EditFormulaPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', str(e) )
             
@@ -391,7 +391,7 @@ class EditFormulaPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            obj = HydrusSerialisable.CreateFromString( raw_text )
+            obj = HydrusSerialisable.create_from_string( raw_text )
             
             self._ImportObject( obj )
             
@@ -415,7 +415,7 @@ class EditFormulaPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 except Exception as e:
                     
-                    HydrusData.PrintException( e )
+                    HydrusData.print_exception( e )
                     
                     ClientGUIDialogsMessage.ShowCritical( self, 'Problem loading!', str(e) )
                     
@@ -424,13 +424,13 @@ class EditFormulaPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 try:
                     
-                    obj = HydrusSerialisable.CreateFromNetworkBytes( payload )
+                    obj = HydrusSerialisable.create_from_network_bytes( payload )
                     
                     self._ImportObject( obj )
                     
                 except Exception as e:
                     
-                    HydrusData.PrintException( e )
+                    HydrusData.print_exception( e )
                     
                     ClientGUIDialogsMessage.ShowCritical( self, 'Problem loading!', 'I could not understand what was encoded in the png!' )
                     

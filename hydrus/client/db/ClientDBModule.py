@@ -13,31 +13,31 @@ class ClientDBModule( HydrusDBModule.HydrusDBModule ):
         message += '\n' * 2
         message += text
         
-        HydrusData.DebugPrint( message )
+        HydrusData.debug_print( message )
         
-        CG.client_controller.BlockingSafeShowCriticalMessage( 'hydrus db failed', message )
+        CG.client_controller.blocking_safe_show_critical_message( 'hydrus db failed', message )
         
     
-    def _PresentMissingIndicesWarningToUser( self, index_names: collections.abc.Collection[ str ] ):
+    def _present_missing_indices_warning_to_user( self, index_names: collections.abc.Collection[ str ] ):
         
         index_names = sorted( index_names )
         
-        HydrusData.DebugPrint( 'The "{}" database module is missing the following indices:'.format( self.name ) )
-        HydrusData.DebugPrint( '\n'.join( index_names ) )
+        HydrusData.debug_print( 'The "{}" database module is missing the following indices:'.format( self.name ) )
+        HydrusData.debug_print( '\n'.join( index_names ) )
         
         message = 'Your "{}" database module is missing {} indices. More information has been written to the log. This may or may not be a big deal, and on its own this error is completely recoverable. If you do not have further problems, hydev does not need to know about it. The indices will be regenerated once you proceed--it may take some time.'.format( self.name, len( index_names ) )
         
-        CG.client_controller.BlockingSafeShowMessage( message )
+        CG.client_controller.blocking_safe_show_message( message )
         
         CG.client_controller.frame_splash_status.SetText( 'recreating indices' )
         
     
-    def _PresentMissingTablesWarningToUser( self, table_names: collections.abc.Collection[ str ] ):
+    def _present_missing_tables_warning_to_user( self, table_names: collections.abc.Collection[ str ] ):
         
         table_names = sorted( table_names )
         
-        HydrusData.DebugPrint( 'The "{}" database module is missing the following tables:'.format( self.name ) )
-        HydrusData.DebugPrint( '\n'.join( table_names ) )
+        HydrusData.debug_print( 'The "{}" database module is missing the following tables:'.format( self.name ) )
+        HydrusData.debug_print( '\n'.join( table_names ) )
         
         
         if self.CAN_REPOPULATE_ALL_MISSING_DATA:
@@ -66,12 +66,12 @@ class ClientDBModule( HydrusDBModule.HydrusDBModule ):
         
         message += 'If you proceed, the missing tables will be recreated. {}'.format( recovery_info )
         
-        CG.client_controller.BlockingSafeShowMessage( message )
+        CG.client_controller.blocking_safe_show_message( message )
         
         CG.client_controller.frame_splash_status.SetText( 'recreating tables' )
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         raise NotImplementedError()
         

@@ -36,34 +36,34 @@ from hydrus.client.parsing import ClientParsing
 
 def IngestClipboard():
     
-    if CG.client_controller.ClipboardHasImage():
+    if CG.client_controller.clipboard_has_image():
         
         try:
             
-            qt_image = CG.client_controller.GetClipboardImage()
+            qt_image = CG.client_controller.get_clipboard_image()
             
             payload_bytes = ClientSerialisable.LoadFromQtImage( qt_image )
             
-            payload_text = HydrusCompression.DecompressBytesToString( payload_bytes )
+            payload_text = HydrusCompression.decompress_bytes_to_string( payload_bytes )
             
             return [ ( 'clipboard image data', payload_text ) ]
             
         except Exception as e:
             
-            HydrusData.PrintException( e, do_wait = False )
+            HydrusData.print_exception( e, do_wait = False )
             
             raise Exception( f'Problem pasting image! Full error written to log; {e}' )
             
         
-    elif CG.client_controller.ClipboardHasLocalPaths():
+    elif CG.client_controller.clipboard_has_local_paths():
         
         try:
             
-            paths = CG.client_controller.GetClipboardLocalPaths()
+            paths = CG.client_controller.get_clipboard_local_paths()
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e, do_wait = False )
+            HydrusData.print_exception( e, do_wait = False )
             
             raise Exception( f'Problem pasting paths! Full error written to log; {e}' )
             
@@ -74,7 +74,7 @@ def IngestClipboard():
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
             payload_text = raw_text
             
@@ -82,7 +82,7 @@ def IngestClipboard():
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e, do_wait = False )
+            HydrusData.print_exception( e, do_wait = False )
             
             raise Exception( f'Problem pasting text! Full error written to log; {e}' )
             
@@ -95,19 +95,19 @@ def IngestPaths( paths ):
     
     for path in paths:
         
-        if HydrusFileHandling.GetIsPNGRealQuick( path ):
+        if HydrusFileHandling.get_is_png_real_quick( path ):
             
             try:
                 
                 payload_bytes = ClientSerialisable.LoadFromPNG( path )
                 
-                payload_text = HydrusCompression.DecompressBytesToString( payload_bytes )
+                payload_text = HydrusCompression.decompress_bytes_to_string( payload_bytes )
                 
                 payloads.append( ( f'PNG "{path}"', payload_text ) )
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e, do_wait = False )
+                HydrusData.print_exception( e, do_wait = False )
                 
                 raise Exception( f'Problem loading PNG at path "{path}"! Full error written to log; {e}' )
                 
@@ -125,7 +125,7 @@ def IngestPaths( paths ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e, do_wait = False )
+                HydrusData.print_exception( e, do_wait = False )
                 
                 raise Exception( f'Problem loading assumed JSON at path "{path}"! Full error written to log; {e}' )
                 
@@ -175,7 +175,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         
         st.setWordWrap( True )
         
-        lain_path = HydrusStaticDir.GetStaticPath( 'lain.jpg' )
+        lain_path = HydrusStaticDir.get_static_path( 'lain.jpg' )
         
         lain_qt_pixmap = ClientRendering.GenerateHydrusBitmap( lain_path, HC.IMAGE_JPEG ).GetQtPixmap()
         
@@ -244,7 +244,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
             
             try:
                 
-                obj_list = HydrusSerialisable.CreateFromString( payload_text, raise_error_on_future_version = True )
+                obj_list = HydrusSerialisable.create_from_string( payload_text, raise_error_on_future_version = True )
                 
             except HydrusExceptions.SerialisationException as e:
                 
@@ -267,7 +267,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Error', 'I could not understand what was encoded in {}!'.format( payload_description ) )
                 
@@ -319,7 +319,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
             
             if num_misc_objects > 0:
                 
-                ClientGUIDialogsMessage.ShowWarning( self, 'I found '+HydrusNumbers.ToHumanInt(num_misc_objects)+' misc objects in that png, but nothing downloader related.' )
+                ClientGUIDialogsMessage.ShowWarning( self, 'I found '+HydrusNumbers.to_human_int(num_misc_objects)+' misc objects in that png, but nothing downloader related.' )
                 
             
             return
@@ -493,7 +493,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         
         if len( new_gugs ) + len( new_url_classes ) + len( new_parsers ) + len( new_domain_metadatas ) + len( new_login_scripts ) == 0:
             
-            ClientGUIDialogsMessage.ShowInformation( self, f'All {HydrusNumbers.ToHumanInt( total_num_dupes )} downloader objects in that package appeared to already be in the client, so nothing need be added.' )
+            ClientGUIDialogsMessage.ShowInformation( self, f'All {HydrusNumbers.to_human_int( total_num_dupes )} downloader objects in that package appeared to already be in the client, so nothing need be added.' )
             
             return
             
@@ -527,10 +527,10 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         
         # final ask
         
-        new_gugs.sort( key = lambda o: o.GetName() )
-        new_url_classes.sort( key = lambda o: o.GetName() )
-        new_parsers.sort( key = lambda o: o.GetName() )
-        new_login_scripts.sort( key = lambda o: o.GetName() )
+        new_gugs.sort( key = lambda o: o.get_name() )
+        new_url_classes.sort( key = lambda o: o.get_name() )
+        new_parsers.sort( key = lambda o: o.get_name() )
+        new_login_scripts.sort( key = lambda o: o.get_name() )
         new_domain_metadatas.sort( key = lambda o: o.GetDomain() )
         
         if len( new_domain_metadatas ) > 0:
@@ -542,7 +542,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
             if len( new_domain_metadatas ) > TOO_MANY_DM:
                 
                 message += '\n' * 2
-                message += 'There are more than ' + HydrusNumbers.ToHumanInt( TOO_MANY_DM ) + ' domain metadata objects. So I do not give you dozens of preview windows, I will only show you these first ' + HydrusNumbers.ToHumanInt( TOO_MANY_DM ) + '.'
+                message += 'There are more than ' + HydrusNumbers.to_human_int( TOO_MANY_DM ) + ' domain metadata objects. So I do not give you dozens of preview windows, I will only show you these first ' + HydrusNumbers.to_human_int( TOO_MANY_DM ) + '.'
                 
             
             new_domain_metadatas_to_show = new_domain_metadatas[:TOO_MANY_DM]
@@ -566,7 +566,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         if len( all_to_add ) > 20:
             
             message += '\n'
-            message += '(and ' + HydrusNumbers.ToHumanInt( len( all_to_add ) - 20 ) + ' others)'
+            message += '(and ' + HydrusNumbers.to_human_int( len( all_to_add ) - 20 ) + ' others)'
             
         
         message += '\n' * 2
@@ -600,11 +600,11 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         num_new_gugs = len( new_gugs )
         num_aux = len( new_url_classes ) + len( new_parsers ) + len( new_login_scripts ) + len( new_domain_metadatas )
         
-        final_message = 'Successfully added ' + HydrusNumbers.ToHumanInt( num_new_gugs ) + ' new downloaders and ' + HydrusNumbers.ToHumanInt( num_aux ) + ' auxiliary objects.'
+        final_message = 'Successfully added ' + HydrusNumbers.to_human_int( num_new_gugs ) + ' new downloaders and ' + HydrusNumbers.to_human_int( num_aux ) + ' auxiliary objects.'
         
         if total_num_dupes > 0:
             
-            final_message += ' ' + HydrusNumbers.ToHumanInt( total_num_dupes ) + ' duplicate objects were not added (but some additional metadata may have been merged).'
+            final_message += ' ' + HydrusNumbers.to_human_int( total_num_dupes ) + ' duplicate objects were not added (but some additional metadata may have been merged).'
             
         
         ClientGUIDialogsMessage.ShowInformation( self, final_message )
@@ -625,9 +625,9 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
             
         except Exception as e:
             
-            HydrusData.Print( 'Hey, I was trying to set up a GUG (downloader) but the GUG store was messed up. Here is the error:' )
+            HydrusData.safe_print( 'Hey, I was trying to set up a GUG (downloader) but the GUG store was messed up. Here is the error:' )
             
-            HydrusData.PrintException( e, do_wait = False )
+            HydrusData.print_exception( e, do_wait = False )
             
         
     
@@ -646,7 +646,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         
         self._ImportPayloads( payloads )
         
-        self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.ToHumanInt(len(payloads))} items!' )
+        self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.to_human_int(len(payloads))} items!' )
         
     
     def EventLainClick( self, event ):
@@ -679,7 +679,7 @@ class ReviewWhatIsThisObject( ClientGUIScrolledPanels.ReviewPanel ):
         self._paste_button = ClientGUICommon.IconButton( self, CC.global_icons().paste, self._Paste )
         self._paste_button.setToolTip( ClientGUIFunctions.WrapToolTip( 'Paste paths/bitmaps/JSON from clipboard!' ) )
         
-        question_mark_path = HydrusStaticDir.GetStaticPath( 'question_mark_on_head.jpg' )
+        question_mark_path = HydrusStaticDir.get_static_path( 'question_mark_on_head.jpg' )
         
         question_mark_qt_pixmap = ClientRendering.GenerateHydrusBitmap( question_mark_path, HC.IMAGE_JPEG ).GetQtPixmap()
         
@@ -732,7 +732,7 @@ class ReviewWhatIsThisObject( ClientGUIScrolledPanels.ReviewPanel ):
             
             try:
                 
-                obj = HydrusSerialisable.CreateFromString( payload_text, raise_error_on_future_version = True )
+                obj = HydrusSerialisable.create_from_string( payload_text, raise_error_on_future_version = True )
                 
                 if not isinstance( obj, HydrusSerialisable.SerialisableBase ):
                     
@@ -743,9 +743,9 @@ class ReviewWhatIsThisObject( ClientGUIScrolledPanels.ReviewPanel ):
                     obj = typing.cast( HydrusSerialisable.SerialisableBase, obj )
                     
                     # TODO: let's make a HydrusSerialisable 'DescribeYourself' or similar and have lists and dicts talk about their contents
-                    result_text = f'Object Type: {obj.GetSerialisableDescription()}'
+                    result_text = f'Object Type: {obj.get_serialisable_description()}'
                     result_text += '\n'
-                    result_text += f'JSON: {HydrusData.ToHumanBytes( len( payload_text ) )}'
+                    result_text += f'JSON: {HydrusData.to_human_bytes( len( payload_text ) )}'
                     
                 
                 result_texts.append( result_text )
@@ -756,7 +756,7 @@ class ReviewWhatIsThisObject( ClientGUIScrolledPanels.ReviewPanel ):
                 
             
         
-        ending_description_text = f'{HydrusNumbers.ToHumanInt(len( result_texts ))} items\n\n' + '\n\n'.join( result_texts )
+        ending_description_text = f'{HydrusNumbers.to_human_int(len( result_texts ))} items\n\n' + '\n\n'.join( result_texts )
         
         self._description.setText( ending_description_text )
         self._json_content.setText( '\n\n'.join( json_texts ) )
@@ -777,7 +777,7 @@ class ReviewWhatIsThisObject( ClientGUIScrolledPanels.ReviewPanel ):
         
         self._ImportPayloads( payloads )
         
-        self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.ToHumanInt(len(payloads))} items!' )
+        self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.to_human_int(len(payloads))} items!' )
         
     
     def EventImageClick( self, event ):

@@ -19,7 +19,7 @@ def GetFrameDurationsMSUgoira( media: ClientMediaResult.MediaResult ):
     
     try:
         
-        frameData = HydrusUgoiraHandling.GetUgoiraFrameDataJSON( path )
+        frameData = HydrusUgoiraHandling.get_ugoira_frame_data_json( path )
         
         if frameData is not None:
             
@@ -138,9 +138,9 @@ class UgoiraRenderer(object):
         
         self._next_render_index = 0
         
-        self._frame_data = HydrusUgoiraHandling.GetFramePathsUgoira( path )
+        self._frame_data = HydrusUgoiraHandling.get_frame_paths_ugoira( path )
         
-        self._zip = HydrusArchiveHandling.GetZipAsPath( path )
+        self._zip = HydrusArchiveHandling.get_zip_as_path( path )
         
     
     def set_position( self, index ):
@@ -159,11 +159,11 @@ class UgoiraRenderer(object):
         
         with self._zip.joinpath(frame_name).open('rb') as frame_from_zip:
             
-            pil_image = HydrusImageHandling.GeneratePILImage( frame_from_zip )
+            pil_image = HydrusImageHandling.generate_pil_image( frame_from_zip )
             
             try:
                 
-                numpy_image = HydrusImageHandling.GenerateNumPyImageFromPILImage( pil_image )
+                numpy_image = HydrusImageHandling.generate_numpy_image_from_pil_image( pil_image )
                 
             finally:
                 
@@ -171,7 +171,7 @@ class UgoiraRenderer(object):
                 
             
         
-        numpy_image = HydrusImageHandling.ResizeNumPyImage( numpy_image, self._target_resolution )
+        numpy_image = HydrusImageHandling.resize_numpy_image( numpy_image, self._target_resolution )
         
         self._next_render_index = ( self._next_render_index + 1 ) % self._num_frames
         
@@ -185,9 +185,9 @@ def ConvertUgoiraToBytesForAPI( media: ClientMediaResult.MediaResult, format: in
     
     path = client_files_manager.GetFilePath( media.GetHash(), media.GetMime() )
     
-    frame_paths = HydrusUgoiraHandling.GetFramePathsUgoira( path )
+    frame_paths = HydrusUgoiraHandling.get_frame_paths_ugoira( path )
     
-    zip = HydrusArchiveHandling.GetZipAsPath( path )
+    zip = HydrusArchiveHandling.get_zip_as_path( path )
     
     frames = []
     
@@ -195,7 +195,7 @@ def ConvertUgoiraToBytesForAPI( media: ClientMediaResult.MediaResult, format: in
         
         for frame_path_from_zip in frame_paths:
             
-            frames.append( HydrusImageHandling.GeneratePILImage( zip.joinpath(frame_path_from_zip).open('rb') ) )
+            frames.append( HydrusImageHandling.generate_pil_image( zip.joinpath(frame_path_from_zip).open('rb') ) )
             
         
         frame_durations_ms = GetFrameDurationsMSUgoira( media )

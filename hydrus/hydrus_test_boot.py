@@ -46,11 +46,8 @@ def boot():
     args = sys.argv[1:]
     
     if len( args ) > 0:
-        
         only_run = args[0]
-        
     else:
-        
         only_run = None
         
     
@@ -66,71 +63,55 @@ def boot():
             # we run the tests on the Qt thread atm
             # keep a window alive the whole time so the app doesn't finish its mainloop
             
-            win = QW.QWidget( None )
-            win.setWindowTitle( 'Running tests...' )
+            win = QW.QWidget(None)
+            win.setWindowTitle('Running tests...')
             
-            controller = TestController.Controller( win, only_run )
+            controller = TestController.Controller(win, only_run)
             
             def do_it():
-                
-                controller.Run( win )
+                controller.run(win)
                 
             
-            controller.CallAfterQtSafe( win, do_it )
+            controller.call_after_qt_safe(win, do_it)
             
             app.exec_()
             
             everything_went_ok = controller.was_successful
             
         except Exception as e:
-            
-            HydrusData.DebugPrint( traceback.format_exc() )
+            HydrusData.debug_print(traceback.format_exc())
             
         finally:
             
             HG.started_shutdown = True
-            
             HG.view_shutdown = True
             
             try:
+                controller.pubimmediate('wake_daemons')
                 
-                controller.pubimmediate( 'wake_daemons' )
-                
-            except Exception as e:
-                
+            except Exception:
                 pass
                 
             
             HG.model_shutdown = True
             
             try:
+                controller.pubimmediate('wake_daemons')
+                controller.tidy_up()
                 
-                controller.pubimmediate( 'wake_daemons' )
-                
-                controller.TidyUp()
-                
-            except Exception as e:
-                
+            except Exception:
                 pass
                 
             
         
-    except Exception as e:
-        
-        HydrusData.DebugPrint( traceback.format_exc() )
+    except Exception:
+        HydrusData.debug_print( traceback.format_exc() )
         
     finally:
-        
         print( 'This was version ' + str( HC.SOFTWARE_VERSION ) )
         
         if sys.stdin.isatty():
-            
             input( 'Press any key to exit.' )
-            
         
         if not everything_went_ok:
-            
             sys.exit( 1 )
-            
-        
-    

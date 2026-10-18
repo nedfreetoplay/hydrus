@@ -82,7 +82,7 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
     
     def _GenerateApplicationDicts( self ):
         
-        unsorted_dict = HydrusData.BuildKeyToListDict( ( master_service_id, ( index, application_service_id ) ) for ( master_service_id, index, application_service_id ) in self._Execute( 'SELECT master_service_id, service_index, application_service_id FROM tag_sibling_application;' ) )
+        unsorted_dict = HydrusData.build_key_to_list_dict( ( master_service_id, ( index, application_service_id ) ) for ( master_service_id, index, application_service_id ) in self._execute( 'SELECT master_service_id, service_index, application_service_id FROM tag_sibling_application;' ) )
         
         self._service_ids_to_applicable_service_ids = collections.defaultdict( list )
         
@@ -99,21 +99,21 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
             
         
     
-    def _GetInitialIndexGenerationDict( self ) -> dict:
+    def _get_initial_index_generation_dict( self ) -> dict:
         
         index_generation_dict = {}
         
         return index_generation_dict
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict( self ) -> dict:
         
         return {
             'main.tag_sibling_application' : ( 'CREATE TABLE IF NOT EXISTS {} ( master_service_id INTEGER, service_index INTEGER, application_service_id INTEGER, PRIMARY KEY ( master_service_id, service_index ) );', 414 )
         }
         
     
-    def _GetServiceIndexGenerationDict( self, service_id ) -> dict:
+    def _get_service_index_generation_dict( self, service_id ) -> dict:
         
         ( cache_ideal_tag_siblings_lookup_table_name, cache_actual_tag_siblings_lookup_table_name ) = GenerateTagSiblingsLookupCacheTableNames( service_id )
         
@@ -148,7 +148,7 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
         return index_generation_dict
         
     
-    def _GetServiceTableGenerationDict( self, service_id ) -> dict:
+    def _get_service_table_generation_dict( self, service_id ) -> dict:
         
         ( cache_ideal_tag_siblings_lookup_table_name, cache_actual_tag_siblings_lookup_table_name ) = GenerateTagSiblingsLookupCacheTableNames( service_id )
         statuses_to_storage_table_names = GenerateTagSiblingsStorageTableNames( service_id )
@@ -163,7 +163,7 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
         }
         
     
-    def _GetServiceTablePrefixes( self ):
+    def _get_service_table_prefixes( self ):
         
         return {
             TAG_SIBLINGS_IDEAL_PREFIX,
@@ -175,16 +175,16 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
         }
         
     
-    def _GetServiceIdsWeGenerateDynamicTablesFor( self ):
+    def _get_service_ids_we_generate_dynamic_tables_for( self ):
         
         return self.modules_services.GetServiceIds( HC.REAL_TAG_SERVICES )
         
     
-    def _RepairRepopulateTables( self, repopulate_table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper ):
+    def _repair_repopulate_tables( self, repopulate_table_names, cursor_transaction_wrapper: HydrusDBBase.DBCursorTransactionWrapper ):
         
-        for service_id in self._GetServiceIdsWeGenerateDynamicTablesFor():
+        for service_id in self._get_service_ids_we_generate_dynamic_tables_for():
             
-            table_generation_dict = self._GetServiceTableGenerationDict( service_id )
+            table_generation_dict = self._get_service_table_generation_dict( service_id )
             
             this_service_table_names = set( table_generation_dict.keys() )
             
@@ -197,7 +197,7 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
                 
                 self.Regen( ( service_id, ) )
                 
-                cursor_transaction_wrapper.CommitAndBegin()
+                cursor_transaction_wrapper.commit_and_begin()
                 
             
         
@@ -206,10 +206,10 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
         
         statuses_to_storage_table_names = GenerateTagSiblingsStorageTableNames( service_id )
         
-        self._ExecuteMany( f'DELETE FROM {statuses_to_storage_table_names[HC.CONTENT_STATUS_DELETED]} WHERE bad_tag_id = ? AND good_tag_id = ?;', pairs )
-        self._ExecuteMany( f'DELETE FROM {statuses_to_storage_table_names[HC.CONTENT_STATUS_PENDING]} WHERE bad_tag_id = ? AND good_tag_id = ?;', pairs )
+        self._execute_many( f'DELETE FROM {statuses_to_storage_table_names[HC.CONTENT_STATUS_DELETED]} WHERE bad_tag_id = ? AND good_tag_id = ?;', pairs )
+        self._execute_many( f'DELETE FROM {statuses_to_storage_table_names[HC.CONTENT_STATUS_PENDING]} WHERE bad_tag_id = ? AND good_tag_id = ?;', pairs )
         
-        self._ExecuteMany( f'INSERT OR IGNORE INTO {statuses_to_storage_table_names[HC.CONTENT_STATUS_CURRENT]} ( bad_tag_id, good_tag_id ) VALUES ( ?, ? );', pairs )
+        self._execute_many( f'INSERT OR IGNORE INTO {statuses_to_storage_table_names[HC.CONTENT_STATUS_CURRENT]} ( bad_tag_id, good_tag_id ) VALUES ( ?, ? );', pairs )
         
     
     def ClearActual( self, service_id, tag_ids = None ):
@@ -218,12 +218,12 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
         
         if tag_ids is None:
             
-            self._Execute( f'DELETE FROM {cache_actual_tag_sibling_lookup_table_name};' )
+            self._execute( f'DELETE FROM {cache_actual_tag_sibling_lookup_table_name};' )
             
         else:
             
-            self._ExecuteMany( f'DELETE FROM {cache_actual_tag_sibling_lookup_table_name} WHERE bad_tag_id = ?;', ( ( tag_id, ) for tag_id in tag_ids ) )
-            self._ExecuteMany( f'DELETE FROM {cache_actual_tag_sibling_lookup_table_name} WHERE ideal_tag_id = ?;', ( ( tag_id, ) for tag_id in tag_ids ) )
+            self._execute_many( f'DELETE FROM {cache_actual_tag_sibling_lookup_table_name} WHERE bad_tag_id = ?;', ( ( tag_id, ) for tag_id in tag_ids ) )
+            self._execute_many( f'DELETE FROM {cache_actual_tag_sibling_lookup_table_name} WHERE ideal_tag_id = ?;', ( ( tag_id, ) for tag_id in tag_ids ) )
             
         
         if service_id in self._service_ids_to_display_application_status:
@@ -236,18 +236,18 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
         
         statuses_to_storage_table_names = GenerateTagSiblingsStorageTableNames( service_id )
         
-        self._Execute( f'DELETE FROM {statuses_to_storage_table_names[ HC.CONTENT_STATUS_PENDING ]};' )
-        self._Execute( f'DELETE FROM {statuses_to_storage_table_names[ HC.CONTENT_STATUS_PETITIONED ]};' )
+        self._execute( f'DELETE FROM {statuses_to_storage_table_names[ HC.CONTENT_STATUS_PENDING ]};' )
+        self._execute( f'DELETE FROM {statuses_to_storage_table_names[ HC.CONTENT_STATUS_PETITIONED ]};' )
         
     
     def DeleteTagSiblings( self, service_id, pairs ):
         
         statuses_to_storage_table_names = GenerateTagSiblingsStorageTableNames( service_id )
         
-        self._ExecuteMany( f'DELETE FROM {statuses_to_storage_table_names[HC.CONTENT_STATUS_CURRENT]} WHERE bad_tag_id = ? AND good_tag_id = ?;', pairs )
-        self._ExecuteMany( f'DELETE FROM {statuses_to_storage_table_names[HC.CONTENT_STATUS_PETITIONED]} WHERE bad_tag_id = ? AND good_tag_id = ?;', pairs )
+        self._execute_many( f'DELETE FROM {statuses_to_storage_table_names[HC.CONTENT_STATUS_CURRENT]} WHERE bad_tag_id = ? AND good_tag_id = ?;', pairs )
+        self._execute_many( f'DELETE FROM {statuses_to_storage_table_names[HC.CONTENT_STATUS_PETITIONED]} WHERE bad_tag_id = ? AND good_tag_id = ?;', pairs )
         
-        self._ExecuteMany( f'INSERT OR IGNORE INTO {statuses_to_storage_table_names[HC.CONTENT_STATUS_DELETED]} ( bad_tag_id, good_tag_id ) VALUES ( ?, ? );', pairs )
+        self._execute_many( f'INSERT OR IGNORE INTO {statuses_to_storage_table_names[HC.CONTENT_STATUS_DELETED]} ( bad_tag_id, good_tag_id ) VALUES ( ?, ? );', pairs )
         
     
     def Drop( self, tag_service_id ):
@@ -262,8 +262,8 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
         self.modules_db_maintenance.DeferredDropTable( cache_actual_tag_siblings_lookup_table_name )
         self.modules_db_maintenance.DeferredDropTable( cache_ideal_tag_siblings_lookup_table_name )
         
-        self._Execute( 'DELETE FROM tag_sibling_application WHERE master_service_id = ?;', ( tag_service_id, ) )
-        self._Execute( 'DELETE FROM tag_sibling_application WHERE application_service_id = ?;', ( tag_service_id, ) )
+        self._execute( 'DELETE FROM tag_sibling_application WHERE master_service_id = ?;', ( tag_service_id, ) )
+        self._execute( 'DELETE FROM tag_sibling_application WHERE application_service_id = ?;', ( tag_service_id, ) )
         
         self._service_ids_to_applicable_service_ids = None
         self._service_ids_to_interested_service_ids = None
@@ -293,13 +293,13 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
         
         cache_tag_siblings_lookup_table_name = GenerateTagSiblingsLookupCacheTableName( display_type, tag_service_id )
         
-        with self._MakeTemporaryIntegerTable( tag_ids, 'tag_id' ) as temp_table_name:
+        with self._make_temporary_integer_table( tag_ids, 'tag_id' ) as temp_table_name:
             
             # keep these separate--older sqlite can't do cross join to an OR ON
             
             # temp tags to lookup
-            chain_tag_ids = self._STS( self._Execute( 'SELECT tag_id FROM {} CROSS JOIN {} ON ( bad_tag_id = tag_id );'.format( temp_table_name, cache_tag_siblings_lookup_table_name ) ) )
-            chain_tag_ids.update( self._STI( self._Execute( 'SELECT tag_id FROM {} CROSS JOIN {} ON ( ideal_tag_id = tag_id );'.format( temp_table_name, cache_tag_siblings_lookup_table_name ) ) ) )
+            chain_tag_ids = self._sts( self._execute( 'SELECT tag_id FROM {} CROSS JOIN {} ON ( bad_tag_id = tag_id );'.format( temp_table_name, cache_tag_siblings_lookup_table_name ) ) )
+            chain_tag_ids.update( self._sti( self._execute( 'SELECT tag_id FROM {} CROSS JOIN {} ON ( ideal_tag_id = tag_id );'.format( temp_table_name, cache_tag_siblings_lookup_table_name ) ) ) )
             
         
         return chain_tag_ids
@@ -314,8 +314,8 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
         # keep these separate--older sqlite can't do cross join to an OR ON
         
         # temp tags to lookup
-        self._Execute( 'INSERT OR IGNORE INTO {} SELECT ideal_tag_id FROM {} CROSS JOIN {} ON ( bad_tag_id = tag_id );'.format( results_table_name, tag_ids_table_name, cache_tag_siblings_lookup_table_name ) )
-        self._STI( self._Execute( 'INSERT OR IGNORE INTO {} SELECT ideal_tag_id FROM {} CROSS JOIN {} ON ( ideal_tag_id = tag_id );'.format( results_table_name, tag_ids_table_name, cache_tag_siblings_lookup_table_name ) ) )
+        self._execute( 'INSERT OR IGNORE INTO {} SELECT ideal_tag_id FROM {} CROSS JOIN {} ON ( bad_tag_id = tag_id );'.format( results_table_name, tag_ids_table_name, cache_tag_siblings_lookup_table_name ) )
+        self._sti( self._execute( 'INSERT OR IGNORE INTO {} SELECT ideal_tag_id FROM {} CROSS JOIN {} ON ( ideal_tag_id = tag_id );'.format( results_table_name, tag_ids_table_name, cache_tag_siblings_lookup_table_name ) ) )
         
     
     def FilterChainedIntoTable( self, display_type, tag_service_id, tag_ids_table_name, results_table_name ):
@@ -327,27 +327,27 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
         # keep these separate--older sqlite can't do cross join to an OR ON
         
         # temp tags to lookup
-        self._Execute( 'INSERT OR IGNORE INTO {} SELECT tag_id FROM {} CROSS JOIN {} ON ( bad_tag_id = tag_id );'.format( results_table_name, tag_ids_table_name, cache_tag_siblings_lookup_table_name ) )
-        self._STI( self._Execute( 'INSERT OR IGNORE INTO {} SELECT tag_id FROM {} CROSS JOIN {} ON ( ideal_tag_id = tag_id );'.format( results_table_name, tag_ids_table_name, cache_tag_siblings_lookup_table_name ) ) )
+        self._execute( 'INSERT OR IGNORE INTO {} SELECT tag_id FROM {} CROSS JOIN {} ON ( bad_tag_id = tag_id );'.format( results_table_name, tag_ids_table_name, cache_tag_siblings_lookup_table_name ) )
+        self._sti( self._execute( 'INSERT OR IGNORE INTO {} SELECT tag_id FROM {} CROSS JOIN {} ON ( ideal_tag_id = tag_id );'.format( results_table_name, tag_ids_table_name, cache_tag_siblings_lookup_table_name ) ) )
         
     
     def Generate( self, tag_service_id ):
         
-        table_generation_dict = self._GetServiceTableGenerationDict( tag_service_id )
+        table_generation_dict = self._get_service_table_generation_dict( tag_service_id )
         
         for ( table_name, ( create_query_without_name, version_added ) ) in table_generation_dict.items():
             
-            self._CreateTable( create_query_without_name, table_name )
+            self._create_table( create_query_without_name, table_name )
             
         
-        index_generation_dict = self._GetServiceIndexGenerationDict( tag_service_id )
+        index_generation_dict = self._get_service_index_generation_dict( tag_service_id )
         
-        for ( table_name, columns, unique, version_added ) in self._FlattenIndexGenerationDict( index_generation_dict ):
+        for ( table_name, columns, unique, version_added ) in self._flatten_index_generation_dict( index_generation_dict ):
             
-            self._CreateIndex( table_name, columns, unique = unique )
+            self._create_index( table_name, columns, unique = unique )
             
         
-        self._Execute( 'INSERT OR IGNORE INTO tag_sibling_application ( master_service_id, service_index, application_service_id ) VALUES ( ?, ?, ? );', ( tag_service_id, 0, tag_service_id ) )
+        self._execute( 'INSERT OR IGNORE INTO tag_sibling_application ( master_service_id, service_index, application_service_id ) VALUES ( ?, ?, ? );', ( tag_service_id, 0, tag_service_id ) )
         
         self._service_ids_to_applicable_service_ids = None
         self._service_ids_to_interested_service_ids = None
@@ -361,8 +361,8 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
         
         tag_ids = set()
         
-        tag_ids.update( self._STI( self._Execute( 'SELECT DISTINCT bad_tag_id FROM {};'.format( cache_tag_siblings_lookup_table_name ) ) ) )
-        tag_ids.update( self._STI( self._Execute( 'SELECT ideal_tag_id FROM {};'.format( cache_tag_siblings_lookup_table_name ) ) ) )
+        tag_ids.update( self._sti( self._execute( 'SELECT DISTINCT bad_tag_id FROM {};'.format( cache_tag_siblings_lookup_table_name ) ) ) )
+        tag_ids.update( self._sti( self._execute( 'SELECT ideal_tag_id FROM {};'.format( cache_tag_siblings_lookup_table_name ) ) ) )
         
         return tag_ids
         
@@ -412,8 +412,8 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
             
             ( cache_ideal_tag_siblings_lookup_table_name, cache_actual_tag_siblings_lookup_table_name ) = GenerateTagSiblingsLookupCacheTableNames( service_id )
             
-            actual_sibling_rows = set( self._Execute( 'SELECT bad_tag_id, ideal_tag_id FROM {};'.format( cache_actual_tag_siblings_lookup_table_name ) ) )
-            ideal_sibling_rows = set( self._Execute( 'SELECT bad_tag_id, ideal_tag_id FROM {};'.format( cache_ideal_tag_siblings_lookup_table_name ) ) )
+            actual_sibling_rows = set( self._execute( 'SELECT bad_tag_id, ideal_tag_id FROM {};'.format( cache_actual_tag_siblings_lookup_table_name ) ) )
+            ideal_sibling_rows = set( self._execute( 'SELECT bad_tag_id, ideal_tag_id FROM {};'.format( cache_ideal_tag_siblings_lookup_table_name ) ) )
             
             sibling_rows_to_remove = actual_sibling_rows.difference( ideal_sibling_rows )
             sibling_rows_to_add = ideal_sibling_rows.difference( actual_sibling_rows )
@@ -430,7 +430,7 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
         
         cache_tag_siblings_lookup_table_name = GenerateTagSiblingsLookupCacheTableName( display_type, tag_service_id )
         
-        sibling_tag_ids = self._STS( self._Execute( 'SELECT bad_tag_id FROM {} WHERE ideal_tag_id = ?;'.format( cache_tag_siblings_lookup_table_name ), ( ideal_tag_id, ) ) )
+        sibling_tag_ids = self._sts( self._execute( 'SELECT bad_tag_id FROM {} WHERE ideal_tag_id = ?;'.format( cache_tag_siblings_lookup_table_name ), ( ideal_tag_id, ) ) )
         
         sibling_tag_ids.add( ideal_tag_id )
         
@@ -452,10 +452,10 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
         
         cache_tag_siblings_lookup_table_name = GenerateTagSiblingsLookupCacheTableName( display_type, tag_service_id )
         
-        with self._MakeTemporaryIntegerTable( ideal_tag_ids, 'ideal_tag_id' ) as temp_table_name:
+        with self._make_temporary_integer_table( ideal_tag_ids, 'ideal_tag_id' ) as temp_table_name:
             
             # temp tags to lookup
-            sibling_tag_ids = self._STS( self._Execute( 'SELECT bad_tag_id FROM {} CROSS JOIN {} USING ( ideal_tag_id );'.format( temp_table_name, cache_tag_siblings_lookup_table_name ) ) )
+            sibling_tag_ids = self._sts( self._execute( 'SELECT bad_tag_id FROM {} CROSS JOIN {} USING ( ideal_tag_id );'.format( temp_table_name, cache_tag_siblings_lookup_table_name ) ) )
             
         
         sibling_tag_ids.update( ideal_tag_ids )
@@ -467,10 +467,10 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
         
         cache_tag_siblings_lookup_table_name = GenerateTagSiblingsLookupCacheTableName( display_type, tag_service_id )
         
-        self._Execute( 'INSERT OR IGNORE INTO {} ( tag_id ) SELECT ideal_tag_id FROM {};'.format( results_table_name, ideal_tag_ids_table_name ) )
+        self._execute( 'INSERT OR IGNORE INTO {} ( tag_id ) SELECT ideal_tag_id FROM {};'.format( results_table_name, ideal_tag_ids_table_name ) )
         
         # tags to lookup
-        self._Execute( 'INSERT OR IGNORE INTO {} ( tag_id ) SELECT bad_tag_id FROM {} CROSS JOIN {} USING ( ideal_tag_id );'.format( results_table_name, ideal_tag_ids_table_name, cache_tag_siblings_lookup_table_name ) )
+        self._execute( 'INSERT OR IGNORE INTO {} ( tag_id ) SELECT bad_tag_id FROM {} CROSS JOIN {} USING ( ideal_tag_id );'.format( results_table_name, ideal_tag_ids_table_name, cache_tag_siblings_lookup_table_name ) )
         
     
     def GetIdeals( self, tag_display_type, service_key, tags ) -> set[ str ]:
@@ -516,7 +516,7 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
         
         cache_tag_siblings_lookup_table_name = GenerateTagSiblingsLookupCacheTableName( display_type, tag_service_id )
         
-        result = self._Execute( 'SELECT ideal_tag_id FROM {} WHERE bad_tag_id = ?;'.format( cache_tag_siblings_lookup_table_name ), ( tag_id, ) ).fetchone()
+        result = self._execute( 'SELECT ideal_tag_id FROM {} WHERE bad_tag_id = ?;'.format( cache_tag_siblings_lookup_table_name ), ( tag_id, ) ).fetchone()
         
         if result is None:
             
@@ -550,11 +550,11 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
         
         cache_tag_siblings_lookup_table_name = GenerateTagSiblingsLookupCacheTableName( display_type, tag_service_id )
         
-        with self._MakeTemporaryIntegerTable( tag_ids, 'tag_id' ) as temp_tag_ids_table_name:
+        with self._make_temporary_integer_table( tag_ids, 'tag_id' ) as temp_tag_ids_table_name:
             
             magic_case = 'CASE WHEN ideal_tag_id NOT NULL THEN ideal_tag_id ELSE tag_id END'
             
-            cursor = self._Execute(
+            cursor = self._execute(
                 'SELECT {} FROM {} LEFT OUTER JOIN {} ON ( tag_id = bad_tag_id );'.format(
                     magic_case,
                     temp_tag_ids_table_name,
@@ -562,7 +562,7 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
                 )
             )
             
-            return self._STS( cursor )
+            return self._sts( cursor )
             
         
         '''
@@ -591,7 +591,7 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
         
         magic_case = 'CASE WHEN ideal_tag_id NOT NULL THEN ideal_tag_id ELSE tag_id END'
         
-        cursor = self._Execute(
+        cursor = self._execute(
             'INSERT OR IGNORE INTO {} ( ideal_tag_id ) SELECT {} FROM {} LEFT OUTER JOIN {} ON ( tag_id = bad_tag_id );'.format(
                 results_table_name,
                 magic_case,
@@ -600,7 +600,7 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
             )
         )
         
-        return self._STS( cursor )
+        return self._sts( cursor )
         
     
     def GetIdealTagIdsToChains( self, display_type, tag_service_id, ideal_tag_ids ):
@@ -622,10 +622,10 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
         
         cache_tag_siblings_lookup_table_name = GenerateTagSiblingsLookupCacheTableName( display_type, tag_service_id )
         
-        with self._MakeTemporaryIntegerTable( ideal_tag_ids, 'ideal_tag_id' ) as temp_table_name:
+        with self._make_temporary_integer_table( ideal_tag_ids, 'ideal_tag_id' ) as temp_table_name:
             
             # temp tags to lookup
-            ideal_tag_ids_to_chain_members = HydrusData.BuildKeyToSetDict( self._Execute( 'SELECT ideal_tag_id, bad_tag_id FROM {} CROSS JOIN {} USING ( ideal_tag_id );'.format( temp_table_name, cache_tag_siblings_lookup_table_name ) ) )
+            ideal_tag_ids_to_chain_members = HydrusData.build_key_to_set_dict( self._execute( 'SELECT ideal_tag_id, bad_tag_id FROM {} CROSS JOIN {} USING ( ideal_tag_id );'.format( temp_table_name, cache_tag_siblings_lookup_table_name ) ) )
             
         
         # this returns ideal in the chain, and chains of size 1
@@ -652,7 +652,7 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
         
         statuses_to_storage_table_names = GenerateTagSiblingsStorageTableNames( service_id )
         
-        ( info, ) = self._Execute( f'SELECT COUNT( * ) FROM {statuses_to_storage_table_names[ HC.CONTENT_STATUS_PENDING ]};' ).fetchone()
+        ( info, ) = self._execute( f'SELECT COUNT( * ) FROM {statuses_to_storage_table_names[ HC.CONTENT_STATUS_PENDING ]};' ).fetchone()
         
         return info
         
@@ -661,18 +661,18 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
         
         statuses_to_storage_table_names = GenerateTagSiblingsStorageTableNames( service_id )
         
-        ( info, ) = self._Execute( f'SELECT COUNT( * ) FROM {statuses_to_storage_table_names[ HC.CONTENT_STATUS_PETITIONED ]};' ).fetchone()
+        ( info, ) = self._execute( f'SELECT COUNT( * ) FROM {statuses_to_storage_table_names[ HC.CONTENT_STATUS_PETITIONED ]};' ).fetchone()
         
         return info
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         tables_and_columns = []
         
         if content_type == HC.CONTENT_TYPE_TAG:
             
-            for service_id in self._GetServiceIdsWeGenerateDynamicTablesFor():
+            for service_id in self._get_service_ids_we_generate_dynamic_tables_for():
                 
                 for table_name in GenerateTagSiblingsStorageTableNames( service_id ).values():
                     
@@ -714,10 +714,10 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
         no_ideal_found_tag_ids = set( tag_ids )
         tag_ids_to_ideal_tag_ids = {}
         
-        with self._MakeTemporaryIntegerTable( tag_ids, 'tag_id' ) as temp_table_name:
+        with self._make_temporary_integer_table( tag_ids, 'tag_id' ) as temp_table_name:
             
             # temp tags to lookup
-            for ( tag_id, ideal_tag_id ) in self._Execute( 'SELECT tag_id, ideal_tag_id FROM {} CROSS JOIN {} ON ( bad_tag_id = tag_id );'.format( temp_table_name, cache_tag_siblings_lookup_table_name ) ):
+            for ( tag_id, ideal_tag_id ) in self._execute( 'SELECT tag_id, ideal_tag_id FROM {} CROSS JOIN {} ON ( bad_tag_id = tag_id );'.format( temp_table_name, cache_tag_siblings_lookup_table_name ) ):
                 
                 no_ideal_found_tag_ids.discard( tag_id )
                 tag_ids_to_ideal_tag_ids[ tag_id ] = ideal_tag_id
@@ -786,7 +786,7 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
         
         cache_tag_siblings_lookup_table_name = GenerateTagSiblingsLookupCacheTableName( ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, tag_service_id )
         
-        pair_ids = self._Execute( 'SELECT bad_tag_id, ideal_tag_id FROM {};'.format( cache_tag_siblings_lookup_table_name ) ).fetchall()
+        pair_ids = self._execute( 'SELECT bad_tag_id, ideal_tag_id FROM {};'.format( cache_tag_siblings_lookup_table_name ) ).fetchall()
         
         all_tag_ids = set( itertools.chain.from_iterable( pair_ids ) )
         
@@ -820,7 +820,7 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
                 
                 for query in queries:
                     
-                    for pair in self._Execute( query ):
+                    for pair in self._execute( query ):
                         
                         tag_ids.update( pair )
                         
@@ -862,7 +862,7 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
         
         for ( status, table_name ) in statuses_to_storage_table_names.items():
             
-            statuses_to_pair_ids[ status ] = sorted( self._Execute( f'SELECT bad_tag_id, good_tag_id FROM {table_name};' ).fetchall() )
+            statuses_to_pair_ids[ status ] = sorted( self._execute( f'SELECT bad_tag_id, good_tag_id FROM {table_name};' ).fetchall() )
             
         
         return statuses_to_pair_ids
@@ -882,7 +882,7 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
             loop_tag_ids = set( next_tag_ids )
             next_tag_ids = set()
             
-            with self._MakeTemporaryIntegerTable( loop_tag_ids, 'tag_id' ) as temp_next_tag_ids_table_name:
+            with self._make_temporary_integer_table( loop_tag_ids, 'tag_id' ) as temp_next_tag_ids_table_name:
                 
                 # keep these separate--older sqlite can't do cross join to an OR ON
                 # ALSO ditching UNION, which perhaps was not helping!
@@ -899,7 +899,7 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
                     
                     for query in queries:
                         
-                        for pair in self._Execute( query ):
+                        for pair in self._execute( query ):
                             
                             unsorted_statuses_to_pair_ids[ status ].add( pair )
                             
@@ -925,7 +925,7 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
         
         cache_tag_siblings_lookup_table_name = GenerateTagSiblingsLookupCacheTableName( display_type, tag_service_id )
         
-        return self._Execute( 'SELECT 1 FROM {} WHERE bad_tag_id = ? OR ideal_tag_id = ?;'.format( cache_tag_siblings_lookup_table_name ), ( tag_id, tag_id ) ).fetchone() is not None
+        return self._execute( 'SELECT 1 FROM {} WHERE bad_tag_id = ? OR ideal_tag_id = ?;'.format( cache_tag_siblings_lookup_table_name ), ( tag_id, tag_id ) ).fetchone() is not None
         
     
     def NotifySiblingAddRowSynced( self, tag_service_id, row ):
@@ -958,28 +958,28 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
         
         statuses_to_storage_table_names = GenerateTagSiblingsStorageTableNames( service_id )
         
-        self._ExecuteMany( f'REPLACE INTO {statuses_to_storage_table_names[ HC.CONTENT_STATUS_PENDING ]} ( bad_tag_id, good_tag_id, reason_id ) VALUES ( ?, ?, ? );', triples )
+        self._execute_many( f'REPLACE INTO {statuses_to_storage_table_names[ HC.CONTENT_STATUS_PENDING ]} ( bad_tag_id, good_tag_id, reason_id ) VALUES ( ?, ?, ? );', triples )
         
     
     def PetitionTagSiblings( self, service_id, triples ):
         
         statuses_to_storage_table_names = GenerateTagSiblingsStorageTableNames( service_id )
         
-        self._ExecuteMany( f'REPLACE INTO {statuses_to_storage_table_names[ HC.CONTENT_STATUS_PETITIONED ]} ( bad_tag_id, good_tag_id, reason_id ) VALUES ( ?, ?, ? );', triples )
+        self._execute_many( f'REPLACE INTO {statuses_to_storage_table_names[ HC.CONTENT_STATUS_PETITIONED ]} ( bad_tag_id, good_tag_id, reason_id ) VALUES ( ?, ?, ? );', triples )
         
     
     def RescindPendingTagSiblings( self, service_id, pairs ):
         
         statuses_to_storage_table_names = GenerateTagSiblingsStorageTableNames( service_id )
         
-        self._ExecuteMany( f'DELETE FROM {statuses_to_storage_table_names[ HC.CONTENT_STATUS_PENDING ]} WHERE bad_tag_id = ? AND good_tag_id = ?;', pairs )
+        self._execute_many( f'DELETE FROM {statuses_to_storage_table_names[ HC.CONTENT_STATUS_PENDING ]} WHERE bad_tag_id = ? AND good_tag_id = ?;', pairs )
         
     
     def RescindPetitionedTagSiblings( self, service_id, pairs ):
         
         statuses_to_storage_table_names = GenerateTagSiblingsStorageTableNames( service_id )
         
-        self._ExecuteMany( f'DELETE FROM {statuses_to_storage_table_names[ HC.CONTENT_STATUS_PETITIONED ]} WHERE bad_tag_id = ? AND good_tag_id = ?;', pairs )
+        self._execute_many( f'DELETE FROM {statuses_to_storage_table_names[ HC.CONTENT_STATUS_PETITIONED ]} WHERE bad_tag_id = ? AND good_tag_id = ?;', pairs )
         
     
     def Regen( self, tag_service_ids ):
@@ -988,7 +988,7 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
             
             cache_tag_siblings_lookup_table_name = GenerateTagSiblingsLookupCacheTableName( ClientTags.TAG_DISPLAY_DISPLAY_IDEAL, tag_service_id )
             
-            self._Execute( 'DELETE FROM {};'.format( cache_tag_siblings_lookup_table_name ) )
+            self._execute( 'DELETE FROM {};'.format( cache_tag_siblings_lookup_table_name ) )
             
             applicable_service_ids = self.GetApplicableServiceIds( tag_service_id )
             
@@ -1016,7 +1016,7 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
                     
                 
             
-            self._ExecuteMany( 'INSERT OR IGNORE INTO {} ( bad_tag_id, ideal_tag_id ) VALUES ( ?, ? );'.format( cache_tag_siblings_lookup_table_name ), tss.GetBadTagsToIdealTags().items() )
+            self._execute_many( 'INSERT OR IGNORE INTO {} ( bad_tag_id, ideal_tag_id ) VALUES ( ?, ? );'.format( cache_tag_siblings_lookup_table_name ), tss.GetBadTagsToIdealTags().items() )
             
             if tag_service_id in self._service_ids_to_display_application_status:
                 
@@ -1051,10 +1051,10 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
             
             if tag_service_id in self._service_ids_to_applicable_service_ids:
                 
-                with self._MakeTemporaryIntegerTable( tag_ids_to_clear_and_regen, 'tag_id' ) as temp_tag_ids_table_name:
+                with self._make_temporary_integer_table( tag_ids_to_clear_and_regen, 'tag_id' ) as temp_tag_ids_table_name:
                     
-                    stuff_deleted = set( self._Execute( f'SELECT bad_tag_id, ideal_tag_id FROM {temp_tag_ids_table_name} CROSS JOIN {cache_tag_siblings_lookup_table_name} ON ( bad_tag_id = tag_id );' ) )
-                    stuff_deleted.update( self._Execute( f'SELECT bad_tag_id, ideal_tag_id FROM {temp_tag_ids_table_name} CROSS JOIN {cache_tag_siblings_lookup_table_name} ON ( ideal_tag_id = tag_id );' ) )
+                    stuff_deleted = set( self._execute( f'SELECT bad_tag_id, ideal_tag_id FROM {temp_tag_ids_table_name} CROSS JOIN {cache_tag_siblings_lookup_table_name} ON ( bad_tag_id = tag_id );' ) )
+                    stuff_deleted.update( self._execute( f'SELECT bad_tag_id, ideal_tag_id FROM {temp_tag_ids_table_name} CROSS JOIN {cache_tag_siblings_lookup_table_name} ON ( ideal_tag_id = tag_id );' ) )
                     
                 
             else:
@@ -1062,8 +1062,8 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
                 stuff_deleted = set()
                 
             
-            self._ExecuteMany( f'DELETE FROM {cache_tag_siblings_lookup_table_name} WHERE bad_tag_id = ?;', ( ( tag_id, ) for tag_id in tag_ids_to_clear_and_regen ) )
-            self._ExecuteMany( f'DELETE FROM {cache_tag_siblings_lookup_table_name} WHERE ideal_tag_id = ?;', ( ( tag_id, ) for tag_id in tag_ids_to_clear_and_regen ) )
+            self._execute_many( f'DELETE FROM {cache_tag_siblings_lookup_table_name} WHERE bad_tag_id = ?;', ( ( tag_id, ) for tag_id in tag_ids_to_clear_and_regen ) )
+            self._execute_many( f'DELETE FROM {cache_tag_siblings_lookup_table_name} WHERE ideal_tag_id = ?;', ( ( tag_id, ) for tag_id in tag_ids_to_clear_and_regen ) )
             
             applicable_tag_service_ids = self.GetApplicableServiceIds( tag_service_id )
             
@@ -1093,7 +1093,7 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
             
             stuff_added = set( tss.GetBadTagsToIdealTags().items() )
             
-            self._ExecuteMany( 'INSERT OR IGNORE INTO {} ( bad_tag_id, ideal_tag_id ) VALUES ( ?, ? );'.format( cache_tag_siblings_lookup_table_name ), stuff_added )
+            self._execute_many( 'INSERT OR IGNORE INTO {} ( bad_tag_id, ideal_tag_id ) VALUES ( ?, ? );'.format( cache_tag_siblings_lookup_table_name ), stuff_added )
             
             if tag_service_id in self._service_ids_to_display_application_status:
                 
@@ -1157,9 +1157,9 @@ class ClientDBTagSiblings( ClientDBModule.ClientDBModule ):
                 
             
         
-        self._Execute( 'DELETE FROM tag_sibling_application;' )
+        self._execute( 'DELETE FROM tag_sibling_application;' )
         
-        self._ExecuteMany( 'INSERT OR IGNORE INTO tag_sibling_application ( master_service_id, service_index, application_service_id ) VALUES ( ?, ?, ? );', inserts )
+        self._execute_many( 'INSERT OR IGNORE INTO tag_sibling_application ( master_service_id, service_index, application_service_id ) VALUES ( ?, ?, ? );', inserts )
         
         self._service_ids_to_applicable_service_ids = None
         self._service_ids_to_interested_service_ids = None

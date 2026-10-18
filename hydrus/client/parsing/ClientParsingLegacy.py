@@ -76,20 +76,20 @@ class ParseNodeContentLink( HydrusSerialisable.SerialisableBase ):
         self._children = children
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_formula = self._formula.GetSerialisableTuple()
-        serialisable_children = [ child.GetSerialisableTuple() for child in self._children ]
+        serialisable_formula = self._formula.get_serialisable_tuple()
+        serialisable_children = [ child.get_serialisable_tuple() for child in self._children ]
         
         return ( self._name, serialisable_formula, serialisable_children )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( self._name, serialisable_formula, serialisable_children ) = serialisable_info
         
-        self._formula = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_formula )
-        self._children = [ HydrusSerialisable.CreateFromSerialisableTuple( serialisable_child ) for serialisable_child in serialisable_children ]
+        self._formula = HydrusSerialisable.create_from_serialisable_tuple( serialisable_formula )
+        self._children = [ HydrusSerialisable.create_from_serialisable_tuple( serialisable_child ) for serialisable_child in serialisable_children ]
         
     
     def GetParsableContentDescriptions( self ):
@@ -112,7 +112,7 @@ class ParseNodeContentLink( HydrusSerialisable.SerialisableBase ):
         
         for search_url in search_urls:
             
-            job_status.SetVariable( 'script_status', 'fetching ' + HydrusText.ElideText( search_url, 32 ) )
+            job_status.SetVariable( 'script_status', 'fetching ' + HydrusText.elide_text( search_url, 32 ) )
             
             network_job = ClientNetworkingJobs.NetworkJob( 'GET', search_url, referral_url = referral_url )
             
@@ -142,8 +142,8 @@ class ParseNodeContentLink( HydrusSerialisable.SerialisableBase ):
                     
                     job_status.SetVariable( 'script_status', 'Network error! Details written to log.' )
                     
-                    HydrusData.Print( 'Problem fetching ' + HydrusText.ElideText( search_url, 256 ) + ':' )
-                    HydrusData.PrintException( e )
+                    HydrusData.safe_print( 'Problem fetching ' + HydrusText.elide_text( search_url, 256 ) + ':' )
+                    HydrusData.print_exception( e )
                     
                     time.sleep( 2 )
                     
@@ -252,7 +252,7 @@ class LookupScriptsCache( object ):
                 
                 self._need_to_refresh.clear()
                 
-                self._scripts = CG.client_controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_PARSE_ROOT_FILE_LOOKUP )
+                self._scripts = CG.client_controller.read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_PARSE_ROOT_FILE_LOOKUP )
                 
             
             return list( self._scripts )
@@ -282,23 +282,23 @@ class ParseRootFileLookup( HydrusSerialisable.SerialisableBaseNamed ):
         self._children = children
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_children = [ child.GetSerialisableTuple() for child in self._children ]
-        serialisable_file_identifier_string_converter = self._file_identifier_string_converter.GetSerialisableTuple()
+        serialisable_children = [ child.get_serialisable_tuple() for child in self._children ]
+        serialisable_file_identifier_string_converter = self._file_identifier_string_converter.get_serialisable_tuple()
         
         return ( self._url, self._query_type, self._file_identifier_type, serialisable_file_identifier_string_converter, self._file_identifier_arg_name, self._static_args, serialisable_children )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( self._url, self._query_type, self._file_identifier_type, serialisable_file_identifier_string_converter, self._file_identifier_arg_name, self._static_args, serialisable_children ) = serialisable_info
         
-        self._children = [ HydrusSerialisable.CreateFromSerialisableTuple( serialisable_child ) for serialisable_child in serialisable_children ]
-        self._file_identifier_string_converter = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_file_identifier_string_converter )
+        self._children = [ HydrusSerialisable.create_from_serialisable_tuple( serialisable_child ) for serialisable_child in serialisable_children ]
+        self._file_identifier_string_converter = HydrusSerialisable.create_from_serialisable_tuple( serialisable_file_identifier_string_converter )
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -321,7 +321,7 @@ class ParseRootFileLookup( HydrusSerialisable.SerialisableBaseNamed ):
             
             file_identifier_string_converter = ClientStrings.StringConverter( conversions, 'some hash bytes' )
             
-            serialisable_file_identifier_string_converter = file_identifier_string_converter.GetSerialisableTuple()
+            serialisable_file_identifier_string_converter = file_identifier_string_converter.get_serialisable_tuple()
             
             new_serialisable_info = ( url, query_type, file_identifier_type, serialisable_file_identifier_string_converter, file_identifier_arg_name, static_args, serialisable_children )
             
@@ -358,7 +358,7 @@ class ParseRootFileLookup( HydrusSerialisable.SerialisableBaseNamed ):
             
             try:
                 
-                source_to_desired = CG.client_controller.Read( 'file_hashes', ( sha256_hash, ), 'sha256', hash_type )
+                source_to_desired = CG.client_controller.read( 'file_hashes', ( sha256_hash, ), 'sha256', hash_type )
                 
                 other_hash = list( source_to_desired.values() )[0]
                 
@@ -413,7 +413,7 @@ class ParseRootFileLookup( HydrusSerialisable.SerialisableBaseNamed ):
             
             full_request_url = self._url + '?' + ClientNetworkingFunctions.ConvertQueryDictToText( request_args, single_value_parameters )
             
-            job_status.SetVariable( 'script_status', 'fetching ' + HydrusText.ElideText( full_request_url, 32 ) )
+            job_status.SetVariable( 'script_status', 'fetching ' + HydrusText.elide_text( full_request_url, 32 ) )
             
             job_status.AddURL( full_request_url )
             
@@ -490,7 +490,7 @@ class ParseRootFileLookup( HydrusSerialisable.SerialisableBaseNamed ):
             
             job_status.SetVariable( 'script_status', 'Network error!' )
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             raise
             
@@ -556,7 +556,7 @@ class ParseRootFileLookup( HydrusSerialisable.SerialisableBaseNamed ):
             
         finally:
             
-            job_status.Finish()
+            job_status.finish()
             
         
     
@@ -575,7 +575,7 @@ class ParseRootFileLookup( HydrusSerialisable.SerialisableBaseNamed ):
             
         else:
             
-            job_status.SetVariable( 'script_status', f'Found {HydrusNumbers.ToHumanInt( len( parsed_post ) )} rows.' )
+            job_status.SetVariable( 'script_status', f'Found {HydrusNumbers.to_human_int( len( parsed_post ) )} rows.' )
             
         
         return parsed_post

@@ -158,7 +158,7 @@ class VolumeControl( QW.QWidget ):
         
         super().resizeEvent( event )
         
-        CG.client_controller.CallAfterQtSafe( self, self._popup_window.DoShowHide )
+        CG.client_controller.call_after_qt_safe( self, self._popup_window.DoShowHide )
         
     
     def setVisible( self, *args, **kwargs ):

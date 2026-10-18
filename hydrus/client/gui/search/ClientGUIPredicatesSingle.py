@@ -1240,7 +1240,7 @@ class PanelPredicateSystemHash( PanelPredicateSystemSingle ):
                 
                 error_block = reason
                 error_block += '\n\n'
-                error_block += HydrusText.ConvertManyStringsToNiceInsertableHumanSummarySingleLine( list_of_lines, 'lines', do_sort = False )
+                error_block += HydrusText.convert_many_strings_to_nice_insertable_human_summary_single_line( list_of_lines, 'lines', do_sort = False )
                 
                 error_blocks.append( error_block )
                 
@@ -1334,7 +1334,7 @@ class PanelPredicateSystemHash( PanelPredicateSystemSingle ):
                     
                     error_block = reason
                     error_block += '\n'
-                    error_block += HydrusText.ConvertManyStringsToNiceInsertableHumanSummarySingleLine( list_of_lines, 'lines', do_sort = False )
+                    error_block += HydrusText.convert_many_strings_to_nice_insertable_human_summary_single_line( list_of_lines, 'lines', do_sort = False )
                     
                     error_blocks.append( error_block )
                     
@@ -2934,21 +2934,21 @@ class PanelPredicateSystemSimilarToData( PanelPredicateSystemSingle ):
     
     def _Paste( self ):
         
-        if CG.client_controller.ClipboardHasImage():
+        if CG.client_controller.clipboard_has_image():
             
             try:
                 
-                qt_image = CG.client_controller.GetClipboardImage()
+                qt_image = CG.client_controller.get_clipboard_image()
                 
                 numpy_image = ClientGUIFunctionsImage.ConvertQtImageToNumPy( qt_image )
                 
-                pixel_hash = HydrusImageHandling.GetImagePixelHashNumPy( numpy_image )
+                pixel_hash = HydrusImageHandling.get_image_pixel_hash_numpy( numpy_image )
                 
                 perceptual_hashes = { ClientImagePerceptualHashes.GenerateShapePerceptualHashNumPy( numpy_image ) }
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', f'Sorry, seemed to be a problem: {e}' )
                 
@@ -2957,9 +2957,9 @@ class PanelPredicateSystemSimilarToData( PanelPredicateSystemSingle ):
             
         else:
             
-            if CG.client_controller.ClipboardHasLocalPaths():
+            if CG.client_controller.clipboard_has_local_paths():
                 
-                paths = CG.client_controller.GetClipboardLocalPaths()
+                paths = CG.client_controller.get_clipboard_local_paths()
                 
                 if len( paths ) == 0:
                     
@@ -2974,7 +2974,7 @@ class PanelPredicateSystemSimilarToData( PanelPredicateSystemSingle ):
                 
                 try:
                     
-                    raw_text = CG.client_controller.GetClipboardText()
+                    raw_text = CG.client_controller.get_clipboard_text()
                     
                 except HydrusExceptions.DataMissing as e:
                     
@@ -2990,11 +2990,11 @@ class PanelPredicateSystemSimilarToData( PanelPredicateSystemSingle ):
                 
                 if os.path.exists( path ) and os.path.isfile( path ):
                     
-                    mime = HydrusFileHandling.GetMime( path )
+                    mime = HydrusFileHandling.get_mime( path )
                     
                     if mime in HC.FILES_THAT_HAVE_PERCEPTUAL_HASH:
                         
-                        pixel_hash = HydrusImageHandling.GetImagePixelHash( path, mime )
+                        pixel_hash = HydrusImageHandling.get_image_pixel_hash( path, mime )
                         
                         perceptual_hashes = ClientImagePerceptualHashes.GenerateShapePerceptualHashes( path, mime )
                         
@@ -3014,7 +3014,7 @@ class PanelPredicateSystemSimilarToData( PanelPredicateSystemSingle ):
                 
             except Exception as e:
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', f'Sorry, seemed to be a problem: {e}' )
                 
@@ -3026,7 +3026,7 @@ class PanelPredicateSystemSimilarToData( PanelPredicateSystemSingle ):
         
         new_text_lines.append( pixel_hash.hex() )
         
-        new_text_lines = HydrusLists.DedupeList( new_text_lines )
+        new_text_lines = HydrusLists.dedupe_list( new_text_lines )
         
         self._pixel_hashes.setPlainText( '\n'.join( new_text_lines ) )
         
@@ -3034,7 +3034,7 @@ class PanelPredicateSystemSimilarToData( PanelPredicateSystemSingle ):
         
         new_text_lines.extend( [ perceptual_hash.hex() for perceptual_hash in perceptual_hashes ] )
         
-        new_text_lines = HydrusLists.DedupeList( new_text_lines )
+        new_text_lines = HydrusLists.dedupe_list( new_text_lines )
         
         self._perceptual_hashes.setPlainText( '\n'.join( new_text_lines ) )
         
@@ -3343,9 +3343,9 @@ class PanelPredicateSystemTagAdvanced( PanelPredicateSystemSingle ):
         
         try:
             
-            tag = HydrusTags.CleanTag( tag )
+            tag = HydrusTags.clean_tag( tag )
             
-            HydrusTags.CheckTagNotEmpty( tag )
+            HydrusTags.check_tag_not_empty( tag )
             
         except Exception as e:
             

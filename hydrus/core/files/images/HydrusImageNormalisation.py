@@ -17,7 +17,7 @@ PIL_SRGB_PROFILE = PILImageCms.createProfile( 'sRGB' )
 
 DO_ICC_PROFILE_NORMALISATION = True
 
-def GetLinearGammaFromPILPNG( pil_image: PILImage.Image ):
+def get_linear_gamma_from_pil_png(pil_image: PILImage.Image):
     
     # gamma is actually independant from 'chromaticity' metadata and _can_ be missing
     # there is no perfect thing to do here, but 0.45455, which is inverse of 2.2, is the best fallback
@@ -29,19 +29,17 @@ def GetLinearGammaFromPILPNG( pil_image: PILImage.Image ):
     else:
         
         return 0.45455
-        
-    
 
-def ConvertGammaChromaticityPNGToSRGB( pil_image ):
+def convert_gamma_chromaticity_png_to_srgb(pil_image):
     
     # this is no longer used. it is ten times slower than the ICC Profile solution and may be unstable for very large images
     
-    if not PILImageIsPNGWithGammaAndChromaticity( pil_image ):
+    if not pil_image_is_png_with_gamma_and_chromaticity( pil_image ):
         
         return pil_image
         
     
-    linear_gamma = GetLinearGammaFromPILPNG( pil_image )
+    linear_gamma = get_linear_gamma_from_pil_png( pil_image )
     
     display_gamma = 1 / linear_gamma # 2.2
     
@@ -153,11 +151,10 @@ def ConvertGammaChromaticityPNGToSRGB( pil_image ):
     converted_pil_image = converted_pil_image_modeless.convert( pil_image.mode ) # probably a no-op
     
     return converted_pil_image
-    
 
-def GenerateICCProfileBytesFromGammaAndChromaticityPNG( pil_image: PILImage.Image ):
+def generate_icc_profile_bytes_from_gamma_and_chromaticity_png(pil_image: PILImage.Image):
     
-    linear_gamma = GetLinearGammaFromPILPNG( pil_image )
+    linear_gamma = get_linear_gamma_from_pil_png( pil_image )
     
     # PNG gAMA stores "file/linear gamma" = 1/encoding_gamma.
     # We want encoding_gamma for an ICC TRC.
@@ -180,9 +177,8 @@ def GenerateICCProfileBytesFromGammaAndChromaticityPNG( pil_image: PILImage.Imag
     icc_profile_bytes = HydrusImageICCProfiles.make_gamma_and_chromaticity_icc_profile( encoding_gamma, M_rgb_to_xyz_D50 )
     
     return icc_profile_bytes
-    
 
-def SetDoICCProfileNormalisation( value: bool ):
+def set_do_icc_profile_normalisation(value: bool):
     
     global DO_ICC_PROFILE_NORMALISATION
     
@@ -192,10 +188,8 @@ def SetDoICCProfileNormalisation( value: bool ):
         
         HG.controller.pub( 'clear_image_cache' )
         HG.controller.pub( 'clear_image_tile_cache' )
-        
-    
 
-def NormaliseNumPyImageToUInt8( numpy_image: numpy.ndarray ):
+def normalise_numpy_image_to_uint8(numpy_image: numpy.ndarray):
     
     if numpy_image.dtype == numpy.uint16:
         
@@ -236,13 +230,12 @@ def NormaliseNumPyImageToUInt8( numpy_image: numpy.ndarray ):
         
     
     return numpy_image
-    
 
-def DequantizeFreshlyLoadedNumPyImage( numpy_image: numpy.ndarray ) -> numpy.ndarray:
+def dequantize_freshly_loaded_numpy_image(numpy_image: numpy.ndarray) -> numpy.ndarray:
     
     # OpenCV loads images in BGR, and we want to normalise to RGB in general
     
-    numpy_image = NormaliseNumPyImageToUInt8( numpy_image )
+    numpy_image = normalise_numpy_image_to_uint8( numpy_image )
     
     shape = numpy_image.shape
     
@@ -280,9 +273,8 @@ def DequantizeFreshlyLoadedNumPyImage( numpy_image: numpy.ndarray ) -> numpy.nda
         
     
     return numpy_image
-    
 
-def PILImageIsPNGWithGammaAndChromaticity( pil_image: PILImage.Image ):
+def pil_image_is_png_with_gamma_and_chromaticity(pil_image: PILImage.Image):
     
     # we no longer look for 'gamma' explicitly here since it _can_ be missing. best fallback in that case is subbing in the 0.45455 value
     
@@ -328,9 +320,8 @@ def PILImageIsPNGWithGammaAndChromaticity( pil_image: PILImage.Image ):
         
     
     return False
-    
 
-def PILImageIsPNGWithSRGB( pil_image: PILImage.Image ):
+def pil_image_is_png_with_srgb(pil_image: PILImage.Image):
     
     if pil_image.format == 'PNG' and 'srgb' in pil_image.info:
         
@@ -338,25 +329,24 @@ def PILImageIsPNGWithSRGB( pil_image: PILImage.Image ):
         
     
     return False
-    
 
-def DequantizePILImage( pil_image: PILImage.Image ) -> PILImage.Image:
+def dequantize_pil_image(pil_image: PILImage.Image) -> PILImage.Image:
     
-    if HydrusImageMetadata.HasICCProfile( pil_image ) and DO_ICC_PROFILE_NORMALISATION:
+    if HydrusImageMetadata.has_icc_profile( pil_image ) and DO_ICC_PROFILE_NORMALISATION:
         
         try:
             
-            icc_profile_bytes = HydrusImageMetadata.GetICCProfileBytes( pil_image )
+            icc_profile_bytes = HydrusImageMetadata.get_icc_profile_bytes( pil_image )
             
             try:
                 
-                pil_image = NormaliseICCProfilePILImageToSRGB( icc_profile_bytes, pil_image )
+                pil_image = normalise_icc_profile_pil_image_to_srgb( icc_profile_bytes, pil_image )
                 
             except Exception as e:
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
-                HydrusData.ShowText( 'Failed to normalise image with ICC profile.' )
+                HydrusData.show_text( 'Failed to normalise image with ICC profile.' )
                 
             
         except HydrusExceptions.DataMissing:
@@ -364,12 +354,12 @@ def DequantizePILImage( pil_image: PILImage.Image ) -> PILImage.Image:
             pass
             
         
-    elif PILImageIsPNGWithSRGB( pil_image ):
+    elif pil_image_is_png_with_srgb( pil_image ):
         
         pass # we are already sRGB
         # the 'srgb' key has a value like 0 or 1. this is 'rendering intent' stuff and would be useful if we wanted to convert to another system
         
-    elif PILImageIsPNGWithGammaAndChromaticity( pil_image ):
+    elif pil_image_is_png_with_gamma_and_chromaticity( pil_image ):
         
         # if a png has an ICC Profile, that overrides gamma/chromaticity, so this should be elif
         # there's also srgb, which has precedence between those two and we can consider if and when it comes up.
@@ -378,17 +368,17 @@ def DequantizePILImage( pil_image: PILImage.Image ) -> PILImage.Image:
         # this doesn't work, but I think we are close! it would be great if we could figure this out since it works fast as anything
         # Qt does it but I couldn't replicate their colourspace and whitepoint conversions right
         
-        icc_profile_bytes = GenerateICCProfileBytesFromGammaAndChromaticityPNG( pil_image )
+        icc_profile_bytes = generate_icc_profile_bytes_from_gamma_and_chromaticity_png( pil_image )
         
         try:
             
-            pil_image = NormaliseICCProfilePILImageToSRGB( icc_profile_bytes, pil_image )
+            pil_image = normalise_icc_profile_pil_image_to_srgb( icc_profile_bytes, pil_image )
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
-            HydrusData.ShowText( 'Failed to normalise image with ICC profile.' )
+            HydrusData.show_text( 'Failed to normalise image with ICC profile.' )
             
         
         '''
@@ -404,12 +394,11 @@ def DequantizePILImage( pil_image: PILImage.Image ) -> PILImage.Image:
             
         '''
     
-    pil_image = NormalisePILImageToRGB( pil_image )
+    pil_image = normalise_pil_image_to_rgb( pil_image )
     
     return pil_image
-    
 
-def NormaliseICCProfilePILImageToSRGB( icc_profile_bytes: bytes, pil_image: PILImage.Image ) -> PILImage.Image:
+def normalise_icc_profile_pil_image_to_srgb(icc_profile_bytes: bytes, pil_image: PILImage.Image) -> PILImage.Image:
     
     try:
         
@@ -429,7 +418,7 @@ def NormaliseICCProfilePILImageToSRGB( icc_profile_bytes: bytes, pil_image: PILI
             
         else:
             
-            if HydrusImageColours.PILImageHasTransparency( pil_image ):
+            if HydrusImageColours.pil_image_has_transparency( pil_image ):
                 
                 outputMode = 'RGBA'
                 
@@ -455,11 +444,10 @@ def NormaliseICCProfilePILImageToSRGB( icc_profile_bytes: bytes, pil_image: PILI
         
     
     return pil_image
-    
 
-def NormalisePILImageToRGB( pil_image: PILImage.Image ) -> PILImage.Image:
+def normalise_pil_image_to_rgb(pil_image: PILImage.Image) -> PILImage.Image:
     
-    if HydrusImageColours.PILImageHasTransparency( pil_image ):
+    if HydrusImageColours.pil_image_has_transparency( pil_image ):
         
         desired_mode = 'RGBA'
         
@@ -481,9 +469,8 @@ def NormalisePILImageToRGB( pil_image: PILImage.Image ) -> PILImage.Image:
         
     
     return pil_image
-    
 
-def RotateEXIFPILImage( pil_image: PILImage.Image )-> PILImage.Image:
+def rotate_exif_pil_image(pil_image: PILImage.Image)-> PILImage.Image:
     
     if pil_image.format == 'PNG':
         
@@ -493,7 +480,7 @@ def RotateEXIFPILImage( pil_image: PILImage.Image )-> PILImage.Image:
         return pil_image
         
     
-    exif_dict = HydrusImageMetadata.GetEXIFDict( pil_image )
+    exif_dict = HydrusImageMetadata.get_exif_dict( pil_image )
     
     if exif_dict is not None:
         
@@ -555,13 +542,12 @@ def RotateEXIFPILImage( pil_image: PILImage.Image )-> PILImage.Image:
         
     
     return pil_image
-    
 
-def StripOutAnyUselessAlphaChannel( numpy_image: numpy.ndarray ) -> numpy.ndarray:
+def strip_out_any_useless_alpha_channel(numpy_image: numpy.ndarray) -> numpy.ndarray:
     
-    if HydrusImageColours.NumPyImageHasUselessAlphaChannel( numpy_image ):
+    if HydrusImageColours.numpy_image_has_useless_alpha_channel( numpy_image ):
         
-        channel_number = HydrusImageColours.GetNumPyAlphaChannelNumber( numpy_image )
+        channel_number = HydrusImageColours.get_numpy_alpha_channel_number( numpy_image )
         
         numpy_image = numpy_image[:,:,:channel_number].copy()
         
@@ -573,16 +559,14 @@ def StripOutAnyUselessAlphaChannel( numpy_image: numpy.ndarray ) -> numpy.ndarra
         '''
     
     return numpy_image
-    
 
-def StripOutAnyAlphaChannel( numpy_image: numpy.ndarray ) -> numpy.ndarray:
+def strip_out_any_alpha_channel(numpy_image: numpy.ndarray) -> numpy.ndarray:
     
-    if HydrusImageColours.NumPyImageHasAlphaChannel( numpy_image ):
+    if HydrusImageColours.numpy_image_has_alpha_channel( numpy_image ):
         
-        channel_number = HydrusImageColours.GetNumPyAlphaChannelNumber( numpy_image )
+        channel_number = HydrusImageColours.get_numpy_alpha_channel_number( numpy_image )
         
         numpy_image = numpy_image[:,:,:channel_number].copy()
         
     
     return numpy_image
-    

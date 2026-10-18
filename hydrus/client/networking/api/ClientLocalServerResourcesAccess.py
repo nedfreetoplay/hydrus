@@ -12,18 +12,18 @@ from hydrus.client.networking.api import ClientLocalServerResources
 
 class HydrusResourceClientAPIPermissionsRequest( ClientLocalServerResources.HydrusResourceClientAPI ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         if not ClientAPI.api_request_dialog_open:
             
             raise HydrusExceptions.ConflictException( 'The permission registration dialog is not open. Please open it under _services->review_ in the hydrus client.' )
             
         
-        name = request.parsed_request_args.GetValue( 'name', str )
+        name = request.parsed_request_args.get_value( 'name', str )
         
-        permits_everything = request.parsed_request_args.GetValue( 'permits_everything', bool, default_value = False )
+        permits_everything = request.parsed_request_args.get_value( 'permits_everything', bool, default_value = False )
         
-        basic_permissions = request.parsed_request_args.GetValue( 'basic_permissions', list, expected_list_type = int, default_value = [] )
+        basic_permissions = request.parsed_request_args.get_value( 'basic_permissions', list, expected_list_type = int, default_value = [] )
         
         basic_permissions = [ int( value ) for value in basic_permissions ]
         
@@ -47,7 +47,7 @@ class HydrusResourceClientAPIPermissionsRequest( ClientLocalServerResources.Hydr
 
 class HydrusResourceClientAPIVersion( ClientLocalServerResources.HydrusResourceClientAPI ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         body_dict = {}
         
@@ -72,13 +72,13 @@ class HydrusResourceClientAPIRestrictedAccount( ClientLocalServerResources.Hydru
 
 class HydrusResourceClientAPIRestrictedAccountClientInfo( HydrusResourceClientAPIRestrictedAccount ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         body_dict = {}
         
-        body_dict[ 'boot_id' ] = CG.client_controller.GetBootId().hex()
-        body_dict[ 'boot_time' ] = HydrusTime.SecondiseMSFloat( CG.client_controller.GetTimestampMS( 'boot' ) )
-        body_dict[ 'currently_idle' ] = CG.client_controller.CurrentlyIdle()
+        body_dict[ 'boot_id' ] = CG.client_controller.get_boot_id().hex()
+        body_dict[ 'boot_time' ] = HydrusTime.secondise_ms_float( CG.client_controller.get_timestamp_ms( 'boot' ) )
+        body_dict[ 'currently_idle' ] = CG.client_controller.currently_idle()
         
         body = ClientLocalServerCore.Dumps( body_dict, request.preferred_mime )
         
@@ -90,7 +90,7 @@ class HydrusResourceClientAPIRestrictedAccountClientInfo( HydrusResourceClientAP
 
 class HydrusResourceClientAPIRestrictedAccountSessionKey( HydrusResourceClientAPIRestrictedAccount ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         new_session_key = CG.client_controller.client_api_manager.GenerateSessionKey( request.client_api_permissions.GetAccessKey() )
         
@@ -108,7 +108,7 @@ class HydrusResourceClientAPIRestrictedAccountSessionKey( HydrusResourceClientAP
 
 class HydrusResourceClientAPIRestrictedAccountVerify( HydrusResourceClientAPIRestrictedAccount ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         api_permissions = request.client_api_permissions
         
@@ -157,7 +157,7 @@ class HydrusResourceClientAPIRestrictedGetService( ClientLocalServerResources.Hy
         )
         
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         allowed_service_types = {
             HC.LOCAL_TAG,
@@ -177,11 +177,11 @@ class HydrusResourceClientAPIRestrictedGetService( ClientLocalServerResources.Hy
         
         if 'service_key' in request.parsed_request_args:
             
-            service_key = request.parsed_request_args.GetValue( 'service_key', bytes )
+            service_key = request.parsed_request_args.get_value( 'service_key', bytes )
             
         elif 'service_name' in request.parsed_request_args:
             
-            service_name = request.parsed_request_args.GetValue( 'service_name', str )
+            service_name = request.parsed_request_args.get_value( 'service_name', str )
             
             try:
                 
@@ -206,7 +206,7 @@ class HydrusResourceClientAPIRestrictedGetService( ClientLocalServerResources.Hy
             raise HydrusExceptions.NotFoundException( 'Sorry, did not find a service with key "{}"!'.format( service_key.hex() ) )
             
         
-        if service.GetServiceType() not in allowed_service_types:
+        if service.get_service_type() not in allowed_service_types:
             
             raise HydrusExceptions.BadRequestException( 'Sorry, for now, you cannot ask about this service!' )
             
@@ -214,8 +214,8 @@ class HydrusResourceClientAPIRestrictedGetService( ClientLocalServerResources.Hy
         body_dict = {
             'service' : {
                 'name' : service.GetName(),
-                'type' : service.GetServiceType(),
-                'type_pretty' : HC.service_string_lookup[ service.GetServiceType() ],
+                'type' : service.get_service_type(),
+                'type_pretty' : HC.service_string_lookup[ service.get_service_type() ],
                 'service_key' : service.GetServiceKey().hex()
             }
         }
@@ -245,7 +245,7 @@ class HydrusResourceClientAPIRestrictedGetServices( ClientLocalServerResources.H
         )
         
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         jobs = [
             ( ( HC.LOCAL_TAG, ), 'local_tags' ),
@@ -272,8 +272,8 @@ class HydrusResourceClientAPIRestrictedGetServices( ClientLocalServerResources.H
                 
                 service_dict = {
                     'name' : service.GetName(),
-                    'type' : service.GetServiceType(),
-                    'type_pretty' : HC.service_string_lookup[ service.GetServiceType() ],
+                    'type' : service.get_service_type(),
+                    'type_pretty' : HC.service_string_lookup[ service.get_service_type() ],
                     'service_key' : service.GetServiceKey().hex()
                 }
                 
@@ -311,7 +311,7 @@ class HydrusResourceClientAPIRestrictedGetServiceRatingSVG( ClientLocalServerRes
         )
         
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         allowed_service_types = {
             HC.LOCAL_RATING_LIKE,
@@ -320,11 +320,11 @@ class HydrusResourceClientAPIRestrictedGetServiceRatingSVG( ClientLocalServerRes
         
         if 'service_key' in request.parsed_request_args:
             
-            service_key = request.parsed_request_args.GetValue( 'service_key', bytes )
+            service_key = request.parsed_request_args.get_value( 'service_key', bytes )
             
         elif 'service_name' in request.parsed_request_args:
             
-            service_name = request.parsed_request_args.GetValue( 'service_name', str )
+            service_name = request.parsed_request_args.get_value( 'service_name', str )
             
             try:
                 
@@ -349,7 +349,7 @@ class HydrusResourceClientAPIRestrictedGetServiceRatingSVG( ClientLocalServerRes
             raise HydrusExceptions.NotFoundException( 'Sorry, did not find a service with key "{}"!'.format( service_key.hex() ) )
             
         
-        if service.GetServiceType() not in allowed_service_types:
+        if service.get_service_type() not in allowed_service_types:
             
             raise HydrusExceptions.BadRequestException( 'This type of service cannot have a SVG associated with it!' )
             
@@ -362,7 +362,7 @@ class HydrusResourceClientAPIRestrictedGetServiceRatingSVG( ClientLocalServerRes
                 
                 svg_name = star_type.GetRatingSVG()
                 
-                svg_path = HydrusStaticDir.GetRatingSVGPath( svg_name )
+                svg_path = HydrusStaticDir.get_rating_svg_path( svg_name )
                 
                 with open( svg_path, 'rb' ) as f:
                     

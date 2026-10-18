@@ -68,7 +68,7 @@ class IPFSDaemonStatusAndInteractionPanel( ClientGUICommon.StaticBox ):
                 
             finally:
                 
-                CG.client_controller.CallAfterQtSafe( self, qt_clean_up, result, is_running )
+                CG.client_controller.call_after_qt_safe( self, qt_clean_up, result, is_running )
                 
             
         
@@ -78,6 +78,6 @@ class IPFSDaemonStatusAndInteractionPanel( ClientGUICommon.StaticBox ):
         
         service = self._service_callable()
         
-        CG.client_controller.CallToThread( do_it, service )
+        CG.client_controller.call_to_thread( do_it, service )
         
     

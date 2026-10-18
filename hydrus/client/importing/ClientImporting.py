@@ -88,7 +88,7 @@ def PublishPresentationHashes( publishing_label: str, hashes: list[ bytes ], pub
         job_status.SetVariable( 'attached_files_mergable', True )
         job_status.SetFiles( list( hashes ), publishing_label )
         
-        job_status.Finish() # important to later make it auto-dismiss on all files disappearing
+        job_status.finish() # important to later make it auto-dismiss on all files disappearing
         
         CG.client_controller.pub( 'message', job_status )
         
@@ -117,7 +117,7 @@ def THREADDownloadURL( job_status, url, url_string ):
     
     def status_hook( text ):
         
-        job_status.SetStatusText( HydrusText.GetFirstLine( text ) )
+        job_status.SetStatusText( HydrusText.get_first_line( text ) )
         
     
     network_job_presentation_context_factory = GenerateSinglePopupNetworkJobPresentationContextFactory( job_status )
@@ -161,7 +161,7 @@ def THREADDownloadURL( job_status, url, url_string ):
         
     finally:
         
-        job_status.Finish()
+        job_status.finish()
         
     
 
@@ -189,7 +189,7 @@ def THREADDownloadURLs( job_status: ClientThreading.JobStatus, urls, title ):
     
     def status_hook( text ):
         
-        job_status.SetStatusText( HydrusText.GetFirstLine( text ), 2 )
+        job_status.SetStatusText( HydrusText.get_first_line( text ), 2 )
         
     
     network_job_presentation_context_factory = GenerateMultiplePopupNetworkJobPresentationContextFactory( job_status )
@@ -203,7 +203,7 @@ def THREADDownloadURLs( job_status: ClientThreading.JobStatus, urls, title ):
             break
             
         
-        job_status.SetStatusText( HydrusNumbers.ValueRangeToPrettyString( i, len( urls ) ) )
+        job_status.SetStatusText( HydrusNumbers.value_range_to_pretty_string( i, len( urls ) ) )
         job_status.SetGauge( i, len( urls ) )
         
         file_seed = ClientImportFileSeeds.FileSeed( ClientImportFileSeeds.FILE_SEED_TYPE_URL, url )
@@ -255,8 +255,8 @@ def THREADDownloadURLs( job_status: ClientThreading.JobStatus, urls, title ):
             
             num_failed += 1
             
-            HydrusData.Print( url + ' failed to import!' )
-            HydrusData.PrintException( e )
+            HydrusData.safe_print( url + ' failed to import!' )
+            HydrusData.print_exception( e )
             
         finally:
             
@@ -270,22 +270,22 @@ def THREADDownloadURLs( job_status: ClientThreading.JobStatus, urls, title ):
     
     if num_successful > 0:
         
-        text_components.append( HydrusNumbers.ToHumanInt( num_successful ) + ' successful' )
+        text_components.append( HydrusNumbers.to_human_int( num_successful ) + ' successful' )
         
     
     if num_redundant > 0:
         
-        text_components.append( HydrusNumbers.ToHumanInt( num_redundant ) + ' already in db' )
+        text_components.append( HydrusNumbers.to_human_int( num_redundant ) + ' already in db' )
         
     
     if num_deleted > 0:
         
-        text_components.append( HydrusNumbers.ToHumanInt( num_deleted ) + ' deleted' )
+        text_components.append( HydrusNumbers.to_human_int( num_deleted ) + ' deleted' )
         
     
     if num_failed > 0:
         
-        text_components.append( HydrusNumbers.ToHumanInt( num_failed ) + ' failed (errors written to log)' )
+        text_components.append( HydrusNumbers.to_human_int( num_failed ) + ' failed (errors written to log)' )
         
     
     job_status.SetStatusText( ', '.join( text_components ) )
@@ -297,7 +297,7 @@ def THREADDownloadURLs( job_status: ClientThreading.JobStatus, urls, title ):
     
     job_status.DeleteGauge()
     
-    job_status.Finish()
+    job_status.finish()
     
 def UpdateFileSeedCacheWithFileSeeds( file_seed_cache, file_seeds, max_new_urls_allowed = None ):
     

@@ -307,7 +307,7 @@ class StatusBarRedirectFilter( QC.QObject ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             return True
             
@@ -331,11 +331,11 @@ def GetEventCallable( callable, *args, **kwargs ):
     
     def event_callable( checked_state ):
         
-        if HydrusProfiling.IsProfileMode( 'ui' ):
+        if HydrusProfiling.is_profile_mode( 'ui' ):
             
             summary = 'Profiling menu: ' + repr( callable )
             
-            HydrusProfiling.Profile( summary, HydrusData.Call( callable, *args, **kwargs ), min_duration_ms = HG.menu_profile_min_job_time_ms )
+            HydrusProfiling.profile( summary, HydrusData.Call( callable, *args, **kwargs ), min_duration_ms = HG.menu_profile_min_job_time_ms )
             
         else:
             
@@ -388,7 +388,7 @@ def SetMenuTexts( menu_item: QW.QAction, label: str, description: str ):
     
     label = SanitiseLabel( label )
     
-    elided_label = HydrusText.ElideText( label, 128, elide_center = True )
+    elided_label = HydrusText.elide_text( label, 128, elide_center = True )
     
     menu_item.setText( elided_label )
     

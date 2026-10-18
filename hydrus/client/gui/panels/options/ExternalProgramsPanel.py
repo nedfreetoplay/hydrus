@@ -386,7 +386,7 @@ class EditProcessCallExecutableAndParametersPanel( ClientGUIScrolledPanels.EditP
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -418,12 +418,12 @@ class EditProcessCallExecutableAndParametersPanel( ClientGUIScrolledPanels.EditP
         executable_path = items[0]
         executable_parameter_templates = items[1:]
         
-        message = f'I took your paste and got a command "{executable_path}" and {HydrusNumbers.ToHumanInt(len(executable_parameter_templates))} parameters'
+        message = f'I took your paste and got a command "{executable_path}" and {HydrusNumbers.to_human_int(len(executable_parameter_templates))} parameters'
         
         if len( executable_parameter_templates ) > 0:
             
             message += ':'
-            message += HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( executable_parameter_templates, do_sort = False, no_trailing_whitespace = True )
+            message += HydrusText.convert_many_strings_to_nice_insertable_human_summary( executable_parameter_templates, do_sort = False, no_trailing_whitespace = True )
             
         else:
             
@@ -1040,7 +1040,7 @@ class TestCallablePanel( ClientGUICommon.StaticBox ):
         
         def errback_callable( etype, value, tb ):
             
-            self._raw_output_text_box.setPlainText( HydrusData.ConvertExceptionTupleToSummary( etype, value, tb ) )
+            self._raw_output_text_box.setPlainText( HydrusData.convert_exception_tuple_to_summary( etype, value, tb ) )
             
         
         def ui_restoration_callable():
@@ -1084,7 +1084,7 @@ class TestCallablePanel( ClientGUICommon.StaticBox ):
         
         def errback_callable( etype, value, tb ):
             
-            self._raw_output_text_box.setPlainText( HydrusData.ConvertExceptionTupleToSummary( etype, value, tb ) )
+            self._raw_output_text_box.setPlainText( HydrusData.convert_exception_tuple_to_summary( etype, value, tb ) )
             
         
         def ui_restoration_callable():
@@ -1330,7 +1330,7 @@ class EditClientExecutableCallablePanel( ClientGUIScrolledPanels.EditPanel ):
     
     def SetValue( self, call: ClientExecutableCallables.ClientExecutableCallable ):
         
-        self._name.setText( call.GetName() )
+        self._name.setText( call.get_name() )
         self._pipeline_type.SetValue( call.GetPipelineType() )
         
         self._UpdatePipelineType()
@@ -1454,7 +1454,7 @@ class ExternalProgramsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def _AddCallableFullyFormed( self, call: ClientExecutableCallables.ClientExecutableCallable ):
         
-        HydrusSerialisable.SetNonDupeName( call, self._GetExistingNames() )
+        HydrusSerialisable.set_non_dupe_name( call, self._GetExistingNames() )
         
         call.GenerateNewCallableKey()
         
@@ -1469,7 +1469,7 @@ class ExternalProgramsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
         except Exception as e:
             
-            message = f'Hey, a call you are trying to import, "{call.GetName()}", seems to be a bit weird. Are you sure you want to import it? The problem is:\n\n{e}'
+            message = f'Hey, a call you are trying to import, "{call.get_name()}", seems to be a bit weird. Are you sure you want to import it? The problem is:\n\n{e}'
             
             result = ClientGUIDialogsQuick.GetYesNo( self, message )
             
@@ -1484,7 +1484,7 @@ class ExternalProgramsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     
     def _ConvertCallableToDisplayTuple( self, call: ClientExecutableCallables.ClientExecutableCallable ):
         
-        name = call.GetName()
+        name = call.get_name()
         pipeline_type = call.GetPipelineType()
         desc = call.GetCall().GetCommandDescription()
         
@@ -1517,11 +1517,11 @@ class ExternalProgramsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             if dlg.exec() == QW.QDialog.DialogCode.Accepted:
                 
                 existing_names = self._GetExistingNames()
-                existing_names.discard( call.GetName() )
+                existing_names.discard( call.get_name() )
                 
                 edited_call = panel.GetValue()
                 
-                HydrusSerialisable.SetNonDupeName( edited_call, existing_names )
+                HydrusSerialisable.set_non_dupe_name( edited_call, existing_names )
                 
                 self._external_calls.ReplaceData( call, edited_call, sort_and_scroll = True )
                 

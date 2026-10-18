@@ -317,7 +317,7 @@ class ThumbnailPairListModelPendingAutoResolutionAction( ThumbnailPairListModel 
     
     def SetRule( self, rule: ClientDuplicatesAutoResolution.DuplicatesAutoResolutionRule ):
         
-        if rule.DumpToString() != self._rule.DumpToString():
+        if rule.dump_to_string() != self._rule.dump_to_string():
             
             self._rule = rule
             
@@ -358,11 +358,11 @@ class ThumbnailPairListModelDeniedAutoResolutionAction( ThumbnailPairListModel )
                 
                 timestamp_ms = self._data_rows[ row ][ col ]
                 
-                timestamp = HydrusTime.SecondiseMS( timestamp_ms )
+                timestamp = HydrusTime.secondise_ms( timestamp_ms )
                 
-                s = HydrusTime.TimestampToPrettyTime( timestamp )
+                s = HydrusTime.timestamp_to_pretty_time( timestamp )
                 s += '\n'
-                s += HydrusTime.TimestampToPrettyTimeDelta( timestamp, force_no_iso = True )
+                s += HydrusTime.timestamp_to_pretty_time_delta( timestamp, force_no_iso = True )
                 
                 return s
                 
@@ -418,13 +418,13 @@ class ThumbnailPairListModelTakenAutoResolutionAction( ThumbnailPairListModel ):
                 
                 ( duplicate_type, timestamp_ms ) = self._data_rows[ row ][ col ]
                 
-                timestamp = HydrusTime.SecondiseMS( timestamp_ms )
+                timestamp = HydrusTime.secondise_ms( timestamp_ms )
                 
                 s = HC.duplicate_type_auto_resolution_action_description_lookup[ duplicate_type ]
                 s += '\n'
-                s += HydrusTime.TimestampToPrettyTime( timestamp )
+                s += HydrusTime.timestamp_to_pretty_time( timestamp )
                 s += '\n'
-                s += HydrusTime.TimestampToPrettyTimeDelta( timestamp, force_no_iso = True )
+                s += HydrusTime.timestamp_to_pretty_time_delta( timestamp, force_no_iso = True )
                 
                 return s
                 
@@ -555,7 +555,7 @@ class ThumbnailPairList( QW.QTableView ):
                 
             else:
                 
-                label = f'show {HydrusNumbers.ToHumanInt(num_selected)} rows in a new page'
+                label = f'show {HydrusNumbers.to_human_int(num_selected)} rows in a new page'
                 
             
             ClientGUIMenus.AppendMenuItem( menu, label, 'Open a new page and show these pairs, even if deleted', self._ShowSelectedPairsInNewPage )

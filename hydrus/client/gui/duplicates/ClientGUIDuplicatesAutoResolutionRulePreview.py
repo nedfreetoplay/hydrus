@@ -209,7 +209,7 @@ class PreviewPanel( ClientGUICommon.StaticBox ):
         
         def work_callable():
             
-            potential_duplicate_id_pairs_and_distances: ClientPotentialDuplicatesSearchContext.PotentialDuplicateIdPairsAndDistances = CG.client_controller.Read( 'potential_duplicate_id_pairs_and_distances', location_context )
+            potential_duplicate_id_pairs_and_distances: ClientPotentialDuplicatesSearchContext.PotentialDuplicateIdPairsAndDistances = CG.client_controller.read( 'potential_duplicate_id_pairs_and_distances', location_context )
             
             return potential_duplicate_id_pairs_and_distances
             
@@ -256,7 +256,7 @@ class PreviewPanel( ClientGUICommon.StaticBox ):
                 return ( [], job_status )
                 
             
-            potential_duplicate_media_result_pairs_and_distances = CG.client_controller.Read( 'potential_duplicate_media_result_pairs_and_distances_fragmentary', potential_duplicate_pairs_fragmentary_search )
+            potential_duplicate_media_result_pairs_and_distances = CG.client_controller.read( 'potential_duplicate_media_result_pairs_and_distances_fragmentary', potential_duplicate_pairs_fragmentary_search )
             
             potential_duplicate_media_result_pairs_and_distances.Sort( ClientDuplicates.DUPE_PAIR_SORT_MIN_FILESIZE, False )
             
@@ -534,14 +534,14 @@ class PreviewPanel( ClientGUICommon.StaticBox ):
             
         elif self._potential_duplicate_pairs_fragmentary_search.SearchDone():
             
-            self._search_results_label.setText( f'{HydrusNumbers.ToHumanInt(self._potential_duplicate_pairs_fragmentary_search.NumPairsInSearchSpace())} pairs searched; {HydrusNumbers.ToHumanInt( len( self._fetched_pairs ) )} matched' )
+            self._search_results_label.setText( f'{HydrusNumbers.to_human_int(self._potential_duplicate_pairs_fragmentary_search.NumPairsInSearchSpace())} pairs searched; {HydrusNumbers.to_human_int( len( self._fetched_pairs ) )} matched' )
             
         else:
             
             value = self._potential_duplicate_pairs_fragmentary_search.NumPairsSearched()
             range = self._potential_duplicate_pairs_fragmentary_search.NumPairsInSearchSpace()
             
-            self._search_results_label.setText( f'{HydrusNumbers.ValueRangeToPrettyString(value, range)} pairs searched; {HydrusNumbers.ToHumanInt( len( self._fetched_pairs ) )} matched{HC.UNICODE_ELLIPSIS}' )
+            self._search_results_label.setText( f'{HydrusNumbers.value_range_to_pretty_string(value, range)} pairs searched; {HydrusNumbers.to_human_int( len( self._fetched_pairs ) )} matched{HC.UNICODE_ELLIPSIS}' )
             
         
     
@@ -553,7 +553,7 @@ class PreviewPanel( ClientGUICommon.StaticBox ):
             
         else:
             
-            label = f'{HydrusNumbers.ToHumanInt( len( self._fetched_pairs_still_to_test ))} pairs still to test'
+            label = f'{HydrusNumbers.to_human_int( len( self._fetched_pairs_still_to_test ))} pairs still to test'
             
         
         self._pairs_still_to_test_label.setText( label )
@@ -564,7 +564,7 @@ class PreviewPanel( ClientGUICommon.StaticBox ):
             
         else:
             
-            label = f'{HydrusNumbers.ToHumanInt(len(self._ab_pairs_that_pass))} pairs - double-click to open a media viewer'
+            label = f'{HydrusNumbers.to_human_int(len(self._ab_pairs_that_pass))} pairs - double-click to open a media viewer'
             
         
         self._pass_pairs_label.setText( label )
@@ -575,7 +575,7 @@ class PreviewPanel( ClientGUICommon.StaticBox ):
             
         else:
             
-            label = f'{HydrusNumbers.ToHumanInt(len(self._pairs_that_fail))} pairs - double-click to open a media viewer'
+            label = f'{HydrusNumbers.to_human_int(len(self._pairs_that_fail))} pairs - double-click to open a media viewer'
             
         
         self._fail_pairs_label.setText( label )
@@ -624,7 +624,7 @@ class PreviewPanel( ClientGUICommon.StaticBox ):
             
             if not isinstance( e, HydrusExceptions.VetoException ):
                 
-                HydrusData.PrintException( e, do_wait = False )
+                HydrusData.print_exception( e, do_wait = False )
                 
             
             self._value = None
@@ -651,7 +651,7 @@ class PreviewPanel( ClientGUICommon.StaticBox ):
                 
                 self._InitialisePotentialDuplicatePairs()
                 
-            elif new_search.DumpToString() != old_search.DumpToString():
+            elif new_search.dump_to_string() != old_search.dump_to_string():
                 
                 self._RefetchPairs()
                 
@@ -660,7 +660,7 @@ class PreviewPanel( ClientGUICommon.StaticBox ):
                 old_selector = old_value.GetPairSelector()
                 new_selector = new_value.GetPairSelector()
                 
-                if new_selector.DumpToString() != old_selector.DumpToString():
+                if new_selector.dump_to_string() != old_selector.dump_to_string():
                     
                     self._RetestPairs()
                     

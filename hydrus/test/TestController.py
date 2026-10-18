@@ -95,86 +95,61 @@ DB_DIR = None
 
 tiniest_gif = b'\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x00\xFF\x00\x2C\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x00\x3B'
 
-LOCAL_RATING_LIKE_SERVICE_KEY = HydrusData.GenerateKey()
-LOCAL_RATING_NUMERICAL_SERVICE_KEY = HydrusData.GenerateKey()
-LOCAL_RATING_INCDEC_SERVICE_KEY = HydrusData.GenerateKey()
+LOCAL_RATING_LIKE_SERVICE_KEY = HydrusData.generate_key()
+LOCAL_RATING_NUMERICAL_SERVICE_KEY = HydrusData.generate_key()
+LOCAL_RATING_INCDEC_SERVICE_KEY = HydrusData.generate_key()
 
-callable_P = typing.ParamSpec( 'callable_P' )
-callable_R = typing.TypeVar( 'callable_R' )
+callable_P = typing.ParamSpec('callable_P')
+callable_R = typing.TypeVar('callable_R')
 
-class MockController( object ):
+class MockController:
     
-    def __init__( self ):
-        
+    def __init__(self):
         self.new_options = ClientOptions.ClientOptions()
-        
     
-    def CallToThread( self, callable, *args, **kwargs ):
-        
-        TG.test_controller.CallToThread( callable, *args, **kwargs )
-        
+    def call_to_thread(self, callable, *args, **kwargs):
+        TG.test_controller.call_to_thread( callable, *args, **kwargs )
     
-    def JustWokeFromSleep( self ):
-        
+    def just_woke_from_sleep(self):
         return False
-        
     
-    def pub( self, *args, **kwargs ):
-        
+    def pub(self, *args, **kwargs):
         pass
-        
     
-    def sub( self, *args, **kwargs ):
-        
+    def sub(self, *args, **kwargs):
         pass
-        
-    
 
-class MockServicesManager( object ):
+
+class MockServicesManager:
     
-    def __init__( self, services ):
-        
+    def __init__(self, services):
         self._service_keys_to_services = { service.GetServiceKey() : service for service in services }
-        
     
-    def GetName( self, service_key ):
-        
+    def GetName(self, service_key):
         return self._service_keys_to_services[ service_key ].GetName()
-        
     
-    def GetService( self, service_key ):
-        
+    def GetService(self, service_key):
         return self._service_keys_to_services[ service_key ]
-        
     
-    def ServiceExists( self, service_key ):
-        
+    def ServiceExists(self, service_key):
         return service_key in self._service_keys_to_services
-        
-    
 
-class FakeWebSessionManager():
+
+class FakeWebSessionManager:
     
-    def EnsureLoggedIn( self, name ):
-        
+    def EnsureLoggedIn(self, name):
         pass
-        
     
-    def GetCookies( self, *args, **kwargs ):
-        
+    def GetCookies(self, *args, **kwargs):
         return { 'session_cookie' : 'blah' }
-        
-    
 
-class TestFrame( QW.QWidget ):
+
+class TestFrame(QW.QWidget):
     
-    def __init__( self ):
-        
+    def __init__(self):
         super().__init__( None )
-        
     
-    def SetPanel( self, panel ):
-        
+    def SetPanel(self, panel):
         vbox = QP.VBoxLayout()
         
         QP.AddToLayout( vbox, panel, CC.FLAGS_EXPAND_BOTH_WAYS )
@@ -182,14 +157,13 @@ class TestFrame( QW.QWidget ):
         self.setLayout( vbox )
         
         self.show()
-        
-    
+
 
 only_run = None
 
-class Controller( object ):
+class Controller:
     
-    def __init__( self, win, only_run ):
+    def __init__(self, win, only_run):
         
         self.app = win
         self.win = win
@@ -201,7 +175,7 @@ class Controller( object ):
         
         self._timestamps_ms = collections.defaultdict( lambda: 0 )
         
-        self._boot_id = HydrusData.GenerateKey()
+        self._boot_id = HydrusData.generate_key()
         
         self.main_qt_thread = self.app.thread()
         
@@ -215,7 +189,7 @@ class Controller( object ):
         
         self.db_dir = tempfile.mkdtemp()
         
-        self._hydrus_temp_dir = HydrusTemp.InitialiseHydrusTempDir()
+        self._hydrus_temp_dir = HydrusTemp.initialise_hydrus_temp_dir()
         
         global DB_DIR
         
@@ -226,9 +200,9 @@ class Controller( object ):
         
         client_files_default = os.path.join( self.db_dir, 'client_files' )
         
-        HydrusPaths.MakeSureDirectoryExists( self._server_files_dir )
-        HydrusPaths.MakeSureDirectoryExists( self._updates_dir )
-        HydrusPaths.MakeSureDirectoryExists( client_files_default )
+        HydrusPaths.make_sure_directory_exists( self._server_files_dir )
+        HydrusPaths.make_sure_directory_exists( self._updates_dir )
+        HydrusPaths.make_sure_directory_exists( client_files_default )
         
         HG.controller = self
         CG.client_controller = self
@@ -252,7 +226,7 @@ class Controller( object ):
         
         def show_text( text ): pass
         
-        HydrusData.ShowText = show_text
+        HydrusData.show_text = show_text
         
         self._name_read_responses = {}
         
@@ -267,10 +241,10 @@ class Controller( object ):
         self.example_numerical_rating_service_key = LOCAL_RATING_NUMERICAL_SERVICE_KEY
         self.example_incdec_rating_service_key = LOCAL_RATING_INCDEC_SERVICE_KEY
         
-        self.example_file_repo_service_key_1 = HydrusData.GenerateKey()
-        self.example_file_repo_service_key_2 = HydrusData.GenerateKey()
-        self.example_tag_repo_service_key = HydrusData.GenerateKey()
-        self.example_ipfs_service_key = HydrusData.GenerateKey()
+        self.example_file_repo_service_key_1 = HydrusData.generate_key()
+        self.example_file_repo_service_key_2 = HydrusData.generate_key()
+        self.example_tag_repo_service_key = HydrusData.generate_key()
+        self.example_ipfs_service_key = HydrusData.generate_key()
         
         services = []
         
@@ -303,12 +277,12 @@ class Controller( object ):
         
         base_location = ClientFilesPhysical.FilesStorageBaseLocation( client_files_default, 1 )
         
-        for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( 'f', HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ):
+        for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( 'f', HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ):
             
             client_files_subfolders.append( ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location ) )
             
         
-        for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( 't', HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ):
+        for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( 't', HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ):
             
             client_files_subfolders.append( ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location ) )
             
@@ -411,7 +385,7 @@ class Controller( object ):
         
         self.network_engine = ClientNetworking.NetworkEngine( self, bandwidth_manager, session_manager, domain_manager, login_manager )
         
-        self.CallToThreadLongRunning( self.network_engine.MainLoop )
+        self.call_to_thread_long_running( self.network_engine.MainLoop )
         
         self.tag_display_manager = ClientTagsHandling.TagDisplayManager()
         
@@ -436,42 +410,30 @@ class Controller( object ):
         self._job_scheduler = HydrusThreading.JobScheduler( self )
         
         self._job_scheduler.start()
-        
     
-    def _SetupQt( self ):
+    def _setup_qt(self):
         
         self.locale = QC.QLocale() # Very important to init this here and keep it non garbage collected
         
         CC.GlobalPixmaps()
         CC.GlobalIcons()
-        
     
-    def pub( self, topic, *args, **kwargs ):
-        
+    def pub(self, topic, *args, **kwargs):
         pass
-        
     
-    def pubimmediate( self, topic, *args, **kwargs ):
-        
+    def pubimmediate(self, topic, *args, **kwargs):
         self._pubsub.pubimmediate( topic, *args, **kwargs )
-        
     
-    def sub( self, object, method_name, topic ):
-        
+    def sub(self, object, method_name, topic):
         self._pubsub.sub( object, method_name, topic )
-        
     
-    def AcquirePageKey( self ):
-        
-        return HydrusData.GenerateKey()
-        
+    def acquire_page_key(self):
+        return HydrusData.generate_key()
     
-    def AmInTheMainQtThread( self ) -> bool:
-        
+    def am_in_the_main_qt_thread(self) -> bool:
         return QC.QThread.currentThread() == self.main_qt_thread
-        
     
-    def CallBlockingToQt( self, win, func: typing.Callable[ callable_P, callable_R ], *args: callable_P.args, **kwargs: callable_P.kwargs ) -> callable_R:
+    def call_blocking_to_qt(self, win, func: typing.Callable[ callable_P, callable_R ], *args: callable_P.args, **kwargs: callable_P.kwargs) -> callable_R:
         
         def qt_code( win: QW.QWidget, job_status: ClientThreading.JobStatus ):
             
@@ -487,18 +449,18 @@ class Controller( object ):
                 
             finally:
                 
-                job_status.Finish()
+                job_status.finish()
                 
             
         
-        if self.AmInTheMainQtThread():
+        if self.am_in_the_main_qt_thread():
             
             return func( *args, **kwargs )
             
         
         job_status = ClientThreading.JobStatus( cancellable = True, cancel_on_shutdown = False )
         
-        self.CallAfterQtSafe( win, qt_code, win, job_status )
+        self.call_after_qt_safe( win, qt_code, win, job_status )
         
         done_event = job_status.GetDoneEvent()
         
@@ -534,23 +496,20 @@ class Controller( object ):
             
         
         raise HydrusExceptions.ShutdownException()
-        
     
-    def CallBlockingToQtFireAndForgetNoResponse( self, win, func, *args, **kwargs ) -> None:
+    def call_blocking_to_qt_fire_and_forget_no_response(self, win, func, *args, **kwargs) -> None:
         
         try:
             
-            self.CallBlockingToQt( win, func, *args, **kwargs )
+            self.call_blocking_to_qt( win, func, *args, **kwargs )
             
         except ( HydrusExceptions.QtDeadWindowException, HydrusExceptions.ShutdownException, HydrusExceptions.CancelledException ):
             
             pass
-            
-        
     
-    def CallBlockingToQtTLW( self, func: typing.Callable[ callable_P, callable_R ], *args: callable_P.args, **kwargs: callable_P.kwargs ) -> callable_R:
+    def call_blocking_to_qt_tlw(self, func: typing.Callable[ callable_P, callable_R ], *args: callable_P.args, **kwargs: callable_P.kwargs) -> callable_R:
         
-        main_tlw = self.GetMainTLW()
+        main_tlw = self.get_main_tlw()
         
         if main_tlw is None:
             
@@ -559,119 +518,90 @@ class Controller( object ):
         
         try:
             
-            return self.CallBlockingToQt( main_tlw, func, *args, **kwargs )
+            return self.call_blocking_to_qt( main_tlw, func, *args, **kwargs )
             
         except ( HydrusExceptions.QtDeadWindowException, HydrusExceptions.ShutdownException ):
             
             raise HydrusExceptions.ShutdownException( 'Program is shutting down!' )
-            
-        
     
-    def CallToThread( self, callable, *args, **kwargs ):
+    def call_to_thread(self, callable, *args, **kwargs):
         
-        call_to_thread = self._thread_worker_pool.GetCallToThread()
+        call_to_thread = self._thread_worker_pool.get_call_to_thread()
         
         call_to_thread.put( callable, *args, **kwargs )
-        
     
-    CallToThreadLongRunning = CallToThread
+    call_to_thread_long_running = call_to_thread
     
-    def CallAfterQtSafe( self, qobject: QC.QObject, func, *args, **kwargs ):
-        
+    def call_after_qt_safe(self, qobject: QC.QObject, func, *args, **kwargs):
         ClientGUICallAfter.CallAfter( self.call_after_catcher, qobject, func, *args, **kwargs )
-        
     
-    def CallLater( self, initial_delay, func, *args, **kwargs ):
+    def call_later(self, initial_delay, func, *args, **kwargs):
         
         call = HydrusData.Call( func, *args, **kwargs )
         
         job = HydrusThreading.SingleJob( self, self._job_scheduler, initial_delay, call )
         
-        self._job_scheduler.AddJob( job )
+        self._job_scheduler.add_job( job )
         
         return job
-        
     
-    def CallLaterQtSafe( self, window, initial_delay, label, func, *args, **kwargs ):
+    def call_later_qt_safe(self, window, initial_delay, label, func, *args, **kwargs):
         
         call = HydrusData.Call( func, *args, **kwargs )
         
-        call.SetLabel( label )
+        call.set_label( label )
         
         job = ClientThreading.QtAwareJob( self, self._job_scheduler, window, initial_delay, call )
         
-        self._job_scheduler.AddJob( job )
+        self._job_scheduler.add_job( job )
         
         return job
-        
     
-    def CallRepeating( self, initial_delay, period, label, func, *args, **kwargs ):
+    def call_repeating(self, initial_delay, period, label, func, *args, **kwargs):
         
         call = HydrusData.Call( func, *args, **kwargs )
         
         job = HydrusThreading.RepeatingJob( self, self._job_scheduler, initial_delay, period, call )
         
-        self._job_scheduler.AddJob( job )
+        self._job_scheduler.add_job( job )
         
         return job
-        
     
-    def CallRepeatingQtSafe( self, window, initial_delay, period, label, func, *args, **kwargs ):
+    def call_repeating_qt_safe(self, window, initial_delay, period, label, func, *args, **kwargs):
         
         call = HydrusData.Call( func, *args, **kwargs )
         
         job = ClientThreading.QtAwareRepeatingJob(self, self._job_scheduler, window, initial_delay, period, call)
         
-        self._job_scheduler.AddJob( job )
+        self._job_scheduler.add_job( job )
         
         return job
-        
     
-    def ClearReads( self, name ):
-        
+    def clear_reads(self, name):
         if name in self._read_call_args:
-            
             del self._read_call_args[ name ]
-            
-        
     
-    def ClearTestDB( self ):
-        
+    def clear_test_db(self):
         self._test_db = None
-        
         ClientMediaResultCache.MediaResultCache.instance().Clear()
-        
     
-    def ClearWrites( self, name ):
-        
+    def clear_writes(self, name):
         if name in self._write_call_args:
-            
             del self._write_call_args[ name ]
-            
-        
     
-    def CurrentlyIdle( self ):
-        
+    def currently_idle(self):
         return False
-        
     
-    def DBCurrentlyDoingJob( self ):
-        
+    def db_currently_doing_job(self):
         return False
-        
     
-    def DoingFastExit( self ):
-        
+    def doing_fast_exit(self):
         return False
-        
     
-    def GetBootId( self ):
-        
+    def get_boot_id(self):
         return self._boot_id
-        
     
-    def GetCurrentSessionPageAPIInfoDict( self ):
-        
+    def get_current_session_page_api_info_dict(self):
         return {
             "name" : "top pages notebook",
             "page_key" : "3b28d8a59ec61834325eb6275d9df012860a1ecfd9e1246423059bc47fb6d5bd",
@@ -712,75 +642,52 @@ class Controller( object ):
                 }	
             ]
         }
-        
     
-    def GetFilesDir( self ):
-        
+    def get_files_dir(self):
         return self._server_files_dir
-        
     
-    def GetHydrusTempDir( self ):
-        
+    def get_hydrus_temp_dir(self):
         return self._hydrus_temp_dir
-        
     
-    def GetMainGUI( self ):
-        
+    def get_main_gui(self):
         return self.win
-        
     
-    def GetMainTLW( self ):
-        
+    def get_main_tlw(self):
         return self.win
-        
     
-    def GetMediaViewersAPIInfo( self ):
-        
+    def get_media_viewers_api_info(self):
         raise NotImplementedError()
-        
     
-    def GetNewOptions( self ):
-        
+    def get_new_options(self):
         return self.new_options
-        
     
-    def GetManager( self, manager_type ):
-        
+    def get_manager(self, manager_type):
         return self._managers[ manager_type ]
-        
     
-    def GetPageAPIInfoDict( self, page_key, simple ):
-        
+    def get_page_api_info_dict(self, page_key, simple):
         return {}
-        
     
-    def GetRead( self, name ):
+    def get_read(self, name):
         
         read = self._read_call_args[ name ]
         
         del self._read_call_args[ name ]
         
         return read
-        
     
-    def GetTimestampMS( self, name: str ) -> int:
-        
+    def get_timestamp_ms(self, name: str) -> int:
         with self._timestamps_lock:
-            
             return self._timestamps_ms[ name ]
-            
-        
     
-    def GetWrite( self, name ):
+    def get_write(self, name):
         
         write = self._write_call_args[ name ]
         
         del self._write_call_args[ name ]
         
         return write
-        
     
-    def ImportURLFromAPI( self, url, filterable_tags, additional_service_keys_to_tags, destination_page_name, destination_page_key, show_destination_page, destination_location_context ):
+    def import_url_from_api(self, url, filterable_tags, additional_service_keys_to_tags, destination_page_name, destination_page_key, show_destination_page, destination_location_context):
         
         from hydrus.client.networking import ClientNetworkingFunctions
         
@@ -790,67 +697,44 @@ class Controller( object ):
         
         human_result_text = '"{}" URL added successfully.'.format( normalised_url )
         
-        self.Write( 'import_url_test', url, filterable_tags, additional_service_keys_to_tags, destination_page_name, destination_page_key, show_destination_page, destination_location_context )
+        self.write( 'import_url_test', url, filterable_tags, additional_service_keys_to_tags, destination_page_name, destination_page_key, show_destination_page, destination_location_context )
         
         return ( normalised_url, human_result_text )
-        
     
-    def IsBooted( self ):
-        
+    def is_booted(self):
         return True
-        
     
-    def IsConnected( self ):
-        
+    def is_connected(self):
         return False
-        
     
-    def IsCurrentPage( self, page_key ):
-        
+    def is_current_page(self, page_key):
         return False
-        
     
-    def IsFirstStart( self ):
-        
+    def is_first_start(self):
         return True
-        
     
-    def isFullScreen( self ):
-        
+    def is_full_screen(self):
         return True # hackery for another test
-        
     
-    def IShouldRegularlyUpdate( self, window ):
-        
+    def i_should_regularly_update(self, window):
         return True
-        
     
-    def JustWokeFromSleep( self ):
-        
+    def just_woke_from_sleep(self):
         return False
-        
     
-    def LastShutdownWasBad( self ):
-        
+    def last_shutdown_was_bad(self):
         return False
-        
     
-    def PageAlive( self, page_key ):
-        
+    def page_alive(self, page_key):
         return False
-        
     
-    def PageClosedButNotDestroyed( self, page_key ):
-        
+    def page_closed_but_not_destroyed(self, page_key):
         return False
-        
     
-    def PauseAndDisconnect( self, pause_and_disconnect ):
-        
+    def pause_and_disconnect(self, pause_and_disconnect):
         pass
-        
     
-    def Read( self, name, *args, **kwargs ):
+    def read(self, name, *args, **kwargs):
         
         self._read_call_args[ name ].append( ( args, kwargs ) )
         
@@ -879,42 +763,29 @@ class Controller( object ):
             
         
         return result
-        
     
-    def RegisterUIUpdateWindow( self, window ):
-        
+    def register_ui_update_window(self, window):
         pass
-        
     
-    def ReleasePageKey( self, page_key ):
-        
+    def release_page_key(self, page_key):
         pass
-        
     
-    def ReportDataUsed( self, num_bytes ):
-        
+    def report_data_used(self, num_bytes):
         pass
-        
     
-    def ReportRequestUsed( self ):
-        
+    def report_request_used(self):
         pass
-        
     
-    def ResetIdleTimer( self ):
-        
+    def reset_idle_timer(self):
         pass
-        
     
-    def ResetIdleTimerFromClientAPI( self ):
-        
+    def reset_idle_timer_from_client_api(self):
         pass
-        
     
-    def Run( self, window ):
+    def run(self, window):
         
         # we are in Qt thread here, we can do this
-        self._SetupQt()
+        self._setup_qt()
         
         if self.only_run is None:
             
@@ -1039,7 +910,7 @@ class Controller( object ):
             TestHydrusServer
         ]
         
-        module_lookup[ 'all' ] = sorted( HydrusLists.MassUnion( module_lookup.values() ), key = lambda d: d.__name__ )
+        module_lookup[ 'all' ] = sorted( HydrusLists.mass_union( module_lookup.values() ), key = lambda d: d.__name__ )
         
         if run_all:
             
@@ -1069,7 +940,7 @@ class Controller( object ):
                 
             finally:
                 
-                self.CallAfterQtSafe( self.win, self.win.deleteLater )
+                self.call_after_qt_safe( self.win, self.win.deleteLater )
                 
             
         
@@ -1078,49 +949,32 @@ class Controller( object ):
         test_thread = threading.Thread( target = do_it )
         
         test_thread.start()
-        
     
-    def SetParamRead( self, name, args, value ):
-        
+    def set_param_read(self, name, args, value):
         self._param_read_responses[ ( name, args ) ] = value
-        
     
-    def SetRead( self, name: str, value ):
-        
+    def set_read(self, name: str, value):
         self._name_read_responses[ name ] = value
-        
     
-    def SetStatusBarDirty( self ):
-        
+    def set_status_bar_dirty(self):
         pass
-        
     
-    def SetTestDB( self, db ):
-        
+    def set_test_db(self, db):
         self._test_db = db
-        
     
-    def SetWebCookies( self, name, value ):
-        
+    def set_web_cookies(self, name, value):
         self._cookies[ name ] = value
-        
     
-    def ShouldStopThisWork( self, maintenance_mode, stop_time = None ):
-        
+    def should_stop_this_work(self, maintenance_mode, stop_time = None):
         return False
-        
     
-    def RefreshPage( self, page_key ):
-        
-        self.Write( 'refresh_page', page_key )
-        
+    def refresh_page(self, page_key):
+        self.write( 'refresh_page', page_key )
     
-    def ShowPage( self, page_key ):
-        
-        self.Write( 'show_page', page_key )
-        
+    def show_page(self, page_key):
+        self.write( 'show_page', page_key )
     
-    def TidyUp( self ):
+    def tidy_up(self):
         
         self._thread_worker_pool.shutdown()
         
@@ -1130,36 +984,27 @@ class Controller( object ):
             
             if self._twisted_thread is not None:
                 
-                HydrusThreading.ShutdownThread( self._twisted_thread )
+                HydrusThreading.shutdown_thread( self._twisted_thread )
                 
             
         
         time.sleep( 2 )
         
-        HydrusPaths.DeletePath( self.db_dir )
-        
+        HydrusPaths.delete_path( self.db_dir )
     
-    def WaitUntilModelFree( self ):
-        
+    def wait_until_model_free(self):
         return
-        
     
-    def WaitUntilViewFree( self ):
-        
+    def wait_until_view_free(self):
         return
-        
     
-    def Write( self, name, *args, **kwargs ):
-        
+    def write(self, name, *args, **kwargs):
         if self._test_db is not None:
-            
             return self._test_db.Write( name, *args, **kwargs )
-            
         
         self._write_call_args[ name ].append( ( args, kwargs ) )
-        
     
-    def WriteSynchronous( self, name, *args, **kwargs ):
+    def write_synchronous(self, name, *args, **kwargs):
         
         self._write_call_args[ name ].append( ( args, kwargs ) )
         
@@ -1181,7 +1026,3 @@ class Controller( object ):
                     
                 
                 return ClientImportFiles.FileImportStatus( CC.STATUS_SUCCESSFUL_AND_NEW, h, note = 'test note' )
-                
-            
-        
-    

@@ -202,7 +202,7 @@ class EditNodes( QW.QWidget ):
         
         if export_object is not None:
             
-            json = export_object.DumpToString()
+            json = export_object.dump_to_string()
             
             CG.client_controller.pub( 'clipboard', 'text', json )
             
@@ -276,11 +276,11 @@ class EditNodes( QW.QWidget ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             
@@ -289,7 +289,7 @@ class EditNodes( QW.QWidget ):
         
         try:
             
-            obj = HydrusSerialisable.CreateFromString( raw_text )
+            obj = HydrusSerialisable.create_from_string( raw_text )
             
             self._ImportObject( obj )
             
@@ -471,7 +471,7 @@ The formula should attempt to parse full or relative urls. If the url is relativ
                 self._test_fetch_result.setEnabled( True )
                 
             
-            result_lines = [ '*** ' + HydrusNumbers.ToHumanInt( len( parsed_urls ) ) + ' RESULTS BEGIN ***' ]
+            result_lines = [ '*** ' + HydrusNumbers.to_human_int( len( parsed_urls ) ) + ' RESULTS BEGIN ***' ]
             
             result_lines.extend( parsed_urls )
             
@@ -486,17 +486,17 @@ The formula should attempt to parse full or relative urls. If the url is relativ
             
             try:
                 
-                stop_time = HydrusTime.GetNow() + 30
+                stop_time = HydrusTime.get_now() + 30
                 
                 job_status = ClientThreading.JobStatus( cancellable = True, stop_time = stop_time )
                 
                 parsed_urls = node.ParseURLs( job_status, data, referral_url )
                 
-                CG.client_controller.CallAfterQtSafe( self, qt_code, parsed_urls )
+                CG.client_controller.call_after_qt_safe( self, qt_code, parsed_urls )
                 
             except Exception as e:
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
                 message = 'Could not parse!'
                 
@@ -508,7 +508,7 @@ The formula should attempt to parse full or relative urls. If the url is relativ
         data = self._example_data.toPlainText()
         referral_url = self._referral_url
         
-        CG.client_controller.CallToThread( do_it, node, data, referral_url )
+        CG.client_controller.call_to_thread( do_it, node, data, referral_url )
         
     
     def GetExampleData( self ):
@@ -749,7 +749,7 @@ And pass that html to a number of 'parsing children' that will each look through
         
         try:
             
-            stop_time = HydrusTime.GetNow() + 30
+            stop_time = HydrusTime.get_now() + 30
             
             job_status = ClientThreading.JobStatus( cancellable = True, stop_time = stop_time )
             
@@ -763,12 +763,12 @@ And pass that html to a number of 'parsing children' that will each look through
                 
             except UnicodeDecodeError:
                 
-                self._example_data.setPlainText( 'The fetched data, which had length ' + HydrusData.ToHumanBytes( len( parsing_text ) ) + ', did not appear to be displayable text.' )
+                self._example_data.setPlainText( 'The fetched data, which had length ' + HydrusData.to_human_bytes( len( parsing_text ) ) + ', did not appear to be displayable text.' )
                 
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             message = 'Could not fetch data!'
             message += '\n' * 2
@@ -778,7 +778,7 @@ And pass that html to a number of 'parsing children' that will each look through
             
         finally:
             
-            job_status.Finish()
+            job_status.finish()
             
         
     
@@ -786,7 +786,7 @@ And pass that html to a number of 'parsing children' that will each look through
         
         def qt_code( parsed_post: ClientParsingResults.ParsedPost ):
             
-            result_lines = [ '*** ' + HydrusNumbers.ToHumanInt( len( parsed_post ) ) + ' RESULTS BEGIN ***' ]
+            result_lines = [ '*** ' + HydrusNumbers.to_human_int( len( parsed_post ) ) + ' RESULTS BEGIN ***' ]
             
             result_lines.extend( [ parsed_content.ToString() for parsed_content in parsed_post.parsed_contents ] )
             
@@ -803,11 +803,11 @@ And pass that html to a number of 'parsing children' that will each look through
                 
                 parsed_post = script.Parse( job_status, data )
                 
-                CG.client_controller.CallAfterQtSafe( self, qt_code, parsed_post )
+                CG.client_controller.call_after_qt_safe( self, qt_code, parsed_post )
                 
             except Exception as e:
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
                 message = 'Could not parse!'
                 
@@ -815,13 +815,13 @@ And pass that html to a number of 'parsing children' that will each look through
                 
             finally:
                 
-                job_status.Finish()
+                job_status.finish()
                 
             
         
         script = self.GetValue()
         
-        stop_time = HydrusTime.GetNow() + 30
+        stop_time = HydrusTime.get_now() + 30
         
         job_status = ClientThreading.JobStatus( cancellable = True, stop_time = stop_time )
         
@@ -829,7 +829,7 @@ And pass that html to a number of 'parsing children' that will each look through
         
         data = self._example_data.toPlainText()
         
-        CG.client_controller.CallToThread( do_it, script, job_status, data )
+        CG.client_controller.call_to_thread( do_it, script, job_status, data )
         
     
     def GetExampleData( self ):
@@ -905,7 +905,7 @@ class ManageParsingScriptsPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         for script_type in self.SCRIPT_TYPES:
             
-            scripts.extend( CG.client_controller.Read( 'serialisable_named', script_type ) )
+            scripts.extend( CG.client_controller.read( 'serialisable_named', script_type ) )
             
         
         self._scripts.SetData( scripts )
@@ -1030,7 +1030,7 @@ class ManageParsingScriptsPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         scripts = self._scripts.GetData()
         
-        CG.client_controller.Write( 'serialisables_overwrite', self.SCRIPT_TYPES, scripts )
+        CG.client_controller.write( 'serialisables_overwrite', self.SCRIPT_TYPES, scripts )
         
         ClientParsingLegacy.LookupScriptsCache.instance().NotifyNewScripts()
         
@@ -1081,7 +1081,7 @@ class ManageParsingScriptsPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         with ClientGUITopLevelWindowsPanels.DialogEdit( self, dlg_title, frame_key = 'deeply_nested_dialog' ) as dlg:
             
-            original_name = script.GetName()
+            original_name = script.get_name()
             
             panel = panel_class( dlg, script )
             
@@ -1091,7 +1091,7 @@ class ManageParsingScriptsPanel( ClientGUIScrolledPanels.ManagePanel ):
                 
                 edited_script = panel.GetValue()
                 
-                if edited_script.GetName() != original_name:
+                if edited_script.get_name() != original_name:
                     
                     self._scripts.SetNonDupeName( edited_script )
                     
@@ -1107,7 +1107,7 @@ class ManageParsingScriptsPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         if export_object is not None:
             
-            json = export_object.DumpToString()
+            json = export_object.dump_to_string()
             
             CG.client_controller.pub( 'clipboard', 'text', json )
             
@@ -1134,11 +1134,11 @@ class ManageParsingScriptsPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', str(e) )
             
@@ -1147,7 +1147,7 @@ class ManageParsingScriptsPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         try:
             
-            obj = HydrusSerialisable.CreateFromString( raw_text )
+            obj = HydrusSerialisable.create_from_string( raw_text )
             
             self._ImportObject( obj )
             
@@ -1171,7 +1171,7 @@ class ManageParsingScriptsPanel( ClientGUIScrolledPanels.ManagePanel ):
                     
                 except Exception as e:
                     
-                    HydrusData.PrintException( e )
+                    HydrusData.print_exception( e )
                     
                     ClientGUIDialogsMessage.ShowCritical( self, 'Problem loading!', str(e) )
                     
@@ -1180,13 +1180,13 @@ class ManageParsingScriptsPanel( ClientGUIScrolledPanels.ManagePanel ):
                 
                 try:
                     
-                    obj = HydrusSerialisable.CreateFromNetworkBytes( payload )
+                    obj = HydrusSerialisable.create_from_network_bytes( payload )
                     
                     self._ImportObject( obj )
                     
                 except Exception as e:
                     
-                    HydrusData.PrintException( e )
+                    HydrusData.print_exception( e )
                     
                     ClientGUIDialogsMessage.ShowCritical( self, 'Problem loading!', 'I could not understand what was encoded in the png!' )
                     

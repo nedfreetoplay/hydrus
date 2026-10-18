@@ -126,8 +126,8 @@ def ConvertDomainIntoSecondLevelDomain( domain ):
                 
                 TLDEXTRACT_ERROR_SHOWN = True
                 
-                HydrusData.Print( 'Hey, some domain stuff went wrong. Hydev would be interested in seeing this:' )
-                HydrusData.PrintException( e, do_wait = False )
+                HydrusData.safe_print( 'Hey, some domain stuff went wrong. Hydev would be interested in seeing this:' )
+                HydrusData.print_exception( e, do_wait = False )
                 
             
         
@@ -177,8 +177,8 @@ def ConvertDomainIntoTopLevelDomain( domain ):
                 
                 TLDEXTRACT_ERROR_SHOWN = True
                 
-                HydrusData.Print( 'Hey, some domain stuff went wrong. Hydev would be interested in seeing this:' )
-                HydrusData.PrintException( e, do_wait = False )
+                HydrusData.safe_print( 'Hey, some domain stuff went wrong. Hydev would be interested in seeing this:' )
+                HydrusData.print_exception( e, do_wait = False )
                 
             
         
@@ -556,11 +556,11 @@ def NetworkReportMode( message: str ):
         
         if HG.network_report_mode_silent:
             
-            HydrusData.Print( message )
+            HydrusData.safe_print( message )
             
         else:
             
-            HydrusData.ShowText( message ) 
+            HydrusData.show_text( message ) 
             
         
     

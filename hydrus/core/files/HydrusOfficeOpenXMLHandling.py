@@ -1,6 +1,6 @@
 from hydrus.core import HydrusConstants as HC
 from hydrus.core import HydrusExceptions
-from hydrus.core.files.HydrusArchiveHandling import GetZipAsPath
+from hydrus.core.files.HydrusArchiveHandling import get_zip_as_path
 from hydrus.core.files.images import HydrusImageHandling
 
 import xml.etree.ElementTree as ET
@@ -15,11 +15,11 @@ DOCX_XPATH_DEFAULT = ".//{*}Default[@Extension='xml'][@ContentType='application/
 XLSX_XPATH_DEFAULT = ".//{*}Default[@Extension='xml'][@ContentType='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml']"
 PPTX_XPATH_DEFAULT = ".//{*}Default[@Extension='xml'][@ContentType='application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml']"
 
-def MimeFromMicrosoftOpenXMLDocument(path: str):
+def mime_from_microsoft_open_xml_document(path: str):
     
     try:
         
-        file = GetZipAsPath( path, '[Content_Types].xml' ).open( 'rb' )
+        file = get_zip_as_path( path, '[Content_Types].xml' ).open( 'rb' )
         
         root = ET.parse( file )
         
@@ -55,21 +55,19 @@ def MimeFromMicrosoftOpenXMLDocument(path: str):
     except Exception as e:
         
         return None
-        
-    
 
-def GenerateThumbnailNumPyFromOfficePath( path: str, target_resolution: tuple[ int, int ] ):
+def generate_thumbnail_numpy_from_office_path(path: str, target_resolution: tuple[int, int]):
     
     try:
         
-        zip_path_file_obj = GetZipAsPath( path, 'docProps/thumbnail.jpeg' ).open( 'rb' )
+        zip_path_file_obj = get_zip_as_path( path, 'docProps/thumbnail.jpeg' ).open( 'rb' )
         
     except FileNotFoundError:
         
         raise HydrusExceptions.NoThumbnailFileException( 'No thumbnail.jpeg file!' )
         
     
-    pil_image = HydrusImageHandling.GeneratePILImage( zip_path_file_obj )
+    pil_image = HydrusImageHandling.generate_pil_image( zip_path_file_obj )
     
     try:
         
@@ -82,7 +80,7 @@ def GenerateThumbnailNumPyFromOfficePath( path: str, target_resolution: tuple[ i
     
     try:
         
-        numpy_image = HydrusImageHandling.GenerateNumPyImageFromPILImage( thumbnail_pil_image )
+        numpy_image = HydrusImageHandling.generate_numpy_image_from_pil_image( thumbnail_pil_image )
         
     finally:
         
@@ -90,7 +88,6 @@ def GenerateThumbnailNumPyFromOfficePath( path: str, target_resolution: tuple[ i
         
     
     return numpy_image
-    
 
 PPTX_ASSUMED_DPI = 300
 
@@ -100,9 +97,9 @@ PPTX_ASSUMED_DPI = 300
 
 PPTX_PIXEL_PER_EMU = PPTX_ASSUMED_DPI / 914400
 
-def PowerPointResolution( path: str ):
+def power_point_resolution(path: str):
     
-    file = GetZipAsPath( path, 'ppt/presentation.xml' ).open( 'rb' )
+    file = get_zip_as_path( path, 'ppt/presentation.xml' ).open( 'rb' )
     
     root = ET.parse( file )
     
@@ -117,11 +114,10 @@ def PowerPointResolution( path: str ):
     height = round(y_emu * PPTX_PIXEL_PER_EMU)
     
     return ( width, height) 
-    
 
-def OfficeDocumentWordCount( path: str ):
+def office_document_word_count(path: str):
     
-    file = GetZipAsPath( path, 'docProps/app.xml' ).open( 'rb' )
+    file = get_zip_as_path( path, 'docProps/app.xml' ).open( 'rb' )
     
     root = ET.parse( file )
     
@@ -130,13 +126,12 @@ def OfficeDocumentWordCount( path: str ):
     num_words = int(words)
     
     return num_words
-    
 
-def GetPPTXInfo( path: str ):
+def get_pptx_info(path: str):
     
     try:
         
-        ( width, height ) = PowerPointResolution( path )
+        ( width, height ) = power_point_resolution( path )
         
     except Exception as e:
         
@@ -144,20 +139,19 @@ def GetPPTXInfo( path: str ):
     
     try:
         
-        num_words = OfficeDocumentWordCount( path )
+        num_words = office_document_word_count( path )
         
     except Exception as e:
         
         num_words = None
         
     return ( num_words, ( width, height ) )
-    
 
-def GetDOCXInfo( path:str ):
+def get_docx_info(path:str):
     
     try:
         
-        num_words = OfficeDocumentWordCount( path )
+        num_words = office_document_word_count( path )
         
     except Exception as e:
         
@@ -165,4 +159,3 @@ def GetDOCXInfo( path:str ):
         
     
     return num_words
-    

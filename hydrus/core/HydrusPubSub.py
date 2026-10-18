@@ -6,9 +6,9 @@ from hydrus.core import HydrusExceptions
 from hydrus.core import HydrusGlobals as HG
 from hydrus.core import HydrusProfiling
 
-class HydrusPubSub( object ):
+class HydrusPubSub:
     
-    def __init__( self, valid_callable ):
+    def __init__(self, valid_callable):
         
         self._valid_callable = valid_callable
         
@@ -25,9 +25,8 @@ class HydrusPubSub( object ):
         
         self._topics_to_objects = {}
         self._topics_to_method_names = {}
-        
     
-    def _GetCallableTuples( self, topic ):
+    def _get_callable_tuples(self, topic):
         
         # this now does the obj as well so we have a strong direct ref to it throughout procesing
         
@@ -66,14 +65,12 @@ class HydrusPubSub( object ):
             
         
         return callable_tuples
-        
     
-    def CurrentlyIdle( self ):
+    def currently_idle(self):
         
         return self._i_am_idle.is_set()
-        
     
-    def Process( self ):
+    def process(self):
         
         # only do one list of callables at a time
         # we don't want to map a topic to its callables until the previous topic's callables have been fully executed
@@ -102,17 +99,17 @@ class HydrusPubSub( object ):
                     
                     # do all this _outside_ the lock, lol
                     
-                    callable_tuples = self._GetCallableTuples( topic )
+                    callable_tuples = self._get_callable_tuples( topic )
                     
                     # don't want to report the showtext we just send here!
                     not_a_report = topic != 'message'
                     
                     if HG.pubsub_report_mode and not_a_report:
                         
-                        HydrusData.ShowText( ( topic, args, kwargs, callable_tuples ) )
+                        HydrusData.show_text( ( topic, args, kwargs, callable_tuples ) )
                         
                     
-                    if HydrusProfiling.IsProfileMode( 'ui' ) and not_a_report:
+                    if HydrusProfiling.is_profile_mode( 'ui' ) and not_a_report:
                         
                         summary = 'Profiling pubsub: {}'.format( topic )
                         
@@ -120,7 +117,7 @@ class HydrusPubSub( object ):
                             
                             try:
                                 
-                                HydrusProfiling.Profile( summary, HydrusData.Call( callable, *args, **kwargs ), min_duration_ms = HG.pubsub_profile_min_job_time_ms )
+                                HydrusProfiling.profile( summary, HydrusData.Call( callable, *args, **kwargs ), min_duration_ms = HG.pubsub_profile_min_job_time_ms )
                                 
                             except HydrusExceptions.ShutdownException:
                                 
@@ -145,17 +142,15 @@ class HydrusPubSub( object ):
                     
                 except Exception as e:
                     
-                    HydrusData.ShowException( e )
+                    HydrusData.show_exception( e )
                     
                 
             
         finally:
             
             self._i_am_idle.set()
-            
-        
     
-    def pub( self, topic, *args, **kwargs ):
+    def pub(self, topic, *args, **kwargs):
         
         if self._shutdown:
             
@@ -173,30 +168,26 @@ class HydrusPubSub( object ):
         
         self._received_job_event.set()
         self._received_job_event.clear()
-        
     
-    def pubimmediate( self, topic, *args, **kwargs ):
+    def pubimmediate(self, topic, *args, **kwargs):
         
         with self._lock:
             
-            callable_tuples = self._GetCallableTuples( topic )
+            callable_tuples = self._get_callable_tuples( topic )
             
         
         for ( obj, callable ) in callable_tuples:
             
             callable( *args, **kwargs )
-            
-        
     
-    def shutdown( self ):
+    def shutdown(self):
         
         self._shutdown = True
         
         self._received_job_event.set()
         self._i_am_idle.set()
-        
     
-    def sub( self, object, method_name, topic ):
+    def sub(self, object, method_name, topic):
         
         with self._lock:
             
@@ -205,24 +196,18 @@ class HydrusPubSub( object ):
             
             self._topics_to_objects[ topic ].add( object )
             self._topics_to_method_names[ topic ].add( method_name )
-            
-        
     
-    def WaitOnPub( self ):
+    def wait_on_pub(self):
         
         self._received_job_event.wait()
-        
     
-    def WaitUntilFree( self ):
+    def wait_until_free(self):
         
         self._i_am_idle.wait()
-        
     
-    def WorkToDo( self ):
+    def work_to_do(self):
         
         with self._lock:
             
             return len( self._pubsubs ) > 0
-            
-        
-    
+

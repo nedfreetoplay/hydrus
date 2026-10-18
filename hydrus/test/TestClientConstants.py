@@ -19,11 +19,11 @@ class TestManagers( unittest.TestCase ):
         def test_service( service, key, service_type, name ):
             
             self.assertEqual( service.GetServiceKey(), key )
-            self.assertEqual( service.GetServiceType(), service_type )
+            self.assertEqual( service.get_service_type(), service_type )
             self.assertEqual( service.GetName(), name )
             
         
-        repo_key = HydrusData.GenerateKey()
+        repo_key = HydrusData.generate_key()
         repo_type = HC.TAG_REPOSITORY
         repo_name = 'test tag repo'
         
@@ -33,7 +33,7 @@ class TestManagers( unittest.TestCase ):
         
         services.append( repo )
         
-        TG.test_controller.SetRead( 'services', services )
+        TG.test_controller.set_read( 'services', services )
         
         services_manager = ClientServices.ServicesManager( CG.client_controller )
         
@@ -55,7 +55,7 @@ class TestManagers( unittest.TestCase ):
         
         services = []
         
-        TG.test_controller.SetRead( 'services', services )
+        TG.test_controller.set_read( 'services', services )
         
         services_manager.RefreshServices()
         
@@ -64,9 +64,9 @@ class TestManagers( unittest.TestCase ):
     
     def test_undo( self ):
         
-        hash_1 = HydrusData.GenerateKey()
-        hash_2 = HydrusData.GenerateKey()
-        hash_3 = HydrusData.GenerateKey()
+        hash_1 = HydrusData.generate_key()
+        hash_2 = HydrusData.generate_key()
+        hash_3 = HydrusData.generate_key()
         
         command_1 = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_ARCHIVE, { hash_1 } ) )
         command_2 = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_FILES, HC.CONTENT_UPDATE_INBOX, { hash_2 } ) )
@@ -79,7 +79,7 @@ class TestManagers( unittest.TestCase ):
         
         #
         
-        TG.test_controller.ClearWrites( 'content_updates' )
+        TG.test_controller.clear_writes( 'content_updates' )
         
         undo_manager.AddCommand( 'content_updates', command_1 )
         
@@ -93,13 +93,13 @@ class TestManagers( unittest.TestCase ):
         
         self.assertEqual( ( 'undo archive 1 files', 'redo inbox 1 files' ), undo_manager.GetUndoRedoStrings() )
         
-        [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.GetWrite( 'content_updates' )
+        [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.get_write( 'content_updates' )
         
         HF.compare_content_update_packages( self, content_update_package, command_2_inverted )
         
         undo_manager.Redo()
         
-        [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.GetWrite( 'content_updates' )
+        [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.get_write( 'content_updates' )
         
         HF.compare_content_update_packages( self, content_update_package, command_2 )
         
@@ -107,13 +107,13 @@ class TestManagers( unittest.TestCase ):
         
         undo_manager.Undo()
         
-        [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.GetWrite( 'content_updates' )
+        [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.get_write( 'content_updates' )
         
         HF.compare_content_update_packages( self, content_update_package, command_2_inverted )
         
         undo_manager.Undo()
         
-        [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.GetWrite( 'content_updates' )
+        [ ( ( content_update_package, ), kwargs ) ] = TG.test_controller.get_write( 'content_updates' )
         
         HF.compare_content_update_packages( self, content_update_package, command_1_inverted )
         

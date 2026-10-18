@@ -111,7 +111,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
     
     def _GetCurrentGranularity( self ) -> int:
         
-        result = self._Execute( 'SELECT granularity FROM current_storage_granularity;' ).fetchone()
+        result = self._execute( 'SELECT granularity FROM current_storage_granularity;' ).fetchone()
         
         if result is None:
             
@@ -123,7 +123,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         return granularity
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict( self ) -> dict:
         
         return {
             'main.current_client_files_locations' : ( 'CREATE TABLE IF NOT EXISTS {} ( location_id INTEGER PRIMARY KEY, location TEXT UNIQUE );', 660 ),
@@ -147,7 +147,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         
         current_granularity = self._GetCurrentGranularity()
         
-        for ( prefix, location_id ) in self._Execute( 'SELECT prefix, location_id FROM client_files_subfolders;' ).fetchall():
+        for ( prefix, location_id ) in self._execute( 'SELECT prefix, location_id FROM client_files_subfolders;' ).fetchall():
             
             if len( prefix ) != current_granularity + 1: # len( 'f34' ) = 2 + 1
                 
@@ -203,8 +203,8 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         
         all_prefixes = { subfolder.prefix for subfolder in subfolders }
         
-        missing_prefixes_f = HydrusFilesPhysicalStorage.GetMissingPrefixes( 'f', all_prefixes, current_granularity )
-        missing_prefixes_t = HydrusFilesPhysicalStorage.GetMissingPrefixes( 't', all_prefixes, current_granularity )
+        missing_prefixes_f = HydrusFilesPhysicalStorage.get_missing_prefixes( 'f', all_prefixes, current_granularity )
+        missing_prefixes_t = HydrusFilesPhysicalStorage.get_missing_prefixes( 't', all_prefixes, current_granularity )
         
         if len( missing_prefixes_f ) > 0 or len( missing_prefixes_t ) > 0:
             
@@ -218,18 +218,18 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
             
             client_files_default = os.path.join( self._db_dir, 'client_files' )
             
-            HydrusPaths.MakeSureDirectoryExists( client_files_default )
+            HydrusPaths.make_sure_directory_exists( client_files_default )
             
             location_id = self.GetLocationId( client_files_default )
             
             for missing_prefix in missing_prefixes_f:
                 
-                self._Execute( 'INSERT OR IGNORE INTO client_files_subfolders ( prefix, location_id ) VALUES ( ?, ? );', ( missing_prefix, location_id ) )
+                self._execute( 'INSERT OR IGNORE INTO client_files_subfolders ( prefix, location_id ) VALUES ( ?, ? );', ( missing_prefix, location_id ) )
                 
             
             for missing_prefix in missing_prefixes_t:
                 
-                self._Execute( 'INSERT OR IGNORE INTO client_files_subfolders ( prefix, location_id ) VALUES ( ?, ? );', ( missing_prefix, location_id ) )
+                self._execute( 'INSERT OR IGNORE INTO client_files_subfolders ( prefix, location_id ) VALUES ( ?, ? );', ( missing_prefix, location_id ) )
                 
             
             return self.GetClientFilesSubfolders()
@@ -242,14 +242,14 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         
         media_base_locations = set()
         
-        for ( location_id, ideal_weight, max_num_bytes ) in self._Execute( 'SELECT location_id, weight, max_num_bytes FROM ideal_client_files_locations;' ).fetchall():
+        for ( location_id, ideal_weight, max_num_bytes ) in self._execute( 'SELECT location_id, weight, max_num_bytes FROM ideal_client_files_locations;' ).fetchall():
             
             location = self.GetLocation( location_id )
             
             media_base_locations.add( ClientFilesPhysical.FilesStorageBaseLocation( location, ideal_weight, max_num_bytes = max_num_bytes ) )
             
         
-        result = self._Execute( 'SELECT location_id FROM ideal_thumbnail_override_location;' ).fetchone()
+        result = self._execute( 'SELECT location_id FROM ideal_thumbnail_override_location;' ).fetchone()
         
         if result is None:
             
@@ -267,7 +267,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         return ( media_base_locations, thumbnail_override_base_location )
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         tables_and_columns = []
         
@@ -278,7 +278,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         
         # TODO: rewrite this guy to return a pathlib Path and propagate the whole gubbins out from there, bottom to top
         
-        result = self._Execute( 'SELECT location FROM current_client_files_locations WHERE location_id = ?;', ( location_id, ) ).fetchone()
+        result = self._execute( 'SELECT location FROM current_client_files_locations WHERE location_id = ?;', ( location_id, ) ).fetchone()
         
         if result is None:
             
@@ -287,7 +287,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         
         ( portable_location, ) = result
         
-        absolute_location = HydrusPaths.ConvertPortablePathToAbsPath( portable_location )
+        absolute_location = HydrusPaths.convert_portable_path_to_abs_path( portable_location )
         
         return absolute_location
         
@@ -298,15 +298,15 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         # TODO: we may need to have some clever alternate call or bool here that says 'hey I need you to check every possible conjugation of this location', which will read all locations and absolute normalise them somehow
         # this would be just to catch the wrong slashes coming in (C:\ vs C:/) and so on, although we don't want this to be normal behaviour perhaps, certainly at least if it can write back any 'corrections' 
         
-        portable_location = HydrusPaths.ConvertAbsPathToPortablePath( absolute_location )
+        portable_location = HydrusPaths.convert_abs_path_to_portable_path( absolute_location )
         
-        result = self._Execute( 'SELECT location_id FROM current_client_files_locations WHERE location = ?;', ( portable_location, ) ).fetchone()
+        result = self._execute( 'SELECT location_id FROM current_client_files_locations WHERE location = ?;', ( portable_location, ) ).fetchone()
         
         if result is None:
             
-            self._Execute( 'INSERT INTO current_client_files_locations ( location ) VALUES ( ? );', ( portable_location, ) )
+            self._execute( 'INSERT INTO current_client_files_locations ( location ) VALUES ( ? );', ( portable_location, ) )
             
-            location_id = self._GetLastRowId()
+            location_id = self._get_last_row_id()
             
         else:
             
@@ -318,7 +318,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
     
     def Granularise( self, job_status: ClientThreading.JobStatus, starting_granularity: int, ending_granularity: int ):
         
-        location_ids = self._STL( self._Execute( 'SELECT DISTINCT location_id FROM client_files_subfolders;' ) )
+        location_ids = self._stl( self._execute( 'SELECT DISTINCT location_id FROM client_files_subfolders;' ) )
         
         locations = sorted( [ self.GetLocation( location_id ) for location_id in location_ids ] )
         
@@ -332,7 +332,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
             
             message = 'You just cancelled the regranularisation process! I will now attempt to undo it. The status window will move to the bottom-right of the main gui window. Just wait it out please.'
             
-            CG.client_controller.BlockingSafeShowMessage( message )
+            CG.client_controller.blocking_safe_show_message( message )
             
             job_status = ClientThreading.JobStatus( pausable = True )
             
@@ -346,7 +346,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
             
         except Exception as e:
             
-            HydrusData.PrintException( e, do_wait = False )
+            HydrusData.print_exception( e, do_wait = False )
             
             message = f'Granularisation failed!! I am paused now, but when this dialog is closed, I will attempt to undo and return to granularisation {starting_granularity}. If you do not want to attempt to repair the damage, kill the hydrus process now. The status window will move to the bottom-right of the main gui window. Just wait it out please.'
             message += '\n\n'
@@ -354,7 +354,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
             message += '\n\n'
             message += str( e )
             
-            CG.client_controller.BlockingSafeShowCriticalMessage( 'Problem with granularisation!', message )
+            CG.client_controller.blocking_safe_show_critical_message( 'Problem with granularisation!', message )
             
             job_status = ClientThreading.JobStatus( pausable = True )
             
@@ -367,7 +367,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
             raise
             
         
-        self._Execute( 'DELETE FROM client_files_subfolders;' )
+        self._execute( 'DELETE FROM client_files_subfolders;' )
         
         inserts = []
         
@@ -378,11 +378,11 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
             inserts.append( ( prefix, location_id ) )
             
         
-        self._ExecuteMany( 'INSERT OR IGNORE INTO client_files_subfolders ( prefix, location_id ) VALUES ( ?, ? );', inserts )
+        self._execute_many( 'INSERT OR IGNORE INTO client_files_subfolders ( prefix, location_id ) VALUES ( ?, ? );', inserts )
         
-        self._Execute( 'DELETE FROM current_storage_granularity;' )
+        self._execute( 'DELETE FROM current_storage_granularity;' )
         
-        self._Execute( 'INSERT INTO current_storage_granularity ( granularity ) VALUES ( ? );', ( ending_granularity, ) )
+        self._execute( 'INSERT INTO current_storage_granularity ( granularity ) VALUES ( ? );', ( ending_granularity, ) )
         
         return ( new_prefixes_to_locations, num_files_moved, num_weird_dirs, num_weird_files )
         
@@ -391,40 +391,40 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         
         current_storage_granularity = HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH
         
-        self._Execute( 'INSERT INTO current_storage_granularity ( granularity ) VALUES ( ? );', ( current_storage_granularity, ) )
+        self._execute( 'INSERT INTO current_storage_granularity ( granularity ) VALUES ( ? );', ( current_storage_granularity, ) )
         
         default_client_files_path = os.path.join( self._db_dir, 'client_files' )
         
-        HydrusPaths.MakeSureDirectoryExists( default_client_files_path )
+        HydrusPaths.make_sure_directory_exists( default_client_files_path )
         
         location_id = self.GetLocationId( default_client_files_path )
         
-        for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( 'f', current_storage_granularity ):
+        for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( 'f', current_storage_granularity ):
             
-            self._Execute( 'INSERT INTO client_files_subfolders ( prefix, location_id ) VALUES ( ?, ? );', ( prefix, location_id ) )
-            
-        
-        for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( 't', current_storage_granularity ):
-            
-            self._Execute( 'INSERT INTO client_files_subfolders ( prefix, location_id ) VALUES ( ?, ? );', ( prefix, location_id ) )
+            self._execute( 'INSERT INTO client_files_subfolders ( prefix, location_id ) VALUES ( ?, ? );', ( prefix, location_id ) )
             
         
-        self._Execute( 'INSERT INTO ideal_client_files_locations ( location_id, weight, max_num_bytes ) VALUES ( ?, ?, ? );', ( location_id, 1, None ) )
+        for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( 't', current_storage_granularity ):
+            
+            self._execute( 'INSERT INTO client_files_subfolders ( prefix, location_id ) VALUES ( ?, ? );', ( prefix, location_id ) )
+            
+        
+        self._execute( 'INSERT INTO ideal_client_files_locations ( location_id, weight, max_num_bytes ) VALUES ( ?, ?, ? );', ( location_id, 1, None ) )
         
     
     def PurgeOrphanLocations( self ):
         
         good_ids = set()
         
-        good_ids.update( self._STS( self._Execute( 'SELECT location_id FROM current_client_files_locations;' ) ) )
-        good_ids.update( self._STS( self._Execute( 'SELECT location_id FROM ideal_client_files_locations;' ) ) )
-        good_ids.update( self._STS( self._Execute( 'SELECT location_id FROM ideal_thumbnail_override_location;' ) ) )
+        good_ids.update( self._sts( self._execute( 'SELECT location_id FROM current_client_files_locations;' ) ) )
+        good_ids.update( self._sts( self._execute( 'SELECT location_id FROM ideal_client_files_locations;' ) ) )
+        good_ids.update( self._sts( self._execute( 'SELECT location_id FROM ideal_thumbnail_override_location;' ) ) )
         
-        existing_ids = self._STS( self._Execute( 'SELECT location_id FROM current_client_files_locations;' ) )
+        existing_ids = self._sts( self._execute( 'SELECT location_id FROM current_client_files_locations;' ) )
         
         orphan_ids = existing_ids.difference( good_ids )
         
-        self._ExecuteMany( 'DELETE FROM current_client_files_locations WHERE location_id = ?;', ( ( location_id, ) for location_id in orphan_ids ) )
+        self._execute_many( 'DELETE FROM current_client_files_locations WHERE location_id = ?;', ( ( location_id, ) for location_id in orphan_ids ) )
         
     
     def RelocateClientFiles( self, source_subfolder: ClientFilesPhysical.FilesStorageSubfolder, dest_subfolder: ClientFilesPhysical.FilesStorageSubfolder ):
@@ -457,7 +457,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
         
         prefix = source_subfolder.prefix
         
-        self._Execute( 'DELETE FROM client_files_subfolders WHERE prefix = ?;', ( prefix, ) )
+        self._execute( 'DELETE FROM client_files_subfolders WHERE prefix = ?;', ( prefix, ) )
         
         # via symlinking etc... which means we are just updating a simple db record, not wanting to move any files
         they_are_secretly_the_same = os.path.samefile( source_subfolder.base_location.path, dest_subfolder.base_location.path )
@@ -466,20 +466,20 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
             
             if os.path.exists( source_dir ):
                 
-                HydrusPaths.MergeTree( source_dir, dest_dir )
+                HydrusPaths.merge_tree( source_dir, dest_dir )
                 
             else:
                 
                 if not os.path.exists( dest_dir ):
                     
-                    HydrusPaths.MakeSureDirectoryExists( dest_dir )
+                    HydrusPaths.make_sure_directory_exists( dest_dir )
                     
                 
             
         
         dest_location_id = self.GetLocationId( dest_subfolder.base_location.path )
         
-        self._Execute( 'INSERT OR IGNORE INTO client_files_subfolders ( prefix, location_id ) VALUES ( ?, ? );', ( prefix, dest_location_id ) )
+        self._execute( 'INSERT OR IGNORE INTO client_files_subfolders ( prefix, location_id ) VALUES ( ?, ? );', ( prefix, dest_location_id ) )
         
         if not they_are_secretly_the_same:
             
@@ -491,7 +491,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
                     
                     try:
                         
-                        HydrusPaths.DeletePath( subdir )
+                        HydrusPaths.delete_path( subdir )
                         
                     except Exception as e:
                         
@@ -522,11 +522,11 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
             
             prefix = incorrect_subfolder.prefix
             
-            self._Execute( 'DELETE FROM client_files_subfolders WHERE prefix = ?;', ( prefix, ) )
+            self._execute( 'DELETE FROM client_files_subfolders WHERE prefix = ?;', ( prefix, ) )
             
             dest_location_id = self.GetLocationId( correct_subfolder.base_location.path )
             
-            self._Execute( 'INSERT OR IGNORE INTO client_files_subfolders ( prefix, location_id ) VALUES ( ?, ? );', ( prefix, dest_location_id ) )
+            self._execute( 'INSERT OR IGNORE INTO client_files_subfolders ( prefix, location_id ) VALUES ( ?, ? );', ( prefix, dest_location_id ) )
             
         
         self.PurgeOrphanLocations()
@@ -539,7 +539,7 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
             raise Exception( 'No locations passed in ideal locations list!' )
             
         
-        self._Execute( 'DELETE FROM ideal_client_files_locations;' )
+        self._execute( 'DELETE FROM ideal_client_files_locations;' )
         
         # small chance that this does an 'IGNORE' if two given paths have the same portable path; I'm actually ok with it
         for base_location in media_base_locations:
@@ -548,16 +548,16 @@ class ClientDBFilesPhysicalStorage( ClientDBModule.ClientDBModule ):
             ideal_weight = base_location.ideal_weight
             max_num_bytes = base_location.max_num_bytes
             
-            self._Execute( 'INSERT OR IGNORE INTO ideal_client_files_locations ( location_id, weight, max_num_bytes ) VALUES ( ?, ?, ? );', ( location_id, ideal_weight, max_num_bytes ) )
+            self._execute( 'INSERT OR IGNORE INTO ideal_client_files_locations ( location_id, weight, max_num_bytes ) VALUES ( ?, ?, ? );', ( location_id, ideal_weight, max_num_bytes ) )
             
         
-        self._Execute( 'DELETE FROM ideal_thumbnail_override_location;' )
+        self._execute( 'DELETE FROM ideal_thumbnail_override_location;' )
         
         if thumbnail_override_base_location is not None:
             
             location_id = self.GetLocationId( thumbnail_override_base_location.path )
             
-            self._Execute( 'INSERT INTO ideal_thumbnail_override_location ( location_id ) VALUES ( ? );', ( location_id, ) )
+            self._execute( 'INSERT INTO ideal_thumbnail_override_location ( location_id ) VALUES ( ? );', ( location_id, ) )
             
         
         self.PurgeOrphanLocations()

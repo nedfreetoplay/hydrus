@@ -55,7 +55,7 @@ def AddTagFavouritesMenu( win: QW.QWidget, menu: QW.QMenu, tag: str ):
         
         favourite_tags.add( tag )
         
-        CG.client_controller.new_options.SetStringList( 'favourite_tags', sorted( favourite_tags, key = HydrusText.HumanTextSortKey ) )
+        CG.client_controller.new_options.SetStringList( 'favourite_tags', sorted( favourite_tags, key = HydrusText.human_text_sort_key ) )
         
         CG.client_controller.pub( 'notify_new_favourite_tags' )
         
@@ -75,7 +75,7 @@ def AddTagFavouritesMenu( win: QW.QWidget, menu: QW.QMenu, tag: str ):
         
         favourite_tags.discard( tag )
         
-        CG.client_controller.new_options.SetStringList( 'favourite_tags', sorted( favourite_tags, key = HydrusText.HumanTextSortKey ) )
+        CG.client_controller.new_options.SetStringList( 'favourite_tags', sorted( favourite_tags, key = HydrusText.human_text_sort_key ) )
         
         CG.client_controller.pub( 'notify_new_favourite_tags' )
         
@@ -88,7 +88,7 @@ def AddTagFavouritesMenu( win: QW.QWidget, menu: QW.QMenu, tag: str ):
         
         most_used_tags.add( tag )
         
-        CG.client_controller.new_options.SetSuggestedTagsMostUsed( tag_service_key, sorted( most_used_tags, key = HydrusText.HumanTextSortKey ) )
+        CG.client_controller.new_options.SetSuggestedTagsMostUsed( tag_service_key, sorted( most_used_tags, key = HydrusText.human_text_sort_key ) )
         
         CG.client_controller.pub( 'notify_new_most_used_tags' )
         
@@ -110,7 +110,7 @@ def AddTagFavouritesMenu( win: QW.QWidget, menu: QW.QMenu, tag: str ):
         
         most_used_tags.discard( tag )
         
-        CG.client_controller.new_options.SetSuggestedTagsMostUsed( tag_service_key, sorted( most_used_tags, key = HydrusText.HumanTextSortKey ) )
+        CG.client_controller.new_options.SetSuggestedTagsMostUsed( tag_service_key, sorted( most_used_tags, key = HydrusText.human_text_sort_key ) )
         
         CG.client_controller.pub( 'notify_new_most_used_tags' )
         
@@ -362,9 +362,9 @@ class BetterQListWidget( QW.QListWidget ):
                 
             except Exception as e:
                 
-                HydrusData.ShowText( 'Could not copy some text from a list!' )
+                HydrusData.show_text( 'Could not copy some text from a list!' )
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
             
         else:
@@ -587,7 +587,7 @@ class AddEditDeleteListBox( QW.QWidget ):
         
         from hydrus.client.gui import ClientGUIDialogsQuick
         
-        result = ClientGUIDialogsQuick.GetYesNo( self, 'Remove {} selected?'.format( HydrusNumbers.ToHumanInt( num_selected ) ) )
+        result = ClientGUIDialogsQuick.GetYesNo( self, 'Remove {} selected?'.format( HydrusNumbers.to_human_int( num_selected ) ) )
         
         if result != QW.QDialog.DialogCode.Accepted:
             
@@ -631,7 +631,7 @@ class AddEditDeleteListBox( QW.QWidget ):
         
         if dupe_data is not None:
             
-            dupe_data = dupe_data.Duplicate()
+            dupe_data = dupe_data.duplicate()
             
             self._ImportObject( dupe_data )
             
@@ -643,7 +643,7 @@ class AddEditDeleteListBox( QW.QWidget ):
         
         if export_object is not None:
             
-            json = export_object.DumpToString()
+            json = export_object.dump_to_string()
             
             CG.client_controller.pub( 'clipboard', 'text', json )
             
@@ -726,11 +726,11 @@ class AddEditDeleteListBox( QW.QWidget ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             
@@ -739,7 +739,7 @@ class AddEditDeleteListBox( QW.QWidget ):
         
         try:
             
-            obj = HydrusSerialisable.CreateFromString( raw_text )
+            obj = HydrusSerialisable.create_from_string( raw_text )
             
             self._ImportObject( obj )
             
@@ -765,7 +765,7 @@ class AddEditDeleteListBox( QW.QWidget ):
                         
                     except Exception as e:
                         
-                        HydrusData.PrintException( e )
+                        HydrusData.print_exception( e )
                         
                         ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', str(e) )
                         
@@ -774,13 +774,13 @@ class AddEditDeleteListBox( QW.QWidget ):
                     
                     try:
                         
-                        obj = HydrusSerialisable.CreateFromNetworkBytes( payload )
+                        obj = HydrusSerialisable.create_from_network_bytes( payload )
                         
                         self._ImportObject( obj )
                         
                     except Exception as e:
                         
-                        HydrusData.PrintException( e )
+                        HydrusData.print_exception( e )
                         
                         ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', 'I could not understand what was encoded in the png!' )
                         
@@ -834,7 +834,7 @@ class AddEditDeleteListBox( QW.QWidget ):
                 
             else:
                 
-                bad_object_type_names.add( HydrusData.GetTypeName( type( obj ) ) )
+                bad_object_type_names.add( HydrusData.get_type_name( type( obj ) ) )
                 
             
         
@@ -848,7 +848,7 @@ class AddEditDeleteListBox( QW.QWidget ):
                 message += '\n' * 2
                 message += 'Whereas this control only allows:'
                 message += '\n' * 2
-                message += '\n'.join( ( HydrusData.GetTypeName( o ) for o in self._permitted_object_types ) )
+                message += '\n'.join( ( HydrusData.get_type_name( o ) for o in self._permitted_object_types ) )
                 
                 ClientGUIDialogsMessage.ShowWarning( self, message )
                 
@@ -864,7 +864,7 @@ class AddEditDeleteListBox( QW.QWidget ):
             
             if num_added > 0:
                 
-                message = '{} objects added!'.format( HydrusNumbers.ToHumanInt( num_added ) )
+                message = '{} objects added!'.format( HydrusNumbers.to_human_int( num_added ) )
                 
                 ClientGUIDialogsMessage.ShowInformation( self, message )
                 
@@ -879,11 +879,11 @@ class AddEditDeleteListBox( QW.QWidget ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             
@@ -892,7 +892,7 @@ class AddEditDeleteListBox( QW.QWidget ):
         
         try:
             
-            texts = HydrusText.DeserialiseNewlinedTexts( raw_text )
+            texts = HydrusText.deserialise_newlined_texts( raw_text )
             
         except Exception as e:
             
@@ -903,7 +903,7 @@ class AddEditDeleteListBox( QW.QWidget ):
         
         self.AddDatas( texts )
         
-        self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.ToHumanInt(len(texts))} items!' )
+        self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.to_human_int(len(texts))} items!' )
         
     
     def _SetNonDupeName( self, obj ):
@@ -1039,7 +1039,7 @@ class AddEditDeleteListBoxUniqueNamedObjects( AddEditDeleteListBox ):
         
         disallowed_names = { o.GetName() for o in self.GetData() }
         
-        HydrusSerialisable.SetNonDupeName( obj, disallowed_names )
+        HydrusSerialisable.set_non_dupe_name( obj, disallowed_names )
         
     
 
@@ -1182,7 +1182,7 @@ class QueueListBox( QW.QWidget ):
         
         from hydrus.client.gui import ClientGUIDialogsQuick
         
-        result = ClientGUIDialogsQuick.GetYesNo( self, 'Remove {} selected?'.format( HydrusNumbers.ToHumanInt( num_selected ) ) )
+        result = ClientGUIDialogsQuick.GetYesNo( self, 'Remove {} selected?'.format( HydrusNumbers.to_human_int( num_selected ) ) )
         
         if result == QW.QDialog.DialogCode.Accepted:
             
@@ -1208,7 +1208,7 @@ class QueueListBox( QW.QWidget ):
         
         if dupe_data is not None:
             
-            dupe_data = dupe_data.Duplicate()
+            dupe_data = dupe_data.duplicate()
             
             self._ImportObject( dupe_data )
             
@@ -1251,7 +1251,7 @@ class QueueListBox( QW.QWidget ):
         
         if export_object is not None:
             
-            json = export_object.DumpToString()
+            json = export_object.dump_to_string()
             
             CG.client_controller.pub( 'clipboard', 'text', json )
             
@@ -1334,11 +1334,11 @@ class QueueListBox( QW.QWidget ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             
@@ -1347,7 +1347,7 @@ class QueueListBox( QW.QWidget ):
         
         try:
             
-            obj = HydrusSerialisable.CreateFromString( raw_text )
+            obj = HydrusSerialisable.create_from_string( raw_text )
             
             self._ImportObject( obj )
             
@@ -1373,7 +1373,7 @@ class QueueListBox( QW.QWidget ):
                         
                     except Exception as e:
                         
-                        HydrusData.PrintException( e )
+                        HydrusData.print_exception( e )
                         
                         ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', str(e) )
                         
@@ -1382,13 +1382,13 @@ class QueueListBox( QW.QWidget ):
                     
                     try:
                         
-                        obj = HydrusSerialisable.CreateFromNetworkBytes( payload )
+                        obj = HydrusSerialisable.create_from_network_bytes( payload )
                         
                         self._ImportObject( obj )
                         
                     except Exception as e:
                         
-                        HydrusData.PrintException( e )
+                        HydrusData.print_exception( e )
                         
                         ClientGUIDialogsMessage.ShowCritical( self, 'Problem importing!', 'I could not understand what was encoded in the png!' )
                         
@@ -1442,7 +1442,7 @@ class QueueListBox( QW.QWidget ):
                 
             else:
                 
-                bad_object_type_names.add( HydrusData.GetTypeName( type( obj ) ) )
+                bad_object_type_names.add( HydrusData.get_type_name( type( obj ) ) )
                 
             
         
@@ -1456,7 +1456,7 @@ class QueueListBox( QW.QWidget ):
                 message += '\n' * 2
                 message += 'Whereas this control only allows:'
                 message += '\n' * 2
-                message += '\n'.join( ( HydrusData.GetTypeName( o ) for o in self._permitted_object_types ) )
+                message += '\n'.join( ( HydrusData.get_type_name( o ) for o in self._permitted_object_types ) )
                 
                 ClientGUIDialogsMessage.ShowWarning( self, message )
                 
@@ -1472,7 +1472,7 @@ class QueueListBox( QW.QWidget ):
             
             if num_added > 0:
                 
-                message = '{} objects added!'.format( HydrusNumbers.ToHumanInt( num_added ) )
+                message = '{} objects added!'.format( HydrusNumbers.to_human_int( num_added ) )
                 
                 ClientGUIDialogsMessage.ShowInformation( self, message )
                 
@@ -1503,7 +1503,7 @@ class QueueListBox( QW.QWidget ):
         self.listBoxContentsChanged.emit()
         self.listBoxChanged.emit()
         
-        self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.ToHumanInt(len(datas))} items!' )
+        self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.to_human_int(len(datas))} items!' )
         
     
     def _Up( self ):
@@ -1817,7 +1817,7 @@ class ListBox( QW.QScrollArea ):
             terms = self._selected_terms
             
         
-        texts = HydrusLists.MassExtend( [ term.GetCopyableTexts() for term in terms ] )
+        texts = HydrusLists.mass_extend( [ term.GetCopyableTexts() for term in terms ] )
         
         if len( texts ) > 0:
             
@@ -1894,11 +1894,11 @@ class ListBox( QW.QScrollArea ):
             terms = self._ordered_terms
             
         
-        copyable_tag_strings = HydrusLists.MassExtend( [ term.GetCopyableTexts( with_counts = with_counts, include_parents = include_parents, collapse_ors = collapse_ors ) for term in terms ] )
+        copyable_tag_strings = HydrusLists.mass_extend( [ term.GetCopyableTexts( with_counts = with_counts, include_parents = include_parents, collapse_ors = collapse_ors ) for term in terms ] )
         
         if only_subtags:
             
-            copyable_tag_strings = [ HydrusTags.SplitTag( tag_string )[1] for tag_string in copyable_tag_strings ]
+            copyable_tag_strings = [ HydrusTags.split_tag( tag_string )[1] for tag_string in copyable_tag_strings ]
             
         
         if '' in copyable_tag_strings:
@@ -1913,7 +1913,7 @@ class ListBox( QW.QScrollArea ):
         
         if switch_to_underscores or not with_counts:
             
-            copyable_tag_strings = HydrusLists.DedupeList( copyable_tag_strings )
+            copyable_tag_strings = HydrusLists.dedupe_list( copyable_tag_strings )
             
         
         return copyable_tag_strings
@@ -2026,7 +2026,7 @@ class ListBox( QW.QScrollArea ):
         
         if False not in [ predicate.GetType() == ClientSearchPredicate.PREDICATE_TYPE_TAG for predicate in predicates ]:
             
-            namespaces = { HydrusTags.SplitTag( predicate.GetValue() )[0] for predicate in predicates }
+            namespaces = { HydrusTags.split_tag( predicate.GetValue() )[0] for predicate in predicates }
             
             if len( namespaces ) == 1:
                 
@@ -2665,7 +2665,7 @@ class ListBox( QW.QScrollArea ):
         
         if HG.gui_report_mode:
             
-            HydrusData.ShowText( f'Setting a virtual size on {self}. Num terms: {len( self._ordered_terms)}, Text height: {text_height}, Total Positional Rows: {self._total_positional_rows}, My Height: {my_size.height()}, Ideal Height: {ideal_virtual_size.height()}' )
+            HydrusData.show_text( f'Setting a virtual size on {self}. Num terms: {len( self._ordered_terms)}, Text height: {text_height}, Total Positional Rows: {self._total_positional_rows}, My Height: {my_size.height()}, Ideal Height: {ideal_virtual_size.height()}' )
             
         
         if ideal_virtual_size != my_size:
@@ -2891,7 +2891,7 @@ class ListBox( QW.QScrollArea ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             return True
             
@@ -3157,7 +3157,7 @@ class ListBox( QW.QScrollArea ):
         if event.isAccepted():
             
             self._last_wheel_event_that_scrolled_direction = 1 if event.angleDelta().y() > 0 else -1
-            self._last_wheel_event_that_scrolled_time = HydrusTime.GetNowFloat()
+            self._last_wheel_event_that_scrolled_time = HydrusTime.get_now_float()
             
         
     
@@ -3359,7 +3359,7 @@ class ListBoxTags( ListBox ):
             
             if command == 'hide':
                 
-                message = f'Hide{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( tags )}from here?'
+                message = f'Hide{HydrusText.convert_many_strings_to_nice_insertable_human_summary( tags )}from here?'
                 
                 from hydrus.client.gui import ClientGUIDialogsQuick
                 
@@ -3374,10 +3374,10 @@ class ListBoxTags( ListBox ):
                 
             elif command == 'hide_namespace':
                 
-                namespaces = { namespace for ( namespace, subtag ) in ( HydrusTags.SplitTag( tag ) for tag in tags ) }
+                namespaces = { namespace for ( namespace, subtag ) in ( HydrusTags.split_tag( tag ) for tag in tags ) }
                 nice_namespaces = [ ClientTags.RenderNamespaceForUser( namespace ) for namespace in namespaces ]
                 
-                message = f'Hide{HydrusText.ConvertManyStringsToNiceInsertableHumanSummary( nice_namespaces )}tags from here?'
+                message = f'Hide{HydrusText.convert_many_strings_to_nice_insertable_human_summary( nice_namespaces )}tags from here?'
                 
                 from hydrus.client.gui import ClientGUIDialogsQuick
                 
@@ -3491,7 +3491,7 @@ class ListBoxTags( ListBox ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             return True
             
@@ -3589,7 +3589,7 @@ class ListBoxTags( ListBox ):
                 
             else:
                 
-                selection_string = '{} selected'.format( HydrusNumbers.ToHumanInt( len( selected_copyable_tag_strings ) ) )
+                selection_string = '{} selected'.format( HydrusNumbers.to_human_int( len( selected_copyable_tag_strings ) ) )
                 
             
             ClientGUIMenus.AppendMenuItem( copy_menu, selection_string, 'Copy the selected tags to your clipboard.', self._ProcessMenuCopyEvent, COPY_SELECTED_TAGS )
@@ -3608,7 +3608,7 @@ class ListBoxTags( ListBox ):
                         
                     else:
                         
-                        sub_selection_string = '{} selected subtags'.format( HydrusNumbers.ToHumanInt( len( selected_copyable_subtag_strings_set ) ) )
+                        sub_selection_string = '{} selected subtags'.format( HydrusNumbers.to_human_int( len( selected_copyable_subtag_strings_set ) ) )
                         
                         ClientGUIMenus.AppendMenuItem( copy_menu, sub_selection_string, 'Copy the selected subtags to your clipboard.', self._ProcessMenuCopyEvent, COPY_SELECTED_SUBTAGS )
                         
@@ -3626,7 +3626,7 @@ class ListBoxTags( ListBox ):
                         
                     else:
                         
-                        sub_selection_string_underscores = '{} selected subtags with underscores'.format( HydrusNumbers.ToHumanInt( len( selected_copyable_subtag_strings_with_underscores_set ) ) )
+                        sub_selection_string_underscores = '{} selected subtags with underscores'.format( HydrusNumbers.to_human_int( len( selected_copyable_subtag_strings_with_underscores_set ) ) )
                         
                         ClientGUIMenus.AppendMenuItem( copy_menu, sub_selection_string_underscores, 'Copy the selected subtags to your clipboard, with underscores.', self._ProcessMenuCopyEvent, COPY_SELECTED_SUBTAGS_WITH_UNDERSCORES )
                         
@@ -3657,7 +3657,7 @@ class ListBoxTags( ListBox ):
                     
                 else:
                     
-                    selection_string = '{} selected, with OR predicates collapsed'.format( HydrusNumbers.ToHumanInt( len( selected_copyable_tag_strings_with_collapsed_ors ) ) )
+                    selection_string = '{} selected, with OR predicates collapsed'.format( HydrusNumbers.to_human_int( len( selected_copyable_tag_strings_with_collapsed_ors ) ) )
                     
                 
                 ClientGUIMenus.AppendMenuItem( copy_menu, selection_string, 'Copy the selected tags to your clipboard, with OR predicates collapsed.', self._ProcessMenuCopyEvent, COPY_SELECTED_TAGS, collapse_ors = True )
@@ -3675,10 +3675,10 @@ class ListBoxTags( ListBox ):
                     
                 else:
                     
-                    selection_string = '{} selected'.format( HydrusNumbers.ToHumanInt( len( selected_copyable_tag_strings ) ) )
+                    selection_string = '{} selected'.format( HydrusNumbers.to_human_int( len( selected_copyable_tag_strings ) ) )
                     
                 
-                selection_string += f' and {HydrusNumbers.ToHumanInt( num_parents )} parents'
+                selection_string += f' and {HydrusNumbers.to_human_int( num_parents )} parents'
                 
                 ClientGUIMenus.AppendMenuItem( copy_menu, selection_string, 'Copy the selected tags and their (deduplicated) parents to your clipboard.', self._ProcessMenuCopyEvent, COPY_SELECTED_TAGS, include_parents = True )
                 
@@ -3738,7 +3738,7 @@ class ListBoxTags( ListBox ):
                 
                 def sp_work_callable():
                     
-                    selected_tag_to_service_keys_to_siblings_and_parents = CG.client_controller.Read( 'tag_siblings_and_parents_lookup', ClientTags.TAG_DISPLAY_DISPLAY_IDEAL, ( selected_tag, ) )
+                    selected_tag_to_service_keys_to_siblings_and_parents = CG.client_controller.read( 'tag_siblings_and_parents_lookup', ClientTags.TAG_DISPLAY_DISPLAY_IDEAL, ( selected_tag, ) )
                     
                     service_keys_to_siblings_and_parents = selected_tag_to_service_keys_to_siblings_and_parents[ selected_tag ]
                     
@@ -3873,13 +3873,13 @@ class ListBoxTags( ListBox ):
                         
                     else:
                         
-                        siblings_menu.setTitle( '{} siblings'.format( HydrusNumbers.ToHumanInt( num_siblings ) ) )
+                        siblings_menu.setTitle( '{} siblings'.format( HydrusNumbers.to_human_int( num_siblings ) ) )
                         
                         #
                         
                         ClientGUIMenus.AppendSeparator( siblings_menu )
                         
-                        ideals = sorted( ideals_to_service_keys.keys(), key = HydrusText.HumanTextSortKey )
+                        ideals = sorted( ideals_to_service_keys.keys(), key = HydrusText.human_text_sort_key )
                         
                         for ideal in ideals:
                             
@@ -3916,7 +3916,7 @@ class ListBoxTags( ListBox ):
                         
                     else:
                         
-                        parents_menu.setTitle( '{} parents, {} children'.format( HydrusNumbers.ToHumanInt( num_parents ), HydrusNumbers.ToHumanInt( num_children ) ) )
+                        parents_menu.setTitle( '{} parents, {} children'.format( HydrusNumbers.to_human_int( num_parents ), HydrusNumbers.to_human_int( num_children ) ) )
                         
                         ClientGUIMenus.AppendSeparator( parents_menu )
                         
@@ -4008,7 +4008,7 @@ class ListBoxTags( ListBox ):
                             ClientGUIMenus.AppendMenuItem( edit_menu, 'add {} to current search'.format( predicates_selection_string ), 'Add the selected predicates to the current search.', self._ProcessMenuPredicateEvent, 'add_predicates' )
                             
                         
-                        some_selected_in_current = HydrusLists.SetsIntersect( predicates, current_predicates )
+                        some_selected_in_current = HydrusLists.sets_intersect( predicates, current_predicates )
                         
                         if some_selected_in_current:
                             
@@ -4093,7 +4093,7 @@ class ListBoxTags( ListBox ):
                 
                 select_menu = ClientGUIMenus.GenerateMenu( menu )
                 
-                tags_sorted_to_show_on_menu = HydrusTags.SortNumericTags( selected_actual_tags )
+                tags_sorted_to_show_on_menu = HydrusTags.sort_numeric_tags( selected_actual_tags )
                 
                 tags_sorted_to_show_on_menu_string = ', '.join( tags_sorted_to_show_on_menu )
                 
@@ -4143,7 +4143,7 @@ class ListBoxTags( ListBox ):
                 
                 for selected_actual_tag in selected_actual_tags:
                     
-                    ( namespace, subtag ) = HydrusTags.SplitTag( selected_actual_tag )
+                    ( namespace, subtag ) = HydrusTags.split_tag( selected_actual_tag )
                     
                     namespaces.add( namespace )
                     
@@ -4156,7 +4156,7 @@ class ListBoxTags( ListBox ):
                     
                 else:
                     
-                    namespace_label = f'{HydrusNumbers.ToHumanInt( len( namespaces ) )} selected namespaces from here'
+                    namespace_label = f'{HydrusNumbers.to_human_int( len( namespaces ) )} selected namespaces from here'
                     
                 
                 if len( selected_actual_tags ) == 1:
@@ -4167,7 +4167,7 @@ class ListBoxTags( ListBox ):
                     
                 else:
                     
-                    actual_tag_label = f'{HydrusNumbers.ToHumanInt( len( selected_actual_tags ) )} selected tags from here'
+                    actual_tag_label = f'{HydrusNumbers.to_human_int( len( selected_actual_tags ) )} selected tags from here'
                     
                 
                 hide_menu = ClientGUIMenus.GenerateMenu( menu )
@@ -4208,7 +4208,7 @@ class ListBoxTags( ListBox ):
                 
                 if result == QW.QDialog.DialogCode.Accepted:
                     
-                    CG.client_controller.Write( 'regenerate_tag_mappings_tags', selected_actual_tags )
+                    CG.client_controller.write( 'regenerate_tag_mappings_tags', selected_actual_tags )
                     
                 
             
@@ -4247,21 +4247,21 @@ class ListBoxTags( ListBox ):
                         
                         try:
                             
-                            tag_filter = tag_repo.GetTagFilter()
+                            tag_filter = tag_repo.get_tag_filter()
                             
-                            tags_currently_ok = { tag for tag in selected_actual_tags if tag_filter.TagOK( tag ) }
+                            tags_currently_ok = { tag for tag in selected_actual_tags if tag_filter.tag_ok( tag ) }
                             tags_currently_not_ok = { tag for tag in selected_actual_tags if tag not in tags_currently_ok }
                             
                             if len( tags_currently_ok ) > 0:
                                 
-                                label = f'block {HydrusText.ConvertManyStringsToNiceInsertableHumanSummarySingleLine(tags_currently_ok,noun)}{HC.UNICODE_ELLIPSIS}'
+                                label = f'block {HydrusText.convert_many_strings_to_nice_insertable_human_summary_single_line(tags_currently_ok,noun)}{HC.UNICODE_ELLIPSIS}'
                                 
                                 ClientGUIMenus.AppendMenuItem( service_submenu, label, 'Change the tag filter for this service.', ClientGUIModalServersideServiceActions.ManageServiceOptionsTagFilter, self, service_key, new_tags_to_block = tags_currently_ok )
                                 
                             
                             if len( tags_currently_not_ok ) > 0:
                                 
-                                label = f're-allow {HydrusText.ConvertManyStringsToNiceInsertableHumanSummarySingleLine(tags_currently_not_ok,noun)}{HC.UNICODE_ELLIPSIS}'
+                                label = f're-allow {HydrusText.convert_many_strings_to_nice_insertable_human_summary_single_line(tags_currently_not_ok,noun)}{HC.UNICODE_ELLIPSIS}'
                                 
                                 ClientGUIMenus.AppendMenuItem( service_submenu, label, 'Change the tag filter for this service.', ClientGUIModalServersideServiceActions.ManageServiceOptionsTagFilter, self, service_key, new_tags_to_allow = tags_currently_not_ok )
                                 
@@ -4274,7 +4274,7 @@ class ListBoxTags( ListBox ):
                     
                     ClientGUIMenus.AppendSeparator( service_submenu )
                     
-                    ClientGUIMenus.AppendMenuItem( service_submenu, f'delete all {HydrusText.ConvertManyStringsToNiceInsertableHumanSummarySingleLine(selected_actual_tags,noun)}{HC.UNICODE_ELLIPSIS}', 'Delete every instance of this tag from the repository.', ClientGUIModalClientsideServiceActions.OpenPurgeTagsWindow, self, service_key, selected_actual_tags )
+                    ClientGUIMenus.AppendMenuItem( service_submenu, f'delete all {HydrusText.convert_many_strings_to_nice_insertable_human_summary_single_line(selected_actual_tags,noun)}{HC.UNICODE_ELLIPSIS}', 'Delete every instance of this tag from the repository.', ClientGUIModalClientsideServiceActions.OpenPurgeTagsWindow, self, service_key, selected_actual_tags )
                     
                     ClientGUIMenus.AppendMenu( menu, service_submenu, 'admin: ' + tag_repo.GetName() )
                     
@@ -4643,13 +4643,13 @@ class ListBoxTagsDisplayCapable( ListBoxTags ):
             
             terms_to_info = { term : None for term in to_lookup }
             
-            for ( num_done, num_to_do, batch_to_lookup ) in HydrusLists.SplitListIntoChunksRich( to_lookup, 500 ):
+            for ( num_done, num_to_do, batch_to_lookup ) in HydrusLists.split_list_into_chunks_rich( to_lookup, 500 ):
                 
                 tags_to_terms = { term.GetTag() : term for term in batch_to_lookup }
                 
                 tags_to_lookup = set( tags_to_terms.keys() )
                 
-                db_tags_to_ideals_and_parents = CG.client_controller.Read( 'tag_display_decorators', service_key, tags_to_lookup )
+                db_tags_to_ideals_and_parents = CG.client_controller.read( 'tag_display_decorators', service_key, tags_to_lookup )
                 
                 terms_to_info.update( { tags_to_terms[ tag ] : info for ( tag, info ) in db_tags_to_ideals_and_parents.items() } )
                 
@@ -5384,7 +5384,7 @@ class StaticBoxSorterForListBoxTags( ClientGUICommon.StaticBox ):
             
             if max_number is not None:
                 
-                title = f'{title} (for first {HydrusNumbers.ToHumanInt(max_number)} files)'
+                title = f'{title} (for first {HydrusNumbers.to_human_int(max_number)} files)'
                 
             
         

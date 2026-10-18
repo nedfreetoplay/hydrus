@@ -99,7 +99,7 @@ def RegranulariseFileStorage( base_location_paths: list[ str ], prefix_types: li
     # there is one canonical destination for each ending prefix, which means going from 3 to 2 may mean moving and merging some things
     ending_prefixes_to_ending_subfolders = dict()
     
-    base_location_paths_to_device_ids = { base_location_path : HydrusPaths.GetDeviceId( base_location_path ) for base_location_path in base_location_paths }
+    base_location_paths_to_device_ids = { base_location_path : HydrusPaths.get_device_id( base_location_path ) for base_location_path in base_location_paths }
     
     base_location_paths_to_granular_folder_prefixes_deleted = collections.defaultdict( list )
     
@@ -123,8 +123,8 @@ def RegranulariseFileStorage( base_location_paths: list[ str ], prefix_types: li
         
         for prefix_type in prefix_types:
             
-            starting_prefixes_potential.update( HydrusFilesPhysicalStorage.IteratePrefixes( prefix_type, starting_prefix_length ) )
-            ending_prefixes_potential.update( HydrusFilesPhysicalStorage.IteratePrefixes( prefix_type, ending_prefix_length ) )
+            starting_prefixes_potential.update( HydrusFilesPhysicalStorage.iterate_prefixes( prefix_type, starting_prefix_length ) )
+            ending_prefixes_potential.update( HydrusFilesPhysicalStorage.iterate_prefixes( prefix_type, ending_prefix_length ) )
             
         
         source_subfolders_we_are_doing: list[ FilesStorageSubfolder ] = []
@@ -155,7 +155,7 @@ def RegranulariseFileStorage( base_location_paths: list[ str ], prefix_types: li
             starting_prefix = source_subfolder.prefix
             source_device_id = base_location_paths_to_device_ids[ source_subfolder.base_location.path ]
             
-            job_status.SetStatusText( f'Working "{starting_prefix}" ({HydrusNumbers.ValueRangeToPrettyString( num_source_subfolders_done, num_source_subfolders_to_do )})' + HC.UNICODE_ELLIPSIS )
+            job_status.SetStatusText( f'Working "{starting_prefix}" ({HydrusNumbers.value_range_to_pretty_string( num_source_subfolders_done, num_source_subfolders_to_do )})' + HC.UNICODE_ELLIPSIS )
             job_status.SetGauge( num_source_subfolders_done, num_source_subfolders_to_do )
             
             if starting_prefix_length < ending_prefix_length:
@@ -194,7 +194,7 @@ def RegranulariseFileStorage( base_location_paths: list[ str ], prefix_types: li
                             
                             num_weird_dirs += 1
                             
-                            HydrusData.Print( f'When granularising folders, I saw a weird directory, "{entry.path}"! How did this thing sneak into Hydrus File Storage? Maybe it is an old prefix stub--a fragment of a previous maintenance job?' )
+                            HydrusData.safe_print( f'When granularising folders, I saw a weird directory, "{entry.path}"! How did this thing sneak into Hydrus File Storage? Maybe it is an old prefix stub--a fragment of a previous maintenance job?' )
                             
                         
                     else:
@@ -221,15 +221,15 @@ def RegranulariseFileStorage( base_location_paths: list[ str ], prefix_types: li
                             
                             num_weird_files += 1
                             
-                            HydrusData.Print( f'When regranularising folders, I failed to find a destination for the file with path "{source_path}"! I imagine it does not have a nice normal hex name and snuck into Hydrus File Storage by accident. You probably want to clean it up.')
+                            HydrusData.safe_print( f'When regranularising folders, I failed to find a destination for the file with path "{source_path}"! I imagine it does not have a nice normal hex name and snuck into Hydrus File Storage by accident. You probably want to clean it up.')
                             
                         
                     
                 
             
-            for ( num_renames_done, num_renames_to_do, chunk_of_rename_jobs ) in HydrusLists.SplitListIntoChunksRich( all_rename_jobs, 100 ):
+            for ( num_renames_done, num_renames_to_do, chunk_of_rename_jobs ) in HydrusLists.split_list_into_chunks_rich( all_rename_jobs, 100 ):
                 
-                job_status.SetStatusText( f'File {HydrusNumbers.ValueRangeToPrettyString( num_renames_done, num_renames_to_do )}', level = 2 )
+                job_status.SetStatusText( f'File {HydrusNumbers.value_range_to_pretty_string( num_renames_done, num_renames_to_do )}', level = 2 )
                 job_status.SetGauge( num_renames_done, num_renames_to_do, level = 2 )
                 
                 while job_status.IsPaused() or job_status.IsCancelled():
@@ -264,7 +264,7 @@ def RegranulariseFileStorage( base_location_paths: list[ str ], prefix_types: li
                 base_location_paths_to_granular_folder_prefixes_deleted[ source_subfolder.base_location.path ].append( source_subfolder.prefix )
                 
                 # not recycle
-                HydrusPaths.DeletePath( source_subfolder.path )
+                HydrusPaths.delete_path( source_subfolder.path )
                 
             
         
@@ -280,8 +280,8 @@ def RegranulariseFileStorage( base_location_paths: list[ str ], prefix_types: li
                 
                 sorted_prefixes = sorted( base_location_paths_to_granular_folder_prefixes_deleted[ migrated_path ] )
                 
-                HydrusData.Print( f'When regranularising folders, I finished migrating prefixes completely out of the path "{migrated_path}". Since the folders were empty, I deleted them. The prefixes deleted were:' )
-                HydrusData.Print( ', '.join( sorted_prefixes ) )
+                HydrusData.safe_print( f'When regranularising folders, I finished migrating prefixes completely out of the path "{migrated_path}". Since the folders were empty, I deleted them. The prefixes deleted were:' )
+                HydrusData.safe_print( ', '.join( sorted_prefixes ) )
                 
             
         
@@ -298,18 +298,18 @@ class FilesStorageBaseLocation( object ):
         self.creation_path = path
         
         # it may seem silly to wash these like this, but it is nice and certain about slashes and so on, which we like
-        path = HydrusPaths.ConvertPortablePathToAbsPath( path )
-        portable_path = HydrusPaths.ConvertAbsPathToPortablePath( path )
+        path = HydrusPaths.convert_portable_path_to_abs_path( path )
+        portable_path = HydrusPaths.convert_abs_path_to_portable_path( path )
         
         try:
             
-            real_path = HydrusPaths.ConvertAbsPathToRealPath( path )
+            real_path = HydrusPaths.convert_abs_path_to_real_path( path )
             
         except Exception as e:
             
-            HydrusData.Print( f'While trying to realise your file location storage path {path} to determine symlinks and such, the following error occured. Please forward to hydev.' )
+            HydrusData.safe_print( f'While trying to realise your file location storage path {path} to determine symlinks and such, the following error occured. Please forward to hydev.' )
             
-            HydrusData.PrintException( e, do_wait = False )
+            HydrusData.print_exception( e, do_wait = False )
             
             real_path = 'Could not determine real path--check log!'
             
@@ -353,7 +353,7 @@ class FilesStorageBaseLocation( object ):
             
         else:
             
-            return f'{pretty_path} ({self.ideal_weight}, {HydrusData.ToHumanBytes( self.max_num_bytes )})'
+            return f'{pretty_path} ({self.ideal_weight}, {HydrusData.to_human_bytes( self.max_num_bytes )})'
             
         
     
@@ -407,7 +407,7 @@ class FilesStorageBaseLocation( object ):
     
     def MakeSureExists( self ):
         
-        HydrusPaths.MakeSureDirectoryExists( self.path )
+        HydrusPaths.make_sure_directory_exists( self.path )
         
     
     def NeedsToRemoveSubfolders( self, current_num_bytes: int ):
@@ -427,16 +427,16 @@ class FilesStorageBaseLocation( object ):
     
     def PathExists( self, lazy_check_ok = False ):
         
-        if lazy_check_ok and not HydrusTime.TimeHasPassedFloat( self._last_successful_exists_time + 300 ):
+        if lazy_check_ok and not HydrusTime.time_has_passed_float( self._last_successful_exists_time + 300 ):
             
             return True
             
         
-        result = HydrusPaths.PathExistsAndIsDir( self.path )
+        result = HydrusPaths.path_exists_and_is_dir( self.path )
         
         if result:
             
-            self._last_successful_exists_time = HydrusTime.GetNowFloat()
+            self._last_successful_exists_time = HydrusTime.get_now_float()
             
         
         return result
@@ -640,21 +640,21 @@ class FilesStorageSubfolder( object ):
     
     def MakeSureExists( self ):
         
-        HydrusPaths.MakeSureDirectoryExists( self.path )
+        HydrusPaths.make_sure_directory_exists( self.path )
         
     
     def PathExists( self, lazy_check_ok = False ):
         
-        if lazy_check_ok and not HydrusTime.TimeHasPassedFloat( self._last_successful_exists_time + 300 ):
+        if lazy_check_ok and not HydrusTime.time_has_passed_float( self._last_successful_exists_time + 300 ):
             
             return True
             
         
-        result = HydrusPaths.PathExistsAndIsDir( self.path )
+        result = HydrusPaths.path_exists_and_is_dir( self.path )
         
         if result:
             
-            self._last_successful_exists_time = HydrusTime.GetNowFloat()
+            self._last_successful_exists_time = HydrusTime.get_now_float()
             
         
         return result
@@ -662,6 +662,6 @@ class FilesStorageSubfolder( object ):
     
     def SetWeKnowItExistedAsOfNow( self, value: bool ):
         
-        self._last_successful_exists_time = HydrusTime.GetNowFloat()
+        self._last_successful_exists_time = HydrusTime.get_now_float()
         
     

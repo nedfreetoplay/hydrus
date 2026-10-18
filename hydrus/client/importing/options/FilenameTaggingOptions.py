@@ -36,14 +36,14 @@ class FilenameTaggingOptions( HydrusSerialisable.SerialisableBase ):
         self._regexes = []
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         serialisable_directories_dict = list(self._directories_dict.items())
         
         return ( list( self._tags_for_all ), self._load_from_neighbouring_txt_files, self._add_filename, serialisable_directories_dict, self._quick_namespaces, self._regexes )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( tags_for_all_list, self._load_from_neighbouring_txt_files, self._add_filename, serialisable_directories_dict, self._quick_namespaces, self._regexes ) = serialisable_info
         
@@ -54,7 +54,7 @@ class FilenameTaggingOptions( HydrusSerialisable.SerialisableBase ):
         self._tags_for_all = set( tags_for_all_list )
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -213,7 +213,7 @@ class FilenameTaggingOptions( HydrusSerialisable.SerialisableBase ):
         
         #
         
-        tags = HydrusTags.CleanTags( tags )
+        tags = HydrusTags.clean_tags( tags )
         
         tags = CG.client_controller.tag_display_manager.FilterTags( ClientTags.TAG_DISPLAY_STORAGE, service_key, tags )
         

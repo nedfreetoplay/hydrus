@@ -77,7 +77,7 @@ class TestSubscription( unittest.TestCase ):
         
         engine = ClientNetworking.NetworkEngine( mock_controller, bandwidth_manager, session_manager, domain_manager, login_manager )
         
-        mock_controller.CallToThread( engine.MainLoop )
+        mock_controller.call_to_thread( engine.MainLoop )
         
         return ( mock_controller, engine )
         
@@ -189,7 +189,7 @@ def generate_query_header( query_text: str, checker_options: CheckerImportOption
 
 def generate_query_log_container() -> ClientImportSubscriptionQuery.SubscriptionQueryLogContainer:
     
-    query_log_container = ClientImportSubscriptionQuery.SubscriptionQueryLogContainer( HydrusData.GenerateKey().hex() )
+    query_log_container = ClientImportSubscriptionQuery.SubscriptionQueryLogContainer( HydrusData.generate_key().hex() )
     
     return query_log_container
     

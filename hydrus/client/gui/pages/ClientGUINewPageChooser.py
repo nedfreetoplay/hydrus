@@ -97,7 +97,7 @@ class DialogPageChooser( ClientGUIDialogs.Dialog ):
         
         repositories: list[ ClientServices.ServiceRepository ] = CG.client_controller.services_manager.GetServices( HC.REPOSITORIES )
         
-        self._petition_service_keys = [ service.GetServiceKey() for service in repositories if True in ( service.HasPermission( content_type, HC.PERMISSION_ACTION_MODERATE ) for content_type in HC.SERVICE_TYPES_TO_CONTENT_TYPES[ service.GetServiceType() ] ) ]
+        self._petition_service_keys = [ service.GetServiceKey() for service in repositories if True in ( service.HasPermission( content_type, HC.PERMISSION_ACTION_MODERATE ) for content_type in HC.SERVICE_TYPES_TO_CONTENT_TYPES[ service.get_service_type() ] ) ]
         
         self._InitButtons( 'home' )
         

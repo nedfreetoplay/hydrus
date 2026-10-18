@@ -63,7 +63,7 @@ class StringConverterButton( ClientGUICommon.BetterButton ):
         
         self.setToolTip( ClientGUIFunctions.WrapToolTip( label ) )
         
-        elided_label = HydrusText.ElideText( label, 64 )
+        elided_label = HydrusText.elide_text( label, 64 )
         
         self.setText( elided_label )
         
@@ -184,7 +184,7 @@ class StringProcessorButton( ClientGUICommon.BetterButton ):
             
         else:
             
-            statements = [ HydrusText.ElideText( statement, 64 ) for statement in statements ]
+            statements = [ HydrusText.elide_text( statement, 64 ) for statement in statements ]
             
             label = '\n'.join( statements )
             
@@ -240,7 +240,7 @@ class StringProcessorWidget( QW.QWidget ):
         
         string_processor = self.GetValue()
         
-        text = string_processor.DumpToString()
+        text = string_processor.dump_to_string()
         
         CG.client_controller.pub( 'clipboard', 'text', text )
         
@@ -255,7 +255,7 @@ class StringProcessorWidget( QW.QWidget ):
             
         else:
             
-            raise Exception( f'The imported object was wrong for this control! It appeared to be a {HydrusData.GetTypeName( obj )}.' )
+            raise Exception( f'The imported object was wrong for this control! It appeared to be a {HydrusData.get_type_name( obj )}.' )
             
         
     
@@ -263,11 +263,11 @@ class StringProcessorWidget( QW.QWidget ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             
@@ -276,7 +276,7 @@ class StringProcessorWidget( QW.QWidget ):
         
         try:
             
-            obj = HydrusSerialisable.CreateFromString( raw_text )
+            obj = HydrusSerialisable.create_from_string( raw_text )
             
             self._ImportObject( obj )
             

@@ -48,10 +48,10 @@ class Dialog( QP.Dialog ):
         
         if parent is not None and position == 'center':
             
-            CG.client_controller.CallAfterQtSafe( self, QP.CenterOnWindow, parent, self )
+            CG.client_controller.call_after_qt_safe( self, QP.CenterOnWindow, parent, self )
             
         
-        CG.client_controller.ResetIdleTimer()
+        CG.client_controller.reset_idle_timer()
         
     
     def keyPressEvent( self, event ):
@@ -216,7 +216,7 @@ class DialogGenerateNewAccounts( Dialog ):
         
         account_type = self._account_types.GetValue()
         
-        account_type_key = account_type.GetAccountTypeKey()
+        account_type_key = account_type.get_account_type_key()
         
         lifetime = self._lifetime.GetValue()
         
@@ -226,7 +226,7 @@ class DialogGenerateNewAccounts( Dialog ):
             
         else:
             
-            expires = HydrusTime.GetNow() + lifetime
+            expires = HydrusTime.get_now() + lifetime
             
         
         service = CG.client_controller.services_manager.GetService( self._service_key )
@@ -544,7 +544,7 @@ class DialogSelectFromURLTree( Dialog ):
     
     def _RenderItemName( self, name, size ):
         
-        return name + ' - ' + HydrusData.ToHumanBytes( size )
+        return name + ' - ' + HydrusData.to_human_bytes( size )
         
     
     def GetURLs( self ):

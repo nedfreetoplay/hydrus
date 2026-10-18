@@ -185,7 +185,7 @@ class ReviewGranularityPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             try:
                 
-                HydrusData.PrintException( e, do_wait = False )
+                HydrusData.print_exception( e, do_wait = False )
                 
                 message = 'Something went wrong with the granularisation!! This is bad news. If this is the second time you are seeing this error, the database should have been able to undo the work successfully and you can return to normal work.'
                 message += '\n\n'
@@ -211,7 +211,7 @@ class ReviewGranularityPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 self._UpdateGranularityLabel()
                 
-                message = f'{HydrusNumbers.ToHumanInt( num_files_moved )} files moved in {HydrusTime.TimeDeltaToPrettyTimeDelta( time_took_float )}.'
+                message = f'{HydrusNumbers.to_human_int( num_files_moved )} files moved in {HydrusTime.time_delta_to_pretty_timedelta( time_took_float )}.'
                 
                 if starting_granularity < ending_granularity:
                     
@@ -228,7 +228,7 @@ class ReviewGranularityPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 if num_weird_dirs > 0 or num_weird_files > 0:
                     
                     message += '\n\n'
-                    message += f'By the way, you had {HydrusNumbers.ToHumanInt( num_weird_dirs )} weird directories and {HydrusNumbers.ToHumanInt( num_weird_files )} weird files in your storage. They were not touched, but everything has been logged, so check out your log and see what that old cruft is. It is probably something like OS-level thumbnail metadata; not a big deal.'
+                    message += f'By the way, you had {HydrusNumbers.to_human_int( num_weird_dirs )} weird directories and {HydrusNumbers.to_human_int( num_weird_files )} weird files in your storage. They were not touched, but everything has been logged, so check out your log and see what that old cruft is. It is probably something like OS-level thumbnail metadata; not a big deal.'
                     
                 
                 ClientGUIDialogsMessage.ShowInformation( self, message )
@@ -243,23 +243,23 @@ class ReviewGranularityPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             try:
                 
-                time_started_float = HydrusTime.GetNowFloat()
+                time_started_float = HydrusTime.get_now_float()
                 
                 ( new_prefixes_to_locations, num_files_moved, num_weird_dirs, num_weird_files ) = CG.client_controller.client_files_manager.Granularise( job_status, starting_granularity, ending_granularity )
                 
-                time_took_float = HydrusTime.GetNowFloat() - time_started_float
+                time_took_float = HydrusTime.get_now_float() - time_started_float
                 
-                CG.client_controller.CallAfterQtSafe( self, qt_ok, time_took_float, num_files_moved, num_weird_dirs, num_weird_files )
+                CG.client_controller.call_after_qt_safe( self, qt_ok, time_took_float, num_files_moved, num_weird_dirs, num_weird_files )
                 
             except Exception as e:
                 
                 if isinstance( e, HydrusExceptions.DBException ) and isinstance( e.db_e, HydrusExceptions.CancelledException ):
                     
-                    CG.client_controller.CallAfterQtSafe( self, qt_cancelled )
+                    CG.client_controller.call_after_qt_safe( self, qt_cancelled )
                     
                 else:
                     
-                    CG.client_controller.CallAfterQtSafe( self, qt_error, e )
+                    CG.client_controller.call_after_qt_safe( self, qt_error, e )
                     
                 
             finally:
@@ -270,7 +270,7 @@ class ReviewGranularityPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         self.setEnabled( False )
         
-        CG.client_controller.CallToThread( do_it )
+        CG.client_controller.call_to_thread( do_it )
         
         with ClientGUITopLevelWindowsPanels.DialogNullipotent( self, 'Granularising', hide_buttons = True ) as dlg:
             
@@ -384,7 +384,7 @@ class ReviewGranularityPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         def qt_error( e: Exception ):
             
-            HydrusData.PrintException( e, do_wait = False )
+            HydrusData.print_exception( e, do_wait = False )
             
             message = 'Something went wrong with the granularisation!! This may be bad news, but if it stopped half way through and you know how to fix the issue (maybe an errant file called "a" that you should move out?), you can just retry it and it will try to continue where it left off. The error, which has been written in more detail to log, was:'
             message += '\n\n'
@@ -395,7 +395,7 @@ class ReviewGranularityPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         def qt_ok( time_took_float: float, num_files_moved, num_weird_dirs: int, num_weird_files: int ):
             
-            message = f'{HydrusNumbers.ToHumanInt( num_files_moved )} files moved in {HydrusTime.TimeDeltaToPrettyTimeDelta( time_took_float )}.'
+            message = f'{HydrusNumbers.to_human_int( num_files_moved )} files moved in {HydrusTime.time_delta_to_pretty_timedelta( time_took_float )}.'
             
             if num_weird_dirs == 0 and num_weird_files == 0:
                 
@@ -407,7 +407,7 @@ class ReviewGranularityPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 message += '\n\n'
                 message += f'Things went great. Your folder has been granularised to level {ending_granularity}.'
                 message += '\n\n'
-                message += f'By the way, you had {HydrusNumbers.ToHumanInt( num_weird_dirs )} weird directories and {HydrusNumbers.ToHumanInt( num_weird_files )} weird files in your storage. They were not touched, but everything has been logged, so check out your log and see what that old cruft is. It is probably something like OS-level thumbnail metadata; not a big deal.'
+                message += f'By the way, you had {HydrusNumbers.to_human_int( num_weird_dirs )} weird directories and {HydrusNumbers.to_human_int( num_weird_files )} weird files in your storage. They were not touched, but everything has been logged, so check out your log and see what that old cruft is. It is probably something like OS-level thumbnail metadata; not a big deal.'
                 
             
             ClientGUIDialogsMessage.ShowInformation( self, message )
@@ -417,25 +417,25 @@ class ReviewGranularityPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             try:
                 
-                time_started_float = HydrusTime.GetNowFloat()
+                time_started_float = HydrusTime.get_now_float()
                 
                 ( new_prefixes_to_locations, num_files_moved, num_weird_dirs, num_weird_files ) = ClientFilesPhysical.RegranulariseFileStorage( [ base_location_path ], [ 'f', 't' ], starting_granularity, ending_granularity, job_status )
                 
-                time_took_float = HydrusTime.GetNowFloat() - time_started_float
+                time_took_float = HydrusTime.get_now_float() - time_started_float
                 
-                CG.client_controller.CallAfterQtSafe( self, qt_ok, time_took_float, num_files_moved, num_weird_dirs, num_weird_files )
+                CG.client_controller.call_after_qt_safe( self, qt_ok, time_took_float, num_files_moved, num_weird_dirs, num_weird_files )
                 
             except HydrusExceptions.CancelledException:
                 
-                CG.client_controller.CallAfterQtSafe( self, qt_cancelled )
+                CG.client_controller.call_after_qt_safe( self, qt_cancelled )
                 
             except Exception as e:
                 
-                CG.client_controller.CallAfterQtSafe( self, qt_error, e )
+                CG.client_controller.call_after_qt_safe( self, qt_error, e )
                 
             
         
-        CG.client_controller.CallToThread( do_it )
+        CG.client_controller.call_to_thread( do_it )
         
         with ClientGUITopLevelWindowsPanels.DialogNullipotent( self, 'Granularising', hide_buttons = True ) as dlg:
             
@@ -478,11 +478,11 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         super().__init__( parent )
         
-        ( self._current_granularity, self._client_files_subfolders ) = CG.client_controller.Read( 'client_files_subfolders' )
+        ( self._current_granularity, self._client_files_subfolders ) = CG.client_controller.read( 'client_files_subfolders' )
         
-        ( self._media_base_locations, self._ideal_thumbnails_base_location_override ) = self._controller.Read( 'ideal_client_files_locations' )
+        ( self._media_base_locations, self._ideal_thumbnails_base_location_override ) = self._controller.read( 'ideal_client_files_locations' )
         
-        service_info = CG.client_controller.Read( 'service_info', CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY )
+        service_info = CG.client_controller.read( 'service_info', CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY )
         
         self._hydrus_local_file_storage_total_size = service_info[ HC.SERVICE_INFO_TOTAL_SIZE ]
         self._hydrus_local_file_storage_total_num = service_info[ HC.SERVICE_INFO_NUM_FILES ]
@@ -789,16 +789,16 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             try:
                 
-                free_space = HydrusPaths.GetFreeSpace( path )
-                pretty_free_space = HydrusData.ToHumanBytes( free_space )
+                free_space = HydrusPaths.get_free_space( path )
+                pretty_free_space = HydrusData.to_human_bytes( free_space )
                 
             except Exception as e:
                 
                 message = 'There was a problem finding the free space for "{path}"! Perhaps this location does not exist?'
                 
-                HydrusData.Print( message )
+                HydrusData.safe_print( message )
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 free_space = 0
                 pretty_free_space = 'problem finding free space'
@@ -816,7 +816,7 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
             pretty_free_space = 'DOES NOT EXIST'
             
         
-        portable_location = HydrusPaths.ConvertAbsPathToPortablePath( base_location.path )
+        portable_location = HydrusPaths.convert_abs_path_to_portable_path( base_location.path )
         portable = not os.path.isabs( portable_location )
         
         if portable:
@@ -831,7 +831,7 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
         fp = locations_to_file_weights[ base_location ]
         tp = locations_to_thumb_weights[ base_location ]
         
-        p = lambda some_f: HydrusNumbers.FloatToPercentage( some_f, sf = 2 )
+        p = lambda some_f: HydrusNumbers.float_to_percentage( some_f, sf = 2 )
         
         current_bytes = fp * f_space + tp * t_space_max
         
@@ -854,7 +854,7 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 usages = [ p( fp ) + ' everything' ]
                 
             
-            pretty_current_usage = HydrusData.ToHumanBytes( current_bytes ) + ' - ' + ','.join( usages )
+            pretty_current_usage = HydrusData.to_human_bytes( current_bytes ) + ' - ' + ','.join( usages )
             
         else:
             
@@ -887,7 +887,7 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
         else:
             
-            pretty_max_num_bytes = HydrusData.ToHumanBytes( base_location.max_num_bytes )
+            pretty_max_num_bytes = HydrusData.to_human_bytes( base_location.max_num_bytes )
             
         
         ideal_fp = self._media_base_locations_to_ideal_usage.get( base_location, 0.0 )
@@ -931,7 +931,7 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 usages = [ p( ideal_fp ) + ' everything' ]
                 
             
-            pretty_ideal_usage = HydrusData.ToHumanBytes( ideal_bytes ) + ' - ' + ','.join( usages )
+            pretty_ideal_usage = HydrusData.to_human_bytes( ideal_bytes ) + ' - ' + ','.join( usages )
             
         else:
             
@@ -957,15 +957,15 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             try:
                 
-                free_space = HydrusPaths.GetFreeSpace( path )
+                free_space = HydrusPaths.get_free_space( path )
                 
             except Exception as e:
                 
                 message = 'There was a problem finding the free space for "{path}"! Perhaps this location does not exist?'
                 
-                HydrusData.Print( message )
+                HydrusData.safe_print( message )
                 
-                HydrusData.PrintException( e )
+                HydrusData.print_exception( e )
                 
                 free_space = 0
                 
@@ -982,7 +982,7 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
             free_space = 0
             
         
-        portable_location = HydrusPaths.ConvertAbsPathToPortablePath( base_location.path )
+        portable_location = HydrusPaths.convert_abs_path_to_portable_path( base_location.path )
         portable = not os.path.isabs( portable_location )
         
         fp = locations_to_file_weights[ base_location ]
@@ -1190,7 +1190,7 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
                     
                 
             
-            stop_time = HydrusTime.GetNow() + result
+            stop_time = HydrusTime.get_now() + result
             
         
         job_status = ClientThreading.JobStatus( cancellable = True, stop_time = stop_time )
@@ -1265,7 +1265,7 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
     
     def _SaveToDB( self ):
         
-        self._controller.Write( 'ideal_client_files_locations', self._media_base_locations, self._ideal_thumbnails_base_location_override )
+        self._controller.write( 'ideal_client_files_locations', self._media_base_locations, self._ideal_thumbnails_base_location_override )
         
         self._controller.client_files_manager.Reinit()
         
@@ -1372,21 +1372,21 @@ class MoveMediaFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
     
     def _Update( self ):
         
-        ( self._current_granularity, self._client_files_subfolders ) = CG.client_controller.Read( 'client_files_subfolders' )
+        ( self._current_granularity, self._client_files_subfolders ) = CG.client_controller.read( 'client_files_subfolders' )
         
-        ( self._media_base_locations, self._ideal_thumbnails_base_location_override ) = self._controller.Read( 'ideal_client_files_locations' )
+        ( self._media_base_locations, self._ideal_thumbnails_base_location_override ) = self._controller.read( 'ideal_client_files_locations' )
         
         self._media_base_locations_to_ideal_usage = ClientFilesPhysical.FilesStorageBaseLocation.STATICGetIdealWeights( self._hydrus_local_file_storage_total_size, self._media_base_locations )
         
-        approx_total_db_size = self._controller.db.GetApproxTotalFileSize()
+        approx_total_db_size = self._controller.db.get_approx_total_file_size()
         
-        self._current_db_path_st.setText( 'database (about '+HydrusData.ToHumanBytes(approx_total_db_size)+'): '+self._controller.GetDBDir() )
+        self._current_db_path_st.setText( 'database (about '+HydrusData.to_human_bytes(approx_total_db_size)+'): '+self._controller.get_db_dir() )
         self._current_install_path_st.setText( 'install: ' + HC.BASE_DIR )
         
         approx_total_client_files = self._hydrus_local_file_storage_total_size
         ( approx_total_thumbnails_min, approx_total_thumbnails_max ) = self._GetThumbnailSizeEstimates()
         
-        label = 'media is {}, thumbnails are estimated at {}-{}'.format( HydrusData.ToHumanBytes( approx_total_client_files ), HydrusData.ToHumanBytes( approx_total_thumbnails_min ), HydrusData.ToHumanBytes( approx_total_thumbnails_max ) )
+        label = 'media is {}, thumbnails are estimated at {}-{}'.format( HydrusData.to_human_bytes( approx_total_client_files ), HydrusData.to_human_bytes( approx_total_thumbnails_min ), HydrusData.to_human_bytes( approx_total_thumbnails_max ) )
         
         self._current_media_paths_st.setText( label )
         self._current_media_paths_st.setToolTip( ClientGUIFunctions.WrapToolTip( 'Precise thumbnail sizes are not tracked, so this is an estimate based on your current thumbnail dimensions.' ) )

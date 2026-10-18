@@ -65,7 +65,7 @@ class ClientDBFilesDuplicatesAutoResolutionSearch( ClientDBModule.ClientDBModule
             
             duplicate_type = result[0]
             
-            self.modules_files_duplicates_auto_resolution_storage.RecordActionedPair( rule, smaller_media_id, larger_media_id, hash_id_a, hash_id_b, duplicate_type, HydrusTime.GetNowMS() )
+            self.modules_files_duplicates_auto_resolution_storage.RecordActionedPair( rule, smaller_media_id, larger_media_id, hash_id_a, hash_id_b, duplicate_type, HydrusTime.get_now_ms() )
             
         
     
@@ -113,7 +113,7 @@ class ClientDBFilesDuplicatesAutoResolutionSearch( ClientDBModule.ClientDBModule
             
             duplicate_type = result[0]
             
-            self.modules_files_duplicates_auto_resolution_storage.RecordActionedPair( rule, smaller_media_id, larger_media_id, hash_id_a, hash_id_b, duplicate_type, HydrusTime.GetNowMS() )
+            self.modules_files_duplicates_auto_resolution_storage.RecordActionedPair( rule, smaller_media_id, larger_media_id, hash_id_a, hash_id_b, duplicate_type, HydrusTime.get_now_ms() )
             
         
     
@@ -156,7 +156,7 @@ class ClientDBFilesDuplicatesAutoResolutionSearch( ClientDBModule.ClientDBModule
             
             self.modules_files_duplicates_auto_resolution_storage.FlipPausePlay( rule )
             
-            HydrusData.ShowText( f'The auto-resolution rule "{rule.GetName()}" was called to do resolution work, but no work is actually pending. I am assuming there is a miscount or orphaned pair and am starting some maintenance. The rule has been paused for safety; unpause it and see what happens. If it carries on working with no more problems, you are great.' )
+            HydrusData.show_text( f'The auto-resolution rule "{rule.get_name()}" was called to do resolution work, but no work is actually pending. I am assuming there is a miscount or orphaned pair and am starting some maintenance. The rule has been paused for safety; unpause it and see what happens. If it carries on working with no more problems, you are great.' )
             
             self.modules_files_duplicates_auto_resolution_storage.MaintenanceFixOrphanPotentialPairs()
             
@@ -201,7 +201,7 @@ class ClientDBFilesDuplicatesAutoResolutionSearch( ClientDBModule.ClientDBModule
             
             self.modules_files_duplicates_auto_resolution_storage.FlipPausePlay( rule )
             
-            HydrusData.ShowText( f'The auto-resolution rule "{rule.GetName()}" was called to do search work, but no work is actually pending. I am assuming there is a miscount or orphaned pair and am starting some maintenance. The rule has been paused for safety; unpause it and see what happens. If it carries on working with no more problems, you are great.' )
+            HydrusData.show_text( f'The auto-resolution rule "{rule.get_name()}" was called to do search work, but no work is actually pending. I am assuming there is a miscount or orphaned pair and am starting some maintenance. The rule has been paused for safety; unpause it and see what happens. If it carries on working with no more problems, you are great.' )
             
             self.modules_files_duplicates_auto_resolution_storage.MaintenanceFixOrphanPotentialPairs()
             
@@ -287,7 +287,7 @@ class ClientDBFilesDuplicatesAutoResolutionSearch( ClientDBModule.ClientDBModule
         return media_result_pairs
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         tables_and_columns = []
         

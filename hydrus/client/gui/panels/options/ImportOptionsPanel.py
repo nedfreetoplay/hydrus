@@ -31,7 +31,7 @@ class ImportOptionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         super().__init__( parent )
         
         self._new_options = new_options
-        self._import_options_manager: ImportOptionsManager.ImportOptionsManager = import_options_manager.Duplicate()
+        self._import_options_manager: ImportOptionsManager.ImportOptionsManager = import_options_manager.duplicate()
         
         menu_template_items = []
         
@@ -282,7 +282,7 @@ class ImportOptionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         if len( selected ) > 1:
             
-            message = f'Clear all custom import options for {HydrusNumbers.ToHumanInt( len( selected ) )} url class entries?'
+            message = f'Clear all custom import options for {HydrusNumbers.to_human_int( len( selected ) )} url class entries?'
             
         else:
             
@@ -359,7 +359,7 @@ class ImportOptionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         url_class_key = url_class.GetClassKey()
         
-        name = url_class.GetName()
+        name = url_class.get_name()
         url_type = url_class.GetURLType()
         
         pretty_name = name
@@ -396,7 +396,7 @@ class ImportOptionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         import_options_container = self._import_options_manager.GetDefaultImportOptionsContainerForCallerType( import_options_caller_type )
         
-        payload = import_options_container.DumpToString()
+        payload = import_options_container.dump_to_string()
         
         CG.client_controller.pub( 'clipboard', 'text', payload )
         
@@ -440,7 +440,7 @@ class ImportOptionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
         else:
             
-            payload = import_options_container.DumpToString()
+            payload = import_options_container.dump_to_string()
             
             CG.client_controller.pub( 'clipboard', 'text', payload )
             
@@ -465,7 +465,7 @@ class ImportOptionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
         else:
             
-            message = f'Delete the {HydrusNumbers.ToHumanInt(len( selected_rows ))} selected favourites/profiles?'
+            message = f'Delete the {HydrusNumbers.to_human_int(len( selected_rows ))} selected favourites/profiles?'
             
         
         result = ClientGUIDialogsQuick.GetYesNo( self, message )
@@ -818,7 +818,7 @@ class ImportOptionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
                 
                 existing_import_options_container = self._import_options_manager.GetDefaultImportOptionsContainerForCallerType( import_options_caller_type )
                 
-                edited_import_options_container = existing_import_options_container.Duplicate()
+                edited_import_options_container = existing_import_options_container.duplicate()
                 
                 if paste_type == ClientGUIImportOptionsContainer.PASTE_MERGE:
                     
@@ -839,7 +839,7 @@ class ImportOptionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
                         
                     
                 
-                edited_import_options_container = pasted_import_options_container.Duplicate()
+                edited_import_options_container = pasted_import_options_container.duplicate()
                 
             
             self._import_options_manager.SetDefaultImportOptionsContainerForCallerType( import_options_caller_type, edited_import_options_container )
@@ -913,7 +913,7 @@ class ImportOptionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
                 
             else:
                 
-                edited_import_options_container = pasted_import_options_container.Duplicate()
+                edited_import_options_container = pasted_import_options_container.duplicate()
                 
             
             actual_name = self._import_options_manager.EditFavourite( name, name, edited_import_options_container )
@@ -979,11 +979,11 @@ class ImportOptionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
                 
                 if existing_import_options_container is None:
                     
-                    edited_import_options_container = pasted_import_options_container.Duplicate()
+                    edited_import_options_container = pasted_import_options_container.duplicate()
                     
                 else:
                     
-                    edited_import_options_container = existing_import_options_container.Duplicate()
+                    edited_import_options_container = existing_import_options_container.duplicate()
                     
                     if paste_type == ClientGUIImportOptionsContainer.PASTE_MERGE:
                         
@@ -997,7 +997,7 @@ class ImportOptionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
                 
             else:
                 
-                edited_import_options_container = pasted_import_options_container.Duplicate()
+                edited_import_options_container = pasted_import_options_container.duplicate()
                 
             
             self._import_options_manager.SetDefaultImportOptionsContainerForURLClass( url_class_key, edited_import_options_container )

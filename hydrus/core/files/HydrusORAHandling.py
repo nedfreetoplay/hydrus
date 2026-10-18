@@ -10,43 +10,39 @@ import xml.etree.ElementTree as ET
 ORA_FILE_THUMB = "Thumbnails/thumbnail.png"
 ORA_FILE_MERGED = "mergedimage.png"
 
-def MergedPILImageFromOra( path: str ):
+def merged_pil_image_from_ora(path: str):
     
     try:
         
-        zip_path_file_obj = HydrusArchiveHandling.GetZipAsPath( path, ORA_FILE_MERGED ).open( 'rb' )
+        zip_path_file_obj = HydrusArchiveHandling.get_zip_as_path( path, ORA_FILE_MERGED ).open( 'rb' )
         
-        return HydrusImageHandling.GeneratePILImage( zip_path_file_obj )
+        return HydrusImageHandling.generate_pil_image( zip_path_file_obj )
         
     except FileNotFoundError:
         
         raise HydrusExceptions.NoRenderFileException( f'Could not read {ORA_FILE_MERGED} from this ora file' )
-        
-    
 
-def ThumbnailPILImageFromOra( path: str ):
+def thumbnail_pil_image_from_ora(path: str):
     
     try:
         
-        zip_path_file_obj = HydrusArchiveHandling.GetZipAsPath( path, ORA_FILE_THUMB ).open( 'rb' )
+        zip_path_file_obj = HydrusArchiveHandling.get_zip_as_path( path, ORA_FILE_THUMB ).open( 'rb' )
         
-        return HydrusImageHandling.GeneratePILImage( zip_path_file_obj )
+        return HydrusImageHandling.generate_pil_image( zip_path_file_obj )
         
     except FileNotFoundError:
         
         raise HydrusExceptions.NoThumbnailFileException( f'Could not read {ORA_FILE_THUMB} from this ora file' )
-        
-    
 
-def GenerateThumbnailNumPyFromOraPath( path: str, target_resolution: tuple[ int, int ] ) -> numpy.ndarray:
+def generate_thumbnail_numpy_from_ora_path(path: str, target_resolution: tuple[int, int]) -> numpy.ndarray:
     
     try:
         
-        pil_image = MergedPILImageFromOra( path )
+        pil_image = merged_pil_image_from_ora( path )
         
     except Exception as e:
         
-        pil_image = ThumbnailPILImageFromOra( path )
+        pil_image = thumbnail_pil_image_from_ora( path )
         
     
     try:
@@ -60,7 +56,7 @@ def GenerateThumbnailNumPyFromOraPath( path: str, target_resolution: tuple[ int,
     
     try:
         
-        numpy_image = HydrusImageHandling.GenerateNumPyImageFromPILImage( thumbnail_pil_image )
+        numpy_image = HydrusImageHandling.generate_numpy_image_from_pil_image( thumbnail_pil_image )
         
     finally:
         
@@ -68,15 +64,14 @@ def GenerateThumbnailNumPyFromOraPath( path: str, target_resolution: tuple[ int,
         
     
     return numpy_image
-    
 
-def GetOraProperties( path: str ):
+def get_ora_properties(path: str):
     
     DOCUMENT_INFO_FILE = "stack.xml"
     
     try:
         
-        data_file = HydrusArchiveHandling.GetZipAsPath( path, DOCUMENT_INFO_FILE ).open( 'rb' )
+        data_file = HydrusArchiveHandling.get_zip_as_path( path, DOCUMENT_INFO_FILE ).open( 'rb' )
         
         tree = ET.parse( data_file )
         
@@ -91,5 +86,3 @@ def GetOraProperties( path: str ):
     except Exception as e:
         
         raise HydrusExceptions.NoResolutionFileException( f'This ora file had no {DOCUMENT_INFO_FILE} or it contains no resolution!' )
-        
-    

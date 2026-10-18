@@ -33,7 +33,7 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
             self._hashes.update( m.GetHashes() )
             
         
-        super().__init__( parent, 'manage ratings for ' + HydrusNumbers.ToHumanInt( len( self._hashes ) ) + ' files', position = 'topleft' )
+        super().__init__( parent, 'manage ratings for ' + HydrusNumbers.to_human_int( len( self._hashes ) ) + ' files', position = 'topleft' )
         
         #
         
@@ -121,14 +121,14 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
         
         CG.client_controller.pub( 'clipboard', 'text', text )
         
-        self._copy_button.ShowMicroNotification( f'Copied {HydrusNumbers.ToHumanInt(len(rating_clipboard_pairs))} ratings!' )
+        self._copy_button.ShowMicroNotification( f'Copied {HydrusNumbers.to_human_int(len(rating_clipboard_pairs))} ratings!' )
         
     
     def _Paste( self ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
@@ -155,7 +155,7 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
             panel.SetRatingClipboardPairs( rating_clipboard_pairs )
             
         
-        self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.ToHumanInt(len(rating_clipboard_pairs))} ratings!' )
+        self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.to_human_int(len(rating_clipboard_pairs))} ratings!' )
         
     
     def EventOK( self ):
@@ -171,7 +171,7 @@ class DialogManageRatings( CAC.ApplicationCommandProcessorMixin, ClientGUIDialog
             
             if content_update_package.HasContent():
                 
-                CG.client_controller.Write( 'content_updates', content_update_package )
+                CG.client_controller.write( 'content_updates', content_update_package )
                 
             
         finally:

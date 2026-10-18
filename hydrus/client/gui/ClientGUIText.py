@@ -28,10 +28,10 @@ def engage_locale_hook( do_it: bool ):
     
     if do_it:
         
-        HydrusNumbers.ToHumanInt = ToHumanInt
+        HydrusNumbers.to_human_int = ToHumanInt
         
     else:
         
-        HydrusNumbers.ToHumanInt = HydrusNumbers.BaseToHumanInt
+        HydrusNumbers.to_human_int = HydrusNumbers.base_to_human_int
         
     

@@ -44,11 +44,11 @@ class TextAndPasteCtrl( QW.QWidget ):
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             
@@ -57,7 +57,7 @@ class TextAndPasteCtrl( QW.QWidget ):
         
         try:
             
-            texts = [ text for text in HydrusText.DeserialiseNewlinedTexts( raw_text ) ]
+            texts = [ text for text in HydrusText.deserialise_newlined_texts( raw_text ) ]
             
             if not self._allow_empty_input:
                 
@@ -68,7 +68,7 @@ class TextAndPasteCtrl( QW.QWidget ):
                 
                 self._add_callable( texts )
                 
-                self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.ToHumanInt(len(texts))} texts!' )
+                self._paste_button.ShowMicroNotification( f'Pasted {HydrusNumbers.to_human_int(len(texts))} texts!' )
                 
             
         except Exception as e:
@@ -81,7 +81,7 @@ class TextAndPasteCtrl( QW.QWidget ):
         
         text = self._text_input.text()
         
-        text = HydrusText.StripIOInputLine( text )
+        text = HydrusText.strip_io_input_line( text )
         
         if text == '' and not self._allow_empty_input:
             

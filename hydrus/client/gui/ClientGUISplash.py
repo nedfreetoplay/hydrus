@@ -37,7 +37,7 @@ class FrameSplashPanel( QW.QWidget ):
         self._drag_last_pos = None
         self._initial_position = self.parentWidget().pos()
         
-        splash_image_path = HydrusStaticDir.GetStaticIconPath( 'hydrus_splash' )
+        splash_image_path = HydrusStaticDir.get_static_icon_path( 'hydrus_splash' )
         
         if splash_image_path.endswith( '.svg' ):
             
@@ -202,7 +202,7 @@ class FrameSplashStatus( object ):
         
         if self._updater is not None and print_to_log and len( text ) > 0:
             
-            HydrusData.Print( text )
+            HydrusData.safe_print( text )
             
         
         with self._lock:
@@ -218,7 +218,7 @@ class FrameSplashStatus( object ):
         
         if HG.boot_debug and self._updater is not None and len( text ) > 0:
             
-            HydrusData.Print( text )
+            HydrusData.safe_print( text )
             
         
         with self._lock:
@@ -233,7 +233,7 @@ class FrameSplashStatus( object ):
         
         if self._updater is not None and print_to_log:
             
-            HydrusData.DebugPrint( text )
+            HydrusData.debug_print( text )
             
         
         with self._lock:

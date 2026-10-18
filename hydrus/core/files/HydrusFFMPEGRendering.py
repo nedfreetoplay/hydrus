@@ -5,11 +5,11 @@ from hydrus.core.processes import HydrusSubprocess
 from hydrus.core.files import HydrusFFMPEG
 from hydrus.core.files import HydrusFFMPEGParsing
 
-def RenderAnyAttachedStillImageToPath( file_path, output_path ):
+def render_any_attached_still_image_to_path(file_path, output_path):
     
-    lines = HydrusFFMPEG.GetFFMPEGInfoLines( file_path )
+    lines = HydrusFFMPEG.get_ffmpeg_info_lines( file_path )
     
-    image_lines = HydrusFFMPEGParsing.GetImageStreamLines( lines )
+    image_lines = HydrusFFMPEGParsing.get_image_stream_lines( lines )
     
     image_stream_mapping = None
     
@@ -19,7 +19,7 @@ def RenderAnyAttachedStillImageToPath( file_path, output_path ):
         
         try:
             
-            image_stream_mapping = HydrusFFMPEGParsing.ParseStreamMappingFromStreamLine( image_line )
+            image_stream_mapping = HydrusFFMPEGParsing.parse_stream_mapping_from_stream_line( image_line )
             
         except Exception as e:
             
@@ -32,7 +32,7 @@ def RenderAnyAttachedStillImageToPath( file_path, output_path ):
         return False
         
     
-    ffmpeg_path = HydrusFFMPEG.GetCurrentFFMPEGPath()
+    ffmpeg_path = HydrusFFMPEG.get_current_ffmpeg_path()
     
     # no dimensions here, so called is responsible for reshaping numpy array or whatever
     
@@ -40,11 +40,11 @@ def RenderAnyAttachedStillImageToPath( file_path, output_path ):
     # note the "-update 1" says "keep overwriting every frame onto the output" just to suppress a warning; -frames:v 1 makes it moot
     cmd = [ ffmpeg_path, "-xerror", '-y', '-i', file_path, '-map', image_stream_mapping, '-frames:v', '1', '-update', '1', '-f', 'image2', '-c:v', 'png', output_path ]
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         
-        HydrusSubprocess.RunSubprocess( cmd, timeout = HydrusFFMPEG.FFMPEG_SUBPROCESS_TIMEOUT, bufsize = 1024 * 512, text = False )
+        HydrusSubprocess.run_subprocess( cmd, timeout = HydrusFFMPEG.FFMPEG_SUBPROCESS_TIMEOUT, bufsize = 1024 * 512, text = False )
         
     except HydrusExceptions.SubprocessTimedOut:
         
@@ -52,15 +52,14 @@ def RenderAnyAttachedStillImageToPath( file_path, output_path ):
         
     except FileNotFoundError as e:
         
-        raise HydrusFFMPEG.HandleFFMPEGFileNotFoundAndGenerateException( e, file_path )
+        raise HydrusFFMPEG.handle_ffmpeg_file_not_found_and_generate_exception( e, file_path )
         
     
     return True
-    
 
-def RenderImageToImagePath( path, temp_image_path ):
+def render_image_to_image_path(path, temp_image_path):
     
-    ffmpeg_path = HydrusFFMPEG.GetCurrentFFMPEGPath()
+    ffmpeg_path = HydrusFFMPEG.get_current_ffmpeg_path()
     
     # -y to overwrite the temp path
     
@@ -74,11 +73,11 @@ def RenderImageToImagePath( path, temp_image_path ):
         cmd = [ ffmpeg_path, "-xerror", '-y', "-i", path, temp_image_path ]
         
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         
-        HydrusSubprocess.RunSubprocess( cmd, timeout = HydrusFFMPEG.FFMPEG_SUBPROCESS_TIMEOUT )
+        HydrusSubprocess.run_subprocess( cmd, timeout = HydrusFFMPEG.FFMPEG_SUBPROCESS_TIMEOUT )
         
     except HydrusExceptions.SubprocessTimedOut:
         
@@ -86,23 +85,21 @@ def RenderImageToImagePath( path, temp_image_path ):
         
     except FileNotFoundError as e:
         
-        raise HydrusFFMPEG.HandleFFMPEGFileNotFoundAndGenerateException( e, path )
-        
-    
+        raise HydrusFFMPEG.handle_ffmpeg_file_not_found_and_generate_exception( e, path )
 
-def RenderImageToRawRGBABytes( path ):
+def render_image_to_raw_rgba_bytes(path):
     
-    ffmpeg_path = HydrusFFMPEG.GetCurrentFFMPEGPath()
+    ffmpeg_path = HydrusFFMPEG.get_current_ffmpeg_path()
     
     # no dimensions here, so called is responsible for reshaping numpy array or whatever
     
     cmd = [ ffmpeg_path, "-xerror", '-i', path, '-f', 'rawvideo', '-pix_fmt', 'rgba', '-' ]
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         
-        ( stdout, stderr, returncode ) = HydrusSubprocess.RunSubprocess( cmd, timeout = HydrusFFMPEG.FFMPEG_SUBPROCESS_TIMEOUT, bufsize = 1024 * 512, text = False )
+        ( stdout, stderr, returncode ) = HydrusSubprocess.run_subprocess( cmd, timeout = HydrusFFMPEG.FFMPEG_SUBPROCESS_TIMEOUT, bufsize = 1024 * 512, text = False )
         
     except HydrusExceptions.SubprocessTimedOut:
         
@@ -110,23 +107,22 @@ def RenderImageToRawRGBABytes( path ):
         
     except FileNotFoundError as e:
         
-        raise HydrusFFMPEG.HandleFFMPEGFileNotFoundAndGenerateException( e, path )
+        raise HydrusFFMPEG.handle_ffmpeg_file_not_found_and_generate_exception( e, path )
         
     
     return stdout
-    
 
-def RenderImageToPNGBytes( path ):
+def render_image_to_png_bytes(path):
     
-    ffmpeg_path = HydrusFFMPEG.GetCurrentFFMPEGPath()
+    ffmpeg_path = HydrusFFMPEG.get_current_ffmpeg_path()
     
     cmd = [ ffmpeg_path, "-xerror", '-i', path, '-f', 'image2pipe', '-vcodec', 'png', '-' ]
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         
-        ( stdout, stderr, returncode ) = HydrusSubprocess.RunSubprocess( cmd, timeout = HydrusFFMPEG.FFMPEG_SUBPROCESS_TIMEOUT, bufsize = 1024 * 512, text = False )
+        ( stdout, stderr, returncode ) = HydrusSubprocess.run_subprocess( cmd, timeout = HydrusFFMPEG.FFMPEG_SUBPROCESS_TIMEOUT, bufsize = 1024 * 512, text = False )
         
     except HydrusExceptions.SubprocessTimedOut:
         
@@ -134,8 +130,7 @@ def RenderImageToPNGBytes( path ):
         
     except FileNotFoundError as e:
         
-        raise HydrusFFMPEG.HandleFFMPEGFileNotFoundAndGenerateException( e, path )
+        raise HydrusFFMPEG.handle_ffmpeg_file_not_found_and_generate_exception( e, path )
         
     
     return stdout
-    

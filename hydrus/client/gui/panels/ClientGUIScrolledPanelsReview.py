@@ -302,7 +302,7 @@ class ReviewFileEmbeddedMetadata( ClientGUIScrolledPanels.ReviewPanel ):
         if isinstance( raw_value, bytes ):
             
             value = raw_value.hex()
-            pretty_value = '{}: {}'.format( HydrusData.ToHumanBytes( len( raw_value ) ), value )
+            pretty_value = '{}: {}'.format( HydrusData.to_human_bytes( len( raw_value ) ), value )
             
         else:
             
@@ -619,7 +619,7 @@ class ReviewFileHistory( ClientGUIScrolledPanels.ReviewPanel ):
             
             try:
                 
-                file_history = CG.client_controller.Read( 'file_history', num_steps, file_search_context = file_search_context, job_status = job_status )
+                file_history = CG.client_controller.read( 'file_history', num_steps, file_search_context = file_search_context, job_status = job_status )
                 
             except HydrusExceptions.DBException as e:
                 
@@ -786,7 +786,7 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
         
         self._search_panel = ClientGUICommon.StaticBox( self._new_work_panel, 'select files by search' )
         
-        page_key = HydrusData.GenerateKey()
+        page_key = HydrusData.generate_key()
         
         default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
         
@@ -891,7 +891,7 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
         
         if len( hash_ids ) > 1000:
             
-            message = 'Are you sure you want to schedule "{}" on {} files?'.format( ClientFilesMaintenance.regen_file_enum_to_str_lookup[ job_type ], HydrusNumbers.ToHumanInt( len( hash_ids ) ) )
+            message = 'Are you sure you want to schedule "{}" on {} files?'.format( ClientFilesMaintenance.regen_file_enum_to_str_lookup[ job_type ], HydrusNumbers.to_human_int( len( hash_ids ) ) )
             
             result = ClientGUIDialogsQuick.GetYesNo( self, message, yes_label = 'do it', no_label = 'forget it' )
             
@@ -940,13 +940,13 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
             num_to_do = 0
             
         
-        pretty_num_to_do = HydrusNumbers.ToHumanInt( num_to_do )
+        pretty_num_to_do = HydrusNumbers.to_human_int( num_to_do )
         
         not_due_num_to_do = self._job_types_to_not_due_counts[ job_type ]
         
         if not_due_num_to_do > 0:
             
-            pretty_num_to_do = '{} ({} is not yet due)'.format( pretty_num_to_do, HydrusNumbers.ToHumanInt( not_due_num_to_do ) )
+            pretty_num_to_do = '{} ({} is not yet due)'.format( pretty_num_to_do, HydrusNumbers.to_human_int( not_due_num_to_do ) )
             
         
         display_tuple = ( pretty_job_type, pretty_num_to_do )
@@ -1008,7 +1008,7 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
     
     def _DoAllWork( self ):
         
-        CG.client_controller.CallToThread( CG.client_controller.files_maintenance_manager.ForceMaintenance )
+        CG.client_controller.call_to_thread( CG.client_controller.files_maintenance_manager.ForceMaintenance )
         
     
     def _DoWork( self ):
@@ -1020,14 +1020,14 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
             return
             
         
-        CG.client_controller.CallToThread( CG.client_controller.files_maintenance_manager.ForceMaintenance, mandated_job_types = job_types )
+        CG.client_controller.call_to_thread( CG.client_controller.files_maintenance_manager.ForceMaintenance, mandated_job_types = job_types )
         
     
     def _RefreshWorkDue( self ):
         
         def work_callable():
             
-            job_types_to_counts = CG.client_controller.Read( 'file_maintenance_get_job_counts' )
+            job_types_to_counts = CG.client_controller.read( 'file_maintenance_get_job_counts' )
             
             return job_types_to_counts
             
@@ -1064,14 +1064,14 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
         
         def work_callable():
             
-            query_hash_ids = CG.client_controller.Read( 'file_query_ids', file_search_context, apply_implicit_limit = False )
+            query_hash_ids = CG.client_controller.read( 'file_query_ids', file_search_context, apply_implicit_limit = False )
             
             return query_hash_ids
             
         
         def publish_callable( hash_ids ):
             
-            self._run_search_st.setText( '{} files found'.format( HydrusNumbers.ToHumanInt( len( hash_ids ) ) ) )
+            self._run_search_st.setText( '{} files found'.format( HydrusNumbers.to_human_int( len( hash_ids ) ) ) )
             
             self._SetHashIds( hash_ids )
             
@@ -1092,7 +1092,7 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
         
         message = ClientFilesMaintenance.regen_file_enum_to_description_lookup[ job_type ]
         message += '\n' * 2
-        message += 'This job has weight {}, where a normalised unit of file work has value {}.'.format( HydrusNumbers.ToHumanInt( ClientFilesMaintenance.regen_file_enum_to_job_weight_lookup[ job_type ] ), HydrusNumbers.ToHumanInt( ClientFilesMaintenance.NORMALISED_BIG_JOB_WEIGHT ) )
+        message += 'This job has weight {}, where a normalised unit of file work has value {}.'.format( HydrusNumbers.to_human_int( ClientFilesMaintenance.regen_file_enum_to_job_weight_lookup[ job_type ] ), HydrusNumbers.to_human_int( ClientFilesMaintenance.NORMALISED_BIG_JOB_WEIGHT ) )
         
         ClientGUIDialogsMessage.ShowInformation( self, message )
         
@@ -1107,7 +1107,7 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
         
         def work_callable():
             
-            query_hash_ids = CG.client_controller.Read( 'file_query_ids', file_search_context, apply_implicit_limit = False )
+            query_hash_ids = CG.client_controller.read( 'file_query_ids', file_search_context, apply_implicit_limit = False )
             
             return query_hash_ids
             
@@ -1137,7 +1137,7 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
         
         def work_callable():
             
-            query_hash_ids = CG.client_controller.Read( 'file_query_ids', file_search_context, apply_implicit_limit = False )
+            query_hash_ids = CG.client_controller.read( 'file_query_ids', file_search_context, apply_implicit_limit = False )
             
             return query_hash_ids
             
@@ -1166,7 +1166,7 @@ class ReviewFileMaintenance( ClientGUIScrolledPanels.ReviewPanel ):
         
         self._hash_ids = hash_ids
         
-        self._selected_files_st.setText( '{} files selected'.format(HydrusNumbers.ToHumanInt(len(hash_ids))) )
+        self._selected_files_st.setText( '{} files selected'.format(HydrusNumbers.to_human_int(len(hash_ids))) )
         
         if len( hash_ids ) == 0:
             
@@ -1214,7 +1214,7 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
         self._mr_bones_text.setWordWrap( True )
         self._mr_bones_text.setAlignment( QC.Qt.AlignmentFlag.AlignCenter )
         
-        boned_path = HydrusStaticDir.GetStaticPath( 'boned.jpg' )
+        boned_path = HydrusStaticDir.get_static_path( 'boned.jpg' )
         
         boned_qt_pixmap = ClientRendering.GenerateHydrusBitmap( boned_path, HC.IMAGE_JPEG ).GetQtPixmap()
         
@@ -1348,7 +1348,7 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
         
         def work_callable():
             
-            boned_stats = CG.client_controller.Read( 'boned_stats', file_search_context = file_search_context, job_status = job_status )
+            boned_stats = CG.client_controller.read( 'boned_stats', file_search_context = file_search_context, job_status = job_status )
             
             return boned_stats
             
@@ -1411,8 +1411,8 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
         total_alternate_groups = boned_stats[ 'total_alternate_groups' ]
         total_duplicate_files = boned_stats[ 'total_duplicate_files' ]
         
-        duplicates_label = f'Total files in duplicate groups: {HydrusNumbers.ToHumanInt( total_duplicate_files )}'
-        alternates_label = f'Total files in alternate groups: {HydrusNumbers.ToHumanInt( total_alternate_files )} ({HydrusNumbers.ToHumanInt( total_alternate_groups )} groups)'
+        duplicates_label = f'Total files in duplicate groups: {HydrusNumbers.to_human_int( total_duplicate_files )}'
+        alternates_label = f'Total files in alternate groups: {HydrusNumbers.to_human_int( total_alternate_files )} ({HydrusNumbers.to_human_int( total_alternate_groups )} groups)'
         
         self._duplicates_st.setText( duplicates_label )
         self._alternates_st.setText( alternates_label )
@@ -1514,11 +1514,11 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
                 #
                 
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = 'Total Ever Imported:' ), CC.FLAGS_ON_LEFT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.ToHumanInt( num_supertotal ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.to_human_int( num_supertotal ) ), CC.FLAGS_ON_RIGHT )
                 QP.AddToLayout( text_table_layout, QW.QWidget( self._files_content_panel ), CC.FLAGS_ON_LEFT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.ToHumanBytes( size_supertotal ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( size_supertotal ) ), CC.FLAGS_ON_RIGHT )
                 QP.AddToLayout( text_table_layout, QW.QWidget( self._files_content_panel ), CC.FLAGS_ON_LEFT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.ToHumanBytes( supertotal_average_filesize ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( supertotal_average_filesize ) ), CC.FLAGS_ON_RIGHT )
                 
                 #
                 
@@ -1532,20 +1532,20 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
                 #
                 
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = 'Current:' ), CC.FLAGS_ON_LEFT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.ToHumanInt( num_total ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.to_human_int( num_total ) ), CC.FLAGS_ON_RIGHT )
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( current_num_percent ) ), CC.FLAGS_ON_RIGHT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.ToHumanBytes( size_total ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( size_total ) ), CC.FLAGS_ON_RIGHT )
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( current_size_percent ) ), CC.FLAGS_ON_RIGHT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.ToHumanBytes( current_average_filesize ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( current_average_filesize ) ), CC.FLAGS_ON_RIGHT )
                 
                 #
                 
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = 'Deleted:' ), CC.FLAGS_ON_LEFT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.ToHumanInt( num_deleted ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.to_human_int( num_deleted ) ), CC.FLAGS_ON_RIGHT )
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( deleted_num_percent ) ), CC.FLAGS_ON_RIGHT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.ToHumanBytes( size_deleted ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( size_deleted ) ), CC.FLAGS_ON_RIGHT )
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( deleted_size_percent ) ), CC.FLAGS_ON_RIGHT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.ToHumanBytes( deleted_average_filesize ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( deleted_average_filesize ) ), CC.FLAGS_ON_RIGHT )
                 
                 #
                 
@@ -1559,20 +1559,20 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
                 #
                 
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = 'Inbox:' ), CC.FLAGS_ON_LEFT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.ToHumanInt( num_inbox ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.to_human_int( num_inbox ) ), CC.FLAGS_ON_RIGHT )
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( inbox_num_percent ) ), CC.FLAGS_ON_RIGHT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.ToHumanBytes( size_inbox ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( size_inbox ) ), CC.FLAGS_ON_RIGHT )
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( inbox_size_percent ) ), CC.FLAGS_ON_RIGHT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.ToHumanBytes( inbox_average_filesize ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( inbox_average_filesize ) ), CC.FLAGS_ON_RIGHT )
                 
                 #
                 
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = 'Archive:' ), CC.FLAGS_ON_LEFT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.ToHumanInt( num_archive ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.to_human_int( num_archive ) ), CC.FLAGS_ON_RIGHT )
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( archive_num_percent ) ), CC.FLAGS_ON_RIGHT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.ToHumanBytes( size_archive ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( size_archive ) ), CC.FLAGS_ON_RIGHT )
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( archive_size_percent ) ), CC.FLAGS_ON_RIGHT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.ToHumanBytes( archive_average_filesize ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( archive_average_filesize ) ), CC.FLAGS_ON_RIGHT )
                 
             else:
                 
@@ -1597,11 +1597,11 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
                 #
                 
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = 'Current:' ), CC.FLAGS_ON_LEFT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.ToHumanInt( num_total ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.to_human_int( num_total ) ), CC.FLAGS_ON_RIGHT )
                 QP.AddToLayout( text_table_layout, QW.QWidget( self._files_content_panel ), CC.FLAGS_ON_LEFT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.ToHumanBytes( size_total ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( size_total ) ), CC.FLAGS_ON_RIGHT )
                 QP.AddToLayout( text_table_layout, QW.QWidget( self._files_content_panel ), CC.FLAGS_ON_LEFT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.ToHumanBytes( current_average_filesize ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( current_average_filesize ) ), CC.FLAGS_ON_RIGHT )
                 
                 #
                 
@@ -1615,20 +1615,20 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
                 #
                 
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = 'Inbox:' ), CC.FLAGS_ON_LEFT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.ToHumanInt( num_inbox ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.to_human_int( num_inbox ) ), CC.FLAGS_ON_RIGHT )
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( inbox_num_percent ) ), CC.FLAGS_ON_RIGHT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.ToHumanBytes( size_inbox ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( size_inbox ) ), CC.FLAGS_ON_RIGHT )
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( inbox_size_percent ) ), CC.FLAGS_ON_RIGHT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.ToHumanBytes( inbox_average_filesize ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( inbox_average_filesize ) ), CC.FLAGS_ON_RIGHT )
                 
                 #
                 
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = 'Archive:' ), CC.FLAGS_ON_LEFT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.ToHumanInt( num_archive ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusNumbers.to_human_int( num_archive ) ), CC.FLAGS_ON_RIGHT )
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( archive_num_percent ) ), CC.FLAGS_ON_RIGHT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.ToHumanBytes( size_archive ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( size_archive ) ), CC.FLAGS_ON_RIGHT )
                 QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = ClientData.ConvertZoomToPercentage( archive_size_percent ) ), CC.FLAGS_ON_RIGHT )
-                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.ToHumanBytes( archive_average_filesize ) ), CC.FLAGS_ON_RIGHT )
+                QP.AddToLayout( text_table_layout, ClientGUICommon.BetterStaticText( self._files_content_panel, label = HydrusData.to_human_bytes( archive_average_filesize ) ), CC.FLAGS_ON_RIGHT )
                 
             
             #
@@ -1641,7 +1641,7 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 eit_timestamp = boned_stats[ 'earliest_import_time' ]
                 
-                eit_label = 'Earliest file import: {} ({})'.format( HydrusTime.TimestampToPrettyTime( eit_timestamp ), HydrusTime.TimestampToPrettyTimeDelta( eit_timestamp ) )
+                eit_label = 'Earliest file import: {} ({})'.format( HydrusTime.timestamp_to_pretty_time( eit_timestamp ), HydrusTime.timestamp_to_pretty_time_delta( eit_timestamp ) )
                 
                 eit_st = ClientGUICommon.BetterStaticText( self._files_content_panel, label = eit_label )
                 
@@ -1730,9 +1730,9 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
         
         ( media_views, media_viewtime, preview_views, preview_viewtime ) = total_viewtime
         
-        media_label = 'Total media views: ' + HydrusNumbers.ToHumanInt( media_views ) + ', totalling ' + HydrusTime.TimeDeltaToPrettyTimeDelta( media_viewtime )
+        media_label = 'Total media views: ' + HydrusNumbers.to_human_int( media_views ) + ', totalling ' + HydrusTime.time_delta_to_pretty_timedelta( media_viewtime )
         
-        preview_label = 'Total preview views: ' + HydrusNumbers.ToHumanInt( preview_views ) + ', totalling ' + HydrusTime.TimeDeltaToPrettyTimeDelta( preview_viewtime )
+        preview_label = 'Total preview views: ' + HydrusNumbers.to_human_int( preview_views ) + ', totalling ' + HydrusTime.time_delta_to_pretty_timedelta( preview_viewtime )
         
         self._media_views_st.setText( media_label )
         self._preview_views_st.setText( preview_label )
@@ -1778,11 +1778,11 @@ class JobSchedulerPanel( QW.QWidget ):
     def _ConvertDataToDisplayTuple( self, job: HydrusThreading.SchedulableJob ):
         
         job_type = job.PRETTY_CLASS_NAME
-        job_call = job.GetPrettyJob()
+        job_call = job.get_pretty_job()
         
         pretty_job_type = job_type
         pretty_job_call = job_call
-        pretty_due = job.GetDueString()
+        pretty_due = job.get_due_string()
         
         display_tuple = ( pretty_job_type, pretty_job_call, pretty_due )
         
@@ -1792,8 +1792,8 @@ class JobSchedulerPanel( QW.QWidget ):
     def _ConvertDataToSortTuple( self, job: HydrusThreading.SchedulableJob ):
         
         job_type = job.PRETTY_CLASS_NAME
-        job_call = job.GetPrettyJob()
-        due = job.GetNextWorkTime()
+        job_call = job.get_pretty_job()
+        due = job.get_next_work_time()
         
         sort_tuple = ( job_type, job_call, due )
         
@@ -1802,7 +1802,7 @@ class JobSchedulerPanel( QW.QWidget ):
     
     def _RefreshSnapshot( self ):
         
-        jobs = self._controller.GetJobSchedulerSnapshot( self._scheduler_name )
+        jobs = self._controller.get_job_scheduler_snapshot( self._scheduler_name )
         
         self._list_ctrl.SetData( jobs )
         
@@ -1870,7 +1870,7 @@ class ThreadsPanel( QW.QWidget ):
     
     def _RefreshSnapshot( self ):
         
-        threads = self._controller.GetThreadsSnapshot()
+        threads = self._controller.get_threads_snapshot()
         
         self._list_ctrl.SetData( threads )
         
@@ -1946,7 +1946,7 @@ class ReviewDeferredDeleteTableData( ClientGUIScrolledPanels.ReviewPanel ):
         else:
             
             sort_num_rows = num_rows
-            pretty_num_rows = HydrusNumbers.ToHumanInt( sort_num_rows )
+            pretty_num_rows = HydrusNumbers.to_human_int( sort_num_rows )
             
         
         display_tuple = ( pretty_name, pretty_num_rows )
@@ -1990,7 +1990,7 @@ class ReviewDeferredDeleteTableData( ClientGUIScrolledPanels.ReviewPanel ):
         
         def work_callable( args ):
             
-            deferred_delete_data = self._controller.Read( 'deferred_delete_data' )
+            deferred_delete_data = self._controller.read( 'deferred_delete_data' )
             
             return deferred_delete_data
             
@@ -2143,7 +2143,7 @@ Vacuuming is an expensive operation. It creates one (temporary) copy of the data
             page_count = vacuum_dict[ 'page_count' ]
             freelist_count = vacuum_dict[ 'freelist_count' ]
             
-            HydrusDB.CheckCanVacuumIntoData( path, page_size, page_count, freelist_count )
+            HydrusDB.check_can_vacuum_into_data( path, page_size, page_count, freelist_count )
             
         except Exception as e:
             
@@ -2184,14 +2184,14 @@ Vacuuming is an expensive operation. It creates one (temporary) copy of the data
         pretty_name = name
         
         sort_total_size = page_size * vacuum_dict[ 'page_count' ]
-        pretty_total_size = HydrusData.ToHumanBytes( sort_total_size )
+        pretty_total_size = HydrusData.to_human_bytes( sort_total_size )
         
         sort_free_size = page_size * vacuum_dict[ 'freelist_count' ]
-        pretty_free_size = HydrusData.ToHumanBytes( sort_free_size )
+        pretty_free_size = HydrusData.to_human_bytes( sort_free_size )
         
         if sort_total_size > 0:
             
-            pretty_free_size = '{} ({})'.format( pretty_free_size, HydrusNumbers.FloatToPercentage( sort_free_size / sort_total_size ) )
+            pretty_free_size = '{} ({})'.format( pretty_free_size, HydrusNumbers.float_to_percentage( sort_free_size / sort_total_size ) )
             
         
         sort_last_vacuumed_ms = vacuum_dict[ 'last_vacuumed_ms' ]
@@ -2202,7 +2202,7 @@ Vacuuming is an expensive operation. It creates one (temporary) copy of the data
             
         else:
             
-            pretty_last_vacuumed_ms = HydrusTime.TimestampToPrettyTimeDelta( HydrusTime.SecondiseMS( sort_last_vacuumed_ms ) )
+            pretty_last_vacuumed_ms = HydrusTime.timestamp_to_pretty_time_delta( HydrusTime.secondise_ms( sort_last_vacuumed_ms ) )
             
         
         ( result, info ) = self._CanVacuumName( name )
@@ -2250,9 +2250,9 @@ Vacuuming is an expensive operation. It creates one (temporary) copy of the data
         
         from hydrus.core import HydrusDB
         
-        vacuum_time_estimate = HydrusDB.GetApproxVacuumIntoDuration( db_size )
+        vacuum_time_estimate = HydrusDB.get_approx_vacuum_into_duration( db_size )
         
-        pretty_vacuum_time_estimate = '{} to {}'.format( HydrusTime.TimeDeltaToPrettyTimeDelta( vacuum_time_estimate / 20 ), HydrusTime.TimeDeltaToPrettyTimeDelta( vacuum_time_estimate ) )
+        pretty_vacuum_time_estimate = '{} to {}'.format( HydrusTime.time_delta_to_pretty_timedelta( vacuum_time_estimate / 20 ), HydrusTime.time_delta_to_pretty_timedelta( vacuum_time_estimate ) )
         
         return ( vacuum_time_estimate, pretty_vacuum_time_estimate )
         
@@ -2273,7 +2273,7 @@ Vacuuming is an expensive operation. It creates one (temporary) copy of the data
             
             if result == QW.QDialog.DialogCode.Accepted:
                 
-                self._controller.Write( 'vacuum', names )
+                self._controller.write( 'vacuum', names )
                 
                 self._OKParent()
                 

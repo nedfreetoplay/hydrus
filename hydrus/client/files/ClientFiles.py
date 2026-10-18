@@ -128,7 +128,7 @@ def GetAllFilePaths( path: str, search_subdirectories: bool, clear_out_sidecars 
         jobs_to_process = next_jobs_to_process
         
     
-    HydrusText.HumanTextSort( file_paths )
+    HydrusText.human_text_sort( file_paths )
     
     PopulateComparableSidecarPrefixes( file_paths, comparable_sidecar_prefixes )
     
@@ -195,7 +195,7 @@ def HasHumanReadableEmbeddedMetadata( path, mime, human_file_description = None,
             
             if possible_raw_pil_image is None:
                 
-                pil_image = HydrusImageOpening.RawOpenPILImage( path, human_file_description = human_file_description )
+                pil_image = HydrusImageOpening.raw_open_pil_image( path, human_file_description = human_file_description )
                 
             else:
                 
@@ -204,7 +204,7 @@ def HasHumanReadableEmbeddedMetadata( path, mime, human_file_description = None,
             
             try:
                 
-                has_human_readable_embedded_metadata = HydrusImageMetadata.HasHumanReadableEmbeddedMetadata( pil_image )
+                has_human_readable_embedded_metadata = HydrusImageMetadata.has_human_readable_embedded_metadata( pil_image )
                 
             finally:
                 
@@ -231,9 +231,9 @@ def HasTransparency( path, mime, duration_ms = None, num_frames = None, resoluti
         
         if mime in HC.IMAGES:
             
-            numpy_image = HydrusImageHandling.GenerateNumPyImage( path, mime )
+            numpy_image = HydrusImageHandling.generate_numpy_image( path, mime )
             
-            return HydrusImageColours.NumPyImageHasUsefulAlphaChannel( numpy_image )
+            return HydrusImageColours.numpy_image_has_useful_alpha_channel( numpy_image )
             
         elif mime in HC.ANIMATIONS:
             
@@ -261,7 +261,7 @@ def HasTransparency( path, mime, duration_ms = None, num_frames = None, resoluti
                     
                     if not we_checked_for_just_alpha_channel:
                         
-                        if not HydrusImageColours.NumPyImageHasAlphaChannel( numpy_image ):
+                        if not HydrusImageColours.numpy_image_has_alpha_channel( numpy_image ):
                             
                             return False
                             
@@ -269,7 +269,7 @@ def HasTransparency( path, mime, duration_ms = None, num_frames = None, resoluti
                         we_checked_for_just_alpha_channel = True
                         
                     
-                    if HydrusImageColours.NumPyImageHasUsefulAlphaChannel( numpy_image ):
+                    if HydrusImageColours.numpy_image_has_useful_alpha_channel( numpy_image ):
                         
                         return True
                         
@@ -283,8 +283,8 @@ def HasTransparency( path, mime, duration_ms = None, num_frames = None, resoluti
         
     except HydrusExceptions.DamagedOrUnusualFileException as e:
         
-        HydrusData.Print( 'Problem determining transparency for "{}":'.format( path ) )
-        HydrusData.PrintException( e )
+        HydrusData.safe_print( 'Problem determining transparency for "{}":'.format( path ) )
+        HydrusData.print_exception( e )
         
         return False
         

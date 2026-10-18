@@ -40,9 +40,9 @@ class LocationImportOptions( IOC.ImportOptionsMetatype ):
         self._import_destination_location_context = ClientLocation.LocationContext.STATICCreateSimple( fallback )
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_import_destination_location_context = self._import_destination_location_context.GetSerialisableTuple()
+        serialisable_import_destination_location_context = self._import_destination_location_context.get_serialisable_tuple()
         
         return (
             serialisable_import_destination_location_context,
@@ -54,7 +54,7 @@ class LocationImportOptions( IOC.ImportOptionsMetatype ):
         )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         (
             serialisable_import_destination_location_context,
@@ -65,7 +65,7 @@ class LocationImportOptions( IOC.ImportOptionsMetatype ):
             self._do_import_destinations_on_already_in_db_files
         ) = serialisable_info
         
-        self._import_destination_location_context = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_import_destination_location_context )
+        self._import_destination_location_context = HydrusSerialisable.create_from_serialisable_tuple( serialisable_import_destination_location_context )
         
     
     def AutomaticallyArchives( self ) -> bool:
@@ -109,7 +109,7 @@ class LocationImportOptions( IOC.ImportOptionsMetatype ):
             if len( file_service_keys_to_add_to ) > 0:
                 
                 file_info_manager = media_result.GetFileInfoManager()
-                now_ms = HydrusTime.GetNowMS()
+                now_ms = HydrusTime.get_now_ms()
                 
                 for service_key in file_service_keys_to_add_to:
                     
@@ -177,7 +177,7 @@ class LocationImportOptions( IOC.ImportOptionsMetatype ):
     
     def SetDestinationLocationContext( self, location_context: ClientLocation.LocationContext ):
         
-        self._import_destination_location_context = location_context.Duplicate()
+        self._import_destination_location_context = location_context.duplicate()
         
     
     def SetDoAutomaticArchiveOnAlreadyInDBFiles( self, value: bool ):

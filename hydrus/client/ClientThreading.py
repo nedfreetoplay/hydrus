@@ -14,9 +14,9 @@ class JobStatus( object ):
     
     def __init__( self, pausable = False, cancellable = False, maintenance_mode = HC.MAINTENANCE_FORCED, only_start_if_unbusy = False, stop_time = None, cancel_on_shutdown = True ):
         
-        self._key = HydrusData.GenerateKey()
+        self._key = HydrusData.generate_key()
         
-        self._creation_time = HydrusTime.GetNowFloat()
+        self._creation_time = HydrusTime.get_now_float()
         
         self._pausable = pausable
         self._cancellable = cancellable
@@ -41,7 +41,7 @@ class JobStatus( object ):
         else:
             
             self._done_event.set()
-            self._job_finish_time = HydrusTime.GetNowFloat()
+            self._job_finish_time = HydrusTime.get_now_float()
             
         
         self._ui_update_pauser = HydrusThreading.BigJobPauser( 0.1, 0.00001 )
@@ -74,18 +74,18 @@ class JobStatus( object ):
     
     def _CheckCancelTests( self ):
         
-        if self._cancel_tests_regular_checker.Due():
+        if self._cancel_tests_regular_checker.due():
             
             if not self._done_event.is_set():
                 
-                if self._cancel_on_shutdown and HydrusThreading.IsThreadShuttingDown():
+                if self._cancel_on_shutdown and HydrusThreading.is_thread_shutting_down():
                     
                     self.Cancel()
                     
                     return
                     
                 
-                if CG.client_controller.ShouldStopThisWork( self._maintenance_mode, self._stop_time ):
+                if CG.client_controller.should_stop_this_work( self._maintenance_mode, self._stop_time ):
                     
                     self.Cancel()
                     
@@ -97,7 +97,7 @@ class JobStatus( object ):
                 
                 if self._finish_and_dismiss_time is not None:
                     
-                    if HydrusTime.TimeHasPassed( self._finish_and_dismiss_time ):
+                    if HydrusTime.time_has_passed( self._finish_and_dismiss_time ):
                         
                         self.FinishAndDismiss()
                         
@@ -121,7 +121,7 @@ class JobStatus( object ):
         
         self._cancelled = True
         
-        self.Finish()
+        self.finish()
         
     
     def DeleteFiles( self ):
@@ -159,12 +159,12 @@ class JobStatus( object ):
                 
             
         
-        self._ui_update_pauser.Pause()
+        self._ui_update_pauser.pause()
         
     
-    def Finish( self ):
+    def finish( self ):
         
-        self._job_finish_time = HydrusTime.GetNowFloat()
+        self._job_finish_time = HydrusTime.get_now_float()
         
         self._paused = False
         
@@ -176,7 +176,7 @@ class JobStatus( object ):
     
     def FinishAndDismiss( self, seconds = None ):
         
-        self.Finish()
+        self.finish()
         
         if seconds is None:
             
@@ -184,7 +184,7 @@ class JobStatus( object ):
             
         else:
             
-            self._finish_and_dismiss_time = HydrusTime.GetNow() + seconds
+            self._finish_and_dismiss_time = HydrusTime.get_now() + seconds
             
         
     
@@ -362,13 +362,13 @@ class JobStatus( object ):
             
             self.SetStatusText( first_line )
             
-            nice_trace = HydrusData.ConvertExceptionTupleToNiceTrace( etype, value, tb )
+            nice_trace = HydrusData.convert_exception_tuple_to_nice_trace( etype, value, tb )
             
             self.SetVariable( 'traceback', nice_trace )
             
         except Exception as e:
             
-            HydrusData.PrintExceptionTuple( etype, value, tb )
+            HydrusData.print_exception_tuple( etype, value, tb )
             
             self.SetStatusText( 'Encountered exception I could not parse!' )
             
@@ -382,7 +382,7 @@ class JobStatus( object ):
             
         else:
             
-            hashes = HydrusLists.DedupeList( list( hashes ) )
+            hashes = HydrusLists.dedupe_list( list( hashes ) )
             
             self.SetVariable( 'attached_files', ( hashes, label ) )
             
@@ -417,14 +417,14 @@ class JobStatus( object ):
         
         with self._variable_lock: self._variables[ name ] = value
         
-        self._ui_update_pauser.Pause()
+        self._ui_update_pauser.pause()
         
     
     def TimeRunning( self ):
         
         if self._job_finish_time is None:
             
-            return HydrusTime.GetNowFloat() - self._creation_time
+            return HydrusTime.get_now_float() - self._creation_time
             
         else:
             
@@ -478,7 +478,7 @@ class JobStatus( object ):
     
     def WaitIfNeeded( self ):
         
-        self._yield_pauser.Pause()
+        self._yield_pauser.pause()
         
         i_paused = False
         should_quit = False
@@ -675,7 +675,7 @@ class QtAwareJob( HydrusThreading.SingleJob ):
         self._window = window
         
     
-    def _BootWorker( self ):
+    def _Boot_worker( self ):
         
         def qt_code():
             
@@ -684,11 +684,11 @@ class QtAwareJob( HydrusThreading.SingleJob ):
                 return
                 
             
-            self.Work()
+            self.work()
             
         
         # yo if you change this, alter how profile_mode (ui) works
-        CG.client_controller.CallAfterQtSafe( self._window, qt_code )
+        CG.client_controller.call_after_qt_safe( self._window, qt_code )
         
     
     def _MyWindowDead( self ):
@@ -696,7 +696,7 @@ class QtAwareJob( HydrusThreading.SingleJob ):
         return self._window is None or not QP.isValid( self._window )
         
     
-    def IsCancelled( self ):
+    def is_cancelled( self ):
         
         my_window_dead = self._MyWindowDead()
         
@@ -705,10 +705,10 @@ class QtAwareJob( HydrusThreading.SingleJob ):
             self._is_cancelled.set()
             
         
-        return HydrusThreading.SingleJob.IsCancelled( self )
+        return HydrusThreading.SingleJob.is_cancelled( self )
         
     
-    def IsDead( self ):
+    def is_dead( self ):
         
         return self._MyWindowDead()
         
@@ -734,13 +734,13 @@ class QtAwareRepeatingJob( HydrusThreading.RepeatingJob ):
             return
             
         
-        self.Work()
+        self.work()
         
     
-    def _BootWorker( self ):
+    def _Boot_worker( self ):
         
         # yo if you change this, alter how profile_mode (ui) works
-        CG.client_controller.CallAfterQtSafe( self._window, self._QTWork )
+        CG.client_controller.call_after_qt_safe( self._window, self._QTWork )
         
     
     def _MyWindowDead( self ):
@@ -748,7 +748,7 @@ class QtAwareRepeatingJob( HydrusThreading.RepeatingJob ):
         return self._window is None or not QP.isValid( self._window )
         
     
-    def IsCancelled( self ):
+    def is_cancelled( self ):
         
         my_window_dead = self._MyWindowDead()
         
@@ -757,10 +757,10 @@ class QtAwareRepeatingJob( HydrusThreading.RepeatingJob ):
             self._is_cancelled.set()
             
         
-        return HydrusThreading.SingleJob.IsCancelled( self )
+        return HydrusThreading.SingleJob.is_cancelled( self )
         
     
-    def IsDead( self ):
+    def is_dead( self ):
         
         return self._MyWindowDead()
         

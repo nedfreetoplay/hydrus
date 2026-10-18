@@ -129,9 +129,9 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_info = self._dictionary.GetSerialisableTuple()
+        serialisable_info = self._dictionary.get_serialisable_tuple()
         
         return serialisable_info
         
@@ -640,7 +640,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         self._dictionary[ 'keys' ] = {
             'default_tag_service_tab' : CC.DEFAULT_LOCAL_TAG_SERVICE_KEY.hex(),
             'default_tag_service_search_page' : CC.COMBINED_TAG_SERVICE_KEY.hex(),
-            'default_gug_key' : HydrusData.GenerateKey().hex(),
+            'default_gug_key' : HydrusData.generate_key().hex(),
             'options_ratings_panel_template_service_key' : CC.PREVIEW_RATINGS_SERVICE_KEY.hex(),
         }
         
@@ -822,7 +822,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         
         # the cleantags here converts to unicode, which is important!
         
-        example_tags = HydrusTags.CleanTags( [ 'creator:creator', 'series:series', 'title:title' ] )
+        example_tags = HydrusTags.clean_tags( [ 'creator:creator', 'series:series', 'title:title' ] )
         
         from hydrus.client.gui.metadata import ClientGUITagSummaryGenerator
         
@@ -838,7 +838,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         
         separator = '-'
         
-        example_tags = HydrusTags.CleanTags( [ 'volume:3', 'chapter:10', 'page:330', 'page:331' ] )
+        example_tags = HydrusTags.clean_tags( [ 'volume:3', 'chapter:10', 'page:330', 'page:331' ] )
         
         tsg = ClientGUITagSummaryGenerator.TagSummaryGenerator( namespace_info = namespace_info, separator = separator, example_tags = example_tags )
         
@@ -855,7 +855,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         
         separator = ' - '
         
-        example_tags = HydrusTags.CleanTags( [ 'creator:creator', 'series:series', 'title:title', 'volume:1', 'chapter:1', 'page:1' ] )
+        example_tags = HydrusTags.clean_tags( [ 'creator:creator', 'series:series', 'title:title', 'volume:1', 'chapter:1', 'page:1' ] )
         
         tsg = ClientGUITagSummaryGenerator.TagSummaryGenerator( namespace_info = namespace_info, separator = separator, example_tags = example_tags )
         
@@ -983,9 +983,9 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         self._dictionary[ 'default_export_files_metadata_routers' ] = HydrusSerialisable.SerialisableList()
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
-        loaded_dictionary = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_info )
+        loaded_dictionary = HydrusSerialisable.create_from_serialisable_tuple( serialisable_info )
         
         for ( key, value ) in loaded_dictionary.items():
             
@@ -1000,11 +1000,11 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
-            loaded_dictionary = HydrusSerialisable.CreateFromSerialisableTuple( old_serialisable_info )
+            loaded_dictionary = HydrusSerialisable.create_from_serialisable_tuple( old_serialisable_info )
             
             if 'media_view' in loaded_dictionary:
                 
@@ -1029,7 +1029,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                     
                 
             
-            new_serialisable_info = loaded_dictionary.GetSerialisableTuple()
+            new_serialisable_info = loaded_dictionary.get_serialisable_tuple()
             
             return ( 2, new_serialisable_info )
             
@@ -1063,7 +1063,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                 
                 try:
                     
-                    db_dir = HG.controller.GetDBDir()
+                    db_dir = HG.controller.get_db_dir()
                     
                     p = os.path.relpath( a_p, db_dir )
                     
@@ -1085,7 +1085,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                 return p
                 
             
-            loaded_dictionary = HydrusSerialisable.CreateFromSerialisableTuple( old_serialisable_info )
+            loaded_dictionary = HydrusSerialisable.create_from_serialisable_tuple( old_serialisable_info )
             
             if 'client_files_locations_ideal_weights' in loaded_dictionary:
                 
@@ -1111,14 +1111,14 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                 loaded_dictionary[ 'client_files_locations_full_size_thumbnail_override' ] = update_portable_path( loaded_dictionary[ 'client_files_locations_full_size_thumbnail_override' ] )
                 
             
-            new_serialisable_info = loaded_dictionary.GetSerialisableTuple()
+            new_serialisable_info = loaded_dictionary.get_serialisable_tuple()
             
             return ( 3, new_serialisable_info )
             
         
         if version == 3:
             
-            loaded_dictionary = HydrusSerialisable.CreateFromSerialisableTuple( old_serialisable_info )
+            loaded_dictionary = HydrusSerialisable.create_from_serialisable_tuple( old_serialisable_info )
             
             if 'media_view' in loaded_dictionary:
                 
@@ -1144,7 +1144,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                     
                 
             
-            new_serialisable_info = loaded_dictionary.GetSerialisableTuple()
+            new_serialisable_info = loaded_dictionary.get_serialisable_tuple()
             
             return ( 4, new_serialisable_info )
             
@@ -1153,7 +1153,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
             serialisable_dictionary = old_serialisable_info
             
-            loaded_dictionary = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_dictionary )
+            loaded_dictionary = HydrusSerialisable.create_from_serialisable_tuple( serialisable_dictionary )
             
             if 'key_list' in loaded_dictionary and 'default_neighbouring_txt_tag_service_keys' in loaded_dictionary[ 'key_list' ]:
                 
@@ -1176,7 +1176,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                 del loaded_dictionary[ 'key_list' ][ 'default_neighbouring_txt_tag_service_keys' ]
                 
             
-            new_serialisable_info = loaded_dictionary.GetSerialisableTuple()
+            new_serialisable_info = loaded_dictionary.get_serialisable_tuple()
             
             return ( 5, new_serialisable_info )
             
@@ -1185,7 +1185,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
             serialisable_dictionary = old_serialisable_info
             
-            loaded_dictionary = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_dictionary )
+            loaded_dictionary = HydrusSerialisable.create_from_serialisable_tuple( serialisable_dictionary )
             
             if 'default_tag_sort' in loaded_dictionary:
                 
@@ -1201,14 +1201,14 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                 del loaded_dictionary[ 'default_tag_sort' ]
                 
             
-            new_serialisable_info = loaded_dictionary.GetSerialisableTuple()
+            new_serialisable_info = loaded_dictionary.get_serialisable_tuple()
             
             return ( 6, new_serialisable_info )
             
         
         if version == 6:
             
-            loaded_dictionary = HydrusSerialisable.CreateFromSerialisableTuple( old_serialisable_info )
+            loaded_dictionary = HydrusSerialisable.create_from_serialisable_tuple( old_serialisable_info )
             
             if 'media_view' in loaded_dictionary:
                 
@@ -1228,14 +1228,14 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                     
                 
             
-            new_serialisable_info = loaded_dictionary.GetSerialisableTuple()
+            new_serialisable_info = loaded_dictionary.get_serialisable_tuple()
             
             return ( 7, new_serialisable_info )
             
         
         if version == 7:
             
-            loaded_dictionary = HydrusSerialisable.CreateFromSerialisableTuple( old_serialisable_info )
+            loaded_dictionary = HydrusSerialisable.create_from_serialisable_tuple( old_serialisable_info )
             
             # web browser conversion
             
@@ -1256,8 +1256,8 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                     
                 except Exception as e:
                     
-                    HydrusData.Print( 'Problem updating options web browser launch path:' )
-                    HydrusData.PrintException( e, do_wait = False )
+                    HydrusData.safe_print( 'Problem updating options web browser launch path:' )
+                    HydrusData.print_exception( e, do_wait = False )
                     
                     web_browser_launch_paths = HydrusSerialisable.SerialisableList( [ None ] )
                     
@@ -1352,8 +1352,8 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                     
                 except Exception as e:
                     
-                    HydrusData.Print( 'Problem updating options open externally launch paths:' )
-                    HydrusData.PrintException( e, do_wait = False )
+                    HydrusData.safe_print( 'Problem updating options open externally launch paths:' )
+                    HydrusData.print_exception( e, do_wait = False )
                     
                     open_externally_launch_paths = HydrusSerialisable.SerialisableDictionary( { HC.GENERAL_FILE : HydrusSerialisable.SerialisableList( [ None ] ) } )
                     
@@ -1363,7 +1363,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
             
             #
             
-            new_serialisable_info = loaded_dictionary.GetSerialisableTuple()
+            new_serialisable_info = loaded_dictionary.get_serialisable_tuple()
             
             return ( 8, new_serialisable_info )
             
@@ -1644,7 +1644,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                 
             else:
                 
-                HydrusData.Print( f'Could not find {frame_key} in the frame locations options!' )
+                HydrusData.safe_print( f'Could not find {frame_key} in the frame locations options!' )
                 
                 return ( False, False, None, None, ( -1, -1 ), 'topleft', False, False )
                 

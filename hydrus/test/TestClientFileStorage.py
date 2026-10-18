@@ -13,8 +13,8 @@ from hydrus.test import TestGlobals as TG
 
 def get_good_prefixes():
     
-    good_prefixes = list( HydrusFilesPhysicalStorage.IteratePrefixes( 'f', HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ) )
-    good_prefixes.extend( HydrusFilesPhysicalStorage.IteratePrefixes( 't', HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ) )
+    good_prefixes = list( HydrusFilesPhysicalStorage.iterate_prefixes( 'f', HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ) )
+    good_prefixes.extend( HydrusFilesPhysicalStorage.iterate_prefixes( 't', HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ) )
     
     return good_prefixes
     
@@ -125,8 +125,8 @@ class TestClientFileStorage( unittest.TestCase ):
         
         good_prefixes = get_good_prefixes()
         
-        self.assertEqual( HydrusFilesPhysicalStorage.GetMissingPrefixes( 'f', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ), [] )
-        self.assertEqual( HydrusFilesPhysicalStorage.GetMissingPrefixes( 't', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ), [] )
+        self.assertEqual( HydrusFilesPhysicalStorage.get_missing_prefixes( 'f', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ), [] )
+        self.assertEqual( HydrusFilesPhysicalStorage.get_missing_prefixes( 't', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ), [] )
         
         #
         
@@ -140,14 +140,14 @@ class TestClientFileStorage( unittest.TestCase ):
             good_prefixes.remove( prefix )
             
         
-        self.assertEqual( HydrusFilesPhysicalStorage.GetMissingPrefixes( 'f', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ), f1_series )
+        self.assertEqual( HydrusFilesPhysicalStorage.get_missing_prefixes( 'f', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ), f1_series )
         
         #
         
         # same deal but missing everything
         good_prefixes = [ prefix for prefix in get_good_prefixes() if prefix.startswith( 'f' ) ]
         
-        self.assertEqual( HydrusFilesPhysicalStorage.GetMissingPrefixes( 'f', [], HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ), good_prefixes )
+        self.assertEqual( HydrusFilesPhysicalStorage.get_missing_prefixes( 'f', [], HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ), good_prefixes )
         
         #
         
@@ -155,27 +155,27 @@ class TestClientFileStorage( unittest.TestCase ):
         
         good_prefixes.remove( 'f53' )
         
-        self.assertEqual( HydrusFilesPhysicalStorage.GetMissingPrefixes( 'f', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ), [ 'f53' ] )
-        self.assertEqual( HydrusFilesPhysicalStorage.GetMissingPrefixes( 't', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ), [] )
+        self.assertEqual( HydrusFilesPhysicalStorage.get_missing_prefixes( 'f', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ), [ 'f53' ] )
+        self.assertEqual( HydrusFilesPhysicalStorage.get_missing_prefixes( 't', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH ), [] )
         
         #
         
         good_prefixes = get_good_prefixes()
         
-        HydrusFilesPhysicalStorage.CheckFullPrefixCoverage( 'f', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH )
-        HydrusFilesPhysicalStorage.CheckFullPrefixCoverage( 't', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH )
+        HydrusFilesPhysicalStorage.check_full_prefix_coverage( 'f', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH )
+        HydrusFilesPhysicalStorage.check_full_prefix_coverage( 't', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH )
         
         good_prefixes.remove( 'f00' )
         good_prefixes.remove( 't06' )
         
         with self.assertRaises( HydrusExceptions.DataMissing ):
             
-            HydrusFilesPhysicalStorage.CheckFullPrefixCoverage( 'f', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH )
+            HydrusFilesPhysicalStorage.check_full_prefix_coverage( 'f', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH )
             
         
         with self.assertRaises( HydrusExceptions.DataMissing ):
             
-            HydrusFilesPhysicalStorage.CheckFullPrefixCoverage( 't', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH )
+            HydrusFilesPhysicalStorage.check_full_prefix_coverage( 't', good_prefixes, HydrusFilesPhysicalStorage.DEFAULT_PREFIX_LENGTH )
             
         
         
@@ -185,17 +185,17 @@ class TestClientGranularisation( unittest.TestCase ):
     
     def test_2to3( self ):
         
-        test_dir = HydrusTemp.GetSubTempDir( 'test_granularisation_2to3' )
+        test_dir = HydrusTemp.get_sub_temp_dir( 'test_granularisation_2to3' )
         
         base_location = ClientFilesPhysical.FilesStorageBaseLocation( test_dir, 1 )
         
         for prefix_type in [ 'f', 't' ]:
             
-            for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( prefix_type, 2 ):
+            for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( prefix_type, 2 ):
                 
                 subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
                 
-                HydrusPaths.MakeSureDirectoryExists( subfolder.path )
+                HydrusPaths.make_sure_directory_exists( subfolder.path )
                 
                 if prefix == 'f83':
                     
@@ -204,7 +204,7 @@ class TestClientGranularisation( unittest.TestCase ):
                         f.write( b'I am a file' )
                         
                     
-                    HydrusPaths.MakeSureDirectoryExists( os.path.join( subfolder.path, 'weird dir' ) )
+                    HydrusPaths.make_sure_directory_exists( os.path.join( subfolder.path, 'weird dir' ) )
                     
                     with open( subfolder.GetFilePath( 'hello' ), 'wb' ) as f:
                         
@@ -226,7 +226,7 @@ class TestClientGranularisation( unittest.TestCase ):
         
         for prefix_type in [ 'f', 't' ]:
             
-            for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( prefix_type, 3 ):
+            for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( prefix_type, 3 ):
                 
                 subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
                 
@@ -239,22 +239,22 @@ class TestClientGranularisation( unittest.TestCase ):
         
         self.assertEqual( num_done, 2 * ( 16 ** 3 ) )
         
-        HydrusPaths.DeletePath( test_dir )
+        HydrusPaths.delete_path( test_dir )
         
     
     def test_3to2( self ):
         
-        test_dir = HydrusTemp.GetSubTempDir( 'test_granularisation_3to2' )
+        test_dir = HydrusTemp.get_sub_temp_dir( 'test_granularisation_3to2' )
         
         base_location = ClientFilesPhysical.FilesStorageBaseLocation( test_dir, 1 )
         
         for prefix_type in [ 'f', 't' ]:
             
-            for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( prefix_type, 3 ):
+            for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( prefix_type, 3 ):
                 
                 subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
                 
-                HydrusPaths.MakeSureDirectoryExists( subfolder.path )
+                HydrusPaths.make_sure_directory_exists( subfolder.path )
                 
                 if prefix == 'f83a':
                     
@@ -278,14 +278,14 @@ class TestClientGranularisation( unittest.TestCase ):
         
         for prefix_type in [ 'f', 't' ]:
             
-            for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( prefix_type, 3 ):
+            for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( prefix_type, 3 ):
                 
                 subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
                 
                 self.assertFalse( subfolder.PathExists() )
                 
             
-            for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( prefix_type, 2 ):
+            for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( prefix_type, 2 ):
                 
                 subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
                 
@@ -298,22 +298,22 @@ class TestClientGranularisation( unittest.TestCase ):
         
         self.assertEqual( num_done, 2 * ( 16 ** 2 ) )
         
-        HydrusPaths.DeletePath( test_dir )
+        HydrusPaths.delete_path( test_dir )
         
     
     def test_cancel( self ):
         
-        test_dir = HydrusTemp.GetSubTempDir( 'test_granularisation_cancel' )
+        test_dir = HydrusTemp.get_sub_temp_dir( 'test_granularisation_cancel' )
         
         base_location = ClientFilesPhysical.FilesStorageBaseLocation( test_dir, 1 )
         
         for prefix_type in [ 'f' ]:
             
-            for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( prefix_type, 2 ):
+            for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( prefix_type, 2 ):
                 
                 subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
                 
-                HydrusPaths.MakeSureDirectoryExists( subfolder.path )
+                HydrusPaths.make_sure_directory_exists( subfolder.path )
                 
                 if prefix == 'f83':
                     
@@ -334,22 +334,22 @@ class TestClientGranularisation( unittest.TestCase ):
             ClientFilesPhysical.RegranulariseFileStorage( [ base_location.path ], [ 'f' ], 2, 3, job_status )
             
         
-        HydrusPaths.DeletePath( test_dir )
+        HydrusPaths.delete_path( test_dir )
         
     
     def test_folder_creation_error( self ):
         
-        test_dir = HydrusTemp.GetSubTempDir( 'test_granularisation_cancel' )
+        test_dir = HydrusTemp.get_sub_temp_dir( 'test_granularisation_cancel' )
         
         base_location = ClientFilesPhysical.FilesStorageBaseLocation( test_dir, 1 )
         
         for prefix_type in [ 'f' ]:
             
-            for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( prefix_type, 2 ):
+            for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( prefix_type, 2 ):
                 
                 subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
                 
-                HydrusPaths.MakeSureDirectoryExists( subfolder.path )
+                HydrusPaths.make_sure_directory_exists( subfolder.path )
                 
                 if prefix == 'f83':
                     
@@ -370,67 +370,67 @@ class TestClientGranularisation( unittest.TestCase ):
             ClientFilesPhysical.RegranulariseFileStorage( [ base_location.path ], [ 'f' ], 2, 3, job_status )
             
         
-        HydrusPaths.DeletePath( test_dir )
+        HydrusPaths.delete_path( test_dir )
         
     
     def test_2_detection( self ):
         
-        test_dir = HydrusTemp.GetSubTempDir( 'test_granularisation_2_detection' )
+        test_dir = HydrusTemp.get_sub_temp_dir( 'test_granularisation_2_detection' )
         
         base_location = ClientFilesPhysical.FilesStorageBaseLocation( test_dir, 1 )
         
         for prefix_type in [ 'f', 't' ]:
             
-            for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( prefix_type, 2 ):
+            for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( prefix_type, 2 ):
                 
                 subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
                 
-                HydrusPaths.MakeSureDirectoryExists( subfolder.path )
+                HydrusPaths.make_sure_directory_exists( subfolder.path )
                 
             
         
         self.assertEqual( ClientFilesPhysical.EstimateBaseLocationGranularity( test_dir ), 2 )
         
-        HydrusPaths.DeletePath( test_dir )
+        HydrusPaths.delete_path( test_dir )
         
     
     def test_3_detection( self ):
         
-        test_dir = HydrusTemp.GetSubTempDir( 'test_granularisation_3_detection' )
+        test_dir = HydrusTemp.get_sub_temp_dir( 'test_granularisation_3_detection' )
         
         base_location = ClientFilesPhysical.FilesStorageBaseLocation( test_dir, 1 )
         
         for prefix_type in [ 'f' ]:
             
-            for prefix in HydrusFilesPhysicalStorage.IteratePrefixes( prefix_type, 3 ):
+            for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( prefix_type, 3 ):
                 
                 subfolder = ClientFilesPhysical.FilesStorageSubfolder( prefix, base_location )
                 
-                HydrusPaths.MakeSureDirectoryExists( subfolder.path )
+                HydrusPaths.make_sure_directory_exists( subfolder.path )
                 
             
         
         self.assertEqual( ClientFilesPhysical.EstimateBaseLocationGranularity( test_dir ), 3 )
         
-        HydrusPaths.DeletePath( test_dir )
+        HydrusPaths.delete_path( test_dir )
         
     
     def test_mysterious_detection( self ):
         
-        test_dir = HydrusTemp.GetSubTempDir( 'test_granularisation_empty_detection' )
+        test_dir = HydrusTemp.get_sub_temp_dir( 'test_granularisation_empty_detection' )
         
         self.assertIs( ClientFilesPhysical.EstimateBaseLocationGranularity( test_dir ), None )
         
-        HydrusPaths.DeletePath( test_dir )
+        HydrusPaths.delete_path( test_dir )
         
         #
         
-        test_dir = HydrusTemp.GetSubTempDir( 'test_granularisation_none_detection' )
+        test_dir = HydrusTemp.get_sub_temp_dir( 'test_granularisation_none_detection' )
         
-        HydrusPaths.MakeSureDirectoryExists( os.path.join( test_dir, 'u wot mate' ) )
+        HydrusPaths.make_sure_directory_exists( os.path.join( test_dir, 'u wot mate' ) )
         
         self.assertIs( ClientFilesPhysical.EstimateBaseLocationGranularity( test_dir ), None )
         
-        HydrusPaths.DeletePath( test_dir )
+        HydrusPaths.delete_path( test_dir )
         
     

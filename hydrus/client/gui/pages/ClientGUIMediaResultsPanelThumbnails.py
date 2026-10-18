@@ -62,7 +62,7 @@ def ShouldShowRatingInThumbnail( media: ClientMedia.Media, service_key: bytes ) 
             
         else:
             
-            service_type = service.GetServiceType()
+            service_type = service.get_service_type()
             
             if service_type == HC.LOCAL_RATING_LIKE:
                 
@@ -113,7 +113,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         self._thumbnail_layout: ClientGUIThumbnailLayouts.ThumbnailLayout = ClientGUIThumbnailLayouts.RegularGridLayout()
         
         self._currently_animating = False
-        self._last_animation_update_time_float = HydrusTime.GetNowFloat()
+        self._last_animation_update_time_float = HydrusTime.get_now_float()
         
         super().__init__( parent, page_key, page_manager, media_results )
         
@@ -126,7 +126,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         # WOOP WOOP, this does not work well when called here!
         # if we set it here, it sets to 126 or whatever, and then when the page is later, actually shown, it gets transmogrified into half, 63
         # therefore we do it on the next frame and reset on pageshown, let's go
-        CG.client_controller.CallAfterQtSafe( self, self._ResetThumbnailScrollSingleStep )
+        CG.client_controller.call_after_qt_safe( self, self._ResetThumbnailScrollSingleStep )
         
         CG.client_controller.sub( self, 'MaintainPageCache', 'memory_maintenance_pulse' )
         CG.client_controller.sub( self, 'NotifyFilesNeedRedraw', 'notify_files_need_redraw' )
@@ -220,7 +220,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                 
                 if HG.thumbnail_graphics_view_report_mode:
                     
-                    HydrusData.Print( f'fade thumbs - fade in {m.GetHash().hex()}' )
+                    HydrusData.safe_print( f'fade thumbs - fade in {m.GetHash().hex()}' )
                     
                 
                 if not self._currently_animating:
@@ -236,7 +236,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                 
                 if HG.thumbnail_graphics_view_report_mode:
                     
-                    HydrusData.Print( f'fade thumbs - immediate update {m.GetHash().hex()}' )
+                    HydrusData.safe_print( f'fade thumbs - immediate update {m.GetHash().hex()}' )
                     
                 
                 thumb.Invalidate()
@@ -370,7 +370,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         
         if HG.thumbnail_graphics_view_report_mode:
             
-            HydrusData.Print( f'visible rect changed with rect {rect}' )
+            HydrusData.safe_print( f'visible rect changed with rect {rect}' )
             
         
         new_possibly_visible_thumbnails: set[ Thumbnail ] = set( self.scene().items( rect, QC.Qt.ItemSelectionMode.IntersectsItemBoundingRect ) )
@@ -656,7 +656,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         selection_has_archive = True in ( media.HasArchive() and media.GetLocationsManager().IsLocal() for media in self._selected_media )
         selection_has_deletion_record = True in ( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY in locations_manager.GetDeleted() for locations_manager in selected_locations_managers )
         
-        all_file_domains = HydrusLists.MassUnion( locations_manager.GetCurrent() for locations_manager in all_locations_managers )
+        all_file_domains = HydrusLists.mass_union( locations_manager.GetCurrent() for locations_manager in all_locations_managers )
         all_specific_file_domains = all_file_domains.difference( { CC.COMBINED_FILE_SERVICE_KEY, CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY } )
         
         some_downloading = True in ( locations_manager.IsDownloading() for locations_manager in selected_locations_managers )
@@ -682,15 +682,15 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         
         services = services_manager.GetServices()
         
-        file_repositories: list[ ClientServices.ServiceRepository ] = [ service for service in services if service.GetServiceType() == HC.FILE_REPOSITORY ]
+        file_repositories: list[ ClientServices.ServiceRepository ] = [ service for service in services if service.get_service_type() == HC.FILE_REPOSITORY ]
         
-        ipfs_services = [ service for service in services if service.GetServiceType() == HC.IPFS ]
+        ipfs_services = [ service for service in services if service.get_service_type() == HC.IPFS ]
         
-        local_ratings_services = [ service for service in services if service.GetServiceType() in HC.RATINGS_SERVICES ]
+        local_ratings_services = [ service for service in services if service.get_service_type() in HC.RATINGS_SERVICES ]
         
         i_can_post_ratings = len( local_ratings_services ) > 0
         
-        local_media_file_service_keys = { service.GetServiceKey() for service in services if service.GetServiceType() == HC.LOCAL_FILE_DOMAIN }
+        local_media_file_service_keys = { service.GetServiceKey() for service in services if service.get_service_type() == HC.LOCAL_FILE_DOMAIN }
         
         file_repository_service_keys = { repository.GetServiceKey() for repository in file_repositories }
         upload_permission_file_service_keys = { repository.GetServiceKey() for repository in file_repositories if repository.HasPermission( HC.CONTENT_TYPE_FILES, HC.PERMISSION_ACTION_CREATE ) }
@@ -755,15 +755,15 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         groups_of_petitioned_remote_service_keys = [ locations_manager.GetPetitioned().intersection( remote_service_keys ) for locations_manager in selected_locations_managers ]
         groups_of_deleted_remote_service_keys = [ locations_manager.GetDeleted().intersection( remote_service_keys ) for locations_manager in selected_locations_managers ]
         
-        current_remote_service_keys = HydrusLists.MassUnion( groups_of_current_remote_service_keys )
-        pending_remote_service_keys = HydrusLists.MassUnion( groups_of_pending_remote_service_keys )
-        petitioned_remote_service_keys = HydrusLists.MassUnion( groups_of_petitioned_remote_service_keys )
-        deleted_remote_service_keys = HydrusLists.MassUnion( groups_of_deleted_remote_service_keys )
+        current_remote_service_keys = HydrusLists.mass_union( groups_of_current_remote_service_keys )
+        pending_remote_service_keys = HydrusLists.mass_union( groups_of_pending_remote_service_keys )
+        petitioned_remote_service_keys = HydrusLists.mass_union( groups_of_petitioned_remote_service_keys )
+        deleted_remote_service_keys = HydrusLists.mass_union( groups_of_deleted_remote_service_keys )
         
-        common_current_remote_service_keys = HydrusLists.IntelligentMassIntersect( groups_of_current_remote_service_keys )
-        common_pending_remote_service_keys = HydrusLists.IntelligentMassIntersect( groups_of_pending_remote_service_keys )
-        common_petitioned_remote_service_keys = HydrusLists.IntelligentMassIntersect( groups_of_petitioned_remote_service_keys )
-        common_deleted_remote_service_keys = HydrusLists.IntelligentMassIntersect( groups_of_deleted_remote_service_keys )
+        common_current_remote_service_keys = HydrusLists.intelligent_mass_intersect( groups_of_current_remote_service_keys )
+        common_pending_remote_service_keys = HydrusLists.intelligent_mass_intersect( groups_of_pending_remote_service_keys )
+        common_petitioned_remote_service_keys = HydrusLists.intelligent_mass_intersect( groups_of_petitioned_remote_service_keys )
+        common_deleted_remote_service_keys = HydrusLists.intelligent_mass_intersect( groups_of_deleted_remote_service_keys )
         
         disparate_current_remote_service_keys = current_remote_service_keys - common_current_remote_service_keys
         disparate_pending_remote_service_keys = pending_remote_service_keys - common_pending_remote_service_keys
@@ -1111,7 +1111,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
             
             if num_notes > 0:
                 
-                notes_str = '{} ({})'.format( notes_str, HydrusNumbers.ToHumanInt( num_notes ) )
+                notes_str = '{} ({})'.format( notes_str, HydrusNumbers.to_human_int( num_notes ) )
                 
             
             ClientGUIMenus.AppendMenuItem( manage_menu, notes_str, 'Manage notes for the focused file.', self._ManageNotes )
@@ -1320,7 +1320,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                 # prefire deal here is mpv lags on initial click, which can cause a drag (and hence an immediate pause) event by accident when mouserelease isn't processed quick
                 # so now we'll say we can't start a drag unless we get a smooth ramp to our pixel delta threshold
                 clean_drag_started = self._drag_prefire_event_count >= 10
-                prob_not_an_accidental_click = HydrusTime.TimeHasPassedMS( self._drag_click_timestamp_ms + 100 )
+                prob_not_an_accidental_click = HydrusTime.time_has_passed_ms( self._drag_click_timestamp_ms + 100 )
                 
                 if clean_drag_started and prob_not_an_accidental_click:
                     
@@ -1332,7 +1332,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                         
                         self._my_current_drag_object = QG.QDrag( self )
                         
-                        CG.client_controller.CallLaterQtSafe( self, 0.1, 'doing DnD check', self._CheckDnDIsOK, self._my_current_drag_object )
+                        CG.client_controller.call_later_qt_safe( self, 0.1, 'doing DnD check', self._CheckDnDIsOK, self._my_current_drag_object )
                         
                         result = ClientGUIDragDrop.DoFileExportDragDrop( self._my_current_drag_object, self._page_key, media, alt_down )
                         
@@ -1398,7 +1398,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                 else:
                     
                     self._drag_init_coordinates = QG.QCursor.pos()
-                    self._drag_click_timestamp_ms = HydrusTime.GetNowMS()
+                    self._drag_click_timestamp_ms = HydrusTime.get_now_ms()
                     
                     # this specifically does not scroll to media, as for clicking (esp. double-clicking attempts), the scroll can be jarring
                     self._HitMedia( event_media, ctrl, shift )
@@ -1465,7 +1465,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         # the halving happens _after_ showEvent completes
         # it re-breaks on every hide but does not compound, so there is an idempotent mess-up here. I think a misfiring 'adjust for device independent pixels' call somewhere
         # I worked on this a bit and think it is a QGV Qt bug. wasn't true for QWidget
-        CG.client_controller.CallAfterQtSafe( self, self._ResetThumbnailScrollSingleStep )
+        CG.client_controller.call_after_qt_safe( self, self._ResetThumbnailScrollSingleStep )
         
     
     def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ) -> bool:
@@ -1579,7 +1579,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         
         if HG.thumbnail_graphics_view_report_mode:
             
-            HydrusData.Print( f'update scene - redraw all thumbs' )
+            HydrusData.safe_print( f'update scene - redraw all thumbs' )
             
         
         self.scene().update()
@@ -1654,7 +1654,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         
         if HG.thumbnail_graphics_view_report_mode:
             
-            HydrusData.Print( f'update scene - thumbs reset' )
+            HydrusData.safe_print( f'update scene - thumbs reset' )
             
         
         self.scene().update()
@@ -1662,7 +1662,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
     
     def TIMERAnimationUpdate( self ):
         
-        if HydrusTime.GetNowFloat() - self._last_animation_update_time_float < FRAME_DURATION_60FPS:
+        if HydrusTime.get_now_float() - self._last_animation_update_time_float < FRAME_DURATION_60FPS:
             
             return
             
@@ -1681,10 +1681,10 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         
         if HG.thumbnail_graphics_view_report_mode:
             
-            HydrusData.Print( f'animation update on {HydrusNumbers.ValueRangeToPrettyString( num_animating, len(self._possibly_visible_thumbnails))} thumbs' )
+            HydrusData.safe_print( f'animation update on {HydrusNumbers.value_range_to_pretty_string( num_animating, len(self._possibly_visible_thumbnails))} thumbs' )
             
         
-        self._last_animation_update_time_float = HydrusTime.GetNowFloat()
+        self._last_animation_update_time_float = HydrusTime.get_now_float()
         
         if num_animating == 0:
             
@@ -1796,7 +1796,7 @@ class Thumbnail( QW.QGraphicsItem ):
             return 1.0
             
         
-        passed = HydrusTime.GetNowFloat() - self._fade_in_started_time_float
+        passed = HydrusTime.get_now_float() - self._fade_in_started_time_float
         
         if passed >= self.FADE_DURATION_S:
             
@@ -1932,8 +1932,8 @@ class Thumbnail( QW.QGraphicsItem ):
                 hash_hex = display_media_result.GetHash().hex()
                 
             
-            HydrusData.ShowText( f'Failed to render thumbnail for file {hash_hex}!' )
-            HydrusData.ShowException( e, do_wait = False )
+            HydrusData.show_text( f'Failed to render thumbnail for file {hash_hex}!' )
+            HydrusData.show_exception( e, do_wait = False )
             
             thumbnail_hydrus_bmp = CG.client_controller.thumbnails_cache.GetHydrusSpecialThumbnail( content_size )
             
@@ -2283,7 +2283,7 @@ class Thumbnail( QW.QGraphicsItem ):
             
             icon = CC.global_pixmaps().collection
             
-            num_files_str = HydrusNumbers.ToHumanInt( media.GetNumFiles() )
+            num_files_str = HydrusNumbers.to_human_int( media.GetNumFiles() )
             
             ( text_size, num_files_str ) = ClientGUIFunctions.GetTextSizeFromPainter( painter, num_files_str )
             
@@ -2336,7 +2336,7 @@ class Thumbnail( QW.QGraphicsItem ):
         
         #
         
-        service_types = [ services_manager.GetService( service_key ).GetServiceType() for service_key in current_to_display ]
+        service_types = [ services_manager.GetService( service_key ).get_service_type() for service_key in current_to_display ]
         
         if HC.FILE_REPOSITORY in service_types:
             
@@ -2350,7 +2350,7 @@ class Thumbnail( QW.QGraphicsItem ):
         
         #
         
-        service_types = [ services_manager.GetService( service_key ).GetServiceType() for service_key in pending ]
+        service_types = [ services_manager.GetService( service_key ).get_service_type() for service_key in pending ]
         
         if HC.FILE_REPOSITORY in service_types:
             
@@ -2364,7 +2364,7 @@ class Thumbnail( QW.QGraphicsItem ):
         
         #
         
-        service_types = [ services_manager.GetService( service_key ).GetServiceType() for service_key in petitioned ]
+        service_types = [ services_manager.GetService( service_key ).get_service_type() for service_key in petitioned ]
         
         if HC.FILE_REPOSITORY in service_types:
             
@@ -2446,7 +2446,7 @@ class Thumbnail( QW.QGraphicsItem ):
             
             if HG.thumbnail_graphics_view_report_mode:
                 
-                HydrusData.Print( f'painting a thumb: {self.boundingRect()} / {option.exposedRect}' )
+                HydrusData.safe_print( f'painting a thumb: {self.boundingRect()} / {option.exposedRect}' )
                 
             
             thumbnails_cache = CG.client_controller.thumbnails_cache
@@ -2547,7 +2547,7 @@ class Thumbnail( QW.QGraphicsItem ):
         # Nevermind actually I'm not sure about that, the scene/view stuff does have a whole system for animations afterall,
         # so maybe we should take a harder look at that for future animations before rolling our own.
         
-        self._fade_in_started_time_float = HydrusTime.GetNowFloat()
+        self._fade_in_started_time_float = HydrusTime.get_now_float()
         
         self._cached_old_pixmap_for_fade = self._cached_pixmap
         self._cached_pixmap = None

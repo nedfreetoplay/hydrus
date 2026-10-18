@@ -66,7 +66,7 @@ class TagSummaryGenerator( HydrusSerialisable.SerialisableBase ):
         self._UpdateNamespaceLookup()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         bc = self._background_colour
         
@@ -79,7 +79,7 @@ class TagSummaryGenerator( HydrusSerialisable.SerialisableBase ):
         return ( background_colour_rgba, text_colour_rgba, self._namespace_info, self._separator, self._example_tags, self._show )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( background_rgba, text_rgba, self._namespace_info, self._separator, self._example_tags, self._show ) = serialisable_info
         
@@ -101,7 +101,7 @@ class TagSummaryGenerator( HydrusSerialisable.SerialisableBase ):
         self._interesting_namespaces = { namespace for ( namespace, prefix, separator ) in self._namespace_info }
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -140,7 +140,7 @@ class TagSummaryGenerator( HydrusSerialisable.SerialisableBase ):
         
         for tag in tags:
             
-            ( namespace, subtag ) = HydrusTags.SplitTag( tag )
+            ( namespace, subtag ) = HydrusTags.split_tag( tag )
             
             if namespace in self._interesting_namespaces:
                 
@@ -152,9 +152,9 @@ class TagSummaryGenerator( HydrusSerialisable.SerialisableBase ):
         
         for ( namespace, unsorted_l ) in list( namespaces_to_subtags.items() ):
             
-            sorted_l = HydrusTags.SortNumericTags( unsorted_l )
+            sorted_l = HydrusTags.sort_numeric_tags( unsorted_l )
             
-            sorted_l = HydrusTags.CollapseMultipleSortedNumericTagsToMinMax( sorted_l )
+            sorted_l = HydrusTags.collapse_multiple_sorted_numeric_tags_to_min_max( sorted_l )
             
             namespaces_to_subtags[ namespace ] = sorted_l
             
@@ -370,7 +370,7 @@ class EditTagSummaryGeneratorPanel( ClientGUIScrolledPanels.EditPanel ):
         text_colour = self._text_colour.GetValue()
         namespace_info = self._namespaces_listbox.GetData()
         separator = self._separator.text()
-        example_tags = HydrusTags.CleanTags( HydrusText.DeserialiseNewlinedTexts( self._example_tags.toPlainText() ) )
+        example_tags = HydrusTags.clean_tags( HydrusText.deserialise_newlined_texts( self._example_tags.toPlainText() ) )
         
         return TagSummaryGenerator( background_colour, text_colour, namespace_info, separator, example_tags, show )
         

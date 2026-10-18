@@ -45,25 +45,25 @@ class ImportOptionsContainer( HydrusSerialisable.SerialisableBase ):
         return result
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_import_options = self._import_options_types_to_import_options.GetSerialisableTuple()
+        serialisable_import_options = self._import_options_types_to_import_options.get_serialisable_tuple()
         
         return serialisable_import_options
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         serialisable_import_options = serialisable_info
         
-        self._import_options_types_to_import_options = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_import_options )
+        self._import_options_types_to_import_options = HydrusSerialisable.create_from_serialisable_tuple( serialisable_import_options )
         
     
     def _SetImportOptions( self, import_options: IOC.ImportOptionsMetatype, source_label: str | None = None ):
         
         import_options_type = import_options.IMPORT_OPTIONS_TYPE
         
-        self._import_options_types_to_import_options[ import_options_type ] = import_options.Duplicate()
+        self._import_options_types_to_import_options[ import_options_type ] = import_options.duplicate()
         
         if source_label is None:
             
@@ -274,7 +274,7 @@ class ImportOptionsContainer( HydrusSerialisable.SerialisableBase ):
             
         else:
             
-            if my_import_options.DumpToString() != other_import_options.DumpToString():
+            if my_import_options.dump_to_string() != other_import_options.dump_to_string():
                 
                 return True
                 

@@ -84,9 +84,9 @@ def DoFileExportDragDrop( drag_object: QG.QDrag, page_key, media, alt_down ):
         
         for ( creation_time, path ) in DND_TEMP_DIRS:
             
-            if HydrusTime.TimeHasPassed( creation_time + TEMP_DIR_TIMEOUT ):
+            if HydrusTime.time_has_passed( creation_time + TEMP_DIR_TIMEOUT ):
                 
-                HydrusPaths.DeletePath( path )
+                HydrusPaths.delete_path( path )
                 
             else:
                 
@@ -96,14 +96,14 @@ def DoFileExportDragDrop( drag_object: QG.QDrag, page_key, media, alt_down ):
         
         DND_TEMP_DIRS = new_list
         
-        this_dnd_temp_dir = HydrusTemp.GetSubTempDir( prefix = 'DnD' )
+        this_dnd_temp_dir = HydrusTemp.get_sub_temp_dir( prefix = 'DnD' )
         
         if this_dnd_temp_dir is None or not os.path.exists( this_dnd_temp_dir ):
             
             raise Exception( f'Could not create a temporary directory ("{this_dnd_temp_dir}") to handle the drag and drop!' )
             
         
-        DND_TEMP_DIRS.append( ( HydrusTime.GetNow(), this_dnd_temp_dir ) )
+        DND_TEMP_DIRS.append( ( HydrusTime.get_now(), this_dnd_temp_dir ) )
         
         make_it_a_move_flag = new_options.GetBoolean( 'secret_discord_dnd_fix' )
         
@@ -161,9 +161,9 @@ def DoFileExportDragDrop( drag_object: QG.QDrag, page_key, media, alt_down ):
             
             path_dir = os.path.dirname( dnd_path )
             
-            HydrusPaths.MakeSureDirectoryExists( path_dir )
+            HydrusPaths.make_sure_directory_exists( path_dir )
             
-            HydrusPaths.MirrorFile( original_path, dnd_path )
+            HydrusPaths.mirror_file( original_path, dnd_path )
             
             dnd_paths.append( dnd_path )
             
@@ -265,7 +265,7 @@ class FileDropTarget( QC.QObject ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             return True
             
@@ -289,7 +289,7 @@ class FileDropTarget( QC.QObject ):
                 
                 if page_key is not None:
                     
-                    CG.client_controller.CallAfterQtSafe( self, self._media_callable, page_key, hashes )  # callafter so we can terminate dnd event now
+                    CG.client_controller.call_after_qt_safe( self, self._media_callable, page_key, hashes )  # callafter so we can terminate dnd event now
                     
                 
             
@@ -342,9 +342,9 @@ class FileDropTarget( QC.QObject ):
                 
                 text = mime_data.text()
                 
-                text = HydrusText.CleanseImportText( text )
+                text = HydrusText.cleanse_import_text( text )
                 
-                text_lines = HydrusText.DeserialiseNewlinedTexts( text )
+                text_lines = HydrusText.deserialise_newlined_texts( text )
                 
                 for text_line in text_lines:
                     
@@ -361,7 +361,7 @@ class FileDropTarget( QC.QObject ):
                 
                 if len( paths ) > 0:
                     
-                    CG.client_controller.CallAfterQtSafe( self, self._filenames_callable, paths ) # callafter to terminate dnd event now
+                    CG.client_controller.call_after_qt_safe( self, self._filenames_callable, paths ) # callafter to terminate dnd event now
                     
                 
             
@@ -377,12 +377,12 @@ class FileDropTarget( QC.QObject ):
                         # but I need to figure out a way to reproduce this on my own. Chrome is supposed to do it on image DnD, but didn't for me
                         if url.startswith( 'data:' ) or len( url ) > 8 * 1024:
                             
-                            HydrusData.ShowText( 'This drag and drop was in the unsupported \'Data URL\' format. hydev would like to know more about this so he can fix it.' )
+                            HydrusData.show_text( 'This drag and drop was in the unsupported \'Data URL\' format. hydev would like to know more about this so he can fix it.' )
                             
                             continue
                             
                         
-                        CG.client_controller.CallAfterQtSafe( self, self._url_callable, url ) # callafter to terminate dnd event now
+                        CG.client_controller.call_after_qt_safe( self, self._url_callable, url ) # callafter to terminate dnd event now
                         
                     
                 

@@ -209,7 +209,7 @@ def CheckFileService( file_service_key: bytes ):
         raise HydrusExceptions.BadRequestException( 'Could not find the file service "{}"!'.format( file_service_key.hex() ) )
         
     
-    if service.GetServiceType() not in HC.ALL_FILE_SERVICES:
+    if service.get_service_type() not in HC.ALL_FILE_SERVICES:
         
         raise HydrusExceptions.BadRequestException( 'Sorry, the service key "{}" did not give a file service!'.format( file_service_key.hex() ) )
         
@@ -228,7 +228,7 @@ def CheckTagService( tag_service_key: bytes ):
         raise HydrusExceptions.BadRequestException( 'Could not find the tag service "{}"!'.format( tag_service_key.hex() ) )
         
     
-    if service.GetServiceType() not in HC.ALL_TAG_SERVICES:
+    if service.get_service_type() not in HC.ALL_TAG_SERVICES:
         
         raise HydrusExceptions.BadRequestException( 'Sorry, the service key "{}" did not give a tag service!'.format( tag_service_key.hex() ) )
         
@@ -242,7 +242,7 @@ def CheckTags( tags: collections.abc.Collection[ str ] ):
         
         try:
             
-            clean_tag = HydrusTags.CleanTag( tag )
+            clean_tag = HydrusTags.clean_tag( tag )
             
         except Exception as e:
             
@@ -267,7 +267,7 @@ def CheckUploadableService( service_key: bytes ):
         raise HydrusExceptions.BadRequestException( 'Could not find the service "{}"!'.format( service_key.hex() ) )
         
     
-    if service.GetServiceType() not in ( HC.IPFS, HC.FILE_REPOSITORY, HC.TAG_REPOSITORY ):
+    if service.get_service_type() not in ( HC.IPFS, HC.FILE_REPOSITORY, HC.TAG_REPOSITORY ):
         
         raise HydrusExceptions.BadRequestException( f'Sorry, the service key "{service_key.hex()}" was not for an uploadable service!' )
         
@@ -299,20 +299,20 @@ def GetServicesDict():
         
         service_dict = {
             'name' : service.GetName(),
-            'type' : service.GetServiceType(),
-            'type_pretty' : HC.service_string_lookup[ service.GetServiceType() ]
+            'type' : service.get_service_type(),
+            'type_pretty' : HC.service_string_lookup[ service.get_service_type() ]
         }
         
         rating_colour_jobs = []
         
-        if service.GetServiceType() in HC.RATINGS_SERVICES:
+        if service.get_service_type() in HC.RATINGS_SERVICES:
             
             service = typing.cast( ClientServices.ServiceLocalRating, service )
             
             service_dict[ 'show_in_thumbnail' ] = service.GetShowInThumbnail()
             service_dict[ 'show_in_thumbnail_even_when_null' ] = service.GetShowInThumbnailEvenWhenNull()
             
-            if service.GetServiceType() in HC.STAR_RATINGS_SERVICES:
+            if service.get_service_type() in HC.STAR_RATINGS_SERVICES:
                 
                 service = typing.cast( ClientServices.ServiceLocalRatingStars, service )
                 
@@ -337,7 +337,7 @@ def GetServicesDict():
                 ]
                 
             
-            if service.GetServiceType() == HC.LOCAL_RATING_INCDEC:
+            if service.get_service_type() == HC.LOCAL_RATING_INCDEC:
                 
                 rating_colour_jobs = [
                     ( 'like', ClientRatings.LIKE ),
@@ -365,7 +365,7 @@ def GetServicesDict():
                 service_dict[ 'colours' ] = colours_dict
                 
             
-            if service.GetServiceType() == HC.LOCAL_RATING_NUMERICAL:
+            if service.get_service_type() == HC.LOCAL_RATING_NUMERICAL:
                 
                 service = typing.cast( ClientServices.ServiceLocalRatingNumerical, service )
                 
@@ -411,20 +411,20 @@ def GetServicesList() -> list[ dict ]:
         service_dict = {
             'name' : service.GetName(),
             'service_key' : service.GetServiceKey().hex(),
-            'type' : service.GetServiceType(),
-            'type_pretty' : HC.service_string_lookup[ service.GetServiceType() ]
+            'type' : service.get_service_type(),
+            'type_pretty' : HC.service_string_lookup[ service.get_service_type() ]
         }
         
         rating_colour_jobs = []
         
-        if service.GetServiceType() in HC.RATINGS_SERVICES:
+        if service.get_service_type() in HC.RATINGS_SERVICES:
             
             service = typing.cast( ClientServices.ServiceLocalRating, service )
             
             service_dict[ 'show_in_thumbnail' ] = service.GetShowInThumbnail()
             service_dict[ 'show_in_thumbnail_even_when_null' ] = service.GetShowInThumbnailEvenWhenNull()
             
-            if service.GetServiceType() in HC.STAR_RATINGS_SERVICES:
+            if service.get_service_type() in HC.STAR_RATINGS_SERVICES:
                 
                 service = typing.cast( ClientServices.ServiceLocalRatingStars, service )
                 
@@ -449,7 +449,7 @@ def GetServicesList() -> list[ dict ]:
                 ]
                 
             
-            if service.GetServiceType() == HC.LOCAL_RATING_INCDEC:
+            if service.get_service_type() == HC.LOCAL_RATING_INCDEC:
                 
                 rating_colour_jobs = [
                     ( 'like', ClientRatings.LIKE ),
@@ -477,7 +477,7 @@ def GetServicesList() -> list[ dict ]:
                 service_dict[ 'colours' ] = colours_dict
                 
             
-            if service.GetServiceType() == HC.LOCAL_RATING_NUMERICAL:
+            if service.get_service_type() == HC.LOCAL_RATING_NUMERICAL:
                 
                 service = typing.cast( ClientServices.ServiceLocalRatingNumerical, service )
                 
@@ -564,7 +564,7 @@ def ParseClientLegacyArgs( args: dict ):
 
 def ParseClientAPIGETArgs( requests_args ):
     
-    args = HydrusNetworkVariableHandling.ParseTwistedRequestGETArgs( requests_args, CLIENT_API_INT_PARAMS, CLIENT_API_BYTE_PARAMS, CLIENT_API_STRING_PARAMS, CLIENT_API_JSON_PARAMS, CLIENT_API_JSON_BYTE_LIST_PARAMS )
+    args = HydrusNetworkVariableHandling.parse_twisted_request_get_args( requests_args, CLIENT_API_INT_PARAMS, CLIENT_API_BYTE_PARAMS, CLIENT_API_STRING_PARAMS, CLIENT_API_JSON_PARAMS, CLIENT_API_JSON_BYTE_LIST_PARAMS )
     
     args = ParseClientLegacyArgs( args )
     
@@ -773,13 +773,13 @@ def ParseClientAPIPOSTArgs( request ):
             
             parsed_request_args = HydrusNetworkVariableHandling.ParsedRequestArguments()
             
-            ( os_file_handle, temp_path ) = HydrusTemp.GetTempPath( 'client_api_upload' )
+            ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path( 'client_api_upload' )
             
             request.temp_file_info = ( os_file_handle, temp_path )
             
             with open( temp_path, 'wb' ) as f:
                 
-                for block in HydrusPaths.ReadFileLikeAsBlocks( request.content ): 
+                for block in HydrusPaths.read_file_like_as_blocks( request.content ): 
                     
                     f.write( block )
                     
@@ -835,8 +835,8 @@ def ParsePotentialDuplicatesSearchContext( request: HydrusServerRequest.HydrusRe
     
     location_context = ParseLocationContext( request, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
     
-    tag_service_key_1 = request.parsed_request_args.GetValue( 'tag_service_key_1', bytes, default_value = CC.COMBINED_TAG_SERVICE_KEY )
-    tag_service_key_2 = request.parsed_request_args.GetValue( 'tag_service_key_2', bytes, default_value = CC.COMBINED_TAG_SERVICE_KEY )
+    tag_service_key_1 = request.parsed_request_args.get_value( 'tag_service_key_1', bytes, default_value = CC.COMBINED_TAG_SERVICE_KEY )
+    tag_service_key_2 = request.parsed_request_args.get_value( 'tag_service_key_2', bytes, default_value = CC.COMBINED_TAG_SERVICE_KEY )
     
     CheckTagService( tag_service_key_1 )
     CheckTagService( tag_service_key_2 )
@@ -844,8 +844,8 @@ def ParsePotentialDuplicatesSearchContext( request: HydrusServerRequest.HydrusRe
     tag_context_1 = ClientSearchTagContext.TagContext( service_key = tag_service_key_1 )
     tag_context_2 = ClientSearchTagContext.TagContext( service_key = tag_service_key_2 )
     
-    tags_1 = request.parsed_request_args.GetValue( 'tags_1', list, default_value = [] )
-    tags_2 = request.parsed_request_args.GetValue( 'tags_2', list, default_value = [] )
+    tags_1 = request.parsed_request_args.get_value( 'tags_1', list, default_value = [] )
+    tags_2 = request.parsed_request_args.get_value( 'tags_2', list, default_value = [] )
     
     if len( tags_1 ) == 0:
         
@@ -868,9 +868,9 @@ def ParsePotentialDuplicatesSearchContext( request: HydrusServerRequest.HydrusRe
     file_search_context_1 = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, tag_context = tag_context_1, predicates = predicates_1 )
     file_search_context_2 = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, tag_context = tag_context_2, predicates = predicates_2 )
     
-    dupe_search_type = request.parsed_request_args.GetValue( 'potentials_search_type', int, default_value = ClientDuplicates.DUPE_SEARCH_ONE_FILE_MATCHES_ONE_SEARCH )
-    pixel_dupes_preference = request.parsed_request_args.GetValue( 'pixel_duplicates', int, default_value = ClientDuplicates.SIMILAR_FILES_PIXEL_DUPES_ALLOWED )
-    max_hamming_distance = request.parsed_request_args.GetValue( 'max_hamming_distance', int, default_value = 4 )
+    dupe_search_type = request.parsed_request_args.get_value( 'potentials_search_type', int, default_value = ClientDuplicates.DUPE_SEARCH_ONE_FILE_MATCHES_ONE_SEARCH )
+    pixel_dupes_preference = request.parsed_request_args.get_value( 'pixel_duplicates', int, default_value = ClientDuplicates.SIMILAR_FILES_PIXEL_DUPES_ALLOWED )
+    max_hamming_distance = request.parsed_request_args.get_value( 'max_hamming_distance', int, default_value = 4 )
     
     potential_duplicates_search_context = ClientPotentialDuplicatesSearchContext.PotentialDuplicatesSearchContext()
     
@@ -890,14 +890,14 @@ def ParseLocationContext( request: HydrusServerRequest.HydrusRequest, default: C
     
     if 'file_service_key' in request.parsed_request_args:
         
-        file_service_key = request.parsed_request_args.GetValue( 'file_service_key', bytes )
+        file_service_key = request.parsed_request_args.get_value( 'file_service_key', bytes )
         
         current_file_service_keys.add( file_service_key )
         
     
     if 'file_service_keys' in request.parsed_request_args:
         
-        file_service_keys = request.parsed_request_args.GetValue( 'file_service_keys', list, expected_list_type = bytes )
+        file_service_keys = request.parsed_request_args.get_value( 'file_service_keys', list, expected_list_type = bytes )
         
         current_file_service_keys.update( file_service_keys )
         
@@ -906,14 +906,14 @@ def ParseLocationContext( request: HydrusServerRequest.HydrusRequest, default: C
         
         if 'deleted_file_service_key' in request.parsed_request_args:
             
-            file_service_key = request.parsed_request_args.GetValue( 'deleted_file_service_key', bytes )
+            file_service_key = request.parsed_request_args.get_value( 'deleted_file_service_key', bytes )
             
             deleted_file_service_keys.add( file_service_key )
             
         
         if 'deleted_file_service_keys' in request.parsed_request_args:
             
-            file_service_keys = request.parsed_request_args.GetValue( 'deleted_file_service_keys', list, expected_list_type = bytes )
+            file_service_keys = request.parsed_request_args.get_value( 'deleted_file_service_keys', list, expected_list_type = bytes )
             
             deleted_file_service_keys.update( file_service_keys )
             
@@ -949,7 +949,7 @@ def ParseLocalFileDomainLocationContext( request: HydrusServerRequest.HydrusRequ
             
             service = CG.client_controller.services_manager.GetService( service_key )
             
-            if service.GetServiceType() not in ( HC.LOCAL_FILE_DOMAIN, ):
+            if service.get_service_type() not in ( HC.LOCAL_FILE_DOMAIN, ):
                 
                 raise HydrusExceptions.BadRequestException( 'Sorry, any custom file domain here must only declare local file domains.' )
                 
@@ -971,7 +971,7 @@ def ParseHashes( request: HydrusServerRequest.HydrusRequest, optional = False ):
         
         something_was_set = True
         
-        hash = request.parsed_request_args.GetValue( 'hash', bytes )
+        hash = request.parsed_request_args.get_value( 'hash', bytes )
         
         hashes.append( hash )
         
@@ -980,7 +980,7 @@ def ParseHashes( request: HydrusServerRequest.HydrusRequest, optional = False ):
         
         something_was_set = True
         
-        more_hashes = request.parsed_request_args.GetValue( 'hashes', list, expected_list_type = bytes )
+        more_hashes = request.parsed_request_args.get_value( 'hashes', list, expected_list_type = bytes )
         
         hashes.extend( more_hashes )
         
@@ -993,12 +993,12 @@ def ParseHashes( request: HydrusServerRequest.HydrusRequest, optional = False ):
         
         if 'file_id' in request.parsed_request_args:
             
-            hash_ids.append( request.parsed_request_args.GetValue( 'file_id', int ) )
+            hash_ids.append( request.parsed_request_args.get_value( 'file_id', int ) )
             
         
         if 'file_ids' in request.parsed_request_args:
             
-            hash_ids.extend( request.parsed_request_args.GetValue( 'file_ids', list, expected_list_type = int ) )
+            hash_ids.extend( request.parsed_request_args.get_value( 'file_ids', list, expected_list_type = int ) )
             
         
         if True in ( hash_id < 0 for hash_id in hash_ids ):
@@ -1015,7 +1015,7 @@ def ParseHashes( request: HydrusServerRequest.HydrusRequest, optional = False ):
         
         try:
             
-            hash_ids_to_hashes = CG.client_controller.Read( 'hash_ids_to_hashes', hash_ids = hash_ids, error_on_missing_hash_ids = True )
+            hash_ids_to_hashes = CG.client_controller.read( 'hash_ids_to_hashes', hash_ids = hash_ids, error_on_missing_hash_ids = True )
             
         except HydrusExceptions.DBException as e:
             
@@ -1045,7 +1045,7 @@ def ParseHashes( request: HydrusServerRequest.HydrusRequest, optional = False ):
         raise HydrusExceptions.BadRequestException( 'Please include some files in your request--file_id or hash based!' )
         
     
-    hashes = HydrusLists.DedupeList( hashes )
+    hashes = HydrusLists.dedupe_list( hashes )
     
     if not optional or len( hashes ) > 0:
         
@@ -1133,8 +1133,8 @@ def ConvertTagListToPredicates( request, tag_list, do_permission_check = True, e
     dirty_negated_tags = negated_tags
     dirty_tags = tags
     
-    negated_tags = HydrusTags.CleanTags( dirty_negated_tags )
-    tags = HydrusTags.CleanTags( dirty_tags )
+    negated_tags = HydrusTags.clean_tags( dirty_negated_tags )
+    tags = HydrusTags.clean_tags( dirty_tags )
     
     if error_on_invalid_tag:
         
@@ -1151,9 +1151,9 @@ def ConvertTagListToPredicates( request, tag_list, do_permission_check = True, e
                     
                     try:
                         
-                        clean_t = HydrusTags.CleanTag( dirty_t )
+                        clean_t = HydrusTags.clean_tag( dirty_t )
                         
-                        HydrusTags.CheckTagNotEmpty( clean_t )
+                        HydrusTags.check_tag_not_empty( clean_t )
                         
                     except Exception as e:
                         
@@ -1231,7 +1231,7 @@ def ConvertTagListToPredicates( request, tag_list, do_permission_check = True, e
     
     for ( inclusive, tag ) in search_tags:
         
-        ( namespace, subtag ) = HydrusTags.SplitTag( tag )
+        ( namespace, subtag ) = HydrusTags.split_tag( tag )
         
         if '*' in tag:
             

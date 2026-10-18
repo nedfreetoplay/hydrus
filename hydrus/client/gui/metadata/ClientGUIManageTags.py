@@ -82,7 +82,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
         
         if HG.gui_report_mode:
             
-            HydrusData.ShowText( f'Opening manage tags on these services: {services}' )
+            HydrusData.show_text( f'Opening manage tags on these services: {services}' )
             
         
         default_tag_service_key = CG.client_controller.new_options.GetKey( 'default_tag_service_tab' )
@@ -94,7 +94,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             
             if HG.gui_report_mode:
                 
-                HydrusData.ShowText( 'Opening manage tags panel on {}, {}, {}'.format( service, name, service_key.hex() ) )
+                HydrusData.show_text( 'Opening manage tags panel on {}, {}, {}'.format( service, name, service_key.hex() ) )
                 
             
             page = self._Panel( self._tag_services, self._location_context, service.GetServiceKey(), self._tag_presentation_location, self._current_media, self._immediate_commit, canvas_key = self._canvas_key )
@@ -113,13 +113,13 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             if service_key == default_tag_service_key:
                 
                 # Py 3.11/PyQt6 6.5.0/two tabs/total tab characters > ~12/select second tab during init = first tab disappears bug
-                CG.client_controller.CallAfterQtSafe( self._tag_services, self._tag_services.setCurrentWidget, page )
+                CG.client_controller.call_after_qt_safe( self._tag_services, self._tag_services.setCurrentWidget, page )
                 
             
         
         if HG.gui_report_mode:
             
-            HydrusData.ShowText( 'Opening manage tags panel, notebook tab count is {}'.format( self._tag_services.count() ) )
+            HydrusData.show_text( 'Opening manage tags panel, notebook tab count is {}'.format( self._tag_services.count() ) )
             
         
         #
@@ -130,7 +130,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
         
         self.widget().setLayout( vbox )
         
-        CG.client_controller.CallAfterQtSafe( self._tag_services, self._tag_services.currentChanged.connect, self.EventServiceChanged )
+        CG.client_controller.call_after_qt_safe( self._tag_services, self._tag_services.currentChanged.connect, self.EventServiceChanged )
         
         if self._canvas_key is not None:
             
@@ -141,7 +141,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
         
         self._UpdatePageTabNames()
         
-        CG.client_controller.CallAfterQtSafe( self, self._NotifyCurrentPageWeAreLookingAtIt )
+        CG.client_controller.call_after_qt_safe( self, self._NotifyCurrentPageWeAreLookingAtIt )
         
     
     def _GetContentUpdatePackages( self ):
@@ -166,7 +166,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             
             current_page = typing.cast( ManageTagsPanel._Panel, current_page )
             
-            CG.client_controller.CallAfterQtSafe( current_page, current_page.NotifyPageChange )
+            CG.client_controller.call_after_qt_safe( current_page, current_page.NotifyPageChange )
             
         
     
@@ -388,7 +388,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             
             self._service = CG.client_controller.services_manager.GetService( self._tag_service_key )
             
-            self._i_am_local_tag_service = self._service.GetServiceType() == HC.LOCAL_TAG
+            self._i_am_local_tag_service = self._service.get_service_type() == HC.LOCAL_TAG
             
             tags_panel = QW.QWidget( self )
             
@@ -533,7 +533,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
         
         def _EnterTags( self, tags, only_add = False, only_remove = False, forced_reason = None ):
             
-            tags = HydrusTags.CleanTags( tags )
+            tags = HydrusTags.clean_tags( tags )
             
             if not self._i_am_local_tag_service and self._service.HasPermission( HC.CONTENT_TYPE_MAPPINGS, HC.PERMISSION_ACTION_MODERATE ):
                 
@@ -687,11 +687,11 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                         
                         [ ( tag, count ) ] = tag_counts
                         
-                        text = '{} "{}" for {} files'.format( choice_text_prefix, HydrusText.ElideText( tag, 64 ), HydrusNumbers.ToHumanInt( count ) )
+                        text = '{} "{}" for {} files'.format( choice_text_prefix, HydrusText.elide_text( tag, 64 ), HydrusNumbers.to_human_int( count ) )
                         
                     else:
                         
-                        text = '{} {} tags'.format( choice_text_prefix, HydrusNumbers.ToHumanInt( len( choice_tags ) ) )
+                        text = '{} {} tags'.format( choice_text_prefix, HydrusNumbers.to_human_int( len( choice_tags ) ) )
                         
                     
                     data = ( choice_action, choice_tags )
@@ -707,11 +707,11 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                         t_c = tag_counts
                         
                     
-                    t_c_lines.extend( ( '{} - {} files'.format( tag, HydrusNumbers.ToHumanInt( count ) ) for ( tag, count ) in t_c ) )
+                    t_c_lines.extend( ( '{} - {} files'.format( tag, HydrusNumbers.to_human_int( count ) ) for ( tag, count ) in t_c ) )
                     
                     if len( tag_counts ) > 25:
                         
-                        t_c_lines.append( 'and {} others'.format( HydrusNumbers.ToHumanInt( len( tag_counts ) - 25 ) ) )
+                        t_c_lines.append( 'and {} others'.format( HydrusNumbers.to_human_int( len( tag_counts ) - 25 ) ) )
                         
                     
                     tooltip = '\n'.join( t_c_lines )
@@ -729,12 +729,12 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                             
                         else:
                             
-                            message = f'The tags have different statuses on the {HydrusNumbers.ToHumanInt( len( self._media ) )} files, so there are different things you can do.'
+                            message = f'The tags have different statuses on the {HydrusNumbers.to_human_int( len( self._media ) )} files, so there are different things you can do.'
                             
                         
                     else:
                         
-                        message = f'Of the {HydrusNumbers.ToHumanInt( len( self._media ) )} files being managed, some have that tag, but not all of them do, so there are different things you can do.'
+                        message = f'Of the {HydrusNumbers.to_human_int( len( self._media ) )} files being managed, some have that tag, but not all of them do, so there are different things you can do.'
                         
                     
                     ( choice_action, tags ) = ClientGUIDialogsQuick.SelectFromListButtons( self, 'What would you like to do?', bdc_choices, message = message )
@@ -761,7 +761,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                         
                     else:
                         
-                        tag_text = 'the ' + HydrusNumbers.ToHumanInt( len( tags ) ) + ' tags'
+                        tag_text = 'the ' + HydrusNumbers.to_human_int( len( tags ) ) + ' tags'
                         
                     
                     message = 'Enter a reason for ' + tag_text + ' to be removed. A janitor will review your petition.'
@@ -900,7 +900,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                     recent_tags = random.sample( recent_tags, num_recent_tags )
                     
                 
-                CG.client_controller.Write( 'push_recent_tags', self._tag_service_key, recent_tags )
+                CG.client_controller.write( 'push_recent_tags', self._tag_service_key, recent_tags )
                 
             
             if len( content_updates_for_this_call ) > 0:
@@ -909,7 +909,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                 
                 if self._immediate_commit:
                     
-                    CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+                    CG.client_controller.write_synchronous( 'content_updates', content_update_package )
                     
                 else:
                     
@@ -939,13 +939,13 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             
             if len( tags ) > 0:
                 
-                tags = HydrusTags.SortNumericTags( tags )
+                tags = HydrusTags.sort_numeric_tags( tags )
                 
                 text = '\n'.join( tags )
                 
                 CG.client_controller.pub( 'clipboard', 'text', text )
                 
-                self._copy_button.ShowMicroNotification( f'Copied {HydrusNumbers.ToHumanInt(len( tags ))} tags!' )
+                self._copy_button.ShowMicroNotification( f'Copied {HydrusNumbers.to_human_int(len( tags ))} tags!' )
                 
             
         
@@ -967,7 +967,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                         
                         if self._immediate_commit:
                             
-                            CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+                            CG.client_controller.write_synchronous( 'content_updates', content_update_package )
                             
                         else:
                             
@@ -998,7 +998,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             
             def do_it( tag_service_key, hashes ):
                 
-                tlw = CG.client_controller.GetMainTLW()
+                tlw = CG.client_controller.get_main_tlw()
                 
                 frame = ClientGUITopLevelWindowsPanels.FrameThatTakesScrollablePanel( tlw, 'migrate tags' )
                 
@@ -1007,7 +1007,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                 frame.SetPanel( panel )
                 
             
-            CG.client_controller.CallAfterQtSafe( self, do_it, self._tag_service_key, hashes )
+            CG.client_controller.call_after_qt_safe( self, do_it, self._tag_service_key, hashes )
             
             self.OK()
             
@@ -1074,7 +1074,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                 tags_to_remove = [ tag for tag in selected_tags if tag in removable_tags ]
                 
             
-            tags_to_remove = HydrusTags.SortNumericTags( tags_to_remove )
+            tags_to_remove = HydrusTags.sort_numeric_tags( tags_to_remove )
             
             self.RemoveTags( tags_to_remove )
             
@@ -1085,7 +1085,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             
             num_deleted_mappings = sum( ( m.GetTagsManager().GetNumDeletedMappings( tag_context, ClientTags.TAG_DISPLAY_STORAGE ) for m in self._media ) )
             
-            self._deleted_tags_label.setText( f'{HydrusNumbers.ToHumanInt( num_deleted_mappings )} deleted mappings' )
+            self._deleted_tags_label.setText( f'{HydrusNumbers.to_human_int( num_deleted_mappings )} deleted mappings' )
             
             self._deleted_tags_panel.setVisible( num_deleted_mappings > 0 )
             
@@ -1212,7 +1212,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                     
                     for m in self._media:
                         
-                        if HydrusLists.SetsIntersect( m.GetHashes(), content_update.GetHashes() ):
+                        if HydrusLists.sets_intersect( m.GetHashes(), content_update.GetHashes() ):
                             
                             m.GetMediaResult().ProcessContentUpdate( service_key, content_update )
                             
@@ -1276,11 +1276,11 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                         
                         message = f'Are you sure you want to {verb} these tags:'
                         message += '\n' * 2
-                        message += '\n'.join( ( HydrusText.ElideText( tag, 64 ) for tag in tags ) )
+                        message += '\n'.join( ( HydrusText.elide_text( tag, 64 ) for tag in tags ) )
                         
                     else:
                         
-                        message = f'Are you sure you want to {verb} these {HydrusNumbers.ToHumanInt( len( tags ) )} tags?'
+                        message = f'Are you sure you want to {verb} these {HydrusNumbers.to_human_int( len( tags ) )} tags?'
                         
                     
                     result = ClientGUIDialogsQuick.GetYesNo( self, message )

@@ -89,7 +89,7 @@ class MediaPlaybackPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         mpv_panel = ClientGUICommon.StaticBox( self, 'mpv' )
         
-        self._mpv_conf_path = ClientGUIPathWidgets.FilePickerCtrl( mpv_panel, starting_directory = HydrusStaticDir.GetStaticPath( 'mpv-conf' ) )
+        self._mpv_conf_path = ClientGUIPathWidgets.FilePickerCtrl( mpv_panel, starting_directory = HydrusStaticDir.get_static_path( 'mpv-conf' ) )
         
         self._mpv_preferred_audio_device = ClientGUICommon.NoneableTextCtrl( mpv_panel, '', none_phrase = 'use default' )
         self._mpv_preferred_audio_device.setToolTip( ClientGUIFunctions.WrapToolTip( 'Write in the audio device id exactly as mpv understands it. Hit the button to see live examples. Use "null" for "no audio device at all". Will update all new existing mpv players immediately on dialog ok.' ) )
@@ -670,7 +670,7 @@ class MediaPlaybackPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
         except ValueError:
             
-            HydrusData.ShowText( 'Could not parse those zooms, so they were not saved!' )
+            HydrusData.show_text( 'Could not parse those zooms, so they were not saved!' )
             
         
         self._new_options.SetInteger( 'media_viewer_zoom_center', self._media_viewer_zoom_center.GetValue() )
@@ -689,16 +689,16 @@ class MediaPlaybackPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         if mpv_conf_path is not None and mpv_conf_path != '' and os.path.exists( mpv_conf_path ) and os.path.isfile( mpv_conf_path ):
             
-            dest_mpv_conf_path = CG.client_controller.GetMPVConfPath()
+            dest_mpv_conf_path = CG.client_controller.get_mpv_conf_path()
             
             try:
                 
-                HydrusPaths.MirrorFile( mpv_conf_path, dest_mpv_conf_path )
+                HydrusPaths.mirror_file( mpv_conf_path, dest_mpv_conf_path )
                 
             except Exception as e:
                 
-                HydrusData.ShowText( 'Could not set the mpv conf path "{}" to "{}"! Error follows!'.format( mpv_conf_path, dest_mpv_conf_path ) )
-                HydrusData.ShowException( e )
+                HydrusData.show_text( 'Could not set the mpv conf path "{}" to "{}"! Error follows!'.format( mpv_conf_path, dest_mpv_conf_path ) )
+                HydrusData.show_exception( e )
                 
             
         

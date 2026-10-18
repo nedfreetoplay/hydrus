@@ -22,7 +22,7 @@ class ClientDBFilesViewingStats( ClientDBModule.ClientDBModule ):
         super().__init__( 'client files viewing stats', cursor )
         
     
-    def _GetInitialIndexGenerationDict( self ) -> dict:
+    def _get_initial_index_generation_dict( self ) -> dict:
         
         index_generation_dict = {}
         
@@ -36,7 +36,7 @@ class ClientDBFilesViewingStats( ClientDBModule.ClientDBModule ):
         return index_generation_dict
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict( self ) -> dict:
         
         # TODO: Migrate last_viewed_timestamp over to the FilesTimestamps module
         # revisiting in 2025-01 and I care less, but maybe it is important somehow
@@ -47,19 +47,19 @@ class ClientDBFilesViewingStats( ClientDBModule.ClientDBModule ):
     
     def AddViews( self, hash_id, canvas_type, view_timestamp_ms, views_delta, viewtime_delta_ms ):
         
-        self._Execute( 'INSERT OR IGNORE INTO file_viewing_stats ( hash_id, canvas_type, last_viewed_timestamp_ms, views, viewtime_ms ) VALUES ( ?, ?, ?, ?, ? );', ( hash_id, canvas_type, 0, 0, 0 ) )
+        self._execute( 'INSERT OR IGNORE INTO file_viewing_stats ( hash_id, canvas_type, last_viewed_timestamp_ms, views, viewtime_ms ) VALUES ( ?, ?, ?, ?, ? );', ( hash_id, canvas_type, 0, 0, 0 ) )
         
-        self._Execute( 'UPDATE file_viewing_stats SET last_viewed_timestamp_ms = ?, views = views + ?, viewtime_ms = viewtime_ms + ? WHERE hash_id = ? AND canvas_type = ?;', ( view_timestamp_ms, views_delta, viewtime_delta_ms, hash_id, canvas_type ) )
+        self._execute( 'UPDATE file_viewing_stats SET last_viewed_timestamp_ms = ?, views = views + ?, viewtime_ms = viewtime_ms + ? WHERE hash_id = ? AND canvas_type = ?;', ( view_timestamp_ms, views_delta, viewtime_delta_ms, hash_id, canvas_type ) )
         
     
     def ClearAllStats( self ):
         
-        self._Execute( 'DELETE FROM file_viewing_stats;' )
+        self._execute( 'DELETE FROM file_viewing_stats;' )
         
     
     def ClearViews( self, hash_ids ):
         
-        self._ExecuteMany( 'DELETE FROM file_viewing_stats WHERE hash_id = ?;', ( ( hash_id, ) for hash_id in hash_ids ) )
+        self._execute_many( 'DELETE FROM file_viewing_stats WHERE hash_id = ?;', ( ( hash_id, ) for hash_id in hash_ids ) )
         
     
     def CullFileViewingStatistics( self ):
@@ -81,22 +81,22 @@ class ClientDBFilesViewingStats( ClientDBModule.ClientDBModule ):
         
         if media_min_ms is not None:
             
-            self._Execute( 'UPDATE file_viewing_stats SET views = CAST( viewtime_ms / ? AS INTEGER ) WHERE views * ? > viewtime_ms AND canvas_type = ?;', ( media_min_ms, media_min_ms, CC.CANVAS_MEDIA_VIEWER ) )
+            self._execute( 'UPDATE file_viewing_stats SET views = CAST( viewtime_ms / ? AS INTEGER ) WHERE views * ? > viewtime_ms AND canvas_type = ?;', ( media_min_ms, media_min_ms, CC.CANVAS_MEDIA_VIEWER ) )
             
         
         if media_max_ms is not None:
             
-            self._Execute( 'UPDATE file_viewing_stats SET viewtime_ms = views * ? WHERE viewtime_ms > views * ? AND canvas_type = ?;', ( media_max_ms, media_max_ms, CC.CANVAS_MEDIA_VIEWER ) )
+            self._execute( 'UPDATE file_viewing_stats SET viewtime_ms = views * ? WHERE viewtime_ms > views * ? AND canvas_type = ?;', ( media_max_ms, media_max_ms, CC.CANVAS_MEDIA_VIEWER ) )
             
         
         if preview_min_ms is not None:
             
-            self._Execute( 'UPDATE file_viewing_stats SET views = CAST( viewtime_ms / ? AS INTEGER ) WHERE views * ? > viewtime_ms AND canvas_type = ?;', ( preview_min_ms, preview_min_ms, CC.CANVAS_PREVIEW ) )
+            self._execute( 'UPDATE file_viewing_stats SET views = CAST( viewtime_ms / ? AS INTEGER ) WHERE views * ? > viewtime_ms AND canvas_type = ?;', ( preview_min_ms, preview_min_ms, CC.CANVAS_PREVIEW ) )
             
         
         if preview_max_ms is not None:
             
-            self._Execute( 'UPDATE file_viewing_stats SET viewtime_ms = views * ? WHERE viewtime_ms > views * ? AND canvas_type = ?;', ( preview_max_ms, preview_max_ms, CC.CANVAS_PREVIEW ) )
+            self._execute( 'UPDATE file_viewing_stats SET viewtime_ms = views * ? WHERE viewtime_ms > views * ? AND canvas_type = ?;', ( preview_max_ms, preview_max_ms, CC.CANVAS_PREVIEW ) )
             
         
     
@@ -134,7 +134,7 @@ class ClientDBFilesViewingStats( ClientDBModule.ClientDBModule ):
             
         else:
             
-            canvas_type_predicate = f'canvas_type in {HydrusLists.SplayListForDB( desired_canvas_types )}'
+            canvas_type_predicate = f'canvas_type in {HydrusLists.splay_list_for_db( desired_canvas_types )}'
             
             group_by_phrase = ' GROUP BY hash_id'
             
@@ -169,7 +169,7 @@ class ClientDBFilesViewingStats( ClientDBModule.ClientDBModule ):
             select_statement = 'SELECT hash_id FROM file_viewing_stats WHERE {} {} HAVING {};'.format( canvas_type_predicate, group_by_phrase, test_phrase )
             
         
-        hash_ids = self._STS( self._Execute( select_statement ) )
+        hash_ids = self._sts( self._execute( select_statement ) )
         
         return hash_ids
         
@@ -195,17 +195,17 @@ class ClientDBFilesViewingStats( ClientDBModule.ClientDBModule ):
         
         pred_string = ' AND '.join( last_viewed_timestamp_predicates )
         
-        return self._STS( self._ExecuteCancellable( 'SELECT hash_id FROM file_viewing_stats WHERE canvas_type = ? AND {};'.format( pred_string ), ( CC.CANVAS_MEDIA_VIEWER, ), cancelled_hook ) )
+        return self._sts( self._execute_cancellable( 'SELECT hash_id FROM file_viewing_stats WHERE canvas_type = ? AND {};'.format( pred_string ), ( CC.CANVAS_MEDIA_VIEWER, ), cancelled_hook ) )
         
     
     def GetHashIdsToFileViewingStatsRows( self, hash_ids_table_name ):
         
         query = 'SELECT hash_id, canvas_type, last_viewed_timestamp_ms, views, viewtime_ms FROM {} CROSS JOIN file_viewing_stats USING ( hash_id );'.format( hash_ids_table_name )
         
-        return HydrusData.BuildKeyToListDict( ( ( hash_id, ( canvas_type, last_viewed_timestamp_ms, views, viewtime_ms ) ) for ( hash_id, canvas_type, last_viewed_timestamp_ms, views, viewtime_ms ) in self._Execute( query ) ) )
+        return HydrusData.build_key_to_list_dict( ( ( hash_id, ( canvas_type, last_viewed_timestamp_ms, views, viewtime_ms ) ) for ( hash_id, canvas_type, last_viewed_timestamp_ms, views, viewtime_ms ) in self._execute( query ) ) )
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         tables_and_columns = []
         
@@ -224,7 +224,7 @@ class ClientDBFilesViewingStats( ClientDBModule.ClientDBModule ):
             return
             
         
-        result = self._Execute( 'SELECT last_viewed_timestamp_ms FROM file_viewing_stats WHERE canvas_type = ? AND hash_id = ?;', ( timestamp_data.location, hash_id ) ).fetchone()
+        result = self._execute( 'SELECT last_viewed_timestamp_ms FROM file_viewing_stats WHERE canvas_type = ? AND hash_id = ?;', ( timestamp_data.location, hash_id ) ).fetchone()
         
         if result is None:
             
@@ -250,20 +250,20 @@ class ClientDBFilesViewingStats( ClientDBModule.ClientDBModule ):
             return
             
         
-        self._ExecuteMany( 'UPDATE file_viewing_stats SET last_viewed_timestamp_ms = ? WHERE canvas_type = ? and hash_id = ?;', ( ( timestamp_data.timestamp_ms, timestamp_data.location, hash_id ) for hash_id in hash_ids ) )
+        self._execute_many( 'UPDATE file_viewing_stats SET last_viewed_timestamp_ms = ? WHERE canvas_type = ? and hash_id = ?;', ( ( timestamp_data.timestamp_ms, timestamp_data.location, hash_id ) for hash_id in hash_ids ) )
         
     
     def SetViews( self, hash_id: int, canvas_type: int, view_timestamp_ms: int | None, views: int, viewtime_ms: int ):
         
-        self._Execute( 'INSERT OR IGNORE INTO file_viewing_stats ( hash_id, canvas_type, last_viewed_timestamp_ms, views, viewtime_ms ) VALUES ( ?, ?, ?, ?, ? );', ( hash_id, canvas_type, HydrusTime.GetNowMS(), 0, 0 ) )
+        self._execute( 'INSERT OR IGNORE INTO file_viewing_stats ( hash_id, canvas_type, last_viewed_timestamp_ms, views, viewtime_ms ) VALUES ( ?, ?, ?, ?, ? );', ( hash_id, canvas_type, HydrusTime.get_now_ms(), 0, 0 ) )
         
         if view_timestamp_ms is None:
             
-            self._Execute( f'UPDATE file_viewing_stats SET views = ?, viewtime_ms = ? WHERE hash_id = ? AND canvas_type = ?;', ( views, viewtime_ms, hash_id, canvas_type ) )
+            self._execute( f'UPDATE file_viewing_stats SET views = ?, viewtime_ms = ? WHERE hash_id = ? AND canvas_type = ?;', ( views, viewtime_ms, hash_id, canvas_type ) )
             
         else:
             
-            self._Execute( f'UPDATE file_viewing_stats SET last_viewed_timestamp_ms = ?, views = ?, viewtime_ms = ? WHERE hash_id = ? AND canvas_type = ?;', ( view_timestamp_ms, views, viewtime_ms, hash_id, canvas_type ) )
+            self._execute( f'UPDATE file_viewing_stats SET last_viewed_timestamp_ms = ?, views = ?, viewtime_ms = ? WHERE hash_id = ? AND canvas_type = ?;', ( view_timestamp_ms, views, viewtime_ms, hash_id, canvas_type ) )
             
         
     

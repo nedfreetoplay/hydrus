@@ -7,7 +7,7 @@ from hydrus.core import HydrusData
 from hydrus.core import HydrusLists
 from hydrus.core import HydrusExceptions
 
-def render_char_card( chara_text: str, indent_depth: int ) -> str:
+def render_char_card(chara_text: str, indent_depth: int) -> str:
     
     try:
         
@@ -32,9 +32,8 @@ def render_char_card( chara_text: str, indent_depth: int ) -> str:
         
     
     return render_key_value( indent_depth, 'Character Card?', card_json )
-    
 
-def render_dict( d: dict, indent_depth: int, keys_to_put_at_the_top = None ) -> str | None:
+def render_dict(d: dict, indent_depth: int, keys_to_put_at_the_top = None) -> str | None:
     
     if keys_to_put_at_the_top is None:
         
@@ -85,10 +84,8 @@ def render_dict( d: dict, indent_depth: int, keys_to_put_at_the_top = None ) -> 
     else:
         
         return None
-        
-    
 
-def render_key_value( indent_depth, key, value, keys_to_put_at_the_top = None ) -> str:
+def render_key_value(indent_depth, key, value, keys_to_put_at_the_top = None) -> str:
     
     if keys_to_put_at_the_top is None:
         
@@ -108,7 +105,7 @@ def render_key_value( indent_depth, key, value, keys_to_put_at_the_top = None ) 
         
     elif isinstance( value, bytes ):
         
-        raw_value = f'{HydrusData.ToHumanBytes(len(value))} of data'
+        raw_value = f'{HydrusData.to_human_bytes(len(value))} of data'
         
         value_string = ( indent * ( indent_depth + 1 ) ) + raw_value
         
@@ -126,9 +123,8 @@ def render_key_value( indent_depth, key, value, keys_to_put_at_the_top = None ) 
     row_text += value_string
     
     return row_text
-    
 
-def GetEmbeddedFileText( pil_image: PILImage.Image ) -> str | None:
+def get_embedded_file_text(pil_image: PILImage.Image) -> str | None:
     
     # OK WE DISCOVERED AN IMAGE THAT DID NOT FLESH OUT ITS info DICT UNTIL IT WAS LOADED
     # I guess sometimes that stuff lives in the frame rather than header data
@@ -139,7 +135,7 @@ def GetEmbeddedFileText( pil_image: PILImage.Image ) -> str | None:
         
         try:
             
-            info_dict = WashPilImageInfoDictForHumanReadableMetadata( pil_image.info.copy() )
+            info_dict = wash_pil_image_info_dict_for_human_readable_metadata( pil_image.info.copy() )
             
             return render_dict( info_dict, indent_depth = 0 )
             
@@ -150,9 +146,8 @@ def GetEmbeddedFileText( pil_image: PILImage.Image ) -> str | None:
         
     
     return None
-    
 
-def GetEXIFDict( pil_image: PILImage.Image ) -> dict | None:
+def get_exif_dict(pil_image: PILImage.Image) -> dict | None:
     
     if pil_image.format in ( 'JPEG', 'JXL', 'TIFF', 'PNG', 'WEBP', 'HEIF', 'AVIF', 'MPO' ):
         
@@ -172,21 +167,19 @@ def GetEXIFDict( pil_image: PILImage.Image ) -> dict | None:
         
     
     return None
-    
 
-def GetICCProfileBytes( pil_image: PILImage.Image ) -> bytes:
+def get_icc_profile_bytes(pil_image: PILImage.Image) -> bytes:
     
-    if HasICCProfile( pil_image ):
+    if has_icc_profile( pil_image ):
         
         return pil_image.info[ 'icc_profile' ]
         
     
     raise HydrusExceptions.DataMissing( 'This image has no ICC profile!' )
-    
 
 # bigger number is worse quality
 # this is very rough and misses some finesse
-def GetJPEGQuantizationQualityEstimate( pil_image: PILImage.Image ):
+def get_jpeg_quantization_quality_estimate(pil_image: PILImage.Image):
     
     if hasattr( pil_image, 'quantization' ):
         
@@ -219,7 +212,7 @@ def GetJPEGQuantizationQualityEstimate( pil_image: PILImage.Image ):
         
         try:
             
-            subsampling_value = GetJpegSubsamplingRaw( pil_image )
+            subsampling_value = get_jpeg_subsampling_raw( pil_image )
             
             quality = quality ** ( 1 / subsampling_quality_lookup[ subsampling_value ] )
             
@@ -267,7 +260,6 @@ def GetJPEGQuantizationQualityEstimate( pil_image: PILImage.Image ):
         
     
     return ( 'unknown', None )
-    
 
 # these first three line up with PIL, so don't change them
 SUBSAMPLING_444 = 0
@@ -302,7 +294,7 @@ subsampling_misc_object_to_enum_lookup  = {
     444 : SUBSAMPLING_444,
 }
 
-def GetChromaSubsamplingFromPilInfo( pil_image: PILImage.Image ):
+def get_chroma_subsampling_from_pil_info(pil_image: PILImage.Image):
     
     pil_info = pil_image.info.copy()
     
@@ -317,9 +309,8 @@ def GetChromaSubsamplingFromPilInfo( pil_image: PILImage.Image ):
         
     
     return SUBSAMPLING_UNKNOWN
-    
 
-def GetJpegSubsamplingRaw( pil_image: PILImage.Image ) -> int:
+def get_jpeg_subsampling_raw(pil_image: PILImage.Image) -> int:
     
     if pil_image.mode == 'L':
         
@@ -336,9 +327,8 @@ def GetJpegSubsamplingRaw( pil_image: PILImage.Image ) -> int:
         
     
     return result
-    
 
-def GetSoftwareSourceFromCommentInfoField( value ) -> str | None:
+def get_software_source_from_comment_info_field(value) -> str | None:
     
     if isinstance( value, str ):
         
@@ -361,9 +351,8 @@ def GetSoftwareSourceFromCommentInfoField( value ) -> str | None:
         
     
     return None
-    
 
-def GetSoftwareSourceFromPilInfo( pil_image: PILImage.Image ) -> str | None:
+def get_software_source_from_pil_info(pil_image: PILImage.Image) -> str | None:
     
     info_dict = pil_image.info.copy()
     
@@ -388,7 +377,7 @@ def GetSoftwareSourceFromPilInfo( pil_image: PILImage.Image ) -> str | None:
             value = info_dict[ 'comment' ]
             
         
-        software = GetSoftwareSourceFromCommentInfoField( value )
+        software = get_software_source_from_comment_info_field( value )
         
         if software is not None:
             
@@ -423,17 +412,15 @@ def GetSoftwareSourceFromPilInfo( pil_image: PILImage.Image ) -> str | None:
         
     else:
         
-        components = HydrusLists.DedupeList( components )
+        components = HydrusLists.dedupe_list( components )
         
         return ' / '.join( [ str( c ) for c in components ] )
-        
-    
 
-def HasEXIF( pil_image: PILImage.Image ) -> bool:
+def has_exif(pil_image: PILImage.Image) -> bool:
     
     try:
         
-        result = GetEXIFDict( pil_image )
+        result = get_exif_dict( pil_image )
         
     except Exception as e:
         
@@ -441,16 +428,15 @@ def HasEXIF( pil_image: PILImage.Image ) -> bool:
         
     
     return result is not None
-    
 
-def HasHumanReadableEmbeddedMetadata( pil_image: PILImage.Image ) -> bool:
+def has_human_readable_embedded_metadata(pil_image: PILImage.Image) -> bool:
     
     # we do a quick search first. if it has interesting data before the forced load call, we don't have to do any load
     if hasattr( pil_image, 'info' ):
         
         try:
             
-            info_dict = WashPilImageInfoDictForHumanReadableMetadata( pil_image.info.copy() )
+            info_dict = wash_pil_image_info_dict_for_human_readable_metadata( pil_image.info.copy() )
             
             result = render_dict( info_dict, indent_depth = 0 )
             
@@ -474,7 +460,7 @@ def HasHumanReadableEmbeddedMetadata( pil_image: PILImage.Image ) -> bool:
         
         try:
             
-            info_dict = WashPilImageInfoDictForHumanReadableMetadata( pil_image.info.copy() )
+            info_dict = wash_pil_image_info_dict_for_human_readable_metadata( pil_image.info.copy() )
             
             result = render_dict( info_dict, indent_depth = 0 )
             
@@ -487,9 +473,8 @@ def HasHumanReadableEmbeddedMetadata( pil_image: PILImage.Image ) -> bool:
         
     
     return False
-    
 
-def HasICCProfile( pil_image: PILImage.Image ) -> bool:
+def has_icc_profile(pil_image: PILImage.Image) -> bool:
     
     if 'icc_profile' in pil_image.info:
         
@@ -502,16 +487,15 @@ def HasICCProfile( pil_image: PILImage.Image ) -> bool:
         
     
     return False
-    
 
-def HasSoftwareSource( pil_image: PILImage.Image ) -> bool:
+def has_software_source(pil_image: PILImage.Image) -> bool:
     
     # we do a quick search first. if it has interesting data before the forced load call, we don't have to do any load
     if hasattr( pil_image, 'info' ):
         
         try:
             
-            result = GetSoftwareSourceFromPilInfo( pil_image )
+            result = get_software_source_from_pil_info( pil_image )
             
             if result is not None:
                 
@@ -533,7 +517,7 @@ def HasSoftwareSource( pil_image: PILImage.Image ) -> bool:
         
         try:
             
-            result = GetSoftwareSourceFromPilInfo( pil_image )
+            result = get_software_source_from_pil_info( pil_image )
             
             return result is not None
             
@@ -544,7 +528,6 @@ def HasSoftwareSource( pil_image: PILImage.Image ) -> bool:
         
     
     return False
-    
 
 # we parse and display this stuff in other places
 # ultimately I guess I should really find the three comment fields we want and whitelist them, rather than trying to blacklist every whack decoder field
@@ -604,7 +587,7 @@ PIL_INFO_KEYS_THAT_ARE_NOT_CONSIDERED_HUMAN_READABLE_STUFF = {
     'Thumb::MTime', # leaving this here as a reminder for another source of modified time
 }
 
-def WashPilImageInfoDictForHumanReadableMetadata( info_dict: dict ) -> dict:
+def wash_pil_image_info_dict_for_human_readable_metadata(info_dict: dict) -> dict:
     
     new_info_dict = dict()
     
@@ -626,7 +609,7 @@ def WashPilImageInfoDictForHumanReadableMetadata( info_dict: dict ) -> dict:
             
         
         # we fetch this elsewhere
-        if key in ( 'comment', 'Comment' ) and GetSoftwareSourceFromCommentInfoField( value ) is not None:
+        if key in ( 'comment', 'Comment' ) and get_software_source_from_comment_info_field( value ) is not None:
             
             continue
             
@@ -663,5 +646,3 @@ Thumb::URI:
         
     
     return new_info_dict
-    
-

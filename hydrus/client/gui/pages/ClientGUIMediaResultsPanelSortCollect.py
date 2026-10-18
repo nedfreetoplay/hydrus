@@ -64,7 +64,7 @@ class CollectComboCtrl( QW.QComboBox ):
         
         if media_collect.DoesACollect():
             
-            CG.client_controller.CallAfterQtSafe( self, self.SetCollectByValue, media_collect )
+            CG.client_controller.call_after_qt_safe( self, self.SetCollectByValue, media_collect )
             
         
     
@@ -100,9 +100,9 @@ class CollectComboCtrl( QW.QComboBox ):
                 
             except Exception as e:
                 
-                HydrusData.DebugPrint( 'Bad namespaces: {}'.format( namespaces ) )
+                HydrusData.debug_print( 'Bad namespaces: {}'.format( namespaces ) )
                 
-                HydrusData.ShowText( 'Hey, your namespace-based sorts are likely damaged. Details have been written to the log, please let hydev know!' )
+                HydrusData.show_text( 'Hey, your namespace-based sorts are likely damaged. Details have been written to the log, please let hydev know!' )
                 
             
         
@@ -294,9 +294,9 @@ class CollectComboCtrl( QW.QComboBox ):
             
         except Exception as e:
             
-            HydrusData.ShowText( 'Failed to set a collect-by value!' )
+            HydrusData.show_text( 'Failed to set a collect-by value!' )
 
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
         
 
@@ -390,12 +390,12 @@ class MediaCollectControl( QW.QWidget ):
         
         for service in services:
             
-            if last_seen_service_type is not None and last_seen_service_type != service.GetServiceType():
+            if last_seen_service_type is not None and last_seen_service_type != service.get_service_type():
                 
                 submenu_template_items.append( ClientGUIMenuButton.MenuTemplateItemSeparator() )
                 
             
-            new_tag_context = self._tag_context.Duplicate()
+            new_tag_context = self._tag_context.duplicate()
             
             new_tag_context.service_key = service.GetServiceKey()
             
@@ -406,7 +406,7 @@ class MediaCollectControl( QW.QWidget ):
             
             submenu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCheck( service.GetName(), 'Filter the namespaces by this tag domain.', check_manager ) )
             
-            last_seen_service_type = service.GetServiceType()
+            last_seen_service_type = service.get_service_type()
             
         
         menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemSubmenu( 'tag service', submenu_template_items ) )
@@ -481,7 +481,7 @@ class MediaCollectControl( QW.QWidget ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             return True
             
@@ -496,7 +496,7 @@ class MediaCollectControl( QW.QWidget ):
     
     def NotifyNewOptions( self ):
         
-        media_collect = self._media_collect.Duplicate()
+        media_collect = self._media_collect.duplicate()
         
         made_changes = self._collect_comboctrl.ReinitialiseChoices()
         
@@ -861,12 +861,12 @@ class MediaSortControl( QW.QWidget ):
             
             for service in services:
                 
-                if last_seen_service_type is not None and last_seen_service_type != service.GetServiceType():
+                if last_seen_service_type is not None and last_seen_service_type != service.get_service_type():
                     
                     submenu_template_items.append( ClientGUIMenuButton.MenuTemplateItemSeparator() )
                     
                 
-                new_tag_context = self._tag_context.Duplicate()
+                new_tag_context = self._tag_context.duplicate()
                 
                 new_tag_context.service_key = service.GetServiceKey()
                 
@@ -877,7 +877,7 @@ class MediaSortControl( QW.QWidget ):
                 
                 submenu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCheck( service.GetName(), 'Filter the namespaces by this tag domain.', check_manager ) )
                 
-                last_seen_service_type = service.GetServiceType()
+                last_seen_service_type = service.get_service_type()
                 
             
             menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemSubmenu( 'tag service', submenu_template_items ) )

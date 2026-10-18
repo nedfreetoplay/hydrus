@@ -93,14 +93,14 @@ class TagSortPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         try:
             
-            text = CG.client_controller.GetClipboardText()
+            text = CG.client_controller.get_clipboard_text()
             
         except Exception as e:
             
             raise HydrusExceptions.VetoException()
             
         
-        namespaces = HydrusText.DeserialiseNewlinedTexts( text )
+        namespaces = HydrusText.deserialise_newlined_texts( text )
         
         return namespaces
         

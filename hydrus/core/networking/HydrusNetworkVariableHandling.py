@@ -10,7 +10,7 @@ try:
     import cbor2
     import base64
     CBOR_AVAILABLE = True
-except Exception as e:
+except Exception:
     pass
 
 from hydrus.core import HydrusConstants as HC
@@ -26,7 +26,7 @@ JSON_BYTE_LIST_PARAMS = { 'registration_keys' }
 
 HASH_BYTE_PARAMS = { 'hash', 'subject_hash', 'update_hash' }
 
-def DumpHydrusArgsToNetworkBytes( args ):
+def dump_hydrus_args_to_network_bytes(args):
     
     if not isinstance( args, HydrusSerialisable.SerialisableBase ):
         
@@ -56,12 +56,12 @@ def DumpHydrusArgsToNetworkBytes( args ):
     
     if 'account' in args:
         
-        args[ 'account' ] = HydrusNetwork.Account.GenerateSerialisableTupleFromAccount( args[ 'account' ] )
+        args[ 'account' ] = HydrusNetwork.Account.generate_serialisable_tuple_from_account( args[ 'account' ] )
         
     
     if 'accounts' in args:
         
-        args[ 'accounts' ] = list( map( HydrusNetwork.Account.GenerateSerialisableTupleFromAccount, args[ 'accounts' ] ) )
+        args[ 'accounts' ] = list( map( HydrusNetwork.Account.generate_serialisable_tuple_from_account, args[ 'accounts' ] ) )
         
     
     if 'service_keys_to_access_keys' in args:
@@ -74,11 +74,11 @@ def DumpHydrusArgsToNetworkBytes( args ):
         args[ 'services' ] = [ service.ToSerialisableTuple() for service in args[ 'services' ] ]
         
     
-    network_bytes = args.DumpToNetworkBytes()
+    network_bytes = args.dump_to_network_bytes()
     
     return network_bytes
-    
-def DumpToGETQuery( args: dict[ str, object ] ):
+
+def dump_to_get_query(args: dict[str, object]):
     
     args = dict( args )
     
@@ -88,18 +88,18 @@ def DumpToGETQuery( args: dict[ str, object ] ):
         
         del args[ 'subject_identifier' ]
         
-        if subject_identifier.HasAccountKey():
+        if subject_identifier.has_account_key():
             
-            account_key = subject_identifier.GetAccountKey()
+            account_key = subject_identifier.get_account_key()
             
             args[ 'subject_account_key' ] = account_key
             
-        elif subject_identifier.HasContent():
+        elif subject_identifier.has_content():
             
-            content = subject_identifier.GetContent()
+            content = subject_identifier.get_content()
             
-            content_type = content.GetContentType()
-            content_data = content.GetContentData()
+            content_type = content.get_content_type()
+            content_data = content.get_content_data()
             
             if content_type == HC.CONTENT_TYPE_FILES:
                 
@@ -150,28 +150,27 @@ def DumpToGETQuery( args: dict[ str, object ] ):
     query = '&'.join( [ key + '=' + value for ( key, value ) in args.items() ] )
     
     return query
-    
 
-def ParseFileArguments( path, decompression_bombs_ok = False ):
+def parse_file_arguments(path, decompression_bombs_ok = False):
     
     from hydrus.core.files import HydrusFileHandling
     from hydrus.core.files.images import HydrusImageHandling
     
-    hash = HydrusFileHandling.GetHashFromPath( path )
+    hash = HydrusFileHandling.get_hash_from_path( path )
     
     try:
         
-        mime = HydrusFileHandling.GetMime( path )
+        mime = HydrusFileHandling.get_mime( path )
         
         if mime in HC.DECOMPRESSION_BOMB_IMAGES and not decompression_bombs_ok:
             
-            if HydrusImageHandling.IsDecompressionBomb( path ):
+            if HydrusImageHandling.is_decompression_bomb( path ):
                 
                 raise HydrusExceptions.InsufficientCredentialsException( 'File seemed to be a Decompression Bomb, which you cannot upload!' )
                 
             
         
-        ( size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) = HydrusFileHandling.GetFileInfo( path, mime = mime )
+        ( size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) = HydrusFileHandling.get_file_info( path, mime = mime )
         
     except Exception as e:
         
@@ -198,9 +197,9 @@ def ParseFileArguments( path, decompression_bombs_ok = False ):
             
             bounding_dimensions = HC.SERVER_THUMBNAIL_DIMENSIONS
             
-            target_resolution = HydrusImageHandling.GetThumbnailResolution( ( width, height ), bounding_dimensions, HydrusImageHandling.THUMBNAIL_SCALE_DOWN_ONLY, 100 )
+            target_resolution = HydrusImageHandling.get_thumbnail_resolution( ( width, height ), bounding_dimensions, HydrusImageHandling.THUMBNAIL_SCALE_DOWN_ONLY, 100 )
             
-            thumbnail_bytes = HydrusFileHandling.GenerateThumbnailBytes( path, target_resolution, mime, duration_ms, num_frames )
+            thumbnail_bytes = HydrusFileHandling.generate_thumbnail_bytes( path, target_resolution, mime, duration_ms, num_frames )
             
         except Exception as e:
             
@@ -213,11 +212,10 @@ def ParseFileArguments( path, decompression_bombs_ok = False ):
         
     
     return args
-    
 
-def ParseHydrusNetworkGETArgs( requests_args ):
+def parse_hydrus_network_get_args(requests_args):
     
-    args = ParseTwistedRequestGETArgs( requests_args, INT_PARAMS, BYTE_PARAMS, STRING_PARAMS, JSON_PARAMS, JSON_BYTE_LIST_PARAMS )
+    args = parse_twisted_request_get_args( requests_args, INT_PARAMS, BYTE_PARAMS, STRING_PARAMS, JSON_PARAMS, JSON_BYTE_LIST_PARAMS )
     
     if 'subject_hash' in args: # or parent/sib stuff in args
         
@@ -240,15 +238,15 @@ def ParseHydrusNetworkGETArgs( requests_args ):
         
     
     return args
-    
-def ParseNetworkBytesToParsedHydrusArgs( network_bytes ):
+
+def parse_network_bytes_to_parsed_hydrus_args(network_bytes):
     
     if len( network_bytes ) == 0:
         
         return HydrusSerialisable.SerialisableDictionary()
         
     
-    args = HydrusSerialisable.CreateFromNetworkBytes( network_bytes )
+    args = HydrusSerialisable.create_from_network_bytes( network_bytes )
     
     if not isinstance( args, dict ):
         
@@ -284,14 +282,14 @@ def ParseNetworkBytesToParsedHydrusArgs( network_bytes ):
     
     if 'account' in args:
         
-        args[ 'account' ] = HydrusNetwork.Account.GenerateAccountFromSerialisableTuple( args[ 'account' ] )
+        args[ 'account' ] = HydrusNetwork.Account.generate_account_from_serialisable_tuple( args[ 'account' ] )
         
     
     if 'accounts' in args:
         
         account_tuples = args[ 'accounts' ]
         
-        args[ 'accounts' ] = [ HydrusNetwork.Account.GenerateAccountFromSerialisableTuple( account_tuple ) for account_tuple in account_tuples ]
+        args[ 'accounts' ] = [ HydrusNetwork.Account.generate_account_from_serialisable_tuple( account_tuple ) for account_tuple in account_tuples ]
         
     
     if 'service_keys_to_access_keys' in args:
@@ -303,12 +301,12 @@ def ParseNetworkBytesToParsedHydrusArgs( network_bytes ):
         
         service_tuples = args[ 'services' ]
         
-        args[ 'services' ] = [ HydrusNetwork.GenerateServiceFromSerialisableTuple( service_tuple ) for service_tuple in service_tuples ]
+        args[ 'services' ] = [ HydrusNetwork.generate_service_from_serialisable_tuple( service_tuple ) for service_tuple in service_tuples ]
         
     
     return args
-    
-def ParseTwistedRequestGETArgs( requests_args: dict, int_params, byte_params, string_params, json_params, json_byte_list_params ):
+
+def parse_twisted_request_get_args(requests_args: dict, int_params, byte_params, string_params, json_params, json_byte_list_params):
     
     args = ParsedRequestArguments()
     
@@ -420,7 +418,6 @@ def ParseTwistedRequestGETArgs( requests_args: dict, int_params, byte_params, st
         
     
     return args
-    
 
 variable_type_to_text_lookup = collections.defaultdict( lambda: 'unknown!' )
 
@@ -432,14 +429,14 @@ variable_type_to_text_lookup[ bool ] = 'boolean'
 variable_type_to_text_lookup[ list ] = 'list'
 variable_type_to_text_lookup[ dict ] = 'object/dict'
 
-def GetValueFromDict( dictionary: dict, key, expected_type, expected_list_type = None, expected_dict_types = None, default_value = None, none_on_missing = False ):
+def get_value_from_dict(dictionary: dict, key, expected_type, expected_list_type = None, expected_dict_types = None, default_value = None, none_on_missing = False):
     
     # not None because in JSON sometimes people put 'null' to mean 'did not enter this optional parameter'
     if key in dictionary and dictionary[ key ] is not None:
         
         value = dictionary[ key ]
         
-        TestVariableType( key, value, expected_type, expected_list_type = expected_list_type, expected_dict_types = expected_dict_types )
+        test_variable_type( key, value, expected_type, expected_list_type = expected_list_type, expected_dict_types = expected_dict_types )
         
         return value
         
@@ -452,11 +449,8 @@ def GetValueFromDict( dictionary: dict, key, expected_type, expected_list_type =
         else:
             
             return default_value
-            
-        
-    
 
-def TestVariableType( name: str, value: typing.Any, expected_type, expected_list_type = None, expected_dict_types = None, allowed_values = None ):
+def test_variable_type(name: str, value: typing.Any, expected_type, expected_list_type = None, expected_dict_types = None, allowed_values = None):
     
     if not isinstance( value, expected_type ):
         
@@ -500,27 +494,20 @@ def TestVariableType( name: str, value: typing.Any, expected_type, expected_list
             if not isinstance( dict_value, expected_value_type ):
                 
                 raise HydrusExceptions.BadRequestException( 'The Object parameter "{}" held a value, "{}" that was {} and not the expected type: {}!'.format( name, dict_value, type( dict_value ), variable_type_to_text_lookup[ expected_value_type ] ) )
-                
-            
-        
-    
 
-EXPECTED_TYPE = typing.TypeVar( 'EXPECTED_TYPE' )
+EXPECTED_TYPE = typing.TypeVar('EXPECTED_TYPE')
 
-class ParsedRequestArguments( dict ):
+
+class ParsedRequestArguments(dict):
     
-    def __missing__( self, key ):
+    def __missing__(self, key):
         
         raise HydrusExceptions.BadRequestException( 'It looks like the parameter "{}" was missing!'.format( key ) )
-        
     
-    def GetValue( self, key, expected_type: EXPECTED_TYPE, expected_list_type = None, expected_dict_types = None, default_value = None ) -> EXPECTED_TYPE:
+    def get_value(self, key, expected_type: EXPECTED_TYPE, expected_list_type = None, expected_dict_types = None, default_value = None) -> EXPECTED_TYPE:
         
-        return GetValueFromDict( self, key, expected_type, expected_list_type = expected_list_type, expected_dict_types = expected_dict_types, default_value = default_value )
-        
+        return get_value_from_dict( self, key, expected_type, expected_list_type = expected_list_type, expected_dict_types = expected_dict_types, default_value = default_value )
     
-    def GetValueOrNone( self, key, expected_type: EXPECTED_TYPE, expected_list_type = None, expected_dict_types = None ) -> EXPECTED_TYPE | None:
+    def get_value_or_none(self, key, expected_type: EXPECTED_TYPE, expected_list_type = None, expected_dict_types = None) -> EXPECTED_TYPE | None:
         
-        return GetValueFromDict( self, key, expected_type, expected_list_type = expected_list_type, expected_dict_types = expected_dict_types, none_on_missing = True )
-        
-    
+        return get_value_from_dict( self, key, expected_type, expected_list_type = expected_list_type, expected_dict_types = expected_dict_types, none_on_missing = True )

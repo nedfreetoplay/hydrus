@@ -20,7 +20,7 @@ class ClientDBURLMap( ClientDBModule.ClientDBModule ):
         super().__init__( 'client urls mapping', cursor )
         
     
-    def _GetInitialIndexGenerationDict( self ) -> dict:
+    def _get_initial_index_generation_dict( self ) -> dict:
         
         index_generation_dict = {}
         
@@ -31,7 +31,7 @@ class ClientDBURLMap( ClientDBModule.ClientDBModule ):
         return index_generation_dict
         
     
-    def _GetInitialTableGenerationDict( self ) -> dict:
+    def _get_initial_table_generation_dict( self ) -> dict:
         
         return {
             'main.url_map' : ( 'CREATE TABLE IF NOT EXISTS {} ( hash_id INTEGER, url_id INTEGER, PRIMARY KEY ( hash_id, url_id ) );', 485 )
@@ -42,19 +42,19 @@ class ClientDBURLMap( ClientDBModule.ClientDBModule ):
         
         url_id = self.modules_urls.GetURLId( url )
         
-        self._Execute( 'INSERT OR IGNORE INTO url_map ( hash_id, url_id ) VALUES ( ?, ? );', ( hash_id, url_id ) )
+        self._execute( 'INSERT OR IGNORE INTO url_map ( hash_id, url_id ) VALUES ( ?, ? );', ( hash_id, url_id ) )
         
     
     def DeleteMapping( self, hash_id: int, url: str ):
         
         url_id = self.modules_urls.GetURLId( url )
         
-        self._Execute( 'DELETE FROM url_map WHERE hash_id = ? AND url_id = ?;', ( hash_id, url_id ) )
+        self._execute( 'DELETE FROM url_map WHERE hash_id = ? AND url_id = ?;', ( hash_id, url_id ) )
         
     
     def GetHashIds( self, search_url: str ):
         
-        hash_ids = self._STS( self._Execute( 'SELECT hash_id FROM url_map NATURAL JOIN urls WHERE url = ?;', ( search_url, ) ) )
+        hash_ids = self._sts( self._execute( 'SELECT hash_id FROM url_map NATURAL JOIN urls WHERE url = ?;', ( search_url, ) ) )
         
         return hash_ids
         
@@ -86,7 +86,7 @@ class ClientDBURLMap( ClientDBModule.ClientDBModule ):
             
             select = f'SELECT DISTINCT hash_id FROM {table_join};'
             
-            nonzero_url_query_hash_ids = self._STS( self._Execute( select ) )
+            nonzero_url_query_hash_ids = self._sts( self._execute( select ) )
             
             if is_zero:
                 
@@ -103,7 +103,7 @@ class ClientDBURLMap( ClientDBModule.ClientDBModule ):
             
             select = f'SELECT hash_id, COUNT( url_id ) FROM {table_join} GROUP BY hash_id;'
             
-            good_url_count_hash_ids = { hash_id for ( hash_id, count ) in self._Execute( select ) if megalambda( count ) }
+            good_url_count_hash_ids = { hash_id for ( hash_id, count ) in self._execute( select ) if megalambda( count ) }
             
             if wants_zero:
                 
@@ -133,7 +133,7 @@ class ClientDBURLMap( ClientDBModule.ClientDBModule ):
             
             select = 'SELECT hash_id FROM {} WHERE url = ?;'.format( table_name )
             
-            result_hash_ids = self._STS( self._Execute( select, ( url, ) ) )
+            result_hash_ids = self._sts( self._execute( select, ( url, ) ) )
             
             return result_hash_ids
             
@@ -147,7 +147,7 @@ class ClientDBURLMap( ClientDBModule.ClientDBModule ):
             
             result_hash_ids = set()
             
-            with self._MakeTemporaryIntegerTable( domain_ids, 'domain_id' ) as temp_domain_table_name:
+            with self._make_temporary_integer_table( domain_ids, 'domain_id' ) as temp_domain_table_name:
                 
                 if hash_ids_table_name is not None and hash_ids is not None and len( hash_ids ) < 50000:
                     
@@ -161,7 +161,7 @@ class ClientDBURLMap( ClientDBModule.ClientDBModule ):
                     select = 'SELECT hash_id, url FROM {} CROSS JOIN urls USING ( domain_id ) CROSS JOIN url_map USING ( url_id );'.format( temp_domain_table_name )
                     
                 
-                for ( hash_id, url ) in self._Execute( select ):
+                for ( hash_id, url ) in self._execute( select ):
                     
                     # this is actually insufficient, as more detailed url classes may match
                     if hash_id not in result_hash_ids and url_class.Matches( url ):
@@ -182,7 +182,7 @@ class ClientDBURLMap( ClientDBModule.ClientDBModule ):
             # if we search for site.com, we also want artist.site.com or www.site.com or cdn2.site.com
             domain_ids = self.modules_urls.GetURLDomainAndSubdomainIds( url_domain_mask )
             
-            with self._MakeTemporaryIntegerTable( domain_ids, 'domain_id' ) as temp_domain_table_name:
+            with self._make_temporary_integer_table( domain_ids, 'domain_id' ) as temp_domain_table_name:
                 
                 if hash_ids_table_name is not None and hash_ids is not None and len( hash_ids ) < 50000:
                     
@@ -196,7 +196,7 @@ class ClientDBURLMap( ClientDBModule.ClientDBModule ):
                     select = 'SELECT hash_id FROM {} CROSS JOIN urls USING ( domain_id ) CROSS JOIN url_map USING ( url_id );'.format( temp_domain_table_name )
                     
                 
-                result_hash_ids = self._STS( self._Execute( select ) )
+                result_hash_ids = self._sts( self._execute( select ) )
                 
             
             return result_hash_ids
@@ -218,7 +218,7 @@ class ClientDBURLMap( ClientDBModule.ClientDBModule ):
             
             result_hash_ids = set()
             
-            for ( hash_id, url ) in self._Execute( select ):
+            for ( hash_id, url ) in self._execute( select ):
                 
                 if hash_id not in result_hash_ids and re.search( regex, url ) is not None:
                     
@@ -236,13 +236,13 @@ class ClientDBURLMap( ClientDBModule.ClientDBModule ):
         
         if hash_ids_table_name is not None:
             
-            hash_ids_to_urls = HydrusData.BuildKeyToSetDict( self._Execute( 'SELECT hash_id, url FROM {} CROSS JOIN url_map USING ( hash_id ) CROSS JOIN urls USING ( url_id );'.format( hash_ids_table_name ) ) )
+            hash_ids_to_urls = HydrusData.build_key_to_set_dict( self._execute( 'SELECT hash_id, url FROM {} CROSS JOIN url_map USING ( hash_id ) CROSS JOIN urls USING ( url_id );'.format( hash_ids_table_name ) ) )
             
         
         return hash_ids_to_urls
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         # if content type is a domain, then give urls? bleh
         

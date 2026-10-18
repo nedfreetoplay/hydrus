@@ -31,9 +31,9 @@ def CatchExceptionClient( etype, value, tb ):
     
     text = job_status.ToString()
     
-    HydrusData.Print( 'Uncaught exception:' )
+    HydrusData.safe_print( 'Uncaught exception:' )
     
-    HydrusData.DebugPrint( text )
+    HydrusData.debug_print( text )
     
     CG.client_controller.pub( 'message', job_status )
     
@@ -118,7 +118,7 @@ def ResolutionToPrettyString( resolution ):
     
     ( width, height ) = resolution
     
-    return '{}x{}'.format( HydrusNumbers.ToHumanInt( width ), HydrusNumbers.ToHumanInt( height ) )
+    return '{}x{}'.format( HydrusNumbers.to_human_int( width ), HydrusNumbers.to_human_int( height ) )
     
 
 def ShowExceptionClient( e, do_wait = True ):
@@ -141,7 +141,7 @@ def ShowExceptionTupleClient( etype, value, tb, do_wait = True ):
         return
         
     
-    HydrusData.PrintExceptionTuple( etype, value, tb, do_wait = False )
+    HydrusData.print_exception_tuple( etype, value, tb, do_wait = False )
     
     job_status = ClientThreading.JobStatus()
     
@@ -163,7 +163,7 @@ def ShowTextClient( text ):
     
     text = job_status.ToString()
     
-    HydrusData.Print( text )
+    HydrusData.safe_print( text )
     
     CG.client_controller.pub( 'message', job_status )
     
@@ -172,10 +172,10 @@ def ToHumanBytes( size ):
     
     sig_figs = CG.client_controller.new_options.GetInteger( 'human_bytes_sig_figs' )
     
-    return HydrusData.BaseToHumanBytes( size, sig_figs = sig_figs )
+    return HydrusData.base_to_human_bytes( size, sig_figs = sig_figs )
     
 
-HydrusData.ToHumanBytes = ToHumanBytes
+HydrusData.to_human_bytes = ToHumanBytes
 
 class Booru( HydrusData.HydrusYAMLBase ):
     

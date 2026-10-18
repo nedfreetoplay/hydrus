@@ -5,13 +5,13 @@ from hydrus.core import HydrusData
 from hydrus.core import HydrusTime
 from hydrus.core.networking import HydrusNetworkVariableHandling
 
-class HydrusRequest( Request ):
+class HydrusRequest(Request):
     
-    def __init__( self, *args, **kwargs ):
+    def __init__(self, *args, **kwargs):
         
         super().__init__( *args, **kwargs )
         
-        self.start_time = HydrusTime.GetNowPrecise()
+        self.start_time = HydrusTime.get_now_precise()
         self.parsed_request_args = HydrusNetworkVariableHandling.ParsedRequestArguments()
         self.hydrus_response_context = None
         self.hydrus_account = None
@@ -21,21 +21,19 @@ class HydrusRequest( Request ):
         self.disconnected = False
         
         self.profile_result = None
-        
     
-    def IsGET( self ):
+    def is_get( self ):
         
         return self.method == b'GET'
-        
     
-    def IsPOST( self ):
+    def is_post(self):
         
         return self.method == b'POST'
-        
+
+
+class HydrusRequestLogging(HydrusRequest):
     
-class HydrusRequestLogging( HydrusRequest ):
-    
-    def finish( self ):
+    def finish(self):
         
         HydrusRequest.finish( self )
         
@@ -54,7 +52,6 @@ class HydrusRequestLogging( HydrusRequest ):
             status_text = '200'
             
         
-        message = str( host.port ) + ' ' + str( self.method, 'utf-8' ) + ' ' + str( self.path, 'utf-8' ) + ' ' + status_text + ' in ' + HydrusTime.TimeDeltaToPrettyTimeDelta( HydrusTime.GetNowPrecise() - self.start_time )
+        message = str( host.port ) + ' ' + str( self.method, 'utf-8' ) + ' ' + str( self.path, 'utf-8' ) + ' ' + status_text + ' in ' + HydrusTime.time_delta_to_pretty_timedelta( HydrusTime.get_now_precise() - self.start_time )
         
-        HydrusData.Print( message )
-        
+        HydrusData.safe_print( message )

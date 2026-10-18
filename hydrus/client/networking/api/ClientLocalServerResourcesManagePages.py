@@ -18,7 +18,7 @@ class HydrusResourceClientAPIRestrictedManagePages( ClientLocalServerResources.H
 
 class HydrusResourceClientAPIRestrictedManagePagesAddFiles( HydrusResourceClientAPIRestrictedManagePages ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         def do_it( page_key, media_results ):
             
@@ -44,15 +44,15 @@ class HydrusResourceClientAPIRestrictedManagePagesAddFiles( HydrusResourceClient
             raise HydrusExceptions.BadRequestException( 'You need a page key for this request!' )
             
         
-        page_key = request.parsed_request_args.GetValue( 'page_key', bytes )
+        page_key = request.parsed_request_args.get_value( 'page_key', bytes )
         
         hashes = ClientLocalServerCore.ParseHashes( request )
         
-        media_results = CG.client_controller.Read( 'media_results', hashes, sorted = True )
+        media_results = CG.client_controller.read( 'media_results', hashes, sorted = True )
         
         try:
             
-            CG.client_controller.CallBlockingToQtTLW( do_it, page_key, media_results )
+            CG.client_controller.call_blocking_to_qt_tlw( do_it, page_key, media_results )
             
         except HydrusExceptions.DataMissing as e:
             
@@ -67,18 +67,18 @@ class HydrusResourceClientAPIRestrictedManagePagesAddFiles( HydrusResourceClient
 
 class HydrusResourceClientAPIRestrictedManagePagesFocusPage( HydrusResourceClientAPIRestrictedManagePages ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         def do_it( page_key ):
             
             return CG.client_controller.gui.ShowPage( page_key )
             
         
-        page_key = request.parsed_request_args.GetValue( 'page_key', bytes )
+        page_key = request.parsed_request_args.get_value( 'page_key', bytes )
         
         try:
             
-            CG.client_controller.CallBlockingToQtTLW( do_it, page_key )
+            CG.client_controller.call_blocking_to_qt_tlw( do_it, page_key )
             
         except HydrusExceptions.DataMissing as e:
             
@@ -92,14 +92,14 @@ class HydrusResourceClientAPIRestrictedManagePagesFocusPage( HydrusResourceClien
     
 class HydrusResourceClientAPIRestrictedManagePagesGetPages( HydrusResourceClientAPIRestrictedManagePages ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         def do_it():
             
             return CG.client_controller.gui.GetCurrentSessionPageAPIInfoDict()
             
         
-        page_info_dict = CG.client_controller.CallBlockingToQtTLW( do_it )
+        page_info_dict = CG.client_controller.call_blocking_to_qt_tlw( do_it )
         
         body_dict = { 'pages' : page_info_dict }
         
@@ -113,18 +113,18 @@ class HydrusResourceClientAPIRestrictedManagePagesGetPages( HydrusResourceClient
 
 class HydrusResourceClientAPIRestrictedManagePagesGetPageInfo( HydrusResourceClientAPIRestrictedManagePages ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         def do_it( page_key, simple ):
             
             return CG.client_controller.gui.GetPageAPIInfoDict( page_key, simple )
             
         
-        page_key = request.parsed_request_args.GetValue( 'page_key', bytes )
+        page_key = request.parsed_request_args.get_value( 'page_key', bytes )
         
-        simple = request.parsed_request_args.GetValue( 'simple', bool, default_value = True )
+        simple = request.parsed_request_args.get_value( 'simple', bool, default_value = True )
         
-        page_info_dict = CG.client_controller.CallBlockingToQtTLW( do_it, page_key, simple )
+        page_info_dict = CG.client_controller.call_blocking_to_qt_tlw( do_it, page_key, simple )
         
         if page_info_dict is None:
             
@@ -143,18 +143,18 @@ class HydrusResourceClientAPIRestrictedManagePagesGetPageInfo( HydrusResourceCli
 
 class HydrusResourceClientAPIRestrictedManagePagesRefreshPage( HydrusResourceClientAPIRestrictedManagePages ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         def do_it( page_key ):
             
             return CG.client_controller.gui.RefreshPage( page_key )
             
         
-        page_key = request.parsed_request_args.GetValue( 'page_key', bytes )
+        page_key = request.parsed_request_args.get_value( 'page_key', bytes )
         
         try:
             
-            CG.client_controller.CallBlockingToQtTLW( do_it, page_key )
+            CG.client_controller.call_blocking_to_qt_tlw( do_it, page_key )
             
         except HydrusExceptions.DataMissing as e:
             
@@ -169,14 +169,14 @@ class HydrusResourceClientAPIRestrictedManagePagesRefreshPage( HydrusResourceCli
 
 class HydrusResourceClientAPIRestrictedManagePagesGetMediaViewers( HydrusResourceClientAPIRestrictedManagePages ):
     
-    def _threadDoGETJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
         def do_it():
             
             return CG.client_controller.gui.GetMediaViewersAPIInfo()
             
         
-        media_viewers_info = CG.client_controller.CallBlockingToQtTLW( do_it )
+        media_viewers_info = CG.client_controller.call_blocking_to_qt_tlw( do_it )
         
         body_dict = {
             'media_viewers': media_viewers_info
@@ -192,27 +192,27 @@ class HydrusResourceClientAPIRestrictedManagePagesGetMediaViewers( HydrusResourc
 
 class HydrusResourceClientAPIRestrictedManagePagesNewPage( HydrusResourceClientAPIRestrictedManagePages ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
-        page_type = request.parsed_request_args.GetValue( 'page_type', int )
-        page_name = request.parsed_request_args.GetValueOrNone( 'page_name', str )
-        page_of_pages_key = request.parsed_request_args.GetValueOrNone( 'page_of_pages_key', bytes )
-        focus_page = request.parsed_request_args.GetValue( 'focus_page', bool, default_value = True )
-        tags = request.parsed_request_args.GetValue( 'tags', list, default_value = [] )
-        file_service_key = request.parsed_request_args.GetValueOrNone( 'file_service_key', bytes )
-        tag_service_key = request.parsed_request_args.GetValueOrNone( 'tag_service_key', bytes )
+        page_type = request.parsed_request_args.get_value( 'page_type', int )
+        page_name = request.parsed_request_args.get_value_or_none( 'page_name', str )
+        page_of_pages_key = request.parsed_request_args.get_value_or_none( 'page_of_pages_key', bytes )
+        focus_page = request.parsed_request_args.get_value( 'focus_page', bool, default_value = True )
+        tags = request.parsed_request_args.get_value( 'tags', list, default_value = [] )
+        file_service_key = request.parsed_request_args.get_value_or_none( 'file_service_key', bytes )
+        tag_service_key = request.parsed_request_args.get_value_or_none( 'tag_service_key', bytes )
         hashes = ClientLocalServerCore.ParseHashes( request, optional = True )
-        service_key = request.parsed_request_args.GetValueOrNone( 'service_key', bytes )
-        paths = request.parsed_request_args.GetValue( 'paths', list, default_value = [] )
-        delete_after_success = request.parsed_request_args.GetValue( 'delete_after_success', bool, default_value = False )
+        service_key = request.parsed_request_args.get_value_or_none( 'service_key', bytes )
+        paths = request.parsed_request_args.get_value( 'paths', list, default_value = [] )
+        delete_after_success = request.parsed_request_args.get_value( 'delete_after_success', bool, default_value = False )
         
-        file_sort_type = request.parsed_request_args.GetValueOrNone( 'file_sort_type', int )
-        file_sort_asc = request.parsed_request_args.GetValue( 'file_sort_asc', bool, default_value = True )
-        file_sort_namespaces = request.parsed_request_args.GetValueOrNone( 'file_sort_namespaces', list )
-        collect_namespaces = request.parsed_request_args.GetValueOrNone( 'collect_namespaces', list )
-        system_hash_locked = request.parsed_request_args.GetValueOrNone( 'system_hash_locked', bool )
-        urls = request.parsed_request_args.GetValue( 'urls', list, default_value = [] )
-        url = request.parsed_request_args.GetValueOrNone( 'url', str )
+        file_sort_type = request.parsed_request_args.get_value_or_none( 'file_sort_type', int )
+        file_sort_asc = request.parsed_request_args.get_value( 'file_sort_asc', bool, default_value = True )
+        file_sort_namespaces = request.parsed_request_args.get_value_or_none( 'file_sort_namespaces', list )
+        collect_namespaces = request.parsed_request_args.get_value_or_none( 'collect_namespaces', list )
+        system_hash_locked = request.parsed_request_args.get_value_or_none( 'system_hash_locked', bool )
+        urls = request.parsed_request_args.get_value( 'urls', list, default_value = [] )
+        url = request.parsed_request_args.get_value_or_none( 'url', str )
         
         if file_sort_type is not None and file_sort_namespaces is not None:
             
@@ -247,7 +247,7 @@ class HydrusResourceClientAPIRestrictedManagePagesNewPage( HydrusResourceClientA
         
         try:
             
-            ( page_key, returned_page_type, returned_page_name ) = CG.client_controller.CallBlockingToQtTLW( ClientGUINewPageAPI.MakeNewPageFromAPI, page_type, page_name, page_of_pages_key, focus_page, predicates, file_service_key, tag_service_key, hashes, service_key, paths, delete_after_success, file_sort_type, file_sort_asc, file_sort_namespaces, collect_namespaces, system_hash_locked, urls, url )
+            ( page_key, returned_page_type, returned_page_name ) = CG.client_controller.call_blocking_to_qt_tlw( ClientGUINewPageAPI.MakeNewPageFromAPI, page_type, page_name, page_of_pages_key, focus_page, predicates, file_service_key, tag_service_key, hashes, service_key, paths, delete_after_success, file_sort_type, file_sort_asc, file_sort_namespaces, collect_namespaces, system_hash_locked, urls, url )
             
         except HydrusExceptions.DataMissing as e:
             

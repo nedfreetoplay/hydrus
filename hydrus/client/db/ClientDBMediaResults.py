@@ -105,9 +105,9 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
         
         cached_hash_ids = list( cached_hash_ids_to_media_results.keys() )
         
-        with self._MakeTemporaryIntegerTable( cached_hash_ids, 'hash_id' ) as temp_table_name:
+        with self._make_temporary_integer_table( cached_hash_ids, 'hash_id' ) as temp_table_name:
             
-            self._AnalyzeTempTable( temp_table_name )
+            self._analyze_temp_table( temp_table_name )
             
             file_info_managers = self.GenerateFileInfoManagers( cached_hash_ids, temp_table_name )
             
@@ -148,7 +148,7 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
         hash_ids_to_hashes = self.modules_hashes_local_cache.GetHashIdsToHashes( hash_ids = hash_ids )
         
         # temp hashes to metadata
-        hash_ids_to_file_info_managers = { hash_id : ClientMediaManagers.FileInfoManager( hash_id, hash_ids_to_hashes[ hash_id ], size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) for ( hash_id, size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) in self._Execute( 'SELECT * FROM {} CROSS JOIN files_info USING ( hash_id );'.format( hash_ids_table_name ) ) }
+        hash_ids_to_file_info_managers = { hash_id : ClientMediaManagers.FileInfoManager( hash_id, hash_ids_to_hashes[ hash_id ], size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) for ( hash_id, size, mime, width, height, duration_ms, num_frames, has_audio, num_words ) in self._execute( 'SELECT * FROM {} CROSS JOIN files_info USING ( hash_id );'.format( hash_ids_table_name ) ) }
         
         hash_ids_to_pixel_hashes = self.modules_similar_files.GetHashIdsToPixelHashes( hash_ids_table_name )
         hash_ids_to_blurhashes = self.modules_files_metadata_basic.GetHashIdsToBlurhashes( hash_ids_table_name )
@@ -211,7 +211,7 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
         
         if len( missing_hash_ids ) > 0:
             
-            with self._MakeTemporaryIntegerTable( missing_hash_ids, 'hash_id' ) as temp_table_name:
+            with self._make_temporary_integer_table( missing_hash_ids, 'hash_id' ) as temp_table_name:
                 
                 missing_file_info_managers = self.GenerateFileInfoManagers( missing_hash_ids, temp_table_name )
                 
@@ -223,7 +223,7 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
             
             if len( hash_ids ) > len( file_info_managers ):
                 
-                hash_ids = HydrusLists.DedupeList( hash_ids )
+                hash_ids = HydrusLists.dedupe_list( hash_ids )
                 
             
             hash_ids_to_file_info_managers = { file_info_manager.hash_id : file_info_manager for file_info_manager in file_info_managers }
@@ -244,7 +244,7 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
             
             if len( hashes ) > len( query_hash_ids ):
                 
-                hashes = HydrusLists.DedupeList( hashes )
+                hashes = HydrusLists.dedupe_list( hashes )
                 
             
             hashes_to_file_info_managers = { file_info_manager.hash : file_info_manager for file_info_manager in file_info_managers }
@@ -257,9 +257,9 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
     
     def GetForceRefreshTagsManagers( self, hash_ids, hash_ids_to_current_file_service_ids = None ):
         
-        with self._MakeTemporaryIntegerTable( hash_ids, 'hash_id' ) as temp_table_name:
+        with self._make_temporary_integer_table( hash_ids, 'hash_id' ) as temp_table_name:
             
-            self._AnalyzeTempTable( temp_table_name )
+            self._analyze_temp_table( temp_table_name )
             
             return self.GetForceRefreshTagsManagersWithTableHashIds( hash_ids, temp_table_name, hash_ids_to_current_file_service_ids = hash_ids_to_current_file_service_ids )
             
@@ -289,7 +289,7 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
                 
             else:
                 
-                with self._MakeTemporaryIntegerTable( batch_of_hash_ids, 'hash_id' ) as temp_batch_hash_ids_table_name:
+                with self._make_temporary_integer_table( batch_of_hash_ids, 'hash_id' ) as temp_batch_hash_ids_table_name:
                     
                     ( batch_of_storage_tag_data, batch_of_display_tag_data ) = self.GetForceRefreshTagsManagersWithTableHashIdsTagData( common_file_service_id, tag_service_ids, temp_batch_hash_ids_table_name )
                     
@@ -306,8 +306,8 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
         
         service_ids_to_service_keys = self.modules_services.GetServiceIdsToServiceKeys()
         
-        hash_ids_to_raw_storage_tag_data = HydrusData.BuildKeyToListDict( storage_tag_data )
-        hash_ids_to_raw_display_tag_data = HydrusData.BuildKeyToListDict( display_tag_data )
+        hash_ids_to_raw_storage_tag_data = HydrusData.build_key_to_list_dict( storage_tag_data )
+        hash_ids_to_raw_display_tag_data = HydrusData.build_key_to_list_dict( display_tag_data )
         
         hash_ids_to_tag_managers = {}
         
@@ -317,22 +317,22 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
             raw_storage_tag_data = hash_ids_to_raw_storage_tag_data[ hash_id ]
             
             # service_id -> ( status, tag )
-            service_ids_to_storage_tag_data = HydrusData.BuildKeyToListDict( ( ( tag_service_id, ( status, tag_ids_to_tags[ tag_id ] ) ) for ( tag_service_id, status, tag_id ) in raw_storage_tag_data ) )
+            service_ids_to_storage_tag_data = HydrusData.build_key_to_list_dict( ( ( tag_service_id, ( status, tag_ids_to_tags[ tag_id ] ) ) for ( tag_service_id, status, tag_id ) in raw_storage_tag_data ) )
             
             service_keys_to_statuses_to_storage_tags = collections.defaultdict(
                 HydrusData.default_dict_set,
-                { service_ids_to_service_keys[ tag_service_id ] : HydrusData.BuildKeyToSetDict( status_and_tag ) for ( tag_service_id, status_and_tag ) in service_ids_to_storage_tag_data.items() }
+                { service_ids_to_service_keys[ tag_service_id ] : HydrusData.build_key_to_set_dict( status_and_tag ) for ( tag_service_id, status_and_tag ) in service_ids_to_storage_tag_data.items() }
             )
             
             # service_id, status, tag_id
             raw_display_tag_data = hash_ids_to_raw_display_tag_data[ hash_id ]
             
             # service_id -> ( status, tag )
-            service_ids_to_display_tag_data = HydrusData.BuildKeyToListDict( ( ( tag_service_id, ( status, tag_ids_to_tags[ tag_id ] ) ) for ( tag_service_id, status, tag_id ) in raw_display_tag_data ) )
+            service_ids_to_display_tag_data = HydrusData.build_key_to_list_dict( ( ( tag_service_id, ( status, tag_ids_to_tags[ tag_id ] ) ) for ( tag_service_id, status, tag_id ) in raw_display_tag_data ) )
             
             service_keys_to_statuses_to_display_tags = collections.defaultdict(
                 HydrusData.default_dict_set,
-                { service_ids_to_service_keys[ tag_service_id ] : HydrusData.BuildKeyToSetDict( status_and_tag ) for ( tag_service_id, status_and_tag ) in service_ids_to_display_tag_data.items() }
+                { service_ids_to_service_keys[ tag_service_id ] : HydrusData.build_key_to_set_dict( status_and_tag ) for ( tag_service_id, status_and_tag ) in service_ids_to_display_tag_data.items() }
             )
             
             tags_manager = ClientMediaManagers.TagsManager( service_keys_to_statuses_to_storage_tags, service_keys_to_statuses_to_display_tags )
@@ -355,7 +355,7 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
             for ( status, mappings_table_name ) in statuses_to_table_names.items():
                 
                 # temp hashes to mappings
-                storage_tag_data.extend( ( hash_id, ( tag_service_id, status, tag_id ) ) for ( hash_id, tag_id ) in self._Execute( 'SELECT hash_id, tag_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_ids_table_name, mappings_table_name ) ) )
+                storage_tag_data.extend( ( hash_id, ( tag_service_id, status, tag_id ) ) for ( hash_id, tag_id ) in self._execute( 'SELECT hash_id, tag_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_ids_table_name, mappings_table_name ) ) )
                 
             
             if common_file_service_id != self.modules_services.combined_file_service_id:
@@ -363,8 +363,8 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
                 ( cache_current_display_mappings_table_name, cache_pending_display_mappings_table_name ) = ClientDBMappingsStorage.GenerateSpecificDisplayMappingsCacheTableNames( common_file_service_id, tag_service_id )
                 
                 # temp hashes to mappings
-                display_tag_data.extend( ( hash_id, ( tag_service_id, HC.CONTENT_STATUS_CURRENT, tag_id ) ) for ( hash_id, tag_id ) in self._Execute( 'SELECT hash_id, tag_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_ids_table_name, cache_current_display_mappings_table_name ) ) )
-                display_tag_data.extend( ( hash_id, ( tag_service_id, HC.CONTENT_STATUS_PENDING, tag_id ) ) for ( hash_id, tag_id ) in self._Execute( 'SELECT hash_id, tag_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_ids_table_name, cache_pending_display_mappings_table_name ) ) )
+                display_tag_data.extend( ( hash_id, ( tag_service_id, HC.CONTENT_STATUS_CURRENT, tag_id ) ) for ( hash_id, tag_id ) in self._execute( 'SELECT hash_id, tag_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_ids_table_name, cache_current_display_mappings_table_name ) ) )
+                display_tag_data.extend( ( hash_id, ( tag_service_id, HC.CONTENT_STATUS_PENDING, tag_id ) ) for ( hash_id, tag_id ) in self._execute( 'SELECT hash_id, tag_id FROM {} CROSS JOIN {} USING ( hash_id );'.format( hash_ids_table_name, cache_pending_display_mappings_table_name ) ) )
                 
             
         
@@ -375,7 +375,7 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
             
             current_and_pending_storage_tag_data = [ ( hash_id, ( tag_service_id, status, tag_id ) ) for ( hash_id, ( tag_service_id, status, tag_id ) ) in storage_tag_data if status in ( HC.CONTENT_STATUS_CURRENT, HC.CONTENT_STATUS_PENDING ) ]
             
-            seen_service_ids_to_seen_tag_ids = HydrusData.BuildKeyToSetDict( ( ( tag_service_id, tag_id ) for ( hash_id, ( tag_service_id, status, tag_id ) ) in current_and_pending_storage_tag_data ) )
+            seen_service_ids_to_seen_tag_ids = HydrusData.build_key_to_set_dict( ( ( tag_service_id, tag_id ) for ( hash_id, ( tag_service_id, status, tag_id ) ) in current_and_pending_storage_tag_data ) )
             
             seen_service_ids_to_tag_ids_to_implied_tag_ids = { tag_service_id : self.modules_tag_display.GetTagsToImplies( ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, tag_service_id, tag_ids ) for ( tag_service_id, tag_ids ) in seen_service_ids_to_seen_tag_ids.items() }
             
@@ -403,7 +403,7 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
             
             # get first detailed results
             
-            with self._MakeTemporaryIntegerTable( missing_hash_ids, 'hash_id' ) as temp_table_name:
+            with self._make_temporary_integer_table( missing_hash_ids, 'hash_id' ) as temp_table_name:
                 
                 # everything here is temp hashes to metadata
                 
@@ -587,7 +587,7 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
             
             if len( hashes ) > len( query_hash_ids ):
                 
-                hashes = HydrusLists.DedupeList( hashes )
+                hashes = HydrusLists.dedupe_list( hashes )
                 
             
             hashes_to_media_results = { media_result.GetHash() : media_result for media_result in media_results }
@@ -598,7 +598,7 @@ class ClientDBMediaResults( ClientDBModule.ClientDBModule ):
         return media_results
         
     
-    def GetTablesAndColumnsThatUseDefinitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
+    def get_tables_and_columns_that_use_definitions( self, content_type: int ) -> list[ tuple[ str, str ] ]:
         
         # if content type is a domain, then give urls? bleh
         

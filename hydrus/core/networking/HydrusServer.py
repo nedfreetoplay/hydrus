@@ -9,24 +9,24 @@ from hydrus.core import HydrusStaticDir
 from hydrus.core.networking import HydrusServerRequest
 from hydrus.core.networking import HydrusServerResources
 
-LOCAL_DOMAIN = HydrusServerResources.HydrusDomain( True )
-REMOTE_DOMAIN = HydrusServerResources.HydrusDomain( False )
+LOCAL_DOMAIN = HydrusServerResources.HydrusDomain(True)
+REMOTE_DOMAIN = HydrusServerResources.HydrusDomain(False)
 
-class FatHTTPChannel( HTTPChannel ):
+class FatHTTPChannel(HTTPChannel):
     
     MAX_LENGTH = 2 * 1048576
     totalHeadersSize = 2 * 1048576 # :^)
-    
 
-class HydrusService( Site ):
+
+class HydrusService(Site):
     
-    def __init__( self, service ):
+    def __init__(self, service):
         
         self._service = service
         
-        self.hydrus_favicon = FileResource( HydrusStaticDir.GetStaticPath( 'hydrus.ico' ), defaultType = 'image/x-icon' )
+        self.hydrus_favicon = FileResource( HydrusStaticDir.get_static_path( 'hydrus.ico' ), defaultType = 'image/x-icon' )
         
-        service_type = self._service.GetServiceType()
+        service_type = self._service.get_service_type()
         
         if service_type == HC.CLIENT_API_SERVICE:
             
@@ -37,11 +37,11 @@ class HydrusService( Site ):
             self._server_version_string = '{}/{}'.format( HC.service_string_lookup[ service_type ], str( HC.NETWORK_VERSION ) )
             
         
-        root = self._InitRoot()
+        root = self._init_root()
         
         super().__init__( root )
         
-        self.protocol = self._ProtocolFactory
+        self.protocol = self._protocol_factory
         
         if service.LogsRequests():
             
@@ -50,10 +50,8 @@ class HydrusService( Site ):
         else:
             
             self.requestFactory = HydrusServerRequest.HydrusRequest
-            
-        
     
-    def _InitRoot( self ):
+    def _init_root(self):
         
         root = Resource()
         
@@ -62,14 +60,12 @@ class HydrusService( Site ):
         root.putChild( b'robots.txt', HydrusServerResources.HydrusResourceRobotsTXT( self._service, REMOTE_DOMAIN ) )
         
         return root
-        
     
-    def _ProtocolFactory( self ):
+    def _protocol_factory(self):
         
         return _GenericHTTPChannelProtocol( FatHTTPChannel() )
-        
     
-    def getResourceFor( self, request: Request ):
+    def getResourceFor(self, request: Request):
         
         request.setHeader( 'Server', self._server_version_string )
         request.setHeader( 'Hydrus-Server', self._server_version_string )

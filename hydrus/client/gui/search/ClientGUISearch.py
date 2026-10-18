@@ -426,7 +426,7 @@ class EditPredicatesPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     service = CG.client_controller.services_manager.GetService( s_k )
                     
-                    return ( order_of_panels.index( service.GetServiceType() ), service.GetName() )
+                    return ( order_of_panels.index( service.get_service_type() ), service.GetName() )
                     
                 except HydrusExceptions.DataMissing:
                     
@@ -446,12 +446,12 @@ class EditPredicatesPanel( ClientGUIScrolledPanels.EditPanel ):
                     
                 except HydrusExceptions.DataMissing:
                     
-                    HydrusData.ShowText( 'Hey, I was asked to edit a rating predicate that seems to refer to a service that no longer exists. I cannot do that, so it was ignored!' )
+                    HydrusData.show_text( 'Hey, I was asked to edit a rating predicate that seems to refer to a service that no longer exists. I cannot do that, so it was ignored!' )
                     
                     continue
                     
                 
-                type = service.GetServiceType()
+                type = service.get_service_type()
                 
                 if type == HC.LOCAL_RATING_LIKE:
                     
@@ -850,7 +850,7 @@ class FleshOutPredicatePanel( ClientGUIScrolledPanels.EditPanel ):
                     
                     for rating_service in rating_services:
                         
-                        if rating_service.GetServiceType() == service_type_in_order:
+                        if rating_service.get_service_type() == service_type_in_order:
                             
                             if service_type_in_order == HC.LOCAL_RATING_LIKE:
                                 
@@ -1204,18 +1204,18 @@ class TagContextButton( ClientGUICommon.BetterButton ):
         
         for service in services:
             
-            if last_seen_service_type is not None and last_seen_service_type != service.GetServiceType():
+            if last_seen_service_type is not None and last_seen_service_type != service.get_service_type():
                 
                 ClientGUIMenus.AppendSeparator( menu )
                 
             
-            new_tag_context = self._tag_context.Duplicate()
+            new_tag_context = self._tag_context.duplicate()
             
             new_tag_context.service_key = service.GetServiceKey()
             
             ClientGUIMenus.AppendMenuCheckItem( menu, service.GetName(), 'Change the current tag domain to {}.'.format( service.GetName() ), new_tag_context == self._tag_context, self.SetValue, new_tag_context )
             
-            last_seen_service_type = service.GetServiceType()
+            last_seen_service_type = service.get_service_type()
             
         
         CGC.core().PopupMenu( self, menu )
@@ -1228,7 +1228,7 @@ class TagContextButton( ClientGUICommon.BetterButton ):
     
     def SetDisplayTagServiceKey( self, service_key: bytes ):
         
-        duplicate_tag_context = self._tag_context.Duplicate()
+        duplicate_tag_context = self._tag_context.duplicate()
         
         duplicate_tag_context.display_service_key = service_key
         
@@ -1237,7 +1237,7 @@ class TagContextButton( ClientGUICommon.BetterButton ):
     
     def SetIncludeCurrent( self, value: bool ):
         
-        duplicate_tag_context = self._tag_context.Duplicate()
+        duplicate_tag_context = self._tag_context.duplicate()
         
         duplicate_tag_context.include_current_tags = value
         
@@ -1246,7 +1246,7 @@ class TagContextButton( ClientGUICommon.BetterButton ):
     
     def SetIncludePending( self, value: bool ):
         
-        duplicate_tag_context = self._tag_context.Duplicate()
+        duplicate_tag_context = self._tag_context.duplicate()
         
         duplicate_tag_context.include_pending_tags = value
         
@@ -1255,7 +1255,7 @@ class TagContextButton( ClientGUICommon.BetterButton ):
     
     def SetTagServiceKey( self, service_key: bytes ):
         
-        tag_context = self._tag_context.Duplicate()
+        tag_context = self._tag_context.duplicate()
         
         tag_context.service_key = service_key
         
@@ -1264,7 +1264,7 @@ class TagContextButton( ClientGUICommon.BetterButton ):
     
     def SetValue( self, tag_context: ClientSearchTagContext.TagContext ):
         
-        tag_context = tag_context.Duplicate()
+        tag_context = tag_context.duplicate()
         
         tag_context.FixMissingServices( CG.client_controller.services_manager.FilterValidServiceKeys )
         

@@ -131,7 +131,7 @@ class NetworkLoginManager( HydrusSerialisable.SerialisableBase ):
                     login_possible = False
                     login_error_text = validity_error_text
                     
-                elif not HydrusTime.TimeHasPassed( no_work_until ):
+                elif not HydrusTime.time_has_passed( no_work_until ):
                     
                     login_possible = False
                     login_error_text = no_work_until_reason
@@ -211,9 +211,9 @@ class NetworkLoginManager( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_login_scripts = self._login_scripts.GetSerialisableTuple()
+        serialisable_login_scripts = self._login_scripts.get_serialisable_tuple()
         
         serialisable_domains_to_login_info = {}
         
@@ -229,11 +229,11 @@ class NetworkLoginManager( HydrusSerialisable.SerialisableBase ):
         return ( serialisable_login_scripts, serialisable_domains_to_login_info )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( serialisable_login_scripts, serialisable_domains_to_login_info ) = serialisable_info
         
-        self._login_scripts = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_login_scripts )
+        self._login_scripts = HydrusSerialisable.create_from_serialisable_tuple( serialisable_login_scripts )
         
         self._domains_to_login_info = {}
         
@@ -420,7 +420,7 @@ class NetworkLoginManager( HydrusSerialisable.SerialisableBase ):
                 return
                 
             
-            no_work_until = HydrusTime.GetNow() + 3600 * 4
+            no_work_until = HydrusTime.get_now() + 3600 * 4
             no_work_until_reason = reason
             
             self._domains_to_login_info[ login_domain ] = ( login_script_key_and_name, credentials, login_access_type, login_access_text, active, validity, validity_error_text, no_work_until, no_work_until_reason )
@@ -561,7 +561,7 @@ class NetworkLoginManager( HydrusSerialisable.SerialisableBase ):
             
             self._domains_to_login_info[ login_domain ] = ( login_script_key_and_name, credentials, login_access_type, login_access_text, active, validity, validity_error_text, no_work_until, no_work_until_reason )
             
-            HydrusData.ShowText( 'The login for "' + login_domain + '" failed! It will not be reattempted until the problem is fixed. The failure reason was:' + '\n' * 2 + validity_error_text )
+            HydrusData.show_text( 'The login for "' + login_domain + '" failed! It will not be reattempted until the problem is fixed. The failure reason was:' + '\n' * 2 + validity_error_text )
             
             self._SetDirty()
             
@@ -816,18 +816,18 @@ class LoginCredentialDefinition( HydrusSerialisable.SerialisableBaseNamed ):
         self._string_match = string_match
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_string_match = self._string_match.GetSerialisableTuple()
+        serialisable_string_match = self._string_match.get_serialisable_tuple()
         
         return ( self._credential_type, serialisable_string_match )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( self._credential_type, serialisable_string_match ) = serialisable_info
         
-        self._string_match = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_string_match )
+        self._string_match = HydrusSerialisable.create_from_serialisable_tuple( serialisable_string_match )
         
     
     def GetStringMatch( self ):
@@ -929,11 +929,11 @@ class LoginProcessDomain( LoginProcess ):
         
         CG.client_controller.pub( 'message', job_status )
         
-        HydrusData.Print( 'Starting login for ' + login_domain )
+        HydrusData.safe_print( 'Starting login for ' + login_domain )
         
         result = self.login_script.Start( self.engine, self.network_context, self.credentials, job_status = job_status )
         
-        HydrusData.Print( 'Finished login for ' + self.network_context.context_data + '. Result was: ' + result )
+        HydrusData.safe_print( 'Finished login for ' + self.network_context.context_data + '. Result was: ' + result )
         
         job_status.SetStatusText( result )
         
@@ -999,7 +999,7 @@ class LoginScriptHydrus( object ):
             
             if self._IsLoggedIn( engine, network_context ):
                 
-                HydrusData.Print( 'Successfully logged into ' + service.GetName() + '.' )
+                HydrusData.safe_print( 'Successfully logged into ' + service.GetName() + '.' )
                 
             elif service.IsFunctional():
                 
@@ -1052,43 +1052,43 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
         
         super().__init__( name )
         
-        self._login_script_key = HydrusData.GenerateKey()
+        self._login_script_key = HydrusData.generate_key()
         self._required_cookies_info = required_cookies_info # string match : string match
         self._credential_definitions = credential_definitions
         self._login_steps = login_steps
         self._example_domains_info = example_domains_info # domain | login_access_type | login_access_text
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         serialisable_login_script_key = self._login_script_key.hex()
-        serialisable_required_cookies = self._required_cookies_info.GetSerialisableTuple()
-        serialisable_credential_definitions = self._credential_definitions.GetSerialisableTuple()
-        serialisable_login_steps = self._login_steps.GetSerialisableTuple()
+        serialisable_required_cookies = self._required_cookies_info.get_serialisable_tuple()
+        serialisable_credential_definitions = self._credential_definitions.get_serialisable_tuple()
+        serialisable_login_steps = self._login_steps.get_serialisable_tuple()
         
         return ( serialisable_login_script_key, serialisable_required_cookies, serialisable_credential_definitions, serialisable_login_steps, self._example_domains_info )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( serialisable_login_script_key, serialisable_required_cookies, serialisable_credential_definitions, serialisable_login_steps, self._example_domains_info ) = serialisable_info
         
         self._login_script_key = bytes.fromhex( serialisable_login_script_key )
-        self._required_cookies_info = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_required_cookies )
-        self._credential_definitions = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_credential_definitions )
-        self._login_steps = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_login_steps )
+        self._required_cookies_info = HydrusSerialisable.create_from_serialisable_tuple( serialisable_required_cookies )
+        self._credential_definitions = HydrusSerialisable.create_from_serialisable_tuple( serialisable_credential_definitions )
+        self._login_steps = HydrusSerialisable.create_from_serialisable_tuple( serialisable_login_steps )
         
         # convert lists to tups for listctrl data hashing
         self._example_domains_info = [ tuple( list_of_info ) for list_of_info in self._example_domains_info ]
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
             ( serialisable_login_script_key, serialisable_required_cookies, serialisable_credential_definitions, serialisable_login_steps, example_domains_info ) = old_serialisable_info
             
-            old_required_cookies_info = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_required_cookies )
+            old_required_cookies_info = HydrusSerialisable.create_from_serialisable_tuple( serialisable_required_cookies )
             new_required_cookies_info = HydrusSerialisable.SerialisableDictionary()
             
             for ( name, value_string_match ) in list(old_required_cookies_info.items()):
@@ -1098,7 +1098,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
                 new_required_cookies_info[ key_string_match ] = value_string_match
                 
             
-            serialisable_required_cookies = new_required_cookies_info.GetSerialisableTuple()
+            serialisable_required_cookies = new_required_cookies_info.get_serialisable_tuple()
             
             new_serialisable_info = ( serialisable_login_script_key, serialisable_required_cookies, serialisable_credential_definitions, serialisable_login_steps, example_domains_info )
             
@@ -1334,7 +1334,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
     
     def RegenerateLoginScriptKey( self ):
         
-        self._login_script_key = HydrusData.GenerateKey()
+        self._login_script_key = HydrusData.generate_key()
         
     
     def SetLoginScriptKey( self, login_script_key ):
@@ -1384,7 +1384,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 if test_result_callable is not None:
                     
-                    HydrusData.ShowException( e )
+                    HydrusData.show_exception( e )
                     
                 
                 message = str( e )
@@ -1397,7 +1397,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 if test_result_callable is not None:
                     
-                    HydrusData.ShowException( e )
+                    HydrusData.show_exception( e )
                     
                 
                 if isinstance( e, HydrusExceptions.InsufficientCredentialsException ):
@@ -1410,7 +1410,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
                     
                 else:
                     
-                    message = HydrusText.GetFirstLine( str( e ) )
+                    message = HydrusText.get_first_line( str( e ) )
                     
                 
                 engine.login_manager.DelayLoginScript( login_domain, self._login_script_key, message )
@@ -1421,7 +1421,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 if test_result_callable is not None:
                     
-                    HydrusData.ShowException( e )
+                    HydrusData.show_exception( e )
                     
                 
                 message = str( e )
@@ -1442,7 +1442,7 @@ class LoginScriptDomain( HydrusSerialisable.SerialisableBaseNamed ):
             
             if test_result_callable is not None:
                 
-                HydrusData.ShowException( e )
+                HydrusData.show_exception( e )
                 
             
             message = str( e )
@@ -1504,31 +1504,31 @@ class LoginStep( HydrusSerialisable.SerialisableBaseNamed ):
             
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
-        serialisable_required_cookies = self._required_cookies_info.GetSerialisableTuple()
-        serialisable_content_parsers = self._content_parsers.GetSerialisableTuple()
+        serialisable_required_cookies = self._required_cookies_info.get_serialisable_tuple()
+        serialisable_content_parsers = self._content_parsers.get_serialisable_tuple()
         
         return ( self._scheme, self._method, self._subdomain, self._path, self._required_credentials, self._static_args, self._temp_args, serialisable_required_cookies, serialisable_content_parsers )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( self._scheme, self._method, self._subdomain, self._path, self._required_credentials, self._static_args, self._temp_args, serialisable_required_cookies, serialisable_content_parsers ) = serialisable_info
         
         self._CleanseSubdomainAndPath()
         
-        self._required_cookies_info = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_required_cookies )
-        self._content_parsers = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_content_parsers )
+        self._required_cookies_info = HydrusSerialisable.create_from_serialisable_tuple( serialisable_required_cookies )
+        self._content_parsers = HydrusSerialisable.create_from_serialisable_tuple( serialisable_content_parsers )
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
             ( scheme, method, subdomain, path, required_credentials, static_args, temp_args, serialisable_required_cookies, serialisable_content_parsers ) = old_serialisable_info
             
-            old_required_cookies_info = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_required_cookies )
+            old_required_cookies_info = HydrusSerialisable.create_from_serialisable_tuple( serialisable_required_cookies )
             new_required_cookies_info = HydrusSerialisable.SerialisableDictionary()
             
             for ( name, value_string_match ) in list(old_required_cookies_info.items()):
@@ -1538,7 +1538,7 @@ class LoginStep( HydrusSerialisable.SerialisableBaseNamed ):
                 new_required_cookies_info[ key_string_match ] = value_string_match
                 
             
-            serialisable_required_cookies = new_required_cookies_info.GetSerialisableTuple()
+            serialisable_required_cookies = new_required_cookies_info.get_serialisable_tuple()
             
             new_serialisable_info = ( scheme, method, subdomain, path, required_credentials, static_args, temp_args, serialisable_required_cookies, serialisable_content_parsers )
             
@@ -1592,7 +1592,7 @@ class LoginStep( HydrusSerialisable.SerialisableBaseNamed ):
                     
                 else:
                     
-                    pretty_expiry = HydrusTime.TimestampToPrettyExpires( expiry )
+                    pretty_expiry = HydrusTime.timestamp_to_pretty_expires( expiry )
                     
                 
                 s += pretty_expiry

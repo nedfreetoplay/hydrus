@@ -82,7 +82,7 @@ class CanvasFrame( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindow
                 
                 event.ignore()
                 
-                CG.client_controller.CallLaterQtSafe( self, 5.0, 'closing old media viewer safety check', self.close )
+                CG.client_controller.call_later_qt_safe( self, 5.0, 'closing old media viewer safety check', self.close )
                 
             
             return
@@ -131,7 +131,7 @@ class CanvasFrame( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindow
                 event.ignore()
                 
                 # just in case somehow the signal doesn't fire
-                CG.client_controller.CallLaterQtSafe( self, 5.0, 'closing old media viewer safety check', self.close )
+                CG.client_controller.call_later_qt_safe( self, 5.0, 'closing old media viewer safety check', self.close )
                 
             
         else:

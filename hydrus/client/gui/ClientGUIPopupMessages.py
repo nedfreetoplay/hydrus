@@ -333,7 +333,7 @@ class PopupMessage( PopupWindow ):
             
             def work_callable():
                 
-                presented_hashes = CG.client_controller.Read( 'filter_hashes', location_context, hashes )
+                presented_hashes = CG.client_controller.read( 'filter_hashes', location_context, hashes )
                 
                 if len( presented_hashes ) > 0:
                     
@@ -358,8 +358,8 @@ class PopupMessage( PopupWindow ):
             
             def errback_callable( etype, value, tb ):
                 
-                HydrusData.ShowText( 'Sorry, unable to show those files:' )
-                HydrusData.ShowExceptionTuple( etype, value, tb, do_wait = False )
+                HydrusData.show_text( 'Sorry, unable to show those files:' )
+                HydrusData.show_exception_tuple( etype, value, tb, do_wait = False )
                 
             
             def ui_restoration_callable():
@@ -539,10 +539,10 @@ class PopupMessage( PopupWindow ):
                 
                 self._network_job_ctrl.ClearNetworkJob()
                 
-                self._time_network_job_disappeared = HydrusTime.GetNow()
+                self._time_network_job_disappeared = HydrusTime.get_now()
                 
             
-            if not self._network_job_ctrl.isHidden() and HydrusTime.TimeHasPassed( self._time_network_job_disappeared + 10 ):
+            if not self._network_job_ctrl.isHidden() and HydrusTime.time_has_passed( self._time_network_job_disappeared + 10 ):
                 
                 self._network_job_ctrl.hide()
                 
@@ -582,7 +582,7 @@ class PopupMessage( PopupWindow ):
             
             ( hashes, attached_files_label ) = result
             
-            text = '{} - show {} files'.format( attached_files_label, HydrusNumbers.ToHumanInt( len( hashes ) ) )
+            text = '{} - show {} files'.format( attached_files_label, HydrusNumbers.to_human_int( len( hashes ) ) )
             
             if self._show_files_button.text() != text:
                 
@@ -606,7 +606,7 @@ class PopupMessage( PopupWindow ):
             
         else:
             
-            self._user_callable_button.setText( user_callable.GetLabel() )
+            self._user_callable_button.setText( user_callable.get_label() )
             
             self._user_callable_button.show()
             
@@ -804,7 +804,7 @@ class JobStatusPopupQueue( object ):
                             
                             new_hashes.extend( hashes )
                             
-                            new_hashes = HydrusLists.DedupeList( new_hashes )
+                            new_hashes = HydrusLists.dedupe_list( new_hashes )
                             
                             existing_job_status.SetFiles( new_hashes, existing_label )
                             
@@ -862,27 +862,27 @@ class PopupMessageManager( QW.QFrame ):
         CG.client_controller.sub( self, 'AddMessage', 'message' )
         
         self._old_excepthook = sys.excepthook
-        self._old_show_exception = HydrusData.ShowException
-        self._old_show_exception_tuple = HydrusData.ShowExceptionTuple
-        self._old_show_text = HydrusData.ShowText
+        self._old_show_exception = HydrusData.show_exception
+        self._old_show_exception_tuple = HydrusData.show_exception_tuple
+        self._old_show_text = HydrusData.show_text
         
         sys.excepthook = ClientData.CatchExceptionClient
-        HydrusData.ShowException = ClientData.ShowExceptionClient
-        HydrusData.ShowExceptionTuple = ClientData.ShowExceptionTupleClient
-        HydrusData.ShowText = ClientData.ShowTextClient
+        HydrusData.show_exception = ClientData.ShowExceptionClient
+        HydrusData.show_exception_tuple = ClientData.ShowExceptionTupleClient
+        HydrusData.show_text = ClientData.ShowTextClient
         
         job_status = ClientThreading.JobStatus()
         
         job_status.SetStatusText( 'initialising popup message manager' + HC.UNICODE_ELLIPSIS )
         
-        self._update_job = CG.client_controller.CallRepeatingQtSafe( self, 0.25, 0.25, 'repeating popup message update', self.REPEATINGUpdate )
+        self._update_job = CG.client_controller.call_repeating_qt_safe( self, 0.25, 0.25, 'repeating popup message update', self.REPEATINGUpdate )
         
         self._summary_bar.dismissAll.connect( self.DismissAll )
         self._summary_bar.expandCollapse.connect( self.ExpandCollapse )
         
-        CG.client_controller.CallLaterQtSafe( self, 0.5, 'initialise message', self.AddMessage, job_status )
+        CG.client_controller.call_later_qt_safe( self, 0.5, 'initialise message', self.AddMessage, job_status )
         
-        CG.client_controller.CallLaterQtSafe( self, 1.0, 'delete initial message', job_status.FinishAndDismiss )
+        CG.client_controller.call_later_qt_safe( self, 1.0, 'delete initial message', job_status.FinishAndDismiss )
         
     
     def _CheckPending( self ):
@@ -928,7 +928,7 @@ class PopupMessageManager( QW.QFrame ):
             # for whatever reason, self._message_vbox.activate does not cause the vbox.sizeHint to be recalculated at this point. it just sits at the last value unless original was (0,0)?!?
             # so we'll do it callafter. it works
             
-            CG.client_controller.CallAfterQtSafe( self, self.MakeSureEverythingFits )
+            CG.client_controller.call_after_qt_safe( self, self.MakeSureEverythingFits )
             
         
     
@@ -1018,13 +1018,13 @@ class PopupMessageManager( QW.QFrame ):
             
             text = 'The popup message manager experienced a fatal error and will now stop working! Please restart the client as soon as possible! If this keeps happening, please email the details and your client.log to the hydrus developer.'
             
-            HydrusData.Print( text )
+            HydrusData.safe_print( text )
             
-            HydrusData.Print( traceback.format_exc() )
+            HydrusData.safe_print( traceback.format_exc() )
             
             ClientGUIDialogsMessage.ShowCritical( gui_frame, 'Popup Message Manager failure!', text )
             
-            self._update_job.Cancel()
+            self._update_job.cancel()
             
             self.CleanBeforeDestroy()
             
@@ -1066,7 +1066,7 @@ class PopupMessageManager( QW.QFrame ):
         
         if HG.started_shutdown:
             
-            self._update_job.Cancel()
+            self._update_job.cancel()
             
             self.CleanBeforeDestroy()
             
@@ -1113,7 +1113,7 @@ class PopupMessageManager( QW.QFrame ):
             
         except Exception as e:
             
-            HydrusData.Print( traceback.format_exc() )
+            HydrusData.safe_print( traceback.format_exc() )
             
         
     
@@ -1146,9 +1146,9 @@ class PopupMessageManager( QW.QFrame ):
         
         sys.excepthook = self._old_excepthook
         
-        HydrusData.ShowException = self._old_show_exception
-        HydrusData.ShowExceptionTuple = self._old_show_exception_tuple
-        HydrusData.ShowText = self._old_show_text
+        HydrusData.show_exception = self._old_show_exception
+        HydrusData.show_exception_tuple = self._old_show_exception_tuple
+        HydrusData.show_text = self._old_show_text
         
     
     def _RemovePopupWindow( self, window: PopupMessage ):
@@ -1245,7 +1245,7 @@ class PopupMessageManager( QW.QFrame ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             return True
             
@@ -1276,7 +1276,7 @@ class PopupMessageManager( QW.QFrame ):
             
         except Exception as e:
             
-            self._update_job.Cancel()
+            self._update_job.cancel()
             
             raise
             
@@ -1312,7 +1312,7 @@ class PopupMessageDialogPanel( QW.QWidget ):
         
         self._message_pubbed = False
         
-        self._update_job = CG.client_controller.CallRepeatingQtSafe( self, 0.25, 0.5, 'repeating popup dialog update', self.REPEATINGUpdate )
+        self._update_job = CG.client_controller.call_repeating_qt_safe( self, 0.25, 0.5, 'repeating popup dialog update', self.REPEATINGUpdate )
         
     
     def CleanBeforeDestroy( self ):
@@ -1474,7 +1474,7 @@ class PopupMessageDialogPanel( QW.QWidget ):
             
         except Exception as e:
             
-            self._update_job.Cancel()
+            self._update_job.cancel()
             
             raise
             
@@ -1521,6 +1521,6 @@ class PopupMessageSummaryBar( QW.QFrame ):
             
         else:
             
-            self._text.setText( HydrusNumbers.ToHumanInt(num_messages_pending)+' messages' )
+            self._text.setText( HydrusNumbers.to_human_int(num_messages_pending)+' messages' )
             
         

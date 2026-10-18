@@ -137,7 +137,7 @@ class TagSuggestionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         self._favourite_file_lookup_script = ClientGUICommon.BetterChoice( suggested_tags_file_lookup_script_panel )
         
-        script_names = sorted( CG.client_controller.Read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_PARSE_ROOT_FILE_LOOKUP ) )
+        script_names = sorted( CG.client_controller.read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_PARSE_ROOT_FILE_LOOKUP ) )
         
         if len( script_names ) == 0:
             
@@ -408,9 +408,9 @@ class TagSuggestionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         ( tag_slice, weight ) = tag_slice_and_weight
         
-        pretty_tag_slice = HydrusTags.ConvertTagSliceToPrettyString( tag_slice )
+        pretty_tag_slice = HydrusTags.convert_tag_slice_to_pretty_string( tag_slice )
         
-        pretty_weight = HydrusNumbers.ToHumanInt( weight ) + '%'
+        pretty_weight = HydrusNumbers.to_human_int( weight ) + '%'
         
         display_tuple = ( pretty_tag_slice, pretty_weight )
         
@@ -421,7 +421,7 @@ class TagSuggestionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         ( tag_slice, weight ) = tag_slice_and_weight
         
-        pretty_tag_slice = HydrusTags.ConvertTagSliceToPrettyString( tag_slice )
+        pretty_tag_slice = HydrusTags.convert_tag_slice_to_pretty_string( tag_slice )
         sort_tag_slice = pretty_tag_slice
         
         sort_tuple = ( sort_tag_slice, weight )

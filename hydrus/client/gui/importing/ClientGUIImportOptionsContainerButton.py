@@ -47,14 +47,14 @@ class SpecificImportOptionsContainerButton( ClientGUICommon.ButtonWithMenuArrow 
             return
             
         
-        json_string = import_options.DumpToString()
+        json_string = import_options.dump_to_string()
         
         CG.client_controller.pub( 'clipboard', 'text', json_string )
         
     
     def _CopyImportOptions( self ):
         
-        json_string = self._import_options_container.DumpToString()
+        json_string = self._import_options_container.dump_to_string()
         
         CG.client_controller.pub( 'clipboard', 'text', json_string )
         
@@ -103,11 +103,11 @@ class SpecificImportOptionsContainerButton( ClientGUICommon.ButtonWithMenuArrow 
         
         try:
             
-            raw_text = CG.client_controller.GetClipboardText()
+            raw_text = CG.client_controller.get_clipboard_text()
             
         except HydrusExceptions.DataMissing as e:
             
-            HydrusData.PrintException( e )
+            HydrusData.print_exception( e )
             
             ClientGUIDialogsMessage.ShowCritical( self, 'Problem pasting!', str(e) )
             
@@ -116,7 +116,7 @@ class SpecificImportOptionsContainerButton( ClientGUICommon.ButtonWithMenuArrow 
         
         try:
             
-            pasted_import_options_container = HydrusSerialisable.CreateFromString( raw_text )
+            pasted_import_options_container = HydrusSerialisable.create_from_string( raw_text )
             
             if not isinstance( pasted_import_options_container, ImportOptionsContainer.ImportOptionsContainer ):
                 
@@ -170,7 +170,7 @@ class SpecificImportOptionsContainerButton( ClientGUICommon.ButtonWithMenuArrow 
         
         names_to_favourite_options_containers = CG.client_controller.import_options_manager.GetFavouriteImportOptionContainers()
         
-        names_in_order = sorted( names_to_favourite_options_containers.keys(), key = HydrusText.HumanTextSortKey )
+        names_in_order = sorted( names_to_favourite_options_containers.keys(), key = HydrusText.human_text_sort_key )
         
         #
         
@@ -235,7 +235,7 @@ class SpecificImportOptionsContainerButton( ClientGUICommon.ButtonWithMenuArrow 
     
     def _SetValue( self, import_options_container: ImportOptionsContainer.ImportOptionsContainer ):
         
-        something_actually_changed = import_options_container.DumpToString() != self._import_options_container.DumpToString()
+        something_actually_changed = import_options_container.dump_to_string() != self._import_options_container.dump_to_string()
         
         self._import_options_container = import_options_container
         
@@ -277,7 +277,7 @@ class SpecificImportOptionsContainerButton( ClientGUICommon.ButtonWithMenuArrow 
         
         my_action = self.defaultAction()
         
-        my_action.setText( HydrusText.ElideText( label, 48 ) )
+        my_action.setText( HydrusText.elide_text( label, 48 ) )
         
         my_action.setToolTip( ClientGUIFunctions.WrapToolTip( tooltip ) )
         

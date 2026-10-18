@@ -10,13 +10,9 @@ FFMPEG_MISSING_ERROR_PUBBED = False
 FFMPEG_NO_CONTENT_ERROR_PUBBED = False
 
 if HC.PLATFORM_WINDOWS:
-    
     FFMPEG_EXE_NAME = 'ffmpeg.exe'
-    
 else:
-    
     FFMPEG_EXE_NAME = 'ffmpeg'
-    
 
 HYDRUS_BIN_FFMPEG_WAS_LOOKED_FOR = False
 HYDRUS_BIN_FFMPEG_EXISTS = False
@@ -24,7 +20,7 @@ PREFER_SYSTEM_FFMPEG = False
 
 FFMPEG_SUBPROCESS_TIMEOUT = 15
 
-def GetCurrentFFMPEGPath() -> str:
+def get_current_ffmpeg_path() -> str:
     
     if not PREFER_SYSTEM_FFMPEG:
         
@@ -47,9 +43,8 @@ def GetCurrentFFMPEGPath() -> str:
         
     
     return FFMPEG_EXE_NAME
-    
 
-def CheckFFMPEGError( lines ):
+def check_ffmpeg_error(lines):
     
     if len( lines ) == 0:
         
@@ -64,13 +59,11 @@ def CheckFFMPEGError( lines ):
     if 'Invalid data' in lines[-1]:
         
         raise HydrusExceptions.DamagedOrUnusualFileException( 'FFMPEG could not parse.' )
-        
-    
 
 # bits of this were originally cribbed from moviepy
-def GetFFMPEGInfoLines( path: str, video_stream_mapping_to_count_frames_manually: str | None = None ):
+def get_ffmpeg_info_lines(path: str, video_stream_mapping_to_count_frames_manually: str | None = None):
     
-    ffmpeg_path = GetCurrentFFMPEGPath()
+    ffmpeg_path = get_current_ffmpeg_path()
     
     # ffmpeg -i input.mp4, nice and simple
     
@@ -100,11 +93,11 @@ def GetFFMPEGInfoLines( path: str, video_stream_mapping_to_count_frames_manually
             
         
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         
-        ( stdout, stderr, returncode ) = HydrusSubprocess.RunSubprocess( cmd, timeout = FFMPEG_SUBPROCESS_TIMEOUT )
+        ( stdout, stderr, returncode ) = HydrusSubprocess.run_subprocess( cmd, timeout = FFMPEG_SUBPROCESS_TIMEOUT )
         
     except HydrusExceptions.SubprocessTimedOut:
         
@@ -112,36 +105,35 @@ def GetFFMPEGInfoLines( path: str, video_stream_mapping_to_count_frames_manually
         
     except FileNotFoundError as e:
         
-        raise HandleFFMPEGFileNotFoundAndGenerateException( e, path )
+        raise handle_ffmpeg_file_not_found_and_generate_exception( e, path )
         
     
     text = stderr
     
     if text is None or len( text ) == 0:
         
-        raise HandleFFMPEGNoContentAndGenerateException( path, stdout, stderr )
+        raise handle_ffmpeg_no_content_and_generate_exception( path, stdout, stderr )
         
     
     lines = text.splitlines()
     
     lines = [ line.strip() for line in lines ]
     
-    CheckFFMPEGError( lines )
+    check_ffmpeg_error( lines )
     
     return lines
-    
 
-def GetFFMPEGVersion():
+def getffmpeg_version():
     
-    ffmpeg_path = GetCurrentFFMPEGPath()
+    ffmpeg_path = get_current_ffmpeg_path()
     
     cmd = [ ffmpeg_path, '-version' ]
     
-    HydrusData.CheckProgramIsNotShuttingDown()
+    HydrusData.check_program_is_not_shutting_down()
     
     try:
         
-        ( stdout, stderr, returncode ) = HydrusSubprocess.RunSubprocess( cmd, timeout = FFMPEG_SUBPROCESS_TIMEOUT )
+        ( stdout, stderr, returncode ) = HydrusSubprocess.run_subprocess( cmd, timeout = FFMPEG_SUBPROCESS_TIMEOUT )
         
     except FileNotFoundError:
         
@@ -153,7 +145,7 @@ def GetFFMPEGVersion():
         
     except Exception as e:
         
-        HydrusData.ShowException( e )
+        HydrusData.show_exception( e )
         
         return 'unable to execute ffmpeg at path "{}"'.format( ffmpeg_path )
         
@@ -180,25 +172,24 @@ def GetFFMPEGVersion():
     
     message = 'FFMPEG was recently contacted to fetch version information. While FFMPEG could be found, the response could not be understood. Significant debug information has been printed to the log, which hydrus_dev would be interested in.'
     
-    HydrusData.ShowText( message )
+    HydrusData.show_text( message )
     
     message += '\n' * 2
     message += 'STDOUT Response: {}'.format( stdout )
     message += '\n' * 2
     message += 'STDERR Response: {}'.format( stderr )
     
-    HydrusData.Print( message )
+    HydrusData.safe_print( message )
     
-    HydrusEnvironment.DumpEnv()
+    HydrusEnvironment.dump_env()
     
     global FFMPEG_NO_CONTENT_ERROR_PUBBED
     
     FFMPEG_NO_CONTENT_ERROR_PUBBED = True
     
     return 'unknown'
-    
 
-def HandleFFMPEGFileNotFoundAndGenerateException( e, path ):
+def handle_ffmpeg_file_not_found_and_generate_exception(e, path):
     
     global FFMPEG_MISSING_ERROR_PUBBED
     
@@ -219,15 +210,14 @@ def HandleFFMPEGFileNotFoundAndGenerateException( e, path ):
         message += '\n' * 2
         message += 'You can check your current FFMPEG status through help->about.'
         
-        HydrusData.ShowText( message )
+        HydrusData.show_text( message )
         
         FFMPEG_MISSING_ERROR_PUBBED = True
         
     
     return FileNotFoundError( 'Cannot interact with media because FFMPEG not found--are you sure it is installed? Full error: ' + str( e ) )
-    
 
-def HandleFFMPEGNoContentAndGenerateException( path, stdout, stderr ):
+def handle_ffmpeg_no_content_and_generate_exception(path, stdout, stderr):
     
     global FFMPEG_NO_CONTENT_ERROR_PUBBED
     
@@ -235,19 +225,18 @@ def HandleFFMPEGNoContentAndGenerateException( path, stdout, stderr ):
         
         message = f'FFMPEG, which hydrus uses to parse and render some media, and here was trying to look at "{path}", did not return any data on a recent file metadata check! More debug info has been written to the log.'
         
-        HydrusData.ShowText( message )
+        HydrusData.show_text( message )
         
         message += '\n' * 2
         message += 'STDOUT Response: {}'.format( stdout )
         message += '\n' * 2
         message += 'STDERR Response: {}'.format( stderr )
         
-        HydrusData.DebugPrint( message )
+        HydrusData.debug_print( message )
         
-        HydrusEnvironment.DumpEnv()
+        HydrusEnvironment.dump_env()
         
         FFMPEG_NO_CONTENT_ERROR_PUBBED = True
         
     
     return HydrusExceptions.DataMissing( 'Cannot interact with media because FFMPEG did not return any content.' )
-    

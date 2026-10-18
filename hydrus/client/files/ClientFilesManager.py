@@ -65,7 +65,7 @@ class ClientFilesManager( object ):
         
         if HG.file_report_mode or HG.file_import_report_mode:
             
-            HydrusData.ShowText( 'Adding file to client file structure: from {} to {}'.format( source_path, dest_path ) )
+            HydrusData.show_text( 'Adding file to client file structure: from {} to {}'.format( source_path, dest_path ) )
             
         
         file_size = os.path.getsize( source_path )
@@ -74,9 +74,9 @@ class ClientFilesManager( object ):
         
         if dest_free_space < 100 * 1048576 or dest_free_space < file_size:
             
-            message = 'The disk for path "{}" is almost full and cannot take the file "{}", which is {}! Shut the client down now and fix this!'.format( dest_path, hash.hex(), HydrusData.ToHumanBytes( file_size ) )
+            message = 'The disk for path "{}" is almost full and cannot take the file "{}", which is {}! Shut the client down now and fix this!'.format( dest_path, hash.hex(), HydrusData.to_human_bytes( file_size ) )
             
-            HydrusData.ShowText( message )
+            HydrusData.show_text( message )
             
             self._HandleCriticalDriveError()
             
@@ -85,22 +85,22 @@ class ClientFilesManager( object ):
         
         try:
             
-            HydrusPaths.MirrorFile( source_path, dest_path )
+            HydrusPaths.mirror_file( source_path, dest_path )
             
         except Exception as e:
             
             message = f'Copying the file from "{source_path}" to "{dest_path}" failed! Details should be shown and other import queues should be paused. You should shut the client down now and fix this!'
             
-            HydrusData.ShowText( message )
+            HydrusData.show_text( message )
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             self._HandleCriticalDriveError()
             
             raise Exception( message ) from e
             
         
-        HydrusPaths.TryToGiveFileNicePermissionBits( dest_path )
+        HydrusPaths.try_to_give_File_nice_permission_bits( dest_path )
         
     
     def _AddThumbnailFromBytes( self, hash, thumbnail_bytes, silent = False ):
@@ -109,12 +109,12 @@ class ClientFilesManager( object ):
         
         if HG.file_report_mode:
             
-            HydrusData.ShowText( 'Adding thumbnail: ' + str( ( len( thumbnail_bytes ), dest_path ) ) )
+            HydrusData.show_text( 'Adding thumbnail: ' + str( ( len( thumbnail_bytes ), dest_path ) ) )
             
         
         try:
             
-            HydrusPaths.TryToGiveFileNicePermissionBits( dest_path )
+            HydrusPaths.try_to_give_File_nice_permission_bits( dest_path )
             
             with open( dest_path, 'wb' ) as f:
                 
@@ -151,7 +151,7 @@ class ClientFilesManager( object ):
         
         known_base_locations = self._GetCurrentSubfolderBaseLocations()
         
-        ( media_base_locations, thumbnail_override_base_location ) = self._controller.Read( 'ideal_client_files_locations' )
+        ( media_base_locations, thumbnail_override_base_location ) = self._controller.read( 'ideal_client_files_locations' )
         
         known_base_locations.update( media_base_locations )
         
@@ -202,12 +202,12 @@ class ClientFilesManager( object ):
             
             message = 'Hydrus found multiple missing locations in your file storage. Some of these locations seemed to be fixable, others did not. The client will now inform you about both problems.'
             
-            self._controller.BlockingSafeShowCriticalMessage( 'Multiple file location problems.', message )
+            self._controller.blocking_safe_show_critical_message( 'Multiple file location problems.', message )
             
         
         if len( correct_rows ) > 0:
             
-            summaries = sorted( ( '{} folders seem to have moved from {} to {}'.format( HydrusNumbers.ToHumanInt( count ), missing_base_location, correct_base_location ) for ( ( missing_base_location, correct_base_location ), count ) in fixes_counter.items() ) )
+            summaries = sorted( ( '{} folders seem to have moved from {} to {}'.format( HydrusNumbers.to_human_int( count ), missing_base_location, correct_base_location ) for ( ( missing_base_location, correct_base_location ), count ) in fixes_counter.items() ) )
             
             summary_message = 'Some client file folders were missing, but they appear to be in other known locations! The folders are:'
             summary_message += '\n' * 2
@@ -215,11 +215,11 @@ class ClientFilesManager( object ):
             summary_message += '\n' * 2
             summary_message += 'Assuming you did this on purpose, or hydrus recently inserted stub values after database corruption, Hydrus is ready to update its internal knowledge to reflect these new mappings as soon as this dialog closes. If you know these proposed fixes are incorrect, terminate the program now.'
             
-            HydrusData.Print( summary_message )
+            HydrusData.safe_print( summary_message )
             
-            self._controller.BlockingSafeShowCriticalMessage( 'About to auto-heal client file folders.', summary_message )
+            self._controller.blocking_safe_show_critical_message( 'About to auto-heal client file folders.', summary_message )
             
-            CG.client_controller.WriteSynchronous( 'repair_client_files', correct_rows )
+            CG.client_controller.write_synchronous( 'repair_client_files', correct_rows )
             
         
     
@@ -237,27 +237,27 @@ class ClientFilesManager( object ):
         
         if HG.file_report_mode:
             
-            HydrusData.ShowText( 'Changing file ext: ' + str( ( old_path, new_path ) ) )
+            HydrusData.show_text( 'Changing file ext: ' + str( ( old_path, new_path ) ) )
             
         
-        if HydrusPaths.PathIsFree( old_path ):
+        if HydrusPaths.path_is_free( old_path ):
             
             try:
                 
-                HydrusPaths.MergeFile( old_path, new_path )
+                HydrusPaths.merge_file( old_path, new_path )
                 
                 needed_to_copy_file = False
                 
             except Exception as e:
                 
-                HydrusPaths.MirrorFile( old_path, new_path )
+                HydrusPaths.mirror_file( old_path, new_path )
                 
                 needed_to_copy_file = True
                 
             
         else:
             
-            HydrusPaths.MirrorFile( old_path, new_path )
+            HydrusPaths.mirror_file( old_path, new_path )
             
             needed_to_copy_file = True
             
@@ -267,7 +267,7 @@ class ClientFilesManager( object ):
     
     def _DoMissingLocationsCheck( self ):
         
-        if CG.client_controller.IsFirstStart():
+        if CG.client_controller.is_first_start():
             
             try:
                 
@@ -283,13 +283,13 @@ class ClientFilesManager( object ):
                     
                     try:
                         
-                        HydrusPaths.MakeSureDirectoryExists( dir_to_test )
+                        HydrusPaths.make_sure_directory_exists( dir_to_test )
                         
                     except Exception as e:
                         
                         text = 'Attempting to create the database\'s client_files folder structure in {} failed!'.format( dir_to_test )
                         
-                        self._controller.BlockingSafeShowCriticalMessage( 'unable to create file structure', text )
+                        self._controller.blocking_safe_show_critical_message( 'unable to create file structure', text )
                         
                         raise
                         
@@ -299,7 +299,7 @@ class ClientFilesManager( object ):
                 
                 text = 'Attempting to create the database\'s client_files folder structure failed!'
                 
-                self._controller.BlockingSafeShowCriticalMessage( 'unable to create file structure', text )
+                self._controller.blocking_safe_show_critical_message( 'unable to create file structure', text )
                 
                 raise
                 
@@ -323,7 +323,7 @@ class ClientFilesManager( object ):
                 
                 #
                 
-                missing_dict = HydrusData.BuildKeyToListDict( [ ( subfolder.base_location, subfolder.prefix ) for subfolder in self._missing_subfolders ] )
+                missing_dict = HydrusData.build_key_to_list_dict( [ ( subfolder.base_location, subfolder.prefix ) for subfolder in self._missing_subfolders ] )
                 
                 missing_base_locations = sorted( missing_dict.keys(), key = lambda b_l: b_l.path )
                 
@@ -333,7 +333,7 @@ class ClientFilesManager( object ):
                     
                     missing_prefixes = sorted( missing_dict[ missing_base_location ] )
                     
-                    missing_prefixes_string = '    ' + '\n'.join( ( ', '.join( block ) for block in HydrusLists.SplitListIntoChunks( missing_prefixes, 32 ) ) )
+                    missing_prefixes_string = '    ' + '\n'.join( ( ', '.join( block ) for block in HydrusLists.split_list_into_chunks( missing_prefixes, 32 ) ) )
                     
                     missing_string += '\n'
                     missing_string += str( missing_base_location )
@@ -345,14 +345,14 @@ class ClientFilesManager( object ):
                 
                 if len( self._missing_subfolders ) > 4:
                     
-                    HydrusData.DebugPrint( 'Missing locations follow:' )
-                    HydrusData.DebugPrint( missing_string )
+                    HydrusData.debug_print( 'Missing locations follow:' )
+                    HydrusData.debug_print( missing_string )
                     
                     text = 'When initialising the client files manager, some file locations either did not exist or were not available! They have all been written to the log!'
                     text += '\n' * 2
                     text += 'If this is happening on client boot, you should now be presented with a dialog to correct this manually!'
                     
-                    self._controller.BlockingSafeShowCriticalMessage( 'missing locations', text )
+                    self._controller.blocking_safe_show_critical_message( 'missing locations', text )
                     
                 else:
                     
@@ -362,7 +362,7 @@ class ClientFilesManager( object ):
                     text += '\n' * 2
                     text += 'If this is happening on client boot, you should now be presented with a dialog to correct this manually!'
                     
-                    self._controller.BlockingSafeShowCriticalMessage( 'missing locations', text )
+                    self._controller.blocking_safe_show_critical_message( 'missing locations', text )
                     
                 
             
@@ -404,13 +404,13 @@ class ClientFilesManager( object ):
         thumbnail_scale_type = self._controller.new_options.GetInteger( 'thumbnail_scale_type' )
         thumbnail_dpr_percent = CG.client_controller.new_options.GetInteger( 'thumbnail_dpr_percent' )
         
-        target_resolution = HydrusImageHandling.GetThumbnailResolution( ( width, height ), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
+        target_resolution = HydrusImageHandling.get_thumbnail_resolution( ( width, height ), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
         
         percentage_in = self._controller.new_options.GetInteger( 'video_thumbnail_percentage_in' )
         
         try:
             
-            thumbnail_bytes = HydrusFileHandling.GenerateThumbnailBytes( file_path, target_resolution, mime, duration_ms, num_frames, percentage_in = percentage_in )
+            thumbnail_bytes = HydrusFileHandling.generate_thumbnail_bytes( file_path, target_resolution, mime, duration_ms, num_frames, percentage_in = percentage_in )
             
         except Exception as e:
             
@@ -471,28 +471,28 @@ class ClientFilesManager( object ):
                 check_period = 60
                 
             
-            if HydrusTime.TimeHasPassed( time_fetched + check_period ):
+            if HydrusTime.time_has_passed( time_fetched + check_period ):
                 
-                free_space = HydrusPaths.GetFreeSpace( base_location.path )
+                free_space = HydrusPaths.get_free_space( base_location.path )
                 
                 if free_space is None:
                     
                     free_space = 0
                     
                 
-                self._locations_to_free_space[ base_location ] = ( free_space, HydrusTime.GetNow() )
+                self._locations_to_free_space[ base_location ] = ( free_space, HydrusTime.get_now() )
                 
             
         else:
             
-            free_space = HydrusPaths.GetFreeSpace( base_location.path )
+            free_space = HydrusPaths.get_free_space( base_location.path )
             
             if free_space is None:
                 
                 free_space = 0
                 
             
-            self._locations_to_free_space[ base_location ] = ( free_space, HydrusTime.GetNow() )
+            self._locations_to_free_space[ base_location ] = ( free_space, HydrusTime.get_now() )
             
         
         return free_space
@@ -509,7 +509,7 @@ class ClientFilesManager( object ):
     
     def _GetPossibleSubfoldersForFile( self, hash: bytes, prefix_type: str ) -> list[ ClientFilesPhysical.FilesStorageSubfolder ]:
         
-        prefix = HydrusFilesPhysicalStorage.GetPrefix( hash, prefix_type, self._current_granularity )
+        prefix = HydrusFilesPhysicalStorage.get_prefix( hash, prefix_type, self._current_granularity )
         
         if prefix in self._prefixes_to_client_files_subfolders:
             
@@ -524,7 +524,7 @@ class ClientFilesManager( object ):
         You can only call this guy if you have the total lock already!
         """
         
-        prefix = HydrusFilesPhysicalStorage.GetPrefix( hash, prefix_type, self._current_granularity )
+        prefix = HydrusFilesPhysicalStorage.get_prefix( hash, prefix_type, self._current_granularity )
         
         return self._prefixes_to_rwlocks[ prefix ]
         
@@ -537,14 +537,14 @@ class ClientFilesManager( object ):
             # In general, I think this thing is going to determine the next migration destination and purge flag
             # the background file migrator will work on current purge flags and not talk to this guy until the current flags are clear 
             
-            ( ideal_media_base_locations, ideal_thumbnail_override_base_location ) = self._controller.Read( 'ideal_client_files_locations' )
+            ( ideal_media_base_locations, ideal_thumbnail_override_base_location ) = self._controller.read( 'ideal_client_files_locations' )
             
             if False in ( base_location.PathExists() for base_location in ideal_media_base_locations ) or ( ideal_thumbnail_override_base_location is not None and not ideal_thumbnail_override_base_location.PathExists() ):
                 
                 return None
                 
             
-            service_info = CG.client_controller.Read( 'service_info', CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY )
+            service_info = CG.client_controller.read( 'service_info', CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY )
             
             hydrus_local_file_storage_total_size = service_info[ HC.SERVICE_INFO_TOTAL_SIZE ]
             
@@ -776,9 +776,9 @@ class ClientFilesManager( object ):
             
         except Exception as e:
             
-            HydrusData.ShowText( 'Hey while calculating a potential rebalance job for the file migration system, I encountered this error. Please forward to hydev! Anonymising paths is fine, I just need to see the code.' )
+            HydrusData.show_text( 'Hey while calculating a potential rebalance job for the file migration system, I encountered this error. Please forward to hydev! Anonymising paths is fine, I just need to see the code.' )
             
-            HydrusData.ShowException( e, do_wait = False )
+            HydrusData.show_exception( e, do_wait = False )
             
             return None
             
@@ -805,7 +805,7 @@ class ClientFilesManager( object ):
         self._controller.new_options.SetBoolean( 'pause_subs_sync', True )
         self._controller.new_options.SetBoolean( 'pause_all_file_queues', True )
         
-        HydrusData.ShowText( 'A critical drive error has occurred. All importers--subscriptions, import folders, and paged file import queues--have been paused. Once the issue is clear, restart the client and resume your imports under the file and network menus!' )
+        HydrusData.show_text( 'A critical drive error has occurred. All importers--subscriptions, import folders, and paged file import queues--have been paused. Once the issue is clear, restart the client and resume your imports under the file and network menus!' )
         
         self._controller.pub( 'notify_refresh_network_menu' )
         self._controller.pub( 'notify_new_import_folders' )
@@ -845,7 +845,7 @@ class ClientFilesManager( object ):
     
     def _ReinitSubfolders( self ):
         
-        ( self._current_granularity, subfolders ) = self._controller.Read( 'client_files_subfolders' )
+        ( self._current_granularity, subfolders ) = self._controller.read( 'client_files_subfolders' )
         
         self._prefixes_to_client_files_subfolders = collections.defaultdict( list )
         
@@ -866,9 +866,9 @@ class ClientFilesManager( object ):
         
         if CG.client_controller.new_options.GetBoolean( 'file_system_waits_on_wakeup' ):
             
-            while CG.client_controller.JustWokeFromSleep():
+            while CG.client_controller.just_woke_from_sleep():
                 
-                HydrusThreading.CheckIfThreadShuttingDown()
+                HydrusThreading.check_if_thread_shutting_down()
                 
                 time.sleep( 1.0 )
                 
@@ -879,7 +879,7 @@ class ClientFilesManager( object ):
         
         with self._master_locations_rwlock.read:
             
-            db_dir = self._controller.GetDBDir()
+            db_dir = self._controller.get_db_dir()
             
             client_files_default = os.path.join( db_dir, 'client_files' )
             
@@ -895,12 +895,12 @@ class ClientFilesManager( object ):
         
         if HG.file_report_mode:
             
-            HydrusData.ShowText( 'Adding file from string: ' + str( ( len( file_bytes ), dest_path ) ) )
+            HydrusData.show_text( 'Adding file from string: ' + str( ( len( file_bytes ), dest_path ) ) )
             
         
         if os.path.exists( dest_path ):
             
-            HydrusPaths.TryToGiveFileNicePermissionBits( dest_path )
+            HydrusPaths.try_to_give_File_nice_permission_bits( dest_path )
             
         
         with open( dest_path, 'wb' ) as f:
@@ -908,7 +908,7 @@ class ClientFilesManager( object ):
             f.write( file_bytes )
             
         
-        HydrusPaths.TryToGiveFileNicePermissionBits( dest_path )
+        HydrusPaths.try_to_give_File_nice_permission_bits( dest_path )
         
     
     def AddFile( self, hash, mime, source_path, thumbnail_bytes = None ):
@@ -966,7 +966,7 @@ class ClientFilesManager( object ):
             
             thumbnails_move_location = os.path.join( move_location, 'thumbnails' )
             
-            HydrusPaths.MakeSureDirectoryExists( thumbnails_move_location )
+            HydrusPaths.make_sure_directory_exists( thumbnails_move_location )
             
         
         with self._master_locations_rwlock.read:
@@ -1007,7 +1007,7 @@ class ClientFilesManager( object ):
                                 
                                 if num_files_reviewed % 100 == 0:
                                     
-                                    status = 'reviewed ' + HydrusNumbers.ToHumanInt( num_files_reviewed ) + ' files, found ' + HydrusNumbers.ToHumanInt( len( orphan_paths ) ) + ' orphans'
+                                    status = 'reviewed ' + HydrusNumbers.to_human_int( num_files_reviewed ) + ' files, found ' + HydrusNumbers.to_human_int( len( orphan_paths ) ) + ' orphans'
                                     
                                     job_status.SetStatusText( status, level = 2 )
                                     
@@ -1016,7 +1016,7 @@ class ClientFilesManager( object ):
                                 
                                 if num_thumbnails_reviewed % 100 == 0:
                                     
-                                    status = 'reviewed ' + HydrusNumbers.ToHumanInt( num_thumbnails_reviewed ) + ' thumbnails, found ' + HydrusNumbers.ToHumanInt( len( orphan_thumbnails ) ) + ' orphans'
+                                    status = 'reviewed ' + HydrusNumbers.to_human_int( num_thumbnails_reviewed ) + ' thumbnails, found ' + HydrusNumbers.to_human_int( len( orphan_thumbnails ) ) + ' orphans'
                                     
                                     job_status.SetStatusText( status, level = 2 )
                                     
@@ -1032,7 +1032,7 @@ class ClientFilesManager( object ):
                                 
                                 orphan_type = 'file' if subfolder.IsForFiles() else 'thumbnail'
                                 
-                                is_an_orphan = CG.client_controller.Read( 'is_an_orphan', orphan_type, hash )
+                                is_an_orphan = CG.client_controller.read( 'is_an_orphan', orphan_type, hash )
                                 
                             except Exception as e:
                                 
@@ -1054,19 +1054,19 @@ class ClientFilesManager( object ):
                                         dest = os.path.join( thumbnails_move_location, filename )
                                         
                                     
-                                    dest = HydrusPaths.AppendPathUntilNoConflicts( dest )
+                                    dest = HydrusPaths.append_path_until_no_conflicts( dest )
                                     
-                                    HydrusData.Print( 'Moving the orphan ' + path + ' to ' + dest )
+                                    HydrusData.safe_print( 'Moving the orphan ' + path + ' to ' + dest )
                                     
                                     try:
                                         
-                                        HydrusPaths.MergeFile( path, dest )
+                                        HydrusPaths.merge_file( path, dest )
                                         
                                     except Exception as e:
                                         
-                                        HydrusData.ShowText( f'Had trouble moving orphan from {path} to {dest}! Abandoning job!' )
+                                        HydrusData.show_text( f'Had trouble moving orphan from {path} to {dest}! Abandoning job!' )
                                         
-                                        HydrusData.ShowException( e, do_wait = False )
+                                        HydrusData.show_exception( e, do_wait = False )
                                         
                                         job_status.Cancel()
                                         
@@ -1106,7 +1106,7 @@ class ClientFilesManager( object ):
                 
                 if len( orphan_paths ) > 0:
                     
-                    status = 'found ' + HydrusNumbers.ToHumanInt( len( orphan_paths ) ) + ' orphan files, now deleting'
+                    status = 'found ' + HydrusNumbers.to_human_int( len( orphan_paths ) ) + ' orphan files, now deleting'
                     
                     job_status.SetStatusText( status )
                     
@@ -1121,9 +1121,9 @@ class ClientFilesManager( object ):
                             return
                             
                         
-                        HydrusData.Print( 'Deleting the orphan ' + path )
+                        HydrusData.safe_print( 'Deleting the orphan ' + path )
                         
-                        status = 'deleting orphan files: ' + HydrusNumbers.ValueRangeToPrettyString( i + 1, len( orphan_paths ) )
+                        status = 'deleting orphan files: ' + HydrusNumbers.value_range_to_pretty_string( i + 1, len( orphan_paths ) )
                         
                         job_status.SetStatusText( status )
                         
@@ -1133,7 +1133,7 @@ class ClientFilesManager( object ):
                 
                 if len( orphan_thumbnails ) > 0:
                     
-                    status = 'found ' + HydrusNumbers.ToHumanInt( len( orphan_thumbnails ) ) + ' orphan thumbnails, now deleting'
+                    status = 'found ' + HydrusNumbers.to_human_int( len( orphan_thumbnails ) ) + ' orphan thumbnails, now deleting'
                     
                     job_status.SetStatusText( status )
                     
@@ -1148,9 +1148,9 @@ class ClientFilesManager( object ):
                             return
                             
                         
-                        HydrusData.Print( 'Deleting the orphan ' + path )
+                        HydrusData.safe_print( 'Deleting the orphan ' + path )
                         
-                        status = 'deleting orphan thumbnails: ' + HydrusNumbers.ValueRangeToPrettyString( i + 1, len( orphan_thumbnails ) )
+                        status = 'deleting orphan thumbnails: ' + HydrusNumbers.value_range_to_pretty_string( i + 1, len( orphan_thumbnails ) )
                         
                         job_status.SetStatusText( status )
                         
@@ -1165,14 +1165,14 @@ class ClientFilesManager( object ):
                 
             else:
                 
-                final_text = HydrusNumbers.ToHumanInt( len( orphan_paths ) ) + ' orphan files and ' + HydrusNumbers.ToHumanInt( len( orphan_thumbnails ) ) + ' orphan thumbnails cleared!'
+                final_text = HydrusNumbers.to_human_int( len( orphan_paths ) ) + ' orphan files and ' + HydrusNumbers.to_human_int( len( orphan_thumbnails ) ) + ' orphan thumbnails cleared!'
                 
             
             job_status.SetStatusText( final_text )
             
-            HydrusData.Print( job_status.ToString() )
+            HydrusData.safe_print( job_status.ToString() )
             
-            job_status.Finish()
+            job_status.finish()
             
         
     
@@ -1207,11 +1207,11 @@ class ClientFilesManager( object ):
                     
                     if os.path.exists( incorrect_path ):
                         
-                        delete_ok = HydrusPaths.DeletePath( incorrect_path )
+                        delete_ok = HydrusPaths.delete_path( incorrect_path )
                         
                         if not delete_ok and random.randint( 1, 52 ) != 52:
                             
-                            self._controller.WriteSynchronous( 'file_maintenance_add_jobs_hashes', { hash }, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_DELETE_NEIGHBOUR_DUPES, HydrusTime.GetNow() + ( 7 * 86400 ) )
+                            self._controller.write_synchronous( 'file_maintenance_add_jobs_hashes', { hash }, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_DELETE_NEIGHBOUR_DUPES, HydrusTime.get_now() + ( 7 * 86400 ) )
                             
                         
                     
@@ -1226,12 +1226,12 @@ class ClientFilesManager( object ):
             return
             
         
-        if not self._controller.CurrentlyIdle() and not self._controller.new_options.GetBoolean( 'deferred_file_deletes_in_normal_time' ):
+        if not self._controller.currently_idle() and not self._controller.new_options.GetBoolean( 'deferred_file_deletes_in_normal_time' ):
             
             return
             
         
-        wait_period = HydrusTime.SecondiseMSFloat( self._controller.new_options.GetInteger( 'ms_to_wait_between_physical_file_deletes' ) )
+        wait_period = HydrusTime.secondise_ms_float( self._controller.new_options.GetInteger( 'ms_to_wait_between_physical_file_deletes' ) )
         
         num_files_deleted = 0
         num_thumbnails_deleted = 0
@@ -1240,7 +1240,7 @@ class ClientFilesManager( object ):
             
             with self._master_locations_rwlock.read:
                 
-                ( file_hash, thumbnail_hash ) = self._controller.Read( 'deferred_physical_delete' )
+                ( file_hash, thumbnail_hash ) = self._controller.read( 'deferred_physical_delete' )
                 
                 if file_hash is None and thumbnail_hash is None:
                     
@@ -1251,7 +1251,7 @@ class ClientFilesManager( object ):
                     
                     with self._GetPrefixRWLock( file_hash, 'f' ).write:
                         
-                        media_result = self._controller.Read( 'media_result', file_hash )
+                        media_result = self._controller.read( 'media_result', file_hash )
                         
                         expected_mime = media_result.GetMime()
                         
@@ -1277,7 +1277,7 @@ class ClientFilesManager( object ):
                             
                         except HydrusExceptions.FileMissingException:
                             
-                            HydrusData.Print( 'Wanted to physically delete the "{}" file, with expected mime "{}", but it was not found!'.format( file_hash.hex(), HC.mime_string_lookup[ expected_mime ] ) )
+                            HydrusData.safe_print( 'Wanted to physically delete the "{}" file, with expected mime "{}", but it was not found!'.format( file_hash.hex(), HC.mime_string_lookup[ expected_mime ] ) )
                             
                         
                     
@@ -1297,7 +1297,7 @@ class ClientFilesManager( object ):
                         
                     
                 
-                self._controller.WriteSynchronous( 'clear_deferred_physical_delete', file_hash = file_hash, thumbnail_hash = thumbnail_hash )
+                self._controller.write_synchronous( 'clear_deferred_physical_delete', file_hash = file_hash, thumbnail_hash = thumbnail_hash )
                 
                 if num_files_deleted % 10 == 0 or num_thumbnails_deleted % 10 == 0:
                     
@@ -1314,7 +1314,7 @@ class ClientFilesManager( object ):
             
             self._controller.pub( 'notify_new_physical_file_delete_numbers' )
             
-            HydrusData.Print( 'Physically deleted {} files and {} thumbnails from file storage.'.format( HydrusNumbers.ToHumanInt( num_files_deleted ), HydrusNumbers.ToHumanInt( num_files_deleted ) ) )
+            HydrusData.safe_print( 'Physically deleted {} files and {} thumbnails from file storage.'.format( HydrusNumbers.to_human_int( num_files_deleted ), HydrusNumbers.to_human_int( num_files_deleted ) ) )
             
         
     
@@ -1344,7 +1344,7 @@ class ClientFilesManager( object ):
             
             if HG.file_report_mode:
                 
-                HydrusData.ShowText( 'File path request: ' + str( ( hash, mime ) ) )
+                HydrusData.show_text( 'File path request: ' + str( ( hash, mime ) ) )
                 
             
             with self._GetPrefixRWLock( hash, 'f' ).read:
@@ -1401,7 +1401,7 @@ class ClientFilesManager( object ):
         
         if HG.file_report_mode:
             
-            HydrusData.ShowText( 'Thumbnail path request: ' + str( ( hash, mime ) ) )
+            HydrusData.show_text( 'Thumbnail path request: ' + str( ( hash, mime ) ) )
             
         
         with self._master_locations_rwlock.read:
@@ -1426,7 +1426,7 @@ class ClientFilesManager( object ):
         
         with self._master_locations_rwlock.write:
             
-            granularise_result = CG.client_controller.WriteSynchronous( 'granularise', job_status, starting_granularity, ending_granularity )
+            granularise_result = CG.client_controller.write_synchronous( 'granularise', job_status, starting_granularity, ending_granularity )
             
             self._Reinit()
             
@@ -1440,7 +1440,7 @@ class ClientFilesManager( object ):
         
         if HG.file_report_mode:
             
-            HydrusData.ShowText( 'File path test: ' + path )
+            HydrusData.show_text( 'File path test: ' + path )
             
         
         return os.path.exists( path )
@@ -1452,7 +1452,7 @@ class ClientFilesManager( object ):
         
         if HG.file_report_mode:
             
-            HydrusData.ShowText( 'Thumbnail path test: ' + path )
+            HydrusData.show_text( 'Thumbnail path test: ' + path )
             
         
         return os.path.exists( path )
@@ -1464,7 +1464,7 @@ class ClientFilesManager( object ):
             
             if self._bad_error_occurred:
                 
-                HydrusData.ShowText( 'A serious file error has previously occurred during this session, so further file moving will not be reattempted. Please restart the client before trying again.' )
+                HydrusData.show_text( 'A serious file error has previously occurred during this session, so further file moving will not be reattempted. Please restart the client before trying again.' )
                 
                 return
                 
@@ -1484,12 +1484,12 @@ class ClientFilesManager( object ):
                     
                     text = f'Moving "{source_subfolder}" to "{dest_subfolder}".'
                     
-                    HydrusData.Print( text )
+                    HydrusData.safe_print( text )
                     
                     job_status.SetStatusText( text )
                     
                     # these two lines can cause a deadlock because the db sometimes calls stuff in here.
-                    self._controller.WriteSynchronous( 'relocate_client_files', source_subfolder, dest_subfolder )
+                    self._controller.write_synchronous( 'relocate_client_files', source_subfolder, dest_subfolder )
                     
                     self._Reinit()
                     
@@ -1577,17 +1577,17 @@ class ClientFilesManager( object ):
                 raise Exception()
                 
             
-            thumbnail_mime = HydrusFileHandling.GetThumbnailMime( path )
+            thumbnail_mime = HydrusFileHandling.get_thumbnail_mime( path )
             
-            numpy_image = HydrusImageHandling.GenerateNumPyImage( path, thumbnail_mime )
+            numpy_image = HydrusImageHandling.generate_numpy_image( path, thumbnail_mime )
             
-            ( current_width, current_height ) = HydrusImageHandling.GetResolutionNumPy( numpy_image )
+            ( current_width, current_height ) = HydrusImageHandling.get_resolution_numpy( numpy_image )
             
             bounding_dimensions = self._controller.options[ 'thumbnail_dimensions' ]
             thumbnail_scale_type = self._controller.new_options.GetInteger( 'thumbnail_scale_type' )
             thumbnail_dpr_percent = CG.client_controller.new_options.GetInteger( 'thumbnail_dpr_percent' )
             
-            ( expected_width, expected_height ) = HydrusImageHandling.GetThumbnailResolution( (media_width, media_height), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
+            ( expected_width, expected_height ) = HydrusImageHandling.get_thumbnail_resolution( (media_width, media_height), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
             
             if current_width != expected_width or current_height != expected_height:
                 
@@ -1632,17 +1632,17 @@ class ClientFilesManager( object ):
                     existing_modified_time = os.path.getmtime( path )
                     
                     # floats are ok here!
-                    modified_timestamp = HydrusTime.SecondiseMSFloat( modified_timestamp_ms )
+                    modified_timestamp = HydrusTime.secondise_ms_float( modified_timestamp_ms )
                     
                     try:
                         
                         os.utime( path, ( existing_access_time, modified_timestamp ) )
                         
-                        HydrusData.Print( 'Successfully changed modified time of "{}" from {} to {}.'.format( path, HydrusTime.TimestampToPrettyTime( int( existing_modified_time ) ), HydrusTime.TimestampToPrettyTime( int( modified_timestamp ) ) ))
+                        HydrusData.safe_print( 'Successfully changed modified time of "{}" from {} to {}.'.format( path, HydrusTime.timestamp_to_pretty_time( int( existing_modified_time ) ), HydrusTime.timestamp_to_pretty_time( int( modified_timestamp ) ) ))
                         
                     except PermissionError:
                         
-                        HydrusData.Print( 'Tried to set modified time of {} to file "{}", but did not have permission!'.format( HydrusTime.TimestampToPrettyTime( int( modified_timestamp ) ), path ) )
+                        HydrusData.safe_print( 'Tried to set modified time of {} to file "{}", but did not have permission!'.format( HydrusTime.timestamp_to_pretty_time( int( modified_timestamp ) ), path ) )
                         
                     
                 

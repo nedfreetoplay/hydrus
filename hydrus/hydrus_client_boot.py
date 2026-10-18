@@ -36,9 +36,9 @@ try:
     
     from hydrus.core import HydrusBoot
     
-    HydrusBoot.AddBaseDirToEnvPath()
+    HydrusBoot.add_base_dir_to_env_path()
     
-    HydrusBoot.DoPreImportEnvWork()
+    HydrusBoot.do_pre_import_env_work()
     
     # initialise Qt here, important it is done early
     from hydrus.client.gui import QtInit
@@ -75,7 +75,7 @@ try:
     
     result = argparser.parse_args()
     
-    db_dir = HydrusPaths.FigureOutDBDir( result.db_dir )
+    db_dir = HydrusPaths.figure_out_db_dir( result.db_dir )
     
     HG.db_journal_mode = result.db_journal_mode
     
@@ -144,7 +144,7 @@ try:
         
         from hydrus.core import HydrusProfiling
         
-        HydrusProfiling.StartProfileMode( 'db' )
+        HydrusProfiling.start_profile_mode( 'db' )
         
     
     HG.boot_with_network_traffic_paused_command_line = result.pause_network_traffic
@@ -170,9 +170,9 @@ try:
     
     if result.temp_dir is not None:
         
-        temp_dir = HydrusPaths.FigureOutTempDir( result.temp_dir )
+        temp_dir = HydrusPaths.figure_out_temp_dir( result.temp_dir )
         
-        HydrusTemp.SetEnvTempDir( temp_dir )
+        HydrusTemp.set_env_temp_dir( temp_dir )
         
     
 except Exception as e:
@@ -185,8 +185,8 @@ except Exception as e:
     
     try:
         
-        HydrusData.DebugPrint( title )
-        HydrusData.PrintException( e )
+        HydrusData.debug_print( title )
+        HydrusData.print_exception( e )
         
     except Exception as e:
         
@@ -230,25 +230,19 @@ except Exception as e:
         
         from hydrus.client.gui import ClientGUIDialogsMessage
         
-        ClientGUIDialogsMessage.ShowCritical( None, title, str( e ) )
-        ClientGUIDialogsMessage.ShowCritical( None, title, 'Here is the full error:\n\n' + traceback.format_exc() )
+        ClientGUIDialogsMessage.ShowCritical(None, title, str(e))
+        ClientGUIDialogsMessage.ShowCritical(None, title, 'Here is the full error:\n\n' + traceback.format_exc())
         
-    except Exception as e:
-        
+    except Exception:
         message = 'Could not start up Qt to show the error visually!'
         
         try:
+            HydrusData.safe_print(message)
             
-            HydrusData.Print( message )
-            
-        except Exception as e:
-            
+        except Exception:
             print( message )
-            
-        
     
-    sys.exit( 1 )
-    
+    sys.exit(1)
 
 def boot():
     
@@ -258,21 +252,21 @@ def boot():
         
         try:
             
-            HydrusData.Print( 'hydrus client started' )
+            HydrusData.safe_print( 'hydrus client started' )
             
             from hydrus.client import ClientController
             
             controller = ClientController.Controller( db_dir, logger )
             
-            controller.Run()
+            controller.run()
             
-        except Exception as e:
+        except Exception:
             
-            HydrusData.Print( 'hydrus client failed' )
+            HydrusData.safe_print('hydrus client failed')
             
             import traceback
             
-            HydrusData.Print( traceback.format_exc() )
+            HydrusData.safe_print(traceback.format_exc())
             
         finally:
             
@@ -306,7 +300,7 @@ def boot():
                     
                 
             
-            HydrusData.Print( 'hydrus client shut down' )
+            HydrusData.safe_print( 'hydrus client shut down' )
             
         
     
@@ -316,6 +310,6 @@ def boot():
         
         from hydrus.core.processes import HydrusProcess
         
-        HydrusProcess.RestartProcess()
+        HydrusProcess.restart_process()
         
     

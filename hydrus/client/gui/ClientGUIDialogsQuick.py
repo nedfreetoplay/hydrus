@@ -94,7 +94,7 @@ def run_auto_yes_no_gubbins( dlg: QW.QDialog, time_to_fire, original_title, acti
     
     def qt_set_title():
         
-        time_string = HydrusTime.TimestampToPrettyTimeDelta( time_to_fire, just_now_threshold = 0, just_now_string = 'imminently' )
+        time_string = HydrusTime.timestamp_to_pretty_time_delta( time_to_fire, just_now_threshold = 0, just_now_string = 'imminently' )
         
         title = f'{original_title} (will {action_description} {time_string})'
         
@@ -109,11 +109,11 @@ def run_auto_yes_no_gubbins( dlg: QW.QDialog, time_to_fire, original_title, acti
             
         
     
-    while not HydrusTime.TimeHasPassed( time_to_fire ):
+    while not HydrusTime.time_has_passed( time_to_fire ):
         
-        job = CG.client_controller.CallLaterQtSafe( dlg, 0.0, 'dialog auto yes/no title set', qt_set_title )
+        job = CG.client_controller.call_later_qt_safe( dlg, 0.0, 'dialog auto yes/no title set', qt_set_title )
         
-        if job.IsDead(): # window closed
+        if job.is_dead(): # window closed
             
             return
             
@@ -121,7 +121,7 @@ def run_auto_yes_no_gubbins( dlg: QW.QDialog, time_to_fire, original_title, acti
         time.sleep( 1 )
         
     
-    job = CG.client_controller.CallLaterQtSafe( dlg, 0.0, 'dialog auto yes/no fire', qt_fire_button )
+    job = CG.client_controller.call_later_qt_safe( dlg, 0.0, 'dialog auto yes/no fire', qt_fire_button )
     
 
 LAST_FOLDER_SELECTED = None
@@ -177,11 +177,11 @@ def GetYesNo( win: QW.QWidget, message: str, title = 'Are you sure?', yes_label 
             
             if auto_yes_time is not None:
                 
-                CG.client_controller.CallToThread( run_auto_yes_no_gubbins, dlg, HydrusTime.GetNow() + auto_yes_time, dlg.windowTitle(), 'auto-yes', QW.QDialog.DialogCode.Accepted )
+                CG.client_controller.call_to_thread( run_auto_yes_no_gubbins, dlg, HydrusTime.get_now() + auto_yes_time, dlg.windowTitle(), 'auto-yes', QW.QDialog.DialogCode.Accepted )
                 
             elif auto_no_time is not None:
                 
-                CG.client_controller.CallToThread( run_auto_yes_no_gubbins, dlg, HydrusTime.GetNow() + auto_no_time, dlg.windowTitle(), 'auto-no', QW.QDialog.DialogCode.Rejected )
+                CG.client_controller.call_to_thread( run_auto_yes_no_gubbins, dlg, HydrusTime.get_now() + auto_no_time, dlg.windowTitle(), 'auto-no', QW.QDialog.DialogCode.Rejected )
                 
             
         
@@ -199,7 +199,7 @@ def GetYesNoNo( win: QW.QWidget, message: str, title = 'Are you sure?', yes_labe
         
         if auto_yes_time is not None:
             
-            CG.client_controller.CallToThread( run_auto_yes_no_gubbins, dlg, HydrusTime.GetNow() + auto_yes_time, dlg.windowTitle(), 'auto-yes', QW.QDialog.DialogCode.Accepted )
+            CG.client_controller.call_to_thread( run_auto_yes_no_gubbins, dlg, HydrusTime.get_now() + auto_yes_time, dlg.windowTitle(), 'auto-yes', QW.QDialog.DialogCode.Accepted )
             
         
         result = dlg.exec()
@@ -242,18 +242,18 @@ def PresentClipboardParseError( win: QW.QWidget, content: str, expected_content_
     
     if len( content ) > MAX_CONTENT_SIZE:
         
-        log_message += '\nFirst {} of content received (total was {}):\n'.format( HydrusData.ToHumanBytes( MAX_CONTENT_SIZE ), HydrusData.ToHumanBytes( len( content ) ) ) + content[:MAX_CONTENT_SIZE]
+        log_message += '\nFirst {} of content received (total was {}):\n'.format( HydrusData.to_human_bytes( MAX_CONTENT_SIZE ), HydrusData.to_human_bytes( len( content ) ) ) + content[:MAX_CONTENT_SIZE]
         
     else:
         
-        log_message += '\nContent received ({}):\n'.format( HydrusData.ToHumanBytes( len( content ) ) ) + content[:MAX_CONTENT_SIZE]
+        log_message += '\nContent received ({}):\n'.format( HydrusData.to_human_bytes( len( content ) ) ) + content[:MAX_CONTENT_SIZE]
         
     
-    HydrusData.DebugPrint( log_message )
+    HydrusData.debug_print( log_message )
     
-    HydrusData.PrintException( e, do_wait = False )
+    HydrusData.print_exception( e, do_wait = False )
     
-    message = 'Sorry, I could not understand what was in the clipboard. I was expecting "{}" but received this text:\n\n{}\n\nMore details have been written to the log, but the general error was:\n\n{}'.format( expected_content_description, HydrusText.ElideText( content, 64 ), repr( e ) )
+    message = 'Sorry, I could not understand what was in the clipboard. I was expecting "{}" but received this text:\n\n{}\n\nMore details have been written to the log, but the general error was:\n\n{}'.format( expected_content_description, HydrusText.elide_text( content, 64 ), repr( e ) )
     
     ClientGUIDialogsMessage.ShowCritical( win, 'Clipboard Error!', message )
     
@@ -374,7 +374,7 @@ def SelectServiceKey( service_types = None, service_keys = None, unallowed = Non
         
         try:
             
-            tlw = CG.client_controller.GetMainTLW()
+            tlw = CG.client_controller.get_main_tlw()
             
             service_key = SelectFromList( tlw, message, choice_tuples )
             

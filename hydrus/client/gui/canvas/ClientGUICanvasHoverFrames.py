@@ -91,7 +91,7 @@ class RatingIncDecCanvas( ClientGUIRatings.RatingIncDec ):
             
             content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_RATINGS, HC.CONTENT_UPDATE_ADD, ( rating, self._hashes ) )
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service_key, content_update ) )
+            CG.client_controller.write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service_key, content_update ) )
             
         
     
@@ -122,7 +122,7 @@ class RatingIncDecCanvas( ClientGUIRatings.RatingIncDec ):
                     
                     hashes = content_update.GetHashes()
                     
-                    if HydrusLists.SetsIntersect( self._hashes, hashes ):
+                    if HydrusLists.sets_intersect( self._hashes, hashes ):
                         
                         ( self._rating_state, self._rating ) = ClientRatings.GetIncDecStateFromMedia( ( self._current_media, ), self._service_key )
                         
@@ -237,7 +237,7 @@ class RatingLikeCanvas( ClientGUIRatings.RatingLike ):
             
             content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_RATINGS, HC.CONTENT_UPDATE_ADD, ( rating, self._hashes ) )
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service_key, content_update ) )
+            CG.client_controller.write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service_key, content_update ) )
             
         
     
@@ -250,7 +250,7 @@ class RatingLikeCanvas( ClientGUIRatings.RatingLike ):
             
             content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_RATINGS, HC.CONTENT_UPDATE_ADD, ( rating, self._hashes ) )
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service_key, content_update ) )
+            CG.client_controller.write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service_key, content_update ) )
             
         
     
@@ -269,7 +269,7 @@ class RatingLikeCanvas( ClientGUIRatings.RatingLike ):
                     
                     hashes = content_update.GetHashes()
                     
-                    if HydrusLists.SetsIntersect( self._hashes, hashes ):
+                    if HydrusLists.sets_intersect( self._hashes, hashes ):
                         
                         self._SetRatingFromCurrentMedia()
                         
@@ -332,7 +332,7 @@ class RatingNumericalCanvas( ClientGUIRatings.RatingNumericalControl ):
             
             content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_RATINGS, HC.CONTENT_UPDATE_ADD, ( rating, self._hashes ) )
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service_key, content_update ) )
+            CG.client_controller.write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service_key, content_update ) )
             
         
     
@@ -367,7 +367,7 @@ class RatingNumericalCanvas( ClientGUIRatings.RatingNumericalControl ):
             
             content_update = ClientContentUpdates.ContentUpdate( HC.CONTENT_TYPE_RATINGS, HC.CONTENT_UPDATE_ADD, ( rating, self._hashes ) )
             
-            CG.client_controller.Write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service_key, content_update ) )
+            CG.client_controller.write( 'content_updates', ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( self._service_key, content_update ) )
             
         
     
@@ -391,7 +391,7 @@ class RatingNumericalCanvas( ClientGUIRatings.RatingNumericalControl ):
                     
                     hashes = content_update.GetHashes()
                     
-                    if HydrusLists.SetsIntersect( self._hashes, hashes ):
+                    if HydrusLists.sets_intersect( self._hashes, hashes ):
                         
                         ( self._rating_state, self._rating ) = ClientRatings.GetNumericalStateFromMedia( ( self._current_media, ), self._service_key )
                         
@@ -493,7 +493,7 @@ class CanvasHoverFrame( QW.QFrame ):
             
             if HG.hover_window_report_mode:
                 
-                HydrusData.ShowText( repr( self ) + ' - lowering' )
+                HydrusData.show_text( repr( self ) + ' - lowering' )
                 
             
             self.hide()
@@ -515,7 +515,7 @@ class CanvasHoverFrame( QW.QFrame ):
             
             if HG.hover_window_report_mode:
                 
-                HydrusData.ShowText( repr( self ) + ' - raising' )
+                HydrusData.show_text( repr( self ) + ' - raising' )
                 
             
             self.show()
@@ -574,7 +574,7 @@ class CanvasHoverFrame( QW.QFrame ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             return True
             
@@ -729,10 +729,10 @@ class CanvasHoverFrame( QW.QFrame ):
             
             if HG.hover_window_report_mode:
                 
-                HydrusData.ShowText( 'showing' )
+                HydrusData.show_text( 'showing' )
                 
                 h1 = get_logic_report_string()
-                HydrusData.ShowText( h1 )
+                HydrusData.show_text( h1 )
                 
             
             self._SizeAndPosition()
@@ -743,11 +743,11 @@ class CanvasHoverFrame( QW.QFrame ):
                 
                 if h1 == h2:
                     
-                    HydrusData.ShowText( 'no change' )
+                    HydrusData.show_text( 'no change' )
                     
                 else:
                     
-                    HydrusData.ShowText( h2 )
+                    HydrusData.show_text( h2 )
                     
                 
             
@@ -757,8 +757,8 @@ class CanvasHoverFrame( QW.QFrame ):
             
             if HG.hover_window_report_mode:
                 
-                HydrusData.ShowText( 'hiding' )
-                HydrusData.ShowText( get_logic_report_string() )
+                HydrusData.show_text( 'hiding' )
+                HydrusData.show_text( get_logic_report_string() )
                 
             
             self._LowerHover()
@@ -1159,7 +1159,7 @@ class CanvasHoverFrameTop( CanvasHoverFrame ):
     
     def _ShowShortcutMenu( self ):
         
-        all_shortcut_names = CG.client_controller.Read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_SHORTCUT_SET )
+        all_shortcut_names = CG.client_controller.read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_SHORTCUT_SET )
         
         custom_shortcuts_names = [ name for name in all_shortcut_names if name not in ClientGUIShortcuts.SHORTCUTS_RESERVED_NAMES ]
         
@@ -1687,7 +1687,7 @@ class InboxIconClickFilter( QC.QObject ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             return True
             
@@ -2139,7 +2139,7 @@ class NotePanel( QW.QWidget ):
             
         except Exception as e:
             
-            HydrusData.ShowException( e )
+            HydrusData.show_exception( e )
             
             return True
             
@@ -2905,12 +2905,12 @@ class CanvasHoverFrameRightDuplicates( CanvasHoverFrame ):
         
         if total_score > 0:
             
-            text = 'score: +' + HydrusNumbers.ToHumanInt( total_score )
+            text = 'score: +' + HydrusNumbers.to_human_int( total_score )
             object_name = 'HydrusValid'
             
         elif total_score < 0:
             
-            text = 'score: ' + HydrusNumbers.ToHumanInt( total_score )
+            text = 'score: ' + HydrusNumbers.to_human_int( total_score )
             object_name = 'HydrusInvalid'
             
         else:
@@ -3060,12 +3060,12 @@ class CanvasHoverFrameTags( CanvasHoverFrame ):
         
         # on a new media from a scroll, we reset the times but _retain_ the direction. if the user wants to keep scrolling through all this, that's fine, we won't block them
         # if it looks like they hit page_up or whatever, we reset the situation
-        if HydrusTime.TimeHasPassedFloat( self._last_wheel_direction_event_time + 250 ):
+        if HydrusTime.time_has_passed_float( self._last_wheel_direction_event_time + 250 ):
             
             self._last_wheel_direction = 0
             
         
-        self._last_media_transition_time = HydrusTime.GetNowFloat()
+        self._last_media_transition_time = HydrusTime.get_now_float()
         
         super().SetMedia( media )
         
@@ -3102,7 +3102,7 @@ class CanvasHoverFrameTags( CanvasHoverFrame ):
             self._last_wheel_direction_event_time = max( self._tags.GetLastWheelEventThatScrolledTime(), self._last_wheel_direction_event_time )
             
             # if the user is looking at a scrollbar and hasn't just flicked to it...
-            if self._tags.verticalScrollBar().isVisible() and HydrusTime.TimeHasPassedFloat( self._last_media_transition_time + THIS_IS_INTENTIONAL_DELAY ):
+            if self._tags.verticalScrollBar().isVisible() and HydrusTime.time_has_passed_float( self._last_media_transition_time + THIS_IS_INTENTIONAL_DELAY ):
                 
                 if self._last_wheel_direction == 0:
                     
@@ -3111,7 +3111,7 @@ class CanvasHoverFrameTags( CanvasHoverFrame ):
                 
                 if self._last_wheel_direction == wheel_direction:
                     
-                    if not HydrusTime.TimeHasPassedFloat( self._last_wheel_direction_event_time + THIS_IS_INTENTIONAL_DELAY ):
+                    if not HydrusTime.time_has_passed_float( self._last_wheel_direction_event_time + THIS_IS_INTENTIONAL_DELAY ):
                         
                         # we are still in a scroll cascade from the taglist
                         
@@ -3126,7 +3126,7 @@ class CanvasHoverFrameTags( CanvasHoverFrame ):
                     
                 
             
-            self._last_wheel_direction_event_time = HydrusTime.GetNowFloat()
+            self._last_wheel_direction_event_time = HydrusTime.get_now_float()
             self._last_wheel_direction = wheel_direction
             
         

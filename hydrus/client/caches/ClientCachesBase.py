@@ -70,7 +70,7 @@ class DataCache( object ):
         
         if HG.cache_report_mode:
             
-            HydrusData.ShowText( 'Cache "{}" removing specific item "{}", size "{}". Current size {}.'.format( self._name, key, HydrusData.ToHumanBytes( entry.size_estimate ), HydrusData.ConvertValueRangeToBytes( self._total_estimated_memory_footprint, self._cache_size ) ) )
+            HydrusData.show_text( 'Cache "{}" removing specific item "{}", size "{}". Current size {}.'.format( self._name, key, HydrusData.to_human_bytes( entry.size_estimate ), HydrusData.convert_value_range_to_bytes( self._total_estimated_memory_footprint, self._cache_size ) ) )
             
         
     
@@ -128,7 +128,7 @@ class DataCache( object ):
         
         if HG.cache_report_mode:
             
-            HydrusData.ShowText( 'Cache "{}" removing oldest item "{}", size "{}". Current size {}.'.format( self._name, key, HydrusData.ToHumanBytes( entry.size_estimate ), HydrusData.ConvertValueRangeToBytes( self._total_estimated_memory_footprint, self._cache_size ) ) )
+            HydrusData.show_text( 'Cache "{}" removing oldest item "{}", size "{}". Current size {}.'.format( self._name, key, HydrusData.to_human_bytes( entry.size_estimate ), HydrusData.convert_value_range_to_bytes( self._total_estimated_memory_footprint, self._cache_size ) ) )
             
         
     
@@ -195,12 +195,12 @@ class DataCache( object ):
                 
                 if HG.cache_report_mode:
                     
-                    HydrusData.ShowText(
+                    HydrusData.show_text(
                         'Cache "{}" adding "{}" ({}). Current size {}.'.format(
                             self._name,
                             key,
-                            HydrusData.ToHumanBytes( entry.size_estimate ),
-                            HydrusData.ConvertValueRangeToBytes( self._total_estimated_memory_footprint, self._cache_size )
+                            HydrusData.to_human_bytes( entry.size_estimate ),
+                            HydrusData.convert_value_range_to_bytes( self._total_estimated_memory_footprint, self._cache_size )
                         )
                     )
                     

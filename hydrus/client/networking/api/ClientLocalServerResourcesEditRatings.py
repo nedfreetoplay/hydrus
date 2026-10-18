@@ -20,9 +20,9 @@ class HydrusResourceClientAPIRestrictedEditRatings( ClientLocalServerResources.H
 
 class HydrusResourceClientAPIRestrictedEditRatingsSetRating( HydrusResourceClientAPIRestrictedEditRatings ):
     
-    def _threadDoPOSTJob( self, request: HydrusServerRequest.HydrusRequest ):
+    def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
-        rating_service_key = request.parsed_request_args.GetValue( 'rating_service_key', bytes )
+        rating_service_key = request.parsed_request_args.get_value( 'rating_service_key', bytes )
         
         applicable_hashes = set( ClientLocalServerCore.ParseHashes( request ) )
         
@@ -40,7 +40,7 @@ class HydrusResourceClientAPIRestrictedEditRatingsSetRating( HydrusResourceClien
         
         rating_service = CG.client_controller.services_manager.GetService( rating_service_key )
         
-        rating_service_type = rating_service.GetServiceType()
+        rating_service_type = rating_service.get_service_type()
         
         none_ok = True
         
@@ -103,7 +103,7 @@ class HydrusResourceClientAPIRestrictedEditRatingsSetRating( HydrusResourceClien
         
         content_update_package = ClientContentUpdates.ContentUpdatePackage.STATICCreateFromContentUpdate( rating_service_key, content_update )
         
-        CG.client_controller.WriteSynchronous( 'content_updates', content_update_package )
+        CG.client_controller.write_synchronous( 'content_updates', content_update_package )
         
         response_context = HydrusServerResources.ResponseContext( 200 )
         

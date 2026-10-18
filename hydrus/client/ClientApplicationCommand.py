@@ -652,7 +652,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
         return self.ToString()
         
     
-    def _GetSerialisableInfo( self ):
+    def _get_serialisable_info( self ):
         
         # TODO: I recently moved to the data_dict here so the simple type could have serialisables in its 'simple_data', let's move the content command type to this too
         # I don't _think_ this was an overcomplicated mistake, but it is a little ugly atm
@@ -675,7 +675,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
             data_dict[ 'simple_action' ] = simple_action
             data_dict[ 'simple_data' ] = simple_data
             
-            serialisable_data = data_dict.GetSerialisableTuple()
+            serialisable_data = data_dict.get_serialisable_tuple()
             
         elif self._command_type == APPLICATION_COMMAND_TYPE_CONTENT:
             
@@ -698,7 +698,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
             data_dict[ 'content_type' ] = content_type
             data_dict[ 'action' ] = action
             
-            serialisable_data = data_dict.GetSerialisableTuple()
+            serialisable_data = data_dict.get_serialisable_tuple()
             
         else:
             
@@ -708,13 +708,13 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
         return ( self._command_type, serialisable_data )
         
     
-    def _InitialiseFromSerialisableInfo( self, serialisable_info ):
+    def _initialise_from_serialisable_info( self, serialisable_info ):
         
         ( self._command_type, serialisable_data ) = serialisable_info
         
         if self._command_type == APPLICATION_COMMAND_TYPE_SIMPLE:
             
-            data_dict = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_data )
+            data_dict = HydrusSerialisable.create_from_serialisable_tuple( serialisable_data )
             
             simple_action = data_dict[ 'simple_action' ]
             simple_data = data_dict[ 'simple_data' ]
@@ -746,7 +746,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
             
         elif self._command_type == APPLICATION_COMMAND_TYPE_INTERACTIVE_CONTENT:
             
-            data_dict = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_data )
+            data_dict = HydrusSerialisable.create_from_serialisable_tuple( serialisable_data )
             
             service_key = bytes.fromhex( data_dict[ 'service_key' ] )
             content_type = data_dict[ 'content_type' ]
@@ -756,7 +756,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def _UpdateSerialisableInfo( self, version, old_serialisable_info ):
+    def _update_serialisable_info( self, version, old_serialisable_info ):
         
         if version == 1:
             
@@ -827,7 +827,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
                 data_dict[ 'simple_action' ] = simple_action
                 data_dict[ 'simple_data' ] = simple_data
                 
-                serialisable_data = data_dict.GetSerialisableTuple()
+                serialisable_data = data_dict.get_serialisable_tuple()
                 
             
             new_serialisable_info = ( command_type, serialisable_data )
@@ -841,7 +841,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
             
             if command_type == APPLICATION_COMMAND_TYPE_SIMPLE:
                 
-                data_dict = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_data )
+                data_dict = HydrusSerialisable.create_from_serialisable_tuple( serialisable_data )
                 
                 simple_action = data_dict[ 'simple_action' ]
                 
@@ -870,7 +870,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
                     data_dict[ 'simple_data' ] = hamming_distance
                     
                 
-                serialisable_data = data_dict.GetSerialisableTuple()
+                serialisable_data = data_dict.get_serialisable_tuple()
                 
             
             new_serialisable_info = ( command_type, serialisable_data )
@@ -884,7 +884,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
             
             if command_type == APPLICATION_COMMAND_TYPE_SIMPLE:
                 
-                data_dict = HydrusSerialisable.CreateFromSerialisableTuple( serialisable_data )
+                data_dict = HydrusSerialisable.create_from_serialisable_tuple( serialisable_data )
                 
                 simple_action = data_dict[ 'simple_action' ]
                 
@@ -939,7 +939,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
                     data_dict[ 'simple_data' ] = FILE_COMMAND_TARGET_SELECTED_FILES
                     
                 
-                serialisable_data = data_dict.GetSerialisableTuple()
+                serialisable_data = data_dict.get_serialisable_tuple()
                 
             
             new_serialisable_info = ( command_type, serialisable_data )
@@ -1086,7 +1086,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
                     
                     direction_s = 'back' if direction == -1 else 'forwards'
                     
-                    ms_s = HydrusTime.TimeDeltaToPrettyTimeDelta( HydrusTime.SecondiseMSFloat( ms ) )
+                    ms_s = HydrusTime.time_delta_to_pretty_timedelta( HydrusTime.secondise_ms_float( ms ) )
                     
                     s = f'{s} ({direction_s} {ms_s})'
                     
@@ -1173,7 +1173,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
                         
                     elif rearrange_type == REARRANGE_THUMBNAILS_TYPE_FIXED:
                         
-                        s = f'{s} (to index {HydrusNumbers.ToHumanInt(rearrange_data)})'
+                        s = f'{s} (to index {HydrusNumbers.to_human_int(rearrange_data)})'
                         
                     
                 elif action == SIMPLE_RESIZE_WINDOW_TO_MEDIA_ZOOMED_VIEWER_CENTER:
@@ -1182,7 +1182,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
                     
                     if new_zoom is not None:
                         
-                        s = f'resize window to fit media at {HydrusNumbers.FloatToPercentage( new_zoom )} and recenter it in the viewer'
+                        s = f'resize window to fit media at {HydrusNumbers.float_to_percentage( new_zoom )} and recenter it in the viewer'
                         
                     
                 
@@ -1205,7 +1205,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
                         
                         value_string = 'uncertain rating, "{}"'.format( value )
                         
-                        if CG.client_controller is not None and CG.client_controller.IsBooted():
+                        if CG.client_controller is not None and CG.client_controller.is_booted():
                             
                             try:
                                 

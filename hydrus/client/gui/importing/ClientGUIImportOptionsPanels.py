@@ -1171,7 +1171,7 @@ class EditServiceTagImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _UpdateAdditionalTagsButtonLabel( self ):
         
-        button_label = HydrusNumbers.ToHumanInt( len( self._additional_tags ) ) + ' additional tags'
+        button_label = HydrusNumbers.to_human_int( len( self._additional_tags ) ) + ' additional tags'
         
         self._additional_button.setText( button_label )
         
@@ -1294,7 +1294,7 @@ class EditTagFilteringImportOptionsPanel( QW.QWidget ):
             
         else:
             
-            label = 'whitelist of {} tags'.format( HydrusNumbers.ToHumanInt( len( self._tag_whitelist ) ) )
+            label = 'whitelist of {} tags'.format( HydrusNumbers.to_human_int( len( self._tag_whitelist ) ) )
             
         
         self._tag_whitelist_button.setText( label )

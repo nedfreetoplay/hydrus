@@ -32,7 +32,7 @@ def CheckImporterCanDoFileWorkBecausePaused( paused: bool, file_seed_cache: Clie
         raise HydrusExceptions.VetoException()
         
     
-    if CG.client_controller.PageClosedButNotDestroyed( page_key ):
+    if CG.client_controller.page_closed_but_not_destroyed( page_key ):
         
         raise HydrusExceptions.VetoException( 'page is closed' )
         
@@ -86,9 +86,9 @@ def CheckImporterCanDoGalleryWorkBecausePaused( paused: bool, gallery_seed_log: 
 
 def CheckCanDoNetworkWork( no_work_until: int, no_work_until_reason: str ):
     
-    if not HydrusTime.TimeHasPassed( no_work_until ):
+    if not HydrusTime.time_has_passed( no_work_until ):
         
-        no_work_text = '{}: {}'.format( HydrusTime.TimestampToPrettyExpires( no_work_until ), no_work_until_reason )
+        no_work_text = '{}: {}'.format( HydrusTime.timestamp_to_pretty_expires( no_work_until ), no_work_until_reason )
         
         raise HydrusExceptions.VetoException( no_work_text )
         
@@ -109,9 +109,9 @@ def CheckImporterCanDoWorkBecauseStopped( page_key: bytes ):
 
 def GenerateLiveStatusText( text: str, paused: bool, currently_working: bool, no_work_until: int, no_work_until_reason: str ) -> str:
     
-    if not HydrusTime.TimeHasPassed( no_work_until ):
+    if not HydrusTime.time_has_passed( no_work_until ):
         
-        return '{}: {}'.format( HydrusTime.TimestampToPrettyExpires( no_work_until ), no_work_until_reason )
+        return '{}: {}'.format( HydrusTime.timestamp_to_pretty_expires( no_work_until ), no_work_until_reason )
         
     
     if paused and text != 'paused':
@@ -133,5 +133,5 @@ def GenerateLiveStatusText( text: str, paused: bool, currently_working: bool, no
 
 def PageImporterShouldStopWorking( page_key: bytes ):
     
-    return HG.started_shutdown or not CG.client_controller.PageAlive( page_key )
+    return HG.started_shutdown or not CG.client_controller.page_alive( page_key )
     

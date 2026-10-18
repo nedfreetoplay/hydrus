@@ -19,13 +19,13 @@ def DAEMONCheckExportFolders():
         
         try:
             
-            export_folder_names = controller.Read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER )
+            export_folder_names = controller.read( 'serialisable_names', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER )
             
             for name in export_folder_names:
                 
-                export_folder = controller.Read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER, name )
+                export_folder = controller.read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER, name )
                 
-                if controller.new_options.GetBoolean( 'pause_export_folders_sync' ) or HydrusThreading.IsThreadShuttingDown():
+                if controller.new_options.GetBoolean( 'pause_export_folders_sync' ) or HydrusThreading.is_thread_shutting_down():
                     
                     break
                     
@@ -82,7 +82,7 @@ class ManagerWithMainLoop( object ):
     
     def _CheckShutdown( self ):
         
-        if HydrusThreading.IsThreadShuttingDown() or self._shutdown or self._serious_error_encountered:
+        if HydrusThreading.is_thread_shutting_down() or self._shutdown or self._serious_error_encountered:
             
             raise HydrusExceptions.ShutdownException()
             
@@ -102,11 +102,11 @@ class ManagerWithMainLoop( object ):
         
         with self._lock:
             
-            time_to_start = HydrusTime.GetNowFloat() + self._pre_loop_wait_time
+            time_to_start = HydrusTime.get_now_float() + self._pre_loop_wait_time
             
         
         # stupid wait here because we are in init and a failure to launch may not trigger nice wake signals as things are unwound
-        while not HydrusTime.TimeHasPassedFloat( time_to_start ):
+        while not HydrusTime.time_has_passed_float( time_to_start ):
             
             with self._lock:
                 
@@ -151,7 +151,7 @@ class ManagerWithMainLoop( object ):
             
             if HG.shutdown_report_mode:
                 
-                HydrusData.DebugPrint( f'MainLoop Manager "{self}" caught a Shutdown exception in its mainloop.' )
+                HydrusData.debug_print( f'MainLoop Manager "{self}" caught a Shutdown exception in its mainloop.' )
                 
             
             pass
@@ -160,7 +160,7 @@ class ManagerWithMainLoop( object ):
             
             if HG.shutdown_report_mode:
                 
-                HydrusData.DebugPrint( f'MainLoop Manager "{self}" is shut down!' )
+                HydrusData.debug_print( f'MainLoop Manager "{self}" is shut down!' )
                 
             
             self._DoPostMainLoopShutdown()
@@ -186,7 +186,7 @@ class ManagerWithMainLoop( object ):
     
     def Start( self ):
         
-        self._controller.CallToThreadLongRunning( self.MainLoop )
+        self._controller.call_to_thread_long_running( self.MainLoop )
         
     
     def Wake( self ):
