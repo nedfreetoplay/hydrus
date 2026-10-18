@@ -2580,7 +2580,7 @@ class ServiceRepository( ServiceRestricted ):
             
         
     
-    def GetTagFilter( self ) -> HydrusTags.TagFilter:
+    def get_tag_filter( self ) -> HydrusTags.TagFilter:
         
         with self._lock:
             

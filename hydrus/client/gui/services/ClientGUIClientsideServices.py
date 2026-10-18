@@ -2771,7 +2771,7 @@ class ReviewServiceHydrusAccountSubPanel( ClientGUICommon.StaticBox ):
             
             try:
                 
-                tag_filter = self._service.GetTagFilter()
+                tag_filter = self._service.get_tag_filter()
                 
                 self._tag_filter_button.setEnabled( True )
                 
@@ -2833,7 +2833,7 @@ class ReviewServiceHydrusAccountSubPanel( ClientGUICommon.StaticBox ):
         
         try:
             
-            tag_filter = self._service.GetTagFilter()
+            tag_filter = self._service.get_tag_filter()
             
         except HydrusExceptions.DataMissing:
             

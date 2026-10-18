@@ -291,8 +291,8 @@ class EditTagDisplayManagerPanel( ClientGUIScrolledPanels.EditPanel ):
             
             super().__init__( parent )
             
-            single_tag_filter = tag_display_manager.GetTagFilter( ClientTags.TAG_DISPLAY_SINGLE_MEDIA, service_key )
-            selection_tag_filter = tag_display_manager.GetTagFilter( ClientTags.TAG_DISPLAY_SELECTION_LIST, service_key )
+            single_tag_filter = tag_display_manager.get_tag_filter( ClientTags.TAG_DISPLAY_SINGLE_MEDIA, service_key )
+            selection_tag_filter = tag_display_manager.get_tag_filter( ClientTags.TAG_DISPLAY_SELECTION_LIST, service_key )
             
             tag_autocomplete_options = tag_display_manager.GetTagAutocompleteOptions( service_key )
             

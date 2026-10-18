@@ -851,7 +851,7 @@ class TagDisplayManager( HydrusSerialisable.SerialisableBase ):
             
         
     
-    def GetTagFilter( self, tag_display_type, service_key ):
+    def get_tag_filter( self, tag_display_type, service_key ):
         
         with self._lock:
             

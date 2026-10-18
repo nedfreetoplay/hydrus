@@ -4837,7 +4837,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         service = self._controller.services_manager.GetService( service_key )
         
-        tag_filter = service.GetTagFilter()
+        tag_filter = service.get_tag_filter()
         
         with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit tag repository tag filter' ) as dlg:
             

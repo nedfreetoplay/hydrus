@@ -1477,7 +1477,7 @@ class StringTagFilter( StringProcessingStep ):
         return self._example_string
         
     
-    def GetTagFilter( self ) -> HydrusTags.TagFilter:
+    def get_tag_filter( self ) -> HydrusTags.TagFilter:
         
         return self._tag_filter
         

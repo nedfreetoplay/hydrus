@@ -2077,7 +2077,7 @@ class EditStringTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
         
         message = 'This works the same as any tag filter elsewhere in the program. Note that it converts your texts to valid hydrus tags, so everything is coming out lowercase with trimmed whitespace, and invalid tags will never pass.'
         
-        tag_filter = string_tag_filter.GetTagFilter()
+        tag_filter = string_tag_filter.get_tag_filter()
         
         self._tag_filter_button = ClientGUITagFilter.TagFilterButton( self, message, tag_filter )
         

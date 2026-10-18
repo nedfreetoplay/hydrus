@@ -1222,7 +1222,7 @@ class HydrusResourceRestrictedTagFilter( HydrusResourceRestricted ):
     
     def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
-        tag_filter = self._service.GetTagFilter()
+        tag_filter = self._service.get_tag_filter()
         
         body = HydrusNetworkVariableHandling.dump_hydrus_args_to_network_bytes( { 'tag_filter' : tag_filter } )
         
@@ -1235,7 +1235,7 @@ class HydrusResourceRestrictedTagFilter( HydrusResourceRestricted ):
         
         tag_filter = request.parsed_request_args[ 'tag_filter' ]
         
-        old_tag_filter = self._service.GetTagFilter()
+        old_tag_filter = self._service.get_tag_filter()
         
         if old_tag_filter != tag_filter:
             

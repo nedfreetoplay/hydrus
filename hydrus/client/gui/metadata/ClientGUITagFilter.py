@@ -833,7 +833,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 service = typing.cast( ClientServices.ServiceRepository, service )
                 
-                tag_filter = service.GetTagFilter()
+                tag_filter = service.get_tag_filter()
                 
                 ClientGUIMenus.AppendMenuItem( menu, f'tag filter for "{service.GetName()}"', 'load the serverside tag filter for this service', self.SetValue, tag_filter )
                 

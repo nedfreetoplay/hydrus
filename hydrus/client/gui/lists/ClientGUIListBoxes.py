@@ -4247,7 +4247,7 @@ class ListBoxTags( ListBox ):
                         
                         try:
                             
-                            tag_filter = tag_repo.GetTagFilter()
+                            tag_filter = tag_repo.get_tag_filter()
                             
                             tags_currently_ok = { tag for tag in selected_actual_tags if tag_filter.tag_ok( tag ) }
                             tags_currently_not_ok = { tag for tag in selected_actual_tags if tag not in tags_currently_ok }
