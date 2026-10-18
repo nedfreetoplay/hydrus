@@ -812,7 +812,7 @@ class DB( HydrusDB.HydrusDB ):
         
         service_id = self._GetServiceId( service_key )
         
-        subject_account_key = subject_account.GetAccountKey()
+        subject_account_key = subject_account.get_account_key()
         
         subject_account_id = self._GetAccountId( subject_account_key )
         
@@ -1434,7 +1434,7 @@ class DB( HydrusDB.HydrusDB ):
         
         HydrusData.safe_print(
             'Account {} changed the account type of {} from "{}" to "{}".'.format(
-                admin_account.GetAccountKey().hex(),
+                admin_account.get_account_key().hex(),
                 subject_account_key.hex(),
                 current_account_type.get_title(),
                 new_account_type.get_title()
@@ -1472,7 +1472,7 @@ class DB( HydrusDB.HydrusDB ):
         
         HydrusData.safe_print(
             'Account {} banned {} with reason "{}" until "{}".'.format(
-                admin_account.GetAccountKey().hex(),
+                admin_account.get_account_key().hex(),
                 subject_account_key.hex(),
                 reason,
                 HydrusTime.timestamp_to_pretty_expires( expires )
@@ -1537,7 +1537,7 @@ class DB( HydrusDB.HydrusDB ):
         
         HydrusData.safe_print(
             'Account {} changed the expiration of {} from "{}" to "{}".'.format(
-                admin_account.GetAccountKey().hex(),
+                admin_account.get_account_key().hex(),
                 subject_account_key.hex(),
                 HydrusTime.timestamp_to_pretty_expires( current_expires ),
                 HydrusTime.timestamp_to_pretty_expires( new_expires )
@@ -1577,7 +1577,7 @@ class DB( HydrusDB.HydrusDB ):
         
         HydrusData.safe_print(
             m.format(
-                admin_account.GetAccountKey().hex(),
+                admin_account.get_account_key().hex(),
                 subject_account_key.hex()
             )
         )
@@ -1604,7 +1604,7 @@ class DB( HydrusDB.HydrusDB ):
         
         HydrusData.safe_print(
             'Account {} unbanned {}.'.format(
-                admin_account.GetAccountKey().hex(),
+                admin_account.get_account_key().hex(),
                 subject_account_key.hex()
             )
         )
@@ -1665,7 +1665,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 HydrusData.safe_print(
                     'Account {} added a new account type, "{}".'.format(
-                        admin_account.GetAccountKey().hex(),
+                        admin_account.get_account_key().hex(),
                         account_type.GetTitle()
                     )
                 )
@@ -1684,7 +1684,7 @@ class DB( HydrusDB.HydrusDB ):
                     
                     HydrusData.safe_print(
                         'Account {} updated the account type, "{}".'.format(
-                            admin_account.GetAccountKey().hex(),
+                            admin_account.get_account_key().hex(),
                             account_type.GetTitle()
                         )
                     )
@@ -1709,7 +1709,7 @@ class DB( HydrusDB.HydrusDB ):
             
             HydrusData.safe_print(
                 'Account {} deleted the account type, "{}", replacing them with "{}".'.format(
-                    admin_account.GetAccountKey().hex(),
+                    admin_account.get_account_key().hex(),
                     deletee_account_type.GetTitle(),
                     new_account_type.GetTitle()
                 )
@@ -4162,7 +4162,7 @@ class DB( HydrusDB.HydrusDB ):
         
         service_id = self._GetServiceId( service_key )
         
-        account_key = account.GetAccountKey()
+        account_key = account.get_account_key()
         
         account_id = self._GetAccountId( account_key )
         

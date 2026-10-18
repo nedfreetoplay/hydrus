@@ -2637,7 +2637,7 @@ class ReviewServiceHydrusAccountSubPanel( ClientGUICommon.StaticBox ):
         
         account = self._service.GetAccount()
         
-        account_key = account.GetAccountKey()
+        account_key = account.get_account_key()
         
         account_key_hex = account_key.hex()
         
@@ -2738,7 +2738,7 @@ class ReviewServiceHydrusAccountSubPanel( ClientGUICommon.StaticBox ):
         
         #
         
-        account_key = account.GetAccountKey()
+        account_key = account.get_account_key()
         
         if account_key is None or account_key == '':
             

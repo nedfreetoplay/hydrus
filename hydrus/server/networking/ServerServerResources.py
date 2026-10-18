@@ -424,7 +424,7 @@ class HydrusResourceRestrictedOptionsModifyNullificationPeriod( HydrusResourceRe
             
             HydrusData.safe_print(
                 'Account {} changed the anonymisation period from "{}" to "{}".'.format(
-                    request.hydrus_account.GetAccountKey().hex(),
+                    request.hydrus_account.get_account_key().hex(),
                     HydrusTime.time_delta_to_pretty_timedelta( old_nullification_period ),
                     HydrusTime.time_delta_to_pretty_timedelta( nullification_period )
                 )
@@ -461,7 +461,7 @@ class HydrusResourceRestrictedOptionsModifyUpdatePeriod( HydrusResourceRestricte
             
             HydrusData.safe_print(
                 'Account {} changed the update period from "{}" to "{}".'.format(
-                    request.hydrus_account.GetAccountKey().hex(),
+                    request.hydrus_account.get_account_key().hex(),
                     HydrusTime.time_delta_to_pretty_timedelta( old_update_period ),
                     HydrusTime.time_delta_to_pretty_timedelta( update_period )
                 )
@@ -692,7 +692,7 @@ class HydrusResourceRestrictedAccountOtherAccount( HydrusResourceRestrictedAccou
             
             if subject_identifier.HasAccountKey():
                 
-                subject_account_key = subject_identifier.GetAccountKey()
+                subject_account_key = subject_identifier.get_account_key()
                 
             elif subject_identifier.HasContent():
                 
@@ -1245,7 +1245,7 @@ class HydrusResourceRestrictedTagFilter( HydrusResourceRestricted ):
             
             HydrusData.safe_print(
                 'Account {} changed the tag filter. Rule changes are:{}{}.'.format(
-                    request.hydrus_account.GetAccountKey().hex(),
+                    request.hydrus_account.get_account_key().hex(),
                     '\n',
                     summary_text
                 )

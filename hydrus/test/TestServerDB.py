@@ -151,7 +151,7 @@ class TestServerDB( unittest.TestCase ):
     def _test_delete_all_content( self ):
         
         # this dude is an admin so he owns siblings and parents
-        delete_all_content_account_key = self._tag_service_regular_delete_all_content_account.GetAccountKey()
+        delete_all_content_account_key = self._tag_service_regular_delete_all_content_account.get_account_key()
         
         account_info = self._read( 'account_info', self._tag_service_key, self._tag_service_account, self._tag_service_regular_delete_all_content_account )
         
@@ -333,12 +333,12 @@ class TestServerDB( unittest.TestCase ):
         
         result = self._read( 'account_key_from_content', self._tag_service_key, mapping_content )
         
-        self.assertEqual( result, self._tag_service_regular_account.GetAccountKey() )
+        self.assertEqual( result, self._tag_service_regular_account.get_account_key() )
         
     
     def _test_account_modification( self ):
         
-        regular_account_key = self._tag_service_regular_account.GetAccountKey()
+        regular_account_key = self._tag_service_regular_account.get_account_key()
         
         account = self._read( 'account', self._tag_service_key, regular_account_key )
         
@@ -1058,7 +1058,7 @@ class TestServerDB( unittest.TestCase ):
         result = self._read( 'account', HC.SERVER_ADMIN_KEY, self._admin_account_key )
         
         self.assertEqual( type( result ), HydrusNetwork.Account )
-        self.assertEqual( result.GetAccountKey(), self._admin_account_key )
+        self.assertEqual( result.get_account_key(), self._admin_account_key )
         
         self._admin_account = result
         
@@ -1090,8 +1090,8 @@ class TestServerDB( unittest.TestCase ):
         self._tag_service_account = self._read( 'account', self._tag_service_key, self._tag_service_account_key )
         self._file_service_account = self._read( 'account', self._file_service_key, self._file_service_account_key )
         
-        self.assertEqual( self._tag_service_account.GetAccountKey(), self._tag_service_account_key )
-        self.assertEqual( self._file_service_account.GetAccountKey(), self._file_service_account_key )
+        self.assertEqual( self._tag_service_account.get_account_key(), self._tag_service_account_key )
+        self.assertEqual( self._file_service_account.get_account_key(), self._file_service_account_key )
         
     
     def test_server( self ):

@@ -177,7 +177,7 @@ class HydrusSessionManagerServer:
             
             for ( session_key, service_key, account, hashed_access_key, expires ) in existing_sessions:
                 
-                account_key = account.GetAccountKey()
+                account_key = account.get_account_key()
                 
                 self._service_keys_to_session_keys_to_sessions[ service_key ][ session_key ] = ( account_key, expires )
                 
@@ -198,4 +198,4 @@ class HydrusSessionManagerServer:
             
             for account in accounts:
                 
-                account_keys_to_accounts[ account.GetAccountKey() ] = account
+                account_keys_to_accounts[ account.get_account_key() ] = account

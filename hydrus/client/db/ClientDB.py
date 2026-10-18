@@ -1169,8 +1169,8 @@ class DB( HydrusDB.HydrusDB ):
         
         for module in self._modules:
             
-            module.CreateInitialTables()
-            module.CreateInitialIndices()
+            module.create_initial_tables()
+            module.create_unitial_indices()
             
         
         # intentionally not IF NOT EXISTS here, to catch double-creation accidents early and on a good table
