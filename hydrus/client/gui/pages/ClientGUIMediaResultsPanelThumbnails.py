@@ -178,7 +178,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
     def _CollectLayoutParams( self ) -> ClientGUIThumbnailLayouts.LayoutParams:
         
         thumbnail_border = CG.client_controller.new_options.GetInteger( 'thumbnail_border' )
-        thumb_width, thumb_height = ClientData.AddPaddingToDimensions( HC.options[ 'thumbnail_dimensions' ], thumbnail_border * 2 )
+        thumb_width, thumb_height = ClientData.add_padding_to_dimensions( HC.options[ 'thumbnail_dimensions' ], thumbnail_border * 2 )
         thumb_content_width, thumb_content_height = HC.options[ 'thumbnail_dimensions' ]
         thumbnail_margin = CG.client_controller.new_options.GetInteger( 'thumbnail_margin' )
         

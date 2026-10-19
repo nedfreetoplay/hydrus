@@ -2559,7 +2559,7 @@ class CanvasWithHovers( Canvas ):
             
             # bottom-right index
             
-            bottom_right_string = ClientData.ConvertZoomToPercentage( self._media_container.GetCurrentZoom() )
+            bottom_right_string = ClientData.convert_zoom_to_percentage( self._media_container.GetCurrentZoom() )
             
             index_string = self._GetIndexString()
             
@@ -3061,7 +3061,7 @@ class CanvasWithHovers( Canvas ):
         
         texts = [ line.text for line in lines ]
         
-        texts.insert( 1, ClientData.ConvertZoomToPercentage( self._media_container.GetCurrentZoom() ) )
+        texts.insert( 1, ClientData.convert_zoom_to_percentage( self._media_container.GetCurrentZoom() ) )
         
         info_string = ' | '.join( texts )
         
@@ -4698,7 +4698,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
                     ClientGUIMenus.AppendMenuItem( zoom_menu, 'zoom to max', 'Set the zoom to the maximum possible.', self._media_container.ZoomMax )
                     
                 
-                ClientGUIMenus.AppendMenu( menu, zoom_menu, 'zoom: {}'.format( ClientData.ConvertZoomToPercentage( self._media_container.GetCurrentZoom() ) ) )
+                ClientGUIMenus.AppendMenu( menu, zoom_menu, 'zoom: {}'.format( ClientData.convert_zoom_to_percentage( self._media_container.GetCurrentZoom() ) ) )
                 
             
             if self.parentWidget().isFullScreen():

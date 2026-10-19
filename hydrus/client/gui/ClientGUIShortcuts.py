@@ -1029,7 +1029,7 @@ class Shortcut( HydrusSerialisable.SerialisableBase ):
             modifiers = []
             
         
-        if shortcut_type == SHORTCUT_TYPE_KEYBOARD_CHARACTER and ClientData.OrdIsAlphaUpper( shortcut_key ):
+        if shortcut_type == SHORTCUT_TYPE_KEYBOARD_CHARACTER and ClientData.ord_is_alpha_upper( shortcut_key ):
             
             shortcut_key += 32 # convert A to a
             
@@ -1176,7 +1176,7 @@ class Shortcut( HydrusSerialisable.SerialisableBase ):
             
             if shortcut_type == SHORTCUT_TYPE_KEYBOARD_CHARACTER:
                 
-                if ClientData.OrdIsAlphaUpper( shortcut_key ):
+                if ClientData.ord_is_alpha_upper( shortcut_key ):
                     
                     shortcut_key += 32 # convert 'A' to 'a'
                     
@@ -1366,7 +1366,7 @@ class Shortcut( HydrusSerialisable.SerialisableBase ):
             
             try:
                 
-                if ClientData.OrdIsAlphaUpper( self.shortcut_key ):
+                if ClientData.ord_is_alpha_upper( self.shortcut_key ):
                     
                     action_name += chr( self.shortcut_key + 32 ) # + 32 for converting ascii A -> a
                     
@@ -1410,7 +1410,7 @@ class Shortcut( HydrusSerialisable.SerialisableBase ):
             
             new_shortcut_key = self.shortcut_key + 1
             
-            if ClientData.OrdIsAlphaLower( new_shortcut_key ) or ClientData.OrdIsNumber( new_shortcut_key ):
+            if ClientData.ord_is_alpha_lower( new_shortcut_key ) or ClientData.ord_is_number( new_shortcut_key ):
                 
                 self.shortcut_key = new_shortcut_key
                 

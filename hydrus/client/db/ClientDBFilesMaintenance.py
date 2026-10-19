@@ -114,7 +114,7 @@ class ClientDBFilesMaintenance( ClientDBModule.ClientDBModule ):
                     
                     if mime in HC.MIMES_WITH_THUMBNAILS and resolution_changed:
                         
-                        HydrusData.safe_print( f'File Maintenance: File {hash.hex()} changed resolution from {ClientData.ResolutionToPrettyString( original_resolution )} to {ClientData.ResolutionToPrettyString( ( width, height ) )}.' )
+                        HydrusData.safe_print( f'File Maintenance: File {hash.hex()} changed resolution from {ClientData.resolution_to_pretty_string( original_resolution )} to {ClientData.resolution_to_pretty_string( ( width, height ) )}.' )
                         
                         self._ScheduleJobsForChangedAppearance( hash_id )
                         

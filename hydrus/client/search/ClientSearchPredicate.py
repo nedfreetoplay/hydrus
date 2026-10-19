@@ -253,8 +253,8 @@ class PredicateCount( object ):
     
     def AddCounts( self, count: "PredicateCount" ):
         
-        ( self.min_current_count, self.max_current_count ) = ClientData.MergeCounts( self.min_current_count, self.max_current_count, count.min_current_count, count.max_current_count )
-        ( self.min_pending_count, self.max_pending_count) = ClientData.MergeCounts( self.min_pending_count, self.max_pending_count, count.min_pending_count, count.max_pending_count )
+        ( self.min_current_count, self.max_current_count ) = ClientData.merge_counts( self.min_current_count, self.max_current_count, count.min_current_count, count.max_current_count )
+        ( self.min_pending_count, self.max_pending_count) = ClientData.merge_counts( self.min_pending_count, self.max_pending_count, count.min_pending_count, count.max_pending_count )
         
     
     def Duplicate( self ):

@@ -382,7 +382,7 @@ class SpeedAndMemoryPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         resolution = ( int( 16 * unit_length ), int( 9 * unit_length ) )
         
-        self._image_cache_storage_limit_percentage_st.setText( '% - {} pixels, or a ~{} image'.format( HydrusNumbers.to_human_int( num_pixels ), ClientData.ResolutionToPrettyString( resolution ) ) )
+        self._image_cache_storage_limit_percentage_st.setText( '% - {} pixels, or a ~{} image'.format( HydrusNumbers.to_human_int( num_pixels ), ClientData.resolution_to_pretty_string( resolution ) ) )
         
         num_pixels = cache_size * ( self._image_cache_prefetch_limit_percentage.value() / 100 ) / 3
         
@@ -398,7 +398,7 @@ class SpeedAndMemoryPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         small_resolution = ( int( 16 * unit_length ), int( 9 * unit_length ) )
         
-        self._image_cache_prefetch_limit_percentage_st.setText( '% - {} pixels: 5x ~{}, max ~{}'.format( HydrusNumbers.to_human_int( num_pixels ), ClientData.ResolutionToPrettyString( small_resolution ), ClientData.ResolutionToPrettyString( big_resolution ) ) )
+        self._image_cache_prefetch_limit_percentage_st.setText( '% - {} pixels: 5x ~{}, max ~{}'.format( HydrusNumbers.to_human_int( num_pixels ), ClientData.resolution_to_pretty_string( small_resolution ), ClientData.resolution_to_pretty_string( big_resolution ) ) )
         
         #
         
@@ -465,7 +465,7 @@ class SpeedAndMemoryPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         ( thumbnail_width, thumbnail_height ) = HC.options[ 'thumbnail_dimensions' ]
         
-        res_string = ClientData.ResolutionToPrettyString( ( thumbnail_width, thumbnail_height ) )
+        res_string = ClientData.resolution_to_pretty_string( ( thumbnail_width, thumbnail_height ) )
         
         estimated_bytes_per_thumb = 3 * thumbnail_width * thumbnail_height
         

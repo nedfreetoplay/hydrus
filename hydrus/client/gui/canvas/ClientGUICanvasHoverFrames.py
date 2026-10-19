@@ -1479,7 +1479,7 @@ class CanvasHoverFrameTop( CanvasHoverFrame ):
         self._current_zoom_type = zoom_type
         self._current_zoom = zoom
         
-        label = ClientData.ConvertZoomToPercentage( self._current_zoom )
+        label = ClientData.convert_zoom_to_percentage( self._current_zoom )
         
         self._zoom_text.setText( label )
         

@@ -187,7 +187,7 @@ def GetDuplicateComparisonStatementsFast( shown_media_result: ClientMediaResult.
         if s_w == c_w and s_h == c_h:
             
             score = 0
-            statement = f'both are {ClientData.ResolutionToPrettyString(s_resolution)}'
+            statement = f'both are {ClientData.resolution_to_pretty_string(s_resolution)}'
             
             statements_and_scores[ 'resolution' ] = ( statement, score )
             
@@ -221,14 +221,14 @@ def GetDuplicateComparisonStatementsFast( shown_media_result: ClientMediaResult.
                 score = -duplicate_comparison_score_higher_resolution
                 
             
-            s_string = ClientData.ResolutionToPrettyString( s_resolution )
+            s_string = ClientData.resolution_to_pretty_string( s_resolution )
             
             if s_w % 2 == 1 or s_h % 2 == 1:
                 
                 s_string += ' (unusual)'
                 
             
-            c_string = ClientData.ResolutionToPrettyString( c_resolution )
+            c_string = ClientData.resolution_to_pretty_string( c_resolution )
             
             if c_w % 2 == 1 or c_h % 2 == 1:
                 

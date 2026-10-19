@@ -866,10 +866,10 @@ class PopupMessageManager( QW.QFrame ):
         self._old_show_exception_tuple = HydrusData.show_exception_tuple
         self._old_show_text = HydrusData.show_text
         
-        sys.excepthook = ClientData.CatchExceptionClient
-        HydrusData.show_exception = ClientData.ShowExceptionClient
-        HydrusData.show_exception_tuple = ClientData.ShowExceptionTupleClient
-        HydrusData.show_text = ClientData.ShowTextClient
+        sys.excepthook = ClientData.catch_exception_client
+        HydrusData.show_exception = ClientData.show_exception_client
+        HydrusData.show_exception_tuple = ClientData.show_exception_tuple_client
+        HydrusData.show_text = ClientData.show_text_client
         
         job_status = ClientThreading.JobStatus()
         

@@ -102,7 +102,7 @@ class FileFilteringImportOptions( IOC.ImportOptionsMetatype ):
             
             if too_thin or too_short:
                 
-                raise HydrusExceptions.FileImportRulesException( 'File had resolution ' + ClientData.ResolutionToPrettyString( ( width, height ) ) + ' but the lower limit in the File Filtering Import Options is ' + ClientData.ResolutionToPrettyString( self._min_resolution ) )
+                raise HydrusExceptions.FileImportRulesException( 'File had resolution ' + ClientData.resolution_to_pretty_string( ( width, height ) ) + ' but the lower limit in the File Filtering Import Options is ' + ClientData.resolution_to_pretty_string( self._min_resolution ) )
                 
             
         
@@ -115,7 +115,7 @@ class FileFilteringImportOptions( IOC.ImportOptionsMetatype ):
             
             if too_wide or too_tall:
                 
-                raise HydrusExceptions.FileImportRulesException( 'File had resolution ' + ClientData.ResolutionToPrettyString( ( width, height ) ) + ' but the upper limit in the File Filtering Import Options is ' + ClientData.ResolutionToPrettyString( self._max_resolution ) )
+                raise HydrusExceptions.FileImportRulesException( 'File had resolution ' + ClientData.resolution_to_pretty_string( ( width, height ) ) + ' but the upper limit in the File Filtering Import Options is ' + ClientData.resolution_to_pretty_string( self._max_resolution ) )
                 
             
         

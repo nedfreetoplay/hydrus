@@ -66,7 +66,7 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
     
     if width is not None and height is not None:
         
-        info_string += f' ({ClientData.ResolutionToPrettyString( ( width, height ) )})'
+        info_string += f' ({ClientData.resolution_to_pretty_string( ( width, height ) )})'
         
     
     bitrate_duration_ms = None

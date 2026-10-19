@@ -430,8 +430,8 @@ class ClientDBMappingsCounts( ClientDBModule.ClientDBModule ):
                 
                 ( existing_current_min, existing_current_max, existing_pending_min, existing_pending_max ) = ids_to_count[ tag_id ]
                 
-                ( current_min, current_max ) = ClientData.MergeCounts( existing_current_min, existing_current_max, current_min, current_max )
-                ( pending_min, pending_max ) = ClientData.MergeCounts( existing_pending_min, existing_pending_max, pending_min, pending_max )
+                ( current_min, current_max ) = ClientData.merge_counts( existing_current_min, existing_current_max, current_min, current_max )
+                ( pending_min, pending_max ) = ClientData.merge_counts( existing_pending_min, existing_pending_max, pending_min, pending_max )
                 
             
             ids_to_count[ tag_id ] = ( current_min, current_max, pending_min, pending_max )
