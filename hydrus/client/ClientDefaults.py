@@ -11,7 +11,7 @@ from hydrus.client import ClientApplicationCommand as CAC
 from hydrus.client import ClientConstants as CC
 from hydrus.client import ClientLocation
 
-def GetClientDefaultOptions():
+def get_client_default_options():
     
     options = {}
     
@@ -63,8 +63,8 @@ def GetClientDefaultOptions():
     options[ 'confirm_client_exit' ] = False
     
     return options
-    
-def GetDefaultCheckerOptions( name ):
+
+def get_default_checker_options(name):
     
     from hydrus.client.importing.options import CheckerImportOptions
     
@@ -87,10 +87,8 @@ def GetDefaultCheckerOptions( name ):
     elif name == 'slow tag subscription':
         
         return CheckerImportOptions.CheckerOptions( intended_files_per_check = 1, never_faster_than = 7 * 86400, never_slower_than = 180 * 86400, death_file_velocity = (1, 365 * 86400) )
-        
-    
 
-def GetDefaultShortcuts():
+def get_default_shortcuts():
     
     from hydrus.client.gui import ClientGUIShortcuts
     
@@ -643,27 +641,24 @@ def GetDefaultShortcuts():
     shortcuts.append( thumbnails )
     
     return shortcuts
-    
 
-def GetDefaultSimpleDownloaderFormulae():
+def get_default_simple_downloader_formulae():
     
     paths = HydrusStaticDir.List_static_dir_file_paths( os.path.join( 'default', 'simple_downloader_formulae' ) )
     
     from hydrus.client.parsing import ClientParsing
     
-    return GetDefaultObjectsFromPNGs( paths, ( ClientParsing.SimpleDownloaderParsingFormula, ) )
-    
+    return get_default_objects_from_pngs( paths, ( ClientParsing.SimpleDownloaderParsingFormula, ) )
 
-def GetDefaultURLClasses():
+def get_default_url_classes():
     
     paths = HydrusStaticDir.List_static_dir_file_paths( os.path.join( 'default', 'url_classes' ) )
     
     from hydrus.client.networking import ClientNetworkingURLClass
     
-    return GetDefaultObjectsFromPNGs( paths, ( ClientNetworkingURLClass.URLClass, ) )
-    
+    return get_default_objects_from_pngs( paths, ( ClientNetworkingURLClass.URLClass, ) )
 
-def GetDefaultObjectsFromPNGs( paths: list[ str ], allowed_object_types ):
+def get_default_objects_from_pngs(paths: list[str], allowed_object_types):
     
     default_objects = []
     
@@ -701,9 +696,8 @@ def GetDefaultObjectsFromPNGs( paths: list[ str ], allowed_object_types ):
         
     
     return default_objects
-    
 
-def SetDefaultBandwidthManagerRules( bandwidth_manager ):
+def set_default_bandwidth_manager_rules(bandwidth_manager):
     
     from hydrus.client.networking import ClientNetworkingContexts
     
@@ -765,11 +759,10 @@ def SetDefaultBandwidthManagerRules( bandwidth_manager ):
     # watchers have time pressure, so no additional rules beyond global and domain limits
     
     bandwidth_manager.SetRules( ClientNetworkingContexts.NetworkContext( CC.NETWORK_CONTEXT_WATCHER_PAGE ), rules )
-    
 
 DEFAULT_USER_AGENT = 'Mozilla/5.0 (compatible; Hydrus Client)'
 
-def SetDefaultDomainManagerData( domain_manager ):
+def set_default_domain_manager_data(domain_manager):
     
     network_contexts_to_custom_header_dicts = {}
     
@@ -804,9 +797,8 @@ def SetDefaultDomainManagerData( domain_manager ):
     tag_import_options_legacy = TagImportOptionsLegacy.TagImportOptionsLegacy( tag_import_options = tag_import_options )
     
     domain_manager.SetDefaultFilePostTagImportOptions( tag_import_options_legacy )
-    
 
-def SetDefaultFavouriteSearchManagerData( favourite_search_manager ):
+def set_default_favourite_search_manager_data(favourite_search_manager):
     
     from hydrus.client.media import ClientMediaSort
     from hydrus.client.search import ClientSearchFileSearchContext
@@ -847,4 +839,3 @@ def SetDefaultFavouriteSearchManagerData( favourite_search_manager ):
     #
     
     favourite_search_manager.SetFavouriteSearchRows( rows )
-    

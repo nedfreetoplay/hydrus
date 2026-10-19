@@ -201,7 +201,7 @@ class Controller(HydrusController.HydrusController):
         CG.client_controller = self
         
         # just to set up some defaults, in case some db update expects something for an odd yaml-loading reason
-        self.options = ClientDefaults.GetClientDefaultOptions()
+        self.options = ClientDefaults.get_client_default_options()
         
         from hydrus.client import ClientOptions
         
@@ -1325,7 +1325,7 @@ class Controller(HydrusController.HydrusController):
             
             bandwidth_manager.SetTrackerContainers( tracker_containers )
             
-            ClientDefaults.SetDefaultBandwidthManagerRules( bandwidth_manager )
+            ClientDefaults.set_default_bandwidth_manager_rules( bandwidth_manager )
             
             bandwidth_manager.SetDirty()
             
@@ -1357,7 +1357,7 @@ class Controller(HydrusController.HydrusController):
             
             domain_manager = ClientNetworkingDomain.NetworkDomainManager()
             
-            ClientDefaults.SetDefaultDomainManagerData( domain_manager )
+            ClientDefaults.set_default_domain_manager_data( domain_manager )
             
             domain_manager._dirty = True
             
@@ -1465,7 +1465,7 @@ class Controller(HydrusController.HydrusController):
             
             favourite_search_manager = ClientSearchFavouriteSearches.FavouriteSearchManager()
             
-            ClientDefaults.SetDefaultFavouriteSearchManagerData( favourite_search_manager )
+            ClientDefaults.set_default_favourite_search_manager_data( favourite_search_manager )
             
             favourite_search_manager._dirty = True
             

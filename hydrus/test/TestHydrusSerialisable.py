@@ -479,7 +479,7 @@ class TestSerialisables( unittest.TestCase ):
                 
             
         
-        default_shortcuts = ClientDefaults.GetDefaultShortcuts()
+        default_shortcuts = ClientDefaults.get_default_shortcuts()
         
         for shortcuts in default_shortcuts:
             

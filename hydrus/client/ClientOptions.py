@@ -948,8 +948,8 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         
         self._dictionary[ 'misc' ] = HydrusSerialisable.SerialisableDictionary()
         
-        self._dictionary[ 'misc' ][ 'default_thread_watcher_options' ] = ClientDefaults.GetDefaultCheckerOptions( 'thread' )
-        self._dictionary[ 'misc' ][ 'default_subscription_checker_options' ] = ClientDefaults.GetDefaultCheckerOptions( 'artist subscription' )
+        self._dictionary[ 'misc' ][ 'default_thread_watcher_options' ] = ClientDefaults.get_default_checker_options( 'thread' )
+        self._dictionary[ 'misc' ][ 'default_subscription_checker_options' ] = ClientDefaults.get_default_checker_options( 'artist subscription' )
         
         #
         

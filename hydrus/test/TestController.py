@@ -220,7 +220,7 @@ class Controller:
         
         self.new_options = ClientOptions.ClientOptions()
         
-        HC.options = ClientDefaults.GetClientDefaultOptions()
+        HC.options = ClientDefaults.get_client_default_options()
         
         self.options = HC.options
         
@@ -231,7 +231,7 @@ class Controller:
         self._name_read_responses = {}
         
         self._name_read_responses[ 'messaging_sessions' ] = []
-        self._name_read_responses[ 'options' ] = ClientDefaults.GetClientDefaultOptions()
+        self._name_read_responses[ 'options' ] = ClientDefaults.get_client_default_options()
         self._name_read_responses[ 'file_system_predicates' ] = []
         self._name_read_responses[ 'media_results' ] = []
         
@@ -314,7 +314,7 @@ class Controller:
         session_manager = ClientNetworkingSessions.NetworkSessionManager()
         domain_manager = ClientNetworkingDomain.NetworkDomainManager()
         
-        ClientDefaults.SetDefaultDomainManagerData( domain_manager )
+        ClientDefaults.set_default_domain_manager_data( domain_manager )
         
         post_default_param = ClientNetworkingURLClass.URLClassParameterFixedName( name = 'page', value_string_match = ClientStrings.StringMatch( match_type = ClientStrings.STRING_MATCH_FIXED, match_value = 'post', example_string = 'post' ) )
         post_default_param.SetDefaultValue( 'post' )

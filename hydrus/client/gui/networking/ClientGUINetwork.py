@@ -918,7 +918,7 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            ClientDefaults.SetDefaultBandwidthManagerRules( self._controller.network_engine.bandwidth_manager )
+            ClientDefaults.set_default_bandwidth_manager_rules( self._controller.network_engine.bandwidth_manager )
             
         
     

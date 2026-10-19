@@ -2050,7 +2050,7 @@ class TestClientDB( unittest.TestCase ):
     
     def test_shortcuts( self ):
         
-        num_default = len( ClientDefaults.GetDefaultShortcuts() )
+        num_default = len( ClientDefaults.get_default_shortcuts() )
         
         result = self._read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_SHORTCUT_SET )
         
@@ -2058,7 +2058,7 @@ class TestClientDB( unittest.TestCase ):
         
         #
         
-        for ( i, shortcuts ) in enumerate( ClientDefaults.GetDefaultShortcuts() ):
+        for ( i, shortcuts ) in enumerate( ClientDefaults.get_default_shortcuts() ):
             
             name = 'shortcuts ' + str( i )
             

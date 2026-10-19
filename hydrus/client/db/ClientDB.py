@@ -1240,7 +1240,7 @@ class DB( HydrusDB.HydrusDB ):
         
         new_options = ClientOptions.ClientOptions()
         
-        new_options.SetSimpleDownloaderFormulae( ClientDefaults.GetDefaultSimpleDownloaderFormulae() )
+        new_options.SetSimpleDownloaderFormulae( ClientDefaults.get_default_simple_downloader_formulae() )
         
         names_to_tag_filters = {}
         
@@ -1289,7 +1289,7 @@ class DB( HydrusDB.HydrusDB ):
         
         self.modules_serialisable.SetJSONDump( new_options )
         
-        list_of_shortcuts = ClientDefaults.GetDefaultShortcuts()
+        list_of_shortcuts = ClientDefaults.get_default_shortcuts()
         
         for shortcuts in list_of_shortcuts:
             
@@ -1304,13 +1304,13 @@ class DB( HydrusDB.HydrusDB ):
         
         bandwidth_manager.SetDirty()
         
-        ClientDefaults.SetDefaultBandwidthManagerRules( bandwidth_manager )
+        ClientDefaults.set_default_bandwidth_manager_rules( bandwidth_manager )
         
         self.modules_serialisable.SetJSONDump( bandwidth_manager )
         
         domain_manager = ClientNetworkingDomain.NetworkDomainManager()
         
-        ClientDefaults.SetDefaultDomainManagerData( domain_manager )
+        ClientDefaults.set_default_domain_manager_data( domain_manager )
         
         self.modules_serialisable.SetJSONDump( domain_manager )
         
@@ -1326,7 +1326,7 @@ class DB( HydrusDB.HydrusDB ):
         
         favourite_search_manager = ClientSearchFavouriteSearches.FavouriteSearchManager()
         
-        ClientDefaults.SetDefaultFavouriteSearchManagerData( favourite_search_manager )
+        ClientDefaults.set_default_favourite_search_manager_data( favourite_search_manager )
         
         self.modules_serialisable.SetJSONDump( favourite_search_manager )
         
@@ -2649,7 +2649,7 @@ class DB( HydrusDB.HydrusDB ):
         
         if result is None:
             
-            options = ClientDefaults.GetClientDefaultOptions()
+            options = ClientDefaults.get_client_default_options()
             
             self._execute( 'INSERT INTO options ( options ) VALUES ( ? );', ( options, ) )
             
@@ -2657,7 +2657,7 @@ class DB( HydrusDB.HydrusDB ):
             
             ( options, ) = result
             
-            default_options = ClientDefaults.GetClientDefaultOptions()
+            default_options = ClientDefaults.get_client_default_options()
             
             for key in default_options:
                 
@@ -6381,7 +6381,7 @@ class DB( HydrusDB.HydrusDB ):
             
             new_options = ClientOptions.ClientOptions()
             
-            new_options.SetSimpleDownloaderFormulae( ClientDefaults.GetDefaultSimpleDownloaderFormulae() )
+            new_options.SetSimpleDownloaderFormulae( ClientDefaults.get_default_simple_downloader_formulae() )
             
             self.modules_serialisable.SetJSONDump( new_options )
             

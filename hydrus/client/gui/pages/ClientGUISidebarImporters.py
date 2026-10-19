@@ -2626,7 +2626,7 @@ class SidebarImporterSimpleDownloader( SidebarImporter ):
             control.AddSeparator()
             control.AddImportExportButtons( ( ClientParsing.SimpleDownloaderParsingFormula, ) )
             control.AddSeparator()
-            control.AddDefaultsButton( ClientDefaults.GetDefaultSimpleDownloaderFormulae )
+            control.AddDefaultsButton( ClientDefaults.get_default_simple_downloader_formulae )
             
             control.AddDatas( formulae )
             

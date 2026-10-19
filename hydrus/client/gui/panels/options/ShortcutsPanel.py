@@ -284,7 +284,7 @@ class ShortcutsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         from hydrus.client import ClientDefaults
         
-        defaults = ClientDefaults.GetDefaultShortcuts()
+        defaults = ClientDefaults.get_default_shortcuts()
         
         names_to_sets = { shortcut_set.GetName() : shortcut_set for shortcut_set in defaults }
         

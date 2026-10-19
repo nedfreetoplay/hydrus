@@ -61,11 +61,11 @@ class EditCheckerOptions( ClientGUIScrolledPanels.EditPanel ):
         
         defaults_panel = ClientGUICommon.StaticBox( self, 'reasonable defaults' )
         
-        defaults_1 = ClientGUICommon.BetterButton( defaults_panel, 'thread', self.SetValue, ClientDefaults.GetDefaultCheckerOptions( 'thread' ) )
-        defaults_2 = ClientGUICommon.BetterButton( defaults_panel, 'slow thread', self.SetValue, ClientDefaults.GetDefaultCheckerOptions( 'slow thread' ) )
-        defaults_3 = ClientGUICommon.BetterButton( defaults_panel, 'faster tag subscription', self.SetValue, ClientDefaults.GetDefaultCheckerOptions( 'fast tag subscription' ) )
-        defaults_4 = ClientGUICommon.BetterButton( defaults_panel, 'medium tag/artist subscription', self.SetValue, ClientDefaults.GetDefaultCheckerOptions( 'artist subscription' ) )
-        defaults_5 = ClientGUICommon.BetterButton( defaults_panel, 'slower tag subscription', self.SetValue, ClientDefaults.GetDefaultCheckerOptions( 'slow tag subscription' ) )
+        defaults_1 = ClientGUICommon.BetterButton( defaults_panel, 'thread', self.SetValue, ClientDefaults.get_default_checker_options( 'thread' ) )
+        defaults_2 = ClientGUICommon.BetterButton( defaults_panel, 'slow thread', self.SetValue, ClientDefaults.get_default_checker_options( 'slow thread' ) )
+        defaults_3 = ClientGUICommon.BetterButton( defaults_panel, 'faster tag subscription', self.SetValue, ClientDefaults.get_default_checker_options( 'fast tag subscription' ) )
+        defaults_4 = ClientGUICommon.BetterButton( defaults_panel, 'medium tag/artist subscription', self.SetValue, ClientDefaults.get_default_checker_options( 'artist subscription' ) )
+        defaults_5 = ClientGUICommon.BetterButton( defaults_panel, 'slower tag subscription', self.SetValue, ClientDefaults.get_default_checker_options( 'slow tag subscription' ) )
         
         #
         

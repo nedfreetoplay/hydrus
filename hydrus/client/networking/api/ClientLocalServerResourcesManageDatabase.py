@@ -131,7 +131,7 @@ class HydrusResourceClientAPIRestrictedManageDatabaseGetClientOptions( HydrusRes
         
         from hydrus.client import ClientDefaults
         
-        OLD_OPTIONS_DEFAULT = ClientDefaults.GetClientDefaultOptions()
+        OLD_OPTIONS_DEFAULT = ClientDefaults.get_client_default_options()
         
         old_options = CG.client_controller.options
         
