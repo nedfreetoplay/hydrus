@@ -1271,7 +1271,7 @@ class Controller(HydrusController.HydrusController):
             
             from hydrus.client import ClientEnvironment
             
-            ClientEnvironment.SetRequestsCABundleEnv()
+            ClientEnvironment.set_requests_ca_bundle_env()
             
         
         if self.new_options.GetBoolean( 'boot_with_network_traffic_paused' ) or HG.boot_with_network_traffic_paused_command_line:
