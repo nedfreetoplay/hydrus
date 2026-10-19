@@ -1976,7 +1976,7 @@ class ReviewDeferredDeleteTableData( ClientGUIScrolledPanels.ReviewPanel ):
     
     def _FlipWorkingHard( self ):
         
-        self._controller.database_maintenance_manager.FlipWorkingHard()
+        self._controller.database_maintenance_manager.flip_working_hard()
         
         self._UpdateButtonLabel()
         
@@ -2018,7 +2018,7 @@ class ReviewDeferredDeleteTableData( ClientGUIScrolledPanels.ReviewPanel ):
     
     def _UpdateButtonLabel( self ):
         
-        if self._controller.database_maintenance_manager.IsWorkingHard():
+        if self._controller.database_maintenance_manager.is_working_hard():
             
             label = 'slow down'
             enabled = True

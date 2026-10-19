@@ -6,9 +6,9 @@ from hydrus.core import HydrusTime
 from hydrus.client import ClientDaemons
 from hydrus.client import ClientGlobals as CG
 
-class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
+class DatabaseMaintenanceManager(ClientDaemons.ManagerWithMainLoop):
     
-    def __init__( self, controller: "CG.ClientController.Controller" ):
+    def __init__(self, controller: "CG.ClientController.Controller"):
         
         super().__init__( controller, 15 )
         
@@ -16,9 +16,8 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         self._controller.sub( self, 'Wake', 'checkbox_manager_inverted' )
         self._controller.sub( self, 'WakeIfNotWorking', 'notify_deferred_delete_database_maintenance_new_work' )
-        
     
-    def _AbleToDoBackgroundMaintenance( self ):
+    def _able_to_do_background_maintenance(self):
         
         if self._is_working_hard:
             
@@ -46,9 +45,8 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
         
         return True
-        
     
-    def _GetWaitPeriod( self, expected_work_period: float, actual_work_period: float, still_work_to_do: bool ):
+    def _get_wait_period(self, expected_work_period: float, actual_work_period: float, still_work_to_do: bool):
         
         if not still_work_to_do:
             
@@ -71,9 +69,8 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         reasonable_work_period = min( 5 * expected_work_period, actual_work_period )
         
         return reasonable_work_period * rest_ratio
-        
     
-    def _GetWorkPeriod( self ):
+    def _get_work_period(self):
         
         if self._is_working_hard:
             
@@ -86,10 +83,8 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         else:
             
             return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'deferred_table_delete_work_time_ms_normal' ) )
-            
-        
     
-    def FlipWorkingHard( self ):
+    def flip_working_hard(self):
         
         with self._lock:
             
@@ -99,22 +94,18 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         self._controller.pub( 'notify_deferred_delete_database_maintenance_state_change' )
         
         self.wake()
-        
     
-    def get_name( self ) -> str:
+    def get_name(self) -> str:
         
         return 'db maintenance'
-        
     
-    def IsWorkingHard( self ) -> bool:
+    def is_working_hard(self) -> bool:
         
         with self._lock:
             
             return self._is_working_hard
-            
-        
     
-    def _do_single_loop( self ):
+    def _do_single_loop(self):
         
         still_work_to_do = False
         
@@ -127,8 +118,8 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         with self._lock:
             
-            able_to_work = self._AbleToDoBackgroundMaintenance()
-            expected_work_period = self._GetWorkPeriod()
+            able_to_work = self._able_to_do_background_maintenance()
+            expected_work_period = self._get_work_period()
             
         
         if able_to_work:
@@ -162,7 +153,7 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             with self._lock:
                 
-                wait_period = self._GetWaitPeriod( expected_work_period, actual_work_period, still_work_to_do )
+                wait_period = self._get_wait_period( expected_work_period, actual_work_period, still_work_to_do )
                 
             
             if still_work_to_do:
@@ -194,5 +185,3 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         self._wake_from_work_sleep_event.clear()
         self._wake_from_idle_sleep_event.clear()
-        
-    
