@@ -16,21 +16,20 @@ from hydrus.client.importing.options import ImportOptionsConstants as IOC
 from hydrus.client.importing.options import ImportOptionsContainer
 from hydrus.client.importing.options import PrefetchImportOptions
 
-class GalleryIdentifier( HydrusSerialisable.SerialisableBase ):
+class GalleryIdentifier(HydrusSerialisable.SerialisableBase):
     
     SERIALISABLE_TYPE = HydrusSerialisable.SERIALISABLE_TYPE_GALLERY_IDENTIFIER
     SERIALISABLE_NAME = 'Gallery Identifier'
     SERIALISABLE_VERSION = 1
     
-    def __init__( self, site_type = None, additional_info = None ):
+    def __init__(self, site_type = None, additional_info = None):
         
         super().__init__()
         
         self._site_type = site_type
         self._additional_info = additional_info
-        
     
-    def __eq__( self, other ):
+    def __eq__(self, other):
         
         if isinstance( other, GalleryIdentifier ):
             
@@ -38,57 +37,48 @@ class GalleryIdentifier( HydrusSerialisable.SerialisableBase ):
             
         
         return NotImplemented
-        
     
-    def __hash__( self ):
+    def __hash__(self):
         
         return ( self._site_type, self._additional_info ).__hash__()
-        
     
-    def __ne__( self, other ):
+    def __ne__(self, other):
         
         return self.__hash__() != other.__hash__()
-        
     
-    def __repr__( self ):
+    def __repr__(self):
         
         text = 'Gallery Identifier: Unknown'
         
         return text
-        
     
-    def _get_serialisable_info( self ):
+    def _get_serialisable_info(self):
         
         return ( self._site_type, self._additional_info )
-        
     
-    def _initialise_from_serialisable_info( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( self._site_type, self._additional_info ) = serialisable_info
-        
     
-    def GetAdditionalInfo( self ):
+    def get_additional_info(self):
         
         return self._additional_info
-        
     
-    def GetSiteType( self ):
+    def get_site_type(self):
         
         return self._site_type
-        
     
-    def ToString( self ):
+    def to_string(self):
         
         return 'unknown downloader'
-        
-    
 
-HydrusSerialisable.SERIALISABLE_TYPES_TO_OBJECT_TYPES[ HydrusSerialisable.SERIALISABLE_TYPE_GALLERY_IDENTIFIER ] = GalleryIdentifier
+
+HydrusSerialisable.SERIALISABLE_TYPES_TO_OBJECT_TYPES[HydrusSerialisable.SERIALISABLE_TYPE_GALLERY_IDENTIFIER] = GalleryIdentifier
 
 # TODO: This whole thing is a mess that could do with a complete re-think. if it only handles file repo and ipfs downloads, just rework it
 class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
     
-    def __init__( self, controller ):
+    def __init__(self, controller):
         
         self._hashes_still_to_download_in_this_run = set()
         self._total_hashes_in_this_run = 0
@@ -97,9 +87,8 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
         self._pending_hashes = set()
         
         super().__init__( controller, 5 )
-        
     
-    def DownloadFiles( self, hashes ):
+    def download_files(self, hashes):
         
         with self._lock:
             
@@ -107,14 +96,12 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
             
         
         self.wake()
-        
     
-    def get_name( self ) -> str:
+    def get_name(self) -> str:
         
         return 'quick downloader'
-        
     
-    def _do_single_loop( self ):
+    def _do_single_loop(self):
         
         with self._lock:
             
@@ -290,7 +277,3 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
                 job_status_pub_job.cancel()
                 
                 job_status.FinishAndDismiss( 1 )
-                
-            
-        
-    

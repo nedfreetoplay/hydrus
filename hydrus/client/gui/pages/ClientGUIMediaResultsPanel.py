@@ -338,7 +338,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
     
     def _DownloadHashes( self, hashes ):
         
-        CG.client_controller.quick_download_manager.DownloadFiles( hashes )
+        CG.client_controller.quick_download_manager.download_files( hashes )
         
     
     def _EndShiftSelect( self ):
