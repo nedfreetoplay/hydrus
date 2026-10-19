@@ -826,12 +826,12 @@ class MediaList( object ):
                         physically_deleted = service_key == CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY
                         possibly_trashed = ( service_key in local_file_domains or service_key == CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) and action == HC.CONTENT_UPDATE_DELETE
                         
-                        deleted_specifically_from_our_domain = self._location_context.IsOneDomain() and service_key in self._location_context.current_service_keys
+                        deleted_specifically_from_our_domain = self._location_context.is_one_domain() and service_key in self._location_context.current_service_keys
                         deleted_implicitly_from_our_domain = set( self._location_context.current_service_keys ).issubset( local_file_domains ) and service_key == CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY
                         deleted_from_our_domain = deleted_specifically_from_our_domain or deleted_implicitly_from_our_domain
                         
-                        we_are_looking_at_trash = self._location_context.IsOneDomain() and CC.TRASH_SERVICE_KEY in self._location_context.current_service_keys
-                        our_view_is_all_local = self._location_context.IncludesCurrent() and not self._location_context.IncludesDeleted() and self._location_context.current_service_keys.issubset( all_local_file_services )
+                        we_are_looking_at_trash = self._location_context.is_one_domain() and CC.TRASH_SERVICE_KEY in self._location_context.current_service_keys
+                        our_view_is_all_local = self._location_context.includes_current() and not self._location_context.includes_deleted() and self._location_context.current_service_keys.issubset( all_local_file_services )
                         
                         # case one, disappeared from hard drive and we are looking at local files
                         physically_deleted_and_local_view = physically_deleted and our_view_is_all_local
@@ -909,7 +909,7 @@ class MediaList( object ):
     
     def ResetService( self, service_key ):
         
-        if self._location_context.IsOneDomain() and service_key in self._location_context.current_service_keys:
+        if self._location_context.is_one_domain() and service_key in self._location_context.current_service_keys:
             
             self._RemoveMediaDirectly( self._singleton_media, self._collected_media )
             

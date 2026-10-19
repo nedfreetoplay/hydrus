@@ -27,7 +27,7 @@ class HydrusResourceClientAPIRestrictedManageFileRelationshipsGetRelationships( 
     
     def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
-        location_context = ClientLocalServerCore.ParseLocationContext( request, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
+        location_context = ClientLocalServerCore.ParseLocationContext( request, ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
         
         hashes = ClientLocalServerCore.ParseHashes( request )
         

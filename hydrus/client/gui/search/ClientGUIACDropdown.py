@@ -1672,14 +1672,14 @@ class ChildrenTab( ListBoxTagsPredicatesAC ):
             tag_service_key = self._service_key
             tags_to_child_predicates_cache = dict( self._tags_to_child_predicates_cache )
             
-            if location_context.IsOneDomain():
+            if location_context.is_one_domain():
                 
                 search_location_context = location_context
                 
             else:
                 
                 # let's not blat the db on some crazy multi-domain just for this un-numbered list
-                search_location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_TAG_SERVICE_KEY )
+                search_location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_TAG_SERVICE_KEY )
                 
             
             tag_context = ClientSearchTagContext.TagContext( service_key = tag_service_key )
@@ -1788,7 +1788,7 @@ class AutoCompleteDropdownTags( AutoCompleteDropdown ):
     
     def __init__( self, parent, location_context: ClientLocation.LocationContext, tag_context: ClientSearchTagContext.TagContext ):
         
-        location_context.FixMissingServices( CG.client_controller.services_manager.FilterValidServiceKeys )
+        location_context.fix_missing_services( CG.client_controller.services_manager.FilterValidServiceKeys )
         
         if not CG.client_controller.services_manager.ServiceExists( tag_context.service_key ):
             
@@ -1887,7 +1887,7 @@ class AutoCompleteDropdownTags( AutoCompleteDropdown ):
         
         tag_service_key = self._tag_context_button.GetValue().service_key
         
-        if location_context.IsAllKnownFiles() and tag_service_key == CC.COMBINED_TAG_SERVICE_KEY:
+        if location_context.is_all_known_files() and tag_service_key == CC.COMBINED_TAG_SERVICE_KEY:
             
             top_local_tag_service_key = CG.client_controller.services_manager.GetDefaultLocalTagService().GetServiceKey()
             
@@ -1920,7 +1920,7 @@ class AutoCompleteDropdownTags( AutoCompleteDropdown ):
         
         location_context = location_context.duplicate()
         
-        location_context.FixMissingServices( CG.client_controller.services_manager.FilterValidServiceKeys )
+        location_context.fix_missing_services( CG.client_controller.services_manager.FilterValidServiceKeys )
         
         if location_context == self._location_context_button.GetValue():
             
@@ -1929,7 +1929,7 @@ class AutoCompleteDropdownTags( AutoCompleteDropdown ):
         
         tag_service_key = self._tag_context_button.GetValue().service_key
         
-        if location_context.IsAllKnownFiles() and tag_service_key == CC.COMBINED_TAG_SERVICE_KEY:
+        if location_context.is_all_known_files() and tag_service_key == CC.COMBINED_TAG_SERVICE_KEY:
             
             local_tag_services = CG.client_controller.services_manager.GetServices( ( HC.LOCAL_TAG, ) )
             
@@ -1955,7 +1955,7 @@ class AutoCompleteDropdownTags( AutoCompleteDropdown ):
             tag_context.service_key = CC.COMBINED_TAG_SERVICE_KEY
             
         
-        if tag_context.service_key == CC.COMBINED_TAG_SERVICE_KEY and self._location_context_button.GetValue().IsAllKnownFiles():
+        if tag_context.service_key == CC.COMBINED_TAG_SERVICE_KEY and self._location_context_button.GetValue().is_all_known_files():
             
             default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
             
@@ -1995,7 +1995,7 @@ class AutoCompleteDropdownTags( AutoCompleteDropdown ):
             tag_service_key = CC.COMBINED_TAG_SERVICE_KEY
             
         
-        if tag_service_key == CC.COMBINED_TAG_SERVICE_KEY and self._location_context_button.GetValue().IsAllKnownFiles():
+        if tag_service_key == CC.COMBINED_TAG_SERVICE_KEY and self._location_context_button.GetValue().is_all_known_files():
             
             default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
             

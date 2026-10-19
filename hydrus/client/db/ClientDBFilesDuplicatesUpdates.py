@@ -249,7 +249,7 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
         
         for location_context in all_pertinent_location_contexts:
             
-            if location_context.IsOneDomain():
+            if location_context.is_one_domain():
                 
                 valid_pairs = deletee_pairs_set
                 
@@ -575,7 +575,7 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
             # a pair is good when both nodes' king hash ids exist in _any_ of the UNION of stuff
             # we are going to give the SQLite query planner latitude to figure out what it wants; we'll see how it goes
             
-            if location_context.IsAllKnownFiles():
+            if location_context.is_all_known_files():
                 
                 rows = self._execute( 'SELECT smaller_media_id, larger_media_id, distance FROM potential_duplicate_pairs;' ).fetchall()
                 
@@ -620,7 +620,7 @@ class ClientDBFilesDuplicatesUpdates( ClientDBModule.ClientDBModule ):
                         good_media_ids.update( self._sti( self._execute( query ) ) )
                         
                     
-                    all_potential_duplicate_id_pairs_and_distances = self.GetPotentialDuplicateIdPairsAndDistances( ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY ) )
+                    all_potential_duplicate_id_pairs_and_distances = self.GetPotentialDuplicateIdPairsAndDistances( ClientLocation.LocationContext.static_create_simple( CC.COMBINED_FILE_SERVICE_KEY ) )
                     
                     rows = [ ( smaller_media_id, larger_media_id, distance ) for ( smaller_media_id, larger_media_id, distance ) in all_potential_duplicate_id_pairs_and_distances.IterateRows() if smaller_media_id in good_media_ids and larger_media_id in good_media_ids ]
                     

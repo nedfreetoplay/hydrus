@@ -643,7 +643,7 @@ class ImportOptionsManager( HydrusSerialisable.SerialisableBase ):
         location_import_options.SetAutomaticallyArchives( False )
         location_import_options.SetShouldAssociatePrimaryURLs( True )
         location_import_options.SetShouldAssociateSourceURLs( True )
-        location_import_options.SetDestinationLocationContext( ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY ) )
+        location_import_options.SetDestinationLocationContext( ClientLocation.LocationContext.static_create_simple( CC.LOCAL_FILE_SERVICE_KEY ) )
         
         import_options_container = ImportOptionsContainer.ImportOptionsContainer()
         

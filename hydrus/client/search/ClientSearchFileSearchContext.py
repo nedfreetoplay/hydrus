@@ -628,7 +628,7 @@ class FileSearchContext( HydrusSerialisable.SerialisableBase ):
         
         if location_context is None:
             
-            location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+            location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
             
         
         if tag_context is None:
@@ -770,7 +770,7 @@ class FileSearchContext( HydrusSerialisable.SerialisableBase ):
             
             file_service_key = bytes.fromhex( file_service_key_hex )
             
-            location_context = ClientLocation.LocationContext.STATICCreateSimple( file_service_key )
+            location_context = ClientLocation.LocationContext.static_create_simple( file_service_key )
             
             serialisable_location_context = location_context.get_serialisable_tuple()
             
@@ -782,7 +782,7 @@ class FileSearchContext( HydrusSerialisable.SerialisableBase ):
     
     def FixMissingServices( self, filter_method ):
         
-        self._location_context.FixMissingServices( filter_method )
+        self._location_context.fix_missing_services( filter_method )
         self._tag_context.FixMissingServices( filter_method )
         
     

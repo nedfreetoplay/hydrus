@@ -3691,7 +3691,7 @@ class ReviewServiceIPFSSubPanel( ClientGUICommon.StaticBox ):
             
             try:
                 
-                location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+                location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
                 
                 for ( multihash, num_files, total_size, note ) in shares:
                     

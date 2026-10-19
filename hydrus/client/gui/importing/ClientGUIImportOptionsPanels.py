@@ -341,7 +341,7 @@ class EditLocationImportOptionsPanel( QW.QWidget ):
         
         destination_location_context = location_import_options.GetDestinationLocationContext()
         
-        destination_location_context.FixMissingServices( CG.client_controller.services_manager.FilterValidServiceKeys )
+        destination_location_context.fix_missing_services( CG.client_controller.services_manager.FilterValidServiceKeys )
         
         self._destination_location_context = ClientGUILocation.LocationSearchContextButton( self, destination_location_context )
         self._destination_location_context.SetOnlyImportableDomainsAllowed( True )
@@ -432,7 +432,7 @@ class EditLocationImportOptionsPanel( QW.QWidget ):
         
         location_context = self._destination_location_context.GetValue()
         
-        self._destination_location_context_st.setVisible( location_context.IsEmpty() )
+        self._destination_location_context_st.setVisible( location_context.is_empty() )
         
     
     def GetValue( self ) -> LocationImportOptions.LocationImportOptions:
@@ -453,7 +453,7 @@ class EditLocationImportOptionsPanel( QW.QWidget ):
         
         destination_location_context = location_import_options.GetDestinationLocationContext()
         
-        destination_location_context.FixMissingServices( CG.client_controller.services_manager.FilterValidServiceKeys )
+        destination_location_context.fix_missing_services( CG.client_controller.services_manager.FilterValidServiceKeys )
         
         self._destination_location_context.SetValue( destination_location_context )
         

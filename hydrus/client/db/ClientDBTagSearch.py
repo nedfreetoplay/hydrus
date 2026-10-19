@@ -520,7 +520,7 @@ class ClientDBTagSearch( ClientDBModule.ClientDBModule ):
         
         display_tag_service_id = self.modules_services.GetServiceId( tag_context.display_service_key )
         
-        if tag_context.IsAllKnownTags() and location_context.IsAllKnownFiles():
+        if tag_context.IsAllKnownTags() and location_context.is_all_known_files():
             
             return []
             

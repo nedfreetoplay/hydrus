@@ -27,7 +27,7 @@ class EditMultipleLocationContextPanel( ClientGUIScrolledPanels.EditPanel ):
         
         self._location_list = ClientGUICommon.BetterCheckBoxList( self )
         
-        services = ClientLocation.GetPossibleFileDomainServicesInOrder( all_known_files_allowed, only_importable_domains_allowed, only_local_file_domains_allowed, only_combined_local_file_domains_allowed )
+        services = ClientLocation.get_possible_file_domain_services_in_order( all_known_files_allowed, only_importable_domains_allowed, only_local_file_domains_allowed, only_combined_local_file_domains_allowed )
         
         for service in services:
             
@@ -78,9 +78,9 @@ class EditMultipleLocationContextPanel( ClientGUIScrolledPanels.EditPanel ):
         
         location_context = self._GetValue()
         
-        location_context.ClearSurplusLocalFilesServices( CG.client_controller.services_manager )
+        location_context.clear_surplus_local_files_services( CG.client_controller.services_manager )
         
-        if set( location_context.GetStatusesAndServiceKeysList() ) != set( self._location_list.GetValue() ):
+        if set( location_context.get_statuses_and_service_keys_list() ) != set( self._location_list.GetValue() ):
             
             self._SetValue( location_context )
             
@@ -102,7 +102,7 @@ class EditMultipleLocationContextPanel( ClientGUIScrolledPanels.EditPanel ):
         
         self._location_list.blockSignals( True )
         
-        statuses_and_service_keys = location_context.GetStatusesAndServiceKeysList()
+        statuses_and_service_keys = location_context.get_statuses_and_service_keys_list()
         
         self._location_list.SetValue( statuses_and_service_keys )
         
@@ -147,7 +147,7 @@ class LocationSearchContextButton( ClientGUICommon.BetterButton ):
     
     def _EditLocation( self ):
         
-        services = ClientLocation.GetPossibleFileDomainServicesInOrder( self._IsAllKnownFilesServiceTypeAllowed(), self._only_importable_domains_allowed, self._only_local_file_domains_allowed, self._only_combined_local_file_domains_allowed )
+        services = ClientLocation.get_possible_file_domain_services_in_order( self._IsAllKnownFilesServiceTypeAllowed(), self._only_importable_domains_allowed, self._only_local_file_domains_allowed, self._only_combined_local_file_domains_allowed )
         
         menu = ClientGUIMenus.GenerateMenu( self )
         
@@ -162,7 +162,7 @@ class LocationSearchContextButton( ClientGUICommon.BetterButton ):
                 ClientGUIMenus.AppendSeparator( menu )
                 
             
-            location_context = ClientLocation.LocationContext.STATICCreateSimple( service.GetServiceKey() )
+            location_context = ClientLocation.LocationContext.static_create_simple( service.GetServiceKey() )
             
             if service.get_service_type() == HC.COMBINED_FILE and self._is_paired_with_tag_domain:
                 
@@ -291,7 +291,7 @@ class LocationSearchContextButton( ClientGUICommon.BetterButton ):
         
         location_context = location_context.duplicate()
         
-        location_context.FixMissingServices( CG.client_controller.services_manager.FilterValidServiceKeys )
+        location_context.fix_missing_services( CG.client_controller.services_manager.FilterValidServiceKeys )
         
         if not force_label:
             
@@ -303,13 +303,13 @@ class LocationSearchContextButton( ClientGUICommon.BetterButton ):
         
         self._location_context = location_context
         
-        if self._location_context.IsAllKnownFiles():
+        if self._location_context.is_all_known_files():
             
             text = 'all known files with tags'
             
         else:
             
-            text = self._location_context.ToString( CG.client_controller.services_manager.GetName )
+            text = self._location_context.to_string( CG.client_controller.services_manager.GetName )
             
         
         self.setText( text )

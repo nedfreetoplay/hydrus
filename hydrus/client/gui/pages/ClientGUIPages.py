@@ -3759,9 +3759,9 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
             tag_service_key = CC.COMBINED_TAG_SERVICE_KEY
             
         
-        if location_context.IsAllKnownFiles() and tag_service_key == CC.COMBINED_TAG_SERVICE_KEY:
+        if location_context.is_all_known_files() and tag_service_key == CC.COMBINED_TAG_SERVICE_KEY:
             
-            location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY )
+            location_context = ClientLocation.LocationContext.static_create_simple( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY )
             
         
         tag_context = ClientSearchTagContext.TagContext( service_key = tag_service_key )
@@ -3992,7 +3992,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
         
         if page is None:
             
-            location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+            location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
             
             page = self.NewPageQuery( location_context, initial_hashes = hashes, page_name = page_name, on_deepest_notebook = True, select_page = False )
             

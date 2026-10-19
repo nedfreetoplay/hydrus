@@ -98,7 +98,7 @@ class TestClientDB( unittest.TestCase ):
         
         full_import_options_container = ImportOptionsManager.ImportOptionsManager.STATICGetDefaultInitialisedManager().GetDefaultImportOptionsContainerForCallerType( IOC.IMPORT_OPTIONS_CALLER_TYPE_GLOBAL )
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_FILE_SERVICE_KEY )
         tag_context = ClientSearchTagContext.TagContext( service_key = CC.DEFAULT_LOCAL_TAG_SERVICE_KEY )
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, tag_context = tag_context )
@@ -246,7 +246,7 @@ class TestClientDB( unittest.TestCase ):
         
         tag_context = ClientSearchTagContext.TagContext( service_key = HydrusData.generate_key() )
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( HydrusData.generate_key() )
+        location_context = ClientLocation.LocationContext.static_create_simple( HydrusData.generate_key() )
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, tag_context = tag_context, predicates = [ ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_TAG, 'test' ) ] )
         
@@ -269,7 +269,7 @@ class TestClientDB( unittest.TestCase ):
                 
                 predicates = [ ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_NAMESPACE, namespace, inclusive ) ]
                 
-                location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )
+                location_context = ClientLocation.LocationContext.static_create_simple( CC.LOCAL_FILE_SERVICE_KEY )
                 
                 search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, predicates = predicates )
                 
@@ -290,7 +290,7 @@ class TestClientDB( unittest.TestCase ):
                 
                 predicates = [ ClientSearchPredicate.Predicate( predicate_type, info ) ]
                 
-                location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )
+                location_context = ClientLocation.LocationContext.static_create_simple( CC.LOCAL_FILE_SERVICE_KEY )
                 
                 search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, predicates = predicates )
                 
@@ -311,7 +311,7 @@ class TestClientDB( unittest.TestCase ):
                 
                 predicates = [ ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_TAG, tag, inclusive ) ]
                 
-                location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )
+                location_context = ClientLocation.LocationContext.static_create_simple( CC.LOCAL_FILE_SERVICE_KEY )
                 
                 search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, predicates = predicates )
                 
@@ -330,7 +330,7 @@ class TestClientDB( unittest.TestCase ):
             
             for ( predicates, result ) in tests:
                 
-                location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )
+                location_context = ClientLocation.LocationContext.static_create_simple( CC.LOCAL_FILE_SERVICE_KEY )
                 
                 search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, predicates = predicates )
                 
@@ -824,7 +824,7 @@ class TestClientDB( unittest.TestCase ):
         
         #
         
-        file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY ), tag_context = ClientSearchTagContext.TagContext() )
+        file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = ClientLocation.LocationContext.static_create_simple( CC.LOCAL_FILE_SERVICE_KEY ), tag_context = ClientSearchTagContext.TagContext() )
         
         result = self._read( 'file_system_predicates', file_search_context )
         
@@ -1160,7 +1160,7 @@ class TestClientDB( unittest.TestCase ):
         
         #
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple( CC.LOCAL_FILE_SERVICE_KEY )
         
         fsc = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, predicates = [] )
         
@@ -1182,7 +1182,7 @@ class TestClientDB( unittest.TestCase ):
         
         tag_context = ClientSearchTagContext.TagContext( service_key = CC.DEFAULT_LOCAL_TAG_SERVICE_KEY )
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple( CC.LOCAL_FILE_SERVICE_KEY )
         
         fsc = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, tag_context = tag_context, predicates = [] )
         
@@ -1202,7 +1202,7 @@ class TestClientDB( unittest.TestCase ):
         
         #
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple( CC.LOCAL_FILE_SERVICE_KEY )
         
         fsc = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, predicates = [ ClientSearchPredicate.SYSTEM_PREDICATE_ARCHIVE ] )
         
@@ -1222,7 +1222,7 @@ class TestClientDB( unittest.TestCase ):
         
         #
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple( CC.LOCAL_FILE_SERVICE_KEY )
         
         fsc = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, predicates = [ ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_TAG, 'tag', count = ClientSearchPredicate.PredicateCount.STATICCreateStaticCount( 1, 3 ) ) ] )
         
@@ -1242,7 +1242,7 @@ class TestClientDB( unittest.TestCase ):
         
         #
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple( CC.LOCAL_FILE_SERVICE_KEY )
         
         fsc = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, predicates = [ ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_RATING, ( '>', 0.2, TestController.LOCAL_RATING_NUMERICAL_SERVICE_KEY ) ), ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_FILE_SERVICE, ( True, HC.CONTENT_STATUS_CURRENT, CC.LOCAL_FILE_SERVICE_KEY ) ) ] )
         
@@ -1687,7 +1687,7 @@ class TestClientDB( unittest.TestCase ):
         
         #
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
         
         predicates = [ ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_MIME, value = ( HC.APPLICATION_FLASH, ) ) ]
         

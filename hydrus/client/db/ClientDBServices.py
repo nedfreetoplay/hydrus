@@ -211,7 +211,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
         location_context = file_search_context.GetLocationContext()
         tag_context = file_search_context.GetTagContext()
         
-        ( file_service_keys, file_location_is_cross_referenced ) = location_context.GetCoveringCurrentFileServiceKeys()
+        ( file_service_keys, file_location_is_cross_referenced ) = location_context.get_covering_current_file_service_keys()
         
         search_file_service_ids = []
         
@@ -346,7 +346,7 @@ class ClientDBMasterServices( ClientDBModule.ClientDBModule ):
     
     def LocationContextIsCoveredByHydrusLocalFileStorage( self, location_context: ClientLocation.LocationContext ):
         
-        if location_context.IncludesDeleted():
+        if location_context.includes_deleted():
             
             return False
             

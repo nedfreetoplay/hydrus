@@ -500,7 +500,7 @@ class MigrationSourceHTA( MigrationSource ):
             data = [ ( hash, tags ) for ( hash, tags ) in data if hash in self._hashes ]
             
         
-        if not self._location_context.IsAllKnownFiles():
+        if not self._location_context.is_all_known_files():
             
             filtered_data = []
             
@@ -531,7 +531,7 @@ class MigrationSourceHTA( MigrationSource ):
     
     def _SHA256FilteringNeeded( self ):
         
-        return self._hashes is not None or not self._location_context.IsAllKnownFiles()
+        return self._hashes is not None or not self._location_context.is_all_known_files()
         
     
     def CleanUp( self ):

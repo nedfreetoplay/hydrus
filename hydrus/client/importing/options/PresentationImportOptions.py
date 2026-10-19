@@ -37,7 +37,7 @@ class PresentationImportOptions( IOC.ImportOptionsMetatype ):
         
         super().__init__()
         
-        self._location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+        self._location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
         self._presentation_status = PRESENTATION_STATUS_ANY_GOOD
         self._presentation_inbox = PRESENTATION_INBOX_AGNOSTIC
         
@@ -173,11 +173,11 @@ class PresentationImportOptions( IOC.ImportOptionsMetatype ):
             
             if presentation_location == 1:
                 
-                location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY )
+                location_context = ClientLocation.LocationContext.static_create_simple( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY )
                 
             else:
                 
-                location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+                location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
                 
             
             serialisable_location_context = location_context.get_serialisable_tuple()
@@ -241,15 +241,15 @@ class PresentationImportOptions( IOC.ImportOptionsMetatype ):
                 
             
         
-        if not self._location_context.IsCombinedLocalFileDomains():
+        if not self._location_context.is_combined_local_file_domains():
             
-            if self._location_context.IsHydrusLocalFileStorage():
+            if self._location_context.is_hydrus_local_file_storage():
                 
                 s = 'including if trashed'
                 
             else:
                 
-                s = 'in {}'.format( self._location_context.ToString( CG.client_controller.services_manager.GetName ) )
+                s = 'in {}'.format( self._location_context.to_string( CG.client_controller.services_manager.GetName ) )
                 
             
             summary = '{}, {}'.format( summary, s )
@@ -353,7 +353,7 @@ class PresentationImportOptions( IOC.ImportOptionsMetatype ):
                 location_context = location_context_override
                 
             
-            if not location_context.IsAllKnownFiles():
+            if not location_context.is_all_known_files():
                 
                 presented_hashes = CG.client_controller.read( 'filter_hashes', location_context, presented_hashes )
                 
@@ -364,7 +364,7 @@ class PresentationImportOptions( IOC.ImportOptionsMetatype ):
     
     def ShouldPresentHashAndStatus( self, hash, status, should_check_location = True ):
         
-        location_context_override = None if should_check_location else ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY )
+        location_context_override = None if should_check_location else ClientLocation.LocationContext.static_create_simple( CC.COMBINED_FILE_SERVICE_KEY )
         
         hashes = self.GetPresentedHashes( [ ( hash, status ) ], location_context_override = location_context_override )
         

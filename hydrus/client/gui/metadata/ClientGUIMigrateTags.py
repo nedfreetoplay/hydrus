@@ -355,7 +355,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             if file_filtering_type == self.HASHES_LOCATION:
                 
-                location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY )
+                location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_FILE_SERVICE_KEY )
                 hashes = self._hashes
                 
                 extra_filter_info_strings.append( 'for {} files'.format( HydrusNumbers.to_human_int( len( hashes ) ) ) )
@@ -365,13 +365,13 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 location_context = self._migration_source_location_context_button.GetValue()
                 hashes = None
                 
-                if location_context.IsAllKnownFiles():
+                if location_context.is_all_known_files():
                     
                     extra_filter_info_strings.append( 'for all known files' )
                     
                 else:
                     
-                    extra_filter_info_strings.append( 'for files in "{}"'.format( location_context.ToString( CG.client_controller.services_manager.GetName ) ) )
+                    extra_filter_info_strings.append( 'for files in "{}"'.format( location_context.to_string( CG.client_controller.services_manager.GetName ) ) )
                     
                 
             

@@ -1054,7 +1054,7 @@ class DB( HydrusDB.HydrusDB ):
                             
                             service_key = self.modules_services.GetServiceKey( umbrella_master_service_id )
                             
-                            location_context = ClientLocation.LocationContext.STATICCreateSimple( service_key )
+                            location_context = ClientLocation.LocationContext.static_create_simple( service_key )
                             
                             hashes = self.modules_hashes_local_cache.GetHashes( [ row[0] for row in import_rows ] )
                             
@@ -1671,7 +1671,7 @@ class DB( HydrusDB.HydrusDB ):
         if file_search_context is None:
             
             file_search_context = ClientSearchFileSearchContext.FileSearchContext(
-                location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+                location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
             )
             
         
@@ -1711,8 +1711,8 @@ class DB( HydrusDB.HydrusDB ):
                     current_files_table_name = temp_table_name
                     
                 
-                hacks_going_to_work = location_context.IsOneDomain()
-                deleted_logic_makes_sense = location_context.IncludesCurrent() and not location_context.IncludesDeleted()
+                hacks_going_to_work = location_context.is_one_domain()
+                deleted_logic_makes_sense = location_context.includes_current() and not location_context.includes_deleted()
                 current_domains_have_inverse = CC.TRASH_SERVICE_KEY not in location_context.current_service_keys and CC.COMBINED_FILE_SERVICE_KEY not in location_context.current_service_keys
                 
                 if hacks_going_to_work and deleted_logic_makes_sense and current_domains_have_inverse:
@@ -1726,7 +1726,7 @@ class DB( HydrusDB.HydrusDB ):
                     # special IsOneDomain hack
                     current_timestamps_ms_table_name = db_location_context.GetSingleFilesTableName()
                     
-                    deleted_location_context = location_context.GetDeletedInverse()
+                    deleted_location_context = location_context.get_deleted_inverse()
                     
                     deleted_db_location_context = self.modules_files_storage.GetDBLocationContext( deleted_location_context )
                     
@@ -2001,7 +2001,7 @@ class DB( HydrusDB.HydrusDB ):
         if file_search_context is None:
             
             file_search_context = ClientSearchFileSearchContext.FileSearchContext(
-                location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+                location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
             )
             
         
@@ -2041,8 +2041,8 @@ class DB( HydrusDB.HydrusDB ):
                     current_files_table_name = temp_table_name
                     
                 
-                hacks_going_to_work = location_context.IsOneDomain()
-                deleted_logic_makes_sense = location_context.IncludesCurrent() and not location_context.IncludesDeleted()
+                hacks_going_to_work = location_context.is_one_domain()
+                deleted_logic_makes_sense = location_context.includes_current() and not location_context.includes_deleted()
                 current_domains_have_inverse = CC.TRASH_SERVICE_KEY not in location_context.current_service_keys and CC.COMBINED_FILE_SERVICE_KEY not in location_context.current_service_keys
                 
                 if hacks_going_to_work and deleted_logic_makes_sense and current_domains_have_inverse:
@@ -2056,7 +2056,7 @@ class DB( HydrusDB.HydrusDB ):
                     # special IsOneDomain hack
                     current_timestamps_ms_table_name = db_location_context.GetSingleFilesTableName()
                     
-                    deleted_location_context = location_context.GetDeletedInverse()
+                    deleted_location_context = location_context.get_deleted_inverse()
                     
                     deleted_db_location_context = self.modules_files_storage.GetDBLocationContext( deleted_location_context )
                     
@@ -2409,7 +2409,7 @@ class DB( HydrusDB.HydrusDB ):
             blank_pred_types.add( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_RATING )
             
         
-        if location_context.IsAllKnownFiles():
+        if location_context.is_all_known_files():
             
             tag_service_key = file_search_context.GetTagContext().service_key
             
@@ -2477,7 +2477,7 @@ class DB( HydrusDB.HydrusDB ):
                     
                     system_everythings.append( ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_EVERYTHING, count = ClientSearchPredicate.PredicateCount.STATICCreateCurrentCount( num_everything ) ) )
                     
-                    if location_context.IncludesDeleted():
+                    if location_context.includes_deleted():
                         
                         # inbox/archive and local/remote are too difficult to get good numbers for and merge for deleted
                         
@@ -3687,7 +3687,7 @@ class DB( HydrusDB.HydrusDB ):
         
         destination_location_context = location_import_options.GetDestinationLocationContext()
         
-        destination_location_context.FixMissingServices( ClientLocation.ValidLocalDomainsFilter )
+        destination_location_context.fix_missing_services( ClientLocation.valid_local_domains_filter )
         
         location_import_options.CheckReadyToImport()
         
@@ -4829,7 +4829,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 statuses_to_table_names = self.modules_mappings_storage.GetFastestStorageMappingTableNamesFromLocationContext( location_context, tag_service_id )
                 
-                if location_context.IsAllKnownFiles():
+                if location_context.is_all_known_files():
                     
                     self.modules_tag_search.PopulateTableFromTagFilter( self.modules_services.combined_file_service_id, tag_service_id, tag_filter, temp_tag_ids_table_name, my_search_includes_deleted_tags )
                     
@@ -4896,7 +4896,7 @@ class DB( HydrusDB.HydrusDB ):
             
             use_hashes_table = False
             
-            if location_context.IsAllKnownFiles():
+            if location_context.is_all_known_files():
                 
                 if tag_filter.allows_everything():
                     
@@ -4957,7 +4957,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 select_subqueries = []
                 
-                if location_context.IsOneDomain() and location_context.IncludesCurrent():
+                if location_context.is_one_domain() and location_context.includes_current():
                     
                     # we need this to be cross referenced
                     # we want to use the mappings for quick hash fetch, but we have to be careful we only do it on simple 'includes current' since otherwise we get an umbrella domain
@@ -6966,7 +6966,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 file_service_key = self.modules_services.GetServiceKey( file_service_id )
                 
-                location_context = ClientLocation.LocationContext.STATICCreateSimple( file_service_key )
+                location_context = ClientLocation.LocationContext.static_create_simple( file_service_key )
                 
                 for tag_service_id in tag_service_ids:
                     

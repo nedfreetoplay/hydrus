@@ -4410,7 +4410,7 @@ class TestClientAPI( unittest.TestCase ):
         self.assertEqual( response_json[ 'human_result_text' ], '"https://boards.someimageboard.org/diy/res/123456.html" URL added successfully.' )
         self.assertEqual( response_json[ 'normalised_url' ], 'https://boards.someimageboard.org/diy/res/123456.html' )
         
-        self.assertEqual( TG.test_controller.get_write( 'import_url_test' ), [ ( ( url, set(), ClientTags.ServiceKeysToTags(), None, None, False, ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY ) ), {} ) ] )
+        self.assertEqual( TG.test_controller.get_write( 'import_url_test' ), [ ( ( url, set(), ClientTags.ServiceKeysToTags(), None, None, False, ClientLocation.LocationContext.static_create_simple( CC.LOCAL_FILE_SERVICE_KEY ) ), {} ) ] )
         
         # with name
         
@@ -5403,7 +5403,7 @@ class TestClientAPI( unittest.TestCase ):
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
-        default_location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+        default_location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
         
         # file relationships
         
@@ -5746,7 +5746,7 @@ class TestClientAPI( unittest.TestCase ):
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
-        default_location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+        default_location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
         
         #
         
@@ -6818,7 +6818,7 @@ class TestClientAPI( unittest.TestCase ):
         
         headers = { 'Hydrus-Client-API-Access-Key' : access_key_hex }
         
-        default_location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+        default_location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
         
         # get pending counts
         

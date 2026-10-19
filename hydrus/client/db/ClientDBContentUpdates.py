@@ -567,7 +567,7 @@ class ClientDBContentUpdates( ClientDBModule.ClientDBModule ):
                                 
                                 if action == HC.CONTENT_UPDATE_DELETE and service_key in ( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, CC.TRASH_SERVICE_KEY ):
                                     
-                                    local_hash_ids = self.modules_files_storage.FilterHashIds( ClientLocation.LocationContext.STATICCreateSimple( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY ), hash_ids )
+                                    local_hash_ids = self.modules_files_storage.FilterHashIds( ClientLocation.LocationContext.static_create_simple( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY ), hash_ids )
                                     
                                     actually_deletable_hash_ids = self.modules_file_delete_lock.FilterForPhysicalFileDeleteLock( local_hash_ids )
                                     

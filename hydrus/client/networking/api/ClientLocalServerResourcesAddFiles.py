@@ -170,7 +170,7 @@ class HydrusResourceClientAPIRestrictedAddFilesDeleteFiles( HydrusResourceClient
     
     def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
-        location_context = ClientLocalServerCore.ParseLocationContext( request, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ), deleted_allowed = False )
+        location_context = ClientLocalServerCore.ParseLocationContext( request, ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ), deleted_allowed = False )
         
         if 'reason' in request.parsed_request_args:
             
@@ -183,7 +183,7 @@ class HydrusResourceClientAPIRestrictedAddFilesDeleteFiles( HydrusResourceClient
         
         hashes = set( ClientLocalServerCore.ParseHashes( request ) )
         
-        location_context.LimitToServiceTypes( CG.client_controller.services_manager.GetServiceType, ( HC.HYDRUS_LOCAL_FILE_STORAGE, HC.COMBINED_LOCAL_FILE_DOMAINS, HC.LOCAL_FILE_DOMAIN ) )
+        location_context.limit_to_service_types( CG.client_controller.services_manager.GetServiceType, ( HC.HYDRUS_LOCAL_FILE_STORAGE, HC.COMBINED_LOCAL_FILE_DOMAINS, HC.LOCAL_FILE_DOMAIN ) )
         
         if CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY in location_context.current_service_keys:
             
@@ -272,11 +272,11 @@ class HydrusResourceClientAPIRestrictedAddFilesUndeleteFiles( HydrusResourceClie
     
     def _thread_do_post_job( self, request: HydrusServerRequest.HydrusRequest ):
         
-        location_context = ClientLocalServerCore.ParseLocationContext( request, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
+        location_context = ClientLocalServerCore.ParseLocationContext( request, ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
         
         hashes = set( ClientLocalServerCore.ParseHashes( request ) )
         
-        location_context.LimitToServiceTypes( CG.client_controller.services_manager.GetServiceType, ( HC.LOCAL_FILE_DOMAIN, HC.COMBINED_LOCAL_FILE_DOMAINS ) )
+        location_context.limit_to_service_types( CG.client_controller.services_manager.GetServiceType, ( HC.LOCAL_FILE_DOMAIN, HC.COMBINED_LOCAL_FILE_DOMAINS ) )
         
         media_results = CG.client_controller.read( 'media_results', hashes )
         

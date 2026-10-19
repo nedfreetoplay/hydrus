@@ -185,7 +185,7 @@ class DialogPageChooser( ClientGUIDialogs.Dialog ):
                         tag_service_key = CC.COMBINED_TAG_SERVICE_KEY
                         
                     
-                    location_context = ClientLocation.LocationContext.STATICCreateSimple( file_service_key )
+                    location_context = ClientLocation.LocationContext.static_create_simple( file_service_key )
                     
                     tag_context = ClientSearchTagContext.TagContext( service_key = tag_service_key )
                     

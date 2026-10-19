@@ -833,7 +833,7 @@ def ParseClientAPISearchPredicates( request ) -> list[ ClientSearchPredicate.Pre
 
 def ParsePotentialDuplicatesSearchContext( request: HydrusServerRequest.HydrusRequest ) -> ClientPotentialDuplicatesSearchContext.PotentialDuplicatesSearchContext:
     
-    location_context = ParseLocationContext( request, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
+    location_context = ParseLocationContext( request, ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
     
     tag_service_key_1 = request.parsed_request_args.get_value( 'tag_service_key_1', bytes, default_value = CC.COMBINED_TAG_SERVICE_KEY )
     tag_service_key_2 = request.parsed_request_args.get_value( 'tag_service_key_2', bytes, default_value = CC.COMBINED_TAG_SERVICE_KEY )
@@ -943,7 +943,7 @@ def ParseLocalFileDomainLocationContext( request: HydrusServerRequest.HydrusRequ
     
     custom_location_context = ParseLocationContext( request, ClientLocation.LocationContext(), deleted_allowed = False )
     
-    if not custom_location_context.IsEmpty():
+    if not custom_location_context.is_empty():
         
         for service_key in custom_location_context.current_service_keys:
             

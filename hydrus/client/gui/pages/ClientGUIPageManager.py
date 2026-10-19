@@ -47,7 +47,7 @@ def CreatePageManagerDuplicateFilter(
     
     if location_context is None:
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
         
     
     if initial_predicates is None:
@@ -403,7 +403,7 @@ class PageManager( HydrusSerialisable.SerialisableBase ):
                     del serialisable_keys[ 'duplicate_filter_file_domain' ]
                     
                 
-                location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )
+                location_context = ClientLocation.LocationContext.static_create_simple( CC.LOCAL_FILE_SERVICE_KEY )
                 
                 file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, predicates = [ ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_EVERYTHING ) ] )
                 
@@ -472,7 +472,7 @@ class PageManager( HydrusSerialisable.SerialisableBase ):
                 
                 del serialisable_keys[ 'file_service' ]
                 
-                location_context = ClientLocation.LocationContext.STATICCreateSimple( file_service_key )
+                location_context = ClientLocation.LocationContext.static_create_simple( file_service_key )
                 
                 serialisable_serialisables[ 'location_context' ] = location_context.get_serialisable_tuple()
                 
@@ -746,11 +746,11 @@ class PageManager( HydrusSerialisable.SerialisableBase ):
                 
                 if petition_service_type in HC.LOCAL_FILE_SERVICES or petition_service_type == HC.FILE_REPOSITORY:
                     
-                    location_context = ClientLocation.LocationContext.STATICCreateSimple( petition_service_key )
+                    location_context = ClientLocation.LocationContext.static_create_simple( petition_service_key )
                     
                 else:
                     
-                    location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY )
+                    location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_FILE_SERVICE_KEY )
                     
                 
                 return location_context
@@ -765,7 +765,7 @@ class PageManager( HydrusSerialisable.SerialisableBase ):
             return self._variables[ 'location_context' ]
             
         
-        return ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+        return ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
         
     
     def GetNumSeeds( self ):

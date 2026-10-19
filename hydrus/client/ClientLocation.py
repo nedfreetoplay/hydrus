@@ -7,7 +7,7 @@ from hydrus.core import HydrusSerialisable
 from hydrus.client import ClientConstants as CC
 from hydrus.client import ClientGlobals as CG
 
-def FilterOutRedundantMetaServices( list_of_service_keys: list[ bytes ] ):
+def filter_out_redundant_meta_services(list_of_service_keys: list[bytes]):
     
     services_manager = CG.client_controller.services_manager
     
@@ -32,9 +32,8 @@ def FilterOutRedundantMetaServices( list_of_service_keys: list[ bytes ] ):
         
     
     return list_of_service_keys
-    
 
-def GetPossibleFileDomainServicesInOrder( all_known_files_allowed: bool, only_importable_domains_allowed: bool, only_local_file_domains_allowed: bool, only_combined_local_file_domains_allowed: bool ):
+def get_possible_file_domain_services_in_order(all_known_files_allowed: bool, only_importable_domains_allowed: bool, only_local_file_domains_allowed: bool, only_combined_local_file_domains_allowed: bool):
     
     # TODO: WOW the 'only_x' parameters here are awful!!! rewrite all this!
     # seems like it cascades, so set up an enum instead I think!
@@ -87,30 +86,28 @@ def GetPossibleFileDomainServicesInOrder( all_known_files_allowed: bool, only_im
     services = services_manager.GetServices( service_types_in_order )
     
     return services
-    
 
-def SortFileServiceKeysNicely( list_of_service_keys ):
+def sort_file_service_keys_nicely(list_of_service_keys):
     
-    services_in_nice_order = GetPossibleFileDomainServicesInOrder( False, False, False, False )
+    services_in_nice_order = get_possible_file_domain_services_in_order( False, False, False, False )
     
     service_keys_in_nice_order = [ service.GetServiceKey() for service in services_in_nice_order ]
     
     list_of_service_keys = [ service_key for service_key in service_keys_in_nice_order if service_key in list_of_service_keys ]
     
     return list_of_service_keys
-    
 
-def ValidLocalDomainsFilter( service_keys ):
+def valid_local_domains_filter(service_keys):
     
     return [ service_key for service_key in service_keys if CG.client_controller.services_manager.ServiceExists( service_key ) and CG.client_controller.services_manager.get_service_type( service_key ) == HC.LOCAL_FILE_DOMAIN ]
-    
-class LocationContext( HydrusSerialisable.SerialisableBase ):
+
+class LocationContext(HydrusSerialisable.SerialisableBase):
     
     SERIALISABLE_TYPE = HydrusSerialisable.SERIALISABLE_TYPE_LOCATION_CONTEXT
     SERIALISABLE_NAME = 'Location Search Context'
     SERIALISABLE_VERSION = 1
     
-    def __init__( self, current_service_keys: collections.abc.Collection[ bytes ] | None = None, deleted_service_keys: collections.abc.Collection[ bytes ] | None = None ):
+    def __init__(self, current_service_keys: collections.abc.Collection[bytes] | None = None, deleted_service_keys: collections.abc.Collection[bytes] | None = None):
         
         # note this is pretty much a read-only class
         # sometimes we'll run FixMissingServices, but usually only on load and who cares if that fix is propagated around
@@ -129,14 +126,12 @@ class LocationContext( HydrusSerialisable.SerialisableBase ):
         self.current_service_keys = frozenset( current_service_keys )
         self.deleted_service_keys = frozenset( deleted_service_keys )
         
-        if self.IsAllKnownFiles():
+        if self.is_all_known_files():
             
             self.current_service_keys = frozenset( [ CC.COMBINED_FILE_SERVICE_KEY ] )
             self.deleted_service_keys = frozenset()
-            
-        
     
-    def __eq__( self, other ):
+    def __eq__(self, other):
         
         if isinstance( other, LocationContext ):
             
@@ -144,34 +139,30 @@ class LocationContext( HydrusSerialisable.SerialisableBase ):
             
         
         return NotImplemented
-        
     
-    def __hash__( self ):
+    def __hash__(self):
         
         # works because frozenset
         return ( self.current_service_keys, self.deleted_service_keys ).__hash__()
-        
     
-    def _get_serialisable_info( self ):
+    def _get_serialisable_info(self):
         
         serialisable_current_service_keys = [ service_key.hex() for service_key in self.current_service_keys ]
         serialisable_deleted_service_keys = [ service_key.hex() for service_key in self.deleted_service_keys ]
         
         return ( serialisable_current_service_keys, serialisable_deleted_service_keys )
-        
     
-    def _initialise_from_serialisable_info( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( serialisable_current_service_keys, serialisable_deleted_service_keys ) = serialisable_info
         
         self.current_service_keys = frozenset( { bytes.fromhex( service_key ) for service_key in serialisable_current_service_keys } )
         self.deleted_service_keys = frozenset( { bytes.fromhex( service_key ) for service_key in serialisable_deleted_service_keys } )
-        
     
-    def ClearSurplusLocalFilesServices( self, services_manager ):
+    def clear_surplus_local_files_services(self, services_manager):
         # if we have combined local files, then we don't need specific local domains
         
-        self.FixMissingServices( services_manager.FilterValidServiceKeys )
+        self.fix_missing_services( services_manager.FilterValidServiceKeys )
         
         if CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY in self.current_service_keys:
             
@@ -191,10 +182,8 @@ class LocationContext( HydrusSerialisable.SerialisableBase ):
         if CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY in self.deleted_service_keys:
             
             self.deleted_service_keys = frozenset( ( service_key for service_key in self.deleted_service_keys if services_manager.get_service_type( service_key ) not in HC.FILE_SERVICES_COVERED_BY_COMBINED_LOCAL_FILE_DOMAINS ) )
-            
-        
     
-    def FixMissingServices( self, services_exist_func: collections.abc.Callable ) -> bool:
+    def fix_missing_services(self, services_exist_func: collections.abc.Callable) -> bool:
         
         prev_len = len( self.current_service_keys ) + len( self.deleted_service_keys )
         
@@ -206,23 +195,21 @@ class LocationContext( HydrusSerialisable.SerialisableBase ):
         some_removed = prev_len != post_len
         
         return some_removed
-        
     
-    def GetCoveringCurrentFileServiceKeys( self ):
+    def get_covering_current_file_service_keys(self):
         
-        file_location_is_cross_referenced = not ( self.IsAllKnownFiles() or self.IncludesDeleted() )
+        file_location_is_cross_referenced = not ( self.is_all_known_files() or self.includes_deleted() )
         
         file_service_keys = list( self.current_service_keys )
         
-        if self.IncludesDeleted():
+        if self.includes_deleted():
             
             file_service_keys.append( CC.COMBINED_DELETED_FILE_SERVICE_KEY )
             
         
         return ( file_service_keys, file_location_is_cross_referenced )
-        
     
-    def GetDeletedInverse( self ):
+    def get_deleted_inverse(self):
         
         inverse = self.duplicate()
         
@@ -231,68 +218,58 @@ class LocationContext( HydrusSerialisable.SerialisableBase ):
         inverse.deleted_service_keys = a
         
         return inverse
-        
     
-    def GetStatusesAndServiceKeysList( self ):
+    def get_statuses_and_service_keys_list(self):
         
         statuses_and_service_keys = [ ( HC.CONTENT_STATUS_CURRENT, service_key ) for service_key in self.current_service_keys ]
         statuses_and_service_keys.extend( [ ( HC.CONTENT_STATUS_DELETED, service_key ) for service_key in self.deleted_service_keys ] )
         
         return statuses_and_service_keys
-        
     
-    def IncludesCurrent( self ):
+    def includes_current(self):
         
         return len( self.current_service_keys ) > 0
-        
     
-    def IncludesDeleted( self ):
+    def includes_deleted(self):
         
         return len( self.deleted_service_keys ) > 0
-        
     
-    def IsAllKnownFiles( self ):
+    def is_all_known_files(self):
         
         return CC.COMBINED_FILE_SERVICE_KEY in self.current_service_keys
-        
     
-    def IsHydrusLocalFileStorage( self ):
+    def is_hydrus_local_file_storage(self):
         
-        return self.IsOneDomain() and CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY in self.current_service_keys
-        
+        return self.is_one_domain() and CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY in self.current_service_keys
     
-    def IsCombinedLocalFileDomains( self ):
+    def is_combined_local_file_domains(self):
         
-        return self.IsOneDomain() and CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY in self.current_service_keys
-        
+        return self.is_one_domain() and CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY in self.current_service_keys
     
-    def IsEmpty( self ):
+    def is_empty(self):
         
         return len( self.current_service_keys ) + len( self.deleted_service_keys ) == 0
-        
     
-    def IsOneDomain( self ):
+    def is_one_domain(self):
         
         return len( self.current_service_keys ) + len( self.deleted_service_keys ) == 1
-        
     
-    def LimitToServiceTypes( self, service_type_func: collections.abc.Callable, service_types ):
+    def limit_to_service_types(self, service_type_func: collections.abc.Callable, service_types):
         
         self.current_service_keys = frozenset( ( service_key for service_key in self.current_service_keys if service_type_func( service_key ) in service_types ) )
         
         self.deleted_service_keys = frozenset( ( service_key for service_key in self.deleted_service_keys if service_type_func( service_key ) in service_types ) )
-        
     
-    def ToString( self, name_method ):
+    def to_string(self, name_method):
         
         # this probably needs some params for 'short string' and stuff later on
         
-        if self.IsEmpty():
+        if self.is_empty():
             
             return 'nothing'
             
         
-        if self.IncludesCurrent() and self.IncludesDeleted():
+        if self.includes_current() and self.includes_deleted():
             
             if self.current_service_keys == self.deleted_service_keys:
                 
@@ -303,7 +280,7 @@ class LocationContext( HydrusSerialisable.SerialisableBase ):
                 prefix = 'a mix of current and deleted files of '
                 
             
-        elif self.IncludesDeleted():
+        elif self.includes_deleted():
             
             prefix = 'deleted files of '
             
@@ -333,27 +310,23 @@ class LocationContext( HydrusSerialisable.SerialisableBase ):
             
         
         return prefix + service_string
-        
     
-    def ToDictForAPI( self ):
+    def to_dict_for_api(self):
         
         return {
             'current_service_keys' : [ service_key.hex() for service_key in self.current_service_keys ],
             'deleted_service_keys' : [ service_key.hex() for service_key in self.deleted_service_keys ]
         }
-        
     
     @staticmethod
-    def STATICCreateAllCurrent( current_service_keys ) -> "LocationContext":
+    def static_create_all_current(current_service_keys) -> "LocationContext":
         
         return LocationContext( current_service_keys, [] )
-        
     
     @staticmethod
-    def STATICCreateSimple( file_service_key ) -> "LocationContext":
+    def static_create_simple(file_service_key) -> "LocationContext":
         
         return LocationContext( [ file_service_key ], [] )
-        
-    
-HydrusSerialisable.SERIALISABLE_TYPES_TO_OBJECT_TYPES[ HydrusSerialisable.SERIALISABLE_TYPE_LOCATION_CONTEXT ] = LocationContext
 
+
+HydrusSerialisable.SERIALISABLE_TYPES_TO_OBJECT_TYPES[HydrusSerialisable.SERIALISABLE_TYPE_LOCATION_CONTEXT] = LocationContext

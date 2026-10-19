@@ -130,9 +130,9 @@ def AddRemoveMenu( win: ClientGUIMediaResultsPanel.MediaResultsPanel, menu: QW.Q
             
             ClientGUIMenus.AppendSeparator( remove_menu )
             
-            all_specific_file_domains = ClientLocation.SortFileServiceKeysNicely( all_specific_file_domains )
+            all_specific_file_domains = ClientLocation.sort_file_service_keys_nicely( all_specific_file_domains )
             
-            all_specific_file_domains = ClientLocation.FilterOutRedundantMetaServices( all_specific_file_domains )
+            all_specific_file_domains = ClientLocation.filter_out_redundant_meta_services( all_specific_file_domains )
             
             for file_service_key in all_specific_file_domains:
                 
@@ -206,9 +206,9 @@ def AddSelectMenu( win: ClientGUIMediaResultsPanel.MediaResultsPanel, menu, filt
             
             ClientGUIMenus.AppendSeparator( select_menu )
             
-            all_specific_file_domains = ClientLocation.SortFileServiceKeysNicely( all_specific_file_domains )
+            all_specific_file_domains = ClientLocation.sort_file_service_keys_nicely( all_specific_file_domains )
             
-            all_specific_file_domains = ClientLocation.FilterOutRedundantMetaServices( all_specific_file_domains )
+            all_specific_file_domains = ClientLocation.filter_out_redundant_meta_services( all_specific_file_domains )
             
             for file_service_key in all_specific_file_domains:
                 

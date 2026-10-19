@@ -1121,7 +1121,7 @@ class LocationsManager( object ):
     
     def IsInLocationContext( self, location_context: ClientLocation.LocationContext ):
         
-        if location_context.IsAllKnownFiles():
+        if location_context.is_all_known_files():
             
             return True
             

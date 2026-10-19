@@ -3222,7 +3222,7 @@ class ListBoxTags( ListBox ):
     
     def _GetCurrentLocationContext( self ):
         
-        return ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+        return ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
         
     
     def _GetCurrentPagePredicates( self ) -> set[ ClientSearchPredicate.Predicate ]:

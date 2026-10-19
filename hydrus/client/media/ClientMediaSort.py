@@ -175,7 +175,7 @@ class MediaSort( HydrusSerialisable.SerialisableBase ):
     
     def CanSortAtDBLevel( self, location_context: ClientLocation.LocationContext ) -> bool:
         
-        if location_context.IsAllKnownFiles():
+        if location_context.is_all_known_files():
             
             return False
             

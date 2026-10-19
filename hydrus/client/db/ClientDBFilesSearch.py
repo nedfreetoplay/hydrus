@@ -303,7 +303,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
         
         with self._make_temporary_integer_table( namespace_ids, 'namespace_id' ) as temp_namespace_ids_table_name:
             
-            ( file_service_keys, file_location_is_cross_referenced ) = location_context.GetCoveringCurrentFileServiceKeys()
+            ( file_service_keys, file_location_is_cross_referenced ) = location_context.get_covering_current_file_service_keys()
             
             mapping_and_tag_table_names = set()
             
@@ -407,7 +407,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
     
     def GetHashIdsFromTag( self, tag_display_type: int, location_context: ClientLocation.LocationContext, tag_context: ClientSearchTagContext.TagContext, tag, hash_ids = None, hash_ids_table_name = None, job_status = None ):
         
-        ( file_service_keys, file_location_is_cross_referenced ) = location_context.GetCoveringCurrentFileServiceKeys()
+        ( file_service_keys, file_location_is_cross_referenced ) = location_context.get_covering_current_file_service_keys()
         
         if not file_location_is_cross_referenced and hash_ids_table_name is not None:
             
@@ -486,7 +486,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
             cancelled_hook = job_status.IsCancelled
             
         
-        ( file_service_keys, file_location_is_cross_referenced ) = location_context.GetCoveringCurrentFileServiceKeys()
+        ( file_service_keys, file_location_is_cross_referenced ) = location_context.get_covering_current_file_service_keys()
         
         if not file_location_is_cross_referenced and hash_ids_table_name is not None:
             
@@ -782,7 +782,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
         
         results = set()
         
-        ( file_service_keys, file_location_is_cross_referenced ) = location_context.GetCoveringCurrentFileServiceKeys()
+        ( file_service_keys, file_location_is_cross_referenced ) = location_context.get_covering_current_file_service_keys()
         
         if not file_location_is_cross_referenced and hash_ids_table_name is not None:
             
@@ -859,12 +859,12 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
     
     def GetHashIdsThatHaveTagAsNumComplexLocation( self, tag_display_type: int, location_context: ClientLocation.LocationContext, tag_context: ClientSearchTagContext.TagContext, namespace_wildcard, num, operator, hash_ids = None, hash_ids_table_name = None, job_status = None ):
         
-        if location_context.IsEmpty():
+        if location_context.is_empty():
             
             return set()
             
         
-        ( file_service_keys, file_location_is_cross_referenced ) = location_context.GetCoveringCurrentFileServiceKeys()
+        ( file_service_keys, file_location_is_cross_referenced ) = location_context.get_covering_current_file_service_keys()
         
         if not file_location_is_cross_referenced and hash_ids_table_name is not None:
             
@@ -932,7 +932,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
     
     def GetHashIdsThatHaveTagsComplexLocation( self, tag_display_type: int, location_context: ClientLocation.LocationContext, tag_context: ClientSearchTagContext.TagContext, namespace_wildcard = '*', hash_ids_table_name = None, job_status = None ):
         
-        if location_context.IsEmpty():
+        if location_context.is_empty():
             
             return set()
             
@@ -964,7 +964,7 @@ class ClientDBFilesSearchTags( ClientDBModule.ClientDBModule ):
                 namespace_ids_table_name = temp_namespace_ids_table_name
                 
             
-            ( file_service_keys, file_location_is_cross_referenced ) = location_context.GetCoveringCurrentFileServiceKeys()
+            ( file_service_keys, file_location_is_cross_referenced ) = location_context.get_covering_current_file_service_keys()
             
             if not file_location_is_cross_referenced and hash_ids_table_name is not None:
                 
@@ -1443,7 +1443,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         location_context = file_search_context.GetLocationContext()
         tag_context = file_search_context.GetTagContext()
         
-        not_all_known_files = not location_context.IsAllKnownFiles()
+        not_all_known_files = not location_context.is_all_known_files()
         
         we_need_some_results = query_hash_ids is None
         we_need_to_cross_reference = not_all_known_files and not search_state.have_cross_referenced_file_locations
@@ -1452,7 +1452,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         
         if we_need_some_results or we_need_to_cross_reference:
             
-            if location_context.IsAllKnownFiles():
+            if location_context.is_all_known_files():
                 
                 query_hash_ids = intersection_update_qhi( query_hash_ids, self.modules_files_search_tags.GetHashIdsThatHaveTagsComplexLocation( ClientTags.TAG_DISPLAY_DISPLAY_ACTUAL, location_context, tag_context, job_status = job_status ) )
                 
@@ -1562,7 +1562,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         
         # hide update files
         
-        if file_search_context.GetLocationContext().IsHydrusLocalFileStorage():
+        if file_search_context.GetLocationContext().is_hydrus_local_file_storage():
             
             repo_update_hash_ids = set( self.modules_files_storage.GetCurrentHashIdsList( self.modules_services.local_update_service_id ) )
             
@@ -1990,7 +1990,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         #
         
         file_location_is_all_local = self.modules_services.LocationContextIsCoveredByHydrusLocalFileStorage( location_context )
-        file_location_is_all_hydrus_local_file_storages_deleted = location_context.IsOneDomain() and CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY in location_context.deleted_service_keys
+        file_location_is_all_hydrus_local_file_storages_deleted = location_context.is_one_domain() and CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY in location_context.deleted_service_keys
         
         must_be_local = system_predicates.MustBeLocal() or system_predicates.MustBeArchive()
         must_not_be_local = system_predicates.MustNotBeLocal()
@@ -2731,7 +2731,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         system_predicates = file_search_context.GetSystemPredicates()
         
         location_context = file_search_context.GetLocationContext()
-        not_all_known_files = not location_context.IsAllKnownFiles()
+        not_all_known_files = not location_context.is_all_known_files()
         
         system_pred_type_to_timestamp_ranges_ms = system_predicates.GetTimestampRangesMS()
         
@@ -2860,7 +2860,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
         
         tag_service_key = tag_context.service_key
         
-        if location_context.IsEmpty():
+        if location_context.is_empty():
             
             return []
             
@@ -3127,7 +3127,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                 
                 if sort_data == CC.SORT_FILES_BY_IMPORT_TIME:
                     
-                    if location_context.IsOneDomain() and location_context.IncludesCurrent():
+                    if location_context.is_one_domain() and location_context.includes_current():
                         
                         file_service_key = list( location_context.current_service_keys )[0]
                         

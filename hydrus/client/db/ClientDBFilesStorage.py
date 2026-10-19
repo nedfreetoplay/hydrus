@@ -605,12 +605,12 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
     
     def FilterHashIds( self, location_context: ClientLocation.LocationContext, hash_ids ) -> set:
         
-        if location_context.IsEmpty():
+        if location_context.is_empty():
             
             return set()
             
         
-        if location_context.IsAllKnownFiles():
+        if location_context.is_all_known_files():
             
             return hash_ids
             
@@ -731,7 +731,7 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
                 
             
         
-        location_context = ClientLocation.LocationContext.STATICCreateAllCurrent( current_service_keys )
+        location_context = ClientLocation.LocationContext.static_create_all_current( current_service_keys )
         
         current_hash_ids = self.FilterHashIds( location_context, hash_ids )
         
@@ -973,12 +973,12 @@ class ClientDBFilesStorage( ClientDBModule.ClientDBModule ):
     
     def GetDBLocationContext( self, location_context: ClientLocation.LocationContext ):
         
-        if location_context.IsEmpty():
+        if location_context.is_empty():
             
-            location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY )
+            location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_FILE_SERVICE_KEY )
             
         
-        if location_context.IsAllKnownFiles():
+        if location_context.is_all_known_files():
             
             # no table set, obviously
             

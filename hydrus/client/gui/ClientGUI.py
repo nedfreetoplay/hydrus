@@ -2810,12 +2810,12 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             for service in local_file_services:
                 
-                location_context = ClientLocation.LocationContext.STATICCreateSimple( service.GetServiceKey() )
+                location_context = ClientLocation.LocationContext.static_create_simple( service.GetServiceKey() )
                 
                 ClientGUIMenus.AppendMenuItem( self._menubar_pages_search_submenu, f'new "{service.GetName()}" search page', f'Open a new search tab for {service.GetName()}.', self._notebook.NewPageQuery, location_context, on_deepest_notebook = True )
                 
             
-            location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.TRASH_SERVICE_KEY )
+            location_context = ClientLocation.LocationContext.static_create_simple( CC.TRASH_SERVICE_KEY )
             
             ClientGUIMenus.AppendMenuItem( self._menubar_pages_search_submenu, 'new "trash" page', 'Open a new search tab for your recently deleted files.', self._notebook.NewPageQuery, location_context, on_deepest_notebook = True )
             
@@ -2825,7 +2825,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             for service in file_repositories:
                 
-                location_context = ClientLocation.LocationContext.STATICCreateSimple( service.GetServiceKey() )
+                location_context = ClientLocation.LocationContext.static_create_simple( service.GetServiceKey() )
                 
                 ClientGUIMenus.AppendMenuItem( self._menubar_pages_search_submenu, f'new "{service.GetName()}" search page', f'Open a new search tab for {service.GetName()}.', self._notebook.NewPageQuery, location_context, on_deepest_notebook = True )
                 
@@ -6245,7 +6245,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                     
                     self.ProposeSaveGUISession( CC.LAST_SESSION_SESSION_NAME )
                     
-                    location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY )
+                    location_context = ClientLocation.LocationContext.static_create_simple( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY )
                     
                     page = self._notebook.NewPageQuery( location_context, page_name = 'client api test' )
                     

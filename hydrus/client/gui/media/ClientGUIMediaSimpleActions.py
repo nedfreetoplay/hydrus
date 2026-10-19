@@ -383,7 +383,7 @@ def ShowDuplicatesInNewPage( location_context: ClientLocation.LocationContext, h
         
     else:
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_FILE_SERVICE_KEY )
         
         hashes = CG.client_controller.read( 'file_duplicate_hashes', location_context, hash, duplicate_type )
         
@@ -424,7 +424,7 @@ def ShowMediaResultsInNewPageWithAppropriateLocationContext( media_results: list
     
     if need_all_known_files:
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY )
+        location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_FILE_SERVICE_KEY )
         
     else:
         
@@ -432,11 +432,11 @@ def ShowMediaResultsInNewPageWithAppropriateLocationContext( media_results: list
         
         if need_hydrus_local_file_storage:
             
-            location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY )
+            location_context = ClientLocation.LocationContext.static_create_simple( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY )
             
         else:
             
-            location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+            location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
             
         
     

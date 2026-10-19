@@ -33,11 +33,11 @@ def MakeNewPageFromAPI( page_type, page_name, page_of_pages_key, focus_page, pre
         
         if file_service_key is not None:
             
-            location_context = ClientLocation.LocationContext.STATICCreateSimple( file_service_key )
+            location_context = ClientLocation.LocationContext.static_create_simple( file_service_key )
             
         else:
             
-            location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+            location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
             
         
         if tag_service_key is None:
@@ -133,7 +133,7 @@ def MakeNewPageFromAPI( page_type, page_name, page_of_pages_key, focus_page, pre
         
         if file_service_key is not None:
             
-            location_context = ClientLocation.LocationContext.STATICCreateSimple( file_service_key )
+            location_context = ClientLocation.LocationContext.static_create_simple( file_service_key )
             
         else:
             

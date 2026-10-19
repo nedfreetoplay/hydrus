@@ -32,10 +32,10 @@ class ReviewPurgeTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         # what about a listboxtags that has an auto-async thing to produce a count suffix, mate? surely this is doable in some way
         self._tags_to_remove = ClientGUIListBoxes.ListBoxTagsStringsAddRemove( self, service_key = service_key )
         
-        self._autocomplete = ClientGUIACDropdown.AutoCompleteDropdownTagsWrite( self, self._tags_to_remove.EnterTags, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY ), self._service_key, show_paste_button = True )
+        self._autocomplete = ClientGUIACDropdown.AutoCompleteDropdownTagsWrite( self, self._tags_to_remove.EnterTags, ClientLocation.LocationContext.static_create_simple( CC.COMBINED_FILE_SERVICE_KEY ), self._service_key, show_paste_button = True )
         
         # forcing things in case options try to set default
-        self._autocomplete.SetLocationContext( ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY ) )
+        self._autocomplete.SetLocationContext( ClientLocation.LocationContext.static_create_simple( CC.COMBINED_FILE_SERVICE_KEY ) )
         self._autocomplete.SetTagServiceKey( self._service_key )
         
         self._autocomplete.externalCopyKeyPressEvent.connect( self._tags_to_remove.keyPressEvent )
@@ -121,7 +121,7 @@ def PurgeTags(
     reason: str
 ):
     
-    location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_FILE_SERVICE_KEY )
+    location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_FILE_SERVICE_KEY )
     desired_hash_type = 'sha256'
     hashes = None
     content_statuses = [ HC.CONTENT_STATUS_CURRENT ]

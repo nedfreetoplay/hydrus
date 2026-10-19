@@ -762,7 +762,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         
         from hydrus.client import ClientLocation
         
-        self._dictionary[ 'default_local_location_context' ] = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )
+        self._dictionary[ 'default_local_location_context' ] = ClientLocation.LocationContext.static_create_simple( CC.LOCAL_FILE_SERVICE_KEY )
         
         #
         
@@ -889,7 +889,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
         location_import_options.SetAutomaticallyArchives( False )
         location_import_options.SetShouldAssociatePrimaryURLs( True )
         location_import_options.SetShouldAssociateSourceURLs( True )
-        location_import_options.SetDestinationLocationContext( ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY ) )
+        location_import_options.SetDestinationLocationContext( ClientLocation.LocationContext.static_create_simple( CC.LOCAL_FILE_SERVICE_KEY ) )
         
         quiet_file_import_options = FileImportOptionsLegacy.FileImportOptionsLegacy()
         
@@ -1533,7 +1533,7 @@ class ClientOptions( HydrusSerialisable.SerialisableBase ):
                     
                     from hydrus.client import ClientLocation
                     
-                    location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+                    location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
                     
                 
             except Exception as e:

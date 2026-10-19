@@ -163,7 +163,7 @@ class FileImportOptionsLegacy( HydrusSerialisable.SerialisableBase ):
             
             ( exclude_deleted, do_not_check_known_urls_before_importing, do_not_check_hashes_before_importing, allow_decompression_bombs, min_size, max_size, max_gif_size, min_resolution, max_resolution ) = pre_import_options
             
-            import_destination_location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )
+            import_destination_location_context = ClientLocation.LocationContext.static_create_simple( CC.LOCAL_FILE_SERVICE_KEY )
             
             serialisable_import_destination_location_context = import_destination_location_context.get_serialisable_tuple()
             

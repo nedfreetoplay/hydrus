@@ -94,11 +94,11 @@ class HydrusResourceClientAPIRestrictedManageDatabaseMrBones( HydrusResourceClie
     
     def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
-        location_context = ClientLocalServerCore.ParseLocationContext( request, ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
+        location_context = ClientLocalServerCore.ParseLocationContext( request, ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
         
         tag_service_key = ClientLocalServerCore.ParseTagServiceKey( request )
         
-        if tag_service_key == CC.COMBINED_TAG_SERVICE_KEY and location_context.IsAllKnownFiles():
+        if tag_service_key == CC.COMBINED_TAG_SERVICE_KEY and location_context.is_all_known_files():
             
             raise HydrusExceptions.BadRequestException( 'Sorry, search for all known tags over all known files is not supported!' )
             
@@ -158,7 +158,7 @@ class HydrusResourceClientAPIRestrictedManageDatabaseGetClientOptions( HydrusRes
             'default_tag_sort_media_vewier_manage_tags' : new_options.GetDefaultTagSort( CC.TAG_PRESENTATION_MEDIA_VIEWER_MANAGE_TAGS ).ToDictForAPI(),
             'fallback_sort' : new_options.GetFallbackSort().ToDictForAPI(),
             'suggested_tags_favourites' : new_options.GetAllSuggestedTagsFavourites(),
-            'default_local_location_context' : new_options.GetDefaultLocalLocationContext().ToDictForAPI()
+            'default_local_location_context' : new_options.GetDefaultLocalLocationContext().to_dict_for_api()
         }
 
         body_dict = {

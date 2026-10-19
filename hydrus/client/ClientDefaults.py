@@ -812,7 +812,7 @@ def set_default_favourite_search_manager_data(favourite_search_manager):
     foldername = 'example search'
     name = 'inbox filter'
     
-    location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )
+    location_context = ClientLocation.LocationContext.static_create_simple( CC.LOCAL_FILE_SERVICE_KEY )
     
     tag_context = ClientSearchTagContext.TagContext()
     

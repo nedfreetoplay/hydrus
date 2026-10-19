@@ -37,7 +37,7 @@ class LocationImportOptions( IOC.ImportOptionsMetatype ):
             fallback = CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY
             
         
-        self._import_destination_location_context = ClientLocation.LocationContext.STATICCreateSimple( fallback )
+        self._import_destination_location_context = ClientLocation.LocationContext.static_create_simple( fallback )
         
     
     def _get_serialisable_info( self ):
@@ -75,7 +75,7 @@ class LocationImportOptions( IOC.ImportOptionsMetatype ):
     
     def CheckReadyToImport( self ) -> None:
         
-        if self._import_destination_location_context.IsEmpty():
+        if self._import_destination_location_context.is_empty():
             
             raise HydrusExceptions.FileImportBlockException( 'There is no import destination set in the Location Import Options!' )
             

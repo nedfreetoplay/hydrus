@@ -2640,7 +2640,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
                 
                 if CG.client_controller.new_options.GetBoolean( 'open_files_to_duplicate_filter_uses_all_my_files' ):
                     
-                    location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+                    location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
                     
                 else:
                     

@@ -43,7 +43,7 @@ def AddDuplicatesMenu( win: QW.QWidget, command_processor: CAC.ApplicationComman
     
     focused_hash = focus_media_result.GetHash()
     
-    combined_local_location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY )
+    combined_local_location_context = ClientLocation.LocationContext.static_create_simple( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY )
     
     if CG.client_controller.db_currently_doing_job():
         
@@ -557,7 +557,7 @@ def AddKnownURLsViewCopyMenu( win: QW.QWidget, command_processor: CAC.Applicatio
             
             def call_generator( u ):
                 
-                location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+                location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
                 predicates = [ ClientSearchPredicate.Predicate( predicate_type = ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_KNOWN_URLS, value = ( True, 'exact_match', u, f'has url {u}' ) ) ]
                 
                 page_name = 'url search'
@@ -574,7 +574,7 @@ def AddKnownURLsViewCopyMenu( win: QW.QWidget, command_processor: CAC.Applicatio
                 
                 ClientGUIMenus.AppendSeparator( urls_open_page_menu )
                 
-                location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+                location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
                 
                 url_preds = [ ClientSearchPredicate.Predicate( predicate_type = ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_KNOWN_URLS, value = ( True, 'exact_match', url, f'has url {url}' ) ) for ( label, url ) in focus_labels_and_urls ]
                 

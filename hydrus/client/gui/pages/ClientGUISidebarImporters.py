@@ -88,7 +88,7 @@ def AddPresentationSubmenu( menu: QW.QMenu, importer_name: str, import_options_c
     
     presentation_import_options = PresentationImportOptions.PresentationImportOptions()
     
-    presentation_import_options.SetLocationContext( ClientLocation.LocationContext.STATICCreateSimple( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY ) )
+    presentation_import_options.SetLocationContext( ClientLocation.LocationContext.static_create_simple( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY ) )
     
     sets_of_options.append( presentation_import_options )
     

@@ -108,7 +108,7 @@ def MakeSomeFakePetitions( service_key: bytes ):
                         ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_LIMIT, 256 ),
                     ]
                     
-                    location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
+                    location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
                     
                     search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, predicates = predicates )
                     

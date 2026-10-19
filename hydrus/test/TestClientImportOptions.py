@@ -441,7 +441,7 @@ class TestLocationImportOptions( unittest.TestCase ):
     
     def test_location_import_options( self ):
         
-        destination_location_context = ClientLocation.LocationContext.STATICCreateSimple( CC.LOCAL_FILE_SERVICE_KEY )
+        destination_location_context = ClientLocation.LocationContext.static_create_simple( CC.LOCAL_FILE_SERVICE_KEY )
         automatic_archive = False
         do_archive_already_in_db_files = False
         do_import_destinations_on_already_in_db_files = False
@@ -757,7 +757,7 @@ class TestPresentationImportOptions( unittest.TestCase ):
         
         presentation_import_options.SetPresentationStatus( PresentationImportOptions.PRESENTATION_STATUS_ANY_GOOD )
         presentation_import_options.SetPresentationInbox( PresentationImportOptions.PRESENTATION_INBOX_AGNOSTIC )
-        presentation_import_options.SetLocationContext( ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
+        presentation_import_options.SetLocationContext( ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
         
         pre_filter_expected_result = [
             new_and_inboxed_hash,
@@ -794,7 +794,7 @@ class TestPresentationImportOptions( unittest.TestCase ):
         
         presentation_import_options.SetPresentationStatus( PresentationImportOptions.PRESENTATION_STATUS_ANY_GOOD )
         presentation_import_options.SetPresentationInbox( PresentationImportOptions.PRESENTATION_INBOX_AGNOSTIC )
-        presentation_import_options.SetLocationContext( ClientLocation.LocationContext.STATICCreateSimple( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY ) )
+        presentation_import_options.SetLocationContext( ClientLocation.LocationContext.static_create_simple( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY ) )
         
         pre_filter_expected_result = [
             new_and_inboxed_hash,
@@ -832,7 +832,7 @@ class TestPresentationImportOptions( unittest.TestCase ):
         
         presentation_import_options.SetPresentationStatus( PresentationImportOptions.PRESENTATION_STATUS_NONE )
         presentation_import_options.SetPresentationInbox( PresentationImportOptions.PRESENTATION_INBOX_AGNOSTIC )
-        presentation_import_options.SetLocationContext( ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
+        presentation_import_options.SetLocationContext( ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
         
         expected_result = []
         
@@ -852,7 +852,7 @@ class TestPresentationImportOptions( unittest.TestCase ):
         
         presentation_import_options.SetPresentationStatus( PresentationImportOptions.PRESENTATION_STATUS_NEW_ONLY )
         presentation_import_options.SetPresentationInbox( PresentationImportOptions.PRESENTATION_INBOX_AGNOSTIC )
-        presentation_import_options.SetLocationContext( ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
+        presentation_import_options.SetLocationContext( ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
         
         pre_filter_expected_result = [
             new_and_inboxed_hash,
@@ -885,7 +885,7 @@ class TestPresentationImportOptions( unittest.TestCase ):
         
         presentation_import_options.SetPresentationStatus( PresentationImportOptions.PRESENTATION_STATUS_ANY_GOOD )
         presentation_import_options.SetPresentationInbox( PresentationImportOptions.PRESENTATION_INBOX_REQUIRE_INBOX )
-        presentation_import_options.SetLocationContext( ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
+        presentation_import_options.SetLocationContext( ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
         
         pre_inbox_filter_expected_result = {
             new_and_inboxed_hash,
@@ -936,7 +936,7 @@ class TestPresentationImportOptions( unittest.TestCase ):
         
         presentation_import_options.SetPresentationStatus( PresentationImportOptions.PRESENTATION_STATUS_NEW_ONLY )
         presentation_import_options.SetPresentationInbox( PresentationImportOptions.PRESENTATION_INBOX_AGNOSTIC )
-        presentation_import_options.SetLocationContext( ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
+        presentation_import_options.SetLocationContext( ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
         
         pre_filter_expected_result = [
             new_and_inboxed_hash,
@@ -969,7 +969,7 @@ class TestPresentationImportOptions( unittest.TestCase ):
         
         presentation_import_options.SetPresentationStatus( PresentationImportOptions.PRESENTATION_STATUS_NEW_ONLY )
         presentation_import_options.SetPresentationInbox( PresentationImportOptions.PRESENTATION_INBOX_REQUIRE_INBOX )
-        presentation_import_options.SetLocationContext( ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
+        presentation_import_options.SetLocationContext( ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
         
         pre_inbox_filter_expected_result = {
             new_and_inboxed_hash,
@@ -1015,7 +1015,7 @@ class TestPresentationImportOptions( unittest.TestCase ):
         
         presentation_import_options.SetPresentationStatus( PresentationImportOptions.PRESENTATION_STATUS_NEW_ONLY )
         presentation_import_options.SetPresentationInbox( PresentationImportOptions.PRESENTATION_INBOX_AND_INCLUDE_ALL_INBOX )
-        presentation_import_options.SetLocationContext( ClientLocation.LocationContext.STATICCreateSimple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
+        presentation_import_options.SetLocationContext( ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
         
         pre_inbox_filter_expected_result = {
             already_in_and_inboxed_hash,

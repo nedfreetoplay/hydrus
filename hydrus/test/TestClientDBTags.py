@@ -646,7 +646,7 @@ class TestClientDBTags( unittest.TestCase ):
     
     def _test_ac( self, search_text, tag_service_key, file_service_key, expected_storage_tags_to_counts, expected_display_tags_to_counts ):
         
-        location_context = ClientLocation.LocationContext.STATICCreateSimple( file_service_key )
+        location_context = ClientLocation.LocationContext.static_create_simple( file_service_key )
         tag_context = ClientSearchTagContext.TagContext( tag_service_key )
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, tag_context = tag_context )
