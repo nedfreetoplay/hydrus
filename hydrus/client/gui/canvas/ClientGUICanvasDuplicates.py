@@ -149,7 +149,7 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
         self._right_notes_hover.AddHoverThatCanBeOnTop( self._duplicates_right_hover )
         
         self._duplicates_right_hover.showPairInPage.connect( self._ShowPairInPage )
-        self._duplicates_right_hover.sendApplicationCommand.connect( self.ProcessApplicationCommand )
+        self._duplicates_right_hover.sendApplicationCommand.connect( self.process_application_command )
         
         self._hovers.append( self._duplicates_right_hover )
         
@@ -1268,13 +1268,13 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
         return self._current_media == self._media_list.GetFirst()
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ) -> bool:
+    def process_application_command( self, command: CAC.ApplicationCommand ) -> bool:
         
         command_matched = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_DUPLICATE_FILTER_THIS_IS_BETTER_AND_DELETE_OTHER:
                 
@@ -1330,7 +1330,7 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
         
         if not command_matched:
             
-            command_matched = super().ProcessApplicationCommand( command )
+            command_matched = super().process_application_command( command )
             
         
         return command_matched

@@ -1515,7 +1515,7 @@ class ShortcutSet( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 if serialisable_service_key is None:
                     
-                    command = CAC.ApplicationCommand.STATICCreateSimpleCommand( data )
+                    command = CAC.ApplicationCommand.static_create_simple_command( data )
                     
                 else:
                     
@@ -1692,7 +1692,7 @@ class ShortcutsHandler( QC.QObject ):
         
         if command is not None:
             
-            command_matched = self._command_processor.ProcessApplicationCommand( command )
+            command_matched = self._command_processor.process_application_command( command )
             
             if command_matched:
                 
@@ -1701,7 +1701,7 @@ class ShortcutsHandler( QC.QObject ):
             
             if HG.shortcut_report_mode:
                 
-                message = 'Shortcut "{}" matched to command "{}" on {}.'.format( shortcut.ToString(), command.ToString(), repr( self._parent ) )
+                message = 'Shortcut "{}" matched to command "{}" on {}.'.format( shortcut.ToString(), command.to_string(), repr( self._parent ) )
                 
                 if command_matched:
                     

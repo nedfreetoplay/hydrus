@@ -45,14 +45,14 @@ from hydrus.client.metadata import ClientTags
 
 def ApplyContentApplicationCommandToMedia( win: QW.QWidget, command: CAC.ApplicationCommand, media: collections.abc.Collection[ ClientMediaSingle.MediaSingle ] ):
     
-    if not command.IsContentCommand():
+    if not command.is_content_command():
         
         return
         
     
-    service_key = command.GetContentServiceKey()
-    action = command.GetContentAction()
-    value = command.GetContentValue()
+    service_key = command.get_content_service_key()
+    action = command.get_content_action()
+    value = command.get_content_value()
     
     try:
         
@@ -130,7 +130,7 @@ def ApplyContentApplicationCommandToMedia( win: QW.QWidget, command: CAC.Applica
             
             job_status = ClientThreading.JobStatus()
             
-            job_status.SetStatusTitle( f'setting {command.ToString()}' )
+            job_status.SetStatusTitle( f'setting {command.to_string()}' )
             
             start_time = HydrusTime.get_now_float()
             have_pubbed_message = False
@@ -522,13 +522,13 @@ def ExportFiles( win: QW.QWidget, medias: collections.abc.Collection[ ClientMedi
 
 def GetContentApplicationCommandFromInteractiveContentCommand( win: QW.QWidget, command: CAC.ApplicationCommand, media: ClientMediaSingle.MediaSingle ) -> CAC.ApplicationCommand:
     
-    if not command.IsInteractiveContentCommand():
+    if not command.is_interactive_content_command():
         
         return command
         
     
-    service_key = command.GetInteractiveContentServiceKey()
-    content_type = command.GetInteractiveContentType()
+    service_key = command.get_interactive_content_service_key()
+    content_type = command.get_interactive_content_type()
     
     try:
         

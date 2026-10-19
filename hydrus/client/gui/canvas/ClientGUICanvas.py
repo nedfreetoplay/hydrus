@@ -601,9 +601,9 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                     
                     child.activateWindow()
                     
-                    command = CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_SET_SEARCH_FOCUS )
+                    command = CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_SET_SEARCH_FOCUS )
                     
-                    panel.ProcessApplicationCommand( command )
+                    panel.process_application_command( command )
                     
                     return
                     
@@ -923,13 +923,13 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         self._media_container.Pause()
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ) -> bool:
+    def process_application_command( self, command: CAC.ApplicationCommand ) -> bool:
         
         command_matched = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_MANAGE_FILE_RATINGS:
                 
@@ -963,7 +963,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
                 if self._current_media is not None:
                     
-                    bitmap_type = command.GetSimpleData()
+                    bitmap_type = command.get_simple_data()
                     
                     ClientGUIMediaSimpleActions.CopyMediaBitmap( self._current_media, bitmap_type )
                     
@@ -991,7 +991,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
             elif action == CAC.SIMPLE_COPY_FILE_HASHES:
                 
-                ( file_command_target, hash_type ) = command.GetSimpleData()
+                ( file_command_target, hash_type ) = command.get_simple_data()
                 
                 if file_command_target in ( CAC.FILE_COMMAND_TARGET_FOCUSED_FILE, CAC.FILE_COMMAND_TARGET_SELECTED_FILES ):
                     
@@ -1003,7 +1003,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
             elif action == CAC.SIMPLE_COPY_FILE_SERVICE_FILENAMES:
                 
-                hacky_ipfs_dict = command.GetSimpleData()
+                hacky_ipfs_dict = command.get_simple_data()
                 
                 ipfs_service_key = hacky_ipfs_dict[ 'ipfs_service_key' ]
                 
@@ -1044,7 +1044,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                     
                     media_result = self._current_media.GetMediaResult()
                     
-                    data = command.GetSimpleData()
+                    data = command.get_simple_data()
                     
                     if data is not None:
                         
@@ -1146,7 +1146,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
                 if self._current_media is not None:
                     
-                    hamming_distance = command.GetSimpleData()
+                    hamming_distance = command.get_simple_data()
                     
                     if hamming_distance is None:
                         
@@ -1229,7 +1229,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                     
                     hash = self._current_media.GetHash()
                     
-                    duplicate_type = command.GetSimpleData()
+                    duplicate_type = command.get_simple_data()
                     
                     ClientGUIMediaSimpleActions.ShowDuplicatesInNewPage( self._location_context, hash, duplicate_type )
                     
@@ -1347,7 +1347,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
             elif action == CAC.SIMPLE_MEDIA_SEEK_DELTA:
                 
-                ( direction, ms ) = command.GetSimpleData()
+                ( direction, ms ) = command.get_simple_data()
                 
                 self._SeekDeltaCurrentMedia( direction, ms )
                 
@@ -1391,7 +1391,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
             elif action == CAC.SIMPLE_RESIZE_WINDOW_TO_MEDIA_ZOOMED:
                 
-                new_zoom = command.GetSimpleData()
+                new_zoom = command.get_simple_data()
                 
                 self._media_container.ZoomToZoomPercent( new_zoom )
                 
@@ -1399,7 +1399,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
             elif action == CAC.SIMPLE_RESIZE_WINDOW_TO_MEDIA_ZOOMED_VIEWER_CENTER:
                 
-                new_zoom = command.GetSimpleData()
+                new_zoom = command.get_simple_data()
                 
                 self._media_container.ZoomToZoomPercent( new_zoom, zoom_center_type_override = ClientGUICanvasMedia.ZOOM_CENTERPOINT_VIEWER_CENTER )
                 
@@ -1485,13 +1485,13 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
             elif action == CAC.SIMPLE_ZOOM_TO_PERCENTAGE:
                 
-                new_zoom = command.GetSimpleData()
+                new_zoom = command.get_simple_data()
                 
                 self._media_container.ZoomToZoomPercent( new_zoom )
                 
             elif action == CAC.SIMPLE_ZOOM_TO_PERCENTAGE_CENTER:
                 
-                new_zoom = command.GetSimpleData()
+                new_zoom = command.get_simple_data()
                 
                 self._media_container.ZoomToZoomPercent( new_zoom, zoom_center_type_override = ClientGUICanvasMedia.ZOOM_CENTERPOINT_VIEWER_CENTER )
                 
@@ -1531,20 +1531,20 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 command_matched = False
                 
             
-        elif command.IsContentCommand():
+        elif command.is_content_command():
             
             if self._current_media is not None:
                 
                 ClientGUIMediaModalActions.ApplyContentApplicationCommandToMedia( self, command, ( self._current_media, ) )
                 
             
-        elif command.IsInteractiveContentCommand():
+        elif command.is_interactive_content_command():
             
             if self._current_media is not None:
                 
                 content_command = ClientGUIMediaModalActions.GetContentApplicationCommandFromInteractiveContentCommand( self, command, self._current_media )
                 
-                if content_command.IsContentCommand():
+                if content_command.is_content_command():
                     
                     ClientGUIMediaModalActions.ApplyContentApplicationCommandToMedia( self, content_command, ( self._current_media, ) )
                     
@@ -2041,7 +2041,7 @@ class CanvasPanelWithHovers( CanvasPanel ):
         self.mediaChanged.connect( self._top_right_hover.SetMedia )
         self.mediaCleared.connect( self._top_right_hover.ClearMedia )
         
-        self._top_right_hover.sendApplicationCommand.connect( self.ProcessApplicationCommand )
+        self._top_right_hover.sendApplicationCommand.connect( self.process_application_command )
         
         self._hovers.append( self._top_right_hover )
         
@@ -2325,10 +2325,10 @@ class CanvasWithHovers( Canvas ):
         self.mediaChanged.connect( self._top_hover.SetMedia )
         self.mediaCleared.connect( self._top_hover.ClearMedia )
         
-        self._top_hover.sendApplicationCommand.connect( self.ProcessApplicationCommand )
+        self._top_hover.sendApplicationCommand.connect( self.process_application_command )
         
         self._media_container.zoomChanged.connect( self._top_hover.SetCurrentZoom )
-        self._media_container.sendApplicationCommand.connect( self.ProcessApplicationCommand, QC.Qt.ConnectionType.QueuedConnection )
+        self._media_container.sendApplicationCommand.connect( self.process_application_command, QC.Qt.ConnectionType.QueuedConnection )
         
         self._hovers.append( self._top_hover )
         
@@ -2339,7 +2339,7 @@ class CanvasWithHovers( Canvas ):
         self.mediaChanged.connect( self._tags_hover.SetMedia )
         self.mediaCleared.connect( self._tags_hover.ClearMedia )
         
-        self._tags_hover.sendApplicationCommand.connect( self.ProcessApplicationCommand )
+        self._tags_hover.sendApplicationCommand.connect( self.process_application_command )
         
         self._hovers.append( self._tags_hover )
         
@@ -2350,7 +2350,7 @@ class CanvasWithHovers( Canvas ):
         self.mediaChanged.connect( self._top_right_hover.SetMedia )
         self.mediaCleared.connect( self._top_right_hover.ClearMedia )
         
-        self._top_right_hover.sendApplicationCommand.connect( self.ProcessApplicationCommand )
+        self._top_right_hover.sendApplicationCommand.connect( self.process_application_command )
         
         self._hovers.append( self._top_right_hover )
         
@@ -2361,7 +2361,7 @@ class CanvasWithHovers( Canvas ):
         self.mediaChanged.connect( self._right_notes_hover.SetMedia )
         self.mediaCleared.connect( self._right_notes_hover.ClearMedia )
         
-        self._right_notes_hover.sendApplicationCommand.connect( self.ProcessApplicationCommand )
+        self._right_notes_hover.sendApplicationCommand.connect( self.process_application_command )
         
         self._hovers.append( self._right_notes_hover )
         
@@ -3305,13 +3305,13 @@ class CanvasWithHovers( Canvas ):
         pass
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ) -> bool:
+    def process_application_command( self, command: CAC.ApplicationCommand ) -> bool:
         
         command_matched = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_CLOSE_MEDIA_VIEWER:
                 
@@ -3370,7 +3370,7 @@ class CanvasWithHovers( Canvas ):
         
         if not command_matched:
             
-            command_matched = super().ProcessApplicationCommand( command )
+            command_matched = super().process_application_command( command )
             
         
         return command_matched
@@ -3560,7 +3560,7 @@ class CanvasMediaList( CanvasWithHovers ):
     
     def EventFullscreenSwitch( self, event ):
         
-        self.ProcessApplicationCommand( CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_SWITCH_BETWEEN_FULLSCREEN_BORDERLESS_AND_REGULAR_FRAMED_WINDOW ) )
+        self.process_application_command( CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_SWITCH_BETWEEN_FULLSCREEN_BORDERLESS_AND_REGULAR_FRAMED_WINDOW ) )
         
     
     def NotifyWeAreClosing( self ):
@@ -3842,13 +3842,13 @@ class CanvasMediaListFilterArchiveDelete( CanvasMediaList ):
             
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ) -> bool:
+    def process_application_command( self, command: CAC.ApplicationCommand ) -> bool:
         
         command_matched = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action in ( CAC.SIMPLE_ARCHIVE_DELETE_FILTER_KEEP, CAC.SIMPLE_ARCHIVE_FILE ):
                 
@@ -3882,7 +3882,7 @@ class CanvasMediaListFilterArchiveDelete( CanvasMediaList ):
         
         if not command_matched:
             
-            command_matched = CanvasMediaList.ProcessApplicationCommand( self, command )
+            command_matched = CanvasMediaList.process_application_command( self, command )
             
         
         return command_matched
@@ -4156,13 +4156,13 @@ class CanvasMediaListNavigable( CanvasMediaList ):
             
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ) -> bool:
+    def process_application_command( self, command: CAC.ApplicationCommand ) -> bool:
         
         command_matched = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_REMOVE_FILE_FROM_VIEW:
                 
@@ -4216,7 +4216,7 @@ class CanvasMediaListNavigable( CanvasMediaList ):
         
         if not command_matched:
             
-            command_matched = CanvasMediaList.ProcessApplicationCommand( self, command )
+            command_matched = CanvasMediaList.process_application_command( self, command )
             
         
         return command_matched
@@ -4571,13 +4571,13 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
         self._RegisterNextSlideshowPresentation()
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ) -> bool:
+    def process_application_command( self, command: CAC.ApplicationCommand ) -> bool:
         
         command_matched = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_PAUSE_PLAY_SLIDESHOW:
                 
@@ -4585,7 +4585,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
                 
             elif action == CAC.SIMPLE_START_SLIDESHOW:
                 
-                data = command.GetSimpleData()
+                data = command.get_simple_data()
                 
                 if data is None:
                     
@@ -4630,7 +4630,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
         
         if not command_matched:
             
-            command_matched = super().ProcessApplicationCommand( command )
+            command_matched = super().process_application_command( command )
             
         
         return command_matched
@@ -4703,11 +4703,11 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
             
             if self.parentWidget().isFullScreen():
                 
-                ClientGUIMenus.AppendMenuItem( menu, 'exit fullscreen', 'Make this media viewer a regular window with borders.', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_SWITCH_BETWEEN_FULLSCREEN_BORDERLESS_AND_REGULAR_FRAMED_WINDOW ) )
+                ClientGUIMenus.AppendMenuItem( menu, 'exit fullscreen', 'Make this media viewer a regular window with borders.', self.process_application_command, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_SWITCH_BETWEEN_FULLSCREEN_BORDERLESS_AND_REGULAR_FRAMED_WINDOW ) )
                 
             else:
                 
-                ClientGUIMenus.AppendMenuItem( menu, 'go fullscreen', 'Make this media viewer a fullscreen window without borders.', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_SWITCH_BETWEEN_FULLSCREEN_BORDERLESS_AND_REGULAR_FRAMED_WINDOW ) )
+                ClientGUIMenus.AppendMenuItem( menu, 'go fullscreen', 'Make this media viewer a fullscreen window without borders.', self.process_application_command, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_SWITCH_BETWEEN_FULLSCREEN_BORDERLESS_AND_REGULAR_FRAMED_WINDOW ) )
                 
             
             ClientGUICanvasMenus.AppendSlideshowMenu(
@@ -4817,7 +4817,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
                 
                 locations_menu = ClientGUIMenus.GenerateMenu( menu )
                 
-                ClientGUIMediaMenus.AddLocalFilesMoveAddToMenu( self, locations_menu, local_file_service_keys, local_duplicable_to_file_service_keys, local_moveable_from_and_to_file_service_keys, local_mergable_from_and_to_file_service_keys, multiple_selected, self.ProcessApplicationCommand )
+                ClientGUIMediaMenus.AddLocalFilesMoveAddToMenu( self, locations_menu, local_file_service_keys, local_duplicable_to_file_service_keys, local_moveable_from_and_to_file_service_keys, local_mergable_from_and_to_file_service_keys, multiple_selected, self.process_application_command )
                 
                 ClientGUIMenus.AppendMenu( menu, locations_menu, 'locations' )
                 

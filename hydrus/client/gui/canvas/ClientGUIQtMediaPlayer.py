@@ -606,13 +606,13 @@ class QtMediaPlayer( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         self._media_player.play()
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ) -> bool:
+    def process_application_command( self, command: CAC.ApplicationCommand ) -> bool:
         
         command_matched = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_PAUSE_MEDIA:
                 
@@ -624,7 +624,7 @@ class QtMediaPlayer( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
             elif action == CAC.SIMPLE_MEDIA_SEEK_DELTA:
                 
-                ( direction, duration_ms ) = command.GetSimpleData()
+                ( direction, duration_ms ) = command.get_simple_data()
                 
                 self.SeekDelta( direction, duration_ms )
                 

@@ -2150,13 +2150,13 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
             
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ) -> bool:
+    def process_application_command( self, command: CAC.ApplicationCommand ) -> bool:
         
         command_matched = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_COPY_FILE_BITMAP:
                 
@@ -2164,14 +2164,14 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
                     
                     focus_singleton = self._GetFocusSingleton()
                     
-                    bitmap_type = command.GetSimpleData()
+                    bitmap_type = command.get_simple_data()
                     
                     ClientGUIMediaSimpleActions.CopyMediaBitmap( focus_singleton, bitmap_type )
                     
                 
             elif action == CAC.SIMPLE_COPY_FILES:
                 
-                file_command_target = command.GetSimpleData()
+                file_command_target = command.get_simple_data()
                 
                 medias = self._GetMediasForFileCommandTarget( file_command_target )
                 
@@ -2182,7 +2182,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
                 
             elif action == CAC.SIMPLE_COPY_FILE_PATHS:
                 
-                file_command_target = command.GetSimpleData()
+                file_command_target = command.get_simple_data()
                 
                 medias = self._GetMediasForFileCommandTarget( file_command_target )
                 
@@ -2193,7 +2193,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
                 
             elif action == CAC.SIMPLE_COPY_FILE_HASHES:
                 
-                ( file_command_target, hash_type ) = command.GetSimpleData()
+                ( file_command_target, hash_type ) = command.get_simple_data()
                 
                 medias = self._GetMediasForFileCommandTarget( file_command_target )
                 
@@ -2204,7 +2204,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
                 
             elif action == CAC.SIMPLE_COPY_FILE_SERVICE_FILENAMES:
                 
-                hacky_ipfs_dict = command.GetSimpleData()
+                hacky_ipfs_dict = command.get_simple_data()
                 
                 file_command_target = hacky_ipfs_dict[ 'file_command_target' ]
                 ipfs_service_key = hacky_ipfs_dict[ 'ipfs_service_key' ]
@@ -2218,7 +2218,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
                 
             elif action == CAC.SIMPLE_COPY_FILE_ID:
                 
-                file_command_target = command.GetSimpleData()
+                file_command_target = command.get_simple_data()
                 
                 medias = self._GetMediasForFileCommandTarget( file_command_target )
                 
@@ -2254,7 +2254,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
                     return True
                     
                 
-                ( rearrange_type, rearrange_data ) = command.GetSimpleData()
+                ( rearrange_type, rearrange_data ) = command.get_simple_data()
                 
                 insertion_index = None
                 
@@ -2322,7 +2322,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
                     
                     hash = media.GetHash()
                     
-                    duplicate_type = command.GetSimpleData()
+                    duplicate_type = command.get_simple_data()
                     
                     ClientGUIMediaSimpleActions.ShowDuplicatesInNewPage( self._location_context, hash, duplicate_type )
                     
@@ -2555,7 +2555,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
                     
                     media_result = focused_singleton.GetMediaResult()
                     
-                    data = command.GetSimpleData()
+                    data = command.get_simple_data()
                     
                     if data is not None:
                         
@@ -2653,7 +2653,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
                 
                 media = self._GetSelectedFlatMedia()
                 
-                hamming_distance = command.GetSimpleData()
+                hamming_distance = command.get_simple_data()
                 
                 if hamming_distance is None:
                     
@@ -2703,7 +2703,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
                 command_matched = False
                 
             
-        elif command.IsInteractiveContentCommand():
+        elif command.is_interactive_content_command():
             
             selected_flat_media = self._GetSelectedFlatMedia()
             
@@ -2711,13 +2711,13 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
                 
                 content_command = ClientGUIMediaModalActions.GetContentApplicationCommandFromInteractiveContentCommand( self, command, selected_flat_media[ 0 ] )
                 
-                if content_command.IsContentCommand():
+                if content_command.is_content_command():
                     
                     ClientGUIMediaModalActions.ApplyContentApplicationCommandToMedia( self, content_command, selected_flat_media )
                     
                 
             
-        elif command.IsContentCommand():
+        elif command.is_content_command():
             
             ClientGUIMediaModalActions.ApplyContentApplicationCommandToMedia( self, command, self._GetSelectedFlatMedia() )
             

@@ -1179,7 +1179,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                 
                 if len_interesting_local_service_keys > 0:
                     
-                    ClientGUIMediaMenus.AddLocalFilesMoveAddToMenu( self, locations_menu, local_file_service_keys, local_duplicable_to_file_service_keys, local_moveable_from_and_to_file_service_keys, local_mergable_from_and_to_file_service_keys, multiple_selected, self.ProcessApplicationCommand )
+                    ClientGUIMediaMenus.AddLocalFilesMoveAddToMenu( self, locations_menu, local_file_service_keys, local_duplicable_to_file_service_keys, local_moveable_from_and_to_file_service_keys, local_mergable_from_and_to_file_service_keys, multiple_selected, self.process_application_command )
                     
                 
                 if len_interesting_remote_service_keys > 0:
@@ -1468,17 +1468,17 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         CG.client_controller.call_after_qt_safe( self, self._ResetThumbnailScrollSingleStep )
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ) -> bool:
+    def process_application_command( self, command: CAC.ApplicationCommand ) -> bool:
         
         command_matched = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_MOVE_THUMBNAIL_FOCUS:
                 
-                ( move_direction, selection_status ) = command.GetSimpleData()
+                ( move_direction, selection_status ) = command.get_simple_data()
                 
                 shift = selection_status == CAC.SELECTION_STATUS_SHIFT
                 
@@ -1541,7 +1541,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                 
             elif action == CAC.SIMPLE_SELECT_FILES:
                 
-                file_filter = command.GetSimpleData()
+                file_filter = command.get_simple_data()
                 
                 self._Select( file_filter )
                 
@@ -1557,7 +1557,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         
         if not command_matched:
             
-            return super().ProcessApplicationCommand( command )
+            return super().process_application_command( command )
             
         else:
             

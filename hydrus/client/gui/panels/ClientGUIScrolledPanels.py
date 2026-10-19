@@ -257,13 +257,13 @@ class EditSingleCtrlPanel( CAC.ApplicationCommandProcessorMixin, EditPanel ):
         return self._control.value()
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ) -> bool:
+    def process_application_command( self, command: CAC.ApplicationCommand ) -> bool:
         
         command_matched = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action in self._ok_on_these_commands:
                 

@@ -166,7 +166,7 @@ class EditShortcutSetPanel( ClientGUIScrolledPanels.EditPanel ):
         shortcut = typing.cast( ClientGUIShortcuts.Shortcut, shortcut )
         command = typing.cast( CAC.ApplicationCommand, command )
         
-        return ( shortcut.ToString( call_mouse_buttons_primary_secondary_override = self._call_mouse_buttons_primary_secondary ), command.ToString() )
+        return ( shortcut.ToString( call_mouse_buttons_primary_secondary_override = self._call_mouse_buttons_primary_secondary ), command.to_string() )
         
     
     _ConvertShortcutTupleToSortTuple = _ConvertShortcutTupleToDisplayTuple

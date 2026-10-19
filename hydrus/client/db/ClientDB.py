@@ -7250,7 +7250,7 @@ class DB( HydrusDB.HydrusDB ):
                 jobs = [
                     (
                         ClientGUIShortcuts.Shortcut( ClientGUIShortcuts.SHORTCUT_TYPE_KEYBOARD_CHARACTER, ord( 'O' ), ClientGUIShortcuts.SHORTCUT_PRESS_TYPE_PRESS, [ ClientGUIShortcuts.SHORTCUT_MODIFIER_CTRL, ClientGUIShortcuts.SHORTCUT_MODIFIER_SHIFT ] ),
-                        CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_OPEN_OPTIONS ) 
+                        CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_OPEN_OPTIONS ) 
                     )
                 ]
                 
@@ -7286,8 +7286,8 @@ class DB( HydrusDB.HydrusDB ):
                 jobs = [
                     (
                         ClientGUIShortcuts.Shortcut( ClientGUIShortcuts.SHORTCUT_TYPE_KEYBOARD_CHARACTER, ord( 'C' ), ClientGUIShortcuts.SHORTCUT_PRESS_TYPE_PRESS, [ ClientGUIShortcuts.SHORTCUT_MODIFIER_CTRL ] ),
-                        CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_COPY_FILES ),
-                        CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_COPY_FILES, simple_data = CAC.FILE_COMMAND_TARGET_SELECTED_FILES ) 
+                        CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_COPY_FILES ),
+                        CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_COPY_FILES, simple_data = CAC.FILE_COMMAND_TARGET_SELECTED_FILES ) 
                     )
                 ]
                 

@@ -141,9 +141,9 @@ class TestSerialisables( unittest.TestCase ):
         
         acs = []
         
-        acs.append( ( CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_ARCHIVE_FILE ), 'archive file' ) )
-        acs.append( ( CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_MEDIA_SEEK_DELTA, simple_data = ( -1, 2500 ) ), 'seek media (back 2.5 seconds)' ) )
-        acs.append( ( CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_MEDIA_SEEK_DELTA, simple_data = ( 1, 800 ) ), 'seek media (forwards 800 milliseconds)' ) )
+        acs.append( ( CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_ARCHIVE_FILE ), 'archive file' ) )
+        acs.append( ( CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_MEDIA_SEEK_DELTA, simple_data = ( -1, 2500 ) ), 'seek media (back 2.5 seconds)' ) )
+        acs.append( ( CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_MEDIA_SEEK_DELTA, simple_data = ( 1, 800 ) ), 'seek media (forwards 800 milliseconds)' ) )
         acs.append( ( CAC.ApplicationCommand( CAC.APPLICATION_COMMAND_TYPE_CONTENT, ( HydrusData.generate_key(), HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_FLIP, 'test' ) ), 'flip on/off tag mappings "test" for unknown service' ) )
         acs.append( ( CAC.ApplicationCommand( CAC.APPLICATION_COMMAND_TYPE_CONTENT, ( CC.DEFAULT_LOCAL_TAG_SERVICE_KEY, HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_FLIP, 'test' ) ), 'flip on/off tag mappings "test" for my tags' ) )
         acs.append( ( CAC.ApplicationCommand( CAC.APPLICATION_COMMAND_TYPE_CONTENT, ( HydrusData.generate_key(), HC.CONTENT_TYPE_RATINGS, HC.CONTENT_UPDATE_SET, 0.4 ) ), 'set ratings uncertain rating, "0.4" for unknown service' ) )
@@ -486,7 +486,7 @@ class TestSerialisables( unittest.TestCase ):
             self._dump_and_load_and_test( shortcuts, test )
             
         
-        command_1 = CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_ARCHIVE_FILE )
+        command_1 = CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_ARCHIVE_FILE )
         command_2 = CAC.ApplicationCommand( CAC.APPLICATION_COMMAND_TYPE_CONTENT, ( HydrusData.generate_key(), HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_FLIP, 'test' ) )
         command_3 = CAC.ApplicationCommand( CAC.APPLICATION_COMMAND_TYPE_CONTENT, ( CC.DEFAULT_LOCAL_TAG_SERVICE_KEY, HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_FLIP, 'test' ) )
         

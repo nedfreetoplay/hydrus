@@ -3646,7 +3646,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         ClientGUIMenus.AppendMenuItem( gui_actions, 'make some popups', 'Throw some varied popups at the message manager, just to check it is working.', self._DebugMakeSomePopups )
         ClientGUIMenus.AppendMenuItem( gui_actions, 'publish some sub files in five seconds', 'Publish some files like a subscription would.', self._controller.call_later, 5, lambda: CG.client_controller.pub( 'imported_files_to_page', [ HydrusData.generate_key() for i in range( 5 ) ], 'example sub files' ) )
         ClientGUIMenus.AppendMenuItem( gui_actions, 'refresh pages menu in five seconds', 'Delayed refresh the pages menu, giving you time to minimise or otherwise alter the client before it arrives.', self._controller.call_later, 5, self._menu_updater_pages.update )
-        ClientGUIMenus.AppendMenuItem( gui_actions, 'reload current qss stylesheet', 'Reload the current QSS stylesheet. Helps if you just edited it on disk and do not want to restart.', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_RELOAD_CURRENT_STYLESHEET ) )
+        ClientGUIMenus.AppendMenuItem( gui_actions, 'reload current qss stylesheet', 'Reload the current QSS stylesheet. Helps if you just edited it on disk and do not want to restart.', self.process_application_command, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_RELOAD_CURRENT_STYLESHEET ) )
         ClientGUIMenus.AppendMenuItem( gui_actions, 'reload icon cache', 'Reload the icons and pixmaps that new icon menus and buttons rely on. Will not affect widgets that are already loaded!', self._ReloadIconCache )
         ClientGUIMenus.AppendMenuItem( gui_actions, 'reset multi-column list settings to default', 'Reset all multi-column list widths and other display settings to default.', self._DebugResetColumnListManager )
         ClientGUIMenus.AppendMenuItem( gui_actions, 'save \'last session\' gui session', 'Make an immediate save of the \'last session\' gui session. Mostly for testing crashes, where last session is not saved correctly.', self.ProposeSaveGUISession, CC.LAST_SESSION_SESSION_NAME )
@@ -3925,7 +3925,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         ClientGUIMenus.AppendSeparator( menu )
         
-        ClientGUIMenus.AppendMenuItem( menu, 'new page' + HC.UNICODE_ELLIPSIS, 'Choose a new page to open.', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_NEW_PAGE ) )
+        ClientGUIMenus.AppendMenuItem( menu, 'new page' + HC.UNICODE_ELLIPSIS, 'Choose a new page to open.', self.process_application_command, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_NEW_PAGE ) )
         
         #
         
@@ -3943,10 +3943,10 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         download_menu = ClientGUIMenus.GenerateMenu( menu )
         
-        ClientGUIMenus.AppendMenuItem( download_menu, 'new url download page', 'Open a new tab to download some separate urls.', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_NEW_URL_DOWNLOADER_PAGE ) )
-        ClientGUIMenus.AppendMenuItem( download_menu, 'new watcher page', 'Open a new tab to watch threads or other updating locations.', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_NEW_WATCHER_DOWNLOADER_PAGE ) )
-        ClientGUIMenus.AppendMenuItem( download_menu, 'new gallery page', 'Open a new tab to download from gallery sites.', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_NEW_GALLERY_DOWNLOADER_PAGE ) )
-        ClientGUIMenus.AppendMenuItem( download_menu, 'new simple downloader page', 'Open a new tab to download files from generic galleries or threads.', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_NEW_SIMPLE_DOWNLOADER_PAGE ) )
+        ClientGUIMenus.AppendMenuItem( download_menu, 'new url download page', 'Open a new tab to download some separate urls.', self.process_application_command, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_NEW_URL_DOWNLOADER_PAGE ) )
+        ClientGUIMenus.AppendMenuItem( download_menu, 'new watcher page', 'Open a new tab to watch threads or other updating locations.', self.process_application_command, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_NEW_WATCHER_DOWNLOADER_PAGE ) )
+        ClientGUIMenus.AppendMenuItem( download_menu, 'new gallery page', 'Open a new tab to download from gallery sites.', self.process_application_command, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_NEW_GALLERY_DOWNLOADER_PAGE ) )
+        ClientGUIMenus.AppendMenuItem( download_menu, 'new simple downloader page', 'Open a new tab to download files from generic galleries or threads.', self.process_application_command, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_NEW_SIMPLE_DOWNLOADER_PAGE ) )
         
         ClientGUIMenus.AppendMenu( menu, download_menu, 'download' )
         
@@ -3954,8 +3954,8 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         special_menu = ClientGUIMenus.GenerateMenu( menu )
         
-        ClientGUIMenus.AppendMenuItem( special_menu, 'new page of pages', 'Open a new tab that can hold more tabs.', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_NEW_PAGE_OF_PAGES ) )
-        ClientGUIMenus.AppendMenuItem( special_menu, 'new duplicates processing page', 'Open a new tab to discover and filter duplicate files.', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_NEW_DUPLICATE_FILTER_PAGE ) )
+        ClientGUIMenus.AppendMenuItem( special_menu, 'new page of pages', 'Open a new tab that can hold more tabs.', self.process_application_command, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_NEW_PAGE_OF_PAGES ) )
+        ClientGUIMenus.AppendMenuItem( special_menu, 'new duplicates processing page', 'Open a new tab to discover and filter duplicate files.', self.process_application_command, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_NEW_DUPLICATE_FILTER_PAGE ) )
         
         ClientGUIMenus.AppendMenu( menu, special_menu, 'special' )
         
@@ -6319,7 +6319,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             t += 0.25
             
-            CG.client_controller.call_later_qt_safe( self, t, 'test job', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_NEW_PAGE_OF_PAGES ) )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', self.process_application_command, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_NEW_PAGE_OF_PAGES ) )
             
             t += 0.25
             
@@ -6327,23 +6327,23 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             t += 0.25
             
-            CG.client_controller.call_later_qt_safe( self, t, 'test job', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_NEW_DUPLICATE_FILTER_PAGE ) )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', self.process_application_command, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_NEW_DUPLICATE_FILTER_PAGE ) )
             
             t += 0.25
             
-            CG.client_controller.call_later_qt_safe( self, t, 'test job', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_NEW_GALLERY_DOWNLOADER_PAGE ) )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', self.process_application_command, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_NEW_GALLERY_DOWNLOADER_PAGE ) )
             
             t += 0.25
             
-            CG.client_controller.call_later_qt_safe( self, t, 'test job', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_NEW_SIMPLE_DOWNLOADER_PAGE ) )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', self.process_application_command, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_NEW_SIMPLE_DOWNLOADER_PAGE ) )
             
             t += 0.25
             
-            CG.client_controller.call_later_qt_safe( self, t, 'test job', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_NEW_URL_DOWNLOADER_PAGE ) )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', self.process_application_command, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_NEW_URL_DOWNLOADER_PAGE ) )
             
             t += 0.25
             
-            CG.client_controller.call_later_qt_safe( self, t, 'test job', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_NEW_WATCHER_DOWNLOADER_PAGE ) )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', self.process_application_command, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_NEW_WATCHER_DOWNLOADER_PAGE ) )
             
             t += 0.25
             
@@ -6399,11 +6399,11 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             t += 0.5
             
-            CG.client_controller.call_later_qt_safe( self, t, 'test job', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_SET_MEDIA_FOCUS ) )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', self.process_application_command, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_SET_MEDIA_FOCUS ) )
             
             t += 0.5
             
-            CG.client_controller.call_later_qt_safe( self, t, 'test job', self.ProcessApplicationCommand, CAC.ApplicationCommand.STATICCreateSimpleCommand( CAC.SIMPLE_SET_SEARCH_FOCUS ) )
+            CG.client_controller.call_later_qt_safe( self, t, 'test job', self.process_application_command, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_SET_SEARCH_FOCUS ) )
             
             t += 0.5
             
@@ -8459,13 +8459,13 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         self._notebook.PresentImportedFilesToPage( hashes, page_name )
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ) -> bool:
+    def process_application_command( self, command: CAC.ApplicationCommand ) -> bool:
         
         command_matched = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_EXIT_APPLICATION:
                 

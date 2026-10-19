@@ -875,25 +875,25 @@ class SimpleSubPanel( QW.QWidget ):
                 simple_data = None
                 
             
-            return CAC.ApplicationCommand.STATICCreateSimpleCommand( action, simple_data = simple_data )
+            return CAC.ApplicationCommand.static_create_simple_command( action, simple_data = simple_data )
             
         
     
     def SetValue( self, command: CAC.ApplicationCommand ):
         
-        action = command.GetSimpleAction()
+        action = command.get_simple_action()
         
         self._simple_actions.SetValue( action )
         
         if action == CAC.SIMPLE_SHOW_DUPLICATES:
             
-            duplicate_type = command.GetSimpleData()
+            duplicate_type = command.get_simple_data()
             
             self._duplicate_type.SetValue( duplicate_type )
             
         elif action == CAC.SIMPLE_MEDIA_SEEK_DELTA:
             
-            ( direction, ms ) = command.GetSimpleData()
+            ( direction, ms ) = command.get_simple_data()
             
             self._seek_direction.SetValue( direction )
             
@@ -906,58 +906,58 @@ class SimpleSubPanel( QW.QWidget ):
             
         elif action == CAC.SIMPLE_MOVE_THUMBNAIL_FOCUS:
             
-            ( move_direction, selection_status ) = command.GetSimpleData()
+            ( move_direction, selection_status ) = command.get_simple_data()
             
             self._move_direction.SetValue( move_direction )
             self._selection_status.SetValue( selection_status )
             
         elif action == CAC.SIMPLE_SELECT_FILES:
             
-            file_filter = command.GetSimpleData()
+            file_filter = command.get_simple_data()
             
             self._file_filter.SetValue( file_filter )
             
         elif action == CAC.SIMPLE_OPEN_SIMILAR_LOOKING_FILES:
             
-            hamming_distance = command.GetSimpleData()
+            hamming_distance = command.get_simple_data()
             
             self._hamming_distance.setValue( hamming_distance )
             
         elif action == CAC.SIMPLE_REARRANGE_THUMBNAILS:
             
-            ( rearrange_type, rearrange_data ) = command.GetSimpleData()
+            ( rearrange_type, rearrange_data ) = command.get_simple_data()
             
             self._thumbnail_rearrange_type.SetValue( rearrange_data )
             
         elif action in ( CAC.SIMPLE_COPY_FILES, CAC.SIMPLE_COPY_FILE_PATHS, CAC.SIMPLE_COPY_FILE_ID ):
             
-            file_command_target = command.GetSimpleData()
+            file_command_target = command.get_simple_data()
             
             self._file_command_target.SetValue( file_command_target )
             
         elif action == CAC.SIMPLE_COPY_FILE_BITMAP:
             
-            bitmap_type = command.GetSimpleData()
+            bitmap_type = command.get_simple_data()
             
             self._bitmap_type.SetValue( bitmap_type )
             
         elif action == CAC.SIMPLE_COPY_FILE_HASHES:
             
-            ( file_command_target, hash_type ) = command.GetSimpleData()
+            ( file_command_target, hash_type ) = command.get_simple_data()
             
             self._file_command_target.SetValue( file_command_target )
             self._hash_type.SetValue( hash_type )
             
         elif action == CAC.SIMPLE_COPY_FILE_SERVICE_FILENAMES:
             
-            hacky_ipfs_dict = command.GetSimpleData()
+            hacky_ipfs_dict = command.get_simple_data()
             
             self._file_command_target.SetValue( hacky_ipfs_dict[ 'file_command_target' ] )
             self._ipfs_service_key.SetValue( hacky_ipfs_dict[ 'ipfs_service_key' ] )
             
         elif action in zoom_command_actions:
             
-            zoom_value_decimal = command.GetSimpleData()
+            zoom_value_decimal = command.get_simple_data()
             
             if zoom_value_decimal is None:
                 
@@ -1131,22 +1131,22 @@ class ApplicationCommandWidget( ClientGUIScrolledPanels.EditPanel ):
         
         #
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
             self._simple_sub_panel.SetValue( command )
             
             self._panel_choice.SetValue( self.PANEL_SIMPLE )
             
-        elif command.IsContentCommand():
+        elif command.is_content_command():
             
-            service_key = command.GetContentServiceKey()
+            service_key = command.get_content_service_key()
             
             if CG.client_controller.services_manager.ServiceExists( service_key ):
                 
                 service = CG.client_controller.services_manager.GetService( service_key )
                 
-                action = command.GetContentAction()
-                value = command.GetContentValue()
+                action = command.get_content_action()
+                value = command.get_content_value()
                 
             else:
                 
@@ -1204,9 +1204,9 @@ class ApplicationCommandWidget( ClientGUIScrolledPanels.EditPanel ):
                     self._panel_choice.SetValue( self.PANEL_RATING_INCDEC )
                     
                 
-        elif command.IsInteractiveContentCommand():
+        elif command.is_interactive_content_command():
             
-            service_key = command.GetInteractiveContentServiceKey()
+            service_key = command.get_interactive_content_service_key()
             
             if CG.client_controller.services_manager.ServiceExists( service_key ):
                 

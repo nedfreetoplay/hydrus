@@ -695,13 +695,13 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         self._paused = False
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ) -> bool:
+    def process_application_command( self, command: CAC.ApplicationCommand ) -> bool:
         
         command_matched = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_PAUSE_MEDIA:
                 
@@ -713,7 +713,7 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
             elif action == CAC.SIMPLE_MEDIA_SEEK_DELTA:
                 
-                ( direction, duration_ms ) = command.GetSimpleData()
+                ( direction, duration_ms ) = command.get_simple_data()
                 
                 self.SeekDelta( direction, duration_ms )
                 
@@ -2141,7 +2141,7 @@ class MediaContainer( QW.QWidget ):
         
         action = CAC.SIMPLE_WINDOW_ALWAYS_ON_TOP_ON if always_on_top else CAC.SIMPLE_WINDOW_ALWAYS_ON_TOP_OFF
         
-        self.sendApplicationCommand.emit( CAC.ApplicationCommand.STATICCreateSimpleCommand( action ) )
+        self.sendApplicationCommand.emit( CAC.ApplicationCommand.static_create_simple_command( action ) )
         
     
     def AddPlayerMenus( self, menu: QW.QMenu ):
@@ -2756,7 +2756,7 @@ class MediaContainer( QW.QWidget ):
             
             action = CAC.SIMPLE_WINDOW_ALWAYS_ON_TOP_ON if always_on_top else CAC.SIMPLE_WINDOW_ALWAYS_ON_TOP_OFF
             
-            self.sendApplicationCommand.emit( CAC.ApplicationCommand.STATICCreateSimpleCommand( action ) )
+            self.sendApplicationCommand.emit( CAC.ApplicationCommand.static_create_simple_command( action ) )
             
         
     
@@ -3987,13 +3987,13 @@ class StaticImage( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
         
     
-    def ProcessApplicationCommand( self, command: CAC.ApplicationCommand ) -> bool:
+    def process_application_command( self, command: CAC.ApplicationCommand ) -> bool:
         
         command_matched = True
         
-        if command.IsSimpleCommand():
+        if command.is_simple_command():
             
-            action = command.GetSimpleAction()
+            action = command.get_simple_action()
             
             if action == CAC.SIMPLE_CLOSE_MEDIA_VIEWER and self._canvas_type in CC.CANVAS_MEDIA_VIEWER_TYPES:
                 

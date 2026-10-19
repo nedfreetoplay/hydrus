@@ -598,13 +598,13 @@ APPLICATION_COMMAND_TYPE_SIMPLE = 0
 APPLICATION_COMMAND_TYPE_CONTENT = 1
 APPLICATION_COMMAND_TYPE_INTERACTIVE_CONTENT = 2
 
-class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
+class ApplicationCommand(HydrusSerialisable.SerialisableBase):
     
     SERIALISABLE_TYPE = HydrusSerialisable.SERIALISABLE_TYPE_APPLICATION_COMMAND
     SERIALISABLE_NAME = 'Application Command'
     SERIALISABLE_VERSION = 7
     
-    def __init__( self, command_type = None, data = None ):
+    def __init__(self, command_type = None, data = None):
         
         if command_type is None:
             
@@ -617,9 +617,8 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
         
         self._command_type = command_type
         self._data: typing.Any = data
-        
     
-    def __eq__( self, other ):
+    def __eq__(self, other):
         
         if isinstance( other, ApplicationCommand ):
             
@@ -627,9 +626,8 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
             
         
         return NotImplemented
-        
     
-    def __hash__( self ):
+    def __hash__(self):
         
         if self._command_type == APPLICATION_COMMAND_TYPE_SIMPLE:
             
@@ -645,14 +643,12 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
             
         
         return ( self._command_type, self._data ).__hash__()
-        
     
-    def __repr__( self ):
+    def __repr__(self):
         
-        return self.ToString()
-        
+        return self.to_string()
     
-    def _get_serialisable_info( self ):
+    def _get_serialisable_info(self):
         
         # TODO: I recently moved to the data_dict here so the simple type could have serialisables in its 'simple_data', let's move the content command type to this too
         # I don't _think_ this was an overcomplicated mistake, but it is a little ugly atm
@@ -706,9 +702,8 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
             
         
         return ( self._command_type, serialisable_data )
-        
     
-    def _initialise_from_serialisable_info( self, serialisable_info ):
+    def _initialise_from_serialisable_info(self, serialisable_info):
         
         ( self._command_type, serialisable_data ) = serialisable_info
         
@@ -753,10 +748,8 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
             action = data_dict[ 'action' ]
             
             self._data = ( service_key, content_type, action )
-            
-        
     
-    def _update_serialisable_info( self, version, old_serialisable_info ):
+    def _update_serialisable_info(self, version, old_serialisable_info):
         
         if version == 1:
             
@@ -945,15 +938,12 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
             new_serialisable_info = ( command_type, serialisable_data )
             
             return ( 7, new_serialisable_info )
-            
-        
     
-    def GetCommandType( self ):
+    def get_command_type(self):
         
         return self._command_type
-        
     
-    def GetSimpleAction( self ) -> int:
+    def get_simple_action(self) -> int:
         
         if self._command_type != APPLICATION_COMMAND_TYPE_SIMPLE:
             
@@ -963,9 +953,8 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
         ( simple_action, simple_data ) = self._data
         
         return simple_action
-        
     
-    def GetSimpleData( self ) -> typing.Any:
+    def get_simple_data(self) -> typing.Any:
         
         if self._command_type != APPLICATION_COMMAND_TYPE_SIMPLE:
             
@@ -975,9 +964,8 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
         ( simple_action, simple_data ) = self._data
         
         return simple_data
-        
     
-    def GetContentAction( self ):
+    def get_content_action(self):
         
         if self._command_type != APPLICATION_COMMAND_TYPE_CONTENT:
             
@@ -987,9 +975,8 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
         ( service_key, content_type, action, value ) = self._data
         
         return action
-        
     
-    def GetContentServiceKey( self ):
+    def get_content_service_key(self):
         
         if self._command_type != APPLICATION_COMMAND_TYPE_CONTENT:
             
@@ -999,9 +986,8 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
         ( service_key, content_type, action, value ) = self._data
         
         return service_key
-        
     
-    def GetContentValue( self ):
+    def get_content_value(self):
         
         if self._command_type != APPLICATION_COMMAND_TYPE_CONTENT:
             
@@ -1011,9 +997,8 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
         ( service_key, content_type, action, value ) = self._data
         
         return value
-        
     
-    def GetInteractiveContentServiceKey( self ):
+    def get_interactive_content_service_key(self):
         
         if self._command_type != APPLICATION_COMMAND_TYPE_INTERACTIVE_CONTENT:
             
@@ -1023,9 +1008,8 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
         ( service_key, content_type, action ) = self._data
         
         return service_key
-        
     
-    def GetInteractiveContentType( self ):
+    def get_interactive_content_type(self):
         
         if self._command_type != APPLICATION_COMMAND_TYPE_INTERACTIVE_CONTENT:
             
@@ -1035,9 +1019,8 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
         ( service_key, content_type, action ) = self._data
         
         return content_type
-        
     
-    def GetInteractiveContentAction( self ):
+    def get_interactive_content_action(self):
         
         if self._command_type != APPLICATION_COMMAND_TYPE_INTERACTIVE_CONTENT:
             
@@ -1047,42 +1030,38 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
         ( service_key, content_type, action ) = self._data
         
         return action
-        
     
-    def IsSimpleCommand( self ):
+    def is_simple_command(self):
         
         return self._command_type == APPLICATION_COMMAND_TYPE_SIMPLE
-        
     
-    def IsContentCommand( self ):
+    def is_content_command(self):
         
         return self._command_type == APPLICATION_COMMAND_TYPE_CONTENT
-        
     
-    def IsInteractiveContentCommand( self ):
+    def is_interactive_content_command(self):
         
         return self._command_type == APPLICATION_COMMAND_TYPE_INTERACTIVE_CONTENT
-        
     
-    def ToString( self ):
+    def to_string(self):
         
         try:
             
             if self._command_type == APPLICATION_COMMAND_TYPE_SIMPLE:
                 
-                action = self.GetSimpleAction()
+                action = self.get_simple_action()
                 
                 s = simple_enum_to_str_lookup[ action ]
                 
                 if action == SIMPLE_SHOW_DUPLICATES:
                     
-                    duplicate_type = self.GetSimpleData()
+                    duplicate_type = self.get_simple_data()
                     
                     s = f'{s} {HC.duplicate_type_string_lookup[ duplicate_type ]}'
                     
                 elif action == SIMPLE_MEDIA_SEEK_DELTA:
                     
-                    ( direction, ms ) = self.GetSimpleData()
+                    ( direction, ms ) = self.get_simple_data()
                     
                     direction_s = 'back' if direction == -1 else 'forwards'
                     
@@ -1092,7 +1071,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
                     
                 elif action == SIMPLE_OPEN_SIMILAR_LOOKING_FILES:
                     
-                    hamming_distance = self.GetSimpleData()
+                    hamming_distance = self.get_simple_data()
                     
                     if hamming_distance is None:
                         
@@ -1109,25 +1088,25 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
                     
                 elif action == SIMPLE_COPY_FILE_HASHES:
                     
-                    ( file_command_target, hash_type ) = self.GetSimpleData()
+                    ( file_command_target, hash_type ) = self.get_simple_data()
                     
                     s = f'{s} ({hash_type}, {file_command_target_enum_to_str_lookup[ file_command_target ]})'
                     
                 elif action == SIMPLE_COPY_FILE_BITMAP:
                     
-                    bitmap_type = self.GetSimpleData()
+                    bitmap_type = self.get_simple_data()
                     
                     s = f'{s} ({bitmap_type_enum_to_str_lookup[ bitmap_type ]})'
                     
                 elif action in ( SIMPLE_COPY_FILES, SIMPLE_COPY_FILE_PATHS, SIMPLE_COPY_FILE_ID ):
                     
-                    file_command_target = self.GetSimpleData()
+                    file_command_target = self.get_simple_data()
                     
                     s = f'{s} ({file_command_target_enum_to_str_lookup[ file_command_target ]})'
                     
                 elif action == SIMPLE_COPY_FILE_SERVICE_FILENAMES:
                     
-                    hacky_ipfs_dict = self.GetSimpleData()
+                    hacky_ipfs_dict = self.get_simple_data()
                     
                     try:
                         
@@ -1153,19 +1132,19 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
                     
                 elif action == SIMPLE_MOVE_THUMBNAIL_FOCUS:
                     
-                    ( move_direction, selection_status ) = self.GetSimpleData()
+                    ( move_direction, selection_status ) = self.get_simple_data()
                     
                     s = f'{s} ({selection_status_enum_to_str_lookup[selection_status]} {move_enum_to_str_lookup[move_direction]})'
                     
                 elif action == SIMPLE_SELECT_FILES:
                     
-                    file_filter = self.GetSimpleData()
+                    file_filter = self.get_simple_data()
                     
                     s = f'{s} ({file_filter.ToString()})'
                     
                 elif action == SIMPLE_REARRANGE_THUMBNAILS:
                     
-                    ( rearrange_type, rearrange_data ) = self.GetSimpleData()
+                    ( rearrange_type, rearrange_data ) = self.get_simple_data()
                     
                     if rearrange_type == REARRANGE_THUMBNAILS_TYPE_COMMAND:
                         
@@ -1178,7 +1157,7 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
                     
                 elif action == SIMPLE_RESIZE_WINDOW_TO_MEDIA_ZOOMED_VIEWER_CENTER:
                     
-                    new_zoom = self.GetSimpleData()
+                    new_zoom = self.get_simple_data()
                     
                     if new_zoom is not None:
                         
@@ -1265,26 +1244,22 @@ class ApplicationCommand( HydrusSerialisable.SerialisableBase ):
         except Exception as e:
             
             return 'Unknown Application Command: ' + repr( ( self._command_type, self._data ) )
-            
-        
     
     @staticmethod
-    def STATICCreateSimpleCommand( simple_action, simple_data = None ) -> 'ApplicationCommand':
+    def static_create_simple_command(simple_action, simple_data = None) -> 'ApplicationCommand':
         
         return ApplicationCommand( APPLICATION_COMMAND_TYPE_SIMPLE, ( simple_action, simple_data ) )
-        
-    
 
-HydrusSerialisable.SERIALISABLE_TYPES_TO_OBJECT_TYPES[ HydrusSerialisable.SERIALISABLE_TYPE_APPLICATION_COMMAND ] = ApplicationCommand
 
-class ApplicationCommandProcessorMixin( object ):
+HydrusSerialisable.SERIALISABLE_TYPES_TO_OBJECT_TYPES[HydrusSerialisable.SERIALISABLE_TYPE_APPLICATION_COMMAND] = ApplicationCommand
+
+
+class ApplicationCommandProcessorMixin:
     
-    def ProcessApplicationCommand( self, command: ApplicationCommand ) -> bool:
+    def process_application_command(self, command: ApplicationCommand) -> bool:
         
         # TODO: eventually expand this guy to do the main if and have separate methods for 'do simple command( action )' and 'do complex command( command )', then objects just implement that
         # only thing they need to do is return False if they don't eat the command, or we move to Qt style event processing and set command.ignore() or similar
         # then we can hang debug stuff off this shared code and so on
         
         raise NotImplementedError()
-        
-    
