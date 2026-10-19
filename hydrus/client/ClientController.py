@@ -2258,7 +2258,7 @@ class Controller(HydrusController.HydrusController):
             
             self.frame_splash_status.SetSubtext( 'file viewing stats flush' )
             
-            self.file_viewing_stats_manager.Flush()
+            self.file_viewing_stats_manager.flush()
             
             self.frame_splash_status.SetSubtext( '' )
             

@@ -14,7 +14,7 @@ from hydrus.client.media import ClientMediaResult
 from hydrus.client.metadata import ClientContentUpdates
 
 # now let's fill out grandparents
-def BuildServiceKeysToChildrenToParents( service_keys_to_simple_children_to_parents ):
+def build_service_keys_to_children_to_parents(service_keys_to_simple_children_to_parents):
     
     # TODO: this is not used any more. was it all moved elsewhere? delete if so
     
@@ -53,8 +53,8 @@ def BuildServiceKeysToChildrenToParents( service_keys_to_simple_children_to_pare
         
     
     return service_keys_to_children_to_parents
-    
-def BuildServiceKeysToSimpleChildrenToParents( service_keys_to_pairs_flat ):
+
+def build_service_keys_to_simple_children_to_parents(service_keys_to_pairs_flat):
     
     # TODO: this is not used any more. was it all moved elsewhere? delete if so
     
@@ -62,15 +62,14 @@ def BuildServiceKeysToSimpleChildrenToParents( service_keys_to_pairs_flat ):
     
     for ( service_key, pairs ) in service_keys_to_pairs_flat.items():
         
-        service_keys_to_simple_children_to_parents[ service_key ] = BuildSimpleChildrenToParents( pairs )
+        service_keys_to_simple_children_to_parents[ service_key ] = build_simple_children_to_parents( pairs )
         
     
     return service_keys_to_simple_children_to_parents
-    
 
 # take pairs, make dict of child -> parents while excluding loops
 # no grandparents here
-def BuildSimpleChildrenToParents( pairs ):
+def build_simple_children_to_parents(pairs):
     
     # TODO: move this and Loop guy somewhere better
     
@@ -83,7 +82,7 @@ def BuildSimpleChildrenToParents( pairs ):
             continue
             
         
-        if parent in simple_children_to_parents and LoopInSimpleChildrenToParents( simple_children_to_parents, child, parent ):
+        if parent in simple_children_to_parents and loop_in_simple_children_to_parents( simple_children_to_parents, child, parent ):
             
             continue
             
@@ -92,8 +91,8 @@ def BuildSimpleChildrenToParents( pairs ):
         
     
     return simple_children_to_parents
-    
-def LoopInSimpleChildrenToParents( simple_children_to_parents, child, parent ):
+
+def loop_in_simple_children_to_parents(simple_children_to_parents, child, parent):
     
     # TODO: move this somewhere better
     
@@ -120,22 +119,20 @@ def LoopInSimpleChildrenToParents( simple_children_to_parents, child, parent ):
         elif len( potential_loop_paths ) == 0:
             
             return False
-            
-        
-    
-class BitmapManager( object ):
+
+
+class BitmapManager:
     
     MAX_MEMORY_ALLOWANCE = 512 * 1024 * 1024
     
-    def __init__( self, controller: "CG.ClientController.Controller" ):
+    def __init__(self, controller: "CG.ClientController.Controller"):
         
         self._controller = controller
         
         self._media_background_pixmap_path = None
         self._media_background_pixmap = None
-        
     
-    def _GetQtImageFormat( self, depth ):
+    def _get_qt_image_format(self, depth):
         
         if depth == 24:
             
@@ -148,10 +145,8 @@ class BitmapManager( object ):
         else:
             
             raise NotImplementedError( 'Unknown image format!' )
-            
-        
     
-    def GetQtImage( self, width, height, depth = 24 ):
+    def get_qt_image(self, width, height, depth = 24):
         
         if width < 0:
             
@@ -163,12 +158,11 @@ class BitmapManager( object ):
             height = 20
             
         
-        qt_image_format = self._GetQtImageFormat( depth )
+        qt_image_format = self._get_qt_image_format( depth )
         
         return QG.QImage( width, height, qt_image_format )
-        
     
-    def GetQtPixmap( self, width, height ):
+    def get_qt_pixmap(self, width, height):
         
         if width < 0:
             
@@ -181,16 +175,15 @@ class BitmapManager( object ):
             
         
         return QG.QPixmap( width, height )
-        
     
-    def GetQtImageFromBuffer( self, width, height, depth, data ):
+    def get_qt_image_from_buffer(self, width, height, depth, data):
         
         if isinstance( data, memoryview ) and not data.c_contiguous:
             
             data = memoryview( bytearray( data ) )
             
         
-        qt_image_format = self._GetQtImageFormat( depth )
+        qt_image_format = self._get_qt_image_format( depth )
         
         bytes_per_line = ( depth // 8 ) * width
         
@@ -204,16 +197,15 @@ class BitmapManager( object ):
         qt_image.python_data_reference = data
         
         return qt_image
-        
     
-    def GetQtPixmapFromBuffer( self, width, height, depth, data ):
+    def get_qt_pixmap_from_buffer(self, width, height, depth, data):
         
         if isinstance( data, memoryview ) and not data.c_contiguous:
             
             data = memoryview( bytearray( data ) )
             
         
-        qt_image_format = self._GetQtImageFormat( depth )
+        qt_image_format = self._get_qt_image_format( depth )
         
         bytes_per_line = ( depth // 8 ) * width
         
@@ -224,9 +216,8 @@ class BitmapManager( object ):
         pixmap = QG.QPixmap.fromImage( qt_image )
         
         return pixmap
-        
     
-    def GetMediaBackgroundPixmap( self ):
+    def get_media_background_pixmap(self):
         
         pixmap_path = self._controller.new_options.GetNoneableString( 'media_background_bmp_path' )
         
@@ -256,12 +247,11 @@ class BitmapManager( object ):
             
         
         return self._media_background_pixmap
-        
-    
 
-class FileViewingStatsManager( object ):
+
+class FileViewingStatsManager:
     
-    def __init__( self, controller: "CG.ClientController.Controller" ):
+    def __init__(self, controller: "CG.ClientController.Controller"):
         
         self._controller = controller
         
@@ -271,10 +261,9 @@ class FileViewingStatsManager( object ):
         
         self._last_update = HydrusTime.get_now()
         
-        self._my_flush_job = self._controller.call_repeating( 5, 60, self.REPEATINGFlush )
-        
+        self._my_flush_job = self._controller.call_repeating( 5, 60, self.repeating_flush )
     
-    def _GenerateViewsRow( self, media_result: ClientMediaResult.MediaResult, canvas_type: int, view_timestamp_ms: int, viewtime_delta_ms: int ):
+    def _generate_views_row(self, media_result: ClientMediaResult.MediaResult, canvas_type: int, view_timestamp_ms: int, viewtime_delta_ms: int):
         
         new_options = CG.client_controller.new_options
         
@@ -331,16 +320,14 @@ class FileViewingStatsManager( object ):
             
         
         return ( canvas_type, ( view_timestamp_ms, result_views_delta, result_viewtime_delta_ms ) )
-        
     
-    def _RowMakesChanges( self, row ):
+    def _row_makes_changes(self, row):
         
         ( view_timestamp_ms, views_delta, viewtime_delta_ms ) = row
         
         return views_delta != 0 or viewtime_delta_ms != 0
-        
     
-    def _PubSubRow( self, hash, canvas_type, row ):
+    def _pub_sub_row(self, hash, canvas_type, row):
         
         ( view_timestamp_ms, views_delta, viewtime_delta_ms ) = row
         
@@ -352,9 +339,8 @@ class FileViewingStatsManager( object ):
         
         CG.client_controller.pub( 'content_updates_data', content_update_package )
         CG.client_controller.pub( 'content_updates_gui', content_update_package )
-        
     
-    def Flush( self ):
+    def flush(self):
         
         with self._lock:
             
@@ -377,11 +363,8 @@ class FileViewingStatsManager( object ):
                 self._controller.write( 'content_updates', content_update_package, publish_content_updates = False )
                 
                 self._pending_updates = {}
-                
-            
-        
     
-    def FinishViewing( self, media_result: ClientMediaResult.MediaResult, canvas_type, view_timestamp_ms, viewtime_delta_ms ):
+    def finish_viewing(self, media_result: ClientMediaResult.MediaResult, canvas_type, view_timestamp_ms, viewtime_delta_ms):
         
         if not CG.client_controller.new_options.GetBoolean( 'file_viewing_statistics_active' ):
             
@@ -392,9 +375,9 @@ class FileViewingStatsManager( object ):
         
         with self._lock:
             
-            ( canvas_type, row ) = self._GenerateViewsRow( media_result, canvas_type, view_timestamp_ms, viewtime_delta_ms )
+            ( canvas_type, row ) = self._generate_views_row( media_result, canvas_type, view_timestamp_ms, viewtime_delta_ms )
             
-            if not self._RowMakesChanges( row ):
+            if not self._row_makes_changes( row ):
                 
                 return
                 
@@ -415,17 +398,16 @@ class FileViewingStatsManager( object ):
                 
             
         
-        self._PubSubRow( hash, canvas_type, row )
-        
+        self._pub_sub_row( hash, canvas_type, row )
     
-    def REPEATINGFlush( self ):
+    def repeating_flush(self):
         
-        self.Flush()
-        
+        self.flush()
+
+
+class UndoManager:
     
-class UndoManager( object ):
-    
-    def __init__( self, controller: "CG.ClientController.Controller" ):
+    def __init__(self, controller: "CG.ClientController.Controller"):
         
         self._controller = controller
         
@@ -437,9 +419,8 @@ class UndoManager( object ):
         
         self._controller.sub( self, 'Undo', 'undo' )
         self._controller.sub( self, 'Redo', 'redo' )
-        
     
-    def _FilterContentUpdatePackage( self, content_update_package: ClientContentUpdates.ContentUpdatePackage ):
+    def _filter_content_update_package(self, content_update_package: ClientContentUpdates.ContentUpdatePackage):
         
         filtered_content_update_package = ClientContentUpdates.ContentUpdatePackage()
         
@@ -482,9 +463,8 @@ class UndoManager( object ):
             
         
         return filtered_content_update_package
-        
     
-    def _InvertContentUpdatePackage( self, content_update_package: ClientContentUpdates.ContentUpdatePackage ):
+    def _invert_content_update_package(self, content_update_package: ClientContentUpdates.ContentUpdatePackage):
         
         inverted_content_update_package = ClientContentUpdates.ContentUpdatePackage()
         
@@ -536,9 +516,8 @@ class UndoManager( object ):
             
         
         return inverted_content_update_package
-        
     
-    def AddCommand( self, action, *args, **kwargs ):
+    def add_command(self, action, *args, **kwargs):
         
         with self._lock:
             
@@ -550,14 +529,14 @@ class UndoManager( object ):
                 
                 ( content_update_package, ) = args
                 
-                content_update_package = self._FilterContentUpdatePackage( content_update_package )
+                content_update_package = self._filter_content_update_package( content_update_package )
                 
                 if not content_update_package.HasContent():
                     
                     return
                     
                 
-                inverted_content_update_package = self._InvertContentUpdatePackage( content_update_package )
+                inverted_content_update_package = self._invert_content_update_package( content_update_package )
                 
                 if not inverted_content_update_package.HasContent():
                     
@@ -581,10 +560,8 @@ class UndoManager( object ):
             self._current_index += 1
             
             self._controller.pub( 'notify_new_undo' )
-            
-        
     
-    def GetUndoRedoStrings( self ):
+    def get_undo_redo_strings(self):
         
         with self._lock:
             
@@ -619,10 +596,8 @@ class UndoManager( object ):
                 
             
             return ( undo_string, redo_string )
-            
-        
     
-    def Undo( self ):
+    def undo(self):
         
         action = None
         
@@ -640,10 +615,8 @@ class UndoManager( object ):
             self._controller.write_synchronous( action, *args, **kwargs )
             
             self._controller.pub( 'notify_new_undo' )
-            
-        
     
-    def Redo( self ):
+    def redo(self):
         
         action = None
         
@@ -662,6 +635,3 @@ class UndoManager( object ):
             self._controller.write_synchronous( action, *args, **kwargs )
             
             self._controller.pub( 'notify_new_undo' )
-            
-        
-    

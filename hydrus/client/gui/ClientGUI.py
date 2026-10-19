@@ -2086,7 +2086,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
     
     def _HowBonedAmI( self ):
         
-        self._controller.file_viewing_stats_manager.Flush()
+        self._controller.file_viewing_stats_manager.flush()
         
         self._boned_updater.update()
         

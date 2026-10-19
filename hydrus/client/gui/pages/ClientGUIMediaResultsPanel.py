@@ -2014,7 +2014,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
             
             painter.eraseRect( rect )
             
-            background_pixmap = CG.client_controller.bitmap_manager.GetMediaBackgroundPixmap()
+            background_pixmap = CG.client_controller.bitmap_manager.get_media_background_pixmap()
             
             if background_pixmap is not None:
                 

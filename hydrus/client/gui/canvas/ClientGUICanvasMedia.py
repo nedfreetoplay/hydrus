@@ -503,7 +503,7 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         if self._canvas_qt_pixmap is None:
             
-            self._canvas_qt_pixmap = CG.client_controller.bitmap_manager.GetQtPixmap( my_raw_width, my_raw_height )
+            self._canvas_qt_pixmap = CG.client_controller.bitmap_manager.get_qt_pixmap( my_raw_width, my_raw_height )
             
         
         self._canvas_qt_pixmap.setDevicePixelRatio( self.devicePixelRatio() )
@@ -3705,7 +3705,7 @@ class StaticImage( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         raw_width = raw_canvas_clip_rect.width()
         raw_height = raw_canvas_clip_rect.height()
         
-        tile_pixmap = CG.client_controller.bitmap_manager.GetQtPixmap( raw_width, raw_height )
+        tile_pixmap = CG.client_controller.bitmap_manager.get_qt_pixmap( raw_width, raw_height )
         
         painter = QG.QPainter( tile_pixmap )
         

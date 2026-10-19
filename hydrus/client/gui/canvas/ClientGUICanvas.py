@@ -695,7 +695,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             return
             
         
-        CG.client_controller.file_viewing_stats_manager.FinishViewing( self._current_media.GetMediaResult(), self.CANVAS_TYPE, view_timestamp_ms, viewtime_delta_ms )
+        CG.client_controller.file_viewing_stats_manager.finish_viewing( self._current_media.GetMediaResult(), self.CANVAS_TYPE, view_timestamp_ms, viewtime_delta_ms )
         
     
     def _SeekDeltaCurrentMedia( self, direction, duration_ms ):

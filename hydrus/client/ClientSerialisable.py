@@ -34,7 +34,7 @@ IMREAD_UNCHANGED = cv2.IMREAD_UNCHANGED
 
 def CreateTopImage( width, title, payload_description, text ):
     
-    text_extent_qt_image = CG.client_controller.bitmap_manager.GetQtImage( 20, 20, 24 )
+    text_extent_qt_image = CG.client_controller.bitmap_manager.get_qt_image( 20, 20, 24 )
     
     painter = QG.QPainter( text_extent_qt_image )
     
@@ -87,7 +87,7 @@ def CreateTopImage( width, title, payload_description, text ):
     
     #
     
-    top_qt_image = CG.client_controller.bitmap_manager.GetQtImage( width, top_height, 24 )
+    top_qt_image = CG.client_controller.bitmap_manager.get_qt_image( width, top_height, 24 )
     
     painter = QG.QPainter( top_qt_image )
     

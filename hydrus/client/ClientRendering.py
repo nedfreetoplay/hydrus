@@ -405,7 +405,7 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
         
         data = numpy_image.data
         
-        qt_image = CG.client_controller.bitmap_manager.GetQtImageFromBuffer( width, height, depth * 8, data )
+        qt_image = CG.client_controller.bitmap_manager.get_qt_image_from_buffer( width, height, depth * 8, data )
         
         # ok this stuff was originally for image ICC, as loaded using PIL's image.info dict
         # ultimately I figured out how to do the conversion with PIL itself, which was more universal
@@ -471,7 +471,7 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
                 
                 data = numpy_image.data
                 
-                return CG.client_controller.bitmap_manager.GetQtPixmapFromBuffer( width, height, depth * 8, data )
+                return CG.client_controller.bitmap_manager.get_qt_pixmap_from_buffer( width, height, depth * 8, data )
                 
             except Exception as e:
                 
@@ -1196,14 +1196,14 @@ class HydrusBitmap( ClientCachesBase.CacheableObject ):
         
         ( width, height ) = self._size
         
-        return CG.client_controller.bitmap_manager.GetQtImageFromBuffer( width, height, self._depth * 8, self._GetData() )
+        return CG.client_controller.bitmap_manager.get_qt_image_from_buffer( width, height, self._depth * 8, self._GetData() )
         
     
     def GetQtPixmap( self ) -> QG.QPixmap:
         
         ( width, height ) = self._size
         
-        return CG.client_controller.bitmap_manager.GetQtPixmapFromBuffer( width, height, self._depth * 8, self._GetData() )
+        return CG.client_controller.bitmap_manager.get_qt_pixmap_from_buffer( width, height, self._depth * 8, self._GetData() )
         
     
     def GetEstimatedMemoryFootprint( self ):

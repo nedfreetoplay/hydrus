@@ -633,7 +633,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
         
         QUERY_CHUNK_SIZE = 100
         
-        CG.client_controller.file_viewing_stats_manager.Flush()
+        CG.client_controller.file_viewing_stats_manager.flush()
         
         query_hash_ids = CG.client_controller.read( 'file_query_ids', file_search_context, job_status = query_job_status, limit_sort_by = sort_by )
         
