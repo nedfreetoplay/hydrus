@@ -2,9 +2,9 @@ from hydrus.core.networking import HydrusServer
 
 from hydrus.server.networking import ServerServerResources
 
-class HydrusServiceRestricted( HydrusServer.HydrusService ):
+class HydrusServiceRestricted(HydrusServer.HydrusService):
     
-    def _init_root( self ):
+    def _init_root(self):
         
         root = HydrusServer.HydrusService._init_root( self )
         
@@ -44,11 +44,11 @@ class HydrusServiceRestricted( HydrusServer.HydrusService ):
         root.putChild( b'maintenance_regen_service_info', ServerServerResources.HydrusResourceRestrictedMaintenanceRegenServiceInfo( self._service, HydrusServer.REMOTE_DOMAIN ) )
         
         return root
-        
+
+
+class HydrusServiceAdmin(HydrusServiceRestricted):
     
-class HydrusServiceAdmin( HydrusServiceRestricted ):
-    
-    def _init_root( self ):
+    def _init_root(self):
         
         root = HydrusServiceRestricted._init_root( self )
         
@@ -61,12 +61,11 @@ class HydrusServiceAdmin( HydrusServiceRestricted ):
         root.putChild( b'vacuum', ServerServerResources.HydrusResourceRestrictedVacuum( self._service, HydrusServer.REMOTE_DOMAIN ) )
         
         return root
-        
-    
 
-class HydrusServiceRepository( HydrusServiceRestricted ):
+
+class HydrusServiceRepository(HydrusServiceRestricted):
     
-    def _init_root( self ):
+    def _init_root(self):
         
         root = HydrusServiceRestricted._init_root( self )
         
@@ -78,11 +77,11 @@ class HydrusServiceRepository( HydrusServiceRestricted ):
         root.putChild( b'metadata', ServerServerResources.HydrusResourceRestrictedMetadataUpdate( self._service, HydrusServer.REMOTE_DOMAIN ) )
         
         return root
-        
+
+
+class HydrusServiceRepositoryFile(HydrusServiceRepository):
     
-class HydrusServiceRepositoryFile( HydrusServiceRepository ):
-    
-    def _init_root( self ):
+    def _init_root(self):
         
         root = HydrusServiceRepository._init_root( self )
         
@@ -91,16 +90,14 @@ class HydrusServiceRepositoryFile( HydrusServiceRepository ):
         root.putChild( b'thumbnail', ServerServerResources.HydrusResourceRestrictedRepositoryThumbnail( self._service, HydrusServer.REMOTE_DOMAIN ) )
         
         return root
-        
+
+
+class HydrusServiceRepositoryTag(HydrusServiceRepository):
     
-class HydrusServiceRepositoryTag( HydrusServiceRepository ):
-    
-    def _init_root( self ):
+    def _init_root(self):
         
         root = HydrusServiceRepository._init_root( self )
         
         root.putChild( b'tag_filter', ServerServerResources.HydrusResourceRestrictedTagFilter( self._service, HydrusServer.REMOTE_DOMAIN ) )
         
         return root
-        
-    
