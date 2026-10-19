@@ -1616,3 +1616,8 @@ sqlite3.register_adapter( bool, int )
 
 sqlite3.register_converter( 'INTEGER_BOOLEAN', integer_boolean_to_bool )
 sqlite3.register_converter( 'TEXT_YAML', yaml.safe_load )
+
+
+#region Повторяющиеся текст
+ROWS_S_TEXT = ' rows/s'
+#endregion Повторяющиеся текст

@@ -1929,7 +1929,7 @@ class ReviewServicePanel( QW.QWidget ):
                 
                 rows_s = int( weight / it_took )
                 
-                update_speed_string = ' at ' + HydrusNumbers.to_human_int( rows_s ) + ' rows/s'
+                update_speed_string = ' at ' + HydrusNumbers.to_human_int( rows_s ) + HC.ROWS_S_TEXT
                 
                 c_u_p_total_weight_processed += weight
                 

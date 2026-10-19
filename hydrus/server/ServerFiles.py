@@ -5,13 +5,13 @@ from hydrus.core.files import HydrusFilesPhysicalStorage
 
 from hydrus.server import ServerGlobals as SG
 
-def GetAllHashes( file_type ):
+def get_all_hashes(file_type):
     
-    return { bytes.fromhex( os.path.split( path )[1] ) for path in IterateAllPaths( file_type ) }
+    return { bytes.fromhex( os.path.split( path )[1] ) for path in iterate_all_paths( file_type ) }
+
+def get_expected_file_path(hash):
     
-def GetExpectedFilePath( hash ):
-    
-    files_dir = SG.server_controller.GetFilesDir()
+    files_dir = SG.server_controller.get_files_dir()
     
     hash_encoded = hash.hex()
     
@@ -20,10 +20,10 @@ def GetExpectedFilePath( hash ):
     path = os.path.join( files_dir, first_two_chars, hash_encoded )
     
     return path
+
+def get_expected_thumbnail_path(hash):
     
-def GetExpectedThumbnailPath( hash ):
-    
-    files_dir = SG.server_controller.GetFilesDir()
+    files_dir = SG.server_controller.get_files_dir()
     
     hash_encoded = hash.hex()
     
@@ -32,10 +32,10 @@ def GetExpectedThumbnailPath( hash ):
     path = os.path.join( files_dir, first_two_chars, hash_encoded + '.thumbnail' )
     
     return path
+
+def get_file_path(hash):
     
-def GetFilePath( hash ):
-    
-    path = GetExpectedFilePath( hash )
+    path = get_expected_file_path( hash )
     
     if not os.path.exists( path ):
         
@@ -43,10 +43,10 @@ def GetFilePath( hash ):
         
     
     return path
+
+def get_thumbnail_path(hash):
     
-def GetThumbnailPath( hash ):
-    
-    path = GetExpectedThumbnailPath( hash )
+    path = get_expected_thumbnail_path( hash )
     
     if not os.path.exists( path ):
         
@@ -54,10 +54,10 @@ def GetThumbnailPath( hash ):
         
     
     return path
+
+def iterate_all_paths(file_type):
     
-def IterateAllPaths( file_type ):
-    
-    files_dir = SG.server_controller.GetFilesDir()
+    files_dir = SG.server_controller.get_files_dir()
     
     for prefix in HydrusFilesPhysicalStorage.iterate_prefixes( '', 2 ):
         
@@ -77,6 +77,3 @@ def IterateAllPaths( file_type ):
                 
             
             yield os.path.join( dir, filename )
-            
-        
-    
