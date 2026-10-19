@@ -1459,7 +1459,7 @@ class EditServiceStarRatingsSubPanel( ClientGUICommon.StaticBox ):
         
         help_hbox = ClientGUICommon.WrapInText( help_button, self, 'help -->', object_name = 'HydrusIndeterminate' )
         
-        CC.global_icons().RefreshUserIcons()
+        CC.global_icons().refresh_user_icons()
         
         svg_ratings_are_ok = len( CC.global_icons().user_icons ) > 0
         

@@ -5768,8 +5768,8 @@ ATTACH "client.mappings.db" as external_mappings;'''
     
     def _ReloadIconCache( self ):
         
-        CC.global_pixmaps().Reload()
-        CC.global_icons().Reload()
+        CC.global_pixmaps().reload()
+        CC.global_icons().reload()
         
         HydrusData.show_text( 'Icon cache reloaded!' )
         
