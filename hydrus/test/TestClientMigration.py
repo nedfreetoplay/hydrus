@@ -306,7 +306,7 @@ class TestMigration( unittest.TestCase ):
         
         job = ClientMigration.MigrationJob( self, 'test', source, destination )
         
-        job.Run()
+        job.run()
         
         self.assertEqual( destination.GetDataReceived(), data )
         
@@ -319,7 +319,7 @@ class TestMigration( unittest.TestCase ):
             
             job = ClientMigration.MigrationJob( self, 'test', source, destination )
             
-            job.Run()
+            job.run()
             
             self.assertEqual( dict( destination.GetDataReceived() ), dict( expected_data ) )
             
@@ -459,7 +459,7 @@ class TestMigration( unittest.TestCase ):
             
             job = ClientMigration.MigrationJob( self, 'test', source, destination )
             
-            job.Run()
+            job.run()
             
             hta = HydrusTagArchive.HydrusTagArchive( destination_path )
             
@@ -498,7 +498,7 @@ class TestMigration( unittest.TestCase ):
             
             job = ClientMigration.MigrationJob( self, 'test', source, destination )
             
-            job.Run()
+            job.run()
             
             self.assertEqual( dict( destination.GetDataReceived() ), dict( expected_data ) )
             
@@ -625,7 +625,7 @@ class TestMigration( unittest.TestCase ):
             
             job = ClientMigration.MigrationJob( self, 'test', source, destination )
             
-            job.Run()
+            job.run()
             
             self._db.modules_media_results._weakref_media_result_cache.Clear()
             
@@ -790,7 +790,7 @@ class TestMigration( unittest.TestCase ):
         
         job = ClientMigration.MigrationJob( self, 'test', source, destination )
         
-        job.Run()
+        job.run()
         
         self.assertEqual( destination.GetDataReceived(), data )
         
@@ -803,7 +803,7 @@ class TestMigration( unittest.TestCase ):
             
             job = ClientMigration.MigrationJob( self, 'test', source, destination )
             
-            job.Run()
+            job.run()
             
             self.assertEqual( set( destination.GetDataReceived() ), set( expected_data ) )
             
@@ -880,7 +880,7 @@ class TestMigration( unittest.TestCase ):
             
             job = ClientMigration.MigrationJob( self, 'test', source, destination )
             
-            job.Run()
+            job.run()
             
             hta = HydrusTagArchive.HydrusTagPairArchive( destination_path )
             
@@ -914,7 +914,7 @@ class TestMigration( unittest.TestCase ):
             
             job = ClientMigration.MigrationJob( self, 'test', source, destination )
             
-            job.Run()
+            job.run()
             
             self.assertEqual( set( destination.GetDataReceived() ), set( expected_data ) )
             
@@ -978,7 +978,7 @@ class TestMigration( unittest.TestCase ):
             
             job = ClientMigration.MigrationJob( self, 'test', source, destination )
             
-            job.Run()
+            job.run()
             
             if content_type == HC.CONTENT_TYPE_TAG_PARENTS:
                 
@@ -1080,7 +1080,7 @@ class TestMigration( unittest.TestCase ):
             
             job = ClientMigration.MigrationJob( self, 'test', source, destination )
             
-            job.Run()
+            job.run()
             
             self.assertEqual( set( destination.GetDataReceived() ), set( expected_data ) )
             
@@ -1192,7 +1192,7 @@ class TestMigration( unittest.TestCase ):
             
             job = ClientMigration.MigrationJob( self, 'test', source, destination )
             
-            job.Run()
+            job.run()
             
             self.assertEqual( set( destination.GetDataReceived() ), set( expected_data ) )
             

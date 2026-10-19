@@ -520,9 +520,9 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         content_statuses_string = source_content_statuses_strings[ tuple( content_statuses ) ]
         content_type_string = HC.content_type_string_lookup[ content_type ]
-        source_name = source.GetName()
+        source_name = source.get_name()
         destination_action_string = destination_action_strings[ content_action ]
-        destination_name = destination.GetName()
+        destination_name = destination.get_name()
         
         title = f'taking {content_statuses_string} {content_type_string}{extra_info} from "{source_name}" and {destination_action_string} "{destination_name}"'
         
@@ -553,7 +553,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
                 
                 migration_job = ClientMigration.MigrationJob( CG.client_controller, title, source, destination )
                 
-                CG.client_controller.call_to_thread( migration_job.Run )
+                CG.client_controller.call_to_thread( migration_job.run )
                 
             
         

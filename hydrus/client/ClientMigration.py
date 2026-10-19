@@ -13,15 +13,15 @@ from hydrus.client.metadata import ClientContentUpdates
 
 pair_types_to_content_types = {}
 
-pair_types_to_content_types[ HydrusTagArchive.TAG_PAIR_TYPE_PARENTS ] = HC.CONTENT_TYPE_TAG_PARENTS
-pair_types_to_content_types[ HydrusTagArchive.TAG_PAIR_TYPE_SIBLINGS ] = HC.CONTENT_TYPE_TAG_SIBLINGS
+pair_types_to_content_types[HydrusTagArchive.TAG_PAIR_TYPE_PARENTS] = HC.CONTENT_TYPE_TAG_PARENTS
+pair_types_to_content_types[HydrusTagArchive.TAG_PAIR_TYPE_SIBLINGS] = HC.CONTENT_TYPE_TAG_SIBLINGS
 
 content_types_to_pair_types = {}
 
-content_types_to_pair_types[ HC.CONTENT_TYPE_TAG_PARENTS ] = HydrusTagArchive.TAG_PAIR_TYPE_PARENTS
-content_types_to_pair_types[ HC.CONTENT_TYPE_TAG_SIBLINGS ] = HydrusTagArchive.TAG_PAIR_TYPE_SIBLINGS
+content_types_to_pair_types[HC.CONTENT_TYPE_TAG_PARENTS] = HydrusTagArchive.TAG_PAIR_TYPE_PARENTS
+content_types_to_pair_types[HC.CONTENT_TYPE_TAG_SIBLINGS] = HydrusTagArchive.TAG_PAIR_TYPE_SIBLINGS
 
-def GetBasicSpeedStatement( num_done, time_started_precise ):
+def get_basic_speed_statement(num_done, time_started_precise):
     
     if num_done == 0:
         
@@ -35,39 +35,35 @@ def GetBasicSpeedStatement( num_done, time_started_precise ):
         
     
     return '{} rows/s'.format( rows_s )
+
+
+class MigrationDestination:
     
-class MigrationDestination( object ):
-    
-    def __init__( self, controller: "CG.ClientController.Controller", name: str ):
+    def __init__(self, controller: "CG.ClientController.Controller", name: str):
         
         self._controller = controller
         self._name = name
-        
     
-    def GetName( self ):
+    def get_name(self):
         
         return self._name
-        
     
-    def CleanUp( self ):
+    def clean_up(self):
         
         pass
-        
     
-    def DoSomeWork( self, source ):
+    def do_some_work(self, source):
         
         raise NotImplementedError()
-        
     
-    def Prepare( self ):
+    def prepare(self):
         
         pass
-        
-    
 
-class MigrationDestinationHTA( MigrationDestination ):
+
+class MigrationDestinationHTA(MigrationDestination):
     
-    def __init__( self, controller, path, desired_hash_type ):
+    def __init__(self, controller, path, desired_hash_type):
         
         name = os.path.basename( path )
         
@@ -79,9 +75,8 @@ class MigrationDestinationHTA( MigrationDestination ):
         self._time_started = 0
         
         self._hta = None
-        
     
-    def CleanUp( self ):
+    def clean_up(self):
         
         self._hta.commit_big_job()
         
@@ -93,9 +88,8 @@ class MigrationDestinationHTA( MigrationDestination ):
         self._hta.close()
         
         self._hta = None
-        
     
-    def DoSomeWork( self, source ):
+    def do_some_work(self, source):
         
         time_started_precise = HydrusTime.get_now_precise()
         
@@ -110,10 +104,9 @@ class MigrationDestinationHTA( MigrationDestination ):
             num_done += len( tags )
             
         
-        return GetBasicSpeedStatement( num_done, time_started_precise )
-        
+        return get_basic_speed_statement( num_done, time_started_precise )
     
-    def Prepare( self ):
+    def prepare(self):
         
         self._time_started = HydrusTime.get_now()
         
@@ -124,11 +117,11 @@ class MigrationDestinationHTA( MigrationDestination ):
         self._hta.set_hash_type( hta_hash_type )
         
         self._hta.begin_big_job()
-        
+
+
+class MigrationDestinationHTPA(MigrationDestination):
     
-class MigrationDestinationHTPA( MigrationDestination ):
-    
-    def __init__( self, controller, path, content_type ):
+    def __init__(self, controller, path, content_type):
         
         name = os.path.basename( path )
         
@@ -140,9 +133,8 @@ class MigrationDestinationHTPA( MigrationDestination ):
         self._time_started = 0
         
         self._htpa = None
-        
     
-    def CleanUp( self ):
+    def clean_up(self):
         
         self._htpa.commit_big_job()
         
@@ -154,9 +146,8 @@ class MigrationDestinationHTPA( MigrationDestination ):
         self._htpa.close()
         
         self._htpa = None
-        
     
-    def DoSomeWork( self, source ):
+    def do_some_work(self, source):
         
         time_started_precise = HydrusTime.get_now_precise()
         
@@ -166,10 +157,9 @@ class MigrationDestinationHTPA( MigrationDestination ):
         
         num_done = len( data )
         
-        return GetBasicSpeedStatement( num_done, time_started_precise )
-        
+        return get_basic_speed_statement( num_done, time_started_precise )
     
-    def Prepare( self ):
+    def prepare(self):
         
         self._time_started = HydrusTime.get_now()
         
@@ -180,11 +170,11 @@ class MigrationDestinationHTPA( MigrationDestination ):
         self._htpa.set_pair_type( pair_type )
         
         self._htpa.begin_big_job()
-        
+
+
+class MigrationDestinationList(MigrationDestination):
     
-class MigrationDestinationList( MigrationDestination ):
-    
-    def __init__( self, controller ):
+    def __init__(self, controller):
         
         name = 'simple list destination'
         
@@ -193,21 +183,19 @@ class MigrationDestinationList( MigrationDestination ):
         self._data_received = []
         
         self._time_started = 0
-        
     
-    def DoSomeWork( self, source ):
+    def do_some_work(self, source):
         
         raise NotImplementedError()
-        
     
-    def GetDataReceived( self ):
+    def GetDataReceived(self):
         
         return self._data_received
-        
+
+
+class MigrationDestinationListMappings(MigrationDestinationList):
     
-class MigrationDestinationListMappings( MigrationDestinationList ):
-    
-    def DoSomeWork( self, source ):
+    def do_some_work(self, source):
         
         time_started_precise = HydrusTime.get_now_precise()
         
@@ -222,12 +210,12 @@ class MigrationDestinationListMappings( MigrationDestinationList ):
             num_done += len( tags )
             
         
-        return GetBasicSpeedStatement( num_done, time_started_precise )
-        
+        return get_basic_speed_statement( num_done, time_started_precise )
+
+
+class MigrationDestinationListPairs(MigrationDestinationList):
     
-class MigrationDestinationListPairs( MigrationDestinationList ):
-    
-    def DoSomeWork( self, source ):
+    def do_some_work(self, source):
         
         time_started_precise = HydrusTime.get_now_precise()
         
@@ -237,12 +225,12 @@ class MigrationDestinationListPairs( MigrationDestinationList ):
         
         num_done = len( data )
         
-        return GetBasicSpeedStatement( num_done, time_started_precise )
-        
+        return get_basic_speed_statement( num_done, time_started_precise )
+
+
+class MigrationDestinationTagService(MigrationDestination):
     
-class MigrationDestinationTagService( MigrationDestination ):
-    
-    def __init__( self, controller, tag_service_key, content_action ):
+    def __init__(self, controller, tag_service_key, content_action):
         
         name = controller.services_manager.GetNameSafe( tag_service_key )
         
@@ -254,23 +242,21 @@ class MigrationDestinationTagService( MigrationDestination ):
         
         self._tag_service_type = service.get_service_type()
         self._content_action = content_action
-        
     
-    def DoSomeWork( self, source ):
+    def do_some_work(self, source):
         
         raise NotImplementedError()
-        
+
+
+class MigrationDestinationTagServiceMappings(MigrationDestinationTagService):
     
-class MigrationDestinationTagServiceMappings( MigrationDestinationTagService ):
-    
-    def __init__( self, controller, tag_service_key, content_action ):
+    def __init__(self, controller, tag_service_key, content_action):
         
         super().__init__( controller, tag_service_key, content_action )
         
         self._reason = 'Mass Migration Job'
-        
     
-    def DoSomeWork( self, source ):
+    def do_some_work(self, source):
         
         time_started_precise = HydrusTime.get_now_precise()
         
@@ -307,25 +293,22 @@ class MigrationDestinationTagServiceMappings( MigrationDestinationTagService ):
         
         self._controller.write_synchronous( 'content_updates', content_update_package )
         
-        return GetBasicSpeedStatement( num_done, time_started_precise )
-        
+        return get_basic_speed_statement( num_done, time_started_precise )
     
-    def SetReason( self, reason: str ):
+    def SetReason(self, reason: str):
         
         self._reason = reason
-        
-    
 
-class MigrationDestinationTagServicePairs( MigrationDestinationTagService ):
+
+class MigrationDestinationTagServicePairs(MigrationDestinationTagService):
     
-    def __init__( self, controller, tag_service_key, content_action, content_type ):
+    def __init__(self, controller, tag_service_key, content_action, content_type):
         
         super().__init__( controller, tag_service_key, content_action )
         
         self._content_type = content_type
-        
     
-    def DoSomeWork( self, source ):
+    def do_some_work(self, source):
         
         time_started_precise = HydrusTime.get_now_precise()
         
@@ -350,20 +333,19 @@ class MigrationDestinationTagServicePairs( MigrationDestinationTagService ):
         
         num_done = len( data )
         
-        return GetBasicSpeedStatement( num_done, time_started_precise )
-        
+        return get_basic_speed_statement( num_done, time_started_precise )
+
+
+class MigrationJob:
     
-class MigrationJob( object ):
-    
-    def __init__( self, controller: "CG.ClientController.Controller", title, source, destination ):
+    def __init__(self, controller: "CG.ClientController.Controller", title, source, destination):
         
         self._controller = controller
         self._title = title
         self._source = source
         self._destination = destination
-        
     
-    def Run( self ):
+    def run(self):
         
         job_status = ClientThreading.JobStatus( pausable = True, cancellable = True )
         
@@ -410,47 +392,41 @@ class MigrationJob( object ):
             job_status.SetStatusText( 'done!' )
             
             job_status.FinishAndDismiss( 3 )
-            
-        
+
+
+class MigrationSource:
     
-class MigrationSource( object ):
-    
-    def __init__( self, controller: "CG.ClientController.Controller", name ):
+    def __init__(self, controller: "CG.ClientController.Controller", name):
         
         self._controller = controller
         self._name = name
         
         self._work_to_do = True
-        
     
-    def GetName( self ):
+    def get_name(self):
         
         return self._name
-        
     
-    def GetSomeData( self ):
+    def get_some_data(self):
         
         raise NotImplementedError()
-        
     
-    def CleanUp( self ):
+    def clean_up(self):
         
         pass
-        
     
-    def Prepare( self ):
+    def prepare(self):
         
         pass
-        
     
-    def StillWorkToDo( self ):
+    def still_work_to_do(self):
         
         return self._work_to_do
-        
+
+
+class MigrationSourceHTA(MigrationSource):
     
-class MigrationSourceHTA( MigrationSource ):
-    
-    def __init__( self, controller, path, location_context: ClientLocation.LocationContext, desired_hash_type, hashes, tag_filter ):
+    def __init__(self, controller, path, location_context: ClientLocation.LocationContext, desired_hash_type, hashes, tag_filter):
         
         name = os.path.basename( path )
         
@@ -465,9 +441,8 @@ class MigrationSourceHTA( MigrationSource ):
         self._hta = None
         self._source_hash_type = None
         self._iterator = None
-        
     
-    def _ConvertHashes( self, source_hash_type, desired_hash_type, data ):
+    def _convert_hashes(self, source_hash_type, desired_hash_type, data):
         
         if source_hash_type != desired_hash_type:
             
@@ -491,9 +466,8 @@ class MigrationSourceHTA( MigrationSource ):
             
         
         return data
-        
     
-    def _FilterSHA256Hashes( self, data ):
+    def _filter_sha256_hashes(self, data):
         
         if self._hashes is not None:
             
@@ -527,14 +501,12 @@ class MigrationSourceHTA( MigrationSource ):
             
         
         return data
-        
     
-    def _SHA256FilteringNeeded( self ):
+    def _sha256_filtering_needed(self):
         
         return self._hashes is not None or not self._location_context.is_all_known_files()
-        
     
-    def CleanUp( self ):
+    def clean_up(self):
         
         self._hta.commit_big_job()
         
@@ -542,9 +514,8 @@ class MigrationSourceHTA( MigrationSource ):
         
         self._hta = None
         self._iterator = None
-        
     
-    def GetSomeData( self ):
+    def get_some_data(self):
         
         data = HydrusLists.pull_n_from_iterator( self._iterator, 256 )
         
@@ -572,38 +543,37 @@ class MigrationSourceHTA( MigrationSource ):
             data = filtered_data
             
         
-        if self._SHA256FilteringNeeded():
+        if self._sha256_filtering_needed():
             
             if self._source_hash_type == 'sha256':
                 
-                data = self._FilterSHA256Hashes( data )
+                data = self._filter_sha256_hashes( data )
                 
-                data = self._ConvertHashes( self._source_hash_type, self._desired_hash_type, data )
+                data = self._convert_hashes( self._source_hash_type, self._desired_hash_type, data )
                 
             elif self._desired_hash_type == 'sha256':
                 
-                data = self._ConvertHashes( self._source_hash_type, self._desired_hash_type, data )
+                data = self._convert_hashes( self._source_hash_type, self._desired_hash_type, data )
                 
-                data = self._FilterSHA256Hashes( data )
+                data = self._filter_sha256_hashes( data )
                 
             else:
                 
-                data = self._ConvertHashes( self._source_hash_type, 'sha256', data )
+                data = self._convert_hashes( self._source_hash_type, 'sha256', data )
                 
-                data = self._FilterSHA256Hashes( data )
+                data = self._filter_sha256_hashes( data )
                 
-                data = self._ConvertHashes( 'sha256', self._desired_hash_type, data )
+                data = self._convert_hashes( 'sha256', self._desired_hash_type, data )
                 
             
         else:
             
-            data = self._ConvertHashes( self._source_hash_type, self._desired_hash_type, data )
+            data = self._convert_hashes( self._source_hash_type, self._desired_hash_type, data )
             
         
         return data
-        
     
-    def Prepare( self ):
+    def prepare(self):
         
         self._hta = HydrusTagArchive.HydrusTagArchive( self._path )
         
@@ -612,11 +582,11 @@ class MigrationSourceHTA( MigrationSource ):
         self._source_hash_type = HydrusTagArchive.hash_type_to_str_lookup[ self._hta.get_hash_type() ]
         
         self._iterator = self._hta.iterate_mappings()
-        
+
+
+class MigrationSourceHTPA(MigrationSource):
     
-class MigrationSourceHTPA( MigrationSource ):
-    
-    def __init__( self, controller, path, content_type, left_tag_filter, right_tag_filter, left_side_needs_count, right_side_needs_count, either_side_needs_count, needs_count_service_key ):
+    def __init__(self, controller, path, content_type, left_tag_filter, right_tag_filter, left_side_needs_count, right_side_needs_count, either_side_needs_count, needs_count_service_key):
         
         name = os.path.basename( path )
         
@@ -633,9 +603,8 @@ class MigrationSourceHTPA( MigrationSource ):
         
         self._htpa = None
         self._iterator = None
-        
     
-    def CleanUp( self ):
+    def clean_up(self):
         
         self._htpa.commit_big_job()
         
@@ -643,9 +612,8 @@ class MigrationSourceHTPA( MigrationSource ):
         
         self._htpa = None
         self._iterator = None
-        
     
-    def GetSomeData( self ):
+    def get_some_data(self):
         
         data = HydrusLists.pull_n_from_iterator( self._iterator, 256 )
         
@@ -667,20 +635,19 @@ class MigrationSourceHTPA( MigrationSource ):
             
         
         return data
-        
     
-    def Prepare( self ):
+    def prepare(self):
         
         self._htpa = HydrusTagArchive.HydrusTagPairArchive( self._path )
         
         self._htpa.begin_big_job()
         
         self._iterator = self._htpa.iterate_pairs()
-        
+
+
+class MigrationSourceList(MigrationSource):
     
-class MigrationSourceList( MigrationSource ):
-    
-    def __init__( self, controller, data ):
+    def __init__(self, controller, data):
         
         name = 'simple list source'
         
@@ -688,9 +655,8 @@ class MigrationSourceList( MigrationSource ):
         
         self._data = data
         self._iterator = None
-        
     
-    def GetSomeData( self ):
+    def get_some_data(self):
         
         some_data = HydrusLists.pull_n_from_iterator( self._iterator, 5 )
         
@@ -700,16 +666,15 @@ class MigrationSourceList( MigrationSource ):
             
         
         return some_data
-        
     
-    def Prepare( self ):
+    def prepare(self):
         
         self._iterator = iter( self._data )
-        
+
+
+class MigrationSourceTagServiceMappings(MigrationSource):
     
-class MigrationSourceTagServiceMappings( MigrationSource ):
-    
-    def __init__( self, controller, tag_service_key, location_context, desired_hash_type, hashes, tag_filter, content_statuses ):
+    def __init__(self, controller, tag_service_key, location_context, desired_hash_type, hashes, tag_filter, content_statuses):
         
         name = controller.services_manager.GetNameSafe( tag_service_key )
         
@@ -723,14 +688,12 @@ class MigrationSourceTagServiceMappings( MigrationSource ):
         self._content_statuses = content_statuses
         
         self._database_temp_job_name = 'migrate_{}'.format( os.urandom( 16 ).hex() )
-        
     
-    def CleanUp( self ):
+    def clean_up(self):
         
         self._controller.write_synchronous( 'migration_clear_job', self._database_temp_job_name )
-        
     
-    def GetSomeData( self ):
+    def get_some_data(self):
         
         data = self._controller.read( 'migration_get_mappings', self._database_temp_job_name, self._location_context, self._tag_service_key, self._desired_hash_type, self._tag_filter, self._content_statuses )
         
@@ -740,18 +703,17 @@ class MigrationSourceTagServiceMappings( MigrationSource ):
             
         
         return data
-        
     
-    def Prepare( self ):
+    def prepare(self):
         
         # later can spread this out into bunch of small jobs, a start and a continue, based on tag filter subsets
         
         self._controller.write_synchronous( 'migration_start_mappings_job', self._database_temp_job_name, self._location_context, self._tag_service_key, self._tag_filter, self._hashes, self._content_statuses )
-        
+
+
+class MigrationSourceTagServicePairs(MigrationSource):
     
-class MigrationSourceTagServicePairs( MigrationSource ):
-    
-    def __init__( self, controller, tag_service_key, content_type, left_tag_filter, right_tag_filter, content_statuses, left_side_needs_count, right_side_needs_count, either_side_needs_count, needs_count_service_key ):
+    def __init__(self, controller, tag_service_key, content_type, left_tag_filter, right_tag_filter, content_statuses, left_side_needs_count, right_side_needs_count, either_side_needs_count, needs_count_service_key):
         
         name = controller.services_manager.GetNameSafe( tag_service_key )
         
@@ -768,14 +730,12 @@ class MigrationSourceTagServicePairs( MigrationSource ):
         self._needs_count_service_key = needs_count_service_key
         
         self._database_temp_job_name = 'migrate_{}'.format( os.urandom( 16 ).hex() )
-        
     
-    def CleanUp( self ):
+    def clean_up(self):
         
         self._controller.write_synchronous( 'migration_clear_job', self._database_temp_job_name )
-        
     
-    def GetSomeData( self ):
+    def get_some_data(self):
         
         data = self._controller.read( 'migration_get_pairs', self._database_temp_job_name, self._left_tag_filter, self._right_tag_filter )
         
@@ -790,10 +750,7 @@ class MigrationSourceTagServicePairs( MigrationSource ):
             
         
         return data
-        
     
-    def Prepare( self ):
+    def prepare(self):
         
         self._controller.write_synchronous( 'migration_start_pairs_job', self._database_temp_job_name, self._tag_service_key, self._content_type, self._content_statuses )
-        
-    
