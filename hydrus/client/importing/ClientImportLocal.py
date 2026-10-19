@@ -1572,14 +1572,14 @@ class ImportFoldersManager( ClientDaemons.ManagerWithMainLoop ):
         return max( HydrusTime.time_until( next_work_time ), 1 )
         
     
-    def GetName( self ) -> str:
+    def get_name( self ) -> str:
         
         return 'import folders'
         
     
-    def _DoSingleLoop( self ):
+    def _do_single_loop( self ):
         
-        self._CheckShutdown()
+        self._check_shutdown()
         
         self._controller.wait_until_view_free()
         
@@ -1627,6 +1627,6 @@ class ImportFoldersManager( ClientDaemons.ManagerWithMainLoop ):
             self._import_folder_names_to_next_work_time_cache = {}
             
         
-        self.Wake()
+        self.wake()
         
     

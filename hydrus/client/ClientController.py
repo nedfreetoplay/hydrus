@@ -291,7 +291,7 @@ class Controller(HydrusController.HydrusController):
     
     def _report_shutdown_managers_status(self):
         
-        names = sorted( ( manager.GetName() for manager in self._managers_with_mainloops if not manager.IsShutdown() ) )
+        names = sorted( ( manager.get_name() for manager in self._managers_with_mainloops if not manager.is_shutdown() ) )
         
         self.frame_splash_status.SetSubtext( ', '.join( names ) )
     
@@ -346,14 +346,14 @@ class Controller(HydrusController.HydrusController):
         
         for manager in self._managers_with_mainloops:
             
-            manager.Shutdown()
+            manager.shutdown()
             
         
         if not self._doing_fast_exit:
             
             started = HydrusTime.get_now()
             
-            while False in ( manager.IsShutdown() for manager in self._managers_with_mainloops ):
+            while False in ( manager.is_shutdown() for manager in self._managers_with_mainloops ):
                 
                 self._report_shutdown_managers_status()
                 
@@ -1412,7 +1412,7 @@ class Controller(HydrusController.HydrusController):
         
         self._managers_with_mainloops.append( self.quick_download_manager )
         
-        self.call_to_thread_long_running( self.quick_download_manager.MainLoop )
+        self.call_to_thread_long_running( self.quick_download_manager.main_loop )
         
         #
         
@@ -1443,7 +1443,7 @@ class Controller(HydrusController.HydrusController):
         
         self._managers_with_mainloops.append( self.tag_display_maintenance_manager )
         
-        self.tag_display_maintenance_manager.Start()
+        self.tag_display_maintenance_manager.start()
         
         from hydrus.client.duplicates import ClientPotentialDuplicatesManager
         
@@ -1451,7 +1451,7 @@ class Controller(HydrusController.HydrusController):
         
         self._managers_with_mainloops.append( self.potential_duplicates_manager )
         
-        self.potential_duplicates_manager.Start()
+        self.potential_duplicates_manager.start()
         
         #
         
@@ -1796,7 +1796,7 @@ class Controller(HydrusController.HydrusController):
         job.ShouldDelayOnWakeup( True )
         self._daemon_jobs[ 'import_folders' ] = job
         '''
-        job = self.call_repeating( 5.0, 180.0, ClientDaemons.DAEMONCheckExportFolders )
+        job = self.call_repeating( 5.0, 180.0, ClientDaemons.daemon_check_export_folders )
         job.wake_on_pub_sub( 'notify_restart_export_folders_daemon' )
         job.wake_on_pub_sub( 'notify_new_export_folders' )
         job.should_delay_on_wakeup( True )
@@ -1818,12 +1818,12 @@ class Controller(HydrusController.HydrusController):
         job.should_delay_on_wakeup( True )
         self._daemon_jobs[ 'maintain_hashed_serialisables' ] = job
         
-        self.files_maintenance_manager.Start()
-        self.database_maintenance_manager.Start()
-        self.duplicates_auto_resolution_manager.Start()
-        self.import_folders_manager.Start()
-        self.trash_maintenance_manager.Start()
-        self.subscriptions_manager.Start()
+        self.files_maintenance_manager.start()
+        self.database_maintenance_manager.start()
+        self.duplicates_auto_resolution_manager.start()
+        self.import_folders_manager.start()
+        self.trash_maintenance_manager.start()
+        self.subscriptions_manager.start()
     
     def reset_idle_timer_from_client_api(self):
         

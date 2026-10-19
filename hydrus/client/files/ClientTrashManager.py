@@ -18,14 +18,14 @@ class TrashMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         self._controller.sub( self, 'NotifyFileDeleted', 'notify_file_deleted' )
         
     
-    def _DoSingleLoop( self ):
+    def _do_single_loop( self ):
         
         still_work_to_do = False
         wait_period = 600
         
         with self._lock:
             
-            self._CheckShutdown()
+            self._check_shutdown()
             
         
         controller = CG.client_controller
@@ -98,7 +98,7 @@ class TrashMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         self._wake_from_idle_sleep_event.clear()
         
     
-    def GetName( self ) -> str:
+    def get_name( self ) -> str:
         
         return 'trash maintenance'
         

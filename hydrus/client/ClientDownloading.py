@@ -106,19 +106,19 @@ class QuickDownloadManager( ClientDaemons.ManagerWithMainLoop ):
             self._pending_hashes.update( hashes )
             
         
-        self.Wake()
+        self.wake()
         
     
-    def GetName( self ) -> str:
+    def get_name( self ) -> str:
         
         return 'quick downloader'
         
     
-    def _DoSingleLoop( self ):
+    def _do_single_loop( self ):
         
         with self._lock:
             
-            self._CheckShutdown()
+            self._check_shutdown()
             
             if len( self._pending_hashes ) > 0:
                 

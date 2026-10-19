@@ -9,7 +9,7 @@ from hydrus.core.processes import HydrusThreading
 
 from hydrus.client import ClientGlobals as CG
 
-def DAEMONCheckExportFolders():
+def daemon_check_export_folders():
     
     controller = CG.client_controller
     
@@ -36,13 +36,11 @@ def DAEMONCheckExportFolders():
         finally:
             
             HG.export_folders_running = False
-            
-        
-    
 
-class ManagerWithMainLoop( object ):
+
+class ManagerWithMainLoop:
     
-    def __init__( self, controller: "CG.ClientController.Controller", pre_loop_wait_time: int ):
+    def __init__(self, controller: "CG.ClientController.Controller", pre_loop_wait_time: int):
         
         # TODO: move work_time/rest_time into this superclass
         # maybe some methods that can be overridden to get current rest time ratio and stuff in the subclasses
@@ -73,32 +71,26 @@ class ManagerWithMainLoop( object ):
         
         self._controller.sub( self, 'Shutdown', 'shutdown' )
         self._controller.sub( self, 'Wake', 'wake_daemons' )
-        
     
-    def __str__( self ):
+    def __str__(self):
         
-        return f'MainLoop: {self.GetName()}'
-        
+        return f'MainLoop: {self.get_name()}'
     
-    def _CheckShutdown( self ):
+    def _check_shutdown(self):
         
         if HydrusThreading.is_thread_shutting_down() or self._shutdown or self._serious_error_encountered:
             
             raise HydrusExceptions.ShutdownException()
-            
-        
     
-    def _DoPostMainLoopShutdown( self ):
+    def _do_post_main_loop_shutdown(self):
         
         pass
-        
     
-    def _DoSingleLoop( self ):
+    def _do_single_loop(self):
         
         raise NotImplementedError()
-        
     
-    def DoPreMainLoopWait( self ):
+    def do_pre_main_loop_wait(self):
         
         with self._lock:
             
@@ -110,7 +102,7 @@ class ManagerWithMainLoop( object ):
             
             with self._lock:
                 
-                self._CheckShutdown()
+                self._check_shutdown()
                 
             
             self._wake_from_idle_sleep_event.wait( 1 )
@@ -118,24 +110,20 @@ class ManagerWithMainLoop( object ):
             if self._wake_from_idle_sleep_event.is_set():
                 
                 break
-                
-            
-        
     
-    def GetName( self ) -> str:
+    def get_name(self) -> str:
         
         raise NotImplementedError()
-        
     
-    def MainLoop( self ):
+    def main_loop(self):
         
         try:
             
-            self.DoPreMainLoopWait()
+            self.do_pre_main_loop_wait()
             
             while True:
                 
-                self._DoSingleLoop()
+                self._do_single_loop()
                 
             
             # ok I moved from DoMainLoop to DoSingleLoop. now we can pull common parts out no here
@@ -163,40 +151,32 @@ class ManagerWithMainLoop( object ):
                 HydrusData.debug_print( f'MainLoop Manager "{self}" is shut down!' )
                 
             
-            self._DoPostMainLoopShutdown()
+            self._do_post_main_loop_shutdown()
             
             self._mainloop_is_finished = True
-            
-        
     
-    def IsShutdown( self ):
+    def is_shutdown(self):
         
         return self._mainloop_is_finished
-        
     
-    def Shutdown( self ):
+    def shutdown(self):
         
         with self._lock:
             
             self._shutdown = True
             
         
-        self.Wake()
-        
+        self.wake()
     
-    def Start( self ):
+    def start(self):
         
-        self._controller.call_to_thread_long_running( self.MainLoop )
-        
+        self._controller.call_to_thread_long_running( self.main_loop )
     
-    def Wake( self ):
+    def wake(self):
         
         self._wake_from_work_sleep_event.set()
         self._wake_from_idle_sleep_event.set()
-        
     
-    def WakeIfNotWorking( self ):
+    def wake_if_not_working(self):
         
         self._wake_from_idle_sleep_event.set()
-        
-    

@@ -74,11 +74,11 @@ class PotentialDuplicatesMaintenanceManager( ClientDaemons.ManagerWithMainLoop )
         CG.client_controller.sub( self, 'WakeIfNotWorking', 'notify_file_potential_search_reset' )
         
     
-    def _DoSingleLoop( self ):
+    def _do_single_loop( self ):
         
         with self._lock:
             
-            self._CheckShutdown()
+            self._check_shutdown()
             
         
         self._controller.wait_until_view_free()
@@ -157,7 +157,7 @@ class PotentialDuplicatesMaintenanceManager( ClientDaemons.ManagerWithMainLoop )
         
         with self._lock:
             
-            self._CheckShutdown()
+            self._check_shutdown()
             
         
         wake_event.wait( wait_time )
@@ -240,7 +240,7 @@ class PotentialDuplicatesMaintenanceManager( ClientDaemons.ManagerWithMainLoop )
         return there_is_stuff_to_search
         
     
-    def GetName( self ) -> str:
+    def get_name( self ) -> str:
         
         return 'potential duplicates search'
         
@@ -266,6 +266,6 @@ class PotentialDuplicatesMaintenanceManager( ClientDaemons.ManagerWithMainLoop )
             self._work_hard.clear()
             
         
-        self.Wake()
+        self.wake()
         
     

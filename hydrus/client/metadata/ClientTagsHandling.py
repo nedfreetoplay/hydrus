@@ -532,19 +532,19 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         self._controller.pub( 'notify_new_tag_display_sync_status', service_key )
         
-        self.Wake()
+        self.wake()
         
     
-    def GetName( self ) -> str:
+    def get_name( self ) -> str:
         
         return 'tag display sync'
         
     
-    def _DoSingleLoop( self ):
+    def _do_single_loop( self ):
         
         with self._lock:
             
-            self._CheckShutdown()
+            self._check_shutdown()
             
         
         self._controller.wait_until_view_free()
@@ -590,7 +590,7 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         with self._lock:
             
-            self._CheckShutdown()
+            self._check_shutdown()
             
         
         wake_event.wait( wait_time )
@@ -615,7 +615,7 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         self._new_data_event.set()
         
-        self.Wake()
+        self.wake()
         
     
     def SyncFasterNow( self ) -> bool:
@@ -640,7 +640,7 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             self._controller.pub( 'notify_new_tag_display_sync_status', service_key )
             
         
-        self.Wake()
+        self.wake()
         
         return True
         

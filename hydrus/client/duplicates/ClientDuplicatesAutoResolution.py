@@ -1326,11 +1326,11 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
         return True
         
     
-    def _DoSingleLoop( self ):
+    def _do_single_loop( self ):
         
         with self._lock:
             
-            self._CheckShutdown()
+            self._check_shutdown()
             
             able_to_work = self._AbleToWork()
             
@@ -1648,7 +1648,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
         return self._edit_work_lock
         
     
-    def GetName( self ) -> str:
+    def get_name( self ) -> str:
         
         return 'duplicates auto-resolution'
         
@@ -1763,6 +1763,6 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
                 
             
         
-        self.Wake()
+        self.wake()
         
     

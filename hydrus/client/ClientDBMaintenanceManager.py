@@ -98,10 +98,10 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         self._controller.pub( 'notify_deferred_delete_database_maintenance_state_change' )
         
-        self.Wake()
+        self.wake()
         
     
-    def GetName( self ) -> str:
+    def get_name( self ) -> str:
         
         return 'db maintenance'
         
@@ -114,13 +114,13 @@ class DatabaseMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
         
     
-    def _DoSingleLoop( self ):
+    def _do_single_loop( self ):
         
         still_work_to_do = False
         
         with self._lock:
             
-            self._CheckShutdown()
+            self._check_shutdown()
             
         
         self._controller.wait_until_view_free()

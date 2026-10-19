@@ -1379,12 +1379,12 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
         
     
-    def GetName( self ) -> str:
+    def get_name( self ) -> str:
         
         return 'file maintenance'
         
     
-    def _DoSingleLoop( self ):
+    def _do_single_loop( self ):
         
         # TODO: locking on CheckShutdown is lax, let's be good and smooth it all out
         
@@ -1392,7 +1392,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             while True:
                 
-                self._CheckShutdown()
+                self._check_shutdown()
                 
                 if self._AbleToDoBackgroundMaintenance() or self._reset_background_event.is_set():
                     
@@ -1417,7 +1417,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                 
             
         
-        self._CheckShutdown()
+        self._check_shutdown()
         
         did_work = False
         
@@ -1467,7 +1467,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                         self._controller.pub( 'notify_files_maintenance_done' )
                         
                     
-                    self._CheckShutdown()
+                    self._check_shutdown()
                     
                 finally:
                     
@@ -1571,7 +1571,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             self._controller.write( 'file_maintenance_add_jobs_hashes', hashes, job_type, time_can_start )
             
         
-        self.WakeIfNotWorking()
+        self.wake_if_not_working()
         
     
     def ScheduleJobHashIds( self, hash_ids, job_type, time_can_start = 0 ):
@@ -1581,6 +1581,6 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             self._controller.write( 'file_maintenance_add_jobs', hash_ids, job_type, time_can_start )
             
         
-        self.WakeIfNotWorking()
+        self.wake_if_not_working()
         
     

@@ -91,7 +91,7 @@ class TestDaemons( unittest.TestCase ):
                     # noinspection PyUnresolvedReferences
                     with mock.patch.object( TG.test_controller.client_files_manager, 'GetFilePath', return_value = fake_file_path ) as client_files_mock_object:
                         
-                        ClientDaemons.DAEMONCheckExportFolders()
+                        ClientDaemons.daemon_check_export_folders()
                         
                         time.sleep( 3 )
                         
@@ -225,9 +225,9 @@ class TestDaemons( unittest.TestCase ):
                     
                     manager = ClientImportLocal.ImportFoldersManager( TG.test_controller )
                     
-                    manager.Start()
+                    manager.start()
                     
-                    manager.Wake()
+                    manager.wake()
                     
                     time.sleep( 3 )
                     
@@ -263,7 +263,7 @@ class TestDaemons( unittest.TestCase ):
                         
                     finally:
                         
-                        manager.Shutdown()
+                        manager.shutdown()
                         
                     
                 

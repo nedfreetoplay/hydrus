@@ -2085,7 +2085,7 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
             
         
     
-    def GetName( self ) -> str:
+    def get_name( self ) -> str:
         
         return 'subscriptions'
         
@@ -2098,11 +2098,11 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
             
         
     
-    def _DoSingleLoop( self ):
+    def _do_single_loop( self ):
         
         with self._lock:
             
-            self._CheckShutdown()
+            self._check_shutdown()
             
             subscription = self._GetSubscriptionReadyToGo()
             
@@ -2128,7 +2128,7 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
         self._wake_from_idle_sleep_event.clear()
         
     
-    def _DoPostMainLoopShutdown( self ):
+    def _do_post_main_loop_shutdown( self ):
         
         self.PauseSubscriptionsForEditing()
         
@@ -2187,7 +2187,7 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
                 
             
         
-        self.Wake()
+        self.wake()
         
     
     def ShowSnapshot( self ):
@@ -2214,11 +2214,11 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
             
         
     
-    def Shutdown( self ):
+    def shutdown( self ):
         
         self.PauseSubscriptionsForEditing()
         
-        super().Shutdown()
+        super().shutdown()
         
     
     def SubscriptionsArePausedForEditing( self ):
