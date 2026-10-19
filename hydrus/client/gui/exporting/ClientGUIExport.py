@@ -78,18 +78,18 @@ class EditExportFoldersPanel( ClientGUIScrolledPanels.EditPanel ):
         
         new_options = CG.client_controller.new_options
         
-        phrase = new_options.GetString( 'export_phrase' )
+        phrase = new_options.get_string( 'export_phrase' )
         
         name = 'export folder'
         path = ''
         export_type = HC.EXPORT_FOLDER_TYPE_REGULAR
         delete_from_client_after_export = False
         
-        default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+        default_location_context = CG.client_controller.new_options.get_default_local_location_context()
         
         file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = default_location_context )
         
-        metadata_routers = new_options.GetDefaultExportFilesMetadataRouters()
+        metadata_routers = new_options.get_default_export_files_metadata_routers()
         
         if len( metadata_routers ) > 0:
             
@@ -645,7 +645,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
             self._export_symlinks.setToolTip( ClientGUIFunctions.WrapToolTip( 'You probably need to run hydrus as Admin for this to work on Windows.' ) )
             
         
-        metadata_routers = new_options.GetDefaultExportFilesMetadataRouters()
+        metadata_routers = new_options.get_default_export_files_metadata_routers()
         allowed_importer_classes = [ ClientMetadataMigrationImporters.SingleFileMetadataImporterMediaTags, ClientMetadataMigrationImporters.SingleFileMetadataImporterMediaNotes, ClientMetadataMigrationImporters.SingleFileMetadataImporterMediaURLs, ClientMetadataMigrationImporters.SingleFileMetadataImporterMediaTimestamps ]
         allowed_exporter_classes = [ ClientMetadataMigrationExporters.SingleFileMetadataExporterTXT, ClientMetadataMigrationExporters.SingleFileMetadataExporterJSON ]
         
@@ -667,13 +667,13 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
             self._directory_picker.SetPath( export_path )
             
         
-        phrase = new_options.GetString( 'export_phrase' )
+        phrase = new_options.get_string( 'export_phrase' )
         
         self._pattern.setText( phrase )
         
         self._paths.SetData( flat_media )
         
-        self._delete_files_after_export.setChecked( CG.client_controller.new_options.GetBoolean( 'delete_files_after_export' ) )
+        self._delete_files_after_export.setChecked( CG.client_controller.new_options.get_boolean( 'delete_files_after_export' ) )
         self._delete_files_after_export.clicked.connect( self.EventDeleteFilesChanged )
         
         #
@@ -851,7 +851,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         pattern = self._pattern.text()
         
-        CG.client_controller.new_options.SetString( 'export_phrase', pattern )
+        CG.client_controller.new_options.set_string( 'export_phrase', pattern )
         
         try:
             
@@ -1055,7 +1055,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         metadata_routers = self._metadata_routers_button.GetValue()
         
-        CG.client_controller.new_options.SetDefaultExportFilesMetadataRouters( metadata_routers )
+        CG.client_controller.new_options.set_default_export_files_metadata_routers( metadata_routers )
         
     
     def _RefreshPaths( self ):
@@ -1071,7 +1071,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
         self._last_phrase_used = pattern
         self._last_dir_used = dir_path
         
-        CG.client_controller.new_options.SetString( 'export_phrase', pattern )
+        CG.client_controller.new_options.set_string( 'export_phrase', pattern )
         
         self._existing_filenames = set()
         self._media_to_paths = {}
@@ -1100,7 +1100,7 @@ class ReviewExportFilesPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         value = self._delete_files_after_export.isChecked()
         
-        CG.client_controller.new_options.SetBoolean( 'delete_files_after_export', value )
+        CG.client_controller.new_options.set_boolean( 'delete_files_after_export', value )
         
         if value:
             

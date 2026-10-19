@@ -102,7 +102,7 @@ class MyQGraphicsView( QW.QGraphicsView ):
         
         super().__init__( parent )
         
-        if CG.client_controller.new_options.GetBoolean( 'qt_media_player_opengl_test' ):
+        if CG.client_controller.new_options.get_boolean( 'qt_media_player_opengl_test' ):
             
             self.setViewport( QW.QOpenGLWidget( self ) )
             
@@ -212,7 +212,7 @@ class QtMediaPlayer( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
     
     def _EnsureAudioOutputIsGood( self ):
         
-        if CG.client_controller.new_options.GetBoolean( 'qt_media_player_no_audio_device' ):
+        if CG.client_controller.new_options.get_boolean( 'qt_media_player_no_audio_device' ):
             
             self._my_audio_output = None
             
@@ -228,7 +228,7 @@ class QtMediaPlayer( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             current_device = None
             
         
-        qt_media_player_preferred_audio_device_id_hex = CG.client_controller.new_options.GetNoneableString( 'qt_media_player_preferred_audio_device_id_hex' )
+        qt_media_player_preferred_audio_device_id_hex = CG.client_controller.new_options.get_noneable_string( 'qt_media_player_preferred_audio_device_id_hex' )
         
         if qt_media_player_preferred_audio_device_id_hex is not None:
             
@@ -239,7 +239,7 @@ class QtMediaPlayer( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             qt_media_player_preferred_audio_device_id = None
             
         
-        qt_media_player_preferred_audio_device_name = CG.client_controller.new_options.GetNoneableString( 'qt_media_player_preferred_audio_device_name' )
+        qt_media_player_preferred_audio_device_name = CG.client_controller.new_options.get_noneable_string( 'qt_media_player_preferred_audio_device_name' )
         
         if qt_media_player_preferred_audio_device_id is not None and qt_media_player_preferred_audio_device_name is not None:
             
@@ -362,7 +362,7 @@ class QtMediaPlayer( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         if self._background_colour_generator.CanDoTransparencyCheckerboard() and self._media is not None and self._media.GetFileInfoManager().has_transparency:
             
-            if CG.client_controller.new_options.GetBoolean( 'draw_transparency_checkerboard_as_greenscreen' ):
+            if CG.client_controller.new_options.get_boolean( 'draw_transparency_checkerboard_as_greenscreen' ):
                 
                 brush = ClientGUITransparency.MakeGreenscreenBrush()
                 
@@ -700,7 +700,7 @@ class QtMediaPlayer( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         self._stop_for_slideshow = False
         
-        if CG.client_controller.new_options.GetBoolean( 'qt_media_player_null_audio_on_silent_media' ):
+        if CG.client_controller.new_options.get_boolean( 'qt_media_player_null_audio_on_silent_media' ):
             
             has_audio = self._media.HasAudio()
             

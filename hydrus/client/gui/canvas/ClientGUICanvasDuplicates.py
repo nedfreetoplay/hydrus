@@ -307,7 +307,7 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
         
         content_update_packages = []
         
-        if CG.client_controller.new_options.GetBoolean( 'delete_lock_reinbox_deletees_after_duplicate_filter' ):
+        if CG.client_controller.new_options.get_boolean( 'delete_lock_reinbox_deletees_after_duplicate_filter' ):
             
             content_update_package = ClientContentUpdates.ContentUpdatePackage()
             
@@ -373,9 +373,9 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
         
         new_options = CG.client_controller.new_options
         
-        if duplicate_type in [ HC.DUPLICATE_BETTER, HC.DUPLICATE_SAME_QUALITY ] or ( new_options.GetBoolean( 'advanced_mode' ) and duplicate_type == HC.DUPLICATE_ALTERNATE ):
+        if duplicate_type in [ HC.DUPLICATE_BETTER, HC.DUPLICATE_SAME_QUALITY ] or ( new_options.get_boolean( 'advanced_mode' ) and duplicate_type == HC.DUPLICATE_ALTERNATE ):
             
-            duplicate_content_merge_options = new_options.GetDuplicateContentMergeOptions( duplicate_type )
+            duplicate_content_merge_options = new_options.get_duplicate_content_merge_options( duplicate_type )
             
             with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit duplicate merge options' ) as dlg_2:
                 
@@ -760,7 +760,7 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
         
         media_results_to_prefetch = [ other_media.GetMediaResult() ]
         
-        duplicate_filter_prefetch_num_pairs = CG.client_controller.new_options.GetInteger( 'duplicate_filter_prefetch_num_pairs' )
+        duplicate_filter_prefetch_num_pairs = CG.client_controller.new_options.get_integer( 'duplicate_filter_prefetch_num_pairs' )
         
         if duplicate_filter_prefetch_num_pairs > 0:
             
@@ -814,11 +814,11 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
         
         if duplicate_content_merge_options is None:
             
-            if duplicate_type in [ HC.DUPLICATE_BETTER, HC.DUPLICATE_SAME_QUALITY ] or ( CG.client_controller.new_options.GetBoolean( 'advanced_mode' ) and duplicate_type == HC.DUPLICATE_ALTERNATE ):
+            if duplicate_type in [ HC.DUPLICATE_BETTER, HC.DUPLICATE_SAME_QUALITY ] or ( CG.client_controller.new_options.get_boolean( 'advanced_mode' ) and duplicate_type == HC.DUPLICATE_ALTERNATE ):
                 
                 new_options = CG.client_controller.new_options
                 
-                duplicate_content_merge_options = new_options.GetDuplicateContentMergeOptions( duplicate_type )
+                duplicate_content_merge_options = new_options.get_duplicate_content_merge_options( duplicate_type )
                 
             else:
                 
@@ -1058,7 +1058,7 @@ class CanvasFilterDuplicates( ClientGUICanvas.CanvasWithHovers ):
                     
                     just_do_it = False
                     
-                    just_do_it_threshold = CG.client_controller.new_options.GetNoneableInteger( 'duplicate_filter_auto_commit_batch_size' )
+                    just_do_it_threshold = CG.client_controller.new_options.get_noneable_integer( 'duplicate_filter_auto_commit_batch_size' )
                     
                     if just_do_it_threshold is not None:
                         

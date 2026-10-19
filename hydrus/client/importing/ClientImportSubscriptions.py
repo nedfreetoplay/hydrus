@@ -49,7 +49,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
         
         new_options = CG.client_controller.new_options
         
-        self._checker_options = new_options.GetDefaultSubscriptionCheckerOptions()
+        self._checker_options = new_options.get_default_subscription_checker_options()
         
         if HC.options[ 'gallery_file_limit' ] is None:
             
@@ -85,7 +85,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
     
     def _CanDoWorkNow( self ):
         
-        p1 = not ( self._paused or CG.client_controller.new_options.GetBoolean( 'pause_subs_sync' ) or CG.client_controller.new_options.GetBoolean( 'pause_all_new_network_traffic' ) or CG.client_controller.subscriptions_manager.SubscriptionsArePausedForEditing() )
+        p1 = not ( self._paused or CG.client_controller.new_options.get_boolean( 'pause_subs_sync' ) or CG.client_controller.new_options.get_boolean( 'pause_all_new_network_traffic' ) or CG.client_controller.subscriptions_manager.SubscriptionsArePausedForEditing() )
         p2 = not ( HG.started_shutdown or self._stop_work_for_shutdown )
         p3 = self._NoDelays()
         
@@ -93,7 +93,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
             
             message = 'Subscription "{}" CanDoWork check.'.format( self._name )
             message += '\n'
-            message += 'Paused/Global/Network/Dialog Pause: {}/{}/{}/{}'.format( self._paused, CG.client_controller.new_options.GetBoolean( 'pause_subs_sync' ), CG.client_controller.new_options.GetBoolean( 'pause_all_new_network_traffic' ), CG.client_controller.subscriptions_manager.SubscriptionsArePausedForEditing() )
+            message += 'Paused/Global/Network/Dialog Pause: {}/{}/{}/{}'.format( self._paused, CG.client_controller.new_options.get_boolean( 'pause_subs_sync' ), CG.client_controller.new_options.get_boolean( 'pause_all_new_network_traffic' ), CG.client_controller.subscriptions_manager.SubscriptionsArePausedForEditing() )
             message += '\n'
             message += 'Started/Sub shutdown: {}/{}'.format( HG.started_shutdown, self._stop_work_for_shutdown )
             message += '\n'
@@ -145,7 +145,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
         
         query_headers = [ query_header for query_header in self._query_headers if query_header.IsCapableOfWorking() ]
         
-        if CG.client_controller.new_options.GetBoolean( 'process_subs_in_random_order' ):
+        if CG.client_controller.new_options.get_boolean( 'process_subs_in_random_order' ):
             
             random.shuffle( query_headers )
             
@@ -1285,7 +1285,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                         time.sleep( 5 )
                         
                     
-                    error_count_threshold = CG.client_controller.new_options.GetNoneableInteger( 'subscription_file_error_cancel_threshold' )
+                    error_count_threshold = CG.client_controller.new_options.get_noneable_integer( 'subscription_file_error_cancel_threshold' )
                     
                     if error_count_threshold is not None and self._file_error_count >= error_count_threshold:
                         
@@ -1797,7 +1797,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                 
             except HydrusExceptions.NetworkException as e:
                 
-                delay = CG.client_controller.new_options.GetInteger( 'subscription_network_error_delay' )
+                delay = CG.client_controller.new_options.get_integer( 'subscription_network_error_delay' )
                 
                 HydrusData.safe_print( f'The subscription "{self._name}" encountered an exception when trying to sync:' )
                 
@@ -1818,7 +1818,7 @@ class Subscription( HydrusSerialisable.SerialisableBaseNamed ):
                 HydrusData.show_text( f'The subscription "{self._name}" encountered an exception when trying to sync:' )
                 HydrusData.show_exception( e )
                 
-                delay = CG.client_controller.new_options.GetInteger( 'subscription_other_error_delay' )
+                delay = CG.client_controller.new_options.get_integer( 'subscription_other_error_delay' )
                 
                 self._DelayWork( delay, 'error: ' + str( e ) )
                 
@@ -1985,8 +1985,8 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _GetSubscriptionReadyToGo( self ):
         
-        p1 = CG.client_controller.new_options.GetBoolean( 'pause_subs_sync' ) or self._pause_subscriptions_for_editing
-        p2 = CG.client_controller.new_options.GetBoolean( 'pause_all_new_network_traffic' )
+        p1 = CG.client_controller.new_options.get_boolean( 'pause_subs_sync' ) or self._pause_subscriptions_for_editing
+        p2 = CG.client_controller.new_options.get_boolean( 'pause_all_new_network_traffic' )
         p3 = HG.started_shutdown
         
         if p1 or p2 or p3:
@@ -1994,7 +1994,7 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
             return None
             
         
-        max_simultaneous_subscriptions = CG.client_controller.new_options.GetInteger( 'max_simultaneous_subscriptions' )
+        max_simultaneous_subscriptions = CG.client_controller.new_options.get_integer( 'max_simultaneous_subscriptions' )
         
         if len( self._names_to_running_subscription_info ) >= max_simultaneous_subscriptions:
             
@@ -2019,7 +2019,7 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
         
         possible_names = list( possible_names )
         
-        if CG.client_controller.new_options.GetBoolean( 'process_subs_in_random_order' ):
+        if CG.client_controller.new_options.get_boolean( 'process_subs_in_random_order' ):
             
             subscription_name = random.choice( possible_names )
             
@@ -2066,8 +2066,8 @@ class SubscriptionsManager( ClientDaemons.ManagerWithMainLoop ):
                 
             else:
                 
-                p1 = CG.client_controller.new_options.GetBoolean( 'pause_subs_sync' ) or self._pause_subscriptions_for_editing
-                p2 = CG.client_controller.new_options.GetBoolean( 'pause_all_new_network_traffic' )
+                p1 = CG.client_controller.new_options.get_boolean( 'pause_subs_sync' ) or self._pause_subscriptions_for_editing
+                p2 = CG.client_controller.new_options.get_boolean( 'pause_all_new_network_traffic' )
                 
                 stopped_because_pause = p1 or p2
                 

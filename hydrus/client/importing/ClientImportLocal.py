@@ -782,7 +782,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             
             file_seed = self._file_seed_cache.GetNextFileSeed( CC.STATUS_UNKNOWN )
             
-            p1 = CG.client_controller.new_options.GetBoolean( 'pause_import_folders_sync' ) or self._paused
+            p1 = CG.client_controller.new_options.get_boolean( 'pause_import_folders_sync' ) or self._paused
             p2 = HydrusThreading.is_thread_shutting_down()
             p3 = job_status.IsCancelled()
             
@@ -1255,7 +1255,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
             return
             
         
-        if CG.client_controller.new_options.GetBoolean( 'pause_import_folders_sync' ) or self._paused:
+        if CG.client_controller.new_options.get_boolean( 'pause_import_folders_sync' ) or self._paused:
             
             return
             
@@ -1463,7 +1463,7 @@ class ImportFoldersManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _DoWork( self ):
         
-        if self._controller.new_options.GetBoolean( 'pause_import_folders_sync' ):
+        if self._controller.new_options.get_boolean( 'pause_import_folders_sync' ):
             
             return
             
@@ -1552,7 +1552,7 @@ class ImportFoldersManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _GetTimeUntilNextWork( self ):
         
-        if self._controller.new_options.GetBoolean( 'pause_import_folders_sync' ):
+        if self._controller.new_options.get_boolean( 'pause_import_folders_sync' ):
             
             return 1800
             

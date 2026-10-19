@@ -485,7 +485,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
         
         new_options = CG.client_controller.new_options
         
-        self._checker_options = new_options.GetDefaultSubscriptionCheckerOptions()
+        self._checker_options = new_options.get_default_subscription_checker_options()
         
         if HC.options[ 'gallery_file_limit' ] is None:
             
@@ -516,7 +516,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
     
     def _CanDoWorkNow( self ):
         
-        p1 = not ( self._paused or CG.client_controller.new_options.GetBoolean( 'pause_subs_sync' ) or CG.client_controller.new_options.GetBoolean( 'pause_all_new_network_traffic' ) )
+        p1 = not ( self._paused or CG.client_controller.new_options.get_boolean( 'pause_subs_sync' ) or CG.client_controller.new_options.get_boolean( 'pause_all_new_network_traffic' ) )
         p2 = not ( HG.started_shutdown or HydrusThreading.is_thread_shutting_down() )
         p3 = self._NoDelays()
         
@@ -524,7 +524,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
             
             message = 'Subscription "{}" CanDoWork check.'.format( self._name )
             message += '\n'
-            message += 'Paused/Global/Network Pause: {}/{}/{}'.format( self._paused, CG.client_controller.new_options.GetBoolean( 'pause_subs_sync' ), CG.client_controller.new_options.GetBoolean( 'pause_all_new_network_traffic' ) )
+            message += 'Paused/Global/Network Pause: {}/{}/{}'.format( self._paused, CG.client_controller.new_options.get_boolean( 'pause_subs_sync' ), CG.client_controller.new_options.get_boolean( 'pause_all_new_network_traffic' ) )
             message += '\n'
             message += 'Started/Thread shutdown: {}/{}'.format( HG.started_shutdown, HydrusThreading.is_thread_shutting_down() )
             message += '\n'
@@ -570,7 +570,7 @@ class SubscriptionLegacy( HydrusSerialisable.SerialisableBaseNamed ):
         
         queries = list( self._queries )
         
-        if CG.client_controller.new_options.GetBoolean( 'process_subs_in_random_order' ):
+        if CG.client_controller.new_options.get_boolean( 'process_subs_in_random_order' ):
             
             random.shuffle( queries )
             

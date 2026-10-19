@@ -843,7 +843,7 @@ class MediaList( object ):
                         
                         user_says_remove_and_possibly_trashed_from_non_trash_local_view = HC.options[ 'remove_trashed_files' ] and possibly_trashed and not we_are_looking_at_trash
                         
-                        user_says_remove_and_moved_from_this_local_file_domain = CG.client_controller.new_options.GetBoolean( 'remove_local_domain_moved_files' ) and moved_from_this_domain_to_another
+                        user_says_remove_and_moved_from_this_local_file_domain = CG.client_controller.new_options.get_boolean( 'remove_local_domain_moved_files' ) and moved_from_this_domain_to_another
                         
                         if physically_deleted_and_local_view or user_says_remove_and_possibly_trashed_from_non_trash_local_view or deleted_from_repo_and_repo_view or user_says_remove_and_moved_from_this_local_file_domain:
                             
@@ -937,7 +937,7 @@ class MediaList( object ):
             
             if self._secondary_media_sort is None:
                 
-                secondary_sort = CG.client_controller.new_options.GetFallbackSort()
+                secondary_sort = CG.client_controller.new_options.get_fallback_sort()
                 
             else:
                 

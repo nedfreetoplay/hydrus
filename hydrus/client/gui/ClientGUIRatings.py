@@ -272,23 +272,23 @@ def GetIconSize( canvas_type, service_type = ClientGUICommon.HC.LOCAL_RATING_LIK
     
     if canvas_type in CC.CANVAS_MEDIA_VIEWER_TYPES:
         
-        rating_icon_size_px = CG.client_controller.new_options.GetFloat( 'media_viewer_rating_icon_size_px' )
-        rating_incdec_height_px = CG.client_controller.new_options.GetFloat( 'media_viewer_rating_incdec_height_px' )
+        rating_icon_size_px = CG.client_controller.new_options.get_float( 'media_viewer_rating_icon_size_px' )
+        rating_incdec_height_px = CG.client_controller.new_options.get_float( 'media_viewer_rating_incdec_height_px' )
         
     elif canvas_type == CC.CANVAS_PREVIEW:
         
-        rating_icon_size_px = CG.client_controller.new_options.GetFloat( 'preview_window_rating_icon_size_px' )
-        rating_incdec_height_px = CG.client_controller.new_options.GetFloat( 'preview_window_rating_incdec_height_px' )
+        rating_icon_size_px = CG.client_controller.new_options.get_float( 'preview_window_rating_icon_size_px' )
+        rating_incdec_height_px = CG.client_controller.new_options.get_float( 'preview_window_rating_incdec_height_px' )
         
     elif canvas_type == CC.CANVAS_DIALOG:
         
-        rating_icon_size_px = CG.client_controller.new_options.GetFloat( 'dialog_rating_icon_size_px' )
-        rating_incdec_height_px = CG.client_controller.new_options.GetFloat( 'dialog_rating_incdec_height_px' )
+        rating_icon_size_px = CG.client_controller.new_options.get_float( 'dialog_rating_icon_size_px' )
+        rating_incdec_height_px = CG.client_controller.new_options.get_float( 'dialog_rating_incdec_height_px' )
         
     else:
         
-        rating_icon_size_px = CG.client_controller.new_options.GetFloat( 'draw_thumbnail_rating_icon_size_px' )
-        rating_incdec_height_px = CG.client_controller.new_options.GetFloat( 'thumbnail_rating_incdec_height_px' )
+        rating_icon_size_px = CG.client_controller.new_options.get_float( 'draw_thumbnail_rating_icon_size_px' )
+        rating_incdec_height_px = CG.client_controller.new_options.get_float( 'thumbnail_rating_incdec_height_px' )
         
     
     if service_type == ClientGUICommon.HC.LOCAL_RATING_INCDEC:
@@ -1360,7 +1360,7 @@ class RatingPreviewServiceWrapper:
     
     def SetServiceTemplate( self, service_key: bytes ):
         
-        CG.client_controller.new_options.SetKey( 'options_ratings_panel_template_service_key' , service_key )
+        CG.client_controller.new_options.set_key( 'options_ratings_panel_template_service_key' , service_key )
         
         self._CloneColours( service_key )
         self._CloneShape( service_key )

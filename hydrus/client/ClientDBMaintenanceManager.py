@@ -26,7 +26,7 @@ class DatabaseMaintenanceManager(ClientDaemons.ManagerWithMainLoop):
         
         if CG.client_controller.currently_idle():
             
-            if not self._controller.new_options.GetBoolean( 'database_deferred_delete_maintenance_during_idle' ):
+            if not self._controller.new_options.get_boolean( 'database_deferred_delete_maintenance_during_idle' ):
                 
                 return False
                 
@@ -38,7 +38,7 @@ class DatabaseMaintenanceManager(ClientDaemons.ManagerWithMainLoop):
             
         else:
             
-            if not self._controller.new_options.GetBoolean( 'database_deferred_delete_maintenance_during_active' ):
+            if not self._controller.new_options.get_boolean( 'database_deferred_delete_maintenance_during_active' ):
                 
                 return False
                 
@@ -55,15 +55,15 @@ class DatabaseMaintenanceManager(ClientDaemons.ManagerWithMainLoop):
         
         if self._is_working_hard:
             
-            rest_ratio = CG.client_controller.new_options.GetInteger( 'deferred_table_delete_rest_percentage_work_hard' ) / 100
+            rest_ratio = CG.client_controller.new_options.get_integer( 'deferred_table_delete_rest_percentage_work_hard' ) / 100
             
         elif CG.client_controller.currently_idle():
             
-            rest_ratio = CG.client_controller.new_options.GetInteger( 'deferred_table_delete_rest_percentage_idle' ) / 100
+            rest_ratio = CG.client_controller.new_options.get_integer( 'deferred_table_delete_rest_percentage_idle' ) / 100
             
         else:
             
-            rest_ratio = CG.client_controller.new_options.GetInteger( 'deferred_table_delete_rest_percentage_normal' ) / 100
+            rest_ratio = CG.client_controller.new_options.get_integer( 'deferred_table_delete_rest_percentage_normal' ) / 100
             
         
         reasonable_work_period = min( 5 * expected_work_period, actual_work_period )
@@ -74,15 +74,15 @@ class DatabaseMaintenanceManager(ClientDaemons.ManagerWithMainLoop):
         
         if self._is_working_hard:
             
-            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'deferred_table_delete_work_time_ms_work_hard' ) )
+            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.get_integer( 'deferred_table_delete_work_time_ms_work_hard' ) )
             
         elif CG.client_controller.currently_idle():
             
-            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'deferred_table_delete_work_time_ms_idle' ) )
+            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.get_integer( 'deferred_table_delete_work_time_ms_idle' ) )
             
         else:
             
-            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'deferred_table_delete_work_time_ms_normal' ) )
+            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.get_integer( 'deferred_table_delete_work_time_ms_normal' ) )
     
     def flip_working_hard(self):
         

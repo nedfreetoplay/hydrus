@@ -37,7 +37,7 @@ class TrashMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             able_to_work = False
             
         
-        if not controller.currently_idle() and not controller.new_options.GetBoolean( 'maintain_trash_in_normal_time' ):
+        if not controller.currently_idle() and not controller.new_options.get_boolean( 'maintain_trash_in_normal_time' ):
             
             able_to_work = False
             

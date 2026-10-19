@@ -338,7 +338,7 @@ class Page( QW.QWidget ):
             self._sidebar_media_split.widget( 0 ).setParent( None )
             
         
-        alignment = CG.client_controller.new_options.GetInteger( 'page_sidebar_alignment' )
+        alignment = CG.client_controller.new_options.get_integer( 'page_sidebar_alignment' )
         
         if alignment == CC.DIRECTION_RIGHT:
             
@@ -521,7 +521,7 @@ class Page( QW.QWidget ):
                 
             
         
-        if not user_was_asked and CG.client_controller.new_options.GetBoolean( 'confirm_all_page_closes' ):
+        if not user_was_asked and CG.client_controller.new_options.get_boolean( 'confirm_all_page_closes' ):
             
             message = f'Close "{self.GetName()}"?'
             
@@ -1180,7 +1180,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
         
         self._child_notebooks = set()
         
-        direction = CG.client_controller.new_options.GetInteger( 'notebook_tab_alignment' )
+        direction = CG.client_controller.new_options.get_integer( 'notebook_tab_alignment' )
         
         self.setTabPosition( directions_for_notebook_tabs[ direction ] )
         
@@ -1308,7 +1308,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
                     
                     new_notebook = self.NewPagesNotebook()
                     
-                    if CG.client_controller.new_options.GetBoolean( 'rename_page_of_pages_on_pick_new' ):
+                    if CG.client_controller.new_options.get_boolean( 'rename_page_of_pages_on_pick_new' ):
                         
                         message = 'Enter the name for the new page of pages.'
                         
@@ -1406,7 +1406,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
         
         if we_are_closing_the_current_focus:
             
-            focus_goes_to = CG.client_controller.new_options.GetInteger( 'close_page_focus_goes' )
+            focus_goes_to = CG.client_controller.new_options.get_integer( 'close_page_focus_goes' )
             
             new_page_focus = None
             
@@ -1543,7 +1543,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
             
             self._ClosePages( [ page_index ], 'collapsing', polite = False )
             
-            default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+            default_location_context = CG.client_controller.new_options.get_default_local_location_context()
             
             self.NewPageQuery( default_location_context, initial_hashes = hashes, forced_insertion_index = page_index )
             
@@ -1579,7 +1579,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
         
         self._ClosePages( closees, 'collapsing', polite = False )
         
-        default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+        default_location_context = CG.client_controller.new_options.get_default_local_location_context()
         
         self.NewPageQuery( default_location_context, initial_hashes = hashes, forced_insertion_index = page_index )
         
@@ -1611,7 +1611,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
         
         new_options = CG.client_controller.new_options
         
-        new_page_goes = new_options.GetInteger( 'default_new_page_goes' )
+        new_page_goes = new_options.get_integer( 'default_new_page_goes' )
         
         current_index = self.currentIndex()
         
@@ -1789,11 +1789,11 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
         
         new_options = CG.client_controller.new_options
         
-        max_page_name_chars = new_options.GetInteger( 'max_page_name_chars' )
+        max_page_name_chars = new_options.get_integer( 'max_page_name_chars' )
         
-        page_file_count_display = new_options.GetInteger( 'page_file_count_display' )
+        page_file_count_display = new_options.get_integer( 'page_file_count_display' )
         
-        import_page_progress_display = new_options.GetBoolean( 'import_page_progress_display' )
+        import_page_progress_display = new_options.get_boolean( 'import_page_progress_display' )
         
         page: Page | PagesNotebook = self.widget( index )
         
@@ -1812,7 +1812,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
         
         page_name = HydrusText.elide_text( full_page_name, max_page_name_chars )
         
-        do_tooltip = len( page_name ) != len( full_page_name ) or CG.client_controller.new_options.GetBoolean( 'elide_page_tab_names' )
+        do_tooltip = len( page_name ) != len( full_page_name ) or CG.client_controller.new_options.get_boolean( 'elide_page_tab_names' )
         
         num_string = ''
         
@@ -1845,9 +1845,9 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
             page_name += f' ({num_string})'
             
         
-        if isinstance( page, PagesNotebook ) and CG.client_controller.new_options.GetBoolean( 'decorate_page_of_pages_tab_names' ):
+        if isinstance( page, PagesNotebook ) and CG.client_controller.new_options.get_boolean( 'decorate_page_of_pages_tab_names' ):
             
-            name_decorator = CG.client_controller.new_options.GetString( 'page_of_pages_decorator' )
+            name_decorator = CG.client_controller.new_options.get_string( 'page_of_pages_decorator' )
             
             page_name += name_decorator
             
@@ -1909,7 +1909,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
             
             self._MovePage( page, dest_notebook, 0 )
             
-            if CG.client_controller.new_options.GetBoolean( 'rename_page_of_pages_on_send' ):
+            if CG.client_controller.new_options.get_boolean( 'rename_page_of_pages_on_send' ):
                 
                 message = 'Enter the name for the new page of pages.'
                 
@@ -1954,7 +1954,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
                 self._MovePage( page, dest_notebook, 0 )
                 
             
-            if CG.client_controller.new_options.GetBoolean( 'rename_page_of_pages_on_send' ):
+            if CG.client_controller.new_options.get_boolean( 'rename_page_of_pages_on_send' ):
                 
                 message = 'Enter the name for the new page of pages.'
                 
@@ -2045,7 +2045,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
             
             click_over_page_of_pages = isinstance( page, PagesNotebook )
             
-            if CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+            if CG.client_controller.new_options.get_boolean( 'advanced_mode' ):
                 
                 label = 'page weight: {}'.format( HydrusNumbers.to_human_int( page.GetTotalWeight() ) )
                 
@@ -2391,7 +2391,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
     
     def _UpdateOptions( self ):
         
-        if CG.client_controller.new_options.GetBoolean( 'elide_page_tab_names' ):
+        if CG.client_controller.new_options.get_boolean( 'elide_page_tab_names' ):
             
             self.tabBar().setElideMode( QC.Qt.TextElideMode.ElideMiddle )
             
@@ -2400,11 +2400,11 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
             self.tabBar().setElideMode( QC.Qt.TextElideMode.ElideNone )
             
         
-        direction = CG.client_controller.new_options.GetInteger( 'notebook_tab_alignment' )
+        direction = CG.client_controller.new_options.get_integer( 'notebook_tab_alignment' )
         
         self.setTabPosition( directions_for_notebook_tabs[ direction ] )
         
-        tabs_are_hidden = CG.client_controller.new_options.GetBoolean( 'treeview_hides_tabs' ) and CG.client_controller.new_options.GetNoneableInteger( 'treeview_alignment' ) is not None
+        tabs_are_hidden = CG.client_controller.new_options.get_boolean( 'treeview_hides_tabs' ) and CG.client_controller.new_options.get_noneable_integer( 'treeview_alignment' ) is not None
         
         self.tabBar().setHidden( tabs_are_hidden )
         
@@ -2509,7 +2509,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
             ShowReasonsAndPagesConfirmationDialog( self, reasons_and_pages, message )
             
         
-        if not user_was_asked and CG.client_controller.new_options.GetBoolean( 'confirm_all_page_closes' ) and not for_session_close:
+        if not user_was_asked and CG.client_controller.new_options.get_boolean( 'confirm_all_page_closes' ) and not for_session_close:
             
             message = f'Close "{self.GetName()}"?'
             
@@ -2734,7 +2734,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
     
     def UpdateTabVisibility( self ):
         
-        tabs_are_hidden = CG.client_controller.new_options.GetBoolean( 'treeview_hides_tabs' ) and CG.client_controller.new_options.GetNoneableInteger( 'treeview_alignment' ) is not None
+        tabs_are_hidden = CG.client_controller.new_options.get_boolean( 'treeview_hides_tabs' ) and CG.client_controller.new_options.get_noneable_integer( 'treeview_alignment' ) is not None
         
         #
         
@@ -3645,7 +3645,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
         # in some unusual circumstances, this gets out of whack
         insertion_index = min( insertion_index, self.count() )
         
-        if CG.client_controller.new_options.GetBoolean( 'force_hide_page_signal_on_new_page' ):
+        if CG.client_controller.new_options.get_boolean( 'force_hide_page_signal_on_new_page' ):
             
             current_gui_page = CG.client_controller.gui.GetCurrentPage()
             
@@ -3752,7 +3752,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
         
         new_options = CG.client_controller.new_options
         
-        tag_service_key = new_options.GetKey( 'default_tag_service_search_page' )
+        tag_service_key = new_options.get_key( 'default_tag_service_search_page' )
         
         if not CG.client_controller.services_manager.ServiceExists( tag_service_key ):
             
@@ -3892,7 +3892,7 @@ class PagesNotebook( ClientGUIPagesTreeView.TabWidgetWithDnD ):
         
         if give_it_a_blank_page:
             
-            default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+            default_location_context = CG.client_controller.new_options.get_default_local_location_context()
             
             page.NewPageQuery( default_location_context )
             

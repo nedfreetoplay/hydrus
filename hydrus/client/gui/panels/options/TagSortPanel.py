@@ -34,7 +34,7 @@ class TagSortPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         #
         
-        self._user_namespace_group_by_sort.AddDatas( CG.client_controller.new_options.GetStringList( 'user_namespace_group_by_sort' ) )
+        self._user_namespace_group_by_sort.AddDatas( CG.client_controller.new_options.get_string_list( 'user_namespace_group_by_sort' ) )
         
         #
         

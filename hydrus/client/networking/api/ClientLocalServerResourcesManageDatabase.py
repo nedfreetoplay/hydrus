@@ -140,25 +140,25 @@ class HydrusResourceClientAPIRestrictedManageDatabaseGetClientOptions( HydrusRes
         new_options = CG.client_controller.new_options
 
         options_dict = {
-            'booleans' : new_options.GetAllBooleans(),
-            'strings' : new_options.GetAllStrings(),
-            'noneable_strings' : new_options.GetAllNoneableStrings(),
-            'integers' : new_options.GetAllIntegers(),
-            'noneable_integers' : new_options.GetAllNoneableIntegers(),
-            'keys' : new_options.GetAllKeysHex(),
-            'colors' : new_options.GetAllColours(),
-            'media_zooms' : new_options.GetMediaZooms(),
-            'slideshow_durations' : new_options.GetSlideshowDurations(),
-            'default_namespace_sorts' : [ sort.ToDictForAPI() for sort in new_options.GetDefaultNamespaceSorts() ],
-            'default_sort' : new_options.GetDefaultSort().ToDictForAPI(),
-            'default_tag_sort' : new_options.GetDefaultTagSort( CC.TAG_PRESENTATION_SEARCH_PAGE ).ToDictForAPI(),
-            'default_tag_sort_search_page' : new_options.GetDefaultTagSort( CC.TAG_PRESENTATION_SEARCH_PAGE ).ToDictForAPI(),
-            'default_tag_sort_search_page_manage_tags' : new_options.GetDefaultTagSort( CC.TAG_PRESENTATION_SEARCH_PAGE_MANAGE_TAGS ).ToDictForAPI(),
-            'default_tag_sort_media_viewer' : new_options.GetDefaultTagSort( CC.TAG_PRESENTATION_MEDIA_VIEWER ).ToDictForAPI(),
-            'default_tag_sort_media_vewier_manage_tags' : new_options.GetDefaultTagSort( CC.TAG_PRESENTATION_MEDIA_VIEWER_MANAGE_TAGS ).ToDictForAPI(),
-            'fallback_sort' : new_options.GetFallbackSort().ToDictForAPI(),
-            'suggested_tags_favourites' : new_options.GetAllSuggestedTagsFavourites(),
-            'default_local_location_context' : new_options.GetDefaultLocalLocationContext().to_dict_for_api()
+            'booleans' : new_options.get_all_booleans(),
+            'strings' : new_options.get_all_strings(),
+            'noneable_strings' : new_options.get_all_noneable_strings(),
+            'integers' : new_options.get_all_integers(),
+            'noneable_integers' : new_options.get_all_noneable_integers(),
+            'keys' : new_options.get_all_keys_hex(),
+            'colors' : new_options.get_all_colours(),
+            'media_zooms' : new_options.get_media_zooms(),
+            'slideshow_durations' : new_options.get_slideshow_durations(),
+            'default_namespace_sorts' : [ sort.ToDictForAPI() for sort in new_options.get_default_namespace_sorts() ],
+            'default_sort' : new_options.get_default_sort().ToDictForAPI(),
+            'default_tag_sort' : new_options.get_default_tag_sort( CC.TAG_PRESENTATION_SEARCH_PAGE ).ToDictForAPI(),
+            'default_tag_sort_search_page' : new_options.get_default_tag_sort( CC.TAG_PRESENTATION_SEARCH_PAGE ).ToDictForAPI(),
+            'default_tag_sort_search_page_manage_tags' : new_options.get_default_tag_sort( CC.TAG_PRESENTATION_SEARCH_PAGE_MANAGE_TAGS ).ToDictForAPI(),
+            'default_tag_sort_media_viewer' : new_options.get_default_tag_sort( CC.TAG_PRESENTATION_MEDIA_VIEWER ).ToDictForAPI(),
+            'default_tag_sort_media_vewier_manage_tags' : new_options.get_default_tag_sort( CC.TAG_PRESENTATION_MEDIA_VIEWER_MANAGE_TAGS ).ToDictForAPI(),
+            'fallback_sort' : new_options.get_fallback_sort().ToDictForAPI(),
+            'suggested_tags_favourites' : new_options.get_all_suggested_tags_favourites(),
+            'default_local_location_context' : new_options.get_default_local_location_context().to_dict_for_api()
         }
 
         body_dict = {

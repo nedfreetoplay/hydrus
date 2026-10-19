@@ -164,7 +164,7 @@ def CalculateCanvasZooms( canvas_size: QC.QSize, canvas_type: int, device_pixel_
     
     mime = media.GetMime()
     
-    ( media_scale_up, media_scale_down, preview_scale_up, preview_scale_down, exact_zooms_only, scale_up_quality, scale_down_quality ) = new_options.GetMediaZoomOptions( mime )
+    ( media_scale_up, media_scale_down, preview_scale_up, preview_scale_down, exact_zooms_only, scale_up_quality, scale_down_quality ) = new_options.get_media_zoom_options( mime )
     
     if exact_zooms_only:
         
@@ -187,7 +187,7 @@ def CalculateCanvasZooms( canvas_size: QC.QSize, canvas_type: int, device_pixel_
         
     else:
         
-        regular_zooms = new_options.GetMediaZooms()
+        regular_zooms = new_options.get_media_zooms()
         
         valid_regular_zooms = [ zoom for zoom in regular_zooms if zoom < canvas_zoom ]
         
@@ -267,7 +267,7 @@ def CalculateMediaContainerSize( media, device_pixel_ratio: float, zoom, show_ac
         # imperfect, but overall fine for most situations
         
         bounding_dimensions = CG.client_controller.options[ 'thumbnail_dimensions' ]
-        thumbnail_scale_type = CG.client_controller.new_options.GetInteger( 'thumbnail_scale_type' )
+        thumbnail_scale_type = CG.client_controller.new_options.get_integer( 'thumbnail_scale_type' )
         
         # we want the device independant size here, not actual pixels, so want to keep this 100
         #thumbnail_dpr_percent = CG.client_controller.new_options.GetInteger( 'thumbnail_dpr_percent' )
@@ -542,7 +542,7 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         if self._background_colour_generator.CanDoTransparencyCheckerboard() and self._media is not None and self._media.GetFileInfoManager().has_transparency:
             
-            if CG.client_controller.new_options.GetBoolean( 'draw_transparency_checkerboard_as_greenscreen' ):
+            if CG.client_controller.new_options.get_boolean( 'draw_transparency_checkerboard_as_greenscreen' ):
                 
                 brush = ClientGUITransparency.MakeGreenscreenBrush()
                 
@@ -876,7 +876,7 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                             
                             do_times_to_play_animation_pause = False
                             
-                            if self._media.GetMime() in HC.VIEWABLE_ANIMATIONS and not CG.client_controller.new_options.GetBoolean( 'always_loop_gifs' ):
+                            if self._media.GetMime() in HC.VIEWABLE_ANIMATIONS and not CG.client_controller.new_options.get_boolean( 'always_loop_gifs' ):
                                 
                                 times_to_play_animation = self._video_container.GetTimesToPlayAnimation()
                                 
@@ -1104,7 +1104,7 @@ class AnimationBar( QW.QWidget ):
                     
                 
             
-            animated_scanbar_nub_width = CG.client_controller.new_options.GetInteger( 'animated_scanbar_nub_width' )
+            animated_scanbar_nub_width = CG.client_controller.new_options.get_integer( 'animated_scanbar_nub_width' )
             
             num_frames_are_useful = self._num_frames is not None and self._num_frames > 1
             
@@ -1169,7 +1169,7 @@ class AnimationBar( QW.QWidget ):
         
         mouse_pos = self.mapFromGlobal( ClientGUIFunctions.GetMousePos() )
         
-        animated_scanbar_nub_width = CG.client_controller.new_options.GetInteger( 'animated_scanbar_nub_width' )
+        animated_scanbar_nub_width = CG.client_controller.new_options.get_integer( 'animated_scanbar_nub_width' )
         
         compensated_x_position = mouse_pos.x() - ( animated_scanbar_nub_width / 2 )
         
@@ -1463,7 +1463,7 @@ class MediaContainer( QW.QWidget ):
         self._close_check_timer.timeout.connect( self._CheckClosingWidgets )
         
         self._media_window = None
-        self._tie_media_window_to_pauseplay_state = self._canvas_type in CC.CANVAS_MEDIA_VIEWER_TYPES and CG.client_controller.new_options.GetBoolean( 'always_start_media_windows_tied_to_pauseplay_state' )
+        self._tie_media_window_to_pauseplay_state = self._canvas_type in CC.CANVAS_MEDIA_VIEWER_TYPES and CG.client_controller.new_options.get_boolean( 'always_start_media_windows_tied_to_pauseplay_state' )
         self._window_always_on_top_update_timer = QC.QTimer( self )
         self._window_always_on_top_update_timer.setSingleShot( True )
         self._window_always_on_top_update_timer.timeout.connect( self._UpdateWindowAlwaysOnTop )
@@ -1588,7 +1588,7 @@ class MediaContainer( QW.QWidget ):
                     
                     mpv_widget = media_window
                     
-                    if CG.client_controller.new_options.GetBoolean( 'mpv_destruction_test' ):
+                    if CG.client_controller.new_options.get_boolean( 'mpv_destruction_test' ):
                         
                         mpv_widget.StartCleanBeforeDestroy()
                         
@@ -1642,11 +1642,11 @@ class MediaContainer( QW.QWidget ):
         
         if self._canvas_type in CC.CANVAS_MEDIA_VIEWER_TYPES:
             
-            return CG.client_controller.new_options.GetInteger( 'media_viewer_default_zoom_type_override' )
+            return CG.client_controller.new_options.get_integer( 'media_viewer_default_zoom_type_override' )
             
         else:
             
-            return CG.client_controller.new_options.GetInteger( 'preview_default_zoom_type_override' )
+            return CG.client_controller.new_options.get_integer( 'preview_default_zoom_type_override' )
             
         
     
@@ -1733,7 +1733,7 @@ class MediaContainer( QW.QWidget ):
             
             if self._show_action == CC.MEDIA_VIEWER_ACTION_SHOW_WITH_MPV:
                 
-                if not CG.client_controller.new_options.GetBoolean( 'persist_media_window_mpv' ) or not isinstance( old_media_window, ClientGUIMPV.MPVWidget ):
+                if not CG.client_controller.new_options.get_boolean( 'persist_media_window_mpv' ) or not isinstance( old_media_window, ClientGUIMPV.MPVWidget ):
                     
                     self._media_window = CG.client_controller.gui.GetMPVWidget( self )
                     
@@ -1748,7 +1748,7 @@ class MediaContainer( QW.QWidget ):
                 
             elif self._show_action == CC.MEDIA_VIEWER_ACTION_SHOW_WITH_QTMEDIAPLAYER:
                 
-                if not CG.client_controller.new_options.GetBoolean( 'persist_media_window_qt_media_player' ) or not isinstance( old_media_window, ClientGUIQtMediaPlayer.QtMediaPlayer ):
+                if not CG.client_controller.new_options.get_boolean( 'persist_media_window_qt_media_player' ) or not isinstance( old_media_window, ClientGUIQtMediaPlayer.QtMediaPlayer ):
                     
                     self._media_window = ClientGUIQtMediaPlayer.QtMediaPlayer( self, self._canvas_type, self.parentWidget(), self._background_colour_generator )
                     
@@ -1833,7 +1833,7 @@ class MediaContainer( QW.QWidget ):
             
             if move_delta is not None and not move_delta.isNull():
                 
-                if isinstance( self._media_window, ClientGUIMPV.MPVWidget ) and CG.client_controller.new_options.GetBoolean( 'do_not_setgeometry_on_an_mpv' ):
+                if isinstance( self._media_window, ClientGUIMPV.MPVWidget ) and CG.client_controller.new_options.get_boolean( 'do_not_setgeometry_on_an_mpv' ):
                     
                     self._MoveDelta( move_delta )
                     self.resize( size_hint )
@@ -1880,7 +1880,7 @@ class MediaContainer( QW.QWidget ):
             
             is_near = self.MouseIsNearAnimationBar()
             
-            if CG.client_controller.new_options.GetBoolean( 'animated_scanbar_pop_in_requires_focus' ):
+            if CG.client_controller.new_options.get_boolean( 'animated_scanbar_pop_in_requires_focus' ):
                 
                 current_focus_tlw = QW.QApplication.activeWindow()
                 
@@ -1890,8 +1890,8 @@ class MediaContainer( QW.QWidget ):
                     
                 
             
-            show_small_instead_of_hiding = CG.client_controller.new_options.GetNoneableInteger( 'animated_scanbar_hide_height' ) is not None
-            force_show = self._volume_control.PopupIsVisible() or self._animation_bar.DoingADrag() or CG.client_controller.new_options.GetBoolean( 'force_animation_scanbar_show' )
+            show_small_instead_of_hiding = CG.client_controller.new_options.get_noneable_integer( 'animated_scanbar_hide_height' ) is not None
+            force_show = self._volume_control.PopupIsVisible() or self._animation_bar.DoingADrag() or CG.client_controller.new_options.get_boolean( 'force_animation_scanbar_show' )
             
             should_show_controls = is_near or show_small_instead_of_hiding or force_show
             
@@ -2040,7 +2040,7 @@ class MediaContainer( QW.QWidget ):
             
             if zoom_center_type_override is None:
                 
-                zoom_center_type = CG.client_controller.new_options.GetInteger( 'media_viewer_zoom_center' )
+                zoom_center_type = CG.client_controller.new_options.get_integer( 'media_viewer_zoom_center' )
                 
             else:
                 
@@ -2324,11 +2324,11 @@ class MediaContainer( QW.QWidget ):
         
         if full_size:
             
-            animated_scanbar_height = CG.client_controller.new_options.GetInteger( 'animated_scanbar_height' )
+            animated_scanbar_height = CG.client_controller.new_options.get_integer( 'animated_scanbar_height' )
             
         else:
             
-            animated_scanbar_height = CG.client_controller.new_options.GetNoneableInteger( 'animated_scanbar_hide_height' )
+            animated_scanbar_height = CG.client_controller.new_options.get_noneable_integer( 'animated_scanbar_hide_height' )
             
             if animated_scanbar_height is None:
                 
@@ -2414,7 +2414,7 @@ class MediaContainer( QW.QWidget ):
     
     def IsAtMaxZoom( self ):
         
-        possible_zooms = CG.client_controller.new_options.GetMediaZooms()
+        possible_zooms = CG.client_controller.new_options.get_media_zooms()
         
         max_zoom = max( possible_zooms )
         
@@ -2752,7 +2752,7 @@ class MediaContainer( QW.QWidget ):
             
         else:
             
-            always_on_top = CG.client_controller.new_options.GetBoolean( 'always_start_media_viewers_always_on_top' )
+            always_on_top = CG.client_controller.new_options.get_boolean( 'always_start_media_viewers_always_on_top' )
             
             action = CAC.SIMPLE_WINDOW_ALWAYS_ON_TOP_ON if always_on_top else CAC.SIMPLE_WINDOW_ALWAYS_ON_TOP_OFF
             
@@ -2796,7 +2796,7 @@ class MediaContainer( QW.QWidget ):
         
         adjusted_pos = QC.QPoint( media_win_pos.x(), media_win_pos.y() + title_bar_offset )
         
-        if not CG.client_controller.new_options.GetBoolean( 'disable_get_safe_position_test' ):
+        if not CG.client_controller.new_options.get_boolean( 'disable_get_safe_position_test' ):
             
             ( adjusted_pos, silenced_message ) = ClientGUITopLevelWindows.GetSafePosition( adjusted_pos, 'media_window_size_self_to_media' )
             
@@ -2825,9 +2825,9 @@ class MediaContainer( QW.QWidget ):
             return
             
         
-        ( media_scale_up, media_scale_down, preview_scale_up, preview_scale_down, exact_zooms_only, scale_up_quality, scale_down_quality ) = CG.client_controller.new_options.GetMediaZoomOptions( self._media.GetMime() )
+        ( media_scale_up, media_scale_down, preview_scale_up, preview_scale_down, exact_zooms_only, scale_up_quality, scale_down_quality ) = CG.client_controller.new_options.get_media_zoom_options( self._media.GetMime() )
         
-        possible_zooms = CG.client_controller.new_options.GetMediaZooms()
+        possible_zooms = CG.client_controller.new_options.get_media_zooms()
         
         if exact_zooms_only:
             
@@ -3029,11 +3029,11 @@ class MediaContainer( QW.QWidget ):
             return
             
         
-        possible_zooms = CG.client_controller.new_options.GetMediaZooms()
+        possible_zooms = CG.client_controller.new_options.get_media_zooms()
         
         max_zoom = max( possible_zooms )
         
-        ( media_scale_up, media_scale_down, preview_scale_up, preview_scale_down, exact_zooms_only, scale_up_quality, scale_down_quality ) = CG.client_controller.new_options.GetMediaZoomOptions( self._media.GetMime() )
+        ( media_scale_up, media_scale_down, preview_scale_up, preview_scale_down, exact_zooms_only, scale_up_quality, scale_down_quality ) = CG.client_controller.new_options.get_media_zoom_options( self._media.GetMime() )
         
         if exact_zooms_only:
             
@@ -3062,7 +3062,7 @@ class MediaContainer( QW.QWidget ):
             return
             
         
-        ( media_scale_up, media_scale_down, preview_scale_up, preview_scale_down, exact_zooms_only, scale_up_quality, scale_down_quality ) = CG.client_controller.new_options.GetMediaZoomOptions( self._media.GetMime() )
+        ( media_scale_up, media_scale_down, preview_scale_up, preview_scale_down, exact_zooms_only, scale_up_quality, scale_down_quality ) = CG.client_controller.new_options.get_media_zoom_options( self._media.GetMime() )
         
         if exact_zooms_only:
             
@@ -3087,7 +3087,7 @@ class MediaContainer( QW.QWidget ):
             
         else:
             
-            possible_zooms = CG.client_controller.new_options.GetMediaZooms()
+            possible_zooms = CG.client_controller.new_options.get_media_zooms()
             
         
         possible_zooms.append( self._zoom_types_to_zooms[ MEDIA_VIEWER_ZOOM_TYPE_CANVAS ] )
@@ -3199,11 +3199,11 @@ class MediaContainer( QW.QWidget ):
         
         if self._current_zoom == switch_base:
             
-            possible_zooms = CG.client_controller.new_options.GetMediaZooms()
+            possible_zooms = CG.client_controller.new_options.get_media_zooms()
             
             max_zoom = max( possible_zooms )
             
-            ( media_scale_up, media_scale_down, preview_scale_up, preview_scale_down, exact_zooms_only, scale_up_quality, scale_down_quality ) = CG.client_controller.new_options.GetMediaZoomOptions( self._media.GetMime() )
+            ( media_scale_up, media_scale_down, preview_scale_up, preview_scale_down, exact_zooms_only, scale_up_quality, scale_down_quality ) = CG.client_controller.new_options.get_media_zoom_options( self._media.GetMime() )
             
             if exact_zooms_only:
                 
@@ -3440,7 +3440,7 @@ class OpenExternallyPanel( QW.QWidget ):
                 
                 qt_pixmap = CG.client_controller.thumbnails_cache.GetThumbnail( display_media_result ).GetQtPixmap()
                 
-                thumbnail_dpr_percent = CG.client_controller.new_options.GetInteger( 'thumbnail_dpr_percent' )
+                thumbnail_dpr_percent = CG.client_controller.new_options.get_integer( 'thumbnail_dpr_percent' )
                 
                 if thumbnail_dpr_percent != 100:
                     
@@ -3573,7 +3573,7 @@ class StaticImage( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             # the trick of going ( 123456 // 16 ) * 16 to give you a nice multiple of 16 does not work with floats like 1.4 lmao.
             # what we can do instead is phrase 1.4 as 7/5 and use 7 as our int. any number cleanly divisible by 7 is cleanly divisible by 1.4
             
-            ideal_tile_dimension = CG.client_controller.new_options.GetInteger( 'ideal_tile_dimension' )
+            ideal_tile_dimension = CG.client_controller.new_options.get_integer( 'ideal_tile_dimension' )
             
             nice_number = HydrusData.get_nicely_divisible_number_for_zoom( self._zoom / self.devicePixelRatio(), ideal_tile_dimension )
             
@@ -3613,7 +3613,7 @@ class StaticImage( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         if self._background_colour_generator.CanDoTransparencyCheckerboard() and self._media is not None and self._media.GetFileInfoManager().has_transparency:
             
-            if CG.client_controller.new_options.GetBoolean( 'draw_transparency_checkerboard_as_greenscreen' ):
+            if CG.client_controller.new_options.get_boolean( 'draw_transparency_checkerboard_as_greenscreen' ):
                 
                 neon_greenscreen = QG.QColor( 34, 255, 0 )
                 

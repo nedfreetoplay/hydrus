@@ -38,7 +38,7 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
         
         super().__init__( parent )
         
-        if CG.client_controller.new_options.GetBoolean( 'use_listbook_for_tag_service_panels' ):
+        if CG.client_controller.new_options.get_boolean( 'use_listbook_for_tag_service_panels' ):
             
             self._tag_services = ClientGUIListBook.ListBook( self )
             
@@ -49,7 +49,7 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
         
         #
         
-        default_tag_service_key = CG.client_controller.new_options.GetKey( 'default_tag_service_tab' )
+        default_tag_service_key = CG.client_controller.new_options.get_key( 'default_tag_service_tab' )
         
         services = list( CG.client_controller.services_manager.GetServices( ( HC.LOCAL_TAG, ) ) )
         
@@ -84,11 +84,11 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
     
     def _SaveDefaultTagServiceKey( self ):
         
-        if CG.client_controller.new_options.GetBoolean( 'save_default_tag_service_tab_on_change' ):
+        if CG.client_controller.new_options.get_boolean( 'save_default_tag_service_tab_on_change' ):
             
             current_page = typing.cast( ManageTagParents._Panel, self._tag_services.currentWidget() )
             
-            CG.client_controller.new_options.SetKey( 'default_tag_service_tab', current_page.GetServiceKey() )
+            CG.client_controller.new_options.set_key( 'default_tag_service_tab', current_page.GetServiceKey() )
             
         
     
@@ -202,7 +202,7 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
             self._children.setMinimumHeight( preview_height )
             self._parents.setMinimumHeight( preview_height )
             
-            default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+            default_location_context = CG.client_controller.new_options.get_default_local_location_context()
             
             self._children_input = ClientGUIACDropdown.AutoCompleteDropdownTagsWrite( self, self.EnterChildren, default_location_context, service_key, show_paste_button = True )
             
@@ -719,7 +719,7 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
                             
                         
                     
-                    if CG.client_controller.new_options.GetBoolean( 'tag_display_maintenance_during_active' ):
+                    if CG.client_controller.new_options.get_boolean( 'tag_display_maintenance_during_active' ):
                         
                         maintenance_part = 'Parents are set to sync all the time in the background.'
                         
@@ -736,7 +736,7 @@ class ManageTagParents( ClientGUIScrolledPanels.ManagePanel ):
                         
                         looking_good = False
                         
-                        if CG.client_controller.new_options.GetBoolean( 'tag_display_maintenance_during_idle' ):
+                        if CG.client_controller.new_options.get_boolean( 'tag_display_maintenance_during_idle' ):
                             
                             maintenance_part = 'Parents are set to sync only when you are not using the client.'
                             changes_part = 'It may take some time for changes here to apply.'

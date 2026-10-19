@@ -55,7 +55,7 @@ class FileSortCollectPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         #
         
-        self._namespace_file_sort_by.AddDatas( [ media_sort.sort_type[1] for media_sort in CG.client_controller.new_options.GetDefaultNamespaceSorts() ] )
+        self._namespace_file_sort_by.AddDatas( [ media_sort.sort_type[1] for media_sort in CG.client_controller.new_options.get_default_namespace_sorts() ] )
         
         self._save_page_sort_on_change.setChecked( self._new_options.GetBoolean( 'save_page_sort_on_change' ) )
         

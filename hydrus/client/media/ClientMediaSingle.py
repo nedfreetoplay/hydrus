@@ -156,7 +156,7 @@ class MediaSingle( ClientMedia.Media ):
         
         new_options = CG.client_controller.new_options
         
-        tag_summary_generator = new_options.GetTagSummaryGenerator( 'media_viewer_top' )
+        tag_summary_generator = new_options.get_tag_summary_generator( 'media_viewer_top' )
         
         tags = self.GetTagsManager().GetCurrentAndPending( CC.COMBINED_TAG_SERVICE_KEY, ClientTags.TAG_DISPLAY_SINGLE_MEDIA )
         

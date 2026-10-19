@@ -82,7 +82,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         self._migration_source = ClientGUICommon.BetterChoice( self._migration_panel )
         
-        location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+        location_context = CG.client_controller.new_options.get_default_local_location_context()
         
         self._migration_source_hash_type_st = ClientGUICommon.BetterStaticText( self._migration_panel, 'hash type: unknown' )
         
@@ -536,7 +536,7 @@ class MigrateTagsPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            if CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+            if CG.client_controller.new_options.get_boolean( 'advanced_mode' ):
                 
                 do_it = True
                 

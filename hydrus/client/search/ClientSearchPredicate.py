@@ -1396,7 +1396,7 @@ class Predicate( HydrusSerialisable.SerialisableBase ):
         
         if self._predicate_type == PREDICATE_TYPE_OR_CONTAINER:
             
-            or_connector_namespace = CG.client_controller.new_options.GetNoneableString( 'or_connector_custom_namespace_colour' )
+            or_connector_namespace = CG.client_controller.new_options.get_noneable_string( 'or_connector_custom_namespace_colour' )
             
             texts_and_namespaces = [ ( prefix + 'OR:', 'or', or_connector_namespace ) ]
             

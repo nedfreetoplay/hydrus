@@ -376,7 +376,7 @@ class EditStringConverterPanel( ClientGUIScrolledPanels.EditPanel ):
         
         try:
             
-            default_string_converter = CG.client_controller.new_options.GetRawSerialisable( 'last_used_string_conversion_step' )
+            default_string_converter = CG.client_controller.new_options.get_raw_serialisable( 'last_used_string_conversion_step' )
             
             default_conversions = default_string_converter.GetConversions()
             
@@ -416,7 +416,7 @@ class EditStringConverterPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 new_default_string_converter = ClientStrings.StringConverter( conversions = [ ( conversion_type, data ) ] )
                 
-                CG.client_controller.new_options.SetRawSerialisable( 'last_used_string_conversion_step', new_default_string_converter )
+                CG.client_controller.new_options.set_raw_serialisable( 'last_used_string_conversion_step', new_default_string_converter )
                 
                 enumerated_conversion = ( number, conversion_type, data )
                 
@@ -575,7 +575,7 @@ class EditStringConverterPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 new_default_string_converter = ClientStrings.StringConverter( conversions = [ ( conversion_type, data ) ] )
                 
-                CG.client_controller.new_options.SetRawSerialisable( 'last_used_string_conversion_step', new_default_string_converter )
+                CG.client_controller.new_options.set_raw_serialisable( 'last_used_string_conversion_step', new_default_string_converter )
                 
                 new_data_row = ( number, conversion_type, data )
                 

@@ -414,7 +414,7 @@ class GalleryImport( HydrusSerialisable.SerialisableBase ):
             
             with self._lock:
                 
-                delay = CG.client_controller.new_options.GetInteger( 'downloader_network_error_delay' )
+                delay = CG.client_controller.new_options.get_integer( 'downloader_network_error_delay' )
                 
                 self._DelayWork( delay, str( e ) )
                 

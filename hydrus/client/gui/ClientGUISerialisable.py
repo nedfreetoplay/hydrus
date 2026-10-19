@@ -59,7 +59,7 @@ class PNGExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         self._width.setValue( 512 )
         
-        last_png_export_dir = CG.client_controller.new_options.GetNoneableString( 'last_png_export_dir' )
+        last_png_export_dir = CG.client_controller.new_options.get_noneable_string( 'last_png_export_dir' )
         
         if title is not None:
             
@@ -168,7 +168,7 @@ class PNGExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
             
             base_dir = os.path.dirname( path )
             
-            CG.client_controller.new_options.SetNoneableString( 'last_png_export_dir', base_dir )
+            CG.client_controller.new_options.set_noneable_string( 'last_png_export_dir', base_dir )
             
         
         if not path.endswith( '.png' ):
@@ -204,7 +204,7 @@ class PNGsExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         #
         
-        last_png_export_dir = CG.client_controller.new_options.GetNoneableString( 'last_png_export_dir' )
+        last_png_export_dir = CG.client_controller.new_options.get_noneable_string( 'last_png_export_dir' )
         
         if last_png_export_dir is not None:
             
@@ -270,7 +270,7 @@ class PNGsExportPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         if last_png_export_dir is not None and last_png_export_dir != '':
             
-            CG.client_controller.new_options.SetNoneableString( 'last_png_export_dir', last_png_export_dir )
+            CG.client_controller.new_options.set_noneable_string( 'last_png_export_dir', last_png_export_dir )
             
         
         for obj in self._payload_objs:

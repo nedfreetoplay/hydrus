@@ -204,40 +204,40 @@ class MediaPlaybackPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         #
         
         self._animation_start_position.setValue( int( HC.options['animation_start_position'] * 100.0 ) )
-        self._always_loop_animations.setChecked( self._new_options.GetBoolean( 'always_loop_gifs' ) )
-        self._mpv_null_audio_on_silent_media.setChecked( self._new_options.GetBoolean( 'mpv_null_audio_on_silent_media' ) )
-        self._use_legacy_mpv_mediator.setChecked( self._new_options.GetBoolean( 'use_legacy_mpv_mediator' ) )
-        self._mpv_loop_playlist_instead_of_file.setChecked( self._new_options.GetBoolean( 'mpv_loop_playlist_instead_of_file' ) )
-        self._persist_media_window_mpv.setChecked( self._new_options.GetBoolean( 'persist_media_window_mpv' ) )
-        self._mpv_destruction_test.setChecked( self._new_options.GetBoolean( 'mpv_destruction_test' ) )
-        self._do_not_setgeometry_on_an_mpv.setChecked( self._new_options.GetBoolean( 'do_not_setgeometry_on_an_mpv' ) )
+        self._always_loop_animations.setChecked( self._new_options.get_boolean( 'always_loop_gifs' ) )
+        self._mpv_null_audio_on_silent_media.setChecked( self._new_options.get_boolean( 'mpv_null_audio_on_silent_media' ) )
+        self._use_legacy_mpv_mediator.setChecked( self._new_options.get_boolean( 'use_legacy_mpv_mediator' ) )
+        self._mpv_loop_playlist_instead_of_file.setChecked( self._new_options.get_boolean( 'mpv_loop_playlist_instead_of_file' ) )
+        self._persist_media_window_mpv.setChecked( self._new_options.get_boolean( 'persist_media_window_mpv' ) )
+        self._mpv_destruction_test.setChecked( self._new_options.get_boolean( 'mpv_destruction_test' ) )
+        self._do_not_setgeometry_on_an_mpv.setChecked( self._new_options.get_boolean( 'do_not_setgeometry_on_an_mpv' ) )
         
-        self._mpv_preferred_audio_device.SetValue( self._new_options.GetNoneableString( 'mpv_preferred_audio_device' ) )
+        self._mpv_preferred_audio_device.SetValue( self._new_options.get_noneable_string( 'mpv_preferred_audio_device' ) )
         
-        self._qt_media_player_opengl_test.setChecked( self._new_options.GetBoolean( 'qt_media_player_opengl_test' ) )
-        self._qt_media_player_null_audio_on_silent_media.setChecked( self._new_options.GetBoolean( 'qt_media_player_null_audio_on_silent_media' ) )
-        self._persist_media_window_qt_media_player.setChecked( self._new_options.GetBoolean( 'persist_media_window_qt_media_player' ) )
-        self._file_has_transparency_strictness.SetValue( self._new_options.GetInteger( 'file_has_transparency_strictness' ) )
-        self._draw_transparency_checkerboard_media_canvas.setChecked( self._new_options.GetBoolean( 'draw_transparency_checkerboard_media_canvas' ) )
-        self._draw_transparency_checkerboard_as_greenscreen.setChecked( self._new_options.GetBoolean( 'draw_transparency_checkerboard_as_greenscreen' ) )
+        self._qt_media_player_opengl_test.setChecked( self._new_options.get_boolean( 'qt_media_player_opengl_test' ) )
+        self._qt_media_player_null_audio_on_silent_media.setChecked( self._new_options.get_boolean( 'qt_media_player_null_audio_on_silent_media' ) )
+        self._persist_media_window_qt_media_player.setChecked( self._new_options.get_boolean( 'persist_media_window_qt_media_player' ) )
+        self._file_has_transparency_strictness.SetValue( self._new_options.get_integer( 'file_has_transparency_strictness' ) )
+        self._draw_transparency_checkerboard_media_canvas.setChecked( self._new_options.get_boolean( 'draw_transparency_checkerboard_media_canvas' ) )
+        self._draw_transparency_checkerboard_as_greenscreen.setChecked( self._new_options.get_boolean( 'draw_transparency_checkerboard_as_greenscreen' ) )
         
-        media_zooms = self._new_options.GetMediaZooms()
+        media_zooms = self._new_options.get_media_zooms()
         
         self._media_zooms.setText( ','.join( ( str( media_zoom ) for media_zoom in media_zooms ) ) )
         
-        self._media_viewer_zoom_center.SetValue( self._new_options.GetInteger( 'media_viewer_zoom_center' ) )
+        self._media_viewer_zoom_center.SetValue( self._new_options.get_integer( 'media_viewer_zoom_center' ) )
 
-        self._media_viewer_default_zoom_type_override.SetValue( self._new_options.GetInteger( 'media_viewer_default_zoom_type_override' ) )
-        self._preview_default_zoom_type_override.SetValue( self._new_options.GetInteger( 'preview_default_zoom_type_override' ) )
-        self._media_viewer_recenter_media_on_window_resize.setChecked( self._new_options.GetBoolean( 'media_viewer_recenter_media_on_window_resize' ) )
+        self._media_viewer_default_zoom_type_override.SetValue( self._new_options.get_integer( 'media_viewer_default_zoom_type_override' ) )
+        self._preview_default_zoom_type_override.SetValue( self._new_options.get_integer( 'preview_default_zoom_type_override' ) )
+        self._media_viewer_recenter_media_on_window_resize.setChecked( self._new_options.get_boolean( 'media_viewer_recenter_media_on_window_resize' ) )
         
-        self._load_images_with_pil.setChecked( self._new_options.GetBoolean( 'load_images_with_pil' ) )
-        self._enable_truncated_images_pil.setChecked( self._new_options.GetBoolean( 'enable_truncated_images_pil' ) )
-        self._do_icc_profile_normalisation.setChecked( self._new_options.GetBoolean( 'do_icc_profile_normalisation' ) )
-        self._use_system_ffmpeg.setChecked( self._new_options.GetBoolean( 'use_system_ffmpeg' ) )
-        self._ffmpeg_subprocess_timeout.setValue( self._new_options.GetInteger( 'ffmpeg_subprocess_timeout' ) )
+        self._load_images_with_pil.setChecked( self._new_options.get_boolean( 'load_images_with_pil' ) )
+        self._enable_truncated_images_pil.setChecked( self._new_options.get_boolean( 'enable_truncated_images_pil' ) )
+        self._do_icc_profile_normalisation.setChecked( self._new_options.get_boolean( 'do_icc_profile_normalisation' ) )
+        self._use_system_ffmpeg.setChecked( self._new_options.get_boolean( 'use_system_ffmpeg' ) )
+        self._ffmpeg_subprocess_timeout.setValue( self._new_options.get_integer( 'ffmpeg_subprocess_timeout' ) )
         
-        all_media_view_options = self._new_options.GetMediaViewOptions()
+        all_media_view_options = self._new_options.get_media_view_options()
         
         for ( mime, view_options ) in all_media_view_options.items():
             
@@ -387,7 +387,7 @@ class MediaPlaybackPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         self._qt_media_player_preferred_audio_device.addItem( 'null - DEBUG: Do not use any audio output device', -1 )
         
-        qt_media_player_no_audio_device = self._new_options.GetBoolean( 'qt_media_player_no_audio_device' )
+        qt_media_player_no_audio_device = self._new_options.get_boolean( 'qt_media_player_no_audio_device' )
         
         if qt_media_player_no_audio_device:
             
@@ -395,7 +395,7 @@ class MediaPlaybackPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
         else:
             
-            self._qt_media_player_preferred_audio_device.SetValue( self._new_options.GetNoneableString( 'qt_media_player_preferred_audio_device_id_hex' ) )
+            self._qt_media_player_preferred_audio_device.SetValue( self._new_options.get_noneable_string( 'qt_media_player_preferred_audio_device_id_hex' ) )
             
         
         self._qt_media_player_initialise_audio_devices_button.setVisible( False )
@@ -615,16 +615,16 @@ class MediaPlaybackPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
     def UpdateOptions( self ):
         
         HC.options[ 'animation_start_position' ] = self._animation_start_position.value() / 100.0
-        self._new_options.SetBoolean( 'always_loop_gifs', self._always_loop_animations.isChecked() )
-        self._new_options.SetBoolean( 'mpv_null_audio_on_silent_media', self._mpv_null_audio_on_silent_media.isChecked() )
-        self._new_options.SetBoolean( 'use_legacy_mpv_mediator', self._use_legacy_mpv_mediator.isChecked() )
-        self._new_options.SetBoolean( 'mpv_loop_playlist_instead_of_file', self._mpv_loop_playlist_instead_of_file.isChecked() )
-        self._new_options.SetBoolean( 'persist_media_window_mpv', self._persist_media_window_mpv.isChecked() )
-        self._new_options.SetBoolean( 'mpv_destruction_test', self._mpv_destruction_test.isChecked() )
-        self._new_options.SetBoolean( 'do_not_setgeometry_on_an_mpv', self._do_not_setgeometry_on_an_mpv.isChecked() )
-        self._new_options.SetBoolean( 'persist_media_window_qt_media_player', self._persist_media_window_qt_media_player.isChecked() )
+        self._new_options.set_boolean( 'always_loop_gifs', self._always_loop_animations.isChecked() )
+        self._new_options.set_boolean( 'mpv_null_audio_on_silent_media', self._mpv_null_audio_on_silent_media.isChecked() )
+        self._new_options.set_boolean( 'use_legacy_mpv_mediator', self._use_legacy_mpv_mediator.isChecked() )
+        self._new_options.set_boolean( 'mpv_loop_playlist_instead_of_file', self._mpv_loop_playlist_instead_of_file.isChecked() )
+        self._new_options.set_boolean( 'persist_media_window_mpv', self._persist_media_window_mpv.isChecked() )
+        self._new_options.set_boolean( 'mpv_destruction_test', self._mpv_destruction_test.isChecked() )
+        self._new_options.set_boolean( 'do_not_setgeometry_on_an_mpv', self._do_not_setgeometry_on_an_mpv.isChecked() )
+        self._new_options.set_boolean( 'persist_media_window_qt_media_player', self._persist_media_window_qt_media_player.isChecked() )
         
-        self._new_options.SetNoneableString( 'mpv_preferred_audio_device', self._mpv_preferred_audio_device.GetValue() )
+        self._new_options.set_noneable_string( 'mpv_preferred_audio_device', self._mpv_preferred_audio_device.GetValue() )
         
         if self._qt_media_player_preferred_audio_device.isEnabled():
             
@@ -632,30 +632,30 @@ class MediaPlaybackPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
             if qt_media_player_preferred_audio_device_id_hex == -1:
                 
-                self._new_options.SetBoolean( 'qt_media_player_no_audio_device', True )
+                self._new_options.set_boolean( 'qt_media_player_no_audio_device', True )
                 
             else:
                 
-                self._new_options.SetBoolean( 'qt_media_player_no_audio_device', False )
+                self._new_options.set_boolean( 'qt_media_player_no_audio_device', False )
                 
                 if qt_media_player_preferred_audio_device_id_hex is None:
                     
-                    self._new_options.SetNoneableString( 'qt_media_player_preferred_audio_device_id_hex', None )
-                    self._new_options.SetNoneableString( 'qt_media_player_preferred_audio_device_name', None )
+                    self._new_options.set_noneable_string( 'qt_media_player_preferred_audio_device_id_hex', None )
+                    self._new_options.set_noneable_string( 'qt_media_player_preferred_audio_device_name', None )
                     
                 else:
                     
-                    self._new_options.SetNoneableString( 'qt_media_player_preferred_audio_device_id_hex', qt_media_player_preferred_audio_device_id_hex )
-                    self._new_options.SetNoneableString( 'qt_media_player_preferred_audio_device_name', self._qt_media_player_preferred_audio_device.currentText() )
+                    self._new_options.set_noneable_string( 'qt_media_player_preferred_audio_device_id_hex', qt_media_player_preferred_audio_device_id_hex )
+                    self._new_options.set_noneable_string( 'qt_media_player_preferred_audio_device_name', self._qt_media_player_preferred_audio_device.currentText() )
                     
                 
             
         
-        self._new_options.SetBoolean( 'qt_media_player_null_audio_on_silent_media', self._qt_media_player_null_audio_on_silent_media.isChecked() )
-        self._new_options.SetBoolean( 'qt_media_player_opengl_test', self._qt_media_player_opengl_test.isChecked() )
-        self._new_options.SetInteger( 'file_has_transparency_strictness', self._file_has_transparency_strictness.GetValue() )
-        self._new_options.SetBoolean( 'draw_transparency_checkerboard_media_canvas', self._draw_transparency_checkerboard_media_canvas.isChecked() )
-        self._new_options.SetBoolean( 'draw_transparency_checkerboard_as_greenscreen', self._draw_transparency_checkerboard_as_greenscreen.isChecked() )
+        self._new_options.set_boolean( 'qt_media_player_null_audio_on_silent_media', self._qt_media_player_null_audio_on_silent_media.isChecked() )
+        self._new_options.set_boolean( 'qt_media_player_opengl_test', self._qt_media_player_opengl_test.isChecked() )
+        self._new_options.set_integer( 'file_has_transparency_strictness', self._file_has_transparency_strictness.GetValue() )
+        self._new_options.set_boolean( 'draw_transparency_checkerboard_media_canvas', self._draw_transparency_checkerboard_media_canvas.isChecked() )
+        self._new_options.set_boolean( 'draw_transparency_checkerboard_as_greenscreen', self._draw_transparency_checkerboard_as_greenscreen.isChecked() )
         
         try:
             
@@ -665,7 +665,7 @@ class MediaPlaybackPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             
             if len( media_zooms ) > 0:
                 
-                self._new_options.SetMediaZooms( media_zooms )
+                self._new_options.set_media_zooms( media_zooms )
                 
             
         except ValueError:
@@ -673,17 +673,17 @@ class MediaPlaybackPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             HydrusData.show_text( 'Could not parse those zooms, so they were not saved!' )
             
         
-        self._new_options.SetInteger( 'media_viewer_zoom_center', self._media_viewer_zoom_center.GetValue() )
+        self._new_options.set_integer( 'media_viewer_zoom_center', self._media_viewer_zoom_center.GetValue() )
 
-        self._new_options.SetInteger( 'media_viewer_default_zoom_type_override', self._media_viewer_default_zoom_type_override.GetValue() )
-        self._new_options.SetInteger( 'preview_default_zoom_type_override', self._preview_default_zoom_type_override.GetValue() )
-        self._new_options.SetBoolean( 'media_viewer_recenter_media_on_window_resize', self._media_viewer_recenter_media_on_window_resize.isChecked() )
+        self._new_options.set_integer( 'media_viewer_default_zoom_type_override', self._media_viewer_default_zoom_type_override.GetValue() )
+        self._new_options.set_integer( 'preview_default_zoom_type_override', self._preview_default_zoom_type_override.GetValue() )
+        self._new_options.set_boolean( 'media_viewer_recenter_media_on_window_resize', self._media_viewer_recenter_media_on_window_resize.isChecked() )
         
-        self._new_options.SetBoolean( 'load_images_with_pil', self._load_images_with_pil.isChecked() )
-        self._new_options.SetBoolean( 'enable_truncated_images_pil', self._enable_truncated_images_pil.isChecked() )
-        self._new_options.SetBoolean( 'do_icc_profile_normalisation', self._do_icc_profile_normalisation.isChecked() )
-        self._new_options.SetBoolean( 'use_system_ffmpeg', self._use_system_ffmpeg.isChecked() )
-        self._new_options.SetInteger( 'ffmpeg_subprocess_timeout', self._ffmpeg_subprocess_timeout.value() )
+        self._new_options.set_boolean( 'load_images_with_pil', self._load_images_with_pil.isChecked() )
+        self._new_options.set_boolean( 'enable_truncated_images_pil', self._enable_truncated_images_pil.isChecked() )
+        self._new_options.set_boolean( 'do_icc_profile_normalisation', self._do_icc_profile_normalisation.isChecked() )
+        self._new_options.set_boolean( 'use_system_ffmpeg', self._use_system_ffmpeg.isChecked() )
+        self._new_options.set_integer( 'ffmpeg_subprocess_timeout', self._ffmpeg_subprocess_timeout.value() )
         
         mpv_conf_path = self._mpv_conf_path.GetPath()
         
@@ -715,6 +715,6 @@ class MediaPlaybackPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             mimes_to_media_view_options[ mime ] = value
             
         
-        self._new_options.SetMediaViewOptions( mimes_to_media_view_options )
+        self._new_options.set_media_view_options( mimes_to_media_view_options )
         
     

@@ -90,7 +90,7 @@ class CollectComboCtrl( QW.QComboBox ):
         
         text_and_data_tuples = set()
         
-        for media_sort in CG.client_controller.new_options.GetDefaultNamespaceSorts():
+        for media_sort in CG.client_controller.new_options.get_default_namespace_sorts():
             
             namespaces = media_sort.GetNamespaces()
             
@@ -330,7 +330,7 @@ class MediaCollectControl( QW.QWidget ):
         
         if media_collect is None:
             
-            media_collect = CG.client_controller.new_options.GetDefaultCollect()
+            media_collect = CG.client_controller.new_options.get_default_collect()
             
         
         self._media_collect = media_collect
@@ -664,7 +664,7 @@ class MediaSortControl( QW.QWidget ):
                 
             
         
-        default_namespace_sorts = CG.client_controller.new_options.GetDefaultNamespaceSorts()
+        default_namespace_sorts = CG.client_controller.new_options.get_default_namespace_sorts()
         
         if menu is not None:
             
@@ -955,11 +955,11 @@ class MediaSortControl( QW.QWidget ):
     
     def _UserChoseASort( self ):
         
-        if CG.client_controller.new_options.GetBoolean( 'save_page_sort_on_change' ):
+        if CG.client_controller.new_options.get_boolean( 'save_page_sort_on_change' ):
             
             media_sort = self._GetCurrentSort()
             
-            CG.client_controller.new_options.SetDefaultSort( media_sort )
+            CG.client_controller.new_options.set_default_sort( media_sort )
             
         
         self._UpdateToolTip()
@@ -1028,7 +1028,7 @@ class MediaSortControl( QW.QWidget ):
     
     def wheelEvent( self, event ):
         
-        if CG.client_controller.new_options.GetBoolean( 'menu_choice_buttons_can_mouse_scroll' ):
+        if CG.client_controller.new_options.get_boolean( 'menu_choice_buttons_can_mouse_scroll' ):
             
             if ClientGUIFunctions.MouseIsOverWidget( self._sort_type_button ):
                 

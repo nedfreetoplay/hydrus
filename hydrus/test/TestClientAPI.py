@@ -1676,7 +1676,7 @@ class TestClientAPI( unittest.TestCase ):
         
         media_result.GetLocationsManager().inbox = False
         
-        TG.test_controller.new_options.SetBoolean( 'delete_lock_for_archived_files', True )
+        TG.test_controller.new_options.set_boolean( 'delete_lock_for_archived_files', True )
         
         TG.test_controller.clear_writes( 'content_updates' )
         
@@ -1696,7 +1696,7 @@ class TestClientAPI( unittest.TestCase ):
         
         self.assertEqual( response.status, 200 )
         
-        CG.client_controller.new_options.SetBoolean( 'delete_lock_for_archived_files', False )
+        CG.client_controller.new_options.set_boolean( 'delete_lock_for_archived_files', False )
         
         TG.test_controller.clear_reads( 'media_results' )
         
@@ -1708,7 +1708,7 @@ class TestClientAPI( unittest.TestCase ):
         
         media_result.GetLocationsManager().inbox = False
         
-        TG.test_controller.new_options.SetBoolean( 'delete_lock_for_archived_files', True )
+        TG.test_controller.new_options.set_boolean( 'delete_lock_for_archived_files', True )
         
         TG.test_controller.clear_writes( 'content_updates' )
         
@@ -1732,7 +1732,7 @@ class TestClientAPI( unittest.TestCase ):
         
         self.assertIn( locked_hash.hex(), text ) # error message should be complaining about it
         
-        CG.client_controller.new_options.SetBoolean( 'delete_lock_for_archived_files', False )
+        CG.client_controller.new_options.set_boolean( 'delete_lock_for_archived_files', False )
         
         TG.test_controller.clear_reads( 'media_results' )
         
@@ -7923,8 +7923,8 @@ class TestClientAPI( unittest.TestCase ):
             if file_info_manager.mime in HC.MIMES_WITH_THUMBNAILS:
                 
                 bounding_dimensions = TG.test_controller.options[ 'thumbnail_dimensions' ]
-                thumbnail_scale_type = TG.test_controller.new_options.GetInteger( 'thumbnail_scale_type' )
-                thumbnail_dpr_percent = CG.client_controller.new_options.GetInteger( 'thumbnail_dpr_percent' )
+                thumbnail_scale_type = TG.test_controller.new_options.get_integer( 'thumbnail_scale_type' )
+                thumbnail_dpr_percent = CG.client_controller.new_options.get_integer( 'thumbnail_dpr_percent' )
                 
                 ( thumbnail_expected_width, thumbnail_expected_height ) = HydrusImageHandling.get_thumbnail_resolution( ( file_info_manager.width, file_info_manager.height ), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
                 

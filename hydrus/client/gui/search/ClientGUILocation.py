@@ -39,7 +39,7 @@ class EditMultipleLocationContextPanel( ClientGUIScrolledPanels.EditPanel ):
             self._location_list.Append( name, ( HC.CONTENT_STATUS_CURRENT, service_key ), starts_checked = starts_checked )
             
         
-        advanced_mode = CG.client_controller.new_options.GetBoolean( 'advanced_mode' )
+        advanced_mode = CG.client_controller.new_options.get_boolean( 'advanced_mode' )
         
         if advanced_mode and not ( only_local_file_domains_allowed or only_importable_domains_allowed or only_combined_local_file_domains_allowed ):
             
@@ -241,7 +241,7 @@ class LocationSearchContextButton( ClientGUICommon.BetterButton ):
         
         if self._all_known_files_allowed:
             
-            if self._all_known_files_allowed_only_in_advanced_mode and not CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+            if self._all_known_files_allowed_only_in_advanced_mode and not CG.client_controller.new_options.get_boolean( 'advanced_mode' ):
                 
                 return False
                 

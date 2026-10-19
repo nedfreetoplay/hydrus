@@ -219,7 +219,7 @@ class BitmapManager:
     
     def get_media_background_pixmap(self):
         
-        pixmap_path = self._controller.new_options.GetNoneableString( 'media_background_bmp_path' )
+        pixmap_path = self._controller.new_options.get_noneable_string( 'media_background_bmp_path' )
         
         if pixmap_path is None:
             
@@ -277,19 +277,19 @@ class FileViewingStatsManager:
         
         if canvas_type == CC.CANVAS_PREVIEW:
             
-            viewtime_min_ms = new_options.GetNoneableInteger( 'file_viewing_statistics_preview_min_time_ms' )
-            viewtime_max_ms = new_options.GetNoneableInteger( 'file_viewing_statistics_preview_max_time_ms' )
+            viewtime_min_ms = new_options.get_noneable_integer( 'file_viewing_statistics_preview_min_time_ms' )
+            viewtime_max_ms = new_options.get_noneable_integer( 'file_viewing_statistics_preview_max_time_ms' )
             
         elif canvas_type in CC.CANVAS_MEDIA_VIEWER_TYPES:
             
-            viewtime_min_ms = new_options.GetNoneableInteger( 'file_viewing_statistics_media_min_time_ms' )
-            viewtime_max_ms = new_options.GetNoneableInteger( 'file_viewing_statistics_media_max_time_ms' )
+            viewtime_min_ms = new_options.get_noneable_integer( 'file_viewing_statistics_media_min_time_ms' )
+            viewtime_max_ms = new_options.get_noneable_integer( 'file_viewing_statistics_media_max_time_ms' )
             
-            if canvas_type == CC.CANVAS_MEDIA_VIEWER_DUPLICATES and not new_options.GetBoolean( 'file_viewing_statistics_active_on_dupe_filter' ):
+            if canvas_type == CC.CANVAS_MEDIA_VIEWER_DUPLICATES and not new_options.get_boolean( 'file_viewing_statistics_active_on_dupe_filter' ):
                 
                 do_it = False
                 
-            elif canvas_type == CC.CANVAS_MEDIA_VIEWER_ARCHIVE_DELETE and not new_options.GetBoolean( 'file_viewing_statistics_active_on_archive_delete_filter' ):
+            elif canvas_type == CC.CANVAS_MEDIA_VIEWER_ARCHIVE_DELETE and not new_options.get_boolean( 'file_viewing_statistics_active_on_archive_delete_filter' ):
                 
                 do_it = False
                 
@@ -366,7 +366,7 @@ class FileViewingStatsManager:
     
     def finish_viewing(self, media_result: ClientMediaResult.MediaResult, canvas_type, view_timestamp_ms, viewtime_delta_ms):
         
-        if not CG.client_controller.new_options.GetBoolean( 'file_viewing_statistics_active' ):
+        if not CG.client_controller.new_options.get_boolean( 'file_viewing_statistics_active' ):
             
             return
             

@@ -535,7 +535,7 @@ class FileSystemPredicates( object ):
         
         if self._limit is None and apply_implicit_limit:
             
-            forced_search_limit = CG.client_controller.new_options.GetNoneableInteger( 'forced_search_limit' )
+            forced_search_limit = CG.client_controller.new_options.get_noneable_integer( 'forced_search_limit' )
             
             return forced_search_limit
             

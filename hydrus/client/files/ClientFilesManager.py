@@ -401,12 +401,12 @@ class ClientFilesManager( object ):
         num_frames = media_result.GetNumFrames()
         
         bounding_dimensions = self._controller.options[ 'thumbnail_dimensions' ]
-        thumbnail_scale_type = self._controller.new_options.GetInteger( 'thumbnail_scale_type' )
-        thumbnail_dpr_percent = CG.client_controller.new_options.GetInteger( 'thumbnail_dpr_percent' )
+        thumbnail_scale_type = self._controller.new_options.get_integer( 'thumbnail_scale_type' )
+        thumbnail_dpr_percent = CG.client_controller.new_options.get_integer( 'thumbnail_dpr_percent' )
         
         target_resolution = HydrusImageHandling.get_thumbnail_resolution( ( width, height ), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
         
-        percentage_in = self._controller.new_options.GetInteger( 'video_thumbnail_percentage_in' )
+        percentage_in = self._controller.new_options.get_integer( 'video_thumbnail_percentage_in' )
         
         try:
             
@@ -801,9 +801,9 @@ class ClientFilesManager( object ):
     
     def _HandleCriticalDriveError( self ):
         
-        self._controller.new_options.SetBoolean( 'pause_import_folders_sync', True )
-        self._controller.new_options.SetBoolean( 'pause_subs_sync', True )
-        self._controller.new_options.SetBoolean( 'pause_all_file_queues', True )
+        self._controller.new_options.set_boolean( 'pause_import_folders_sync', True )
+        self._controller.new_options.set_boolean( 'pause_subs_sync', True )
+        self._controller.new_options.set_boolean( 'pause_all_file_queues', True )
         
         HydrusData.show_text( 'A critical drive error has occurred. All importers--subscriptions, import folders, and paged file import queues--have been paused. Once the issue is clear, restart the client and resume your imports under the file and network menus!' )
         
@@ -864,7 +864,7 @@ class ClientFilesManager( object ):
     
     def _WaitOnWakeup( self ):
         
-        if CG.client_controller.new_options.GetBoolean( 'file_system_waits_on_wakeup' ):
+        if CG.client_controller.new_options.get_boolean( 'file_system_waits_on_wakeup' ):
             
             while CG.client_controller.just_woke_from_sleep():
                 
@@ -1226,12 +1226,12 @@ class ClientFilesManager( object ):
             return
             
         
-        if not self._controller.currently_idle() and not self._controller.new_options.GetBoolean( 'deferred_file_deletes_in_normal_time' ):
+        if not self._controller.currently_idle() and not self._controller.new_options.get_boolean( 'deferred_file_deletes_in_normal_time' ):
             
             return
             
         
-        wait_period = HydrusTime.secondise_ms_float( self._controller.new_options.GetInteger( 'ms_to_wait_between_physical_file_deletes' ) )
+        wait_period = HydrusTime.secondise_ms_float( self._controller.new_options.get_integer( 'ms_to_wait_between_physical_file_deletes' ) )
         
         num_files_deleted = 0
         num_thumbnails_deleted = 0
@@ -1584,8 +1584,8 @@ class ClientFilesManager( object ):
             ( current_width, current_height ) = HydrusImageHandling.get_resolution_numpy( numpy_image )
             
             bounding_dimensions = self._controller.options[ 'thumbnail_dimensions' ]
-            thumbnail_scale_type = self._controller.new_options.GetInteger( 'thumbnail_scale_type' )
-            thumbnail_dpr_percent = CG.client_controller.new_options.GetInteger( 'thumbnail_dpr_percent' )
+            thumbnail_scale_type = self._controller.new_options.get_integer( 'thumbnail_scale_type' )
+            thumbnail_dpr_percent = CG.client_controller.new_options.get_integer( 'thumbnail_dpr_percent' )
             
             ( expected_width, expected_height ) = HydrusImageHandling.get_thumbnail_resolution( (media_width, media_height), bounding_dimensions, thumbnail_scale_type, thumbnail_dpr_percent )
             

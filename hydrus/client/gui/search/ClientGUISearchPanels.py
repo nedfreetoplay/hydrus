@@ -216,7 +216,7 @@ class EditFavouriteSearchesPanel( ClientGUIScrolledPanels.EditPanel ):
             foldername = None
             name = 'new favourite search'
             
-            default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+            default_location_context = CG.client_controller.new_options.get_default_local_location_context()
             
             file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = default_location_context )
             

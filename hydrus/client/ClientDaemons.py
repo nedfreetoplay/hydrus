@@ -13,7 +13,7 @@ def daemon_check_export_folders():
     
     controller = CG.client_controller
     
-    if not controller.new_options.GetBoolean( 'pause_export_folders_sync' ):
+    if not controller.new_options.get_boolean( 'pause_export_folders_sync' ):
         
         HG.export_folders_running = True
         
@@ -25,7 +25,7 @@ def daemon_check_export_folders():
                 
                 export_folder = controller.read( 'serialisable_named', HydrusSerialisable.SERIALISABLE_TYPE_EXPORT_FOLDER, name )
                 
-                if controller.new_options.GetBoolean( 'pause_export_folders_sync' ) or HydrusThreading.is_thread_shutting_down():
+                if controller.new_options.get_boolean( 'pause_export_folders_sync' ) or HydrusThreading.is_thread_shutting_down():
                     
                     break
                     

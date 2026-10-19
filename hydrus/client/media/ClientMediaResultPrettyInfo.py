@@ -110,7 +110,7 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
     
     if has_audio:
         
-        audio_label = CG.client_controller.new_options.GetString( 'has_audio_label' )
+        audio_label = CG.client_controller.new_options.get_string( 'has_audio_label' )
         
         info_string += f', {audio_label}'
         
@@ -189,9 +189,9 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
     
     if len( current_local_file_services ) > 0:
         
-        state_local_service_timestamp = not only_interesting_lines or CG.client_controller.new_options.GetBoolean( 'file_info_line_consider_file_services_import_times_interesting' )
+        state_local_service_timestamp = not only_interesting_lines or CG.client_controller.new_options.get_boolean( 'file_info_line_consider_file_services_import_times_interesting' )
         
-        line_is_interesting = CG.client_controller.new_options.GetBoolean( 'file_info_line_consider_file_services_interesting' )
+        line_is_interesting = CG.client_controller.new_options.get_boolean( 'file_info_line_consider_file_services_interesting' )
         
         for local_file_service in current_local_file_services:
             
@@ -252,7 +252,7 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
     
     if locations_manager.IsTrashed():
         
-        state_trash_timestamp = not only_interesting_lines or CG.client_controller.new_options.GetBoolean( 'file_info_line_consider_trash_time_interesting' )
+        state_trash_timestamp = not only_interesting_lines or CG.client_controller.new_options.get_boolean( 'file_info_line_consider_trash_time_interesting' )
         
         if state_trash_timestamp:
             
@@ -265,7 +265,7 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
             tooltip = 'in the trash'
             
         
-        state_deletion_reason = not only_interesting_lines or CG.client_controller.new_options.GetBoolean( 'file_info_line_consider_trash_reason_interesting' )
+        state_deletion_reason = not only_interesting_lines or CG.client_controller.new_options.get_boolean( 'file_info_line_consider_trash_reason_interesting' )
         
         if state_deletion_reason:
             
@@ -278,9 +278,9 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
     
     #
     
-    state_remote_service_timestamp = not only_interesting_lines or CG.client_controller.new_options.GetBoolean( 'file_info_line_consider_file_services_import_times_interesting' )
+    state_remote_service_timestamp = not only_interesting_lines or CG.client_controller.new_options.get_boolean( 'file_info_line_consider_file_services_import_times_interesting' )
     
-    line_is_interesting = CG.client_controller.new_options.GetBoolean( 'file_info_line_consider_file_services_interesting' )
+    line_is_interesting = CG.client_controller.new_options.get_boolean( 'file_info_line_consider_file_services_interesting' )
     
     for service_key in current_service_keys.intersection( CG.client_controller.services_manager.GetServiceKeys( HC.REMOTE_FILE_SERVICES ) ):
         
@@ -328,7 +328,7 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
     
     if file_modified_timestamp_ms is not None:
         
-        if CG.client_controller.new_options.GetBoolean( 'hide_uninteresting_modified_time' ):
+        if CG.client_controller.new_options.get_boolean( 'hide_uninteresting_modified_time' ):
             
             # if we haven't already printed this timestamp somewhere
             line_is_interesting = False not in ( timestamp_ms_is_interesting( timestamp_ms, file_modified_timestamp_ms ) for timestamp_ms in seen_local_file_service_timestamps_ms )
@@ -378,7 +378,7 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
     
     if CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY in current_service_keys and not locations_manager.inbox:
         
-        state_archived_timestamp = not only_interesting_lines or CG.client_controller.new_options.GetBoolean( 'file_info_line_consider_archived_time_interesting' )
+        state_archived_timestamp = not only_interesting_lines or CG.client_controller.new_options.get_boolean( 'file_info_line_consider_archived_time_interesting' )
         
         archived_timestamp_ms = times_manager.GetArchivedTimestampMS()
         
@@ -409,7 +409,7 @@ def GetPrettyMediaResultInfoLines( media_result: ClientMediaResult.MediaResult, 
             tooltip = f'archived: {HydrusTime.timestamp_to_pretty_time_delta( HydrusTime.secondise_ms( archived_timestamp_ms ), reverse_iso_delta_setting = True )}'
             
         
-        line_is_interesting = CG.client_controller.new_options.GetBoolean( 'file_info_line_consider_archived_interesting' )
+        line_is_interesting = CG.client_controller.new_options.get_boolean( 'file_info_line_consider_archived_interesting' )
         
         pretty_info_lines.append( ClientMediaResultPrettyInfoObjects.PrettyMediaResultInfoLine( line, line_is_interesting, tooltip = tooltip ) )
         

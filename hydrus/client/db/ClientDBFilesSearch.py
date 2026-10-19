@@ -3176,7 +3176,7 @@ class ClientDBFilesQuery( ClientDBModule.ClientDBModule ):
                     
                 elif sort_data in ( CC.SORT_FILES_BY_MEDIA_VIEWS, CC.SORT_FILES_BY_MEDIA_VIEWTIME ):
                     
-                    desired_canvas_types = CG.client_controller.new_options.GetIntegerList( 'file_viewing_stats_interesting_canvas_types' )
+                    desired_canvas_types = CG.client_controller.new_options.get_integer_list( 'file_viewing_stats_interesting_canvas_types' )
                     
                     desired_canvas_types_splayed = HydrusLists.splay_list_for_db( desired_canvas_types )
                     

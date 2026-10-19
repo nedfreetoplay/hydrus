@@ -71,7 +71,7 @@ class TagSuggestionsPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         self._suggested_most_used_dict = {}
         
-        default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+        default_location_context = CG.client_controller.new_options.get_default_local_location_context()
         
         self._suggested_most_used_input = ClientGUIACDropdown.AutoCompleteDropdownTagsWrite( suggested_tags_favourites_panel, self._suggested_most_used.AddTags, default_location_context, CC.COMBINED_TAG_SERVICE_KEY, show_paste_button = True )
         

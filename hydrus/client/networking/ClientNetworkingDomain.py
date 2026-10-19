@@ -852,7 +852,7 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
     
     def ConvertURLsToMediaViewerTuples( self, urls ):
         
-        show_unmatched_urls_in_media_viewer = CG.client_controller.new_options.GetBoolean( 'show_unmatched_urls_in_media_viewer' )
+        show_unmatched_urls_in_media_viewer = CG.client_controller.new_options.get_boolean( 'show_unmatched_urls_in_media_viewer' )
         
         url_tuples = []
         unmatched_url_tuples = []
@@ -1061,14 +1061,14 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
                 
                 if domain in self._domains_to_network_infrastructure_errors:
                     
-                    number_of_errors = CG.client_controller.new_options.GetInteger( 'domain_network_infrastructure_error_number' )
+                    number_of_errors = CG.client_controller.new_options.get_integer( 'domain_network_infrastructure_error_number' )
                     
                     if number_of_errors == 0:
                         
                         return True
                         
                     
-                    error_time_delta = CG.client_controller.new_options.GetInteger( 'domain_network_infrastructure_error_time_delta' )
+                    error_time_delta = CG.client_controller.new_options.get_integer( 'domain_network_infrastructure_error_time_delta' )
                     
                     network_infrastructure_errors = self._domains_to_network_infrastructure_errors[ domain ]
                     
@@ -1140,8 +1140,8 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
         
         with self._lock:
             
-            gug_key = CG.client_controller.new_options.GetKey( 'default_gug_key' )
-            gug_name = CG.client_controller.new_options.GetString( 'default_gug_name' )
+            gug_key = CG.client_controller.new_options.get_key( 'default_gug_key' )
+            gug_name = CG.client_controller.new_options.get_string( 'default_gug_name' )
             
             if gug_name == '':
                 
@@ -1798,8 +1798,8 @@ class NetworkDomainManager( HydrusSerialisable.SerialisableBase ):
                 ( gug_key, gug_name ) = gug_key_and_name
                 
             
-            CG.client_controller.new_options.SetKey( 'default_gug_key', gug_key )
-            CG.client_controller.new_options.SetString( 'default_gug_name', gug_name )
+            CG.client_controller.new_options.set_key( 'default_gug_key', gug_key )
+            CG.client_controller.new_options.set_string( 'default_gug_name', gug_name )
             
         
     

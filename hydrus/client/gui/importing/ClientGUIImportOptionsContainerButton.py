@@ -83,7 +83,7 @@ class SpecificImportOptionsContainerButton( ClientGUICommon.ButtonWithMenuArrow 
     
     def _LoadFavouriteCustom( self, loaded_import_options_container: ImportOptionsContainer.ImportOptionsContainer ):
         
-        simple_mode = CG.client_controller.new_options.GetBoolean( 'import_options_simple_mode' )
+        simple_mode = CG.client_controller.new_options.get_boolean( 'import_options_simple_mode' )
         
         try:
             
@@ -130,7 +130,7 @@ class SpecificImportOptionsContainerButton( ClientGUICommon.ButtonWithMenuArrow 
             return
             
         
-        simple_mode = CG.client_controller.new_options.GetBoolean( 'import_options_simple_mode' )
+        simple_mode = CG.client_controller.new_options.get_boolean( 'import_options_simple_mode' )
         
         try:
             

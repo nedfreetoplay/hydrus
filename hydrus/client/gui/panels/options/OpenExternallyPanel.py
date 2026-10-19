@@ -117,7 +117,7 @@ class OpenExternallyPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             self._EditLaunchURLIdAndName
         )
         
-        launch_url_executable_ids_and_names = self._new_options.GetLaunchURLExecutableIdsAndNames()
+        launch_url_executable_ids_and_names = self._new_options.get_launch_url_executable_ids_and_names()
         
         self._launch_url_executable_ids_and_names.SetData( launch_url_executable_ids_and_names )
         
@@ -137,7 +137,7 @@ class OpenExternallyPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         self._mime_launch_listctrl_panel.AddButton( 'edit', self._EditMimeLaunch, enabled_only_on_single_selection = True )
         self._mime_launch_listctrl_panel.AddDeleteButton( enabled_check_func = self._GeneralFileIsNotSelected )
         
-        mimes_to_launch_file_executable_ids_and_names = self._new_options.GetMimesToLaunchFileExecutableIdsAndNames()
+        mimes_to_launch_file_executable_ids_and_names = self._new_options.get_mimes_to_launch_file_executable_ids_and_names()
         
         self._mime_launch_listctrl.AddDatas( list( mimes_to_launch_file_executable_ids_and_names.items() ) )
         
@@ -372,7 +372,7 @@ class OpenExternallyPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
         
         launch_url_executable_ids_and_names = executable_manager.WashIdsAndNames( ClientExecutablePipelines.EXECUTABLE_PIPELINE_TYPE_OPEN_EXTERNALLY_SINGLE_URL, launch_url_executable_ids_and_names )
         
-        self._new_options.SetLaunchURLExecutableIdsAndNames( launch_url_executable_ids_and_names )
+        self._new_options.set_launch_url_executable_ids_and_names( launch_url_executable_ids_and_names )
         
         mimes_to_launch_file_executable_ids_and_names = dict()
         
@@ -393,6 +393,6 @@ class OpenExternallyPanel( ClientGUIOptionsPanelBase.OptionsPagePanel ):
             mimes_to_launch_file_executable_ids_and_names[ HC.GENERAL_FILE ] = [ executable_manager.GetOSLaunchFileCallable().GetIdAndName() ]
             
         
-        self._new_options.SetMimesToLaunchFileExecutableIdsAndNames( mimes_to_launch_file_executable_ids_and_names )
+        self._new_options.set_mimes_to_launch_file_executable_ids_and_names( mimes_to_launch_file_executable_ids_and_names )
         
     

@@ -429,7 +429,7 @@ def TLWOrChildIsActive( win ):
 
 def UpdateAppDisplayName():
     
-    app_display_name = CG.client_controller.new_options.GetString( 'app_display_name' )
+    app_display_name = CG.client_controller.new_options.get_string( 'app_display_name' )
     
     typing.cast( QW.QApplication, QW.QApplication.instance() ).setApplicationDisplayName( '{} {}'.format( app_display_name, HC.SOFTWARE_VERSION ) )
     

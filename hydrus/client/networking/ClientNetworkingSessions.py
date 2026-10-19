@@ -153,7 +153,7 @@ class NetworkSessionManagerSessionContainer( HydrusSerialisable.SerialisableBase
         # TODO: This is pretty horrible, so fix it so this container can be in an 'invalid' state with a reason, and then in this curl cffi situation we set that.
         # Network UI can block DomainOK on an invalid session with reason yeah
         
-        curl_cffi_definition = CG.client_controller.new_options.GetNoneableString( 'curl_cffi_definition' )
+        curl_cffi_definition = CG.client_controller.new_options.get_noneable_string( 'curl_cffi_definition' )
         
         if curl_cffi_definition is not None and not ClientNetworkingCurlCFFI.CURL_CFFI_OK:
             
@@ -170,7 +170,7 @@ class NetworkSessionManagerSessionContainer( HydrusSerialisable.SerialisableBase
             
             curl_cffi_definition = None
             
-            CG.client_controller.new_options.SetNoneableString( 'curl_cffi_definition', curl_cffi_definition )
+            CG.client_controller.new_options.set_noneable_string( 'curl_cffi_definition', curl_cffi_definition )
             
         
         if self.network_context.context_type == CC.NETWORK_CONTEXT_HYDRUS:
@@ -424,9 +424,9 @@ class NetworkSessionManager( HydrusSerialisable.SerialisableBase ):
         
         self._proxies_dict = {}
         
-        http_proxy = CG.client_controller.new_options.GetNoneableString( 'http_proxy' )
-        https_proxy = CG.client_controller.new_options.GetNoneableString( 'https_proxy' )
-        no_proxy = CG.client_controller.new_options.GetNoneableString( 'no_proxy' )
+        http_proxy = CG.client_controller.new_options.get_noneable_string( 'http_proxy' )
+        https_proxy = CG.client_controller.new_options.get_noneable_string( 'https_proxy' )
+        no_proxy = CG.client_controller.new_options.get_noneable_string( 'no_proxy' )
         
         if http_proxy is not None:
             
@@ -525,7 +525,7 @@ class NetworkSessionManager( HydrusSerialisable.SerialisableBase ):
             
             #
             
-            if not CG.client_controller.new_options.GetBoolean( 'verify_regular_https' ):
+            if not CG.client_controller.new_options.get_boolean( 'verify_regular_https' ):
                 
                 session.verify = False
                 

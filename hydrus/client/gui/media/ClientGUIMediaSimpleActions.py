@@ -402,7 +402,7 @@ def ShowDuplicatesInNewPage( location_context: ClientLocation.LocationContext, h
 
 def ShowFilesInNewDuplicatesFilterPage( hashes: collections.abc.Collection[ bytes ], location_context: ClientLocation.LocationContext ):
     
-    activate_window = CG.client_controller.new_options.GetBoolean( 'activate_window_on_tag_search_page_activation' )
+    activate_window = CG.client_controller.new_options.get_boolean( 'activate_window_on_tag_search_page_activation' )
     
     predicates = [ ClientSearchPredicate.Predicate( predicate_type = ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_HASH, value = ( tuple( hashes ), 'sha256' ) ) ]
     

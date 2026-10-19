@@ -37,14 +37,14 @@ def GetDuplicateComparisonStatementsFast( shown_media_result: ClientMediaResult.
     
     new_options = CG.client_controller.new_options
     
-    duplicate_comparison_score_higher_filesize = new_options.GetInteger( 'duplicate_comparison_score_higher_filesize' )
-    duplicate_comparison_score_much_higher_filesize = new_options.GetInteger( 'duplicate_comparison_score_much_higher_filesize' )
-    duplicate_comparison_score_higher_resolution = new_options.GetInteger( 'duplicate_comparison_score_higher_resolution' )
-    duplicate_comparison_score_much_higher_resolution = new_options.GetInteger( 'duplicate_comparison_score_much_higher_resolution' )
-    duplicate_comparison_score_more_tags = new_options.GetInteger( 'duplicate_comparison_score_more_tags' )
-    duplicate_comparison_score_older = new_options.GetInteger( 'duplicate_comparison_score_older' )
-    duplicate_comparison_score_nicer_ratio = new_options.GetInteger( 'duplicate_comparison_score_nicer_ratio' )
-    duplicate_comparison_score_has_audio = new_options.GetInteger( 'duplicate_comparison_score_has_audio' )
+    duplicate_comparison_score_higher_filesize = new_options.get_integer( 'duplicate_comparison_score_higher_filesize' )
+    duplicate_comparison_score_much_higher_filesize = new_options.get_integer( 'duplicate_comparison_score_much_higher_filesize' )
+    duplicate_comparison_score_higher_resolution = new_options.get_integer( 'duplicate_comparison_score_higher_resolution' )
+    duplicate_comparison_score_much_higher_resolution = new_options.get_integer( 'duplicate_comparison_score_much_higher_resolution' )
+    duplicate_comparison_score_more_tags = new_options.get_integer( 'duplicate_comparison_score_more_tags' )
+    duplicate_comparison_score_older = new_options.get_integer( 'duplicate_comparison_score_older' )
+    duplicate_comparison_score_nicer_ratio = new_options.get_integer( 'duplicate_comparison_score_nicer_ratio' )
+    duplicate_comparison_score_has_audio = new_options.get_integer( 'duplicate_comparison_score_has_audio' )
     
     #
     
@@ -683,8 +683,8 @@ def GetDuplicateComparisonStatementsSlow( shown_media_result: ClientMediaResult.
     s_hash = shown_media_result.GetHash()
     c_hash = comparison_media_result.GetHash()
     
-    duplicate_comparison_score_higher_jpeg_quality = new_options.GetInteger( 'duplicate_comparison_score_higher_jpeg_quality' )
-    duplicate_comparison_score_much_higher_jpeg_quality = new_options.GetInteger( 'duplicate_comparison_score_much_higher_jpeg_quality' )
+    duplicate_comparison_score_higher_jpeg_quality = new_options.get_integer( 'duplicate_comparison_score_higher_jpeg_quality' )
+    duplicate_comparison_score_much_higher_jpeg_quality = new_options.get_integer( 'duplicate_comparison_score_much_higher_jpeg_quality' )
     
     statements_and_scores = {}
     

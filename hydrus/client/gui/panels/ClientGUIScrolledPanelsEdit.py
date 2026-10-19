@@ -75,9 +75,9 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
         
         selection_success = False
         
-        if CG.client_controller.new_options.GetBoolean( 'remember_last_advanced_file_deletion_special_action' ):
+        if CG.client_controller.new_options.get_boolean( 'remember_last_advanced_file_deletion_special_action' ):
             
-            last_advanced_file_deletion_special_action = CG.client_controller.new_options.GetNoneableString( 'last_advanced_file_deletion_special_action' )
+            last_advanced_file_deletion_special_action = CG.client_controller.new_options.get_noneable_string( 'last_advanced_file_deletion_special_action' )
             
             selection_success = self._TryToSelectAction( last_advanced_file_deletion_special_action )
             
@@ -96,7 +96,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
         
         forced_existing_reason_selection_index = None
         
-        advanced_file_deletion_reasons = CG.client_controller.new_options.GetStringList( 'advanced_file_deletion_reasons' )
+        advanced_file_deletion_reasons = CG.client_controller.new_options.get_string_list( 'advanced_file_deletion_reasons' )
         
         general_selection_index = 0 # default, top row
         
@@ -119,9 +119,9 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
                 
             
         
-        if CG.client_controller.new_options.GetBoolean( 'remember_last_advanced_file_deletion_reason' ):
+        if CG.client_controller.new_options.get_boolean( 'remember_last_advanced_file_deletion_reason' ):
             
-            last_advanced_file_deletion_reason = CG.client_controller.new_options.GetNoneableString( 'last_advanced_file_deletion_reason' )
+            last_advanced_file_deletion_reason = CG.client_controller.new_options.get_noneable_string( 'last_advanced_file_deletion_reason' )
             
         else:
             
@@ -224,7 +224,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
             self._simple_description.hide()
             
         
-        if not CG.client_controller.new_options.GetBoolean( 'use_advanced_file_deletion_dialog' ):
+        if not CG.client_controller.new_options.get_boolean( 'use_advanced_file_deletion_dialog' ):
             
             self._reason_panel.hide()
             self._reason_panel.setEnabled( False )
@@ -325,7 +325,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _InitialisePermittedActionChoices( self ):
         
-        we_are_advanced_delete_dialog = CG.client_controller.new_options.GetBoolean( 'use_advanced_file_deletion_dialog' )
+        we_are_advanced_delete_dialog = CG.client_controller.new_options.get_boolean( 'use_advanced_file_deletion_dialog' )
         
         possible_file_service_keys = []
         
@@ -530,7 +530,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
             self._question_is_already_resolved = True
             
         
-        if CG.client_controller.new_options.GetBoolean( 'use_advanced_file_deletion_dialog' ):
+        if CG.client_controller.new_options.get_boolean( 'use_advanced_file_deletion_dialog' ):
             
             hashes = [ m.GetHash() for m in self._media if CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY in m.GetLocationsManager().GetCurrent() if PhysicalDeleteLockOK( CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY, m.GetMediaResult() ) ]
             
@@ -683,7 +683,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            previous_last_advanced_file_deletion_special_action = CG.client_controller.new_options.GetNoneableString( 'last_advanced_file_deletion_special_action' )
+            previous_last_advanced_file_deletion_special_action = CG.client_controller.new_options.get_noneable_string( 'last_advanced_file_deletion_special_action' )
             
             # if there is nothing to do but physically delete, then we don't want to overwrite an existing 'use service' setting
             # HACKMODE ALERT. len() == 64 is a stupid test for 'looks like a service key mate'
@@ -695,12 +695,12 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
             last_advanced_file_deletion_special_action = file_service_key
             
         
-        if save_action and CG.client_controller.new_options.GetBoolean( 'remember_last_advanced_file_deletion_special_action' ):
+        if save_action and CG.client_controller.new_options.get_boolean( 'remember_last_advanced_file_deletion_special_action' ):
             
-            CG.client_controller.new_options.SetNoneableString( 'last_advanced_file_deletion_special_action', last_advanced_file_deletion_special_action )
+            CG.client_controller.new_options.set_noneable_string( 'last_advanced_file_deletion_special_action', last_advanced_file_deletion_special_action )
             
         
-        if save_reason and CG.client_controller.new_options.GetBoolean( 'remember_last_advanced_file_deletion_reason' ):
+        if save_reason and CG.client_controller.new_options.get_boolean( 'remember_last_advanced_file_deletion_reason' ):
             
             reasons_ok = self._reason_radio.isVisible() and self._reason_radio.isEnabled()
             
@@ -717,7 +717,7 @@ class EditDeleteFilesPanel( ClientGUIScrolledPanels.EditPanel ):
                     last_advanced_file_deletion_reason = reason
                     
                 
-                CG.client_controller.new_options.SetNoneableString( 'last_advanced_file_deletion_reason', last_advanced_file_deletion_reason )
+                CG.client_controller.new_options.set_noneable_string( 'last_advanced_file_deletion_reason', last_advanced_file_deletion_reason )
                 
             
         
@@ -1022,7 +1022,7 @@ class EditFileNotesPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolle
         
         ClientGUIFunctions.SetFocusLater( control )
         
-        if CG.client_controller.new_options.GetBoolean( 'start_note_editing_at_end' ):
+        if CG.client_controller.new_options.get_boolean( 'start_note_editing_at_end' ):
             
             CG.client_controller.call_after_qt_safe( control, control.moveCursor, QG.QTextCursor.MoveOperation.End )
             
@@ -1036,7 +1036,7 @@ class EditFileNotesPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolle
     
     def _Copy( self ):
         
-        if CG.client_controller.new_options.GetBoolean( 'copy_notes_dialog_copy_all' ):
+        if CG.client_controller.new_options.get_boolean( 'copy_notes_dialog_copy_all' ):
             
             ( names_to_notes, deletee_names ) = self.GetValue()
             
@@ -1062,7 +1062,7 @@ class EditFileNotesPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolle
             return
             
         
-        if CG.client_controller.new_options.GetBoolean( 'copy_notes_dialog_copy_json' ):
+        if CG.client_controller.new_options.get_boolean( 'copy_notes_dialog_copy_json' ):
             
             text = json.dumps( names_to_notes )
             

@@ -11,7 +11,7 @@ def OpenExternallySingleFileDefault( win: QW.QWidget, media_result: ClientMediaR
     
     mime = media_result.GetMime()
     
-    ids_and_names = CG.client_controller.new_options.GetLaunchFileExecutableIdsAndNames( mime )
+    ids_and_names = CG.client_controller.new_options.get_launch_file_executable_ids_and_names( mime )
     
     if len( ids_and_names ) == 0:
         
@@ -65,7 +65,7 @@ def OpenExternallyPathAsURL( win: QW.QWidget, path: str ) -> bool:
 
 def OpenExternallyURLDefault( win: QW.QWidget, url: str ) -> bool:
     
-    ids_and_names = CG.client_controller.new_options.GetLaunchURLExecutableIdsAndNames()
+    ids_and_names = CG.client_controller.new_options.get_launch_url_executable_ids_and_names()
     
     if len( ids_and_names ) == 0:
         

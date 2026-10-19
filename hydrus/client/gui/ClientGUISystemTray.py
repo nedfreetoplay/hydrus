@@ -54,7 +54,7 @@ class ClientSystemTrayIcon( QW.QSystemTrayIcon ):
     
     def _FlipSimpleBool( self, name ):
         
-        CG.client_controller.new_options.FlipBoolean( name )
+        CG.client_controller.new_options.flip_boolean( name )
         
         self._UpdateSimpleBooleanMenuItemChecks()
         
@@ -106,7 +106,7 @@ class ClientSystemTrayIcon( QW.QSystemTrayIcon ):
         
         if self._network_traffic_menu_item is not None:
             
-            self._network_traffic_menu_item.setChecked( CG.client_controller.new_options.GetBoolean( 'pause_all_new_network_traffic' ) )
+            self._network_traffic_menu_item.setChecked( CG.client_controller.new_options.get_boolean( 'pause_all_new_network_traffic' ) )
             
         
     
@@ -144,17 +144,17 @@ class ClientSystemTrayIcon( QW.QSystemTrayIcon ):
         
         if self._minimise_client_to_system_tray_menu_item is not None:
             
-            self._minimise_client_to_system_tray_menu_item.setChecked( CG.client_controller.new_options.GetBoolean( 'minimise_client_to_system_tray' ) )
+            self._minimise_client_to_system_tray_menu_item.setChecked( CG.client_controller.new_options.get_boolean( 'minimise_client_to_system_tray' ) )
             
         
         if self._close_client_to_system_tray_menu_item is not None:
             
-            self._close_client_to_system_tray_menu_item.setChecked( CG.client_controller.new_options.GetBoolean( 'close_client_to_system_tray' ) )
+            self._close_client_to_system_tray_menu_item.setChecked( CG.client_controller.new_options.get_boolean( 'close_client_to_system_tray' ) )
             
         
         if self._start_client_in_system_tray_menu_item is not None:
             
-            self._start_client_in_system_tray_menu_item.setChecked( CG.client_controller.new_options.GetBoolean( 'start_client_in_system_tray' ) )
+            self._start_client_in_system_tray_menu_item.setChecked( CG.client_controller.new_options.get_boolean( 'start_client_in_system_tray' ) )
             
         
     
@@ -162,22 +162,22 @@ class ClientSystemTrayIcon( QW.QSystemTrayIcon ):
         
         if self._subscriptions_paused_menu_item is not None:
             
-            self._subscriptions_paused_menu_item.setChecked( CG.client_controller.new_options.GetBoolean( 'pause_subs_sync' ) )
+            self._subscriptions_paused_menu_item.setChecked( CG.client_controller.new_options.get_boolean( 'pause_subs_sync' ) )
             
         
     
     def _UpdateTooltip( self ):
         
-        app_display_name = CG.client_controller.new_options.GetString( 'app_display_name' )
+        app_display_name = CG.client_controller.new_options.get_string( 'app_display_name' )
         
         tt = app_display_name
         
-        if CG.client_controller.new_options.GetBoolean( 'pause_all_new_network_traffic' ):
+        if CG.client_controller.new_options.get_boolean( 'pause_all_new_network_traffic' ):
             
             tt = '{} - network traffic paused'.format( tt )
             
         
-        if CG.client_controller.new_options.GetBoolean( 'pause_subs_sync' ):
+        if CG.client_controller.new_options.get_boolean( 'pause_subs_sync' ):
             
             tt = '{} - subscriptions paused'.format( tt )
             

@@ -248,7 +248,7 @@ class NetworkJob( object ):
             return False
             
         
-        max_connection_attempts_allowed = CG.client_controller.new_options.GetInteger( 'max_connection_attempts_allowed' )
+        max_connection_attempts_allowed = CG.client_controller.new_options.get_integer( 'max_connection_attempts_allowed' )
         
         return self._current_connection_attempt_number <= max_connection_attempts_allowed
         
@@ -262,7 +262,7 @@ class NetworkJob( object ):
         
         if self._method == 'GET':
             
-            max_attempts_allowed = CG.client_controller.new_options.GetInteger( 'max_request_attempts_allowed_get' )
+            max_attempts_allowed = CG.client_controller.new_options.get_integer( 'max_request_attempts_allowed_get' )
             
         else:
             
@@ -353,7 +353,7 @@ class NetworkJob( object ):
     
     def _GetTimeouts( self ):
         
-        connect_timeout = CG.client_controller.new_options.GetInteger( 'network_timeout' )
+        connect_timeout = CG.client_controller.new_options.get_integer( 'network_timeout' )
         
         read_timeout = connect_timeout * 6
         
@@ -890,7 +890,7 @@ class NetworkJob( object ):
     
     def _WaitOnConnectionError( self, status_text: str ):
         
-        connection_error_wait_time = CG.client_controller.new_options.GetInteger( 'connection_error_wait_time' )
+        connection_error_wait_time = CG.client_controller.new_options.get_integer( 'connection_error_wait_time' )
         
         self._connection_error_wake_time = HydrusTime.get_now() + ( ( self._current_connection_attempt_number - 1 ) * connection_error_wait_time )
         
@@ -909,7 +909,7 @@ class NetworkJob( object ):
     
     def _WaitOnNetworkTrafficPaused( self, status_text: str ):
         
-        while CG.client_controller.new_options.GetBoolean( 'pause_all_new_network_traffic' ) and not self._IsCancelled():
+        while CG.client_controller.new_options.get_boolean( 'pause_all_new_network_traffic' ) and not self._IsCancelled():
             
             with self._lock:
                 
@@ -935,7 +935,7 @@ class NetworkJob( object ):
         
         if num_seconds_to_wait is None:
             
-            serverside_bandwidth_wait_time = CG.client_controller.new_options.GetInteger( 'serverside_bandwidth_wait_time' )
+            serverside_bandwidth_wait_time = CG.client_controller.new_options.get_integer( 'serverside_bandwidth_wait_time' )
             
             backoff_factor = 1.25
             problem_rating = ( self._current_connection_attempt_number + self._current_request_attempt_number ) - 1

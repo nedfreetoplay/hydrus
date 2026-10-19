@@ -1027,7 +1027,7 @@ class EditServiceTagImportOptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         self._get_tags_checkbox = QW.QCheckBox( 'get tags', tag_parsing_panel )
         
-        if CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+        if CG.client_controller.new_options.get_boolean( 'advanced_mode' ):
             
             message = None
             

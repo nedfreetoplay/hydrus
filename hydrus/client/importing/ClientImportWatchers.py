@@ -45,7 +45,7 @@ class MultipleWatcherImport( HydrusSerialisable.SerialisableBase ):
         
         self._highlighted_watcher_url = None
         
-        self._checker_options = CG.client_controller.new_options.GetDefaultWatcherCheckerOptions()
+        self._checker_options = CG.client_controller.new_options.get_default_watcher_checker_options()
         
         if import_options_container is None:
             
@@ -193,7 +193,7 @@ class MultipleWatcherImport( HydrusSerialisable.SerialisableBase ):
             
             try:
                 
-                checker_options = CG.client_controller.new_options.GetDefaultWatcherCheckerOptions()
+                checker_options = CG.client_controller.new_options.get_default_watcher_checker_options()
                 
                 file_import_options = FileImportOptionsLegacy.FileImportOptionsLegacy()
                 file_import_options.SetIsDefault( True )
@@ -709,7 +709,7 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
         self._external_filterable_tags = set()
         self._external_additional_service_keys_to_tags = ClientTags.ServiceKeysToTags()
         
-        self._checker_options = CG.client_controller.new_options.GetDefaultWatcherCheckerOptions()
+        self._checker_options = CG.client_controller.new_options.get_default_watcher_checker_options()
         
         self._import_options_container = ImportOptionsContainer.ImportOptionsContainer()
         
@@ -845,7 +845,7 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
             
         except HydrusExceptions.NetworkException as e:
             
-            delay = CG.client_controller.new_options.GetInteger( 'downloader_network_error_delay' )
+            delay = CG.client_controller.new_options.get_integer( 'downloader_network_error_delay' )
             
             self._DelayWork( delay, str( e ) )
             
@@ -1907,12 +1907,12 @@ class WatcherImport( HydrusSerialisable.SerialisableBase ):
                 raise HydrusExceptions.VetoException( 'paused' )
                 
             
-            if CG.client_controller.new_options.GetBoolean( 'pause_all_paged_importers' ):
+            if CG.client_controller.new_options.get_boolean( 'pause_all_paged_importers' ):
                 
                 raise HydrusExceptions.VetoException( 'all paged importers are paused! hit network->pause to resume!' )
                 
             
-            if CG.client_controller.new_options.GetBoolean( 'pause_all_watcher_checkers' ):
+            if CG.client_controller.new_options.get_boolean( 'pause_all_watcher_checkers' ):
                 
                 raise HydrusExceptions.VetoException( 'all checkers are paused! hit network->pause to resume!' )
                 

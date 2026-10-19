@@ -109,7 +109,7 @@ class CanvasFrame( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindow
             # WE ARE CLOSING
             
             # only affect media viewer TLWs
-            if CG.client_controller.new_options.GetBoolean( 'save_media_viewer_window_size_and_position_on_close' ):
+            if CG.client_controller.new_options.get_boolean( 'save_media_viewer_window_size_and_position_on_close' ):
                 
                 ClientGUITopLevelWindows.SaveTLWSizeAndPosition( self, self._frame_key )
                 
@@ -250,7 +250,7 @@ class CanvasFrame( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindow
                 
             elif action == CAC.SIMPLE_GLOBAL_FORCE_ANIMATION_SCANBAR_SHOW:
                 
-                CG.client_controller.new_options.FlipBoolean( 'force_animation_scanbar_show' )
+                CG.client_controller.new_options.flip_boolean( 'force_animation_scanbar_show' )
                 
             else:
                 

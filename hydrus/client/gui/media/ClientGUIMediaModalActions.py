@@ -268,7 +268,7 @@ def CopyHashesToClipboard( win: QW.QWidget, hash_type: str, medias: collections.
             text_lines = desired_hashes
             
         
-        if CG.client_controller.new_options.GetBoolean( 'prefix_hash_when_copying' ):
+        if CG.client_controller.new_options.get_boolean( 'prefix_hash_when_copying' ):
             
             text_lines = [ '{}:{}'.format( hash_type, hex_hash ) for hex_hash in text_lines ]
             
@@ -383,7 +383,7 @@ def EditDuplicateContentMergeOptions( win: QW.QWidget, duplicate_type: int ):
     
     new_options = CG.client_controller.new_options
     
-    duplicate_content_merge_options = new_options.GetDuplicateContentMergeOptions( duplicate_type )
+    duplicate_content_merge_options = new_options.get_duplicate_content_merge_options( duplicate_type )
     
     with ClientGUITopLevelWindowsPanels.DialogEdit( win, 'edit duplicate merge options' ) as dlg:
         
@@ -399,7 +399,7 @@ def EditDuplicateContentMergeOptions( win: QW.QWidget, duplicate_type: int ):
             
             duplicate_content_merge_options = ctrl.GetValue()
             
-            new_options.SetDuplicateContentMergeOptions( duplicate_type, duplicate_content_merge_options )
+            new_options.set_duplicate_content_merge_options( duplicate_type, duplicate_content_merge_options )
             
         
     
@@ -541,7 +541,7 @@ def GetContentApplicationCommandFromInteractiveContentCommand( win: QW.QWidget, 
     
     service_type = service.get_service_type()
     service_name = CG.client_controller.services_manager.GetNameSafe( service_key )
-    suggestions_user_opt = CG.client_controller.new_options.GetNoneableInteger( 'num_recent_tags_in_quick_dialog' )
+    suggestions_user_opt = CG.client_controller.new_options.get_noneable_integer( 'num_recent_tags_in_quick_dialog' )
     
     if service_type in HC.REAL_TAG_SERVICES:
         
@@ -929,12 +929,12 @@ def MoveOrDuplicateLocalFiles( win: QW.QWidget, dest_service_key: bytes, action:
     
     ( local_duplicable_to_file_service_keys, local_moveable_from_and_to_file_service_keys, local_mergable_from_and_to_file_service_keys ) = ClientGUIMediaSimpleActions.GetLocalFileActionServiceKeys( applicable_media )
     
-    do_yes_no = CG.client_controller.new_options.GetBoolean( 'confirm_multiple_local_file_services_copy' )
+    do_yes_no = CG.client_controller.new_options.get_boolean( 'confirm_multiple_local_file_services_copy' )
     yes_no_text = 'Add {} files to {}?'.format( HydrusNumbers.to_human_int( len( applicable_media ) ), dest_service_name )
     
     if action in ( HC.CONTENT_UPDATE_MOVE, HC.CONTENT_UPDATE_MOVE_MERGE ):
         
-        do_yes_no = CG.client_controller.new_options.GetBoolean( 'confirm_multiple_local_file_services_move' )
+        do_yes_no = CG.client_controller.new_options.get_boolean( 'confirm_multiple_local_file_services_move' )
         
         if action == HC.CONTENT_UPDATE_MOVE:
             

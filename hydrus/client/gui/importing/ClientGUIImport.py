@@ -499,7 +499,7 @@ class FilenameTaggingOptionsPanel( QW.QWidget ):
             
             self._tags = ClientGUIListBoxes.ListBoxTagsStringsAddRemove( self._tags_panel, self._service_key, tag_display_type = ClientTags.TAG_DISPLAY_STORAGE )
             
-            default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+            default_location_context = CG.client_controller.new_options.get_default_local_location_context()
             
             self._tag_autocomplete_all = ClientGUIACDropdown.AutoCompleteDropdownTagsWrite( self._tags_panel, self.EnterTags, default_location_context, service_key, show_paste_button = True )
             
@@ -856,7 +856,7 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
         
         services = CG.client_controller.services_manager.GetServices( HC.REAL_TAG_SERVICES )
         
-        default_tag_service_key = CG.client_controller.new_options.GetKey( 'default_tag_service_tab' )
+        default_tag_service_key = CG.client_controller.new_options.get_key( 'default_tag_service_tab' )
         
         for service in services:
             
@@ -899,13 +899,13 @@ class EditLocalImportFilenameTaggingPanel( ClientGUIScrolledPanels.EditPanel ):
             return
             
         
-        if CG.client_controller.new_options.GetBoolean( 'save_default_tag_service_tab_on_change' ):
+        if CG.client_controller.new_options.get_boolean( 'save_default_tag_service_tab_on_change' ):
             
             current_page: EditLocalImportFilenameTaggingPanel._FilenameTaggingOptionsPanel = self._notebook.currentWidget()
             
             if current_page in self._filename_tagging_option_pages:
                 
-                CG.client_controller.new_options.SetKey( 'default_tag_service_tab', current_page.GetServiceKey() )
+                CG.client_controller.new_options.set_key( 'default_tag_service_tab', current_page.GetServiceKey() )
                 
             
         

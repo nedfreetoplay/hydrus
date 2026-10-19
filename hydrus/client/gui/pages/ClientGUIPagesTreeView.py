@@ -154,11 +154,11 @@ class TabBar( QW.QTabBar ):
                 
                 if shift_down:
                     
-                    do_navigate = CG.client_controller.new_options.GetBoolean( 'page_drag_change_tab_with_shift' )
+                    do_navigate = CG.client_controller.new_options.get_boolean( 'page_drag_change_tab_with_shift' )
                     
                 else:
                     
-                    do_navigate = CG.client_controller.new_options.GetBoolean( 'page_drag_change_tab_normally' )
+                    do_navigate = CG.client_controller.new_options.get_boolean( 'page_drag_change_tab_normally' )
                     
                 
                 if do_navigate:
@@ -194,7 +194,7 @@ class TabBar( QW.QTabBar ):
         
         try:
             
-            if CG.client_controller.new_options.GetBoolean( 'wheel_scrolls_tab_bar' ):
+            if CG.client_controller.new_options.get_boolean( 'wheel_scrolls_tab_bar' ):
                 
                 children = self.children()
                 
@@ -340,7 +340,7 @@ class TabWidgetWithDnD( QW.QTabWidget ):
         
         mouse_is_over_actual_page = self.currentWidget() and self.currentWidget().rect().contains( self.currentWidget().mapFromGlobal( self.mapToGlobal( e.position().toPoint() ) ) )
         
-        if mouse_is_over_actual_page or CG.client_controller.new_options.GetBoolean( 'disable_page_tab_dnd' ):
+        if mouse_is_over_actual_page or CG.client_controller.new_options.get_boolean( 'disable_page_tab_dnd' ):
             
             QW.QTabWidget.mouseMoveEvent( self, e )
             
@@ -454,11 +454,11 @@ class TabWidgetWithDnD( QW.QTabWidget ):
             
             if shift_down:
                 
-                do_navigate = CG.client_controller.new_options.GetBoolean( 'page_drag_change_tab_with_shift' )
+                do_navigate = CG.client_controller.new_options.get_boolean( 'page_drag_change_tab_with_shift' )
                 
             else:
                 
-                do_navigate = CG.client_controller.new_options.GetBoolean( 'page_drag_change_tab_normally' )
+                do_navigate = CG.client_controller.new_options.get_boolean( 'page_drag_change_tab_normally' )
                 
             
             if do_navigate:
@@ -624,11 +624,11 @@ class TabWidgetWithDnD( QW.QTabWidget ):
             
             if shift_down:
                 
-                follow_dropped_page = new_options.GetBoolean( 'page_drop_chase_with_shift' )
+                follow_dropped_page = new_options.get_boolean( 'page_drop_chase_with_shift' )
                 
             else:
                 
-                follow_dropped_page = new_options.GetBoolean( 'page_drop_chase_normally' )
+                follow_dropped_page = new_options.get_boolean( 'page_drop_chase_normally' )
                 
             
             if follow_dropped_page:
@@ -701,11 +701,11 @@ class TreeViewWithDnD( QW.QTreeView ):
         
         self.setItemDelegate( self._row_height_delegate )
         self.setUniformRowHeights( True )
-        self.setIndentation( CG.client_controller.new_options.GetInteger( 'treeview_indentation' ) )
-        self.SetRowHeight( CG.client_controller.new_options.GetInteger( 'treeview_row_height' ) )
+        self.setIndentation( CG.client_controller.new_options.get_integer( 'treeview_indentation' ) )
+        self.SetRowHeight( CG.client_controller.new_options.get_integer( 'treeview_row_height' ) )
         
         self.setHeaderHidden( True )
-        self.setAlternatingRowColors( CG.client_controller.new_options.GetBoolean( 'treeview_alternating_row_colours' ) )
+        self.setAlternatingRowColors( CG.client_controller.new_options.get_boolean( 'treeview_alternating_row_colours' ) )
         
         self.setContextMenuPolicy( QC.Qt.ContextMenuPolicy.CustomContextMenu )
         
@@ -956,7 +956,7 @@ class TreeViewWithDnD( QW.QTreeView ):
                 
             
         
-        if CG.client_controller.new_options.GetBoolean( 'treeview_collapse_all_children_upon_parent_closed' ):
+        if CG.client_controller.new_options.get_boolean( 'treeview_collapse_all_children_upon_parent_closed' ):
             
             self._CollapseAllChildren( index )
             
@@ -1131,7 +1131,7 @@ class TreeViewWithDnD( QW.QTreeView ):
                 
                 self._SetCurrentIndex( current_index )
                 
-                if CG.client_controller.new_options.GetBoolean( 'treeview_always_expand_to_current_tab_after_reset' ):
+                if CG.client_controller.new_options.get_boolean( 'treeview_always_expand_to_current_tab_after_reset' ):
                     
                     self.RevealCurrentSelection()
                     
@@ -1274,7 +1274,7 @@ class HistoryPanel( QW.QWidget ):
         
         self._pin_button = QW.QPushButton( '', self._button_bar )
         self._pin_button.setCheckable( True )
-        self._pin_button.setChecked( CG.client_controller.new_options.GetBoolean( 'treeview_history_box_pinned' ) )
+        self._pin_button.setChecked( CG.client_controller.new_options.get_boolean( 'treeview_history_box_pinned' ) )
         self._pin_button.setToolTip( ClientGUIFunctions.WrapToolTip( 'Keep history box open' ) )
         self._pin_button.toggled.connect( self._PinChanged )
         self._SetPinIcon()
@@ -1294,7 +1294,7 @@ class HistoryPanel( QW.QWidget ):
         
         CG.client_controller.gui.ShowPage( page_key )
         
-        if not CG.client_controller.new_options.GetBoolean( 'treeview_history_box_pinned' ):
+        if not CG.client_controller.new_options.get_boolean( 'treeview_history_box_pinned' ):
             
             self.iWantToClose.emit()
             
@@ -1346,7 +1346,7 @@ class HistoryPanel( QW.QWidget ):
     
     def _PinChanged( self, value: bool ):
         
-        CG.client_controller.new_options.SetBoolean( 'treeview_history_box_pinned', value )
+        CG.client_controller.new_options.set_boolean( 'treeview_history_box_pinned', value )
         
         self._SetPinIcon()
         
@@ -1422,7 +1422,7 @@ class HistoryPanel( QW.QWidget ):
         
         self._ClearPageList()
         
-        self._pin_button.setChecked( CG.client_controller.new_options.GetBoolean( 'treeview_history_box_pinned' ) )
+        self._pin_button.setChecked( CG.client_controller.new_options.get_boolean( 'treeview_history_box_pinned' ) )
         
         history = CG.client_controller.gui.GetPagesHistory()
         
@@ -1478,8 +1478,8 @@ class TreeViewWithControls( QW.QWidget ):
         self._tree = tree
         self._current_depth = 2
         
-        self._controls_at_top = CG.client_controller.new_options.GetBoolean( 'treeview_controls_at_top' )
-        self._panel_at_top = CG.client_controller.new_options.GetBoolean( 'treeview_expanding_panel_at_top' )
+        self._controls_at_top = CG.client_controller.new_options.get_boolean( 'treeview_controls_at_top' )
+        self._panel_at_top = CG.client_controller.new_options.get_boolean( 'treeview_expanding_panel_at_top' )
         
         #
         
@@ -1574,7 +1574,7 @@ class TreeViewWithControls( QW.QWidget ):
             self._expanding_panel_splitter.addWidget( self._tree )
             #self._expanding_panel_splitter.addWidget( self._expanding_panel )
         
-        self._expanding_panel_splitter.setSizes( CG.client_controller.new_options.GetIntegerList( 'treeview_expanding_panel_splitter_size' ) )
+        self._expanding_panel_splitter.setSizes( CG.client_controller.new_options.get_integer_list( 'treeview_expanding_panel_splitter_size' ) )
         self._expanding_panel_splitter.splitterMoved.connect( self._SplitterSizeChanged )
         
         #
@@ -1651,7 +1651,7 @@ class TreeViewWithControls( QW.QWidget ):
     
     def _EmitAlignmentToggle( self, direction: int ):
         
-        CG.client_controller.new_options.SetNoneableInteger( 'treeview_alignment', direction )
+        CG.client_controller.new_options.set_noneable_integer( 'treeview_alignment', direction )
         
         self.widgetAlignmentChanged.emit()
         
@@ -1663,7 +1663,7 @@ class TreeViewWithControls( QW.QWidget ):
     
     def _EmitTagViewAlignmentToggle( self, direction: int ):
         
-        CG.client_controller.new_options.SetInteger( 'page_sidebar_alignment', direction )
+        CG.client_controller.new_options.set_integer( 'page_sidebar_alignment', direction )
         
         self.tagBarAlignmentChanged.emit()
         
@@ -1731,7 +1731,7 @@ class TreeViewWithControls( QW.QWidget ):
         self._vbox.insertWidget( 0, self._controls )
         
         self._controls_at_top = True
-        CG.client_controller.new_options.SetBoolean( 'treeview_controls_at_top', True )
+        CG.client_controller.new_options.set_boolean( 'treeview_controls_at_top', True )
         
     
     def _MoveControlBarDown( self ):
@@ -1743,7 +1743,7 @@ class TreeViewWithControls( QW.QWidget ):
         self._vbox.addWidget( self._controls )
         
         self._controls_at_top = False
-        CG.client_controller.new_options.SetBoolean( 'treeview_controls_at_top', False )
+        CG.client_controller.new_options.set_boolean( 'treeview_controls_at_top', False )
         
     
     def _MoveExpandingPanelToTop( self ):
@@ -1757,7 +1757,7 @@ class TreeViewWithControls( QW.QWidget ):
         self._expanding_panel_splitter.insertWidget( 0, self._expanding_panel )
         
         self._panel_at_top = True
-        CG.client_controller.new_options.SetBoolean( 'treeview_expanding_panel_at_top', True )
+        CG.client_controller.new_options.set_boolean( 'treeview_expanding_panel_at_top', True )
         
     
     def _MoveExpandingPanelToBottom( self ):
@@ -1771,7 +1771,7 @@ class TreeViewWithControls( QW.QWidget ):
         self._expanding_panel_splitter.addWidget( self._expanding_panel )
         
         self._panel_at_top = False
-        CG.client_controller.new_options.SetBoolean( 'treeview_expanding_panel_at_top', False )
+        CG.client_controller.new_options.set_boolean( 'treeview_expanding_panel_at_top', False )
         
     
     def _PositionPanelNearWidget( self, panel: QW.QWidget, widget: QW.QWidget, avoid_widgets = None ):
@@ -1877,14 +1877,14 @@ class TreeViewWithControls( QW.QWidget ):
     
     def _SetTreeViewIndentation( self, value: int ):
         
-        CG.client_controller.new_options.SetInteger( 'treeview_indentation', value )
+        CG.client_controller.new_options.set_integer( 'treeview_indentation', value )
         
         self._tree.setIndentation( value )
         
     
     def _SetTreeViewRowHeight( self, value: int ):
         
-        CG.client_controller.new_options.SetInteger( 'treeview_row_height', value )
+        CG.client_controller.new_options.set_integer( 'treeview_row_height', value )
         
         self._tree.SetRowHeight( value )
         
@@ -1905,7 +1905,7 @@ class TreeViewWithControls( QW.QWidget ):
         
         def tree_sidebar_position_title_call():
             
-            if CG.client_controller.new_options.GetNoneableInteger( 'treeview_alignment' ) == CC.DIRECTION_LEFT:
+            if CG.client_controller.new_options.get_noneable_integer( 'treeview_alignment' ) == CC.DIRECTION_LEFT:
                 
                 return 'Move tree sidebar to right'
                 
@@ -1917,7 +1917,7 @@ class TreeViewWithControls( QW.QWidget ):
         
         def tag_sidebar_position_title_call():
             
-            if CG.client_controller.new_options.GetInteger( 'page_sidebar_alignment' ) == CC.DIRECTION_LEFT:
+            if CG.client_controller.new_options.get_integer( 'page_sidebar_alignment' ) == CC.DIRECTION_LEFT:
                 
                 return 'Move tags/preview sidebar to right'
                 
@@ -1929,7 +1929,7 @@ class TreeViewWithControls( QW.QWidget ):
         
         def tab_bar_visibility_title_call():
             
-            if CG.client_controller.new_options.GetBoolean( 'treeview_hides_tabs' ):
+            if CG.client_controller.new_options.get_boolean( 'treeview_hides_tabs' ):
                 
                 return 'Show the normal tab bar'
                 
@@ -1941,7 +1941,7 @@ class TreeViewWithControls( QW.QWidget ):
         
         def tree_sidebar_collapsibility_title_call():
             
-            if CG.client_controller.new_options.GetBoolean( 'treeview_sidebar_can_collapse' ):
+            if CG.client_controller.new_options.get_boolean( 'treeview_sidebar_can_collapse' ):
                 
                 return 'Prevent tree sidebar from collapsing'
                 
@@ -1957,8 +1957,8 @@ class TreeViewWithControls( QW.QWidget ):
         
         menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemSeparator() )
         
-        menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCall( tree_sidebar_position_title_call, 'Move the tree sidebar to the other side.', lambda: self._EmitAlignmentToggle( CC.DIRECTION_RIGHT if CG.client_controller.new_options.GetNoneableInteger( 'treeview_alignment' ) == CC.DIRECTION_LEFT else CC.DIRECTION_LEFT ) ) )
-        menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCall( tag_sidebar_position_title_call, 'Move the tags and preview sidebar to the other side.', lambda: self._EmitTagViewAlignmentToggle( CC.DIRECTION_RIGHT if CG.client_controller.new_options.GetInteger( 'page_sidebar_alignment' ) == CC.DIRECTION_LEFT else CC.DIRECTION_LEFT ) ) )
+        menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCall( tree_sidebar_position_title_call, 'Move the tree sidebar to the other side.', lambda: self._EmitAlignmentToggle( CC.DIRECTION_RIGHT if CG.client_controller.new_options.get_noneable_integer( 'treeview_alignment' ) == CC.DIRECTION_LEFT else CC.DIRECTION_LEFT ) ) )
+        menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCall( tag_sidebar_position_title_call, 'Move the tags and preview sidebar to the other side.', lambda: self._EmitTagViewAlignmentToggle( CC.DIRECTION_RIGHT if CG.client_controller.new_options.get_integer( 'page_sidebar_alignment' ) == CC.DIRECTION_LEFT else CC.DIRECTION_LEFT ) ) )
         menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCall( tab_bar_visibility_title_call, 'Show or hide the normal notebook tab bar.', self._ToggleTabBarVisibility ) )
         
         menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemSeparator() )
@@ -1970,15 +1970,15 @@ class TreeViewWithControls( QW.QWidget ):
         menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCheck( 'Collapse all children when parent is closed', 'If this is unchecked, collapsing a page-of-pages node will remember the expanded state of all its sub-pages. Otherwise, it will be collapsed completely.', check_manager ) )
 
         check_manager = ClientGUICommon.CheckboxManagerOptions( 'treeview_alternating_row_colours' )
-        check_manager.AddNotifyCall( lambda: self._tree.setAlternatingRowColors( CG.client_controller.new_options.GetBoolean( 'treeview_alternating_row_colours' ) ) )
+        check_manager.AddNotifyCall( lambda: self._tree.setAlternatingRowColors( CG.client_controller.new_options.get_boolean( 'treeview_alternating_row_colours' ) ) )
 
         menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCheck( 'Shade alternating rows', 'Style the tree view with alternating colour shading per row.', check_manager ) )
         
         menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemSeparator() )
         
         spacing_template_items = []
-        spacing_template_items.append( ClientGUIMenuButton.MenuTemplateItemSlider( 'indent width', 'The horizontal indentation added for each nested tree level.', lambda: CG.client_controller.new_options.GetInteger( 'treeview_indentation' ), 4, 64, 1, self._SetTreeViewIndentation ) )
-        spacing_template_items.append( ClientGUIMenuButton.MenuTemplateItemSlider( 'row height', 'The vertical height of each tree row.', lambda: CG.client_controller.new_options.GetInteger( 'treeview_row_height' ), 16, 64, 1, self._SetTreeViewRowHeight ) )
+        spacing_template_items.append( ClientGUIMenuButton.MenuTemplateItemSlider( 'indent width', 'The horizontal indentation added for each nested tree level.', lambda: CG.client_controller.new_options.get_integer( 'treeview_indentation' ), 4, 64, 1, self._SetTreeViewIndentation ) )
+        spacing_template_items.append( ClientGUIMenuButton.MenuTemplateItemSlider( 'row height', 'The vertical height of each tree row.', lambda: CG.client_controller.new_options.get_integer( 'treeview_row_height' ), 16, 64, 1, self._SetTreeViewRowHeight ) )
 
         menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemSubmenu( 'tree row dimensions', spacing_template_items ) )
         
@@ -1993,7 +1993,7 @@ class TreeViewWithControls( QW.QWidget ):
         
         sizes = self._expanding_panel_splitter.sizes()
         
-        CG.client_controller.new_options.SetIntegerList( 'treeview_expanding_panel_splitter_size', sizes )
+        CG.client_controller.new_options.set_integer_list( 'treeview_expanding_panel_splitter_size', sizes )
         
     
     def _ToggleFilterPanel( self ):
@@ -2034,14 +2034,14 @@ class TreeViewWithControls( QW.QWidget ):
     
     def _ToggleTabBarVisibility( self ):
         
-        CG.client_controller.new_options.FlipBoolean( 'treeview_hides_tabs' )
+        CG.client_controller.new_options.flip_boolean( 'treeview_hides_tabs' )
         
         self.tabBarVisibilityChanged.emit()
         
     
     def _ToggleCollapsibility( self ):
         
-        CG.client_controller.new_options.FlipBoolean( 'treeview_sidebar_can_collapse' )
+        CG.client_controller.new_options.flip_boolean( 'treeview_sidebar_can_collapse' )
         
         self.treeSidebarCollapsibilityChanged.emit()
         

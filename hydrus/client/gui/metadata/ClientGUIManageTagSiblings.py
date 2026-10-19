@@ -37,7 +37,7 @@ class ManageTagSiblings( ClientGUIScrolledPanels.ManagePanel ):
         
         super().__init__( parent )
         
-        if CG.client_controller.new_options.GetBoolean( 'use_listbook_for_tag_service_panels' ):
+        if CG.client_controller.new_options.get_boolean( 'use_listbook_for_tag_service_panels' ):
             
             self._tag_services = ClientGUIListBook.ListBook( self )
             
@@ -48,7 +48,7 @@ class ManageTagSiblings( ClientGUIScrolledPanels.ManagePanel ):
         
         #
         
-        default_tag_service_key = CG.client_controller.new_options.GetKey( 'default_tag_service_tab' )
+        default_tag_service_key = CG.client_controller.new_options.get_key( 'default_tag_service_tab' )
         
         services = list( CG.client_controller.services_manager.GetServices( ( HC.LOCAL_TAG, ) ) )
         
@@ -83,13 +83,13 @@ class ManageTagSiblings( ClientGUIScrolledPanels.ManagePanel ):
     
     def _SaveDefaultTagServiceKey( self ):
         
-        if CG.client_controller.new_options.GetBoolean( 'save_default_tag_service_tab_on_change' ):
+        if CG.client_controller.new_options.get_boolean( 'save_default_tag_service_tab_on_change' ):
             
             current_page = typing.cast( ManageTagSiblings._Panel, self._tag_services.currentWidget() )
             
             if current_page is not None:
                 
-                CG.client_controller.new_options.SetKey( 'default_tag_service_tab', current_page.GetServiceKey() )
+                CG.client_controller.new_options.set_key( 'default_tag_service_tab', current_page.GetServiceKey() )
                 
             
         
@@ -207,7 +207,7 @@ class ManageTagSiblings( ClientGUIScrolledPanels.ManagePanel ):
             
             self._old_siblings.setMinimumHeight( preview_height )
             
-            default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+            default_location_context = CG.client_controller.new_options.get_default_local_location_context()
             
             self._old_input = ClientGUIACDropdown.AutoCompleteDropdownTagsWrite( self, self.EnterOlds, default_location_context, service_key, show_paste_button = True )
             self._new_input = ClientGUIACDropdown.AutoCompleteDropdownTagsWrite( self, self.SetNew, default_location_context, service_key, show_paste_button = True )
@@ -773,7 +773,7 @@ class ManageTagSiblings( ClientGUIScrolledPanels.ManagePanel ):
                             
                         
                     
-                    if CG.client_controller.new_options.GetBoolean( 'tag_display_maintenance_during_active' ):
+                    if CG.client_controller.new_options.get_boolean( 'tag_display_maintenance_during_active' ):
                         
                         maintenance_part = 'Siblings are set to sync all the time in the background.'
                         
@@ -790,7 +790,7 @@ class ManageTagSiblings( ClientGUIScrolledPanels.ManagePanel ):
                         
                         looking_good = False
                         
-                        if CG.client_controller.new_options.GetBoolean( 'tag_display_maintenance_during_idle' ):
+                        if CG.client_controller.new_options.get_boolean( 'tag_display_maintenance_during_idle' ):
                             
                             maintenance_part = 'Siblings are set to sync only when you are not using the client.'
                             changes_part = 'It may take some time for changes here to apply.'

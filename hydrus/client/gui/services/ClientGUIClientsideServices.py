@@ -1807,7 +1807,7 @@ class ReviewServicePanel( QW.QWidget ):
         
         #
         
-        if not CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+        if not CG.client_controller.new_options.get_boolean( 'advanced_mode' ):
             
             self._id_button.hide()
             self._service_key_button.hide()
@@ -2967,7 +2967,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
         
         new_options = CG.client_controller.new_options
         
-        if not new_options.GetBoolean( 'advanced_mode' ):
+        if not new_options.get_boolean( 'advanced_mode' ):
             
             self._export_updates_button.hide()
             self._reset_processing_button.hide()
@@ -3233,7 +3233,7 @@ class ReviewServiceRepositorySubPanel( QW.QWidget ):
         
         self._service_info_button.setText( 'service info' )
         self._service_info_button.setEnabled( True )
-        self._service_info_button.setVisible( CG.client_controller.new_options.GetBoolean( 'advanced_mode' ) )
+        self._service_info_button.setVisible( CG.client_controller.new_options.get_boolean( 'advanced_mode' ) )
         
         #
         

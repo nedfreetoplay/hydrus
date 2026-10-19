@@ -671,7 +671,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         self._have_shown_once = False
         
-        if ClientGUISystemTray.SystemTrayAvailable() and self._controller.new_options.GetBoolean( 'start_client_in_system_tray' ):
+        if ClientGUISystemTray.SystemTrayAvailable() and self._controller.new_options.get_boolean( 'start_client_in_system_tray' ):
             
             self._currently_hidden_to_system_tray = True
             
@@ -706,7 +706,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             self._locator.addProvider( ClientGUILocatorSearchProviders.GetSearchProvider( provider ) )
             
         
-        command_palette_num_chars_for_results_threshold = CG.client_controller.new_options.GetInteger( 'command_palette_num_chars_for_results_threshold' )
+        command_palette_num_chars_for_results_threshold = CG.client_controller.new_options.get_integer( 'command_palette_num_chars_for_results_threshold' )
         
         self._locator_widget = QLocator.QLocatorWidget( self,
             width = 800,
@@ -727,15 +727,15 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
         
         try:
             
-            mpv_available_at_start = self._controller.new_options.GetBoolean( 'mpv_available_at_start' )
+            mpv_available_at_start = self._controller.new_options.get_boolean( 'mpv_available_at_start' )
             
             if not mpv_available_at_start and ClientGUIMPV.MPV_IS_AVAILABLE:
                 
                 # ok, mpv has started working!
                 
-                self._controller.new_options.SetBoolean( 'mpv_available_at_start', True )
+                self._controller.new_options.set_boolean( 'mpv_available_at_start', True )
                 
-                original_mimes_to_view_options = self._new_options.GetMediaViewOptions()
+                original_mimes_to_view_options = self._new_options.get_media_view_options()
                 
                 edited_mimes_to_view_options = dict( original_mimes_to_view_options )
                 
@@ -765,7 +765,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
                 
                 if we_done_it:
                     
-                    self._controller.new_options.SetMediaViewOptions( edited_mimes_to_view_options )
+                    self._controller.new_options.set_media_view_options( edited_mimes_to_view_options )
                     
                     HydrusData.show_text( 'Hey, MPV was not working on a previous boot, but it looks like it is now. I have updated your media view settings to use MPV.')
                     
@@ -905,7 +905,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
     
     def _BackupDatabase( self ):
         
-        path = self._new_options.GetNoneableString( 'backup_path' )
+        path = self._new_options.get_noneable_string( 'backup_path' )
         
         if path is None:
             
@@ -955,7 +955,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
             
             self._controller.write( 'backup', path )
             
-            CG.client_controller.new_options.SetNoneableInteger( 'last_backup_time', HydrusTime.get_now() )
+            CG.client_controller.new_options.set_noneable_integer( 'last_backup_time', HydrusTime.get_now() )
             
             self._did_a_backup_this_session = True
             
@@ -1008,8 +1008,8 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
     
     def _BootOrStopClipboardWatcherIfNeeded( self ):
         
-        allow_watchers = self._controller.new_options.GetBoolean( 'watch_clipboard_for_watcher_urls' )
-        allow_other_recognised_urls = self._controller.new_options.GetBoolean( 'watch_clipboard_for_other_recognised_urls' )
+        allow_watchers = self._controller.new_options.get_boolean( 'watch_clipboard_for_watcher_urls' )
+        allow_other_recognised_urls = self._controller.new_options.get_boolean( 'watch_clipboard_for_other_recognised_urls' )
         
         if allow_watchers or allow_other_recognised_urls:
             
@@ -1031,7 +1031,7 @@ class FrameGUI( CAC.ApplicationCommandProcessorMixin, ClientGUITopLevelWindows.M
     
     def _CheckImportFolder( self, name = None ):
         
-        if self._controller.new_options.GetBoolean( 'pause_import_folders_sync' ):
+        if self._controller.new_options.get_boolean( 'pause_import_folders_sync' ):
             
             HydrusData.show_text( 'Import folders are currently paused under the \'file\' menu. Please unpause them and try this again.' )
             
@@ -2015,7 +2015,7 @@ QMenuBar::item { padding: 2px 8px; margin: 0px; }'''
     
     def _FlipClipboardWatcher( self, option_name ):
         
-        self._controller.new_options.FlipBoolean( option_name )
+        self._controller.new_options.flip_boolean( option_name )
         
         self._controller.write_synchronous( 'serialisable', self._controller.new_options )
         
@@ -2354,7 +2354,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
     
     def _InitialiseMenubar( self ):
         
-        use_native_menubar = CG.client_controller.new_options.GetBoolean( 'use_native_menubar' )
+        use_native_menubar = CG.client_controller.new_options.get_boolean( 'use_native_menubar' )
         
         if use_native_menubar:
             
@@ -2545,13 +2545,13 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             all_locations_are_default = result
             
-            backup_path = self._new_options.GetNoneableString( 'backup_path' )
+            backup_path = self._new_options.get_noneable_string( 'backup_path' )
             
             self._menubar_database_set_up_backup_path.setVisible( all_locations_are_default and backup_path is None )
             
             self._menubar_database_update_backup.setVisible( all_locations_are_default and backup_path is not None )
             
-            last_backup_time = CG.client_controller.new_options.GetNoneableInteger( 'last_backup_time' )
+            last_backup_time = CG.client_controller.new_options.get_noneable_integer( 'last_backup_time' )
             
             message = 'update database backup'
             
@@ -2575,8 +2575,8 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             self._menubar_database_multiple_location_label.setVisible( not all_locations_are_default )
             
-            self._menubar_database_file_maintenance_during_idle.setChecked( CG.client_controller.new_options.GetBoolean( 'file_maintenance_during_idle' ) )
-            self._menubar_database_file_maintenance_during_active.setChecked( CG.client_controller.new_options.GetBoolean( 'file_maintenance_during_active' ) )
+            self._menubar_database_file_maintenance_during_idle.setChecked( CG.client_controller.new_options.get_boolean( 'file_maintenance_during_idle' ) )
+            self._menubar_database_file_maintenance_during_active.setChecked( CG.client_controller.new_options.get_boolean( 'file_maintenance_during_active' ) )
             
         
         return ClientGUIAsync.AsyncQtUpdater( 'database menu', self, loading_callable, work_callable, publish_callable )
@@ -2644,13 +2644,13 @@ ATTACH "client.mappings.db" as external_mappings;'''
                     
                 
             
-            simple_non_windows = not HC.PLATFORM_WINDOWS and not CG.client_controller.new_options.GetBoolean( 'advanced_mode' )
+            simple_non_windows = not HC.PLATFORM_WINDOWS and not CG.client_controller.new_options.get_boolean( 'advanced_mode' )
             
             windows_or_advanced_non_windows = not simple_non_windows
             
             self._menubar_file_minimise_to_system_tray.setVisible( ClientGUISystemTray.SystemTrayAvailable() and windows_or_advanced_non_windows )
             
-            self._menubar_file_import_folders_paused.setChecked( CG.client_controller.new_options.GetBoolean( 'pause_import_folders_sync' ) )
+            self._menubar_file_import_folders_paused.setChecked( CG.client_controller.new_options.get_boolean( 'pause_import_folders_sync' ) )
             
         
         return ClientGUIAsync.AsyncQtUpdater( 'file menu', self, loading_callable, work_callable, publish_callable )
@@ -2670,15 +2670,15 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         def publish_callable( result ):
             
-            advanced_mode = self._controller.new_options.GetBoolean( 'advanced_mode' )
+            advanced_mode = self._controller.new_options.get_boolean( 'advanced_mode' )
             
             self._menubar_network_nudge_subs.setVisible( advanced_mode )
             
-            self._menubar_network_all_traffic_paused.setChecked( CG.client_controller.new_options.GetBoolean( 'pause_all_new_network_traffic' ) )
+            self._menubar_network_all_traffic_paused.setChecked( CG.client_controller.new_options.get_boolean( 'pause_all_new_network_traffic' ) )
             
-            self._menubar_network_subscriptions_paused.setChecked( CG.client_controller.new_options.GetBoolean( 'pause_subs_sync' ) )
+            self._menubar_network_subscriptions_paused.setChecked( CG.client_controller.new_options.get_boolean( 'pause_subs_sync' ) )
             
-            self._menubar_network_paged_import_queues_paused.setChecked( CG.client_controller.new_options.GetBoolean( 'pause_all_file_queues' ) )
+            self._menubar_network_paged_import_queues_paused.setChecked( CG.client_controller.new_options.get_boolean( 'pause_all_file_queues' ) )
             
         
         return ClientGUIAsync.AsyncQtUpdater( 'network menu', self, loading_callable, work_callable, publish_callable )
@@ -3139,8 +3139,8 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         def publish_callable( result ):
             
-            self._menubar_tags_tag_display_maintenance_during_idle.setChecked( CG.client_controller.new_options.GetBoolean( 'tag_display_maintenance_during_idle' ) )
-            self._menubar_tags_tag_display_maintenance_during_active.setChecked( CG.client_controller.new_options.GetBoolean( 'tag_display_maintenance_during_active' ) )
+            self._menubar_tags_tag_display_maintenance_during_idle.setChecked( CG.client_controller.new_options.get_boolean( 'tag_display_maintenance_during_idle' ) )
+            self._menubar_tags_tag_display_maintenance_during_active.setChecked( CG.client_controller.new_options.get_boolean( 'tag_display_maintenance_during_active' ) )
             
         
         return ClientGUIAsync.AsyncQtUpdater( 'tags menu', self, loading_callable, work_callable, publish_callable )
@@ -3447,8 +3447,8 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         submenu = ClientGUIMenus.GenerateMenu( i_and_e_submenu )
         
-        self._menubar_file_import_folders_paused = ClientGUIMenus.AppendMenuCheckItem( submenu, 'import folders', 'Pause the client\'s import folders.', self._controller.new_options.GetBoolean( 'pause_import_folders_sync' ), self._PausePlaySync, 'import_folders' )
-        ClientGUIMenus.AppendMenuCheckItem( submenu, 'export folders', 'Pause the client\'s export folders.', self._controller.new_options.GetBoolean( 'pause_export_folders_sync' ), self._PausePlaySync, 'export_folders' )
+        self._menubar_file_import_folders_paused = ClientGUIMenus.AppendMenuCheckItem( submenu, 'import folders', 'Pause the client\'s import folders.', self._controller.new_options.get_boolean( 'pause_import_folders_sync' ), self._PausePlaySync, 'import_folders' )
+        ClientGUIMenus.AppendMenuCheckItem( submenu, 'export folders', 'Pause the client\'s export folders.', self._controller.new_options.get_boolean( 'pause_export_folders_sync' ), self._PausePlaySync, 'export_folders' )
         
         ClientGUIMenus.AppendMenu( i_and_e_submenu, submenu, 'pause' )
         
@@ -3535,7 +3535,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         ClientGUIMenus.AppendSeparator( menu )
         
-        currently_darkmode = self._new_options.GetString( 'current_colourset' ) == 'darkmode'
+        currently_darkmode = self._new_options.get_string( 'current_colourset' ) == 'darkmode'
         
         self._menu_item_help_darkmode = ClientGUIMenus.AppendMenuCheckItem( menu, 'darkmode', 'Set the \'darkmode\' colourset on and off.', currently_darkmode, self.FlipDarkmode )
         
@@ -3558,7 +3558,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         ClientGUIMenus.AppendSeparator( debug_modes )
         ClientGUIMenus.AppendMenuCheckItem( debug_modes, 'allow crashy files in mpv', 'Disable the crash handling that unloads files from mpv when they raise certain fatal errors.', HG.mpv_allow_crashy_files, self._FlipMPVCrashHandling )
         ClientGUIMenus.AppendMenuCheckItem( debug_modes, 'allow crashy files in mpv (and silence errors)', 'Disable the crash handling that unloads files from mpv when they raise certain fatal errors and do not notify the user when it happens.', HG.mpv_allow_crashy_files_silently, self._FlipMPVSilentCrashHandling )
-        ClientGUIMenus.AppendMenuCheckItem( debug_modes, 'allow crashy files in mpv (and silence errors) (PERSISTENT)', 'Version of the above option that is maintained between program boots.', self._new_options.GetBoolean( 'mpv_allow_crashy_files_silently' ), self._new_options.FlipBoolean, 'mpv_allow_crashy_files_silently' )
+        ClientGUIMenus.AppendMenuCheckItem( debug_modes, 'allow crashy files in mpv (and silence errors) (PERSISTENT)', 'Version of the above option that is maintained between program boots.', self._new_options.get_boolean( 'mpv_allow_crashy_files_silently' ), self._new_options.flip_boolean, 'mpv_allow_crashy_files_silently' )
         ClientGUIMenus.AppendSeparator( debug_modes )
         crash_reporting_on = CG.client_controller.logger.currently_crash_reporting()
         ClientGUIMenus.AppendMenuCheckItem( debug_modes, 'use faulthandler to log crashes', 'Enable python crash logging. Note this will disable Windows Error Reporting or Linux Dumps, and it does not play well with mpv.', crash_reporting_on, self._FlipCrashReporting )
@@ -3615,7 +3615,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         gui_actions = ClientGUIMenus.GenerateMenu( debug_menu )
         
-        default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+        default_location_context = CG.client_controller.new_options.get_default_local_location_context()
         
         def flip_macos_antiflicker():
             
@@ -3733,14 +3733,14 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         submenu = ClientGUIMenus.GenerateMenu( menu )
         
-        pause_all_new_network_traffic = self._controller.new_options.GetBoolean( 'pause_all_new_network_traffic' )
+        pause_all_new_network_traffic = self._controller.new_options.get_boolean( 'pause_all_new_network_traffic' )
         
         self._menubar_network_all_traffic_paused = ClientGUIMenus.AppendMenuCheckItem( submenu, 'all new network traffic', 'Stop any new network jobs from sending data.', pause_all_new_network_traffic, self.FlipNetworkTrafficPaused )
-        ClientGUIMenus.AppendMenuCheckItem( submenu, 'always boot the client with paused network traffic', 'Always start the program with network traffic paused.', self._controller.new_options.GetBoolean( 'boot_with_network_traffic_paused' ), self._controller.new_options.FlipBoolean, 'boot_with_network_traffic_paused' )
+        ClientGUIMenus.AppendMenuCheckItem( submenu, 'always boot the client with paused network traffic', 'Always start the program with network traffic paused.', self._controller.new_options.get_boolean( 'boot_with_network_traffic_paused' ), self._controller.new_options.flip_boolean, 'boot_with_network_traffic_paused' )
         
         ClientGUIMenus.AppendSeparator( submenu )
         
-        self._menubar_network_subscriptions_paused = ClientGUIMenus.AppendMenuCheckItem( submenu, 'subscriptions', 'Pause the client\'s synchronisation with website subscriptions.', self._controller.new_options.GetBoolean( 'pause_subs_sync' ), self.FlipSubscriptionsPaused )
+        self._menubar_network_subscriptions_paused = ClientGUIMenus.AppendMenuCheckItem( submenu, 'subscriptions', 'Pause the client\'s synchronisation with website subscriptions.', self._controller.new_options.get_boolean( 'pause_subs_sync' ), self.FlipSubscriptionsPaused )
         
         self._menubar_network_nudge_subs = ClientGUIMenus.AppendMenuItem( submenu, 'nudge subscriptions awake', 'Tell the subs daemon to wake up, just in case any subs are due.', self._controller.subscriptions_manager.wake )
         
@@ -3828,8 +3828,8 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         clipboard_menu = ClientGUIMenus.GenerateMenu( downloaders_submenu )
         
-        ClientGUIMenus.AppendMenuCheckItem( clipboard_menu, 'watcher urls', 'Automatically import watcher URLs that enter the clipboard just as if you drag-and-dropped them onto the ui.', self._controller.new_options.GetBoolean( 'watch_clipboard_for_watcher_urls' ), self._FlipClipboardWatcher, 'watch_clipboard_for_watcher_urls' )
-        ClientGUIMenus.AppendMenuCheckItem( clipboard_menu, 'other recognised urls', 'Automatically import recognised URLs that enter the clipboard just as if you drag-and-dropped them onto the ui.', self._controller.new_options.GetBoolean( 'watch_clipboard_for_other_recognised_urls' ), self._FlipClipboardWatcher, 'watch_clipboard_for_other_recognised_urls' )
+        ClientGUIMenus.AppendMenuCheckItem( clipboard_menu, 'watcher urls', 'Automatically import watcher URLs that enter the clipboard just as if you drag-and-dropped them onto the ui.', self._controller.new_options.get_boolean( 'watch_clipboard_for_watcher_urls' ), self._FlipClipboardWatcher, 'watch_clipboard_for_watcher_urls' )
+        ClientGUIMenus.AppendMenuCheckItem( clipboard_menu, 'other recognised urls', 'Automatically import recognised URLs that enter the clipboard just as if you drag-and-dropped them onto the ui.', self._controller.new_options.get_boolean( 'watch_clipboard_for_other_recognised_urls' ), self._FlipClipboardWatcher, 'watch_clipboard_for_other_recognised_urls' )
         
         ClientGUIMenus.AppendMenu( downloaders_submenu, clipboard_menu, 'watch clipboard for urls' )
         
@@ -3905,7 +3905,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         ClientGUIMenus.AppendSeparator( splitter_menu )
         
-        ClientGUIMenus.AppendMenuCheckItem( splitter_menu, 'save current page\'s sidebar/preview size on client exit', 'Set whether the current width and height of the sidebar and preview panels should be saved on client exit.', self._new_options.GetBoolean( 'saving_sash_positions_on_exit' ), self._new_options.FlipBoolean, 'saving_sash_positions_on_exit' )
+        ClientGUIMenus.AppendMenuCheckItem( splitter_menu, 'save current page\'s sidebar/preview size on client exit', 'Set whether the current width and height of the sidebar and preview panels should be saved on client exit.', self._new_options.get_boolean( 'saving_sash_positions_on_exit' ), self._new_options.flip_boolean, 'saving_sash_positions_on_exit' )
         
         ClientGUIMenus.AppendSeparator( splitter_menu )
         
@@ -3980,7 +3980,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         submenu = ClientGUIMenus.GenerateMenu( menu )
         
-        ClientGUIMenus.AppendMenuCheckItem( submenu, 'all repository synchronisation', 'Pause the client\'s synchronisation with hydrus repositories.', self._controller.new_options.GetBoolean( 'pause_repo_sync' ), self._PausePlaySync, 'repo' )
+        ClientGUIMenus.AppendMenuCheckItem( submenu, 'all repository synchronisation', 'Pause the client\'s synchronisation with hydrus repositories.', self._controller.new_options.get_boolean( 'pause_repo_sync' ), self._PausePlaySync, 'repo' )
         
         ClientGUIMenus.AppendMenu( menu, submenu, 'pause' )
         
@@ -4117,7 +4117,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
                 if load_a_blank_page:
                     
-                    default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+                    default_location_context = CG.client_controller.new_options.get_default_local_location_context()
                     
                     self._notebook.NewPageQuery( default_location_context, on_deepest_notebook = True )
                     
@@ -4132,7 +4132,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
             finally:
                 
-                last_session_save_period_minutes = self._controller.new_options.GetInteger( 'last_session_save_period_minutes' )
+                last_session_save_period_minutes = self._controller.new_options.get_integer( 'last_session_save_period_minutes' )
                 
                 #self._controller.CallLaterQtSafe(self, 1.0, 'adjust size', self.adjustSize ) # some i3 thing--doesn't layout main gui on init for some reason
                 
@@ -4274,7 +4274,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             url_class_keys_to_display = domain_manager.GetURLClassKeysToDisplay()
             
-            show_unmatched_urls_in_media_viewer = CG.client_controller.new_options.GetBoolean( 'show_unmatched_urls_in_media_viewer' )
+            show_unmatched_urls_in_media_viewer = CG.client_controller.new_options.get_boolean( 'show_unmatched_urls_in_media_viewer' )
             
             panel = ClientGUIDownloaders.EditDownloaderDisplayPanel( dlg, self._controller.network_engine, gugs, gug_keys_to_display, url_classes, url_class_keys_to_display, show_unmatched_urls_in_media_viewer )
             
@@ -4287,7 +4287,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 domain_manager.SetGUGKeysToDisplay( gug_keys_to_display )
                 domain_manager.SetURLClassKeysToDisplay( url_class_keys_to_display )
                 
-                CG.client_controller.new_options.SetBoolean( 'show_unmatched_urls_in_media_viewer', show_unmatched_urls_in_media_viewer )
+                CG.client_controller.new_options.set_boolean( 'show_unmatched_urls_in_media_viewer', show_unmatched_urls_in_media_viewer )
                 
             
         
@@ -4592,43 +4592,43 @@ ATTACH "client.mappings.db" as external_mappings;'''
         # we do this to convert tuples to lists, to match the earlier duped-up guy
         test_new_options = CG.client_controller.new_options.duplicate()
         
-        curl_cffi_changes = original_new_options.GetNoneableString( 'curl_cffi_definition' ) != test_new_options.GetNoneableString( 'curl_cffi_definition' )
+        curl_cffi_changes = original_new_options.get_noneable_string( 'curl_cffi_definition' ) != test_new_options.get_noneable_string( 'curl_cffi_definition' )
         
         if curl_cffi_changes:
             
             CG.client_controller.network_engine.session_manager.ReinitialiseSessions()
             
         
-        if test_new_options.GetStringList( 'favourite_tags' ) != original_new_options.GetStringList( 'favourite_tags' ):
+        if test_new_options.get_string_list( 'favourite_tags' ) != original_new_options.get_string_list( 'favourite_tags' ):
             
             self._controller.pub( 'notify_new_favourite_tags' )
             
         
-        if test_new_options.GetMediaViewOptions() != original_new_options.GetMediaViewOptions():
+        if test_new_options.get_media_view_options() != original_new_options.get_media_view_options():
             
             CG.client_controller.pub( 'clear_image_tile_cache' )
             
         
         res_changed = HC.options[ 'thumbnail_dimensions' ] != original_options[ 'thumbnail_dimensions' ]
-        type_changed = test_new_options.GetInteger( 'thumbnail_scale_type' ) != original_new_options.GetInteger( 'thumbnail_scale_type' )
-        dpr_changed = test_new_options.GetInteger( 'thumbnail_dpr_percent' ) != original_new_options.GetInteger( 'thumbnail_dpr_percent' )
-        blurhash_changed = test_new_options.GetBoolean( 'allow_blurhash_fallback' ) != original_new_options.GetBoolean( 'allow_blurhash_fallback' )
+        type_changed = test_new_options.get_integer( 'thumbnail_scale_type' ) != original_new_options.get_integer( 'thumbnail_scale_type' )
+        dpr_changed = test_new_options.get_integer( 'thumbnail_dpr_percent' ) != original_new_options.get_integer( 'thumbnail_dpr_percent' )
+        blurhash_changed = test_new_options.get_boolean( 'allow_blurhash_fallback' ) != original_new_options.get_boolean( 'allow_blurhash_fallback' )
         
         if res_changed or type_changed or dpr_changed or blurhash_changed:
             
             CG.client_controller.pub( 'clear_thumbnail_cache' )
             
         
-        border_changed = test_new_options.GetInteger( 'thumbnail_border' ) != original_new_options.GetInteger( 'thumbnail_border' )
-        margin_changed = test_new_options.GetInteger( 'thumbnail_margin' ) != original_new_options.GetInteger( 'thumbnail_margin' )
+        border_changed = test_new_options.get_integer( 'thumbnail_border' ) != original_new_options.get_integer( 'thumbnail_border' )
+        margin_changed = test_new_options.get_integer( 'thumbnail_margin' ) != original_new_options.get_integer( 'thumbnail_margin' )
         
         if border_changed or margin_changed:
             
             CG.client_controller.pub( 'thumbnail_layout_changed' )
             
         
-        qt_style_name = test_new_options.GetNoneableString( 'qt_style_name' )
-        qt_stylesheet_name = test_new_options.GetNoneableString( 'qt_stylesheet_name' )
+        qt_style_name = test_new_options.get_noneable_string( 'qt_style_name' )
+        qt_stylesheet_name = test_new_options.get_noneable_string( 'qt_stylesheet_name' )
         
         if qt_style_name != ClientGUIStyle.CURRENT_STYLE_NAME:
             
@@ -4670,7 +4670,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
             
         
-        if original_new_options.GetString( 'current_colourset' ) != CG.client_controller.new_options.GetString( 'current_colourset' ):
+        if original_new_options.get_string( 'current_colourset' ) != CG.client_controller.new_options.get_string( 'current_colourset' ):
             
             self._controller.pub( 'notify_new_colourset' )
             
@@ -4683,8 +4683,8 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         CG.client_controller.reinit_global_settings()
         
-        self._menu_item_help_darkmode.setChecked( CG.client_controller.new_options.GetString( 'current_colourset' ) == 'darkmode' )
-        self._menu_item_help_advanced_mode.setChecked( self._new_options.GetBoolean( 'advanced_mode' ) )
+        self._menu_item_help_darkmode.setChecked( CG.client_controller.new_options.get_string( 'current_colourset' ) == 'darkmode' )
+        self._menu_item_help_advanced_mode.setChecked( self._new_options.get_boolean( 'advanced_mode' ) )
         
         self._UpdateSystemTrayIcon()
         
@@ -4744,9 +4744,9 @@ ATTACH "client.mappings.db" as external_mappings;'''
     
     def _ManageServices( self, auto_account_creation_service_key = None ):
         
-        original_pause_status = self._controller.new_options.GetBoolean( 'pause_repo_sync' )
+        original_pause_status = self._controller.new_options.get_boolean( 'pause_repo_sync' )
         
-        self._controller.new_options.SetBoolean( 'pause_repo_sync', True )
+        self._controller.new_options.set_boolean( 'pause_repo_sync', True )
         
         try:
             
@@ -4763,7 +4763,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
         finally:
             
-            self._controller.new_options.SetBoolean( 'pause_repo_sync', original_pause_status )
+            self._controller.new_options.set_boolean( 'pause_repo_sync', original_pause_status )
             
         
     
@@ -5285,7 +5285,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
     
     def _MigrateTags( self ):
         
-        default_tag_service_key = self._controller.new_options.GetKey( 'default_tag_service_tab' )
+        default_tag_service_key = self._controller.new_options.get_key( 'default_tag_service_tab' )
         
         frame = ClientGUITopLevelWindowsPanels.FrameThatTakesScrollablePanel( self, 'migrate tags' )
         
@@ -5360,19 +5360,19 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         if sync_type == 'repo':
             
-            self._controller.new_options.FlipBoolean( 'pause_repo_sync' )
+            self._controller.new_options.flip_boolean( 'pause_repo_sync' )
             
             self._controller.pub( 'notify_restart_repo_sync' )
             
         elif sync_type == 'export_folders':
             
-            self._controller.new_options.FlipBoolean( 'pause_export_folders_sync' )
+            self._controller.new_options.flip_boolean( 'pause_export_folders_sync' )
             
             self._controller.pub( 'notify_restart_export_folders_daemon' )
             
         elif sync_type == 'import_folders':
             
-            self._controller.new_options.FlipBoolean( 'pause_import_folders_sync' )
+            self._controller.new_options.flip_boolean( 'pause_import_folders_sync' )
             
             self._controller.import_folders_manager.wake()
             
@@ -5382,7 +5382,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
     
     def _RebuildMainFrameLayout( self ):
         
-        alignment = CG.client_controller.new_options.GetNoneableInteger( 'treeview_alignment' )
+        alignment = CG.client_controller.new_options.get_noneable_integer( 'treeview_alignment' )
         
         while self._vertical_splitter.count() > 0:
             
@@ -5400,7 +5400,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 self._vertical_splitter.addWidget( self._tabs_tree_sidebar )
                 self._vertical_splitter.addWidget( self._notebook )
                 
-                sizes = CG.client_controller.new_options.GetIntegerList( 'tab_tree_splitter_sizes_left' )
+                sizes = CG.client_controller.new_options.get_integer_list( 'tab_tree_splitter_sizes_left' )
                 
                 self._vertical_splitter.setSizes( sizes )
                 
@@ -5409,7 +5409,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 self._vertical_splitter.addWidget( self._notebook )
                 self._vertical_splitter.addWidget( self._tabs_tree_sidebar )
                 
-                sizes = CG.client_controller.new_options.GetIntegerList( 'tab_tree_splitter_sizes_right' )
+                sizes = CG.client_controller.new_options.get_integer_list( 'tab_tree_splitter_sizes_right' )
                 
                 self._vertical_splitter.setSizes( sizes )
                 
@@ -5418,7 +5418,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             notebook_index = self._vertical_splitter.indexOf( self._notebook )
             
             self._vertical_splitter.setCollapsible( notebook_index, False )
-            self._vertical_splitter.setCollapsible( tabs_tree_index, CG.client_controller.new_options.GetBoolean( 'treeview_sidebar_can_collapse' ) )
+            self._vertical_splitter.setCollapsible( tabs_tree_index, CG.client_controller.new_options.get_boolean( 'treeview_sidebar_can_collapse' ) )
             
             self._vertical_splitter.setStretchFactor( tabs_tree_index, 0 )
             self._vertical_splitter.setStretchFactor( notebook_index, 1 )
@@ -6138,7 +6138,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
     
     def _RunExportFolder( self, name = None ):
         
-        if self._controller.new_options.GetBoolean( 'pause_export_folders_sync' ):
+        if self._controller.new_options.get_boolean( 'pause_export_folders_sync' ):
             
             HydrusData.show_text( 'Export folders are currently paused under the \'file\' menu. Please unpause them and try this again.' )
             
@@ -6313,7 +6313,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             t = 0.25
             
-            default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+            default_location_context = CG.client_controller.new_options.get_default_local_location_context()
             
             CG.client_controller.call_later_qt_safe( self, t, 'test job', self._notebook.NewPageQuery, default_location_context, page_name = 'test', on_deepest_notebook = True )
             
@@ -6385,7 +6385,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         def qt_test_ac():
             
-            default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+            default_location_context = CG.client_controller.new_options.get_default_local_location_context()
             
             SYS_PRED_REFRESH = 1.0
             
@@ -6673,7 +6673,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
     
     def _SaveMainVboxSplitterPosition( self ):
         
-        alignment = CG.client_controller.new_options.GetNoneableInteger( 'treeview_alignment' )
+        alignment = CG.client_controller.new_options.get_noneable_integer( 'treeview_alignment' )
         
         if alignment is None:
             
@@ -6683,11 +6683,11 @@ ATTACH "client.mappings.db" as external_mappings;'''
         
         if alignment == CC.DIRECTION_LEFT:
             
-            CG.client_controller.new_options.SetIntegerList( 'tab_tree_splitter_sizes_left', sizes )
+            CG.client_controller.new_options.set_integer_list( 'tab_tree_splitter_sizes_left', sizes )
             
         else:
             
-            CG.client_controller.new_options.SetIntegerList( 'tab_tree_splitter_sizes_right', sizes )
+            CG.client_controller.new_options.set_integer_list( 'tab_tree_splitter_sizes_right', sizes )
             
         
     
@@ -6837,7 +6837,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
     
     def _SetupBackupPath( self ):
         
-        existing_backup_path = self._new_options.GetNoneableString( 'backup_path' )
+        existing_backup_path = self._new_options.get_noneable_string( 'backup_path' )
         
         if existing_backup_path is None:
             
@@ -6917,8 +6917,8 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         if result == QW.QDialog.DialogCode.Accepted:
             
-            self._new_options.SetNoneableString( 'backup_path', path )
-            self._new_options.SetNoneableInteger( 'last_backup_time', None )
+            self._new_options.set_noneable_string( 'backup_path', path )
+            self._new_options.set_noneable_integer( 'last_backup_time', None )
             
             text = 'Would you like to create your backup now?'
             
@@ -7149,7 +7149,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
             if self.isActiveWindow():
                 
-                if self._controller.new_options.GetBoolean( 'minimise_client_to_system_tray' ):
+                if self._controller.new_options.get_boolean( 'minimise_client_to_system_tray' ):
                     
                     self._SystemTrayHide()
                     
@@ -7261,7 +7261,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         self._have_shown_once = True
         
-        if CG.client_controller.new_options.GetBoolean( 'minimise_client_to_system_tray_bugfix_restore_after_show' ) and self._last_systray_hide_happened_because_of_main_gui_minimise:
+        if CG.client_controller.new_options.get_boolean( 'minimise_client_to_system_tray_bugfix_restore_after_show' ) and self._last_systray_hide_happened_because_of_main_gui_minimise:
             
             self.setWindowState( self._pre_minimise_window_state )
             
@@ -7372,7 +7372,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
             total_active_weight = ClientGUIPages.ConvertNumHashesAndSeedsToWeight( total_active_num_hashes, total_active_num_seeds )
             
-            if total_active_weight > 10000000 and self._controller.new_options.GetBoolean( 'show_session_size_warnings' ) and not self._have_shown_session_size_warning:
+            if total_active_weight > 10000000 and self._controller.new_options.get_boolean( 'show_session_size_warnings' ) and not self._have_shown_session_size_warning:
                 
                 self._have_shown_session_size_warning = True
                 
@@ -7395,7 +7395,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
             for i, ( page_key, page_name ) in enumerate( reversed( self.page_nav_history.GetHistory() ) ):
                 
-                if i >= CG.client_controller.new_options.GetInteger( 'page_nav_history_max_entries' ):
+                if i >= CG.client_controller.new_options.get_integer( 'page_nav_history_max_entries' ):
                     
                     break
                     
@@ -7418,9 +7418,9 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
     
     def _UpdateTreeSidebarCollapsibility( self ):
         
-        update = CG.client_controller.new_options.GetBoolean( 'treeview_sidebar_can_collapse' )
+        update = CG.client_controller.new_options.get_boolean( 'treeview_sidebar_can_collapse' )
         
-        if CG.client_controller.new_options.GetNoneableInteger( 'treeview_alignment' ) == CC.DIRECTION_LEFT:
+        if CG.client_controller.new_options.get_noneable_integer( 'treeview_alignment' ) == CC.DIRECTION_LEFT:
             
             self._vertical_splitter.setCollapsible( 0, update )
             
@@ -7440,7 +7440,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         new_options = self._controller.new_options
         
-        always_show_system_tray_icon = new_options.GetBoolean( 'always_show_system_tray_icon' )
+        always_show_system_tray_icon = new_options.get_boolean( 'always_show_system_tray_icon' )
         
         need_system_tray = always_show_system_tray_icon
         
@@ -7624,7 +7624,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
     
     def AutoSaveLastSession( self ):
         
-        only_save_last_session_during_idle = self._controller.new_options.GetBoolean( 'only_save_last_session_during_idle' )
+        only_save_last_session_during_idle = self._controller.new_options.get_boolean( 'only_save_last_session_during_idle' )
         
         if only_save_last_session_during_idle and not self._controller.currently_idle():
             
@@ -7643,7 +7643,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                 
                 callable = self.AutoSaveLastSession
                 
-                last_session_save_period_minutes = self._controller.new_options.GetInteger( 'last_session_save_period_minutes' )
+                last_session_save_period_minutes = self._controller.new_options.get_integer( 'last_session_save_period_minutes' )
                 
                 next_call_delay = last_session_save_period_minutes * 60
                 
@@ -7663,7 +7663,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         try:
             
-            if ClientGUISystemTray.SystemTrayAvailable() and self._controller.new_options.GetBoolean( 'close_client_to_system_tray' ):
+            if ClientGUISystemTray.SystemTrayAvailable() and self._controller.new_options.get_boolean( 'close_client_to_system_tray' ):
                 
                 self._SystemTrayHide()
                 
@@ -7779,15 +7779,15 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                     
                     self._pre_minimise_window_state = event.oldState()
                     
-                    if ClientGUISystemTray.SystemTrayAvailable() and self._controller.new_options.GetBoolean( 'minimise_client_to_system_tray' ):
+                    if ClientGUISystemTray.SystemTrayAvailable() and self._controller.new_options.get_boolean( 'minimise_client_to_system_tray' ):
                         
-                        if CG.client_controller.new_options.GetBoolean( 'minimise_client_to_system_tray_bugfix_restore_after_show' ):
+                        if CG.client_controller.new_options.get_boolean( 'minimise_client_to_system_tray_bugfix_restore_after_show' ):
                             
                             self._SystemTrayHide( happening_because_of_main_gui_minimise = True )
                             
                             return
                             
-                        elif CG.client_controller.new_options.GetBoolean( 'minimise_client_to_system_tray_bugfix_deferred_state_set' ):
+                        elif CG.client_controller.new_options.get_boolean( 'minimise_client_to_system_tray_bugfix_deferred_state_set' ):
                             
                             def do_it():
                                 
@@ -7906,12 +7906,12 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
     
     def FlipDarkmode( self ):
         
-        if not self._new_options.GetBoolean( 'override_stylesheet_colours' ):
+        if not self._new_options.get_boolean( 'override_stylesheet_colours' ):
             
             ClientGUIDialogsMessage.ShowWarning( self, 'Hey, this command comes from an old colour system. If you want to change to darkmode, try _options->style_ instead. Or, if you know what you are doing, make sure you flip the "override" checkbox in _options->colours_ and then try this again.' )
             
         
-        current_colourset = self._new_options.GetString( 'current_colourset' )
+        current_colourset = self._new_options.get_string( 'current_colourset' )
         
         if current_colourset == 'darkmode':
             
@@ -7922,7 +7922,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             new_colourset = 'darkmode'
             
         
-        self._new_options.SetString( 'current_colourset', new_colourset )
+        self._new_options.set_string( 'current_colourset', new_colourset )
         
         CG.client_controller.pub( 'notify_new_colourset' )
         
@@ -7948,7 +7948,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
     
     def FlipSubscriptionsPaused( self ):
         
-        self._controller.new_options.FlipBoolean( 'pause_subs_sync' )
+        self._controller.new_options.flip_boolean( 'pause_subs_sync' )
         
         self._controller.subscriptions_manager.wake()
         
@@ -8113,7 +8113,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         shown = not self._currently_hidden_to_system_tray
         
-        windows_or_advanced_mode = HC.PLATFORM_WINDOWS or CG.client_controller.new_options.GetBoolean( 'advanced_mode' )
+        windows_or_advanced_mode = HC.PLATFORM_WINDOWS or CG.client_controller.new_options.get_boolean( 'advanced_mode' )
         
         good_to_go = ClientGUISystemTray.SystemTrayAvailable() and windows_or_advanced_mode
         
@@ -8182,7 +8182,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
         
         try:
             
-            show_destination_page = CG.client_controller.new_options.GetBoolean( 'show_destination_page_when_dnd_url' )
+            show_destination_page = CG.client_controller.new_options.get_boolean( 'show_destination_page_when_dnd_url' )
             
             self._ImportURL( url, show_destination_page = show_destination_page )
             
@@ -8368,7 +8368,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
     
     def NotifyMediaViewerExiting( self ):
         
-        if CG.client_controller.new_options.GetBoolean( 'activate_main_gui_on_viewer_close' ):
+        if CG.client_controller.new_options.get_boolean( 'activate_main_gui_on_viewer_close' ):
             
             self.activateWindow()
             
@@ -8591,7 +8591,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                 
             elif action == CAC.SIMPLE_GLOBAL_FORCE_ANIMATION_SCANBAR_SHOW:
                 
-                CG.client_controller.new_options.FlipBoolean( 'force_animation_scanbar_show' )
+                CG.client_controller.new_options.flip_boolean( 'force_animation_scanbar_show' )
                 
             elif action == CAC.SIMPLE_OPEN_COMMAND_PALETTE:
                 
@@ -8856,12 +8856,12 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             bandwidth_status += ' (' + HydrusData.to_human_bytes( current_usage ) + '/s)'
             
         
-        if self._controller.new_options.GetBoolean( 'pause_subs_sync' ):
+        if self._controller.new_options.get_boolean( 'pause_subs_sync' ):
             
             bandwidth_status += ', subs paused'
             
         
-        if self._controller.new_options.GetBoolean( 'pause_all_new_network_traffic' ):
+        if self._controller.new_options.get_boolean( 'pause_all_new_network_traffic' ):
             
             bandwidth_status += ', network paused'
             
@@ -8873,8 +8873,8 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
     
     def REPEATINGClipboardWatcher( self ):
         
-        allow_watchers = self._controller.new_options.GetBoolean( 'watch_clipboard_for_watcher_urls' )
-        allow_other_recognised_urls = self._controller.new_options.GetBoolean( 'watch_clipboard_for_other_recognised_urls' )
+        allow_watchers = self._controller.new_options.get_boolean( 'watch_clipboard_for_watcher_urls' )
+        allow_other_recognised_urls = self._controller.new_options.get_boolean( 'watch_clipboard_for_other_recognised_urls' )
         
         if not ( allow_watchers or allow_other_recognised_urls ):
             
@@ -9125,7 +9125,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
             
             if self._have_shown_once:
                 
-                if self._new_options.GetBoolean( 'saving_sash_positions_on_exit' ):
+                if self._new_options.get_boolean( 'saving_sash_positions_on_exit' ):
                     
                     self._SaveSplitterPositions()
                     
@@ -9314,7 +9314,7 @@ The password is cleartext here but obscured in the entry dialog. Enter a blank p
                 
                 last_shutdown_work_time = self._controller.read( 'last_shutdown_work_time' )
                 
-                shutdown_work_period = self._controller.new_options.GetInteger( 'shutdown_work_period' )
+                shutdown_work_period = self._controller.new_options.get_integer( 'shutdown_work_period' )
                 
                 shutdown_work_due = HydrusTime.time_has_passed( last_shutdown_work_time + shutdown_work_period )
                 

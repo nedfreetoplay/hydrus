@@ -673,7 +673,7 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
         
         #
         
-        last_review_bandwidth_search_distance = self._controller.new_options.GetNoneableInteger( 'last_review_bandwidth_search_distance' )
+        last_review_bandwidth_search_distance = self._controller.new_options.get_noneable_integer( 'last_review_bandwidth_search_distance' )
         
         if last_review_bandwidth_search_distance is None:
             
@@ -905,7 +905,7 @@ class ReviewAllBandwidthPanel( ClientGUIScrolledPanels.ReviewPanel ):
             last_review_bandwidth_search_distance = self._history_time_delta_threshold.GetValue()
             
         
-        self._controller.new_options.SetNoneableInteger( 'last_review_bandwidth_search_distance', last_review_bandwidth_search_distance )
+        self._controller.new_options.set_noneable_integer( 'last_review_bandwidth_search_distance', last_review_bandwidth_search_distance )
         
         self._update_job.wake()
         

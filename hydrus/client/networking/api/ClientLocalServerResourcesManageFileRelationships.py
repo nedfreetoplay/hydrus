@@ -68,7 +68,7 @@ class HydrusResourceClientAPIRestrictedManageFileRelationshipsGetPotentialPairs(
         
         potential_duplicates_search_context = ClientLocalServerCore.ParsePotentialDuplicatesSearchContext( request )
         
-        max_num_pairs = request.parsed_request_args.get_value( 'max_num_pairs', int, default_value = CG.client_controller.new_options.GetInteger( 'duplicate_filter_max_batch_size' ) )
+        max_num_pairs = request.parsed_request_args.get_value( 'max_num_pairs', int, default_value = CG.client_controller.new_options.get_integer( 'duplicate_filter_max_batch_size' ) )
         
         duplicate_pair_sort_type = request.parsed_request_args.get_value( 'duplicate_pair_sort_type', int, default_value = ClientDuplicates.DUPE_PAIR_SORT_MAX_FILESIZE )
         duplicate_pair_sort_asc = request.parsed_request_args.get_value( 'duplicate_pair_sort_asc', bool, default_value = False )
@@ -273,7 +273,7 @@ class HydrusResourceClientAPIRestrictedManageFileRelationshipsSetRelationships( 
             
             if do_default_content_merge:
                 
-                duplicate_content_merge_options = CG.client_controller.new_options.GetDuplicateContentMergeOptions( duplicate_type )
+                duplicate_content_merge_options = CG.client_controller.new_options.get_duplicate_content_merge_options( duplicate_type )
                 
                 content_update_packages.extend( duplicate_content_merge_options.ProcessPairIntoContentUpdatePackages( media_result_a, media_result_b, file_deletion_reason = file_deletion_reason, delete_a = delete_a, delete_b = delete_b ) )
                 

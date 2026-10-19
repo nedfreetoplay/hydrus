@@ -997,7 +997,7 @@ class ServiceRemote( Service ):
     
     def _CheckCanCommunicateExternally( self, including_bandwidth = True ):
         
-        if CG.client_controller.new_options.GetBoolean( 'pause_all_new_network_traffic' ):
+        if CG.client_controller.new_options.get_boolean( 'pause_all_new_network_traffic' ):
             
             raise HydrusExceptions.CancelledException( 'All network traffic is paused!' )
             
@@ -1628,7 +1628,7 @@ class ServiceRestricted( ServiceRemote ):
                                 
                                 tag_filter = tag_filter_response[ 'tag_filter' ]
                                 
-                                if 'tag_filter' in self._service_options and CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+                                if 'tag_filter' in self._service_options and CG.client_controller.new_options.get_boolean( 'advanced_mode' ):
                                     
                                     old_tag_filter = self._service_options[ 'tag_filter' ]
                                     
@@ -1731,12 +1731,12 @@ class ServiceRepository( ServiceRestricted ):
     
     def _CanSyncProcess( self ):
         
-        return not ( self._update_processing_paused or CG.client_controller.new_options.GetBoolean( 'pause_repo_sync' ) )
+        return not ( self._update_processing_paused or CG.client_controller.new_options.get_boolean( 'pause_repo_sync' ) )
         
     
     def _CheckFunctional( self, including_external_communication = True, including_bandwidth = True, including_account = True ):
         
-        if CG.client_controller.new_options.GetBoolean( 'pause_repo_sync' ):
+        if CG.client_controller.new_options.get_boolean( 'pause_repo_sync' ):
             
             raise HydrusExceptions.ConflictException( 'All repositories are paused!' )
             
@@ -2210,18 +2210,18 @@ class ServiceRepository( ServiceRestricted ):
                         
                         if CG.client_controller.currently_very_idle():
                             
-                            expected_work_period = HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_very_idle' ) )
-                            rest_ratio = CG.client_controller.new_options.GetInteger( 'repository_processing_rest_percentage_very_idle' ) / 100
+                            expected_work_period = HydrusTime.secondise_ms_float( CG.client_controller.new_options.get_integer( 'repository_processing_work_time_ms_very_idle' ) )
+                            rest_ratio = CG.client_controller.new_options.get_integer( 'repository_processing_rest_percentage_very_idle' ) / 100
                             
                         elif CG.client_controller.currently_idle():
                             
-                            expected_work_period = HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_idle' ) )
-                            rest_ratio = CG.client_controller.new_options.GetInteger( 'repository_processing_rest_percentage_idle' ) / 100
+                            expected_work_period = HydrusTime.secondise_ms_float( CG.client_controller.new_options.get_integer( 'repository_processing_work_time_ms_idle' ) )
+                            rest_ratio = CG.client_controller.new_options.get_integer( 'repository_processing_rest_percentage_idle' ) / 100
                             
                         else:
                             
-                            expected_work_period = HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_normal' ) )
-                            rest_ratio = CG.client_controller.new_options.GetInteger( 'repository_processing_rest_percentage_normal' ) / 100
+                            expected_work_period = HydrusTime.secondise_ms_float( CG.client_controller.new_options.get_integer( 'repository_processing_work_time_ms_normal' ) )
+                            rest_ratio = CG.client_controller.new_options.get_integer( 'repository_processing_rest_percentage_normal' ) / 100
                             
                         
                         start_time = HydrusTime.get_now_precise()
@@ -2360,18 +2360,18 @@ class ServiceRepository( ServiceRestricted ):
                         
                         if CG.client_controller.currently_very_idle():
                             
-                            expected_work_period = HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_very_idle' ) )
-                            rest_ratio = CG.client_controller.new_options.GetInteger( 'repository_processing_rest_percentage_very_idle' ) / 100
+                            expected_work_period = HydrusTime.secondise_ms_float( CG.client_controller.new_options.get_integer( 'repository_processing_work_time_ms_very_idle' ) )
+                            rest_ratio = CG.client_controller.new_options.get_integer( 'repository_processing_rest_percentage_very_idle' ) / 100
                             
                         elif CG.client_controller.currently_idle():
                             
-                            expected_work_period = HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_idle' ) )
-                            rest_ratio = CG.client_controller.new_options.GetInteger( 'repository_processing_rest_percentage_idle' ) / 100
+                            expected_work_period = HydrusTime.secondise_ms_float( CG.client_controller.new_options.get_integer( 'repository_processing_work_time_ms_idle' ) )
+                            rest_ratio = CG.client_controller.new_options.get_integer( 'repository_processing_rest_percentage_idle' ) / 100
                             
                         else:
                             
-                            expected_work_period = HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'repository_processing_work_time_ms_normal' ) )
-                            rest_ratio = CG.client_controller.new_options.GetInteger( 'repository_processing_rest_percentage_normal' ) / 100
+                            expected_work_period = HydrusTime.secondise_ms_float( CG.client_controller.new_options.get_integer( 'repository_processing_work_time_ms_normal' ) )
+                            rest_ratio = CG.client_controller.new_options.get_integer( 'repository_processing_rest_percentage_normal' ) / 100
                             
                         
                         start_time = HydrusTime.get_now_precise()

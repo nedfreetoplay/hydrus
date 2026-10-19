@@ -86,7 +86,7 @@ class EditCheckerOptions( ClientGUIScrolledPanels.EditPanel ):
         
         #
         
-        if CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+        if CG.client_controller.new_options.get_boolean( 'advanced_mode' ):
             
             never_faster_than_min = 1
             never_slower_than_min = 1
@@ -190,7 +190,7 @@ class EditCheckerOptions( ClientGUIScrolledPanels.EditPanel ):
         QP.AddToLayout( vbox, defaults_panel, CC.FLAGS_EXPAND_PERPENDICULAR )
         QP.AddToLayout( vbox, gridbox, CC.FLAGS_EXPAND_SIZER_PERPENDICULAR )
         
-        if CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+        if CG.client_controller.new_options.get_boolean( 'advanced_mode' ):
             
             label = 'As you are in advanced mode, these options have extremely low limits. This is intended only for testing and small scale private network tasks. Do not use very fast check times for real world use on public websites, as it is wasteful and rude, hydrus will be overloaded with high-CPU parsing work, and you may get your IP banned.'
             

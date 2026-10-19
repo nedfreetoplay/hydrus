@@ -478,7 +478,7 @@ class EditImportOptionsContainerPanel( ClientGUIScrolledPanels.EditPanel ):
         
         full_default_import_options_container = self._GetFullDefaultStackImportOptionsContainer()
         
-        selectee_type = CG.client_controller.new_options.GetInteger( 'last_selected_import_options_container_panel_options_type' )
+        selectee_type = CG.client_controller.new_options.get_integer( 'last_selected_import_options_container_panel_options_type' )
         selectee_page = None
         
         for import_options_type in import_options_types_to_list_here:
@@ -693,7 +693,7 @@ class EditImportOptionsContainerPanel( ClientGUIScrolledPanels.EditPanel ):
             
             import_options_type = panel.GetImportOptionsType()
             
-            CG.client_controller.new_options.SetInteger( 'last_selected_import_options_container_panel_options_type', import_options_type )
+            CG.client_controller.new_options.set_integer( 'last_selected_import_options_container_panel_options_type', import_options_type )
             
         
     
@@ -775,7 +775,7 @@ class EditSpecificImportOptionsContainerPanel( EditImportOptionsContainerPanel )
         
         self._default_stack_import_options_caller_type = import_options_caller_type
         
-        simple_mode = CG.client_controller.new_options.GetBoolean( 'import_options_simple_mode' )
+        simple_mode = CG.client_controller.new_options.get_boolean( 'import_options_simple_mode' )
         
         restrict_to_non_downloader_types = simple_mode and import_options_caller_type in IOC.NON_DOWNLOADER_IMPORT_OPTION_CALLER_TYPES
         

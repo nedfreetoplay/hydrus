@@ -766,9 +766,9 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                     
                 except Exception as e:
                     
-                    CG.client_controller.new_options.SetBoolean( 'pause_import_folders_sync', True )
-                    CG.client_controller.new_options.SetBoolean( 'pause_subs_sync', True )
-                    CG.client_controller.new_options.SetBoolean( 'pause_all_file_queues', True )
+                    CG.client_controller.new_options.set_boolean( 'pause_import_folders_sync', True )
+                    CG.client_controller.new_options.set_boolean( 'pause_subs_sync', True )
+                    CG.client_controller.new_options.set_boolean( 'pause_all_file_queues', True )
                     
                     HydrusData.show_text( f'Failed to run "{id_and_name.name}" on file with hash "{hash.hex()}"! All importers--subscriptions, import folders, and paged file import queues--have been paused. Once the issue is clear, restart the client and resume your imports under the file and network menus!' )
                     
@@ -1255,7 +1255,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                 raise HydrusExceptions.VetoException( 'Source file does not exist!' )
                 
             
-            if CG.client_controller.new_options.GetBoolean( 'copy_import_files_to_temp_dir' ):
+            if CG.client_controller.new_options.get_boolean( 'copy_import_files_to_temp_dir' ):
                 
                 ( os_file_handle, temp_path ) = HydrusTemp.get_temp_path( 'file_import' )
                 
@@ -1737,7 +1737,7 @@ class FileSeed( HydrusSerialisable.SerialisableBase ):
                                 if should_download_file:
                                     
                                     # this could become an url class property on the post url url class
-                                    override_bandwidth = CG.client_controller.new_options.GetBoolean( 'override_bandwidth_on_file_urls_from_post_urls' )
+                                    override_bandwidth = CG.client_controller.new_options.get_boolean( 'override_bandwidth_on_file_urls_from_post_urls' )
                                     
                                     self.DownloadAndImportRawFile( file_url, full_import_options_container, network_job_factory, network_job_presentation_context_factory, status_hook, override_bandwidth = override_bandwidth, spawning_url = url_to_fetch, forced_referral_url = url_for_child_referral, file_seed_cache = file_seed_cache )
                                     
@@ -2111,7 +2111,7 @@ class FileSeedCacheStatus( HydrusSerialisable.SerialisableBase ):
                     status_text += HydrusNumbers.to_human_int( total_processed )
                     
                 
-                show_new_on_file_seed_short_summary = CG.client_controller.new_options.GetBoolean( 'show_new_on_file_seed_short_summary' )
+                show_new_on_file_seed_short_summary = CG.client_controller.new_options.get_boolean( 'show_new_on_file_seed_short_summary' )
                 
                 if show_new_on_file_seed_short_summary and num_successful_and_new:
                     
@@ -2125,7 +2125,7 @@ class FileSeedCacheStatus( HydrusSerialisable.SerialisableBase ):
                     simple_status_strings.append( '{}Ign'.format( HydrusNumbers.to_human_int( num_ignored ) ) )
                     
                 
-                show_deleted_on_file_seed_short_summary = CG.client_controller.new_options.GetBoolean( 'show_deleted_on_file_seed_short_summary' )
+                show_deleted_on_file_seed_short_summary = CG.client_controller.new_options.get_boolean( 'show_deleted_on_file_seed_short_summary' )
                 
                 if show_deleted_on_file_seed_short_summary and num_deleted > 0:
                     

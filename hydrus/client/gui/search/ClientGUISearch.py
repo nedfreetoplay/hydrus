@@ -103,7 +103,7 @@ def EditPredicates( widget: QW.QWidget, predicates: collections.abc.Collection[ 
                 
                 edited_predicates = panel.GetValue()
                 
-                CG.client_controller.new_options.PushRecentPredicates( edited_predicates )
+                CG.client_controller.new_options.push_recent_predicates( edited_predicates )
                 
                 result = list( non_editable_predicates )
                 result.extend( edited_predicates )
@@ -168,7 +168,7 @@ def FleshOutPredicates( widget: QW.QWidget, predicates: collections.abc.Collecti
                     
                     preds = panel.GetValue()
                     
-                    CG.client_controller.new_options.PushRecentPredicates( preds )
+                    CG.client_controller.new_options.push_recent_predicates( preds )
                     
                     good_predicates.extend( preds )
                     
@@ -953,7 +953,7 @@ class FleshOutPredicatePanel( ClientGUIScrolledPanels.EditPanel ):
             
             if len( recent_predicate_types ) > 0:
                 
-                recent_predicates = CG.client_controller.new_options.GetRecentPredicates( recent_predicate_types )
+                recent_predicates = CG.client_controller.new_options.get_recent_predicates( recent_predicate_types )
                 
                 recent_predicates = [ pred for pred in recent_predicates if pred not in all_static_preds ]
                 
@@ -1065,7 +1065,7 @@ class FleshOutPredicatePanel( ClientGUIScrolledPanels.EditPanel ):
         
         for predicate in predicates:
             
-            CG.client_controller.new_options.RemoveRecentPredicate( predicate )
+            CG.client_controller.new_options.remove_recent_predicate( predicate )
             
         
         button.hide()

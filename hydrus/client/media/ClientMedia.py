@@ -228,11 +228,11 @@ def GetShowAction( media_result: ClientMediaResult.MediaResult, canvas_type: int
     
     if canvas_type == CC.CANVAS_PREVIEW:
         
-        action =  CG.client_controller.new_options.GetPreviewShowAction( mime )
+        action =  CG.client_controller.new_options.get_preview_show_action( mime )
         
     else:
         
-        action = CG.client_controller.new_options.GetMediaShowAction( mime )
+        action = CG.client_controller.new_options.get_media_show_action( mime )
         
     
     return action

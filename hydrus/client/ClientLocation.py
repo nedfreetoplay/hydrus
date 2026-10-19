@@ -44,7 +44,7 @@ def get_possible_file_domain_services_in_order(all_known_files_allowed: bool, on
     
     if not only_importable_domains_allowed:
         
-        advanced_mode = CG.client_controller.new_options.GetBoolean( 'advanced_mode' )
+        advanced_mode = CG.client_controller.new_options.get_boolean( 'advanced_mode' )
         
         if len( services_manager.GetServices( ( HC.LOCAL_FILE_DOMAIN, ) ) ) > 1 or advanced_mode:
             

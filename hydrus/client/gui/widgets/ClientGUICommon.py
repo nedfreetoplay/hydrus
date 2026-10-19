@@ -865,7 +865,7 @@ class EnterCatchingRadioButton( QW.QRadioButton ):
     
     def keyPressEvent( self, event: QG.QKeyEvent ):
         
-        if event.key() in ( QC.Qt.Key.Key_Return, QC.Qt.Key.Key_Enter ) and CG.client_controller.new_options.GetBoolean( 'force_enter_on_radio_buttons_to_do_dialog_ok' ):
+        if event.key() in ( QC.Qt.Key.Key_Return, QC.Qt.Key.Key_Enter ) and CG.client_controller.new_options.get_boolean( 'force_enter_on_radio_buttons_to_do_dialog_ok' ):
             
             event.ignore()
             return
@@ -1219,14 +1219,14 @@ class CheckboxManagerOptions( CheckboxManager ):
         
         new_options = CG.client_controller.new_options
         
-        return new_options.GetBoolean( self._boolean_name )
+        return new_options.get_boolean( self._boolean_name )
         
     
     def Invert( self ):
         
         new_options = CG.client_controller.new_options
         
-        new_options.InvertBoolean( self._boolean_name )
+        new_options.invert_boolean( self._boolean_name )
         
         if self._boolean_name == 'advanced_mode':
             

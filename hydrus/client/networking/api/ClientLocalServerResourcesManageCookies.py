@@ -116,7 +116,7 @@ class HydrusResourceClientAPIRestrictedManageCookiesSetCookies( HydrusResourceCl
             CG.client_controller.network_engine.session_manager.SetSessionDirty( network_context )
             
         
-        if CG.client_controller.new_options.GetBoolean( 'notify_client_api_cookies' ) and len( domains_cleared ) + len( domains_set ) > 0:
+        if CG.client_controller.new_options.get_boolean( 'notify_client_api_cookies' ) and len( domains_cleared ) + len( domains_set ) > 0:
             
             domains_cleared = sorted( domains_cleared )
             domains_set = sorted( domains_set )
@@ -366,7 +366,7 @@ class HydrusResourceClientAPIRestrictedManageCookiesSetHeaders( HydrusResourceCl
                 
             
         
-        if CG.client_controller.new_options.GetBoolean( 'notify_client_api_cookies' ) and len( headers_cleared ) + len( headers_set ) + len( headers_altered ) > 0:
+        if CG.client_controller.new_options.get_boolean( 'notify_client_api_cookies' ) and len( headers_cleared ) + len( headers_set ) + len( headers_altered ) > 0:
             
             message_lines = [ 'Headers sent from API:' ]
             

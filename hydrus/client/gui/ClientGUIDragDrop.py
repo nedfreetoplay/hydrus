@@ -72,7 +72,7 @@ def DoFileExportDragDrop( drag_object: QG.QDrag, page_key, media, alt_down ):
     
     #
     
-    discord_dnd_fix_possible = new_options.GetBoolean( 'discord_dnd_fix' ) and len( original_paths ) <= 50 and total_size < 200 * 1048576
+    discord_dnd_fix_possible = new_options.get_boolean( 'discord_dnd_fix' ) and len( original_paths ) <= 50 and total_size < 200 * 1048576
     
     if discord_dnd_fix_possible:
         
@@ -105,7 +105,7 @@ def DoFileExportDragDrop( drag_object: QG.QDrag, page_key, media, alt_down ):
         
         DND_TEMP_DIRS.append( ( HydrusTime.get_now(), this_dnd_temp_dir ) )
         
-        make_it_a_move_flag = new_options.GetBoolean( 'secret_discord_dnd_fix' )
+        make_it_a_move_flag = new_options.get_boolean( 'secret_discord_dnd_fix' )
         
         if make_it_a_move_flag:
             
@@ -122,7 +122,7 @@ def DoFileExportDragDrop( drag_object: QG.QDrag, page_key, media, alt_down ):
         
         try:
             
-            filename_pattern = new_options.GetString( 'discord_dnd_filename_pattern' )
+            filename_pattern = new_options.get_string( 'discord_dnd_filename_pattern' )
             filename_terms = ClientExportingFiles.ParseExportPhrase( filename_pattern )
             
             if len( filename_terms ) == 0:

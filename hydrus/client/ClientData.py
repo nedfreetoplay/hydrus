@@ -103,7 +103,7 @@ def resolution_to_pretty_string(resolution):
             
         
     
-    if resolution in HC.NICE_RESOLUTIONS and CG.client_controller.new_options.GetBoolean( 'use_nice_resolution_strings' ):
+    if resolution in HC.NICE_RESOLUTIONS and CG.client_controller.new_options.get_boolean( 'use_nice_resolution_strings' ):
         
         return HC.NICE_RESOLUTIONS[ resolution ]
         
@@ -157,7 +157,7 @@ def show_text_client(text):
 
 def to_human_bytes(size):
     
-    sig_figs = CG.client_controller.new_options.GetInteger( 'human_bytes_sig_figs' )
+    sig_figs = CG.client_controller.new_options.get_integer( 'human_bytes_sig_figs' )
     
     return HydrusData.base_to_human_bytes( size, sig_figs = sig_figs )
 

@@ -306,7 +306,7 @@ class TagPairActionContext( object ):
                     
                     fixed_suggestions = self._GetFixedPendSuggestions()
                     
-                    suggestions = CG.client_controller.new_options.GetRecentPetitionReasons( content_type, HC.CONTENT_UPDATE_ADD )
+                    suggestions = CG.client_controller.new_options.get_recent_petition_reasons( content_type, HC.CONTENT_UPDATE_ADD )
                     
                     suggestions.extend( fixed_suggestions )
                     
@@ -318,7 +318,7 @@ class TagPairActionContext( object ):
                         
                         if reason not in fixed_suggestions:
                             
-                            CG.client_controller.new_options.PushRecentPetitionReason( content_type, HC.CONTENT_UPDATE_ADD, reason )
+                            CG.client_controller.new_options.push_recent_petition_reason( content_type, HC.CONTENT_UPDATE_ADD, reason )
                             
                         
                     except HydrusExceptions.CancelledException:
@@ -404,7 +404,7 @@ class TagPairActionContext( object ):
                     
                     fixed_suggestions = self._GetFixedPetitionSuggestions()
                     
-                    suggestions = CG.client_controller.new_options.GetRecentPetitionReasons( content_type, HC.CONTENT_UPDATE_DELETE )
+                    suggestions = CG.client_controller.new_options.get_recent_petition_reasons( content_type, HC.CONTENT_UPDATE_DELETE )
                     
                     suggestions.extend( fixed_suggestions )
                     
@@ -414,7 +414,7 @@ class TagPairActionContext( object ):
                         
                         if reason not in fixed_suggestions:
                             
-                            CG.client_controller.new_options.PushRecentPetitionReason( content_type, HC.CONTENT_UPDATE_DELETE, reason )
+                            CG.client_controller.new_options.push_recent_petition_reason( content_type, HC.CONTENT_UPDATE_DELETE, reason )
                             
                         
                     except HydrusExceptions.CancelledException:

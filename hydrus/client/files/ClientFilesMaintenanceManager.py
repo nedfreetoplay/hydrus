@@ -86,7 +86,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         if CG.client_controller.currently_idle():
             
-            if not self._controller.new_options.GetBoolean( 'file_maintenance_during_idle' ):
+            if not self._controller.new_options.get_boolean( 'file_maintenance_during_idle' ):
                 
                 return False
                 
@@ -100,7 +100,7 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
         else:
             
-            if not self._controller.new_options.GetBoolean( 'file_maintenance_during_active' ):
+            if not self._controller.new_options.get_boolean( 'file_maintenance_during_active' ):
                 
                 return False
                 
@@ -985,15 +985,15 @@ class FilesMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
     
     def _ReInitialiseWorkRules( self ):
         
-        file_maintenance_idle_throttle_files = self._controller.new_options.GetInteger( 'file_maintenance_idle_throttle_files' )
-        file_maintenance_idle_throttle_time_delta = self._controller.new_options.GetInteger( 'file_maintenance_idle_throttle_time_delta' )
+        file_maintenance_idle_throttle_files = self._controller.new_options.get_integer( 'file_maintenance_idle_throttle_files' )
+        file_maintenance_idle_throttle_time_delta = self._controller.new_options.get_integer( 'file_maintenance_idle_throttle_time_delta' )
         
         self._idle_work_rules = HydrusNetworking.BandwidthRules()
         
         self._idle_work_rules.add_rule( HC.BANDWIDTH_TYPE_REQUESTS, file_maintenance_idle_throttle_time_delta, file_maintenance_idle_throttle_files * ClientFilesMaintenance.NORMALISED_BIG_JOB_WEIGHT )
         
-        file_maintenance_active_throttle_files = self._controller.new_options.GetInteger( 'file_maintenance_active_throttle_files' )
-        file_maintenance_active_throttle_time_delta = self._controller.new_options.GetInteger( 'file_maintenance_active_throttle_time_delta' )
+        file_maintenance_active_throttle_files = self._controller.new_options.get_integer( 'file_maintenance_active_throttle_files' )
+        file_maintenance_active_throttle_time_delta = self._controller.new_options.get_integer( 'file_maintenance_active_throttle_time_delta' )
         
         self._active_work_rules = HydrusNetworking.BandwidthRules()
         

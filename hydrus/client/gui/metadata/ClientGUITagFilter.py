@@ -66,7 +66,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
         self._show_all_panels_button = ClientGUICommon.BetterButton( self._filter_panel, 'show other panels', self._ShowAllPanels )
         self._show_all_panels_button.setToolTip( ClientGUIFunctions.WrapToolTip( 'This shows the whitelist and advanced panels, in case you want to craft a clever blacklist with \'except\' rules.' ) )
         
-        show_the_button = self._only_show_blacklist and CG.client_controller.new_options.GetBoolean( 'advanced_mode' )
+        show_the_button = self._only_show_blacklist and CG.client_controller.new_options.get_boolean( 'advanced_mode' )
         
         self._show_all_panels_button.setVisible( show_the_button )
         
@@ -422,7 +422,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
         
         def do_it( name ):
             
-            names_to_tag_filters = CG.client_controller.new_options.GetFavouriteTagFilters()
+            names_to_tag_filters = CG.client_controller.new_options.get_favourite_tag_filters()
             
             if name in names_to_tag_filters:
                 
@@ -437,11 +437,11 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 del names_to_tag_filters[ name ]
                 
-                CG.client_controller.new_options.SetFavouriteTagFilters( names_to_tag_filters )
+                CG.client_controller.new_options.set_favourite_tag_filters( names_to_tag_filters )
                 
             
         
-        names_to_tag_filters = CG.client_controller.new_options.GetFavouriteTagFilters()
+        names_to_tag_filters = CG.client_controller.new_options.get_favourite_tag_filters()
         
         menu = ClientGUIMenus.GenerateMenu( self )
         
@@ -462,7 +462,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _ExportFavourite( self ):
         
-        names_to_tag_filters = CG.client_controller.new_options.GetFavouriteTagFilters()
+        names_to_tag_filters = CG.client_controller.new_options.get_favourite_tag_filters()
         
         menu = ClientGUIMenus.GenerateMenu( self )
         
@@ -544,7 +544,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
             return
             
         
-        names_to_tag_filters = CG.client_controller.new_options.GetFavouriteTagFilters()
+        names_to_tag_filters = CG.client_controller.new_options.get_favourite_tag_filters()
         
         if name in names_to_tag_filters:
             
@@ -560,7 +560,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
         
         names_to_tag_filters[ name ] = tag_filter
         
-        CG.client_controller.new_options.SetFavouriteTagFilters( names_to_tag_filters )
+        CG.client_controller.new_options.set_favourite_tag_filters( names_to_tag_filters )
         
         self.SetValue( tag_filter )
         
@@ -807,7 +807,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
     
     def _LoadFavourite( self ):
         
-        names_to_tag_filters = CG.client_controller.new_options.GetFavouriteTagFilters()
+        names_to_tag_filters = CG.client_controller.new_options.get_favourite_tag_filters()
         
         menu = ClientGUIMenus.GenerateMenu( self )
         
@@ -855,7 +855,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
             return
             
         
-        names_to_tag_filters = CG.client_controller.new_options.GetFavouriteTagFilters()
+        names_to_tag_filters = CG.client_controller.new_options.get_favourite_tag_filters()
         
         tag_filter = self.GetValue()
         
@@ -873,7 +873,7 @@ class EditTagFilterPanel( ClientGUIScrolledPanels.EditPanel ):
         
         names_to_tag_filters[ name ] = tag_filter
         
-        CG.client_controller.new_options.SetFavouriteTagFilters( names_to_tag_filters )
+        CG.client_controller.new_options.set_favourite_tag_filters( names_to_tag_filters )
         
     
     def _ShowAllPanels( self ):

@@ -721,7 +721,7 @@ class ListBoxTagsPredicatesAC( ClientGUIListBoxes.ListBoxTagsPredicates ):
             
             if len( self._predicates ) > 0:
                 
-                ac_select_first_with_count = CG.client_controller.new_options.GetBoolean( 'ac_select_first_with_count' )
+                ac_select_first_with_count = CG.client_controller.new_options.get_boolean( 'ac_select_first_with_count' )
                 
                 if ac_select_first_with_count: # no matter what, selection preservation won't work well if we move selection down
                     
@@ -837,7 +837,7 @@ class AutoCompleteDropdown( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         if self.window() == CG.client_controller.gui:
             
-            use_float_mode = CG.client_controller.new_options.GetBoolean( 'autocomplete_float_main_gui' )
+            use_float_mode = CG.client_controller.new_options.get_boolean( 'autocomplete_float_main_gui' )
             
         else:
             
@@ -1448,9 +1448,9 @@ class AutoCompleteDropdown( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         new_options = CG.client_controller.new_options
         
-        if new_options.GetBoolean( 'override_stylesheet_colours' ):
+        if new_options.get_boolean( 'override_stylesheet_colours' ):
             
-            return new_options.GetColour( colour_type )
+            return new_options.get_colour( colour_type )
             
         else:
             
@@ -1736,7 +1736,7 @@ class ChildrenTab( ListBoxTagsPredicatesAC ):
                 
                 child_predicates = [ predicate.GetCountlessCopy() for predicate in child_predicates ]
                 
-                num_to_show_in_ac_dropdown_children_tab = CG.client_controller.new_options.GetNoneableInteger( 'num_to_show_in_ac_dropdown_children_tab' )
+                num_to_show_in_ac_dropdown_children_tab = CG.client_controller.new_options.get_noneable_integer( 'num_to_show_in_ac_dropdown_children_tab' )
                 
                 if num_to_show_in_ac_dropdown_children_tab is not None:
                     
@@ -1957,7 +1957,7 @@ class AutoCompleteDropdownTags( AutoCompleteDropdown ):
         
         if tag_context.service_key == CC.COMBINED_TAG_SERVICE_KEY and self._location_context_button.GetValue().is_all_known_files():
             
-            default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+            default_location_context = CG.client_controller.new_options.get_default_local_location_context()
             
             self._SetLocationContext( default_location_context )
             
@@ -1997,7 +1997,7 @@ class AutoCompleteDropdownTags( AutoCompleteDropdown ):
         
         if tag_service_key == CC.COMBINED_TAG_SERVICE_KEY and self._location_context_button.GetValue().is_all_known_files():
             
-            default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+            default_location_context = CG.client_controller.new_options.get_default_local_location_context()
             
             self._SetLocationContext( default_location_context )
             
@@ -2054,7 +2054,7 @@ class AutoCompleteDropdownTags( AutoCompleteDropdown ):
             return
             
         
-        favourite_tags = sorted( CG.client_controller.new_options.GetStringList( 'favourite_tags' ) )
+        favourite_tags = sorted( CG.client_controller.new_options.get_string_list( 'favourite_tags' ) )
         
         predicates = [ ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_TAG, value = tag ) for tag in favourite_tags ]
         
@@ -2517,7 +2517,7 @@ class AutoCompleteDropdownTagsRead( AutocompleteDropdownTagsFileSearchContextORC
         self._or_advanced = ClientGUICommon.BetterButton( self._dropdown_window, 'advanced', self._AdvancedORInput )
         self._or_advanced.setToolTip( ClientGUIFunctions.WrapToolTip( 'You can paste complicated predicate strings in here and it will parse into proper logic.' ) )
         
-        if not CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+        if not CG.client_controller.new_options.get_boolean( 'advanced_mode' ):
             
             self._or_advanced.hide()
             
@@ -2601,7 +2601,7 @@ class AutoCompleteDropdownTagsRead( AutocompleteDropdownTagsFileSearchContextORC
     
     def _ClearSearch( self ):
         
-        location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+        location_context = CG.client_controller.new_options.get_default_local_location_context()
         
         tag_context = ClientSearchTagContext.TagContext()
         
@@ -2715,7 +2715,7 @@ class AutoCompleteDropdownTagsRead( AutocompleteDropdownTagsFileSearchContextORC
         
         if self._fixed_results_list_height is None:
             
-            height_num_chars = CG.client_controller.new_options.GetInteger( 'ac_read_list_height_num_chars' )
+            height_num_chars = CG.client_controller.new_options.get_integer( 'ac_read_list_height_num_chars' )
             
         else:
             
@@ -2733,7 +2733,7 @@ class AutoCompleteDropdownTagsRead( AutocompleteDropdownTagsFileSearchContextORC
         
         if self._fixed_results_list_height is None:
             
-            height_num_chars = CG.client_controller.new_options.GetInteger( 'ac_read_list_height_num_chars' )
+            height_num_chars = CG.client_controller.new_options.get_integer( 'ac_read_list_height_num_chars' )
             
         else:
             
@@ -3099,7 +3099,7 @@ class ListBoxTagsActiveSearchPredicates( ClientGUIListBoxes.ListBoxTagsPredicate
     
     def __init__( self, parent: AutocompleteDropdownTagsFileSearchContextORCapable, page_key, file_search_context: ClientSearchFileSearchContext.FileSearchContext, for_metadata_conditional: bool ):
         
-        height_num_chars = CG.client_controller.new_options.GetInteger( 'active_search_predicates_height_num_chars' )
+        height_num_chars = CG.client_controller.new_options.get_integer( 'active_search_predicates_height_num_chars' )
         
         super().__init__( parent, height_num_chars = height_num_chars )
         
@@ -3531,26 +3531,26 @@ class AutoCompleteDropdownTagsWrite( AutoCompleteDropdownTags ):
     
     def _InitFavouritesList( self ) -> ListBoxTagsStringsAC:
         
-        height_num_chars = CG.client_controller.new_options.GetInteger( 'ac_write_list_height_num_chars' )
+        height_num_chars = CG.client_controller.new_options.get_integer( 'ac_write_list_height_num_chars' )
         
         favs_list = ListBoxTagsStringsAC( self._dropdown_notebook, self.BroadcastChoices, self._display_tag_service_key, self._float_mode, tag_display_type = ClientTags.TAG_DISPLAY_STORAGE, height_num_chars = height_num_chars )
         
-        favs_list.SetExtraParentRowsAllowed( CG.client_controller.new_options.GetBoolean( 'expand_parents_on_storage_autocomplete_taglists' ) )
-        favs_list.SetParentDecoratorsAllowed( CG.client_controller.new_options.GetBoolean( 'show_parent_decorators_on_storage_autocomplete_taglists' ) )
-        favs_list.SetSiblingDecoratorsAllowed( CG.client_controller.new_options.GetBoolean( 'show_sibling_decorators_on_storage_autocomplete_taglists' ) )
+        favs_list.SetExtraParentRowsAllowed( CG.client_controller.new_options.get_boolean( 'expand_parents_on_storage_autocomplete_taglists' ) )
+        favs_list.SetParentDecoratorsAllowed( CG.client_controller.new_options.get_boolean( 'show_parent_decorators_on_storage_autocomplete_taglists' ) )
+        favs_list.SetSiblingDecoratorsAllowed( CG.client_controller.new_options.get_boolean( 'show_sibling_decorators_on_storage_autocomplete_taglists' ) )
         
         return favs_list
         
     
     def _InitSearchResultsList( self ) -> ListBoxTagsPredicatesAC:
         
-        height_num_chars = CG.client_controller.new_options.GetInteger( 'ac_write_list_height_num_chars' )
+        height_num_chars = CG.client_controller.new_options.get_integer( 'ac_write_list_height_num_chars' )
         
         preds_list = ListBoxTagsPredicatesAC( self._dropdown_notebook, self.BroadcastChoices, self._float_mode, self._display_tag_service_key, tag_display_type = ClientTags.TAG_DISPLAY_STORAGE, height_num_chars = height_num_chars )
         
-        preds_list.SetExtraParentRowsAllowed( CG.client_controller.new_options.GetBoolean( 'expand_parents_on_storage_autocomplete_taglists' ) )
-        preds_list.SetParentDecoratorsAllowed( CG.client_controller.new_options.GetBoolean( 'show_parent_decorators_on_storage_autocomplete_taglists' ) )
-        preds_list.SetSiblingDecoratorsAllowed( CG.client_controller.new_options.GetBoolean( 'show_sibling_decorators_on_storage_autocomplete_taglists' ) )
+        preds_list.SetExtraParentRowsAllowed( CG.client_controller.new_options.get_boolean( 'expand_parents_on_storage_autocomplete_taglists' ) )
+        preds_list.SetParentDecoratorsAllowed( CG.client_controller.new_options.get_boolean( 'show_parent_decorators_on_storage_autocomplete_taglists' ) )
+        preds_list.SetSiblingDecoratorsAllowed( CG.client_controller.new_options.get_boolean( 'show_sibling_decorators_on_storage_autocomplete_taglists' ) )
         
         return preds_list
         
@@ -3651,7 +3651,7 @@ class AutoCompleteDropdownTagsWrite( AutoCompleteDropdownTags ):
                 
                 do_it = False
                 
-                if CG.client_controller.new_options.GetBoolean( 'skip_yesno_on_write_autocomplete_multiline_paste' ):
+                if CG.client_controller.new_options.get_boolean( 'skip_yesno_on_write_autocomplete_multiline_paste' ):
                     
                     do_it = True
                     
@@ -3691,7 +3691,7 @@ class AutoCompleteDropdownTagsWrite( AutoCompleteDropdownTags ):
             return
             
         
-        favourite_tags = sorted( CG.client_controller.new_options.GetStringList( 'favourite_tags' ) )
+        favourite_tags = sorted( CG.client_controller.new_options.get_string_list( 'favourite_tags' ) )
         
         self._favourites_list.SetTags( favourite_tags )
         

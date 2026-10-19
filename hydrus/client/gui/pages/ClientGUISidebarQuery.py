@@ -214,7 +214,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
     
     def _MakeCurrentSelectionTagsBox( self, sizer, **kwargs ):
         
-        tag_display_type = CG.client_controller.new_options.GetInteger( 'tag_list_tag_display_type_sidebar' )
+        tag_display_type = CG.client_controller.new_options.get_integer( 'tag_list_tag_display_type_sidebar' )
         
         self._current_selection_tags_box = ClientGUIListBoxes.StaticBoxSorterForListBoxTags( self, 'selection tags', CC.TAG_PRESENTATION_SEARCH_PAGE )
         
@@ -289,7 +289,7 @@ class SidebarQuery( ClientGUISidebarCore.Sidebar ):
         
         if media_sort.CanSortAtDBLevel( file_search_context.GetLocationContext() ):
             
-            if CG.client_controller.new_options.GetBoolean( 'refresh_search_page_on_system_limited_sort_changed' ) and self._tag_autocomplete.IsSynchronised() and file_search_context.GetSystemPredicates().HasSystemLimit():
+            if CG.client_controller.new_options.get_boolean( 'refresh_search_page_on_system_limited_sort_changed' ) and self._tag_autocomplete.IsSynchronised() and file_search_context.GetSystemPredicates().HasSystemLimit():
                 
                 self._RefreshQuery()
                 

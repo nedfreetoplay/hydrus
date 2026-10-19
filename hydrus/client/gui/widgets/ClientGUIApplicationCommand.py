@@ -991,7 +991,7 @@ class TagSubPanel( QW.QWidget ):
         self._tag_value = QW.QLineEdit( self )
         self._tag_value.setReadOnly( True )
         
-        default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+        default_location_context = CG.client_controller.new_options.get_default_local_location_context()
         
         self._tag_input = ClientGUIACDropdown.AutoCompleteDropdownTagsWrite( self, self.SetTags, default_location_context, CC.COMBINED_TAG_SERVICE_KEY )
         

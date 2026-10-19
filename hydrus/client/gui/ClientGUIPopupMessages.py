@@ -76,11 +76,11 @@ class PopupMessage( PopupWindow ):
         font.setBold( True )
         self._title.setFont( font )
         
-        popup_message_character_width = CG.client_controller.new_options.GetInteger( 'popup_message_character_width' )
+        popup_message_character_width = CG.client_controller.new_options.get_integer( 'popup_message_character_width' )
         
         popup_char_width = ClientGUIFunctions.ConvertTextToPixelWidth( self._title, popup_message_character_width )
         
-        if CG.client_controller.new_options.GetBoolean( 'popup_message_force_min_width' ):
+        if CG.client_controller.new_options.get_boolean( 'popup_message_force_min_width' ):
             
             self.setFixedWidth( popup_char_width )
             
@@ -1039,7 +1039,7 @@ class PopupMessageManager( QW.QFrame ):
             return False
             
         
-        if CG.client_controller.new_options.GetBoolean( 'freeze_message_manager_when_mouse_on_other_monitor' ):
+        if CG.client_controller.new_options.get_boolean( 'freeze_message_manager_when_mouse_on_other_monitor' ):
             
             on_my_monitor = ClientGUIFunctions.MouseIsOnMyDisplay( main_gui )
             
@@ -1049,7 +1049,7 @@ class PopupMessageManager( QW.QFrame ):
                 
             
         
-        if CG.client_controller.new_options.GetBoolean( 'freeze_message_manager_when_main_gui_minimised' ):
+        if CG.client_controller.new_options.get_boolean( 'freeze_message_manager_when_main_gui_minimised' ):
             
             main_gui_up = not main_gui.isMinimized()
             

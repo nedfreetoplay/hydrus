@@ -39,7 +39,7 @@ class EditPotentialDuplicatesSearchContextPanel( ClientGUICommon.StaticBox ):
         
         self._num_potential_duplicate_pairs = 0
         
-        self._count_paused = CG.client_controller.new_options.GetBoolean( 'potential_duplicate_pairs_search_starts_paused' )
+        self._count_paused = CG.client_controller.new_options.get_boolean( 'potential_duplicate_pairs_search_starts_paused' )
         
         self._count_work_updater = self._InitialiseCountWorkUpdater()
         
@@ -439,7 +439,7 @@ class EditPotentialDuplicatesSearchContextPanel( ClientGUICommon.StaticBox ):
     
     def _WeAreDoingACountEstimateAndHaveEnough( self ):
         
-        if not CG.client_controller.new_options.GetBoolean( 'potential_duplicate_pairs_search_context_panel_stops_to_estimate' ):
+        if not CG.client_controller.new_options.get_boolean( 'potential_duplicate_pairs_search_context_panel_stops_to_estimate' ):
             
             return False
             

@@ -62,7 +62,7 @@ def AddAudioVolumeMenu( menu, canvas_type, media_container ):
         
         mute_volume_type = ClientGUIMediaControls.AUDIO_MEDIA_VIEWER
         
-        if CG.client_controller.new_options.GetBoolean( 'media_viewer_uses_its_own_audio_volume' ):
+        if CG.client_controller.new_options.get_boolean( 'media_viewer_uses_its_own_audio_volume' ):
             
             volume_volume_type = ClientGUIMediaControls.AUDIO_MEDIA_VIEWER
             
@@ -71,7 +71,7 @@ def AddAudioVolumeMenu( menu, canvas_type, media_container ):
         
         mute_volume_type = ClientGUIMediaControls.AUDIO_PREVIEW
         
-        if CG.client_controller.new_options.GetBoolean( 'preview_uses_its_own_audio_volume' ):
+        if CG.client_controller.new_options.get_boolean( 'preview_uses_its_own_audio_volume' ):
             
             volume_volume_type = ClientGUIMediaControls.AUDIO_PREVIEW
             
@@ -81,7 +81,7 @@ def AddAudioVolumeMenu( menu, canvas_type, media_container ):
     
     ( global_mute_option_name, global_volume_option_name ) = ClientGUIMediaControls.volume_types_to_option_names[ ClientGUIMediaControls.AUDIO_GLOBAL ]
     
-    current_global_mute = CG.client_controller.new_options.GetBoolean( global_mute_option_name )
+    current_global_mute = CG.client_controller.new_options.get_boolean( global_mute_option_name )
     
     if current_global_mute:
         
@@ -102,7 +102,7 @@ def AddAudioVolumeMenu( menu, canvas_type, media_container ):
         
         ( mute_option_name, volume_option_name ) = ClientGUIMediaControls.volume_types_to_option_names[ mute_volume_type ]
         
-        current_options_mute = CG.client_controller.new_options.GetBoolean( mute_option_name )
+        current_options_mute = CG.client_controller.new_options.get_boolean( mute_option_name )
         
         if current_options_mute:
             
@@ -172,7 +172,7 @@ def AddAudioVolumeMenu( menu, canvas_type, media_container ):
     
     ( mute_option_name, volume_option_name ) = ClientGUIMediaControls.volume_types_to_option_names[ volume_volume_type ]
     
-    current_volume = CG.client_controller.new_options.GetInteger( volume_option_name )
+    current_volume = CG.client_controller.new_options.get_integer( volume_option_name )
     
     def change_volume_from_slider( v ):
         
@@ -220,7 +220,7 @@ class CanvasBackgroundColourGenerator( object ):
     
     def CanDoTransparencyCheckerboard( self ) -> bool:
         
-        return CG.client_controller.new_options.GetBoolean( 'draw_transparency_checkerboard_media_canvas' )
+        return CG.client_controller.new_options.get_boolean( 'draw_transparency_checkerboard_media_canvas' )
         
     
 
@@ -228,7 +228,7 @@ class CanvasBackgroundColourGeneratorDuplicates( CanvasBackgroundColourGenerator
     
     def CanDoTransparencyCheckerboard( self ) -> bool:
         
-        return CG.client_controller.new_options.GetBoolean( 'draw_transparency_checkerboard_media_canvas_duplicates' )
+        return CG.client_controller.new_options.get_boolean( 'draw_transparency_checkerboard_media_canvas_duplicates' )
         
     
     def GetColour( self ) -> QG.QColor:
@@ -241,11 +241,11 @@ class CanvasBackgroundColourGeneratorDuplicates( CanvasBackgroundColourGenerator
             
             if self._my_canvas.IsShowingFileA():
                 
-                duplicate_intensity = new_options.GetNoneableInteger( 'duplicate_background_switch_intensity_a' )
+                duplicate_intensity = new_options.get_noneable_integer( 'duplicate_background_switch_intensity_a' )
                 
             else:
                 
-                duplicate_intensity = new_options.GetNoneableInteger( 'duplicate_background_switch_intensity_b' )
+                duplicate_intensity = new_options.get_noneable_integer( 'duplicate_background_switch_intensity_b' )
                 
             
             return ClientGUIFunctions.GetLighterDarkerColour( normal_colour, duplicate_intensity )
@@ -744,7 +744,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
     
     def BeginDrag( self ):
         
-        if self._current_media is not None and self._current_media.HasDuration() and CG.client_controller.new_options.GetBoolean( 'disallow_media_drags_on_duration_media' ):
+        if self._current_media is not None and self._current_media.HasDuration() and CG.client_controller.new_options.get_boolean( 'disallow_media_drags_on_duration_media' ):
             
             return
             
@@ -761,7 +761,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         if self._current_media is not None:
             
-            if self._canvas_type in CC.CANVAS_MEDIA_VIEWER_TYPES and not self._new_options.GetBoolean( 'media_viewer_recenter_media_on_window_resize' ):
+            if self._canvas_type in CC.CANVAS_MEDIA_VIEWER_TYPES and not self._new_options.get_boolean( 'media_viewer_recenter_media_on_window_resize' ):
                 
                 self._media_container.ZoomMaintainingZoom( self._current_media )
                 
@@ -785,11 +785,11 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
                 if my_size != media_container_size:
                     
-                    if self._new_options.GetBoolean( 'media_viewer_lock_current_zoom_type' ):
+                    if self._new_options.get_boolean( 'media_viewer_lock_current_zoom_type' ):
                         
                         self._media_container.ZoomToZoomType()
                         
-                    elif self._new_options.GetBoolean( 'media_viewer_lock_current_zoom' ):
+                    elif self._new_options.get_boolean( 'media_viewer_lock_current_zoom' ):
                         
                         self._media_container.ZoomMaintainingZoom( self._current_media )
                         
@@ -830,9 +830,9 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
     
     def GetColour( self, colour_type ):
         
-        if self._new_options.GetBoolean( 'override_stylesheet_colours' ):
+        if self._new_options.get_boolean( 'override_stylesheet_colours' ):
             
-            return self._new_options.GetColour( colour_type )
+            return self._new_options.get_colour( colour_type )
             
         else:
             
@@ -1128,7 +1128,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                     
                     hash = self._current_media.GetHash()
                     
-                    if CG.client_controller.new_options.GetBoolean( 'open_files_to_duplicate_filter_uses_all_my_files' ):
+                    if CG.client_controller.new_options.get_boolean( 'open_files_to_duplicate_filter_uses_all_my_files' ):
                         
                         location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
                         
@@ -1497,7 +1497,7 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
             elif action == CAC.SIMPLE_FLIP_ICC_PROFILE_APPLICATION:
                 
-                result = CG.client_controller.new_options.FlipBoolean( 'do_icc_profile_normalisation' )
+                result = CG.client_controller.new_options.flip_boolean( 'do_icc_profile_normalisation' )
                 
                 from hydrus.core.files.images import HydrusImageNormalisation
                 
@@ -1507,15 +1507,15 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
                 if action == CAC.SIMPLE_FLIP_TRANSPARENCY_CHECKERBOARD_MEDIA_VIEWER:
                     
-                    CG.client_controller.new_options.FlipBoolean( 'draw_transparency_checkerboard_media_canvas' )
+                    CG.client_controller.new_options.flip_boolean( 'draw_transparency_checkerboard_media_canvas' )
                     
                 elif action == CAC.SIMPLE_FLIP_TRANSPARENCY_CHECKERBOARD_MEDIA_VIEWER_DUPLICATE_FILTER:
                     
-                    CG.client_controller.new_options.FlipBoolean( 'draw_transparency_checkerboard_media_canvas_duplicates' )
+                    CG.client_controller.new_options.flip_boolean( 'draw_transparency_checkerboard_media_canvas_duplicates' )
                     
                 elif action == CAC.SIMPLE_FLIP_TRANSPARENCY_CHECKERBOARD_GREENSCREEN:
                     
-                    CG.client_controller.new_options.FlipBoolean( 'draw_transparency_checkerboard_as_greenscreen' )
+                    CG.client_controller.new_options.flip_boolean( 'draw_transparency_checkerboard_as_greenscreen' )
                     
                 else:
                     
@@ -1636,9 +1636,9 @@ class Canvas( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                         
                         self._last_geometry = self.window().geometry()
                         
-                        maintain_zoom = self._new_options.GetBoolean( 'media_viewer_lock_current_zoom' )
-                        maintain_zoom_type = not maintain_zoom and self._new_options.GetBoolean( 'media_viewer_lock_current_zoom_type' )
-                        maintain_pan = self._new_options.GetBoolean( 'media_viewer_lock_current_pan' )
+                        maintain_zoom = self._new_options.get_boolean( 'media_viewer_lock_current_zoom' )
+                        maintain_zoom_type = not maintain_zoom and self._new_options.get_boolean( 'media_viewer_lock_current_zoom_type' )
+                        maintain_pan = self._new_options.get_boolean( 'media_viewer_lock_current_pan' )
                         
                     
                     self._media_container.SetMedia( self._current_media, maintain_zoom, maintain_zoom_type, maintain_pan, start_paused = start_paused )
@@ -2088,7 +2088,7 @@ class CanvasPanelWithHovers( CanvasPanel ):
             #     self._DrawTopMiddle( painter )
                 
             
-            if new_options.GetBoolean( 'draw_top_right_hover_in_preview_window_background' ):
+            if new_options.get_boolean( 'draw_top_right_hover_in_preview_window_background' ):
                 
                 current_y = self._DrawTopRight( painter )
                 
@@ -2132,8 +2132,8 @@ class CanvasPanelWithHovers( CanvasPanel ):
         
         # ratings
         
-        RATING_ICON_SET_SIZE = round( self._new_options.GetFloat( 'preview_window_rating_icon_size_px' ) )
-        RATING_INCDEC_SET_HEIGHT = round( self._new_options.GetFloat( 'preview_window_rating_incdec_height_px' ) )
+        RATING_ICON_SET_SIZE = round( self._new_options.get_float( 'preview_window_rating_icon_size_px' ) )
+        RATING_INCDEC_SET_HEIGHT = round( self._new_options.get_float( 'preview_window_rating_incdec_height_px' ) )
         STAR_DX = RATING_ICON_SET_SIZE
         STAR_DY = RATING_ICON_SET_SIZE
         STAR_PAD = ClientGUIPainterShapes.PAD
@@ -2367,7 +2367,7 @@ class CanvasWithHovers( Canvas ):
         
         self._my_shortcuts_handler.AddWindowToFilter( self._right_notes_hover )
         
-        for name in self._new_options.GetStringList( 'default_media_viewer_custom_shortcuts' ):
+        for name in self._new_options.get_string_list( 'default_media_viewer_custom_shortcuts' ):
             
             self._my_shortcuts_handler.AddShortcuts( name )
             
@@ -2377,12 +2377,12 @@ class CanvasWithHovers( Canvas ):
         self._window_always_on_top = False
         self._hide_window_frame = False # should always start with titlebar/frame (to establish taskbar gubbins?)
         
-        if CG.client_controller.new_options.GetBoolean( 'always_start_media_viewers_always_on_top' ) and not self.IsAlwaysOnTopWhilePlaying():
+        if CG.client_controller.new_options.get_boolean( 'always_start_media_viewers_always_on_top' ) and not self.IsAlwaysOnTopWhilePlaying():
             
             CG.client_controller.call_later_qt_safe( self, 0.1, 'setting media viewer window on top', self._FlipWindowAlwaysOnTop )
             
         
-        if CG.client_controller.new_options.GetBoolean( 'always_start_media_viewers_frameless' ):
+        if CG.client_controller.new_options.get_boolean( 'always_start_media_viewers_frameless' ):
             
             CG.client_controller.call_later_qt_safe( self, 0.1, 'removing titlebar from media viewer', self._FlipShowHideWindowFrame )
             
@@ -2510,17 +2510,17 @@ class CanvasWithHovers( Canvas ):
             
             new_options = CG.client_controller.new_options
             
-            if new_options.GetBoolean( 'draw_tags_hover_in_media_viewer_background' ):
+            if new_options.get_boolean( 'draw_tags_hover_in_media_viewer_background' ):
                 
                 self._DrawTags( painter )
                 
             
-            if new_options.GetBoolean( 'draw_top_hover_in_media_viewer_background' ):
+            if new_options.get_boolean( 'draw_top_hover_in_media_viewer_background' ):
                 
                 self._DrawTopMiddle( painter )
                 
             
-            if new_options.GetBoolean( 'draw_top_right_hover_in_media_viewer_background' ):
+            if new_options.get_boolean( 'draw_top_right_hover_in_media_viewer_background' ):
                 
                 current_y = self._DrawTopRight( painter )
                 
@@ -2530,12 +2530,12 @@ class CanvasWithHovers( Canvas ):
                 current_y = 0
                 
             
-            if new_options.GetBoolean( 'draw_notes_hover_in_media_viewer_background' ):
+            if new_options.get_boolean( 'draw_notes_hover_in_media_viewer_background' ):
                 
                 self._DrawNotes( painter, current_y )
                 
             
-            if new_options.GetBoolean( 'draw_bottom_right_index_in_media_viewer_background' ):
+            if new_options.get_boolean( 'draw_bottom_right_index_in_media_viewer_background' ):
                 
                 self._DrawIndexAndZoom( painter )
                 
@@ -2730,7 +2730,7 @@ class CanvasWithHovers( Canvas ):
             
             tags_i_want_to_display = list( tags_i_want_to_display )
             
-            tag_sort = CG.client_controller.new_options.GetDefaultTagSort( CC.TAG_PRESENTATION_MEDIA_VIEWER )
+            tag_sort = CG.client_controller.new_options.get_default_tag_sort( CC.TAG_PRESENTATION_MEDIA_VIEWER )
             
             ClientTagSorting.SortTags( tag_sort, tags_i_want_to_display )
             
@@ -2864,8 +2864,8 @@ class CanvasWithHovers( Canvas ):
             
             # ratings
             
-            RATING_ICON_SET_SIZE = round( self._new_options.GetFloat( 'media_viewer_rating_icon_size_px' ) )
-            RATING_INCDEC_SET_HEIGHT = round( self._new_options.GetFloat( 'media_viewer_rating_incdec_height_px' ) )
+            RATING_ICON_SET_SIZE = round( self._new_options.get_float( 'media_viewer_rating_icon_size_px' ) )
+            RATING_INCDEC_SET_HEIGHT = round( self._new_options.get_float( 'media_viewer_rating_incdec_height_px' ) )
             STAR_DX = RATING_ICON_SET_SIZE
             STAR_DY = RATING_ICON_SET_SIZE
             STAR_PAD = ClientGUIPainterShapes.PAD
@@ -3075,7 +3075,7 @@ class CanvasWithHovers( Canvas ):
     
     def _HideCursorCheck( self ):
         
-        hide_time_ms = CG.client_controller.new_options.GetNoneableInteger( 'media_viewer_cursor_autohide_time_ms' )
+        hide_time_ms = CG.client_controller.new_options.get_noneable_integer( 'media_viewer_cursor_autohide_time_ms' )
         
         if hide_time_ms is None:
             
@@ -3200,7 +3200,7 @@ class CanvasWithHovers( Canvas ):
         
         has_moved = event_pos != self._last_motion_pos
         
-        we_are_hiding_a_drag = is_dragging and CG.client_controller.new_options.GetBoolean( 'hide_canvas_drags' )
+        we_are_hiding_a_drag = is_dragging and CG.client_controller.new_options.get_boolean( 'hide_canvas_drags' )
         
         if is_dragging:
             
@@ -3210,7 +3210,7 @@ class CanvasWithHovers( Canvas ):
             
             if approx_distance > 0:
                 
-                touchscreen_canvas_drags_unanchor = CG.client_controller.new_options.GetBoolean( 'touchscreen_canvas_drags_unanchor' )
+                touchscreen_canvas_drags_unanchor = CG.client_controller.new_options.get_boolean( 'touchscreen_canvas_drags_unanchor' )
                 
                 if not self._current_drag_is_touch and approx_distance > 50:
                     
@@ -3222,7 +3222,7 @@ class CanvasWithHovers( Canvas ):
                 # touch events obviously don't mix with warping well. the touch just warps it back and again and we get a massive delta!
                 
                 touch_anchor_override = touchscreen_canvas_drags_unanchor and self._current_drag_is_touch
-                anchor_canvas_drags = CG.client_controller.new_options.GetBoolean( 'anchor_canvas_drags' )
+                anchor_canvas_drags = CG.client_controller.new_options.get_boolean( 'anchor_canvas_drags' )
                 
                 if anchor_canvas_drags and not touch_anchor_override:
                     
@@ -3424,7 +3424,7 @@ class CanvasMediaList( CanvasWithHovers ):
             self.exitFocusMediaForced.emit( self._current_media )
             
         
-        if CG.client_controller.new_options.GetBoolean( 'activate_main_gui_on_focusing_viewer_close' ):
+        if CG.client_controller.new_options.get_boolean( 'activate_main_gui_on_focusing_viewer_close' ):
             
             CG.client_controller.gui.activateWindow()
             
@@ -3437,7 +3437,7 @@ class CanvasMediaList( CanvasWithHovers ):
             CG.client_controller.gui.ShowPage( self._page_key )
             
         
-        if CG.client_controller.new_options.GetBoolean( 'activate_main_gui_on_focusing_viewer_close' ):
+        if CG.client_controller.new_options.get_boolean( 'activate_main_gui_on_focusing_viewer_close' ):
             
             CG.client_controller.gui.activateWindow()
             
@@ -3471,8 +3471,8 @@ class CanvasMediaList( CanvasWithHovers ):
         previous = self._current_media
         next = self._current_media
         
-        num_to_go_back = CG.client_controller.new_options.GetInteger( 'media_viewer_prefetch_num_previous' )
-        num_to_go_forward = CG.client_controller.new_options.GetInteger( 'media_viewer_prefetch_num_next' )
+        num_to_go_back = CG.client_controller.new_options.get_integer( 'media_viewer_prefetch_num_previous' )
+        num_to_go_forward = CG.client_controller.new_options.get_integer( 'media_viewer_prefetch_num_next' )
         
         # if media_looked_at nukes the list, we want shorter delays, so do next first
         
@@ -3669,7 +3669,7 @@ def CommitArchiveDelete( deletee_location_context: ClientLocation.LocationContex
         job_status.SetStatusText( f'Deleting: {HydrusNumbers.value_range_to_pretty_string( num_done, num_to_do )}' )
         job_status.SetGauge( num_done, num_to_do )
         
-        if CG.client_controller.new_options.GetBoolean( 'delete_lock_for_archived_files' ) and CG.client_controller.new_options.GetBoolean( 'delete_lock_reinbox_deletees_after_archive_delete' ):
+        if CG.client_controller.new_options.get_boolean( 'delete_lock_for_archived_files' ) and CG.client_controller.new_options.get_boolean( 'delete_lock_reinbox_deletees_after_archive_delete' ):
             
             block_of_deleted_hashes = [ m.GetHash() for m in block_of_deleted if not m.GetLocationsManager().inbox ]
             
@@ -3938,7 +3938,7 @@ class CanvasMediaListFilterArchiveDelete( CanvasMediaList ):
             
             if len( deleted ) > 0:
                 
-                if CG.client_controller.new_options.GetBoolean( 'only_show_delete_from_all_local_domains_when_filtering' ):
+                if CG.client_controller.new_options.get_boolean( 'only_show_delete_from_all_local_domains_when_filtering' ):
                     
                     location_contexts_to_present_options_for = [ ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) ]
                     
@@ -4036,7 +4036,7 @@ class CanvasMediaListFilterArchiveDelete( CanvasMediaList ):
                     all_hashes.update( kept_hashes )
                     all_hashes.update( deleted_hashes )
                     
-                    if CG.client_controller.new_options.GetBoolean( 'remove_filtered_files_even_when_skipped' ):
+                    if CG.client_controller.new_options.get_boolean( 'remove_filtered_files_even_when_skipped' ):
                         
                         skipped_hashes = [ m.GetHash() for m in skipped ]
                         
@@ -4282,8 +4282,8 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
         self._normal_slideshow_period = 0.0
         self._special_slideshow_period_for_current_media = None
         
-        self._slideshow_is_shuffling = CG.client_controller.new_options.GetBoolean( 'slideshows_progress_randomly' )
-        self._slideshow_is_playing_once_through = CG.client_controller.new_options.GetBoolean( 'slideshow_always_play_duration_media_once_through' )
+        self._slideshow_is_shuffling = CG.client_controller.new_options.get_boolean( 'slideshows_progress_randomly' )
+        self._slideshow_is_playing_once_through = CG.client_controller.new_options.get_boolean( 'slideshow_always_play_duration_media_once_through' )
         
         if first_hash is None:
             
@@ -4335,14 +4335,14 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
                 
                 short_cutoff_periods = []
                 
-                slideshow_short_duration_loop_percentage = new_options.GetNoneableInteger( 'slideshow_short_duration_loop_percentage' )
+                slideshow_short_duration_loop_percentage = new_options.get_noneable_integer( 'slideshow_short_duration_loop_percentage' )
                 
                 if slideshow_short_duration_loop_percentage is not None:
                     
                     short_cutoff_periods.append( self._normal_slideshow_period * ( slideshow_short_duration_loop_percentage / 100 ) )
                     
                 
-                slideshow_short_duration_loop_seconds = new_options.GetNoneableInteger( 'slideshow_short_duration_loop_seconds' )
+                slideshow_short_duration_loop_seconds = new_options.get_noneable_integer( 'slideshow_short_duration_loop_seconds' )
                 
                 if slideshow_short_duration_loop_seconds is not None:
                     
@@ -4364,7 +4364,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
                         
                     
                 
-                slideshow_short_duration_cutoff_percentage = new_options.GetNoneableInteger( 'slideshow_short_duration_cutoff_percentage' )
+                slideshow_short_duration_cutoff_percentage = new_options.get_noneable_integer( 'slideshow_short_duration_cutoff_percentage' )
                 
                 if slideshow_short_duration_cutoff_percentage is not None:
                     
@@ -4383,7 +4383,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
                 
                 # ok, we have a longer vid. maybe we want to permit a little overspill to show the whole thing
                 
-                slideshow_long_duration_overspill_percentage = new_options.GetNoneableInteger( 'slideshow_long_duration_overspill_percentage' )
+                slideshow_long_duration_overspill_percentage = new_options.get_noneable_integer( 'slideshow_long_duration_overspill_percentage' )
                 
                 if slideshow_long_duration_overspill_percentage is not None:
                     
@@ -4470,7 +4470,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
             
             if self._normal_slideshow_period == 0.0:
                 
-                slideshow_durations = CG.client_controller.new_options.GetSlideshowDurations()
+                slideshow_durations = CG.client_controller.new_options.get_slideshow_durations()
                 
                 if len( slideshow_durations ) > 0:
                     
@@ -4604,7 +4604,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
                 
             elif action == CAC.SIMPLE_FLIP_GLOBAL_SLIDESHOW_SHUFFLE:
                 
-                self._slideshow_is_shuffling = CG.client_controller.new_options.FlipBoolean( 'slideshows_progress_randomly' )
+                self._slideshow_is_shuffling = CG.client_controller.new_options.flip_boolean( 'slideshows_progress_randomly' )
                 
             elif action == CAC.SIMPLE_FLIP_THISWINDOW_SLIDESHOW_ALWAYS_PLAY_DURATION_MEDIA_ONCE_THROUGH:
                 
@@ -4612,7 +4612,7 @@ class CanvasMediaListBrowser( CanvasMediaListNavigable ):
                 
             elif action == CAC.SIMPLE_FLIP_GLOBAL_SLIDESHOW_ALWAYS_PLAY_DURATION_MEDIA_ONCE_THROUGH:
                 
-                self._slideshow_is_playing_once_through = CG.client_controller.new_options.FlipBoolean( 'slideshow_always_play_duration_media_once_through' )
+                self._slideshow_is_playing_once_through = CG.client_controller.new_options.flip_boolean( 'slideshow_always_play_duration_media_once_through' )
                 
             elif action == CAC.SIMPLE_SHOW_MENU:
                 

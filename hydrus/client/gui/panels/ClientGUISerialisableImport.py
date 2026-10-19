@@ -186,7 +186,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         self._select_from_list = QW.QCheckBox( self )
         self._select_from_list.setToolTip( ClientGUIFunctions.WrapToolTip( 'If the payload includes multiple objects (most do), select what you want to import.' ) )
         
-        if CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+        if CG.client_controller.new_options.get_boolean( 'advanced_mode' ):
             
             self._select_from_list.setChecked( True )
             

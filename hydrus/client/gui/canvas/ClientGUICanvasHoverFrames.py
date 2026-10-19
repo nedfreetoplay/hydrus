@@ -620,7 +620,7 @@ class CanvasHoverFrame( QW.QFrame ):
         
         current_focus_tlw = QW.QApplication.activeWindow()
         
-        if CG.client_controller.new_options.GetBoolean( 'hover_windows_need_window_focus_to_pop_in' ):
+        if CG.client_controller.new_options.get_boolean( 'hover_windows_need_window_focus_to_pop_in' ):
             
             focus_is_good = current_focus_tlw == self.window()
             
@@ -931,7 +931,7 @@ class CanvasHoverFrameTop( CanvasHoverFrame ):
         zoom_out.SetToolTipWithShortcuts( 'zoom out', CAC.SIMPLE_ZOOM_OUT )
         zoom_out.setFocusPolicy( QC.Qt.FocusPolicy.TabFocus )
         
-        zoom_switch_command = CG.client_controller.new_options.GetInteger( 'zoom_switch_command' )
+        zoom_switch_command = CG.client_controller.new_options.get_integer( 'zoom_switch_command' )
         zoom_switch = ClientGUICommon.IconButton( self, CC.global_icons().zoom_switch, self.sendApplicationCommand.emit, CAC.ApplicationCommand.static_create_simple_command( zoom_switch_command ) )
         zoom_switch.SetToolTipWithShortcuts( 'zoom switch', zoom_switch_command )
         zoom_switch.setFocusPolicy( QC.Qt.FocusPolicy.TabFocus )
@@ -1131,7 +1131,7 @@ class CanvasHoverFrameTop( CanvasHoverFrame ):
         
         new_options = CG.client_controller.new_options
         
-        default_media_viewer_custom_shortcuts = list( new_options.GetStringList( 'default_media_viewer_custom_shortcuts' ) )
+        default_media_viewer_custom_shortcuts = list( new_options.get_string_list( 'default_media_viewer_custom_shortcuts' ) )
         
         if name in default_media_viewer_custom_shortcuts:
             
@@ -1144,7 +1144,7 @@ class CanvasHoverFrameTop( CanvasHoverFrame ):
             default_media_viewer_custom_shortcuts.sort()
             
         
-        new_options.SetStringList( 'default_media_viewer_custom_shortcuts', default_media_viewer_custom_shortcuts )
+        new_options.set_string_list( 'default_media_viewer_custom_shortcuts', default_media_viewer_custom_shortcuts )
         
     
     def _ShowFileEmbeddedMetadata( self ):
@@ -1172,7 +1172,7 @@ class CanvasHoverFrameTop( CanvasHoverFrame ):
         if len( custom_shortcuts_names ) > 0:
             
             my_canvas_active_custom_shortcuts = self._my_canvas.GetActiveCustomShortcutNames()
-            default_media_viewer_custom_shortcuts = CG.client_controller.new_options.GetStringList( 'default_media_viewer_custom_shortcuts' )
+            default_media_viewer_custom_shortcuts = CG.client_controller.new_options.get_string_list( 'default_media_viewer_custom_shortcuts' )
             
             current_menu = ClientGUIMenus.GenerateMenu( menu )
             
@@ -1200,15 +1200,15 @@ class CanvasHoverFrameTop( CanvasHoverFrame ):
         
         def flip_background_boolean( name ):
             
-            new_options.FlipBoolean( name )
+            new_options.flip_boolean( name )
             
             self.update()
             
         
         new_options = CG.client_controller.new_options
-        collapse_eye_menu_window = new_options.GetBoolean( 'collapse_eye_menu_window' )
-        collapse_eye_menu_hovers = new_options.GetBoolean( 'collapse_eye_menu_hovers' )
-        collapse_eye_menu_rendering = new_options.GetBoolean( 'collapse_eye_menu_rendering' )
+        collapse_eye_menu_window = new_options.get_boolean( 'collapse_eye_menu_window' )
+        collapse_eye_menu_hovers = new_options.get_boolean( 'collapse_eye_menu_hovers' )
+        collapse_eye_menu_rendering = new_options.get_boolean( 'collapse_eye_menu_rendering' )
         
         menu = ClientGUIMenus.GenerateMenu( self )
         
@@ -1267,19 +1267,19 @@ class CanvasHoverFrameTop( CanvasHoverFrame ):
                 
             
         
-        ClientGUIMenus.AppendMenuCheckItem( hovers_menu, 'draw tags (left) in the background', 'Draw a copy of the respective hover window\'s text in the background of the media viewer canvas.', new_options.GetBoolean( 'draw_tags_hover_in_media_viewer_background' ), flip_background_boolean, 'draw_tags_hover_in_media_viewer_background' )
-        ClientGUIMenus.AppendMenuCheckItem( hovers_menu, 'draw file information (top) in the background', 'Draw a copy of the respective hover window\'s text in the background of the media viewer canvas.', new_options.GetBoolean( 'draw_top_hover_in_media_viewer_background' ), flip_background_boolean, 'draw_top_hover_in_media_viewer_background' )
-        ClientGUIMenus.AppendMenuCheckItem( hovers_menu, 'draw ratings and locations (top-right) in the background', 'Draw a copy of the respective hover window\'s text in the background of the media viewer canvas.', new_options.GetBoolean( 'draw_top_right_hover_in_media_viewer_background' ), flip_background_boolean, 'draw_top_right_hover_in_media_viewer_background' )
-        ClientGUIMenus.AppendMenuCheckItem( hovers_menu, 'draw notes (right) in the background', 'Draw a copy of the respective hover window\'s text in the background of the media viewer canvas.', new_options.GetBoolean( 'draw_notes_hover_in_media_viewer_background' ), flip_background_boolean, 'draw_notes_hover_in_media_viewer_background' )
-        ClientGUIMenus.AppendMenuCheckItem( hovers_menu, 'draw index text (bottom-right) in the background', 'Draw a copy of the respective hover window\'s text in the background of the media viewer canvas.', new_options.GetBoolean( 'draw_bottom_right_index_in_media_viewer_background' ), flip_background_boolean, 'draw_bottom_right_index_in_media_viewer_background' )
+        ClientGUIMenus.AppendMenuCheckItem( hovers_menu, 'draw tags (left) in the background', 'Draw a copy of the respective hover window\'s text in the background of the media viewer canvas.', new_options.get_boolean( 'draw_tags_hover_in_media_viewer_background' ), flip_background_boolean, 'draw_tags_hover_in_media_viewer_background' )
+        ClientGUIMenus.AppendMenuCheckItem( hovers_menu, 'draw file information (top) in the background', 'Draw a copy of the respective hover window\'s text in the background of the media viewer canvas.', new_options.get_boolean( 'draw_top_hover_in_media_viewer_background' ), flip_background_boolean, 'draw_top_hover_in_media_viewer_background' )
+        ClientGUIMenus.AppendMenuCheckItem( hovers_menu, 'draw ratings and locations (top-right) in the background', 'Draw a copy of the respective hover window\'s text in the background of the media viewer canvas.', new_options.get_boolean( 'draw_top_right_hover_in_media_viewer_background' ), flip_background_boolean, 'draw_top_right_hover_in_media_viewer_background' )
+        ClientGUIMenus.AppendMenuCheckItem( hovers_menu, 'draw notes (right) in the background', 'Draw a copy of the respective hover window\'s text in the background of the media viewer canvas.', new_options.get_boolean( 'draw_notes_hover_in_media_viewer_background' ), flip_background_boolean, 'draw_notes_hover_in_media_viewer_background' )
+        ClientGUIMenus.AppendMenuCheckItem( hovers_menu, 'draw index text (bottom-right) in the background', 'Draw a copy of the respective hover window\'s text in the background of the media viewer canvas.', new_options.get_boolean( 'draw_bottom_right_index_in_media_viewer_background' ), flip_background_boolean, 'draw_bottom_right_index_in_media_viewer_background' )
         
         ClientGUIMenus.AppendSeparator( hovers_menu )
         
-        ClientGUIMenus.AppendMenuCheckItem( hovers_menu, 'hover window pop-in requires window focus', 'Should the hover windows be able to pop-in even when the window is in the background?', new_options.GetBoolean( 'hover_windows_need_window_focus_to_pop_in' ), flip_background_boolean, 'hover_windows_need_window_focus_to_pop_in' )
-        ClientGUIMenus.AppendMenuCheckItem( hovers_menu, 'pop-in tags hover window on mouseover', 'Enable the tags hover window.', not new_options.GetBoolean( 'disable_tags_hover_in_media_viewer' ), flip_background_boolean, 'disable_tags_hover_in_media_viewer' )
-        ClientGUIMenus.AppendMenuCheckItem( hovers_menu, 'pop-in ratings and locations hover window on mouseover', 'Enable the ratings hover window.', not new_options.GetBoolean( 'disable_top_right_hover_in_media_viewer' ), flip_background_boolean, 'disable_top_right_hover_in_media_viewer' )
-        ClientGUIMenus.AppendMenuCheckItem( hovers_menu, 'pop-in notes hover window on mouseover', 'Enable the notes hover window.', not new_options.GetBoolean( 'disable_notes_hover_in_media_viewer' ), flip_background_boolean, 'disable_notes_hover_in_media_viewer' )
-        ClientGUIMenus.AppendMenuCheckItem( hovers_menu, 'pin the duplicates hover window so it is always visible', 'Ensure the special duplicates hover window is always visible in the duplicates filter.', new_options.GetBoolean( 'hover_window_duplicates_always_on_top' ), flip_background_boolean, 'hover_window_duplicates_always_on_top' )
+        ClientGUIMenus.AppendMenuCheckItem( hovers_menu, 'hover window pop-in requires window focus', 'Should the hover windows be able to pop-in even when the window is in the background?', new_options.get_boolean( 'hover_windows_need_window_focus_to_pop_in' ), flip_background_boolean, 'hover_windows_need_window_focus_to_pop_in' )
+        ClientGUIMenus.AppendMenuCheckItem( hovers_menu, 'pop-in tags hover window on mouseover', 'Enable the tags hover window.', not new_options.get_boolean( 'disable_tags_hover_in_media_viewer' ), flip_background_boolean, 'disable_tags_hover_in_media_viewer' )
+        ClientGUIMenus.AppendMenuCheckItem( hovers_menu, 'pop-in ratings and locations hover window on mouseover', 'Enable the ratings hover window.', not new_options.get_boolean( 'disable_top_right_hover_in_media_viewer' ), flip_background_boolean, 'disable_top_right_hover_in_media_viewer' )
+        ClientGUIMenus.AppendMenuCheckItem( hovers_menu, 'pop-in notes hover window on mouseover', 'Enable the notes hover window.', not new_options.get_boolean( 'disable_notes_hover_in_media_viewer' ), flip_background_boolean, 'disable_notes_hover_in_media_viewer' )
+        ClientGUIMenus.AppendMenuCheckItem( hovers_menu, 'pin the duplicates hover window so it is always visible', 'Ensure the special duplicates hover window is always visible in the duplicates filter.', new_options.get_boolean( 'hover_window_duplicates_always_on_top' ), flip_background_boolean, 'hover_window_duplicates_always_on_top' )
         
         if collapse_eye_menu_hovers:
             
@@ -1305,10 +1305,10 @@ class CanvasHoverFrameTop( CanvasHoverFrame ):
                 
             
         
-        ClientGUIMenus.AppendMenuCheckItem( rendering_menu, 'apply image ICC Profile colour adjustments', 'Set whether images with ICC Profiles should have them applied. This may be useful to flip back and forth if you are in the duplicate filter.', new_options.GetBoolean( 'do_icc_profile_normalisation' ), self.sendApplicationCommand.emit, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_FLIP_ICC_PROFILE_APPLICATION ) )
-        ClientGUIMenus.AppendMenuCheckItem( rendering_menu, 'draw transparency as checkerboard in media viewer', 'Set whether to draw transparency as something that stands out more.', new_options.GetBoolean( 'draw_transparency_checkerboard_media_canvas' ), self.sendApplicationCommand.emit, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_FLIP_TRANSPARENCY_CHECKERBOARD_MEDIA_VIEWER ) )
-        ClientGUIMenus.AppendMenuCheckItem( rendering_menu, 'draw transparency as checkerboard in media viewer (duplicate filter)', 'Set whether to draw transparency as something that stands out more in the duplicate filter.', new_options.GetBoolean( 'draw_transparency_checkerboard_media_canvas_duplicates' ), self.sendApplicationCommand.emit, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_FLIP_TRANSPARENCY_CHECKERBOARD_MEDIA_VIEWER_DUPLICATE_FILTER ) )
-        ClientGUIMenus.AppendMenuCheckItem( rendering_menu, 'instead of checkerboard, use a bright greenscreen', 'Set whether to draw transparency as something that stands out more.', new_options.GetBoolean( 'draw_transparency_checkerboard_as_greenscreen' ), self.sendApplicationCommand.emit, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_FLIP_TRANSPARENCY_CHECKERBOARD_GREENSCREEN ) )
+        ClientGUIMenus.AppendMenuCheckItem( rendering_menu, 'apply image ICC Profile colour adjustments', 'Set whether images with ICC Profiles should have them applied. This may be useful to flip back and forth if you are in the duplicate filter.', new_options.get_boolean( 'do_icc_profile_normalisation' ), self.sendApplicationCommand.emit, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_FLIP_ICC_PROFILE_APPLICATION ) )
+        ClientGUIMenus.AppendMenuCheckItem( rendering_menu, 'draw transparency as checkerboard in media viewer', 'Set whether to draw transparency as something that stands out more.', new_options.get_boolean( 'draw_transparency_checkerboard_media_canvas' ), self.sendApplicationCommand.emit, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_FLIP_TRANSPARENCY_CHECKERBOARD_MEDIA_VIEWER ) )
+        ClientGUIMenus.AppendMenuCheckItem( rendering_menu, 'draw transparency as checkerboard in media viewer (duplicate filter)', 'Set whether to draw transparency as something that stands out more in the duplicate filter.', new_options.get_boolean( 'draw_transparency_checkerboard_media_canvas_duplicates' ), self.sendApplicationCommand.emit, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_FLIP_TRANSPARENCY_CHECKERBOARD_MEDIA_VIEWER_DUPLICATE_FILTER ) )
+        ClientGUIMenus.AppendMenuCheckItem( rendering_menu, 'instead of checkerboard, use a bright greenscreen', 'Set whether to draw transparency as something that stands out more.', new_options.get_boolean( 'draw_transparency_checkerboard_as_greenscreen' ), self.sendApplicationCommand.emit, CAC.ApplicationCommand.static_create_simple_command( CAC.SIMPLE_FLIP_TRANSPARENCY_CHECKERBOARD_GREENSCREEN ) )
         
         if collapse_eye_menu_rendering:
             
@@ -1322,15 +1322,15 @@ class CanvasHoverFrameTop( CanvasHoverFrame ):
         
         def flip_background_boolean( name ):
             
-            new_options.FlipBoolean( name )
+            new_options.flip_boolean( name )
             
             mutually_exclusive_guys = ( 'media_viewer_lock_current_zoom', 'media_viewer_lock_current_zoom_type' )
             
             for ( a, b ) in ( mutually_exclusive_guys, mutually_exclusive_guys[::-1] ):
                 
-                if name == a and new_options.GetBoolean( a ) and new_options.GetBoolean( b ):
+                if name == a and new_options.get_boolean( a ) and new_options.get_boolean( b ):
                     
-                    new_options.SetBoolean( b, False )
+                    new_options.set_boolean( b, False )
                     
                 
             
@@ -1349,9 +1349,9 @@ class CanvasHoverFrameTop( CanvasHoverFrame ):
             
             def on_zoom_clicked( checked = None, zoom = zoom_type ):
                 
-                if new_options.GetBoolean( 'media_viewer_set_default_viewer_zoom_type_from_menu' ):
+                if new_options.get_boolean( 'media_viewer_set_default_viewer_zoom_type_from_menu' ):
                     
-                    new_options.SetInteger( 'media_viewer_default_zoom_type_override', zoom )
+                    new_options.set_integer( 'media_viewer_default_zoom_type_override', zoom )
                     
             
             label = ClientGUICanvasMedia.media_viewer_zoom_type_str_lookup[ zoom_type ]
@@ -1366,14 +1366,14 @@ class CanvasHoverFrameTop( CanvasHoverFrame ):
         
         ClientGUIMenus.AppendSeparator( menu )
         
-        ClientGUIMenus.AppendMenuCheckItem( menu, 'try to lock current size', 'Try to preserve the zoom ratio between visual media. Useful when trying to compare duplicates.', new_options.GetBoolean( 'media_viewer_lock_current_zoom' ), flip_background_boolean, 'media_viewer_lock_current_zoom' )
-        ClientGUIMenus.AppendMenuCheckItem( menu, 'lock current zoom type', 'Prevent the zoom level from changing when switching images.', new_options.GetBoolean( 'media_viewer_lock_current_zoom_type' ), flip_background_boolean, 'media_viewer_lock_current_zoom_type' )
-        ClientGUIMenus.AppendMenuCheckItem( menu, 'lock current pan', 'Prevent the panning position from changing when switching images. Useful when trying to compare duplicates.', new_options.GetBoolean( 'media_viewer_lock_current_pan' ), flip_background_boolean, 'media_viewer_lock_current_pan' )
+        ClientGUIMenus.AppendMenuCheckItem( menu, 'try to lock current size', 'Try to preserve the zoom ratio between visual media. Useful when trying to compare duplicates.', new_options.get_boolean( 'media_viewer_lock_current_zoom' ), flip_background_boolean, 'media_viewer_lock_current_zoom' )
+        ClientGUIMenus.AppendMenuCheckItem( menu, 'lock current zoom type', 'Prevent the zoom level from changing when switching images.', new_options.get_boolean( 'media_viewer_lock_current_zoom_type' ), flip_background_boolean, 'media_viewer_lock_current_zoom_type' )
+        ClientGUIMenus.AppendMenuCheckItem( menu, 'lock current pan', 'Prevent the panning position from changing when switching images. Useful when trying to compare duplicates.', new_options.get_boolean( 'media_viewer_lock_current_pan' ), flip_background_boolean, 'media_viewer_lock_current_pan' )
         
         ClientGUIMenus.AppendSeparator( menu )
         
-        ClientGUIMenus.AppendMenuCheckItem( menu, 'set default zoom type from this menu', 'Set the default media zoom type, i.e. for all viewer windows, only if selected from this menu directly (not by zoom shortcut).', new_options.GetBoolean( 'media_viewer_set_default_viewer_zoom_type_from_menu' ), flip_background_boolean, 'media_viewer_set_default_viewer_zoom_type_from_menu' )
-        ClientGUIMenus.AppendMenuCheckItem( menu, 'recenter media on window resize', 'Uncheck to lock the media in the same place and size while you resize the window. This can also be set in the normal \'media playback\' options panel.', new_options.GetBoolean( 'media_viewer_recenter_media_on_window_resize' ), flip_background_boolean, 'media_viewer_recenter_media_on_window_resize' )
+        ClientGUIMenus.AppendMenuCheckItem( menu, 'set default zoom type from this menu', 'Set the default media zoom type, i.e. for all viewer windows, only if selected from this menu directly (not by zoom shortcut).', new_options.get_boolean( 'media_viewer_set_default_viewer_zoom_type_from_menu' ), flip_background_boolean, 'media_viewer_set_default_viewer_zoom_type_from_menu' )
+        ClientGUIMenus.AppendMenuCheckItem( menu, 'recenter media on window resize', 'Uncheck to lock the media in the same place and size while you resize the window. This can also be set in the normal \'media playback\' options panel.', new_options.get_boolean( 'media_viewer_recenter_media_on_window_resize' ), flip_background_boolean, 'media_viewer_recenter_media_on_window_resize' )
         
         CGC.core().PopupMenu( self, menu )
         
@@ -1850,7 +1850,7 @@ class CanvasHoverFrameTopRight( CanvasHoverFrame ):
         
         if canvas_type in CC.CANVAS_MEDIA_VIEWER_TYPES:
             
-            if CG.client_controller.new_options.GetBoolean( 'disable_top_right_hover_in_media_viewer'):
+            if CG.client_controller.new_options.get_boolean( 'disable_top_right_hover_in_media_viewer'):
                 
                 return ( False, QC.QSize( 0, 0 ), QC.QPoint( 0, 0 ) )
                 
@@ -1902,7 +1902,7 @@ class CanvasHoverFrameTopRight( CanvasHoverFrame ):
                 
             return ( should_resize, ideal_size, ideal_position )
             
-        elif canvas_type == CC.CANVAS_PREVIEW and CG.client_controller.new_options.GetBoolean( 'preview_window_hover_top_right_shows_popup' ):
+        elif canvas_type == CC.CANVAS_PREVIEW and CG.client_controller.new_options.get_boolean( 'preview_window_hover_top_right_shows_popup' ):
             
             preview_size = self.parentWidget().size()
             
@@ -2096,7 +2096,7 @@ class NotePanel( QW.QWidget ):
     
     def _CopyNoteFromClick( self ):
         
-        if CG.client_controller.new_options.GetBoolean( 'copy_notes_quick_click_only_copies_text' ):
+        if CG.client_controller.new_options.get_boolean( 'copy_notes_quick_click_only_copies_text' ):
             
             copy_text = self._note
             
@@ -2236,7 +2236,7 @@ class CanvasHoverFrameRightNotes( CanvasHoverFrame ):
             return ( True, QC.QSize( 20, 20 ), QC.QPoint( -100, -100 ) )
             
         
-        if CG.client_controller.new_options.GetBoolean( 'disable_notes_hover_in_media_viewer'):
+        if CG.client_controller.new_options.get_boolean( 'disable_notes_hover_in_media_viewer'):
             
             return ( False, QC.QSize( 0, 0 ), QC.QPoint( 0, 0 ) )
             
@@ -2437,7 +2437,7 @@ class CanvasHoverFrameRightDuplicates( CanvasHoverFrame ):
         menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCall( 'edit duplicate metadata merge options for \'this is better\'', 'edit what content is merged when you filter files', HydrusData.Call( self._EditMergeOptions, HC.DUPLICATE_BETTER ) ) )
         menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCall( 'edit duplicate metadata merge options for \'same quality\'', 'edit what content is merged when you filter files', HydrusData.Call( self._EditMergeOptions, HC.DUPLICATE_SAME_QUALITY ) ) )
         
-        if CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+        if CG.client_controller.new_options.get_boolean( 'advanced_mode' ):
             
             menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCall( 'edit duplicate metadata merge options for \'alternates\' (advanced!)', 'edit what content is merged when you filter files', HydrusData.Call( self._EditMergeOptions, HC.DUPLICATE_ALTERNATE ) ) )
             
@@ -2450,7 +2450,7 @@ class CanvasHoverFrameRightDuplicates( CanvasHoverFrame ):
         
         check_manager = ClientGUICommon.CheckboxManagerCalls(
             self._FlipAlwaysOnTop,
-            HydrusData.Call( CG.client_controller.new_options.GetBoolean, 'hover_window_duplicates_always_on_top' )
+            HydrusData.Call( CG.client_controller.new_options.get_boolean, 'hover_window_duplicates_always_on_top' )
         )
         
         menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCheck( 'pin this hover so it is always visible', 'By default, this hover is always visible. If you like, you can have it appear only on mouseover, like the others.', check_manager ) )
@@ -2630,7 +2630,7 @@ class CanvasHoverFrameRightDuplicates( CanvasHoverFrame ):
             ( 'intensity for B', 'This changes the background colour when you are looking at B. Making it different to the A value helps to highlight switches between the two.', 'duplicate_background_switch_intensity_b' )
         ]:
             
-            value = new_options.GetNoneableInteger( variable_name )
+            value = new_options.get_noneable_integer( variable_name )
             
             with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit lighten/darken intensity' ) as dlg:
                 
@@ -2648,7 +2648,7 @@ class CanvasHoverFrameRightDuplicates( CanvasHoverFrame ):
                     
                     new_value = control.GetValue()
                     
-                    new_options.SetNoneableInteger( variable_name, new_value )
+                    new_options.set_noneable_integer( variable_name, new_value )
                     
                     self.window().update()
                     
@@ -2664,7 +2664,7 @@ class CanvasHoverFrameRightDuplicates( CanvasHoverFrame ):
         
         new_options = CG.client_controller.new_options
         
-        duplicate_content_merge_options = new_options.GetDuplicateContentMergeOptions( duplicate_type )
+        duplicate_content_merge_options = new_options.get_duplicate_content_merge_options( duplicate_type )
         
         with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit duplicate merge options' ) as dlg:
             
@@ -2680,7 +2680,7 @@ class CanvasHoverFrameRightDuplicates( CanvasHoverFrame ):
                 
                 duplicate_content_merge_options = ctrl.GetValue()
                 
-                new_options.SetDuplicateContentMergeOptions( duplicate_type, duplicate_content_merge_options )
+                new_options.set_duplicate_content_merge_options( duplicate_type, duplicate_content_merge_options )
                 
             
         
@@ -2695,7 +2695,7 @@ class CanvasHoverFrameRightDuplicates( CanvasHoverFrame ):
     
     def _FlipAlwaysOnTop( self ):
         
-        CG.client_controller.new_options.FlipBoolean( 'hover_window_duplicates_always_on_top' )
+        CG.client_controller.new_options.flip_boolean( 'hover_window_duplicates_always_on_top' )
         
         self.DoRegularHideShow()
         
@@ -2817,7 +2817,7 @@ class CanvasHoverFrameRightDuplicates( CanvasHoverFrame ):
     
     def _IsAlwaysShown( self ):
         
-        return CG.client_controller.new_options.GetBoolean( 'hover_window_duplicates_always_on_top' )
+        return CG.client_controller.new_options.get_boolean( 'hover_window_duplicates_always_on_top' )
         
     
     def _PopulateStatements( self, statements_and_scores, names ):
@@ -2988,7 +2988,7 @@ class CanvasHoverFrameTags( CanvasHoverFrame ):
     
     def _GetIdealSizeAndPosition( self ):
         
-        if CG.client_controller.new_options.GetBoolean( 'disable_tags_hover_in_media_viewer' ):
+        if CG.client_controller.new_options.get_boolean( 'disable_tags_hover_in_media_viewer' ):
             
             return ( False, QC.QSize( 0, 0 ), QC.QPoint( 0, 0 ) )
             
@@ -3078,7 +3078,7 @@ class CanvasHoverFrameTags( CanvasHoverFrame ):
         # if self.rect().contains( self.mapFromGlobal( ClientGUIFunctions.GetMousePos() ) ):
         # not sure if we do any more
         
-        media_viewer_tags_scrolling_behaviour = CG.client_controller.new_options.GetInteger( 'media_viewer_tags_scrolling_behaviour' )
+        media_viewer_tags_scrolling_behaviour = CG.client_controller.new_options.get_integer( 'media_viewer_tags_scrolling_behaviour' )
         
         allow_propagation = True
         

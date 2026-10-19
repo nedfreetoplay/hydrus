@@ -23,23 +23,23 @@ FUZZY_PADDING = 10
 
 def GetSafePosition( position: QC.QPoint, frame_key, window_size = None ):
     
-    if CG.client_controller.new_options.GetBoolean( 'disable_get_safe_position_test' ):
+    if CG.client_controller.new_options.get_boolean( 'disable_get_safe_position_test' ):
         
         return ( position, None )
         
     
     if frame_key == 'media_window_size_self_to_media':
         
-        do_fuzzy_relocate = CG.client_controller.new_options.GetBoolean( 'fuzzy_relocate_on_get_safe_position_test_only_for_self_sizing_media_viewer_canvas' )
+        do_fuzzy_relocate = CG.client_controller.new_options.get_boolean( 'fuzzy_relocate_on_get_safe_position_test_only_for_self_sizing_media_viewer_canvas' )
         
     else:
         
-        do_fuzzy_relocate = CG.client_controller.new_options.GetBoolean( 'fuzzy_relocate_on_get_safe_position_test' )
+        do_fuzzy_relocate = CG.client_controller.new_options.get_boolean( 'fuzzy_relocate_on_get_safe_position_test' )
         
     
     # some window managers size the windows just off screen to cut off borders
     # so choose a test position that's a little more lenient
-    fuzzy_padding = CG.client_controller.new_options.GetInteger( 'forgive_frame_gubbins_fuzzy_padding' )
+    fuzzy_padding = CG.client_controller.new_options.get_integer( 'forgive_frame_gubbins_fuzzy_padding' )
     fuzzy_point = QC.QPoint( fuzzy_padding, fuzzy_padding )
     
     test_position = position + fuzzy_point
@@ -285,7 +285,7 @@ def SaveTLWSizeAndPosition( tlw: QW.QWidget, frame_key ):
     
     new_options = CG.client_controller.new_options
     
-    ( remember_size, remember_position, last_size, last_position, default_gravity, default_position, maximised, fullscreen ) = new_options.GetFrameLocation( frame_key )
+    ( remember_size, remember_position, last_size, last_position, default_gravity, default_position, maximised, fullscreen ) = new_options.get_frame_location( frame_key )
     
     if remember_size:
         
@@ -361,14 +361,14 @@ def SaveTLWSizeAndPosition( tlw: QW.QWidget, frame_key ):
             
         
     
-    new_options.SetFrameLocation( frame_key, remember_size, remember_position, last_size, last_position, default_gravity, default_position, maximised, fullscreen )
+    new_options.set_frame_location( frame_key, remember_size, remember_position, last_size, last_position, default_gravity, default_position, maximised, fullscreen )
     
 
 def SetInitialTLWSizeAndPosition( tlw: QW.QWidget, frame_key ):
     
     new_options = CG.client_controller.new_options
     
-    ( remember_size, remember_position, last_size, last_position, default_gravity, default_position, maximised, fullscreen ) = new_options.GetFrameLocation( frame_key )
+    ( remember_size, remember_position, last_size, last_position, default_gravity, default_position, maximised, fullscreen ) = new_options.get_frame_location( frame_key )
     
     parent = tlw.parentWidget()
     
@@ -837,7 +837,7 @@ class Frame( QW.QWidget ):
         
         window_flag = QC.Qt.WindowType.Window
         
-        if parent is not None and CG.client_controller.is_booted() and CG.client_controller.new_options.GetBoolean( 'make_child_frames_qt_tool' ):
+        if parent is not None and CG.client_controller.is_booted() and CG.client_controller.new_options.get_boolean( 'make_child_frames_qt_tool' ):
             
             window_flag = QC.Qt.WindowType.Tool
             

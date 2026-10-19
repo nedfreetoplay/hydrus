@@ -115,11 +115,11 @@ class ManageOptionsPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         self._listbook.AddPage( 'advanced', AdvancedPanel.AdvancedPanel( self._listbook, self._new_options ) )
         
-        if self._new_options.GetBoolean( 'remember_options_window_panel' ):
+        if self._new_options.get_boolean( 'remember_options_window_panel' ):
             
             self._listbook.currentChanged.connect( self.SetCurrentOptionsPanel )
             
-            self._listbook.SelectName( self._new_options.GetString( 'last_options_window_panel' ) )
+            self._listbook.SelectName( self._new_options.get_string( 'last_options_window_panel' ) )
             
         
         #
@@ -225,7 +225,7 @@ class ManageOptionsPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         vbox = QP.VBoxLayout()
         
-        if self._new_options.GetBoolean( 'options_search_bar_top_of_window' ):
+        if self._new_options.get_boolean( 'options_search_bar_top_of_window' ):
             
             QP.AddToLayout( vbox, self._options_search, CC.FLAGS_EXPAND_BOTH_WAYS )
             QP.AddToLayout( vbox, self._listbook, CC.FLAGS_EXPAND_SIZER_BOTH_WAYS )
@@ -245,7 +245,7 @@ class ManageOptionsPanel( ClientGUIScrolledPanels.ManagePanel ):
         
         current_panel_name = self._listbook.tabText( self._listbook.GetCurrentPageIndex() )
         
-        self._new_options.SetString( 'last_options_window_panel', current_panel_name )
+        self._new_options.set_string( 'last_options_window_panel', current_panel_name )
         
     
     def CommitChanges( self ):

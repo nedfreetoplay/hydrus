@@ -214,7 +214,7 @@ class SidebarImporterHDD( SidebarImporter ):
         
         num_items = len( self._hdd_import.GetFileSeedCache() )
         
-        if not for_session_close and CG.client_controller.new_options.GetBoolean( 'confirm_non_empty_downloader_page_close' ) and num_items > 0:
+        if not for_session_close and CG.client_controller.new_options.get_boolean( 'confirm_non_empty_downloader_page_close' ) and num_items > 0:
             
             raise HydrusExceptions.VetoException( f'This is a local import page holding {HydrusNumbers.to_human_int( num_items )} import objects.' )
             
@@ -484,11 +484,11 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
         
         if files_finished:
             
-            pretty_files_paused = CG.client_controller.new_options.GetString( 'stop_character' )
+            pretty_files_paused = CG.client_controller.new_options.get_string( 'stop_character' )
             
         elif files_paused:
             
-            pretty_files_paused = CG.client_controller.new_options.GetString( 'pause_character' )
+            pretty_files_paused = CG.client_controller.new_options.get_string( 'pause_character' )
             
         else:
             
@@ -500,11 +500,11 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
         
         if gallery_finished:
             
-            pretty_gallery_paused = CG.client_controller.new_options.GetString( 'stop_character' )
+            pretty_gallery_paused = CG.client_controller.new_options.get_string( 'stop_character' )
             
         elif gallery_paused:
             
-            pretty_gallery_paused = CG.client_controller.new_options.GetString( 'pause_character' )
+            pretty_gallery_paused = CG.client_controller.new_options.get_string( 'pause_character' )
             
         else:
             
@@ -862,7 +862,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
         
         results = self._multiple_gallery_import.PendQueries( queries )
         
-        if len( results ) > 0 and self._highlighted_gallery_import is None and CG.client_controller.new_options.GetBoolean( 'highlight_new_query' ):
+        if len( results ) > 0 and self._highlighted_gallery_import is None and CG.client_controller.new_options.get_boolean( 'highlight_new_query' ):
             
             first_result = results[ 0 ]
             
@@ -1190,8 +1190,8 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
             
             num_items = len( self._gallery_importers_listctrl.GetData() )
             
-            min_time = HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'gallery_page_status_update_time_minimum_ms' ) )
-            denominator = CG.client_controller.new_options.GetInteger( 'gallery_page_status_update_time_ratio_denominator' )
+            min_time = HydrusTime.secondise_ms_float( CG.client_controller.new_options.get_integer( 'gallery_page_status_update_time_minimum_ms' ) )
+            denominator = CG.client_controller.new_options.get_integer( 'gallery_page_status_update_time_ratio_denominator' )
             
             try:
                 
@@ -1279,7 +1279,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
             raise HydrusExceptions.VetoException( HydrusNumbers.to_human_int( num_working ) + ' queries are still importing.' )
             
         
-        if not for_session_close and CG.client_controller.new_options.GetBoolean( 'confirm_non_empty_downloader_page_close' ) and num_items > 0:
+        if not for_session_close and CG.client_controller.new_options.get_boolean( 'confirm_non_empty_downloader_page_close' ) and num_items > 0:
             
             raise HydrusExceptions.VetoException( f'This is a gallery downloader page holding {HydrusNumbers.to_human_int(num_items)} import objects.' )
             
@@ -1294,7 +1294,7 @@ class SidebarImporterMultipleGallery( SidebarImporter ):
         
         new_query = self._multiple_gallery_import.PendSubscriptionGapDownloader( gug_key_and_name, query_text, import_options_container, file_limit )
         
-        if new_query is not None and self._highlighted_gallery_import is None and CG.client_controller.new_options.GetBoolean( 'highlight_new_query' ):
+        if new_query is not None and self._highlighted_gallery_import is None and CG.client_controller.new_options.get_boolean( 'highlight_new_query' ):
             
             self._HighlightGalleryImport( new_query )
             
@@ -1456,7 +1456,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
                 
             
         
-        if first_result is not None and self._highlighted_watcher is None and CG.client_controller.new_options.GetBoolean( 'highlight_new_watcher' ):
+        if first_result is not None and self._highlighted_watcher is None and CG.client_controller.new_options.get_boolean( 'highlight_new_watcher' ):
             
             self._HighlightWatcher( first_result )
             
@@ -1582,7 +1582,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
         
         if files_paused:
             
-            pretty_files_paused = CG.client_controller.new_options.GetString( 'pause_character' )
+            pretty_files_paused = CG.client_controller.new_options.get_string( 'pause_character' )
             
         else:
             
@@ -1594,11 +1594,11 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
         
         if checking_dead:
             
-            pretty_checking_paused = CG.client_controller.new_options.GetString( 'stop_character' )
+            pretty_checking_paused = CG.client_controller.new_options.get_string( 'stop_character' )
             
         elif checking_paused:
             
-            pretty_checking_paused = CG.client_controller.new_options.GetString( 'pause_character' )
+            pretty_checking_paused = CG.client_controller.new_options.get_string( 'pause_character' )
             
         else:
             
@@ -2283,8 +2283,8 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
             
             num_items = len( self._watchers_listctrl.GetData() )
             
-            min_time = HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'watcher_page_status_update_time_minimum_ms' ) )
-            denominator = CG.client_controller.new_options.GetInteger( 'watcher_page_status_update_time_ratio_denominator' )
+            min_time = HydrusTime.secondise_ms_float( CG.client_controller.new_options.get_integer( 'watcher_page_status_update_time_minimum_ms' ) )
+            denominator = CG.client_controller.new_options.get_integer( 'watcher_page_status_update_time_ratio_denominator' )
             
             try:
                 
@@ -2382,7 +2382,7 @@ class SidebarImporterMultipleWatcher( SidebarImporter ):
             raise HydrusExceptions.VetoException( HydrusNumbers.to_human_int( num_working ) + ' watchers are still importing.' )
             
         
-        if not for_session_close and CG.client_controller.new_options.GetBoolean( 'confirm_non_empty_downloader_page_close' ) and num_items > 0:
+        if not for_session_close and CG.client_controller.new_options.get_boolean( 'confirm_non_empty_downloader_page_close' ) and num_items > 0:
             
             raise HydrusExceptions.VetoException( f'This is a watcher page holding {HydrusNumbers.to_human_int(num_items)} import objects.' )
             
@@ -2611,7 +2611,7 @@ class SidebarImporterSimpleDownloader( SidebarImporter ):
             return edit_callable( data )
             
         
-        formulae = list( CG.client_controller.new_options.GetSimpleDownloaderFormulae() )
+        formulae = list( CG.client_controller.new_options.get_simple_downloader_formulae() )
         
         formulae.sort( key = lambda o: o.GetName() )
         
@@ -2638,7 +2638,7 @@ class SidebarImporterSimpleDownloader( SidebarImporter ):
                 
                 formulae = control.GetData()
                 
-                CG.client_controller.new_options.SetSimpleDownloaderFormulae( formulae )
+                CG.client_controller.new_options.set_simple_downloader_formulae( formulae )
                 
             
         
@@ -2671,7 +2671,7 @@ class SidebarImporterSimpleDownloader( SidebarImporter ):
         
         select_name = self._simple_downloader_import.GetFormulaName()
         
-        simple_downloader_formulae = list( CG.client_controller.new_options.GetSimpleDownloaderFormulae() )
+        simple_downloader_formulae = list( CG.client_controller.new_options.get_simple_downloader_formulae() )
         
         simple_downloader_formulae.sort( key = lambda o: o.GetName() )
         
@@ -2772,7 +2772,7 @@ class SidebarImporterSimpleDownloader( SidebarImporter ):
         
         num_items = len( self._simple_downloader_import.GetFileSeedCache() )
         
-        if not for_session_close and CG.client_controller.new_options.GetBoolean( 'confirm_non_empty_downloader_page_close' ) and num_items > 0:
+        if not for_session_close and CG.client_controller.new_options.get_boolean( 'confirm_non_empty_downloader_page_close' ) and num_items > 0:
             
             raise HydrusExceptions.VetoException( f'This is a simple urls import page holding {HydrusNumbers.to_human_int( num_items )} import objects.' )
             
@@ -2785,7 +2785,7 @@ class SidebarImporterSimpleDownloader( SidebarImporter ):
         formula_name = formula.GetName()
         
         self._simple_downloader_import.SetFormulaName( formula_name )
-        CG.client_controller.new_options.SetString( 'favourite_simple_downloader_formula', formula_name )
+        CG.client_controller.new_options.set_string( 'favourite_simple_downloader_formula', formula_name )
         
     
     def PauseQueue( self ):
@@ -2961,7 +2961,7 @@ class SidebarImporterURLs( SidebarImporter ):
         
         num_items = len( self._urls_import.GetFileSeedCache() )
         
-        if not for_session_close and CG.client_controller.new_options.GetBoolean( 'confirm_non_empty_downloader_page_close' ) and num_items > 0:
+        if not for_session_close and CG.client_controller.new_options.get_boolean( 'confirm_non_empty_downloader_page_close' ) and num_items > 0:
             
             raise HydrusExceptions.VetoException( f'This is a urls import page holding {HydrusNumbers.to_human_int( num_items )} import objects.' )
             

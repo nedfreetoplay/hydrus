@@ -65,7 +65,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             self._hashes.update( m.GetHashes() )
             
         
-        if CG.client_controller.new_options.GetBoolean( 'use_listbook_for_tag_service_panels' ):
+        if CG.client_controller.new_options.get_boolean( 'use_listbook_for_tag_service_panels' ):
             
             self._tag_services = ClientGUIListBook.ListBook( self )
             
@@ -85,7 +85,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             HydrusData.show_text( f'Opening manage tags on these services: {services}' )
             
         
-        default_tag_service_key = CG.client_controller.new_options.GetKey( 'default_tag_service_tab' )
+        default_tag_service_key = CG.client_controller.new_options.get_key( 'default_tag_service_tab' )
         
         for service in services:
             
@@ -263,11 +263,11 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
         
         current_page = self._tag_services.currentWidget()
         
-        if current_page is not None and CG.client_controller.new_options.GetBoolean( 'save_default_tag_service_tab_on_change' ):
+        if current_page is not None and CG.client_controller.new_options.get_boolean( 'save_default_tag_service_tab_on_change' ):
             
             current_page = typing.cast( ManageTagsPanel._Panel, current_page )
             
-            CG.client_controller.new_options.SetKey( 'default_tag_service_tab', current_page.GetServiceKey() )
+            CG.client_controller.new_options.set_key( 'default_tag_service_tab', current_page.GetServiceKey() )
             
         
     
@@ -773,7 +773,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                         'splitting filename/title/etc... into individual tags'
                     ]
                     
-                    suggestions = CG.client_controller.new_options.GetRecentPetitionReasons( HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_DELETE )
+                    suggestions = CG.client_controller.new_options.get_recent_petition_reasons( HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_DELETE )
                     
                     suggestions.extend( fixed_suggestions )
                     
@@ -788,7 +788,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                     
                     if reason not in fixed_suggestions:
                         
-                        CG.client_controller.new_options.PushRecentPetitionReason( HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_DELETE, reason )
+                        CG.client_controller.new_options.push_recent_petition_reason( HC.CONTENT_TYPE_MAPPINGS, HC.CONTENT_UPDATE_DELETE, reason )
                         
                     
                 else:
@@ -889,7 +889,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
                     
                 
             
-            num_recent_tags = CG.client_controller.new_options.GetNoneableInteger( 'num_recent_tags' )
+            num_recent_tags = CG.client_controller.new_options.get_noneable_integer( 'num_recent_tags' )
             
             if len( recent_tags ) > 0 and num_recent_tags is not None:
                 
@@ -982,7 +982,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
         
         def _FlipShowDeleted( self ):
             
-            CG.client_controller.new_options.FlipBoolean( 'manage_tags_show_deleted_mappings' )
+            CG.client_controller.new_options.flip_boolean( 'manage_tags_show_deleted_mappings' )
             
             CG.client_controller.pub( 'notify_options_manage_tags_show_deleted_mappings' )
             
@@ -1092,7 +1092,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
         
         def _UpdateShowDeleted( self ):
             
-            manage_tags_show_deleted_mappings = CG.client_controller.new_options.GetBoolean( 'manage_tags_show_deleted_mappings' )
+            manage_tags_show_deleted_mappings = CG.client_controller.new_options.get_boolean( 'manage_tags_show_deleted_mappings' )
             
             self._tags_box.SetShow( 'deleted', manage_tags_show_deleted_mappings )
             
@@ -1105,7 +1105,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
         
         def AddTags( self, tags, only_add = False ):
             
-            if not self._new_options.GetBoolean( 'allow_remove_on_manage_tags_input' ):
+            if not self._new_options.get_boolean( 'allow_remove_on_manage_tags_input' ):
                 
                 only_add = True
                 
@@ -1233,7 +1233,7 @@ class ManageTagsPanel( CAC.ApplicationCommandProcessorMixin, ClientGUIScrolledPa
             
             if len( tags ) > 0:
                 
-                if self._new_options.GetBoolean( 'yes_no_on_remove_on_manage_tags' ):
+                if self._new_options.get_boolean( 'yes_no_on_remove_on_manage_tags' ):
                     
                     tags_managers = [ m.GetTagsManager() for m in self._media ]
                     

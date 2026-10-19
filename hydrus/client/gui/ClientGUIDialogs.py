@@ -354,7 +354,7 @@ class DialogInputTags( Dialog ):
         
         self._tags = ClientGUIListBoxes.ListBoxTagsStringsAddRemove( self, service_key, tag_display_type = tag_display_type )
         
-        default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+        default_location_context = CG.client_controller.new_options.get_default_local_location_context()
         
         self._tag_autocomplete = ClientGUIACDropdown.AutoCompleteDropdownTagsWrite( self, self.EnterTags, default_location_context, service_key, show_paste_button = True )
         

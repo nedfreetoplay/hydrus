@@ -331,7 +331,7 @@ class DuplicatesAutoResolutionRule( HydrusSerialisable.SerialisableBaseNamed ):
         
         if self._custom_duplicate_content_merge_options is None:
             
-            duplicate_content_merge_options = CG.client_controller.new_options.GetDuplicateContentMergeOptions( self._action )
+            duplicate_content_merge_options = CG.client_controller.new_options.get_duplicate_content_merge_options( self._action )
             
         else:
             
@@ -370,7 +370,7 @@ class DuplicatesAutoResolutionRule( HydrusSerialisable.SerialisableBaseNamed ):
         
         if self._custom_duplicate_content_merge_options is None:
             
-            duplicate_content_merge_options = CG.client_controller.new_options.GetDuplicateContentMergeOptions( action )
+            duplicate_content_merge_options = CG.client_controller.new_options.get_duplicate_content_merge_options( action )
             
         else:
             
@@ -1305,7 +1305,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
         
         if CG.client_controller.currently_idle():
             
-            if not CG.client_controller.new_options.GetBoolean( 'duplicates_auto_resolution_during_idle' ):
+            if not CG.client_controller.new_options.get_boolean( 'duplicates_auto_resolution_during_idle' ):
                 
                 return False
                 
@@ -1317,7 +1317,7 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
             
         else:
             
-            if not CG.client_controller.new_options.GetBoolean( 'duplicates_auto_resolution_during_active' ):
+            if not CG.client_controller.new_options.get_boolean( 'duplicates_auto_resolution_during_active' ):
                 
                 return False
                 
@@ -1472,11 +1472,11 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
         
         if self._controller.currently_idle():
             
-            rest_ratio = CG.client_controller.new_options.GetInteger( 'duplicates_auto_resolution_rest_percentage_idle' ) / 100
+            rest_ratio = CG.client_controller.new_options.get_integer( 'duplicates_auto_resolution_rest_percentage_idle' ) / 100
             
         else:
             
-            rest_ratio = CG.client_controller.new_options.GetInteger( 'duplicates_auto_resolution_rest_percentage_active' ) / 100
+            rest_ratio = CG.client_controller.new_options.get_integer( 'duplicates_auto_resolution_rest_percentage_active' ) / 100
             
         
         reasonable_work_period = min( 5 * expected_work_period, actual_work_period )
@@ -1493,11 +1493,11 @@ class DuplicatesAutoResolutionManager( ClientDaemons.ManagerWithMainLoop ):
         
         if self._controller.currently_idle():
             
-            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'duplicates_auto_resolution_work_time_ms_idle' ) )
+            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.get_integer( 'duplicates_auto_resolution_work_time_ms_idle' ) )
             
         else:
             
-            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'duplicates_auto_resolution_work_time_ms_active' ) )
+            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.get_integer( 'duplicates_auto_resolution_work_time_ms_active' ) )
             
         
     

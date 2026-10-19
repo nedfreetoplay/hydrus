@@ -341,7 +341,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
         queries_panel.AddButton( 'check now', self._CheckNow, enabled_check_func = self._ListCtrlCanCheckNow )
         queries_panel.AddButton( 'reset', self._STARTReset, enabled_check_func = self._ListCtrlCanResetCache )
         
-        if CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+        if CG.client_controller.new_options.get_boolean( 'advanced_mode' ):
             
             queries_panel.AddSeparator()
             
@@ -357,7 +357,7 @@ class EditSubscriptionPanel( ClientGUIScrolledPanels.EditPanel ):
         
         self._file_limits_panel = ClientGUICommon.StaticBox( self, 'synchronisation' )
         
-        if CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+        if CG.client_controller.new_options.get_boolean( 'advanced_mode' ):
             
             limits_max = 50000
             
@@ -1923,7 +1923,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         QP.AddToLayout( vbox, help_hbox, CC.FLAGS_ON_RIGHT )
         
-        if CG.client_controller.new_options.GetBoolean( 'pause_subs_sync' ):
+        if CG.client_controller.new_options.get_boolean( 'pause_subs_sync' ):
             
             message = 'SUBSCRIPTIONS ARE CURRENTLY GLOBALLY PAUSED! CHECK THE NETWORK MENU TO UNPAUSE THEM.'
             
@@ -2578,7 +2578,7 @@ class EditSubscriptionsPanel( ClientGUIScrolledPanels.EditPanel ):
                     ClientGUIDialogsMessage.ShowInformation( self, 'Hey, multiple items in the subscriptions list are selected. I am only going to do this on the topmost selected.  If you need to do this to multiple entries, set up one exactly how you want and then copy/replace-paste to the rest.' )
                     
                 
-                simple_mode = CG.client_controller.new_options.GetBoolean( 'import_options_simple_mode' )
+                simple_mode = CG.client_controller.new_options.get_boolean( 'import_options_simple_mode' )
                 
                 subscription = self._subscriptions.GetTopSelectedData()
                 

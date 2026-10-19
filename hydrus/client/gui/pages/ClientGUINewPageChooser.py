@@ -178,7 +178,7 @@ class DialogPageChooser( ClientGUIDialogs.Dialog ):
                     
                     new_options = self._controller.new_options
                     
-                    tag_service_key = new_options.GetKey( 'default_tag_service_search_page' )
+                    tag_service_key = new_options.get_key( 'default_tag_service_search_page' )
                     
                     if not self._controller.services_manager.ServiceExists( tag_service_key ):
                         
@@ -256,9 +256,9 @@ class DialogPageChooser( ClientGUIDialogs.Dialog ):
                 entries.append( ( 'page_query', service_key ) )
                 
             
-            if len( entries ) > 1 and self._controller.new_options.GetBoolean( 'show_all_my_files_on_page_chooser' ):
+            if len( entries ) > 1 and self._controller.new_options.get_boolean( 'show_all_my_files_on_page_chooser' ):
                 
-                if self._controller.new_options.GetBoolean( 'show_all_my_files_on_page_chooser_at_top' ):
+                if self._controller.new_options.get_boolean( 'show_all_my_files_on_page_chooser_at_top' ):
                     
                     entries.insert( 0, ( 'page_query', CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY ) )
                     
@@ -269,9 +269,9 @@ class DialogPageChooser( ClientGUIDialogs.Dialog ):
             
             entries.append( ( 'page_query', CC.TRASH_SERVICE_KEY ) )
             
-            if self._controller.new_options.GetBoolean( 'show_local_files_on_page_chooser' ):
+            if self._controller.new_options.get_boolean( 'show_local_files_on_page_chooser' ):
                 
-                if self._controller.new_options.GetBoolean( 'show_local_files_on_page_chooser_at_top' ):
+                if self._controller.new_options.get_boolean( 'show_local_files_on_page_chooser_at_top' ):
                     
                     entries.insert( 0, ( 'page_query', CC.HYDRUS_LOCAL_FILE_STORAGE_SERVICE_KEY ) )
                     

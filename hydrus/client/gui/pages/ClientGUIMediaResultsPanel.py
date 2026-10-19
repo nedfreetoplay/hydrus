@@ -436,7 +436,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
             
             s += f' - {selected_files_string} selected, '
             
-            if len( self._selected_media ) == 1 and len( list(self._selected_media)[0].GetHashes() ) == 1 and CG.client_controller.new_options.GetBoolean( 'show_extended_single_file_info_in_status_bar' ):
+            if len( self._selected_media ) == 1 and len( list(self._selected_media)[0].GetHashes() ) == 1 and CG.client_controller.new_options.get_boolean( 'show_extended_single_file_info_in_status_bar' ):
                 
                 # TODO: Were I feeling clever, this guy would also emit a tooltip, which we can calculate here no prob
                 
@@ -735,9 +735,9 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
                     
                     focus_it = False
                     
-                    if CG.client_controller.new_options.GetBoolean( 'focus_preview_on_ctrl_click' ):
+                    if CG.client_controller.new_options.get_boolean( 'focus_preview_on_ctrl_click' ):
                         
-                        if CG.client_controller.new_options.GetBoolean( 'focus_preview_on_ctrl_click_only_static' ):
+                        if CG.client_controller.new_options.get_boolean( 'focus_preview_on_ctrl_click_only_static' ):
                             
                             focus_it = media.GetDurationMS() is None
                             
@@ -784,9 +784,9 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
                 
                 focus_it = False
                 
-                if CG.client_controller.new_options.GetBoolean( 'focus_preview_on_shift_click' ):
+                if CG.client_controller.new_options.get_boolean( 'focus_preview_on_shift_click' ):
                     
-                    if CG.client_controller.new_options.GetBoolean( 'focus_preview_on_shift_click_only_static' ):
+                    if CG.client_controller.new_options.get_boolean( 'focus_preview_on_shift_click_only_static' ):
                         
                         focus_it = media.GetDurationMS() is None
                         
@@ -865,7 +865,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
             
             new_options = CG.client_controller.new_options
             
-            ( media_show_action, media_start_paused, media_start_with_embed ) = new_options.GetMediaShowAction( media.GetMime() )
+            ( media_show_action, media_start_paused, media_start_with_embed ) = new_options.get_media_show_action( media.GetMime() )
             
             if media_show_action == CC.MEDIA_VIEWER_ACTION_DO_NOT_SHOW_ON_ACTIVATION_OPEN_EXTERNALLY:
                 
@@ -1163,7 +1163,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
             
             if len( self._selected_media ) == 0:
                 
-                number_of_unselected_medias_to_present_tags_for = CG.client_controller.new_options.GetNoneableInteger( 'number_of_unselected_medias_to_present_tags_for' )
+                number_of_unselected_medias_to_present_tags_for = CG.client_controller.new_options.get_noneable_integer( 'number_of_unselected_medias_to_present_tags_for' )
                 
                 if number_of_unselected_medias_to_present_tags_for is None:
                     
@@ -1505,13 +1505,13 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
             
             yes_no_text = 'apply "{}"'.format( HC.duplicate_type_string_lookup[ duplicate_type ] )
             
-            if duplicate_type in [ HC.DUPLICATE_BETTER, HC.DUPLICATE_SAME_QUALITY ] or ( CG.client_controller.new_options.GetBoolean( 'advanced_mode' ) and duplicate_type == HC.DUPLICATE_ALTERNATE ):
+            if duplicate_type in [ HC.DUPLICATE_BETTER, HC.DUPLICATE_SAME_QUALITY ] or ( CG.client_controller.new_options.get_boolean( 'advanced_mode' ) and duplicate_type == HC.DUPLICATE_ALTERNATE ):
                 
                 yes_no_text += ' (with default duplicate metadata merge options)'
                 
                 new_options = CG.client_controller.new_options
                 
-                duplicate_content_merge_options = new_options.GetDuplicateContentMergeOptions( duplicate_type )
+                duplicate_content_merge_options = new_options.get_duplicate_content_merge_options( duplicate_type )
                 
             
         else:
@@ -1698,7 +1698,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
         
         duplicate_types = [ HC.DUPLICATE_BETTER, HC.DUPLICATE_SAME_QUALITY ]
         
-        if CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+        if CG.client_controller.new_options.get_boolean( 'advanced_mode' ):
             
             duplicate_types.append( HC.DUPLICATE_ALTERNATE )
             
@@ -1716,7 +1716,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
         
         new_options = CG.client_controller.new_options
         
-        duplicate_content_merge_options = new_options.GetDuplicateContentMergeOptions( duplicate_type )
+        duplicate_content_merge_options = new_options.get_duplicate_content_merge_options( duplicate_type )
         
         with ClientGUITopLevelWindowsPanels.DialogEdit( self, 'edit duplicate merge options' ) as dlg:
             
@@ -2076,9 +2076,9 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
     
     def GetColour( self, colour_type ):
         
-        if CG.client_controller.new_options.GetBoolean( 'override_stylesheet_colours' ):
+        if CG.client_controller.new_options.get_boolean( 'override_stylesheet_colours' ):
             
-            bg_colour = CG.client_controller.new_options.GetColour( colour_type )
+            bg_colour = CG.client_controller.new_options.get_colour( colour_type )
             
         else:
             
@@ -2102,7 +2102,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
         
         do_activate_window_test = False
         
-        if CG.client_controller.new_options.GetBoolean( 'focus_media_tab_on_viewer_close_if_possible' ):
+        if CG.client_controller.new_options.get_boolean( 'focus_media_tab_on_viewer_close_if_possible' ):
             
             if CG.client_controller.gui.GetPageFromPageKey( self._page_key ) is not None:
                 
@@ -2112,14 +2112,14 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
             do_activate_window_test = True
             
         
-        if CG.client_controller.new_options.GetBoolean( 'focus_media_thumb_on_viewer_close' ):
+        if CG.client_controller.new_options.get_boolean( 'focus_media_thumb_on_viewer_close' ):
             
             self.SetFocusedMedia( media )
             
             do_activate_window_test = True
             
         
-        if do_activate_window_test and CG.client_controller.new_options.GetBoolean( 'activate_main_gui_on_focusing_viewer_close' ):
+        if do_activate_window_test and CG.client_controller.new_options.get_boolean( 'activate_main_gui_on_focusing_viewer_close' ):
             
             self.activateWindow()
             
@@ -2638,7 +2638,7 @@ class MediaResultsPanel( CAC.ApplicationCommandProcessorMixin, ClientMediaList.M
                 
                 hashes = self._GetSelectedHashes( ordered = True )
                 
-                if CG.client_controller.new_options.GetBoolean( 'open_files_to_duplicate_filter_uses_all_my_files' ):
+                if CG.client_controller.new_options.get_boolean( 'open_files_to_duplicate_filter_uses_all_my_files' ):
                     
                     location_context = ClientLocation.LocationContext.static_create_simple( CC.COMBINED_LOCAL_FILE_DOMAINS_SERVICE_KEY )
                     

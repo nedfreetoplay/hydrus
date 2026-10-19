@@ -221,7 +221,7 @@ def AddDuplicatesMenu( win: QW.QWidget, command_processor: CAC.ApplicationComman
                 ClientGUIMenus.AppendMenuItem( duplicates_edit_action_submenu, 'for ' + HC.duplicate_type_string_lookup[duplicate_type], 'Edit what happens when you set this status.', ClientGUIMediaModalActions.EditDuplicateContentMergeOptions, win, duplicate_type )
                 
             
-            if CG.client_controller.new_options.GetBoolean( 'advanced_mode' ):
+            if CG.client_controller.new_options.get_boolean( 'advanced_mode' ):
                 
                 ClientGUIMenus.AppendMenuItem( duplicates_edit_action_submenu, 'for ' + HC.duplicate_type_string_lookup[HC.DUPLICATE_ALTERNATE] + ' (advanced!)', 'Edit what happens when you set this status.', ClientGUIMediaModalActions.EditDuplicateContentMergeOptions, win, HC.DUPLICATE_ALTERNATE )
                 
@@ -332,7 +332,7 @@ def AddFileViewingStatsMenu( menu, medias: collections.abc.Collection[ ClientMed
         
         
     
-    desired_canvas_types = CG.client_controller.new_options.GetIntegerList( 'file_viewing_stats_interesting_canvas_types' )
+    desired_canvas_types = CG.client_controller.new_options.get_integer_list( 'file_viewing_stats_interesting_canvas_types' )
     
     if len( desired_canvas_types ) == 0:
         
@@ -356,7 +356,7 @@ def AddFileViewingStatsMenu( menu, medias: collections.abc.Collection[ ClientMed
     
     lines = [ fvsm.GetPrettyViewsLine( ( canvas_type, ) ) for canvas_type in canvas_types_with_views ]
     
-    view_style = CG.client_controller.new_options.GetInteger( 'file_viewing_stats_menu_display' )
+    view_style = CG.client_controller.new_options.get_integer( 'file_viewing_stats_menu_display' )
     
     if view_style == CC.FILE_VIEWING_STATS_MENU_DISPLAY_SUMMED_AND_THEN_SUBMENU and sum_appropriate:
         
@@ -511,7 +511,7 @@ def AddKnownURLsViewCopyMenu( win: QW.QWidget, command_processor: CAC.Applicatio
         urls_copy_menu = ClientGUIMenus.GenerateMenu( urls_menu )
         urls_force_refetch_menu = ClientGUIMenus.GenerateMenu( urls_menu )
         
-        open_url_executable_ids_and_names = CG.client_controller.new_options.GetLaunchURLExecutableIdsAndNames()
+        open_url_executable_ids_and_names = CG.client_controller.new_options.get_launch_url_executable_ids_and_names()
         
         if len( open_url_executable_ids_and_names ) == 0:
             
@@ -832,7 +832,7 @@ def AddOpenMenu( win: QW.QWidget, command_processor: CAC.ApplicationCommandProce
         return
         
     
-    advanced_mode = CG.client_controller.new_options.GetBoolean( 'advanced_mode' )
+    advanced_mode = CG.client_controller.new_options.get_boolean( 'advanced_mode' )
     
     open_menu = ClientGUIMenus.GenerateMenu( menu )
     
@@ -870,7 +870,7 @@ def AddOpenMenu( win: QW.QWidget, command_processor: CAC.ApplicationCommandProce
         
         focused_media_single = focused_media.GetDisplayMedia()
         
-        executable_ids_and_names = CG.client_controller.new_options.GetLaunchFileExecutableIdsAndNames( focused_media_single.GetMime() )
+        executable_ids_and_names = CG.client_controller.new_options.get_launch_file_executable_ids_and_names( focused_media_single.GetMime() )
         
         for executable_ids_and_name in executable_ids_and_names:
             

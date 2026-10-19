@@ -32,7 +32,7 @@ class ORPredicateControl( QW.QWidget ):
         
         if empty_file_search_context is None:
             
-            location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+            location_context = CG.client_controller.new_options.get_default_local_location_context()
             
             file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = location_context, predicates = predicates )
             

@@ -321,7 +321,7 @@ class PanelPredicateSystemSingle( PanelPredicateSystem ):
             return predicate
             
         
-        custom_defaults = CG.client_controller.new_options.GetCustomDefaultSystemPredicates( comparable_predicate = default_predicate )
+        custom_defaults = CG.client_controller.new_options.get_custom_default_system_predicates( comparable_predicate = default_predicate )
         
         if len( custom_defaults ) > 0:
             
@@ -335,7 +335,7 @@ class PanelPredicateSystemSingle( PanelPredicateSystem ):
         
         default_predicate = self.GetDefaultPredicate()
         
-        CG.client_controller.new_options.ClearCustomDefaultSystemPredicates( comparable_predicate = default_predicate )
+        CG.client_controller.new_options.clear_custom_default_system_predicates( comparable_predicate = default_predicate )
         
     
     def GetDefaultPredicate( self ) -> ClientSearchPredicate.Predicate:
@@ -352,14 +352,14 @@ class PanelPredicateSystemSingle( PanelPredicateSystem ):
         
         predicates = self.GetPredicates()
         
-        CG.client_controller.new_options.SetCustomDefaultSystemPredicates( comparable_predicates = predicates )
+        CG.client_controller.new_options.set_custom_default_system_predicates( comparable_predicates = predicates )
         
     
     def UsesCustomDefault( self ) -> bool:
         
         default_predicate = self.GetDefaultPredicate()
         
-        custom_defaults = CG.client_controller.new_options.GetCustomDefaultSystemPredicates( comparable_predicate = default_predicate )
+        custom_defaults = CG.client_controller.new_options.get_custom_default_system_predicates( comparable_predicate = default_predicate )
         
         return len( custom_defaults ) > 0
         

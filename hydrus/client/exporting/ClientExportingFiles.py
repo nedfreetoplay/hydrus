@@ -124,7 +124,7 @@ def GenerateExportFilename( destination_directory, media, terms, file_index, do_
         filename = re.sub( '/+', '/', filename )
         
     
-    if CG.client_controller.new_options.GetBoolean( 'always_apply_ntfs_export_filename_rules' ):
+    if CG.client_controller.new_options.get_boolean( 'always_apply_ntfs_export_filename_rules' ):
         
         force_ntfs_rules = True
         
@@ -160,9 +160,9 @@ def GenerateExportFilename( destination_directory, media, terms, file_index, do_
         filename = filename[ : - len( ext ) ]
         
     
-    path_character_limit = CG.client_controller.new_options.GetNoneableInteger( 'export_path_character_limit' )
-    dirname_character_limit = CG.client_controller.new_options.GetNoneableInteger( 'export_dirname_character_limit' )
-    filename_character_limit = CG.client_controller.new_options.GetInteger( 'export_filename_character_limit' )
+    path_character_limit = CG.client_controller.new_options.get_noneable_integer( 'export_path_character_limit' )
+    dirname_character_limit = CG.client_controller.new_options.get_noneable_integer( 'export_dirname_character_limit' )
+    filename_character_limit = CG.client_controller.new_options.get_integer( 'export_filename_character_limit' )
     
     ( subdirs, true_filename ) = os.path.split( filename )
     
@@ -342,7 +342,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
         
         if file_search_context is None:
             
-            default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+            default_location_context = CG.client_controller.new_options.get_default_local_location_context()
             
             file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = default_location_context )
             
@@ -354,7 +354,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
         
         if phrase is None:
             
-            phrase = CG.client_controller.new_options.GetString( 'export_phrase' )
+            phrase = CG.client_controller.new_options.get_string( 'export_phrase' )
             
         
         self._path = path
@@ -603,7 +603,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                 return
                 
             
-            if CG.client_controller.new_options.GetBoolean( 'pause_export_folders_sync' ) or HydrusThreading.is_thread_shutting_down():
+            if CG.client_controller.new_options.get_boolean( 'pause_export_folders_sync' ) or HydrusThreading.is_thread_shutting_down():
                 
                 return
                 
@@ -646,7 +646,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                 return
                 
             
-            if CG.client_controller.new_options.GetBoolean( 'pause_export_folders_sync' ) or HydrusThreading.is_thread_shutting_down():
+            if CG.client_controller.new_options.get_boolean( 'pause_export_folders_sync' ) or HydrusThreading.is_thread_shutting_down():
                 
                 return
                 

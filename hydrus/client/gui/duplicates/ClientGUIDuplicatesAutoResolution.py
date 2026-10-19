@@ -543,7 +543,7 @@ class EditPairActionsWidget( ClientGUICommon.StaticBox ):
         
         if duplicates_content_merge_options is None:
             
-            duplicates_content_merge_options = CG.client_controller.new_options.GetDuplicateContentMergeOptions( action )
+            duplicates_content_merge_options = CG.client_controller.new_options.get_duplicate_content_merge_options( action )
             
         else:
             
@@ -580,7 +580,7 @@ class EditPairActionsWidget( ClientGUICommon.StaticBox ):
         
         if current_action != action:
             
-            duplicates_content_merge_options = CG.client_controller.new_options.GetDuplicateContentMergeOptions( action )
+            duplicates_content_merge_options = CG.client_controller.new_options.get_duplicate_content_merge_options( action )
             
             self._custom_duplicate_content_merge_options.SetValue( action, duplicates_content_merge_options )
             
@@ -1677,7 +1677,7 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
     
     def _FlipBoolean( self, name ):
         
-        CG.client_controller.new_options.FlipBoolean( name )
+        CG.client_controller.new_options.flip_boolean( name )
         
         CG.client_controller.duplicates_auto_resolution_manager.wake()
         
@@ -1707,14 +1707,14 @@ class ReviewDuplicatesAutoResolutionPanel( QW.QWidget ):
         
         check_manager = ClientGUICommon.CheckboxManagerCalls(
             lambda: self._FlipBoolean( 'duplicates_auto_resolution_during_idle' ),
-            lambda: CG.client_controller.new_options.GetBoolean( 'duplicates_auto_resolution_during_idle' )
+            lambda: CG.client_controller.new_options.get_boolean( 'duplicates_auto_resolution_during_idle' )
         )
         
         menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCheck( 'work on these rules during idle time', 'Allow the client to work on auto-resolution rules when you are not using the program.', check_manager ) )
         
         check_manager = ClientGUICommon.CheckboxManagerCalls(
             lambda: self._FlipBoolean( 'duplicates_auto_resolution_during_active' ),
-            lambda: CG.client_controller.new_options.GetBoolean( 'duplicates_auto_resolution_during_active' )
+            lambda: CG.client_controller.new_options.get_boolean( 'duplicates_auto_resolution_during_active' )
         )
         
         menu_template_items.append( ClientGUIMenuButton.MenuTemplateItemCheck( 'work on these rules during normal time', 'Allow the client to work on auto-resolution rules when you are using the program.', check_manager ) )

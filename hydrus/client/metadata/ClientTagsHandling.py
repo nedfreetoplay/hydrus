@@ -383,7 +383,7 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
                     self._go_faster.discard( service_key )
                     
                 
-                rest_ratio = CG.client_controller.new_options.GetInteger( 'tag_display_processing_rest_percentage_work_hard' ) / 100
+                rest_ratio = CG.client_controller.new_options.get_integer( 'tag_display_processing_rest_percentage_work_hard' ) / 100
                 
             
         
@@ -391,11 +391,11 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             if self._controller.currently_idle():
                 
-                rest_ratio = CG.client_controller.new_options.GetInteger( 'tag_display_processing_rest_percentage_idle' ) / 100
+                rest_ratio = CG.client_controller.new_options.get_integer( 'tag_display_processing_rest_percentage_idle' ) / 100
                 
             else:
                 
-                rest_ratio = CG.client_controller.new_options.GetInteger( 'tag_display_processing_rest_percentage_normal' ) / 100
+                rest_ratio = CG.client_controller.new_options.get_integer( 'tag_display_processing_rest_percentage_normal' ) / 100
                 
             
         
@@ -436,17 +436,17 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
             
             if service_key in self._go_faster:
                 
-                return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'tag_display_processing_work_time_ms_work_hard' ) )
+                return HydrusTime.secondise_ms_float( CG.client_controller.new_options.get_integer( 'tag_display_processing_work_time_ms_work_hard' ) )
                 
             
         
         if self._controller.currently_idle():
             
-            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'tag_display_processing_work_time_ms_idle' ) )
+            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.get_integer( 'tag_display_processing_work_time_ms_idle' ) )
             
         else:
             
-            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.GetInteger( 'tag_display_processing_work_time_ms_normal' ) )
+            return HydrusTime.secondise_ms_float( CG.client_controller.new_options.get_integer( 'tag_display_processing_work_time_ms_normal' ) )
             
         
     
@@ -465,14 +465,14 @@ class TagDisplayMaintenanceManager( ClientDaemons.ManagerWithMainLoop ):
         
         if self._controller.currently_idle():
             
-            if self._controller.new_options.GetBoolean( 'tag_display_maintenance_during_idle' ):
+            if self._controller.new_options.get_boolean( 'tag_display_maintenance_during_idle' ):
                 
                 return True
                 
             
         else:
             
-            if self._controller.new_options.GetBoolean( 'tag_display_maintenance_during_active' ):
+            if self._controller.new_options.get_boolean( 'tag_display_maintenance_during_active' ):
                 
                 return True
                 

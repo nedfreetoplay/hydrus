@@ -606,7 +606,7 @@ class PotentialDuplicatePairsFragmentarySearch( object ):
     
     def DoingFileBasedSearchIsOK( self ):
         
-        options_ok = CG.client_controller.new_options.GetBoolean( 'potential_duplicate_pairs_search_can_do_file_search_based_optimisation' )
+        options_ok = CG.client_controller.new_options.get_boolean( 'potential_duplicate_pairs_search_can_do_file_search_based_optimisation' )
         
         with self._lock:
             
@@ -1099,7 +1099,7 @@ class PotentialDuplicatesSearchContext( HydrusSerialisable.SerialisableBase ):
             
             try:
                 
-                location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+                location_context = CG.client_controller.new_options.get_default_local_location_context()
                 
             except Exception as e:
                 

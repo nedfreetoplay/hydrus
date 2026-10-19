@@ -104,7 +104,7 @@ class GalleryURLGenerator( HydrusSerialisable.SerialisableBaseNamed ):
             raise HydrusExceptions.GUGException( 'Replacement phrase not in URL template!' )
             
         
-        if CG.client_controller.new_options.GetBoolean( 'replace_percent_twenty_with_space_in_gug_input' ):
+        if CG.client_controller.new_options.get_boolean( 'replace_percent_twenty_with_space_in_gug_input' ):
             
             query_text = query_text.replace( '%20', ' ' )
             

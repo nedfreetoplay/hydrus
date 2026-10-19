@@ -215,7 +215,7 @@ def views_or_viewtime_wash_desired_canvas_types( desired_canvas_types ):
             CC.CANVAS_CLIENT_API : 'client api'
         }
         
-        desired_canvas_types = [ silly_lookup[ canvas_type ] for canvas_type in CG.client_controller.new_options.GetIntegerList( 'file_viewing_stats_interesting_canvas_types' ) ]
+        desired_canvas_types = [ silly_lookup[ canvas_type ] for canvas_type in CG.client_controller.new_options.get_integer_list( 'file_viewing_stats_interesting_canvas_types' ) ]
         
     
     return tuple( desired_canvas_types )

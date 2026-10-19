@@ -177,10 +177,10 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
     
     def _CollectLayoutParams( self ) -> ClientGUIThumbnailLayouts.LayoutParams:
         
-        thumbnail_border = CG.client_controller.new_options.GetInteger( 'thumbnail_border' )
+        thumbnail_border = CG.client_controller.new_options.get_integer( 'thumbnail_border' )
         thumb_width, thumb_height = ClientData.add_padding_to_dimensions( HC.options[ 'thumbnail_dimensions' ], thumbnail_border * 2 )
         thumb_content_width, thumb_content_height = HC.options[ 'thumbnail_dimensions' ]
-        thumbnail_margin = CG.client_controller.new_options.GetInteger( 'thumbnail_margin' )
+        thumbnail_margin = CG.client_controller.new_options.get_integer( 'thumbnail_margin' )
         
         # this is now mostly hardcoded for demo purposes, but should come from:
         # 1. settings / application-widge defaults
@@ -205,7 +205,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
     
     def _FadeThumbnails( self, media ):
         
-        fade_thumbnails = CG.client_controller.new_options.GetBoolean( 'fade_thumbnails' ) and self.isVisible()
+        fade_thumbnails = CG.client_controller.new_options.get_boolean( 'fade_thumbnails' ) and self.isVisible()
         
         for m in media:
             
@@ -306,7 +306,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         media_to_use = None
         you_should_just_select_this_guy = False
         
-        last_hit_media_is_important = shift or CG.client_controller.new_options.GetBoolean( 'on_shift_click_move_ghost_focus_to_last_hit' )
+        last_hit_media_is_important = shift or CG.client_controller.new_options.get_boolean( 'on_shift_click_move_ghost_focus_to_last_hit' )
         
         if last_hit_media_is_important and self._last_hit_media is not None:
             
@@ -487,7 +487,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         # This is probably fine...
         ( thumbnail_span_width, thumbnail_span_height ) = self._thumbnail_layout.ThumbnailSpanDimensions( None )
         
-        thumbnail_scroll_rate = float( CG.client_controller.new_options.GetString( 'thumbnail_scroll_rate' ) )
+        thumbnail_scroll_rate = float( CG.client_controller.new_options.get_string( 'thumbnail_scroll_rate' ) )
         
         self.verticalScrollBar().setSingleStep( int( round( thumbnail_span_height * thumbnail_scroll_rate ) ) )
         
@@ -539,7 +539,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
         
         thumb_pos = thumb.scenePos()
         
-        percent_visible = CG.client_controller.new_options.GetInteger( 'thumbnail_visibility_scroll_percent' ) / 100
+        percent_visible = CG.client_controller.new_options.get_integer( 'thumbnail_visibility_scroll_percent' ) / 100
         
         visible_rect = self.mapToScene( self.viewport().rect() ).boundingRect()
         
@@ -584,7 +584,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                 
                 if len( self._selected_media ) == 0:
                     
-                    max_number = CG.client_controller.new_options.GetNoneableInteger( 'number_of_unselected_medias_to_present_tags_for' )
+                    max_number = CG.client_controller.new_options.get_noneable_integer( 'number_of_unselected_medias_to_present_tags_for' )
                     
                     if max_number is None:
                         
@@ -1520,7 +1520,7 @@ class MediaResultsPanelThumbnails( ClientGUIMediaResultsPanel.MediaResultsPanel 
                                 
                                 scene_rect = self.mapToScene( self.viewport().rect() ).boundingRect()
                                 media_index = self._sorted_media.index( focus_media )
-                                percent_visible = CG.client_controller.new_options.GetInteger( 'thumbnail_visibility_scroll_percent' ) / 100
+                                percent_visible = CG.client_controller.new_options.get_integer( 'thumbnail_visibility_scroll_percent' ) / 100
                                 
                                 new_index = self._thumbnail_layout.JumpPage( scene_rect, media_index, direction, percent_visible )
                                 
@@ -1780,7 +1780,7 @@ class Thumbnail( QW.QGraphicsItem ):
         # this guy is going to see some changes as we move to size-agnostic thumb pipeline, but just a note, this is device pixels, not device-independant pixels
         # we won't want to scale a thumb to this size but rather scale to true-DPI size and then draw as if it were in this coordinate space _or something_
         
-        thumbnail_border = CG.client_controller.new_options.GetInteger( 'thumbnail_border' )
+        thumbnail_border = CG.client_controller.new_options.get_integer( 'thumbnail_border' )
         
         # now if self.width/height haven't been set (by the layouting code) by this time we will be in for a lot of pain when this returns negative values,
         # but since that happens in the layouting code at the same place where we make this thumb visible,
@@ -1816,7 +1816,7 @@ class Thumbnail( QW.QGraphicsItem ):
         
         thumbnails_cache = CG.client_controller.thumbnails_cache
         
-        thumbnail_border = CG.client_controller.new_options.GetInteger( 'thumbnail_border' )
+        thumbnail_border = CG.client_controller.new_options.get_integer( 'thumbnail_border' )
         
         content_size = self._GetContentSize()
         
@@ -1940,7 +1940,7 @@ class Thumbnail( QW.QGraphicsItem ):
             raw_thumbnail_qt_image = thumbnail_hydrus_bmp.GetQtImage()
             
         
-        thumbnail_dpr_percent = new_options.GetInteger( 'thumbnail_dpr_percent' )
+        thumbnail_dpr_percent = new_options.get_integer( 'thumbnail_dpr_percent' )
         
         if thumbnail_dpr_percent != 100:
             
@@ -1967,8 +1967,8 @@ class Thumbnail( QW.QGraphicsItem ):
         
         if len( tags ) > 0:
             
-            upper_tag_summary_generator = new_options.GetTagSummaryGenerator( 'thumbnail_top' )
-            lower_tag_summary_generator = new_options.GetTagSummaryGenerator( 'thumbnail_bottom_right' )
+            upper_tag_summary_generator = new_options.get_tag_summary_generator( 'thumbnail_top' )
+            lower_tag_summary_generator = new_options.get_tag_summary_generator( 'thumbnail_bottom_right' )
             
             if self._last_tags is not None and self._last_tags == tags:
                 
@@ -2095,8 +2095,8 @@ class Thumbnail( QW.QGraphicsItem ):
         locations_manager = media.GetLocationsManager()
         
         # ratings
-        THUMBNAIL_RATING_ICON_SET_SIZE = round( new_options.GetFloat( 'draw_thumbnail_rating_icon_size_px' ) )
-        THUMBNAIL_RATING_INCDEC_SET_HEIGHT = round( new_options.GetFloat( 'thumbnail_rating_incdec_height_px' ) )
+        THUMBNAIL_RATING_ICON_SET_SIZE = round( new_options.get_float( 'draw_thumbnail_rating_icon_size_px' ) )
+        THUMBNAIL_RATING_INCDEC_SET_HEIGHT = round( new_options.get_float( 'thumbnail_rating_incdec_height_px' ) )
         STAR_DX = THUMBNAIL_RATING_ICON_SET_SIZE
         STAR_DY = THUMBNAIL_RATING_ICON_SET_SIZE
         
@@ -2104,7 +2104,7 @@ class Thumbnail( QW.QGraphicsItem ):
         
         ICON_MARGIN = 1
         
-        draw_thumbnail_rating_background = new_options.GetBoolean( 'draw_thumbnail_rating_background' )
+        draw_thumbnail_rating_background = new_options.get_boolean( 'draw_thumbnail_rating_background' )
         
         current_top_right_y = thumbnail_border
         
@@ -2150,7 +2150,7 @@ class Thumbnail( QW.QGraphicsItem ):
         
         numerical_services = services_manager.GetServices( ( HC.LOCAL_RATING_NUMERICAL, ) )
         
-        draw_collapsed_numerical_ratings = new_options.GetBoolean( 'draw_thumbnail_numerical_ratings_collapsed_always' )
+        draw_collapsed_numerical_ratings = new_options.get_boolean( 'draw_thumbnail_numerical_ratings_collapsed_always' )
         
         numerical_services_to_show = [ numerical_service for numerical_service in numerical_services if ShouldShowRatingInThumbnail( media, numerical_service.GetServiceKey() ) ]
         

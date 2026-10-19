@@ -1240,7 +1240,7 @@ class DB( HydrusDB.HydrusDB ):
         
         new_options = ClientOptions.ClientOptions()
         
-        new_options.SetSimpleDownloaderFormulae( ClientDefaults.get_default_simple_downloader_formulae() )
+        new_options.set_simple_downloader_formulae( ClientDefaults.get_default_simple_downloader_formulae() )
         
         names_to_tag_filters = {}
         
@@ -1285,7 +1285,7 @@ class DB( HydrusDB.HydrusDB ):
         
         names_to_tag_filters[ 'exclude long/spammy namespaces' ] = tag_filter
         
-        new_options.SetFavouriteTagFilters( names_to_tag_filters )
+        new_options.set_favourite_tag_filters( names_to_tag_filters )
         
         self.modules_serialisable.SetJSONDump( new_options )
         
@@ -2417,7 +2417,7 @@ class DB( HydrusDB.HydrusDB ):
                 
                 # this shouldn't happen, combined on both sides, but let's do our best anyway
                 
-                if force_system_everything or self._controller.new_options.GetBoolean( 'show_system_everything' ):
+                if force_system_everything or self._controller.new_options.get_boolean( 'show_system_everything' ):
                     
                     predicates.append( ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_EVERYTHING ) )
                     
@@ -2552,7 +2552,7 @@ class DB( HydrusDB.HydrusDB ):
             
             num_everything = system_everything.GetCount().GetMinCount()
             
-            if force_system_everything or self._controller.new_options.GetBoolean( 'show_system_everything' ):
+            if force_system_everything or self._controller.new_options.get_boolean( 'show_system_everything' ):
                 
                 predicates.append( system_everything )
                 
@@ -6381,7 +6381,7 @@ class DB( HydrusDB.HydrusDB ):
             
             new_options = ClientOptions.ClientOptions()
             
-            new_options.SetSimpleDownloaderFormulae( ClientDefaults.get_default_simple_downloader_formulae() )
+            new_options.set_simple_downloader_formulae( ClientDefaults.get_default_simple_downloader_formulae() )
             
             self.modules_serialisable.SetJSONDump( new_options )
             

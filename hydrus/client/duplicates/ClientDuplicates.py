@@ -836,12 +836,12 @@ class DuplicateContentMergeOptions( HydrusSerialisable.SerialisableBase ):
             
             if media_result.GetLocationsManager().IsInCombinedLocalFileDomains():
                 
-                delete_lock_applies = not media_result.GetLocationsManager().inbox and CG.client_controller.new_options.GetBoolean( 'delete_lock_for_archived_files' )
+                delete_lock_applies = not media_result.GetLocationsManager().inbox and CG.client_controller.new_options.get_boolean( 'delete_lock_for_archived_files' )
                 
                 if delete_lock_applies:
                     
-                    undo_delete_lock_1 = not in_auto_resolution and CG.client_controller.new_options.GetBoolean( 'delete_lock_reinbox_deletees_after_duplicate_filter' )
-                    undo_delete_lock_2 = in_auto_resolution and CG.client_controller.new_options.GetBoolean( 'delete_lock_reinbox_deletees_in_auto_resolution' )
+                    undo_delete_lock_1 = not in_auto_resolution and CG.client_controller.new_options.get_boolean( 'delete_lock_reinbox_deletees_after_duplicate_filter' )
+                    undo_delete_lock_2 = in_auto_resolution and CG.client_controller.new_options.get_boolean( 'delete_lock_reinbox_deletees_in_auto_resolution' )
                     
                     if ( undo_delete_lock_1 or undo_delete_lock_2 ):
                         

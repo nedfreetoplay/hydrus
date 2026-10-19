@@ -36,7 +36,7 @@ class EditTagDisplayApplication( ClientGUIScrolledPanels.EditPanel ):
         
         services = list( CG.client_controller.services_manager.GetServices( HC.REAL_TAG_SERVICES ) )
         
-        default_tag_service_key = CG.client_controller.new_options.GetKey( 'default_tag_service_tab' )
+        default_tag_service_key = CG.client_controller.new_options.get_key( 'default_tag_service_tab' )
         
         for service in services:
             
@@ -79,7 +79,7 @@ class EditTagDisplayApplication( ClientGUIScrolledPanels.EditPanel ):
         
         self._sync_status.setWordWrap( True )
         
-        if CG.client_controller.new_options.GetBoolean( 'tag_display_maintenance_during_active' ):
+        if CG.client_controller.new_options.get_boolean( 'tag_display_maintenance_during_active' ):
             
             self._sync_status.setText( 'Siblings and parents are set to sync all the time. Changes will start applying as soon as you ok this dialog.' )
             
@@ -87,7 +87,7 @@ class EditTagDisplayApplication( ClientGUIScrolledPanels.EditPanel ):
             
         else:
             
-            if CG.client_controller.new_options.GetBoolean( 'tag_display_maintenance_during_idle' ):
+            if CG.client_controller.new_options.get_boolean( 'tag_display_maintenance_during_idle' ):
                 
                 self._sync_status.setText( 'Siblings and parents are only set to sync during idle time. Changes here will only start to apply when you are not using the client.' )
                 
@@ -113,11 +113,11 @@ class EditTagDisplayApplication( ClientGUIScrolledPanels.EditPanel ):
     
     def _ServicePageChanged( self ):
         
-        if CG.client_controller.new_options.GetBoolean( 'save_default_tag_service_tab_on_change' ):
+        if CG.client_controller.new_options.get_boolean( 'save_default_tag_service_tab_on_change' ):
             
             current_page = typing.cast( EditTagDisplayApplication._Panel, self._tag_services.currentWidget() )
             
-            CG.client_controller.new_options.SetKey( 'default_tag_service_tab', current_page.GetServiceKey() )
+            CG.client_controller.new_options.set_key( 'default_tag_service_tab', current_page.GetServiceKey() )
             
         
     

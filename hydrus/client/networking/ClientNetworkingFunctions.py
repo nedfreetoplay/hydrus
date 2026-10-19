@@ -232,7 +232,7 @@ def ConvertPathTextToList( path: str ) -> list[ str ]:
     # https://somebooru.com//images/ab/cd/abcdblahblahblah.jpg
     # We have a bunch of legacy URLs where I collapsed starting // down to /. Oh well!
     
-    if CG.client_controller.new_options.GetBoolean( 'remove_leading_url_double_slashes' ):
+    if CG.client_controller.new_options.get_boolean( 'remove_leading_url_double_slashes' ):
         
         # old legacy way
         while path.startswith( '/' ):

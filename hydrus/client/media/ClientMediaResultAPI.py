@@ -64,8 +64,8 @@ def PopulateMetadataAPIDict( metadata_list: list[ dict ], hashes: list[ bytes ],
     ipfs_service_keys = services_manager.GetServiceKeys( ( HC.IPFS, ) )
     
     thumbnail_bounding_dimensions = CG.client_controller.options[ 'thumbnail_dimensions' ]
-    thumbnail_scale_type = CG.client_controller.new_options.GetInteger( 'thumbnail_scale_type' )
-    thumbnail_dpr_percent = CG.client_controller.new_options.GetInteger( 'thumbnail_dpr_percent' )
+    thumbnail_scale_type = CG.client_controller.new_options.get_integer( 'thumbnail_scale_type' )
+    thumbnail_dpr_percent = CG.client_controller.new_options.get_integer( 'thumbnail_dpr_percent' )
     
     for hash in hashes:
         

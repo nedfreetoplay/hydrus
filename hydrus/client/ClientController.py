@@ -261,7 +261,7 @@ class Controller(HydrusController.HydrusController):
     
     def _get_wake_delay_period_ms(self):
         
-        return HydrusTime.millisecondise_s( self.new_options.GetInteger( 'wake_delay_period' ) )
+        return HydrusTime.millisecondise_s( self.new_options.get_integer( 'wake_delay_period' ) )
     
     def _publish_shutdown_subtext(self, text):
         
@@ -380,7 +380,7 @@ class Controller(HydrusController.HydrusController):
             
             ( current_thread_count, current_option ) = self._thread_slots[ lock_name ]
             
-            self._thread_slots[ lock_name ] = ( current_thread_count, self.new_options.GetInteger( option_name ) )
+            self._thread_slots[ lock_name ] = ( current_thread_count, self.new_options.get_integer( option_name ) )
     
     @staticmethod
     def instance() -> 'Controller':
@@ -768,7 +768,7 @@ class Controller(HydrusController.HydrusController):
                     
                 
             
-            idle_mode_client_api_timeout_ms = HydrusTime.millisecondise_s( self.new_options.GetNoneableInteger( 'idle_mode_client_api_timeout' ) )
+            idle_mode_client_api_timeout_ms = HydrusTime.millisecondise_s( self.new_options.get_noneable_integer( 'idle_mode_client_api_timeout' ) )
             
             if idle_mode_client_api_timeout_ms is not None:
                 
@@ -847,7 +847,7 @@ class Controller(HydrusController.HydrusController):
         
         self.maintain_db( maintenance_mode = HC.MAINTENANCE_SHUTDOWN, stop_time = stop_time )
         
-        if not self.new_options.GetBoolean( 'pause_repo_sync' ):
+        if not self.new_options.get_boolean( 'pause_repo_sync' ):
             
             services = self.services_manager.GetServices( HC.REPOSITORIES, randomised = True )
             
@@ -1169,26 +1169,26 @@ class Controller(HydrusController.HydrusController):
         
         from hydrus.core.files import HydrusFileHandling
         
-        HydrusFileHandling.ALLOW_COMIC_BOOK_ARCHIVE_INSPECTION = self.new_options.GetBoolean( 'allow_comic_book_archive_detection' )
+        HydrusFileHandling.ALLOW_COMIC_BOOK_ARCHIVE_INSPECTION = self.new_options.get_boolean( 'allow_comic_book_archive_detection' )
         
         from hydrus.core.files.images import HydrusImageHandling
         from hydrus.core.files.images import HydrusImageNormalisation
         from hydrus.core.files.images import HydrusImageColours
         
-        HydrusImageHandling.set_enable_load_truncated_images( self.new_options.GetBoolean( 'enable_truncated_images_pil' ) )
-        HydrusImageNormalisation.set_do_icc_profile_normalisation( self.new_options.GetBoolean( 'do_icc_profile_normalisation' ) )
-        HydrusImageColours.set_has_transparency_strictness_level( self.new_options.GetInteger( 'file_has_transparency_strictness' ) )
+        HydrusImageHandling.set_enable_load_truncated_images( self.new_options.get_boolean( 'enable_truncated_images_pil' ) )
+        HydrusImageNormalisation.set_do_icc_profile_normalisation( self.new_options.get_boolean( 'do_icc_profile_normalisation' ) )
+        HydrusImageColours.set_has_transparency_strictness_level( self.new_options.get_integer( 'file_has_transparency_strictness' ) )
         
-        HydrusImageHandling.FORCE_PIL_ALWAYS = self.new_options.GetBoolean( 'load_images_with_pil' )
+        HydrusImageHandling.FORCE_PIL_ALWAYS = self.new_options.get_boolean( 'load_images_with_pil' )
         
         from hydrus.core import HydrusTime
         
-        HydrusTime.ALWAYS_SHOW_ISO_TIME_ON_DELTA_CALL = self.new_options.GetBoolean( 'always_show_iso_time' )
+        HydrusTime.ALWAYS_SHOW_ISO_TIME_ON_DELTA_CALL = self.new_options.get_boolean( 'always_show_iso_time' )
         
         from hydrus.core import HydrusPaths
         
-        HydrusPaths.DO_NOT_DO_CHMOD_MODE = self.new_options.GetBoolean( 'do_not_do_chmod_mode' )
-        HydrusPaths.DO_FLOCK_ALREADY_IN_USE_TEST_IN_POSIX = self.new_options.GetBoolean( 'do_flock_already_in_use_test_in_posix' )
+        HydrusPaths.DO_NOT_DO_CHMOD_MODE = self.new_options.get_boolean( 'do_not_do_chmod_mode' )
+        HydrusPaths.DO_FLOCK_ALREADY_IN_USE_TEST_IN_POSIX = self.new_options.get_boolean( 'do_flock_already_in_use_test_in_posix' )
         
         with self._thread_slot_lock:
             
@@ -1199,12 +1199,12 @@ class Controller(HydrusController.HydrusController):
         
         HydrusFFMPEG.HYDRUS_BIN_FFMPEG_WAS_LOOKED_FOR = False
         HydrusFFMPEG.HYDRUS_BIN_FFMPEG_EXISTS = False
-        HydrusFFMPEG.PREFER_SYSTEM_FFMPEG = self.new_options.GetBoolean( 'use_system_ffmpeg' )
-        HydrusFFMPEG.FFMPEG_SUBPROCESS_TIMEOUT = self.new_options.GetInteger( 'ffmpeg_subprocess_timeout' )
+        HydrusFFMPEG.PREFER_SYSTEM_FFMPEG = self.new_options.get_boolean( 'use_system_ffmpeg' )
+        HydrusFFMPEG.FFMPEG_SUBPROCESS_TIMEOUT = self.new_options.get_integer( 'ffmpeg_subprocess_timeout' )
         
         from hydrus.client.gui import ClientGUIText
         
-        ClientGUIText.engage_locale_hook( self.new_options.GetBoolean( 'use_qt_locale_for_human_int' ) )
+        ClientGUIText.engage_locale_hook( self.new_options.get_boolean( 'use_qt_locale_for_human_int' ) )
     
     def init_model(self):
         
@@ -1276,7 +1276,7 @@ class Controller(HydrusController.HydrusController):
         
         if self.new_options.GetBoolean( 'boot_with_network_traffic_paused' ) or HG.boot_with_network_traffic_paused_command_line:
             
-            CG.client_controller.new_options.SetBoolean( 'pause_all_new_network_traffic', True )
+            CG.client_controller.new_options.set_boolean( 'pause_all_new_network_traffic', True )
             
         
         self.parsing_cache = ClientCaches.ParsingCache()
@@ -1559,7 +1559,7 @@ class Controller(HydrusController.HydrusController):
             
             ClientGUIStyle.InitialiseDefaults()
             
-            qt_style_name = self.new_options.GetNoneableString( 'qt_style_name' )
+            qt_style_name = self.new_options.get_noneable_string( 'qt_style_name' )
             
             if qt_style_name is not None:
                 
@@ -1573,7 +1573,7 @@ class Controller(HydrusController.HydrusController):
                     
                 
             
-            qt_stylesheet_name = self.new_options.GetNoneableString( 'qt_stylesheet_name' )
+            qt_stylesheet_name = self.new_options.get_noneable_string( 'qt_stylesheet_name' )
             
             if qt_stylesheet_name is None:
                 
@@ -2323,7 +2323,7 @@ class Controller(HydrusController.HydrusController):
     
     def sleep_check(self) -> None:
         
-        if not self.new_options.GetBoolean( 'do_sleep_check' ):
+        if not self.new_options.get_boolean( 'do_sleep_check' ):
             
             self._just_woke_from_sleep = False
             
@@ -2334,7 +2334,7 @@ class Controller(HydrusController.HydrusController):
     
     def synchronise_accounts(self):
         
-        if CG.client_controller.new_options.GetBoolean( 'pause_all_new_network_traffic' ):
+        if CG.client_controller.new_options.get_boolean( 'pause_all_new_network_traffic' ):
             
             return
             
@@ -2360,7 +2360,7 @@ class Controller(HydrusController.HydrusController):
     
     def synchronise_repositories(self):
         
-        if not self.new_options.GetBoolean( 'pause_repo_sync' ):
+        if not self.new_options.get_boolean( 'pause_repo_sync' ):
             
             services = self.services_manager.GetServices( HC.REPOSITORIES, randomised = True )
             
@@ -2371,7 +2371,7 @@ class Controller(HydrusController.HydrusController):
                     return
                     
                 
-                if self.new_options.GetBoolean( 'pause_repo_sync' ):
+                if self.new_options.get_boolean( 'pause_repo_sync' ):
                     
                     return
                     
@@ -2389,8 +2389,8 @@ class Controller(HydrusController.HydrusController):
             return False
             
         
-        system_busy_cpu_percent = self.new_options.GetInteger( 'system_busy_cpu_percent' )
-        system_busy_cpu_count = self.new_options.GetNoneableInteger( 'system_busy_cpu_count' )
+        system_busy_cpu_percent = self.new_options.get_integer( 'system_busy_cpu_percent' )
+        system_busy_cpu_count = self.new_options.get_noneable_integer( 'system_busy_cpu_count' )
         
         if system_busy_cpu_count is None:
             

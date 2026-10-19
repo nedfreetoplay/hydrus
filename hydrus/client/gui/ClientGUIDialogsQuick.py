@@ -144,7 +144,7 @@ def PickDirectory( parent: QW.QWidget, message: str, starting_dir_path: str | No
     
     options = QW.QFileDialog.Option.ShowDirsOnly | QW.QFileDialog.Option.DontResolveSymlinks
     
-    if CG.client_controller.new_options.GetBoolean( 'use_qt_file_dialogs' ):
+    if CG.client_controller.new_options.get_boolean( 'use_qt_file_dialogs' ):
         
         options |= QW.QFileDialog.Option.DontUseNativeDialog
         

@@ -223,7 +223,7 @@ class EditTagDisplayManagerPanel( ClientGUIScrolledPanels.EditPanel ):
         
         self._original_tag_display_manager = tag_display_manager
         
-        if CG.client_controller.new_options.GetBoolean( 'use_listbook_for_tag_service_panels' ):
+        if CG.client_controller.new_options.get_boolean( 'use_listbook_for_tag_service_panels' ):
             
             self._tag_services = ClientGUIListBook.ListBook( self )
             

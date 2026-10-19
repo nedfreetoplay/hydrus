@@ -345,7 +345,7 @@ class MPVMediator( object ):
     
     def SetAudioDeviceFromOptions( self ):
         
-        mpv_preferred_audio_device = CG.client_controller.new_options.GetNoneableString( 'mpv_preferred_audio_device' )
+        mpv_preferred_audio_device = CG.client_controller.new_options.get_noneable_string( 'mpv_preferred_audio_device' )
         
         if mpv_preferred_audio_device is None:
             
@@ -518,7 +518,7 @@ class MPVMediatorPolite( MPVMediator ):
         # Disable mpv key event capture, might also need to set input_x11_keyboard
         self._mpv_player.command_async( 'set', 'input-vo-keyboard', False )
         
-        mpv_preferred_audio_device = CG.client_controller.new_options.GetNoneableString( 'mpv_preferred_audio_device' )
+        mpv_preferred_audio_device = CG.client_controller.new_options.get_noneable_string( 'mpv_preferred_audio_device' )
         
         if mpv_preferred_audio_device is not None:
             
@@ -769,7 +769,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             loglevel = loglevel
         )
         
-        if CG.client_controller.new_options.GetBoolean( 'use_legacy_mpv_mediator' ):
+        if CG.client_controller.new_options.get_boolean( 'use_legacy_mpv_mediator' ):
             
             self._mpv_mediator = MPVMediatorRude( self._player )
             
@@ -847,14 +847,14 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         if self._canvas_type in CC.CANVAS_MEDIA_VIEWER_TYPES:
             
-            if CG.client_controller.new_options.GetBoolean( 'media_viewer_uses_its_own_audio_volume' ):
+            if CG.client_controller.new_options.get_boolean( 'media_viewer_uses_its_own_audio_volume' ):
                 
                 return ClientGUIMediaControls.volume_types_to_option_names[ ClientGUIMediaControls.AUDIO_MEDIA_VIEWER ]
                 
             
         elif self._canvas_type == CC.CANVAS_PREVIEW:
             
-            if CG.client_controller.new_options.GetBoolean( 'preview_uses_its_own_audio_volume' ):
+            if CG.client_controller.new_options.get_boolean( 'preview_uses_its_own_audio_volume' ):
                 
                 return ClientGUIMediaControls.volume_types_to_option_names[ ClientGUIMediaControls.AUDIO_PREVIEW ]
                 
@@ -1067,7 +1067,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         if probably_crashy:
             
-            silenced = HG.mpv_allow_crashy_files_silently or CG.client_controller.new_options.GetBoolean( 'mpv_allow_crashy_files_silently' )
+            silenced = HG.mpv_allow_crashy_files_silently or CG.client_controller.new_options.get_boolean( 'mpv_allow_crashy_files_silently' )
             
             if HG.mpv_allow_crashy_files or silenced:
                 
@@ -1454,7 +1454,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         global damaged_file_hashes
         
-        if media is not None and media.GetHash() in damaged_file_hashes and not HG.mpv_allow_crashy_files and not HG.mpv_allow_crashy_files_silently and not CG.client_controller.new_options.GetBoolean( 'mpv_allow_crashy_files_silently' ):
+        if media is not None and media.GetHash() in damaged_file_hashes and not HG.mpv_allow_crashy_files and not HG.mpv_allow_crashy_files_silently and not CG.client_controller.new_options.get_boolean( 'mpv_allow_crashy_files_silently' ):
             
             self.ClearMedia()
             
@@ -1532,7 +1532,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                     
                     self._stop_for_slideshow = False
                     
-                    if CG.client_controller.new_options.GetBoolean( 'mpv_null_audio_on_silent_media' ):
+                    if CG.client_controller.new_options.get_boolean( 'mpv_null_audio_on_silent_media' ):
                         
                         has_audio = self._media.HasAudio()
                         
@@ -1548,7 +1548,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                     
                     mime = self._media.GetMime()
                     
-                    if mime in HC.VIEWABLE_ANIMATIONS and not CG.client_controller.new_options.GetBoolean( 'always_loop_gifs' ):
+                    if mime in HC.VIEWABLE_ANIMATIONS and not CG.client_controller.new_options.get_boolean( 'always_loop_gifs' ):
                         
                         from hydrus.core.files import HydrusAnimationHandling
                         
@@ -1696,7 +1696,7 @@ class MPVWidget( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
         
         # this fixes at least one instance of the 100% CPU 'too many events queued' bug, which was down to bad APNG EOF rewind navigation
-        loop_playlist = CG.client_controller.new_options.GetBoolean( 'mpv_loop_playlist_instead_of_file' )
+        loop_playlist = CG.client_controller.new_options.get_boolean( 'mpv_loop_playlist_instead_of_file' )
         
         self._player[ 'loop' ] = not loop_playlist
         self._player[ 'loop-playlist' ] = loop_playlist

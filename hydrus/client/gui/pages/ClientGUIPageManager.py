@@ -33,8 +33,8 @@ def CreatePageManager( page_name, page_type ):
     page_manager = PageManager( page_name )
     
     page_manager.SetType( page_type )
-    page_manager.SetVariable( 'media_sort', new_options.GetDefaultSort() )
-    page_manager.SetVariable( 'media_collect', new_options.GetDefaultCollect() )
+    page_manager.SetVariable( 'media_sort', new_options.get_default_sort() )
+    page_manager.SetVariable( 'media_collect', new_options.get_default_collect() )
     
     return page_manager
     
@@ -62,7 +62,7 @@ def CreatePageManagerDuplicateFilter(
     
     page_manager = CreatePageManager( page_name, ClientGUIPagesCore.PAGE_TYPE_DUPLICATE_FILTER )
     
-    synchronised = CG.client_controller.new_options.GetBoolean( 'default_search_synchronised' )
+    synchronised = CG.client_controller.new_options.get_boolean( 'default_search_synchronised' )
     
     page_manager.SetVariable( 'synchronised', synchronised )
     
@@ -100,7 +100,7 @@ def CreatePageManagerImportSimpleDownloader():
     
     simple_downloader_import = ClientImportSimpleURLs.SimpleDownloaderImport()
     
-    formula_name = CG.client_controller.new_options.GetString( 'favourite_simple_downloader_formula' )
+    formula_name = CG.client_controller.new_options.get_string( 'favourite_simple_downloader_formula' )
     
     simple_downloader_import.SetFormulaName( formula_name )
     
@@ -176,7 +176,7 @@ def CreatePageManagerQuery( page_name, file_search_context: ClientSearchFileSear
     
     page_manager = CreatePageManager( page_name, ClientGUIPagesCore.PAGE_TYPE_QUERY )
     
-    synchronised = CG.client_controller.new_options.GetBoolean( 'default_search_synchronised' )
+    synchronised = CG.client_controller.new_options.get_boolean( 'default_search_synchronised' )
     
     page_manager.SetVariable( 'file_search_context', file_search_context )
     page_manager.SetVariable( 'synchronised', synchronised )
@@ -516,7 +516,7 @@ class PageManager( HydrusSerialisable.SerialisableBase ):
                 
                 variables[ 'dupe_search_type' ] = value
                 
-                default_location_context = CG.client_controller.new_options.GetDefaultLocalLocationContext()
+                default_location_context = CG.client_controller.new_options.get_default_local_location_context()
                 
                 file_search_context = ClientSearchFileSearchContext.FileSearchContext( location_context = default_location_context, predicates = [ ClientSearchPredicate.Predicate( ClientSearchPredicate.PREDICATE_TYPE_SYSTEM_EVERYTHING ) ] )
                 

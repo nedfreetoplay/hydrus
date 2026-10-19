@@ -254,7 +254,7 @@ def get_shortcut_mouse_string( shortcut_key: int, call_mouse_buttons_primary_sec
         
         try:
             
-            call_mouse_buttons_primary_secondary = CG.client_controller.new_options.GetBoolean( 'call_mouse_buttons_primary_secondary' )
+            call_mouse_buttons_primary_secondary = CG.client_controller.new_options.get_boolean( 'call_mouse_buttons_primary_secondary' )
             
         except Exception as e:
             
@@ -712,7 +712,7 @@ def ConvertKeyEventToShortcut( event, shortcuts_merge_non_number_numpad_override
                 
                 try:
                     
-                    shortcuts_merge_non_number_numpad = CG.client_controller.new_options.GetBoolean( 'shortcuts_merge_non_number_numpad' )
+                    shortcuts_merge_non_number_numpad = CG.client_controller.new_options.get_boolean( 'shortcuts_merge_non_number_numpad' )
                     
                 except Exception as e:
                     
@@ -1221,7 +1221,7 @@ class Shortcut( HydrusSerialisable.SerialisableBase ):
             
             try:
                 
-                shortcuts_merge_non_number_numpad = CG.client_controller.new_options.GetBoolean( 'shortcuts_merge_non_number_numpad' )
+                shortcuts_merge_non_number_numpad = CG.client_controller.new_options.get_boolean( 'shortcuts_merge_non_number_numpad' )
                 
             except Exception as e:
                 

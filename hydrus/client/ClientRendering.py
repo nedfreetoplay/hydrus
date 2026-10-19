@@ -601,7 +601,7 @@ class RasterContainerVideo( RasterContainer ):
         
         new_options = CG.client_controller.new_options
         
-        video_buffer_size = new_options.GetInteger( 'video_buffer_size' )
+        video_buffer_size = new_options.get_integer( 'video_buffer_size' )
         
         duration_ms = self._media.GetDurationMS()
         num_frames_in_video = self._media.GetNumFrames()
