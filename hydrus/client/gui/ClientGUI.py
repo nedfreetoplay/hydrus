@@ -6195,9 +6195,9 @@ ATTACH "client.mappings.db" as external_mappings;'''
             
             api_permissions = ClientAPI.APIPermissions( name = 'hydrus test access', permits_everything = True )
             
-            access_key = api_permissions.GetAccessKey()
+            access_key = api_permissions.get_access_key()
             
-            CG.client_controller.client_api_manager.AddAccess( api_permissions )
+            CG.client_controller.client_api_manager.add_access( api_permissions )
             
             #
             
@@ -6278,7 +6278,7 @@ ATTACH "client.mappings.db" as external_mappings;'''
                 
                 #
                 
-                CG.client_controller.client_api_manager.DeleteAccess( ( access_key, ) )
+                CG.client_controller.client_api_manager.delete_access( ( access_key, ) )
                 
                 #
                 

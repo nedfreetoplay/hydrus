@@ -100,7 +100,7 @@ class EditAPIPermissionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         self._check_all_permissions_button = ClientGUICommon.BetterButton( self._permissions_panel, 'check all permissions', self._CheckAllPermissions )
         
-        search_tag_filter = api_permissions.GetSearchTagFilter()
+        search_tag_filter = api_permissions.get_search_tag_filter()
         
         message = 'The API will only permit searching for tags that pass through this filter.'
         message += '\n' * 2
@@ -110,7 +110,7 @@ class EditAPIPermissionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         #
         
-        access_key = api_permissions.GetAccessKey()
+        access_key = api_permissions.get_access_key()
         
         self._access_key.setText( access_key.hex() )
         
@@ -118,9 +118,9 @@ class EditAPIPermissionsPanel( ClientGUIScrolledPanels.EditPanel ):
         
         self._name.setText( name )
         
-        self._permits_everything.setChecked( api_permissions.PermitsEverything() )
+        self._permits_everything.setChecked( api_permissions.permits_everything() )
         
-        basic_permissions = api_permissions.GetBasicPermissions()
+        basic_permissions = api_permissions.get_basic_permissions()
         
         self._basic_permissions.SetValue( basic_permissions )
         

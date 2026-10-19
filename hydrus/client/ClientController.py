@@ -1943,13 +1943,13 @@ class Controller(HydrusController.HydrusController):
                 self.write_synchronous( 'dirty_services', dirty_services )
                 
             
-            if self.client_api_manager.IsDirty():
+            if self.client_api_manager.is_dirty():
                 
                 self.frame_splash_status.SetSubtext( 'client api manager' )
                 
                 self.write_synchronous( 'serialisable', self.client_api_manager )
                 
-                self.client_api_manager.SetClean()
+                self.client_api_manager.set_clean()
                 
             
             if self.executable_manager.IsDirty():

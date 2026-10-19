@@ -129,7 +129,7 @@ class HydrusResourceClientAPIRestricted( HydrusResourceClientAPI ):
         
         try:
             
-            api_permissions = CG.client_controller.client_api_manager.GetPermissions( access_key )
+            api_permissions = CG.client_controller.client_api_manager.get_permissions( access_key )
             
         except HydrusExceptions.DataMissing as e:
             
@@ -187,7 +187,7 @@ class HydrusResourceClientAPIRestricted( HydrusResourceClientAPI ):
             
             try:
                 
-                access_key = CG.client_controller.client_api_manager.GetAccessKey( session_key )
+                access_key = CG.client_controller.client_api_manager.get_access_key( session_key )
                 
             except HydrusExceptions.DataMissing as e:
                 

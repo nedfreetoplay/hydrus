@@ -626,7 +626,7 @@ class TestClientAPI( unittest.TestCase ):
             
             set_up_permissions[ name ] = api_permissions
             
-            TG.test_controller.client_api_manager.AddAccess( api_permissions )
+            TG.test_controller.client_api_manager.add_access( api_permissions )
             
         
         # /verify_access_key

@@ -2149,9 +2149,9 @@ class ReviewServiceClientAPISubPanel( ClientGUICommon.StaticBox ):
                 
                 api_permissions = panel.GetValue()
                 
-                access_key = api_permissions.GetAccessKey()
+                access_key = api_permissions.get_access_key()
                 
-                if CG.client_controller.client_api_manager.HasAccessKey( access_key ):
+                if CG.client_controller.client_api_manager.has_access_key( access_key ):
                     
                     message = 'You appear to have edited the API Access Key to something that already exists. Either something has gone technically wrong, or there has been a misunderstanding. I will not make any changes.'
                     
@@ -2160,7 +2160,7 @@ class ReviewServiceClientAPISubPanel( ClientGUICommon.StaticBox ):
                     return
                     
                 
-                CG.client_controller.client_api_manager.AddAccess( api_permissions )
+                CG.client_controller.client_api_manager.add_access( api_permissions )
                 
                 self._Refresh()
                 
@@ -2175,7 +2175,7 @@ class ReviewServiceClientAPISubPanel( ClientGUICommon.StaticBox ):
             
             access_keys = [ api_permissions.GetAccessKey() for api_permissions in self._permissions_list.GetData( only_selected = True ) ]
             
-            CG.client_controller.client_api_manager.DeleteAccess( access_keys )
+            CG.client_controller.client_api_manager.delete_access( access_keys )
             
             self._Refresh()
             
@@ -2204,7 +2204,7 @@ class ReviewServiceClientAPISubPanel( ClientGUICommon.StaticBox ):
         
         existing_objects.extend( dupes )
         
-        CG.client_controller.client_api_manager.SetPermissions( existing_objects )
+        CG.client_controller.client_api_manager.set_permissions( existing_objects )
         
         self._Refresh()
         
@@ -2230,11 +2230,11 @@ class ReviewServiceClientAPISubPanel( ClientGUICommon.StaticBox ):
                 
                 edited_api_permissions = panel.GetValue()
                 
-                if edited_api_permissions.GetAccessKey() != api_permissions.GetAccessKey():
+                if edited_api_permissions.get_access_key() != api_permissions.GetAccessKey():
                     
-                    new_access_key = edited_api_permissions.GetAccessKey()
+                    new_access_key = edited_api_permissions.get_access_key()
                     
-                    if CG.client_controller.client_api_manager.HasAccessKey( new_access_key ):
+                    if CG.client_controller.client_api_manager.has_access_key( new_access_key ):
                         
                         message = 'You appear to have edited the API Access Key to something that already exists. Either something has gone technically wrong, or there has been a misunderstanding. I will not make any changes.'
                         
@@ -2244,7 +2244,7 @@ class ReviewServiceClientAPISubPanel( ClientGUICommon.StaticBox ):
                         
                     
                 
-                CG.client_controller.client_api_manager.OverwriteAccess( api_permissions, edited_api_permissions )
+                CG.client_controller.client_api_manager.overwrite_access( api_permissions, edited_api_permissions )
                 
                 self._Refresh()
                 
@@ -2291,7 +2291,7 @@ class ReviewServiceClientAPISubPanel( ClientGUICommon.StaticBox ):
         
         self._service_status.setText( status )
         
-        api_permissions_objects = CG.client_controller.client_api_manager.GetAllPermissions()
+        api_permissions_objects = CG.client_controller.client_api_manager.get_all_permissions()
         
         self._permissions_list.SetData( api_permissions_objects )
         

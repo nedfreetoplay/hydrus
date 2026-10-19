@@ -31,7 +31,7 @@ class HydrusResourceClientAPIPermissionsRequest( ClientLocalServerResources.Hydr
         
         ClientAPI.last_api_permissions_request = api_permissions
         
-        access_key = api_permissions.GetAccessKey()
+        access_key = api_permissions.get_access_key()
         
         body_dict = {}
         
@@ -92,7 +92,7 @@ class HydrusResourceClientAPIRestrictedAccountSessionKey( HydrusResourceClientAP
     
     def _thread_do_get_job( self, request: HydrusServerRequest.HydrusRequest ):
         
-        new_session_key = CG.client_controller.client_api_manager.GenerateSessionKey( request.client_api_permissions.GetAccessKey() )
+        new_session_key = CG.client_controller.client_api_manager.generate_session_key( request.client_api_permissions.GetAccessKey() )
         
         body_dict = {}
         
