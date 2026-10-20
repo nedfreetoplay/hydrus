@@ -8,13 +8,12 @@ PDF_IMPORT_ERROR = 'QtPdf seems fine!'
 try:
     
     from qtpy import QtPdf
-    
+
 except Exception as e:
     
     PDF_OK = False
     PDF_MODULE_NOT_FOUND = isinstance( e, ModuleNotFoundError )
     PDF_IMPORT_ERROR = traceback.format_exc()
-    
 
 from qtpy import QtGui as QG
 from qtpy import QtCore as QC
@@ -25,7 +24,7 @@ from hydrus.core.files import HydrusPDFHandling
 from hydrus.client import ClientGlobals as CG
 from hydrus.client.gui import ClientGUIFunctionsImage
 
-def QtLoadPDF( path: str ):
+def qt_load_pdf(path: str):
     
     if not PDF_OK:
         
@@ -71,15 +70,14 @@ def QtLoadPDF( path: str ):
         
     
     return document
-    
 
-def GenerateThumbnailNumPyFromPDFPath( path: str, target_resolution: tuple[int, int] ) -> bytes:
+def generate_thumbnail_numpy_from_pdf_path(path: str, target_resolution: tuple[int, int]) -> bytes:
     
     def qt_code() -> bytes:
         
         try:
             
-            document = QtLoadPDF( path )
+            document = qt_load_pdf( path )
             
             ( target_width, target_height ) = target_resolution
             
@@ -110,19 +108,18 @@ def GenerateThumbnailNumPyFromPDFPath( path: str, target_resolution: tuple[int, 
         
     
     return CG.client_controller.call_blocking_to_qt_tlw( qt_code )
-    
 
-HydrusPDFHandling.base_generate_thumbnail_numpy_from_pdf_path = GenerateThumbnailNumPyFromPDFPath
+HydrusPDFHandling.base_generate_thumbnail_numpy_from_pdf_path = generate_thumbnail_numpy_from_pdf_path
 
 PDF_ASSUMED_DPI = 300
 
-def GetHumanReadableEmbeddedMetadata( path ) -> str | None:
+def get_human_readable_embedded_metadata(path) -> str | None:
     
     def qt_code() -> str | None:
         
         try:
             
-            document = QtLoadPDF( path )
+            document = qt_load_pdf( path )
             
         except Exception as e:
             
@@ -160,14 +157,12 @@ def GetHumanReadableEmbeddedMetadata( path ) -> str | None:
     else:
         
         return result
-        
-    
 
-def HasHumanReadableEmbeddedMetadata( path ) -> bool:
+def has_human_readable_embedded_metadata(path) -> bool:
     
     try:
         
-        text = GetHumanReadableEmbeddedMetadata( path )
+        text = get_human_readable_embedded_metadata( path )
         
     except HydrusExceptions.LimitedSupportFileException:
         
@@ -175,15 +170,14 @@ def HasHumanReadableEmbeddedMetadata( path ) -> bool:
         
     
     return text is not None
-    
 
-def GetPDFInfo( path: str ):
+def get_pdf_info(path: str):
     
     def qt_code():
         
         try:
             
-            document = QtLoadPDF( path )
+            document = qt_load_pdf( path )
             
         except Exception as e:
             
@@ -192,7 +186,7 @@ def GetPDFInfo( path: str ):
         
         try:
             
-            ( width, height ) = GetPDFResolutionFromDocument( document )
+            ( width, height ) = get_pdf_resolution_from_document( document )
             
         except Exception as e:
             
@@ -225,9 +219,8 @@ def GetPDFInfo( path: str ):
         
     
     return CG.client_controller.call_blocking_to_qt_tlw( qt_code )
-    
 
-def GetPDFModifiedTimestampMS( path ):
+def get_pdf_modified_timestamp_ms(path):
     
     def qt_code():
         
@@ -237,7 +230,7 @@ def GetPDFModifiedTimestampMS( path ):
         
         try:
             
-            document = QtLoadPDF( path )
+            document = qt_load_pdf( path )
             
         except Exception as e:
             
@@ -252,9 +245,8 @@ def GetPDFModifiedTimestampMS( path ):
         
     
     return CG.client_controller.call_blocking_to_qt_tlw( qt_code )
-    
 
-def GetPDFResolutionFromDocument( document ):
+def get_pdf_resolution_from_document(document):
     
     pointSize = document.pagePointSize(0)
     
@@ -264,6 +256,5 @@ def GetPDFResolutionFromDocument( document ):
     height = pointSize.height() * ( PDF_ASSUMED_DPI / 72 )
     
     return ( round( width ), round( height ) )
-    
 
-HydrusPDFHandling.base_get_pdf_info = GetPDFInfo
+HydrusPDFHandling.base_get_pdf_info = get_pdf_info

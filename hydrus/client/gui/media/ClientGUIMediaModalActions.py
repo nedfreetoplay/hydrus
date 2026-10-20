@@ -1337,7 +1337,7 @@ def ShowFileEmbeddedMetadata( win: QW.QWidget, media_result: ClientMediaResult.M
                 
                 try:
                     
-                    file_text = ClientPDFHandling.GetHumanReadableEmbeddedMetadata( path )
+                    file_text = ClientPDFHandling.get_human_readable_embedded_metadata( path )
                     
                 except HydrusExceptions.LimitedSupportFileException as e:
                     
