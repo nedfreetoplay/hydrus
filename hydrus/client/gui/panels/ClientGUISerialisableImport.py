@@ -177,7 +177,7 @@ class ReviewDownloaderImport( ClientGUIScrolledPanels.ReviewPanel ):
         
         lain_path = HydrusStaticDir.get_static_path( 'lain.jpg' )
         
-        lain_qt_pixmap = ClientRendering.GenerateHydrusBitmap( lain_path, HC.IMAGE_JPEG ).GetQtPixmap()
+        lain_qt_pixmap = ClientRendering.generate_hydrus_bitmap( lain_path, HC.IMAGE_JPEG ).get_qt_pixmap()
         
         win = QW.QLabel( self, pixmap = lain_qt_pixmap )
         
@@ -681,7 +681,7 @@ class ReviewWhatIsThisObject( ClientGUIScrolledPanels.ReviewPanel ):
         
         question_mark_path = HydrusStaticDir.get_static_path( 'question_mark_on_head.jpg' )
         
-        question_mark_qt_pixmap = ClientRendering.GenerateHydrusBitmap( question_mark_path, HC.IMAGE_JPEG ).GetQtPixmap()
+        question_mark_qt_pixmap = ClientRendering.generate_hydrus_bitmap( question_mark_path, HC.IMAGE_JPEG ).get_qt_pixmap()
         
         win = QW.QLabel( self, pixmap = question_mark_qt_pixmap )
         

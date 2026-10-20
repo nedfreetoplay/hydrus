@@ -2555,7 +2555,7 @@ class Controller(HydrusController.HydrusController):
                     
                 
                 # this is faster than qpixmap, which converts to a qimage anyway
-                qt_image = image_renderer.GetQtImage( target_resolution = target_resolution ).copy()
+                qt_image = image_renderer.get_qt_image( target_resolution = target_resolution ).copy()
                 
                 QW.QApplication.clipboard().setImage( qt_image )
                 
@@ -2564,7 +2564,7 @@ class Controller(HydrusController.HydrusController):
                 
                 start_time = time.time()
                 
-                while not image_renderer.IsReady():
+                while not image_renderer.is_ready():
                     
                     if HydrusTime.time_has_passed( start_time + 15 ):
                         
@@ -2599,7 +2599,7 @@ class Controller(HydrusController.HydrusController):
             
             thumbnail = self.thumbnails_cache.GetThumbnail( display_media_result )
             
-            qt_image = thumbnail.GetQtImage().copy()
+            qt_image = thumbnail.get_qt_image().copy()
             
             QW.QApplication.clipboard().setImage( qt_image )
     

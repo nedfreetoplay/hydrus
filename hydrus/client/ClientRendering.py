@@ -23,7 +23,7 @@ from hydrus.client.files.images import ClientImageHandling
 from hydrus.client.media import ClientMediaSingle
 from hydrus.client import ClientUgoiraHandling
 
-def FrameIndexOutOfRange( index, range_start, range_end ):
+def frame_index_out_of_range(index, range_start, range_end):
     
     before_start = index < range_start
     after_end = range_end < index
@@ -44,23 +44,20 @@ def FrameIndexOutOfRange( index, range_start, range_end ):
         
     
     return False
-    
 
-def GenerateHydrusBitmap( path, mime, compressed = True ):
+def generate_hydrus_bitmap(path, mime, compressed = True):
     
     numpy_image = HydrusImageHandling.generate_numpy_image( path, mime )
     
-    return GenerateHydrusBitmapFromNumPyImage( numpy_image, compressed = compressed )
-    
+    return generate_hydrus_bitmap_from_numpy_image( numpy_image, compressed = compressed )
 
-def GenerateHydrusBitmapFromNumPyImage( numpy_image, compressed = True ):
+def generate_hydrus_bitmap_from_numpy_image(numpy_image, compressed = True):
     
     ( y, x, depth ) = numpy_image.shape
     
     return HydrusBitmap( numpy_image.data, ( x, y ), depth, compressed = compressed )
-    
 
-def GenerateHydrusBitmapFromPILImage( pil_image, compressed = True ):
+def generate_hydrus_bitmap_from_pil_image(pil_image, compressed = True):
     
     depth = 3
     
@@ -80,10 +77,8 @@ def GenerateHydrusBitmapFromPILImage( pil_image, compressed = True ):
     except IOError:
         
         raise HydrusExceptions.DamagedOrUnusualFileException( 'Looks like a truncated file that PIL could not handle!' )
-        
-    
 
-class ImageRenderer( ClientCachesBase.CacheableObject ):
+class ImageRenderer(ClientCachesBase.CacheableObject):
     
     def __init__( self, media, this_is_for_metadata_alone = False ):
         
@@ -111,15 +106,13 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
         
         self._this_is_for_metadata_alone = this_is_for_metadata_alone
         
-        CG.client_controller.call_to_thread( self._Initialise )
-        
-
-    def GetNumPyImage(self):
+        CG.client_controller.call_to_thread( self._initialise )
+    
+    def get_numpy_image(self):
 
         return self._numpy_image
-        
     
-    def _GetNumPyImage( self, clip_rect: QC.QRect, target_resolution: QC.QSize ):
+    def _get_numpy_image(self, clip_rect: QC.QRect, target_resolution: QC.QSize):
         
         if self._numpy_image is None:
             
@@ -239,9 +232,8 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
             
         
         return result
-        
     
-    def _Initialise( self ):
+    def _initialise(self):
         
         # do this here so we are off the main thread and can wait
         client_files_manager = CG.client_controller.client_files_manager
@@ -254,13 +246,13 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
             
         except HydrusExceptions.NoRenderFileException as e:
             
-            self._numpy_image = self._InitialiseErrorImage( e, mention_log = False )
+            self._numpy_image = self._initialise_error_image( e, mention_log = False )
             
             self._render_failed = True
             
         except Exception as e:
             
-            self._numpy_image = self._InitialiseErrorImage( e )
+            self._numpy_image = self._initialise_error_image( e )
             
             self._render_failed = True
             
@@ -314,12 +306,8 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
                     HydrusData.show_text( m )
                     
                     CG.client_controller.write( 'file_maintenance_add_jobs_hashes', { self._hash }, ClientFilesMaintenance.REGENERATE_FILE_DATA_JOB_FILE_METADATA )
-                    
-                
-            
-        
     
-    def _InitialiseErrorImage( self, e: Exception, mention_log = True ):
+    def _initialise_error_image(self, e: Exception, mention_log = True):
         
         ( width, height ) = self._resolution
         
@@ -363,9 +351,8 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
         del painter
         
         return ClientGUIFunctionsImage.ConvertQtImageToNumPy( qt_image )
-        
     
-    def GetEstimatedMemoryFootprint( self ):
+    def get_estimated_memory_footprint(self):
         
         if self._numpy_image is None:
             
@@ -376,16 +363,17 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
         else:
             
             return self._numpy_image.nbytes
-            
-        
     
-    def GetHash( self ): return self._hash
+    def get_hash(self):
+        return self._hash
     
-    def GetNumFrames( self ): return self._num_frames
+    def get_num_frames(self):
+        return self._num_frames
     
-    def GetResolution( self ): return self._resolution
+    def get_resolution(self):
+        return self._resolution
     
-    def GetQtImage( self, clip_rect: QC.QRect | None = None, target_resolution: QC.QSize | None = None ):
+    def get_qt_image(self, clip_rect: QC.QRect | None = None, target_resolution: QC.QSize | None = None):
         
         if clip_rect is None:
             
@@ -399,7 +387,7 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
             target_resolution = clip_rect.size()
             
         
-        numpy_image = self._GetNumPyImage( clip_rect, target_resolution )
+        numpy_image = self._get_numpy_image( clip_rect, target_resolution )
         
         ( height, width, depth ) = numpy_image.shape
         
@@ -435,14 +423,13 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
             
         
         return qt_image
-        
     
-    def GetQtPixmap( self, clip_rect = None, target_resolution = None ):
+    def get_qt_pixmap(self, clip_rect = None, target_resolution = None):
         
         # colourspace conversions seem to be exclusively QImage territory
         if self._icc_profile_bytes is not None:
             
-            qt_image = self.GetQtImage( clip_rect = clip_rect, target_resolution = target_resolution )
+            qt_image = self.get_qt_image( clip_rect = clip_rect, target_resolution = target_resolution )
             
             return QG.QPixmap.fromImage( qt_image )
             
@@ -465,7 +452,7 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
             
             try:
                 
-                numpy_image = self._GetNumPyImage( clip_rect, target_resolution )
+                numpy_image = self._get_numpy_image( clip_rect, target_resolution )
                 
                 ( height, width, depth ) = numpy_image.shape
                 
@@ -486,25 +473,21 @@ class ImageRenderer( ClientCachesBase.CacheableObject ):
         pixmap.fill( QC.Qt.GlobalColor.black )
         
         return pixmap
-        
     
-    def IsFinishedLoading( self ):
+    def is_finished_loading(self):
         
         return self._is_ready
-        
     
-    def IsReady( self ):
+    def is_ready(self):
         
         return self._is_ready
-        
     
-    def RenderFailed( self ):
+    def render_failed(self):
         
         return self._render_failed
-        
-    
 
-class ImageTile( ClientCachesBase.CacheableObject ):
+
+class ImageTile(ClientCachesBase.CacheableObject):
     
     def __init__( self, hash: bytes, clip_rect: QC.QRect, qt_pixmap: QG.QPixmap ):
         
@@ -515,22 +498,19 @@ class ImageTile( ClientCachesBase.CacheableObject ):
         self.qt_pixmap = qt_pixmap
         
         self._num_bytes = self.qt_pixmap.width() * self.qt_pixmap.height() * 3
-        
     
-    def GetEstimatedMemoryFootprint( self ):
+    def get_estimated_memory_footprint(self):
         
         return self._num_bytes
-        
     
-    def IsFinishedLoading( self ):
+    def is_finished_loading(self):
         
         return True
-        
-    
 
-class RasterContainer( object ):
+
+class RasterContainer:
     
-    def __init__( self, media: ClientMediaSingle.MediaSingle, target_resolution = None ):
+    def __init__(self, media: ClientMediaSingle.MediaSingle, target_resolution = None):
         
         if target_resolution is None: target_resolution = media.GetResolution()
         
@@ -570,12 +550,11 @@ class RasterContainer( object ):
         if self._zoom > 1.0:
             
             self._zoom = 1.0
-            
-        
+
+
+class RasterContainerVideo(RasterContainer):
     
-class RasterContainerVideo( RasterContainer ):
-    
-    def __init__( self, media: ClientMediaSingle.MediaSingle, target_resolution = None, init_position = 0, frame_durations_ms = None ):
+    def __init__(self, media: ClientMediaSingle.MediaSingle, target_resolution = None, init_position = 0, frame_durations_ms = None):
         
         super().__init__( media, target_resolution )
         
@@ -661,40 +640,33 @@ class RasterContainerVideo( RasterContainer ):
         self._rendered_first_frame = False
         self._ideal_next_frame = 0
         
-        CG.client_controller.call_to_thread( self.THREADRender )
-        
+        CG.client_controller.call_to_thread( self.thread_render )
     
-    def __del__( self ):
+    def __del__(self):
         
-        self.Stop()
-        
+        self.stop()
     
-    def _HasFrame( self, index ):
+    def _has_frame(self, index):
         
         return index in self._frames
-        
     
-    def _IndexInRange( self, index, range_start, range_end ):
+    def _index_in_range(self, index, range_start, range_end):
         
-        return not FrameIndexOutOfRange( index, range_start, range_end )
-        
+        return not frame_index_out_of_range( index, range_start, range_end )
     
-    def _MaintainBuffer( self ):
+    def _maintain_buffer(self):
         
-        deletees = [ index for index in list(self._frames.keys()) if FrameIndexOutOfRange( index, self._buffer_start_index, self._buffer_end_index ) ]
+        deletees = [ index for index in list(self._frames.keys()) if frame_index_out_of_range( index, self._buffer_start_index, self._buffer_end_index ) ]
         
         for i in deletees:
             
             del self._frames[ i ]
-            
-        
     
-    def CanHaveVariableFramerate( self ):
+    def can_have_variable_framerate(self):
         
         return self._media.GetMime() in ( HC.ANIMATION_GIF, HC.ANIMATION_UGOIRA, HC.ANIMATION_WEBP )
-        
     
-    def GetBufferIndices( self ):
+    def get_buffer_indices(self):
         
         if self._last_index_rendered == -1:
             
@@ -703,12 +675,10 @@ class RasterContainerVideo( RasterContainer ):
         else:
             
             return ( self._buffer_start_index, self._last_index_rendered, self._buffer_end_index )
-            
-        
     
-    def GetDurationMS( self, index ):
+    def get_duration_ms(self, index):
         
-        if self.CanHaveVariableFramerate():
+        if self.can_have_variable_framerate():
             
             if 0 <= index <= len( self._frame_durations_ms ) - 1:
                 
@@ -717,16 +687,15 @@ class RasterContainerVideo( RasterContainer ):
             
         
         return self._average_frame_duration_ms
-        
     
-    def GetFrame( self, index ):
+    def get_frame(self, index):
         
         with self._lock:
             
             frame = self._frames[ index ]
             
         
-        num_frames_in_video = self.GetNumFrames()
+        num_frames_in_video = self.get_num_frames()
         
         if index == num_frames_in_video - 1:
             
@@ -737,36 +706,32 @@ class RasterContainerVideo( RasterContainer ):
             next_index = index + 1
             
         
-        self.GetReadyForFrame( next_index )
+        self.get_ready_for_frame( next_index )
         
         return frame
-        
     
-    def GetHash( self ):
+    def get_hash(self):
         
         return self._media.GetHash()
-        
     
-    def GetKey( self ):
+    def get_key(self):
         
         return ( self._media.GetHash(), self._target_resolution )
-        
     
-    def GetNumFrames( self ):
+    def get_num_frames(self):
         
         return self._media.GetNumFrames()
-        
     
-    def GetReadyForFrame( self, next_index_to_expect ):
+    def get_ready_for_frame(self, next_index_to_expect):
         
-        num_frames_in_video = self.GetNumFrames()
+        num_frames_in_video = self.get_num_frames()
         
         if num_frames_in_video == 0 or num_frames_in_video is None:
             
             return
             
         
-        frame_request_is_impossible = FrameIndexOutOfRange( next_index_to_expect, 0, num_frames_in_video - 1 )
+        frame_request_is_impossible = frame_index_out_of_range( next_index_to_expect, 0, num_frames_in_video - 1 )
         
         if frame_request_is_impossible:
             
@@ -781,7 +746,7 @@ class RasterContainerVideo( RasterContainer ):
             
             if video_is_bigger_than_buffer:
                 
-                current_ideal_is_out_of_buffer = self._buffer_start_index == -1 or FrameIndexOutOfRange( self._ideal_next_frame, self._buffer_start_index, self._buffer_end_index )
+                current_ideal_is_out_of_buffer = self._buffer_start_index == -1 or frame_index_out_of_range( self._ideal_next_frame, self._buffer_start_index, self._buffer_end_index )
                 
                 ideal_buffer_start_index = max( 0, self._ideal_next_frame - self._num_frames_backwards )
                 
@@ -802,15 +767,15 @@ class RasterContainerVideo( RasterContainer ):
                     # we do not want to shunt right if we don't have the earliest frames yet--be patient
                     
                     # i.e. it is between the current start and the ideal
-                    next_ideal_start_would_shunt_right = self._IndexInRange( ideal_buffer_start_index, self._buffer_start_index, self._ideal_next_frame )
-                    have_next_ideal_start = self._HasFrame( ideal_buffer_start_index )
+                    next_ideal_start_would_shunt_right = self._index_in_range( ideal_buffer_start_index, self._buffer_start_index, self._ideal_next_frame )
+                    have_next_ideal_start = self._has_frame( ideal_buffer_start_index )
                     
                     if next_ideal_start_would_shunt_right and have_next_ideal_start:
                         
                         self._buffer_start_index = ideal_buffer_start_index
                         
                     
-                    next_ideal_end_would_shunt_right = self._IndexInRange( ideal_buffer_end_index, self._buffer_end_index, self._buffer_start_index )
+                    next_ideal_end_would_shunt_right = self._index_in_range( ideal_buffer_end_index, self._buffer_end_index, self._buffer_start_index )
                     
                     if next_ideal_end_would_shunt_right:
                     
@@ -826,26 +791,22 @@ class RasterContainerVideo( RasterContainer ):
             
         
         self._render_event.set()
-        
     
-    def GetResolution( self ):
+    def get_resolution(self):
         
         return self._media.GetResolution()
-        
     
-    def GetSize( self ):
+    def get_size(self):
         
         return self._target_resolution
-        
     
-    def GetTimesToPlayAnimation( self ):
+    def get_times_to_play_animation(self):
         
         return self._times_to_play_animation
-        
     
-    def GetFrameIndex( self, timestamp_ms ):
+    def get_frame_index(self, timestamp_ms):
         
-        if self.CanHaveVariableFramerate():
+        if self.can_have_variable_framerate():
             
             so_far = 0
             
@@ -857,7 +818,7 @@ class RasterContainerVideo( RasterContainer ):
                     
                     result = frame_index
                     
-                    if FrameIndexOutOfRange( result, 0, self.GetNumFrames() - 1 ):
+                    if frame_index_out_of_range( result, 0, self.get_num_frames() - 1 ):
                         
                         return 0
                         
@@ -873,60 +834,48 @@ class RasterContainerVideo( RasterContainer ):
         else:
             
             return timestamp_ms // self._average_frame_duration_ms
-            
-        
     
-    def GetTimestampMS( self, frame_index ):
+    def get_timestamp_ms(self, frame_index):
         
-        if self.CanHaveVariableFramerate():
+        if self.can_have_variable_framerate():
             
             return sum( self._frame_durations_ms[ : frame_index ] )
             
         else:
             
             return self._average_frame_duration_ms * frame_index
-            
-        
     
-    def GetTotalDuration( self ):
+    def get_total_duration(self):
         
-        if self.CanHaveVariableFramerate():
+        if self.can_have_variable_framerate():
             
             return sum( self._frame_durations_ms )
             
         else:
             
-            return self._average_frame_duration_ms * self.GetNumFrames()
-            
-        
+            return self._average_frame_duration_ms * self.get_num_frames()
     
-    def HasFrame( self, index ):
+    def has_frame(self, index):
         
         with self._lock:
             
-            return self._HasFrame( index )
-            
-        
+            return self._has_frame( index )
     
-    def IsInitialised( self ):
+    def is_initialised(self):
         
         with self._lock:
             
             return self._initialised
-            
-        
     
-    def IsScaled( self ):
+    def is_scaled(self):
         
         return self._zoom != 1.0
-        
     
-    def Stop( self ):
+    def stop(self):
         
         self._stop = True
-        
     
-    def THREADRender( self ):
+    def thread_render(self):
         
         mime = self._media.GetMime()
         duration_ms = self._media.GetDurationMS()
@@ -985,7 +934,7 @@ class RasterContainerVideo( RasterContainer ):
         # give ui a chance to draw a blank frame rather than hard-charge right into CPUland
         time.sleep( 0.00001 )
         
-        self.GetReadyForFrame( self._init_position )
+        self.get_ready_for_frame( self._init_position )
         
         with self._lock:
             
@@ -1014,14 +963,14 @@ class RasterContainerVideo( RasterContainer ):
                 
                 # lets see if we should move the renderer to a new position
                 
-                next_render_is_out_of_buffer = FrameIndexOutOfRange( self._next_render_index, self._buffer_start_index, self._buffer_end_index )
+                next_render_is_out_of_buffer = frame_index_out_of_range( self._next_render_index, self._buffer_start_index, self._buffer_end_index )
                 buffer_not_fully_rendered = self._last_index_rendered != self._buffer_end_index
                 
                 currently_rendering_out_of_buffer = next_render_is_out_of_buffer and buffer_not_fully_rendered
                 
-                will_render_ideal_frame_soon = self._IndexInRange( self._next_render_index, self._buffer_start_index, self._ideal_next_frame )
+                will_render_ideal_frame_soon = self._index_in_range( self._next_render_index, self._buffer_start_index, self._ideal_next_frame )
                 
-                need_ideal_next_frame = not self._HasFrame( self._ideal_next_frame )
+                need_ideal_next_frame = not self._has_frame( self._ideal_next_frame )
                 
                 will_not_get_to_ideal_frame = need_ideal_next_frame and not will_render_ideal_frame_soon
                 
@@ -1083,18 +1032,18 @@ class RasterContainerVideo( RasterContainer ):
                         self._last_index_rendered = -1
                         
                     
-                    should_save_frame = not self._HasFrame( frame_index )
+                    should_save_frame = not self._has_frame( frame_index )
                     
                 
                 if should_save_frame:
                     
-                    frame = GenerateHydrusBitmapFromNumPyImage( numpy_image, compressed = False )
+                    frame = generate_hydrus_bitmap_from_numpy_image( numpy_image, compressed = False )
                     
                     with self._lock:
                         
                         self._frames[ frame_index ] = frame
                         
-                        self._MaintainBuffer()
+                        self._maintain_buffer()
                         
                     
                 
@@ -1121,14 +1070,11 @@ class RasterContainerVideo( RasterContainer ):
                 self._render_event.wait( 1 )
                 
                 self._render_event.clear()
-                
-            
-        
-    
 
-class HydrusBitmap( ClientCachesBase.CacheableObject ):
+
+class HydrusBitmap(ClientCachesBase.CacheableObject):
     
-    def __init__( self, data, size, depth, compressed = True ):
+    def __init__(self, data, size, depth, compressed = True):
         
         super().__init__()
         
@@ -1150,9 +1096,8 @@ class HydrusBitmap( ClientCachesBase.CacheableObject ):
         
         self._size = size
         self._depth = depth
-        
     
-    def _GetData( self ):
+    def _get_data(self):
         
         if self._compressed:
             
@@ -1161,10 +1106,8 @@ class HydrusBitmap( ClientCachesBase.CacheableObject ):
         else:
             
             return self._data
-            
-        
     
-    def _GetQtImageFormat( self ):
+    def _get_qt_image_format(self):
         
         if self._depth == 3:
             
@@ -1173,51 +1116,41 @@ class HydrusBitmap( ClientCachesBase.CacheableObject ):
         elif self._depth == 4:
             
             return QG.QImage.Format.Format_RGBA8888
-            
-        
     
-    def GetDepth( self ):
+    def get_depth(self):
         
         return self._depth
-        
     
-    def GetNumpyImage( self ):
+    def get_numpy_image(self):
         
-        arr = numpy.frombuffer( self._GetData(), dtype = numpy.uint8 )
+        arr = numpy.frombuffer( self._get_data(), dtype = numpy.uint8 )
         
         # Restore original shape: ( y, x, depth )
         width, height = self._size
         depth = self._depth
         
         return arr.reshape( ( height, width, depth ) )
-        
     
-    def GetQtImage( self ) -> QG.QImage:
+    def get_qt_image(self) -> QG.QImage:
         
         ( width, height ) = self._size
         
-        return CG.client_controller.bitmap_manager.get_qt_image_from_buffer( width, height, self._depth * 8, self._GetData() )
-        
+        return CG.client_controller.bitmap_manager.get_qt_image_from_buffer( width, height, self._depth * 8, self._get_data() )
     
-    def GetQtPixmap( self ) -> QG.QPixmap:
+    def get_qt_pixmap(self) -> QG.QPixmap:
         
         ( width, height ) = self._size
         
-        return CG.client_controller.bitmap_manager.get_qt_pixmap_from_buffer( width, height, self._depth * 8, self._GetData() )
-        
+        return CG.client_controller.bitmap_manager.get_qt_pixmap_from_buffer( width, height, self._depth * 8, self._get_data() )
     
-    def GetEstimatedMemoryFootprint( self ):
+    def get_estimated_memory_footprint(self):
         
         return len( self._data )
-        
     
-    def GetSize( self ):
+    def get_size(self):
         
         return self._size
-        
     
-    def IsFinishedLoading( self ):
+    def is_finished_loading(self):
         
         return True
-        
-    

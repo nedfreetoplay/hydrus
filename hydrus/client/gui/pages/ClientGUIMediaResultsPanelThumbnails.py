@@ -1917,7 +1917,7 @@ class Thumbnail( QW.QGraphicsItem ):
         
         try:
             
-            raw_thumbnail_qt_image = thumbnail_hydrus_bmp.GetQtImage()
+            raw_thumbnail_qt_image = thumbnail_hydrus_bmp.get_qt_image()
             
         except Exception as e:
             
@@ -1937,7 +1937,7 @@ class Thumbnail( QW.QGraphicsItem ):
             
             thumbnail_hydrus_bmp = CG.client_controller.thumbnails_cache.GetHydrusSpecialThumbnail( content_size )
             
-            raw_thumbnail_qt_image = thumbnail_hydrus_bmp.GetQtImage()
+            raw_thumbnail_qt_image = thumbnail_hydrus_bmp.get_qt_image()
             
         
         thumbnail_dpr_percent = new_options.get_integer( 'thumbnail_dpr_percent' )

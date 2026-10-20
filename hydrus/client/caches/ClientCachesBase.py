@@ -11,12 +11,12 @@ from hydrus.client import ClientGlobals as CG
 
 class CacheableObject( object ):
     
-    def GetEstimatedMemoryFootprint( self ) -> int:
+    def get_estimated_memory_footprint( self ) -> int:
         
         raise NotImplementedError()
         
     
-    def IsFinishedLoading( self ):
+    def is_finished_loading( self ):
         
         raise NotImplementedError()
         
@@ -27,7 +27,7 @@ class DataCacheEntry( object ):
     def __init__( self, data: CacheableObject ):
         
         self.data = data
-        self.size_estimate = data.GetEstimatedMemoryFootprint()
+        self.size_estimate = data.get_estimated_memory_footprint()
         self.last_access_time = time.monotonic()
         
     
@@ -89,7 +89,7 @@ class DataCache( object ):
         
         for ( key, entry ) in self._keys_to_data.items():
             
-            if not entry.data.IsFinishedLoading():
+            if not entry.data.is_finished_loading():
                 
                 # this guy is still rendering, let's not push him out for a different prefetch
                 continue
@@ -146,7 +146,7 @@ class DataCache( object ):
         data = entry.data
         size_estimate = entry.size_estimate
         
-        new_estimate = data.GetEstimatedMemoryFootprint()
+        new_estimate = data.get_estimated_memory_footprint()
         
         if new_estimate != size_estimate:
             

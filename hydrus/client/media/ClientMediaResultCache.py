@@ -20,12 +20,12 @@ class MediaResultCacheContainer( ClientCachesBase.CacheableObject ):
         self._media_result = media_result
         
     
-    def GetEstimatedMemoryFootprint( self ) -> int:
+    def get_estimated_memory_footprint( self ) -> int:
         
         return 1
         
     
-    def IsFinishedLoading( self ):
+    def is_finished_loading( self ):
         
         return True
         

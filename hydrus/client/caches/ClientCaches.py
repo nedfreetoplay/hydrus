@@ -178,7 +178,7 @@ class ImageRendererCache( object ):
             # we are no longer going to let big lads flush the whole cache. they can render on demand
             
             image_cache_storage_limit_percentage = self._controller.new_options.get_integer( 'image_cache_storage_limit_percentage' )
-            acceptable_size = image_renderer.GetEstimatedMemoryFootprint() < self._data_cache.GetSizeLimit() * ( image_cache_storage_limit_percentage / 100 )
+            acceptable_size = image_renderer.get_estimated_memory_footprint() < self._data_cache.GetSizeLimit() * ( image_cache_storage_limit_percentage / 100 )
             
             if acceptable_size:
                 
@@ -231,9 +231,9 @@ class ImageRendererCache( object ):
                 
                 image_renderer = typing.cast( ClientRendering.ImageRenderer, result )
                 
-                if image_renderer.IsReady():
+                if image_renderer.is_ready():
                     
-                    total_size_we_have_prefetched_here += image_renderer.GetEstimatedMemoryFootprint()
+                    total_size_we_have_prefetched_here += image_renderer.get_estimated_memory_footprint()
                     
                 else:
                     
@@ -333,7 +333,7 @@ class ImageTileCache( object ):
         
         if result is None:
             
-            qt_pixmap = image_renderer.GetQtPixmap( clip_rect = clip_rect, target_resolution = target_resolution )
+            qt_pixmap = image_renderer.get_qt_pixmap( clip_rect = clip_rect, target_resolution = target_resolution )
             
             tile = ClientRendering.ImageTile( hash, clip_rect, qt_pixmap )
             
@@ -423,7 +423,7 @@ class ThumbnailCache( object ):
         
         is_hydrus_bitmap = isinstance( image, ClientRendering.HydrusBitmap )
         
-        ( current_width, current_height ) = image.GetSize() if is_hydrus_bitmap else HydrusImageHandling.get_resolution_numpy( image )
+        ( current_width, current_height ) = image.get_size() if is_hydrus_bitmap else HydrusImageHandling.get_resolution_numpy( image )
         
         ( media_width, media_height ) = media_result.GetResolution() if media_result else ( current_width, current_height )
         
@@ -466,14 +466,14 @@ class ThumbnailCache( object ):
                     
                 else:
                     
-                    return ClientRendering.GenerateHydrusBitmapFromNumPyImage( image )
+                    return ClientRendering.generate_hydrus_bitmap_from_numpy_image( image )
                     
                 
             
         
         if is_hydrus_bitmap:
             
-            numpy_image = image.GetNumpyImage()
+            numpy_image = image.get_numpy_image()
             
         else:
             
@@ -482,7 +482,7 @@ class ThumbnailCache( object ):
         
         numpy_image = HydrusImageHandling.resize_numpy_image( numpy_image, ( expected_width, expected_height ) )
         
-        return ClientRendering.GenerateHydrusBitmapFromNumPyImage( numpy_image )
+        return ClientRendering.generate_hydrus_bitmap_from_numpy_image( numpy_image )
         
     
     def _GetBestRecoveryThumbnailNumpyUnsized( self, media_result: ClientMediaResult.MediaResult ):
@@ -832,7 +832,7 @@ class ThumbnailCache( object ):
                 
                 image_svg_numpy = ClientSVGHandling.GenerateThumbnailNumPyFromSVGPath( svg_thumbnail_path, target_resolution )
                 
-                image_svg_hydrus_bitmap = ClientRendering.GenerateHydrusBitmapFromNumPyImage( image_svg_numpy )
+                image_svg_hydrus_bitmap = ClientRendering.generate_hydrus_bitmap_from_numpy_image( image_svg_numpy )
                 
             except Exception as e:
                 
@@ -857,7 +857,7 @@ class ThumbnailCache( object ):
                 
                 numpy_image_resized = HydrusImageHandling.resize_numpy_image( numpy_image, target_resolution )
                 
-                hydrus_bitmap = ClientRendering.GenerateHydrusBitmapFromNumPyImage( numpy_image_resized )
+                hydrus_bitmap = ClientRendering.generate_hydrus_bitmap_from_numpy_image( numpy_image_resized )
                 
                 self._special_thumbs_default_size_hydrus_bitmap[ mime ] = hydrus_bitmap
                 self._special_thumbs_unsized_numpy[ mime ] = numpy_image
@@ -966,13 +966,13 @@ class ThumbnailCache( object ):
                             # how well does this work in practice? does using thumbnail_scale_type even make sense inside this function?
                             numpy_image_unsized = self._GetBestRecoveryThumbnailNumpyUnsized( media_result )
                             
-                            hydrus_bitmap_unsized = ClientRendering.GenerateHydrusBitmapFromNumPyImage( numpy_image_unsized )
+                            hydrus_bitmap_unsized = ClientRendering.generate_hydrus_bitmap_from_numpy_image( numpy_image_unsized )
                             
                             hydrus_bitmap_sized = self._ApplySizingToHydrusBitmapOrNumpyImage( media_result, numpy_image_unsized, bounding_dimensions, skip_if_correct_sized_and_numpy = True )
                             
                         else:
                             
-                            hydrus_bitmap_unsized = ClientRendering.GenerateHydrusBitmapFromNumPyImage( numpy_image )
+                            hydrus_bitmap_unsized = ClientRendering.generate_hydrus_bitmap_from_numpy_image( numpy_image )
                             
                             hydrus_bitmap_sized = self._ApplySizingToHydrusBitmapOrNumpyImage( media_result, numpy_image, bounding_dimensions, skip_if_correct_sized_and_numpy = True )
                             
@@ -993,7 +993,7 @@ class ThumbnailCache( object ):
                     self._hashes_to_cached_sizes[ hash ].add( ( hash, None ) )
                     
                     # Then if the "sized" variant is different, add that too:
-                    if ADD_SIZE_VARIANTS_TO_CACHE and bounding_dimensions is not None and hydrus_bitmap_sized.GetSize() != hydrus_bitmap_unsized.GetSize():
+                    if ADD_SIZE_VARIANTS_TO_CACHE and bounding_dimensions is not None and hydrus_bitmap_sized.get_size() != hydrus_bitmap_unsized.get_size():
                         
                         self._data_cache.AddData( ( hash, bounding_dimensions ), hydrus_bitmap_sized )
                         self._hashes_to_cached_sizes[ hash ].add( ( hash, bounding_dimensions ) )
@@ -1008,7 +1008,7 @@ class ThumbnailCache( object ):
                     
                     hydrus_bitmap_sized = self._ApplySizingToHydrusBitmapOrNumpyImage( media_result, result, bounding_dimensions, skip_if_correct_sized_and_numpy = True )
                     
-                    if ADD_SIZE_VARIANTS_TO_CACHE and bounding_dimensions is not None and hydrus_bitmap_sized.GetSize() != result.GetSize():
+                    if ADD_SIZE_VARIANTS_TO_CACHE and bounding_dimensions is not None and hydrus_bitmap_sized.get_size() != result.GetSize():
                         
                         self._data_cache.AddData( ( hash, bounding_dimensions ), hydrus_bitmap_sized )
                         self._hashes_to_cached_sizes[ hash ].add( ( hash, bounding_dimensions ) )

@@ -96,7 +96,7 @@ class ThumbnailPairListModel( QC.QAbstractTableModel ):
         
         def publish_callable( thumbnail_hydrus_bmp: ClientRendering.HydrusBitmap ):
             
-            pixmap = thumbnail_hydrus_bmp.GetQtPixmap()
+            pixmap = thumbnail_hydrus_bmp.get_qt_pixmap()
             
             too_big = pixmap.width() > self._max_thumbnail_width or pixmap.height() > self._max_thumbnail_height
             too_small = pixmap.width() < self._max_thumbnail_width and pixmap.height() < self._max_thumbnail_height

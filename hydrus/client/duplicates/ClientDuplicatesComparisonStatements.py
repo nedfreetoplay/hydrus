@@ -840,7 +840,7 @@ def GetVisualData( media_result: ClientMediaResult.MediaResult ) -> ClientVisual
         
         image_renderer = CG.client_controller.images_cache.GetImageRenderer( media_result )
         
-        while not image_renderer.IsReady():
+        while not image_renderer.is_ready():
             
             if HydrusThreading.is_thread_shutting_down():
                 
@@ -850,7 +850,7 @@ def GetVisualData( media_result: ClientMediaResult.MediaResult ) -> ClientVisual
             time.sleep( 0.1 )
             
         
-        numpy_image = image_renderer.GetNumPyImage()
+        numpy_image = image_renderer.get_numpy_image()
         
         try:
             
@@ -879,7 +879,7 @@ def GetVisualDataTiled( media_result: ClientMediaResult.MediaResult ) -> ClientV
         
         image_renderer = CG.client_controller.images_cache.GetImageRenderer( media_result )
         
-        while not image_renderer.IsReady():
+        while not image_renderer.is_ready():
             
             if HydrusThreading.is_thread_shutting_down():
                 
@@ -889,7 +889,7 @@ def GetVisualDataTiled( media_result: ClientMediaResult.MediaResult ) -> ClientV
             time.sleep( 0.1 )
             
         
-        numpy_image = image_renderer.GetNumPyImage()
+        numpy_image = image_renderer.get_numpy_image()
         
         try:
             
@@ -919,12 +919,12 @@ class JpegQuality( ClientCachesBase.CacheableObject ):
         self.progressive = progressive
         
     
-    def GetEstimatedMemoryFootprint( self ) -> int:
+    def get_estimated_memory_footprint( self ) -> int:
         
         return 64 # w/e
         
     
-    def IsFinishedLoading( self ):
+    def is_finished_loading( self ):
         
         return True
         

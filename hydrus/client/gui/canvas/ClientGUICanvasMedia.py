@@ -454,19 +454,19 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
             if self._video_container is not None:
                 
-                ( renderer_width, renderer_height ) = self._video_container.GetSize()
+                ( renderer_width, renderer_height ) = self._video_container.get_size()
                 
                 we_just_zoomed_in = my_raw_width > renderer_width or my_raw_height > renderer_height
                 we_just_zoomed_out = my_raw_width < renderer_width or my_raw_height < renderer_height
                 
                 if we_just_zoomed_in:
                     
-                    if self._video_container.IsScaled():
+                    if self._video_container.is_scaled():
                         
                         target_width = min( media_width, my_raw_width )
                         target_height = min( media_height, my_raw_height )
                         
-                        self._video_container.Stop()
+                        self._video_container.stop()
                         
                         self._video_container = ClientRendering.RasterContainerVideo( self._media, ( target_width, target_height ), init_position = self._current_frame_index, frame_durations_ms = self._frame_durations_ms )
                         
@@ -475,7 +475,7 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                     
                     if my_raw_width < media_width or my_raw_height < media_height: # i.e. new zoom is scaled
                         
-                        self._video_container.Stop()
+                        self._video_container.stop()
                         
                         self._video_container = ClientRendering.RasterContainerVideo( self._media, ( my_raw_width, my_raw_height ), init_position = self._current_frame_index, frame_durations_ms = self._frame_durations_ms )
                         
@@ -496,7 +496,7 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             self._video_container = ClientRendering.RasterContainerVideo( self._media, ( my_raw_width, my_raw_height ), init_position = self._current_frame_index, frame_durations_ms = self._frame_durations_ms )
             
         
-        if not self._video_container.HasFrame( self._current_frame_index ):
+        if not self._video_container.has_frame( self._current_frame_index ):
             
             return
             
@@ -513,7 +513,7 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         # this makes transparency work nice, so just force it
         self._DrawABlankFrame( painter )
         
-        current_frame = self._video_container.GetFrame( self._current_frame_index )
+        current_frame = self._video_container.get_frame( self._current_frame_index )
         
         current_frame_image = current_frame.GetQtImage()
         
@@ -524,7 +524,7 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         self._current_frame_drawn = True
         
-        next_frame_duration_s = HydrusTime.secondise_ms_float( self._video_container.GetDurationMS( self._current_frame_index ) )
+        next_frame_duration_s = HydrusTime.secondise_ms_float( self._video_container.get_duration_ms( self._current_frame_index ) )
         
         next_frame_ideally_due = self._next_frame_due_at + next_frame_duration_s
         
@@ -581,11 +581,11 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
         else:
             
-            buffer_indices = self._video_container.GetBufferIndices()
+            buffer_indices = self._video_container.get_buffer_indices()
             
-            if self._current_timestamp_ms is None and self._video_container.IsInitialised():
+            if self._current_timestamp_ms is None and self._video_container.is_initialised():
                 
-                self._current_timestamp_ms = self._video_container.GetTimestampMS( self._current_frame_index )
+                self._current_timestamp_ms = self._video_container.get_timestamp_ms( self._current_frame_index )
                 
             
         
@@ -594,7 +594,7 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
     
     def GotoFrame( self, frame_index, pause_afterwards = True ):
         
-        if self._video_container is not None and self._video_container.IsInitialised():
+        if self._video_container is not None and self._video_container.is_initialised():
             
             if frame_index != self._current_frame_index:
                 
@@ -603,7 +603,7 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                 
                 self._next_frame_due_at = HydrusTime.get_now_precise()
                 
-                self._video_container.GetReadyForFrame( self._current_frame_index )
+                self._video_container.get_ready_for_frame( self._current_frame_index )
                 
                 self._current_frame_drawn = False
                 
@@ -619,9 +619,9 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
     
     def GotoTimestamp( self, timestamp_ms, round_direction, pause_afterwards = True ):
         
-        if self._video_container is not None and self._video_container.IsInitialised():
+        if self._video_container is not None and self._video_container.is_initialised():
             
-            frame_index = self._video_container.GetFrameIndex( timestamp_ms )
+            frame_index = self._video_container.get_frame_index( timestamp_ms )
             
             if frame_index == self._current_frame_index:
                 
@@ -756,7 +756,7 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
     
     def SeekDelta( self, direction, duration_ms ):
         
-        if self._current_timestamp_ms is not None and self._video_container is not None and self._video_container.IsInitialised():
+        if self._current_timestamp_ms is not None and self._video_container is not None and self._video_container.is_initialised():
             
             new_ts = max( 0, self._current_timestamp_ms + ( direction * duration_ms ) )
             
@@ -800,7 +800,7 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         if self._video_container is not None:
             
-            self._video_container.Stop()
+            self._video_container.stop()
             
         
         self._video_container = None
@@ -878,7 +878,7 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                             
                             if self._media.GetMime() in HC.VIEWABLE_ANIMATIONS and not CG.client_controller.new_options.get_boolean( 'always_loop_gifs' ):
                                 
-                                times_to_play_animation = self._video_container.GetTimesToPlayAnimation()
+                                times_to_play_animation = self._video_container.get_times_to_play_animation()
                                 
                                 # 0 is infinite
                                 if times_to_play_animation != 0 and self._playthrough_count >= times_to_play_animation:
@@ -901,9 +901,9 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                             
                             self._current_frame_index = next_frame_index
                             
-                            if self._current_timestamp_ms is not None and self._video_container is not None and self._video_container.IsInitialised():
+                            if self._current_timestamp_ms is not None and self._video_container is not None and self._video_container.is_initialised():
                                 
-                                duration_ms = self._video_container.GetDurationMS( self._current_frame_index - 1 )
+                                duration_ms = self._video_container.get_duration_ms( self._current_frame_index - 1 )
                                 
                                 self._current_timestamp_ms += duration_ms
                                 
@@ -917,7 +917,7 @@ class Animation( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
                     
                     if not self._current_frame_drawn:
                         
-                        if self._video_container.HasFrame( self._current_frame_index ):
+                        if self._video_container.has_frame( self._current_frame_index ):
                             
                             self.update()
                             
@@ -1062,7 +1062,7 @@ class AnimationBar( QW.QWidget ):
                 
                 ( start_index, rendered_to_index, end_index ) = buffer_indices
                 
-                if ClientRendering.FrameIndexOutOfRange( rendered_to_index, start_index, end_index ):
+                if ClientRendering.frame_index_out_of_range( rendered_to_index, start_index, end_index ):
                     
                     rendered_to_index = start_index
                     
@@ -3408,7 +3408,7 @@ class EmbedButton( QW.QWidget ):
                 
                 thumbnail_mime = HydrusFileHandling.get_thumbnail_mime( thumbnail_path )
                 
-                self._thumbnail_qt_pixmap = ClientRendering.GenerateHydrusBitmap( thumbnail_path, thumbnail_mime ).GetQtPixmap()
+                self._thumbnail_qt_pixmap = ClientRendering.generate_hydrus_bitmap( thumbnail_path, thumbnail_mime ).get_qt_pixmap()
                 
                 self.update()
                 
@@ -3438,7 +3438,7 @@ class OpenExternallyPanel( QW.QWidget ):
             
             if display_media_result is not None:
                 
-                qt_pixmap = CG.client_controller.thumbnails_cache.GetThumbnail( display_media_result ).GetQtPixmap()
+                qt_pixmap = CG.client_controller.thumbnails_cache.GetThumbnail( display_media_result ).get_qt_pixmap()
                 
                 thumbnail_dpr_percent = CG.client_controller.new_options.get_integer( 'thumbnail_dpr_percent' )
                 
@@ -3853,7 +3853,7 @@ class StaticImage( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
             painter = QG.QPainter( self )
             
-            if self._image_renderer is None or not self._image_renderer.IsReady():
+            if self._image_renderer is None or not self._image_renderer.is_ready():
                 
                 self._DrawBackground( painter )
                 
@@ -3968,7 +3968,7 @@ class StaticImage( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
             
             self._image_renderer = images_cache.GetImageRenderer( self._media.GetMediaResult() )
             
-            if not self._image_renderer.IsReady():
+            if not self._image_renderer.is_ready():
                 
                 CG.client_controller.gui.RegisterAnimationUpdateWindow( self )
                 
@@ -4036,7 +4036,7 @@ class StaticImage( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         self._image_renderer = images_cache.GetImageRenderer( self._media.GetMediaResult() )
         
-        if not self._image_renderer.IsReady():
+        if not self._image_renderer.is_ready():
             
             CG.client_controller.gui.RegisterAnimationUpdateWindow( self )
             
@@ -4048,7 +4048,7 @@ class StaticImage( CAC.ApplicationCommandProcessorMixin, QW.QWidget ):
         
         try:
             
-            if self._image_renderer is None or self._image_renderer.IsReady():
+            if self._image_renderer is None or self._image_renderer.is_ready():
                 
                 self.update()
                 

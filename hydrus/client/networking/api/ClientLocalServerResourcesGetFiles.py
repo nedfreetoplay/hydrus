@@ -247,7 +247,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetRenderedFile( HydrusResourceCl
             
             renderer = CG.client_controller.images_cache.GetImageRenderer( media_result )
             
-            while not renderer.IsReady():
+            while not renderer.is_ready():
                 
                 if request.disconnected:
                     
@@ -257,7 +257,7 @@ class HydrusResourceClientAPIRestrictedGetFilesGetRenderedFile( HydrusResourceCl
                 time.sleep( 0.01 )
                 
             
-            numpy_image = renderer.GetNumPyImage()
+            numpy_image = renderer.get_numpy_image()
             
             if 'width' in request.parsed_request_args and 'height' in request.parsed_request_args:
                 

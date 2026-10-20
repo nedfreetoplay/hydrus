@@ -1216,7 +1216,7 @@ class ReviewHowBonedAmI( ClientGUIScrolledPanels.ReviewPanel ):
         
         boned_path = HydrusStaticDir.get_static_path( 'boned.jpg' )
         
-        boned_qt_pixmap = ClientRendering.GenerateHydrusBitmap( boned_path, HC.IMAGE_JPEG ).GetQtPixmap()
+        boned_qt_pixmap = ClientRendering.generate_hydrus_bitmap( boned_path, HC.IMAGE_JPEG ).get_qt_pixmap()
         
         self._mr_bones_image = QW.QLabel( self, pixmap = boned_qt_pixmap )
         
