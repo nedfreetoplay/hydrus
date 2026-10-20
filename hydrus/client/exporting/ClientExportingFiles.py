@@ -806,7 +806,7 @@ class ExportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 job_status.SetStatusText( 'delete-synchronising: {}'.format( HydrusNumbers.value_range_to_pretty_string( i + 1, len( deletee_paths ) ) ) )
                 
-                ClientPaths.DeletePath( deletee_path )
+                ClientPaths.delete_path( deletee_path )
                 
             
             deletee_dirs = set()

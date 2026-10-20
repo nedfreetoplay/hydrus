@@ -834,7 +834,7 @@ class EditFileSeedCachePanel( ClientGUIScrolledPanels.EditPanel ):
                 
                 try:
                     
-                    ClientPaths.OpenFileLocations( [ file_seed.file_seed_data for file_seed in file_seeds ] )
+                    ClientPaths.open_file_locations( [ file_seed.file_seed_data for file_seed in file_seeds ] )
                     
                     
                 except Exception as e:

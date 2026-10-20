@@ -322,7 +322,7 @@ def OpenFileLocation( media: ClientMediaSingle.MediaSingle | None ) -> bool:
     
     path = CG.client_controller.client_files_manager.GetFilePath( hash, mime )
     
-    ClientPaths.OpenFileLocation( path )
+    ClientPaths.open_file_location( path )
     
     return True
     
@@ -344,7 +344,7 @@ def OpenNativeFileProperties( media: ClientMediaSingle.MediaSingle | None ) -> b
     
     path = CG.client_controller.client_files_manager.GetFilePath( hash, mime )
     
-    ClientPaths.OpenNativeFileProperties( path )
+    ClientPaths.open_native_file_properties( path )
     
     return True
 
@@ -366,7 +366,7 @@ def OpenFileWithDialog( media: ClientMediaSingle.MediaSingle | None ) -> bool:
     
     path = CG.client_controller.client_files_manager.GetFilePath( hash, mime )
     
-    ClientPaths.OpenFileWithDialog( path )
+    ClientPaths.open_file_with_dialog( path )
     
     return True
     

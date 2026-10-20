@@ -107,7 +107,7 @@ class HydrusResourceClientAPIRestrictedAddFilesAddFile( HydrusResourceClientAPIR
             
             if delete_after_successful_import and file_import_status.status in CC.SUCCESSFUL_IMPORT_STATES:
                 
-                ClientPaths.DeletePath( path )
+                ClientPaths.delete_path( path )
                 
             
         

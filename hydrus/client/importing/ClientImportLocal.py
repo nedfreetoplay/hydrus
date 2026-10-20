@@ -268,7 +268,7 @@ class HDDImport( HydrusSerialisable.SerialisableBase ):
                 
                 try:
                     
-                    ClientPaths.DeletePath( path )
+                    ClientPaths.delete_path( path )
                     
                 except Exception as e:
                     
@@ -289,7 +289,7 @@ class HDDImport( HydrusSerialisable.SerialisableBase ):
                         
                         try:
                             
-                            ClientPaths.DeletePath( possible_sidecar_path )
+                            ClientPaths.delete_path( possible_sidecar_path )
                             
                         except Exception as e:
                             
@@ -615,7 +615,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                 
                 if os.path.exists( path ) and not os.path.isdir( path ):
                     
-                    ClientPaths.DeletePath( path )
+                    ClientPaths.delete_path( path )
                     
                 
                 possible_sidecar_paths = set()
@@ -629,7 +629,7 @@ class ImportFolder( HydrusSerialisable.SerialisableBaseNamed ):
                     
                     if os.path.exists( possible_sidecar_path ):
                         
-                        ClientPaths.DeletePath( possible_sidecar_path )
+                        ClientPaths.delete_path( possible_sidecar_path )
                         
                     
                 

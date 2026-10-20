@@ -9,11 +9,10 @@ try:
     from showinfm import show_in_file_manager
     
     SHOW_IN_FILE_MANAGER_OK = True
-    
+
 except Exception as e:
     
     SHOW_IN_FILE_MANAGER_OK = False
-    
 
 if HC.PLATFORM_WINDOWS:
     
@@ -25,12 +24,10 @@ if HC.PLATFORM_WINDOWS:
         
         HydrusData.safe_print( 'Could not import ClientWindowsIntegration--maybe you need PyWin32 in your venv?' )
         HydrusData.print_exception( e, do_wait = False )
-        
-    
 
 CAN_OPEN_FILE_LOCATION = HC.PLATFORM_WINDOWS or HC.PLATFORM_MACOS or ( HC.PLATFORM_LINUX and SHOW_IN_FILE_MANAGER_OK )
 
-def DeletePath( path, always_delete_fully = False ):
+def delete_path(path, always_delete_fully = False):
     
     delete_to_recycle_bin = HC.options[ 'delete_to_recycle_bin' ]
     
@@ -41,10 +38,8 @@ def DeletePath( path, always_delete_fully = False ):
     else:
         
         HydrusPaths.delete_path( path )
-        
-    
 
-def GetDefaultLaunchPath():
+def get_default_launch_path():
     
     if HC.PLATFORM_WINDOWS:
         
@@ -61,10 +56,8 @@ def GetDefaultLaunchPath():
     elif HC.PLATFORM_HAIKU:
         
         return 'open "%path%"'
-        
-    
 
-def OpenFileLocation( path: str ):
+def open_file_location(path: str):
     
     if SHOW_IN_FILE_MANAGER_OK:
         
@@ -73,10 +66,8 @@ def OpenFileLocation( path: str ):
     else:
         
         HydrusPaths.open_file_location( path )
-        
-    
 
-def OpenFileLocations( paths: collections.abc.Sequence[str] ):
+def open_file_locations(paths: collections.abc.Sequence[str]):
     
     if SHOW_IN_FILE_MANAGER_OK:
         
@@ -87,21 +78,15 @@ def OpenFileLocations( paths: collections.abc.Sequence[str] ):
         for path in paths:
         
             HydrusPaths.open_file_location( path )
-            
-    
 
-def OpenNativeFileProperties( path: str ):
+def open_native_file_properties(path: str):
     
     if HC.PLATFORM_WINDOWS:
         
         ClientWindowsIntegration.OpenFileProperties( path )
-        
-    
 
-def OpenFileWithDialog( path: str ):
+def open_file_with_dialog(path: str):
     
     if HC.PLATFORM_WINDOWS:
         
         ClientWindowsIntegration.OpenFileWith( path )
-        
-    

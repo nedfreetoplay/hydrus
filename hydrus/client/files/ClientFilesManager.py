@@ -1127,7 +1127,7 @@ class ClientFilesManager( object ):
                         
                         job_status.SetStatusText( status )
                         
-                        ClientPaths.DeletePath( path )
+                        ClientPaths.delete_path( path )
                         
                     
                 
@@ -1154,7 +1154,7 @@ class ClientFilesManager( object ):
                         
                         job_status.SetStatusText( status )
                         
-                        ClientPaths.DeletePath( path, always_delete_fully = True )
+                        ClientPaths.delete_path( path, always_delete_fully = True )
                         
                     
                 
@@ -1271,7 +1271,7 @@ class ClientFilesManager( object ):
                                 ( path, actual_mime ) = self._LookForFilePath( file_hash )
                                 
                             
-                            ClientPaths.DeletePath( path )
+                            ClientPaths.delete_path( path )
                             
                             num_files_deleted += 1
                             
@@ -1290,7 +1290,7 @@ class ClientFilesManager( object ):
                         
                         if os.path.exists( path ):
                             
-                            ClientPaths.DeletePath( path, always_delete_fully = True )
+                            ClientPaths.delete_path( path, always_delete_fully = True )
                             
                             num_thumbnails_deleted += 1
                             
